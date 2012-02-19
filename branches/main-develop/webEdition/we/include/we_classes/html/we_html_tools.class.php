@@ -881,7 +881,7 @@ HTS;
 
 		if(strpos($width, "%") === false){
 			$width = intval($width);
-			if($GLOBALS['BROWSER'] != "IE"){
+			if(!we_base_browserDetect::isIE()){
 				$width -= 10;
 			}
 		}

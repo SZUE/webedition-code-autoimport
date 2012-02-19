@@ -305,8 +305,8 @@ class we_workflow_view extends we_workflow_base{
 		$yuiSuggest = & weSuggest::getInstance();
 
 		/*		 * *** BROWSER DEPENDENCIES **** */
-		switch($GLOBALS['BROWSER']){
-			case "IE" :
+		switch(we_base_browserDetect::inst()->getBrowser()){
+			case we_base_browserDetect::IE:
 				$_spacer_1_height = 13;
 				$_spacer_2_height = 5;
 				break;

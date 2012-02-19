@@ -116,9 +116,9 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		left:0px;
 		top:0px;
 		background: white;
-		<?php if($GLOBALS['BROWSER'] == 'IE'){ ?>
+		<?php if(we_base_browserDetect::isIE()){ ?>
 			filter: alpha(opacity=80);
-		<?php } else if($GLOBALS['BROWSER'] == 'SAFARI'){ ?>
+		<?php } else if(we_base_browserDetect::isSafari()){ ?>
 			KhtmlOpacity: .8;
 		<?php } else{ ?>
 			opacity: .8;

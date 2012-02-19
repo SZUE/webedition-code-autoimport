@@ -346,7 +346,7 @@ class we_button{
 		if($align == "")
 			$attr["align"] = "right";
 		//	button order depends on OS
-		if($GLOBALS['SYSTEM'] == "MAC"){
+		if(we_base_browserDetect::isMAC()){
 			$_order = array("no_button", "cancel_button", "yes_button");
 		} else{
 			$_order = array("yes_button", "no_button", "cancel_button");

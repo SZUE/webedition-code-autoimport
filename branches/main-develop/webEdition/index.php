@@ -279,7 +279,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else if(!$ignore_browser && !$GLOBALS['brDetect']->isSupported()){
+} else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
 	/*	 * *******************************************************************
 	 * CHECK BROWSER

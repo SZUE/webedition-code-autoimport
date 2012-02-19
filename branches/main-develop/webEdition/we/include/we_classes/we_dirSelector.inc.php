@@ -274,7 +274,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 							d.writeln('</tr>');
 						}
 						for(i=0;i < entries.length; i++){
-						var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"] == "IE" ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+						var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 						var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 						d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + '>');
 													 d.writeln('<td class="selector" align="center">');
@@ -841,7 +841,6 @@ top.selectFile(top.currentID);
 	<frameset cols="605,*" border="1">
 		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
 		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . (($GLOBALS['BROWSER'] != "NN6") ? ' style="border-left:1px solid black"' : '') . '>
-		<!--frame src="" name="fspreview" noresize scrolling="auto"' . (($GLOBALS['BROWSER'] != "NN6") ? ' style="border-left:1px solid black"' : '') . '-->
 	</frameset>
 	<frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
 	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">

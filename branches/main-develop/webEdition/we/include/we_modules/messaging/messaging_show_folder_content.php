@@ -28,7 +28,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$browser = new we_base_browserDetect();
+$browser = we_base_browserDetect::inst();
 if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }

@@ -663,7 +663,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			 */
 			function showLoadingSymbol(elementId) {
 	<?php
-	if($GLOBALS['BROWSER'] != 'SAFARI'){
+	if(!we_base_browserDetect::isSafari()){
 		echo '
 	if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
@@ -687,7 +687,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			 * hide the spinning wheel for a widget
 			 */
 			function hideLoadingSymbol( elementId ) {
-				var saf = <?php echo ($GLOBALS['BROWSER'] == 'SAFARI' ? 'true' : 'false'); ?>;
+				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
 
 				if(!saf && gel('rpcBusyClone_' + elementId)){
 					var oWrapper=gel(elementId+'_wrapper');
@@ -705,7 +705,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				var docIFrm,iFrmScr;
 				var oInline = gel(widgetId+'_inline'); // object-inline
 
-				var saf = <?php echo ($GLOBALS['BROWSER'] == 'SAFARI' ? 'true' : 'false'); ?>;
+			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
 				if(!saf) {
 					oInline.style.display='block';
 				}
@@ -838,7 +838,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				var docIFrm,iFrmScr;
 				var oInline=gel(sObjId+'_inline');
 
-				var saf = <?php echo ($GLOBALS['BROWSER'] == 'SAFARI' ? 'true' : 'false'); ?>;
+			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
 				if(!saf) {
 					oInline.style.display='block';
 				}

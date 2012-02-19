@@ -104,7 +104,7 @@ function _cutText($text, $l){
 	}
 
 	function setScrollTo(){
-		parent.scrollToVal=<?php if($GLOBALS["BROWSER"] == "IE"){ ?>document.body.scrollTop;<?php } else{ ?>pageYOffset;<?php } ?>
+		parent.scrollToVal=<?php if(we_base_browserDetect::isIE()){ ?>document.body.scrollTop;<?php } else{ ?>pageYOffset;<?php } ?>
 	}
 
 	function keypressed(e) {

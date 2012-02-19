@@ -32,7 +32,7 @@ we_html_tools::htmlTop();
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
+<?php } else if(we_base_browserDetect::isSafari()){ ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>

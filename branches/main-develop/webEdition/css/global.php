@@ -30,7 +30,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-$brDetect = new we_base_browserDetect();
 
 /* if (isset($_REQUEST["WE_LANGUAGE"]) && $_REQUEST["WE_LANGUAGE"] != "") {
   $_REQUEST["WE_LANGUAGE"] = str_replace(".", "", $_REQUEST["WE_LANGUAGE"]);
@@ -58,7 +57,7 @@ color: black;
 border: #AAAAAA solid 1px;
 box-sizing: border-box;
 height: 20px;
-<?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
+<?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
@@ -75,7 +74,7 @@ border: #888888 solid 1px;
 background-color: #dce6f2;
 box-sizing: border-box;
 height: 20px;
-<?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
+<?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
@@ -85,7 +84,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 color: black;
 border: #AAAAAA solid 1px;
 height: 80px;
-<?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
+<?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
@@ -95,7 +94,7 @@ color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
 height: 80px;
-<?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
+<?php print (we_base_browserDetect::isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
@@ -367,20 +366,20 @@ color: #006DB8;
 
 .small {
 color: black;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "9px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && ($SYSTEM == "WIN") ? "9px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
 .header_small {
 color: #006699;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "11px" : (($SYSTEM == "X11") ? "10px" : "10px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && ($SYSTEM == "WIN") ? "11px" : (($SYSTEM == "X11") ? "10px" : "10px")); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
 
 .header_shop {
 color: #006699;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "11px" : (($SYSTEM == "X11") ? "11px" : "11px")); ?>;
+font-size: 11px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 background-image: url(/webEdition/we/include/we_modules/shop/images/shopInfast.gif);
 background-position: bottom left;
@@ -389,7 +388,7 @@ background-repeat: no-repeat;
 
 .shop_th {
 color: #000000;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "12px" : (($SYSTEM == "X11") ? "12px" : "12px")); ?>;
+font-size: 12px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 padding-bottom:5px;
 font-weight:bold;
@@ -397,7 +396,7 @@ font-weight:bold;
 
 .shop_fontView {
 color: #666666;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "12px" : (($SYSTEM == "X11") ? "12px" : "12px")); ?>;
+font-size: 12px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 
@@ -406,7 +405,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 .big {
 color: black;
 text-align: left;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "14px" : (($SYSTEM == "X11") ? "15px" : "13px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && ($SYSTEM == "WIN") ? "14px" : (($SYSTEM == "X11") ? "15px" : "13px")); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 }
@@ -424,7 +423,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 
 .tree {
 color: black;
-font-size: <?php print ($brDetect->isNN() && ($SYSTEM == "WIN") ? "10px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
+font-size: <?php print (we_base_browserDetect::isGecko() && ($SYSTEM == "WIN") ? "10px" : (($SYSTEM == "X11") ? "11px" : "9px")); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
 

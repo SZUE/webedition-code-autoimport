@@ -367,7 +367,7 @@ class weVersionsView{
 				newID = elem.rows.length-1;
 
 				for(i=0;i<newID;i++) {
-					scrollheight = scrollheight + ' . ($GLOBALS['BROWSER'] == "IE" ? '22' : '26') . ';
+					scrollheight = scrollheight + ' . (we_base_browserDetect::isIE() ? '22' : '26') . ';
 				}
 
 				if (mode==1) {

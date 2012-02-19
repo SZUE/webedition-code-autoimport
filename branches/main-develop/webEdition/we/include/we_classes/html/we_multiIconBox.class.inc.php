@@ -91,7 +91,7 @@ abstract class we_multiIconBox{
 			$out .= '<br style="clear:both;">';
 
 
-			$out .= '</div>' . (($GLOBALS["BROWSER"] == "IE") ? '<br>' : '');
+			$out .= '</div>' . (we_base_browserDetect::isIE() ? '<br>' : '');
 
 			if($i < (count($content) - 1) && (!isset($c["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
@@ -273,7 +273,7 @@ abstract class we_multiIconBox{
 				var mainTD = document.getElementById("td_' . $uniqname . '");
 				mainTD.appendChild(mainDiv);
 
-' . (($GLOBALS["BROWSER"] == "IE") ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
+' . (we_base_browserDetect::isIE() ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
 
 				var lastDiv = document.createElement("DIV");
 				lastDiv.style.cssText = "margin:10px 0;clear:both;";

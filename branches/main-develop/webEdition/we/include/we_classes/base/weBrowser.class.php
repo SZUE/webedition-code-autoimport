@@ -26,9 +26,8 @@
 class weBrowser{
 
 	function getDownloadLinkText(){
-		$browser = new we_base_browserDetect();
 
-		switch($browser->getBrowser()){
+		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::SAFARI:
 			case we_base_browserDetect::APPLE:
 				$out = g_l('browser', '[save_link_as_SAFARI]');

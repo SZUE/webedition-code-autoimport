@@ -303,7 +303,7 @@ EO_SCRIPT;
 		$_select = we_html_tools::hidden($name . 'Control', (isset($_REQUEST[$name . 'Control']) ? $_REQUEST[$name . 'Control'] : 0)) .
 			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
-			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + ($GLOBALS['BROWSER'] == "IE" ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
+			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>
 <script type="text/javascript">' . $_script . '</script>';
 		return weCustomerFilterView::getDiv($_select, $name . 'Div', $isVisible, 22);

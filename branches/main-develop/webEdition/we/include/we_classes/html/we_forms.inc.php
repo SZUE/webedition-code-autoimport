@@ -48,12 +48,6 @@ abstract class we_forms{
 		$_id = ($uniqid ? uniqid($name . "_") : $name);
 
 		$labelonclick = "";
-		/* 		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
-
-		  if($onClick){
-		  $labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
-		  }
-		  } */
 
 		// Create HTML tags
 		$foo = '
@@ -63,7 +57,7 @@ abstract class we_forms{
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td>
 						' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="' . $class . '" style="white-space:nowrap;"><label' . /* (($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : ''). */' id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
+					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
 
@@ -106,14 +100,6 @@ abstract class we_forms{
 		} else{
 			$_id = $name;
 		}
-		/* 		$labelonclick = "";
-		  if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
-
-		  if($onClick){
-		  $labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
-		  }
-		  }
-		 */
 		// Create HTML tags
 		$foo = '
 			<table cellpadding="0" border="0" cellspacing="0">
@@ -122,7 +108,7 @@ abstract class we_forms{
 						<input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td class="weEditmodeStyle">
 						' . we_html_tools::getPixel(4, 2) . '</td>
-					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label' . /* (($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : ''). */' id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
+					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
@@ -159,7 +145,7 @@ abstract class we_forms{
 		$dhtmledit = weTag_getAttribute("dhtmledit", $attribs, false, true); //4614
 		$wysiwyg = weTag_getAttribute("wysiwyg", $attribs, false, true);
 
-		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['brDetect']->isIE() || $GLOBALS['brDetect']->isGecko() || $GLOBALS['brDetect']->isOpera() || (defined("SAFARI_WYSIWYG") && $GLOBALS['brDetect']->isSafari()));
+		$wysiwyg = ($dhtmledit || $wysiwyg) && (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined("SAFARI_WYSIWYG") && we_base_browserDetect::isSafari()));
 		$cols = weTag_getAttribute("cols", $attribs);
 		$rows = weTag_getAttribute("rows", $attribs);
 		$width = weTag_getAttribute("width", $attribs);
@@ -279,7 +265,7 @@ abstract class we_forms{
 			if($showAutobr || $showSpell){
 				$clearval = $value;
 				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
-				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","' . (($GLOBALS["BROWSER"] == "SAFARI") ? "onkeydown" : "onchange") . '","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
+				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","' . (we_base_browserDetect::isSafari() ? "onkeydown" : "onchange") . '","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
 					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($clearval) . '</textarea></noscript>';
 			} else{
 				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($value) . '</textarea>';

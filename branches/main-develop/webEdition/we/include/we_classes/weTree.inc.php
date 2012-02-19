@@ -192,13 +192,11 @@ class weTree{
 	}
 
 	function getJSAddSortFunction(){
-		$insp = new we_base_browserDetect();
-
 		return '
  		function addSort(object){
 				this.len++;
 				for(var i=this.len; i>0; i--){
-					if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . ( $insp->getSystem() != "mac" ? " || (this[i-1].typ>object.typ)" : "" ) . ')){
+					if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . ( !we_base_browserDetect::isMAC() ? " || (this[i-1].typ>object.typ)" : "" ) . ')){
 						this[i] = this[i-1];
 					}
 					else{
@@ -221,7 +219,7 @@ class weTree{
 		function setScrollY(){
 			if(' . $this->topFrame . '){
 				if(' . $this->topFrame . '.we_scrollY){
-					' . $this->topFrame . '.we_scrollY[treeData.table]=' . ($GLOBALS["BROWSER"] == "IE" ? 'document.body.scrollTop' : 'pageYOffset') . ';
+					' . $this->topFrame . '.we_scrollY[treeData.table]=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
 				}
 			}
 		}

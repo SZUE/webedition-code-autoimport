@@ -31,6 +31,7 @@ class we_ui_Client{
 	/**
 	 * constant for IE Browser
 	 */
+
 	const kBrowserIE = 0;
 
 	/**
@@ -98,30 +99,32 @@ class we_ui_Client{
 	 * @return void
 	 */
 	function __construct($userAgent = ''){
-		if($userAgent === ''){
-			$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		$inst = we_base_browserDetect::inst();
+		$this->_version = $inst->getBrowserVersion();
+
+		switch($inst->getBrowser()){
+			case we_base_browserDetect::IE:
+				$this->_browser = self::kBrowserIE;
+				break;
+			case we_base_browserDetect::FF:
+				$this->_browser = self::kBrowserGecko;
+				break;
+			case we_base_browserDetect::APPLE:
+				$this->_browser = self::kBrowserWebkit;
+				break;
+			default:
+				$this->_browser = self::kBrowserOther;
 		}
 
-		if(preg_match('/MSIE ([0-9\.]+)/i', $userAgent, $regs)){
-			$this->_browser = self::kBrowserIE;
-			$this->_version = $regs[1];
-		} else if(preg_match('/Gecko\/([0-9]+)/i', $userAgent, $regs)){
-			$this->_browser = self::kBrowserGecko;
-			$this->_version = $regs[1];
-		} else if(preg_match('/AppleWebKit\/([0-9\.]+)/', $userAgent, $regs)){
-			$this->_browser = self::kBrowserWebkit;
-			$this->_version = $regs[1];
-		} else{
-			$this->_browser = self::kBrowserOther;
-			$this->_version = 0;
-		}
-
-		if(preg_match('/(Mac_PowerPC)|(Macintosh)/', $userAgent)){
-			$this->_system = self::kSystemMacOS;
-		} else if(preg_match('/(Windows)|(WinNT)|(Win98)|(Win95)/', $userAgent)){
-			$this->_system = self::kSystemWindows;
-		} else{
-			$this->_system = self::kSystemOther;
+		switch($inst->getSystem()){
+			case we_base_browserDetect::SYS_MAC:
+				$this->_system = self::kSystemMacOS;
+				break;
+			case we_base_browserDetect::SYS_WIN:
+				$this->_system = self::kSystemWindows;
+				break;
+			default:
+				$this->_system = self::kSystemOther;
 		}
 	}
 

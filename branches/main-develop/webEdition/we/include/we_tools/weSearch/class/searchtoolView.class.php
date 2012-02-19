@@ -454,10 +454,10 @@ class searchtoolView extends weToolView{
 
 	function getSearchJS($whichSearch){
 
-		$h = ($GLOBALS['BROWSER'] == "IE" ? 155 : 170);
+		$h = (we_base_browserDetect::isIE() ? 155 : 170);
 		if($whichSearch == "AdvSearch"){
 
-			$h = ($GLOBALS['BROWSER'] == "IE" ? 125 : 140);
+			$h = (we_base_browserDetect::isIE() ? 125 : 140);
 		}
 
 		$addinputRows = "";
@@ -482,7 +482,7 @@ class searchtoolView extends weToolView{
      var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
      var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
 
-     var heightDiv = ' . ($GLOBALS['BROWSER'] == "IE" ? 200 : 180) . ';
+     var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
 
      if((h - heightDiv)>0){
       scrollContent.style.height = h - heightDiv;
@@ -522,51 +522,11 @@ class searchtoolView extends weToolView{
 			$tab = $_REQUEST['tabnr'];
 		}
 
-		$IE6 = false;
-		//workaround for z-index ans selects in ie6
-		if(($GLOBALS['BROWSER'] == "IE")){
-			$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-			$version = intval(preg_replace('%[^0-9\\.]%', '', $foo[1]));
-			if($version < 7){
-				$IE6 = true;
-			}
-		}
-		if($IE6){
-			$showHideSelects = 'var AnzahlSelects = ' . $this->editorBodyFrame . '.document.getElementsByTagName("select");
-              for (var k = 0; k <= AnzahlSelects.length; k++ ) {
-                var selectAnzahl = AnzahlSelects[k];
-                var sATop = absTop(selectAnzahl);
-                var sAHeight = selectAnzahl.offsetHeight;
-                var sABottom = eval(sATop+sAHeight);
-                var sALeft = absLeft(selectAnzahl);
-                var sAWidth = selectAnzahl.offsetWidth;
-                var sARight = eval(sALeft+sAWidth);
-
-                if(elem.offsetTop-20<sATop && eval(elem.offsetTop+elemHeight+50)>sABottom && elem.offsetLeft<sARight && eval(elem.offsetLeft+elemWidth)>sALeft) {
-                  selectAnzahl.style.visibility = "hidden";
-                }
-                else {
-                  selectAnzahl.style.visibility = "visible";
-                }
-              }';
-
-			$showSelects = 'var AnzahlSelects = ' . $this->editorBodyFrame . '.document.getElementsByTagName("select");
-            for (var k = 0; k <= AnzahlSelects.length; k++ ) {
-              var selectAnzahl = AnzahlSelects[k];
-              if(selectAnzahl.style.visibility == "hidden") {
-                selectAnzahl.style.visibility = "visible";
-              }
-            }';
-		} else{
-			$showHideSelects = '';
-			$showSelects = '';
-		}
-
-		$_js = we_html_element::jsElement(
-				'
+		$showHideSelects = '';
+		$showSelects = '';
 
 
-
+		$_js = we_html_element::jsElement('
    var ajaxURL = "/webEdition/rpc/rpc.php";
    var ajaxCallbackResultList = {
     success: function(o) {
@@ -3116,7 +3076,7 @@ class searchtoolView extends weToolView{
 		$allDivs = "";
 		$outDivs = "";
 
-		$width = ($GLOBALS['BROWSER'] == "IE" ? "400px" : "398px");
+		$width = (we_base_browserDetect::isIE() ? "400px" : "398px");
 
 		for($n = 0; $n < $x; $n++){
 			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">';

@@ -235,7 +235,7 @@ class weCustomerAdd{
 			}
 
 			function setScrollTo(){
-   				opener.' . $this->topFrame . '.scrollToVal=' . (($GLOBALS['BROWSER'] == 'IE') ? 'document.body.scrollTop' : 'pageYOffset') . ';
+   				opener.' . $this->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
 			}
 
 			' . $pob->getJSSubmitFunction("sort_admin");

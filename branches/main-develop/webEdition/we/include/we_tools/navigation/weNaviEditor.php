@@ -84,7 +84,7 @@ $_parts[] = array(
 $_parts[] = array(
 	'headline' => g_l('navigation', '[group]'),
 	'html' => we_html_tools::htmlSelect(
-		'ParentID', $_dirs, 1, $_navi->ParentID, false, ($GLOBALS['BROWSER'] == "IE" ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onChange="queryEntries(this.value)"'),
+		'ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onChange="queryEntries(this.value)"'),
 	'space' => $_space_size,
 	'noline' => 1
 );

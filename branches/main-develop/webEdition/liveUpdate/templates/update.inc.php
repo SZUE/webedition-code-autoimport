@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,29 +22,28 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
  *
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 $searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate');
-if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variables']['clientSubVersion'] !='0000'){
-	$clientSubVersion = ' (SVN-Revision: '.$GLOBALS['LU_Variables']['clientSubVersion'].')';
-} else {
+if(isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000'){
+	$clientSubVersion = ' (SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] . ')';
+} else{
 	$clientSubVersion = '';
 }
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . g_l('liveUpdate','[update][actualVersion]') . '</td>
+	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . '</td>
 </tr>
 <tr>
-	<td>' . g_l('liveUpdate','[update][lastUpdate]') . '</td>
+	<td>' . g_l('liveUpdate', '[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
 <tr>
@@ -53,10 +53,10 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . g_l('liveUpdate','[update][lookForUpdate]') . '</td>
+	<td>' . g_l('liveUpdate', '[update][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
 </table>
 ';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[update][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[update][headline]'), $content);

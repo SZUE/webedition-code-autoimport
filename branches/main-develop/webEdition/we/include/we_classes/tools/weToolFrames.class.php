@@ -111,12 +111,12 @@ class weToolFrames extends weModuleFrames{
 
 	function getHTMLResize(){
 
-		if(($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
+		if(($GLOBALS["BROWSER"] == "NN6") || (we_base_browserDetect::isOpera())){
 			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "1", "id" => "resizeframeid"));
 		} else{
 			$frameset = new we_html_frameset(array("cols" => "200,*", "border" => "0", "frameborder" => "0", "framespacing" => "0", "id" => "resizeframeid"));
 		}
-		if($GLOBALS["BROWSER"] == "IE"){
+		if(we_base_browserDetect::isIE()){
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no", "frameborder" => "no"));
 		} else{
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "left", "scrolling" => "no"));
@@ -134,10 +134,10 @@ class weToolFrames extends weModuleFrames{
 	function getHTMLRight(){
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		if(($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
+		if(($GLOBALS["BROWSER"] == "NN6") || we_base_browserDetect::isOpera()){
 			$frameset->setAttributes(array("cols" => "*"));
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		} else if($GLOBALS["BROWSER"] == "SAFARI"){
+		} else if(we_base_browserDetect::isSafari()){
 			$frameset->setAttributes(array("cols" => "1,*"));
 			$frameset->addFrame(array("src" => HTML_DIR . "safariResize.html", "name" => "separator", "noresize" => null, "scrolling" => "no"));
 			$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));

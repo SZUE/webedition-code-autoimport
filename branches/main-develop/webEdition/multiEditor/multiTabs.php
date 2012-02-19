@@ -39,7 +39,7 @@ unset($ct);
  * Browser dependences
  */
 $tabContainerMargin = "0px";
-$browser = new we_base_browserDetect();
+$browser = we_base_browserDetect::inst();
 switch($browser->getBrowser()){
 	case we_base_browserDetect::SAFARI:
 		$heightPlus = "";

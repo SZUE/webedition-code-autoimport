@@ -243,7 +243,7 @@ function enableDelBut(){
 				d.writeln('function weonclick(e){');
 				if(makeNewFolder || makeNewCat || we_editCatID){
 				d.writeln('if(!inputklick){');
-				<?php if($GLOBALS['BROWSER'] == "IE" && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'){ ?>
+				<?php if(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'){ ?>
 					d.writeln('document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);document.we_form.submit();');
 
 				<?php } else{ ?>
@@ -267,7 +267,7 @@ function enableDelBut(){
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
 					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || makeNewCat || we_editCatID) ? ' onload="document.we_form.we_EntryText_tmp.focus();document.we_form.we_EntryText_tmp.select();"' : '')+'>');
-				<?php if($GLOBALS['BROWSER'] == "IE" && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
+				<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
 												 d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
 
 					<?php } else{ ?>
@@ -301,7 +301,7 @@ function enableDelBut(){
 								d.writeln('</tr>');
 							}
 							for(i=0;i < entries.length; i++){
-							var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"] == "IE" ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
+							var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 							d.writeln('<tr id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editCatID != entries[i].ID) ? '' : '' )+'"'+((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' >');
 														 d.writeln('<td class="selector" width="25" align="center">');

@@ -50,7 +50,7 @@ function isUrl(s) {
 }
 
 function populateSct(oSctRss){
-	var saf = " . ($GLOBALS['BROWSER'] == 'SAFARI' ? 'true' : 'false') . ";
+	var saf = " . (we_base_browserDetect::isSafari() ? 'true' : 'false') . ";
 	for(var i=0;_iTopRssFeedsLen>i;i++){
 		var sOptVal=opener.base64_decode(_aTopRssFeeds_[i][1]);
 		var sOptTxt=opener.base64_decode(_aTopRssFeeds_[i][0]);

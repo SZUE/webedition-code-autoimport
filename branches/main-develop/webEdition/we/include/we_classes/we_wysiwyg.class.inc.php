@@ -145,8 +145,6 @@ function tinyMCEchanged(inst){
 }
 </script>';
 			case 'default':
-				$_BROWSER = new we_base_browserDetect();
-
 				return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">
 					.tbButton {
@@ -242,8 +240,8 @@ function tinyMCEchanged(inst){
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
-					var isGecko = ' . ($_BROWSER->isGecko() ? 'true' : 'false') . ';
-					var isOpera = ' . ($GLOBALS['BROWSER'] == 'OPERA' ? 'true' : 'false') . ';
+					var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+					var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
 					var weWysiwygFolderPath = "/webEdition/editors/content/wysiwyg/";
@@ -306,7 +304,7 @@ function tinyMCEchanged(inst){
 				-->
 				</script>' .
 					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-					($GLOBALS['brDetect']->isSafari() ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwygSafari.js') .
+					(we_base_browserDetect::isSafari() ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwygSafari.js') .
 						we_html_element::jsScript(JS_DIR . 'weDOM_Safari.js') : we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwyg.js'));
 		}
 	}
@@ -379,7 +377,7 @@ function tinyMCEchanged(inst){
 				$this,
 				"formatblock",
 				g_l('wysiwyg', "[format]"),
-				($GLOBALS["BROWSER"] == "IE") ? array(
+				we_base_browserDetect::isIE() ? array(
 					"normal" => g_l('wysiwyg', "[normal]"),
 					"p" => g_l('wysiwyg', "[paragraph]"),
 					"h1" => g_l('wysiwyg', "[h1]"),
@@ -390,7 +388,7 @@ function tinyMCEchanged(inst){
 					"h6" => g_l('wysiwyg', "[h6]"),
 					"pre" => g_l('wysiwyg', "[pre]"),
 					"address" => g_l('wysiwyg', "[address]")
-					) : ($GLOBALS['brDetect']->isSafari() ? array(
+					) : (we_base_browserDetect::isSafari() ? array(
 						"div" => g_l('wysiwyg', "[normal]"),
 						"p" => g_l('wysiwyg', "[paragraph]"),
 						"h1" => g_l('wysiwyg', "[h1]"),
@@ -431,7 +429,7 @@ function tinyMCEchanged(inst){
 				$this,
 				"fontsize",
 				g_l('wysiwyg', "[fontsize]"),
-				$GLOBALS['brDetect']->isSafari() ? array(
+				we_base_browserDetect::isSafari() ? array(
 					"8px" => "8px",
 					"9px" => "9px",
 					"10px" => "10px",
@@ -718,7 +716,6 @@ function tinyMCEchanged(inst){
 				g_l('wysiwyg', "[removecaption]")
 			),
 			new we_wysiwygToolbarSeparator($this),
-//		if($GLOBALS['brDetect']->isIE() || $GLOBALS['brDetect']->isSafari()){
 			new we_wysiwygToolbarButton(
 				$this,
 				"insertbreak",
@@ -971,7 +968,7 @@ tinyMCE.init({
 
 				$realWidth = max($min_w, $this->width);
 				$out .= '<table border="0" cellpadding="0" cellspacing="0"  class="tbButtonWysiwygDefaultStyle"><tr><td class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:' . $realWidth . 'px; height:' . $this->height . 'px;" id="' . $this->ref . 'edit_src" name="' . $this->ref . 'edit_src"></textarea><iframe contenteditable  width="' . $realWidth . '" height="' . $this->height . '" name="' . $this->ref . 'edit" id="' . $this->ref . 'edit" allowTransparency="true" ';
-				if($GLOBALS['brDetect']->isSafari()){
+				if(we_base_browserDetect::isSafari()){
 					$out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
 				} else{
 					$out.='style="display: block;color: black;border: 1px solid #A5ACB2;"';
@@ -1067,7 +1064,7 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		if($GLOBALS['brDetect']->isSafari()){
+		if(we_base_browserDetect::isSafari()){
 			return '<div id="' . $this->editor->ref . 'edit_' . $this->cmd . 'Div" class="tbButton">
 <img  width="' . ($this->width - 2) . '" height="' . $this->height . '" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" src="' . $this->imgSrc . '" alt="' . $this->tooltiptext . '" title="' . $this->tooltiptext . '"
 onmouseover="' . $this->editor->ref . 'Obj.over(\'' . $this->cmd . '\');"
@@ -1161,10 +1158,10 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		if($GLOBALS['brDetect']->isOpera()){
+		if(we_base_browserDetect::isOpera()){
 			//FIMXE: opera not intended - but currently fixes racing condition
 			return '';
-		} else if($GLOBALS['brDetect']->isSafari()){
+		} else if(we_base_browserDetect::isSafari()){
 			$out = '<select id="' . $this->editor->ref . '_sel_' . $this->cmd . '" style="width:' . $this->width . 'px;margin-right:3px;" size="1" onmousedown="' . $this->editor->ref . 'Obj.saveSelection();" onmouseup="' . $this->editor->ref . 'Obj.restoreSelection();" onchange="' . $this->editor->ref . 'Obj.restoreSelection();' . $this->editor->ref . 'Obj.selectChanged(\'' . $this->cmd . '\',this.value);this.selectedIndex=0">';
 			$out .= '<option value="">' . htmlspecialchars($this->title) . '</option>' . "\n";
 			foreach($this->vals as $val => $txt){

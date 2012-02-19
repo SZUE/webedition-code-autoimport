@@ -22,21 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_base_browserDetect.class.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_base_browserDetect.class.php');
-function we_browser_check() {
+function we_browser_check(){
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
-									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
+			$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
-	$GLOBALS['brDetect'] = new we_base_browserDetect();
-
-	$GLOBALS['SYSTEM'] = strtoupper($GLOBALS['brDetect']->getSystem());
+	$GLOBALS['SYSTEM'] = strtoupper(we_base_browserDetect::inst()->getSystem());
 	//renaming
-	if($GLOBALS['SYSTEM']=='UNIX'){
-		$GLOBALS['SYSTEM']='X11';
+	if($GLOBALS['SYSTEM'] == 'UNIX'){
+		$GLOBALS['SYSTEM'] = 'X11';
 	}
 
-	switch($GLOBALS['brDetect']->getBrowser()){
+	switch(we_base_browserDetect::inst()->getBrowser()){
 		case 'opera':
 			$GLOBALS['BROWSER'] = 'OPERA';
 			break;
@@ -46,21 +44,15 @@ function we_browser_check() {
 		case 'appleWebKit':
 		case 'safari':
 			$GLOBALS['BROWSER'] = "SAFARI";
-/*			$wkV=$GLOBALS['brDetect']->getWebKitVersion();
-      $GLOBALS['SAFARI_3'] = ($wkV > 522);*/
 			break;
 		case 'mozilla':
 		case 'firefox':
 		case 'nn':
-			$GLOBALS['BROWSER'] = ($GLOBALS['brDetect']->isGecko()?'NN6':'NN');
+			$GLOBALS['BROWSER'] = (we_base_browserDetect::inst()->isGecko() ? 'NN6' : 'NN');
 			break;
 		default:
 			$GLOBALS['BROWSER'] = "UNKNOWN";
-
 	}
 }
 
-
-if(!isset($GLOBALS['brDetect'])){
-	we_browser_check();
-}
+we_browser_check();

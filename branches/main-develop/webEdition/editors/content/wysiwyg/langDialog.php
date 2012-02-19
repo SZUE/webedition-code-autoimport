@@ -22,12 +22,10 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $appendJS = "";
-if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1) {
+if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
 
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
@@ -40,18 +38,14 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
 	$Glossary->setPath();
 
-	if($Glossary->Text=="" || $Glossary->getAttribute('lang')=="") {
-		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary','[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
-
-	} else if($Glossary->pathExists($Glossary->Path)) {
-		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary','[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
-
-	} else {
+	if($Glossary->Text == "" || $Glossary->getAttribute('lang') == ""){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else if($Glossary->pathExists($Glossary->Path)){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else{
 		$Glossary->save();
-		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary','[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
-
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 	}
-
 }
 
 $dialog = new weLangDialog();

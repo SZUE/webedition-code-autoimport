@@ -195,7 +195,7 @@ function getCSS(){
 		border:#AAAAAA solid 1px;
 		height:18px;
 		vertical-align:middle;
-		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
+		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
@@ -204,7 +204,7 @@ function getCSS(){
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:18px;
-		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
+		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
@@ -212,7 +212,7 @@ function getCSS(){
 		color:black;
 		border:#AAAAAA solid 1px;
 		height:80px;
-		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
+		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
@@ -221,7 +221,7 @@ function getCSS(){
 		border:#888888 solid 1px;
 		background-color:#DCE6F2;
 		height:80px;
-		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
+		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}

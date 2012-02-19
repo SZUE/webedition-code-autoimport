@@ -115,11 +115,11 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 
 			case "revenue_view":
 
-<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects      ?>
+<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects              ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
-<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects      ?>
+<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects              ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
-<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects      ?>
+<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects              ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } ?>
 
@@ -417,54 +417,54 @@ echo "top.yearshop = '$year';";
 </head>
 <?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" border="0" frameborder="1" onLoad="start();">
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize>
-			<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize>
+		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>
 
-				<frameset cols="198,*"  border="1" frameborder="1">
-					<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-						<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" name="shop_tree_header" scrolling="no">
-							<frame src="<?php print HTML_DIR ?>white.html" name="shop_tree" scrolling="auto">
-								</frameset>
-								<?php
-								if(isset($_REQUEST['bid'])){
-									print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto>';
-								} else{
-									print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto>';
-								}
-								?>
-								</frameset>
-								<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize>
-									</frameset>
-								<?php } else{ ?>
-									<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-										<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize>
-											<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize>
+		<frameset cols="198,*"  border="1" frameborder="1">
+			<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
+				<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" name="shop_tree_header" scrolling="no"/>
+				<frame src="<?php print HTML_DIR ?>white.html" name="shop_tree" scrolling="auto"/>
+			</frameset>
+			<?php
+			if(isset($_REQUEST['bid'])){
+				print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
+			} else{
+				print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
+			}
+			?>
+		</frameset>
+		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
+	</frameset>
+<?php } else{ ?>
+	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize/>
 
-												<frameset cols="198,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-													<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-														<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" name="shop_tree_header" scrolling="no">
-															<frame src="<?php print HTML_DIR ?>white.html" name="shop_tree" scrolling="auto">
-																</frameset>
-																<?php if($GLOBALS["BROWSER"] == "IE"){ ?>
-																	<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
-																		<frame src="<?php print HTML_DIR; ?>whiteWithLeftLine.html" name="shop_separator_line" frameborder="0" noresize scrolling="no">
-																		<?php } else{ ?>
-																			<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
-																				<frame src="<?php print HTML_DIR; ?>safariResize.html" name="shop_separator_line" frameborder="0" noresize scrolling="no">
-																					<?php
-																				}
+		<frameset cols="198,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
+			<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
+				<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" name="shop_tree_header" scrolling="no"/>
+				<frame src="<?php print HTML_DIR ?>white.html" name="shop_tree" scrolling="auto"/>
+			</frameset>
+			<?php if(we_base_browserDetect::isIE()){ ?>
+				<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
+					<frame src="<?php print HTML_DIR; ?>whiteWithLeftLine.html" name="shop_separator_line" frameborder="0" noresize scrolling="no"/>
+				<?php } else{ ?>
+					<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
+						<frame src="<?php print HTML_DIR; ?>safariResize.html" name="shop_separator_line" frameborder="0" noresize scrolling="no"/>
+						<?php
+					}
 
-																				if(isset($_REQUEST['bid'])){
-																					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto>';
-																				} else{
-																					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto>';
-																				}
-																				?>
-																		</frameset>
-																</frameset>
-																<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize>
-																	</frameset>
-																<?php } ?>
-																<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-																</body>
-																</html>
+					if(isset($_REQUEST['bid'])){
+						print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
+					} else{
+						print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
+					}
+					?>
+				</frameset>
+			</frameset>
+			<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
+		</frameset>
+	<?php } ?>
+	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	</body>
+</html>

@@ -22,14 +22,13 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weImportRtfDialog();
 $dialog->initByHttp();
 if(isset($dialog->args["ntxt"]) && $dialog->args["ntxt"]){
 	$dialog->registerOkJsFN("weDoRtfJSTxt");
-}else{
+} else{
 	$dialog->registerOkJsFN("weDoRtfJS");
 }
 print $dialog->getHTML();
@@ -41,6 +40,7 @@ editorObj.replaceText(document.we_form.elements["we_dialog_args[htmltxt]"].value
 top.close();
 ';
 }
+
 function weDoRtfJSTxt(){
 	return '
 eval("var taObj = top.opener."+document.we_form.elements["we_dialog_args[taname]"].value+"Object");

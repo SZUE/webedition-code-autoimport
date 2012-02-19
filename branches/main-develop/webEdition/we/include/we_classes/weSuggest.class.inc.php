@@ -112,7 +112,7 @@ class weSuggest {
 
 	function getErrorMarkPlaceHolder($id="errormark",$space=3,$w=4,$h=20){
 		$s = $w+$space;
-		if ($GLOBALS['BROWSER'] == "IE") {
+		if (we_base_browserDetect::isIE()) {
 			$out = "<img id=\"$id\" src=\"".IMAGE_DIR."icons/errormark.gif\" width=\"$w\" height=\"$h\" border=\"0\" style=\"position:relative; left:-".$s."px; top:4px; visibility: hidden; z-index:1000000\" />";
 		} else {
 			$out = "<img id=\"$id\" src=\"".IMAGE_DIR."icons/errormark.gif\" width=\"$w\" height=\"$h\" border=\"0\" style=\"position:absolute; left:-$s; visibility:hidden;\" />";
@@ -731,7 +731,7 @@ $doAjax
 
 YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 {$this->preCheck}
-" . ($GLOBALS['BROWSER']=="SAFARI"?$safariEventListener:"")."
+" . (we_base_browserDetect::isSafari()?$safariEventListener:"")."
 
 function weInputAppendClass(inp, cls) {
 	if (inp.className) {
@@ -843,7 +843,7 @@ function doDebugResizeH(){
 		for ($i=0; $i<count($this->inputfields);$i++) {
 			$inputfields     .= ($i>0?", ":"") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i>0?", ":"") . "#" . $this->containerfields[$i];
-			$yuiAcContent    .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:".($GLOBALS['BROWSER']=="IE" ? $this->containerwidth[$i] : ($this->containerwidth[$i]+4))."px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}\n";
+			$yuiAcContent    .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:".(we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i]+4))."px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}\n";
 			$ysearchquery    .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " .ysearchquery";
 			$yuiAcShadow     .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
 			$ul              .= ($i>0?", ":"") . "#" . $this->containerfields[$i] . " ul";
@@ -856,7 +856,7 @@ function doDebugResizeH(){
 		}
 		$out = "
 <style type=\"text/css\">\n";
-		if($GLOBALS['BROWSER']=="IE") {
+		if(we_base_browserDetect::isIE()) {
 			if(!empty($layer)) {
 				$out .= "	$layerZ";
 			}
@@ -927,11 +927,11 @@ function doDebugResizeH(){
 		if (!$this->containerWidthForAll) {
 			$this->containerWidth = "";
 		}
-		$this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, ($GLOBALS['BROWSER']=="IE"?$containerWidth:($containerWidth-8)), $inputMayBeEmpty);
+		$this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, (we_base_browserDetect::isIE()?$containerWidth:($containerWidth-8)), $inputMayBeEmpty);
 
 		$_button1 = "";
 		if (is_array($button)) {
-			if ($GLOBALS['BROWSER']=="IE") {
+			if (we_base_browserDetect::isIE()) {
 				$_button = array("text" => "<div>".$button[0]."</div>", "valign" => "top");
 				$_button1 = array("text" => "<div>".$button[1]."</div>", "valign" => "top");
 				$_space = $width+$inputButtonSpace-1;
@@ -944,7 +944,7 @@ function doDebugResizeH(){
 			}
 
 		} else {
-			if ($GLOBALS['BROWSER']=="IE") {
+			if (we_base_browserDetect::isIE()) {
 				$_button = array("text" => "<div>".$button."</div>", "valign" => "top");
 				$_space = $width+$inputButtonSpace-1;
 				$_space2 = "";
@@ -992,7 +992,7 @@ function doDebugResizeH(){
 		$resultId = empty($this->resultId) ? "yuiAcResult".$this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth)?$this->width:$this->containerWidth);
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($GLOBALS['BROWSER']=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty,$this->rootDir);
+		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE()?$containerWidth:($containerWidth-8)), $this->mayBeEmpty,$this->rootDir);
 		$inputField  = $this->_htmlTextInput($this->inputName,30,$this->inputValue,"", 'id="'.$inputId.'" '.$this->inputAttribs,"text", $this->width, 0,"", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName,$this->resultValue,array('id' => $resultId));
 		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">".$inputField."<div id=\"yuiAcContainer{$this->acId}\"></div></div>".we_html_tools::getPixel(1,1);

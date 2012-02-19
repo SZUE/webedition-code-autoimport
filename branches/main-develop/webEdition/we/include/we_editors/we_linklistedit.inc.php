@@ -514,7 +514,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 		$wecmdenc1 = we_cmd_enc("document.we_form.href.value");
 		$wecmdenc4 = '';
 		$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
-		if($GLOBALS['BROWSER'] == "SAFARI"){
+		if(we_base_browserDetect::isSafari()){
 			$butspace = 8;
 		} else{
 			$butspace = 10;

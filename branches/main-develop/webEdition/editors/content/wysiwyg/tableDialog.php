@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weTableDialog();
 // MS-Fix
@@ -43,7 +42,7 @@ $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoTblJS");
 
 if(!$_REQUEST["we_dialog_args"]["edit"]){
-	$dialog->dialogTitle = g_l('wysiwyg',"[insert_table]");
+	$dialog->dialogTitle = g_l('wysiwyg', "[insert_table]");
 }
 print $dialog->getHTML();
 
@@ -68,4 +67,5 @@ editorObj.edittable(edit_table,rows,cols,border,cellpadding,cellspacing,bgcolor,
 top.close();
 ';
 }
+
 ?>

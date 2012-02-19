@@ -168,7 +168,7 @@ class we_multiSelector extends we_fileselector{
 					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 					for(i=0;i < entries.length; i++){
-					var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"] == "IE" ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
+					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
 					d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;"'+onclick+ (entries[i].isFolder ? ondblclick : '') + ' >');
 						d.writeln('<td class="selector" width="25" align="center">');

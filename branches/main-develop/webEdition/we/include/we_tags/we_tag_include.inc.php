@@ -100,7 +100,7 @@ function we_tag_include($attribs, $content){
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs);
 			$_tmpspan = '<span style="color: white;font-size:' .
-				(($GLOBALS['SYSTEM'] == 'MAC') ? '11px' : (($GLOBALS['SYSTEM'] == 'X11') ? '13px' : '12px')) . ';font-family:' .
+				((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' .
 				g_l('css', '[font_family]') . ';">';
 
 			return '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags', '[include_file]') . '</span></td></tr><tr><td>' .

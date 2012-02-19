@@ -82,24 +82,6 @@ function startEditIncludeMode(){
 	for($i = 1; $i < sizeof($_REQUEST['we_cmd']); $i++){
 		$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 	}
-
-//	if($GLOBALS["BROWSER"] == "NN"){
-	?>
-	<!--<FRAMESET cols="0,*,0" border="0" frameborder="NO">
-		<frame src="baumFrame.php" name="bframe" scrolling="no" noresize>
-			<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php?<?php print $we_cmds ?>SEEM_edit_include=true" name="bm_content_frame" noresize>
-				<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-					</FRAMESET>-->
-	<?php
-	//} else{
-	?>
-	<!--		<FRAMESET cols="0,*,0" border="1" frameborder="YES">
-				<frame src="baumFrame.php" name="bframe" scrolling="no" noresize>
-					<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php?<?php print $we_cmds ?>SEEM_edit_include=true" name="bm_content_frame" noresize>
-						<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-							</FRAMESET>-->
-	<?php
-	//}
 }
 
 /**
@@ -124,23 +106,6 @@ function startSEEMMode(){
 		<?php } ?>
 	</div>
 	<?php
-	//if(($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){
-	?>
-	<!--<FRAMESET cols="0,*,0" border="1">
-		<frame src="<?php print HTML_DIR; ?>white.html" name="bframe" scrolling="no" noresize>
-			<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-				<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-					</FRAMESET>-->
-	<?php
-	//		} else{
-	?>
-	<!-- <frameset cols="0,*,0" border="0" frameborder="0">
-		<frame src="<?php print HTML_DIR; ?>white.html" name="bframe" frameborder="0" scrolling="no" noresize>
-			<frame src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame">
-				<frame src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar">
-					</frameset>-->
-	<?php
-	//}
 }
 ?>
 

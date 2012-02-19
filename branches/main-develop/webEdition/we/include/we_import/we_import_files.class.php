@@ -221,7 +221,7 @@ class we_import_files{
 
 
 		$parts = array();
-		$selectorSpace = $GLOBALS['BROWSER'] == "IE" ? 16 : 280;
+		$selectorSpace = we_base_browserDetect::isIE()? 16 : 280;
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = sizeof($wsA) ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;

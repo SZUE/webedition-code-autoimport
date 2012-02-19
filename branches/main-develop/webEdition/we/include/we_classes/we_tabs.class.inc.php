@@ -42,15 +42,15 @@ class we_tabs {
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
 		$this->containerEnd   = "</div>\n";
 
-		switch ($GLOBALS['BROWSER']) {
-			case "SAFARI":
+		switch (we_base_browserDetect::inst()->getBrowser()) {
+			case we_base_browserDetect::SAFARI:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
 				$this->tabBG ="";
 				break;
-			case "IE":
+			case we_base_browserDetect::IE:
 				$this->heightPlus = "";
 				$this->textvalign = "middle";
 				$this->frameDefaultHeight = 21;
@@ -60,7 +60,7 @@ class we_tabs {
 			default:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
-				$frameDefaultHeight = 21;
+				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border: 0px;";
 		}
 	}

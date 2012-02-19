@@ -841,7 +841,7 @@ class weNewsletterView{
 
 						var str=dest.value;
 
-						' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'var arr = str.split("\r");' : 'var arr = str.split("\n");') . '
+						var arr = str.split("\n");
 
 						var str2=arr[p.selectedIndex];
 						var arr2=str2.split(",");
@@ -925,7 +925,7 @@ class weNewsletterView{
 				new jsWindow("' . HTML_DIR . 'white.html",wname,-1,-1,width,height,true,true,true,true);
 
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? '
+				' . ((($GLOBALS["SYSTEM"] == "MAC") && (we_base_browserDetect::isIE())) ? '
 							setTimeout("submitForm(\'"+wname+"\');", 250);
 							setTimeout("document.we_form.pnt.value=old;", 350);
 				' : '
@@ -944,7 +944,7 @@ class weNewsletterView{
 			}
 
 			function setScrollTo() {
-				parent.scrollToVal = ' . (($GLOBALS["BROWSER"] == "IE") ? 'document.body.scrollTop' : 'pageYOffset') . ';
+				parent.scrollToVal = ' . ((we_base_browserDetect::isIE()) ? 'document.body.scrollTop' : 'pageYOffset') . ';
 			}
 
 			function switchRadio(a, b) {
@@ -1142,7 +1142,7 @@ class weNewsletterView{
 
 				if( str.length > 0) {
 
-					' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'var arr = str.split("\r");' : 'var arr = str.split("\n");') . '
+					var arr = str.split("\n");
 
 				} else {
 					var arr=new Array();
@@ -1151,7 +1151,7 @@ class weNewsletterView{
 				arr[arr.length] = email+","+html+","+salutation+","+title+","+firstname+","+lastname;
 
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'dest.value = arr.join("\r");' : 'dest.value = arr.join("\n");') . '
+				dest.value = arr.join("\n");
 
 				top.content.hot=1;
 			}
@@ -1160,12 +1160,12 @@ class weNewsletterView{
 				var dest = document.forms[0].elements["group"+group+"_Emails"]
 				var str = dest.value;
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'var arr = str.split("\r");' : 'var arr = str.split("\n");') . '
+				var arr = str.split("\n");
 
 				arr[id] = email+","+html+","+salutation+","+title+","+firstname+","+lastname;
 
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'dest.value = arr.join("\r");' : 'dest.value = arr.join("\n");') . '
+				dest.value = arr.join("\n");
 
 				top.content.hot = 1;
 			}
@@ -1186,11 +1186,11 @@ class weNewsletterView{
 				var dest = document.forms[0].elements["group"+group+"_Emails"]
 				var str = dest.value;
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'var arr = str.split("\r");' : 'var arr = str.split("\n");') . '
+				var arr = str.split("\n");
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'arr = mysplice(arr, id, 1);' : 'arr.splice(id, 1);') . '
+				arr.splice(id, 1);
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? 'dest.value = arr.join("\r");' : 'dest.value = arr.join("\n");') . '
+				dest.value = arr.join("\n");
 
 				top.content.hot=1;
 			}

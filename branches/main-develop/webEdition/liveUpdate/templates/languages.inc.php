@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * This is the template for tab languages. It contains the information screen
  * before deleting or installing languages
  */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 $nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=languages&update_cmd=languages&detail=selectLanguages');
 $deleteButton = we_button::create_button('delete', 'javascript:document.we_form.submit()');
@@ -34,37 +34,36 @@ $deleteButton = we_button::create_button('delete', 'javascript:document.we_form.
 $languages = liveUpdateFunctions::getInstalledLanguages();
 
 $languagesStr = '';
-foreach ($languages as $lng) {
+foreach($languages as $lng){
 
-	if (WE_LANGUAGE == $lng) {
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate','[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
-	} else if ($GLOBALS['WE_LANGUAGE'] == $lng) {
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate','[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
-	} else {
+	if(WE_LANGUAGE == $lng){
+		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
+	} else if($GLOBALS['WE_LANGUAGE'] == $lng){
+		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate', '[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
+	} else{
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
 	}
-		$languagesStr .= "
+	$languagesStr .= "
 	$lngBox";
-
 }
 
 $deletedLngs = $this->getData('deletedLngs');
 $notDeletedLngs = $this->getData('notDeletedLngs');
 $jsAlert = '';
-if (sizeof($deletedLngs)) {
-	$jsAlert .= g_l('liveUpdate','[languages][languagesDeleted]') . '\n';
-	foreach ($deletedLngs as $lng) {
+if(sizeof($deletedLngs)){
+	$jsAlert .= g_l('liveUpdate', '[languages][languagesDeleted]') . '\n';
+	foreach($deletedLngs as $lng){
 		$jsAlert .= $lng . '\n';
 	}
 }
-if (sizeof($notDeletedLngs)) {
-	$jsAlert .= g_l('liveUpdate','[languages][languagesNotDeleted]') . '\n';
-	foreach ($notDeletedLngs as $lng) {
+if(sizeof($notDeletedLngs)){
+	$jsAlert .= g_l('liveUpdate', '[languages][languagesNotDeleted]') . '\n';
+	foreach($notDeletedLngs as $lng){
 		$jsAlert .= $lng . '\n';
 	}
 }
 
-if ($jsAlert) {
+if($jsAlert){
 	$jsAlert = "<script type=\"text/JavaScript\">alert(\"$jsAlert\")</script>";
 }
 
@@ -72,20 +71,20 @@ $content = '
 <div>
 <form name="we_form">
 ' . we_html_tools::hidden('section', 'languages') . '
-' . g_l('liveUpdate','[languages][installedLngs]') . '
+' . g_l('liveUpdate', '[languages][installedLngs]') . '
 <br />
 ' . $languagesStr . '
 <br />
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . g_l('liveUpdate','[languages][showLanguages]') . '</td>
+	<td>' . g_l('liveUpdate', '[languages][showLanguages]') . '</td>
 	<td>' . $nextButton . '</td>
 </tr>
 <tr>
 	<td><br /></td>
 </tr>
 <tr>
-	<td>' . g_l('liveUpdate','[languages][deleteSelectedLanguages]') . '</td>
+	<td>' . g_l('liveUpdate', '[languages][deleteSelectedLanguages]') . '</td>
 	<td>' . $deleteButton . '</td>
 </tr>
 </table>
@@ -93,4 +92,4 @@ $content = '
 ' . $jsAlert . '
 ';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate','[languages][headline]'), $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), $content);

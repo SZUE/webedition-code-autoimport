@@ -433,7 +433,7 @@ if($GLOBALS['we_editmode']){
 				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
 				break;
 			case 'text/weTmpl':
-				$useCSCC = $GLOBALS['BROWSER'] == 'IE' ? false : true; //tag completion doesn't work in IE yet
+				$useCSCC = we_base_browserDetect::isIE() ? false : true; //tag completion doesn't work in IE yet
 				$parser_js[] = 'parsexml.js';
 				$parser_js[] = 'parsecss.js';
 				$parser_js[] = 'tokenizejavascript.js';
@@ -932,7 +932,7 @@ if($GLOBALS['we_editmode']){
 		if($_useJavaEditor){
 			$maineditor .= we_getJavaEditorCode($code);
 		} else{
-			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 				. htmlspecialchars($code) . '</textarea>';
 			if($_SESSION['prefs']['editorMode'] == 'codemirror' || $_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 				$vers = ($_SESSION['prefs']['editorMode'] == 'codemirror' ? '' : 2);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
 
-	$id = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+$JSIDName = stripslashes(we_cmd_dec(2));
+$JSTextName = stripslashes(we_cmd_dec(3));
+$JSCommand = we_cmd_dec(4);
+$sessionID = isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : "";
+$rootDirID = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : "";
+$filter = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : "";
+$multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : "";
 
-	$JSIDName = stripslashes(we_cmd_dec(2));
-	$JSTextName = stripslashes(we_cmd_dec(3));
-	$JSCommand = we_cmd_dec(4);
-	$sessionID = isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : "";
-	$rootDirID = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : "";
-	$filter = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : "";
-	$multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : "";
-
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php");

@@ -46,38 +46,38 @@ class weModuleBannerFrames{
 			var hloaded=0;
 
 			function setHot(){
-		    hot=1;
+				hot=1;
 			}
 
 			function usetHot(){
-		    hot=0;
+				hot=0;
 			}
 
 			var menuDaten = new container();var count = 0;var folder=0;
 			var table="<?php print BANNER_TABLE; ?>";
 
 			function drawEintraege(){
-		    fr = top.content.resize.left.tree.document;
-		    fr.open();
-		    fr.writeln("<html><head>");
-		    fr.writeln("<script language=\"JavaScript\" type=\"text/javascript\">");
-		    fr.writeln("clickCount=0;");
-		    fr.writeln("wasdblclick=0;");
-		    fr.writeln("tout=null");
-		    fr.writeln("function doClick(id,ct,table){");
-		    //fr.writeln("if(ct=='folder') top.content.we_cmd('edit_newsletter',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
+				fr = top.content.resize.left.tree.document;
+				fr.open();
+				fr.writeln("<html><head>");
+				fr.writeln("<script language=\"JavaScript\" type=\"text/javascript\">");
+				fr.writeln("clickCount=0;");
+				fr.writeln("wasdblclick=0;");
+				fr.writeln("tout=null");
+				fr.writeln("function doClick(id,ct,table){");
+				//fr.writeln("if(ct=='folder') top.content.we_cmd('edit_newsletter',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
 				fr.writeln("top.content.we_cmd('<?php print $this->edit_cmd; ?>',id,ct,table);");
-		    fr.writeln("}");
-		    fr.writeln("top.content.loaded=1;");
-		    fr.writeln("</"+"script>");
-		    fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-		    fr.write("</head>\n");
-		    fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
-		    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
-		    zeichne(top.content.startloc,"");
-		    fr.write("</nobr>\n</td></tr></table>\n");
-		    fr.write("</body>\n</html>");
-		    fr.close();
+				fr.writeln("}");
+				fr.writeln("top.content.loaded=1;");
+				fr.writeln("</"+"script>");
+				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+				fr.write("</head>\n");
+				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
+				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
+				zeichne(top.content.startloc,"");
+				fr.write("</nobr>\n</td></tr></table>\n");
+				fr.write("</body>\n</html>");
+				fr.close();
 			}
 
 
@@ -93,7 +93,7 @@ class weModuleBannerFrames{
 						if(nf[ai].name != -1){
 							fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");  ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");     ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">"+(parseInt(nf[ai].published) ? "" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? "" : "")+ "</A>&nbsp;&nbsp;<BR>\n");
 					}else{
@@ -102,14 +102,14 @@ class weModuleBannerFrames{
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen == 0){
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")  ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")     ?>\"></A>");
 							var zusatz2 = "";
 						}else{
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")  ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")     ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_"+nf[ai].name+"' href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon.replace(/\.gif/,"")+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");  ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon.replace(/\.gif/,"")+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");     ?>\">");
 						fr.write("</a>");
 						fr.write("<A name='_"+nf[ai].name+"' HREF=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 						fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -216,12 +216,18 @@ class weModuleBannerFrames{
 		?>
 		</head>
 		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-			<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=header" name="header" scrolling=no noresize>
-				<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=resize" name="resize" scrolling=no>
-					<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=cmd" name="cmd" scrolling=no noresize>
+			<frame src="<?php
+		print WEBEDITION_DIR . "we/include/we_modules/";
+		print $this->frameset
+		?>?pnt=header" name="header" scrolling=no noresize>
+				<frame src="<?php
+				 print WEBEDITION_DIR . "we/include/we_modules/";
+				 print $this->frameset
+		?>?pnt=resize" name="resize" scrolling=no>
+					<frame src="<?php
+					 print WEBEDITION_DIR . "we/include/we_modules/";
+					 print $this->frameset
+		?>?pnt=cmd" name="cmd" scrolling=no noresize>
 						</frameset>
 
 						<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
@@ -243,100 +249,118 @@ class weModuleBannerFrames{
 					function getHTMLResize(){
 						?>
 						</head>
-		<?php if(($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){ ?>
+		<?php if(($GLOBALS["BROWSER"] == "NN6") || (we_base_browserDetect::isOpera())){ ?>
 							<frameset cols="170,*" border="1" id="resizeframeid">
-								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-			print $this->frameset ?>?pnt=left" name="left" scrolling="no">
-									<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-			print $this->frameset ?>?pnt=right" name="right">
+								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=left" name="left" scrolling="no"/>
+								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/".$this->frameset; ?>?pnt=right" name="right"/>
+							</frameset>
+						<?php } else if(we_base_browserDetect::isSafari()){ ?>
+							<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
+								<frame src="<?php
+				print WEBEDITION_DIR . "we/include/we_modules/";
+				print $this->frameset
+							?>?pnt=left" name="left" scrolling="no">
+									<frame src="<?php
+								 print WEBEDITION_DIR . "we/include/we_modules/";
+								 print $this->frameset
+							?>?pnt=right" name="right">
 										</frameset>
-		<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
+									<?php } else{ //IE ?>
 										<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-											<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-			print $this->frameset ?>?pnt=left" name="left" scrolling="no">
-												<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-			print $this->frameset ?>?pnt=right" name="right">
+											<frame src="<?php
+							print WEBEDITION_DIR . "we/include/we_modules/";
+							print $this->frameset
+										?>?pnt=left" name="left" scrolling="no" frameborder="0">
+												<frame src="<?php
+											 print WEBEDITION_DIR . "we/include/we_modules/";
+											 print $this->frameset
+										?>?pnt=right" name="right">
 													</frameset>
-															<?php } else{ //IE ?>
-													<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-														<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-													print $this->frameset ?>?pnt=left" name="left" scrolling="no" frameborder="0">
-															<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-													print $this->frameset ?>?pnt=right" name="right">
-																</frameset>
-															<?php } ?>
+												<?php } ?>
+												<noframes>
+													<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+													</body>
+												</noframes>
+												</html>
+												<?php
+											}
+
+											function getHTMLLeft(){
+												?>
+												</head>
+												<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
+													<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize>
+														<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize>
+															</frameset>
 															<noframes>
 																<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 																</body>
 															</noframes>
 															</html>
-		<?php
-	}
+															<?php
+														}
 
-	function getHTMLLeft(){
-		?>
+														function getHTMLRight(){
+															?>
 															</head>
-															<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
-																<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize>
-																	<frame src="<?php print HTML_DIR ?>white.html" name="tree" scrolling="auto" noresize>
-																		</frameset>
-																		<noframes>
-																			<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-																			</body>
-																		</noframes>
-																		</html>
-																		<?php
-																	}
-
-																	function getHTMLRight(){
-																		?>
-																		</head>
-																		<?php if(($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA")){ ?>
-																			<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-																				<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-																			print $this->frameset ?>?pnt=editor" scrolling="no" noresize name="editor">
+															<?php if(($GLOBALS["BROWSER"] == "NN6") || we_base_browserDetect::isOpera()){ ?>
+																<frameset cols="*" framespacing="0" border="0" frameborder="NO">
+																	<frame src="<?php
+													print WEBEDITION_DIR . "we/include/we_modules/";
+													print $this->frameset
+																?>?pnt=editor" scrolling="no" noresize name="editor">
+																</frameset>
+															<?php } else if(we_base_browserDetect::isSafari()){ ?>
+																<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
+																	<frame src="<?php print HTML_DIR; ?>safariResize.html" name="separator" noresize scrolling="no">
+																		<frame src="<?php
+													print WEBEDITION_DIR . "we/include/we_modules/";
+													print $this->frameset
+																?>?pnt=editor" noresize name="editor" scrolling="no">
 																			</frameset>
-																					<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
-																			<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
-																				<frame src="<?php print HTML_DIR; ?>safariResize.html" name="separator" noresize scrolling="no">
-																					<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-																						print $this->frameset ?>?pnt=editor" noresize name="editor" scrolling="no">
+																		<?php } else{ ?>
+																			<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
+																				<frame src="<?php print HTML_DIR; ?>ieResize.html" name="separator" noresize scrolling="no">
+																					<frame src="<?php
+																print WEBEDITION_DIR . "we/include/we_modules/";
+																print $this->frameset
+																			?>?pnt=editor" noresize name="editor" scrolling="no">
 																						</frameset>
-																								<?php } else{ ?>
-																						<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
-																							<frame src="<?php print HTML_DIR; ?>ieResize.html" name="separator" noresize scrolling="no">
-																								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-																						print $this->frameset ?>?pnt=editor" noresize name="editor" scrolling="no">
+																					<?php } ?>
+																					<noframes>
+																						<body bgcolor="#ffffff">
+																							<p></p>
+																						</body>
+																					</noframes>
+																					</html>
+
+																					<?php
+																				}
+
+																				function getHTMLEditor(){
+																					?>
+																					</head>
+																					<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
+																						<frame src="<?php
+																			print WEBEDITION_DIR . "we/include/we_modules/";
+																			print $this->frameset
+																					?>?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
+																							<frame src="<?php
+																							 print WEBEDITION_DIR . "we/include/we_modules/";
+																							 print $this->frameset
+																					?>?pnt=edbody&home=1" name="edbody" scrolling=auto>
+																								<frame src="<?php
+																								 print WEBEDITION_DIR . "we/include/we_modules/";
+																								 print $this->frameset
+																					?>?pnt=edfooter&home=1" name="edfooter" scrolling=no>
+
 																									</frameset>
-		<?php } ?>
-																								<noframes>
-																									<body bgcolor="#ffffff">
-																										<p></p>
-																									</body>
-																								</noframes>
-																								</html>
+																									<noframes>
+																										<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+																										</body>
+																									</noframes>
+																									</html>
+																									<?php
+																								}
 
-		<?php
-	}
-
-	function getHTMLEditor(){
-		?>
-																								</head>
-																								<frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-																									<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
-																										<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=edbody&home=1" name="edbody" scrolling=auto>
-																											<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/";
-		print $this->frameset ?>?pnt=edfooter&home=1" name="edfooter" scrolling=no>
-
-																												</frameset>
-																												<noframes>
-																													<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-																													</body>
-																												</noframes>
-																												</html>
-		<?php
-	}
-
-}
+																							}

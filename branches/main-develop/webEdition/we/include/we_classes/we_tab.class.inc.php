@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,39 +22,39 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class we_tab{
 
-class we_tab {
 	var $tab;
 
-	function __construct($href='#', $text, $status='TAB_NORMAL', $jscmd='', $attribs=array()) {
-		$class = $status == 'TAB_ACTIVE' ? "tabActive":"tabNormal";
+	function __construct($href, $text, $status = 'TAB_NORMAL', $jscmd = '', $attribs = array()){
+		$class = $status == 'TAB_ACTIVE' ? "tabActive" : "tabNormal";
 		$att = "";
-		if (isset($attribs) && is_array($attribs)) {
-			foreach ($attribs as $key=>$val) {
+		if(isset($attribs) && is_array($attribs)){
+			foreach($attribs as $key => $val){
 				$att .= $key . '="' . $val . '" ';
 			}
 		}
 
-		global $SYSTEM;
-		switch ($GLOBALS['BROWSER']) {
-			case "SAFARI":
+
+		switch(we_base_browserDetect::inst()->getBrowser()){
+			case we_base_browserDetect::SAFARI:
 				$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr><span><img src="/webEdition/images/pixel.gif" height="0" /></span></div>';
 				break;
-			case "IE":
+			case we_base_browserDetect::IE:
 				$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				break;
 			default:
-				$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				if($SYSTEM == "MAC") {
+				if(we_base_browserDetect::isMAC()){
 					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} elseif ($SYSTEM == "X11") {
+				} elseif(we_base_browserDetect::isUNIX()){
+					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
+				} else{
 					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				}
 		}
-
 	}
 
-	function getHTML() {
+	function getHTML(){
 		return $this->tab;
 	}
 

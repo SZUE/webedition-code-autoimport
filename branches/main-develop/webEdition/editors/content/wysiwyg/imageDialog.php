@@ -22,9 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weImageDialog();
 $dialog->initByHttp();
@@ -36,13 +34,13 @@ function weDoImgCmd($args){
 
 	if($args["thumbnail"] && $args["fileID"]){
 		$thumbObj = new we_thumbnail();
-		$thumbObj->initByImageIDAndThumbID($args["fileID"],$args["thumbnail"]);
+		$thumbObj->initByImageIDAndThumbID($args["fileID"], $args["thumbnail"]);
 		if(!file_exists($thumbObj->getOutputPath(true))){
 			$thumbObj->createThumb();
 		}
 	}
 
-	return we_html_element::jsElement('top.opener.weWysiwygObject_'.$args["editname"].'.insertImage("'.$args["src"].'","'.$args["width"].'","'.$args["height"].'","'.$args["hspace"].'","'.$args["vspace"].'","'.$args["border"].'","'.addslashes($args["alt"]).'","'.$args["align"].'","'.$args["name"].'","'.$args["class"].'","'.addslashes($args["title"]).'","'.$args["longdesc"].'");
+	return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["class"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
 top.close();
 ');
 }
