@@ -2678,8 +2678,9 @@ function we_templateInit(){
 		}
 		//check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			!isset($GLOBALS['we']['backVars']) //on first call this variable is unset, so we're not inside an include
-			&& (defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_PREDOC)){
+			(defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+			(!isset($GLOBALS['we']['backVars'])|| (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+			){
 			we_schedpro::trigger_schedule();
 		}
 
@@ -2757,8 +2758,9 @@ function we_templatePost(){
 	}
 	//check for Trigger
 	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))&&
 		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
-		&& ((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
+		){ //is set to Post or not set (new default)
 		we_schedpro::trigger_schedule();
 	}
 }
