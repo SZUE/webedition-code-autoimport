@@ -26,8 +26,7 @@ we_html_tools::protect();
 // disable javascript errors
 if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
 
-	print
-		"<script type=\"text/javascript\">
+	print we_html_element::jsElement("
 
 	// overwrite/disable some functions in javascript!!!!
 	window.open = function(){};
@@ -50,9 +49,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
 		window.attachEvent('onload', we_rpc_dw_onload);
 
 	}
-
-</script>
-";
+");
 }
 
 echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');

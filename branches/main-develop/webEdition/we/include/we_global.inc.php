@@ -289,12 +289,12 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
-function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir=''){
+function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
 	return we_getCatsFromIDs(
 			(isset($doc->Category) ? $doc->Category : ''), $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir);
 }
 
-function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir=''){
+function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
 	if(!$db)
 		$db = new DB_WE();
 	if($catIDs){
@@ -843,7 +843,7 @@ function encode($in){
  * @param type $table
  * @return bool true on success, or if not in DB
  */
-function deleteContentFromDB($id, $table, $DB_WE=''){
+function deleteContentFromDB($id, $table, $DB_WE = ''){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
@@ -1324,7 +1324,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	}
 }
 
-function getHashArrayFromCSV($csv, $firstEntry, $db=''){
+function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	if(!$csv)
 		return array();
 	if(!$db)
@@ -1597,7 +1597,7 @@ function p_r($val){
  * @param string $type (optional) define the type of the log; possible values are: warning (default), error, notice, deprecated
  * Note: type error causes we to stop execution, cause this is considered a major bug; but value is still logged.
  */
-function t_e($type='warning'){
+function t_e($type = 'warning'){
 	$inc = false;
 	$data = array();
 	switch(is_string($type) ? strtolower($type) : -1){
@@ -1613,8 +1613,8 @@ function t_e($type='warning'){
 			$inc = true;
 			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
 				$type = E_USER_DEPRECATED;
-			}else{
-				$data[]='DEPRECATED';
+			} else{
+				$data[] = 'DEPRECATED';
 				$type = E_USER_NOTICE;
 			}
 			break;
@@ -1640,7 +1640,7 @@ function t_e($type='warning'){
 	}
 }
 
-function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex=false, $objectseourls=false){
+function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
 
 	if(!$path)
 		$path = $_SERVER['SCRIPT_NAME'];
@@ -1989,7 +1989,7 @@ function getServerAuth(){
 	return (strlen($pwd) > 3) ? $pwd : '';
 }
 
-function getServerUrl($useUserPwd=false){
+function getServerUrl($useUserPwd = false){
 	$port = '';
 	if(isset($_SERVER['SERVER_PORT'])){
 		if((we_isHttps() && $_SERVER['SERVER_PORT'] != 443) || ($_SERVER['SERVER_PORT'] != 80)){
@@ -2605,7 +2605,7 @@ function g_l_encodeArray($tmp){
  * @param $specific array the array element to access
  * @param $omitErrors boolean don't throw an error on non-existent entry
  */
-function g_l($name, $specific, $omitErrors=false){
+function g_l($name, $specific, $omitErrors = false){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 			//inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
@@ -2633,10 +2633,10 @@ function g_l($name, $specific, $omitErrors=false){
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
 	if(file_exists($file)){
 		include($file);
-		$tmp = (isset(${'l_'.$name}) ? getVarArray(${'l_'.$name}, $specific) : false);
+		$tmp = (isset(${'l_' . $name}) ? getVarArray(${'l_' . $name}, $specific) : false);
 		//get local variable
 		if($tmp !== false){
-			$cache['l_'.$name] = ${'l_'.$name};
+			$cache['l_' . $name] = ${'l_' . $name};
 			return ($charset != 'UTF-8' ?
 					(is_array($tmp) ?
 						array_map('g_l_encodeArray', $tmp) :
@@ -2651,16 +2651,16 @@ function g_l($name, $specific, $omitErrors=false){
 		}
 	}
 	if(!$omitErrors){
-		t_e('Language file "'.$file.'" not found');
+		t_e('Language file "' . $file . '" not found');
 	}
 	return '';
 }
 
 function we_templateInit(){
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE;
 	}
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
 	if($GLOBALS['we_doc']){
 		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we_doc']->ID;
@@ -2693,28 +2693,31 @@ function we_templateInit(){
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
-//FIXME: this code is obsolete?
+		//FIXME: this code doesn't work!
+		/*
 		list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
-		if($__lang){
-			$__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
-			$__last = array_pop($__parts);
-			// Charset of page is not UTF-8 but languge files of page are UTF-8
-			// Then change language files to non UTF-8 pedant if available
-			if(count($__parts) && $__last === 'UTF-8' && $GLOBALS['CHARSET'] !== 'UTF-8'){
-				$__lang = $__parts[0];
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
-					$GLOBALS['WE_LANGUAGE'] = $__lang;
-				}
+		 if($__lang){
+		  $__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
+		  $__last = array_pop($__parts);
+		  // Charset of page is not UTF-8 but languge files of page are UTF-8
+		  // Then change language files to non UTF-8 pedant if available
+		  if(count($__parts) && $__last === 'UTF-8' && $GLOBALS['CHARSET'] !== 'UTF-8'){
+		  $__lang = $__parts[0];
+		  if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
+		  $GLOBALS['WE_LANGUAGE'] = $__lang;
+		  }
 
-				// Charset of page is  UTF-8 but languge files of page are not UTF-8
-				// Then change language files to UTF-8 pedant if available
-			} else if($__last !== 'UTF-8' && $GLOBALS['CHARSET'] === 'UTF-8'){
-				$__lang = $GLOBALS['WE_LANGUAGE'] . '_UTF-8';
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
-					$GLOBALS['WE_LANGUAGE'] = $__lang;
-				}
-			}
-		}
+		  // Charset of page is  UTF-8 but languge files of page are not UTF-8
+		  // Then change language files to UTF-8 pedant if available
+		  } else if($__last !== 'UTF-8' && $GLOBALS['CHARSET'] === 'UTF-8'){
+		  $__lang = $GLOBALS['WE_LANGUAGE'] . '_UTF-8';
+		  if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
+		  $GLOBALS['WE_LANGUAGE'] = $__lang;
+		  }
+		  }
+		  }
+		*/
+
 	}
 }
 
@@ -2742,21 +2745,21 @@ function we_templatePostContent(){
 		if(defined('WE_ECONDA_STAT') && defined('WE_ECONDA_PATH') && WE_ECONDA_STAT && WE_ECONDA_PATH != '' && !$GLOBALS['we_doc']->InWebEdition){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php');
 		}
-		//check for Trigger
-		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
-			&& ((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
-			we_schedpro::trigger_schedule();
-		}
 	}
 }
 
 function we_templatePost(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-		print '<script  type="text/javascript">setTimeout("doScrollTo();",100);</script>';
+		print we_html_element::jsElement('setTimeout("doScrollTo();",100);');
 	}
 	if(defined('DEBUG_MEM')){
 		weMemDebug();
+	}
+	//check for Trigger
+	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+		&& ((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
+		we_schedpro::trigger_schedule();
 	}
 }
 
@@ -2769,7 +2772,7 @@ function show_SeoLinks(){
 	return true;
 }
 
-function we_TemplateExit($param=0){
+function we_TemplateExit($param = 0){
 	if(isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession']){
 		//we are inside we, we don't terminate here
 		if($param){
@@ -2786,7 +2789,7 @@ function we_cmd_enc($str){
 	return ($str == '' ? '' : 'WECMDENC_' . urlencode(base64_encode($str)));
 }
 
-function we_cmd_dec($no, $default=''){
+function we_cmd_dec($no, $default = ''){
 	if(isset($_REQUEST['we_cmd'][$no])){
 		if(strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false){
 			$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][$no], 9)));
@@ -2796,7 +2799,7 @@ function we_cmd_dec($no, $default=''){
 	return $default;
 }
 
-function getWEZendCache($lifetime=1800){
+function getWEZendCache($lifetime = 1800){
 	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
 }
 

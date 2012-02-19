@@ -138,7 +138,7 @@ class weVotingFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				($this->View->voting->IsFolder ? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]')) . ':&nbsp;' . $this->View->voting->Text .
-				we_html_tools::getPixel(1600,19)
+				we_html_tools::getPixel(1600, 19)
 			)
 		);
 
@@ -207,14 +207,8 @@ class weVotingFrames extends weModuleFrames{
 		);
 	}
 
-	function getPercent($total, $value, $precision=0){
-
-		if($total){
-			$result = round(($value * 100) / $total, $precision);
-		} else{
-			$result = 0;
-		}
-
+	function getPercent($total, $value, $precision = 0){
+		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 		return weVoting::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), weVoting::PRECISION);
 	}
 
@@ -240,18 +234,15 @@ class weVotingFrames extends weModuleFrames{
 		';
 
 		if($this->View->voting->IsFolder == 0){
-			$variant_js .= '
-				question_edit = new multi_edit("question",document.we_form,1,"",' . ($this->_width_size) . ',true);
+			$variant_js .=
+				'question_edit = new multi_edit("question",document.we_form,1,"",' . ($this->_width_size) . ',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . ($this->_width_size - 32) . ',true);
 				answers_edit.SetImageIDText("' . g_l('modules_voting', '[imageID_text]') . '");
 				answers_edit.SetMediaIDText("' . g_l('modules_voting', '[mediaID_text]') . '");
-				answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");
-			';
+				answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");';
 
 			for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
-				$variant_js .= '
-					answers_edit.addItem("2");
-				';
+				$variant_js .= 'answers_edit.addItem("2");';
 			}
 
 			foreach($this->View->voting->QASet as $variant => $value){
@@ -271,61 +262,42 @@ class weVotingFrames extends weModuleFrames{
 							$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
 							$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
 							$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
-							$variant_js .= '
-								answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
+							$variant_js .=
+								'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
 
 								answers_edit.setItemImageID("' . $variant . '","' . $akey . '","' . $aval2 . '");
 								answers_edit.setItemMediaID("' . $variant . '","' . $akey . '","' . $aval3 . '");
-								answers_edit.setItemSuccessorID("' . $variant . '","' . $akey . '","' . $aval4 . '");
-							';
+								answers_edit.setItemSuccessorID("' . $variant . '","' . $akey . '","' . $aval4 . '");';
 						}
 					}
 				}
 			}
 
-			$variant_js .= '
-
-				answers_edit.delRelatedItems=true;
+			$variant_js .=
+				'answers_edit.delRelatedItems=true;
 				question_edit.showVariant(0);
 				answers_edit.showVariant(0);
 				question_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');
-				answers_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');
-			';
+				answers_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');';
 			if($this->View->voting->AllowFreeText){
-				$variant_js .= '
-
-				answers_edit.SetMinCount(1);';
+				$variant_js .= 'answers_edit.SetMinCount(1);';
 			} else{
-				$variant_js .= '
-
-				answers_edit.SetMinCount(2);';
+				$variant_js .= 'answers_edit.SetMinCount(2);';
 			}
 			if($this->View->voting->AllowImages){
-				$variant_js .= '
-
-				answers_edit.showImages();';
+				$variant_js .= 'answers_edit.showImages();';
 			} else{
-				$variant_js .= '
-
-				answers_edit.hideImages();';
+				$variant_js .= 'answers_edit.hideImages();';
 			}
 			if($this->View->voting->AllowMedia){
-				$variant_js .= '
-
-				answers_edit.showMedia();';
+				$variant_js .= 'answers_edit.showMedia();';
 			} else{
-				$variant_js .= '
-
-				answers_edit.hideMedia();';
+				$variant_js .= 'answers_edit.hideMedia();';
 			}
 			if($this->View->voting->AllowSuccessors){
-				$variant_js .= '
-
-				answers_edit.showSuccessors();';
+				$variant_js .= 'answers_edit.showSuccessors();';
 			} else{
-				$variant_js .= '
-
-				answers_edit.hideSuccessors();';
+				$variant_js .= 'answers_edit.hideSuccessors();';
 			}
 		}
 
@@ -350,28 +322,22 @@ class weVotingFrames extends weModuleFrames{
 		';
 
 
-		$variant_js .= '
-			iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
-			iptable_label.addVariant();
-		';
+		$variant_js .=
+			'iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
+			iptable_label.addVariant();';
 		if(is_array($this->View->voting->BlackList)){
 			foreach($this->View->voting->BlackList as $ip){
 
-				$variant_js .= '
-					top.content.setHot();
+				$variant_js .=
+					'top.content.setHot();
 					iptable_label.addItem();
-					iptable_label.setItem(0,(iptable_label.itemCount-1),"' . $ip . '");
-				';
+					iptable_label.setItem(0,(iptable_label.itemCount-1),"' . $ip . '");';
 			}
 		}
-		$variant_js .= '
-			iptable_label.showVariant(0);
-		';
+		$variant_js .= 'iptable_label.showVariant(0);';
 
 
-		$variant_js .= '
-			}
-		';
+		$variant_js .= '}';
 
 		$js .= we_html_element::jsElement($variant_js);
 
@@ -877,7 +843,7 @@ class weVotingFrames extends weModuleFrames{
 		return $parts;
 	}
 
-	function getHTMLProperties($preselect=""){
+	function getHTMLProperties($preselect = ""){
 
 		$tabNr = isset($_REQUEST["tabnr"]) ? (($this->View->voting->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
 
@@ -997,7 +963,7 @@ class weVotingFrames extends weModuleFrames{
 		return $this->getHTMLDocument($out);
 	}
 
-	function getHTMLExportCsvMessage($mode=0){
+	function getHTMLExportCsvMessage($mode = 0){
 		if(isset($_REQUEST["lnk"])){
 			$link = $_REQUEST["lnk"];
 		}
@@ -1037,7 +1003,7 @@ class weVotingFrames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLExportGroupCsvMessage($mode=0){
+	function getHTMLExportGroupCsvMessage($mode = 0){
 		if(isset($_REQUEST["lnk"])){
 			$link = $_REQUEST["lnk"];
 		}
