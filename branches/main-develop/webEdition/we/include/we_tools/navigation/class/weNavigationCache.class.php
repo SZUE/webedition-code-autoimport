@@ -94,14 +94,14 @@ class weNavigationCache{
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
+		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items),9));
 	}
 
 	static function getCacheFromFile($parentid){
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
-			return unserialize(weFile::load($_cache));
+			return @unserialize(@gzinflate(weFile::load($_cache)));
 		}
 		return false;
 	}
