@@ -47,8 +47,6 @@ class we_object extends we_document{
 	var $InWebEdition = false;
 	var $CSS = '';
 
-
-
 	/* Constructor */
 
 	function __construct(){
@@ -1334,11 +1332,11 @@ class we_object extends we_document{
 		return $out;
 	}
 
-	function getObjectFieldHTML($ObjectID, $attribs, $editable=true){
+	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
 		$pid = $this->getElement($ObjectID, "dat");
 		if($editable){
 			$db = new DB_WE();
-			$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=".$pid, 'Path', $db);
+			$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=" . $pid, 'Path', $db);
 			$textname = 'we_' . $this->Name . '_txt[' . $pid . '_path]';
 			$idname = 'we_' . $this->Name . "_input[" . $ObjectID . "default]";
 			$myid = $this->getElement($ObjectID . "default", "dat");
@@ -1380,7 +1378,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($name . "class", "dat");
 
 		$db = new DB_WE();
-		$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=".$pid, "Path", $db);
+		$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=" . $pid, "Path", $db);
 		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 		$idname = 'we_' . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]";
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");
@@ -1426,7 +1424,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function dhtmledit($name, $i=0){
+	function dhtmledit($name, $i = 0){
 
 
 		$_but = we_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');");
@@ -1480,7 +1478,7 @@ class we_object extends we_document{
 		$this->elements[$name . "users"]["dat"] = $csv;
 	}
 
-	function formUsers1($name, $nr=0){
+	function formUsers1($name, $nr = 0){
 		$users = $this->getElement($name . "users", "dat") ? explode(",", $this->getElement($name . "users", "dat")) : array();
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
@@ -1503,7 +1501,7 @@ class we_object extends we_document{
 			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>';
 	}
 
-	function formUsers($canChange=true){
+	function formUsers($canChange = true){
 
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
@@ -1592,7 +1590,7 @@ class we_object extends we_document{
 		$this->CSS = makeCSVFromArray($css, true);
 	}
 
-	function getImageHTML($name, $defaultname, $i=0){
+	function getImageHTML($name, $defaultname, $i = 0){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 		$content = "";
@@ -1640,7 +1638,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function getFlashmovieHTML($name, $defaultname, $i=0){
+	function getFlashmovieHTML($name, $defaultname, $i = 0){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
 		$content = "";
@@ -1669,7 +1667,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function getQuicktimeHTML($name, $defaultname, $i=0){
+	function getQuicktimeHTML($name, $defaultname, $i = 0){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 
 		$content = "";
@@ -1698,7 +1696,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function getBinaryHTML($name, $defaultname, $i=0){
+	function getBinaryHTML($name, $defaultname, $i = 0){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 
 		$content = "";
@@ -1765,7 +1763,7 @@ class we_object extends we_document{
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
-				$select .= $this->htmlSelect("textwert_" . $zahl, $g_l('modules_object', '[value]'), 1, "Text", "", 'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
+				$select .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", 'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 				$select .= $this->htmlTextInput("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", 40, $key, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
@@ -1924,7 +1922,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function formRestrictUsers($canChange=true){
+	function formRestrictUsers($canChange = true){
 		if($canChange){
 			$hiddenname = 'we_' . $this->Name . '_RestrictUsers';
 			$tmpname = 'tmpwe_' . $this->Name . '_RestrictUsers';
@@ -2136,7 +2134,7 @@ class we_object extends we_document{
 		$this->setSort();
 	}
 
-	function i_getContentData($loadBinary=0){
+	function i_getContentData($loadBinary = 0){
 		$f = 0;
 
 		if($this->ID){
@@ -2388,7 +2386,7 @@ class we_object extends we_document{
 		}
 	}
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		$this->save();
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_history.class.php");
 		we_history::insertIntoHistory($this);
@@ -2477,7 +2475,7 @@ class we_object extends we_document{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width="", $rootDirID=0, $table="", $Pathname="ParentPath", $IDName="ParentID", $cmd="", $pathID=0, $identifier=""){
+	function formDirChooser($width = "", $rootDirID = 0, $table = "", $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $pathID = 0, $identifier = ""){
 		$path = id_to_path($pathID);
 
 		if(!$table)

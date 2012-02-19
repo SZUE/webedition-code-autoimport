@@ -40,7 +40,7 @@ print we_html_element::cssElement('
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
-	font-size: '.(($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';
+	font-size: ' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';
 	font-family: ' . g_l('css', '[font_family]') . ' ! important;
 }
 
@@ -48,7 +48,7 @@ print we_html_element::cssElement('
 .rssDiv a {
 	color: black;
 	text-decoration:none;
-}').we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
+}') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
 if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
@@ -139,8 +139,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			'#widgets{position:absolute;top:27px;left:45px;z-index:3;}'+
 			'#le_tblWidgets{table-layout:fixed;}';
 		for(i=1;i<=10;i++){
-				jsCss+='.cls_'+i+'_collapse{width:'+oCfg.general_['cls_collapse']+'px;vertical-align:top;}'+
-					'.cls_'+i+'_expand{width:'+oCfg.general_['cls_expand']+'px;vertical-align:top;}';
+			jsCss+='.cls_'+i+'_collapse{width:'+oCfg.general_['cls_collapse']+'px;vertical-align:top;}'+
+				'.cls_'+i+'_expand{width:'+oCfg.general_['cls_expand']+'px;vertical-align:top;}';
 		}
 		jsCss+='</style>';
 		document.write(jsCss);
@@ -456,7 +456,6 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					for (i=0;i<_inlineDivs.length;i++) {
 						if (_inlineDivs[i].className == "sct_row") {
 							_inlineDivs[i].style.width = _width;
-
 						}
 					}
 				}
@@ -666,19 +665,19 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	<?php
 	if($GLOBALS['BROWSER'] != 'SAFARI'){
 		echo '
-		if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
+	if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-			var clone=gel("rpcBusy").cloneNode(true);
-			var wpNode=gel(elementId+"_wrapper");
-			var ctNode=gel(elementId+"_content");
+		var clone=gel("rpcBusy").cloneNode(true);
+		var wpNode=gel(elementId+"_wrapper");
+		var ctNode=gel(elementId+"_content");
 
-			ctNode.style.display="none";
-			wpNode.style.textAlign="center";
-			wpNode.style.verticalAlign="middle";
-			wpNode.insertBefore(clone,ctNode);
-			clone.id="rpcBusyClone_" + elementId;
-			clone.style.display="inline";
-		}';
+		ctNode.style.display="none";
+		wpNode.style.textAlign="center";
+		wpNode.style.verticalAlign="middle";
+		wpNode.insertBefore(clone,ctNode);
+		clone.id="rpcBusyClone_" + elementId;
+		clone.style.display="inline";
+	}';
 	}
 	?>
 			}
@@ -1071,9 +1070,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				), $oClone->getHtml()));
 } else{ // no right to see cockpit!!!
 	print
-		we_html_element::jsElement(
-			'
-
+		we_html_element::jsElement('
 		function isHot(){
 			return false;
 		}
@@ -1092,8 +1089,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	');
 
 	print
-		we_html_element::cssElement(
-			'
+		we_html_element::cssElement('
 		html {
 			heigth: 90%;
 		}
@@ -1115,7 +1111,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		}
 		');
 
-	print "</head>";
+	print '</head>';
 	print
 		we_html_element::htmlBody(
 			array(
@@ -1128,6 +1124,4 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 							"preferences", "javascript:top.we_cmd('openPreferences');"), 1, 0, false) : we_html_tools::htmlAlertAttentionBox(
 						"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", 1, 0, false))));
 }
-echo "
-<iframe id=\"RSIFrame\" name=\"RSIFrame\" style=\"border:0px;width:1px;height:1px; visibility:hidden\"></iframe>
-</html>\n";
+echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';

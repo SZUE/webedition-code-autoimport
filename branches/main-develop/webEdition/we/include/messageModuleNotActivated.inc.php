@@ -35,7 +35,7 @@ $content = '
 		<img src="' . IMAGE_DIR . "alert.gif" . '" />
 	</td>
 	<td class="defaultfont">
-		' . $g_l('moduleActivation', '[content]') . '
+		' . g_l('moduleActivation', '[content]') . '
 	</td>
 </tr>
 </table>';

@@ -67,7 +67,7 @@ class weCustomerFrames extends weModuleFrames{
 		return $this->View->getJSTop();
 	}
 
-	function getHTMLBranchSelect($with_common=true, $with_other=true){
+	function getHTMLBranchSelect($with_common = true, $with_other = true){
 		$branches_names = array();
 		$branches_names = $this->View->customer->getBranchesNames();
 
@@ -108,7 +108,7 @@ class weCustomerFrames extends weModuleFrames{
 		return $select;
 	}
 
-	function getHTMLSortSelect($include_no_sort=true){
+	function getHTMLSortSelect($include_no_sort = true){
 		$sort = new we_html_select(array('name' => 'sort', 'class' => 'weSelect'));
 
 		$sort_names = array_keys($this->View->settings->SortView);
@@ -124,7 +124,7 @@ class weCustomerFrames extends weModuleFrames{
 		return $sort;
 	}
 
-	function getHTMLFieldControl($field, $value=null){
+	function getHTMLFieldControl($field, $value = null){
 		$props = $this->View->getFieldProperties($field);
 		if(!($props['type'] == 'select' || $props['type'] == 'multiselect') && !$this->View->customer->ID && $value == null){
 			$value = $props['default'];
@@ -158,9 +158,9 @@ class weCustomerFrames extends weModuleFrames{
 				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
 
 				$topCountries = array_flip($topCountries);
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
+				if(!Zend_Locale::hasCache()){
+					Zend_Locale::setCache(getWEZendCache());
+				}
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
@@ -366,7 +366,7 @@ class weCustomerFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('modules_customer', '[customer]') . ":&nbsp;" . $this->View->customer->Username .
-				we_html_tools::getPixel(1600,10)
+				we_html_tools::getPixel(1600, 10)
 			)
 		);
 
@@ -438,7 +438,7 @@ class weCustomerFrames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLProperties($preselect=''){
+	function getHTMLProperties($preselect = ''){
 		$parts = array();
 
 		$out = '';
@@ -527,7 +527,7 @@ class weCustomerFrames extends weModuleFrames{
 			$objectStr = '';
 			if($DB_WE->num_rows()){
 				$objectStr.='<table class="defaultfont" width="600">';
-				$objectStr.='<tr><td>&nbsp;</td> <td><b>' . $g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+				$objectStr.='<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 				while($DB_WE->next_record()) {
 					$objectStr.='<tr>';
 					$objectStr.='<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>';
@@ -716,7 +716,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 2, 1);
-		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600,10));
+		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600, 10));
 		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("treefooter")) .
 			$hiddens .
 			we_button::create_button_table(
@@ -1103,7 +1103,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		return $this->getHTMLDocument($body, we_html_element::jsElement($this->View->getJSSettings()));
 	}
 
-	function getDateInput2($name, $time="", $setHot=false, $format="", $onchange="", $class="defaultfont", $from_year=1970){
+	function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "defaultfont", $from_year = 1970){
 		// removed attribute setHot
 
 		if(is_array($time)){

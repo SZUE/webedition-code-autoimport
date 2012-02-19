@@ -153,7 +153,7 @@ foreach($tbls as $table){
 			if($DB_WE->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($DB_WE->f("ID"), $table));
-				$text = "$step&nbsp;" . $g_l('resave', '[of]') . "&nbsp;$steps";
+				$text = "$step&nbsp;" . g_l('resave', '[of]') . "&nbsp;$steps";
 				if($DB_WE->f("mywforder"))
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
 				else
