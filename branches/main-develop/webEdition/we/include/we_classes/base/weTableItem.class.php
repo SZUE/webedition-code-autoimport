@@ -51,7 +51,7 @@ class weTableItem extends weModelBase{
 		parent::load();
 		// remove binary content
 		if($this->table == CONTENT_TABLE && $this->IsBinary){
-				$this->Dat = '';
+			$this->Dat = '';
 		}
 	}
 
@@ -194,32 +194,32 @@ class weTableItem extends weModelBase{
 									if(is_array($add)){
 										foreach($add as &$addd){
 											$addd = convertCharsetEncoding($fromC, $toC, $addd);
-											$addd = convertExactCharsetString($fromC, $toC, $addd);
-											$addd = convertCharsetString($fromC, $toC, $addd);
+											$addd = self::convertExactCharsetString($fromC, $toC, $addd);
+											$addd = self::convertCharsetString($fromC, $toC, $addd);
 										}
 									} else{
 
 										$add = convertCharsetEncoding($fromC, $toC, $add);
-										$add = convertExactCharsetString($fromC, $toC, $add);
-										$add = convertCharsetString($fromC, $toC, $add);
+										$add = self::convertExactCharsetString($fromC, $toC, $add);
+										$add = self::convertCharsetString($fromC, $toC, $add);
 									}
 								}
 							} else{
 								$ad = convertCharsetEncoding($fromC, $toC, $ad);
-								$ad = convertExactCharsetString($fromC, $toC, $ad);
-								$ad = convertCharsetString($fromC, $toC, $ad);
+								$ad = self::convertExactCharsetString($fromC, $toC, $ad);
+								$ad = self::convertCharsetString($fromC, $toC, $ad);
 							}
 						}
 						$val = serialize($mydataUS);
 					}
 				} else{
 					$val = convertCharsetEncoding($fromC, $toC, $mydata);
-					$val = convertExactCharsetString($fromC, $toC, $val);
-					$val = convertCharsetString($fromC, $toC, $val);
+					$val = self::convertExactCharsetString($fromC, $toC, $val);
+					$val = self::convertCharsetString($fromC, $toC, $val);
 				}
 			}
 			if($this->doCorrectExactCharsetString($key)){
-				$val = convertExactCharsetString($fromC, $toC, $val);
+				$val = self::convertExactCharsetString($fromC, $toC, $val);
 			}
 			if($this->doCorrectSerializedLenghtValues($key)){
 				if($this->doPrepareCorrectSerializedLenghtValues($key)){
@@ -234,13 +234,21 @@ class weTableItem extends weModelBase{
 				if(is_array($mydataUS)){
 					foreach($mydataUS as &$ad){
 						if(isset($ad['Charset']) && isset($ad['Charset']['dat'])){
-							$ad['Charset']['dat'] = convertExactCharsetString($fromC, $toC, $ad['Charset']['dat']); //tblObject
+							$ad['Charset']['dat'] = self::convertExactCharsetString($fromC, $toC, $ad['Charset']['dat']); //tblObject
 						}
 					}
 				}
 				$val = @serialize($mydataUS);
 			}
 		}
+	}
+
+	static function convertCharsetString($fromC, $toC, $string){
+		return str_replace($fromC, $toC, $string);
+	}
+
+	static function convertExactCharsetString($fromC, $toC, $string){
+		return ($string == $fromC ? $toC : $string);
 	}
 
 }

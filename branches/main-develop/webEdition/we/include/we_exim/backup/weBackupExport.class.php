@@ -46,7 +46,6 @@ class weBackupExport{
 					'type' => 'create'
 				);
 
-
 				weContentProvider::object2xml($_object, $_fh, $_attributes);
 
 				fwrite($_fh, '<!-- webackup -->' . "\n");

@@ -47,7 +47,7 @@ class weBackup extends we_backup{
 	var $old_objects_deleted = 0;
 	var $backup_binary = 1;
 
-	function __construct($handle_options=array()){
+	function __construct($handle_options = array()){
 		$this->nl = "\n";
 
 		$this->header = "<?xml version=\"1.0\" encoding=\"" . $GLOBALS['WE_BACKENDCHARSET'] . "\" standalone=\"yes\"?>" . $this->nl .
@@ -209,10 +209,11 @@ class weBackup extends we_backup{
 		$tablename = $attributes["name"];
 		if(!$this->isFixed($tablename) && $tablename != ""){
 			$tablename = $this->fixTableName($tablename);
-			if(isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)])
+			if(isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)]){
 				$this->current_description = $this->description["import"][strtolower($tablename)];
-			else
+			}else{
 				$this->current_description = g_l('backup', "[working]");
+			}
 
 			$object = weContentProvider::getInstance("weTable", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
@@ -244,10 +245,11 @@ class weBackup extends we_backup{
 
 		foreach($node_set2 as $nsk => $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
-			if(weContentProvider::needCoding($classname, $index))
+			if(weContentProvider::needCoding($classname, $index)){
 				$content[$index] = weContentProvider::decode($xmlBrowser->getData($nsv));
-			else
+			}else{
 				$content[$index] = $xmlBrowser->getData($nsv);
+			}
 		}
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
@@ -286,7 +288,6 @@ class weBackup extends we_backup{
 	}
 
 	function recoverPrefs(&$object){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weConfParser.class.php");
 		$file = "/webEdition/we/tmp/we_conf_global.inc.php";
 		$object->Path = $file;
 		$object->save(true);
@@ -328,7 +329,6 @@ class weBackup extends we_backup{
 	}
 
 	function recover($chunk_file){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLBrowser.class.php");
 		if(!is_readable($chunk_file))
 			return false;
 		@set_time_limit(240);
@@ -338,13 +338,16 @@ class weBackup extends we_backup{
 
 		foreach($xmlBrowser->nodes as $key => $val){
 			$name = $xmlBrowser->nodeName($key);
-			if($name == "we:table"){
-				weBackup::recoverTable($key, $xmlBrowser);
-			} else if($name == "we:tableitem"){
-				weBackup::recoverTableItem($key, $xmlBrowser);
-			}
-			if($name == "we:binary"){
-				weBackup::recoverBinary($key, $xmlBrowser);
+			switch($name){
+				case "we:table":
+					weBackup::recoverTable($key, $xmlBrowser);
+					break;
+				case "we:tableitem":
+					weBackup::recoverTableItem($key, $xmlBrowser);
+					break;
+				case "we:binary":
+					weBackup::recoverBinary($key, $xmlBrowser);
+					break;
 			}
 		}
 		return true;
@@ -426,10 +429,11 @@ class weBackup extends we_backup{
 						$this->table_end = f("SELECT COUNT(1) AS Count FROM " . $this->backup_db->escape($table), "Count", $this->backup_db);
 					}
 
-					if(isset($this->description["export"][strtolower($table)]))
+					if(isset($this->description["export"][strtolower($table)])){
 						$this->current_description = $this->description["export"][strtolower($table)];
-					else
+					}else{
 						$this->current_description = g_l('backup', "[working]");
+					}
 
 					$keys = weTableItem::getTableKey($table);
 					$this->partial = false;
@@ -480,17 +484,17 @@ class weBackup extends we_backup{
 		if(!is_array($fields))
 			return false;
 		// remve $res=array(); from exportTables function
-		$out = "<we:info>";
-		$this->backup_db->query("SELECT " . implode(",", $fields) . " FROM " . $this->backup_db->escape($table) . ";");
+		$out = '<we:info>';
+		$this->backup_db->query('SELECT ' . implode(',', $fields) . ' FROM ' . $this->backup_db->escape($table) . ";");
 		while($this->backup_db->next_record()) {
 			$out.='<we:map table="' . $this->getDefaultTableName($table) . '"';
 			foreach($fields as $field){
 				$out.=' ' . $field . '="' . $this->backup_db->f($field) . '"';
 			}
-			$out.=">";
+			$out.='>';
 		}
-		$out.="</we:info>";
-		$out.=we_html_element::htmlComment("webackup") . "\n";
+		$out.='</we:info>';
+		$out.=we_html_element::htmlComment('webackup') . "\n";
 		weFile::save($filename, $out, "ab");
 	}
 
@@ -594,7 +598,7 @@ class weBackup extends we_backup{
 
 #==============================================================================#
 
-	function getFileList($dir="", $with_dirs=false, $rem_doc_root=true){
+	function getFileList($dir = "", $with_dirs = false, $rem_doc_root = true){
 		if($dir == "")
 			$dir = $_SERVER['DOCUMENT_ROOT'];
 
@@ -620,7 +624,7 @@ class weBackup extends we_backup{
 		$this->file_list_count = count($this->file_list);
 	}
 
-	function addToFileList($file, $rem_doc_root=true){
+	function addToFileList($file, $rem_doc_root = true){
 		if($rem_doc_root){
 			$this->file_list[] = str_replace($_SERVER['DOCUMENT_ROOT'], "", $file);
 		} else{
@@ -684,7 +688,7 @@ class weBackup extends we_backup{
 		}
 	}
 
-	function saveState($of=""){
+	function saveState($of = ""){
 
 		// Initialize variable
 		$save = '';

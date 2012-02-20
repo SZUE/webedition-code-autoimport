@@ -2553,14 +2553,6 @@ function correctSerDataISOtoUTF($serial_str){
 	return $out;
 }
 
-function convertExactCharsetString($fromC, $toC, $string){
-	return ($string == $fromC ? $toC : $string);
-}
-
-function convertCharsetString($fromC, $toC, $string){
-	return str_replace($fromC, $toC, $string);
-}
-
 function getVarArray($arr, $string){
 	if(!isset($arr)){
 		return false;

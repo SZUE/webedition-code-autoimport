@@ -24,7 +24,7 @@
  */
 class weContentProvider{
 
-	function getInstance($we_ContentType, $ID="", $table=""){
+	static function getInstance($we_ContentType, $ID = "", $table = ""){
 		$we_doc = "";
 
 		$DB_WE = new DB_WE();
@@ -100,42 +100,59 @@ class weContentProvider{
 		return $we_doc;
 	}
 
-	function populateInstance(&$object, $content){
-		if(!isset($object))
+	static function populateInstance(&$object, $content){
+		if(!isset($object)){
 			return;
+		}
 		foreach($content as $k => $v){
 			$object->$k = $v;
 		}
-		if(isset($object->persistent_slots) && empty($object->persistent_slots))
+		if(isset($object->persistent_slots) && empty($object->persistent_slots)){
 			$object->persistent_slots = array_keys($content);
-	}
-
-	function getTagName(&$object){
-
-		if(isset($object->Pseudo))
-			$classname = $object->Pseudo;
-		else
-			$classname = $object->ClassName;
-
-		switch($classname){
-			case "we_template": return "we:template";
-			case "we_element": return "we:content";
-			case "we_object": return "we:class";
-			case "we_objectFile": return "we:object";
-			case "we_docTypes": return "we:doctype";
-			case "we_category": return "we:category";
-			case "weTable": return "we:table";
-			case "weTableAdv": return "we:tableadv";
-			case "weTableItem": return "we:tableitem";
-			case "weBinary": return "we:binary";
-			case "weNavigation": return "we:navigation";
-			case "weNavigationRule": return "we:navigationrule";
-			case "we_thumbnail": return "we:thumbnail";
-			default: return "we:document";
 		}
 	}
 
-	function needCoding($classname, $prop){
+	static function getTagName(&$object){
+
+		if(isset($object->Pseudo)){
+			$classname = $object->Pseudo;
+		} else{
+			$classname = $object->ClassName;
+		}
+
+		switch($classname){
+			case "we_template":
+				return "we:template";
+			case "we_element":
+				return "we:content";
+			case "we_object":
+				return "we:class";
+			case "we_objectFile":
+				return "we:object";
+			case "we_docTypes":
+				return "we:doctype";
+			case "we_category":
+				return "we:category";
+			case "weTable":
+				return "we:table";
+			case "weTableAdv":
+				return "we:tableadv";
+			case "weTableItem":
+				return "we:tableitem";
+			case "weBinary":
+				return "we:binary";
+			case "weNavigation":
+				return "we:navigation";
+			case "weNavigationRule":
+				return "we:navigationrule";
+			case "we_thumbnail":
+				return "we:thumbnail";
+			default:
+				return "we:document";
+		}
+	}
+
+	static function needCoding($classname, $prop){
 		if($prop == "schedArr")
 			return true;
 		$encoded = array(
@@ -149,13 +166,14 @@ class weContentProvider{
 			"weNavigation" => array("Sort", "Attributes")
 		);
 
-		if(isset($encoded[$classname]))
+		if(isset($encoded[$classname])){
 			return in_array($prop, $encoded[$classname]);
-		else
+		} else{
 			return false;
+		}
 	}
 
-	function noEncodingChange($classname, $prop, $wedocClass, $objectname){
+	static function noEncodingChange($classname, $prop, $wedocClass, $objectname){
 
 		$nocoding = array(
 			"we_object" => array("DefaultText", "DefaultValues", "SerializedArray"),
@@ -182,7 +200,7 @@ class weContentProvider{
 		}
 	}
 
-	function needCdata($classname, $prop, $content){
+	static function needCdata($classname, $prop, $content){
 		$encoded = array(
 			"we_element" => array("Dat"),
 			"we_object" => array("DefaultText", "DefaultValues"),
@@ -197,7 +215,7 @@ class weContentProvider{
 		  return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]); */
 	}
 
-	function needSerialize(&$object, $classname, $prop){
+	static function needSerialize(&$object, $classname, $prop){
 		if($prop == "schedArr")
 			return true;
 		$serialize = array(
@@ -215,7 +233,7 @@ class weContentProvider{
 		}
 	}
 
-	function isExportable(&$object, $prop){
+	static function isExportable(&$object, $prop){
 
 		if(isset($object->Pseudo))
 			$classname = $object->Pseudo;
@@ -231,21 +249,21 @@ class weContentProvider{
 
 		$noexport = array();
 		if(isset($noexport[$classname]))
-			return!in_array($prop, $noexport[$classname]);
+			return !in_array($prop, $noexport[$classname]);
 		else
 			return true;
 	}
 
-	function binary2file(&$object, &$file, $isWe=true){
+	static function binary2file(&$object, &$file, $isWe = true){
 		$attribs = '';
 		foreach($object->persistent_slots as $k => $v){
 			if($v != "Data" && $v != "SeqN"){
 				if(isset($object->$v))
 					$content = $object->$v;
-				if(weContentProvider::needCoding($object->ClassName, $v)){
-					$content = weContentProvider::encode($content);
-				} else if(weContentProvider::needCdata($object->ClassName, $v, $content)){
-					$content = weContentProvider::getCDATA($content);
+				if(self::needCoding($object->ClassName, $v)){
+					$content = self::encode($content);
+				} else if(self::needCdata($object->ClassName, $v, $content)){
+					$content = self::getCDATA($content);
 				}
 				$attribs .= weXMLComposer::we_xmlElement($v, $content);
 			}
@@ -255,21 +273,15 @@ class weContentProvider{
 			$offset = 0;
 			$rsize = 1048576;
 			do{
-				if($isWe){
-					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
-				} else{
-					$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
-				}
+				$path = $_SERVER['DOCUMENT_ROOT'] . ($isWe ? SITE_DIR : '') . $object->Path;
 				$data = weFile::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
-					fwrite($file, "<we:binary>");
-					fwrite($file, $attribs);
+					fwrite($file, '<we:binary>' . $attribs);
 					fwrite($file, weXMLComposer::we_xmlElement('SeqN', $object->SeqN));
-					fwrite($file, weXMLComposer::we_xmlElement('Data', weContentProvider::encode($data)));
+					fwrite($file, weXMLComposer::we_xmlElement('Data', self::encode($data)));
 					$offset+=$rsize;
 					$object->SeqN++;
-					fwrite($file, "</we:binary>");
-					fwrite($file, '<!-- webackup -->' . "\n");
+					fwrite($file, '</we:binary><!-- webackup -->' . "\n");
 				}
 				// if offset g.t. filesize then exit
 				/* if(filesize($path)<$offset){
@@ -279,16 +291,16 @@ class weContentProvider{
 		}
 	}
 
-	function version2file(&$object, &$file, $isWe=true){
+	static function version2file(&$object, &$file, $isWe = true){
 		$attribs = '';
 		foreach($object->persistent_slots as $k => $v){
 			if($v != "Data" && $v != "SeqN"){
 				if(isset($object->$v))
 					$content = $object->$v;
-				if(weContentProvider::needCoding($object->ClassName, $v)){
-					$content = weContentProvider::encode($content);
-				} else if(weContentProvider::needCdata($object->ClassName, $v, $content)){
-					$content = weContentProvider::getCDATA($content);
+				if(self::needCoding($object->ClassName, $v)){
+					$content = self::encode($content);
+				} else if(self::needCdata($object->ClassName, $v, $content)){
+					$content = self::getCDATA($content);
 				}
 				$attribs .= weXMLComposer::we_xmlElement($v, $content);
 			}
@@ -305,14 +317,12 @@ class weContentProvider{
 				$data = weFile::loadPart($path, $offset, $rsize);
 
 				if(!empty($data)){
-					fwrite($file, "<we:version>");
-					fwrite($file, $attribs);
+					fwrite($file, '<we:version>' . $attribs);
 					fwrite($file, weXMLComposer::we_xmlElement('SeqN', $object->SeqN));
-					fwrite($file, weXMLComposer::we_xmlElement('Data', weContentProvider::encode($data)));
+					fwrite($file, weXMLComposer::we_xmlElement('Data', self::encode($data)));
 					$offset+=$rsize;
 					$object->SeqN++;
-					fwrite($file, "</we:version>");
-					fwrite($file, '<!-- webackup -->' . "\n");
+					fwrite($file, '</we:version><!-- webackup -->' . "\n");
 				}
 				// if offset g.t. filesize then exit
 				/* if(filesize($path)<$offset){
@@ -322,7 +332,7 @@ class weContentProvider{
 		}
 	}
 
-	function object2xml(&$object, &$file, $attribs=array()){
+	static function object2xml(&$object, &$file, $attribs = array()){
 
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
@@ -330,7 +340,7 @@ class weContentProvider{
 			$object->persistent_slots = array_merge(array("ClassName"), $object->persistent_slots);
 
 		//write tag name
-		fwrite($file, '<' . weContentProvider::getTagName($object));
+		fwrite($file, '<' . self::getTagName($object));
 		if(!empty($attribs)){
 			fwrite($file, weXMLComposer::buildAttributesFromArray($attribs));
 		}
@@ -369,17 +379,17 @@ class weContentProvider{
 					$content = $object->$v;
 				}
 
-				if(weContentProvider::needSerialize($object, $classname, $v)){
+				if(self::needSerialize($object, $classname, $v)){
 					$content = serialize($content);
 				}
 
 
-				if(weContentProvider::needCoding($classname, $v)){
+				if(self::needCoding($classname, $v)){
 					if(!is_array($content)){
-						$content = weContentProvider::encode($content);
+						$content = self::encode($content);
 					}
-				} else if(weContentProvider::needCdata($classname, $v, $content)){
-					$content = weContentProvider::getCDATA($content);
+				} else if(self::needCdata($classname, $v, $content)){
+					$content = self::getCDATA($content);
 				}
 				//$out.=weXMLComposer::we_xmlElement($v,$content);
 				fwrite($file, weXMLComposer::we_xmlElement($v, $content));
@@ -418,7 +428,7 @@ class weContentProvider{
 					$contentObj = new we_element(false, $options);
 				}
 
-				weContentProvider::object2xml($contentObj, $file);
+				self::object2xml($contentObj, $file);
 			}
 			unset($elements_ids);
 			unset($contentObj);
@@ -426,18 +436,18 @@ class weContentProvider{
 		}
 
 		//return $out;
-		fwrite($file, '</' . weContentProvider::getTagName($object) . '>');
+		fwrite($file, '</' . self::getTagName($object) . '>');
 	}
 
-	function file2xml($file, &$fh){
+	static function file2xml($file, &$fh){
 
-		$bin = weContentProvider::getInstance('weBinary', 0);
+		$bin = self::getInstance('weBinary', 0);
 		$bin->Path = $file;
 
-		weContentProvider::binary2file($bin, $fh, false);
+		self::binary2file($bin, $fh, false);
 	}
 
-	function xml2object(&$object){
+	static function xml2object(&$object){
 		switch($object->ClassName){
 			case "we_template":
 				break;
@@ -449,33 +459,34 @@ class weContentProvider{
 		}
 	}
 
-	function isBinary($id){
+	static function isBinary($id){
 		$db = new DB_WE();
-		return f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType='image/*';", "ContentType", new DB_WE()) ||
-			f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType LIKE 'application/%';", "ContentType", new DB_WE());
+		return f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType='image/*';", "ContentType", $db) ||
+			f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType LIKE 'application/%';", "ContentType", $db);
 	}
 
-	function getCDATA($data){
+	static function getCDATA($data){
 		return sprintf("<![CDATA[%s]]>", $data);
 	}
 
-	function encode($data){
+	static function encode($data){
 		return base64_encode($data);
 	}
 
-	function decode($data){
+	static function decode($data){
 		return base64_decode($data);
 	}
 
-	function getContentTypeHandler($contenttype){
+	static function getContentTypeHandler($contenttype){
 		switch($contenttype){
-			case "category": return "weModelBase";
-				break;
-			case "text/weTmpl": return "we_template";
-				break;
-			case "doctype": return "we_docTypes";
-				break;
-			default: return $contenttype;
+			case "category":
+				return "weModelBase";
+			case "text/weTmpl":
+				return "we_template";
+			case "doctype":
+				return "we_docTypes";
+			default:
+				return $contenttype;
 		}
 	}
 

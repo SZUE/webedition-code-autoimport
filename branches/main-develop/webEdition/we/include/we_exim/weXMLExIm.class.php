@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 class weXMLExIm{
 
 	//var $perserves_file=array();
@@ -78,7 +76,7 @@ class weXMLExIm{
 	);
 	var $xmlBrowser;
 
-	function __construct($file=""){
+	function __construct($file = ""){
 
 		$this->RefTable = new RefTable();
 		if($file != ""){
@@ -96,17 +94,19 @@ class weXMLExIm{
 
 	function setOptions($options){
 		foreach($options as $k => $v){
-			if(isset($this->options[$k]))
+			if(isset($this->options[$k])){
 				$this->options[$k] = $v;
+			}
 		}
 	}
 
 	function setBackupProfile(){
-		$options = array();
-		$options["handle_content"] = 1;
-		$options["handle_table"] = 1;
-		$options["handle_tableitems"] = 1;
-		$options["handle_binarys"] = 1;
+		$options = array(
+			"handle_content" => 1,
+			"handle_table" => 1,
+			"handle_tableitems" => 1,
+			"handle_binarys" => 1,
+		);
 
 		$this->setOptions($options);
 	}
@@ -137,22 +137,18 @@ class weXMLExIm{
 		}
 	}
 
-	function getTableForCT($we_ContentType, $table=""){
+	function getTableForCT($we_ContentType, $table = ""){
 		switch($we_ContentType){
 			case "doctype":
 				return DOC_TYPES_TABLE;
 			case "category":
 				return CATEGORY_TABLE;
 			case "object":
-				if(defined("OBJECT_TABLE"))
-					return OBJECT_TABLE; else
-					return null;
+				return (defined("OBJECT_TABLE")) ? OBJECT_TABLE : null;
 			case "text/weTmpl":
 				return TEMPLATES_TABLE;
 			case "objectFile":
-				if(defined("OBJECT_FILES_TABLE"))
-					return OBJECT_FILES_TABLE; else
-					return null;
+				return (defined("OBJECT_FILES_TABLE")) ? OBJECT_FILES_TABLE : null;
 			case "weBinary":
 				return null;
 			case "weNavigation":
@@ -171,7 +167,6 @@ class weXMLExIm{
 		}
 	}
 
-	//---------------------
 	function loadPerserves(){
 		if(isset($_SESSION["ExImRefTable"]))
 			$this->RefTable->Array2RefTable($_SESSION["ExImRefTable"]);
@@ -181,14 +176,12 @@ class weXMLExIm{
 			$this->RefTable->current = $_SESSION["ExImCurrentRef"];
 	}
 
-	//---------------------
 	function savePerserves(){
 		$_SESSION["ExImRefTable"] = $this->RefTable->RefTable2Array();
 		$_SESSION["ExImRefUsers"] = $this->RefTable->Users;
 		$_SESSION["ExImCurrentRef"] = $this->RefTable->current;
 	}
 
-	//---------------------
 	function unsetPerserves(){
 		if(isset($_SESSION["ExImRefTable"]))
 			unset($_SESSION["ExImRefTable"]);
@@ -198,14 +191,11 @@ class weXMLExIm{
 			unset($_SESSION["ExImCurrentRef"]);
 	}
 
-	//---------------------
 	function resetContenID(&$object){
 		if(isset($object->elements) && is_array($object->elements))
 			foreach($object->elements as $ek => $ev)
 				$object->elements[$ek]["id"] = 0;
 	}
-
-	//---------------------
 
 
 	function prepareExport($ids){
@@ -247,16 +237,16 @@ class weXMLExIm{
 		}
 	}
 
-	function getHeader($encoding='', $type=''){
+	function getHeader($encoding = '', $type = ''){
 		if($encoding == ''){
 			$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 		}
-		return "<?xml version=\"1.0\" encoding=\"" . $encoding . "\" standalone=\"yes\"?>" . "\n" .
-			"<webEdition version=\"" . WE_VERSION . "\" type=\"" . "\" xmlns:we=\"we-namespace\">" . "\n";
+		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
+			'<webEdition version="' . WE_VERSION . '" type="' . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	function getFooter(){
-		return "</webEdition>";
+		return '</webEdition>';
 	}
 
 	function isCompressed($file){
@@ -264,7 +254,7 @@ class weXMLExIm{
 		return (stripos($part, "<?xml version=") === false);
 	}
 
-	function getIDs($selIDs, $table, $with_dirs=false){
+	function getIDs($selIDs, $table, $with_dirs = false){
 		$ret = array();
 		$tmp = array();
 		$db = new DB_WE();
