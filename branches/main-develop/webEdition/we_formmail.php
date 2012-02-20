@@ -143,7 +143,7 @@ function print_error($errortext){
 		'media' => 'screen',
 		'rel' => 'stylesheet',
 		'type' => 'text/css',
-		'href' => WEBEDITION_DIR . 'css/global.php?WE_LANGUAGE=' . $GLOBALS['WE_LANGUAGE'] . '&amp;WE_BACKENDCHARSET=' . $GLOBALS['WE_BACKENDCHARSET'],
+		'href' => WEBEDITION_DIR . 'css/global.php',
 	);
 
 	print we_html_tools::htmlTop();

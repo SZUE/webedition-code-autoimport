@@ -23,13 +23,14 @@
  */
 $yuiSuggest = & weSuggest::getInstance();
 
-//	send charset, if one is set:
-$charset = $we_doc->getElement('Charset');
-$charset = $charset ? $charset : DEFAULT_CHARSET;
 if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES){
-	we_html_tools::headerCtCharset('text/html', $charset);
+	//	send charset, if one is set:
+	$charset = $we_doc->getElement('Charset');
+	$charset = $charset ? $charset : DEFAULT_CHARSET;
+} else{
+	$charset = $GLOBALS['WE_BACKENDCHARSET'];
 }
-
+we_html_tools::headerCtCharset('text/html', $charset);
 we_html_tools::htmlTop('', $charset);
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');

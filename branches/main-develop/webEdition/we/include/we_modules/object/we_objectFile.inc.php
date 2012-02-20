@@ -1842,7 +1842,6 @@ class we_objectFile extends we_document{
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirAndTemplateChooser.inc.php");
 
 		// values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws, true), "", $this->DB_WE);
@@ -2574,7 +2573,6 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-
 		if($saveinMainDB){
 			if(!we_root::we_save(1))
 				return false;
@@ -2596,9 +2594,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
-		}
+		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 		return $this->insertAtIndex();
 	}
 
@@ -2951,7 +2947,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$where = ($this->wasUpdate) ? ' WHERE ID=' . intval($this->ID) : '';
+		$where = ($this->wasUpdate) ? ' WHERE OF_ID=' . intval($this->ID) : '';
 		$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
 		$this->ObjectID = ($this->wasUpdate ? $this->ObjectID : $this->DB_WE->getInsertId());
 		return $ret;
@@ -2964,8 +2960,9 @@ class we_objectFile extends we_document{
 			if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE))
 				return false;
 		}
-		if($this->ID)
+		if($this->ID){
 			$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_TEXT='" . $this->Text . "',OF_PATH='" . $this->Path . "' WHERE OF_ID=" . $this->ID);
+		}
 		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID");
 	}
 

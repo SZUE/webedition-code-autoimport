@@ -29,11 +29,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base
 // Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(isset($_REQUEST["WE_BACKENDCHARSET"]) && $_REQUEST["WE_BACKENDCHARSET"] != ""){
-	$GLOBALS['WE_BACKENDCHARSET'] = $_REQUEST["WE_BACKENDCHARSET"];
-} else{
-	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
-}
 ?>
 
 .weSelect {

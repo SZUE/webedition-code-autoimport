@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop('sideBar');
-echo we_html_element::cssLink('/webEdition/css/global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '&amp;WE_BACKENDCHARSET=' . $GLOBALS["WE_BACKENDCHARSET"]);
+echo we_html_element::cssLink('/webEdition/css/global.php');
 ?>
 
 </head>

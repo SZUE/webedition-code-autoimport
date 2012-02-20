@@ -166,7 +166,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$_SESSION["EditPageNr"] = $_REQUEST['we_cmd'][1];
 		$we_doc->EditPageNr = $_REQUEST['we_cmd'][1];
 		if($_SESSION["we_mode"] == "seem"){
-			$_insertReloadFooter = "<script language=\"javascript\">\n<!--\ntry{parent.editFooter.location.reload();}catch(exception){};\n//-->\n</script>" . SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
+			$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};') . SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
 		}
 		break;
 	case "delete_link":
@@ -517,7 +517,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 								$wasSaved = true;
 								if($we_doc->ContentType == "object"){
 									//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
-									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}\n";
+									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}";
 								}
 								$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

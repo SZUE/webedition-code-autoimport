@@ -160,7 +160,7 @@ function we_tag_sendMail($attribs, $content){
 			if($_blocked){
 				$headline = "Fehler / Error";
 				$content = g_l('global', "[formmailerror]") . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
-				$css = array('media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css', 'href' => WEBEDITION_DIR . "css/global.php?WE_LANGUAGE=" . $GLOBALS["WE_LANGUAGE"] . "&amp;WE_BACKENDCHARSET=" . $GLOBALS["WE_BACKENDCHARSET"]);
+				$css = array('media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css', 'href' => WEBEDITION_DIR . 'css/global.php');
 
 				print we_html_tools::htmlTop();
 				print getHtmlTag("link", $css);

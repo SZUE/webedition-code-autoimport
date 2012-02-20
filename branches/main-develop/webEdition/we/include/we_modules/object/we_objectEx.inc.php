@@ -29,7 +29,6 @@ class we_objectEx extends we_object{
 	}
 
 	function saveToDB(){
-
 		$this->wasUpdate = $this->ID ? true : false;
 
 		$this->i_savePersistentSlotsToDB();

@@ -40,7 +40,7 @@ class weTableItem extends weModelBase{
 			$this->db = new DB_WE();
 			$this->table = $table;
 		}
-		$this->attribute_slots["table"] = weTableItem::rmTablePrefix($table);
+		$this->attribute_slots["table"] = stripTblPrefix($table);
 		$this->setKeys($this->getTableKey($this->table));
 	}
 
@@ -63,10 +63,6 @@ class weTableItem extends weModelBase{
 		} else{
 			return array('ID');
 		}
-	}
-
-	function rmTablePrefix($tabname){
-		return stripTblPrefix($tabname);
 	}
 
 	function getFieldType($fieldname){

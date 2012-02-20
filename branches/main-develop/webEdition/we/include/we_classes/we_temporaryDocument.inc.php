@@ -123,8 +123,7 @@ abstract class we_temporaryDocument{
 
 		if(isset($id)){
 			$db = $db ? $db : new DB_WE();
-			$ret = f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db);
-			return ($ret == '1');
+			return f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db)=='1';
 		} else{
 			return false;
 		}

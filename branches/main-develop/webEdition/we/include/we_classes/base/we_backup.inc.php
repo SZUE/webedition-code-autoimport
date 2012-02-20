@@ -88,7 +88,6 @@ class we_backup{
 		"export2server", "export2send", "partial", "current_insert", "table_end", "current_description", "offset"
 	);
 
-
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
 	 * *********************************************************************** */
@@ -106,7 +105,7 @@ class we_backup{
 	 * @return     we_backup
 	 */
 	//function we_backup($handle_users=false,$handle_customers=false,$handle_shop=false,$handle_workflow=false,$handle_todo=false,$handle_newsletter=false) {
-	function __construct($handle_options=array()){
+	function __construct($handle_options = array()){
 		$this->backup_db = new DB_WE();
 		$this->backup_steps = $this->default_backup_steps;
 		$this->partial = false;
@@ -568,7 +567,7 @@ class we_backup{
 				while($i < $num_tables) {
 					$exp = 0;
 					$table = $tables[$i];
-					//$noprefix = $this->rmTablePrefix($table);
+					//$noprefix = stripTblPrefix($table);
 					$noprefix = $this->getDefaultTableName($table);
 					if(!$this->isFixed($noprefix)){
 						$metadata = $this->backup_db->metadata($table);
@@ -937,7 +936,7 @@ class we_backup{
 	 *
 	 * Description: This function restores a backup.
 	 */
-	function restoreFromBackup($filename, $restore_extra=0){
+	function restoreFromBackup($filename, $restore_extra = 0){
 		$buff = "";
 		$fh = fopen("$filename", "rb");
 
@@ -985,7 +984,7 @@ class we_backup{
 											if(defined("OBJECT_X_TABLE") && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
 												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
 													$this->dummy[] = $buff;
-												}else{
+												} else{
 													$this->backup_db->query($buff);
 												}
 											}
@@ -1204,17 +1203,6 @@ class we_backup{
 	}
 
 	/**
-	 * Function: rmTablePrefix
-	 *
-	 * Description: The function removes table prefix from table name
-	 */
-	function rmTablePrefix($tabname){
-		return stripTblPrefix($tabname);
-	}
-
-#==============================================================================#
-
-	/**
 	 * Function: isFixed
 	 *
 	 * Description: This function checks if a table name has its correct value.
@@ -1339,7 +1327,7 @@ class we_backup{
 	 *
 	 * Description:
 	 */
-	function saveState($of=""){
+	function saveState($of = ""){
 
 
 		// Initialize variable

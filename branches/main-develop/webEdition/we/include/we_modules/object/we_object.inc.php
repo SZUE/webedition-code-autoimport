@@ -1981,7 +1981,6 @@ class we_object extends we_document{
 
 		$addbut = $button;
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirTemplateAndDefaultChooser.inc.php");
 		$obj = new MultiDirTemplateAndDefaultChooser(450, $this->Workspaces, "del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", "", get_ws(TEMPLATES_TABLE), "we_" . $this->Name . "_DefaultWorkspaces", $this->DefaultWorkspaces);
 		$obj->CanDelete = true;
 		$obj->create = 1;
@@ -2387,7 +2386,6 @@ class we_object extends we_document{
 
 	function we_save($resave = 0, $skipHook = 0){
 		$this->save();
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_history.class.php");
 		we_history::insertIntoHistory($this);
 
 		/* hook */

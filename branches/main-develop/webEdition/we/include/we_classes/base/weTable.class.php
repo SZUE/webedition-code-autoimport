@@ -42,7 +42,7 @@ class weTable{
 		$this->table = $table;
 		$this->elements = array();
 
-		$this->attribute_slots["name"] = weTable::rmTablePrefix($table);
+		$this->attribute_slots["name"] = stripTblPrefix($table);
 
 		$update_table = true;
 
@@ -107,10 +107,6 @@ class weTable{
 		}
 
 		return false;
-	}
-
-	function rmTablePrefix($tabname){
-		return stripTblPrefix($tabname);
 	}
 
 	// add new fields to the table before import
