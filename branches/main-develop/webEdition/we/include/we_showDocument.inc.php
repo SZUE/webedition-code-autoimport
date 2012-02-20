@@ -73,6 +73,10 @@ if(isset($_REQUEST['vers_we_obj'])){
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
 		@session_start();
+		//FIXME: remove in 6.4; due to upgrade!
+		if(isset($_SESSION['we'])){
+			unset($_SESSION['we']);
+		}
 	}
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){

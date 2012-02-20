@@ -28,11 +28,13 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 
 if(!isset($_SESSION)){
 	@session_start();
-	//for some reason this overwrites $GLOBALS['we']
-	we_error_setErrorHandler();
+	//FIXME: remove in 6.4; due to upgrade!
+	if(isset($_SESSION['we'])){
+		unset($_SESSION['we']);
+	}
 }
-if(!isset($_SESSION["we"])){
-	$_SESSION['we'] = array();
+if(!isset($_SESSION['weS'])){
+	$_SESSION['weS'] = array();
 }
 
 if(!isset($_SESSION["user"])){

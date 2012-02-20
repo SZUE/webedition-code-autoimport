@@ -39,7 +39,6 @@ function we_tag_createShop($attribs, $content){
 
 	if(!isset($_SESSION)){
 		@session_start();
-		we_error_setErrorHandler();
 	}
 
 	if(isset($_SESSION[$shopname . '_save']) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"] == 1 || $deleteshop == true)){ // delete shop

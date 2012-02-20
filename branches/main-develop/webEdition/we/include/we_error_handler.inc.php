@@ -41,20 +41,16 @@ if(!defined('E_SQL')){
 	define('E_SQL', -1);
 }
 
-we_error_setErrorHandler();
-
-function we_error_setErrorHandler(){
-	$GLOBALS['we']['errorhandler'] = array(
-		'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
-		'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
-		'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
-		'error' => defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true,
-		'display' => false,
-		'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
-		'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
-		'shutdown' => 'we',
-	);
-}
+$GLOBALS['we']['errorhandler'] = array(
+	'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
+	'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
+	'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
+	'error' => defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true,
+	'display' => false,
+	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
+	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
+	'shutdown' => 'we',
+);
 
 function we_error_setHandleAll(){
 	$GLOBALS['we']['errorhandler'] = array(
@@ -221,7 +217,7 @@ function getBacktrace($skip){
  * *
  * @return         bool
  */
-function display_error_message($type, $message, $file, $line, $skipBT=false){
+function display_error_message($type, $message, $file, $line, $skipBT = false){
 	if(strpos($message, 'MYSQL-ERROR') === 0){
 		$type = E_SQL;
 	}
@@ -278,7 +274,7 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 	print $_detailedError;
 }
 
-function getVariableMax($var, $db=''){
+function getVariableMax($var, $db = ''){
 	static $max = -1;
 	if($db == ''){
 		$max = 1073741824 - 2048; //1MB
@@ -316,7 +312,7 @@ function getVariableMax($var, $db=''){
 	return $var . '="' . escape_sql_query($ret) . '"';
 }
 
-function log_error_message($type, $message, $file, $_line, $skipBT=false){
+function log_error_message($type, $message, $file, $_line, $skipBT = false){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 	if(strpos($message, 'MYSQL-ERROR') === 0){
@@ -375,7 +371,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 	}
 }
 
-function mail_error_message($type, $message, $file, $line, $skipBT=false){
+function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	if(strpos($message, 'MYSQL-ERROR') === 0){
 		$type = E_SQL;
 	}

@@ -48,8 +48,8 @@ if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with t
 	}
 } else{ //	normal logout from webEdition.
 	unset($_SESSION["user"]);
-	if(isset($_SESSION['we'])){
-		unset($_SESSION['we']);
+	if(isset($_SESSION['weS'])){
+		unset($_SESSION['weS']);
 	}
 	$_path = WEBEDITION_DIR;
 }

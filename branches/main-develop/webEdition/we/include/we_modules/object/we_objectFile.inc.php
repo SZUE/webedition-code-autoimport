@@ -2579,9 +2579,9 @@ class we_objectFile extends we_document{
 		}
 		if($DoNotMark == false){
 			$this->Published = time();
-			if(!$this->DB_WE->query("UPDATE " . $this->Table . " SET Published='" . $this->Published . "' WHERE ID='" . $this->ID . "'"))
+			if(!$this->DB_WE->query("UPDATE " . $this->Table . " SET Published='" . $this->Published . "' WHERE ID=" . $this->ID))
 				return false; // mark the document as published;
-			if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published='" . $this->Published . "' WHERE OF_ID='" . $this->ID . "'"))
+			if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published='" . $this->Published . "' WHERE OF_ID=" . $this->ID))
 				return false;
 		}
 		/* hook */
@@ -2601,9 +2601,9 @@ class we_objectFile extends we_document{
 	function we_unpublish($skipHook = 0){
 		if(!$this->ID)
 			return false;
-		if(!$this->DB_WE->query("UPDATE " . $this->Table . " SET Published='0' WHERE ID='" . $this->ID . "'"))
+		if(!$this->DB_WE->query("UPDATE " . $this->Table . " SET Published='0' WHERE ID=" . $this->ID))
 			return false;
-		if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published=0 WHERE OF_ID='" . $this->ID . "'"))
+		if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published=0 WHERE OF_ID=" . $this->ID))
 			return false;
 		$this->Published = 0;
 

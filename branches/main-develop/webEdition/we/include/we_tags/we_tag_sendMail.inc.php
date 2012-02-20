@@ -174,7 +174,6 @@ function we_tag_sendMail($attribs, $content){
 			if(!$_blocked){
 				if(!isset($_SESSION)){
 					@session_start();
-					we_error_setErrorHandler();
 				}
 				$_SESSION['WE_SendMail'] = true;
 				$codes = we_getDocumentByID($id);

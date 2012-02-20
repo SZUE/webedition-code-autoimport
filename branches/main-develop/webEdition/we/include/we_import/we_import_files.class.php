@@ -480,7 +480,7 @@ class we_import_files{
 				'serverProtocol' => 'HTTP/1.1',
 				'showLogWindow' => 'onError',
 				'debugLevel' => '99',
-				'browsingDirectory' => isset($_SESSION['we']['importDir']) ? $_SESSION['we']['importDir'] : null,
+				'browsingDirectory' => isset($_SESSION['weS']['importDir']) ? $_SESSION['weS']['importDir'] : null,
 			);
 			$auth = getServerAuth();
 			if($auth){

@@ -182,6 +182,10 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 	// call session_start to init session, otherwise NO customer can exist
 	if(!isset($_SESSION)){
 		@session_start();
+		//FIXME: remove in 6.4; due to upgrade!
+		if(isset($_SESSION['we'])){
+			unset($_SESSION['we']);
+		}
 	}
 
 	if($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj'])){
