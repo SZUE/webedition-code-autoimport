@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Le nom de l`object indiqué n`est pas valide!\nPermis sont les lettres de a à z (minuscule et majuscule), les nombre, le soulignage (_), le signe moins (-), le signe plus (-) et le point (.).',
 		'we_objecturl_exists'=>'L`objet `%s` ne peut pas être enregistré car un autre objet avec la mème URL est déjà présent ici !',
 	),
+	'object'=>array(
+		'filename_empty'=>'Vous n`avez pas encore saisi un nom à la classe!',
+		'response_path_exists'=>'La classe %s ne peut pas être enregistrée, parce qu`il y a déjà une autre classe ou répertoire a cet endroit!',
+		'response_publish_ok'=>'La classe %s a été publiée avec succès!',
+		'response_save_noperms_to_create_folders'=>'La classe n`a pas pus être enregistrée, parce que vous n`avez pas les droits nécessaires pour créer des nouveaux répertoires (%s)!',
+		'response_save_notok'=>'Erreur en enregistrant la classe %s!',
+		'response_save_ok'=>'The class %s was successfully saved!',
+		'response_unpublish_ok'=>'La classe %s a été depubliée avec succès!',
+		'we_filename_notAllowed'=>'Le nom de classe indiqué n`est pas permis!',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'Le répertoire ne peut pas être enregistré dans le répertoir choisi!',
 	'required_field_alert'=>'Le champ `%s` est obligatoire et doit être rempli!',
 	'response_save_noperms_to_create_folders'=>'Le fichier n`a pas pu être enregistré, parce que vous n`avez pas les droits nécessaires, pour créer des nouveaux répertoire (%s)!',

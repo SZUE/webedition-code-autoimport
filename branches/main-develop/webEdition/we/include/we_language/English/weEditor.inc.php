@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Invalid object name\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'No name entered for this class!',
+		'response_path_exists'=>'The class %s could not be saved, because another document or directory exists in the same location!',
+		'response_publish_ok'=>'The class %s was successfully published!',
+		'response_save_noperms_to_create_folders'=>'The class could not be saved, because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving class %s!',
+		'response_save_ok'=>'The class %s was successfully saved!',
+		'response_unpublish_ok'=>'The class %s was successfully unpublished!',
+		'we_filename_notAllowed'=>'The class name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'The directory cannot be saved in the chosen directory!',
 	'required_field_alert'=>'The field `%s` is required and must be filled!',
 	'response_save_noperms_to_create_folders'=>'The document could not be saved because you do not have the neccessary rights to create folders (%s)!',

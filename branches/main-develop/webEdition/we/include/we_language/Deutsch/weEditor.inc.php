@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Der eingegebene Objektname ist nicht gültig!\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
 		'we_objecturl_exists'=>'Das Objekt `%s` konnte nicht gespeichert werden, da bereits ein anderes Object mit dieser URL existiert!',
 	),
+	'object'=>array(
+		'filename_empty'=>'Sie haben noch keinen Namen für die Klasse eingegeben!',
+		'response_path_exists'=>'Die Klasse %s konnte nicht gespeichert werden, da es bereits eine andere Klasse oder Verzeichnis an dieser Stelle gibt!',
+		'response_publish_ok'=>'Die Klasse %s wurde erfolgreich veröffentlicht!',
+		'response_save_noperms_to_create_folders'=>'Die Klasse konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen neue Verzeichnisse (%s) anzulegen!',
+		'response_save_notok'=>'Fehler beim Speichern der Klasse %s!',
+		'response_save_ok'=>'Die Klasse %s wurde erfolgreich gespeichert!',
+		'response_unpublish_ok'=>'Die Klasse %s wurde erfolgreich geparkt!',
+		'we_filename_notAllowed'=>'Der eingegebene Klassenname ist nicht erlaubt!',
+		'we_filename_notValid'=>'Der eingegebene Klassenname oder der Automatische Name ist nicht gültig!
+Erlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen, Unterstrich (_), Minus (-) und Punkt (.).',
+	),
 	'pfolder_notsave'=>'Das Verzeichnis darf im ausgewählten Verzeichnis nicht gespeichert werden!',
 	'required_field_alert'=>'Das Feld `%s` ist ein Pflichtfeld und muß ausgefüllt sein!',
 	'response_save_noperms_to_create_folders'=>'Die Datei konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen, um neue Verzeichnisse (%s) anzulegen!',

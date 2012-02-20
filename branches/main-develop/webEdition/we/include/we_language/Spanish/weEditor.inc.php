@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Nombre de objeto no válido!\nLos carácteres permitidos son alpha-númericos, minúscula o mayúscula, subrayado, guión y punto (a-z, A-Z, 0-9, _, -, .).',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'Ningún nombre ha sido entrado para esta clase!',
+		'response_path_exists'=>'The class %s could not be saved, because another document or directory exists in the same location!',
+		'response_publish_ok'=>'¡La clase %s fue publicada éxitosamente!',
+		'response_save_noperms_to_create_folders'=>'La clase no puede ser salvada porque UD no tiene los permisos necesarios para crear carpetas (%s)!',
+		'response_save_notok'=>'Error al salvar la clase %s!',
+		'response_save_ok'=>'The class %s was successfully saved!',
+		'response_unpublish_ok'=>'¡La clase %s fue despublicada éxitosamente!',
+		'we_filename_notAllowed'=>'El nombre de clase que Ud ha entrado no está permitido',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'El directorio no puede ser salvado en el directorio seleccionado!',
 	'required_field_alert'=>'El campo `%s` es requerido y debe ser llenado!',
 	'response_save_noperms_to_create_folders'=>'El documento no pudo ser salvado porque Ud no tiene los derechos necesarios para crear carpetas (%s)!',
@@ -93,7 +105,7 @@ $l_weEditor=array(
 	),
 	'text/htaccess'=>array(
 		'filename_empty'=>'Ningún nombre ha sido entrado para este documento!',
-		'response_path_exists'=>'The file `%s` could not be saved because another document or directory is positioned at the same location!',
+		'response_path_exists'=>'¡La clase %s no podrá ser salvada, porque otra clase o directorio existen en la misma posición!',
 		'response_publish_ok'=>'The file `%s` has been successfully published!',
 		'response_save_noperms_to_create_folders'=>'El documento no pudo ser salvado porque Ud no tiene los derechos necesarios para crear carpetas (%s)!',
 		'response_save_notok'=>'Error while saving the file `%s`!',

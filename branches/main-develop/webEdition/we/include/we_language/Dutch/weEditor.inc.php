@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Ongeldige object naam\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'Er is geen naam opgegeven voor deze class!',
+		'response_path_exists'=>'De class %s kon niet bewaard worden, omdat er al een ander document of directory bestaat op dezelfde locatie!',
+		'response_publish_ok'=>'De class %s is succesvol gepubliceerd!',
+		'response_save_noperms_to_create_folders'=>'De class kon niet bewaard worden, omdat u niet de vereiste rechten heeft om mappen (%s) aan te maken!',
+		'response_save_notok'=>'Fout tijdens het bewaren van class %s!',
+		'response_save_ok'=>'De class %s is succesvol bewaard!',
+		'response_unpublish_ok'=>'De class %s is succesvol gedepubliceerd!',
+		'we_filename_notAllowed'=>'De classnaam die u heeft opgegeven is niet toegestaan!',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'De directory kan niet bewaard worden in de gekozen directory!',
 	'required_field_alert'=>'Het veld `%s` is vereist en moet ingevuld worden!',
 	'response_save_noperms_to_create_folders'=>'Het document kon niet bewaard worden omdat u niet de juiste rechten heeft om mappen aan te maken (%s)!',

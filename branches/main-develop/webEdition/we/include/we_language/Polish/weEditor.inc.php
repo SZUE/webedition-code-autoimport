@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Nieprawidłowa nazwa obiektu!\nDozwolone znaki to litery od a do z (wielkie i małe), cyfry, znak podkreślenia (_), minus (-) i kropka (.).',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'"Nie podano nazwy dla klasy!',
+		'response_path_exists'=>'Nie można zapisać klasy %s, ponieważ w tym miejscu znajduje sę inna klasa bądź katalog!',
+		'response_publish_ok'=>'Opublikowano klasę %s!',
+		'response_save_noperms_to_create_folders'=>'Nie można było zapisać klasy, ponieważ nie posiadasz wystarczających uprawnień do tworzenia nowych katalogów (%s)!',
+		'response_save_notok'=>'Błąd przy zapisywaniu klasy %s!',
+		'response_save_ok'=>'The class %s was successfully saved!',
+		'response_unpublish_ok'=>'Wycofano klasę %s!',
+		'we_filename_notAllowed'=>'Wprowadzono niedozwoloną nazwę klasy!',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'Nie można zapisać katalogu w wybranym katalogu!',
 	'required_field_alert'=>'Pole `%s` jest obowišzkowe i należy je wypełnić!',
 	'response_save_noperms_to_create_folders'=>'Nie można było zapisać pliku, ponieważ nie masz wystarczajšcych uprawnień do zakładania nowych katalogów (%s) !',

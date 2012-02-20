@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Virheellinen objektin nimi\nSallitut kirjaimet ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'Luokalle ei ole annettu nimeä!',
+		'response_path_exists'=>'Luokkaa %s ei voitu tallentaa, koska toinen dokumentti tai hakemisto on jo olemassa samassa kohteessa!',
+		'response_publish_ok'=>'Luokka %s on julkaistu!',
+		'response_save_noperms_to_create_folders'=>'Luokkaa ei voitu tallentaa, koska sinulla ei ole riittäviä oikeuksia tehdä hakemistoja (%s)!',
+		'response_save_notok'=>'Virhe luokkaa tallennettaessa %s!',
+		'response_save_ok'=>'Luokka %s on tallennettu!',
+		'response_unpublish_ok'=>'Luokka %s on poistettu julkaisusta!',
+		'we_filename_notAllowed'=>'Luokan nimi ei ole sallittu!',
+		'we_filename_notValid'=>'Virheellinen luokan nimi!
+Sallitut kirjaimet ovat alfa-numeerisia , isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'Hakemistoa ei voida tallentaa valittuun hakemistoon!',
 	'required_field_alert'=>'Kenttä `%s` on pakollinen!',
 	'response_save_noperms_to_create_folders'=>'Dokumenttia ei voitu tallentaa koska sinulla ei ole riittäviä oikeuksia luoda kansioita (%s)!',
@@ -93,7 +105,7 @@ $l_weEditor=array(
 	),
 	'text/htaccess'=>array(
 		'filename_empty'=>'Dokumentille ei ole annettu nimeä!',
-		'response_path_exists'=>'The file `%s` could not be saved because another document or directory is positioned at the same location!',
+		'response_path_exists'=>'Luokkaa %s ei voitu tallentaa, koska toinen dokumentti tai hakemisto on jo olemassa samassa kohteessa!',
 		'response_publish_ok'=>'The file `%s` has been successfully published!',
 		'response_save_noperms_to_create_folders'=>'Dokumenttia ei voitu tallentaa koska sinulla ei ole riittäviä oikeuksia luoda kansioita (%s)!',
 		'response_save_notok'=>'Error while saving the file `%s`!',

@@ -76,6 +76,18 @@ $l_weEditor=array(
 		'we_filename_notValid'=>'Недействительное имя объекта\nДопустимыми являются большие и малые буквы латинского алфавита, цифры, тире, нижняя черта и точка (a-z, A-Z, 0-9, _, -, .)',
 		'we_objecturl_exists'=>'The object `%s` could not be saved, because another object with the same URL already exists',
 	),
+	'object'=>array(
+		'filename_empty'=>'Не введено имя для данного класса!',
+		'response_path_exists'=>'The class %s could not be saved, because another document or directory exists in the same location!',
+		'response_publish_ok'=>'Класс %s успешно опубликован!',
+		'response_save_noperms_to_create_folders'=>'Класс не сохранен, так как у Вас нет соответствующих полномочий на создание новых директорий (%s)!',
+		'response_save_notok'=>'Ошибка при сохранении класса %s!',
+		'response_save_ok'=>'Класс %s успешно сохранен!',
+		'response_unpublish_ok'=>'Класс %s успешно снят с публикации!',
+		'we_filename_notAllowed'=>'Введенное имя класса недопустимо!',
+		'we_filename_notValid'=>'Invalid class name or automatic name!
+Valid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .).',
+	),
 	'pfolder_notsave'=>'Данная директория не может быть сохранена в выбранной директории!',
 	'required_field_alert'=>'Требуется заполнить поле `%s`!',
 	'response_save_noperms_to_create_folders'=>'Документ не сохранен, так как у Вас нет необходимых полномочий на создание директорий (%s)!',
@@ -93,7 +105,7 @@ $l_weEditor=array(
 	),
 	'text/htaccess'=>array(
 		'filename_empty'=>'Для этого документа не введено имя!',
-		'response_path_exists'=>'The file `%s` could not be saved because another document or directory is positioned at the same location!',
+		'response_path_exists'=>'Класс %s не сохранен по указанному пути, так как это местоположение занято другим документом или директорией!',
 		'response_publish_ok'=>'The file `%s` has been successfully published!',
 		'response_save_noperms_to_create_folders'=>'Документ не сохранен, так как у Вас нет необходимых полномочий на создание директорий (%s)!',
 		'response_save_notok'=>'Error while saving the file `%s`!',
