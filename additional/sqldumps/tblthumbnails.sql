@@ -8,6 +8,7 @@ CREATE TABLE ###TBLPREFIX###tblthumbnails (
   Ratio tinyint(1) unsigned NOT NULL default '0',
   Maxsize tinyint(1) unsigned NOT NULL default '0',
   Interlace tinyint(1) unsigned NOT NULL default '1',
+  Fitinside smallint(5) unsigned NOT NULL default '0',
   `Directory` varchar(255) NOT NULL default '',
   Utilize tinyint(1) unsigned NOT NULL default '0',
   `Quality` TINYINT unsigned NOT NULL DEFAULT  '8',
