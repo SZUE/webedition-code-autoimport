@@ -828,8 +828,7 @@ class liveUpdateFunctions {
 
 		while (false !== ($entry = $_language_directory->read())) {
 			if ($entry != "." && $entry != "..") {
-				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry) &&
-					is_file($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry) ) {
 					$_installedLanguages[] = $entry;
 				}
 			}
