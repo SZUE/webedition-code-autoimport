@@ -205,8 +205,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 	if($isFlag){
 		$val = (is_string($value) ? strtolower(trim($value)) : $value);
 		$ret = (bool) $default;
-		$ret = $ret && !($val == 'false' || $val == 'off' || $val == '0' || $val === 0 || $val === false);
-		$ret = $ret || ($val == 'true' || $val == 'on' || $val == '1' || $value == $name || $val === 1 || $val === true);
+		$ret = $ret && !($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false);
+		$ret = $ret || ($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
 		return $ret;
 	}
 	$value = is_array($value) || strlen($value) ? $value : $default;
