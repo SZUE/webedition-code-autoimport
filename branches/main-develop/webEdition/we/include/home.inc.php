@@ -517,7 +517,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				var props={'prefix':prefix,'postfix':postfix,'type':wizType,'res':defRes};
 				for(var att_name in asoc){
 					for(var v in asoc[att_name]){
-						eval('gel(wizId+v).style.'+att_name+'=asoc[att_name][v]');
+						eval('gel(wizId+v).style.'+att_name+'=asoc[att_name][v]+"px"');
 					}
 				}
 				for(var p in props){
@@ -872,7 +872,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			function propsWidget(){
 				eval('var iHeight=oCfg.'+arguments[0]+'_props_["iDlgHeight"]');
 				var uri=composeUri(arguments);
-				eval('_propsDlg["'+arguments[1]+'"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width='+oCfg.general_['iDlgWidth']+',height='+iHeight+'px")');
+				eval('_propsDlg["'+arguments[1]+'"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width='+oCfg.general_['iDlgWidth']+'px,height='+iHeight+'px")');
 			}
 
 			function closeAllModalWindows() {
