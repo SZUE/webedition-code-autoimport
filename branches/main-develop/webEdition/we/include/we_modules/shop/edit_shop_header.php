@@ -33,9 +33,7 @@ print STYLESHEET;
 //	Include javaMenu information for this module
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_shop.inc.php");
 
-$port = defined("HTTP_PORT") ? HTTP_PORT : "";
-$protocol = getServerProtocol();
-$jmenu = new weJavaMenu($we_menu_shop, SERVER_NAME, "top.opener.top.load", $protocol, $port, 350, 30);
+$jmenu = new weJavaMenu($we_menu_shop, "top.opener.top.load", 350, 30);
 
 echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>

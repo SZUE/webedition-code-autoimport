@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $yuiSuggest = & weSuggest::getInstance();
-
-we_html_tools::htmlTop();
+we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
+we_html_tools::htmlTop('',DEFAULT_CHARSET);
 
 print STYLESHEET;
 

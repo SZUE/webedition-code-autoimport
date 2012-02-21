@@ -33,9 +33,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$port = defined("HTTP_PORT") ? HTTP_PORT : "";
-$protocol=getServerProtocol();
-$jmenu = new weJavaMenu($we_menu_messaging, SERVER_NAME, 'top.opener.top.load', $protocol, $port,300);
+$jmenu = new weJavaMenu($we_menu_messaging, 'top.opener.top.load', 300);
 echo we_html_element::jsScript(JS_DIR.'images.js');
 ?>
 	<script type="text/javascript"><!--

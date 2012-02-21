@@ -25,7 +25,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
+//We need to set this (and in corresponding frames, since the data in database is formated this way
+we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
+we_html_tools::htmlTop('',DEFAULT_CHARSET);
 
 print STYLESHEET;
 
@@ -249,7 +251,8 @@ if(isset($_SESSION["user_session_data"]))
 		function drawEintraege() {
 			fr = top.content.user_resize.user_left.user_tree.window.document;
 			fr.open();
-			fr.writeln("<HTML><HEAD>");
+			fr.charset = "<?php echo DEFAULT_CHARSET;?>";
+			fr.writeln("<HTML><HEAD><?php echo addslashes(we_html_element::htmlMeta(array("http-equiv" => "content-type","content" => 'text/html; charset=' . DEFAULT_CHARSET)));?>");
 			fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
 			fr.writeln("clickCount=0;");
 			fr.writeln("wasdblclick=0;");
