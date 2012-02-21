@@ -29,9 +29,20 @@
  */
 
 $ischecked=0;
-if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){$ischecked=1;}
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
+	$ischecked=1;			
+}
 if (isset($_REQUEST["setTestUpdate"])){
 	 $ischecked = $_REQUEST["setTestUpdate"];
+}
+if($ischecked){
+	require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+	$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
+	
+	if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){
+		$conf=str_replace('$'."_REQUEST['testUpdate'] = 0;",'$'."_REQUEST['testUpdate'] = 1;",$conf);
+		weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+	}
 }
 
 $content = '

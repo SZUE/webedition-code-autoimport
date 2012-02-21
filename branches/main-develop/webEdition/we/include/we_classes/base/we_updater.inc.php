@@ -173,6 +173,8 @@ class we_updater{
 			$this->changeColTyp(GLOSSARY_TABLE, "`Type`", " enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation'");
 			$this->changeColTyp(GLOSSARY_TABLE, "`Icon`", " enum('folder.gif','prog.gif') NOT NULL ");
 		}
+		if(!$this->isColExist(THUMBNAILS_TABLE,"Fitinside")) $this->addCol(THUMBNAILS_TABLE,"Fitinside"," smallint(5) unsigned NOT NULL default '0' ",' AFTER Interlace ');
+
 	}
 
 	function convertPerms(){

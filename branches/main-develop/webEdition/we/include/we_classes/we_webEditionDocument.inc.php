@@ -1121,4 +1121,16 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		return $template->getVariantFields();
 	}
 
+	protected function updateRemoteLang($db, $id, $lang, $type){
+		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
+		if($oldLang == $lang){
+			return;
+		}
+		//update Lang of doc
+		$db->query('UPDATE ' . $this->Table . ' SET Language="' . $lang . '" WHERE ID=' . $id);
+		//update LangLink:
+		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
+		//drop invalid entries => is this safe???
+		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
+	}
 }

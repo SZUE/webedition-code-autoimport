@@ -76,6 +76,12 @@ class we_thumbnail{
 	 * @var boolean
 	 */
 	var $thumbInterlace = true;
+	
+	/**
+	 * Fitinside of the thumbnail
+	 * @var smallint
+	 */
+	var $thumbFitinside=false;
 
 	/**
 	 * Format (jpg, png or gif) of the thumbnail
@@ -183,38 +189,39 @@ class we_thumbnail{
 	}
 
 	/**
-	 * main initializer
-	 *
-	 * @return void
-	 * @param int $thumbID
-	 * @param int $thumbWidth
-	 * @param int $thumbHeight
-	 * @param boolean $thumbRatio
-	 * @param boolean $thumbMaxsize
-	 * @param boolean $thumbInterlace
-	 * @param string $thumbFormat
-	 * @param string $thumbName
-	 * @param int $imageID
-	 * @param string $imageFileName
-	 * @param string $imagePath
-	 * @param string $imageExtension
-	 * @param int $imageWidth
-	 * @param int $imageHeight
-	 * @param string $imageData
-	 * @param int $date
-	 * @public
-	 */
-	function init($thumbID, $thumbWidth, $thumbHeight, $thumbRatio, $thumbMaxsize, $thumbInterlace, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData="", $date="", $thumbQuality=8, $generateSmaller=false){
+	* main initializer
+	*
+	* @return void
+	* @param int $thumbID
+	* @param int $thumbWidth
+	* @param int $thumbHeight
+	* @param boolean $thumbRatio
+	* @param boolean $thumbMaxsize
+	* @param boolean $thumbInterlace
+	* @param string $thumbFormat
+	* @param string $thumbName
+	* @param int $imageID
+	* @param string $imageFileName
+	* @param string $imagePath
+	* @param string $imageExtension
+	* @param int $imageWidth
+	* @param int $imageHeight
+	* @param string $imageData
+	* @param int $date
+	* @public
+	*/
+	function init($thumbID,$thumbWidth,$thumbHeight,$thumbRatio,$thumbMaxsize,$thumbInterlace,$thumbFitinside,$thumbFormat,$thumbName,$imageID,$imageFileName,$imagePath,$imageExtension,$imageWidth,$imageHeight,$imageData="",$date="",$thumbQuality=8,$generateSmaller=false){
 
 		$this->thumbID = $thumbID;
-		$this->thumbWidth = $thumbWidth;
-		$this->thumbHeight = $thumbHeight;
-		$this->thumbQuality = $thumbQuality;
-		$this->thumbRatio = $thumbRatio;
-		$this->thumbMaxsize = $thumbMaxsize;
-		$this->thumbInterlace = $thumbInterlace;
-		$this->thumbFormat = $thumbFormat;
-		$this->thumbName = $thumbName;
+		$this->thumbWidth=$thumbWidth;
+		$this->thumbHeight=$thumbHeight;
+		$this->thumbQuality=$thumbQuality;
+		$this->thumbRatio=$thumbRatio;
+		$this->thumbMaxsize=$thumbMaxsize;
+		$this->thumbInterlace=$thumbInterlace;
+		$this->thumbFitinside=$thumbFitinside;
+		$this->thumbFormat=$thumbFormat;
+		$this->thumbName=$thumbName;
 		$this->imageID = $imageID;
 		$this->imageFileName = $imageFileName;
 		$this->imagePath = $imagePath;
@@ -250,8 +257,26 @@ class we_thumbnail{
 
 		$_foo = getHash("SELECT * FROM " . THUMBNAILS_TABLE . " WHERE ID=" . intval($thumbID), $this->db);
 
-		$this->init($thumbID, isset($_foo["Width"]) ? $_foo["Width"] : "", isset($_foo["Height"]) ? $_foo["Height"] : "", isset($_foo["Ratio"]) ? $_foo["Ratio"] : "", isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "", isset($_foo["Interlace"]) ? $_foo["Interlace"] : "", isset($_foo["Format"]) ? $_foo["Format"] : "", isset($_foo["Name"]) ? $_foo["Name"] : "", $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, isset($_foo["Date"]) ? $_foo["Date"] : "", isset($_foo["Quality"]) ? $_foo["Quality"] : ""
-		);
+		$this->init(	$thumbID,
+						isset($_foo["Width"]) ? $_foo["Width"] : "",
+						isset($_foo["Height"]) ? $_foo["Height"] : "",
+						isset($_foo["Ratio"]) ? $_foo["Ratio"] : "",
+						isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "",
+						isset($_foo["Interlace"]) ? $_foo["Interlace"] : "",
+						isset($_foo["Fitinside"]) ? $_foo["Fitinside"] : "",
+						isset($_foo["Format"]) ? $_foo["Format"] : "",
+						isset($_foo["Name"]) ? $_foo["Name"] : "",
+						$imageID,
+						$imageFileName,
+						$imagePath,
+						$imageExtension,
+						$imageWidth,
+						$imageHeight,
+						$imageData,
+						isset($_foo["Date"]) ? $_foo["Date"] : "",
+						isset($_foo["Quality"]) ? $_foo["Quality"] : ""
+						);
+
 	}
 
 	/**
@@ -272,8 +297,26 @@ class we_thumbnail{
 
 		$_foo = getHash("SELECT * FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $this->db->escape($thumbName) . "'", $this->db);
 
-		$this->init(isset($_foo["ID"]) ? $_foo["ID"] : 0, isset($_foo["Width"]) ? $_foo["Width"] : "", isset($_foo["Height"]) ? $_foo["Height"] : "", isset($_foo["Ratio"]) ? $_foo["Ratio"] : "", isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "", isset($_foo["Interlace"]) ? $_foo["Interlace"] : "", isset($_foo["Format"]) ? $_foo["Format"] : "", isset($_foo["Name"]) ? $_foo["Name"] : "", $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, isset($_foo["Date"]) ? $_foo["Date"] : "", isset($_foo["Quality"]) ? $_foo["Quality"] : ""
-		);
+		$this->init(	isset($_foo["ID"]) ? $_foo["ID"] : 0,
+						isset($_foo["Width"]) ? $_foo["Width"] : "",
+						isset($_foo["Height"]) ? $_foo["Height"] : "",
+						isset($_foo["Ratio"]) ? $_foo["Ratio"] : "",
+						isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "",
+						isset($_foo["Interlace"]) ? $_foo["Interlace"] : "",
+						isset($_foo["Fitinside"]) ? $_foo["Fitinside"] : "",
+						isset($_foo["Format"]) ? $_foo["Format"] : "",
+						isset($_foo["Name"]) ? $_foo["Name"] : "",
+						$imageID,
+						$imageFileName,
+						$imagePath,
+						$imageExtension,
+						$imageWidth,
+						$imageHeight,
+						$imageData,
+						isset($_foo["Date"]) ? $_foo["Date"] : "",
+						isset($_foo["Quality"]) ? $_foo["Quality"] : ""
+					);
+
 	}
 
 	/**
@@ -294,8 +337,24 @@ class we_thumbnail{
 		}
 		$_foo = getHash("SELECT * FROM " . THUMBNAILS_TABLE . " WHERE ID=" . intval($thumbID), $this->db);
 
-		$this->init($thumbID, isset($_foo["Width"]) ? $_foo["Width"] : "", isset($_foo["Height"]) ? $_foo["Height"] : "", isset($_foo["Ratio"]) ? $_foo["Ratio"] : "", isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "", isset($_foo["Interlace"]) ? $_foo["Interlace"] : "", isset($_foo["Format"]) ? $_foo["Format"] : "", isset($_foo["Name"]) ? $_foo["Name"] : "", $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, isset($_foo["Date"]) ? $_foo["Date"] : ""
-		);
+		$this->init(	$thumbID,
+						isset($_foo["Width"]) ? $_foo["Width"] : "",
+						isset($_foo["Height"]) ? $_foo["Height"] : "",
+						isset($_foo["Ratio"]) ? $_foo["Ratio"] : "",
+						isset($_foo["Maxsize"]) ? $_foo["Maxsize"] : "",
+						isset($_foo["Interlace"]) ? $_foo["Interlace"] : "",
+						isset($_foo["Fitinside"]) ? $_foo["Fitinside"] : "",
+						isset($_foo["Format"]) ? $_foo["Format"] : "",
+						isset($_foo["Name"]) ? $_foo["Name"] : "",
+						$imageID,
+						$this->imageFileName,
+						$this->imagePath,
+						$this->imageExtension,
+						$this->imageWidth,
+						$this->imageHeight,
+						$this->imageData,
+						isset($_foo["Date"]) ? $_foo["Date"] : ""
+					);
 		return true;
 	}
 
@@ -324,8 +383,17 @@ class we_thumbnail{
 		if(!file_exists($_thumbdir)){
 			we_util_File::createLocalFolder($_thumbdir);
 		}
-		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace);
+		$quality = $this->thumbQuality<1?10:($this->thumbQuality>10?100:$this->thumbQuality*10);
+		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath,
+												$this->outputFormat,
+												$_SERVER['DOCUMENT_ROOT'] . $this->outputPath,
+												$quality,
+												$this->thumbWidth,
+												$this->thumbHeight,
+												$this->thumbRatio,
+												$this->thumbInterlace,
+												0, 0, -1, -1, 0,
+												$this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -345,8 +413,17 @@ class we_thumbnail{
 		if($this->_useOriginalSize()){
 			return self::USE_ORIGINAL;
 		}
-		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace);
+		$quality = $this->thumbQuality<1?10:($this->thumbQuality>10?100:$this->thumbQuality*10);
+		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath,
+												$this->outputFormat,
+												"",
+												$quality,
+												$this->thumbWidth,
+												$this->thumbHeight,
+												$this->thumbRatio,
+												$this->thumbInterlace,
+												0, 0, -1, -1, 0,
+												$this->thumbFitinside);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;
@@ -503,6 +580,13 @@ class we_thumbnail{
 			$this->outputWidth = $this->thumbWidth;
 			$this->outputHeight = $this->thumbHeight;
 		}
+		
+		// Check if it will fitinside
+		if ($this->thumbFitinside && ($this->thumbWidth) && ($this->thumbHeight)) {
+			$this->outputWidth  = $this->thumbWidth;
+			$this->outputHeight = $this->thumbHeight;
+		}
+		
 	}
 
 	/**
@@ -512,7 +596,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	function _useOriginalSize(){
-		$outvar = ($this->thumbMaxsize == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0);
+		$outvar = ($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth==0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight==0);
 		if($this->generateSmaller){
 			$outvar = false;
 		}

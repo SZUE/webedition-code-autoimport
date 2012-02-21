@@ -260,12 +260,8 @@ class we_folder extends we_root{
 		if($resave == 0){
 			$this->rewriteNavigation();
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			if($this->ClassName == 'we_class_folder'){
-				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', true, true);
-			} else{
-				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', true, false);
-			}
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0 ){
+			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',true,($this->ClassName=='we_class_folder'));
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -738,6 +734,19 @@ class we_folder extends we_root{
 	 */
 	function checkTabs(){
 
+	}
+
+	protected function updateRemoteLang($db, $id, $lang, $type){
+		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
+		if($oldLang == $lang){
+			return;
+		}
+		//update Lang of doc
+		$db->query('UPDATE ' . $this->Table . ' SET Language="' . $lang . '" WHERE ID=' . $id);
+		//update LangLink:
+		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
+		//drop invalid entries => is this safe???
+		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
 
 }

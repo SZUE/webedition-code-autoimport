@@ -296,9 +296,10 @@ class we_image_edit{
 		}
 	}
 
-	function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true){
-		if(we_image_edit::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize)){
-			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
+
+	function calculate_image_size($origwidth,$origheight,$newwidth,$newheight,$keep_aspect_ratio = true, $maxsize = true,$fitinside=false){
+		if(we_image_edit::should_not_resize($origwidth,$origheight,$newwidth,$newheight,$maxsize,$fitinside)){
+			return array("width"=>$origwidth,"height"=>$origheight,"useorig"=>1);
 		}
 
 		$_outsize["width"] = 0;
@@ -333,11 +334,46 @@ class we_image_edit{
 			$_outsize["width"] = $newwidth;
 			$_outsize["height"] = $newheight;
 		}
-		return array("width" => $_outsize["width"], "height" => $_outsize["height"], "useorig" => 0);
+
+		// Check, if it is supposed to fit inside
+		if ($fitinside && ($newwidth) && ($newheight)) {
+			$_outsize["width"]  = $newwidth;
+			$_outsize["height"] = $newheight;
+		}
+
+		return array("width"=>$_outsize["width"],"height"=>$_outsize["height"], "useorig"=>0);
 	}
 
-	function should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize = false){
-		return ($maxsize == false) && ($origwidth <= $newwidth) && ($origheight <= $newheight);
+	function calculate_image_sizeFit($origwidth,$origheight,$newwidth,$newheight, $maxsize = true){
+		if(we_image_edit::should_not_resize($origwidth,$origheight,$newwidth,$newheight,$maxsize,true)){
+			return array("width"=>$origwidth,"height"=>$origheight,"useorig"=>1);
+		}
+
+		$_outsize["width"] = 0;
+		$_outsize["height"] = 0;
+
+		// If width has been specified set it and compute new height based on source area aspect ratio
+		// here it is set
+		$_outsize["width"] = $newwidth;
+		$_outsize["height"] = round($origheight * $newwidth / $origwidth);
+		
+
+		
+		// If width has already been set and the new image is too tall, compute a new width based
+		// on aspect ratio - otherwise, use height and compute new width
+		if ($newheight) {
+			if ($_outsize["height"] > $newheight) {
+				$_outsize["width"]  = round($origwidth * $newheight / $origheight);
+				$_outsize["height"] = $newheight;
+			}
+		}
+
+
+		return array("width"=>$_outsize["width"],"height"=>$_outsize["height"], "useorig"=>0);
+	}
+	
+	function should_not_resize($origwidth,$origheight,$newwidth,$newheight,$maxsize = false,$fitinside=false){
+		return ($maxsize == false) && ($fitinside == false) && ($origwidth <= $newwidth) && ($origheight <= $newheight);
 	}
 
 	function getimagesize($filename){
@@ -395,7 +431,7 @@ class we_image_edit{
 		return in_array($type, $sit);
 	}
 
-	function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0){
+	function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0,$fitinside=false) {
 		$_fromFile = false;
 
 		$output_format = strtolower($output_format);
@@ -443,7 +479,7 @@ class we_image_edit{
 					}
 				}
 
-				$_outsize = we_image_edit::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio);
+				$_outsize = we_image_edit::calculate_image_size($_width,$_height,$width,$height,$keep_aspect_ratio,true,$fitinside);
 
 				// Decide, which functions to use (depends on version of GD library)
 				if(we_image_edit::gd_version() >= 2.0){
@@ -496,7 +532,24 @@ class we_image_edit{
 				}
 				// Resize image
 				//if($_outsize["width"] == "1")
-				$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
+				if($fitinside && $keep_aspect_ratio &&  $width && $height ){
+					$wratio = $width/$_width;
+					$hratio = $height/$_height;
+					$ratio = max($width/$_width, $height/$_height);
+     				$h = $height / $ratio;
+     				
+     				$w = $width / $ratio;
+					if($wratio<$hratio){
+						$x = ($_width - $width / $ratio) / 2;
+						$y=0;
+					} else {
+						$x=0;
+						$y= ($_height - $height / $ratio) / 2;				
+					}
+					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
+				} else {				
+					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
+				}
 
 				// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
 				if($output_filename != "" && file_exists($output_filename)){

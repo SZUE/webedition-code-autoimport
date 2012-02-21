@@ -3234,5 +3234,19 @@ class we_objectFile extends we_document{
 			$this->resetParentID();
 		}
 	}
+	protected function updateRemoteLang($db, $id, $lang, $type){
+		list($oldLang, $tid) = getHash('SELECT Language,TableID FROM ' . $this->Table . ' WHERE ID=' . $id, $db);
+		if($oldLang == $lang){
+			return;
+		}
+		//update Lang of doc
+		$db->query('UPDATE ' . $this->Table . ' SET Language="' . $lang . '" WHERE ID=' . $id);
+		$db->query('UPDATE ' . OBJECT_X_TABLE . $tid . 'SET OF_Language="' . $lang . '" WHERE ID=' . $id);
+		//update LangLink:
+		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $lang . '" WHERE DID=' . $id . ' AND DocumentTable="' . $type . '"');
+		//drop invalid entries => is this safe???
+		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND Locale!="' . $lang . '"');
+	}
+
 
 }

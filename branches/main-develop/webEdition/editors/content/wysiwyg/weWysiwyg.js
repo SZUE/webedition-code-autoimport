@@ -3874,7 +3874,7 @@ function weGetElementStyle(elementName,styleSheets){
 	// loop through all styles
 	for(var i=0;i<styleSheets.length;i++){
 		// get the rules
-		var r = (isGecko||isOpera|isIE9) ? styleSheets[i].cssRules : styleSheets(i).rules;
+		var r = (isGecko||isOpera||isIE9) ? styleSheets[i].cssRules : styleSheets(i).rules;
 		// loop through all rules
 		for(var n=0;n<r.length;n++){
 			// get selector Text (.class or elemName)
@@ -3886,7 +3886,7 @@ function weGetElementStyle(elementName,styleSheets){
 					var el = elementName.toLowerCase().trim(); // element
 					var selText = v[m].toLowerCase().trim(); // selector Text
 					if(el == selText){
-						style = (isGecko||isOpera) ? r[n].style : r(n).style;
+						style = (isGecko||isOpera||isIE9) ? r[n].style : r(n).style;
 						if(style.cssText.length > 1){
 							var properties = style.cssText.split(';');
 							for (var o = 0; o < properties.length; o++) {
