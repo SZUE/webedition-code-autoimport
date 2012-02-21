@@ -266,7 +266,7 @@ function we_cmd(){
 function we_submit(){
 	var bSelection=_fo.Selection.selectedIndex;
 	var bSelType=_fo.headerSwitch.selectedIndex;
-	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mdc.inc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
+	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mdc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
 		(bSelection?'1':'0')+(bSelType?'1':'0')+';'+(bSelection?getTreeSelected():'');
 	_fo.method='post';
 	_fo.submit();

@@ -54,7 +54,7 @@ class weTree{
 
 //Initialization
 
-	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 		$this->db = new DB_WE();
 		$this->setTreeImageDir(TREE_IMAGE_DIR);
 		$this->setTreeIconDir(ICON_DIR);
@@ -153,7 +153,7 @@ class weTree{
 			$this->getJSClearItems();
 	}
 
-	function getJSTreeCode($withTag=true){
+	function getJSTreeCode($withTag = true){
 
 		$out = '';
 
@@ -196,7 +196,7 @@ class weTree{
  		function addSort(object){
 				this.len++;
 				for(var i=this.len; i>0; i--){
-					if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . ( !we_base_browserDetect::isMAC() ? " || (this[i-1].typ>object.typ)" : "" ) . ')){
+					if(i > 1 && (this[i-1].text.toLowerCase() > object.text.toLowerCase()' . (!we_base_browserDetect::isMAC() ? " || (this[i-1].typ>object.typ)" : "" ) . ')){
 						this[i] = this[i-1];
 					}
 					else{
@@ -585,27 +585,22 @@ class weTree{
 
 	// Function which control how tree contenet will be displayed
 
-	function getHTMLContruct($onresize=""){
+	function getHTMLContruct($onresize = ""){
 
 		$style_code = "";
 		foreach($this->styles as $st)
 			$style_code.=$st . "\n";
 
-		//$table=new we_html_table(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"100%"),1,1);
-		//$table->setCol(0,0,array("id"=>"treetable","class"=>"top"),"<nobr>");
-		$js = '
-<script language="JavaScript" type="text/javascript">
+		$js = we_html_element::jsElement('
 function setCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check0.gif";}
 }
 function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check1.gif";}
-}
-</script>
-';
+}');
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(				//FIXME: missing title
-				we_html_tools::getHtmlInnerHead().
+				we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
 					we_html_element::cssElement($style_code) . $js
 				) .
@@ -684,7 +679,7 @@ function setUnCheckNode(imgName){
 	';
 	}
 
-	function getJSCustomDraw($click_handler=""){
+	function getJSCustomDraw($click_handler = ""){
 		$out = array();
 
 		if($click_handler == '')

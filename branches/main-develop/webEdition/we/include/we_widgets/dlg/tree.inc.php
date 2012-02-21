@@ -256,7 +256,7 @@ class weExportTree extends weMainTree{
 				array(
 				'id' => 'treetable',
 				'class' => 'blockwrapper',
-				'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'
+				'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;overflow:scroll;'
 				), '');
 	}
 
