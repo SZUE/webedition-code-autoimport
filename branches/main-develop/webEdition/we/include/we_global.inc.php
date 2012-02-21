@@ -1821,8 +1821,7 @@ function removeHTML($val){
 }
 
 function removePHP($val){
-	$val = str_replace(array('<?', '?>'), '', $val);
-	return preg_replace('|<script +language[^p]+php[^>]*>|si', '', $val);
+	return we_util::rmPhp($val);
 }
 
 function getMysqlVer($nodots = true){
