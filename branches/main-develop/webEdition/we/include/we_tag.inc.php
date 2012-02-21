@@ -199,7 +199,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
  */
 function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
-	if($useGlobal && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
+	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$(.+)$|', $value, $regs)){
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
 	if($isFlag){
@@ -209,9 +209,9 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 		$ret = $ret || ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
 		return $ret;
 	}
-	$value = strlen($value) ? $value : $default;
+	$value = is_array($value) || strlen($value) ? $value : $default;
 
-	return htmlspecialchars_decode($value);
+	return is_array($value) ? $value : htmlspecialchars_decode($value);
 }
 
 /*
