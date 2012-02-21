@@ -228,16 +228,18 @@ class weCustomerFrames extends weModuleFrames{
 			case 'textarea':
 				return we_html_element::htmlTextArea(array("name" => $field, "style" => "width:240px;", "class" => "wetextarea", "onblur" => "this.className='wetextarea'", "onfocus" => "this.className='wetextareaselected'"), $value);
 				break;
-			case 'dateTime':
 			case 'date':
+				$date_format = DATE_ONLY_FORMAT;
+				$format = g_l('weEditorInfo', '[date_only_format]');
+			case 'dateTime':
 				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
 
 				if(empty($value)){
 					$value = $this->View->settings->getSettings('start_year') . '-01-01';
 				}
-				$date_format = ($props['type'] == 'dateTime' ? DATE_FORMAT : DATE_ONLY_FORMAT);
+				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
 				$value = $this->View->settings->getDate($value, $date_format);
-				$format = ($props['type'] == 'dateTime' ? g_l('weEditorInfo', '[date_format]') : g_l('weEditorInfo', '[date_only_format]'));
+				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
 				$out.=we_html_element::jsElement('
 					function populateDate_' . $field . '(){
 						var year=document.we_form.' . $field . '_select_year.options[document.we_form.' . $field . '_select_year.selectedIndex].text;
