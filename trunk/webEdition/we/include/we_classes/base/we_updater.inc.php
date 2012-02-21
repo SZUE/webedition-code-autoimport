@@ -130,6 +130,8 @@
 	  		$this->changeColTyp(GLOSSARY_TABLE,"`Icon`"," enum('folder.gif','prog.gif') NOT NULL ");
 
 		}
+		if(!$this->isColExist(THUMBNAILS_TABLE,"Fitinside")) $this->addCol(THUMBNAILS_TABLE,"Fitinside"," smallint(5) unsigned NOT NULL default '0' ",' AFTER Interlace ');
+
 	}
 
 

@@ -170,6 +170,11 @@ function remember_value($settingvalue, $settingname) {
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '" . abs($settingvalue) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
+				
+			case '$_REQUEST["Fitinside"]':
+				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Fitinside = '" . abs($settingvalue) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
+
+				break;
 
 			case '$_REQUEST["Format"]':
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Format = '" . (($settingvalue == "none") ? "" : $DB_WE->escape($settingvalue)) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
@@ -210,6 +215,11 @@ function remember_value($settingvalue, $settingname) {
 
 			case '$_REQUEST["Interlace"]':
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '0' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
+
+				break;
+				
+			case '$_REQUEST["Fitinside"]':
+				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Fitinside = '0' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
 
@@ -253,6 +263,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["Ratio"]) ? $_REQUEST["Ratio"] : null, '$_REQUEST["Ratio"]');
 		$_update_prefs = remember_value(isset($_REQUEST["Maxsize"]) ? $_REQUEST["Maxsize"] : null, '$_REQUEST["Maxsize"]');
 		$_update_prefs = remember_value(isset($_REQUEST["Interlace"]) ? $_REQUEST["Interlace"] : null, '$_REQUEST["Interlace"]');
+		$_update_prefs = remember_value(isset($_REQUEST["Fitinside"]) ? $_REQUEST["Fitinside"] : null, '$_REQUEST["Fitinside"]');
 		$_update_prefs = remember_value(isset($_REQUEST["Format"]) ? $_REQUEST["Format"] : null, '$_REQUEST["Format"]');
 
 		// Update saving timestamp
@@ -484,14 +495,18 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnail_ratio = ($_GET["id"] != -1) ? f("SELECT Ratio FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Ratio", $DB_WE) : -1;
 			$_thumbnail_maximize = ($_GET["id"] != -1) ? f("SELECT Maxsize FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Maxsize", $DB_WE) : -1;
 			$_thumbnail_interlace = ($_GET["id"] != -1) ? f("SELECT Interlace FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Interlace", $DB_WE) : -1;
+			$_thumbnail_fitinside = ($_GET["id"] != -1) ? f("SELECT Fitinside FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Fitinside", $DB_WE) : -1;
 
-			$_thumbnail_option_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
+
+			$_thumbnail_option_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
 
 			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), "Ratio", $l_thumbnails["ratio"], false, "defaultfont", "", ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, getPixel(1, 5));
 			$_thumbnail_option_table->setCol(2, 0, null, we_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), "Maxsize", $l_thumbnails["maximize"], false, "defaultfont", "", ($_thumbnail_maximize == -1)));
 			$_thumbnail_option_table->setCol(3, 0, null, getPixel(1, 5));
 			$_thumbnail_option_table->setCol(4, 0, null, we_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), "Interlace", $l_thumbnails["interlace"], false, "defaultfont", "", ($_thumbnail_interlace == -1)));
+			$_thumbnail_option_table->setCol(5, 0, null, getPixel(1, 5));
+			$_thumbnail_option_table->setCol(6, 0, null, we_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), "Fitinside", 'Fit inside', false, "defaultfont", "", ($_thumbnail_fitinside == -1)));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
