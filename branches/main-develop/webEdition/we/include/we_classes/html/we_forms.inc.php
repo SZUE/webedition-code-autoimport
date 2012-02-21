@@ -276,12 +276,12 @@ abstract class we_forms{
 	static function removeBrokenInternalLinksAndImages(&$text){
 		$DB_WE = new DB_WE();
 		$regs = array();
-		if(preg_match_all('/(href|src)="document:([^" \?#]+)/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="document:(\\d+)([^" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				if(!f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
-					$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
-					$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|i', '', $text);
-					$text = preg_replace('|<img [^>]*src="document:' . $reg[2] . '"[^>]*>|i', '', $text);
+					$text = preg_replace('|<a [^>]*href="document:' . $reg[2].$reg[3] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
+					$text = preg_replace('|<a [^>]*href="document:' . $reg[2].$reg[3] . '"[^>]*>|i', '', $text);
+					$text = preg_replace('|<img [^>]*src="document:' . $reg[2].$reg[3] . '"[^>]*>|i', '', $text);
 				}
 			}
 		}

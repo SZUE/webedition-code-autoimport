@@ -1753,8 +1753,8 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 
 function parseInternalLinks(&$text, $pid, $path = ''){
 	$DB_WE = new DB_WE();
-
-	if(preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+	$regs = array();
+	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 
 		foreach($regs as $reg){
 
@@ -1765,7 +1765,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3], $reg[1] . '="' . $_path . $reg[3], $text);
+				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3]. $reg[4], $reg[1] . '="' . $_path . ($reg[3]?'?':'').$reg[4], $text);
 			} else{
 				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '\1', $text);
 				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
@@ -2636,7 +2636,7 @@ function g_l($name, $specific, $omitErrors = false){
 					$tmp);
 		} else{
 			if(!$omitErrors){
-				t_e('notice','Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
+				t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
 				return '??';
 			}
 			return '';
@@ -2671,8 +2671,8 @@ function we_templateInit(){
 		//check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-			(!isset($GLOBALS['we']['backVars'])|| (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
-			){
+			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+		){
 			we_schedpro::trigger_schedule();
 		}
 
@@ -2688,8 +2688,8 @@ function we_templateInit(){
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
 		//FIXME: this code doesn't work!
 		/*
-		list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
-		 if($__lang){
+		  list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
+		  if($__lang){
 		  $__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
 		  $__last = array_pop($__parts);
 		  // Charset of page is not UTF-8 but languge files of page are UTF-8
@@ -2709,8 +2709,7 @@ function we_templateInit(){
 		  }
 		  }
 		  }
-		*/
-
+		 */
 	}
 }
 
@@ -2750,9 +2749,9 @@ function we_templatePost(){
 	}
 	//check for Trigger
 	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))&&
+		((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER')) &&
 		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
-		){ //is set to Post or not set (new default)
+	){ //is set to Post or not set (new default)
 		we_schedpro::trigger_schedule();
 	}
 }
