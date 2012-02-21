@@ -77,12 +77,12 @@ class we_binaryDocument extends we_document{
 	 * @param boolean $from
 	 * @desc loads the data of the document
 	 */
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		//$this->i_getContentData($this->LoadBinaryContent);
 	}
 
-	function i_getContentData($loadBinary=1){
+	function i_getContentData($loadBinary = 1){
 		parent::i_getContentData(true);
 		$_sitePath = $this->getSitePath();
 		if(file_exists($_sitePath)){
@@ -92,7 +92,7 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function we_save($resave=0){
+	function we_save($resave = 0){
 		if($this->getFilesize() == 0){
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR)
@@ -109,7 +109,7 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function i_getDocument($includepath=""){
+	function i_getDocument($includepath = ""){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weFile.class.php");
 		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
@@ -160,7 +160,11 @@ class we_binaryDocument extends we_document{
 	/* gets the filesize of the document */
 
 	function getFilesize(){
-		return filesize($this->elements["data"]["dat"]);
+		$size = filesize($this->elements["data"]["dat"]);
+		if(!$size){
+			t_e('filesize 0 in ' . $this->elements["data"]["dat"], $this->getSitePath());
+		}
+		return $size;
 	}
 
 	function insertAtIndex(){
@@ -176,17 +180,17 @@ class we_binaryDocument extends we_document{
 					}
 				}
 			}
-			$set=array('DID'=>intval($this->ID),
-				'Text'=>$text,
-				'BText'=>$text,
-				'Workspace'=>$this->ParentPath,
-				'WorkspaceID'=>intval($this->ParentID),
-				'Category'=>$this->Category,
-				'Doctype'=>'',
-				'Title'=>$this->getElement("Title"),
-				'Description'=>$this->getElement("Description"),
-				'Path'=>$this->Path);
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET '.we_database_base::arraySetter($set));
+			$set = array('DID' => intval($this->ID),
+				'Text' => $text,
+				'BText' => $text,
+				'Workspace' => $this->ParentPath,
+				'WorkspaceID' => intval($this->ParentID),
+				'Category' => $this->Category,
+				'Doctype' => '',
+				'Title' => $this->getElement("Title"),
+				'Description' => $this->getElement("Description"),
+				'Path' => $this->Path);
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
 		return true;
 	}
