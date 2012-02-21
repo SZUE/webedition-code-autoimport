@@ -90,7 +90,7 @@ class we_docSelector extends we_dirSelector{
 		$q = "
 			SELECT " . $this->fields . " FROM " .
 			$this->db->escape($this->table) .
-			" WHERE ParentID=" . intval($this->dir) . ' ' .
+			' WHERE ParentID=' . intval($this->dir) . ' ' .
 			makeOwnersSql() .
 			$wsQuery .
 			$filterQuery . //$publ_q.
@@ -126,7 +126,7 @@ class we_docSelector extends we_dirSelector{
 				$this->printPreviewHTML();
 				break;
 			default:
-				we_dirSelector::printHTML($what);
+				parent::printHTML($what);
 		}
 	}
 

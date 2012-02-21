@@ -156,19 +156,19 @@ class we_fileselector{
 
 	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case self::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case self::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case self::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_fileselector::CMD:
+			case self::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}

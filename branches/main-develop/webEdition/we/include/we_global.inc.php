@@ -1111,7 +1111,7 @@ function makeOwnersSql($useCreatorID = true){
 	}
 }
 
-function we_getParentIDs($table, $id, $ids, $db = ''){
+function we_getParentIDs($table, $id, &$ids, $db = ''){
 	if(!$db){
 		$db = new DB_WE();
 	}

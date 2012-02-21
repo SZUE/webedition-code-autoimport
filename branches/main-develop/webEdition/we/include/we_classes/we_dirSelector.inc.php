@@ -63,7 +63,7 @@ class we_dirSelector extends we_multiSelector{
 			case we_fileselector::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_multiSelector::SETDIR:
+			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
 			case self::NEWFOLDER:
@@ -81,7 +81,7 @@ class we_dirSelector extends we_multiSelector{
 			case self::PREVIEW:
 				$this->printPreviewHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
