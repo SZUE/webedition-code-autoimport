@@ -967,7 +967,6 @@ abstract class we_root extends we_class{
 	}
 
 	function i_saveContentDataInDB(){
-		t_e('save');
 		if(!is_array($this->elements)){
 			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
