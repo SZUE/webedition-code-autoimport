@@ -166,11 +166,11 @@ abstract class weDBUtil{
 	}
 
 	static function addKey($tab, $key){
-		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' ADD ' . $key);
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' ADD ' . $key);
 	}
 
 	static function delKey($tab, $key){
-		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' DROP INDEX ' . $key);
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' DROP INDEX ' . $key);
 	}
 
 }
