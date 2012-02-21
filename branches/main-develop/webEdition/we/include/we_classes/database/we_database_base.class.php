@@ -495,7 +495,7 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			if(is_object($val)){
-				t_e('error','data error',$arr,$key);
+				t_e('warning','data error: db-field cannot contain objects','Key: '.$key,$arr);
 			}
 			$ret[] = '`' . $key . '`=' . (is_int($val) ? $val : '"' . escape_sql_query($val) . '"');
 		}

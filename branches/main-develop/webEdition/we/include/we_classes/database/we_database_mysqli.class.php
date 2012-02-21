@@ -66,10 +66,15 @@ class DB_WE extends we_database_base{
 			false;
 	}
 
-	public function getAll($resultType){
-		return (is_object($this->Query_ID)) ?
-			$this->Query_ID->fetch_all($resultType) :
-			false;
+	public function getAll($resultType = MYSQL_ASSOC){
+		if(!is_object($this->Query_ID)){
+			return false;
+		}
+		$ret = array();
+    while($row = $this->fetch_array($resultType)) {
+      $ret[] = $row;
+    }
+    return $ret;
 	}
 
 	public function affected_rows(){

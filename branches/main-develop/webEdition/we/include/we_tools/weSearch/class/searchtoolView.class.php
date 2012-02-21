@@ -2996,7 +2996,7 @@ class searchtoolView extends weToolView{
 <col style="width:28%;text-align:left;"/>
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
-<col style="width:*;text-align:left;"/>
+<col style="width:18%;text-align:left;"/>
 </colgroup>
 
 <tr style="height:20px;">
@@ -3033,7 +3033,7 @@ class searchtoolView extends weToolView{
 <col style="width:28%;text-align:left;"/>
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
-<col style="width:*;text-align:left;"/>
+<col style="width:18%;text-align:left;"/>
 </colgroup>';
 
 			for($m = 0; $m < $x; $m++){

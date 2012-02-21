@@ -96,7 +96,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	}
 
 
-	$we_doc->setElement("type", $ct, "attrib");
+	$we_doc->setElement("type", $we_ContentType, "attrib");
 
 	$foo = explode("/", $_FILES["we_uploadedFile"]["type"]);
 	$we_doc->setElement("data", $tempName, $foo[0]);

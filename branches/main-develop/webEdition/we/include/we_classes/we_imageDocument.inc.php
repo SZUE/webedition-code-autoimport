@@ -88,7 +88,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return void
 	 * @param boolean $from
 	 */
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 	}
 
@@ -242,7 +242,7 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function initByAttribs($attribs){
 		foreach($attribs as $a => $b){
-			if(strtolower($a) != "id" && $b!=''){
+			if(strtolower($a) != "id" && $b != ''){
 				$this->setElement($a, $b, "attrib");
 			}
 		}
@@ -593,7 +593,7 @@ class we_imageDocument extends we_binaryDocument{
 					getHtmlTag('img', $attribs);
 			}
 		} else{
-			$xml = weTag_getAttribute('xml', $attribs, false, true); //rest is done in getHtmlTag
+			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, true) : true; //rest is done in getHtmlTag
 			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
 				'src' => IMAGE_DIR . 'icons/no_image.gif',
 				'alt' => '',
@@ -726,7 +726,7 @@ class we_imageDocument extends we_binaryDocument{
 		return isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)] : 'jpg';
 	}
 
-	function convert($type, $quality=8){
+	function convert($type, $quality = 8){
 		if(!is_numeric($quality)){
 			return false;
 		} else{
@@ -786,7 +786,7 @@ class we_imageDocument extends we_binaryDocument{
 		return $this->metaData;
 	}
 
-	function importMetaData($fieldsToImport=null, $importOnlyEmptyFields=false){
+	function importMetaData($fieldsToImport = null, $importOnlyEmptyFields = false){
 		$this->getMetaData();
 
 
