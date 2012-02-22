@@ -54,4 +54,11 @@ if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with t
 	$_path = WEBEDITION_DIR;
 }
 
-echo we_html_element::jsElement("top.location.replace('" . $_path . "');");
+echo we_html_element::jsElement('
+for(i=0;i<top.jsWindow_count;i++){
+	eval("var obj=top.jsWindow"+i+"Object");
+	try{
+		obj.close();
+	}catch(err){}
+}
+top.location.replace("' . $_path . '");');

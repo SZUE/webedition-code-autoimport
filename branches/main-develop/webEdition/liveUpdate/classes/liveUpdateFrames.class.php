@@ -31,7 +31,7 @@ class liveUpdateFrames {
 	var $Section;
 	var $Data;
 
-	function liveUpdateFrames() {
+	function __construct() {
 
 		if (!isset($_REQUEST['section'])) {
 			$_REQUEST['section'] = 'frameset';
