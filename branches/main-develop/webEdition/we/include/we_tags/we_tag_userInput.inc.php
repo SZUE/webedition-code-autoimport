@@ -116,7 +116,7 @@ function we_tag_userInput($attribs, $content){
 					$checkboxstyle = weTag_getAttribute("checkboxstyle", $attribs);
 					$inputstyle = weTag_getAttribute("inputstyle", $attribs);
 					$checkboxclass = weTag_getAttribute("checkboxclass", $attribs);
-					$inputclass = weTag_getAttributeweTag_getAttribute("inputclass", $attribs);
+					$inputclass = weTag_getAttribute("inputclass", $attribs);
 					$checkboxtext = weTag_getAttribute("checkboxtext", $attribs, g_l('parser', '[delete]'));
 
 					if($_SESSION[$_imgDataId]["id"]){
@@ -136,11 +136,7 @@ function we_tag_userInput($attribs, $content){
 						$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
 					}
 
-					if(isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]){
-						$checked = ' checked';
-					} else{
-						$checked = '';
-					}
+					$checked = (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"])?' checked':'';
 
 					return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
