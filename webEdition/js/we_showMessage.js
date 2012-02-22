@@ -41,10 +41,15 @@ function we_showMessage (message, prio, win) {
 	} else if (win.top.opener) {
 		if (win.top.opener.top.showMessage != null) {
 			win.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener.top.showMessage != null) {
+		} else if (typeof win.top.opener.top.opener!='undefined' && win.top.opener.top.opener.top.showMessage != null) {
 			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener.top.opener.top.showMessage != null) {
+		} else if (typeof win.top.opener.top.opener!='undefined' && typeof win.top.opener.top.opener.top.opener!='undefined' &&  win.top.opener.top.opener.top.opener.top.showMessage != null) {
 			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
+		} else {//nichts gefunden
+			if (!win) {
+				win = window;
+			}
+			win.alert(message);
 		}
 	} else { // there is no webEdition window open, just show the alert
 		if (!win) {
