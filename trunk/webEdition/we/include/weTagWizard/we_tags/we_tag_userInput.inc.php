@@ -3,7 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_typeAttribute.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
-
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlRowAttribute.class.php');
 $GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
 
 $GLOBALS['weTagWizard']['attribute']['id554_name'] = new weTagData_textAttribute('554', 'name', true, '');
@@ -26,6 +26,8 @@ $GLOBALS['weTagWizard']['attribute']['id570_pure'] = new weTagData_selectAttribu
 $GLOBALS['weTagWizard']['attribute']['id571_autobr'] = new weTagData_selectAttribute('571', 'autobr', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id572_width'] = new weTagData_textAttribute('572', 'width', false, '');
 $GLOBALS['weTagWizard']['attribute']['id573_height'] = new weTagData_textAttribute('573', 'height', false, '');
+$GLOBALS['weTagWizard']['attribute']['id309_thumbnail'] = new weTagData_sqlRowAttribute('309', 'thumbnail',THUMBNAILS_TABLE, false, 'Name', '', '', '');
+
 $GLOBALS['weTagWizard']['attribute']['id574_bgcolor'] = new weTagData_textAttribute('574', 'bgcolor', false, '');
 $GLOBALS['weTagWizard']['attribute']['id575_class'] = new weTagData_textAttribute('575', 'class', false, '');
 $GLOBALS['weTagWizard']['attribute']['id576_style'] = new weTagData_textAttribute('576', 'style', false, '');
