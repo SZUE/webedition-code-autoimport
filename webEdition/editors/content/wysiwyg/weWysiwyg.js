@@ -26,7 +26,7 @@ String.prototype.trim2=function () {
 }
 
 var isIE9=false;
-if (typeof weFrontpageEdit!='undefined'){
+if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
 	if (navigator.appVersion.indexOf("MSIE")!=-1){
 		var temp=navigator.appVersion.split("MSIE");
 		isIE9= parseFloat(temp[1]) == 9;
