@@ -87,7 +87,7 @@ function we_error_handler($in_webEdition = true){
 	 */
 	// Check PHP version
 	if(version_compare(PHP_VERSION, '5.2.4') < 0){
-		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', '/webEdition/we/include/we_error_handler.inc.php', 69);
+		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', __FILE__, __LINE__);
 		exit();
 	}
 
@@ -101,6 +101,8 @@ function we_error_handler($in_webEdition = true){
 		ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
 		set_error_handler('error_handler', $_error_level);
 		register_shutdown_function('shutdown_handler');
+		//FIXME: add exception-handler
+		set_exception_handler('we_exception_handler');
 	} else{
 		//disable strict & deprecated errors
 		if(version_compare(PHP_VERSION, '5.3.0') >= 0){
@@ -181,7 +183,7 @@ function translate_error_type($type){
 function getBacktrace($skip){
 	$_detailedError = $_caller = $_file = $_line = '';
 
-	$_backtrace = debug_backtrace();
+	$_backtrace = debug_backtrace(defined('DEBUG_BACKTRACE_IGNORE_ARGS') ? DEBUG_BACKTRACE_IGNORE_ARGS : false);
 	$cnt = 0;
 	$found = false;
 	//error handler called directly caused by an error
@@ -223,8 +225,10 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	$detailedError = $_caller = '-';
-	if(!$skipBT){
+	if($skipBT === false){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
+	} else if(is_string($skipBT)){
+		$detailedError = $skipBT;
 	}
 
 	// Build the error table
@@ -332,8 +336,10 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		$type = E_SQL;
 	}
 	$_detailedError = $_caller = '-';
-	if(!$skipBT){
-		list($_detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
+	if($skipBT === false){
+		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
+	} else if(is_string($skipBT)){
+				$_detailedError = $skipBT;
 	}
 
 	// Error type
@@ -389,8 +395,10 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 		$type = E_SQL;
 	}
 	$detailedError = $_caller = '-';
-	if(!$skipBT){
+	if($skipBT === false){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
+	} else if(is_array($skipBT)){
+		list($detailedError, $_caller, $file, $line) = $skipBT;
 	}
 
 	// Build the error table
@@ -543,5 +551,28 @@ function shutdown_handler(){
 				error_handler($error['type'], $error['message'] . "\n" . print_r($error, true), $error['file'], $error['line'], null);
 			default:
 		}
+	}
+}
+
+function we_exception_handler($exception){
+	//FIMXE: add data from $exception
+	$type = E_ERROR;
+	$message = $exception->getMessage();
+	$file = $exception->getFile();
+	$line = $exception->getLine();
+	$bt = $exception->getTraceAsString();
+
+	if($GLOBALS['we']['errorhandler']['display']){
+		display_error_message($type, $message, $file, $line, $bt);
+	}
+
+	// Log error?
+	if($GLOBALS['we']['errorhandler']['log']){
+		log_error_message($type, $message, $file, $line, $bt);
+	}
+
+	// Mail error?
+	if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+		mail_error_message($type, $message, $file, $line, $bt);
 	}
 }
