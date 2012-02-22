@@ -23,7 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-we_html_tools::protect();
+if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+	we_html_tools::protect();
+}
 $dialog = new weImportRtfDialog();
 $dialog->initByHttp();
 if(isset($dialog->args["ntxt"]) && $dialog->args["ntxt"]){

@@ -24,7 +24,9 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 //make sure we know which browser is used
-we_html_tools::protect();
+if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+	we_html_tools::protect();
+}
 $dialog = new weSpecialCharDialog();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoRuleJS");

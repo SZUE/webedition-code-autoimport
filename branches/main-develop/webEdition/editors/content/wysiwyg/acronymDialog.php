@@ -29,7 +29,9 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-	we_html_tools::protect();
+	if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+		we_html_tools::protect();
+	}
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
 	$Glossary->Type = "acronym";
