@@ -23,14 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
+
 	private $ct;
 
 	public function __construct(){
-		$charset=defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
+		$charset = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 		$this->ct = array(
 // Content Type for Images
 			'image/*' => array(
-				'Extension' => array('.gif','.jpg','.jpeg','.png'),
+				'Extension' => array('.gif', '.jpg', '.jpeg', '.png'),
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -38,7 +39,7 @@ class we_base_ContentTypes{
 				'Icon' => 'image.gif',
 			),
 			'text/html' => array(
-				'Extension' => array('.html','.htm','.shtm','.shtml','.stm','.php','.jsp','.asp','.pl','.cgi','.xml','.xsl'),
+				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
 				'Permission' => 'NEW_HTML',
 				'DefaultCode' => '<html>' . "\n\t" .
 				'<head>' . "\n\t\t" .
@@ -53,7 +54,7 @@ class we_base_ContentTypes{
 				'Icon' => 'html.gif',
 			),
 			'text/webedition' => array(
-				'Extension' => array('.html','.htm','.shtm','.shtml','.stm','.php','.jsp','.asp','.pl','.cgi','.xml'),
+				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
 				'IsWebEditionFile' => true,
@@ -151,7 +152,7 @@ class we_base_ContentTypes{
 				'Icon' => 'flashmovie.gif',
 			),
 			'video/quicktime' => array(
-				'Extension' => array('.mov','.moov','.qt'),
+				'Extension' => array('.mov', '.moov', '.qt'),
 				'Permission' => 'NEW_QUICKTIME',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -159,7 +160,7 @@ class we_base_ContentTypes{
 				'Icon' => 'quicktime.gif',
 			),
 			'application/*' => array(
-				'Extension' => array('.doc','.xls','.ppt','.zip','.sit','.bin','.hqx','.exe'),
+				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe'),
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -201,7 +202,7 @@ class we_base_ContentTypes{
 		return array_keys($this->ct);
 	}
 
-	public function getIcon($name, $default='', $extension=''){
+	public function getIcon($name, $default = '', $extension = ''){
 		if($name == 'application/*'){
 			switch($extension){
 				case '.pdf' :
@@ -225,35 +226,35 @@ class we_base_ContentTypes{
 	}
 
 	public function getExtension($name){
-		return isset($this->ct[$name])?$this->ct[$name]['Extension']:'';
+		return isset($this->ct[$name]) ? $this->ct[$name]['Extension'] : '';
 	}
 
 	public function isWEFile($name){
-		return isset($this->ct[$name])?$this->ct[$name]['IsWebEditionFile']:false;
+		return isset($this->ct[$name]) ? $this->ct[$name]['IsWebEditionFile'] : false;
 	}
 
 	public function getWETypes(){
-		$ret=array();
-		foreach($this->ct as $name=>$type){
+		$ret = array();
+		foreach($this->ct as $name => $type){
 			if($type['IsWebEditionFile']){
-				$ret[]=$name;
+				$ret[] = $name;
 			}
 		}
 		return $ret;
 	}
 
 	public function getDefaultCode($name){
-		return isset($this->ct[$name])?$this->ct[$name]['DefaultCode']:'';
+		return isset($this->ct[$name]) ? $this->ct[$name]['DefaultCode'] : '';
 	}
 
 	public function getPermission($name){
-		return isset($this->ct[$name])?$this->ct[$name]['Permission']:'';
+		return isset($this->ct[$name]) ? $this->ct[$name]['Permission'] : '';
 	}
 
 	public function getTypeForExtension($extension){
-		foreach($this->ct as $type=>$val){
-			$ext=$val['Extension'];
-			if((is_array($ext)&&in_array($extension, $ext))||$ext==$extension){
+		foreach($this->ct as $type => $val){
+			$ext = $val['Extension'];
+			if((is_array($ext) && in_array($extension, $ext)) || $ext == $extension){
 				return $type;
 			}
 		}
@@ -261,12 +262,13 @@ class we_base_ContentTypes{
 	}
 
 	public function getFiles(){
-		$ret=array();
-		foreach($this->ct as $type=>$val){
+		$ret = array();
+		foreach($this->ct as $type => $val){
 			if($val['IsRealFile']){
-				$ret[]=$type;
+				$ret[] = $type;
 			}
 		}
 		return $ret;
 	}
+
 }

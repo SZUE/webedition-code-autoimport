@@ -59,7 +59,7 @@ if(isset($GLOBALS['we_doc'])){
 }
 ?>
 <script  type="text/javascript">
-<!--
+	<!--
 	var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;
 
 
@@ -75,84 +75,86 @@ if(isset($_REQUEST["we_transaction"])){
 }
 ?>
 
-		}
+	}
 
 
 <?php
 if(isset($GLOBALS['we_doc'])){
 	if(isset($GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds){
-		print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "', '" . $GLOBALS['we_doc']->ParentID . "');";
+		if($GLOBALS['we_doc']->ParentID){
+			print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "', '" . $GLOBALS['we_doc']->ParentID . "');";
+		}
 	}
 	?>
-		// check if parentId was changed
-		var ajaxCallback = {
-			success: function(o) {
-				if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
-					var weResponse = false;
-					try {
-						eval( o.responseText );
-						if ( weResponse ) {
-							if (weResponse["data"] == "true") {
-								_question = "<?php print ($GLOBALS['we_doc']->IsFolder ? g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
-								if ( confirm(_question) ) {
-									top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
-
+			// check if parentId was changed
+			var ajaxCallback = {
+				success: function(o) {
+					if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
+						var weResponse = false;
+						try {
+							eval( o.responseText );
+							if ( weResponse ) {
+								if (weResponse["data"] == "true") {
+									_question = "<?php print ($GLOBALS['we_doc']->IsFolder ? g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
+									if ( confirm(_question) ) {
+										top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
+									}
 								}
 							}
+						} catch (exc){}
+					}
+				},
+				failure: function(o) {
+
+				}
+			}
+
+			var _oldparentid = <?php print $GLOBALS['we_doc']->ParentID; ?>;
+			function updateCustomerFilterIfNeeded() {
+				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
+					_parentid = _elem.value;
+					if ( _parentid != _oldparentid ) {
+						top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"]))
+		print $_REQUEST["we_transaction"];
+	?>&table=<?php print $GLOBALS['we_doc']->Table; ?>&classname=<?php print $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback );
+							_oldparentid = _parentid;
 						}
-					} catch (exc){}
-				}
-			},
-			failure: function(o) {
-
-			}
-		}
-
-		var _oldparentid = <?php print $GLOBALS['we_doc']->ParentID; ?>;
-		function updateCustomerFilterIfNeeded() {
-			if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
-				_parentid = _elem.value;
-				if ( _parentid != _oldparentid ) {
-					top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"]))
-		print $_REQUEST["we_transaction"]; ?>&table=<?php print $GLOBALS['we_doc']->Table; ?>&classname=<?php print $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback );
-					_oldparentid = _parentid;
-				}
-			}
-		}
-
-		// check If Filename was changed..
-		function pathOfDocumentChanged() {
-
-			var _oldfilepath = '';
-
-			var _filetext = '';
-			var _filepath = '';
-			var elem = false;
-
-			elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Filename"]; // documents
-			if (!elem) { // object
-				elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Text"]
-			}
-
-			if (elem) {
-
-				// text
-				_filetext = elem.value;
-				// Extension if there
-				if (document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"]) {
-					_filetext += document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"].value;
+					}
 				}
 
-				// path
-				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentPath"]) {
-					_filepath = _elem.value;
-				}
-				if (_filepath != "/") {
-					_filepath += "/";
-				}
+				// check If Filename was changed..
+				function pathOfDocumentChanged() {
 
-				_filepath += _filetext;
-				parent.frames[0].we_setPath(_filepath, _filetext, -1);
+					var _oldfilepath = '';
+
+					var _filetext = '';
+					var _filepath = '';
+					var elem = false;
+
+					elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Filename"]; // documents
+					if (!elem) { // object
+						elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Text"]
+					}
+
+					if (elem) {
+
+						// text
+						_filetext = elem.value;
+						// Extension if there
+						if (document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"]) {
+							_filetext += document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"].value;
+						}
+
+						// path
+						if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentPath"]) {
+							_filepath = _elem.value;
+						}
+						if (_filepath != "/") {
+							_filepath += "/";
+						}
+
+						_filepath += _filetext;
+						parent.frames[0].we_setPath(_filepath, _filetext, -1);
 	<?php
 	if(defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
 		// only use this when customer filters are possible
@@ -161,8 +163,8 @@ if(isset($GLOBALS['we_doc'])){
 		<?php
 	}
 	?>
-					}
 				}
+			}
 
 <?php } ?>
 
@@ -319,36 +321,37 @@ if(isset($GLOBALS['we_doc'])){
 						break;
 <?php }
 
-if(isset($we_doc) && $we_doc->ContentType == "image/*"){ ?>
+if(isset($we_doc) && $we_doc->ContentType == "image/*"){
+	?>
 
-							case "add_thumbnail":
-								new jsWindow(url,"we_add_thumbnail",-1,-1,400,410,true,true,true);
-								break;
-							case "image_resize":
-								if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
+						case "add_thumbnail":
+							new jsWindow(url,"we_add_thumbnail",-1,-1,400,410,true,true,true);
+							break;
+						case "image_resize":
+							if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
 	<?php if($we_doc->gd_support()){ ?>
-								new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType() == "jpg") ? 250 : 190; ?>,true,false,true);
-	<?php
+									new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType() == "jpg") ? 250 : 190; ?>,true,false,true);
+		<?php
 	} else{
 		print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	?>
 
-										break;
-									case "image_convertJPEG":
-										if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
-										new jsWindow(url,"we_convert_jpg",-1,-1,260,160,true,false,true);
-										break;
-									case "image_rotate":
-										if (typeof CropTool == 'object' && CropTool.triggered){
-											CropTool.drop();
-										}
+								break;
+							case "image_convertJPEG":
+								if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
+								new jsWindow(url,"we_convert_jpg",-1,-1,260,160,true,false,true);
+								break;
+							case "image_rotate":
+								if (typeof CropTool == 'object' && CropTool.triggered){
+									CropTool.drop();
+								}
 	<?php
 	if(function_exists("ImageRotate")){
 
 		if($we_doc->gd_support()){
 			?>
-											new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType() == "jpg") ? 230 : 170; ?>,true,false,true);
+												new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType() == "jpg") ? 230 : 170; ?>,true,false,true);
 			<?php
 		} else{
 			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
@@ -364,16 +367,16 @@ if(isset($we_doc) && $we_doc->ContentType == "image/*"){ ?>
 						case "image_crop":
 <?php if(defined("WE_EDIT_IMAGE") && $GLOBALS['we_doc']->gd_support()){ ?>
 								CropTool.crop();
-<?php
+	<?php
 } else if(defined("WE_EDIT_IMAGE")){
 
 	print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
-									break;
-								case "crop_cancel":
-									CropTool.drop();
-									break;
+							break;
+						case "crop_cancel":
+							CropTool.drop();
+							break;
 <?php if(defined('SPELLCHECKER')){ ?>
 								case "spellcheck":
 									var win = new jsWindow("<?php print WE_SPELLCHECKER_MODULE_PATH ?>/weSpellchecker.php?editname="+(arguments[1]),"spellcheckdialog",-1,-1,500,450,true,false,true,false);
@@ -403,77 +406,77 @@ if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == "object"){
 	_checkFields = true;";
 }
 ?>
-									if (_checkFields) {
+								if (_checkFields) {
 
-										var theInputs = document.getElementsByTagName("input");
+									var theInputs = document.getElementsByTagName("input");
 
-										for (i=0;i<theInputs.length;i++) {
+									for (i=0;i<theInputs.length;i++) {
 
-											if ( (theType = theInputs[i].getAttribute("weType")) && (theVal = theInputs[i].value) ) {
+										if ( (theType = theInputs[i].getAttribute("weType")) && (theVal = theInputs[i].value) ) {
 
-												switch (theType) {
+											switch (theType) {
 
-													case "int":
-													case "integer":
-														if ( !theVal.match(/^-{0,1}\d+$/) ) {
+												case "int":
+												case "integer":
+													if ( !theVal.match(/^-{0,1}\d+$/) ) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_contains_incorrect_chars]'), "' + theType + '");
 print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 ?>
-																					theInputs[i].focus();
-																					return false;
-																				} else if(theVal>2147483647) {
+														theInputs[i].focus();
+														return false;
+													} else if(theVal>2147483647) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_int_value_to_height]'));
 print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 ?>
-																					theInputs[i].focus();
-																					return false;
-																				}
-																				break;
-																			case "float":
-																				if ( isNaN(theVal) ) {
+														theInputs[i].focus();
+														return false;
+													}
+													break;
+												case "float":
+													if ( isNaN(theVal) ) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_contains_incorrect_chars]'), "' + theType + '");
 print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 ?>
-																					theInputs[i].focus();
-																					return false;
-																				}
-																				break;
-																			case "weObject_input_length":
-																				if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>255) {
+														theInputs[i].focus();
+														return false;
+													}
+													break;
+												case "weObject_input_length":
+													if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>255) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_input_contains_incorrect_length]'));
 print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 ?>
-																					theInputs[i].focus();
-																					return false;
-																				}
-																				break;
-																			case "weObject_int_length":
-																				if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>10) {
+														theInputs[i].focus();
+														return false;
+													}
+													break;
+												case "weObject_int_length":
+													if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>10) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_int_contains_incorrect_length]'));
 print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 ?>
-																					theInputs[i].focus();
-																					return false;
-																				}
-																				break;
-																			}
-																		}
-																	}
+														theInputs[i].focus();
+														return false;
+													}
+													break;
+												}
+											}
+										}
 
-																}
-																return true;
-															}
-//-->
+									}
+									return true;
+								}
+								//-->
 </script>
 
 

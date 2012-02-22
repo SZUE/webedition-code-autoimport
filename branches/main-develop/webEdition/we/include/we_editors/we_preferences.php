@@ -190,7 +190,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
 	return $_output . we_multiIconBox::getHTML($name, "100%", $content, 30, "", $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie);
 }
 
-function getColorInput($name, $value, $disabled=false, $width=20, $height=20){
+function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
 	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 }
 
@@ -4137,7 +4137,7 @@ EOF;
 			}
 
 			// Build final HTML code
-			$_we_extensions_html = g_l('prefs', '[static]') . "<br>" . $_static_we_extensions->getHtml() . "<br><br>" . g_l('prefs', '[dynamic]') . "<br>" . $_dynamic_we_extensions->getHtml();
+			$_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
 
 			// Build dialog element if users has permission
 			if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
@@ -5372,7 +5372,7 @@ else {
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
-				} else{	//  gd lib ist nicht installiert
+				} else{ //  gd lib ist nicht installiert
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
@@ -6425,10 +6425,12 @@ function render_dialog(){
 
 
 
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
 
 
 

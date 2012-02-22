@@ -320,7 +320,7 @@ class we_docTypes extends we_class{
 		$vals = array();
 		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		$vals[0] = g_l('we_class', '[nodoctype]');
+		$vals[0] = g_l('weClass', '[nodoctype]');
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
