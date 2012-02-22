@@ -22,7 +22,9 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weImageDialog.class.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
-protect();
+if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+	protect();
+}
 $dialog = new weImageDialog();
 $dialog->initByHttp();
 $dialog->registerCmdFn("weDoImgCmd");
