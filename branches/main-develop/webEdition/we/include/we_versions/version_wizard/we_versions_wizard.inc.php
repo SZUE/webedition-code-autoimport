@@ -376,7 +376,7 @@ abstract class we_versions_wizard{
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
-		$nextButton = $button->create_button(
+		$nextButton = we_button::create_button(
 			"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
 
 		$js = 'window.onload = function(){
@@ -616,7 +616,7 @@ abstract class we_versions_wizard{
 			'space' => 0
 		));
 
-		$clearDate = $button->create_button(
+		$clearDate = we_button::create_button(
 			"reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
 
 		array_push(
@@ -642,7 +642,7 @@ abstract class we_versions_wizard{
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
-		$nextButton = $button->create_button(
+		$nextButton = we_button::create_button(
 			"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
 
 		$js = 'window.onload = function(){
@@ -1274,7 +1274,7 @@ abstract class we_versions_wizard{
 			$act = 0;
 		}
 
-		$nextButton = $button->create_button(
+		$nextButton = we_button::create_button(
 			"go", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
