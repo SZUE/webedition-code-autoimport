@@ -1765,7 +1765,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3]. $reg[4], $reg[1] . '="' . $_path . ($reg[3]?'?':'').$reg[4], $text);
+				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);
 			} else{
 				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '\1', $text);
 				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
@@ -2643,9 +2643,9 @@ function g_l($name, $specific, $omitErrors = false){
 		}
 	}
 	if(!$omitErrors){
-		t_e('Language file "' . $file . '" not found');
+		t_e('Language file "' . $file . '" not found with entry ' . $specific);
 	}
-	return '';
+	return '?';
 }
 
 function we_templateInit(){
@@ -2686,6 +2686,10 @@ function we_templateInit(){
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
+		//check if CHARSET is valid
+		if(!in_array($GLOBALS['CHARSET'],charsetHandler::getAvailCharsets())){
+			$GLOBALS['CHARSET'] =DEFAULT_CHARSET;
+		}
 		//FIXME: this code doesn't work!
 		/*
 		  list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
