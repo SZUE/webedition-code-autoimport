@@ -2595,7 +2595,8 @@ class weNewsletterView{
 						$firstname = $this->db->f($this->settings["customer_firstname_field"]);
 						$lastname = $this->db->f($this->settings["customer_lastname_field"]);
 
-						// damd: Parmeter $customer (Kunden ID in der Kundenverwaltung) und Flag dass es sich um Daten aus der Kundenverwaltung handelt angeh�ngt
+						// damd: Parmeter $customer (Kunden ID in der Kundenverwaltung) und Flag dass es sich um Daten aus der Kundenverwaltung handelt angehängt
+						$customer = $this->db->f('ID');
 						$customer_mail[] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname, $group, $this->getGroupBlocks($group), $customer, 'customer');
 					}
 				}

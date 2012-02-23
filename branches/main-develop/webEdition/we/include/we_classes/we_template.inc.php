@@ -670,7 +670,7 @@ class we_template extends we_document{
 		// find all we:master Tags
 		$masterTags = $regs = array();
 
-		preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
+		preg_match_all("|(<we:master([^>+]*)>)\n?([\\s\\S]*?)</we:master>\n?|", $code, $regs, PREG_SET_ORDER);
 
 
 		foreach($regs as $reg){
@@ -701,7 +701,7 @@ class we_template extends we_document{
 				$masterTemplateCode = $templObj->getTemplateCode(true);
 
 				$contentTags = array();
-				preg_match_all("|<we:content ?([^>+]*)/?>|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
+				preg_match_all("|<we:content ?([^>+]*)/?>\n?|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
 
 				foreach($contentTags as $reg){
 					$all = $reg[0];
