@@ -90,7 +90,9 @@ if (!_EditorFrame) {
 <?php
 
 if (isset($we_doc->ApplyWeDocumentCustomerFiltersToChilds) && $we_doc->ApplyWeDocumentCustomerFiltersToChilds) {
-	print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $we_doc->ID . "', '" . $we_doc->Table . "', '" . $we_doc->ParentID . "');";
+	if($GLOBALS['we_doc']->ParentID){
+		print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $we_doc->ID . "', '" . $we_doc->Table . "', '" . $we_doc->ParentID . "');";
+	}
 }
 
 ?>
