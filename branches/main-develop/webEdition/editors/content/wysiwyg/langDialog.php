@@ -29,9 +29,6 @@ if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['ou
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
 
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
 	$Glossary->Type = "foreignword";

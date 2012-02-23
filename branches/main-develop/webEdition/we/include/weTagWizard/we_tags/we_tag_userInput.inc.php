@@ -1,5 +1,4 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlRowAttribute.class.php');
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
