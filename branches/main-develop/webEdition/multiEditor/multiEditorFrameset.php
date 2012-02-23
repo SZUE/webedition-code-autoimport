@@ -31,9 +31,8 @@ $MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESS
 
 
 for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
-
 	$cols[] = "*";
-	$frames .= '	<frame src="about:blank" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize />' . "\n";
+	$frames .= '	<frame src="'.HTML_DIR.'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize />' . "\n";
 }
 ?><html>
 	<head>

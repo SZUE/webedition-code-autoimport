@@ -52,7 +52,7 @@ class we_message_reporting{
 			if($isJsMsg){ // message is build from scripts, just print it!
 				return "alert( $message );";
 			} else{
-				return 'alert("' . str_replace("'", "\'", $message) . '");';
+				return 'alert("' . str_replace('"', '\\"', $message) . '");';
 			}
 		} else{
 
