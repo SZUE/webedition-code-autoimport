@@ -22,9 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-define("NO_SESS", 1);
 
 $id = isset($_GET["id"]) ? $_GET["id"] : 0;
 $bid = isset($_GET["bid"]) ? $_GET["bid"] : 0;
