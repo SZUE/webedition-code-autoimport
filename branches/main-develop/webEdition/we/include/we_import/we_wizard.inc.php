@@ -43,10 +43,10 @@ class we_wizard{
 				"onload" => "wiz_next('wizbody', '" . $this->path . "?" . $args . "');")
 		);
 
-		$fst->addFrame(array("src" => HTML_DIR . "blank.html", "name" => "wizbody"));
+		$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "wizbody"));
 		$fst->setFrameAttributes(0, array("scrolling" => "auto"));
 
-		$fst->addFrame(array("src" => HTML_DIR . "blank.html", "name" => "wizbusy"));
+		$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "wizbusy"));
 		$fst->setFrameAttributes(1, array("scrolling" => "no"));
 
 		$fst->addFrame(array("src" => $this->path . "?pnt=wizcmd", "name" => "wizcmd"));

@@ -1173,7 +1173,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		<td width="' . ($this->width - 20) . '" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);"  class="tbButtonWysiwygDefaultStyle"><input value="' . htmlspecialchars($this->title) . '" type="text" name="' . $this->editor->ref . '_seli_' . $this->cmd . '" id="' . $this->editor->ref . '_seli_' . $this->cmd . '" readonly="readonly" style="cursor:pointer;height:16px;width:' . ($this->width - 30) . 'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="' . IMAGE_DIR . 'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
-</table><iframe src="' . HTML_DIR . 'blank.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
+</table><iframe src="' . HTML_DIR . 'white.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
 			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
 			foreach($this->vals as $val => $txt){
 				$out .= 'wePopupMenuArray[wefoo]["' . $this->cmd . '"]["' . $val . '"]="' . $txt . '";	' . "\n";

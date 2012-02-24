@@ -312,7 +312,7 @@ class weBackupWizard{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=body", "name" => "body", "scrolling" => "auto", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset, "name" => "busy", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
-		$frameset->addFrame(array("src" => HTML_DIR . 'blank.html', "name" => "checker", "scrolling" => "no", "noresize" => null));
+		$frameset->addFrame(array("src" => HTML_DIR . 'white.html', "name" => "checker", "scrolling" => "no", "noresize" => null));
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]')) . STYLESHEET;
 		$body = $frameset->getHtml() . $noframeset->getHTML();

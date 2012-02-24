@@ -210,7 +210,7 @@ if(isset($_REQUEST['cmd'])){
 									<script type="text/javascript">
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[error]") . '");
 										if(top.busy.setProgress) top.busy.setProgress(100);
-										top.checker.location = "' . HTML_DIR . 'blank.html";
+										top.checker.location = "' . HTML_DIR . 'white.html";
 										alert("' . g_l('backup', '[error_compressing_backup]') . '");
 									</script>
 									';
@@ -250,9 +250,9 @@ if(isset($_REQUEST['cmd'])){
 								if(top.busy.setProgress) top.busy.setProgress(100);
 								//top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2";
 								top.body.setLocation("/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&step=2");
-								//top.checker.location = "' . HTML_DIR . 'blank.html";
+								//top.checker.location = "' . HTML_DIR . 'white.html";
 								if(top.checker != "undefined"){
-									top.checker.setLocation("' . HTML_DIR . 'blank.html");
+									top.checker.setLocation("' . HTML_DIR . 'white.html");
 								}');
 
 				if($_SESSION['weBackupVars']['backup_log']){
@@ -373,7 +373,7 @@ if(isset($_REQUEST['cmd'])){
 
 				print '
 								<script type="text/javascript">
-									top.checker.location = "' . HTML_DIR . 'blank.html";
+									top.checker.location = "' . HTML_DIR . 'white.html";
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
 									top.opener.top.header.location.reload();
