@@ -24,16 +24,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
-$cols = array();
-$frames = "";
-$MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
-
-
-for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
-	$cols[] = "*";
-	$frames .= '	<frame src="'.HTML_DIR.'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize />' . "\n";
-}
 ?><html>
 	<head>
 
@@ -49,9 +39,18 @@ for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
 		</script>
 
 	</head>
-	<frameset id="multiEditorFrameset" cols="<?php print implode(",", $cols); ?>" border="0" frameborder="no" framespacing="0" noresize>
-		<?php
-		print $frames;
-		?>
-	</frameset>
+	<body style="margin:0px;"><?php
+//echo '<frameset id="multiEditorFrameset" cols="'.implode(",", $cols); .'" border="0" frameborder="no" framespacing="0" noresize>';
+
+/* $cols = array();
+  $frames = ""; */
+$MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
+
+for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
+	//$cols[] = "*";
+	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;overflow: hidden;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+}
+//</frameset>
+?>
+	</body>
 </html>

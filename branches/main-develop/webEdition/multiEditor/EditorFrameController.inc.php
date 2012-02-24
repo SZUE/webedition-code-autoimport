@@ -89,7 +89,7 @@ function EditorFrameController() {
 		this.MultiEditorFramesetWindow = top.rframe.bm_content_frame.multiEditorEditorFramesets;
 		this.MultiEditorFrameset = this.MultiEditorFramesetWindow.document.getElementById("multiEditorFrameset");
 
-		var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("frame");
+		var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("iframe");
 
 		if ( _frames.length ) {
 
@@ -119,10 +119,7 @@ function EditorFrameController() {
 	//   boolean
 	//--------------------------------------------------------------------
 	this.isInitialized = function() {
-		if (this.EditorFrames == null) {
-			return false;
-		}
-		return true;
+		return (this.EditorFrames != null);
 	}
 
 	/**
@@ -633,28 +630,33 @@ function EditorFrameController() {
 	//   nothing
 	//--------------------------------------------------------------------
 	this.toggleFrames = function() {
+		if(!this.isInitialized()){
 
-		var _colStr = "";
+		}
+//		var _colStr = "";
 		if ( !this.ActiveEditorFrameId ) {
-			var _firstIsSet = false;
-
+			first=true;
 			for (frameId in this.EditorFrames) {
 
-				if (_colStr == "") {
-					_colStr += "*";
+				if (first) {
+					//_colStr += "*";
 					this.getEditorFrame(frameId).setEmptyEditor();
+					this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
+					first=false;
 				} else {
-					_colStr += ",0";
+					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
+					//_colStr += ",0";
 				}
 			}
 
 		} else {
 			for (frameId in this.EditorFrames) {
-				if (_colStr != "") {
+	/*			if (_colStr != "") {
 					_colStr += ",";
-				}
+				}*/
 				if (this.ActiveEditorFrameId == frameId) {
-					_colStr += "*";
+					//_colStr += "*";
+					this.getEditorFrame(frameId).EditorFrameReference.style.display="inline";
 				} else {
 					if ( this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType != "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows){
 						this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
@@ -663,12 +665,13 @@ function EditorFrameController() {
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 					}
-					_colStr += "0";
+	//				_colStr += "0";
+					this.getEditorFrame(frameId).EditorFrameReference.style.display="none";
+
 				}
 			}
 		}
-
-		this.MultiEditorFrameset.setAttribute("cols", _colStr);
+		//this.MultiEditorFrameset.setAttribute("cols", _colStr);
 	}
 
 	//--------------------------------------------------------------------
@@ -970,7 +973,7 @@ function EditorFrame(ref, elementId) {
 
 	this.freeEditor = function() {
 
-		this.EditorFrameWindow.location = "about:blank";
+		this.EditorFrameWindow.location = "<?php print HTML_DIR ?>/blank_editor.html";
 
 		this.EditorType = null;	// model|cockpit, etc
 
@@ -1346,5 +1349,5 @@ function EditorFrame(ref, elementId) {
 		}
 	}
 }
--->
+//-->
 </script>

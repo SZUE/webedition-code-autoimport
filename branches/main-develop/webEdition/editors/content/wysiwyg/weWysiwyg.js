@@ -26,22 +26,22 @@ String.prototype.trim2=function () {
 }
 
 var isIE9=false;
-if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
-	if (navigator.appVersion.indexOf("MSIE")!=-1){
+if (navigator.appVersion.indexOf("MSIE")!=-1){
+	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
 		var IE = null;
-		if (document.documentMode) {  
+		if (document.documentMode) {
 			// Internet Exploter 8 oder 9
 			IE = document.documentMode; // documentMode = 8
 		} else {
-			  // Internet Explorer 5-7
-			  IE = 5; //setzt sozusagen den Quirks-Modus
-			  if (document.compatMode) {
-				 if (document.compatMode == "CSS1Compat")
+			// Internet Explorer 5-7
+			IE = 5; //setzt sozusagen den Quirks-Modus
+			if (document.compatMode) {
+				if (document.compatMode == "CSS1Compat")
 					IE = 7; // IE7 Modus
-				 }
+			}
 		}
 		isIE9 = IE >= 9;//dies detektiert wie sich der IE verhällt
-		//var temp=navigator.appVersion.split("MSIE"); alternative, das gibt er an, was aber definiitv nicht immer funktioniert
+	//var temp=navigator.appVersion.split("MSIE"); alternative, das gibt er an, was aber definiitv nicht immer funktioniert
 	}
 }
 
@@ -3948,7 +3948,7 @@ function we_getElemPos(el) {
 	var arr = {
 		x: el.offsetLeft,
 		y: el.offsetTop
-		};
+	};
 	if (el.offsetParent) {
 		var tmp = we_getElemPos(el.offsetParent);
 		arr.x += tmp.x;
