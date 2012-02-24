@@ -151,6 +151,8 @@ class we_baseElement{
 				case 'border':
 					$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 					break;
+				case 'bgcolor':
+					$this->setStyle('background-color',$attrib_value);
 				default:
 					$this->attribs[$attrib_name] = $attrib_value;
 			}

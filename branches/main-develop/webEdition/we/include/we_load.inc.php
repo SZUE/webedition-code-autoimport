@@ -69,12 +69,11 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 	}
 
 	function getItems($ParentID, $offset = 0, $segment = 0){
-		global $prefs, $table, $openFolders, $parentpaths, $wsQuery, $treeItems, $Tree;
+		global $table, $openFolders, $parentpaths, $wsQuery, $treeItems;
 
-		if($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
+		if(($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))){
 			return 0;
-		if($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))
-			return 0;
+		}
 		$prevoffset = $offset - $segment;
 		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
 		if($offset && $segment){
@@ -188,7 +187,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	if($ws = get_ws($table)){
+	if(($ws = get_ws($table))){
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 		foreach($wsPathArray as $path){
 			$wsQuery .= " Path like '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . " OR ";
@@ -229,7 +228,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	$js = "";
+	$js = '';
 	if($_SESSION["we_mode"] != "seem"){
 		$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
 
@@ -237,34 +236,31 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 
 		getItems($parentFolder, $offset, $Tree->default_segment);
 
-		$js = '
-	if(!' . $Tree->topFrame . '.treeData) {
-		' . we_message_reporting::getShowMessageCall(
-				"A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
-	}';
+		$js =
+			'if(!' . $Tree->topFrame . '.treeData) {' .
+			we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) .
+			'}';
 
 		if(!$parentFolder)
-			$js .= '
-		' . $Tree->topFrame . '.treeData.clear();
-		' . $Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));
-';
+			$js .=
+				$Tree->topFrame . '.treeData.clear();' .
+				$Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));';
 
 		$js .= $Tree->getJSLoadTree($treeItems);
 
-		$js .= '
-		first=' . $Tree->topFrame . '.firstLoad;
-		if(top.firstLoad)
+		$js .=
+			'first=' . $Tree->topFrame . '.firstLoad;
+		if(top.firstLoad){
 			' . $Tree->topFrame . '.toggleBusy(0);
-		else
+		}else{
 			' . $Tree->topFrame . '.firstLoad = true;
-';
+		}';
 	}
-	$body = we_html_element::htmlBody(array(
-			"bgcolor" => "white"
-		));
 
-	$head = //FIXME: missing title
-		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js);
 
-	print we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
+	print we_html_element::htmlHtml(we_html_element::htmlHead(
+				we_html_tools::getHtmlInnerHead('File-Tree') .
+				we_html_element::jsElement($js)
+			) . we_html_element::htmlBody(array("bgcolor" => "white"))
+		);
 }

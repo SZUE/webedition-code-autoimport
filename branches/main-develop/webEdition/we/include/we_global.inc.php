@@ -1585,12 +1585,14 @@ function getArrayKey($needle, $haystack){
 /**
  * This function is equivalent to print_r, except that it adds addtional "pre"-headers
  * @param * $val the variable to print
+ * @param bool html (default: true) whether to apply htmlspecialchars
+ * @param bool useTA (default: false) whether output is formated as textarea
  */
-function p_r($val, $html = true){
-	print '<pre>';
+function p_r($val, $html = true,$useTA=false){
+	print ($useTA?'<textarea style="width:100%" rows="20">':'<pre>');
 	$val = print_r($val, true);
-	echo ($html ? str_replace(array('<', '>'), array('&lt;', '&gt;'), $val) : $val);
-	print '</pre>';
+	echo ($html ? htmlspecialchars($val) : $val);
+	print ($useTA?'</textarea>':'</pre>');
 }
 
 /**
