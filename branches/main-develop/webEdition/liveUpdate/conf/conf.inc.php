@@ -58,4 +58,6 @@ if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && 
 	@set_time_limit(180);
 }
 
-//Beta-Switch
+//Beta-Switch default muss so drin bleiben
+$_REQUEST['testUpdate'] = 0;
+
