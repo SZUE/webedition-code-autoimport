@@ -29,12 +29,8 @@
 abstract class we_util_File{
 
 	public static function load($filename, $flags = "rb", $rsize = 8192){
-		if($filename == "")
+		if($filename == "" || ((!self::hasURL($filename)) && (!is_readable($filename)))){
 			return false;
-		if(!self::hasURL($filename)){
-			if(!is_readable($filename)){
-				return false;
-			}
 		}
 		$buffer = "";
 		$fp = @fopen($filename, $flags);
@@ -47,18 +43,15 @@ abstract class we_util_File{
 			} while(true);
 			fclose($fp);
 			return $buffer;
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	public static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
 
-		if($filename == '')
+		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
-		if(self::hasURL($filename))
-			return false;
-		if(!is_readable($filename))
-			return false;
+		}
 
 		if($iscompressed == 0){
 			$open = 'fopen';
@@ -91,11 +84,7 @@ abstract class we_util_File{
 
 	public static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
 
-		if($filename == '')
-			return false;
-		if(self::hasURL($filename))
-			return false;
-		if(!is_readable($filename))
+		if($filename == '' || self::hasURL($filename) || !is_readable($filename))
 			return false;
 
 		if($iscompressed == 0){
@@ -121,28 +110,27 @@ abstract class we_util_File{
 				return $buffer;
 			} else{
 				$close($fp);
-				return false;
 			}
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
-		if($filename == "")
-			return false;
-		if(self::hasURL($filename))
+		if($filename == "" || self::hasURL($filename))
 			return false;
 		if(file_exists($filename)){
-			if(!is_writable($filename))
+			if(!is_writable($filename)){
 				return false;
+			}
 		} else{
 			if($create_path){
 				if(!self::mkpath(dirname($filename))){
 					return false;
 				}
 			}
-			if(!is_writable(dirname($filename)))
+			if(!is_writable(dirname($filename))){
 				return false;
+			}
 		}
 		$written = 0;
 
@@ -159,10 +147,7 @@ abstract class we_util_File{
 		if($filename == "")
 			$filename = self::getUniqueId();
 		$filename = TMP_DIR . "/" . $filename;
-		if(self::save($filename, $content))
-			return $filename;
-		else
-			return false;
+		return (self::save($filename, $content)) ? $filename : false;
 	}
 
 	public static function delete($filename){
@@ -175,27 +160,19 @@ abstract class we_util_File{
 				} else{
 					return @unlink($filename);
 				}
-			} else{
-				return false;
 			}
 		}
 		return false;
 	}
 
 	public static function hasURL($filename){
-		if((strtolower(substr($filename, 0, 4)) == "http") || (strtolower(substr($filename, 0, 4)) == "ftp"))
-			return true;
-		else
-			return false;
+		return ((strtolower(substr($filename, 0, 4)) == "http") || (strtolower(substr($filename, 0, 4)) == "ftp"));
 	}
 
 	public static function getUniqueId($md5 = true){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		if($md5)
-			return md5(uniqid(microtime()));
-		else
-			return uniqid(microtime());
+		return ($md5 ? md5(uniqid(microtime())) : uniqid(microtime()));
 	}
 
 	/**
@@ -203,8 +180,9 @@ abstract class we_util_File{
 	 */
 	public static function splitFile($filename, $path, $pattern = "", $split_size = 0, $marker = ""){
 
-		if($pattern == "")
+		if($pattern == ""){
 			$pattern = basename($filename) . "%s";
+		}
 		$buff = "";
 		$filename_tmp = "";
 		$fh = fopen($filename, "rb");
@@ -310,22 +288,29 @@ abstract class we_util_File{
 	}
 
 	public static function getComPrefix($compression){
-		if($compression == "gzip")
-			return "gz";
-		if($compression == "zip")
-			return "zip_";
-		if($compression == "bzip")
-			return "bz";
-		return "f";
+		switch($compression){
+			case "gzip":
+				return "gz";
+			case "zip":
+				return "zip_";
+			case "bzip":
+				return "bz";
+			default:
+				return "f";
+		}
 	}
 
 	public static function getZExtension($compression){
-		if($compression == "gzip")
-			return "gz";
-		if($compression == "zip")
-			return "zip";
-		if($compression == "bzip")
-			return "bz";
+		switch($compression){
+			case "gzip":
+				return "gz";
+			case "zip":
+				return "zip";
+			case "bzip":
+				return "bz";
+			default:
+				return '';
+		}
 	}
 
 	public static function getCompression($filename){
@@ -444,7 +429,7 @@ abstract class we_util_File{
 
 		$returnValue = true;
 
-		if(self::checkAndMakeFolder($completeDirPath,true))
+		if(self::checkAndMakeFolder($completeDirPath, true))
 			return $returnValue;
 
 		$cf = array($completeDirPath);
@@ -461,11 +446,7 @@ abstract class we_util_File{
 		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
 			$oldumask = @umask(0000);
 
-			if(defined("WE_NEW_FOLDER_MOD")){
-				$mod = octdec(intval(WE_NEW_FOLDER_MOD));
-			} else{
-				$mod = 0755;
-			}
+			$mod = (defined("WE_NEW_FOLDER_MOD") ? octdec(intval(WE_NEW_FOLDER_MOD)) : 0755);
 
 			if(!@mkdir($cf[$i], $mod)){
 				t_e('warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
@@ -502,11 +483,7 @@ abstract class we_util_File{
 
 		$oldumask = @umask(0000);
 
-		if(defined('WE_NEW_FOLDER_MOD')){
-			$mod = octdec(abs(WE_NEW_FOLDER_MOD));
-		} else{
-			$mod = 0755;
-		}
+		$mod = (defined('WE_NEW_FOLDER_MOD') ? octdec(abs(WE_NEW_FOLDER_MOD)) : 0755);
 
 		// check for directories: create it if we could no write into it:
 		if(!@mkdir($path, $mod, $recursive)){
@@ -522,30 +499,21 @@ abstract class we_util_File{
 	 * checks permission to write in path $path and tries a chmod(0755)
 	 */
 	public static function checkWritePermissions($path, $mod = 0755, $nocreate = false){
-		if(is_file($path)){
-			// ok, it's a file
-		} else if(is_dir($path)){
-			// ok, it's a directory
-		} else{
+		if(!is_file($path) && !is_dir($path)){
 			error_log("we_util_File/checkWritePermissions() - target " . $path . " does not exist");
 			return false;
 		}
 		if(is_writable($path)){
 			return true;
-		} else{
-			$oldumask = @umask();
-			@umask(0755);
-			if(!@chmod($path, $mod)){
-				return false;
-			} else{
-				if(is_writable($path)){
-					return true;
-				} else{
-					return false;
-				}
-			}
-			@umask($oldumask);
 		}
+		$oldumask = @umask();
+		@umask(0755);
+		if(!@chmod($path, $mod)){
+			return false;
+		} else{
+			return (is_writable($path));
+		}
+		@umask($oldumask);
 	}
 
 	public static function insertIntoErrorLog($text){
@@ -578,10 +546,7 @@ abstract class we_util_File{
 	 * if $new exists already, windows will not rename the file $old
 	 */
 	public static function copyFile($old, $new){
-		if(!@copy($old, $new)){
-			return false;
-		}
-		return true;
+		return (@copy($old, $new));
 	}
 
 	/**
@@ -696,11 +661,7 @@ abstract class we_util_File{
 	}
 
 	public static function removeTrailingSlash($value){
-		if(substr($value, -1) == "/"){
-			return substr($value, 0, -1);
-		} else{
-			return $value;
-		}
+		return rtrim($value,'/');
 	}
 
 	public static function compressDirectoy($directoy, $destinationfile){

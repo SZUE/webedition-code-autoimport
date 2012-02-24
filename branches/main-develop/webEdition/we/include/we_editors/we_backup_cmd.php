@@ -242,20 +242,18 @@ if(isset($_REQUEST['cmd'])){
 				}
 
 				if($_SESSION['weBackupVars']['options']['export2send'] == 1){
-					we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'], time() + 300);
+					we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'], time() + 8*3600); //8h
 				}
 
-				print '
-								<script type="text/javascript">
-
-								if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
+				print we_html_element::jsElement(
+						'if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 								if(top.busy.setProgress) top.busy.setProgress(100);
 								//top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2";
 								top.body.setLocation("/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&step=2");
 								//top.checker.location = "' . HTML_DIR . 'blank.html";
-								top.checker.setLocation("' . HTML_DIR . 'blank.html");
-							</script>
-							';
+								if(top.checker != "undefined"){
+									top.checker.setLocation("' . HTML_DIR . 'blank.html");
+								}');
 
 				if($_SESSION['weBackupVars']['backup_log']){
 					weBackupUtil::addLog('Backup export finished');
