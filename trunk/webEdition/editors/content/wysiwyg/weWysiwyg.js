@@ -26,8 +26,8 @@ String.prototype.trim2=function () {
 }
 
 var isIE9=false;
-if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
-	if (navigator.appVersion.indexOf("MSIE")!=-1){
+if (navigator.appVersion.indexOf("MSIE")!=-1){
+	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
 		var IE = null;
 		if (document.documentMode) {  
 			// Internet Exploter 8 oder 9
