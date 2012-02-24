@@ -105,7 +105,7 @@ class weVersionsView{
 
 	  				var height = 240;
 	  				if((h - height)>0) {
-	  					scrollContent.style.height=h - height;
+	  					scrollContent.style.height=(h - height)+"px";
 	  				}
 	  				if((scrollContent.offsetHeight - scrollheight)>0){
 	  					scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";

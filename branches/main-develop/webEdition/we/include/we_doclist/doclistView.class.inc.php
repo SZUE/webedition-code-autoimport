@@ -333,7 +333,7 @@ class doclistView {
 
         var height = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
         if((h - height)>0) {
-          scrollContent.style.height=h - height;
+          scrollContent.style.height=(h - height)+"px";
         }
         if((scrollContent.offsetHeight - scrollheight)>0){
           scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
