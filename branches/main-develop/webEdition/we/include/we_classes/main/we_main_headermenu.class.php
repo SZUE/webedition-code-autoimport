@@ -26,6 +26,14 @@ class we_main_headermenu{
 
 	static function pCSS(){
 		print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+		switch(we_base_browserDetect::inst()->getBrowser()){
+			case we_base_browserDetect::SAFARI:
+				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
+				break;
+			case we_base_browserDetect::FF:
+				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_FF.css');
+				break;
+		}
 		print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
 		//needed, to correct IE Bug
 		$_BROWSER = we_base_browserDetect::inst();
