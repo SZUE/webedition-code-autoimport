@@ -26,7 +26,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php'
 $parts = array();
 
 if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be determined in template
-	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
+	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
 if($GLOBALS['we_editmode']){
@@ -138,218 +138,222 @@ if($GLOBALS['we_editmode']){
 	<?php
 	if($_SESSION['prefs']['editorMode'] == 'codemirror2'){
 		echo 'document.getElementById("bodydiv").style.display="block";
-		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
-		sizeEditor();
+	editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
+	sizeEditor();
 
-				return;';
+			return;';
 	}
 	?>
 
-					if (document.weEditorApplet) {
-						if (top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
-							document.getElementById("weEditorApplet").style.left="0";
-							document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-							document.weEditorApplet.initUndoManager();
+			if (document.weEditorApplet) {
+				if (top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
+					document.getElementById("weEditorApplet").style.left="0";
+					document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+					document.weEditorApplet.initUndoManager();
 
-							sizeEditor();
-							checkAndSetHot();
-						} else {
-							setTimeout(initEditor, 1000);
-						}
-					} else {
-						sizeEditor();
-						window.setTimeout('scrollToPosition();',50);
-					}
-					document.getElementById("bodydiv").style.display="block";
+					sizeEditor();
+					checkAndSetHot();
+				} else {
+					setTimeout(initEditor, 1000);
 				}
+			} else {
+				sizeEditor();
+				window.setTimeout('scrollToPosition();',50);
+			}
+			document.getElementById("bodydiv").style.display="block";
+		}
 
-				function toggleTagWizard() {
-					var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-					w = Math.max(w,350);
-					var editorWidth = w - 37;
-					var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-					var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
-					if (document.weEditorApplet) {
-						var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
-						document.weEditorApplet.height = editorHeight;
-						document.weEditorApplet.setSize(editorWidth,editorHeight);
-					} else {
+		function toggleTagWizard() {
+			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+			w = Math.max(w,350);
+			var editorWidth = w - 37;
+			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+			var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
+			if (document.weEditorApplet) {
+				var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+				document.weEditorApplet.height = editorHeight;
+				document.weEditorApplet.setSize(editorWidth,editorHeight);
+			} else {
 
-						var editarea = document.getElementById("editarea");
-						editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-						if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-							editarea.nextSibling.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+				var editarea = document.getElementById("editarea");
+				editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
+					editarea.nextSibling.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 
-						if(window.editor && window.editor.frame) {
-							window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-						}
-					}
-
+				if(window.editor && window.editor.frame) {
+					window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 				}
+			}
 
-				// ################ Java Editor specific Functions
+		}
 
-				function weEditorSetHiddenText() {
-					if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
-						if (document.weEditorApplet.isHot()) {
-							_EditorFrame.setEditorIsHot(true);
-							document.weEditorApplet.setHot(false);
-						}
-						document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
-					}
+		// ################ Java Editor specific Functions
+
+		function weEditorSetHiddenText() {
+			if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+				if (document.weEditorApplet.isHot()) {
+					_EditorFrame.setEditorIsHot(true);
+					document.weEditorApplet.setHot(false);
 				}
+				document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
+			}
+		}
 
 
-				function checkAndSetHot() {
-					if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != "undefined") {
-						if (document.weEditorApplet.isHot()) {
-							_EditorFrame.setEditorIsHot(true);
-						} else {
-							setTimeout("checkAndSetHot()", 1000);
-						}
-					}
+		function checkAndSetHot() {
+			if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != "undefined") {
+				if (document.weEditorApplet.isHot()) {
+					_EditorFrame.setEditorIsHot(true);
+				} else {
+					setTimeout("checkAndSetHot()", 1000);
 				}
+			}
+		}
 
-				function setCode() {
-					if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
-						document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-					}
+		function setCode() {
+			if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
+				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+			}
+		}
+
+		// ################## Textarea specific functions #############
+
+		function getScrollPosTop () {
+			var elem = document.getElementById("editarea");
+			if (elem) {
+				return elem.scrollTop;
+			}
+			return 0;
+
+		}
+
+		function getScrollPosLeft () {
+			var elem = document.getElementById("editarea");
+			if (elem) {
+				return elem.scrollLeft;
+			}
+			return 0;
+		}
+
+		function scrollToPosition () {
+			var elem = document.getElementById("editarea");
+			if (elem) {
+				elem.scrollTop=parent.editorScrollPosTop;
+				elem.scrollLeft=parent.editorScrollPosLeft;
+			}
+		}
+
+		function wedoKeyDown(ta,keycode){
+
+			if (keycode == 9) { // TAB
+				if (ta.setSelectionRange) {
+					var selectionStart = ta.selectionStart;
+					var selectionEnd = ta.selectionEnd;
+					ta.value = ta.value.substring(0, selectionStart)
+						+ "\t"
+						+ ta.value.substring(selectionEnd);
+					ta.focus();
+					ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
+					ta.focus();
+					return false;
+
+				} else if (document.selection) {
+					var selection = document.selection;
+					var range = selection.createRange();
+					range.text = "\t";
+					return false;
 				}
+			}
 
-				// ################## Textarea specific functions #############
+			return true;
+		}
+		// ############ EDITOR PLUGIN ################
 
-				function getScrollPosTop () {
-					var elem = document.getElementById("editarea");
-					if (elem) {
-						return elem.scrollTop;
-					}
-					return 0;
+		function setSource(source){
+			document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value=source;
+			//Codemirror
+			if(editor!="undefined"){
+				editor.setValue(source);
+			}
+			// for Applet
+			setCode(source);
+		}
 
-				}
+		function getSource(){
+			if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+				return document.weEditorApplet.getCode();
+			} else {
+				return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
+			}
+		}
 
-				function getScrollPosLeft () {
-					var elem = document.getElementById("editarea");
-					if (elem) {
-						return elem.scrollLeft;
-					}
-					return 0;
-				}
+		function getCharset(){
+			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
+		}
 
-				function scrollToPosition () {
-					var elem = document.getElementById("editarea");
-					if (elem) {
-						elem.scrollTop=parent.editorScrollPosTop;
-						elem.scrollLeft=parent.editorScrollPosLeft;
-					}
-				}
+		// ############ CodeMirror Functions ################
 
-				function wedoKeyDown(ta,keycode){
+		function reindent() { // reindents code of CodeMirror
+			if(editor.selection().length)
+				editor.reindentSelection();
+			else
+				editor.reindent();
+		}
 
-					if (keycode == 9) { // TAB
-						if (ta.setSelectionRange) {
-							var selectionStart = ta.selectionStart;
-							var selectionEnd = ta.selectionEnd;
-							ta.value = ta.value.substring(0, selectionStart)
-								+ "\t"
-								+ ta.value.substring(selectionEnd);
-							ta.focus();
-							ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
-							ta.focus();
-							return false;
+		function reindent2() { // reindents code of CodeMirror2
+			if(editor.somethingSelected()){
+				start=editor.getCursor(true).line;
+				end=editor.getCursor(false).line;
+			}else{
+				start=0;
+				end=editor.lineCount();
+			}
+			for(i=start;i<end;++i){
+				editor.indentLine(i);
+			}
+		}
+		var lastPos = null, lastQuery = null, marked = [];
+		function unmark() {
+			for (var i = 0; i < marked.length; ++i) marked[i].clear();
+			marked.length = 0;
+		}
+		function search(text) {
+			unmark();
+			if (!text) return;
+			for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
+				marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
 
-						} else if (document.selection) {
-							var selection = document.selection;
-							var range = selection.createRange();
-							range.text = "\t";
-							return false;
-						}
-					}
+			if (lastQuery != text) lastPos = null;
+			var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
+			if (!cursor.findNext()) {
+				cursor = editor.getSearchCursor(text);
+				if (!cursor.findNext()) return;
+			}
+			editor.setSelection(cursor.from(), cursor.to());
+			lastQuery = text; lastPos = cursor.to();
+		}
 
-					return true;
-				}
-				// ############ EDITOR PLUGIN ################
-
-				function setSource(source){
-					document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value=source;
-					// for Applet
-					setCode(source);
-				}
-
-				function getSource(){
-					if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
-						return document.weEditorApplet.getCode();
-					} else {
-						return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
-					}
-				}
-
-				function getCharset(){
-					return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
-				}
-
-				// ############ CodeMirror Functions ################
-
-				function reindent() { // reindents code of CodeMirror
-					if(editor.selection().length)
-						editor.reindentSelection();
-					else
-						editor.reindent();
-				}
-
-				function reindent2() { // reindents code of CodeMirror2
-					if(editor.somethingSelected()){
-						start=editor.getCursor(true).line;
-						end=editor.getCursor(false).line;
-					}else{
-						start=0;
-						end=editor.lineCount();
-					}
-					for(i=start;i<end;++i){
-						editor.indentLine(i);
-					}
-				}
-				var lastPos = null, lastQuery = null, marked = [];
-				function unmark() {
-					for (var i = 0; i < marked.length; ++i) marked[i].clear();
-					marked.length = 0;
-				}
-				function search(text) {
-					unmark();
-					if (!text) return;
-					for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
-						marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
-
-					if (lastQuery != text) lastPos = null;
-					var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
-					if (!cursor.findNext()) {
-						cursor = editor.getSearchCursor(text);
-						if (!cursor.findNext()) return;
-					}
-					editor.setSelection(cursor.from(), cursor.to());
-					lastQuery = text; lastPos = cursor.to();
-				}
-
-				function myReplace(text, replaceby) {
-					if(!text|| !replaceby) return;
-					if(editor.getSelection()!=text){
-						search(text);
-					}
-					if(editor.getSelection()!=text){
-						return;
-					}
-					editor.replaceSelection(replaceby);
-					search(text);
-				}
+		function myReplace(text, replaceby) {
+			if(!text|| !replaceby) return;
+			if(editor.getSelection()!=text){
+				search(text);
+			}
+			if(editor.getSelection()!=text){
+				return;
+			}
+			editor.replaceSelection(replaceby);
+			search(text);
+		}
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'       ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'        ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
-		$we_doc->pHiddenTrans();
-	}
+	$we_doc->pHiddenTrans();
+}
 
-	function we_getJavaEditorCode($code){
-		global $we_doc;
-		$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
+function we_getJavaEditorCode($code){
+	global $we_doc;
+	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
     <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl(true) . '/webEdition/editors/template/editor"/>
     <param name="phpext" value=".php"/>
 	<param name="serverUrl" value="' . getServerUrl(true) . '"/>
@@ -357,40 +361,40 @@ if($GLOBALS['we_editmode']){
 
 
 
-		if($_SESSION["prefs"]["editorFont"] == 1){
-			// translate html font names into java font names
-			switch($_SESSION["prefs"]["editorFontname"]){
-				case "mono":
-					$fontname = 'monospaced';
-					break;
-				case "sans-serif":
-					$fontname = 'sansserif';
-					break;
-				default:
-					$fontname = $_SESSION['prefs']['editorFontname'];
-					break;
-			}
-			$maineditor .= '<param name="fontName" value="' . $fontname . '"/>';
-			$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '"/>';
+	if($_SESSION["prefs"]["editorFont"] == 1){
+		// translate html font names into java font names
+		switch($_SESSION["prefs"]["editorFontname"]){
+			case "mono":
+				$fontname = 'monospaced';
+				break;
+			case "sans-serif":
+				$fontname = 'sansserif';
+				break;
+			default:
+				$fontname = $_SESSION['prefs']['editorFontname'];
+				break;
 		}
-
-		if($_SESSION["prefs"]["specify_jeditor_colors"] == 1){
-			$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">';
-			$maineditor .= '<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">';
-			$maineditor .= '<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">';
-			$maineditor .= '<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
-		}
-
-		$maineditor .= '</applet>';
-		return $maineditor;
+		$maineditor .= '<param name="fontName" value="' . $fontname . '"/>';
+		$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '"/>';
 	}
 
-	function we_get_CM_css(){
-		return
-			'<style type="text/css">
+	if($_SESSION["prefs"]["specify_jeditor_colors"] == 1){
+		$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">';
+		$maineditor .= '<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">';
+		$maineditor .= '<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">';
+		$maineditor .= '<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">';
+		$maineditor .= '<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">';
+		$maineditor .= '<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">';
+		$maineditor .= '<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
+	}
+
+	$maineditor .= '</applet>';
+	return $maineditor;
+}
+
+function we_get_CM_css(){
+	return
+		'<style type="text/css">
 		.CodeMirror-line-numbers {
 			padding-top: 6px;
 			padding-right: 5px;
@@ -414,76 +418,76 @@ if($GLOBALS['we_editmode']){
 			-webkit-border-radius: 3px;
 		}
 	</style>';
-	}
+}
 
-	function we_getCodeMirrorCode($code){
-		global $we_doc;
-		$maineditor = '';
-		$parser_js = array();
-		$parser_css = array();
-		$useCSCC = false;
-		switch($we_doc->ContentType){ // Depending on content type we use different parsers and css files
-			case 'text/css':
-				$parser_js[] = 'parsecss.js';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-				break;
-			case 'text/js':
-				$parser_js[] = 'tokenizejavascript.js';
-				$parser_js[] = 'parsejavascript.js';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-				break;
-			case 'text/weTmpl':
-				$useCSCC = we_base_browserDetect::isIE() ? false : true; //tag completion doesn't work in IE yet
-				$parser_js[] = 'parsexml.js';
-				$parser_js[] = 'parsecss.js';
-				$parser_js[] = 'tokenizejavascript.js';
-				$parser_js[] = 'parsejavascript.js';
-				$parser_js[] = '../contrib/php/js/tokenizephp.js';
-				$parser_js[] = '../contrib/php/js/parsephp.js';
-				$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/php/css/phpcolors.css';
-				break;
-			case 'text/html':
-				$parser_js[] = 'parsexml.js';
-				$parser_js[] = 'parsecss.js';
-				$parser_js[] = 'tokenizejavascript.js';
-				$parser_js[] = 'parsejavascript.js';
-				$parser_js[] = '../contrib/php/js/tokenizephp.js';
-				$parser_js[] = '../contrib/php/js/parsephp.js';
-				$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
-				break;
-			case 'text/xml':
-				$parser_js[] = 'parsexml.js';
-				$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
-				break;
-			default:
-				//don't use CodeMirror
-				return '';
-		}
-		$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
-		if(count($parser_js) > 0){ // CodeMirror will be used
-			$maineditor = we_get_CM_css() . we_html_element::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
-			if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //if we use tag completion we need additional files
-				$maineditor.=
-					we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js') .
-					we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js') .
-					we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js') .
-					we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js') .
-					'
+function we_getCodeMirrorCode($code){
+	global $we_doc;
+	$maineditor = '';
+	$parser_js = array();
+	$parser_css = array();
+	$useCSCC = false;
+	switch($we_doc->ContentType){ // Depending on content type we use different parsers and css files
+		case 'text/css':
+			$parser_js[] = 'parsecss.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			break;
+		case 'text/js':
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			break;
+		case 'text/weTmpl':
+			$useCSCC = we_base_browserDetect::isIE() ? false : true; //tag completion doesn't work in IE yet
+			$parser_js[] = 'parsexml.js';
+			$parser_js[] = 'parsecss.js';
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_js[] = '../contrib/php/js/tokenizephp.js';
+			$parser_js[] = '../contrib/php/js/parsephp.js';
+			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/php/css/phpcolors.css';
+			break;
+		case 'text/html':
+			$parser_js[] = 'parsexml.js';
+			$parser_js[] = 'parsecss.js';
+			$parser_js[] = 'tokenizejavascript.js';
+			$parser_js[] = 'parsejavascript.js';
+			$parser_js[] = '../contrib/php/js/tokenizephp.js';
+			$parser_js[] = '../contrib/php/js/parsephp.js';
+			$parser_js[] = '../contrib/php/js/parsephphtmlmixed.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/jscolors.css';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/csscolors.css';
+			break;
+		case 'text/xml':
+			$parser_js[] = 'parsexml.js';
+			$parser_css[] = '/webEdition/editors/template/CodeMirror/css/xmlcolors.css';
+			break;
+		default:
+			//don't use CodeMirror
+			return '';
+	}
+	$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
+	if(count($parser_js) > 0){ // CodeMirror will be used
+		$maineditor = we_get_CM_css() . we_html_element::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
+		if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //if we use tag completion we need additional files
+			$maineditor.=
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js') .
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js') .
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js') .
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js') .
+				'
 							<script type="text/javascript">
 								if(top.we_tags==undefined) { //this is our tag cache
 									document.write("<scr"+"ipt src=\"/webEdition/editors/template/CodeMirror/contrib/webEdition/js/vocabulary.js.php\" type=\"text/javascript\"></sc"+"ript>");
 								};
 							</script>
 						';
-			}
-			$maineditor.='
+		}
+		$maineditor.='
 						<script type="text/javascript">
 							var getDescriptionDiv=function() {
 								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
@@ -595,8 +599,8 @@ if($GLOBALS['we_editmode']){
 											}
 										}
 					';
-			if($useCSCC && $we_doc->ContentType == 'text/weTmpl'){
-				$maineditor.='
+		if($useCSCC && $we_doc->ContentType == 'text/weTmpl'){
+			$maineditor.='
 										if(window.addEventListener) {
 											editor.frame.contentWindow.document.addEventListener("mousemove", showDescription, false);
 											editor.frame.contentWindow.document.addEventListener("click", hideCscc, false);
@@ -606,16 +610,16 @@ if($GLOBALS['we_editmode']){
 											editor.frame.contentWindow.document.attachEvent("onclick", hideCscc);
 										}
 									';
-			}
-			$maineditor.='
+		}
+		$maineditor.='
 									},500);
 								},
 								onChange: function(){
 									updateEditor();
 								}
 								';
-			if($useCSCC){
-				$maineditor.='
+		if($useCSCC){
+			$maineditor.='
 							,activeTokens: function(span, token) {
 								if(token.style == "xml-tagname" && !span.className.match(/we-tagname/) && token.content.substring(0,3)=="we:" ) { //this is our hook to colorize we:tags
 									span.className += " we-tagname";
@@ -665,8 +669,8 @@ if($GLOBALS['we_editmode']){
 								}catch(e){};
 							}
 						';
-			}
-			$maineditor.='
+		}
+		$maineditor.='
 							};
 							var updateEditor=function(){ //this wil save content from CoeMirror to our original <textarea>.
 								var currentTemplateCode=editor.getCode();
@@ -679,89 +683,89 @@ if($GLOBALS['we_editmode']){
 							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
 						</script>
 					';
-			if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //initiation depends on the use of code completion
-				$maineditor.=
-					'<script type="text/JavaScript">
+		if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //initiation depends on the use of code completion
+			$maineditor.=
+				'<script type="text/JavaScript">
 				cscc.init("editarea");
 				var editor=cscc.editor;
 			</script>';
-			} else{
-				$maineditor.=
-					'<script type="text/JavaScript">
+		} else{
+			$maineditor.=
+				'<script type="text/JavaScript">
 				var editor = CodeMirror.fromTextArea("editarea", CMoptions);
 			</script>';
-			}
 		}
-		return $maineditor;
+	}
+	return $maineditor;
+}
+
+function we_getCodeMirror2Tags(){
+	$ret = '';
+	$allWeTags = weTagWizard::getExistingWeTags();
+	foreach($allWeTags as $tagName){
+		$GLOBALS['TagRefURLName'] = strtolower($tagName);
+		if(isset($weTag)){
+			unset($weTag);
+		}
+		$weTag = weTagData::getTagData($tagName);
+		$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}' . "\n";
+	}
+	return $ret;
+}
+
+function we_getCodeMirror2Code($code){
+	$maineditor = '';
+	$parser_js = array();
+	$parser_css = array('theme/default.css');
+	$toolTip = false;
+	switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
+		case 'text/css':
+			$parser_js[] = 'mode/css/css.js';
+			$mode = 'text/css';
+			break;
+		case 'text/js':
+			$parser_js[] = 'mode/javascript/javascript.js';
+			$mode = 'text/javascript';
+			break;
+		case 'text/weTmpl':
+			$parser_js[] = 'lib/util/overlay.js';
+			$parser_js[] = 'mode/webEdition/webEdition.js';
+			$toolTip = $_SESSION['prefs']['editorTooltips'];
+			$mode = 'text/weTmpl';
+		case 'text/html':
+			$parser_js[] = 'mode/xml/xml.js';
+			$parser_js[] = 'mode/javascript/javascript.js';
+			$parser_js[] = 'mode/css/css.js';
+			$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
+			$parser_js[] = 'mode/clike/clike.js';
+			$parser_js[] = 'mode/php/php.js';
+			$parser_css[] = 'mode/clike/clike.css';
+			$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
+			break;
+		case 'text/xml':
+			$parser_js[] = 'mode/xml/xml.js';
+			$mode = 'application/xml';
+			break;
+		default:
+			//don't use CodeMirror
+			return '';
 	}
 
-	function we_getCodeMirror2Tags(){
-		$ret = '';
-		$allWeTags = weTagWizard::getExistingWeTags();
-		foreach($allWeTags as $tagName){
-			$GLOBALS['TagRefURLName'] = strtolower($tagName);
-			if(isset($weTag)){
-				unset($weTag);
-			}
-			$weTag = weTagData::getTagData($tagName);
-			$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(),null,$GLOBALS['WE_BACKENDCHARSET'])) . '";}' . "\n";
-		}
-		return $ret;
-	}
+	$parser_css[] = 'mode/webEdition/webEdition.css';
 
-	function we_getCodeMirror2Code($code){
-		$maineditor = '';
-		$parser_js = array();
-		$parser_css = array('theme/default.css');
-		$toolTip=false;
-		switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
-			case 'text/css':
-				$parser_js[] = 'mode/css/css.js';
-				$mode = 'text/css';
-				break;
-			case 'text/js':
-				$parser_js[] = 'mode/javascript/javascript.js';
-				$mode = 'text/javascript';
-				break;
-			case 'text/weTmpl':
-				$parser_js[] = 'lib/util/overlay.js';
-				$parser_js[] = 'mode/webEdition/webEdition.js';
-				$toolTip = $_SESSION['prefs']['editorTooltips'];
-				$mode = 'text/weTmpl';
-			case 'text/html':
-				$parser_js[] = 'mode/xml/xml.js';
-				$parser_js[] = 'mode/javascript/javascript.js';
-				$parser_js[] = 'mode/css/css.js';
-				$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
-				$parser_js[] = 'mode/clike/clike.js';
-				$parser_js[] = 'mode/php/php.js';
-				$parser_css[]= 'mode/clike/clike.css';
-				$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
-				break;
-			case 'text/xml':
-				$parser_js[] = 'mode/xml/xml.js';
-				$mode = 'application/xml';
-				break;
-			default:
-				//don't use CodeMirror
-				return '';
+	if(count($parser_js) > 0){ // CodeMirror will be used
+		$parser_js[] = 'lib/util/searchcursor.js';
+		$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css') .
+			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
+		foreach($parser_css as $css){
+			$maineditor.=we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $css);
+		}
+		foreach($parser_js as $js){
+			$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $js);
 		}
 
-		$parser_css[] = 'mode/webEdition/webEdition.css';
-
-		if(count($parser_js) > 0){ // CodeMirror will be used
-			$parser_js[]='lib/util/searchcursor.js';
-			$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css').
-				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
-			foreach($parser_css as $css){
-				$maineditor.=we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $css);
-			}
-			foreach($parser_js as $js){
-				$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $js);
-			}
-
-			$maineditor.='
-		<style type="text/css">' . ($toolTip?we_getCodeMirror2Tags():'') . '
+		$maineditor.='
+		<style type="text/css">' . ($toolTip ? we_getCodeMirror2Tags() : '') . '
 			.weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 				font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
 				font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -913,112 +917,112 @@ if($GLOBALS['we_editmode']){
 			}
 			window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 </script>';
-		}
-		return $maineditor;
+	}
+	return $maineditor;
+}
+
+if($GLOBALS['we_editmode']){
+	$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
+
+	$code = $we_doc->getElement("data");
+
+	if($we_doc->ClassName == "we_htmlDocument"){
+		$code = $we_doc->getDocumentCode();
 	}
 
-	if($GLOBALS['we_editmode']){
-		$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
+	$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
 
-		$code = $we_doc->getElement("data");
-
-		if($we_doc->ClassName == "we_htmlDocument"){
-			$code = $we_doc->getDocumentCode();
+	$vers = '';
+	if($_useJavaEditor){
+		$maineditor .= we_getJavaEditorCode($code);
+	} else{
+		$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+			. htmlspecialchars($code) . '</textarea>';
+		if($_SESSION['prefs']['editorMode'] == 'codemirror' || $_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
+			$vers = ($_SESSION['prefs']['editorMode'] == 'codemirror' ? '' : 2);
+			$maineditor .= ($vers == 2 ? we_getCodeMirror2Code($code) : we_getCodeMirrorCode($code));
 		}
-
-		$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
-
-		$vers = '';
-		if($_useJavaEditor){
-			$maineditor .= we_getJavaEditorCode($code);
-		} else{
-			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
-				. htmlspecialchars($code) . '</textarea>';
-			if($_SESSION['prefs']['editorMode'] == 'codemirror' || $_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
-				$vers = ($_SESSION['prefs']['editorMode'] == 'codemirror' ? '' : 2);
-				$maineditor .= ($vers == 2 ? we_getCodeMirror2Code($code) : we_getCodeMirrorCode($code));
-			}
-		}
-		$maineditor .= '</td>
+	}
+	$maineditor .= '</td>
          </tr>
          <tr>
             <td align="left">';
-		$maineditor .= we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
+	$maineditor .= we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
 	    <tr>';
 
-		$maineditor .= ($vers == 2 ? '
+	$maineditor .= ($vers == 2 ? '
 <td align="left" class="defaultfont">
 <input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);') . '</div>' .
-				'</td>' : '') .
-			'<td align="right" class="defaultfont">' .
-			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
+			'</td>' : '') .
+		'<td align="right" class="defaultfont">' .
+		(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
 
 
 
 <div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent' . $vers . '();') . '</div>' : '') .
-			($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
+		($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global', '[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
         </table></td></tr></table>
 ';
-		$znr = -1;
-		$wepos = "";
-		array_push($parts, array("headline" => "", "html" => $maineditor, "space" => 0));
-	} else{
-		print $maineditor;
-	}
+	$znr = -1;
+	$wepos = "";
+	array_push($parts, array("headline" => "", "html" => $maineditor, "space" => 0));
+} else{
+	print $maineditor;
+}
 
-	if($GLOBALS['we_editmode']){
-		if($we_doc->ContentType == "text/weTmpl"){
-			// Code Wizard
-			$CodeWizard = new weCodeWizard();
-			$allWeTags = weTagWizard::getExistingWeTags();
+if($GLOBALS['we_editmode']){
+	if($we_doc->ContentType == "text/weTmpl"){
+		// Code Wizard
+		$CodeWizard = new weCodeWizard();
+		$allWeTags = weTagWizard::getExistingWeTags();
 
-			$tagGroups = weTagWizard::getWeTagGroups($allWeTags);
+		$tagGroups = weTagWizard::getWeTagGroups($allWeTags);
 
-			$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">';
-			$groupJs = "tagGroups = new Array();\n";
+		$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">';
+		$groupJs = "tagGroups = new Array();\n";
 
-			$selectedGroup = isset($we_doc->TagWizardSelection) && !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
-			$groupselect .= '<optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">';
-			$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>';
-			$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard', '[custom_snippets]') . '</option>';
-			$groupselect .= '</optgroup>';
-			$groupselect .= '<optgroup label="we:tags">';
+		$selectedGroup = isset($we_doc->TagWizardSelection) && !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
+		$groupselect .= '<optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">';
+		$groupselect .= '<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>';
+		$groupselect .= '<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard', '[custom_snippets]') . '</option>';
+		$groupselect .= '</optgroup>';
+		$groupselect .= '<optgroup label="we:tags">';
 
-			foreach($tagGroups as $tagGroupName => $tags){
+		foreach($tagGroups as $tagGroupName => $tags){
 
-				if($tagGroupName == 'custom'){
-					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
-				}
-				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_integrated_modules']) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
-				if($tagGroupName == 'alltags'){
-					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
-				}
-				$groupJs .= "tagGroups['" . $tagGroupName . "'] = new Array('" . implode("', '", $tags) . "');\n";
+			if($tagGroupName == 'custom'){
+				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
-			$groupselect .= '</optgroup>';
-			$groupselect .= '</select>';
-
-			$tagselect = '<select onkeydown="evt=event?event:window.event; return openTagWizWithReturn(evt)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onChange="weButton.enable(\'btn_direction_right_applyCode\')">';
-
-			for($i = 0; $i < sizeof($allWeTags); $i++){
-				$tagselect .= '
-	<option value="' . $allWeTags[$i] . '">' . $allWeTags[$i] . '</option>';
+			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_integrated_modules']) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
+			if($tagGroupName == 'alltags'){
+				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
+			$groupJs .= "tagGroups['" . $tagGroupName . "'] = new Array('" . implode("', '", $tags) . "');\n";
+		}
+		$groupselect .= '</optgroup>';
+		$groupselect .= '</select>';
 
+		$tagselect = '<select onkeydown="evt=event?event:window.event; return openTagWizWithReturn(evt)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onChange="weButton.enable(\'btn_direction_right_applyCode\')">';
 
+		for($i = 0; $i < sizeof($allWeTags); $i++){
 			$tagselect .= '
+	<option value="' . $allWeTags[$i] . '">' . $allWeTags[$i] . '</option>';
+		}
+
+
+		$tagselect .= '
 </select>';
 
-			// buttons
-			$editTagbut = we_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
-			$selectallbut = we_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
-			$prependbut = we_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
-			$appendbut = we_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
-			$addCursorPositionbut = we_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
+		// buttons
+		$editTagbut = we_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+		$selectallbut = we_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
+		$prependbut = we_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
+		$appendbut = we_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
+		$addCursorPositionbut = we_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
-			$tagWizardHtml = $CodeWizard->getJavascript();
-			$tagWizardHtml .= '
+		$tagWizardHtml = $CodeWizard->getJavascript();
+		$tagWizardHtml .= '
 		<script type="text/javascript">
 			function executeEditButton() {
 				if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_custom\') {
@@ -1201,21 +1205,19 @@ if($GLOBALS['we_editmode']){
 		</tr>
 	</table>';
 
-			array_push($parts, array("headline" => "", "html" => $tagWizardHtml, "space" => 0));
-			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
-			$znr = 1;
-		}
-		print we_multiIconBox::getJS();
-		print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+		array_push($parts, array("headline" => "", "html" => $tagWizardHtml, "space" => 0));
+		$wepos = weGetCookieVariable("but_weTMPLDocEdit");
+		$znr = 1;
+	}
+	print we_multiIconBox::getJS();
+	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
 
 	<?php
 	if(isset($selectedGroup)){
-		echo "<script type='text/javascript'>
-	selectTagGroup('$selectedGroup');
-	</script>";
+		echo we_html_element::jsElement("selectTagGroup('$selectedGroup');");
 	}
 	?>
 	</html>
-<?php
+	<?php
 }
