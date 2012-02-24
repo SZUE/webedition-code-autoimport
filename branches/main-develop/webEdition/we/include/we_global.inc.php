@@ -1586,9 +1586,10 @@ function getArrayKey($needle, $haystack){
  * This function is equivalent to print_r, except that it adds addtional "pre"-headers
  * @param * $val the variable to print
  */
-function p_r($val){
+function p_r($val, $html = true){
 	print '<pre>';
-	print_r($val);
+	$val = print_r($val, true);
+	echo ($html ? str_replace(array('<', '>'), array('&lt;', '&gt;'), $val) : $val);
 	print '</pre>';
 }
 
@@ -2482,7 +2483,6 @@ $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
 	return fclose($fh);
 }
 
-
 function we_filenameNotValid($filename){
 	if(substr($filename, 0, 2) === '..'){
 		return true;
@@ -2664,8 +2664,8 @@ function we_templateInit(){
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
 		//check if CHARSET is valid
-		if(!in_array($GLOBALS['CHARSET'],charsetHandler::getAvailCharsets())){
-			$GLOBALS['CHARSET'] =DEFAULT_CHARSET;
+		if(!in_array($GLOBALS['CHARSET'], charsetHandler::getAvailCharsets())){
+			$GLOBALS['CHARSET'] = DEFAULT_CHARSET;
 		}
 		//FIXME: this code doesn't work!
 		/*

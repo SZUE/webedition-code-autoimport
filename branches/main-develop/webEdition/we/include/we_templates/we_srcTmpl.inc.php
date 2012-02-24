@@ -138,10 +138,10 @@ if($GLOBALS['we_editmode']){
 	<?php
 	if($_SESSION['prefs']['editorMode'] == 'codemirror2'){
 		echo 'document.getElementById("bodydiv").style.display="block";
-	editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
-	sizeEditor();
+editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
+sizeEditor();
 
-			return;';
+		return;';
 	}
 	?>
 
@@ -272,7 +272,7 @@ if($GLOBALS['we_editmode']){
 		function setSource(source){
 			document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value=source;
 			//Codemirror
-			if(editor!="undefined"){
+			if(editor!="undefined" && editor !=null && typeof editor =='object'){
 				editor.setValue(source);
 			}
 			// for Applet
@@ -346,7 +346,7 @@ if($GLOBALS['we_editmode']){
 		}
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'        ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'         ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }
