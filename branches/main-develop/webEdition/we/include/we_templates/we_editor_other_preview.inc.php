@@ -21,30 +21,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$prot = getServerProtocol();
-$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
-
 // force the download of this document
 if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download"){
 	$_filename = $we_doc->Filename . $we_doc->Extension;
-	$_size = filesize($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
+	//$_size = filesize($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
 
-	if(we_isHttps()){									// Additional headers to make downloads work using IE in HTTPS mode.
+	if(we_isHttps()){				 // Additional headers to make downloads work using IE in HTTPS mode.
 		header("Pragma: ");
 		header("Cache-Control: ");
 		header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");				 // HTTP 1.1
-		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Cache-Control: no-store, no-cache, must-revalidate");		 // HTTP 1.1
+		header('Cache-Control: post-check=0, pre-check=0', false);
 	} else{
 		header("Cache-control: private");
 	}
 
-	header("Content-Type: application/force-download");
-	header("Content-Disposition: attachment; filename=\"" . trim(htmlentities($_filename)) . "\"");
-	header("Content-Description: " . trim(htmlentities($_filename)));
+	header('Content-Type: application/force-download');
+	header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
+	header('Content-Description: ' . trim(htmlentities($_filename)));
 
-	$_filehandler = readfile($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
+	readfile($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
 	exit;
 }
 
@@ -53,7 +50,7 @@ we_html_tools::htmlTop();
 
 
 if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == "doImage_convert"){
-	print '<script  type="text/javascript">parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");</script>' . "\n";
+	print we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -88,7 +85,7 @@ print STYLESHEET;
 
 			if($we_doc->ID){
 				$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-				$link = "<a href='" . $preurl . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . (isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "") . "&we_cmd[1]=" . (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "") . "&we_cmd[2]=" . (isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "") . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
+				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . (isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : "") . "&we_cmd[1]=" . (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "") . "&we_cmd[2]=" . (isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "") . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
 			} else{
 				$link = g_l('weClass', "[file_not_saved]");
 			}

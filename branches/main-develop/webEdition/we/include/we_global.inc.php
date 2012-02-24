@@ -2482,29 +2482,6 @@ $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
 	return fclose($fh);
 }
 
-function getObjectsForDocWorkspace($id){
-	$ids = (is_array($id)) ? $id : array($id);
-	$db = new DB_WE();
-
-	if(!defined('OBJECT_FILES_TABLE')){
-		return array();
-	}
-
-	$where = array();
-	foreach($ids as $id){
-		$where[] = 'Workspaces LIKE "%,' . $id . ',%"';
-		$where[] = 'ExtraWorkspaces LIKE "%,' . $id . ',%"';
-	}
-
-	$out = array();
-	$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . implode(' OR ', $where));
-
-	while($db->next_record()) {
-		$out[$db->f('ID')] = $db->f('Path');
-	}
-
-	return $out;
-}
 
 function we_filenameNotValid($filename){
 	if(substr($filename, 0, 2) === '..'){
