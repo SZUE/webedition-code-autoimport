@@ -141,7 +141,7 @@ if($GLOBALS['we_editmode']){
 editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 sizeEditor();
 
-		return;';
+	return;';
 	}
 	?>
 
@@ -346,7 +346,7 @@ sizeEditor();
 		}
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'         ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'          ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }
@@ -411,11 +411,13 @@ function we_get_CM_css(){
 			font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
 			border: outset 1px;
 			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			border-radius: 3px;' .
+		(we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-			border-radius: 3px;
-			-moz-border-radius: 3px;
+			-moz-border-radius: 3px;' :
+			(we_base_browserDetect::isSafari() ? '
 			-webkit-border-radius: 3px;
+			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);' : '')) . '
 		}
 	</style>';
 }

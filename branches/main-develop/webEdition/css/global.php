@@ -28,7 +28,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base
 //FIXME: remove latter ones
 // Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 ?>
 
 .weSelect {
