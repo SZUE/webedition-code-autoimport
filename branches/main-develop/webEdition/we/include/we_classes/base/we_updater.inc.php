@@ -934,7 +934,7 @@ class we_updater{
 					foreach($v as $tabkey){
 						if(!weDBUtil::isKeyExist($k, $tabkey)){
 							if(($key=weDBUtil::isKeyExistAtAll($k, $tabkey))){
-
+								weDBUtil::delKey($l, $key);
 							}
 							weDBUtil::addKey($k, $tabkey);
 						}

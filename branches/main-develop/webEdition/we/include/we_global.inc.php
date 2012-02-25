@@ -977,7 +977,7 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	// Bug Fix 6615
 	$tmpArray = $returnIDs['templateIDs'];
 	$tmpArray[] = $id;
-	$tmp = implode(',', $tmpArray);
+	$tmp = implode(',', array_filter($tmpArray));
 	unset($tmpArray);
 	$where = ' (' .
 		($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .

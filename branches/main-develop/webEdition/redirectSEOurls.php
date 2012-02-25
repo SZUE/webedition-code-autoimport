@@ -136,7 +136,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		header('HTTP/1.0 200 OK', true, 200);
 		header('Status: 200 OK', true, 200);
-		include($_SERVER['DOCUMENT_ROOT'] . $display);
+		@include($_SERVER['DOCUMENT_ROOT'] . $display);
 
 		exit;
 	} elseif($error404doc){
@@ -147,7 +147,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			header('HTTP/1.0 404 Not Found', true, 404);
 			header('Status: 404 Not Found', true, 404);
 		}
-		include($_SERVER['DOCUMENT_ROOT'] . id_to_path($error404doc, FILE_TABLE));
+		@include($_SERVER['DOCUMENT_ROOT'] . id_to_path($error404doc, FILE_TABLE));
 		exit;
 	}
 }
