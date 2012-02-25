@@ -36,7 +36,7 @@ if($nrTemplatesUsedByThisTemplate){
 }
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 ?>
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 
 	// functions for keyBoard Listener
 	function applyOnEnter() {
@@ -70,7 +70,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 
 	}
 	self.focus();
-
+//-->
 </script>
 <?php print STYLESHEET; ?>
 </head>

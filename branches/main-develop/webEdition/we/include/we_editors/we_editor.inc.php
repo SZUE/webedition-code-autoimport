@@ -109,11 +109,11 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	case "doctype_changed":
 		$we_doc->changeDoctype("", true);
-		$_insertReloadFooter = "<script language=\"JavaScript\">try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};</script>";
+		$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
 		break;
 	case "template_changed":
 		$we_doc->changeTemplate();
-		$_insertReloadFooter = "<script language=\"JavaScript\">try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};</script>";
+		$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
 		break;
 	case "remove_image":
 		$we_doc->remove_image($_REQUEST['we_cmd'][1]);
@@ -557,13 +557,13 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 										$we_responseTextType = (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7]) ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
 										$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 										if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 1)){
-											$we_JavaScript .= 'top.we_cmd("in_workflow","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");' . "\n";
+											$we_JavaScript .= 'top.we_cmd("in_workflow","' . $we_transaction . '","' . $_REQUEST['we_cmd'][4] . '");';
 											$wf_flag = true;
 										} else if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 2)){
-											$we_JavaScript .= 'top.we_cmd("pass","' . $we_transaction . '");' . "\n";
+											$we_JavaScript .= 'top.we_cmd("pass","' . $we_transaction . '");';
 											$wf_flag = true;
 										} else if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 3)){
-											$we_JavaScript .= 'top.we_cmd("decline","' . $we_transaction . '");' . "\n";
+											$we_JavaScript .= 'top.we_cmd("decline","' . $we_transaction . '");';
 											$wf_flag = true;
 										}
 									}
@@ -573,11 +573,11 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 									}
 								}
 
-								$we_JavaScript .= "\n" . $we_doc->getUpdateTreeScript(!$_REQUEST['we_cmd'][4]) . "\n";
+								$we_JavaScript .= $we_doc->getUpdateTreeScript(!$_REQUEST['we_cmd'][4]);
 
 								if($wasNew || (!$wasPubl)){
 									if($we_doc->ContentType == "folder"){
-										$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' . "\n;";
+										$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 									}
 									$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();\n";
 								}
@@ -585,20 +585,20 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 
 
 								if(!defined("SCHEDULE_TABLE")){
-									$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n";
+									$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');';
 								}
 
 								if(($we_doc->ContentType == "text/webedition" || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
 									weShopVariants::setVariantDataForModel($we_doc, true);
 								}
 							} else{
-								$we_JavaScript = "";
+								$we_JavaScript = '';
 								$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							}
 						}
 						if($_REQUEST['we_cmd'][6]){
-							$we_JavaScript .= "\n" . $_REQUEST['we_cmd'][6] . "\n";
+							$we_JavaScript .= $_REQUEST['we_cmd'][6];
 						} else if($_REQUEST['we_cmd'][4] && (!$wf_flag)){
 
 							$we_doc->makeSameNew();
@@ -609,11 +609,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 							if($_SESSION["we_mode"] == "seem"){
 
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								if(we_hasPerm('CAN_SEE_PROPERTIES')){
-									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . WE_EDITPAGE_PROPERTIES . '","' . $we_transaction . '");';
-								} else{
-									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
-								}
+								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (we_hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 							} else if($_SESSION["we_mode"] == "normal"){
 
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
@@ -630,11 +626,11 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 
 				if(defined("SCHEDULE_TABLE")){
 					we_schedpro::trigger_schedule();
-					$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n"; // save/ rename a document
+					$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");"; // save/ rename a document
 				}
 				include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_editor_save.inc.php");
 			} else{
-				exit(" ContentType Missing !!! ");
+				exit(' ContentType Missing !!! ');
 			}
 			break;
 		case "unpublish":
@@ -652,9 +648,9 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 					//	uncomment the following line to switch to preview page.
 					$_REQUEST['we_cmd'][5] .= '_EditorFrame.getDocumentReference().frames[3].location.reload();';
 
-					$we_JavaScript = "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . ";\n"; // save/ rename a document
+					$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 				} else{
-					$we_JavaScript = "";
+					$we_JavaScript = '';
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
