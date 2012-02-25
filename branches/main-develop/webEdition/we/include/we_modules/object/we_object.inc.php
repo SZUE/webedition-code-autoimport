@@ -1104,9 +1104,9 @@ class we_object extends we_document{
 					$content .= "</td><td>" . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f, "dat"), 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
 					$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
+					$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, -1, -1, "", "", true);
 					$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true);
+					$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, -1, -1, "", "", true);
 
 					$plusAmount = $this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray);
 					$plusbut = we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");

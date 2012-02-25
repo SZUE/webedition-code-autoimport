@@ -332,7 +332,7 @@ class we_listview_multiobject extends listviewBase{
 			}
 		}
 		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' as we_wedoc_Published,';
-		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . ($this->customers ? OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," : "") . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
+		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . (isset($this->customers)&&$this->customers ? OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," : "") . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){

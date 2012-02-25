@@ -1025,12 +1025,12 @@ class we_objectFile extends we_document{
 				$selectObject = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDir','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 				$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f) . "')");
-				$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
+				$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, -1, -1, "", "", true);
 				$downbut = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f) . "')");
-				$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true);
+				$downbutDis = we_button::create_button("image:btn_direction_down", "#", true, -1, -1, "", "", true);
 
 				$plusbut = we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f) . "')");
-				$plusbutDis = we_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
+				$plusbutDis = we_button::create_button("image:btn_add_listelement", "#", true, -1, -1, "", "", true);
 				$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f) . "')");
 
 				$buttontable = we_button::create_button_table(
