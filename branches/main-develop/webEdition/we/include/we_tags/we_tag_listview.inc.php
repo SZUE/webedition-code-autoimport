@@ -125,10 +125,7 @@ function we_tag_listview($attribs, $content){
 		!weTag_getAttribute('subfolders', $attribs, false, true) :
 		weTag_getAttribute('recursive', $attribs, true, true);
 
-	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
-	if($we_lv_subfolders == 'false'){
-		$we_lv_subfolders = false;
-	}
+	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool)$_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
 	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
