@@ -27,7 +27,8 @@ $l_backup=array(
 	'delete_nok'=>'The files can not be deleted!',
 	'delete_old_files'=>'Delete old files...',
 	'delold_confirm'=>'All existing data will be erased!\nAre you sure?',
-	'delold_notice'=>'It is recommended that you delete old files from server to free space.<br/>Do you want to to continue?',
+	'delold_notice'=>'Delete existing files on server (recommended)?<br/>
+All files managed by webEdition are deleted! Documents and templates will be kept in database. Your website will be back online after a full rebuild (documents + templates).',
 	'del_backup_confirm'=>'Do you want to delete selected backup file?',
 	'download'=>'Please click here.',
 	'download_failed'=>'Either the file you requested does not exist or you are not permitted to download it.',

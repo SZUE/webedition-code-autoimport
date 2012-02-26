@@ -27,7 +27,8 @@ $l_backup=array(
 	'delete_nok'=>'Die Dateien kann nicht gelöscht werden!',
 	'delete_old_files'=>'Lösche alte Dateien...',
 	'delold_confirm'=>'Sind Sie sicher, dass Sie alle Dateien vom Server löschen möchten?',
-	'delold_notice'=>'Es wird empfohlen, die vorhandenen Dateien vorher zu löschen.<br/>Möchten Sie dies jetzt tun?',
+	'delold_notice'=>'Auf dem Server vorhandene Dateien löschen (empfohlen)?<br/>
+Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente und Vorlagen bleiben in der Datenbank vorhanden. Die Webseite ist erst nach erfolgreichem Rebuild (Dokumente + Vorlagen) wieder funktional.',
 	'del_backup_confirm'=>'Möchten Sie ausgewählte Backup-Datei löschen?',
 	'download'=>'klicken Sie bitte hier.',
 	'download_failed'=>'Die angeforderte Datei existiert entweder nicht oder Sie haben keine Berechtigung, sie herunterzuladen.',
