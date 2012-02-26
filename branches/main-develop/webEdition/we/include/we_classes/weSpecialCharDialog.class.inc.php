@@ -27,7 +27,7 @@ class weSpecialCharDialog extends weDialog{
 	var $dialogWidth = 270;
 	var $JsOnly = true;
 	var $changeableArgs = array("char");
-	var $charset = "iso-88591";
+	var $charset = "iso-8859-1";
 
 	function __construct(){
 		parent::__construct();
