@@ -29,13 +29,6 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
-function getMenuReloadCode(){
-	$menu = we_main_headermenu::getMenu();
-	$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
-	return 'top.opener.document.getElementById("nav").parentNode.innerHTML="' . $menu . '";
-									top.opener.top.initClickMenu();';
-}
-
 switch($_REQUEST['we_cmd'][0]){
 	case "save_docType":
 		if(!we_hasPerm("EDIT_DOCTYPE")){
@@ -55,15 +48,15 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_JavaScript = "";
 			$we_show_response = 1;
 		} else{
-			$DB_WE->query('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . addslashes($we_doc->DocType) . '"');
-			if(($DB_WE->next_record()) && ($we_doc->ID != $DB_WE->f("ID"))){
+			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '"');
+			if(($GLOBALS['DB_WE']->next_record()) && ($we_doc->ID != $GLOBALS['DB_WE']->f("ID"))){
 				$we_responseText = sprintf(g_l('weClass', "[doctype_save_nok_exist]"), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 				$we_JavaScript = "";
 				$we_show_response = 1;
 			} else{
 				$we_JavaScript = 'opener.top.makefocus = self;' .
-					getMenuReloadCode();
+					we_main_headermenu::getMenuReloadCode();
 
 				//$we_JavaScript .= "opener.top.header.document.location.reload();\n";
 				if($we_doc->we_save()){
@@ -88,13 +81,13 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$DB_WE->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
+		$GLOBALS['DB_WE']->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
 		$del = false;
-		if($DB_WE->next_record()){
-			$name = $DB_WE->f("DocType");
-			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=" . intval($_REQUEST['we_cmd'][1]) . " OR temp_doc_type=" . $DB_WE->escape($_REQUEST['we_cmd'][1]));
-			if(!$DB_WE->next_record()){
-				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
+		if($GLOBALS['DB_WE']->next_record()){
+			$name = $GLOBALS['DB_WE']->f("DocType");
+			$GLOBALS['DB_WE']->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=" . intval($_REQUEST['we_cmd'][1]) . " OR temp_doc_type=" . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
+			if(!$GLOBALS['DB_WE']->next_record()){
+				$GLOBALS['DB_WE']->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
 				$we_responseText = g_l('weClass', "[doctype_delete_ok]");
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_responseText = sprintf($we_responseText, $name);
@@ -106,9 +99,9 @@ switch($_REQUEST['we_cmd'][0]){
 				$we_responseText = sprintf($we_responseText, $name);
 			}
 			if($del){
-				$DB_WE->query("SELECT ID FROM " . DOC_TYPES_TABLE . " ORDER BY DocType");
-				if($DB_WE->next_record())
-					$we_doc->initByID($DB_WE->f("ID"), DOC_TYPES_TABLE);
+				$GLOBALS['DB_WE']->query("SELECT ID FROM " . DOC_TYPES_TABLE . " ORDER BY DocType");
+				if($GLOBALS['DB_WE']->next_record())
+					$we_doc->initByID($GLOBALS['DB_WE']->f("ID"), DOC_TYPES_TABLE);
 			} else{
 				$we_doc->initByID($_REQUEST['we_cmd'][1], DOC_TYPES_TABLE);
 			}
@@ -158,9 +151,9 @@ switch($_REQUEST['we_cmd'][0]){
 		if(isset($_REQUEST['we_cmd'][1])){
 			$id = $_REQUEST['we_cmd'][1];
 		} else{
-			$q = getDoctypeQuery($DB_WE);
+			$q = getDoctypeQuery($GLOBALS['DB_WE']);
 			$q = "SELECT ID FROM " . DOC_TYPES_TABLE . " $q";
-			$id = f($q, "ID", $DB_WE);
+			$id = f($q, "ID", $GLOBALS['DB_WE']);
 		}
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
@@ -199,7 +192,7 @@ if($_REQUEST['we_cmd'][0] == "deleteDocType"){
 }
 if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){
 	echo 'opener.top.makefocus = self;' .
-	getMenuReloadCode();
+	we_main_headermenu::getMenuReloadCode();
 //							opener.top.header.document.location.reload();
 
 	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
@@ -258,9 +251,9 @@ if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){
 			case "newDocType":
 <?php
 $dtNames = "";
-$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
-while($DB_WE->next_record()) {
-	$dtNames .= '\'' . str_replace('\'', '\\\'', $DB_WE->f("DocType")) . '\',';
+$GLOBALS['DB_WE']->query('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
+while($GLOBALS['DB_WE']->next_record()) {
+	$dtNames .= '\'' . str_replace('\'', '\\\'', $GLOBALS['DB_WE']->f("DocType")) . '\',';
 }
 $dtNames = rtrim($dtNames, ',');
 print 'var docTypeNames = new Array(' . $dtNames . ');';
@@ -283,7 +276,7 @@ print 'var docTypeNames = new Array(' . $dtNames . ');';
 					}
 					else {
 <?php
-echo getMenuReloadCode();
+echo we_main_headermenu::getMenuReloadCode();
 ?>
 						/*						if (top.opener.top.header) {
 							top.opener.top.header.location.reload();

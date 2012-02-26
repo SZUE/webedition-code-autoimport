@@ -370,15 +370,12 @@ if(isset($_REQUEST['cmd'])){
 					$_SESSION['prefs'] = $exprefs;
 				}
 
-				$menu = we_main_headermenu::getMenu();
-				$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
 				print we_html_element::jsElement('
 									top.checker.location = "' . HTML_DIR . 'white.html";
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
-									top.opener.document.getElementById("nav").parentNode.innerHTML="' . $menu . '";
+									'.we_main_headermenu::getMenuReloadCode().'
 									top.opener.top.initClickMenu();
-//									top.opener.top.header.location.reload();
 									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 								' . (( $_SESSION['weBackupVars']['options']['rebuild']) ? ('
 									top.cmd.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";

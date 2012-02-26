@@ -47,7 +47,7 @@ class we_main_headermenu{
 
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsScript(JS_DIR . 'weSidebar.php') .
-			($jmenu?$jmenu->getJS():'');
+		($jmenu ? $jmenu->getJS() : '');
 		we_html_element::jsElement('
 top.weSidebar = weSidebar;
 
@@ -61,6 +61,12 @@ top.weSidebar = weSidebar;
 		}
 	}
 ');
+	}
+
+	static function getMenuReloadCode($location = 'top.opener.'){
+		$menu = self::getMenu();
+		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
 	}
 
 	static function getMenu(){
