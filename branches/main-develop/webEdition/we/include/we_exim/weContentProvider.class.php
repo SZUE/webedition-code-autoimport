@@ -153,15 +153,20 @@ class weContentProvider{
 	}
 
 	static function needCoding($classname, $prop){
-		if($prop == "schedArr")
+		if($prop == "schedArr"){
 			return true;
+		}
 		$encoded = array(
 			"we_element" => array("Dat", "dat"),
-			"weTableItem" => array("Dat", "strFelder", "strSerial", "DocumentObject", "QASet", "QASetAdditions", "Catfields", "RevoteUserAgent", "agent", "LogData", "strSerialOrder"),
+			"weTableItem" => array("Dat", "strFelder", "strSerial", "DocumentObject",
+				"QASet", "QASetAdditions", "Catfields", "RevoteUserAgent", "agent",
+				"LogData", "strSerialOrder",
+				'documentElements','documentScheduler','documentCustomFilter'//tblVersions
+				),
 			"we_object" => array("DefaultText", "DefaultValues", "SerializedArray"),
 			"we_objectFile" => array("DefArray", "schedArr"),
 			"weBinary" => array("Data"),
-			"weVersion" => array("Data"),
+			"weVersion" => array('Data',),
 			"we_category" => array("Catfields"),
 			"weNavigation" => array("Sort", "Attributes")
 		);
