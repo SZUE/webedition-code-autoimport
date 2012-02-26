@@ -242,7 +242,7 @@ if(isset($_REQUEST['cmd'])){
 				}
 
 				if($_SESSION['weBackupVars']['options']['export2send'] == 1){
-					we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'], time() + 8*3600); //8h
+					we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'], time() + 8 * 3600); //8h
 				}
 
 				print we_html_element::jsElement(
@@ -370,11 +370,14 @@ if(isset($_REQUEST['cmd'])){
 					$_SESSION['prefs'] = $exprefs;
 				}
 
-
-				print we_html_element::jsElement( '
+				$menu = we_main_headermenu::getMenu();
+				$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+				print we_html_element::jsElement('
 									top.checker.location = "' . HTML_DIR . 'white.html";
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
+									top.opener.document.getElementById("nav").parentNode.innerHTML="' . $menu . '";
+									top.opener.top.initClickMenu();
 //									top.opener.top.header.location.reload();
 									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 								' . (( $_SESSION['weBackupVars']['options']['rebuild']) ? ('

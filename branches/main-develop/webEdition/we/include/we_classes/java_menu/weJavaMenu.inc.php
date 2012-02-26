@@ -52,17 +52,15 @@ class weJavaMenu{
 	}
 
 	function getCode($old = true){
-		return $this->getJS() . $this->getHTML($old);
+		return ($old ? $this->getJS():'') . $this->getHTML($old);
 	}
 
 	function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+			we_html_element::jsElement('
 				function menuaction(cmd) {
 					' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . '/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
-				}
-			//-->
-			</script>';
+				}');
 	}
 
 	function getHTML($old = true){
@@ -83,7 +81,7 @@ class weJavaMenu{
 						$mtext = ($e["text"] ? $e["text"] : "");
 					}
 					$menus[] = array('id' => $id,
-						'code' => '<li class="top"><div class="top_div"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">' . "\n",
+						'code' => '<li class="top"><div class="top_div"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
 					);
 				}
 			}

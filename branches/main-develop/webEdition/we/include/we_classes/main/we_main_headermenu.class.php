@@ -41,9 +41,13 @@ class we_main_headermenu{
 			echo we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/stuHover.js');
 		}
 	}
+
 	static function pJS(){
+		$jmenu = self::getMenu();
+
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'weSidebar.php');
+		we_html_element::jsScript(JS_DIR . 'weSidebar.php') .
+			($jmenu?$jmenu->getJS():'');
 		we_html_element::jsElement('
 top.weSidebar = weSidebar;
 
@@ -59,25 +63,40 @@ top.weSidebar = weSidebar;
 ');
 	}
 
+	static function getMenu(){
+		if(isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
+			return null;
+		}
+		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/we_menu.inc.php");
+		ksort($we_menu);
+		if(// menu for normalmode
+			isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
+
+			$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
+		} else{ // menu for seemode
+			if(permissionhandler::isUserAllowedForAction("header", "with_java")){
+				$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
+			} else{
+				return null;
+			}
+		}
+
+		return $jmenu;
+	}
+
 	static function pbody(){
-//	width of java-/XUL-Menu
-		$_menu_width = 360;
-		$port = defined("HTTP_PORT") ? HTTP_PORT : "";
 
 // all available elements
-		$jmenu = null;
+		$jmenu = self::getMenu();
 		$navigationButtons = array();
 
 		if(!isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/we_menu.inc.php");
-			ksort($we_menu);
 			if(// menu for normalmode
 				isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
 
-				$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
 			} else{ // menu for seemode
 				if(permissionhandler::isUserAllowedForAction("header", "with_java")){
-					$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
+
 				} else{
 //  no menu in this case !
 					$navigationButtons[] = array(
@@ -125,4 +144,5 @@ top.weSidebar = weSidebar;
 		</div>
 		<?php
 	}
+
 }
