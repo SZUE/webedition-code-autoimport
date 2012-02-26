@@ -293,7 +293,7 @@ class we_format extends we_class{
 		return $this->selected_recipient;
 	}
 
-	function &get_msg_text(){
+	function get_msg_text(){
 		$ret = '';
 
 		switch($this->mode){
@@ -337,7 +337,7 @@ class we_format extends we_class{
 		return $ret;
 	}
 
-	function &get_todo_history(){
+	function get_todo_history(){
 		if($this->msg_obj != 'we_todo'){
 			return NULL;
 		}

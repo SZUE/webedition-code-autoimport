@@ -130,11 +130,6 @@ class we_messaging extends we_class{
 			return -1;
 		}
 
-		include_once($inc_files[$objname]);
-		if(!@class_exists($objname)){
-			return -2;
-		}
-
 		$c = new $objname;
 		$c->set_login_data($this->userid, $this->username);
 

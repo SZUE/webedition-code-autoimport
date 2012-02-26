@@ -23,14 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-
+include_once(WE_MESSAGING_MODULE_DIR . 'we_conf_messaging.inc.php');
 /* todo object class */
 
 class we_todo extends we_msg_proto{
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
-
 	/* Name of the class => important for reconstructing the class from outside the class */
 
 	var $ClassName = __CLASS__;
@@ -148,20 +144,12 @@ class we_todo extends we_msg_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid));
-		if($this->DB->next_record()){
-			return $this->DB->f('c');
-		}
-
-		return 0;
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB));
 	}
 
 	function get_count($folder_id){
-		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->DB->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid));
-		if($this->DB->next_record())
-			return $this->DB->f('c');
-
-		return -1;
+		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($this->userid), 'c', $this->DB);
+		return $cnt === '' ? -1 : $cnt;
 	}
 
 	function get_userids_by_nick($nick){
@@ -176,15 +164,9 @@ class we_todo extends we_msg_proto{
 	}
 
 	function format_from_line($userid){
-		$ret = '';
+		$tmp=getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid),new DB_WE());
+		return $tmp['First'] . ' ' . $tmp['Second'] . ' (' . $tmp['username'] . ')';
 
-		$db2 = new DB_WE();
-		$db2->query('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid));
-
-		$db2->next_record();
-		$ret = $db2->f('First') . ' ' . $db2->f('Second') . ' (' . $db2->f('username') . ')';
-
-		return $ret;
 	}
 
 	function create_folder($name, $parent, $aid = -1){

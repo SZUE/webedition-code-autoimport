@@ -68,13 +68,9 @@ class we_message extends we_msg_proto{
 	var $so2sqlso = array('desc' => 'asc',
 		'asc' => 'desc');
 
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
 	/* Constructor */
 
-	function we_message(){
+	function __construct(){
 		$this->Name = 'message_' . md5(uniqid(rand()));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields');
 		$this->DB = new DB_WE();
@@ -121,20 +117,12 @@ class we_message extends we_msg_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid));
-		if($this->DB->next_record()){
-			return $this->DB->f('c');
-		}
-
-		return 0;
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid),'c',$this->DB));
 	}
 
 	function get_count($folder_id){
-		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
-		if($this->DB->next_record())
-			return $this->DB->f('c');
-
-		return -1;
+		$cnt=f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid),'c',$this->DB);
+		return $cnt===''?-1:$cnt;
 	}
 
 	function get_userids_by_nick($nick){

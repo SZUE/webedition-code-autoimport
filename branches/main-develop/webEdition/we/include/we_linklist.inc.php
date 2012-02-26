@@ -121,8 +121,9 @@ class we_linklist{
 	}
 
 	function getLinktag($link = "", $tagAttr = ""){
-		if(!$link)
+		if(!$link){
 			$link = $this->getLink();
+		}
 		$target = $this->getTarget();
 		$attribs = $this->getAttribs();
 		$anchor = $this->getAnchor();
@@ -214,13 +215,13 @@ class we_linklist{
 			} else{
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';
 			}
-			$foo = $js . "var we_win = window.open('','" . "we_ll_" . $nr . "',we_winOpts);";
+			$foo = $js . "var we_win = window.open('','" . "we_ll_" . key($this->listArray) . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array(
 				'name', 'target', 'href', 'onClick', 'onclick'
 				));
 
-			$lattribs['target'] = 'we_ll_' . $nr;
+			$lattribs['target'] = 'we_ll_' . key($this->listArray);
 			$lattribs['onclick'] = $foo;
 		} else{ //  no popUp
 			$lattribs = removeAttribs($lattribs, array(

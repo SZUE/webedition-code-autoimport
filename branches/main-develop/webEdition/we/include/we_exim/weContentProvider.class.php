@@ -206,12 +206,12 @@ class weContentProvider{
 	}
 
 	static function needCdata($classname, $prop, $content){
-		$encoded = array(
+/*		$encoded = array(
 			"we_element" => array("Dat"),
 			"we_object" => array("DefaultText", "DefaultValues"),
 			"weTableItem" => array("Text", "BText", "answertext"),
 			"we_category" => array("Catfields")
-		);
+		);*/
 		return strpos($content, '<') !== FALSE || strpos($content, '>') !== FALSE || strpos($content, '&') !== FALSE;
 		/*
 		  if($classname == "weTableItem"){

@@ -42,7 +42,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 print STYLESHEET;
 
 ?>
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
 	function do_confirm() {
 	    document.update_todo_form.submit();
 	}
@@ -54,6 +54,7 @@ print STYLESHEET;
 		    }
 	    }
 	}
+	//-->
     </script>
   </head>
   <body class="weDialogBody"  onUnload="doUnload();">
