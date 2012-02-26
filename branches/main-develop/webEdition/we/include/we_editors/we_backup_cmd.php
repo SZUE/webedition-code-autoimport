@@ -371,12 +371,11 @@ if(isset($_REQUEST['cmd'])){
 				}
 
 
-				print '
-								<script type="text/javascript">
+				print we_html_element::jsElement( '
 									top.checker.location = "' . HTML_DIR . 'white.html";
 									var op = top.opener.top.makeFoldersOpenString();
 									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
-									top.opener.top.header.location.reload();
+//									top.opener.top.header.location.reload();
 									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 								' . (( $_SESSION['weBackupVars']['options']['rebuild']) ? ('
 									top.cmd.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";
@@ -393,8 +392,7 @@ if(isset($_REQUEST['cmd'])){
 									top.busy.setProgress(100);
 								}
 
-							</script>
-							';
+							');
 
 				if($_SESSION['weBackupVars']['backup_log']){
 					weBackupUtil::addLog('Backup import finished');
