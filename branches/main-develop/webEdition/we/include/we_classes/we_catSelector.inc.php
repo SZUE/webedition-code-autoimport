@@ -232,8 +232,7 @@ function enableDelBut(){
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
 		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-				d.writeln('</head>');
-			d.writeln('<scr'+'ipt>');
+		d.writeln('<scr'+'ipt>');
 				d.writeln('var ctrlpressed=false');
 				d.writeln('var shiftpressed=false');
 				d.writeln('var inputklick=false');
@@ -266,6 +265,8 @@ function enableDelBut(){
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
+				d.writeln('</head>');
+
 					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || makeNewCat || we_editCatID) ? ' onload="document.we_form.we_EntryText_tmp.focus();document.we_form.we_EntryText_tmp.select();"' : '')+'>');
 				<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
 												 d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');

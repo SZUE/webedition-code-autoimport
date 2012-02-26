@@ -22,13 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
+$loc=filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
+header('Location: '.$loc);
 we_html_tools::htmlTop();
 ?>
-</head>
-<frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
-	<frame src="<?php print filter_var($_REQUEST["url"], FILTER_VALIDATE_URL); ?>" name="contBrowse" scrolling="auto"/>
-</frameset>
-<body bgcolor="white">
-</body>
-</html>
+<meta HTTP-EQUIV="REFRESH" content="0; url=<?php echo $loc;?>">
+</head><body></body></html>
