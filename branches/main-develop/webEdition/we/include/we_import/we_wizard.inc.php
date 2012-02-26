@@ -434,14 +434,14 @@ HTS;
 							. "top.leWizardProgress.hide();\n"
 							. "top.weButton.enable('next');\n"
 							. "top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);\n"
-							. "top.opener.top.header.location.reload();\n"
+							//. "top.opener.top.header.location.reload();\n"
 							. "function we_import_handler(e) { we_import(1," . $v["numFiles"] . "); }\n"
 							. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
 					} else{
 						$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');\n"
 							. "top.frames['wizbusy'].setProgress(100);\n"
 							. "top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);\n"
-							. "top.opener.top.header.location.reload();\n"
+							//. "top.opener.top.header.location.reload();\n"
 							. "if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart) != 'undefined') top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();\n"
 							. "if(top.frames['wizbusy'] && top.frames['wizbusy'].document.getElementById('progress')) {\n"
 							. "	progress = top.frames['wizbusy'].document.getElementById('progress');\n"

@@ -1950,12 +1950,12 @@ $_we_active_integrated_modules = array(
 
 			case '$_REQUEST["we_tracker_dir"]':
 
-				$save_javascript .= "
+				/*$save_javascript .= "
 
                         if (parent.opener.top.header) {
                             parent.opener.top.header.location.reload();
                         }
-                        ";
+                        ";*/
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "WE_TRACKER_DIR", $settingvalue);

@@ -72,10 +72,10 @@ top.weSidebar = weSidebar;
 		if(// menu for normalmode
 			isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
 
-			$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
+			$jmenu = new weJavaMenu($we_menu, "top.load");
 		} else{ // menu for seemode
 			if(permissionhandler::isUserAllowedForAction("header", "with_java")){
-				$jmenu = new weJavaMenu($we_menu, "top.load", $_menu_width, 30);
+				$jmenu = new weJavaMenu($we_menu, "top.load");
 			} else{
 				return null;
 			}

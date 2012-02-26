@@ -29,6 +29,13 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
+function getMenuReloadCode(){
+	$menu = we_main_headermenu::getMenu();
+	$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+	return 'top.opener.document.getElementById("nav").parentNode.innerHTML="' . $menu . '";
+									top.opener.top.initClickMenu();';
+}
+
 switch($_REQUEST['we_cmd'][0]){
 	case "save_docType":
 		if(!we_hasPerm("EDIT_DOCTYPE")){
@@ -55,8 +62,10 @@ switch($_REQUEST['we_cmd'][0]){
 				$we_JavaScript = "";
 				$we_show_response = 1;
 			} else{
-				$we_JavaScript = "opener.top.makefocus = self;\n";
-				$we_JavaScript .= "opener.top.header.document.location.reload();\n";
+				$we_JavaScript = 'opener.top.makefocus = self;' .
+					getMenuReloadCode();
+
+				//$we_JavaScript .= "opener.top.header.document.location.reload();\n";
 				if($we_doc->we_save()){
 					$we_responseText = sprintf(g_l('weClass', "[doctype_save_ok]"), $we_doc->DocType);
 					$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -185,15 +194,17 @@ if($_REQUEST['we_cmd'][0] == "deleteDocType"){
 					if(confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
 						we_cmd("deleteDocTypeok","<?php print $_REQUEST['we_cmd'][1]; ?>");
 					}
-	<?php
+		<?php
 	}
 }
 if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){
-	?>
-		opener.top.makefocus = self;
-		opener.top.header.document.location.reload();
-	<?php print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
-} ?>
+	echo 'opener.top.makefocus = self;' .
+	getMenuReloadCode();
+//							opener.top.header.document.location.reload();
+
+	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
+}
+?>
 
 	var countSaveLoop = 0;
 
@@ -251,7 +262,7 @@ $DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
 while($DB_WE->next_record()) {
 	$dtNames .= '\'' . str_replace('\'', '\\\'', $DB_WE->f("DocType")) . '\',';
 }
-$dtNames = rtrim($dtNames,',');
+$dtNames = rtrim($dtNames, ',');
 print 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>
 
@@ -271,9 +282,12 @@ print 'var docTypeNames = new Array(' . $dtNames . ');';
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[doctype_exists]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					}
 					else {
-						if (top.opener.top.header) {
+<?php
+echo getMenuReloadCode();
+?>
+						/*						if (top.opener.top.header) {
 							top.opener.top.header.location.reload();
-						}
+						}*/
 						self.location = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]="+encodeURIComponent(name);
 					}
 				}
@@ -404,3 +418,4 @@ print 'var docTypeNames = new Array(' . $dtNames . ');';
 
 <?php
 $we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+
