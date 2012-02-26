@@ -522,7 +522,14 @@ HTS;
 			$_attsSelect['onchange'] = (($setHot ? '_EditorFrame.setEditorIsHot(true);' : '') . $onchange);
 		}
 
-		if($time){
+		if(is_object($time)){
+			$day = $time->format('j');
+			$month = $time->format('n');
+			$year = $time->format('Y');
+			$hour = $time->format('G');
+			$minute = $time->format('i');
+
+		}else	if($time){
 			$day = abs(date("j", $time));
 			$month = abs(date("n", $time));
 			$year = abs(date("Y", $time));
@@ -690,8 +697,7 @@ HTS;
 			foreach($_timePosArray as $foo){
 				$retVal .= $foo;
 			}
-			$retVal .= '</td></tr>
-';
+			$retVal .= '</td></tr>';
 		} else{
 			foreach($_timePosArray as $foo){
 				$retVal .= $foo;
