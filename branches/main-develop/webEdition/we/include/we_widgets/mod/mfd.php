@@ -104,7 +104,7 @@ $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
 $i = $j = $k = 0;
 while($j < $iMaxItems) {
-	$_query = "SELECT DISTINCT DID,UserName,DocumentTable FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' ORDER BY ModDate DESC LIMIT ' . ($k * $_count) . " , " . $_count;
+	$_query = "SELECT DISTINCT DID,UserName,DocumentTable FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' ORDER BY ModDate LIMIT ' . ($k * $_count) . " , " . $_count;
 	$k++;
 	$DB_WE->query($_query);
 	$_db = new DB_WE();
@@ -124,7 +124,7 @@ while($j < $iMaxItems) {
 				}
 			}
 		}
-		$_hash = getHash("SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = " . $DB_WE->f("DID") . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : ''), $_db);
+		$_hash = getHash("SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = " . $DB_WE->f("DID") . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '').' ORDER BY ModDate LIMIT 1', $_db);
 		if(!empty($_hash)){
 			$_show = true;
 			$_bool_oft = (defined("OBJECT_FILES_TABLE")) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
