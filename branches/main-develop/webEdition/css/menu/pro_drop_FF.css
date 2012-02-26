@@ -1,4 +1,10 @@
 #nav li div.click:hover ul{
 	-moz-border-radius: 5px;
+}
+
+#nav li div.click:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
 	-moz-border-radius: 5px;
 }

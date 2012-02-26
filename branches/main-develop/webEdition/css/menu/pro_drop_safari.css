@@ -2,3 +2,10 @@
 	-webkit-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
+
+#nav li div.click:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul li:hover ul,
+#nav li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
+	-webkit-border-radius: 5px;
+}
