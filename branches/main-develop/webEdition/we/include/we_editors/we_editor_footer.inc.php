@@ -29,6 +29,7 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_tran
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+
 function inWorkflow($doc){
 	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc)
 		return false;
@@ -699,43 +700,43 @@ function showEditFooterForSEEMMode(){
 <body style="background-color:#f0f0f0; background-image: url('<?php print EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
 	<form name="we_form"<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onSubmit="sub();return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
-<?php
-$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
-$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
-
-if($we_doc->userCanSave()){
-
-	if($_SESSION["we_mode"] == "normal"){ // open footer for NormalMode
-		showEditFooterForNormalMode();
-	} else if($_SESSION["we_mode"] == "seem"){ // open footer for SeeMode
-		showEditFooterForSEEMMode();
-	}
-} else{
-
-	if($_SESSION["we_mode"] == "seem"){
-
-		$_noPermTable = new we_html_table(array("cellpadding" => 0,
-				"cellspacing" => 0,
-				"border" => 0),
-				1,
-				4);
-
-		$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-		$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-		$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
-		$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
-
-
-		print $_noPermTable->getHtml();
-	}
-}
-?>
-	</form>
 		<?php
-		$_js_tmpl = $_js_publish = $_js_permnew = '';
+		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
+		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
 
-		if($we_doc->ContentType == "text/weTmpl"){ // a template
-			$_js_tmpl = "
+		if($we_doc->userCanSave()){
+
+			if($_SESSION["we_mode"] == "normal"){ // open footer for NormalMode
+				showEditFooterForNormalMode();
+			} else if($_SESSION["we_mode"] == "seem"){ // open footer for SeeMode
+				showEditFooterForSEEMMode();
+			}
+		} else{
+
+			if($_SESSION["we_mode"] == "seem"){
+
+				$_noPermTable = new we_html_table(array("cellpadding" => 0,
+						"cellspacing" => 0,
+						"border" => 0),
+						1,
+						4);
+
+				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
+				$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+				$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
+				$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
+
+
+				print $_noPermTable->getHtml();
+			}
+		}
+		?>
+	</form>
+	<?php
+	$_js_tmpl = $_js_publish = $_js_permnew = '';
+
+	if($we_doc->ContentType == "text/weTmpl"){ // a template
+		$_js_tmpl = "
 		if( _EditorFrame.getEditorAutoRebuild() ) {
 			self.document.we_form.autoRebuild.checked = true;
 		}
@@ -749,20 +750,20 @@ if($we_doc->userCanSave()){
 			self.document.we_form.makeNewDoc.checked = false;
 		}
 		";
-		}
+	}
 
-		if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-			if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
-				$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-				if(!$_ctrlElem){ //	changes for we:controlElement
-					if($we_doc->ID){
-						$_js_permnew = "
+	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
+		if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+			if(!$_ctrlElem){ //	changes for we:controlElement
+				if($we_doc->ID){
+					$_js_permnew = "
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = false;
 			}
 			";
-					} else{
-						$_js_permnew = "
+				} else{
+					$_js_permnew = "
 			if( _EditorFrame.getEditorMakeSameDoc() ) {
 				if(self.document.we_form && self.document.we_form.makeSameDoc){
 					self.document.we_form.makeSameDoc.checked = true;
@@ -773,28 +774,28 @@ if($we_doc->userCanSave()){
 				}
 			}
 			";
-					}
-				} else{ //	$_ctrlElement determines values
-					if($we_doc->ID){
-						$_js_permnew = "
+				}
+			} else{ //	$_ctrlElement determines values
+				if($we_doc->ID){
+					$_js_permnew = "
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = " . ($_ctrlElem["checked"] ? "true" : "false") . ";
 				_EditorFrame.setEditorMakeSameDoc(" . $_ctrlElem["checked"] ? "true" : "false" . ");
 			}
 			";
-					} else{
-						$_js_permnew = "
+				} else{
+					$_js_permnew = "
 				if(self.document.we_form && self.document.we_form.makeSameDoc){
 					self.document.we_form.makeSameDoc.checked = " . ($_ctrlElem["checked"] ? "true" : "false") . ";
 					_EditorFrame.setEditorMakeSameDoc(" . $_ctrlElem["checked"] ? "true" : "false" . ");
 				}
 			";
-					}
 				}
 			}
 		}
+	}
 
-		print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
-		?>
+	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
+	?>
 </body>
 </html>
