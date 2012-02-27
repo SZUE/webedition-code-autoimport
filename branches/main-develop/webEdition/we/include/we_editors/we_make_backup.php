@@ -52,6 +52,6 @@ switch($what){
 		print $weBackupWizard->getHTMLChecker();
 		break;
 	default:
-		error_log(__FILE__ . " unknown reference: $what");
+		t_e(__FILE__ . " unknown reference: $what");
 }
 

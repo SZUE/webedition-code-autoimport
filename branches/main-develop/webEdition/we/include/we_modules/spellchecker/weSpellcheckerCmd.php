@@ -105,7 +105,7 @@ if(isset($_REQUEST['cmd'][0])){
 				$_checksum = crc32($_content);
 
 				if(sprintf("%u", $_checksum) != $_REQUEST['cmd'][2])
-					error_log('Corrupt!!!');
+					t_e('Corrupt!!!');
 
 				weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
 

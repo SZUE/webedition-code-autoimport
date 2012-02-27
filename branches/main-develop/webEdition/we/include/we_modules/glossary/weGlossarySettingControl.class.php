@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,29 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weGlossarySettingControl{
 
-class weGlossarySettingControl {
-
-	function weGlossarySettingControl() {
-
-	}
-
-	function processCommands() {
+	function processCommands(){
 
 		$js = '';
 		$html = '';
 
-		if (isset($_REQUEST['cmd'])) {
+		if(isset($_REQUEST['cmd'])){
 
-			switch ($_REQUEST['cmd']) {
+			switch($_REQUEST['cmd']){
 
 				case "save_glossary_setting":
-					if($this->saveSettings()) {
-						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . "</script>";
-					} else {
-						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) . "</script>";
+					if($this->saveSettings()){
+						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . "</script>";
+					} else{
+						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) . "</script>";
 					}
-				break;
+					break;
 			}
 
 			print we_html_tools::htmlTop();
@@ -57,22 +53,20 @@ class weGlossarySettingControl {
 		}
 	}
 
-	function processVariables() {
+	function processVariables(){
 
 	}
 
-	function saveSettings($default = false) {
+	function saveSettings($default = false){
 
-		if($default) {
+		if($default){
 			$GlossaryAutomaticReplacement = 'false';
-
-		} else {
+		} else{
 
 			$GlossaryAutomaticReplacement = 'false';
-			if(isset($_REQUEST['GlossaryAutomaticReplacement']) && $_REQUEST['GlossaryAutomaticReplacement'] == 1) {
+			if(isset($_REQUEST['GlossaryAutomaticReplacement']) && $_REQUEST['GlossaryAutomaticReplacement'] == 1){
 				$GlossaryAutomaticReplacement = 'true';
 			}
-
 		}
 
 		$code = <<<EOF
@@ -82,14 +76,13 @@ class weGlossarySettingControl {
 
 EOF;
 
-		$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
 		$fh = fopen($configFile, "w+");
-		if(!$fh) {
+		if(!$fh){
 			return false;
 		}
 		fputs($fh, $code);
 		return fclose($fh);
-
 	}
 
 }

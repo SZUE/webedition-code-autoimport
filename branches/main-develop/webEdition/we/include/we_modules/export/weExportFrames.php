@@ -71,7 +71,7 @@ class weExportFrames extends weModuleFrames{
 				break;
 
 			default:
-				error_log(__FILE__ . " unknown reference: $what");
+				t_e(__FILE__ . " unknown reference: $what");
 		}
 	}
 

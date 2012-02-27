@@ -60,7 +60,7 @@
 				        	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR));
 				        }
 				        if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
-				            error_log(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText);
+				            t_e(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText);
 				        }
 				    }
 				}

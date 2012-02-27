@@ -500,7 +500,7 @@ abstract class we_util_File{
 	 */
 	public static function checkWritePermissions($path, $mod = 0755, $nocreate = false){
 		if(!is_file($path) && !is_dir($path)){
-			error_log("we_util_File/checkWritePermissions() - target " . $path . " does not exist");
+			t_e("we_util_File/checkWritePermissions() - target " . $path . " does not exist");
 			return false;
 		}
 		if(is_writable($path)){
@@ -573,14 +573,12 @@ abstract class we_util_File{
 		$dir = self::removeTrailingSlash($dir);
 		$target = self::addTrailingSlash($target);
 		$dirname = substr(strrchr($dir, "/"), 1);
-		//error_log("source: ".$dir);
-		//error_log("destination: ".self::addTrailingSlash($target.$dirname));
 		if(self::removeTrailingSlash($dir) == self::removeTrailingSlash($target)){
-			error_log("source and destination are the same.");
+			t_e("source and destination are the same.");
 			return true;
 		}
 		if(!@rename($dir, self::addTrailingSlash($target))){
-			error_log("could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
+			t_e("could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
 			return false;
 		} else{
 			return true;
@@ -619,22 +617,22 @@ abstract class we_util_File{
 	 * @param bool $nofiles does not delete any files but only empty subdirectories
 	 */
 	public static function rmdirr($path, $nofiles = false){
-		error_log("trying to recursively delete " . $path);
+		t_e("trying to recursively delete " . $path);
 		if($nofiles && !is_dir($path)){
-			error_log("ERROR: $path is no directory");
+			t_e("ERROR: $path is no directory");
 			return false;
 		}
 		if(!file_exists($path)){
-			error_log("ERROR: could not find $path");
+			t_e("ERROR: could not find $path");
 			return false;
 		}
 		// check if it is a file or a symbolic link;
 		if(is_file($path) || is_link($path)){
 			if($nofiles === false){
-				error_log(" -- trying to delete file " . $path);
+				t_e(" -- trying to delete file " . $path);
 				return @unlink($path);
 			} else{
-				error_log(" -- skipping file " . $path);
+				t_e(" -- skipping file " . $path);
 			}
 		}
 		// loop through the folder
@@ -644,11 +642,10 @@ abstract class we_util_File{
 				continue;
 			}
 			// Recurse
-			error_log(" -- trying to delete folder " . $path);
+			t_e(" -- trying to delete folder " . $path);
 			self::rmdirr($path . DIRECTORY_SEPARATOR . $entry);
 		}
 		$dir->close();
-		// error_log(" -- trying to delete folder ".$path);
 		return @rmdir($path);
 	}
 

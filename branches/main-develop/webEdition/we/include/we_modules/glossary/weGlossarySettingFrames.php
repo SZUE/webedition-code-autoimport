@@ -40,7 +40,7 @@ class weGlossarySettingFrames{
 			case 'content': print $this->getHTMLContent();
 				break;
 			default:
-				error_log(__FILE__ . " unknown reference: $what");
+				t_e(__FILE__ . " unknown reference: $what");
 		}
 	}
 
@@ -60,7 +60,6 @@ class weGlossarySettingFrames{
 
 		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
 		if(!file_exists($configFile) || !is_file($configFile)){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php");
 			weGlossarySettingControl::saveSettings(true);
 		}
 		include($configFile);
@@ -81,11 +80,9 @@ class weGlossarySettingFrames{
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 
 		return we_html_tools::htmlTop() .
-			STYLESHEET . '
-
-' . we_html_element::jsScript(JS_DIR . 'formFunctions.js') . '
-
-</head>
+			STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
+			'</head>
 <body class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '

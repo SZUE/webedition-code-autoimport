@@ -1037,6 +1037,29 @@ class weSiteImport{
 	}
 
 	/**
+	 * Makes a relative path from an absolute path
+	 *
+	 * @param	string	$docpath Absolute Path of document
+	 * @param	string	$linkpath Absolute Path of link (href or src)
+	 *
+	 * @return         string
+	 */
+	static function makeRelativePath($docpath, $linkpath){
+		$parentPath = $docpath;
+		$newLinkPath = '';
+
+		while($parentPath != substr($linkpath, 0, strlen($parentPath))) {
+			$parentPath = dirname($parentPath);
+			$newLinkPath .= '../';
+		}
+		$rest = substr($linkpath, strlen($parentPath));
+		if(substr($rest, 0, 1) == '/'){
+			$rest = substr($rest, 1);
+		}
+		return $newLinkPath . $rest;
+	}
+
+	/**
 	 * converts a relative path to an absolute path and returns it
 	 *
 	 * @param $path string path to convert
@@ -1049,7 +1072,7 @@ class weSiteImport{
 		if(!preg_match('|^[a-z]+://|i', $path)){
 			if(substr($path, 0, 1) == "/"){
 				// if href is an absolute URL convert it into a relative URL
-				$path = makeRelativePath($sourcePath, $path);
+				$path = self::makeRelativePath($sourcePath, $path);
 			} else
 			if(substr($path, 0, 2) == "./"){
 				// if href is a relative URL starting with "./" remove the "./"

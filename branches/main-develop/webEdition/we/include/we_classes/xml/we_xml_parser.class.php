@@ -137,7 +137,7 @@ class we_xml_parser{
 	 * @throws     FALSE on error
 	 * @see        parserHasContent(), parseXML(), addWarning()
 	 */
-	function getFile($file, $force_encoding=''){
+	function getFile($file, $force_encoding = ''){
 		// Save the file name which is used by the error handler.
 		$f = pathinfo($file);
 		$this->fileName = $f['basename'];
@@ -174,7 +174,7 @@ class we_xml_parser{
 		return $this->parseXML($data, $encoding);
 	}
 
-	function setEncoding($force_encoding, $data=''){
+	function setEncoding($force_encoding, $data = ''){
 		if(empty($force_encoding)){
 			$encoding = $this->getEncoding('', $data);
 		} else{
@@ -194,7 +194,7 @@ class we_xml_parser{
 	 * @see        openElementHandler(), closeElementHandler(),
 	 *             characterDataHandler(), defaultHandler(), addWarning()
 	 */
-	function parseXML($data, $charset='ISO-8859-1'){
+	function parseXML($data, $charset = 'ISO-8859-1'){
 		if(!empty($data)){
 			// Initialize the expat parser, resource id #5.
 			$parser = xml_parser_create($charset);
@@ -330,7 +330,7 @@ class we_xml_parser{
 	 * @see        parseXML()
 	 */
 	function parserHasContent(){
-		return!empty($this->root);
+		return !empty($this->root);
 	}
 
 	/**
@@ -675,6 +675,20 @@ class we_xml_parser{
 	}
 
 	/**
+	 * This function works oposit to htmlentities function
+	 *
+	 * @param          array                                  $code
+	 *
+	 *
+	 * @return         string
+	 */
+	static function rhtmlentities($code){
+		$table = get_html_translation_table(HTML_ENTITIES);
+		$rtable = array_flip($table);
+		return strtr($code, $rtable);
+	}
+
+	/**
 	 * This method evaluates an XPath expression.
 	 *
 	 * @param      string $xPath
@@ -701,7 +715,8 @@ class we_xml_parser{
 			$this->xPath = $xPath;
 
 			// Replace all entities.
-			$xPath = function_exists("rhtmlentities") ? rhtmlentities($xPath) : $this->replaceEntities($xPath);
+			//html_entity_decode??
+			$xPath = self::rhtmlentities($xPath);
 
 			// Split the XPath at every slash.
 			$steps = $this->splitSteps($xPath);
@@ -2331,7 +2346,7 @@ class we_xml_parser{
 		// Check the type of parameter.
 		if(preg_match('|^[0-9]+(\.[0-9]+)?$|', $args) || preg_match('|^\.[0-9]+$|', $args)){
 			// Convert the digits to a number &&  Check if the number is 0.
-			return!(doubleval($args) == 0);
+			return !(doubleval($args) == 0);
 		} else if(empty($args)){
 			return FALSE;
 		} else{
@@ -2406,7 +2421,7 @@ class we_xml_parser{
 	 */
 	function execMethod_not($node, $args){
 		// Return TRUE if the condition argument is FALSE.
-		return!$this->evaluatePredicate($node, trim($args));
+		return !$this->evaluatePredicate($node, trim($args));
 	}
 
 	/**
@@ -2504,7 +2519,7 @@ class we_xml_parser{
 	 * @return     string
 	 * @see        parseXML()
 	 */
-	function getEncoding($file='', $data=''){
+	function getEncoding($file = '', $data = ''){
 
 		if(!empty($file)){
 			$data = weFile::loadPart($file, 0, 256);

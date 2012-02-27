@@ -72,7 +72,7 @@ class weToolFrames extends weModuleFrames{
 			case 'exit_doc_question': print $this->getHTMLExitQuestion();
 				break;
 			default:
-				error_log(__FILE__ . " unknown reference: $what");
+				t_e(__FILE__ . " unknown reference: $what");
 		}
 	}
 

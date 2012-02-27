@@ -536,9 +536,6 @@ class weGlossaryView {
 					break;
 
 				case 'populateWorkspaces':
-
-					include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
-
 					$objectLinkID = (isset($_REQUEST['link']['Attributes']['ObjectLinkID'])&&$_REQUEST['link']['Attributes']['ObjectLinkID']!=""?$_REQUEST['link']['Attributes']['ObjectLinkID']:0);
 					$_values = weDynList::getWorkspacesForObject($objectLinkID);
 					$_js = '';

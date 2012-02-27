@@ -140,25 +140,6 @@ function build_dialog($selected_setting = "ui"){
 					"importFrom" => $GLOBALS['DB_WE']->f("importFrom")
 				);
 			}
-			//error_log(print_r($_defined_fields,true));
-			// identifying all available metadata readers:
-//			$_types = array();
-//			$_metadata_implementation_dir = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/";
-//			$dl = dir($_metadata_implementation_dir);
-//			while (false !== ($entry = $dl->read())) {
-//				if(is_file($_metadata_implementation_dir.$entry)) {
-//					$entry = substr($entry,0,-10);
-//					if(substr($entry,0,1) != "." && preg_match("|^[A-Za-z0-9]+$|", $entry))
-//					$_types[] = $entry;
-//				}
-//			}
-//			$dl->close();
-//			$_metadata_types = array("" => "");
-//			foreach($_types as $key => $value) {
-//				$_metadata_types[$value] = $value;
-//			}
-			//array_unshift(,"");
-			//error_log(print_r($_metadata_types,true));
 
 			$_metadata_types = array(
 				"textfield" => "textfield",

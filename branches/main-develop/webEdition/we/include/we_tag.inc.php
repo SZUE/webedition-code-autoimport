@@ -315,6 +315,153 @@ function we_getDocForTag($docAttr, $maindefault = false){
 	}
 }
 
+function modulFehltError($modul, $tag){
+	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
+}
+
+function parseError($text){
+	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile);
+	return "<b>" . g_l('parser', '[error_in_template]') . ":</b>$text<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile; /* .'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>'; */
+}
+
+function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
+	if($canBeEmpty){
+		if(!isset($attribs[$attr]))
+			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
+	} else{
+		if(!isset($attribs[$attr]) || $attribs[$attr] == '')
+			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
+	}
+	return '';
+}
+
+function we_getInputRadioField($name, $value, $itsValue, $atts){
+	//  This function replaced fnc: we_getRadioField
+	$atts['type'] = 'radio';
+	$atts['name'] = $name;
+	$atts['value'] = htmlspecialchars($itsValue);
+	if($value == $itsValue){
+		$atts['checked'] = 'checked';
+	}
+	return getHtmlTag('input', $atts);
+}
+
+function we_getTextareaField($name, $value, $atts){
+	$atts['name'] = $name;
+	$atts['rows'] = isset($atts['rows']) ? $atts['rows'] : 5;
+	$atts['cols'] = isset($atts['cols']) ? $atts['cols'] : 20;
+
+	return getHtmlTag('textarea', $atts, htmlspecialchars($value), true);
+}
+
+function we_getInputTextInputField($name, $value, $atts){
+	$atts['type'] = 'text';
+	$atts['name'] = $name;
+	$atts['value'] = htmlspecialchars($value);
+
+	return getHtmlTag('input', $atts);
+}
+
+function we_getInputPasswordField($name, $value, $atts){
+	$atts['type'] = 'password';
+	$atts['name'] = $name;
+	$atts['value'] = htmlspecialchars($value);
+
+	return getHtmlTag('input', $atts);
+}
+
+function we_getHiddenField($name, $value, $xml = false){
+	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
+}
+
+function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
+	//  This function replaced we_getChoiceField
+	//  we need input="text" and select-box
+	//  First input='text'
+	//<input type="text"'.($size ? ' size="'.$size.'"' : '').' name="'.$name.'" value="'.htmlspecialchars($value).'" '.$attr.($xml ? " /" :"").'>
+	$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
+
+	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+	$attsOpts = array();
+
+	if($valuesIsHash){
+		foreach($values as $_val => $_text){
+			$attsOpts['value'] = htmlspecialchars($_val);
+			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
+		}
+	} else{
+		// options of select Menu
+		$options = makeArrayFromCSV($values);
+		if(isset($atts['xml'])){
+			$attsOpts['xml'] = $atts['xml'];
+		}
+
+		foreach($options as $option){
+			$attsOpts['value'] = htmlspecialchars($option);
+			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
+		}
+	}
+
+	// select menu
+	$onchange = ($mode == 'add' ? 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' : 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
+
+	if(isset($atts['id'])){ //  use another ID!!!!
+		$atts['id'] = 'tmp_' . $atts['id'];
+	}
+	$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
+	$atts['name'] = 'tmp_' . $name;
+	$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
+	$atts = removeAttribs($atts, array('size')); //  remove size for choice
+	$selectMenue = getHtmlTag('select', $atts, $opts, true);
+	return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
+}
+
+function we_getInputCheckboxField($name, $value, $attr){
+	//  returns a checkbox with associated hidden-field
+
+	$tmpname = md5(uniqid(time()));
+	if($value){
+		$attr['checked'] = 'checked';
+	}
+	$attr['type'] = 'checkbox';
+	$attr['value'] = 1;
+	$attr['name'] = $tmpname;
+	$attr['onclick'] = 'this.form.elements[\'' . $name . '\'].value=(this.checked) ? 1 : 0';
+	$_attsHidden = array();
+
+	// hiddenField
+	if(isset($attr['xml'])){
+		$_attsHidden['xml'] = $attr['xml'];
+	}
+	$_attsHidden['type'] = 'hidden';
+	$_attsHidden['name'] = $name;
+	$_attsHidden['value'] = htmlspecialchars($value);
+
+	return getHtmlTag('input', $attr) . getHtmlTag('input', $_attsHidden);
+}
+
+function we_getSelectField($name, $value, $values, $attribs = array(), $addMissing = true){
+
+	$options = makeArrayFromCSV($values);
+	$attribs['name'] = $name;
+	$content = '';
+	$isin = 0;
+	foreach($options as $option){
+		if($option == $value){
+			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true);
+			$isin = 1;
+		} else{
+			$content .= getHtmlTag('option', array('value' => $option), $option, true);
+		}
+	}
+	if((!$isin) && $addMissing && value != ''){
+		$content .= getHtmlTag('option', array(
+			'value' => htmlspecialchars($value), 'selected' => 'selected'
+			), htmlspecialchars($value), true);
+	}
+	return getHtmlTag('select', $attribs, $content, true);
+}
+
 /* * *************************************************
  * 	we:tags										 *
   /*  ************************************************* */

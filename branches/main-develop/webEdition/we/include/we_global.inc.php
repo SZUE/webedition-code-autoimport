@@ -49,13 +49,6 @@ function correctUml($in){
 	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
 }
 
-function inWorkflow($doc){
-	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc)
-		return false;
-
-	return ($doc->ID ? we_workflow_utility::inWorkflow($doc->ID, $doc->Table) : false);
-}
-
 function getAllowedClasses($db = ''){
 	if(!$db){
 		$db = new DB_WE();
@@ -98,30 +91,6 @@ function getAllowedClasses($db = ''){
 	return $out;
 }
 
-function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
-	if(!$db){
-		$db = new DB_WE();
-	}
-	$rootPath = '/';
-	$rootId = $classId;
-	if(defined('OBJECT_TABLE')){
-		$ws = get_ws(OBJECT_FILES_TABLE);
-		if(intval($ws) == 0){
-			$ws = 0;
-		}
-		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
-		while($db->next_record()) {
-			if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
-				if($rootPath == '/' || strlen($db->f('Path')) < strlen($rootPath)){
-					$rootPath = $db->f('Path');
-					$rootId = $db->f('ID');
-				}
-			}
-		}
-	}
-	return $rootId;
-}
-
 function weFileExists($id, $table = FILE_TABLE, $db = ''){
 	$id = intval($id);
 	if($id == 0){
@@ -160,133 +129,6 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	}
 
 	return ' (' . $pid_tail . ') ';
-}
-
-function we_getInputRadioField($name, $value, $itsValue, $atts){
-	//  This function replaced fnc: we_getRadioField
-	$atts['type'] = 'radio';
-	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($itsValue);
-	if($value == $itsValue){
-		$atts['checked'] = 'checked';
-	}
-	return getHtmlTag('input', $atts);
-}
-
-function we_getTextareaField($name, $value, $atts){
-	$atts['name'] = $name;
-	$atts['rows'] = isset($atts['rows']) ? $atts['rows'] : 5;
-	$atts['cols'] = isset($atts['cols']) ? $atts['cols'] : 20;
-
-	return getHtmlTag('textarea', $atts, htmlspecialchars($value), true);
-}
-
-function we_getInputTextInputField($name, $value, $atts){
-	$atts['type'] = 'text';
-	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($value);
-
-	return getHtmlTag('input', $atts);
-}
-
-function we_getInputPasswordField($name, $value, $atts){
-	$atts['type'] = 'password';
-	$atts['name'] = $name;
-	$atts['value'] = htmlspecialchars($value);
-
-	return getHtmlTag('input', $atts);
-}
-
-function we_getHiddenField($name, $value, $xml = false){
-	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
-}
-
-function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
-	//  This function replaced we_getChoiceField
-	//  we need input="text" and select-box
-	//  First input='text'
-	//<input type="text"'.($size ? ' size="'.$size.'"' : '').' name="'.$name.'" value="'.htmlspecialchars($value).'" '.$attr.($xml ? " /" :"").'>
-	$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
-
-	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
-	$attsOpts = array();
-
-	if($valuesIsHash){
-		foreach($values as $_val => $_text){
-			$attsOpts['value'] = htmlspecialchars($_val);
-			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
-		}
-	} else{
-		// options of select Menu
-		$options = makeArrayFromCSV($values);
-		if(isset($atts['xml'])){
-			$attsOpts['xml'] = $atts['xml'];
-		}
-
-		foreach($options as $option){
-			$attsOpts['value'] = htmlspecialchars($option);
-			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
-		}
-	}
-
-	// select menu
-	$onchange = ($mode == 'add' ? 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' : 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
-
-	if(isset($atts['id'])){ //  use another ID!!!!
-		$atts['id'] = 'tmp_' . $atts['id'];
-	}
-	$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
-	$atts['name'] = 'tmp_' . $name;
-	$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
-	$atts = removeAttribs($atts, array('size')); //  remove size for choice
-	$selectMenue = getHtmlTag('select', $atts, $opts, true);
-	return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
-}
-
-function we_getInputCheckboxField($name, $value, $attr){
-	//  returns a checkbox with associated hidden-field
-
-	$tmpname = md5(uniqid(time()));
-	if($value){
-		$attr['checked'] = 'checked';
-	}
-	$attr['type'] = 'checkbox';
-	$attr['value'] = 1;
-	$attr['name'] = $tmpname;
-	$attr['onclick'] = 'this.form.elements[\'' . $name . '\'].value=(this.checked) ? 1 : 0';
-	$_attsHidden = array();
-
-	// hiddenField
-	if(isset($attr['xml'])){
-		$_attsHidden['xml'] = $attr['xml'];
-	}
-	$_attsHidden['type'] = 'hidden';
-	$_attsHidden['name'] = $name;
-	$_attsHidden['value'] = htmlspecialchars($value);
-
-	return getHtmlTag('input', $attr) . getHtmlTag('input', $_attsHidden);
-}
-
-function we_getSelectField($name, $value, $values, $attribs = array(), $addMissing = true){
-
-	$options = makeArrayFromCSV($values);
-	$attribs['name'] = $name;
-	$content = '';
-	$isin = 0;
-	foreach($options as $option){
-		if($option == $value){
-			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true);
-			$isin = 1;
-		} else{
-			$content .= getHtmlTag('option', array('value' => $option), $option, true);
-		}
-	}
-	if((!$isin) && $addMissing && value != ''){
-		$content .= getHtmlTag('option', array(
-			'value' => htmlspecialchars($value), 'selected' => 'selected'
-			), htmlspecialchars($value), true);
-	}
-	return getHtmlTag('select', $attribs, $content, true);
 }
 
 function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
@@ -784,26 +626,6 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	}
 }
 
-function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
-	if($canBeEmpty){
-		if(!isset($attribs[$attr]))
-			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
-	} else{
-		if(!isset($attribs[$attr]) || $attribs[$attr] == '')
-			return parseError(sprintf(g_l('parser', '[attrib_missing]'), $attr, $tag));
-	}
-	return '';
-}
-
-function modulFehltError($modul, $tag){
-	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
-}
-
-function parseError($text){
-	t_e('warning', html_entity_decode($text, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET']), g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile);
-	return "<b>" . g_l('parser', '[error_in_template]') . ":</b>$text<br/>\n" . g_l('weClass', '[template]') . ': ' . we_tag_tagParser::$curFile; /* .'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>'; */
-}
-
 function std_numberformat($content){
 	if(preg_match('#.*,[0-9]*$#', $content)){
 		// Deutsche Schreibweise
@@ -821,20 +643,6 @@ function std_numberformat($content){
 	} else
 		$content = str_replace(',', '', str_replace('.', '', $content));
 	return $content;
-}
-
-function decode($in){
-	$out = '';
-	for($i = 0; $i < strlen($in); $i++)
-		$out .= chr(ord(substr($in, $i, 1)) + 1);
-	return $out;
-}
-
-function encode($in){
-	$out = '';
-	for($i = 0; $i < strlen($in); $i++)
-		$out .= chr(ord(substr($in, $i, 1)) - 1);
-	return $out;
 }
 
 /**
@@ -1001,12 +809,6 @@ function ObjectUsedByObjectFile($id){
 	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1;
 }
 
-function dbDateToTimeStamp($date, $time = ''){
-	list($y, $m, $d) = explode('-', $date);
-	list($hr, $min, $sec) = $time ? explode(':', $time) : array(0, 0, 0);
-	return mktime($hr, $min, $sec, $m, $d, $y);
-}
-
 function we_makeHiddenFields($filter = ''){
 	$filterArr = explode(',', $filter);
 	$hidden = '';
@@ -1040,12 +842,6 @@ function we_make_attribs($attribs, $doNotUse = ''){
 		$attr = trim($attr);
 	}
 	return $attr;
-}
-
-function debug($text){
-	$fp = fopen(TMP_DIR . '/debug.txt', 'ab');
-	fwrite($fp, $text);
-	fclose($fp);
 }
 
 function we_hasPerm($perm){
@@ -1088,27 +884,27 @@ function we_userCanEditModule($modName){
 }
 
 function makeOwnersSql($useCreatorID = true){
-	if(!$_SESSION['perms']['ADMINISTRATOR']){
-		$aliases = array(
-			$_SESSION['user']['ID']
-		);
-		we_getAliases($_SESSION['user']['ID'], $aliases, $GLOBALS['DB_WE']);
-		$q = $useCreatorID ? 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\') OR ' : '';
-		foreach($aliases as $id)
-			$q .= 'Owners like "%,' . intval($id) . ',%" OR ';
-		$groups = array(
-			$_SESSION['user']['ID']
-		);
-		we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
-		foreach($aliases as $id)
-			we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
-		foreach($groups as $id)
-			$q .= "Owners like '%," . intval($id) . ",%' OR ";
-		$q = preg_replace('#^(.*) OR $#', '\1', $q);
-		return ' AND ( RestrictOwners=0 OR (' . $q . ')) ';
-	} else{
+	if($_SESSION['perms']['ADMINISTRATOR']){
 		return '';
 	}
+	$aliases = array($_SESSION['user']['ID']);
+	we_getAliases($_SESSION['user']['ID'], $aliases, $GLOBALS['DB_WE']);
+	$q = array();
+	if($useCreatorID){
+		$q[] = 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\')';
+	}
+	foreach($aliases as $id){
+		$q [] = 'Owners like "%,' . intval($id) . ',%"';
+	}
+	$groups = array($_SESSION['user']['ID']);
+	we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
+	foreach($aliases as $id)
+		we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
+
+	foreach($groups as $id){
+		$q[] = "Owners like '%," . intval($id) . ",%'";
+	}
+	return ' AND ( RestrictOwners=0 OR (' . implode(' OR ', $q) . ')) ';
 }
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){
@@ -1142,7 +938,7 @@ function we_isOwner($csvOwners){
 function makeArrayFromCSV($csv){
 	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
 
-	if($csv == '' && $csv != '0'){
+	if($csv === ''){
 		return array();
 	}
 
@@ -1251,11 +1047,7 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab){
 				we_users_util::addAllUsersAndGroups($uid, $ownersArr);
 			array_push($ownersArr, $db->f('CreatorID'));
 			$ownersArr = array_unique($ownersArr);
-			if(in_array($_SESSION['user']['ID'], $ownersArr)){
-				return true;
-			} else{
-				return false;
-			}
+			return (in_array($_SESSION['user']['ID'], $ownersArr));
 		} else{
 			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
 			return userIsOwnerCreatorOfParentDir($pid, $tab);
@@ -1306,22 +1098,18 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	$foo = array();
 	foreach($IDs as $id){
 		if($id == 0){
-			array_push($foo, '/');
+			$foo[] = '/';
 		} else{
 			$foo2 = getHash('SELECT Path,IsFolder FROM `' . $table . '` WHERE ID=' . intval($id), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
 				}
-				array_push($foo, $foo2['Path']);
+				$foo[] = $foo2['Path'];
 			}
 		}
 	}
-	if($asArray){
-		return $foo;
-	} else{
-		return makeCSVFromArray($foo, $prePostKomma);
-	}
+	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
 }
 
 function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
@@ -1375,8 +1163,7 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 	$out = $first ? array(
 		'0' => $first
 		) : array();
-	$db->query('SELECT ID,Path
-		FROM ' . $table . (($q || $q2 || $q3) ? '
+	$db->query('SELECT ID,Path FROM ' . $table . (($q || $q2 || $q3) ? '
 		WHERE ' : '') . $q . (($q && $q2) ? ' AND ' : '') . $q2 . ((($q || $q2) && $q3) ? ' AND ' : '') . $q3 . '
 		ORDER BY ' . $order);
 	while($db->next_record())
@@ -1588,11 +1375,11 @@ function getArrayKey($needle, $haystack){
  * @param bool html (default: true) whether to apply htmlspecialchars
  * @param bool useTA (default: false) whether output is formated as textarea
  */
-function p_r($val, $html = true,$useTA=false){
-	print ($useTA?'<textarea style="width:100%" rows="20">':'<pre>');
+function p_r($val, $html = true, $useTA = false){
+	print ($useTA ? '<textarea style="width:100%" rows="20">' : '<pre>');
 	$val = print_r($val, true);
 	echo ($html ? htmlspecialchars($val) : $val);
-	print ($useTA?'</textarea>':'</pre>');
+	print ($useTA ? '</textarea>' : '</pre>');
 }
 
 /**
@@ -1645,10 +1432,12 @@ function t_e($type = 'warning'){
 
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
 
-	if(!$path)
+	if(!$path){
 		$path = $_SERVER['SCRIPT_NAME'];
-	if(!$DB_WE)
+	}
+	if(!$DB_WE){
 		$DB_WE = new DB_WE();
+	}
 
 	if(!$id){
 		return '';
@@ -1727,29 +1516,25 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	if(!$DB_WE)
 		$DB_WE = new DB_WE();
-	if(f('
-		SELECT IsDynamic
-		FROM ' . FILE_TABLE . "
-		WHERE Path='" . $DB_WE->escape($path) . "'", 'IsDynamic', $DB_WE)){
+	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "' LIMIT 1", 'IsDynamic', $DB_WE)){
 		return $path;
 	}
 	$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
 	$arr2 = makeArrayFromCSV(id_to_path($ws2, FILE_TABLE, $DB_WE));
 	$arr3 = makeArrayFromCSV($ws1);
 	$arr4 = makeArrayFromCSV($ws2);
-	foreach($arr1 as $i => $ws)
+	foreach($arr1 as $i => $ws){
 		if(in_workspace($pid, $arr3[$i])){
-			$path = f(
-				'
-				SELECT Path
-				FROM ' . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($ws) . "%'", 'Path', $DB_WE);
-			if($path)
+			$path = f('SELECT Path FROM ' . FILE_TABLE . "
+				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($ws) . "%' LIMIT 1", 'Path', $DB_WE);
+			if($path){
 				return $path;
+			}
 		}
+	}
 	foreach($arr2 as $i => $ws)
 		if(in_workspace($pid, $arr4[$i])){
-			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path like "' . $DB_WE->escape($ws) . '%"', 'Path', $DB_WE);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path like "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
 		}
 	return '';
 }
@@ -2168,8 +1953,6 @@ function clearPath($path){
  *          attribs through the tagParser.
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
-
-
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 	//	default at the moment is xhtml-style
 	$_xmlClose = false;
@@ -2290,46 +2073,6 @@ function new_array_splice(&$a, $start, $len = 1){
 }
 
 /**
- * This function works oposit to htmlentities function
- *
- * @param          array                                  $code
- *
- *
- * @return         string
- */
-function rhtmlentities($code){
-	$table = get_html_translation_table(HTML_ENTITIES);
-	$rtable = array_flip($table);
-	return strtr($code, $rtable);
-}
-
-/**
- * Returns number od days for given month
- *
- * @param          int                                  $month
- * @param          int                                  $year
- *
- *
- * @return         int
- */
-function getNumberOfDays($month, $year){
-	switch($month){
-		case 1:
-		case 3:
-		case 5:
-		case 7:
-		case 8:
-		case 10:
-		case 12:
-			return '31';
-		case 2:
-			return ($year % 4) == 0 ? '29' : '28';
-		default:
-			return '30';
-	}
-}
-
-/**
  * Returns "where query" for Doctypes depending on which workspace the user have
  *
  * @param	object	$db
@@ -2378,29 +2121,6 @@ function getDoctypeQuery($db = ''){
 	return $q;
 }
 
-/**
- * Makes a relative path from an absolute path
- *
- * @param	string	$docpath Absolute Path of document
- * @param	string	$linkpath Absolute Path of link (href or src)
- *
- * @return         string
- */
-function makeRelativePath($docpath, $linkpath){
-	$parentPath = $docpath;
-	$newLinkPath = '';
-
-	while($parentPath != substr($linkpath, 0, strlen($parentPath))) {
-		$parentPath = dirname($parentPath);
-		$newLinkPath .= '../';
-	}
-	$rest = substr($linkpath, strlen($parentPath));
-	if(substr($rest, 0, 1) == '/'){
-		$rest = substr($rest, 1);
-	}
-	return $newLinkPath . $rest;
-}
-
 function we_loadLanguageConfig(){
 
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
@@ -2440,41 +2160,16 @@ function we_writeLanguageConfig($default, $available = array()){
 	$locales = '';
 	sort($available);
 	foreach($available as $Locale){
-		$temp = explode('_', $Locale);
-		if(sizeof($temp) == 1){
-			$locales .= "	'" . $Locale . "',\n";
-		} else{
-			$locales .= "	'" . $Locale . "',\n";
-		}
+		$locales .= "	'" . $Locale . "',\n";
 	}
 
 	$code = '<?php
-
-/**
- * webEdition CMS
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_base
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
 
 $GLOBALS["weFrontendLanguages"] = array(
 ' . $locales . '
 );
 
-$GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
-';
+$GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";';
 
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
 	$fh = fopen($file, 'w+');
@@ -2594,11 +2289,6 @@ function g_l($name, $specific, $omitErrors = false){
 					) :
 					$tmp);
 		}
-	} else{
-		//FIXME: decide if in we - then turn off, else turn on
-		/* 		if(isset($GLOBALS['WE_MAIN_DOC']) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
-		  unset($cache);
-		  } */
 	}
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
 	if(file_exists($file)){

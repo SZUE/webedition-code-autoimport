@@ -690,9 +690,6 @@ class weGlossaryFrameEditorItem extends weGlossaryFrameEditor{
 	}
 
 	function getHTMLObject(&$weGlossaryFrames){
-
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
-
 		$workspace = g_l('modules_glossary', '[workspace]');
 		$parameter = g_l('modules_glossary', '[parameter]');
 

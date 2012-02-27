@@ -118,10 +118,34 @@ class we_objectFile extends we_document{
 		return parent::we_rewrite();
 	}
 
+	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
+		if(!$db){
+			$db = new DB_WE();
+		}
+		$rootPath = '/';
+		$rootId = $classId;
+		if(defined('OBJECT_TABLE')){
+			$ws = get_ws(OBJECT_FILES_TABLE);
+			if(intval($ws) == 0){
+				$ws = 0;
+			}
+			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
+			while($db->next_record()) {
+				if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
+					if($rootPath == '/' || strlen($db->f('Path')) < strlen($rootPath)){
+						$rootPath = $db->f('Path');
+						$rootId = $db->f('ID');
+					}
+				}
+			}
+		}
+		return $rootId;
+	}
+
 	function formCopyDocument(){
 
 		$idname = 'we_' . $this->Name . '_CopyID';
-		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
+		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDirId."','".$this->ContentType."');"
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
@@ -270,7 +294,7 @@ class we_objectFile extends we_document{
 			$this->setParentID($this->rootDirID);
 		}
 		// adjust to bug #376 regarding workspace
-		$workspaceRootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
+		$workspaceRootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		$this->ParentPath = id_to_path($workspaceRootDirId, OBJECT_FILES_TABLE);
 		$this->ParentID = $workspaceRootDirId;
 	}
@@ -516,7 +540,7 @@ class we_objectFile extends we_document{
 	}
 
 	function formPath(){
-		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
+		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		if($this->ParentID == ""){
 			$this->ParentID = $rootDirId;
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
@@ -3234,6 +3258,7 @@ class we_objectFile extends we_document{
 			$this->resetParentID();
 		}
 	}
+
 	protected function updateRemoteLang($db, $id, $lang, $type){
 		list($oldLang, $tid) = getHash('SELECT Language,TableID FROM ' . $this->Table . ' WHERE ID=' . $id, $db);
 		if($oldLang == $lang){
@@ -3247,6 +3272,5 @@ class we_objectFile extends we_document{
 		//drop invalid entries => is this safe???
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND Locale!="' . $lang . '"');
 	}
-
 
 }

@@ -89,7 +89,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			if(file_exists($we_doc->getElement('data'))){
 				copy($we_doc->getElement('data'), $_SERVER['DOCUMENT_ROOT'] . $_tmp_file);
 			} else{
-				error_log("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
+				t_e("$_tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
 			}
 
 

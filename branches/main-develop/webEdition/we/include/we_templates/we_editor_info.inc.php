@@ -25,6 +25,14 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
+
+function inWorkflow($doc){
+	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc)
+		return false;
+
+	return ($doc->ID ? we_workflow_utility::inWorkflow($doc->ID, $doc->Table) : false);
+}
+
 ?>
 <script type="text/javascript">
 	function revertToPublished() {

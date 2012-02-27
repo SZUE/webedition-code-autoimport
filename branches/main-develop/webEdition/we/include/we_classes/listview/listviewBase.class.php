@@ -34,23 +34,23 @@
  */
 abstract class listviewBase{
 
-	var $DB_WE;	 /* Main DB Object */
-	var $name;		/* name of listview */
-	var $rows = -1;	/* Number of rows */
-	var $cols = 0;	/* Number of cols */
+	var $DB_WE; /* Main DB Object */
+	var $name; /* name of listview */
+	var $rows = -1; /* Number of rows */
+	var $cols = 0; /* Number of cols */
 	var $maxItemsPerPage = 1;
 	var $stop_next_row = false;
-	var $start = 0;	/* Where to start output */
-	var $search = '';	/* search words */
-	var $offset = 0;	/* start offset of first page */
-	var $order = '';	/* Order string */
-	var $desc = false;	/* set to true, if order should be descendend */
-	var $cats = '';	/* category string */
+	var $start = 0; /* Where to start output */
+	var $search = ''; /* search words */
+	var $offset = 0; /* start offset of first page */
+	var $order = ''; /* Order string */
+	var $desc = false; /* set to true, if order should be descendend */
+	var $cats = ''; /* category string */
 	var $catOr = false; /* set to true if it should be an 'OR condition' e.g. categories='value1' OR categories='value2' */
-	var $anz_all = 0;	/* total number of matches */
-	var $anz = 0;	 /* number of rows in page */
+	var $anz_all = 0; /* total number of matches */
+	var $anz = 0; /* number of rows in page */
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
-	var $count = 0;	/* internal counter */
+	var $count = 0; /* internal counter */
 	var $Record = array(); /* array to store results */
 	var $ClassName = __CLASS__; /* Name of class */
 	var $close_a = true; /* close </a> when endtag used */
@@ -74,7 +74,7 @@ abstract class listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name='0', $rows=999999999, $offset=0, $order='', $desc=false, $cats='', $catOr=false, $workspaceID='0', $cols=0, $calendar='', $datefield='', $date='', $weekstart='', $categoryids='', $customerFilterType='all', $id=''){
+	function __construct($name = '0', $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = '0', $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = ''){
 
 		$this->name = $name;
 		//FIXME: broken String due to UTF-8 conversion
@@ -151,7 +151,7 @@ abstract class listviewBase{
 					case 'year':
 						$date = mktime(0, 0, 0, $calendarCount, $day, $year);
 						$start_date = mktime(0, 0, 0, $calendarCount, $day, $year);
-						$end_date = mktime(23, 59, 59, $calendarCount, getNumberOfDays($calendarCount, $year), $year);
+						$end_date = mktime(23, 59, 59, $calendarCount, self::getNumberOfDays($calendarCount, $year), $year);
 						break;
 					case 'day':
 						$date = mktime($calendarCount, 0, 0, $month, $day, $year);
@@ -209,7 +209,7 @@ abstract class listviewBase{
 	 * @param   name  string - name of listview
 	 *
 	 */
-	function hasNextPage($parentEnd=false){
+	function hasNextPage($parentEnd = false){
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != '')
 			return true;
 		if($parentEnd && isset($_REQUEST['we_lv_pend_' . $this->name])){
@@ -225,7 +225,7 @@ abstract class listviewBase{
 	 * @param   name  string - name of listview
 	 *
 	 */
-	function hasPrevPage($parentStart=false){
+	function hasPrevPage($parentStart = false){
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != '')
 			return true;
 		if($parentStart && isset($_REQUEST['we_lv_pstart_' . $this->name])){
@@ -270,7 +270,7 @@ abstract class listviewBase{
 						$month = 12;
 						$year--;
 					}
-					$day = getNumberOfDays($month, $year);
+					$day = self::getNumberOfDays($month, $year);
 				}
 				$newdate = $year . '-' . $month . '-' . $day;
 			}
@@ -309,7 +309,7 @@ abstract class listviewBase{
 		}
 	}
 
-	function we_makeQueryString($queryString='', $filter=''){
+	function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = array();
 		$filterArr = ($filter ? explode(',', $filter) : array());
 		array_push($filterArr, 'edit_object');
@@ -376,7 +376,7 @@ abstract class listviewBase{
 				$newdate = $year . '-' . $month . '-' . $day;
 			} else if($this->calendar_struct['calendar'] == 'day'){
 				$day++;
-				$numd = getNumberOfDays($month, $year);
+				$numd = self::getNumberOfDays($month, $year);
 				if($day > $numd){
 					$day = 1;
 					$month++;
@@ -409,7 +409,7 @@ abstract class listviewBase{
 			} else{
 				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '='.$foo));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 			if($only){
 				$this->close_a = false;
 				return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -422,7 +422,7 @@ abstract class listviewBase{
 	}
 
 	function shouldPrintEndTR(){
-		return ($this->cols ? (($this->count % $this->cols) == 0):false);
+		return ($this->cols ? (($this->count % $this->cols) == 0) : false);
 	}
 
 	function shouldPrintStartTR(){
@@ -513,7 +513,7 @@ abstract class listviewBase{
 		return in_array($type, array('day', 'dayname', 'dayname_long', 'dayname_short', 'month', 'monthname', 'monthname_long', 'monthname_short', 'year', 'hour'));
 	}
 
-	function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix=array()){
+	function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = array()){
 		if($this->calendar_struct['calendar'] != ''){
 			$calendar = $this->calendar_struct['calendar'];
 			$day = date('j', $this->calendar_struct['defaultDate']);
@@ -532,7 +532,7 @@ abstract class listviewBase{
 					$numofentries = 24;
 					break;
 				default:
-					$numofentries = getNumberOfDays($month, $year);
+					$numofentries = self::getNumberOfDays($month, $year);
 					$start_date = mktime(0, 0, 0, $month, 1, $year);
 					$end_date = mktime(23, 59, 59, $month, $numofentries, $year);
 			}
@@ -549,7 +549,7 @@ abstract class listviewBase{
 			if($this->calendar_struct['datefield'] == '' || $this->calendar_struct['datefield'] == '###Published###'){
 				$this->calendar_struct['datefield'] = '###Published###';
 				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
-				$calendar_where = ' AND (' . FILE_TABLE . '.Published>='.$start_date.' AND ' . FILE_TABLE . '.Published<='.$end_date.') ';
+				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else{
 				if(count($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))){
 					$field = $matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'];
@@ -559,9 +559,9 @@ abstract class listviewBase{
 
 				$calendar_select = ',' . $field . ' AS Calendar ';
 				if($condition == ''){
-					$condition = $this->calendar_struct['datefield'] . '>='.$start_date.' AND ' . $this->calendar_struct['datefield'] . '<='.$end_date;
+					$condition = $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
 				} else{
-					$condition.=' AND ' . $this->calendar_struct['datefield'] . '>='.$start_date.' AND ' . $this->calendar_struct['datefield'] . '<='.$end_date;
+					$condition.=' AND ' . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
 				}
 			}
 		}
@@ -599,6 +599,32 @@ abstract class listviewBase{
 
 
 			$this->calendar_struct['date'] = -1;
+		}
+	}
+
+	/**
+	 * Returns number od days for given month
+	 *
+	 * @param          int                                  $month
+	 * @param          int                                  $year
+	 *
+	 *
+	 * @return         int
+	 */
+	static function getNumberOfDays($month, $year){
+		switch($month){
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+				return '31';
+			case 2:
+				return ($year % 4) == 0 ? '29' : '28';
+			default:
+				return '30';
 		}
 	}
 

@@ -24,13 +24,8 @@
  */
 
 we_html_tools::protect();
-?>
-<script  type="text/javascript"><!--
-	top.opener.top.toggleBusy(0);
-//-->
+echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
 
-</script>
-<?php
 if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
 	$wf_select = $_REQUEST["wf_select"];

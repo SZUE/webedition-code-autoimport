@@ -254,7 +254,7 @@ class weDialog{
 		$out = we_html_tools::htmlTop($this->dialogTitle, $this->charset);
 
 		if($printJS_Style){
-			$out .= "\n" . STYLESHEET . "\n";
+			$out .= STYLESHEET;
 			$out .= $this->getJs();
 		}
 
@@ -360,7 +360,7 @@ class weDialog{
 	}
 
 	function getFooterHTML(){
-		return '</body></html>' . "\n";
+		return '</body></html>';
 	}
 
 	function getHttpVar($name, $alt=""){
