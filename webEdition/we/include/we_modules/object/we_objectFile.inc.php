@@ -2320,7 +2320,7 @@ class we_objectFile extends we_document{
 	function i_convertElemFromRequest($type,&$v,$k){
 		if(!$type){
 			foreach($this->DefArray as $n=>$foo){
-				$regs=explode('_',$n,1);
+				$regs=explode('_',$n,2);
 				if(isset($regs[0])){
 					$testtype= $regs[0];
 					unset($regs[0]);

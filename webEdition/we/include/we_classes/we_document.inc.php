@@ -1196,7 +1196,13 @@ class we_document extends we_root {
 					$val = time();
 				}
 				$format = isset($attribs['format']) ? $attribs['format'] : $GLOBALS['l_global']['date_format'];
-				return date(correctDateFormat($format,$val),$val);
+				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language!='de_DE'){
+					$zdate= new Zend_Date($val,Zend_Date::TIMESTAMP);
+					$zwdate = $zdate->toString($format,'php',$GLOBALS['WE_MAIN_DOC']->Language);				
+				} else {		
+					$zwdate = date(correctDateFormat($format,$val),$val);	
+				}
+				return $zwdate;
 			case 'select':
 				if(defined('OBJECT_TABLE')) {
 					if(strlen($val) == 0)
