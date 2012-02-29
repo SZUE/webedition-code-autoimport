@@ -150,6 +150,10 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	 * Path for Workspace Icon
 	 */
 	const kIconWorkspace = '/webEdition/images/icons/workspace.gif';
+	
+	
+	const kIconUnfolded = '/webEdition/images/button/btn_direction_down.gif';
+	const kIconFolded = '/webEdition/images/button/btn_direction_right.gif';
 
 	/*
 	 * buffer to store the content HTML
@@ -220,11 +224,22 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	protected function _renderHTML()
 	{
 		$iconHTML = ($this->_iconPath !== '') ? ('<img src="' . htmlspecialchars($this->_iconPath) . '" alt="" />') : "";
-		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . htmlspecialchars($this->_title) . '</div>') : "";
+		$divID=we_util_Strings::createUniqueId();
+		$imgID=we_util_Strings::createUniqueId();
+		if($this->_isFoldable){
+			if($this->_isFolded){
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars('/webEdition/images/button/btn_direction_right.gif') . '" alt=""  id="'.$imgID.'" onclick=" d = document.getElementById(\''.$divID.'\');i = document.getElementById(\''.$imgID.'\');if(d.style.display == \'none\'){d.style.display = \'block\'; i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+			} else {
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars('/webEdition/images/button/btn_direction_down.gif') . '" alt=""  id="'.$imgID.'" onclick=" d = document.getElementById(\''.$divID.'\');d = document.getElementById(\''.$imgID.'\');i = document.getElementById(\''.$imgID.'\');if(d.style.display == \'none\'){d.style.display = \'block\';i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+			}			
+		} else {
+			$folderHTML = '';
+		}
+		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' .$folderHTML. htmlspecialchars($this->_title) . '</div>') : "";
 		
 		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition == 'left')) ? $headlineHTML : "");
 		
-		$rightContent = '<div style="float:left;">' . ((($iconHTML && $headlineHTML) || ($leftContent === "") || ($this->_titlePosition != 'left')) ? ($headlineHTML . '<div>' . $this->_contentHTML . '</div>') : '<div>' . $this->_contentHTML . '</div>') . '</div>';
+		$rightContent = '<div style="float:left;">' . ((($iconHTML && $headlineHTML) || ($leftContent === "") || ($this->_titlePosition != 'left')) ? ($headlineHTML . '<div>' . $this->_contentHTML . '</div>') : '<div id="'.$divID.'" '.($this->_isFolded ? 'style="display:none"': '').' >' . $this->_contentHTML . '</div>') . '</div>';
 		
 		$html = '';
 		
@@ -323,5 +338,16 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	public function setTitlePosition($titlePosition)
 	{
 		$this->_titlePosition = $titlePosition;
+	}
+	
+	protected $_isFoldable = false;
+	public function setIsFoldable($isfoldable)
+	{
+		$this->_isFoldable = $isfoldable;
+	}
+	protected $_isFolded = false;
+	public function setIsFolded($isfolded)
+	{
+		$this->_isFolded = $isfolded;
 	}
 }
