@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_ifEditmode($attribs, $content){
 	$doc = weTag_getAttribute('doc', $attribs);
-	switch ($doc) {
+	switch($doc){
 		case 'self' :
-			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && $GLOBALS["we_editmode"];
+			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && isset($GLOBALS['we_editmode']) && $GLOBALS["we_editmode"];
 		default :
-			return $GLOBALS['we_editmode']|| $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem')*/;
+			return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') */;
 	}
 }
