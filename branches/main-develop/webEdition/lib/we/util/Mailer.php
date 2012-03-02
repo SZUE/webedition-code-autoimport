@@ -107,8 +107,7 @@ class we_util_Mailer extends Zend_Mail{
 	 * @param Bool $isEmbedImages
 	 */
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0){
-
-		setCharSet($GLOBALS['WE_BACKENDCHARSET']);
+		$this->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 
 		if(defined("WE_MAILER")){
 			switch(WE_MAILER){

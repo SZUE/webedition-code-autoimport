@@ -133,12 +133,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 			$lists = "";
 			$emailExistsInOneOfTheLists = false;
 			if($customer){
-				$__query = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f["subscribe_mail"]) . "'",$db);
+				$__query = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f["subscribe_mail"]) . "'", $db);
 				if(count($__query)){
 					$emailExistsInOneOfTheLists = true;
 				}
 				foreach($abos as $cAbo){
-					$dbAbo = isset($__query[$cAbo])?$__query[$cAbo]:'';
+					$dbAbo = isset($__query[$cAbo]) ? $__query[$cAbo] : '';
 					if(!empty($dbAbo)){
 						$emailExistsInOneOfTheLists = true;
 					}
@@ -197,7 +197,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				$subject = weTag_getAttribute("subject", $attribs, 'newsletter');
 				$from = weTag_getAttribute("from", $attribs, "newsletter@" . $_SERVER['SERVER_NAME']);
 
-				$use_https_refer = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='use_https_refer'",'pref_value',$db);
+				$use_https_refer = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='use_https_refer'", 'pref_value', $db);
 				$protocol = ($use_https_refer ? "https://" : "http://");
 
 				$port = defined("HTTP_PORT") ? HTTP_PORT : ($use_https_refer ? 443 : 80);
@@ -272,30 +272,30 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				$recipientBCC = weTag_getAttribute("recipientBCC", $attribs);
 				$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
 				$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true, true);
-				$toCC = explode(",", $recipientCC);
+				$toCC = explode(',', $recipientCC);
 				$we_recipientCC = array();
-				for($l = 0; $l < sizeof($toCC); $l++){
-					if(strpos($toCC[$l], '@') === false){
-						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]], '@') !== false){ //wenn man registrierten Usern was senden moechte
-							$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
-						} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]], '@') !== false){ //email to friend test
-							$we_recipientCC[] = $_REQUEST[$toCC[$l]];
+				foreach($toCC as $cc){
+					if(strpos($cc, '@') === false){
+						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$cc]) && strpos($_SESSION["webuser"][$cc], '@') !== false){ //wenn man registrierten Usern was senden moechte
+							$we_recipientCC[] = $_SESSION["webuser"][$cc];
+						} else if(isset($_REQUEST[$cc]) && strpos($_REQUEST[$cc], '@') !== false){ //email to friend test
+							$we_recipientCC[] = $_REQUEST[$cc];
 						}
 					} else{
-						$we_recipientCC[] = $toCC[$l];
+						$we_recipientCC[] = $cc;
 					}
 				}
-				$toBCC = explode(",", $recipientBCC);
+				$toBCC = explode(',', $recipientBCC);
 				$we_recipientBCC = array();
-				for($l = 0; $l < sizeof($toBCC); $l++){
-					if(strpos("@", $toBCC[$l]) === false){
-						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos("@", $_SESSION["webuser"][$toBCC[$l]]) !== false){ //wenn man registrierte Usern was senden moechte
-							$we_recipientBCC[] = $_SESSION["webuser"][$toBCC[$l]];
-						} else if(isset($_REQUEST[$toBCC[$l]]) && strpos("@", $_REQUEST[$toBCC[$l]]) !== false){ //email to friend test
-							$we_recipientBCC[] = $_REQUEST[$toBCC[$l]];
+				foreach($toBCC as $bcc){
+					if(strpos($bcc, '@') === false){
+						if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$bcc]) && strpos("@", $_SESSION["webuser"][$bcc]) !== false){ //wenn man registrierte Usern was senden moechte
+							$we_recipientBCC[] = $_SESSION["webuser"][$bcc];
+						} else if(isset($_REQUEST[$bcc]) && strpos("@", $_REQUEST[$bcc]) !== false){ //email to friend test
+							$we_recipientBCC[] = $_REQUEST[$bcc];
 						}
 					} else{
-						$we_recipientBCC[] = $toBCC[$l];
+						$we_recipientBCC[] = $bcc;
 					}
 				}
 				$phpmail = new we_util_Mailer($f["subscribe_mail"], $subject, $from, $from);
@@ -603,7 +603,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	return true;
 }
 
-function getNewsletterFields($request, $confirmid, &$errorcode, $mail=""){
+function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ""){
 
 	$errorcode = weNewsletterBase::STATUS_SUCCESS;
 	if($confirmid){
