@@ -1949,6 +1949,7 @@ function clearPath($path){
  * @param	[opt]array $attribs
  * @param	[opt]string $content
  * @param	[opt]boolean $forceEndTag=false
+ * @param [opt]boolean onlyStartTag=false
  * @desc	returns the html element with the given attribs.attr[pass_*] is replaced by "*" to loop some
  *          attribs through the tagParser.
  */

@@ -23,12 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sendMail($attribs, $content){
-	$foo = attributFehltError($attribs, "recipient", "sendMail");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "recipient", "sendMail")) || ($foo = attributFehltError($attribs, "from", "sendMail"))){
 		return $foo;
-	$foo = attributFehltError($attribs, "from", "sendMail");
-	if($foo)
-		return $foo;
+	}
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 
@@ -50,21 +47,9 @@ function we_tag_sendMail($attribs, $content){
 		$subject = weTag_getAttribute("subject", $attribs);
 		$charset = weTag_getAttribute("charset", $attribs, "UTF-8");
 		$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
-		if(isset($attribs['useBaseHref'])){
-			$useBaseHref = weTag_getAttribute("useBaseHref", $attribs, true, true);
-		} else{
-			$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true);
-		}
-		if(isset($attribs['useFormmailLog'])){
-			$useFormmailLog = weTag_getAttribute("useFormmailLog", $attribs, false, true);
-		} else{
-			$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, false, true);
-		}
-		if(isset($attribs['useFormmailBlock'])){
-			$useFormmailBlock = weTag_getAttribute("useFormmailBlock", $attribs, false, true);
-		} else{
-			$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, false, true);
-		}
+		$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true);
+		$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, false, true);
+		$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, false, true);
 		if($useFormmailBlock){
 			$useFormmailLog = true;
 		}
@@ -162,12 +147,11 @@ function we_tag_sendMail($attribs, $content){
 				$content = g_l('global', "[formmailerror]") . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
 				$css = array('media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css', 'href' => WEBEDITION_DIR . 'css/global.php');
 
-				print we_html_tools::htmlTop();
-				print getHtmlTag("link", $css);
-				print "</head>";
-				print getHtmlTag("body", array("class" => "weEditorBody"), "", false, true);
-				print we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline);
-				print "</body></html>";
+				print we_html_tools::htmlTop() .
+					getHtmlTag("link", $css) .
+					'</head>' .
+					getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)) .
+					'</html>';
 
 				exit;
 			}
