@@ -271,6 +271,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				$recipientCC = weTag_getAttribute("recipientCC", $attribs);
 				$recipientBCC = weTag_getAttribute("recipientBCC", $attribs);
 				$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
+				//FIXME: this is unused???
 				$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true, true);
 				$toCC = explode(',', $recipientCC);
 				$we_recipientCC = array();

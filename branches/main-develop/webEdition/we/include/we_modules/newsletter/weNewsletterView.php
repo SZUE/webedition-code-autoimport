@@ -76,7 +76,7 @@ class weNewsletterView{
 		$this->cmdFrame = $cmdFrame;
 	}
 
-	function getHiddens($predefs=array()){
+	function getHiddens($predefs = array()){
 		$out = $this->htmlHidden("ncmd", (isset($predefs["ncmd"]) ? $predefs["ncmd"] : "new_newsletter"));
 		$out .= $this->htmlHidden("we_cmd[0]", "show_newsletter");
 		$out .= $this->htmlHidden("nid", (isset($predefs["nid"]) ? $predefs["nid"] : $this->newsletter->ID));
@@ -203,14 +203,14 @@ class weNewsletterView{
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "", $acObject=null, $contentType=""){
+	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "", $acObject = null, $contentType = ""){
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$button = we_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','$filter',document.we_form.elements['$IDName'].value);");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname="Path", $Pathvalue = "/", $cmd = "", $open_doc="", $acObject=null, $contentType=""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $open_doc = "", $acObject = null, $contentType = ""){
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
 		}
@@ -239,7 +239,7 @@ class weNewsletterView{
 		}
 	}
 
-	function formWeDocChooser($table=FILE_TABLE, $width="", $rootDirID=0, $IDName="ID", $IDValue="0", $Pathname="Path", $Pathvalue="/", $cmd="", $filter="text/webedition", $acObject=null){
+	function formWeDocChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $filter = "text/webedition", $acObject = null){
 		if($Pathvalue == "")
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
 
@@ -268,7 +268,7 @@ class weNewsletterView{
 		}
 	}
 
-	function formNewsletterDirChooser($width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname="Path", $Pathvalue = "/", $cmd = "", $acObject=null){
+	function formNewsletterDirChooser($width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = "", $acObject = null){
 		$table = NEWSLETTER_TABLE;
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
@@ -2141,7 +2141,7 @@ class weNewsletterView{
 		}
 	}
 
-	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "", $customerid=0){
+	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "", $customerid = 0){
 
 		$content = "";
 		$GLOBALS['we_doc'] = "";
@@ -2153,6 +2153,7 @@ class weNewsletterView{
 		$GLOBALS["WE_FIRSTNAME"] = $firstname;
 		$GLOBALS["WE_LASTNAME"] = $lastname;
 		$GLOBALS["WE_CUSTOMERID"] = $customerid;
+		$patterns = array();
 
 		if(isset($this->newsletter->blocks[$pblk])){
 			$block = $this->newsletter->blocks[$pblk];
@@ -2241,7 +2242,6 @@ class weNewsletterView{
 							$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
 							$patterns[] = "/<(link" . $trenner . "[^>]+href" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\'\040\\\\>]*)(" . $trenner . "[^>]*)>/sie";
 							$match = array();
-							$inlines = array();
 
 							foreach($patterns as $pattern){
 								if(preg_match_all($pattern, $content, $match)){
@@ -2283,25 +2283,20 @@ class weNewsletterView{
 					$spacer = '[\040|\n|\t|\r]*';
 					parseInternalLinks($content, 0);
 
-					$content = preg_replace('|(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = preg_replace('|(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = preg_replace('|(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = preg_replace('|(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = preg_replace('|(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
+					$content = preg_replace('-(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
+					$content = preg_replace('-(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
+					$content = preg_replace('-(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
+					$content = preg_replace('-(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
 				}
 			} else{
-				$newplain = preg_replace('/<br */? *>/', "\n", $content);
+				$newplain = preg_replace('|<br */? *>|', "\n", $content);
 				$newplain = preg_replace('|<title>.*</title>|i', "\n", $newplain);
 				if($block->Type != weNewsletterBlock::TEXT){
 					$newplain = strip_tags($newplain);
 				}
 				$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
-				$newplain = str_ireplace("&nbsp;", " ", $newplain);
-				$newplain = str_ireplace("&lt;", "<", $newplain);
-				$newplain = str_ireplace("&gt;", ">", $newplain);
-				$newplain = str_ireplace("&quot;", "\"", $newplain);
-				$newplain = str_ireplace("&amp;", "&", $newplain);
-				$content = $newplain;
+				$content = $newplain = str_ireplace(array('&nbsp;', '&lt;', '&gt;', '&quot;', '&amp;',), array(' ', '<', '>', '"', '&'), $newplain);
 			}
 		}
 		return $content;
@@ -2681,14 +2676,14 @@ class weNewsletterView{
 		// WORKARROUND BUG NR 7450
 		foreach($this->settings as $key => $value){
 			if($key != 'black_list'){
-				$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET '.we_database_base::arraySetter(array('pref_name'=>$key,'pref_value'=>$value)));
+				$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $key, 'pref_value' => $value)));
 			}
 		}
 	}
 
 	function saveSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET '.we_database_base::arraySetter(array('pref_name'=>$name,'pref_value'=>$value)));
+		$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
 	}
 
 	function getBlackList(){
@@ -2714,7 +2709,7 @@ class weNewsletterView{
 	 * @param Boolean $cachemails
 	 * @return Array
 	 */
-	function cacheNewsletter($nid=0, $cachemails=true){
+	function cacheNewsletter($nid = 0, $cachemails = true){
 
 		$ret = array();
 		if($nid)
