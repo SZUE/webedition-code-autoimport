@@ -156,20 +156,27 @@ function correctDateFormat($format, $t = ''){
 		'y' => '\\y', 'a' => '\\a', 'A' => '\\A', 'B' => '\\B', 'g' => '\\g', 'G' => '\\G', 'h' => '\\h', 'H' => '\\H', 'i' => '\\i', 's' => '\\s',
 		'u' => '\\u', 'e' => '\\e', 'I' => '\\I', 'O' => '\\O', 'P' => '\\P', 'T' => '\\T', 'Z' => '\\Z', 'c' => '\\c', 'r' => '\\r', 'U' => '\\U');
 
-	$rep = array('%%%4%%%' => '\\B', '%%%5%%%' => '\\I', '%%%6%%%' => '\\L', '%%%7%%%' => '\\T', '%%%8%%%' => '\\U', '%%%9%%%' => '\\Z');
-
-	$format = str_replace(array_values($rep), array_keys($rep), $format);
-	$format = str_replace(
-		array('B', 'I', 'L', 'T', 'U', 'Z'), array('\\B', '\\I', '\\L', '\\T', '\\U', '\\Z'), $format);
-
-	$format = str_replace(array_keys($rep), array_values($rep), $format);
+	$evals = array_values($escapes);
+	//skip escaped
+	foreach($evals as $k => $e){
+		$format = str_replace($e, '%%' . $k . '%%', $format);
+	}
 
 	$rep = array(
-		'D' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][short][' . date('w', $t) . ']')),
-		'F' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
-		'l' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][long][' . date('w', $t) . ']')),
-		'M' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
+		'##1##' => g_l('date', '[day][short][' . date('w', $t) . ']'),
+		'##2##' => g_l('date', '[month][long][' . (date('n', $t) - 1) . ']'),
+		'##3##' => g_l('date', '[day][long][' . date('w', $t) . ']'),
+		'##4##' => g_l('date', '[month][short][' . (date('n', $t) - 1) . ']')
 	);
 
-	return str_replace(array_keys($rep), array_values($rep), $format);
+	$format = str_replace(array_keys($escapes), array_values($escapes), //escape chars
+		str_replace(array_keys($rep), array_vals($rep), //make sure we don't replace chars in dayname strings
+			str_replace(array('D', 'F', 'l', 'M'), array_keys($rep), $format)));
+
+	//reset escaped
+	foreach($evals as $k => $e){
+		$format = str_replace('%%' . $k . '%%', $e, $format);
+	}
+
+	return $format;
 }
