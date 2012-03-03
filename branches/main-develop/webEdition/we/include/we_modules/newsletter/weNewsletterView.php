@@ -2287,7 +2287,7 @@ class weNewsletterView{
 					$content = preg_replace('-(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
 					$content = preg_replace('-(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
 					$content = preg_replace('-(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
-					$content = preg_replace('-(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
+					$content = preg_replace('+(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)+i', '\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2', $content);
 				}
 			} else{
 				$newplain = preg_replace('|<br */? *>|', "\n", $content);
