@@ -169,7 +169,7 @@ function correctDateFormat($format, $t = ''){
 		'##4##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
 	);
 
-	$format = str_replace(array_keys($rep), array_vals($rep), //make sure we don't replace chars in dayname strings
+	$format = str_replace(array_keys($rep), array_values($rep), //make sure we don't replace chars in dayname strings
 		str_replace(array('D', 'F', 'l', 'M'), array_keys($rep), $format));
 
 	//reset escaped
