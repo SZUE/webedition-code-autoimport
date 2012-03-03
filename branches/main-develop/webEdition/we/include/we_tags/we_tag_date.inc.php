@@ -163,15 +163,14 @@ function correctDateFormat($format, $t = ''){
 	}
 
 	$rep = array(
-		'##1##' => g_l('date', '[day][short][' . date('w', $t) . ']'),
-		'##2##' => g_l('date', '[month][long][' . (date('n', $t) - 1) . ']'),
-		'##3##' => g_l('date', '[day][long][' . date('w', $t) . ']'),
-		'##4##' => g_l('date', '[month][short][' . (date('n', $t) - 1) . ']')
+		'##1##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[day][short][' . date('w', $t) . ']')),
+		'##2##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
+		'##3##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[day][long][' . date('w', $t) . ']')),
+		'##4##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
 	);
 
-	$format = str_replace(array_keys($escapes), array_values($escapes), //escape chars
-		str_replace(array_keys($rep), array_vals($rep), //make sure we don't replace chars in dayname strings
-			str_replace(array('D', 'F', 'l', 'M'), array_keys($rep), $format)));
+	$format = str_replace(array_keys($rep), array_vals($rep), //make sure we don't replace chars in dayname strings
+		str_replace(array('D', 'F', 'l', 'M'), array_keys($rep), $format));
 
 	//reset escaped
 	foreach($evals as $k => $e){
