@@ -108,7 +108,7 @@ $_count = 10;
 $i = $j = $k = 0;
 while($j < $iMaxItems) {
 	$_query = "SELECT DISTINCT DID,UserName,DocumentTable FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
-					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >' . $timestamp : '') . ' ORDER BY ModDate LIMIT ' . abs($k * $_count) . " , " . abs($_count) . ";";
+					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >' . $timestamp : '') . ' ORDER BY ModDate DESC LIMIT ' . abs($k * $_count) . " , " . abs($_count) . ";";
 	$k++;
 	$DB_WE->query($_query);
 	$_db = new DB_WE();
