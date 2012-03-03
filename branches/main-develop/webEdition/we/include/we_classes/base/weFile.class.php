@@ -171,9 +171,9 @@ abstract class weFile{
 		if(!weFile::hasURL($filename)){
 			if(is_writable($filename)){
 				if(is_dir($filename)){
-					return @rmdir($filename);
+					return rmdir($filename);
 				} else{
-					return @unlink($filename);
+					return unlink($filename);
 				}
 			} else{
 				return false;

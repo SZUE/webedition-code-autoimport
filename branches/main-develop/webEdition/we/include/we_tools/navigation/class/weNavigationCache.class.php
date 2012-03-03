@@ -119,6 +119,7 @@ class weNavigationCache{
 	/**
 	 * Used on upgrade to remove all navigation entries
 	 */
+	//FIXME: remove in 6.4??
 	static function clean(){
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean')){
 			unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean');
