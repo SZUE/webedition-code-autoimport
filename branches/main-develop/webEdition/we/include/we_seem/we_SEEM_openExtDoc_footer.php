@@ -31,9 +31,6 @@ we_html_tools::protect();
 //	the back button is only activated when there are documents in
 //	the navigation history
 
-if(!session_id()){
-	@session_start();
-}
 
 $_head = "";
 $_body = "";

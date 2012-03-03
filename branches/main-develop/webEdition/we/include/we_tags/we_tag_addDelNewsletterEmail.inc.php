@@ -34,8 +34,11 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 	if($forcedoubleoptin){
 		$doubleoptin = 1;
 	}
-	$customer = weTag_getAttribute("type", $attribs) == "customer" ? true : false;
-	$emailonly = weTag_getAttribute("type", $attribs) == "emailonly" ? true : false;
+	$customer = weTag_getAttribute("type", $attribs) == "customer";
+	$emailonly = weTag_getAttribute("type", $attribs) == "emailonly";
+	$adminmailid = intval(weTag_getAttribute("adminmailid", $attribs, 0));
+	$adminsubject = weTag_getAttribute("adminsubject", $attribs);
+	$adminemail = weTag_getAttribute("adminemail", $attribs);
 	$fieldGroup = weTag_getAttribute("fieldGroup", $attribs);
 	$fieldGroup = empty($fieldGroup) ? "Newsletter" : $fieldGroup;
 	$abos = array();
@@ -51,9 +54,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				$abos[0] = "Newsletter_Ok";
 			}
 		} else{
-			if($emailonly){
-
-			} else{
+			if(!$emailonly){
 				$paths = makeArrayFromCSV(weTag_getAttribute("path", $attribs));
 				if(!sizeof($paths) || (strlen($paths[0]) == 0)){
 					$paths[0] = "newsletter.txt";
@@ -333,7 +334,6 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 		} else{ //confirmID wurde �bermittelt, eine Best�tigung liegt also vor
 			$emailwritten = 0;
 			if($customer){
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
 				$__db = new DB_WE();
 				$__id = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"', 'ID', $__db);
 				if($__id == ''){
@@ -464,12 +464,11 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 					if($emailwritten == 0){
 						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 					}
-					$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
 				} else{ //nicht in eine Liste eintragen sondern adminmail versenden
-					$adminmailid = weTag_getAttribute("adminmailid", $attribs);
-					$adminsubject = weTag_getAttribute("adminsubject", $attribs);
-					$adminemail = weTag_getAttribute("adminemail", $attribs);
-					$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
+					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
+				}
+
+				if($adminmailid && $adminemail){//inform admin of the new account
 					$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f["subscribe_mail"], $f["subscribe_mail"]);
 					$phpmail->setCharSet($charset);
 
@@ -487,8 +486,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 					}
 					$phpmail->buildMessage();
 					$phpmail->Send();
-					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
 				}
+
+				$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
 			}
 		}
 	}

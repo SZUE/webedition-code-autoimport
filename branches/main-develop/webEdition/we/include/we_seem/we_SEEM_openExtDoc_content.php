@@ -42,14 +42,8 @@ if($fh){
 }
 
 if(isset($content)){
-
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 	print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
 } else{
-
-	if(!session_id()){
-		@session_start();
-	}
 
 
 	$_head = we_html_element::htmlHead(STYLESHEET);

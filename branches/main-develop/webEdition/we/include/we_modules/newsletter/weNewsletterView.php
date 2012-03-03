@@ -545,9 +545,8 @@ class weNewsletterView{
 	}
 
 	function getJSFooterCode(){
-		$js = '
-
-			function doUnload() {
+		return we_html_element::jsElement(
+		'function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
 						eval("jsWindow" + i + "Object.close()");
@@ -569,23 +568,18 @@ class weNewsletterView{
 						}
 						eval("parent.edbody.we_cmd(" + args + ")");
 				}
-			}
-
-		';
-
-		return we_html_element::jsElement($js);
+			}');
 	}
 
 	function getJSCmd(){
-		return we_html_element::jsElement('
-			function submitForm() {
+		return we_html_element::jsElement(
+			'function submitForm() {
 				var f = self.document.we_form;
 
 				f.target = "cmd";
 				f.method = "post";
 				f.submit();
-			}
-		');
+			}');
 	}
 
 	function getJSProperty(){
@@ -597,9 +591,8 @@ class weNewsletterView{
 		$js = we_html_element::jsScript(JS_DIR . "windows.js");
 		$js.=we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js");
 
-		$js.=we_html_element::jsElement('
-
-			function doUnload() {
+		$js.=we_html_element::jsElement(
+			'function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
 						eval("jsWindow" + i + "Object.close()");
