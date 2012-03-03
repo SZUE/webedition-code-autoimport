@@ -2747,8 +2747,6 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
 
-			include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
-
 			$not_black = !$this->View->isBlack($email); //Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';

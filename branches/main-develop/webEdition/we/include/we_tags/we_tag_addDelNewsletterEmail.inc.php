@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 
 function we_tag_addDelNewsletterEmail($attribs, $content){
 	$useListsArray = isset($_REQUEST["we_use_lists__"]);

@@ -546,7 +546,7 @@ class weNewsletterView{
 
 	function getJSFooterCode(){
 		return we_html_element::jsElement(
-		'function doUnload() {
+				'function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
 						eval("jsWindow" + i + "Object.close()");
@@ -573,7 +573,7 @@ class weNewsletterView{
 
 	function getJSCmd(){
 		return we_html_element::jsElement(
-			'function submitForm() {
+				'function submitForm() {
 				var f = self.document.we_form;
 
 				f.target = "cmd";
@@ -592,7 +592,7 @@ class weNewsletterView{
 		$js.=we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js");
 
 		$js.=we_html_element::jsElement(
-			'function doUnload() {
+				'function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
 						eval("jsWindow" + i + "Object.close()");
@@ -2396,8 +2396,6 @@ class weNewsletterView{
 	}
 
 	function sendTestMail($group, $hm){
-		include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
-
 		$plain = "";
 		$content = "";
 		$inlines = array();
