@@ -3,6 +3,6 @@
 $l_buttons_modules_schedule=array(
 	'schedule_button'=>array(
 		'alt'=>'Zeitgesteuerte Aufgaben',
-		'value'=>'Scheduler',
+		'value'=>'Zeitplaner',
 		'width'=>100,
 ));

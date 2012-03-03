@@ -8,7 +8,7 @@ $l_tabs=array(
 		'meta'=>'Meta-Informationen',
 		'preview'=>'Vorschau',
 		'properties'=>'Eigenschaften',
-		'scheduler'=>'Scheduler',
+		'scheduler'=>'Zeitplaner',
 		'search'=>'Suche',
 		'workspace'=>'Arbeitsbereich',
 	),

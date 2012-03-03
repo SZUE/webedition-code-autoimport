@@ -34,8 +34,8 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Objekte',
 	),
 	'schedule'=>array(
-		'text'=>'Scheduler',
-		'text_short'=>'Scheduler',
+		'text'=>'Zeitplaner',
+		'text_short'=>'Zeitplaner',
 	),
 	'shop'=>array(
 		'text'=>'Shop Modul',
