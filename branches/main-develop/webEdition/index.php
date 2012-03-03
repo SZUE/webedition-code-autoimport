@@ -145,6 +145,7 @@ if(is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
 
 cleanTempFiles(true);
 cleanWEZendCache();
+weNavigationCache::clean();
 we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table

@@ -23,7 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weNavigationCache{
-	const CACHEDIR='/webEdition/we/include/we_tools/navigation/cache/';
+
+	const CACHEDIR = '/webEdition/we/include/we_tools/navigation/cache/';
+
 	static $rebuildRootCnt = 0;
 
 	static function delNavigationTree($id){
@@ -80,7 +82,7 @@ class weNavigationCache{
 		$_content = serialize($currentRulesStorage);
 		unset($currentRulesStorage);
 
-		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'rules.php', $_content);
+		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
 	}
 
 	static function cacheNavigation($id){
@@ -90,11 +92,11 @@ class weNavigationCache{
 	}
 
 	static function delCacheNavigationEntry($id){
-		weFile::delete($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php');
+		weFile::delete($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php');
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items),9));
+		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
 	}
 
 	static function getCacheFromFile($parentid){
@@ -112,6 +114,21 @@ class weNavigationCache{
 			return $navigationRulesStorage = weFile::load($_cache);
 		}
 		return false;
+	}
+
+	/**
+	 * Used on upgrade to remove all navigation entries
+	 */
+	static function clean(){
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean')){
+			unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean');
+			$files = scandir($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR);
+			foreach($files as $file){
+				if(strpos($file, 'navigation_') === 0){
+					unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . $file);
+				}
+			}
+		}
 	}
 
 }
