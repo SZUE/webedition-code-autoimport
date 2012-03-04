@@ -167,7 +167,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 	<div id="info" style="display: block;">
 		<?php
 		print we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+			we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto");
 		?>
 	</div>
 </body>
