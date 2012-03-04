@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,24 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_newsletterUnsubscribeLink($attribs){
+	$foo = attributFehltError($attribs, "id", "newsletterUnsubscribeLink");
+	if($foo)
+		return $foo;
+	$id = weTag_getAttribute("id", $attribs);
+	$plain = weTag_getAttribute("plain", $attribs, true, true);
 
-function we_tag_newsletterUnsubscribeLink($attribs, $content){
-	$foo = attributFehltError($attribs,"id","newsletterUnsubscribeLink");if($foo) return $foo;
-	$id = weTag_getAttribute("id",$attribs);
-	$plain = weTag_getAttribute("plain",$attribs,true,true);
+	$db = DB_WE();
+	$settings = array();
+	$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name IN ("use_port","use_https_refer")');
 
-	$db=DB_WE();
-	$settings=array();
-	$db->query('SELECT * FROM '.NEWSLETTER_PREFS_TABLE.' WHERE pref_name IN ("use_port","use_https_refer")');
-
-	while ($db->next_record()) {
-		$settings[$db->f("pref_name")]=$db->f("pref_value");
+	while($db->next_record()) {
+		$settings[$db->f("pref_name")] = $db->f("pref_value");
 	}
 
-	$port = (isset($settings["use_port"]) && $settings["use_port"]) ? ":".$settings["use_port"] : '';
-	$protocol=(isset($settings["use_https_refer"]) && $settings["use_https_refer"]) ? 'https://' : 'http://';
+	$port = (isset($settings["use_port"]) && $settings["use_port"]) ? ":" . $settings["use_port"] : '';
+	$protocol = (isset($settings["use_https_refer"]) && $settings["use_https_refer"]) ? 'https://' : 'http://';
 
-	$ret=getServerUrl().id_to_path($id,FILE_TABLE).'?we_unsubscribe_email__=###EMAIL###';
-	return ($plain?$ret:'<a href="'.$ret.'">'.$ret.'</a>');
-
+	$ret = getServerUrl() . id_to_path($id, FILE_TABLE) . '?we_unsubscribe_email__=###EMAIL###';
+	return ($plain ? $ret : '<a href="' . $ret . '">' . $ret . '</a>');
 }

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_url($attribs, $content){
+function we_tag_url($attribs){
 	$foo = attributFehltError($attribs, "id", "url");
 	if ($foo)
 		return $foo;

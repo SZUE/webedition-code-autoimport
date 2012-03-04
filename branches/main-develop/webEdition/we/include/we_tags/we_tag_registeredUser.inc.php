@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,31 +22,32 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_registeredUser($attribs, $content){
+function we_tag_registeredUser($attribs){
 
 	$id = weTag_getAttribute("id", $attribs);
 	$show = weTag_getAttribute("show", $attribs);
 	$docAttr = weTag_getAttribute("doc", $attribs);
-
-	if (preg_match('|^field:(.+)$|', $id, $regs)) {
+	$regs = array();
+	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);
 		$field = $regs[1];
-		if (strlen($field))
+		if(strlen($field))
 			$id = $doc->getElement($field);
 	}
-	if ($id) {
+	if($id){
 		$db = new DB_WE();
-		$h = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE id='$id'", $db);
-		if ($show) {
+		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE id=' . intval($id), $db);
+		unset($h['Password']);
+		if($show){
+			$foo = array();
 			preg_match_all("|%([^ ]+) ?|i", $show, $foo, PREG_SET_ORDER);
-			for ($i = 0; $i < sizeof($foo); $i++) {
+			for($i = 0; $i < sizeof($foo); $i++){
 				$show = str_replace("%" . $foo[$i][1], $h[$foo[$i][1]], $show);
 			}
 			return $show;
-		} else {
+		} else{
 			return $h["Username"];
 		}
 	}
-	return "";
+	return '';
 }

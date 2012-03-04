@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_captcha($attribs, $content){
+function we_parse_tag_captcha($attribs){
 	eval('$attribs = ' . $attribs . ';');
 	if(($foo = attributFehltError($attribs, 'width', 'captcha')) || ($foo = attributFehltError($attribs, 'height', 'captcha'))){
 		return $foo;
@@ -104,7 +104,7 @@ function we_parse_tag_captcha($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('captcha', $attribs) . ');?>';
 }
 
-function we_tag_captcha($attribs, $content){
+function we_tag_captcha($attribs){
 	$attribs['src'] .= "?r=" . md5(md5(time()) . session_id());
 	return getHtmlTag("img", $attribs);
 }

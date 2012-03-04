@@ -139,7 +139,7 @@ function we_tag_block($attribs, $content){
 	);
 }
 
-function we_tag_blockControls($attribs, $content=''){
+function we_tag_blockControls($attribs, $content = ''){
 	//if in listview no Buttons are shown!
 	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv'])){
 		return '';

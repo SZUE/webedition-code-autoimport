@@ -22,10 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_deleteShop($attribs, $content) {
-	if (($foo = attributFehltError($attribs, "shopname", "deleteShop")))
+function we_tag_deleteShop($attribs){
+	if(($foo = attributFehltError($attribs, "shopname", "deleteShop")))
 		return $foo;
-	if (!defined("SHOP_TABLE")) {
+	if(!defined("SHOP_TABLE")){
 		return modulFehltError('Shop', '"deleteShop"');
 	}
 	$shopname = weTag_getAttribute("shopname", $attribs);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_hidden($attribs){
 
-function we_tag_hidden($attribs, $content){
-
-	$foo = attributFehltError($attribs, "name", "hidden");
-	if ($foo)
+	if(($foo = attributFehltError($attribs, "name", "hidden")))
 		return $foo;
 
 	$name = weTag_getAttribute("name", $attribs);
@@ -33,7 +32,7 @@ function we_tag_hidden($attribs, $content){
 	$xml = weTag_getAttribute("xml", $attribs);
 
 	$value = '';
-	switch ($type) {
+	switch($type){
 		case 'session' :
 
 			$value = $_SESSION[$name];
@@ -47,6 +46,6 @@ function we_tag_hidden($attribs, $content){
 	}
 
 	return getHtmlTag('input', array(
-		'type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml
-	));
+			'type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml
+		));
 }

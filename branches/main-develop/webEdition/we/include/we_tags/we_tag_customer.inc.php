@@ -22,20 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_customer($attribs, $content) {
-	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
+function we_parse_tag_customer($attribs, $content){
+	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
 	$name = weTag_getParserAttribute("name", $arr);
-	if ($name && strpos($name, ' ') !== false) {
+	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'customer'));
 	}
 
 	return '<?php global $lv;
-		if('.we_tag_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php }
+		if(' . we_tag_tagParser::printTag('customer', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_customer($attribs, $content) {
-	if (!defined("WE_CUSTOMER_MODULE_DIR")) {
+function we_tag_customer($attribs){
+	if(!defined("WE_CUSTOMER_MODULE_DIR")){
 		print modulFehltError('Customer', 'customer');
 		return false;
 	}
@@ -47,14 +47,14 @@ function we_tag_customer($attribs, $content) {
 	$size = weTag_getAttribute("size", $attribs, 30);
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 
-	if (!isset($GLOBALS["we_lv_array"])) {
+	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
 	include_once(WE_CUSTOMER_MODULE_DIR . "we_customertag.inc.php");
 
-	if ($name) {
-		if (strpos($name, " ") !== false) {
+	if($name){
+		if(strpos($name, " ") !== false){
 			print parseError(sprintf(g_l('parser', '[name_with_space]'), "object"));
 			return false;
 		}
@@ -70,7 +70,7 @@ function we_tag_customer($attribs, $content) {
 		$delbutton = we_button::create_button("image:btn_function_trash", "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 		$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "',0,'',1)");
 
-		if ($GLOBALS["we_editmode"]) {
+		if($GLOBALS["we_editmode"]){
 			?>
 			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 				<tr>
@@ -84,16 +84,16 @@ function we_tag_customer($attribs, $content) {
 				</tr>
 			</table><?php
 		}
-	} else {
+	} else{
 
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
 	}
 
 	$GLOBALS["lv"] = new we_customertag($we_cid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
-	if (is_array($GLOBALS["we_lv_array"]))
+	if(is_array($GLOBALS["we_lv_array"]))
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
-	if ($GLOBALS["lv"]->avail) {
+	if($GLOBALS["lv"]->avail){
 //implement seem
 	}
 	return $GLOBALS["lv"]->avail;

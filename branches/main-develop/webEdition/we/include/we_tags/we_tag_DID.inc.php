@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,14 +18,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_DID($attribs, $content){
+function we_tag_DID($attribs){
 	$docAttr = weTag_getAttribute("doc", $attribs);
-	if (!$docAttr) {
+	if(!$docAttr){
 		$docAttr = weTag_getAttribute("type", $attribs); // for Compatibility Reasons
 	}
 
-	switch ($docAttr) {
+	switch($docAttr){
 		case "top" :
 			return $GLOBALS["WE_MAIN_DOC"]->ID;
 		case "listview" :

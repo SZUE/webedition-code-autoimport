@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_href($attribs, $content){
+function we_tag_href($attribs){
 	if(($foo = attributFehltError($attribs, 'name', 'href'))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs);
-	$type = weTag_getAttribute('type', $attribs,'all');
+	$type = weTag_getAttribute('type', $attribs, 'all');
 	$include = weTag_getAttribute('include', $attribs, false, true);
 	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');

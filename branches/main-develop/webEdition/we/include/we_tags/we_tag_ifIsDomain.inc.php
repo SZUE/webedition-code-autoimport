@@ -22,10 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifIsDomain($attribs, $content){
+function we_tag_ifIsDomain($attribs){
 	if(($foo = attributFehltError($attribs, 'domain', 'ifIsDomain'))){
 		print($foo);
-		return '';
+		return false;
 	}
 	if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		return true;

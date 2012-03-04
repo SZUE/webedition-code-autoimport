@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifLogin($attribs,$content) {
-	if (isset($GLOBALS["WE_LOGIN"]) && $GLOBALS["WE_LOGIN"]) {
-		return true; 
-	} else {
-		return false;
-	}
+function we_tag_ifLogin(){
+	return (isset($GLOBALS["WE_LOGIN"]) && $GLOBALS["WE_LOGIN"]);
 }

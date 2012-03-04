@@ -22,18 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_votingList($attribs, $content) {
+function we_parse_tag_votingList($attribs, $content){
 	eval('$attribs = ' . $attribs . ';');
-	if (($foo = attributFehltError($attribs, 'name', 'votingList'))) {
+	if(($foo = attributFehltError($attribs, 'name', 'votingList'))){
 		return $foo;
 	}
 
 	$attribs['_type'] = 'start';
-	return '<?php '.we_tag_tagParser::printTag('votingList',$attribs).'; ?>' . $content . '<?php '.we_tag_tagParser::printTag('votingList',array('_type'=>'stop')).';?>';
+	return '<?php ' . we_tag_tagParser::printTag('votingList', $attribs) . '; ?>' . $content . '<?php ' . we_tag_tagParser::printTag('votingList', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_votingList($attribs, $content) {
-	if (!defined("VOTING_TABLE")) {
+function we_tag_votingList($attribs){
+	if(!defined("VOTING_TABLE")){
 		print modulFehltError('Voting', '"VotingList"');
 		return;
 	}
@@ -47,7 +47,7 @@ function we_tag_votingList($attribs, $content) {
 	$offset = weTag_getAttribute("offset", $attribs, 0);
 
 	$_type = weTag_getAttribute('_type', $attribs);
-	switch ($_type) {
+	switch($_type){
 		case 'start':
 			$GLOBALS['_we_voting_list'] = new weVotingList($name, $groupid, ($version > 0 ? ($version - 1) : 0), $rows, $offset, $desc, $order, $subgroup);
 			break;

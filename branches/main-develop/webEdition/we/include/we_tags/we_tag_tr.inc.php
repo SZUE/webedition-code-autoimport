@@ -27,7 +27,7 @@ function we_parse_tag_tr($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'start')) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'end')) . ');?>';
 }
 
-function we_tag_tr($attribs, $content){
+function we_tag_tr($attribs){
 	$_type = weTag_getAttribute('_type', $attribs);
 	$attribs = removeAttribs($attribs, array('_type'));
 

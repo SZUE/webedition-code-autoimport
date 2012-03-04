@@ -26,7 +26,7 @@ function we_parse_tag_next($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('next', $attribs) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('next', array('_type' => 'stop')) . ');?>';
 }
 
-function we_tag_next($attribs, $content){
+function we_tag_next($attribs){
 	$_type = weTag_getAttribute('_type', $attribs);
 	$attribs = removeAttribs($attribs, array('_type'));
 	switch($_type){

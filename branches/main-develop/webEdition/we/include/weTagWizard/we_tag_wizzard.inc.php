@@ -59,7 +59,7 @@ foreach($_reqAttributes as $_attribName){
 }
 
 // #3 all neccessary stuff for typeAttribute
-if($typeAttribute = $weTag->getTypeAttribute()){
+if(($typeAttribute = $weTag->getTypeAttribute())){
 
 	// name of the attribute
 	$typeAttributeJs = 'var typeAttributeId = "' . $typeAttribute->getIdName() . '";';
@@ -226,8 +226,6 @@ function we_cmd(){
 <body onload="window.focus();" class="defaultfont">
 <form name="we_form" onsubmit="we_cmd(\'saveTag\'); return false;">';
 // start building the content of the page
-
-$content = '';
 
 // get all attributes
 $typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();

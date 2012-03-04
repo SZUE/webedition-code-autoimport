@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifClient($attribs, $content){
+function we_tag_ifClient($attribs){
 	$version = weTag_getAttribute('version', $attribs);
 	$browser = weTag_getAttribute('browser', $attribs);
 	$system = weTag_getAttribute('system', $attribs);

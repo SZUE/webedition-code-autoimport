@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifShopVat($attribs,$content) {
-	$foo = attributFehltError($attribs,"id","ifShopVat");if($foo) return $foo;
+function we_tag_ifShopVat($attribs){
+	if(($foo = attributFehltError($attribs, "id", "ifShopVat")))
+		return $foo;
 	$id = weTag_getAttribute('id', $attribs, -1);
 
 	$vatId = 0;
 
-	if (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)) {
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)){
 		$vatId = $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME);
-	} else {
+	} else{
 		$vatId = $GLOBALS['we_doc']->getField(WE_SHOP_VAT_FIELD_NAME);
 	}
 
-	if (!$vatId) {
+	if(!$vatId){
 		$shopVat = weShopVats::getStandardShopVat();
-		if ($shopVat) {
+		if($shopVat){
 			$vatId = $shopVat->id;
 		}
 	}

@@ -18,7 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_saveRegisteredUser($attribs, $content){
+function we_tag_saveRegisteredUser($attribs){
 	$userexists = weTag_getAttribute('userexists', $attribs);
 	$userempty = weTag_getAttribute('userempty', $attribs);
 	$passempty = weTag_getAttribute('passempty', $attribs);
@@ -234,7 +234,7 @@ function we_saveCustomerImages(){
 
 						$_imgwidth = $we_size[0];
 						$_imgheight = $we_size[1];
-						$_type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
+						//$_type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
 						$_size = $_FILES['WE_SF_IMG_DATA']['size'][$imgName];
 
 						$imgDocument = new we_imageDocument();

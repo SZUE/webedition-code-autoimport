@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_conditionAdd($attribs, $content){
-	if (($foo = attributFehltError($attribs, 'field', 'conditionAdd'))){
+function we_tag_conditionAdd($attribs){
+	if(($foo = attributFehltError($attribs, 'field', 'conditionAdd'))){
 		return $foo;
 	}
 
@@ -43,55 +43,54 @@ function we_tag_conditionAdd($attribs, $content){
 	$value = str_replace('&lt;', '<', $value);
 
 	$regs = array();
-	if ($var && $compare == 'like') {
-		if (preg_match('/^(%)?([^%]+)(%)?$/', $var, $regs)) {
+	if($var && $compare == 'like'){
+		if(preg_match('/^(%)?([^%]+)(%)?$/', $var, $regs)){
 			$var = $regs[2];
 		}
 	}
-	switch (strtolower($type)) {
+	switch(strtolower($type)){
 		case 'now' :
 			$value = time();
 		case 'sessionfield' :
-			if ($var && isset($_SESSION['webuser'][$var])) {
+			if($var && isset($_SESSION['webuser'][$var])){
 				$value = $_SESSION['webuser'][$var];
 			}
 			break;
 		case 'document' :
-			if ($var) {
+			if($var){
 				$doc = we_getDocForTag($docAttr, false);
-				if ($property) {
+				if($property){
 					$value = $doc->$var;
-				} else {
+				} else{
 					$value = $doc->getElement($var);
 				}
 			}
 			break;
 		case 'request' :
-			if ($var && isset($_REQUEST[$var])) {
+			if($var && isset($_REQUEST[$var])){
 				$value = $_REQUEST[$var];
 			}
 			break;
 		default :
-			if ($var && isset($GLOBALS[$var])) {
+			if($var && isset($GLOBALS[$var])){
 				$value = $GLOBALS[$var];
 			}
 	}
-	if($exactmatch && defined('DB_COLLATION') && DB_COLLATION!=''){
-		if(strpos(DB_COLLATION,'latin1') !== false ) {
-			$compare = 'COLLATE latin1_bin '.$compare;
-		} elseif(strpos(DB_COLLATION,'utf') !== false) {
-			$compare = 'COLLATE utf8_bin '.$compare;
+	if($exactmatch && defined('DB_COLLATION') && DB_COLLATION != ''){
+		if(strpos(DB_COLLATION, 'latin1') !== false){
+			$compare = 'COLLATE latin1_bin ' . $compare;
+		} elseif(strpos(DB_COLLATION, 'utf') !== false){
+			$compare = 'COLLATE utf8_bin ' . $compare;
 		}
-
 	}
 	$value = (isset($regs[1]) ? $regs[1] : '') . $value . (isset($regs[3]) ? $regs[3] : '');
 
-	if (strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])) {
-		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '('.$field.' '.$compare.' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
-	} else {
-		if (preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']])) {
+	if(strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])){
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(' . $field . ' ' . $compare . ' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
+	} else{
+		if(preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']])){
 			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '1 ';
-		} else {
+		} else{
 			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '0 ';
 		}
 	}

@@ -22,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_addDelNewsletterEmail($attribs, $content){
+function we_tag_addDelNewsletterEmail($attribs){
 	$useListsArray = isset($_REQUEST["we_use_lists__"]);
 
 	$isSubscribe = isset($_REQUEST["we_subscribe_email__"]) || isset($_REQUEST["confirmID"]);
@@ -470,7 +469,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				if($adminmailid && $adminemail){//inform admin of the new account
 					$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f["subscribe_mail"], $f["subscribe_mail"]);
 
-					$adminmailtextHTML = we_getDocumentByID($adminmailid,'',$db,$charset);
+					$adminmailtextHTML = we_getDocumentByID($adminmailid, '', $db, $charset);
 					$phpmail->setCharSet($charset);
 
 					$adminmailtextHTML = str_replace('###MAIL###', $f["subscribe_mail"], $adminmailtextHTML);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_isUserInputNotEmpty($attribs){
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 	$match = weTag_getAttribute('match', $attribs);
 	return (isset($_REQUEST['we_ui_' . $formname][$match]) && strlen($_REQUEST['we_ui_' . $formname][$match]));
 }
 
-function we_tag_ifUserInputEmpty($attribs, $content){
+function we_tag_ifUserInputEmpty($attribs){
 	$foo = attributFehltError($attribs, 'match', 'ifUserInputEmpty');
-	if ($foo) {
+	if($foo){
 		print($foo);
 		return '';
 	}

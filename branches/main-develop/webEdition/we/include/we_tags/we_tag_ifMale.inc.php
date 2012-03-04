@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifMale($attribs, $content){
+function we_tag_ifMale(){
 	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
 		return true;
 	}
@@ -32,7 +32,6 @@ function we_tag_ifMale($attribs, $content){
 			$maleSalutation = g_l('modules_newsletter', '[default][male]');
 		}
 		return ($GLOBALS["WE_SALUTATION"] == $maleSalutation);
-	} else{
-		return false;
 	}
+	return false;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_flashmovie($attribs, $content){
-	// Include Flash class
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
-
-	$foo = attributFehltError($attribs, "name", "flashmovie");
-	if ($foo)
+function we_tag_flashmovie($attribs){
+	if(($foo = attributFehltError($attribs, "name", "flashmovie")))
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
 	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
@@ -41,29 +37,25 @@ function we_tag_flashmovie($attribs, $content){
 
 	$attribs = removeAttribs($attribs, array(
 		'showcontrol', 'showflash'
-	));
+		));
 
-	if ($GLOBALS['we_editmode'] && !$showflash) {
+	if($GLOBALS['we_editmode'] && !$showflash){
 		$out = '';
-	} else {
+	} else{
 		$out = $GLOBALS['we_doc']->getField($attribs, "flashmovie");
 	}
 
-	if ($showcontrol && $GLOBALS['we_editmode']) {
+	if($showcontrol && $GLOBALS['we_editmode']){
 		// Create "Edit Flash" button
 		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
-		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 		$flash_button = we_button::create_button(
-				"image:btn_edit_flash",
-				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', '".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
-				true);
+				"image:btn_edit_flash", "javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', '" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "'," . $parentid . ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear Flash" button
 		$clear_button = we_button::create_button(
-				"image:btn_function_trash",
-				"javascript:we_cmd('remove_image', '" . $name . "')",
-				true);
+				"image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
 		// Create HTML output
 
@@ -73,14 +65,13 @@ function we_tag_flashmovie($attribs, $content){
 				<tr>
 					<td class=\"weEditmodeStyle\">$out
 						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS['we_doc']->getElement(
-				$name,
-				"bdid") . "\" /></td>
+				$name, "bdid") . "\" /></td>
 				</tr>
 				<tr>
 					<td class=\"weEditmodeStyle\" align=\"center\">";
 		$out .= we_button::create_button_table(array(
-			$flash_button, $clear_button
-		), 5) . "</td></tr></table>";
+				$flash_button, $clear_button
+				), 5) . "</td></tr></table>";
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;

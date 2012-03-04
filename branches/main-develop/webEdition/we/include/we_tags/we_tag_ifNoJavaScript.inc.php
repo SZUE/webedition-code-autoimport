@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifNoJavaScript($attribs, $content){
-	if (($foo = attributFehltError($attribs, 'id', 'ifNoJavaScript'))) {
+function we_tag_ifNoJavaScript($attribs){
+	if(($foo = attributFehltError($attribs, 'id', 'ifNoJavaScript'))){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), new DB_WE());
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
-	$attr = we_make_attribs($attribs, 'id');
+	//$attr = we_make_attribs($attribs, 'id');
 	return '<noscript><meta http-equiv="refresh" content="0;URL=' . $url . '"></noscript>';
 }

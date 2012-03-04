@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifSendMail($attribs, $content)
-{
-	if(isset($_SESSION['WE_SendMail'])) {
-		return true;
-	} else {
-		return false;
-	}
+function we_tag_ifSendMail(){
+	return (isset($_SESSION['WE_SendMail']));
 }

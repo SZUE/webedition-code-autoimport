@@ -50,9 +50,7 @@ function correctUml($in){
 }
 
 function getAllowedClasses($db = ''){
-	if(!$db){
-		$db = new DB_WE();
-	}
+	$db = ($db ? $db : new DB_WE());
 	$out = array();
 	if(defined('OBJECT_TABLE')){
 		$ws = get_ws();
@@ -69,18 +67,16 @@ function getAllowedClasses($db = ''){
 
 		while($db->next_record()) {
 			$path = $db->f('Path');
-			if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) ||
-				in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
-
+			if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
 				$path2 = $path . '/';
 				if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
-					array_push($out, $db->f('ID'));
+					$out[] = $db->f('ID');
 				} else{
 
 					// object Workspace check (New since Version 4.x)
 					foreach($ofWsArray as $w){
 						if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
-							array_push($out, $db->f('ID'));
+							$out[] = $db->f('ID');
 							break;
 						}
 					}
@@ -137,8 +133,7 @@ function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $ro
 }
 
 function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
-	if(!$db)
-		$db = new DB_WE();
+	$db = ($db ? $db : new DB_WE());
 	if($catIDs){
 		$foo = makeArrayFromCSV($catIDs);
 		$cats = array();
@@ -494,17 +489,13 @@ function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Ca
 			'');
 }
 
-function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true){
+function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category"){
 	$db = ($db ? $db : new DB_WE());
-	$q = 'SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"';
-
-	$db->query($q);
-	$sql = '';
-	$z = 0;
+	$db->query('SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+	$sql = array();
 	while($db->next_record())
-		$sql .= " " . $table . "." . $fieldName . " like '%," . intval($db->f("ID")) . ",%' OR ";
-	$sql = preg_replace('#^(.*)OR $#', '\1', $sql);
-	return ($sql ? "( $sql )" : '');
+		$sql [] = $table . '.' . $fieldName . ' like "%,' . intval($db->f('ID')) . ',%"';
+	return (count($sql) ? '( ' . implode(' OR ', $sql) . ' )' : '');
 }
 
 function getHttpOption(){
@@ -678,7 +669,7 @@ function addTblPrefix($table){
 
 function cleanTempFiles($cleanSessFiles = false){
 	$db2 = new DB_WE();
-	$sess = $GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
+	$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
 	while($GLOBALS['DB_WE']->next_record()) {
 		$p = $GLOBALS['DB_WE']->f('Path');
 		if(file_exists($p)){
@@ -1121,7 +1112,7 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 	$out = $firstEntry ? array(
 		'0' => $firstEntry
 		) : array();
-	foreach($IDArr as $i => $id){
+	foreach($IDArr as $id){
 		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
 			$out[$id] = $path;
 		}
@@ -1718,6 +1709,7 @@ function getMaxAllowedPacket($db = ''){
 }
 
 function we_convertIniSizes($in){
+	$regs = array();
 	if(preg_match('#^([0-9]+)M$#i', $in, $regs)){
 		return 1024 * 1024 * intval($regs[1]);
 	} else
@@ -1792,6 +1784,7 @@ function getServerUrl($useUserPwd = false){
 function we_check_email($email){ // Zend validates only the pure address
 	$email = html_entity_decode($email);
 	$namePart[0] = '';
+	$_email = array();
 	if(preg_match('/<(.)*>/', $email, $_email)){
 		$namePart = substr($email, 0, strpos($email, '<'));
 		$namePart = preg_replace('/"(.)*"/', "x", $namePart);
@@ -1902,7 +1895,6 @@ function makePath($path, $table, &$pathids, $owner = 0){
 	$patharr = explode('/', $path);
 	$mkpath = '';
 	$pid = 0;
-	$ids = array();
 	foreach($patharr as $elem){
 		if($elem != '' && $elem != '/'){
 			$mkpath .= '/' . $elem;
@@ -2042,8 +2034,8 @@ function removeEmptyAttribs($atts, $ignore = array()){
  * @desc only uses the attribs given in the array use
  */
 function useAttribs($atts, $use = array()){
-
-	foreach($atts as $k => $v){
+	$keys = array_keys($atts);
+	foreach($keys as $k){
 		if(!in_array($k, $use)){
 			unset($atts[$k]);
 		}
@@ -2231,6 +2223,7 @@ function getVarArray($arr, $string){
 	if(!isset($arr)){
 		return false;
 	}
+	$arr_matches = array();
 	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
 	$return = $arr;
 	foreach($arr_matches[1] as $dimension){

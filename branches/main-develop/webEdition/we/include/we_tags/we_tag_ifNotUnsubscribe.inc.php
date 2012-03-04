@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifNotUnsubscribe($attribs, $content) {
-	if (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) {
+function we_tag_ifNotUnsubscribe(){
+	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
 		return (($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] != 0) ? true : false);
 	}
 	return false;

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_path($attribs, $content){
+function we_tag_path($attribs){
 	$db = new DB_WE();
 	$field = weTag_getAttribute("field", $attribs);
 	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
@@ -49,7 +49,7 @@ function we_tag_path($attribs, $content){
 	$path = '';
 	$q = array();
 	foreach($indexArray as $v){
-		$q[]= ' Text="'.$v.'"';
+		$q[] = ' Text="' . $v . '"';
 	}
 	$q = implode(' OR ', $q);
 	$id = $doc->ID;
@@ -86,7 +86,7 @@ function we_tag_path($attribs, $content){
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
 	}
 	$show = '';
-	$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ('.$q.') AND (Published>0 AND IsSearchable=1)');
+	$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)');
 	$db->next_record();
 	$fileID = $db->f("ID");
 	$filePath = $db->f("Path");

@@ -22,21 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_xmlnode($attribs, $content) {
-$unq = '$_xmlnode'.uniqid(rand());
-	return $unq.'='.we_tag_tagParser::printTag('xmlnode',$attribs).';
-		while('.$unq.'->next()){
-			if('.$unq.'->hasChild()){
-			$GLOBALS[\'xsuperparent\']='.$unq.'->getNode();
-				?>'.$content.'<?php
+function we_parse_tag_xmlnode($attribs, $content){
+	$unq = '$_xmlnode' . uniqid(rand());
+	return $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
+		while(' . $unq . '->next()){
+			if(' . $unq . '->hasChild()){
+			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();
+				?>' . $content . '<?php
 			}else{
-			  print '.$unq.'->getFeedData();
+			  print ' . $unq . '->getFeedData();
 			}
 			array_pop($GLOBALS["xstack"]);
-			unset('.$unq.')';
+			unset(' . $unq . ')';
 }
-
 
 /**
  * @return string
@@ -44,22 +42,21 @@ $unq = '$_xmlnode'.uniqid(rand());
  * @param string $content
  * @desc Beschreibung eingeben...
  */
-function we_tag_xmlnode($attribs, $content) {
-	if (($foo = attributFehltError($attribs, "xpath", "xmlnode")))
+function we_tag_xmlnode($attribs){
+	if(($foo = attributFehltError($attribs, "xpath", "xmlnode")))
 		return $foo;
 	$feed = weTag_getAttribute('feed', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
 
-	$out_name = '';
-	if (!isset($GLOBALS["xpaths"]))
+	if(!isset($GLOBALS["xpaths"]))
 		$GLOBALS["xpaths"] = array();
-	if (!isset($GLOBALS["xstack"]))
+	if(!isset($GLOBALS["xstack"]))
 		$GLOBALS["xstack"] = array();
 	$pind_name = count($GLOBALS["xstack"]) - 1;
-	if ($pind_name < 0) {
+	if($pind_name < 0){
 		$pind_name = 0;
 		$parent_name = '';
-	} else {
+	} else{
 		$parent_name = $GLOBALS["xstack"][$pind_name];
 	}
 
@@ -72,30 +69,29 @@ function we_tag_xmlnode($attribs, $content) {
 
 
 	// find feed
-	if ($url) {
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLBrowser.class.php");
+	if($url){
 		$feed_name = new weXMLBrowser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
 	} else
-	if ($feed) {
+	if($feed){
 		$feed_name = $GLOBALS["xmlfeeds"][$feed];
 		$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
 		$got_name = true;
-	} else {
+	} else{
 		$got_name = false;
 		$c_name = 0;
 
-		if (!empty($parent_name)) {
-			for ($c_name = $pind_name; $c_name > -1; $c_name--) {
+		if(!empty($parent_name)){
+			for($c_name = $pind_name; $c_name > -1; $c_name--){
 				$otac_name = $GLOBALS["xstack"][$c_name];
-				if (isset($GLOBALS["xpaths"][$otac_name])) {
-					if (isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])) {
+				if(isset($GLOBALS["xpaths"][$otac_name])){
+					if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
 						$feed_name = new weXMLBrowser($GLOBALS["xpaths"][$otac_name]["url"]);
 						$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
 						$got_name = true;
 					}
-					if (isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])) {
+					if(isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])){
 						$feed_name = $GLOBALS["xmlfeeds"][$GLOBALS["xpaths"][$otac_name]["feed"]];
 						$GLOBALS["xpaths"][$ind_name]["feed"] = $GLOBALS["xpaths"][$otac_name]["feed"];
 						$got_name = true;
@@ -106,19 +102,19 @@ function we_tag_xmlnode($attribs, $content) {
 	}
 
 	$nodes_name = array();
-	if ($got_name) {
-		if (isset($GLOBALS["xsuperparent"])) {
+	if($got_name){
+		if(isset($GLOBALS["xsuperparent"])){
 			$nodes_name = $feed_name->evaluate($GLOBALS["xsuperparent"] . "/" . $GLOBALS["xpaths"][$ind_name]["xpath"]);
 		}
-		if (count($nodes_name) == 0) {
+		if(count($nodes_name) == 0){
 			$nodes_name = $feed_name->evaluate($GLOBALS["xpaths"][$ind_name]["xpath"]);
 		}
-		if (count($nodes_name) == 0) {
-			if (!empty($parent_name)) {
-				for ($c_name = $pind_name; $c_name > -1; $c_name--) {
+		if(count($nodes_name) == 0){
+			if(!empty($parent_name)){
+				for($c_name = $pind_name; $c_name > -1; $c_name--){
 					$otac_name = $GLOBALS["xstack"][$c_name];
-					if (isset($GLOBALS["xpaths"][$otac_name])) {
-						if (isset($GLOBALS["xpaths"][$otac_name]["xpath"]) && !empty($GLOBALS["xpaths"][$otac_name]["xpath"])) {
+					if(isset($GLOBALS["xpaths"][$otac_name])){
+						if(isset($GLOBALS["xpaths"][$otac_name]["xpath"]) && !empty($GLOBALS["xpaths"][$otac_name]["xpath"])){
 							$GLOBALS["xpaths"][$ind_name]["xpath"] = $GLOBALS["xpaths"][$otac_name]["xpath"] . "/" . $GLOBALS["xpaths"][$ind_name]["xpath"];
 							$nodes_name = $feed_name->evaluate($GLOBALS["xpaths"][$ind_name]["xpath"]);
 						}
@@ -126,10 +122,10 @@ function we_tag_xmlnode($attribs, $content) {
 				}
 			}
 		}
-		if (count($nodes_name) != 0)
+		if(count($nodes_name) != 0)
 			$got_name = true;
 		else
-			$got_name=true;
+			$got_name = true;
 	}
 
 	array_push($GLOBALS["xstack"], ind_name);
@@ -137,23 +133,23 @@ function we_tag_xmlnode($attribs, $content) {
 	return new _we_tag_xmlnode_struct($nodes_name, $feed_name);
 }
 
-class _we_tag_xmlnode_struct {
+class _we_tag_xmlnode_struct{
 
 	private $nodes_name;
 	private $feed_name;
-	private $init=false;
+	private $init = false;
 
-	function __construct($nodes_name, $feed_name) {
+	function __construct($nodes_name, $feed_name){
 		$this->nodes_name = $nodes_name;
 		$this->feed_name = $feed_name;
 	}
 
 	function next(){
 		if($this->init){
-			return next($this->nodes_name)!==FALSE;
-		}else{
-			$this->init=true;
-			return reset($this->nodes_name)!==FALSE;
+			return next($this->nodes_name) !== FALSE;
+		} else{
+			$this->init = true;
+			return reset($this->nodes_name) !== FALSE;
 		}
 	}
 

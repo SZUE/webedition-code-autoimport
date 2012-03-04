@@ -127,7 +127,7 @@ function we_tag_sessionField($attribs, $content){
 				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 			}
 			$frontendL = $GLOBALS['weFrontendLanguages'];
-			foreach($frontendL as $lc => &$lcvalue){
+			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
@@ -135,6 +135,7 @@ function we_tag_sessionField($attribs, $content){
 				Zend_Locale::setCache(getWEZendCache());
 			}
 
+			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
 				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
 			}
@@ -260,10 +261,11 @@ function we_tag_sessionField($attribs, $content){
 		case 'hidden':
 			$usevalue = weTag_getAttribute('usevalue', $attribs, false, true);
 			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, true);
-			$_hidden['type'] = 'hidden';
-			$_hidden['name'] = 's[' . $name . ']';
-			$_hidden['value'] = ($usevalue ? $value : $orgVal);
-			$_hidden['xml'] = $xml;
+			$_hidden = array(
+				'type' => 'hidden',
+				'name' => 's[' . $name . ']',
+				'value' => ($usevalue ? $value : $orgVal),
+				'xml' => $xml);
 			if($languageautofill){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);

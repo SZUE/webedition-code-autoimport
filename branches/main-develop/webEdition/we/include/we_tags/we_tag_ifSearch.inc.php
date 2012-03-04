@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifSearch($attribs, $content){
+function we_tag_ifSearch($attribs){
 	$name = weTag_getAttribute('name', $attribs, '0');
 	$set = weTag_getAttribute('set', $attribs, true, true);
 
-	if ($set) {
+	if($set){
 		return isset($_REQUEST['we_lv_search_' . $name]);
-	} else {
+	} else{
 		return isset($_REQUEST['we_lv_search_' . $name]) && strlen(
 				str_replace(
-						'"',
-						'',
-						str_replace(
-								'\\"',
-								'',
-								(isset($_REQUEST['we_lv_search_' . $name]) ? trim(
-										$_REQUEST['we_lv_search_' . $name]) : ''))));
+					'"', '', str_replace(
+						'\\"', '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim(
+								$_REQUEST['we_lv_search_' . $name]) : ''))));
 	}
 }

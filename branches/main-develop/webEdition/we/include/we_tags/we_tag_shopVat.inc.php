@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_shopVat($attribs, $content){
+function we_tag_shopVat($attribs){
 
 	$name = WE_SHOP_VAT_FIELD_NAME;
 

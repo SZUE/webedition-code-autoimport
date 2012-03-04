@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifEmailNotExists($attribs, $content){
-	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==1);
-	}else return false;
+function we_tag_ifEmailNotExists(){
+	return (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) && ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == 1);
 }

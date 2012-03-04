@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,94 +22,101 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_writeVoting($attribs){
 
-function we_tag_writeVoting($attribs, $content) {
-
-	$id = weTag_getAttribute('id',$attribs,0);
-	$additionalFields = weTag_getAttribute('additionalfields',$attribs,0);
+	$id = weTag_getAttribute('id', $attribs, 0);
+	$additionalFields = weTag_getAttribute('additionalfields', $attribs, 0);
 	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, true);
 	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, true);
 	$writeto = weTag_getAttribute("writeto", $attribs, "voting");
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 
-	if($id) {
+	if($id){
 		$pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
-	} else {
+	} else{
 		$pattern = '/_we_voting_answer_([0-9]+)_?([0-9]+)?/';
 	}
 
-	$vars = implode(',',array_keys($_REQUEST));
+	$vars = implode(',', array_keys($_REQUEST));
 
 	$_voting = array();
 
+	$matches = array();
 	if(preg_match_all($pattern, $vars, $matches)){
-		foreach ($matches[0] as $key=>$value){
+		foreach($matches[0] as $key => $value){
 			$id = $matches[1][$key];
-			if(!isset($_voting[$id]) || !is_array($_voting[$id])) {
+			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if (!empty($_REQUEST[$value])) {
-				$_voting[$id][]= $_REQUEST[$value];
+			if(!empty($_REQUEST[$value])){
+				$_voting[$id][] = $_REQUEST[$value];
 			}
 		}
 	}
 	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
 	$addFields = array();
-	foreach ($additionalFieldsArray as $field){
-		if(isset($_REQUEST[$field])) {
+	foreach($additionalFieldsArray as $field){
+		if(isset($_REQUEST[$field])){
 			$addFields[$field] = $_REQUEST[$field];
 		}
 	}
 
 
-	if ($deletesessiondata){	unset($_SESSION['_we_voting_sessionData']);}
+	if($deletesessiondata){
+		unset($_SESSION['_we_voting_sessionData']);
+	}
 
 
-	foreach($_voting as $id=>$value){
-		if(	$writeto =='voting'){
+	foreach($_voting as $id => $value){
+		if($writeto == 'voting'){
 			$voting = new weVoting($id);
-			if ($voting->IsRequired && implode('',$value) =='') {
+			if($voting->IsRequired && implode('', $value) == ''){
 
 				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
-				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
-				if($voting->Log) $voting->logVoting(weVoting::ERROR,$votingsession,'','','');
+				if(isset($_SESSION['_we_voting_sessionID'])){
+					$votingsession = $_SESSION['_we_voting_sessionID'];
+				} else{
+					$votingsession = 0;
+				}
+				if($voting->Log)
+					$voting->logVoting(weVoting::ERROR, $votingsession, '', '', '');
 				break;
 			}
 
-			$GLOBALS['_we_voting_status'] = $voting->vote($value,$addFields);
-			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS) {
+			$GLOBALS['_we_voting_status'] = $voting->vote($value, $addFields);
+			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS){
 				break;
 			}
-		} else {
+		} else{
 			$voting = new weVoting($id);
-			if ($voting->IsRequired && implode('',$value) =='') {
+			if($voting->IsRequired && implode('', $value) == ''){
 
 				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
-				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
-				if($voting->Log) $voting->logVoting(weVoting::ERROR,$votingsession,'','','');
+				if(isset($_SESSION['_we_voting_sessionID'])){
+					$votingsession = $_SESSION['_we_voting_sessionID'];
+				} else{
+					$votingsession = 0;
+				}
+				if($voting->Log)
+					$voting->logVoting(weVoting::ERROR, $votingsession, '', '', '');
 				break;
 			}
 
 			$GLOBALS['_we_voting_status'] = $voting->setSuccessor($value);
-			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS) {
+			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS){
 				break;
 			}
-			$_SESSION['_we_voting_sessionData'][$id] = array ('value' => $value,'addFields' => $addFields );
-
+			$_SESSION['_we_voting_sessionData'][$id] = array('value' => $value, 'addFields' => $addFields);
 		}
-
-
 	}
-	if ($allowredirect && !$GLOBALS["WE_MAIN_DOC"]->InWebEdition && isset($GLOBALS['_we_voting_SuccessorID']) && $GLOBALS['_we_voting_SuccessorID'] > 0) {
+	if($allowredirect && !$GLOBALS["WE_MAIN_DOC"]->InWebEdition && isset($GLOBALS['_we_voting_SuccessorID']) && $GLOBALS['_we_voting_SuccessorID'] > 0){
 		$mypath = id_to_path($GLOBALS['_we_voting_SuccessorID']);
-		if ($mypath != $_SERVER['SCRIPT_NAME']) {
-			header("Location: ".$mypath); /* Redirect browser */
+		if($mypath != $_SERVER['SCRIPT_NAME']){
+			header("Location: " . $mypath); /* Redirect browser */
 
-		/* Make sure that code below does not get executed when we redirect. */
+			/* Make sure that code below does not get executed when we redirect. */
 			exit;
 		}
-
 	}
-
 }

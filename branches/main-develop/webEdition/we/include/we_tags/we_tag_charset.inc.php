@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,35 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_parse_tag_charset($attribs, $content){
-	return '<?php printElement('.we_tag_tagParser::printTag('charset',$attribs,$content,true).');?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('charset', $attribs, $content, true) . ');?>';
 }
 
-function we_tag_charset($attribs,$content) {
+function we_tag_charset($attribs, $content){
 
-	$defined = weTag_getAttribute("defined",$attribs);
-	$xml     = weTag_getAttribute("xml",$attribs, false, true, true);
+	$defined = weTag_getAttribute("defined", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs, false, true, true);
 
-	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){	//	normally meta tags are edited on property page
-
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Charset"]["default"] = "' . $content . '";
 						$GLOBALS["meta"]["Charset"]["defined"] = "' . $defined . '";	?>';
-	} else {
-		if($GLOBALS['CHARSET'] != ""){		//	take from template determined charset
+	} else{
+		if($GLOBALS['CHARSET'] != ""){	//	take from template determined charset
 			$content = $GLOBALS['CHARSET'];
 		}
 
-		if($content != ""){		//	set charset
-
+		if($content != ""){	//	set charset
 			$attribs["http-equiv"] = "Content-Type";
-			$attribs["content"]    = "text/html; charset=$content";
+			$attribs["content"] = "text/html; charset=$content";
 
 			$attribs = removeAttribs($attribs, array("defined"));
 
-			return getHtmlTag("meta", $attribs). "\n";
-
-		} else {
+			return getHtmlTag("meta", $attribs) . "\n";
+		} else{
 
 			return '';
 		}

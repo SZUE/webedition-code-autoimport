@@ -78,7 +78,7 @@ class we_tag_tagParser{
 	 * 			[2][x] = parameter as string
 	 */
 	public static function itemize_we_tag($tagname, $code){
-
+		$_matches = array();
 		preg_match_all('/(<' . $tagname . '([^>]*)>)/U', $code, $_matches);
 		return $_matches;
 	}
@@ -234,6 +234,7 @@ class we_tag_tagParser{
 		$endtags = array();
 
 		$endtagpos = $tagPos;
+		$regs = array();
 		for($i = $ipos + 1; $i < sizeof($this->tags); $i++){
 			if(preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)){
 				array_push($endtags, $regs[1]);

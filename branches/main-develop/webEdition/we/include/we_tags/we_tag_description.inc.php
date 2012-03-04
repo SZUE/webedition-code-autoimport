@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
 function we_parse_tag_description($attribs, $content){
-	return '<?php printElement('.we_tag_tagParser::printTag('description',$attribs,$content,true).');?>';
-} 
+	return '<?php printElement(' . we_tag_tagParser::printTag('description', $attribs, $content, true) . ');?>';
+}
 
 function we_tag_description($attribs, $content){
 	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
 		'htmlspecialchars'
-	));
+		));
 
-	if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition) { //	normally meta tags are edited on property page
-
-
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Description"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
-	} else {
+	} else{
 
 		$descr = $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : $content;
 

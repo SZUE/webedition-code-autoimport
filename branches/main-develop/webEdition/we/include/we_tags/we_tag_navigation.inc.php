@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_navigation($attribs, $content = ''){
+function we_tag_navigation($attribs){
 	$parentid = weTag_getAttribute("parentid", $attribs, -1);
 	$id = weTag_getAttribute("id", $attribs, 0);
 	$name = weTag_getAttribute("navigationname", $attribs, "default");
@@ -37,8 +37,7 @@ function we_tag_navigation($attribs, $content = ''){
 			//make sure we use cache next time!
 			$showRoot = ($id ? true : ($parentid == -1));
 			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
-			weNavigationCache::saveCacheNavigation($realId,$GLOBALS['we_navigation'][$name]);
-
+			weNavigationCache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
 		}
 	}
 }

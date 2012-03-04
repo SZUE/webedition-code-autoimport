@@ -120,14 +120,14 @@ function we_tag_input($attribs, $content){
 					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 				}
 				$frontendL = $GLOBALS['weFrontendLanguages'];
-				foreach($frontendL as $lc => &$lcvalue){
+				foreach($frontendL as &$lcvalue){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
-
+				$frontendLL = array();
 				foreach($frontendL as &$lcvalue){
 					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
 				}

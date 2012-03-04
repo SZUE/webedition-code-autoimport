@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_setVar($attribs, $content){
+function we_tag_setVar($attribs){
 	if(($foo = attributFehltError($attribs, "nameto", "setVar")))
 		return $foo;
 	if(($foo = attributFehltError($attribs, "to", "setVar")))
@@ -96,7 +96,7 @@ function we_tag_setVar($attribs, $content){
 			case "object" :
 			case "document" :
 				if($propertyFrom){
-					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom: '';
+					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '';
 				} else{
 					$valueFrom = isset($GLOBALS["we_" . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS["we_" . $from][$formnameFrom]->getElement(
 							$nameFrom) : "";

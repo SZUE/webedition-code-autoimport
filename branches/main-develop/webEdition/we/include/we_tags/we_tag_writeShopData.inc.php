@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_u
  *
  * @return         void
  */
-function we_tag_writeShopData($attribs, $content){
+function we_tag_writeShopData($attribs){
 	global $DB_WE;
 
 	$name = weTag_getAttribute('name', $attribs);
@@ -98,8 +98,6 @@ function we_tag_writeShopData($attribs, $content){
 			$preis = we_util::std_numberformat($preis);
 
 			$totPrice += $preis * $shoppingItem['quantity'];
-
-			$additionalFields = array();
 
 			// add shopcartfields to table
 			$cartField[WE_SHOP_CART_CUSTOM_FIELD] = $cartFields; // add custom cart fields to article

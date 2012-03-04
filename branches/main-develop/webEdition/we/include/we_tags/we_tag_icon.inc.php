@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_icon($attribs, $content){
-	if (($foo=attributFehltError($attribs, 'id', 'icon'))) return $foo;
+function we_tag_icon($attribs){
+	if(($foo = attributFehltError($attribs, 'id', 'icon')))
+		return $foo;
 	$xml = weTag_getAttribute('xml', $attribs);
 	$id = weTag_getAttribute('id', $attribs);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), new DB_WE());
-	if (count($row)) {
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
+	if(count($row)){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 		return getHtmlTag('link', array('rel' => 'shortcut icon', 'href' => $url, 'xml' => $xml));
 	}

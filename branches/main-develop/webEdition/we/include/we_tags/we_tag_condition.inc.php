@@ -28,7 +28,7 @@ function we_parse_tag_condition($attribs, $content){
 	return '<?php ' . we_tag_tagParser::printTag('condition', $attribs) . ';?>' . $content . '<?php ' . we_tag_tagParser::printTag('condition', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_condition($attribs, $content){
+function we_tag_condition($attribs){
 	$name = weTag_getAttribute('name', $attribs, 'we_lv_condition');
 	//internal Attribute
 	$_type = weTag_getAttribute('_type', $attribs);

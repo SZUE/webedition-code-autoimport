@@ -22,6 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_else($attribs, $content) {
+function we_parse_tag_else(){
 	return '<?php }else{ ?>';
 }

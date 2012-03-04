@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_listview($attribs, $content){
+	$arr = array();
 	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
@@ -67,7 +68,7 @@ function we_parse_tag_listview($attribs, $content){
 	return '<?php global $lv;' . we_tag_tagParser::printTag('listview', $attribs) . ';?>' . $content . '<?php we_post_tag_listview();?>';
 }
 
-function we_tag_listview($attribs, $content){
+function we_tag_listview($attribs){
 	$name = weTag_getAttribute('name', $attribs, 0);
 	$doctype = weTag_getAttribute('doctype', $attribs);
 	$class = weTag_getAttribute('classid', $attribs, 0);
@@ -125,7 +126,7 @@ function we_tag_listview($attribs, $content){
 		!weTag_getAttribute('subfolders', $attribs, false, true) :
 		weTag_getAttribute('recursive', $attribs, true, true);
 
-	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool)$_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
+	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
 	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);

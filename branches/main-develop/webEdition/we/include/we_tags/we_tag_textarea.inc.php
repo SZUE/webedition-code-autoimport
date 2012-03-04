@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_textarea($attribs, $content){
-	if (($foo = attributFehltError($attribs, "name", "textarea"))){
+	if(($foo = attributFehltError($attribs, "name", "textarea"))){
 		return $foo;
 	}
 
 	$name = weTag_getAttribute("name", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
+	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
@@ -37,11 +37,11 @@ function we_tag_textarea($attribs, $content){
 	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'true');
 
 	$autobr = $GLOBALS['we_doc']->getElement($name, "autobr");
-	if (strlen($autobr) == 0) {
+	if(strlen($autobr) == 0){
 		$autobr = $autobrAttr ? "on" : "off";
 	}
 	$showAutobr = isset($attribs["autobr"]);
-	if (!$showAutobr && $GLOBALS['we_editmode']) {
+	if(!$showAutobr && $GLOBALS['we_editmode']){
 		$autobr = "off";
 		$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
 		$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
@@ -51,26 +51,14 @@ function we_tag_textarea($attribs, $content){
 	$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 	$value = $GLOBALS['we_doc']->getElement($name) ? $GLOBALS['we_doc']->getElement($name) : $content;
 
-	if ($GLOBALS['we_editmode']) {
-		if((!$GLOBALS['we_doc']->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
+	if($GLOBALS['we_editmode']){
+		if((!$GLOBALS['we_doc']->getElement($name)) && $value){ // when not inlineedit, we need to save the content in the object, if the field is empty
 			$GLOBALS['we_doc']->setElement($name, $value);
 			$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
 		}
 		return we_forms::weTextarea(
-				$fieldname,
-				$value,
-				$attribs,
-				$autobr,
-				$autobrName,
-				$showAutobr,
-				$GLOBALS['we_doc']->getHttpPath(),
-				false,
-				false,
-				$xml,
-				$removeFirstParagraph,
-				'',
-				($spellcheck == 'true'));
-	} else {
+				$fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
+	} else{
 		return $GLOBALS['we_doc']->getField($attribs);
 	}
 }

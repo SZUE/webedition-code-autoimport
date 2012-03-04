@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_tracker($attribs, $content){
-	if ($GLOBALS['we_doc']->InWebEdition) {
+function we_tag_tracker($attribs){
+	if($GLOBALS['we_doc']->InWebEdition){
 		return "";
 	}
-	if (!defined("WE_TRACKER_DIR")) {
+	if(!defined("WE_TRACKER_DIR")){
 		define("WE_TRACKER_DIR", "/pageLogger");
 	}
-	if(!is_dir($_SERVER['DOCUMENT_ROOT'].WE_TRACKER_DIR)){
+	if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR)){
 		t_e('pagelogger not installed, but we:pagelogger called');
 		return '';
 	}
@@ -39,47 +39,47 @@ function we_tag_tracker($attribs, $content){
 	$websitename = weTag_getAttribute("websitename", $attribs, $_SERVER['SERVER_NAME']);
 	$trackname = weTag_getAttribute("trackname", $attribs);
 
-	if ($trackname == "WE_PATH") {
-		if (isset($_REQUEST['we_objectID'])) {
+	if($trackname == "WE_PATH"){
+		if(isset($_REQUEST['we_objectID'])){
 			$trackname = "/object" . id_to_path($_REQUEST['we_objectID'], OBJECT_FILES_TABLE);
-		} else {
+		} else{
 			$trackname = $GLOBALS["WE_MAIN_DOC"]->Path;
 		}
 	} else
-		if ($trackname == "WE_TITLE") {
-			$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
-		}
+	if($trackname == "WE_TITLE"){
+		$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
+	}
 
 	$trackerurl = ($ssl ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WE_TRACKER_DIR;
 
-	if ($type == 'standard') {
-		return '<!-- pageLogger Code BEGIN -->'.we_html_element::jsScript($trackerurl . '/scripts/picmodejs.js').'
+	if($type == 'standard'){
+		return '<!-- pageLogger Code BEGIN -->' . we_html_element::jsScript($trackerurl . '/scripts/picmodejs.js') . '
 <script type="text/javascript">
 <!--
 _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ? (",'" . addslashes(
-				$trackname) . "'") : "") . ');
+					$trackname) . "'") : "") . ');
 //-->
 </script>
 <noscript>
 <img width="1" height="1"  alt="" src="' . $trackerurl . '/connector.php?' . $websitename . '&amp;mode=NOSCRIPT' . ($trackname ? ("&amp;trackname=" . rawurlencode(
-				$trackname)) : "") . '" />
+					$trackname)) : "") . '" />
 </noscript>
 <!-- pageLogger Code END -->
 ';
 	} else
-		if ($type == 'robot') {
-			include ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/spidertracker.php");
-			@logspider($websitename);
-		} else
-			if ($type == 'fileserver') {
-				@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/service/fileserver.php");
-			} else
-				if ($type == 'downloads') {
-					@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
-					$category = weTag_getAttribute("category", $attribs);
-					$order = weTag_getAttribute("order", $attribs, "FILETITLE");
-					$desc = weTag_getAttribute("desc", $attribs, true, true);
-					$rows = weTag_getAttribute("rows", $attribs, "10");
-					showcat($category, $order, $desc ? "DESC" : "ASC", $rows, $websitename);
-				}
+	if($type == 'robot'){
+		include ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/spidertracker.php");
+		@logspider($websitename);
+	} else
+	if($type == 'fileserver'){
+		@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/service/fileserver.php");
+	} else
+	if($type == 'downloads'){
+		@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
+		$category = weTag_getAttribute("category", $attribs);
+		$order = weTag_getAttribute("order", $attribs, "FILETITLE");
+		$desc = weTag_getAttribute("desc", $attribs, true, true);
+		$rows = weTag_getAttribute("rows", $attribs, "10");
+		showcat($category, $order, $desc ? "DESC" : "ASC", $rows, $websitename);
+	}
 }

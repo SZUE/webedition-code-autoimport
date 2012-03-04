@@ -86,18 +86,18 @@ function we_tag_categorySelect($attribs, $content){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = $db->f($dbfield);
 			if($rootdir && ($rootdir != '/') && $showpath){
-				$field = preg_replace('|^'.preg_quote($rootdir).'|', '', $field);
+				$field = preg_replace('|^' . preg_quote($rootdir) . '|', '', $field);
 			}
 			if($field){
 				if(in_array($db->f("Path"), $valuesArray)){
 					$content .= getHtmlTag(
-							'option', array(
-							'value' => $db->f("Path"), 'selected' => 'selected'
-							), str_repeat($indent, $deep) . $field);
+						'option', array(
+						'value' => $db->f("Path"), 'selected' => 'selected'
+						), str_repeat($indent, $deep) . $field);
 				} else{
 					$content .= getHtmlTag('option', array(
-							'value' => $db->f("Path")
-							), str_repeat($indent, $deep) . $field);
+						'value' => $db->f("Path")
+						), str_repeat($indent, $deep) . $field);
 				}
 			}
 		}

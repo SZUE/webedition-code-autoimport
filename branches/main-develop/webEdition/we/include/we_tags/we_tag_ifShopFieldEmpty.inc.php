@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifShopFieldEmpty($attribs){
+	if(($foo = attributFehltError($attribs, "name", "ifShopFieldEmpty")))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "reference", "ifShopFieldEmpty")))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "shopname", "ifShopFieldEmpty")))
+		return $foo;
 
-function we_tag_ifShopFieldEmpty($attribs,$content) {
-	$foo = attributFehltError($attribs, "name", "ifShopFieldEmpty");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "ifShopFieldEmpty");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "ifShopFieldEmpty");if($foo) return $foo;
-
-	$name      = weTag_getAttribute("name", $attribs);
-	$reference = weTag_getAttribute("reference", $attribs);
-	$shopname  = weTag_getAttribute("shopname", $attribs);
-	$attribs['type']='print';//Bug #4895
-
-	return (we_tag('shopField',$attribs, "") == '');
+	return (we_tag('shopField', $attribs) == '');
 }

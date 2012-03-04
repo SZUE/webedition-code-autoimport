@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/w
  *
  * @return         void
  */
-function we_tag_saferpay($attribs,$content) {
+function we_tag_saferpay($attribs) {
 	global $DB_WE;
 	$name = weTag_getAttribute('name',$attribs);
 	$foo = attributFehltError($attribs,'pricename','saferpay');

@@ -22,14 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_order($attribs, $content) {
+function we_parse_tag_order($attribs, $content){
 	return '<?php global $lv;
-		if('.we_tag_tagParser::printTag('order', $attribs).'){?>' . $content . '<?php }
+		if(' . we_tag_tagParser::printTag('order', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_order($attribs, $content) {
-	if (!defined('WE_SHOP_MODULE_DIR')) {
+function we_tag_order($attribs){
+	if(!defined('WE_SHOP_MODULE_DIR')){
 		print modulFehltError('Shop', '"order"');
 		return false;
 	}
@@ -39,7 +39,7 @@ function we_tag_order($attribs, $content) {
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 
-	if (!isset($GLOBALS["we_lv_array"])) {
+	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
@@ -48,8 +48,7 @@ function we_tag_order($attribs, $content) {
 
 
 	$GLOBALS["lv"] = new we_shop_ordertag($we_orderid, $condition, $hidedirindex);
-	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
-	if (is_array($GLOBALS["we_lv_array"])){
+	if(is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
 	}
 	return $GLOBALS["lv"]->avail;

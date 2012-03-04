@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,8 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //used in we:linkedlist
 function we_tag_postlink($attribs, $content){
-	return (we_tag('ifPosition',array('type'=>'linklist','position'=>'last','reference'=>''))?'':$content);
+	return (we_tag('ifPosition', array('type' => 'linklist', 'position' => 'last', 'reference' => '')) ? '' : $content);
 }

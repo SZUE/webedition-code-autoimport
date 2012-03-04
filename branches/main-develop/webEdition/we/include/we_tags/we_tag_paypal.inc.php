@@ -31,7 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop
  *
  * @return			void
  */
-function we_tag_paypal($attribs, $content){
+function we_tag_paypal($attribs){
 	global $DB_WE;
 	$name = weTag_getAttribute('name', $attribs);
 	if(($foo = attributFehltError($attribs, 'pricename', 'PayPal')))

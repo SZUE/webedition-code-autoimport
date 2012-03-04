@@ -22,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_sessionLogout($attribs, $content) {
-	if (($foo = attributFehltError($attribs, 'id', 'sessionLogout'))){
+function we_tag_sessionLogout($attribs, $content){
+	if(($foo = attributFehltError($attribs, 'id', 'sessionLogout'))){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_css($attribs, $content){
+function we_tag_css($attribs){
 
 	$foo = attributFehltError($attribs, "id", "css");
-	if ($foo)
+	if($foo)
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);
 	$rel = weTag_getAttribute("rel", $attribs, "stylesheet");
 
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".intval($id), new DB_WE());
-	if (count($row)) {
+	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($id), new DB_WE());
+	if(count($row)){
 		$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
 
 		//	remove not needed elements
 		$attribs = removeAttribs($attribs, array(
 			"id", "rel"
-		));
+			));
 
 		$attribs["rel"] = $rel;
 		$attribs["type"] = "text/css";
 		$attribs["href"] = $url;
 
 
-		return getHtmlTag("link", $attribs). "\n";
+		return getHtmlTag("link", $attribs) . "\n";
 	}
 	return "";
 }

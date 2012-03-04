@@ -485,7 +485,7 @@ class weShopVariants{
 		return $parts;
 	}
 
-	function useVariant(&$model, $name){
+	static function useVariant(&$model, $name){
 
 		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 

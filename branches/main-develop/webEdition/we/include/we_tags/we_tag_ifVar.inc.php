@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifVar($attribs, $content){
+function we_tag_ifVar($attribs){
 	if(($foo = attributFehltError($attribs, "name", "ifVar"))){
 		print($foo);
 		return false;

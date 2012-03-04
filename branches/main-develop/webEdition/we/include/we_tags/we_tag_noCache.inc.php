@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,8 +18,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_noCache($attribs, $content) {
+function we_parse_tag_noCache($attribs, $content){
 	//this tag is ignored!
 	return $content;
 }

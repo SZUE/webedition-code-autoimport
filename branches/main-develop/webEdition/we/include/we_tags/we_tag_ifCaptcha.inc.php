@@ -22,22 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaImage.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaMemory.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captcha.class.php');
-
-function we_tag_ifCaptcha($attribs, $content) {
+function we_tag_ifCaptcha($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$formname = weTag_getAttribute('formname', $attribs);
 
-	if (!empty($formname)) {
-		if (isset($_REQUEST['we_ui_' . $formname][$name]))
+	if(!empty($formname)){
+		if(isset($_REQUEST['we_ui_' . $formname][$name]))
 			return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);
-	} else {
-		if (isset($_REQUEST['we_ui_we_global_form'][$name])) {
+	} else{
+		if(isset($_REQUEST['we_ui_we_global_form'][$name])){
 			return Captcha::check($_REQUEST['we_ui_we_global_form'][$name]);
 		}
-		if (isset($_REQUEST[$name])) {
+		if(isset($_REQUEST[$name])){
 			return Captcha::check($_REQUEST[$name]);
 		}
 	}

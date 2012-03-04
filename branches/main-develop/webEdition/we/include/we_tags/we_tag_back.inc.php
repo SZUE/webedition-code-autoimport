@@ -26,7 +26,7 @@ function we_parse_tag_back($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('back', $attribs) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('back', array('_type' => 'stop')) . ');?>';
 }
 
-function we_tag_back($attribs, $content){
+function we_tag_back($attribs){
 	$_type = weTag_getAttribute('_type', $attribs);
 	$attribs = removeAttribs($attribs, array('_type'));
 

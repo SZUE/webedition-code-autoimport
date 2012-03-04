@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,21 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifWorkspace($attribs, $content){
+function we_tag_ifWorkspace($attribs){
 	$required_path = weTag_getAttribute('path', $attribs);
 	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
 	$id = weTag_getAttribute('id', $attribs);
 
-	if (!$required_path) {
+	if(!$required_path){
 		$required_path = id_to_path($id);
 	}
 
-	if (!$required_path) {
+	if(!$required_path){
 		return false;
 	}
 
-	if (substr($required_path, 0, 1) != '/') {
+	if(substr($required_path, 0, 1) != '/'){
 		$required_path = '/' . $required_path;
 	}
 

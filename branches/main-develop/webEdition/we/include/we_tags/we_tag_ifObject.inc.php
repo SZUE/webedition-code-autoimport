@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifObject($attribs,$content) {
-	return (($GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName=="we_search_listview" && $GLOBALS["lv"]->f("OID")));
+function we_tag_ifObject(){
+	return (($GLOBALS["lv"]->ClassName == "we_listview_object") || ($GLOBALS["lv"]->ClassName == "we_search_listview" && $GLOBALS["lv"]->f("OID")));
 }

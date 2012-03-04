@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_registerSwitch(){
 
-function we_tag_registerSwitch($attribs,$content) {
-
-	if ($GLOBALS["we_editmode"]) {
+	if($GLOBALS["we_editmode"]){
 
 		return '
 			<table border="0" cellpadding="4" cellspacing="0" bgcolor="silver">
 				<tr>
 					<td>
 						<font face="verdana" size="2">
-							<b>' . g_l('modules_customer','[view]') . ':</b>&nbsp;</font></td>
+							<b>' . g_l('modules_customer', '[view]') . ':</b>&nbsp;</font></td>
 					<td>
-						<input id="set_registered" type="radio" name="we_set_registeredUser" value="1" onClick="top.we_cmd(\'reload_editpage\');"'.((isset($_SESSION["we_set_registered"]) && $_SESSION["we_set_registered"]) ? " checked" : "").' /></td>
-					<td>
-						<font face="verdana" size="2">
-							&nbsp;<label for="set_registered">' . g_l('modules_customer','[registered_user]') . '</label>&nbsp;&nbsp;&nbsp;<font></td>
-					<td>
-						<input id="set_unregistered" type="radio" name="we_set_registeredUser" value="0" onClick="top.we_cmd(\'reload_editpage\');"'.((!isset($_SESSION["we_set_registered"]) || !$_SESSION["we_set_registered"]) ? " checked" : "").' /></td>
+						<input id="set_registered" type="radio" name="we_set_registeredUser" value="1" onClick="top.we_cmd(\'reload_editpage\');"' . ((isset($_SESSION["we_set_registered"]) && $_SESSION["we_set_registered"]) ? " checked" : "") . ' /></td>
 					<td>
 						<font face="verdana" size="2">
-							&nbsp;<label for="set_unregistered">' . g_l('modules_customer','[unregistered_user]') . '</label></font></td>
+							&nbsp;<label for="set_registered">' . g_l('modules_customer', '[registered_user]') . '</label>&nbsp;&nbsp;&nbsp;<font></td>
+					<td>
+						<input id="set_unregistered" type="radio" name="we_set_registeredUser" value="0" onClick="top.we_cmd(\'reload_editpage\');"' . ((!isset($_SESSION["we_set_registered"]) || !$_SESSION["we_set_registered"]) ? " checked" : "") . ' /></td>
+					<td>
+						<font face="verdana" size="2">
+							&nbsp;<label for="set_unregistered">' . g_l('modules_customer', '[unregistered_user]') . '</label></font></td>
 				</tr>
 			</table>';
-	} else {
+	} else{
 		return "";
 	}
 }

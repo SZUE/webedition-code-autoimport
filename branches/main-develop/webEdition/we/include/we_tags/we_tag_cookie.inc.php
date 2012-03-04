@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_cookie($attribs, $content) {
-	setcookie('_we_cookie_',time(),(time()+630720000));
+function we_tag_cookie(){
+	setcookie('_we_cookie_', time(), (time() + 630720000));
 }

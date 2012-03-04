@@ -1,7 +1,7 @@
 <?php
 
-function we_parse_tag_voting($attribs, $content) {
-		return '<?php printElement('.we_tag_tagParser::printTag('voting',$attribs).');?>'.$content.'<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
+function we_parse_tag_voting($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('voting', $attribs) . ');?>' . $content . '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
 }
 
 /**
@@ -26,15 +26,15 @@ function we_parse_tag_voting($attribs, $content) {
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_voting($attribs, $content) {
-	if (!defined("VOTING_TABLE")) {
+function we_tag_voting($attribs){
+	if(!defined("VOTING_TABLE")){
 		return modulFehltError('Voting', '"voting"');
 	}
 	$id = weTag_getAttribute("id", $attribs, 0);
 	$name = weTag_getAttribute("name", $attribs);
 	$version = weTag_getAttribute("version", $attribs, 0);
 
-	if (($foo = attributFehltError($attribs, 'name', 'voting'))) {
+	if(($foo = attributFehltError($attribs, 'name', 'voting'))){
 		return $foo;
 	}
 
@@ -43,18 +43,18 @@ function we_tag_voting($attribs, $content) {
 	$GLOBALS["_we_voting_namespace"] = $name;
 	$GLOBALS['_we_voting'] = new weVoting();
 
-	if (isset($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat'])) {
+	if(isset($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat'])){
 		$GLOBALS['_we_voting'] = new weVoting($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat']);
-	} else if ($id != 0) {
+	} else if($id != 0){
 		$GLOBALS['_we_voting'] = new weVoting($id);
-	} else {
+	} else{
 		$__voting_matches = array();
-		if (preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches)) {
+		if(preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches)){
 			$GLOBALS['_we_voting'] = new weVoting($__voting_matches[1][0]);
 		}
 	}
 
-	if (isset($GLOBALS['_we_voting'])) {
+	if(isset($GLOBALS['_we_voting'])){
 		$GLOBALS['_we_voting']->setDefVersion($version);
 	}
 }

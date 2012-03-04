@@ -22,19 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_answers($attribs, $content) {
-	if (!defined("VOTING_TABLE")) {
+function we_parse_tag_answers($attribs, $content){
+	if(!defined("VOTING_TABLE")){
 		return modulFehltError('Voting', '"Answer"');
 	}
-	return '<?php while('.we_tag_tagParser::printTag('answers',$attribs).'){?>' . $content . '<?php }?>';
+	return '<?php while(' . we_tag_tagParser::printTag('answers', $attribs) . '){?>' . $content . '<?php }?>';
 }
 
-function we_tag_answers($attribs, $content) {
-	if (isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()) {
+function we_tag_answers(){
+	if(isset($GLOBALS["_we_voting"]) && $GLOBALS["_we_voting"]->getNext()){
 		return true;
 	}
 
-	if (isset($GLOBALS['_we_voting']))
+	if(isset($GLOBALS['_we_voting']))
 		$GLOBALS['_we_voting']->resetSets();
 	return false;
 }

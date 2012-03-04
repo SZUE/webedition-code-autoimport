@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,18 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_processDateSelect($attribs, $content){
+function we_tag_processDateSelect($attribs){
 	$foo = attributFehltError($attribs, "name", "dateSelect");
-	if ($foo)
+	if($foo)
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
 	$endofday = weTag_getAttribute("endofday", $attribs, false, true);
 	$GLOBALS[$name] = $_REQUEST[$name] = mktime(
-			$endofday ? 23 : 0,
-			$endofday ? 59 : 0,
-			$endofday ? 59 : 0,
-			isset($_REQUEST[$name . "_month"]) ? $_REQUEST[$name . "_month"] : 0,
-			isset($_REQUEST[$name . "_day"]) ? $_REQUEST[$name . "_day"] : 0,
-			isset($_REQUEST[$name . "_year"]) ? $_REQUEST[$name . "_year"] : 0);
+		$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, isset($_REQUEST[$name . "_month"]) ? $_REQUEST[$name . "_month"] : 0, isset($_REQUEST[$name . "_day"]) ? $_REQUEST[$name . "_day"] : 0, isset($_REQUEST[$name . "_year"]) ? $_REQUEST[$name . "_year"] : 0);
 }

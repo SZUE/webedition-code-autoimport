@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,36 +22,35 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_pageLanguage($attribs, $content){
+function we_tag_pageLanguage($attribs){
 
 	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$type = weTag_getAttribute("type", $attribs, "complete");
 	$case = weTag_getAttribute("case", $attribs, "unchanged");
 	$doc = we_getDocForTag($docAttr);
 
-	$lang=$doc->Language;
-	$out="";
+	$lang = $doc->Language;
+	$out = "";
 
-	switch ($type){
+	switch($type){
 		case "language":
-			$out=substr($lang,0,2);
+			$out = substr($lang, 0, 2);
 			break;
 		case "country":
-			$out=substr($lang,3,2);
+			$out = substr($lang, 3, 2);
 			break;
 		default:
-			$out=$lang;
+			$out = $lang;
 	}
-	switch ($case){
+	switch($case){
 		case "uppercase":
-			$out= strtoupper ($out);
+			$out = strtoupper($out);
 			break;
 		case "lowercase":
-			$out= strtolower ($out);
+			$out = strtolower($out);
 			break;
 		default:
-			$out=$out;
+			$out = $out;
 	}
 	return $out;
 }

@@ -113,7 +113,6 @@ class weNewsletterView{
 		foreach($this->newsletter->groups as $group){
 
 			foreach($group->persistents as $per){
-				$varname = "group" . $counter . "_" . $per;
 				$val = $group->$per;
 				$out .= $this->htmlHidden("group" . $counter . "_" . $per, $val);
 			}
@@ -166,7 +165,6 @@ class weNewsletterView{
 	function getHiddensContentPage(){
 		$out = "";
 		$counter = 0;
-		$val = "";
 
 		foreach($this->newsletter->blocks as $bk => $bv){
 
@@ -302,7 +300,7 @@ class weNewsletterView{
 	}
 
 	function getFields($id, $table){
-		$ClassName = f("SELECT ClassName FROM " . $this->db->escape($table) . " WHERE ID=" . intval($id), "ClassName", $this->db);
+		$ClassName = f('SELECT ClassName FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id), "ClassName", $this->db);
 		$foo = array();
 
 		if($ClassName){
@@ -310,7 +308,7 @@ class weNewsletterView{
 			$ent->initByID($id, $table);
 			$tmp = array_keys($ent->elements);
 
-			foreach($tmp as $k => $v){
+			foreach($tmp as $v){
 				$foo[$v] = $v;
 			}
 		}
@@ -318,22 +316,22 @@ class weNewsletterView{
 		return $foo;
 	}
 
-	function getObjectFields(){
-		$ClassName = f("SELECT ClassName FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "ClassName", $this->db);
+	/* 	function getObjectFields(){
+	  $ClassName = f("SELECT ClassName FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "ClassName", $this->db);
 
-		$doc = new $ClassName();
+	  $doc = new $ClassName();
 
-		$doc->initByID($id);
-		$tmp = array_keys($doc->elements);
-		$foo = array();
+	  $doc->initByID($id);
+	  $tmp = array_keys($doc->elements);
+	  $foo = array();
 
-		foreach($tmp as $k => $v){
-			$foo[$v] = $v;
-		}
+	  foreach($tmp as $k => $v){
+	  $foo[$v] = $v;
+	  }
 
-		return $foo;
-		return array();
-	}
+	  return $foo;
+	  return array();
+	  } */
 
 	function getJSTopCode(){
 		$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
@@ -1436,8 +1434,8 @@ class weNewsletterView{
 										$acErrorField = g_l('modules_newsletter', '[block_object]');
 										break;
 									default:
-										$acTable = "";
-										$acField = "";
+										$acTable = '';
+										$acErrorField = '';
 								}
 								if(!empty($acTable)){
 									$weAcResult = $weAcQuery->getItemById($_REQUEST['block' . $i . "_LinkID"], $acTable, array("IsFolder"));
@@ -1494,7 +1492,6 @@ class weNewsletterView{
 							$this->newsletter->isEmbedImages = $this->settings["isEmbedImages"];
 						}
 
-						$exist = false;
 						$double = intval(f('SELECT COUNT(1) AS Count FROM ' . NEWSLETTER_TABLE . " WHERE Path='" . $this->db->escape($this->newsletter->Path) . "'" . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), 'Count', $this->db));
 
 						if(!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")){
@@ -1521,7 +1518,6 @@ class weNewsletterView{
 								return;
 							}
 
-							$childs = "";
 							$message = "";
 
 							$ret = $this->newsletter->save($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
@@ -1632,7 +1628,6 @@ class weNewsletterView{
 
 				case "addGroup":
 					$this->newsletter->addGroup();
-					$cg = count($this->newsletter->groups);
 					print we_html_element::jsElement('
 								var edf=top.content.resize.right.editor.edfooter;
 								edf.document.we_form.gview.length = 0;
@@ -1777,7 +1772,7 @@ class weNewsletterView{
 							$row = array();
 							$control = array();
 							$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
-
+							$mailListArray = array();
 							if($fh){
 								$_mailListArray = explode("\n", $this->newsletter->groups[$importno]->Emails);
 								foreach($_mailListArray as $line){
@@ -2005,15 +2000,15 @@ class weNewsletterView{
 
 		$fields_names = array("fieldname", "operator", "fieldvalue", "logic", "hours", "minutes");
 
-		foreach($this->newsletter->groups as $gkey => $gval){
+		foreach($this->newsletter->groups as $gkey => &$gval){
 			// persistens
-			$this->newsletter->groups[$gkey]->NewsletterID = $this->newsletter->ID;
+			$gval->NewsletterID = $this->newsletter->ID;
 
-			foreach($this->newsletter->groups[$gkey]->persistents as $per){
+			foreach($gval->persistents as $per){
 				$varname = "group" . $gkey . "_" . $per;
 
 				if(isset($_REQUEST[$varname])){
-					$this->newsletter->groups[$gkey]->$per = $_REQUEST[$varname];
+					$gval->$per = $_REQUEST[$varname];
 				}
 			}
 
@@ -2040,7 +2035,7 @@ class weNewsletterView{
 				}
 
 				if(count($new)){
-					$this->newsletter->groups[$gkey]->aFilter[] = $new;
+					$gval->aFilter[] = $new;
 				}
 			}
 		}
@@ -2061,14 +2056,14 @@ class weNewsletterView{
 			$this->newsletter->addBlock();
 		}
 
-		foreach($this->newsletter->blocks as $skey => $sval){
-			$this->newsletter->blocks[$skey]->NewsletterID = $this->newsletter->ID;
+		foreach($this->newsletter->blocks as $skey => &$sval){
+			$sval->NewsletterID = $this->newsletter->ID;
 
-			foreach($this->newsletter->blocks[$skey]->persistents as $per){
+			foreach($sval->persistents as $per){
 				$varname = "block" . $skey . "_" . $per;
 
 				if(isset($_REQUEST[$varname])){
-					$this->newsletter->blocks[$skey]->$per = $_REQUEST[$varname];
+					$sval->$per = $_REQUEST[$varname];
 				}
 			}
 		}
@@ -2087,7 +2082,6 @@ class weNewsletterView{
 	 * Newsletter printing functions
 	 */
 	function initDocByObject(&$we_doc, $we_objectID){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 		$we_obj = new we_objectFile();
 		$we_obj->initByID($we_objectID, OBJECT_FILES_TABLE);
@@ -2166,6 +2160,7 @@ class weNewsletterView{
 						break;
 					case weNewsletterBlock::DOCUMENT_FIELD:
 						if($block->LinkID){
+							$we_doc = '';
 							$this->initDoc($we_doc, $block->LinkID);
 							$content .= $we_doc->getElement($block->Field);
 						}
@@ -2297,8 +2292,8 @@ class weNewsletterView{
 
 	function getBlockContents(){
 		$content = array();
-
-		foreach($this->newsletter->blocks as $kblock => $block){
+		$keys = array_keys($this->newsletter->blocks);
+		foreach($keys as $kblock){
 			$blockid = $kblock + 1;
 
 			$out["plain"]["defaultC"] = $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###");
@@ -2362,7 +2357,8 @@ class weNewsletterView{
 		$ret = array();
 
 		if(is_array($this->newsletter->groups)){
-			foreach($this->newsletter->groups as $gk => $gv){
+			$keys=  array_keys($this->newsletter->groups);
+			foreach($keys as $gk){
 				$emails = $this->getEmails($gk + 1, 0, 1);
 
 				if(in_array($email, $emails)){
@@ -2419,8 +2415,7 @@ class weNewsletterView{
 		$atts = array();
 
 		$atts = $this->getAttachments($group);
-		$basehref = getServerUrl();
-		$_clean = $this->getCleanMail($this->newsletter->Reply);
+		//$_clean = $this->getCleanMail($this->newsletter->Reply);
 		$phpmail = new we_util_Mailer($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
@@ -2835,7 +2830,7 @@ class weNewsletterView{
 		$match = array();
 		$inlines = array();
 
-		foreach($buffer as $k => $v){
+		foreach($buffer as $v){
 			foreach($patterns as $pattern){
 				if(preg_match_all($pattern, $v, $match)){
 					foreach($match[2] as $name){

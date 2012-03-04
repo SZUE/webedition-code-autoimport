@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_write($attribs, $content){
+function we_tag_write($attribs){
 	$type = weTag_getAttribute("type", $attribs, "document");
 
 	if($type == "object"){
@@ -83,7 +83,7 @@ function we_tag_write($attribs, $content){
 			if($isAdmin || ($GLOBALS["we_$type"][$name]->ID == 0) || $isOwner || $forceedit){
 				$doWrite = true;
 				$GLOBALS["we_" . $type . "_write_ok"] = true;
-				$newObject = ($GLOBALS["we_$type"][$name]->ID) ? false : true;
+				//$newObject = ($GLOBALS["we_$type"][$name]->ID) ? false : true;
 				if($protected){
 					if(!isset($_SESSION["webuser"]["ID"])){
 						return;
@@ -208,7 +208,6 @@ function we_tag_write($attribs, $content){
 						$classname = f(
 							"SELECT Text FROM " . OBJECT_TABLE . " WHERE ID=" . intval($classid), "Text", $GLOBALS['DB_WE']);
 						if($triggerid){
-							$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
 							$mailtext = sprintf(g_l('global', "[std_mailtext_newObj]"), $path, $classname) . "\n" . getServerUrl() . id_to_path(
 									$triggerid) . "?we_objectID=" . $GLOBALS["we_object"][$name]->ID;
 						} else{

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -31,62 +32,62 @@
  * @param int $size size of comparable
  * @return mixed (true,false,-1) -1 if no decission is made yet - pass next element of position array
  */
-function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size) {
-	switch ($_position) {
+function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
+	switch($_position){
 		case "first" :
-			if ($_size == 1 && $operator != '') {
-				switch ($operator) {
+			if($_size == 1 && $operator != ''){
+				switch($operator){
 					case "equal": return $position == 1;
 					case "less": return $position < 1;
 					case "less|equal": return $position <= 1;
 					case "greater": return $position > 1;
 					case "greater|equal": return $position >= 1;
 				}
-			} else {
-				if ($position == 1) {
+			} else{
+				if($position == 1){
 					return true;
 				}
 			}
 			break;
 		case "last" :
-			if ($_size == 1 && $operator != '') {
-				switch ($operator) {
+			if($_size == 1 && $operator != ''){
+				switch($operator){
 					case "equal": return $position == $size;
 					case "less": return $position < $size;
 					case "less|equal": return $position <= $size;
 					case "greater|equal": return $position >= $size;
 				}
-			} else {
-				if ($position == $size) {
+			} else{
+				if($position == $size){
 					return true;
 				}
 			}
 			break;
 		case "odd" :
-			if ($position % 2 != 0) {
+			if($position % 2 != 0){
 				return true;
 			}
 			break;
 		case "even" :
-			if ($position % 2 == 0) {
+			if($position % 2 == 0){
 				return true;
 			}
 			break;
 
 		default :
 			$_position = intval($_position); // Umwandeln in integer
-			if ($_size == 1 && $operator != '') {
-				switch ($operator) {
+			if($_size == 1 && $operator != ''){
+				switch($operator){
 					case "equal": return $position == $_position;
 					case "less": return $position < $_position;
 					case "less|equal": return $position <= $_position;
 					case "greater": return $position > $_position;
 					case "greater|equal": return $position >= $_position;
 				}
-			} else {
-				if($operator=='every' && ($position % $_position == 0) ){
+			} else{
+				if($operator == 'every' && ($position % $_position == 0)){
 					return true;
-				}else if ($position == $_position) {
+				} else if($position == $_position){
 					return true;
 				}
 			}
@@ -96,14 +97,14 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size) 
 	return -1;
 }
 
-function we_tag_ifPosition($attribs, $content){
+function we_tag_ifPosition($attribs){
 	//	content is not needed in this tag
 	//Hack for linklist
 	if(isset($GLOBALS['we']['ll'])){
-		$attribs['type']='linklist';
+		$attribs['type'] = 'linklist';
 	}
-	if (($missingAttrib = attributFehltError($attribs, "type", "ifPosition")
-					|| attributFehltError($attribs, "position", "ifPosition"))) {
+	if(($missingAttrib = attributFehltError($attribs, "type", "ifPosition")
+		|| attributFehltError($attribs, "position", "ifPosition"))){
 		print $missingAttrib;
 		return '';
 	}
@@ -113,13 +114,13 @@ function we_tag_ifPosition($attribs, $content){
 	$position = weTag_getAttribute("position", $attribs);
 	$positionArray = explode(',', $position);
 	$_size = sizeof($positionArray);
-	$operator  = weTag_getAttribute("operator", $attribs);
+	$operator = weTag_getAttribute("operator", $attribs);
 
-	switch ($type) {
+	switch($type){
 		case "listview" : //	inside a listview, we take direct global listview object
-			foreach ($positionArray as $_position) {
-				$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$GLOBALS['lv']->count,$GLOBALS['lv']->anz);
-				if($tmp!==-1){
+			foreach($positionArray as $_position){
+				$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $GLOBALS['lv']->count, $GLOBALS['lv']->anz);
+				if($tmp !== -1){
 					return $tmp;
 				}
 			}
@@ -127,27 +128,27 @@ function we_tag_ifPosition($attribs, $content){
 
 		case "linklist" : //	look in fkt we_tag_linklist and callss we_linklist for details
 			//	first we must get right array !!!
-			$_reference=$GLOBALS['we']['ll']->getName();
-			/*$missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
-			if ($missingAttrib) {
-				print $missingAttrib;
-				return "";
-			}
-			$_reference = weTag_getAttribute("reference", $attribs);
-*/
-			foreach ($GLOBALS['we_position']['linklist'] as $name => $arr) {
+			$_reference = $GLOBALS['we']['ll']->getName();
+			/* $missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
+			  if ($missingAttrib) {
+			  print $missingAttrib;
+			  return "";
+			  }
+			  $_reference = weTag_getAttribute("reference", $attribs);
+			 */
+			foreach($GLOBALS['we_position']['linklist'] as $name => $arr){
 
-				if (strpos($name, $_reference) === 0) {
-					if (is_array($arr)) {
+				if(strpos($name, $_reference) === 0){
+					if(is_array($arr)){
 						$_content = $arr;
 					}
 				}
 			}
 
-			if (isset($_content) && $_content['position']) {
-				foreach ($positionArray as $_position) {
-					$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$_content['position'],$_content['size']);
-					if($tmp!==-1){
+			if(isset($_content) && $_content['position']){
+				foreach($positionArray as $_position){
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+					if($tmp !== -1){
 						return $tmp;
 					}
 				}
@@ -156,23 +157,23 @@ function we_tag_ifPosition($attribs, $content){
 
 		case "block" : //	look in function we_tag_block for details
 			$missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
-			if ($missingAttrib) {
+			if($missingAttrib){
 				print $missingAttrib;
 				return "";
 			}
 
 			$_reference = weTag_getAttribute("reference", $attribs);
 
-			foreach ($GLOBALS['we_position']['block'] as $name => $arr) {
-				if (strpos($name, $_reference) === 0) {
+			foreach($GLOBALS['we_position']['block'] as $name => $arr){
+				if(strpos($name, $_reference) === 0){
 					$_content = $arr;
 				}
 			}
 
-			if (isset($_content) && $_content['position']) {
-				foreach ($positionArray as $_position) {
-					$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$_content['position'],$_content['size']);
-					if($tmp!==-1){
+			if(isset($_content) && $_content['position']){
+				foreach($positionArray as $_position){
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+					if($tmp !== -1){
 						return $tmp;
 					}
 				}
@@ -180,13 +181,13 @@ function we_tag_ifPosition($attribs, $content){
 			break;
 
 		case "listdir" : //	inside a listview
-			if (isset($GLOBALS['we_position']['listdir'])) {
+			if(isset($GLOBALS['we_position']['listdir'])){
 				$_content = $GLOBALS['we_position']['listdir'];
 			}
-			if (isset($_content) && $_content['position']) {
-				foreach ($positionArray as $_position) {
-					$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$_content['position'],$_content['size']);
-					if($tmp!==-1){
+			if(isset($_content) && $_content['position']){
+				foreach($positionArray as $_position){
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+					if($tmp !== -1){
 						return $tmp;
 					}
 				}

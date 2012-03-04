@@ -18,22 +18,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_repeat($attribs, $content) {
-	return '<?php while('.we_tag_tagParser::printTag('repeat',$attribs).'){?>' . $content . '<?php }?>';
+function we_parse_tag_repeat($attribs, $content){
+	return '<?php while(' . we_tag_tagParser::printTag('repeat', $attribs) . '){?>' . $content . '<?php }?>';
 }
 
-function we_tag_repeat($attribs, $content) {
-	if (isset($GLOBALS["_we_voting_list"])) {
+function we_tag_repeat(){
+	if(isset($GLOBALS["_we_voting_list"])){
 		return $GLOBALS["_we_voting_list"]->getNext();
-	} else {
-		if (isset($GLOBALS["lv"])) {
-			if ($GLOBALS["lv"]->next_record()) {
+	} else{
+		if(isset($GLOBALS["lv"])){
+			if($GLOBALS["lv"]->next_record()){
 				$GLOBALS["we_lv_array"][(sizeof($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
-				if ($GLOBALS["lv"]->ClassName == "we_listview_object") {
+				if($GLOBALS["lv"]->ClassName == "we_listview_object"){
 					$GLOBALS["_we_listview_object_flag"] = true;
 				}
 				return true;
-			} else { //last entry
+			} else{ //last entry
 				unset($GLOBALS["_we_listview_object_flag"]);
 				return false;
 			}

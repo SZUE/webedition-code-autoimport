@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifBack($attribs, $content){
-	if (isset($GLOBALS['_we_voting_list']))
+function we_tag_ifBack($attribs){
+	if(isset($GLOBALS['_we_voting_list']))
 		return $GLOBALS['_we_voting_list']->hasPrevPage();
 	$useparent = weTag_getAttribute("useparent", $attribs, false, true);
 	return $GLOBALS["lv"]->hasPrevPage($useparent);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_ifVarSet.inc.php");
 
 function we_isVarNotEmpty($attribs){
@@ -33,32 +33,26 @@ function we_isVarNotEmpty($attribs){
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 	$property = weTag_getAttribute('property', $attribs, false, true);
 
-	if (!we_isVarSet($match, $type, $docAttr, $property, $formname))
+	if(!we_isVarSet($match, $type, $docAttr, $property, $formname))
 		return false;
 
-	switch ($type) {
+	switch($type){
 		case 'request' :
 			return (strlen($_REQUEST[$match]) > 0);
-			break;
 		case 'post' :
 			return (strlen($_POST[$match]) > 0);
-			break;
 		case 'get' :
 			return (strlen($_GET[$match]) > 0);
-			break;
 		case 'global' :
 			return (strlen($GLOBALS[$match]) > 0);
-			break;
 		case 'session' :
 			$foo = isset($_SESSION[$match]) ? $_SESSION[$match] : '';
 			return (strlen($foo) > 0);
-			break;
 		case 'sessionfield' :
 			return (strlen($_SESSION['webuser'][$match]) > 0);
-			break;
 		default :
 			$doc = false;
-			switch ($docAttr) {
+			switch($docAttr){
 				case 'object' :
 				case 'document' :
 					$doc = isset($GLOBALS['we_' . $docAttr][$formname]) ? $GLOBALS['we_' . $docAttr][$formname] : false;
@@ -69,13 +63,13 @@ function we_isVarNotEmpty($attribs){
 				default :
 					$doc = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 			}
-			if ($doc) {
-				if ($property) {
-					$retVal = isset($doc->$match) ? $doc->$match:'';
+			if($doc){
+				if($property){
+					$retVal = isset($doc->$match) ? $doc->$match : '';
 					return $retVal;
-				} else {
+				} else{
 					$name = $match;
-					switch ($type) {
+					switch($type){
 						case 'href' :
 							$attribs['name'] = $match;
 							$foo = $doc->getField($attribs, $type, true);
@@ -83,14 +77,14 @@ function we_isVarNotEmpty($attribs){
 						case 'multiobject' :
 							$attribs['name'] = $match;
 							$data = unserialize($doc->getField($attribs, $type, true));
-							if (!is_array($data['objects'])) {
+							if(!is_array($data['objects'])){
 								$data['objects'] = array();
 							}
 							include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php');
 							$temp = new we_listview_multiobject($match);
-							if (sizeof($temp->Record) > 0) {
+							if(sizeof($temp->Record) > 0){
 								return true;
-							} else {
+							} else{
 								return false;
 							}
 						default :
@@ -98,14 +92,14 @@ function we_isVarNotEmpty($attribs){
 					}
 					return (strlen($foo) > 0);
 				}
-			} else {
+			} else{
 				return false;
 			}
 	}
 }
 
 function we_tag_ifVarEmpty($attribs, $content){
-	if (($foo = attributFehltError($attribs, 'match', 'ifVarEmpty'))) {
+	if(($foo = attributFehltError($attribs, 'match', 'ifVarEmpty'))){
 		print($foo);
 		return false;
 	}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,20 +18,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifNewsletterSalutation($attribs,$content) {
+function we_tag_ifNewsletterSalutation($attribs){
 	$foo = attributFehltError($attribs, "type", "ifNewsletterSalutation", true);
-	if ($foo) {
+	if($foo){
 		print($foo);
-		return "";
+		return false;
 	}
 	$foo = attributFehltError($attribs, "match", "ifNewsletterSalutation");
-	if ($foo) {
+	if($foo){
 		print($foo);
-		return "";
+		return false;
 	}
-	$match = weTag_getParserAttribute("match",$attribs);
-	$atts = removeAttribs($attribs,array('match'));
-	return (we_tag('newsletterSalutation',$atts, "")==$match);
+	$match = weTag_getParserAttribute("match", $attribs);
+	$atts = removeAttribs($attribs, array('match'));
+	return (we_tag('newsletterSalutation', $atts) == $match);
 }

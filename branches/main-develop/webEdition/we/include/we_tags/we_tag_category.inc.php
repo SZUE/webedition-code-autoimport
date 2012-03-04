@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_category($attribs, $content){
+function we_tag_category($attribs){
 
 	// initialize possible Attributes
 	$delimiter = weTag_getAttribute("delimiter", $attribs);
-	if ($delimiter === "") {
+	if($delimiter === ""){
 		$delimiter = weTag_getAttribute("tokken", $attribs, "-");
 	}
 
@@ -39,19 +39,17 @@ function we_tag_category($attribs, $content){
 	$onlyindir = weTag_getAttribute("onlyindir", $attribs);
 
 	// end initialize possible Attributes
-	if ($id) {
+	if($id){
 		$category = str_replace(
-				"\\,",
-				",",
-				we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
+			"\\,", ",", we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 
 	$isInListview = isset($GLOBALS["lv"]) && (!$docAttr);
 
-	if ($isInListview) {
+	if($isInListview){
 		// get cats from listview object
-		switch ($GLOBALS["lv"]->ClassName) {
+		switch($GLOBALS["lv"]->ClassName){
 			case "we_listview_object" :
 				$catIDs = $GLOBALS["lv"]->f("wedoc_Category");
 				break;
@@ -63,17 +61,12 @@ function we_tag_category($attribs, $content){
 		}
 
 		$category = $catIDs ? str_replace(
-				"\\,",
-				",",
-				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) : "";
+				"\\,", ",", we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) : "";
 		return str_replace("/", $separator, $category);
-
-	} else {
+	} else{
 		$doc = we_getDocForTag($docAttr, false);
 		$category = str_replace(
-				"\\,",
-				",",
-				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
+			"\\,", ",", we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 }

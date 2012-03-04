@@ -26,7 +26,7 @@ function we_parse_tag_linklist($attribs, $content){
 	return '<?php $GLOBALS[\'we\'][\'ll\']=' . we_tag_tagParser::printTag('linklist', $attribs) . '; while($GLOBALS[\'we\'][\'ll\']->next()){?>' . $content . '<?php } $GLOBALS[\'we\'][\'ll\']->last(); unset($GLOBALS[\'we\'][\'ll\']);' . we_tag_tagParser::printTag('linklist', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_linklist($attribs, $content){
+function we_tag_linklist($attribs){
 	switch(weTag_getAttribute('_type', $attribs)){
 		default:
 			$name = weTag_getAttribute("name", $attribs);
@@ -40,7 +40,7 @@ function we_tag_linklist($attribs, $content){
 
 			$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getElement($name) : ''));
 
-			$ll = new we_linklist($linklist, $hidedirindex, $objectseourls,$GLOBALS['we_doc']->Name,$attribs);
+			$ll = new we_linklist($linklist, $hidedirindex, $objectseourls, $GLOBALS['we_doc']->Name, $attribs);
 			$ll->setName($name);
 			return $ll;
 		case 'stop':

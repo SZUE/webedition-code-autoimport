@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,36 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-
-function we_tag_ifVotingField($attribs,$content) {
-	$foo = attributFehltError($attribs, "match", "ifVotingField");
-	if ($foo) {
+function we_tag_ifVotingField($attribs){
+	if(($foo = attributFehltError($attribs, "match", "ifVotingField"))){
 		print($foo);
-		return "";
+		return false;
 	}
 
-	$operator  = weTag_getAttribute("operator", $attribs);
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-    	$match = (int) weTag_getAttribute("match",$attribs);
-	} else {
-		$match = weTag_getAttribute("match",$attribs);
-	}
-	$atts = removeAttribs($attribs,array('match','operator'));
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-		$realvalue = (int) we_tag('votingField',$atts, "");
-	} else {
-		$realvalue = we_tag('votingField',$atts, "");
-	}
+	$operator = weTag_getAttribute("operator", $attribs);
+	$match = weTag_getAttribute("match", $attribs);
 
-	switch ($operator) {
-		case "equal": return $realvalue == $match; break;
-		case "less": return $realvalue < $match; break;
-		case "less|equal": return $realvalue <= $match; break;
-		case "greater": return $realvalue > $match; break;
-		case "greater|equal": return $realvalue >= $match; break;
-		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
-		default: return $realvalue == $match;
-	}
+	$atts = removeAttribs($attribs, array('match', 'operator'));
+	$realvalue = we_tag('votingField', $atts);
 
+	switch($operator){
+		default:
+		case "equal":
+			return $realvalue == $match;
+		case "less":
+			return intval($realvalue) < intval($match);
+		case "less|equal":
+			return intval($realvalue) <= intval($match);
+		case "greater":
+			return intval($realvalue) > intval($match);
+		case "greater|equal":
+			return intval($realvalue) >= intval($match);
+		case "contains":
+			return (strpos($realvalue, $match) !== false);
+	}
 }

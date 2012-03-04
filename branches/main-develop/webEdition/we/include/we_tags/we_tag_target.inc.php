@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //used in we:linkedlist
-function we_tag_target($attribs,$content){
+function we_tag_target(){
 	//inside linklist
 	return $GLOBALS['we']['ll']->getTarget();
 }

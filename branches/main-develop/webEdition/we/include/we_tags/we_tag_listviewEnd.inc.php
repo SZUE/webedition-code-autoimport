@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_listviewEnd(){
 
-function we_tag_listviewEnd($attribs, $content){
-	
 	return $GLOBALS['lv']->rows ? min(
-			($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage),
-			($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs(
+			($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage), ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs(
 			$GLOBALS['lv']->offset));
 }

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_sessionStart($attribs, $content){
+function we_tag_sessionStart($attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
 	$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, true);
 	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, true);

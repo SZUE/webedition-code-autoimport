@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_userInput($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "userInput");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", "userInput")))
 		return $foo;
 
 	$name = weTag_getAttribute("name", $attribs);
@@ -136,7 +135,7 @@ function we_tag_userInput($attribs, $content){
 						$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
 					}
 
-					$checked = (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"])?' checked':'';
+					$checked = (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]) ? ' checked' : '';
 
 					return '<table border="0" cellpadding="2" cellspacing="2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
@@ -622,11 +621,7 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-				if(defined("WE_COUNTRIES_TOP")){
-					$topCountries = explode(',', WE_COUNTRIES_TOP);
-				} else{
-					$topCountries = explode(',', "DE,AT,CH");
-				}
+				$topCountries = explode(',', defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH");
 				$topCountries = array_flip($topCountries);
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
@@ -674,14 +669,14 @@ function we_tag_userInput($attribs, $content){
 					$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 				}
 				$frontendL = $GLOBALS["weFrontendLanguages"];
-				foreach($frontendL as $lc => &$lcvalue){
+				foreach($frontendL as &$lcvalue){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
-
+				$frontendLL = array();
 				foreach($frontendL as &$lcvalue){
 					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
 				}

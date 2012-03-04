@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifDoubleOptIn($attribs, $content){
+function we_tag_ifDoubleOptIn(){
 	return isset($GLOBALS["WE_DOUBLEOPTIN"]) && $GLOBALS["WE_DOUBLEOPTIN"];
 }

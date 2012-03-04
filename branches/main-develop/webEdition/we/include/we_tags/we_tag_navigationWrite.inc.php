@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_navigationWrite($attribs, $content = ''){
+function we_tag_navigationWrite($attribs){
 
 	$name = weTag_getAttribute("navigationname", $attribs, "default");
 	$depth = weTag_getAttribute("depth", $attribs);
 
-	if (!$depth) {
+	if(!$depth){
 		$depth = false;
 	}
 
-	if (isset($GLOBALS['we_navigation'][$name])) {
+	if(isset($GLOBALS['we_navigation'][$name])){
 
 		$GLOBALS['weNavigationDepth'] = $depth;
 		print $GLOBALS['we_navigation'][$name]->writeNavigation($depth);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -19,12 +20,12 @@
  */
 
 /**
- *shows a comment in the defined language
+ * shows a comment in the defined language
  * @param type $attribs
  * @param type $content
  * @return type
  */
-function we_parse_tag_comment($attribs,$content){
+function we_parse_tag_comment($attribs, $content){
 	eval('$arr = ' . $attribs . ';');
 	$type = weTag_getParserAttribute('type', $arr);
 	//remove we: parts since this will confuse the tag parser and it will parse these tags
@@ -32,23 +33,23 @@ function we_parse_tag_comment($attribs,$content){
 	switch($type){
 		case 'xml':
 		case 'html':
-			return '<!-- '.$content.' -->';
+			return '<!-- ' . $content . ' -->';
 		case 'js':
-			return '/* '.$content.' */';
+			return '/* ' . $content . ' */';
 		case 'php':
-				return '<?php /*'.str_replace('*/','',$content).'*/ ?>';
+			return '<?php /*' . str_replace('*/', '', $content) . '*/ ?>';
 		default:
 			return '';
 	}
 }
 
 /**
- *shows a comment in the defined language
+ * shows a comment in the defined language
  * @param type $attribs
  * @param type $content
  * @return type
  */
-function we_tag_comment($attribs, $content){
+function we_tag_comment(){
 	/**
 	 * Dummy tag - only parser part needed
 	 */

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_date($attribs, $content){
+function we_tag_date($attribs){
 	$type = weTag_getAttribute("type", $attribs);
 	$format = weTag_getAttribute("format", $attribs, g_l('date', '[format][default]'));
 
@@ -163,10 +163,10 @@ function correctDateFormat($format, $t = ''){
 	}
 
 	$rep = array(
-		'##1##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[day][short][' . date('w', $t) . ']')),
-		'##2##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
-		'##3##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[day][long][' . date('w', $t) . ']')),
-		'##4##' => str_replace(array_keys($escapes), array_values($escapes),g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
+		'##1##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][short][' . date('w', $t) . ']')),
+		'##2##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
+		'##3##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][long][' . date('w', $t) . ']')),
+		'##4##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
 	);
 
 	$format = str_replace(array_keys($rep), array_values($rep), //make sure we don't replace chars in dayname strings

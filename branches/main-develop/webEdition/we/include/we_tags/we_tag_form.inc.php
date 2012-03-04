@@ -18,7 +18,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TODO
 function we_parse_tag_form($attribs, $content){
 	return '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){
 		printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');}?>' .
@@ -26,7 +25,7 @@ function we_parse_tag_form($attribs, $content){
 		'<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){ echo \'</form>\';unset($GLOBALS[\'WE_FORM\']); if (isset($GLOBALS[\'we_form_action\'])) {unset($GLOBALS[\'we_form_action\']);}}?>';
 }
 
-function we_tag_form($attribs, $content){
+function we_tag_form($attribs){
 	$ret = '';
 	$method = weTag_getAttribute("method", $attribs, "post");
 	$id = weTag_getAttribute("id", $attribs);

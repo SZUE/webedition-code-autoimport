@@ -22,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_metadata($attribs, $content) {
-	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
-	if (($foo = attributFehltError($arr, 'name', 'metadata')))
+function we_parse_tag_metadata($attribs, $content){
+	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
+	if(($foo = attributFehltError($arr, 'name', 'metadata')))
 		return $foo;
-	return '<?php if('.we_tag_tagParser::printTag('metadata', $attribs).'){?>' . $content . '<?php } we_post_tag_listview();?>';
+	return '<?php if(' . we_tag_tagParser::printTag('metadata', $attribs) . '){?>' . $content . '<?php } we_post_tag_listview();?>';
 }
 
-function we_tag_metadata($attribs, $content) {
+function we_tag_metadata($attribs){
 	$name = weTag_getAttribute("name", $attribs);
 
-	if (!isset($GLOBALS["we_lv_array"])) {
+	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
@@ -40,7 +40,7 @@ function we_tag_metadata($attribs, $content) {
 
 	$GLOBALS["lv"] = new metadatatag($name);
 //$lv = clone($GLOBALS["lv"]); // for backwards compatibility
-	if (is_array($GLOBALS["we_lv_array"]))
+	if(is_array($GLOBALS["we_lv_array"]))
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
 
 	return $GLOBALS["lv"]->avail;

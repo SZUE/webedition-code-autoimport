@@ -22,14 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_onlinemonitor($attribs, $content) {
+function we_parse_tag_onlinemonitor($attribs, $content){
 	return '<?php global $lv;
-		if('.we_tag_tagParser::printTag('onlinemonitor', $attribs).'){?>' . $content . '<?php }
+		if(' . we_tag_tagParser::printTag('onlinemonitor', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_onlinemonitor($attribs, $content) {
-	if (!defined('WE_CUSTOMER_MODULE_DIR')) {
+function we_tag_onlinemonitor($attribs){
+	if(!defined('WE_CUSTOMER_MODULE_DIR')){
 		print modulFehltError('Customer', 'onlinemonitor');
 		return false;
 	}
@@ -37,7 +37,7 @@ function we_tag_onlinemonitor($attribs, $content) {
 	$we_omid = weTag_getAttribute("id", $attribs, 0);
 
 
-	if (!isset($GLOBALS["we_lv_array"])) {
+	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
@@ -48,7 +48,7 @@ function we_tag_onlinemonitor($attribs, $content) {
 
 
 	$GLOBALS["lv"] = new we_onlinemonitortag($we_omid, "' . $condition . '");
-	if (is_array($GLOBALS["we_lv_array"])){
+	if(is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
 	}
 	return $GLOBALS["lv"]->avail;

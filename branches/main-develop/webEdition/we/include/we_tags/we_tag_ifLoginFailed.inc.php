@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifLoginFailed($attribs,$content) {
+function we_tag_ifLoginFailed(){
 	$foo = isset($_SESSION["webuser"]["loginfailed"]) ? $_SESSION["webuser"]["loginfailed"] : "";
-	$_SESSION["webuser"]["loginfailed"]="";
+	$_SESSION["webuser"]["loginfailed"] = "";
 	return $foo;
 }

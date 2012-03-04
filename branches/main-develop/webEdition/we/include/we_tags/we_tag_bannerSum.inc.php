@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_bannerSum($attribs,$content){
+function we_tag_bannerSum($attribs){
 	if(!isset($GLOBALS["lv"])){
-			return false;
+		return false;
 	}
-	$foo = attributFehltError($attribs,"type","bannerSum");if($foo) return $foo;
-	$type = weTag_getAttribute("type",$attribs);
-	switch ($type){
+	$foo = attributFehltError($attribs, "type", "bannerSum");
+	if($foo)
+		return $foo;
+	$type = weTag_getAttribute("type", $attribs);
+	switch($type){
 		case "clicks":
 			return $GLOBALS["lv"]->getAllclicks();
 			break;

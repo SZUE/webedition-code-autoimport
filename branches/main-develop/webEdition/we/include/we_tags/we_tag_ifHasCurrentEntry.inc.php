@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifHasCurrentEntry($attribs = array(), $content = ''){
-	if (isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])) {
+function we_tag_ifHasCurrentEntry(){
+	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
 
 		$element = $GLOBALS['weNavigationItemArray'][(sizeof($GLOBALS['weNavigationItemArray']) - 1)];
 
-		if (sizeof($element->items)) {
-			foreach ($element->items as $key => $value) {
-				if ($value->containsCurrent == 'true') {
+		if(sizeof($element->items)){
+			foreach($element->items as $key => $value){
+				if($value->containsCurrent == 'true'){
 					return true;
 				}
 			}
 		}
-		return false;
 	}
+	return false;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_votingSession($attribs, $content){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/weVoting.php");
-
+function we_tag_votingSession(){
 	if(!$GLOBALS['we_editmode']){
 		$_SESSION['_we_voting_sessionID'] = uniqid();
- 	}
-
+	}
 }

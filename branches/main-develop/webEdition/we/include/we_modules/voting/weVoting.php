@@ -29,14 +29,15 @@
  */
 class weVoting extends weModelBase{
 //voting status codes
-	const SUCCESS=1;
-	const ERROR=2;
-	const ERROR_REVOTE=3;
-	const ERROR_ACTIVE=4;
-	const ERROR_BLACKIP=5;
-	const ERROR_REQUIRED=6;
+
+	const SUCCESS = 1;
+	const ERROR = 2;
+	const ERROR_REVOTE = 3;
+	const ERROR_ACTIVE = 4;
+	const ERROR_BLACKIP = 5;
+	const ERROR_REQUIRED = 6;
 //number precision
-	const PRECISION=2;
+	const PRECISION = 2;
 
 	//properties
 	var $ID;
@@ -123,7 +124,7 @@ class weVoting extends weModelBase{
 			$this->PublishDate = time();
 	}
 
-	function load($id=0){
+	function load($id = 0){
 		if(parent::load($id)){
 			$this->QASet = @unserialize($this->QASet);
 			$this->QASetAdditions = @unserialize($this->QASetAdditions);
@@ -142,7 +143,7 @@ class weVoting extends weModelBase{
 		}
 	}
 
-	function save($with_scores=true){
+	function save($with_scores = true){
 
 		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'link.gif');
 
@@ -219,7 +220,7 @@ class weVoting extends weModelBase{
 		$this->LogData = $logdata;
 	}
 
-	function saveField($name, $serialize=false){
+	function saveField($name, $serialize = false){
 		if($serialize)
 			$field = serialize($this->$name);
 		else
@@ -263,7 +264,7 @@ class weVoting extends weModelBase{
 		return (strpos(clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false);
 	}
 
-	function evalPath($id=0){
+	function evalPath($id = 0){
 		$db_tmp = new DB_WE();
 		$path = "";
 		if($id == 0){
@@ -315,11 +316,11 @@ class weVoting extends weModelBase{
 		$this->answerCount = -1;
 	}
 
-	function getAnswer($ansn=-1){
+	function getAnswer($ansn = -1){
 		return $this->QASet[$this->defVersion]['answers'][$this->answerCount];
 	}
 
-	function getResult($type='count', $num_format='', $precision=weVoting::PRECISION){
+	function getResult($type = 'count', $num_format = '', $precision = weVoting::PRECISION){
 		switch($type){
 			case 'percent':
 				$total = $this->getResult('total');
@@ -347,7 +348,7 @@ class weVoting extends weModelBase{
 		return $result;
 	}
 
-	function formatNumber($number, $format, $precision=weVoting::PRECISION){
+	function formatNumber($number, $format, $precision = weVoting::PRECISION){
 		switch($format){
 			case 'german':
 			case 'deutsch':
@@ -449,7 +450,7 @@ class weVoting extends weModelBase{
 		return weVoting::SUCCESS;
 	}
 
-	function vote($answers, $addfields=NULL){
+	function vote($answers, $addfields = NULL){
 		if(isset($_SESSION['_we_voting_sessionID'])){
 			$votingsession = $_SESSION['_we_voting_sessionID'];
 		} else{
@@ -686,7 +687,7 @@ class weVoting extends weModelBase{
 		$this->saveField('RevoteUserAgent');
 	}
 
-	function logVoting($status, $votingsession, $answer, $answertext, $successor, $additionalfields=''){
+	function logVoting($status, $votingsession, $answer, $answertext, $successor, $additionalfields = ''){
 		if($this->LogDB){
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
 		} else{
@@ -751,7 +752,7 @@ class weVoting extends weModelBase{
 	 * @author Alexander Lindenstruth
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
-	function loadDB($id="0"){
+	function loadDB($id = "0"){
 
 		if($this->IsFolder){
 			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->Path . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
@@ -785,7 +786,7 @@ class weVoting extends weModelBase{
 	 * @author Alexander Lindenstruth
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
-	function logVotingDB($status = NULL, $votingsession=NULL, $answer = NULL, $answertext = NULL, $successor = NULL, $additionalfields = NULL){
+	function logVotingDB($status = NULL, $votingsession = NULL, $answer = NULL, $answertext = NULL, $successor = NULL, $additionalfields = NULL){
 		if(is_null($status))
 			$status = 0;
 		if(is_null($votingsession))
@@ -871,5 +872,3 @@ class weVoting extends weModelBase{
 	}
 
 }
-
-?>

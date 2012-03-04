@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_js($attribs, $content){
+function we_tag_js($attribs){
 
 	$foo = attributFehltError($attribs, "id", "js");
-	if ($foo)
+	if($foo)
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".intval($id), new DB_WE());
+	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($id), new DB_WE());
 
-	if (count($row)) {
+	if(count($row)){
 
 		$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
 
@@ -39,11 +39,10 @@ function we_tag_js($attribs, $content){
 
 		$attribs = removeAttribs($attribs, array(
 			"id"
-		));
+			));
 
 		//	prepare $attribs for output:
 		return getHtmlTag("script", $attribs, "", true) . "\n";
-
 	}
 	return "";
 }

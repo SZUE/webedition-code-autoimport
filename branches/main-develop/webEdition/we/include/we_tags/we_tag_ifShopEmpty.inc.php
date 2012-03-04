@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 
 /**
  * This functions checks if the shops basket is empty
@@ -32,18 +31,17 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/w
  *
  * @return         bool
  */
-
-function we_tag_ifShopEmpty($attribs,$content) {
-	$foo = attributFehltError($attribs,"shopname","ifShopEmpty");if($foo) return $foo;
-	$shopname = weTag_getAttribute("shopname",$attribs);
+function we_tag_ifShopEmpty($attribs){
+	if(($foo = attributFehltError($attribs, "shopname", "ifShopEmpty")))
+		return $foo;
+	$shopname = weTag_getAttribute("shopname", $attribs);
 
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : "";
-	if ($basket) {
+	if($basket){
 		$shoppingItems = $basket->getShoppingItems();
 		$basket_count = sizeof($shoppingItems);
 
 		return abs($basket_count) == 0;
-	} else {
-		return true;
 	}
+	return true;
 }

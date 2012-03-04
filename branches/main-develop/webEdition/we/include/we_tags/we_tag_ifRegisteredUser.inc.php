@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifRegisteredUser($attribs, $content) {
+function we_tag_ifRegisteredUser($attribs){
 
 	$permission = weTag_getAttribute('permission', $attribs);
 	$match = weTag_getAttribute('match', $attribs);
@@ -33,69 +33,69 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 	$userid = makeArrayFromCSV($userid);
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
 
-	if ($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition) {
+	if($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		return isset($_SESSION['we_set_registered']) && $_SESSION['we_set_registered'];
 	}
 
 	//return true only on registered users - or if cfilter is set to "no filter"
-	if (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']) {
+	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){
 		$ret = true;
 
-		if ($ret && sizeof($userid) > 0) {
-			if (!isset($_SESSION['webuser']['ID'])) {
+		if($ret && sizeof($userid) > 0){
+			if(!isset($_SESSION['webuser']['ID'])){
 				return false;
-			} else {
+			} else{
 				$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 			}
 		}
 
-			if ($ret && $permission) {
-				$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'];
-				if (!$ret) {
-					return false;
-				}
-				if (!empty($match)) {
-					$perm = explode(',', $_SESSION['webuser'][$permission]);
-					switch ($matchType) {
-						case 'one':
-							$tmp = array_intersect($perm, $match);
-							$ret &= count($tmp) > 0;
-							break;
-						case 'contains':
-							$tmp = array_intersect($perm, $match);
-							$ret &= count($tmp) == count($match);
-							break;
-						default:
-						case 'exact':
-							$ret &= count($perm) == count($match);
-							if ($ret) {
-								$tmp = array_intersect($perm, $match);
-								$ret &= count($tmp) == count($perm);
-							}
-							break;
-					}
-				} else {
-					$ret &= (bool)$_SESSION['webuser'][$permission];
-				}
+		if($ret && $permission){
+			$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'];
+			if(!$ret){
+				return false;
 			}
+			if(!empty($match)){
+				$perm = explode(',', $_SESSION['webuser'][$permission]);
+				switch($matchType){
+					case 'one':
+						$tmp = array_intersect($perm, $match);
+						$ret &= count($tmp) > 0;
+						break;
+					case 'contains':
+						$tmp = array_intersect($perm, $match);
+						$ret &= count($tmp) == count($match);
+						break;
+					default:
+					case 'exact':
+						$ret &= count($perm) == count($match);
+						if($ret){
+							$tmp = array_intersect($perm, $match);
+							$ret &= count($tmp) == count($perm);
+						}
+						break;
+				}
+			} else{
+				$ret &= (bool) $_SESSION['webuser'][$permission];
+			}
+		}
 
-		if ($ret && $cfilter && defined('CUSTOMER_TABLE')) {
-			if (isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter) {
+		if($ret && $cfilter && defined('CUSTOMER_TABLE')){
+			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
 				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc'], array(), true) == weDocumentCustomerFilter::ACCESS);
-			} else {
+			} else{
 				//access depends on $allowNoFilter
 				return $allowNoFilter;
 			}
 		}
 
 		return $ret;
-	} else {
+	} else{
 		//we are not logged in!
-		if ($cfilter && defined('CUSTOMER_TABLE')) {
-			if (isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter) {
+		if($cfilter && defined('CUSTOMER_TABLE')){
+			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
 				//not logged in - no filter can match
 				return false;
-			} else {
+			} else{
 				//not logged in - but "allow all users" is set - return depends on allowNoFilter
 				return $allowNoFilter;
 			}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,20 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifHtmlMail($attribs, $content) {
-	if ((isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)) {
+function we_tag_ifHtmlMail(){
+	if((isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)){
 		return true;
 	}
 
-	if (isset($GLOBALS["WE_HTMLMAIL"])) {
-		if ($GLOBALS["WE_HTMLMAIL"]) {
+	if(isset($GLOBALS["WE_HTMLMAIL"])){
+		if($GLOBALS["WE_HTMLMAIL"]){
 			return true;
-		} else {
+		} else{
 			return false;
 		}
-	} else {
-		return true;
 	}
+	return true;
 }

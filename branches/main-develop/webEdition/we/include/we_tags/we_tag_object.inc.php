@@ -22,20 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_object($attribs, $content) {
-	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
+function we_parse_tag_object($attribs, $content){
+	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
 	$name = weTag_getParserAttribute('name', $arr);
-	if ($name && strpos($name, ' ') !== false) {
+	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}
 
 	return '<?php global $lv;
-		if('.we_tag_tagParser::printTag('object', $attribs).'){?>' . $content . '<?php }
+		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_object($attribs, $content) {
-	if (!defined('WE_OBJECT_MODULE_DIR')) {
+function we_tag_object($attribs){
+	if(!defined('WE_OBJECT_MODULE_DIR')){
 		print modulFehltError('Object/DB', 'object');
 		return false;
 	}
@@ -52,19 +52,19 @@ function we_tag_object($attribs, $content) {
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
 
-	if (!isset($GLOBALS['we_lv_array'])) {
+	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
 	}
 
 	include_once(WE_OBJECT_MODULE_DIR . 'we_objecttag.inc.php');
 
-	if ($classid) {
+	if($classid){
 		$rootDirID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']);
-	} else {
+	} else{
 		$rootDirID = 0;
 	}
-	if ($name) {
-		if (strpos($name, ' ') !== false) {
+	if($name){
+		if(strpos($name, ' ') !== false){
 			print parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 			return;
 		}
@@ -77,7 +77,7 @@ function we_tag_object($attribs, $content) {
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = OBJECT_FILES_TABLE;
 
-		if ($GLOBALS['we_editmode']) {
+		if($GLOBALS['we_editmode']){
 			$delbutton = we_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['$idname'].value=0;document.forms[0].elements['$textname'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 			$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "','$rootDirID','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 			?>
@@ -85,27 +85,27 @@ function we_tag_object($attribs, $content) {
 				<tr>
 					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php echo $_showName; ?></b></span></td>
 					<td><?php print we_html_tools::hidden($idname, $we_oid); ?></td>
-					<td><?php print we_html_tools::htmlTextInput($textname, $size , $path, "", ' readonly', "text", 0, 0); ?></td>
-					<td><?php we_html_tools::getPixel(6, 4);?></td>
+					<td><?php print we_html_tools::htmlTextInput($textname, $size, $path, "", ' readonly', "text", 0, 0); ?></td>
+					<td><?php we_html_tools::getPixel(6, 4); ?></td>
 					<td><?php print $button; ?></td>
-					<td><?php we_html_tools::getPixel(6, 4);?></td>
+					<td><?php we_html_tools::getPixel(6, 4); ?></td>
 					<td><?php print $delbutton; ?></td>
 				</tr>
 			</table><?php
 		}
-	} else {
+	} else{
 
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? $_REQUEST['we_oid'] : 0);
 	}
 	$searchable = empty($searchable) ? 'false' : $searchable;
 	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
-	if (is_array($GLOBALS['we_lv_array'])) {
+	if(is_array($GLOBALS['we_lv_array'])){
 		array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
 	}
 
-	if ($GLOBALS['lv']->avail) {
-		if (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') {
-			print '<a href="'.$we_oid.'" seem="object"></a>';
+	if($GLOBALS['lv']->avail){
+		if(isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem'){
+			print '<a href="' . $we_oid . '" seem="object"></a>';
 		}
 	}
 	return $GLOBALS['lv']->avail;

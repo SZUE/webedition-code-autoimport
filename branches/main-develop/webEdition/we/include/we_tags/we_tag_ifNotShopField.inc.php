@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_ifNotShopField($attribs,$content) {
+function we_tag_ifNotShopField($attribs) {
 	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
@@ -30,13 +30,8 @@ function we_tag_ifNotShopField($attribs,$content) {
 
 	$match = weTag_getAttribute("match", $attribs);
 
-	$name      = weTag_getAttribute("name", $attribs);
-	$reference = weTag_getAttribute("reference", $attribs);
-	$shopname  = weTag_getAttribute("shopname", $attribs);
-
 	$attribs['type']='print';
 	unset($attribs['match']);
 
-	$realvalue = we_tag('shopField',$attribs, "");
-	return $realvalue != $match;
+	return we_tag('shopField',$attribs) != $match;
 }

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_formfield($attribs, $content){
+function we_tag_formfield($attribs){
 
 	$foo = attributFehltError($attribs, "name", "formfield");
 	if($foo)

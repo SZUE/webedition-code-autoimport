@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_newsletterField($attribs, $content){
-	$fieldName = weTag_getAttribute("fieldName",$attribs);
-	return empty($fieldName) ? "" : "####PLACEHOLDER:DB::CUSTOMER_TABLE:".$fieldName."####";
+function we_tag_newsletterField($attribs){
+	$fieldName = weTag_getAttribute("fieldName", $attribs);
+	return empty($fieldName) ? "" : "####PLACEHOLDER:DB::CUSTOMER_TABLE:" . $fieldName . "####";
 }

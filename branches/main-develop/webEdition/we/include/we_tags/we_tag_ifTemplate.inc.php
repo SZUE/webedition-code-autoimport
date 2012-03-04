@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifTemplate($attribs, $content){
+function we_tag_ifTemplate($attribs){
 	$id = weTag_getAttribute("id", $attribs);
 	$workspaceID = weTag_getAttribute("workspaceID", $attribs);
 	$path = weTag_getAttribute("path", $attribs);
@@ -39,12 +39,8 @@ function we_tag_ifTemplate($attribs, $content){
 			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", new DB_WE());
-			if(isset($row['Path']) && strpos($curTempPath, $row['Path']) !== false && strpos($curTempPath, $row['Path']) == 0){
-				return true;
-			} else{
-				return false;
-			}
+			$path = f("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", 'Path', new DB_WE());
+			return (($path != '') && strpos($curTempPath, $path) !== false && strpos($curTempPath, $path) == 0);
 		} else{
 			if($path === ""){
 				return true;

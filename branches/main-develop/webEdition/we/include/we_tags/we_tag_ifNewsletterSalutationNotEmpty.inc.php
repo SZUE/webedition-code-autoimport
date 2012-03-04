@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,12 +18,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifNewsletterSalutationNotEmpty($attribs,$content) {
-	if (($foo = attributFehltError($attribs, "type", "ifNewsletterSalutationNotEmpty", true))) {
+function we_tag_ifNewsletterSalutationNotEmpty($attribs){
+	if(($foo = attributFehltError($attribs, "type", "ifNewsletterSalutationNotEmpty", true))){
 		print($foo);
-		return "";
+		return false;
 	}
-	return  !we_tag('ifNewsletterSalutationEmpty',$attribs, "");
+	return !we_tag('ifNewsletterSalutationEmpty', $attribs);
 }

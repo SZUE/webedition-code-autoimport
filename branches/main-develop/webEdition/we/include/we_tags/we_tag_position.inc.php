@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_position($attribs, $content){
+function we_tag_position($attribs){
 	global $lv;
 
 	//	type is required !!!
 	$missingAttrib = attributFehltError($attribs, "type", "position");
-	if ($missingAttrib) {
+	if($missingAttrib){
 		print $missingAttrib;
 		return "";
 	}
@@ -35,21 +35,21 @@ function we_tag_position($attribs, $content){
 	//	here we get the needed attributes
 	$type = weTag_getAttribute("type", $attribs);
 	$_reference = weTag_getAttribute("reference", $attribs);
-	$format = weTag_getAttribute("format", $attribs, 1);	
+	$format = weTag_getAttribute("format", $attribs, 1);
 	//	this value we will return later
 	$_retPos = "";
 
-	switch ($type) {
+	switch($type){
 
 		case "listview" : //	inside a listview, we take direct global listview object
 			$_retPos = ($lv->start + $lv->count);
 			break;
 
 		case "listdir" : //	inside a listview
-			if (isset($GLOBALS['we_position']['listdir'])) {
+			if(isset($GLOBALS['we_position']['listdir'])){
 				$_content = $GLOBALS['we_position']['listdir'];
 			}
-			if (isset($_content) && $_content['position']) {
+			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}
 			break;
@@ -58,26 +58,26 @@ function we_tag_position($attribs, $content){
 		case "block" : //	look in function we_tag_block for details
 			//	first we must get right array !!!
 			$missingAttrib = attributFehltError($attribs, "reference", "position");
-			if ($missingAttrib) {
+			if($missingAttrib){
 				print $missingAttrib;
 				return "";
 			}
-			foreach ($GLOBALS['we_position'][$type] as $name => $arr) {
+			foreach($GLOBALS['we_position'][$type] as $name => $arr){
 
-				if (strpos($name, $_reference) === 0) {
-					if (is_array($arr)) {
+				if(strpos($name, $_reference) === 0){
+					if(is_array($arr)){
 						$_content = $arr;
 					}
 				}
 			}
-			if (isset($_content) && $_content['position']) {
+			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}
 			break;
 	}
 
 	//	convert to desired format
-	switch ($format) {
+	switch($format){
 
 		case "a" :
 			return number2System($_retPos);

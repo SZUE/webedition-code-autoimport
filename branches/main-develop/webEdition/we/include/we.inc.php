@@ -87,7 +87,7 @@ if(!defined('NO_SESS')){
 			@include_once ($_tooldefine);
 		}
 	}
-	$_tooltagdirs = weToolLookup::getTagDirs();
+	//$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
 if(defined('WE_WEBUSER_LANGUAGE')){

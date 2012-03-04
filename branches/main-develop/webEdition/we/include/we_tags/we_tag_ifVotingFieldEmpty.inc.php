@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-
-function we_tag_ifVotingFieldEmpty($attribs,$content) {
-	$realvalue = we_tag('votingField',$attribs, "");
-	return ($realvalue =='');
+function we_tag_ifVotingFieldEmpty($attribs){
+	return (we_tag('votingField', $attribs) == '');
 }

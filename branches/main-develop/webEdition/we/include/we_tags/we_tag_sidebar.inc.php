@@ -42,7 +42,7 @@ function we_tag_sidebar($attribs, $content){
 			'id', 'file', 'url', 'width', 'href','params'
 		));
 
-		if (trim($content) == "") {
+		if (trim($content) == '') {
 			$content = g_l('tags',"[open_sidebar]");
 
 		}

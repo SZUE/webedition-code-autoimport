@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_include($attribs, $content){
+function we_parse_tag_include($attribs){
 	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
 }
 
@@ -127,7 +127,6 @@ function we_tag_include($attribs, $content){
 		$db = new DB_WE();
 		$realPath = '';
 		if($id){
-			$__id__ = ($id == '' ? '' : $id);
 			$db->query('SELECT Path,IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
 			if($db->next_record() === false){
 				return '';

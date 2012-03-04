@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifNext($attribs, $content){
-	if (isset($GLOBALS['_we_voting_list']))
+function we_tag_ifNext($attribs){
+	if(isset($GLOBALS['_we_voting_list']))
 		return $GLOBALS['_we_voting_list']->hasNextPage();
 	$useparent = weTag_getAttribute('useparent', $attribs, false, true);
 	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->hasNextPage($useparent);

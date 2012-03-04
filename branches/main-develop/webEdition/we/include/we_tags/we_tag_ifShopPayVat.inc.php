@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifShopPayVat($attribs, $content){
+function we_tag_ifShopPayVat($attribs){
 	$namefrom = weTag_getAttribute("customerfrom", $attribs);
 	$weShopVatRule = weShopVatRule::getShopVatRule();
 	if(we_tag('ifRegisteredUser', array(), '')){
