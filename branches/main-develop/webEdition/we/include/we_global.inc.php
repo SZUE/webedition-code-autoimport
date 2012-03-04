@@ -1970,10 +1970,10 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
 
-	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) ||!$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
-	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
+	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) ||!$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
 	if($xhtml){ //	xhtml, check if and what we shall debug
