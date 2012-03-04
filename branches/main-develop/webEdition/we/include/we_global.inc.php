@@ -1728,7 +1728,7 @@ function we_convertIniSizes($in){
 	}
 }
 
-function we_getDocumentByID($id, $includepath = '', $db = '', $charset = ''){
+function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
 	if(!$db){
 		$db = new DB_WE();
 	}

@@ -105,7 +105,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 		$err = weNewsletterBase::STATUS_SUCCESS;
 		$f = getNewsletterFields($_REQUEST, isset($_REQUEST["confirmID"]) ? $_REQUEST["confirmID"] : "", $err, isset($_REQUEST["mail"]) ? $_REQUEST["mail"] : "");
 		// Setting Globals FOR WE-Tags
-		$GLOBALS["WE_NEWSLETTER_EMAIL"] = isset($f["subscribe_mail"]) ? $f["subscribe_mail"] : "";
+		$GLOBALS["WE_NEWSLETTER_EMAIL"] = isset($f["subscribe_mail"]) ? $f["subscribe_mail"] : '';
 		$GLOBALS["WE_SALUTATION"] = isset($f["subscribe_salutation"]) ? $f["subscribe_salutation"] : "";
 		$GLOBALS["WE_TITLE"] = isset($f["subscribe_title"]) ? $f["subscribe_title"] : "";
 		$GLOBALS["WE_FIRSTNAME"] = isset($f["subscribe_firstname"]) ? $f["subscribe_firstname"] : "";
@@ -240,7 +240,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 
 
 				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"] != "" ? $mywedoc->elements["Charset"]["dat"] : $GLOBALS['WE_BACKENDCHARSET'];
-				$mailtext = we_getDocumentByID($mailid, "", "", $charset);
+				$mailtext = we_getDocumentByID($mailid, "", $db, $charset);
 
 				if($f["subscribe_title"]){
 					$mailtext = preg_replace('%([^ ])###TITLE###%', '\1 ' . $f["subscribe_title"], $mailtext);
@@ -469,9 +469,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 
 				if($adminmailid && $adminemail){//inform admin of the new account
 					$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f["subscribe_mail"], $f["subscribe_mail"]);
+
+					$adminmailtextHTML = we_getDocumentByID($adminmailid,'',$db,$charset);
 					$phpmail->setCharSet($charset);
 
-					$adminmailtextHTML = we_getDocumentByID($adminmailid);
 					$adminmailtextHTML = str_replace('###MAIL###', $f["subscribe_mail"], $adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###SALUTATION###', $f["subscribe_salutation"], $adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###TITLE###', $f["subscribe_title"], $adminmailtextHTML);
