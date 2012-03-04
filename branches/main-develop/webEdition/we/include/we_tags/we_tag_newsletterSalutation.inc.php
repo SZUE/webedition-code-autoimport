@@ -24,7 +24,7 @@
 
 
 function we_tag_newsletterSalutation($attribs){
-	$type = weTag_getAttribute('type',$attribs);
+	$type = trim(weTag_getAttribute('type',$attribs));
 	switch($type){
 		case 'customerid':
 			return (isset($GLOBALS['WE_CUSTOMERID']) && $GLOBALS['WE_CUSTOMERID'] ) ? $GLOBALS['WE_CUSTOMERID'] : '';
@@ -36,6 +36,7 @@ function we_tag_newsletterSalutation($attribs){
 			return (isset($GLOBALS['WE_LASTNAME'])  )? $GLOBALS['WE_LASTNAME'] : '';
 		case 'email':
 			return isset($GLOBALS['WE_MAIL']) ? $GLOBALS['WE_MAIL'] : (isset($GLOBALS['WE_NEWSLETTER_EMAIL']) ? $GLOBALS['WE_NEWSLETTER_EMAIL'] : '');
+		case 'salutation':
 		default:
 			return isset($GLOBALS['WE_SALUTATION']) ? $GLOBALS['WE_SALUTATION'] : '';
 	}
