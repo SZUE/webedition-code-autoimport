@@ -1443,22 +1443,33 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 	}
 
-	if(count($foo) == 0)
+	$foo = getHash("SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id), $DB_WE);
+	if(count($foo) == 0){
 		return '';
+	}
 	$showLink = false;
 
-	if($foo['Workspaces']){
-		if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE))
-			$showLink = true;
-		else
-		if($foo['ExtraWorkspacesSelected']){
-			if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))
+	if($foo["Workspaces"]){
+		if($foo["TriggerID"]){
+			if(in_workspace($foo["TriggerID"], $foo["Workspaces"], FILE_TABLE, $DB_WE)){
 				$showLink = true;
+			}
+			if(in_workspace($foo["TriggerID"], $foo["ExtraWorkspacesSelected"], FILE_TABLE, $DB_WE)){
+				$showLink = true;
+			}
+		} else{
+			if(in_workspace($pid, $foo["Workspaces"], FILE_TABLE, $DB_WE)){
+				$showLink = true;
+			} else{
+				if($foo["ExtraWorkspacesSelected"]){
+					if(in_workspace($pid, $foo["ExtraWorkspacesSelected"], FILE_TABLE, $DB_WE))
+						$showLink = true;
+				}
+			}
 		}
 	}
 	if($showLink){
-
-		$path = getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE);
+		$path = ($foo["TriggerID"] ? id_to_path($foo["TriggerID"]) : getNextDynDoc($path, $pid, $foo["Workspaces"], $foo["ExtraWorkspacesSelected"], $DB_WE));
 		if(!$path)
 			return '';
 

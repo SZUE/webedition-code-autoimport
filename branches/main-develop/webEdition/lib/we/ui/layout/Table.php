@@ -281,6 +281,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 		$colspan = 1;
 
 		for($row = 0; $row <= $maxRowIndex; $row++){
+			$colspan = 1;
 			$html .= '<tr>';
 			for($col = 0; $col <= $maxColIndex; $col++){
 				if($colspan < 2){

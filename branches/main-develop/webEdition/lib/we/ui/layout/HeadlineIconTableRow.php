@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -27,18 +27,17 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class which creates a row to display in a we_ui_layout_HeadlineIconTable
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
-{
-
+class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 	/*
 	 * Path for Attributes Icon
 	 */
+
 	const kIconAttributes = '/webEdition/images/icons/attrib.gif';
 
 	/*
@@ -150,39 +149,42 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	 * Path for Workspace Icon
 	 */
 	const kIconWorkspace = '/webEdition/images/icons/workspace.gif';
+	const kIconUnfolded = '/webEdition/images/button/btn_direction_down.gif';
+	const kIconFolded = '/webEdition/images/button/btn_direction_right.gif';
 
 	/*
 	 * buffer to store the content HTML
-	 * 
+	 *
 	 * @var string
 	 */
+
 	protected $_contentHTML = "";
 
 	/*
-	 * position where the title should displays. 
+	 * position where the title should displays.
 	 * Possible values are "left" and "right"
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_titlePosition = 'left';
 
 	/*
 	 * path (src) where the icon is stored
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_iconPath = '';
 
 	/*
 	 * width of the left column
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $_leftWidth = 150;
 
 	/*
 	 * If set to true a line will be inserted at the end of the row
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $_line = true;
@@ -194,8 +196,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	 * @param we_ui_abstract_AbstractElement $elem
 	 * @return void
 	 */
-	public function addElement($elem)
-	{
+	public function addElement($elem){
 		$this->addCSSFiles($elem->getCSSFiles());
 		$this->addJSFiles($elem->getJSFiles());
 		$this->_contentHTML .= $elem->getHTML();
@@ -207,8 +208,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	 * @param string $html
 	 * @return void
 	 */
-	public function addHTML($html)
-	{
+	public function addHTML($html){
 		$this->_contentHTML .= $html;
 	}
 
@@ -217,111 +217,125 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 		$iconHTML = ($this->_iconPath !== '') ? ('<img src="' . htmlspecialchars($this->_iconPath) . '" alt="" />') : "";
-		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . htmlspecialchars($this->_title) . '</div>') : "";
-		
+		$divID = we_util_Strings::createUniqueId();
+		$imgID = we_util_Strings::createUniqueId();
+		if($this->_isFoldable){
+			if($this->_isFolded){
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars('/webEdition/images/button/btn_direction_right.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\'; i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+			} else{
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars('/webEdition/images/button/btn_direction_down.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');d = document.getElementById(\'' . $imgID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\';i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+			}
+		} else{
+			$folderHTML = '';
+		}
+		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . $folderHTML . htmlspecialchars($this->_title) . '</div>') : "";
+
 		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition == 'left')) ? $headlineHTML : "");
-		
-		$rightContent = '<div style="float:left;">' . ((($iconHTML && $headlineHTML) || ($leftContent === "") || ($this->_titlePosition != 'left')) ? ($headlineHTML . '<div>' . $this->_contentHTML . '</div>') : '<div>' . $this->_contentHTML . '</div>') . '</div>';
-		
+
+		$rightContent = '<div style="float:left;">' . ((($iconHTML && $headlineHTML) || ($leftContent === "") || ($this->_titlePosition != 'left')) ? ($headlineHTML . '<div>' . $this->_contentHTML . '</div>') : '<div id="' . $divID . '" ' . ($this->_isFolded ? 'style="display:none"' : '') . ' >' . $this->_contentHTML . '</div>') . '</div>';
+
 		$html = '';
-		
-		if ($leftContent || $this->_leftWidth) {
-			if ((!$leftContent) && $this->_leftWidth) {
+
+		if($leftContent || $this->_leftWidth){
+			if((!$leftContent) && $this->_leftWidth){
 				$leftContent = "&nbsp;";
 			}
 			$html .= '<div style="float:left;width:' . $this->_leftWidth . 'px">' . $leftContent . '</div>';
 		}
-		
+
 		$html .= $rightContent;
 		$html .= '<br style="clear:both;">';
-		
+
 		return $html;
 	}
 
 	/**
 	 * Retrieve line attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function getLine()
-	{
+	public function getLine(){
 		return $this->_line;
 	}
 
 	/**
 	 * Retrieve iconPath attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getIconPath()
-	{
+	public function getIconPath(){
 		return $this->_iconPath;
 	}
 
 	/**
 	 * Retrieve leftWidth attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getLeftWidth()
-	{
+	public function getLeftWidth(){
 		return $this->_leftWidth;
 	}
 
 	/**
 	 * Retrieve line attribute => Alias for getLine()
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function hasLine()
-	{
+	public function hasLine(){
 		return $this->getLine();
 	}
 
 	/**
 	 * Set line attribute => Alias for getLine()
-	 * 
+	 *
 	 * @param string $iconPath
 	 * @return void
 	 */
-	public function setIconPath($iconPath)
-	{
+	public function setIconPath($iconPath){
 		$this->_iconPath = $iconPath;
 	}
 
 	/**
 	 * Set leftWidth attribute
-	 * 
+	 *
 	 * @param integer $leftWidth
 	 * @return void
 	 */
-	public function setLeftWidth($leftWidth)
-	{
+	public function setLeftWidth($leftWidth){
 		$this->_leftWidth = $leftWidth;
 	}
 
 	/**
 	 * Set line attribute
-	 * 
+	 *
 	 * @param boolean $line
 	 * @return void
 	 */
-	public function setLine($line)
-	{
+	public function setLine($line){
 		$this->_line = $line;
 	}
 
 	/**
 	 * Set titlePosition attribute
-	 * 
+	 *
 	 * @param string $titlePosition possible values are "right" and "left"
 	 * @return void
 	 */
-	public function setTitlePosition($titlePosition)
-	{
+	public function setTitlePosition($titlePosition){
 		$this->_titlePosition = $titlePosition;
+	}
+
+	protected $_isFoldable = false;
+
+	public function setIsFoldable($isfoldable){
+		$this->_isFoldable = $isfoldable;
+	}
+
+	protected $_isFolded = false;
+
+	public function setIsFolded($isfolded){
+		$this->_isFolded = $isfolded;
 	}
 }

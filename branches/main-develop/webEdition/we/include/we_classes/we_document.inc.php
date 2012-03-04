@@ -113,7 +113,7 @@ class we_document extends we_root{
 	}
 
 	// returns the whole document Alias - don't remove
-	function getDocument($we_editmode='0', $baseHref='0', $we_transaction=''){
+	function getDocument($we_editmode = '0', $baseHref = '0', $we_transaction = ''){
 		return $this->i_getDocument();
 	}
 
@@ -246,7 +246,7 @@ class we_document extends we_root{
 		return $content;
 	}
 
-	function formInGlossar($leftwidth=100){
+	function formInGlossar($leftwidth = 100){
 		$n = 'we_' . $this->Name . '_InGlossar';
 
 		$glossarActivated = we_getModuleNameByContentType('glossary');
@@ -259,7 +259,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function formIsSearchable($leftwidth=100){
+	function formIsSearchable($leftwidth = 100){
 		$n = 'we_' . $this->Name . '_IsSearchable';
 		$v = $this->IsSearchable;
 		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
@@ -517,7 +517,7 @@ class we_document extends we_root{
 		return $f->ID;
 	}
 
-	function addEntryToList($name, $number=1){
+	function addEntryToList($name, $number = 1){
 		$list = $this->getElement($name);
 
 		$listarray = $list ? unserialize($list) : array();
@@ -552,7 +552,7 @@ class we_document extends we_root{
 		return $maxnr;
 	}
 
-	function insertEntryAtList($name, $nr, $number=1){
+	function insertEntryAtList($name, $nr, $number = 1){
 		$list = $this->getElement($name);
 
 		$listarray = $list ? unserialize($list) : array();
@@ -578,7 +578,7 @@ class we_document extends we_root{
 		$this->setElement($name, $list);
 	}
 
-	function upEntryAtList($name, $nr, $number=1){
+	function upEntryAtList($name, $nr, $number = 1){
 		$list = $this->getElement($name);
 		if(!$list){
 			return;
@@ -595,7 +595,7 @@ class we_document extends we_root{
 		$this->setElement($name, $list);
 	}
 
-	function downEntryAtList($name, $nr, $number=1){
+	function downEntryAtList($name, $nr, $number = 1){
 		$list = $this->getElement($name);
 		if(!$list){
 			return;
@@ -612,7 +612,7 @@ class we_document extends we_root{
 		$this->setElement($name, $list);
 	}
 
-	function removeEntryFromList($name, $nr, $names='', $isBlock=false){
+	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
 		$list = $this->getElement($name);
 		$listarray = $list ? unserialize($list) : array();
 		if($list){
@@ -656,7 +656,7 @@ class we_document extends we_root{
 		$this->setElement($name, $ll->getString());
 	}
 
-	function removeLinkFromLinklist($name, $nr, $names=''){
+	function removeLinkFromLinklist($name, $nr, $names = ''){
 		$linklist = $this->getElement($name);
 		$ll = new we_linklist($linklist);
 		$ll->removeLink($nr, $names, $name);
@@ -714,7 +714,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
 
@@ -771,7 +771,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		// Navigation items
 		$this->i_setExtensions();
@@ -898,7 +898,7 @@ class we_document extends we_root{
 		return $this->DocStream;
 	}
 
-	function i_getDocument($includepath=''){
+	function i_getDocument($includepath = ''){
 		return isset($this->elements['data']['dat']) ? $this->elements['data']['dat'] : '';
 	}
 
@@ -910,7 +910,7 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
 	}
 
-	function getFieldByVal($val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='this'){
+	function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -1085,9 +1085,14 @@ class we_document extends we_root{
 					$val = time();
 				}
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
-
-				return date(correctDateFormat($format, $val), $val);
+				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE'){
+					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
+					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
+				} else{
+					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
+					return date(correctDateFormat($format, $val), $val);
+				}
+				return $zwdate;
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0)
@@ -1185,7 +1190,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getField($attribs, $type='txt', $pathOnly=false){
+	function getField($attribs, $type = 'txt', $pathOnly = false){
 		if(is_array($attribs) && isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
@@ -1221,7 +1226,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getHref($attribs, $db='', $fn='this'){
+	function getHref($attribs, $db = '', $fn = 'this'){
 		if(!$db)
 			$db = new_DB_WE();
 		$n = $attribs['name'];
@@ -1247,7 +1252,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkHref($link, $parentID, $path, $db='', $hidedirindex=false, $objectseourls=false){
+	function getLinkHref($link, $parentID, $path, $db = '', $hidedirindex = false, $objectseourls = false){
 		if(!$db){
 			$db = new DB_WE();
 		}
@@ -1293,7 +1298,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkContent($link, $parentID=0, $path='', $db='', $img='', $xml='', $_useName='', $htmlspecialchars=false, $hidedirindex=false, $objectseourls=false){
+	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 
 		$l_href = we_document::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
@@ -1349,7 +1354,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkStartTag($link, $attribs, $parentID=0, $path='', $db='', $img='', $_useName='', $hidedirindex=false, $objectseourls=false){
+	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', $db = '', $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = we_document::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 			//    define some arrays to order the attribs to image, link or js-window ...
 			$_popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
