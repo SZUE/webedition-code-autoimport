@@ -377,6 +377,7 @@ abstract class we_autoloader{
 			'weSiteImport' => 'weSiteImport.class.php',
 			'siteimportFrag' => 'siteimportFrag.class.php',
 			'we_import_files' => 'we_import_files.class.php',
+			'weJUpload' => 'weJUpload.class.php',
 		),
 		'we_logging' => array(
 			'logging' => 'logging.class.php',

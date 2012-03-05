@@ -79,15 +79,16 @@ abstract class listviewBase{
 		$this->name = $name;
 		//FIXME: broken String due to UTF-8 conversion
 		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? '���������' : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
-		$this->search = str_replace('"', '', str_replace('\\"', '', trim($this->search)));
+		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE;
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
 		$this->start = (isset($_REQUEST['we_lv_start_' . $this->name]) && $_REQUEST['we_lv_start_' . $this->name]) ? abs($_REQUEST['we_lv_start_' . $this->name]) : 0;
-		if($this->start == 0)
+		if($this->start == 0){
 			$this->start += $this->offset;
+		}
 		$this->order = $order;
 		$this->desc = $desc;
 		$this->cats = trim($cats);

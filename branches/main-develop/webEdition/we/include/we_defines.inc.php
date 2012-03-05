@@ -80,6 +80,7 @@ define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 //all paths
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/');
 define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
+define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');

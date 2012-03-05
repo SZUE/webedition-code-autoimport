@@ -201,16 +201,15 @@ class we_listview extends listviewBase{
 			$searchfield = $this->casesensitive ? 'BText' : 'Text';
 
 			$ranking = '0';
-			$worte = array();
 			$spalten = array(INDEX_TABLE . '.' . $searchfield);
 			reset($bedingungen);
-			while(list($k1, $v1) = each($bedingungen)) {
+			foreach($bedingungen as $v1) {
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1)) ? 'NOT ' : '';
 					$bed = preg_replace('/^[-\+]/', '', $v1);
 					$klammer = array();
 					reset($spalten);
-					while(list($k, $v) = each($spalten)) {
+					foreach($spalten as $k=>$v) {
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
 					}
 					if($not){
@@ -221,7 +220,7 @@ class we_listview extends listviewBase{
 				} else{
 					$klammer = array();
 					reset($spalten);
-					while(list($k, $v) = each($spalten)) {
+					foreach($spalten as $k=>$v) {
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
 					}
 					$bed2 = '(' . join($klammer, ' OR ') . ')';
@@ -314,7 +313,6 @@ class we_listview extends listviewBase{
 				$q = 'SELECT DISTINCT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID FROM ' . FILE_TABLE . ',' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . ($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' '.$sql_tail . $calendar_where . " " . $orderstring;
 			}
 		}
-
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 		$this->adjustRows();

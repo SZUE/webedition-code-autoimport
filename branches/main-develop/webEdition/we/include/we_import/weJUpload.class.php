@@ -32,38 +32,50 @@ class weJUpload{
 	 * fi, 	  fr, 	  hr, 	  hu, 	  il, 	  it, 	  ja, 	  nl, 	  no, 	  pl,
 	 * pt_BR, 	  pt, 	  ro, 	  ru, 	  sk, 	  sl, 	  sv, 	  tr, 	  zh, zh_TW
 	 */
-	function weJUpload($params, $language=''){
 
-		$this->Params = $params;
+	function __construct(){
 
-		if(!empty($language)){
-			switch($language){
-				default:
-				case 'Deutsch':
-					$this->Params['land'] = 'de';
-					break;
-				case 'Dutch':
-					$this->Params['lang'] = 'nl';
-					break;
-				case 'English':
-					$this->Params['lang'] = 'en';
-					break;
-				case 'Finnish':
-					$this->Params['lang'] = 'fi';
-					break;
-				case 'French':
-					$this->Params['lang'] = 'fr';
-					break;
-				case 'Polish':
-					$this->Params['lang'] = 'pl';
-					break;
-				case 'Russian':
-					$this->Params['lang'] = 'ru';
-					break;
-				case 'Spanish':
-					$this->Params['lang'] = 'es';
-					break;
-			}
+		$this->Params = array(
+			'postURL' => getServerUrl(true) . '/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
+			'maxFileSize' => getUploadMaxFilesize(false),
+			'afterUploadURL' => getServerUrl(true) . '/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
+			'serverProtocol' => 'HTTP/1.1',
+			'showLogWindow' => 'onError',
+			'debugLevel' => 99,
+			'browsingDirectory' => isset($_SESSION['weS']['importDir']) ? $_SESSION['weS']['importDir'] : null,
+		);
+
+		$auth = getServerAuth();
+		if($auth){
+			$this->Params['specificHeaders'] = 'Authorization: Basic ' . base64_encode($auth);
+		}
+
+		switch($GLOBALS['WE_LANGUAGE']){
+			default:
+			case 'Deutsch':
+				$this->Params['land'] = 'de';
+				break;
+			case 'Dutch':
+				$this->Params['lang'] = 'nl';
+				break;
+			case 'English':
+				$this->Params['lang'] = 'en';
+				break;
+			case 'Finnish':
+				$this->Params['lang'] = 'fi';
+				break;
+			case 'French':
+				$this->Params['lang'] = 'fr';
+				break;
+			case 'Polish':
+				$this->Params['lang'] = 'pl';
+				break;
+			case 'Russian':
+				$this->Params['lang'] = 'ru';
+				break;
+			case 'Spanish':
+				$this->Params['lang'] = 'es';
+				break;
 		}
 	}
 
@@ -71,7 +83,7 @@ class weJUpload{
 		$this->Params[$name] = $value;
 	}
 
-	function getAppletTag($content='', $w=300, $h=300){
+	function getAppletTag($content = '', $w = 300, $h = 300){
 
 		$_params = '';
 
@@ -81,7 +93,7 @@ class weJUpload{
 		}
 
 		return '
-			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="'.getServerUrl(true).'/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
+			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . '/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
 				' . $_params . '
 				' . $content . '
 			</applet>
@@ -89,11 +101,10 @@ class weJUpload{
 	}
 
 	function getJS(){
-
 		return '';
 	}
 
-	function getButtons($buttons, $order='h', $space=5){
+	function getButtons($buttons, $order = 'h', $space = 5){
 		$_buttons = array();
 
 		foreach($buttons as $button){

@@ -56,17 +56,12 @@ function we_tag_object($attribs){
 		$GLOBALS['we_lv_array'] = array();
 	}
 
-	include_once(WE_OBJECT_MODULE_DIR . 'we_objecttag.inc.php');
+	$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']) : 0);
 
-	if($classid){
-		$rootDirID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')', 'ID', $GLOBALS['DB_WE']);
-	} else{
-		$rootDirID = 0;
-	}
 	if($name){
 		if(strpos($name, ' ') !== false){
 			print parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
-			return;
+			return false;
 		}
 
 		$we_doc = $GLOBALS['we_doc'];
@@ -100,7 +95,7 @@ function we_tag_object($attribs){
 	$searchable = empty($searchable) ? 'false' : $searchable;
 	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){
-		array_push($GLOBALS['we_lv_array'], clone($GLOBALS['lv']));
+		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}
 
 	if($GLOBALS['lv']->avail){

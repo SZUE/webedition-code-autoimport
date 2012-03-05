@@ -32,7 +32,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
  * INCLUDES
  * *************************************************************************** */
 
-if(!file_exists($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/conf/we_conf_language.inc.php')){
+if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 	we_loadLanguageConfig();
 }
@@ -66,7 +66,7 @@ function printHeader($login){
 		we_html_element::cssElement('html, body {height:100%;}');
 
 	print we_html_element::jsScript(JS_DIR . 'windows.js');
-	print we_html_element::jsScript(JS_DIR . 'weJsStrings.php');
+	include(JS_PATH . 'weJsStrings.inc.php');
 
 	if($login != 2){
 		print we_html_element::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));
