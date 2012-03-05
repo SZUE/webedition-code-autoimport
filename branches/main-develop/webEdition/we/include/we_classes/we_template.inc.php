@@ -30,7 +30,7 @@ class we_template extends we_document{
 	var $ClassName = __CLASS__;
 
 	/* Icon which is shown at the tree-menue  */
-	var $Icon = "template.gif";
+	var $Icon = "we_template.gif";
 	var $Published = "1";
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS);
 	var $DocTypes;
