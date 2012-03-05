@@ -106,6 +106,8 @@ if(isset($GLOBALS['we_doc'])){
 				},
 				failure: function(o) {
 
+				}}
+
 			var _oldparentid = <?php print $GLOBALS['we_doc']->ParentID; ?>;
 			function updateCustomerFilterIfNeeded() {
 				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
