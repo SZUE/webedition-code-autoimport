@@ -204,7 +204,7 @@ class we_base_ContentTypes{
 
 	public function getIcon($name, $default = '', $extension = ''){
 		if($name == 'application/*'){
-			switch($extension){
+			switch(strtolower($extension)){
 				case '.pdf' :
 					return 'pdf.gif';
 				case '.zip' :
@@ -212,14 +212,26 @@ class we_base_ContentTypes{
 				case '.hqx' :
 				case '.bin' :
 					return 'zip.gif';
+				case '.odt':
+				case '.ott':
+				case '.dot' :
 				case '.doc' :
 					return 'word.gif';
+				case '.ods':
+				case '.ots':
+				case '.xlt' :
 				case '.xls' :
 					return 'excel.gif';
+				case '.odp':
+				case '.otp':
 				case '.ppt' :
 					return 'powerpoint.gif';
+				case '.odg':
+				case '.otg':
+					return 'odg.gif';
+				default:
+					return 'prog.gif';
 			}
-			return 'prog.gif';
 		} else{
 			return isset($this->ct[$name]) ? $this->ct[$name]['Icon'] : $default;
 		}

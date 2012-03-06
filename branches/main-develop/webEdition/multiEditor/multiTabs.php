@@ -101,20 +101,31 @@ print we_html_element::jsElement($content = $_contentTypes);
 <script type="text/javascript"><!--
 	function _getIcon(contentType, extension) {
 		if (contentType == "application/*") {
-			switch(extension){
-				case ".pdf":
-					return "pdf.gif";
-				case ".zip":
-				case ".sit":
-				case ".hqx":
-				case ".bin":
-					return "zip.gif";
-				case ".doc":
-					return "word.gif";
-				case ".xls":
-					return "excel.gif";
-				case ".ppt":
-					return "powerpoint.gif";
+			switch(extension.toLowerCase()){
+				case '.pdf' :
+					return 'pdf.gif';
+				case '.zip' :
+				case '.sit' :
+				case '.hqx' :
+				case '.bin' :
+					return 'zip.gif';
+				case '.odt':
+				case '.ott':
+				case '.dot' :
+				case '.doc' :
+					return 'word.gif';
+				case '.ods':
+				case '.ots':
+				case '.xlt' :
+				case '.xls' :
+					return 'excel.gif';
+				case '.odp':
+				case '.otp':
+				case '.ppt' :
+					return 'powerpoint.gif';
+				case '.odg':
+				case '.otg':
+					return 'odg.gif';
 			}
 			return "prog.gif";
 

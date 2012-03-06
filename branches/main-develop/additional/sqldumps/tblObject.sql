@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblObject (
   `Text` varchar(255) NOT NULL default '',
   Icon varchar(64) NOT NULL default '',
   IsFolder tinyint(4) unsigned NOT NULL default '0',
-  ContentType varchar(32) NOT NULL default '',
+  ContentType enum('object') NOT NULL default 'object',
   CreationDate int(11) unsigned NOT NULL default '0',
   ModDate int(11) unsigned NOT NULL default '0',
   Path varchar(255) NOT NULL default '',

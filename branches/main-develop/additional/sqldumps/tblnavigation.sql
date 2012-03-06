@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   Published int(11) unsigned NOT NULL DEFAULT '1',
   Text varchar(255) NOT NULL default '',
   Display varchar(255) NOT NULL default '',
-  ContentType varchar(255) NOT NULL default 'weNavigation',
+  ContentType enum('weNavigation') NOT NULL default 'weNavigation',
   Icon varchar(32) NOT NULL default '0',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   TitleField varchar(255) NOT NULL default '',

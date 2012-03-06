@@ -352,49 +352,34 @@ abstract class we_ui_layout_Image{
 		switch($contentType){
 			case "image/*" :
 				return "image";
-				break;
 			case "text/webedition" :
 				return "we_document";
-				break;
 			case "text/html" :
 				return "text_html";
-				break;
 			case "folder" :
 				return "folder";
-				break;
 			case "folderOpen" :
 				return "folderOpen";
-				break;
 			case "text/css" :
 				return "text_css";
-				break;
 			case "text/weTmpl" :
 				return "text_weTmpl";
-				break;
 			case "text/js" :
 				return "text_js";
-				break;
 			case "text/plain" :
 				return "text_plain";
-				break;
 			case "text/htaccess" :
 				return "text_htaccess";
-				break;
 			case "text/xml" :
 				return "text_xml";
-				break;
 			case "application/x-shockwave-flash" :
 				return "flash";
-				break;
 			case "video/quicktime" :
 				return "quicktime";
-				break;
 			case "object" :
 				return "object";
-				break;
 			case "objectFile" :
 				return "objectFile";
-				break;
 			case "application/*" :
 				switch($extension){
 					case ".pdf" :
@@ -412,7 +397,6 @@ abstract class we_ui_layout_Image{
 						return "powerpoint";
 				}
 				return "text_plain";
-				break;
 			default :
 				return "text_plain";
 		}
