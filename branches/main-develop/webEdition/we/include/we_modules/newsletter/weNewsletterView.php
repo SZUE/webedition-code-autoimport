@@ -2156,7 +2156,7 @@ class weNewsletterView{
 							$path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates" . preg_replace('/\.tmpl$/i', '.php', id_to_path($tid, TEMPLATES_TABLE));
 						}
 						if($block->LinkID && $path)
-							$content .= we_getDocumentByID($block->LinkID, $path);
+							$content .= ($block->LinkID > 0) && weFileExists($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
 						break;
 					case weNewsletterBlock::DOCUMENT_FIELD:
 						if($block->LinkID){

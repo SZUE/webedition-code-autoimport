@@ -221,7 +221,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mywedoc = $GLOBALS['we_doc'];
 						unset($GLOBALS['we_doc']);
 					}
-					$mailtextHTML = we_getDocumentByID($mailid);
+					$mailtextHTML = ($mailid > 0) && weFileExists($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid) : '';
 					if($f["subscribe_title"]){
 						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '\1 ' . $f["subscribe_title"], $mailtextHTML);
 					}
@@ -239,7 +239,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"] != "" ? $mywedoc->elements["Charset"]["dat"] : $GLOBALS['WE_BACKENDCHARSET'];
-				$mailtext = we_getDocumentByID($mailid, "", $db, $charset);
+				$mailtext = ($mailid > 0) && weFileExists($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, "", $db, $charset) : '';
 
 				if($f["subscribe_title"]){
 					$mailtext = preg_replace('%([^ ])###TITLE###%', '\1 ' . $f["subscribe_title"], $mailtext);
@@ -469,7 +469,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				if($adminmailid && $adminemail){//inform admin of the new account
 					$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f["subscribe_mail"], $f["subscribe_mail"]);
 
-					$adminmailtextHTML = we_getDocumentByID($adminmailid, '', $db, $charset);
+					$adminmailtextHTML = ($adminmailid > 0) && weFileExists($adminmailid, FILE_TABLE, $db) ? we_getDocumentByID($adminmailid, '', $db, $charset) : '';
 					$phpmail->setCharSet($charset);
 
 					$adminmailtextHTML = str_replace('###MAIL###', $f["subscribe_mail"], $adminmailtextHTML);

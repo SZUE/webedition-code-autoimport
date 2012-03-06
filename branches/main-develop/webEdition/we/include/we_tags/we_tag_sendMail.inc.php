@@ -160,7 +160,7 @@ function we_tag_sendMail($attribs, $content){
 					@session_start();
 				}
 				$_SESSION['WE_SendMail'] = true;
-				$codes = we_getDocumentByID($id);
+				$codes = ($id > 0) && weFileExists($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id) : '';
 				unset($_SESSION['WE_SendMail']);
 				$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
 				if(isset($includeimages)){

@@ -92,7 +92,7 @@ function weFileExists($id, $table = FILE_TABLE, $db = ''){
 	if($id == 0){
 		return true;
 	}
-	return f('SELECT ID FROM ' . $table . ' WHERE ID=' . $id, 'ID', ($db ? $db : new DB_WE()));
+	return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? $db : new DB_WE()))==='1');
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
@@ -1743,13 +1743,17 @@ function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
 		$backupdoc = $GLOBALS['we_doc'];
 	}
 
+	if(!$clNm){
+		t_e('Classname missing for Document with id' . $id, $includepath);
+		t_e('error', 'Classname missing');
+	}
 	$GLOBALS['we_doc'] = new $clNm();
 
 	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_class::LOAD_MAID_DB);
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
 	$charset = $GLOBALS['we_doc']->getElement('Charset');
 	if(!$charset){
-		$charset = 'UTF-8';
+		$charset = DEFAULT_CHARSET;
 	}
 
 	if(isset($backupdoc)){
@@ -1970,10 +1974,10 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
 
-	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) ||!$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
-	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) ||!$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
 	if($xhtml){ //	xhtml, check if and what we shall debug
