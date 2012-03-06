@@ -229,27 +229,31 @@ class weShopStatusMails{
 			}
 		}
 
-		if($docID && $docID != '' && weFileExists($docID)){
-			$_SESSION['WE_SendMail'] = true;
-			$_REQUEST['we_orderid'] = $order;
-			$_REQUEST['we_userlanguage'] = $UserLang;
-			$_REQUEST['we_shopstatus'] = $was;
-			$codes = we_getDocumentByID($docID);
-			$maildoc = new we_webEditionDocument();
-			$maildoc->initByID($docID);
+		$docID = intval($docID);
+		if($docID){
+			if(weFileExists($docID)){
+				$_SESSION['WE_SendMail'] = true;
+				$_REQUEST['we_orderid'] = $order;
+				$_REQUEST['we_userlanguage'] = $UserLang;
+				$_REQUEST['we_shopstatus'] = $was;
+				$codes = we_getDocumentByID($docID);
+				$maildoc = new we_webEditionDocument();
+				$maildoc->initByID($docID);
 
-			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
-				$codes = $codes . $attachmentA;
+				if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
+					$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
+					$codes = $codes . $attachmentA;
+				}
+				unset($_REQUEST['we_orderid']);
+				unset($_SESSION['WE_SendMail']);
+			} else{
+				t_e('Document to send as status mail is empty ID: ' . $docID);
+				$docID = 0;
 			}
-			unset($_REQUEST['we_orderid']);
-			unset($_SESSION['WE_SendMail']);
-		} else
-			$docID = 0;
+		}
 
 
 		if($docID){
-
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
 

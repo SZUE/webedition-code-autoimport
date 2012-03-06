@@ -1744,8 +1744,8 @@ function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
 	}
 
 	if(!$clNm){
-		t_e('Classname missing for Document with id' . $id, $includepath);
-		t_e('error', 'Classname missing');
+		t_e('Document with ID' . $id.' missing, or ClassName not set.', $includepath);
+		t_e('error', 'Classname/ID missing');
 	}
 	$GLOBALS['we_doc'] = new $clNm();
 
