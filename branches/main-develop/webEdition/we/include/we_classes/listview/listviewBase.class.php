@@ -310,23 +310,20 @@ abstract class listviewBase{
 		}
 	}
 
-	function we_makeQueryString($queryString = '', $filter = ''){
+	static function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = array();
-		$filterArr = ($filter ? explode(',', $filter) : array());
-		array_push($filterArr, 'edit_object');
-		array_push($filterArr, 'edit_document');
-		array_push($filterArr, 'we_editObject_ID');
-		array_push($filterArr, 'we_editDocument_ID');
-		array_push($filterArr, 'we_transaction');
+		//filter special variables
+		$filterArr = array('edit_object', 'edit_document', 'we_editObject_ID', 'we_editDocument_ID', 'we_transaction', 'we_cmd', 'we_cmd[1]', 'pv_id', 'pv_tid', 'bsuniquevid');
+		//remove potential Cookies and filter from query
+		$filterArr = array_merge($filterArr, ($filter ? explode(',', $filter) : array()),array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
-			for($i = 0; $i < sizeof($foo); $i++){
-				list($key, $val) = explode('=', $foo[$i]);
-				array_push($usedKeys, $key);
+			foreach($foo as $f){
+				list($key, $val) = explode('=', $f);
+				$usedKeys[] = $key;
 				$queryString .= $key . '=' . rawurlencode($val) . '&';
 			}
-			$queryString = rtrim($queryString, '&');
 		}
 		$url_tail = '';
 		if(isset($_REQUEST)){
