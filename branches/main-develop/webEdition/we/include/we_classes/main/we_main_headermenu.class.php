@@ -35,11 +35,6 @@ class we_main_headermenu{
 				break;
 		}
 		print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
-		//needed, to correct IE Bug
-		$_BROWSER = we_base_browserDetect::inst();
-		if($_BROWSER->getBrowser() == we_base_browserDetect::IE && $_BROWSER->getBrowserVersion() < 7){
-			echo we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/stuHover.js');
-		}
 	}
 
 	static function pJS(){

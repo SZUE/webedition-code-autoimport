@@ -92,7 +92,7 @@ function weFileExists($id, $table = FILE_TABLE, $db = ''){
 	if($id == 0){
 		return true;
 	}
-	return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? $db : new DB_WE()))==='1');
+	return (f('SELECT 1 AS a FROM ' . $table . ' WHERE ID=' . $id, 'a', ($db ? $db : new DB_WE())) === '1');
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
@@ -1696,19 +1696,14 @@ function getContentTypeFromFile($dat){
 }
 
 function getUploadMaxFilesize($mysql = false, $db = ''){
-
 	$post_max_size = we_convertIniSizes(ini_get('post_max_size'));
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
+	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
 
 	if(!defined('WE_MAX_UPLOAD_SIZE') || WE_MAX_UPLOAD_SIZE == 0){
-
-		if($mysql){
-			return min($post_max_size, $upload_max_filesize, getMaxAllowedPacket($db));
-		} else{
-			return min($post_max_size, $upload_max_filesize);
-		}
+		return $min;
 	} else{
-		return WE_MAX_UPLOAD_SIZE * 1024 * 1024;
+		return min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min);
 	}
 }
 
@@ -1723,12 +1718,11 @@ function we_convertIniSizes($in){
 	$regs = array();
 	if(preg_match('#^([0-9]+)M$#i', $in, $regs)){
 		return 1024 * 1024 * intval($regs[1]);
-	} else
+	}
 	if(preg_match('#^([0-9]+)K$#i', $in, $regs)){
 		return 1024 * intval($regs[1]);
-	} else{
-		return intval($in);
 	}
+	return intval($in);
 }
 
 function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
@@ -1744,7 +1738,7 @@ function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
 	}
 
 	if(!$clNm){
-		t_e('Document with ID' . $id.' missing, or ClassName not set.', $includepath);
+		t_e('Document with ID' . $id . ' missing, or ClassName not set.', $includepath);
 		t_e('error', 'Classname/ID missing');
 	}
 	$GLOBALS['we_doc'] = new $clNm();

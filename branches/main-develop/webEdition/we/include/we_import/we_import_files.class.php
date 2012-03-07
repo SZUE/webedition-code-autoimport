@@ -415,21 +415,14 @@ class we_import_files{
 
 		$parts = array();
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
-		$maxsize = round($maxsize / (1024 * 1024), 3) . "MB";
+		$maxsize = round($maxsize / (1024 * 1024), 3) . 'MB';
 
-		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . we_html_element::htmlDiv(
-				array(
-				'id' => 'desc'
-				), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), 2, "520", false)) . we_html_element::htmlDiv(
-				array(
-				'id' => 'descJupload', 'style' => 'display:none;'
-				), we_html_tools::htmlAlertAttentionBox(
-					sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), 2, "520", false));
+		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
+			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
+			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), 2, 520, false)) .
+			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), 2, 520, false));
 
-		array_push(
-			$parts, array(
-			"headline" => "", "html" => $content, "space" => 0
-		));
+		array_push($parts, array("headline" => "", "html" => $content, "space" => 0));
 
 		$fileinput = we_html_element::htmlInput(
 				array(
@@ -473,8 +466,7 @@ class we_import_files{
 		));
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"),
-					(getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_html_element::htmlForm(array(
+				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), "") : "") . we_html_element::htmlForm(
 					array(

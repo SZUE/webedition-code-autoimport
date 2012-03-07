@@ -37,7 +37,7 @@ class weJUpload{
 
 		$this->Params = array(
 			'postURL' => getServerUrl(true) . '/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
-			'maxFileSize' => getUploadMaxFilesize(false),
+			'maxFileSize' => getUploadMaxFilesize(false) - (10 * 1024),
 			'afterUploadURL' => getServerUrl(true) . '/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
 			'serverProtocol' => 'HTTP/1.1',
 			'showLogWindow' => 'onError',

@@ -49,7 +49,7 @@ abstract class weDBUtil{
 		return (bool) ($DB_WE->num_rows());
 	}
 
-	static function addTable($tab, $cols, $keys=array()){
+	static function addTable($tab, $cols, $keys = array()){
 		global $DB_WE;
 
 		if(!is_array($cols))
@@ -82,7 +82,7 @@ abstract class weDBUtil{
 		$DB_WE->query("DROP TABLE IF EXISTS " . $DB_WE->escape($tab) . ";");
 	}
 
-	static function addCol($tab, $col, $typ, $pos=""){
+	static function addCol($tab, $col, $typ, $pos = ""){
 		global $DB_WE;
 		$DB_WE->query("ALTER TABLE " . $DB_WE->escape($tab) . " ADD $col $typ" . (($pos != "") ? " " . $pos : "") . ";");
 	}
@@ -137,14 +137,16 @@ abstract class weDBUtil{
 	}
 
 	static function isKeyExistAtAll($tab, $key){
-		$keys = explode('(', $key);
+		$matches = array();
+		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
+		$key = $matches[1];
+
 		global $DB_WE;
 		$create = f("SHOW CREATE TABLE " . $DB_WE->escape($tab), 'Create Table', $DB_WE);
-		if($create && isset($keys[0])){
-			$key = trim($keys[0]);
+		if($create){
 			$zw = explode("\n", $create);
 			foreach($zw as $v){
-				if(strpos($v, 'KEY ' . $key) !== FALSE){
+				if(preg_match('|.*KEY *`?'.$key.'`? \(|',$v)){
 					return $key;
 				}
 			}
@@ -165,12 +167,12 @@ abstract class weDBUtil{
 		return false;
 	}
 
-	static function addKey($tab, $key){
-		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' ADD ' . $key);
+	static function addKey($tab, $fullKey){
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' ADD ' . $fullKey);
 	}
 
-	static function delKey($tab, $key){
-		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' DROP INDEX ' . $key);
+	static function delKey($tab, $keyname){
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $GLOBALS['DB_WE']->escape($tab) . ' DROP INDEX `' . $keyname.'`');
 	}
 
 }
