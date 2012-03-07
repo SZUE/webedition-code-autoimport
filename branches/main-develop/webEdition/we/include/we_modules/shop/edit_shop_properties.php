@@ -44,7 +44,7 @@ if($strFelder !== ''){
 	$CLFields['languageFieldIsISO'] = 0;
 }
 
-function getFieldFromShoparticle($array, $name, $length=0){
+function getFieldFromShoparticle($array, $name, $length = 0){
 
 	$val = ( isset($array["we_$name"]) ? $array["we_$name"] : (isset($array[$name]) ? $array[$name] : '' ) );
 
@@ -55,7 +55,7 @@ function getFieldFromShoparticle($array, $name, $length=0){
 	return $val;
 }
 
-function getOrderCustomerData($orderId, $orderData=false, $customerId=false, $strFelder=array()){
+function getOrderCustomerData($orderId, $orderData = false, $customerId = false, $strFelder = array()){
 
 	if(!$customerId){
 
@@ -521,8 +521,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 		case 'edit_shop_cart_custom_field':
 
-			print '
-			' . we_html_element::jsElement('
+			print we_html_element::jsElement('
 	function we_submit() {
 		elem = document.getElementById("cartfieldname");
 
@@ -617,8 +616,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 
 
-			print '
-			' . we_html_element::jsElement($jsCmd) . '
+			print we_html_element::jsElement($jsCmd) . '
 			</head>
 <body></body>
 </html>';
@@ -1690,7 +1688,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		<td>' . $pixelImg . '</td>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>
 		' . ($calcVat ? '<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwSt]') . '</th>' : '' ) . '
+		<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 	</tr>';
 
 
@@ -2020,7 +2018,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	//
 echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-	we_html_element::jsScript(JS_DIR . WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
@@ -2129,240 +2127,33 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 </head>
 <body bgcolor="#ffffff">';
 	}
-	?>
-	<script type="text/javascript">we_html_element::jsElement(
+
+	$js = '
 			// init the used calendars
 
 			function CalendarChanged(calObject) {
 				// field:
 				_field = calObject.params.inputField;
-				document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&" + _field.name + "=" + _field.value;
+				document.location = "' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&" + _field.name + "=" + _field.value;
 
-			}
-<?php if(!$weShopStatusMails->FieldsHidden['DateOrder']){ ?>
-			// Calender for order date
-			Calendar.setup(
-			{
-				"inputField" : "hidden_Calendar_DateOrder",
-				"displayArea" : "div_Calendar_DateOrder",
-				"button" : "date_pickerbutton_Calendar_DateOrder",
-				"ifFormat" : "<?php print $da; ?>",
-				"daFormat" : "<?php print $da; ?>",
-				"onUpdate" : CalendarChanged
-			}
-		);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
+			}';
+
+	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
+		'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ');
+	foreach($all as $cur){
+		if(!$weShopStatusMails->FieldsHidden[$cur]){
+			$js.='		Calendar.setup({
+		"inputField" : "hidden_Calendar_' . $cur . '",
+		"displayArea" : "div_Calendar_' . $cur . '",
+		"button" : "date_pickerbutton_Calendar_' . $cur . '",
+		"ifFormat" : "' . $da . '",
+		"daFormat" : "' . $da . '",
+		"onUpdate" : CalendarChanged
+		});';
+		}
+	}
+	echo we_html_element::jsElement($js);
 	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateConfirmation",
-					"displayArea" : "div_Calendar_DateConfirmation",
-					"button" : "date_pickerbutton_Calendar_DateConfirmation",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomA']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomA",
-					"displayArea" : "div_Calendar_DateCustomA",
-					"button" : "date_pickerbutton_Calendar_DateCustomA",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomB']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomB",
-					"displayArea" : "div_Calendar_DateCustomB",
-					"button" : "date_pickerbutton_Calendar_DateCustomB",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomC']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomC",
-					"displayArea" : "div_Calendar_DateCustomC",
-					"button" : "date_pickerbutton_Calendar_DateCustomC",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateShipping']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateShipping",
-					"displayArea" : "div_Calendar_DateShipping",
-					"button" : "date_pickerbutton_Calendar_DateShipping",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomD']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomD",
-					"displayArea" : "div_Calendar_DateCustomD",
-					"button" : "date_pickerbutton_Calendar_DateCustomD",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomE']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomE",
-					"displayArea" : "div_Calendar_DateCustomE",
-					"button" : "date_pickerbutton_Calendar_DateCustomE",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DatePayment']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DatePayment",
-					"displayArea" : "div_Calendar_DatePayment",
-					"button" : "date_pickerbutton_Calendar_DatePayment",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomF']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomF",
-					"displayArea" : "div_Calendar_DateCustomF",
-					"button" : "date_pickerbutton_Calendar_DateCustomF",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomG']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomG",
-					"displayArea" : "div_Calendar_DateCustomG",
-					"button" : "date_pickerbutton_Calendar_DateCustomG",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCancellation']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCancellation",
-					"displayArea" : "div_Calendar_DateCancellation",
-					"button" : "date_pickerbutton_Calendar_DateCancellation",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomH']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomH",
-					"displayArea" : "div_Calendar_DateCustomH",
-					"button" : "date_pickerbutton_Calendar_DateCustomH",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomI']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomI",
-					"displayArea" : "div_Calendar_DateCustomI",
-					"button" : "date_pickerbutton_Calendar_DateCustomI",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateCustomJ']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateCustomJ",
-					"displayArea" : "div_Calendar_DateCustomJ",
-					"button" : "date_pickerbutton_Calendar_DateCustomJ",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-	<?php
-}
-if(!$weShopStatusMails->FieldsHidden['DateFinished']){
-	?>
-				Calendar.setup(
-				{
-					"inputField" : "hidden_Calendar_DateFinished",
-					"displayArea" : "div_Calendar_DateFinished",
-					"button" : "date_pickerbutton_Calendar_DateFinished",
-					"ifFormat" : "<?php print $da; ?>",
-					"daFormat" : "<?php print $da; ?>",
-					"onUpdate" : CalendarChanged
-				}
-			);
-<?php } ?>
-		//-->
-	</script>
+
 </body>
 </html>
