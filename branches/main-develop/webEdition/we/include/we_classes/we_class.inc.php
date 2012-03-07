@@ -321,18 +321,18 @@ abstract class we_class{
 			);
 	}
 
-	function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = ""){
+	function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $compare = 'value', $width = 0){
 		if(is_array($values)){
 			reset($values);
 		} else{
 			$values = array();
 		}
-		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
-		$selIndex = explode(",", $selectedIndex);
-		while(list($value, $text) = each($values)) {
-			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected=\"selected\"" : "") . '>' . $text . "</option>\n";
+		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
+		$selIndex = explode(',', $selectedIndex);
+		foreach($values as $value => $text){
+			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
-		$ret .= "</select>";
+		$ret .= '</select>';
 		return $ret;
 	}
 
@@ -591,7 +591,7 @@ abstract class we_class{
 		return false;
 	}
 
-	protected function updateRemoteLang($db,$id,$lang,$type){
+	protected function updateRemoteLang($db, $id, $lang, $type){
 		//overwrite if needed
 	}
 
@@ -614,7 +614,7 @@ abstract class we_class{
 			}
 			foreach($LangLinkArray as $locale => $LDID){
 				if(($ID = f("SELECT ID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($this->ID) . " AND Locale='" . $locale . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
-					$q = "UPDATE " . LANGLINK_TABLE . " SET LDID=" . intval($LDID) . ",DLocale='" . $this->Language . "' WHERE ID=" . intval($ID).' AND DocumentTable="'.$type.'"';
+					$q = "UPDATE " . LANGLINK_TABLE . " SET LDID=" . intval($LDID) . ",DLocale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"';
 					$this->DB_WE->query($q);
 				} else{
 					if($locale != $this->Language){
@@ -628,10 +628,10 @@ abstract class we_class{
 					$q = '';
 					if($ID = f("SELECT ID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($LDID) . " AND Locale='" . $this->Language . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE)){
 						if($LDID > 0){
-							$q = "UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ",Locale='" . $this->Language . "' WHERE ID=" . intval($ID).' AND DocumentTable="'.$type.'"';
+							$q = "UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ",Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"';
 						}
 						if($LDID < 0){
-							$q = "UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID='0',Locale='" . $this->Language . "' WHERE ID=" . intval($ID).' AND DocumentTable="'.$type.'"';
+							$q = "UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID='0',Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"';
 						}
 					} else{
 						if($LDID > 0){
@@ -672,7 +672,7 @@ abstract class we_class{
 								$this->DB_WE->query($q);
 								while($this->DB_WE->next_record()) {
 									$delRowID = $this->DB_WE->Record['ID'];
-									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID).' AND DocumentTable="'.$type.'"';
+									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID) . ' AND DocumentTable="' . $type . '"';
 									$db->query($qd);
 								}
 							}
@@ -681,7 +681,7 @@ abstract class we_class{
 								$this->DB_WE->query($q);
 								while($this->DB_WE->next_record()) {
 									$delRowID = $this->DB_WE->Record['ID'];
-									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID).' AND DocumentTable="'.$type.'"';
+									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID) . ' AND DocumentTable="' . $type . '"';
 									$db->query($qd);
 								}
 							}

@@ -48,7 +48,7 @@ $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 		$year = substr($mid, (strlen($mid)-4));
 		$month = str_replace($year,'',$_REQUEST["mid"]);
 
-		print "<frame src=\"edit_shop_revenueTop.php?ViewYear=$year&ViewMonth=$month\" name=\"edbody\" scrolling=auto>";
+		print '<frame src="edit_shop_revenueTop.php?ViewYear='.$year.'&ViewMonth='.$month.'" name="edbody" scrolling=auto>';
 
 	?>
 

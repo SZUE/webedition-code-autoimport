@@ -98,7 +98,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 $parts = array();
 
 array_push($parts, array(
-	"headline" => g_l('modules_shopMonth', '[' . $month . ']') . " " . $year,
+	"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
 	"html" => $info,
 	"space" => 170
 	)

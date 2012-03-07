@@ -84,9 +84,9 @@ function yearSelect($select_name){
 }
 
 function monthSelect($select_name){
+	$opts = g_l('modules_shop', '[month]');
 	$opts[0] = '-';
-	$opts = array_merge($opts, g_l('modules_shopMonth', ''));
-
+	ksort($opts, SORT_NUMERIC);
 	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : ''), false, 'id="' . $select_name . '"');
 }
 
@@ -106,7 +106,7 @@ print we_html_element::jsElement('
 	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
-		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shopMonth', '[' . $_REQUEST['ViewMonth'] . ']') . " " : "") . $_REQUEST['ViewYear'] . '";
+		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shop', '[month][' . $_REQUEST['ViewMonth'] . ']') . " " : "") . $_REQUEST['ViewYear'] . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
 			parent.edheader.hasPathGroup = true;
 			parent.edheader.setPathGroup(pre);
