@@ -375,10 +375,10 @@ if($DB_WE->num_rows()){
 	);
 
 	$headline[0]["dat"] = getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID');
-	$headline[1]["dat"] = getTitleLink(g_l('modules_shop', '[artName]'), 'shoptitle');
+	$headline[1]["dat"] = getTitleLink(g_l('modules_shop', '[ArtName]'), 'shoptitle');
 	$headline[2]["dat"] = getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price');
 	$headline[3]["dat"] = getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder');
-	$headline[4]["dat"] = getTitleLink(g_l('modules_shop', '[artID]'), 'IntArticleID');
+	$headline[4]["dat"] = getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID');
 	$headline[5]["dat"] = getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment');
 
 	// we need functionalitty to order these
