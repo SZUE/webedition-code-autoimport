@@ -353,7 +353,7 @@ class we_updater{
 			while($DB_WE->next_record())
 				$db123->query("UPDATE " . USER_TABLE . " SET IsFolder=1 WHERE ID=" . intval($DB_WE->f("ID")));
 		}
-		$this->fix_icon();
+		self::fix_icon();
 
 		return true;
 	}
@@ -586,7 +586,7 @@ class we_updater{
 						self::addCol($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL', ' AFTER OF_WebUserID ');
 					}
 					//add indices to all objects
-					$this->updateUnindexedCols($_table, 'object_%');
+					self::updateUnindexedCols($_table, 'object_%');
 
 					if(!self::hasIndex($_table, 'OF_WebUserID')){
 						self::addIndex($_table, 'OF_WebUserID', 'OF_WebUserID');
