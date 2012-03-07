@@ -127,10 +127,8 @@ print we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
-	}
-
-</script>
-<style type="text/css">
+	}').
+we_html_element::cssElement('
 	table.revenueTable {
 		border-collapse: collapse;
 	}
