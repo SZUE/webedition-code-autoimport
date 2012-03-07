@@ -1579,7 +1579,7 @@ class weVersions{
 
 				$path = substr($we_doc->Path, 1);
 				$location = SITE_DIR . $path;
-				$contents = getHTTP($_SERVER['SERVER_NAME'], $location . "?vers_we_obj=1");
+				$contents = getHTTP(getServerUrl(true), $location . "?vers_we_obj=1");
 
 				if(ini_get("short_open_tag") == 1){
 					$contents = str_replace("<?xml", '<?php print "<?xml"; ?>', $contents);

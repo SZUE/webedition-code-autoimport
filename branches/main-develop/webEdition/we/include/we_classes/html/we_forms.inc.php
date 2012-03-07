@@ -206,7 +206,7 @@ abstract class we_forms{
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["WE_MAIN_DOC"]->InWebEdition) && $GLOBALS["WE_MAIN_DOC"]->InWebEdition);
 		}
 
-		$value = self::removeBrokenInternalLinksAndImages($value);
+			$value = self::removeBrokenInternalLinksAndImages($value);
 
 		if($wysiwyg){
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");
@@ -276,16 +276,16 @@ abstract class we_forms{
 	static function removeBrokenInternalLinksAndImages(&$text){
 		$DB_WE = new DB_WE();
 		$regs = array();
-		if(preg_match_all('/(href|src)="document:(\\d+)([^" \?#])/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="document:(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				if(!f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
+				if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
 					$text = preg_replace('|<a [^>]*href="document:' . $reg[2].$reg[3] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
 					$text = preg_replace('|<a [^>]*href="document:' . $reg[2].$reg[3] . '"[^>]*>|i', '', $text);
 					$text = preg_replace('|<img [^>]*src="document:' . $reg[2].$reg[3] . '"[^>]*>|i', '', $text);
 				}
 			}
 		}
-		if(preg_match_all('/src="thumbnail:([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="thumbnail:(\\d+)[" ])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$imgID = $thumbID = 0;
 				list($imgID, $thumbID) = explode(",", $reg[1]);

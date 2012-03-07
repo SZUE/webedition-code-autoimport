@@ -56,8 +56,7 @@ function we_tag_textarea($attribs, $content){
 			$GLOBALS['we_doc']->setElement($name, $value);
 			$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
 		}
-		return we_forms::weTextarea(
-				$fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
+		return we_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
 	} else{
 		return $GLOBALS['we_doc']->getField($attribs);
 	}

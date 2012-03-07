@@ -1545,7 +1545,6 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 	$DB_WE = new DB_WE();
 	$regs = array();
 	if(preg_match_all('/(href|src)="document:(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
-
 		foreach($regs as $reg){
 
 			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published > 0'), 'Path', $DB_WE);
