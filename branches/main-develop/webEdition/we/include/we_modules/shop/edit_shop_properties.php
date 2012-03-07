@@ -2138,7 +2138,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 
 			}';
 
-	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
+	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished','DateShipping','DateCancellation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
 		'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ');
 	foreach($all as $cur){
 		if(!$weShopStatusMails->FieldsHidden[$cur]){
