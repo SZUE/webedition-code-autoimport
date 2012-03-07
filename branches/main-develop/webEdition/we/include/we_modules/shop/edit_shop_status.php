@@ -277,7 +277,7 @@ print we_multiIconBox::getHTML(
 	'',
 	'',
 	false,
-	g_l('modules_shop','[statusmails][box_headline]'),'','540','scroll'
+	g_l('modules_shop','[statusmails][box_headline]'),'','','scroll'
 );
 
 

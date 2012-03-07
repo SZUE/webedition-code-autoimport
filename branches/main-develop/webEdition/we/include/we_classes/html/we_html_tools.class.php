@@ -27,7 +27,7 @@ abstract class we_html_tools{
 ### we_html_tools::protect()
 ### protects a page. Guests can not see this page
 
-	static function protect(array $perms=null){
+	static function protect(array $perms = null){
 		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
@@ -416,7 +416,7 @@ HTS;
 		}
 	}
 
-	static function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "", $permission=true){
+	static function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "", $permission = true){
 		$disabled = '';
 		if(!$permission){
 			$disabled .= ' disabled="disabled "';
@@ -500,7 +500,7 @@ HTS;
 		return -1;
 	}
 
-	static function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "", $style=""){
+	static function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchange = "", $class = "weSelect", $xml = "", $minyear = "", $maxyear = "", $style = ""){
 		$_attsSelect = array();
 		$_attsOption = array();
 		$_attsHidden = array();
@@ -528,8 +528,7 @@ HTS;
 			$year = $time->format('Y');
 			$hour = $time->format('G');
 			$minute = $time->format('i');
-
-		}else	if($time){
+		} else if($time){
 			$day = abs(date("j", $time));
 			$month = abs(date("n", $time));
 			$year = abs(date("Y", $time));
@@ -707,17 +706,17 @@ HTS;
 		return $retVal;
 	}
 
-	static function htmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
+	static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
+	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
 		return we_html_element::htmlDocType($doctype) . '<html><head>' .
 			self::getHtmlInnerHead($title, $charset);
 	}
 
 	static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
-		return 	we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "Expires", "content" => date('r')
 			)) .
@@ -727,7 +726,7 @@ HTS;
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
 			)) .
-			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])).
+			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
 			)) .
@@ -737,22 +736,20 @@ HTS;
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
 			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
-
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
 		$GLOBALS['we']['PageCharset'] = $charset;
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
-				"content" => $content.'; charset=' . $charset
+				"content" => $content . '; charset=' . $charset
 			));
 	}
 
 	static function headerCtCharset($content, $charset){
 		$GLOBALS['we']['PageCharset'] = $charset;
-		header('Content-Type: '.$content.'; charset=' . $charset);
+		header('Content-Type: ' . $content . '; charset=' . $charset);
 	}
-
 
 	/**
 	 * Enter description here...
@@ -892,7 +889,7 @@ HTS;
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . 'px;' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
 	}
 
 }

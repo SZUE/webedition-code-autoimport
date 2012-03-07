@@ -259,7 +259,7 @@ $frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_sh
 echo we_html_element::jsElement('self.focus();') . '
 	</head>
 	<body class="weDialogBody">
-	<form name="we_form" method="post" style="margin-left:8; margin-top:16px;">
+	<form name="we_form" method="post" style="margin-left:8px; margin-top:16px;">
 	' . $frame . '</form>
 
 

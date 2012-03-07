@@ -37,7 +37,7 @@ abstract class we_multiIconBox{
 	 * @param	$headline			string
 	 * @return	string
 	 */
-	static function getHTML($name, $width, $content, $marginLeft="0", $buttons="", $foldAtNr=-1, $foldRight="", $foldDown="", $displayAtStartup=false, $headline = "", $delegate = "", $height = "", $overflow = "auto"){
+	static function getHTML($name, $width, $content, $marginLeft = "0", $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = "", $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(rand(), true));
 
 		if(isset($headline) && $headline != ""){
@@ -109,7 +109,7 @@ abstract class we_multiIconBox{
 		if($buttons){
 			$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
 			//ignore height, replace by bottom:
-			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:'.$height.'px;':'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>' . $buttonsHTML;
+			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>' . $buttonsHTML;
 		} else{
 			return $boxHTML;
 		}
@@ -199,7 +199,7 @@ abstract class we_multiIconBox{
 		</script>';
 	}
 
-	static function getDynJS($uniqname="", $marginLeft="0"){
+	static function getDynJS($uniqname = "", $marginLeft = "0"){
 		return '<script  type="text/javascript"><!--
 			if(navigator.product == "Gecko"){
 				var CELLPADDING = "cellpadding";
@@ -292,8 +292,8 @@ abstract class we_multiIconBox{
 ';
 	}
 
-	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $overflow="auto"){
-		return '<table width="' . $width . '" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:' . $width . '; overflow:' . $overflow . '">
+	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = "0", $overflow = "auto"){
+		return '<table border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
 	<tr>
 		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>
 	</tr>
@@ -328,7 +328,7 @@ abstract class we_multiIconBox{
 ';
 	}
 
-	static function _getButton($name, $cmd, $state="right", $title=""){
+	static function _getButton($name, $cmd, $state = "right", $title = ""){
 		return '<script  type="text/javascript">weSetCookieVariable("but_' . $name . '","' . $state . '");var btn_direction_' . $name . '_mouse_event = false;</script><table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_' . $name . '_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_' . $name . '_middle\').style.background = \'url(' . BUTTONS_DIR . 'btn_direction_\'+weGetCookieVariable(\'but_' . $name . '\')+\'.gif)\';btn_direction_' . $name . '_mouse_event = false;' . $cmd . ';"><tr title="' . $title . '" style="height: 22px;"><td align="center" id="btn_direction_' . $name . '_middle" style="background-image:url(' . BUTTONS_DIR . '/btn_direction_' . $state . '.gif);width: 21px;" nowrap="nowrap">' . we_html_tools::getPixel(21, 22) . '</td></tr></table>';
 	}
 
