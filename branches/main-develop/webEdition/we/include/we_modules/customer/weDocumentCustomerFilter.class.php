@@ -370,15 +370,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 		if($model->ID){
 			$_db = new DB_WE();
-			$_query = "
-			DELETE FROM " . CUSTOMER_FILTER_TABLE . "
-			WHERE
-				modelId=" . $model->ID . "
+			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE modelId=" . $model->ID . "
 				AND modelType=\"" . $model->ContentType . "\"
-				AND modelTable=\"" . $model->Table . "\"
-			";
+				AND modelTable=\"" . $model->Table . "\"";
 			$_db->query($_query);
-			unset($_db);
 		}
 	}
 
@@ -428,9 +423,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	function deleteModel($modelIds=array(), $table){
 		if(sizeof($modelIds)){
 			$_db = new DB_WE();
-			$_query = "
-			DELETE FROM " . CUSTOMER_FILTER_TABLE . "
-			WHERE
+			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE
 				modelId IN (" . implode(", ", $modelIds) . ")
 				AND modelTable = \"" . $table . "\"
 			";
@@ -459,24 +452,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 		// detect all files/objects with restrictions
 		if($listview->ClassName == "we_search_listview"){
-			$_queryForIds = "
-					SELECT *
-					FROM " . CUSTOMER_FILTER_TABLE .
-				" WHERE $_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery)";
+			$_queryForIds = "SELECT * FROM " . CUSTOMER_FILTER_TABLE . " WHERE $_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery)";
 		} else{
 
 			if($listview->ClassName == "we_listview"){ // type="document"
-				$_queryForIds = "
-					SELECT *
-					FROM " . CUSTOMER_FILTER_TABLE . "
-					WHERE modelType='text/webedition'" .
-					" AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = "SELECT * FROM " . CUSTOMER_FILTER_TABLE . " WHERE modelType='text/webedition'  AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 			} else if($listview->ClassName == "we_listview_object" || $listview->ClassName == "we_listview_multiobject"){ // type="object"
-				$_queryForIds = "
-					SELECT *
-					FROM " . CUSTOMER_FILTER_TABLE . "
-					WHERE modelType='objectFile'" .
-					" AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
+				$_queryForIds = "SELECT * FROM " . CUSTOMER_FILTER_TABLE . " WHERE modelType='objectFile' AND ($_defaultQuery $_blacklistQuery OR ( ($_specificCustomersQuery OR $_whiteLlistQuery) $_accessControlOnTemplateQuery))";
 			}
 		}
 		// if customer is not logged in=> return NO_LOGIN
@@ -488,7 +470,6 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 			// Vistior is not logged in => Visitor has no Access to files with filters!
 			if($_db->num_rows()){
 
-				$_dummyFilters = array();
 				while($_db->next_record()) {
 					$_filesWithRestrictionsForCustomer[$_db->f("modelType")][] = $_db->f("modelId");
 				}

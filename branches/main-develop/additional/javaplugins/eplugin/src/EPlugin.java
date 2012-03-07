@@ -19,13 +19,10 @@ import java.net.URL;
 import java.security.AccessController;
 import java.util.Iterator;
 import java.util.Vector;
-
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.webedition.eplugin.editor.DocumentManager;
 import org.webedition.eplugin.editor.EPDocument;
 import org.webedition.eplugin.editor.WeEditor;
@@ -37,7 +34,6 @@ import org.webedition.eplugin.util.Base64Coder;
 public class EPlugin extends JApplet {
 
 	static final long serialVersionUID = -1611200117062004017L;
-	//private boolean initialized=false;
 	//Specify the look and feel to use.  Valid values:
 	//null (use the default), "Metal", "System", "Motif", "GTK+"
 	final static String look = "System";
@@ -76,10 +72,11 @@ public class EPlugin extends JApplet {
 			try {
 				UIManager.setLookAndFeel(lookAndFeel);
 				JFrame.setDefaultLookAndFeelDecorated(false);
-			} catch (ClassNotFoundException e) {
+				/*
+				 * } catch (ClassNotFoundException e) { e.printStackTrace(); } catch
+				 * (UnsupportedLookAndFeelException e) {
 				e.printStackTrace();
-			} catch (UnsupportedLookAndFeelException e) {
-				e.printStackTrace();
+				 */
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -87,6 +84,7 @@ public class EPlugin extends JApplet {
 		}
 	}
 
+	@Override
 	public void init() {
 		URL codeBase = getCodeBase();
 		String SERVER_NAME = codeBase.getHost();
@@ -128,18 +126,22 @@ public class EPlugin extends JApplet {
 
 	}
 
+	@Override
 	public void start() {
 	}
 
+	@Override
 	public void stop() {
 		runThreads = false;
 		gotoBed(2 * threadTick);
 	}
 
+	@Override
 	public String getAppletInfo() {
 		return "Editor Plugin\nAuthor Slavko Tomcic";
 	}
 
+	@Override
 	public String[][] getParameterInfo() {
 		String pinfo[][] = {
 			{"param_list", "string", "list of dinamicaly loadable parameters"}
@@ -193,9 +195,7 @@ public class EPlugin extends JApplet {
 
 	public String clearPath(String in) {
 
-		String out = "";
-
-		out = in.replace('\\', '/');
+		String out = in.replace('\\', '/');
 		out = out.replaceAll("[/]+", "/");
 		if (System.getProperty("os.name").matches("Windows(.)*")) {
 			out = out.replace('/', '\\');
@@ -208,12 +208,7 @@ public class EPlugin extends JApplet {
 					String contenttype, String encoded, String charset) {
 
 		weSettings.lastContentType = contenttype;
-		String cachefn = "";
-		if (contenttype.equals("text/weTmpl")) {
-			cachefn = clearPath(weSettings.cacheDir + "template" + System.getProperty("file.separator") + filename);
-		} else {
-			cachefn = clearPath(weSettings.cacheDir + "document" + System.getProperty("file.separator") + filename);
-		}
+		String cachefn = clearPath(weSettings.cacheDir + (contenttype.equals("text/weTmpl") ? "template" : "document") + System.getProperty("file.separator") + filename);
 
 		System.out.println("contenttype:" + contenttype);
 		EPDocument document = new EPDocument(sess, trans, cachefn, contenttype, cmdEntry);
@@ -234,12 +229,7 @@ public class EPlugin extends JApplet {
 
 	public void editFile(String sess, String trans, String path, String url, String contenttype) {
 
-		String cachefn = "";
-		if (contenttype.equals("text/weTmpl")) {
-			cachefn = clearPath(weSettings.cacheDir + "template" + System.getProperty("file.separator") + path);
-		} else {
-			cachefn = clearPath(weSettings.cacheDir + "document" + System.getProperty("file.separator") + path);
-		}
+		String cachefn = clearPath(weSettings.cacheDir + (contenttype.equals("text/weTmpl") ? "template" : "document") + System.getProperty("file.separator") + path);
 
 		EPDocument document = new EPDocument(sess, trans, cachefn, contenttype, cmdEntry);
 
@@ -286,8 +276,7 @@ public class EPlugin extends JApplet {
 		 * System.out.println("Remove document: " + transaction);
 		 * DocumentManager.reset(); while(DocumentManager.hasNext()) { EPDocument
 		 * doc = DocumentManager.next(); System.out.println(doc.getTransaction() +
-		 * ": " + doc.getCacheFilename());
-		}
+		 * ": " + doc.getCacheFilename()); }
 		 */
 
 	}
@@ -342,6 +331,7 @@ public class EPlugin extends JApplet {
 		return mess;
 	}
 
+	@Override
 	public void destroy() {
 		deleteDwFiles();
 	}
@@ -349,8 +339,8 @@ public class EPlugin extends JApplet {
 	public static String replace(String source, String find, String replace) {
 		if (source != null) {
 			final int len = find.length();
-			StringBuffer buff = new StringBuffer();
-			int found = -1;
+			StringBuilder buff = new StringBuilder();
+			int found;
 			int start = 0;
 
 			while ((found = source.indexOf(find, start)) != -1) {
@@ -373,6 +363,7 @@ public class EPlugin extends JApplet {
 
 	class UIMonitor extends Thread {
 
+		@Override
 		public void run() {
 			while (runThreads) {
 
@@ -424,6 +415,7 @@ public class EPlugin extends JApplet {
 
 	class CacheMonitor extends Thread {
 
+		@Override
 		public void run() {
 			while (runThreads) {
 

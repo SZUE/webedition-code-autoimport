@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_SEEM{
 
 	/**
@@ -475,7 +474,7 @@ class we_SEEM{
 		for($i = 0; $i < sizeof($linkArray[0]); $i++){
 
 
-			if($linkArray[6][$i] != -1){	//  The target of the Link is a webEdition - Document.
+			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
 					$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
@@ -511,7 +510,7 @@ class we_SEEM{
 
 		for($i = 0; $i < sizeof($linkArray[0]); $i++){
 
-			if($linkArray[6][$i] != -1){	//  The target of the Link is a webEdition - Document.
+			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
 					$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
@@ -679,17 +678,17 @@ class we_SEEM{
 	 * @param    tbl             string table to look for the paths
 	 * @return   ID              string Document-ID to which the path belongs to or -1
 	 */
-	function getDocIDbyPath($docPath, $tbl=""){
-        //FIXME: does this work for SEO Url's???
-        	$docPath=trim($docPath);
-		        $db=new DB_WE();
-            $docPath=$db->escape($docPath);
-            if(defined('NAVIGATION_DIRECTORYINDEX_HIDE')&& defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath)-1]== '/'){
-            	$indexFileNames = explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES));
-            	$docPath= $docPath . implode('","' . $docPath, $indexFileNames);
-            }
-            $id = f('SELECT ID FROM ' . $db->escape($tbl?$tbl:FILE_TABLE) . ' WHERE Path IN ("'. $docPath . '") LIMIT 1','ID',$db);
-            return $id?$id:-1;
+	function getDocIDbyPath($docPath, $tbl = ""){
+		//FIXME: does this work for SEO Url's???
+		$docPath = trim($docPath);
+		$db = new DB_WE();
+		$docPath = $db->escape($docPath);
+		if(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath) - 1] == '/'){
+			$indexFileNames = explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES));
+			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
+		}
+		$id = f('SELECT ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
+		return $id ? $id : -1;
 	}
 
 	/**

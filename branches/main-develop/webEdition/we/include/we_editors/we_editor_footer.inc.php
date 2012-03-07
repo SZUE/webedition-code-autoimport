@@ -492,18 +492,21 @@ function showEditFooterForNormalMode(){
 		}
 	}
 
-	if($we_doc->ContentType == "text/weTmpl"){
-		if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")){
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-		}
-	} else if($we_doc->ContentType == "object"){
-		if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")){
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-		}
+	switch($we_doc->ContentType){
+		case "text/weTmpl":
+			if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")){
+				$_normalTable->addCol(2);
+				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+			}
+			break;
+		case "object":
+			if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")){
+				$_normalTable->addCol(2);
+				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+			}
+			break;
 	}
 
 	print $_normalTable->getHtml();
@@ -514,7 +517,7 @@ function showEditFooterForNormalMode(){
  * @desc prints the footer for the See-Mode
  */
 function showEditFooterForSEEMMode(){
-	global $we_doc, $we_transaction, $haspermNew, $showPubl, $_we_active_integrated_modules;
+	global $we_doc, $we_transaction, $haspermNew, $showPubl;
 
 	$_seeModeTable = new we_html_table(array("cellpadding" => 0,
 			"cellspacing" => 0,

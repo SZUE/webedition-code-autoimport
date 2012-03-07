@@ -25,93 +25,82 @@ import java.awt.event.ActionListener;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Vector;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-
 import org.webedition.eplugin.editor.WeEditor;
 import org.webedition.eplugin.editor.WeSettings;
 
 public class EPPropDialog extends JFrame implements ActionListener {
-	
+
 	static final long serialVersionUID = -1611200117062004003L;
-	
+
 	private WeSettings weSettings;
-	
+
 	private JTextField nameText;
 	private JTextField pathText;
 	private JTextField argsText;
 	//private JTextField iconText;
 	private JTextField contentTypeText;
 	private JTextField defaultForText;
-	
+
 	private JButton cancelButton;
 	private JButton saveButton;
 	private JButton pathButton;
-	
+
 	private JComboBox contentTypeBox;
-	
+
 	private JComboBox defaultForBox;
-	
+
 	private JComboBox encodingBox;
-	
+
 	private EPEditorDialog parentFrame;
-	
+
 	public EPPropDialog(WeSettings wesettings,WeEditor editor,EPEditorDialog parent){
-		
+
 		//Index = index;
-		weSettings = wesettings;		
+		weSettings = wesettings;
 		parentFrame=parent;
-		
+
 		String Name = "";
 		String Path = "";
 		String Args = "";
 		String ContentType = "";
-		String DefaultFor = "";	
+		String DefaultFor = "";
 		String Encoding = WeSettings.getDefaultEncoding();
-		
+
 		Name = editor.Name;
 		Path = editor.Path;
 		Args = editor.Args;
 		ContentType = (editor.ContentType==null) ? weSettings.lastContentType : editor.ContentType;
 		DefaultFor = editor.DefaultFor;
 		Encoding = editor.Encoding;
-		
+
 
 		EmptyBorder eb = new EmptyBorder(10,10,10,10);
 		//BevelBorder bb = new BevelBorder(BevelBorder.RAISED);
 		//BorderFactory.createTitledBorder("Editor properties");
 		CompoundBorder cb = new CompoundBorder(eb,BorderFactory.createEtchedBorder());
 		//CompoundBorder cb = new CompoundBorder(eb,BorderFactory.createTitledBorder("Editor properties"));
-		
+
 		int textFieldSize = 32;
-		
+
 		nameText = new JTextField(Name,textFieldSize);
-		JLabel nameLabel = new JLabel(weSettings.getParam("lan_editor_name"));				
+		JLabel nameLabel = new JLabel(weSettings.getParam("lan_editor_name"));
 
 		pathText = new JTextField(Path,textFieldSize);
-		JLabel pathLabel = new JLabel(weSettings.getParam("lan_path")); 
+		JLabel pathLabel = new JLabel(weSettings.getParam("lan_path"));
 		pathButton = new JButton("...");
 		pathButton.addActionListener(this);
-		
+
 		argsText = new JTextField(Args,textFieldSize);
-		JLabel argsLabel = new JLabel(weSettings.getParam("lan_args")); 
-		
-		
+		JLabel argsLabel = new JLabel(weSettings.getParam("lan_args"));
+
+
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new BoxLayout(namePane, BoxLayout.X_AXIS));
 		namePane.add(nameText);
-		
+
 		JPanel pathPane = new JPanel();
 		pathPane.setLayout(new BoxLayout(pathPane, BoxLayout.X_AXIS));
 		pathPane.add(pathText);
@@ -121,26 +110,26 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		argsPane.setLayout(new BoxLayout(argsPane, BoxLayout.X_AXIS));
 		argsPane.add(argsText);
 
-		
+
 		// Content types
-		
-		Vector contentTypes = new Vector(); 
+
+		Vector contentTypes = new Vector();
 		contentTypes = (Vector)weSettings.getContentTypes();
 		contentTypes.insertElementAt("",0);
-		
+
 		contentTypeText = new JTextField(ContentType,textFieldSize);
 		contentTypeText.setText(ContentType);
 		contentTypeBox = new JComboBox(contentTypes);
 		contentTypeBox.setPreferredSize(new Dimension(200,10));
 		contentTypeBox.addActionListener(this);
 		JLabel contentTypeLabel = new JLabel(weSettings.getParam("lan_contenttypes"));
-				
+
 		JPanel contentTypePane = new JPanel();
 		contentTypePane.setLayout(new BoxLayout(contentTypePane, BoxLayout.X_AXIS));
 		contentTypePane.add(contentTypeText);
 		contentTypePane.add(Box.createRigidArea(new Dimension(5, 0)));
 		contentTypePane.add(contentTypeBox);
-		
+
 		// Default editor for content type
 		defaultForText = new JTextField(DefaultFor,textFieldSize);
 		defaultForBox = new JComboBox();
@@ -148,13 +137,13 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		addItems(defaultForBox,","+ContentType);
 		defaultForBox.addActionListener(this);
 		JLabel defaultForBoxLabel = new JLabel(weSettings.getParam("lan_defaultfor_label"));
-		
+
 		JPanel defaultForPane = new JPanel();
 		defaultForPane.setLayout(new BoxLayout(defaultForPane, BoxLayout.X_AXIS));
 		defaultForPane.add(defaultForText);
 		defaultForPane.add(Box.createRigidArea(new Dimension(5, 0)));
 		defaultForPane.add(defaultForBox);
-		
+
 		// Encoding panel
 		encodingBox = new JComboBox();
 		encodingBox.setPreferredSize(new Dimension(200,10));
@@ -164,31 +153,31 @@ public class EPPropDialog extends JFrame implements ActionListener {
 
         String s="";
         int count = -1;
-        for(Iterator it=supportedEnc.iterator();it.hasNext();s = it.next().toString()) {        	
+        for(Iterator it=supportedEnc.iterator();it.hasNext();s = it.next().toString()) {
         	if(s.equals(Encoding)) {
         		encodingBox.setSelectedIndex(count);
         		break;
         	}
         	count++;
         }
-		
+
 		encodingBox.addActionListener(this);
 		JPanel encodingPane = new JPanel();
 		encodingPane.setLayout(new BoxLayout(encodingPane, BoxLayout.X_AXIS));
 		encodingPane.add(encodingBox);
 		JLabel encodingLabel = new JLabel(weSettings.getParam("lan_encoding"));
-		
-		
+
+
 		// Main panel
 		JPanel mainPane = new JPanel();
 		mainPane.setLayout(new BorderLayout());
 		mainPane.setBorder(cb);
-		
-		JPanel centerPane = new JPanel();				
+
+		JPanel centerPane = new JPanel();
 		centerPane.setLayout(new BoxLayout(centerPane, BoxLayout.PAGE_AXIS));
 		centerPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 15));
 		centerPane.setAlignmentY(JPanel.LEFT_ALIGNMENT);
-		
+
 		nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		namePane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		pathLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -199,49 +188,49 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		contentTypePane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		defaultForPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		encodingPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
+
 		centerPane.add(Box.createRigidArea(new Dimension(10, 10)));
-		centerPane.add(nameLabel);		
+		centerPane.add(nameLabel);
 		centerPane.add(namePane);
 		centerPane.add(Box.createRigidArea(new Dimension(10, 10)));
-		centerPane.add(pathLabel);		
+		centerPane.add(pathLabel);
 		centerPane.add(pathPane);
-		centerPane.add(argsLabel);		
+		centerPane.add(argsLabel);
 		centerPane.add(argsPane);
-		
+
 		centerPane.add(Box.createRigidArea(new Dimension(10, 10)));
 		centerPane.add(contentTypeLabel);
 		centerPane.add(contentTypePane);
-				
+
 		centerPane.add(Box.createRigidArea(new Dimension(10, 10)));
 		centerPane.add(defaultForBoxLabel);
 		centerPane.add(defaultForPane);
-		
+
 		centerPane.add(Box.createRigidArea(new Dimension(10, 10)));
 		centerPane.add(encodingLabel);
 		centerPane.add(encodingPane);
-		
-		
+
+
 		mainPane.add(centerPane,BorderLayout.CENTER);
-		
-		cancelButton = new JButton(weSettings.getParam("lan_close_button"));		
+
+		cancelButton = new JButton(weSettings.getParam("lan_close_button"));
 		cancelButton.addActionListener(this);
 		cancelButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
+
 		saveButton = new JButton(weSettings.getParam("lan_save_button"));
 		saveButton.addActionListener(this);
 		saveButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
+
 		Box box = Box.createHorizontalBox();
 		box.add(Box.createHorizontalGlue());
 		box.add(saveButton);
 		box.add(Box.createHorizontalStrut(5));
 		box.add(cancelButton);
 		box.setBorder(BorderFactory.createEmptyBorder(0,20,10,10));
-		  
-		getContentPane().add(mainPane,BorderLayout.NORTH);        
+
+		getContentPane().add(mainPane,BorderLayout.NORTH);
 		getContentPane().add(box, BorderLayout.SOUTH);
-		
+
 		int windowHeight = 320;
 		int windowWidth = 320;
 
@@ -252,43 +241,43 @@ public class EPPropDialog extends JFrame implements ActionListener {
 		this.setSize(w, h);
 		this.setTitle(weSettings.getParam("lan_editor_prop"));
 		this.setResizable(false);
-		 		
+
 	}
-	
+
 	private void addItems(JComboBox combo,String items)  {
-		
+
 		String arr[] = items.split(",");
 		String it;
-		
+
 		for(int i = 0;i<arr.length;i++) {
 			it = (arr[i].trim());
 			if(!hasItem(combo,it)) {
 				combo.addItem(new String(it));
 			}
 		}
-		
+
 	 }
-	
+
 	private boolean hasItem(JComboBox combo,String item) {
-		
+
 		String s;
 		int c = defaultForBox.getItemCount();
-		
+
 		for(int i = 0;i<c;i++) {
 			s = (String)combo.getItemAt(i);
 			if(s.equals(item)) {
 				return true;
-			} 
+			}
 		}
 		return false;
-		
+
 	}
-	
+
 	private boolean inList(String list,String item) {
-		
+
 		String arr[] = list.split(",");
 		String it;
-		
+
 		for(int i = 0;i<arr.length;i++) {
 			it = (arr[i].trim());
 			if(item.equals(it)) {
@@ -296,9 +285,9 @@ public class EPPropDialog extends JFrame implements ActionListener {
 			}
 		}
 		return false;
-		
+
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == cancelButton) {
@@ -307,12 +296,12 @@ public class EPPropDialog extends JFrame implements ActionListener {
 
 		if (e.getSource() == pathButton) {
 			JFileChooser fileSelector = new JFileChooser();
-			int returnVal = fileSelector.showOpenDialog(pathButton.getParent());        	
+			int returnVal = fileSelector.showOpenDialog(pathButton.getParent());
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				String selected=fileSelector.getSelectedFile().getPath();
 				pathText.setText(selected);
-			}			
-		}		
+			}
+		}
 
 		if (e.getSource() == contentTypeBox) {
 			String text = contentTypeText.getText();
@@ -326,13 +315,13 @@ public class EPPropDialog extends JFrame implements ActionListener {
 						text=selected;
 					}
 					addItems(defaultForBox,text);
-					contentTypeText.setText(text);					
+					contentTypeText.setText(text);
 				}
-				
+
 			}
 			contentTypeBox.setSelectedItem("");
 		}
-		
+
 		if (e.getSource() == defaultForBox) {
 			String text = defaultForText.getText();
 			String selected = (String)defaultForBox.getSelectedItem();
@@ -344,23 +333,23 @@ public class EPPropDialog extends JFrame implements ActionListener {
 					else {
 						text=selected;
 					}
-					
+
 					defaultForText.setText(text);
 				}
 			}
 			defaultForBox.setSelectedItem("");
 		}
-		
-		if (e.getSource() == saveButton) {		
+
+		if (e.getSource() == saveButton) {
 
 			WeEditor editor = new WeEditor();
 
 			Object enc = encodingBox.getSelectedItem();
-			
+
 			editor.init(nameText.getText(),pathText.getText(),argsText.getText(),contentTypeText.getText(),defaultForText.getText(),(enc!=null ? enc.toString() : ""));
-			
+
 			if(weSettings.isInDefaultEditorList(editor)) {
-			
+
 				weSettings.replaceEditor(editor);
 			}
 			else {
@@ -370,8 +359,8 @@ public class EPPropDialog extends JFrame implements ActionListener {
 			this.dispose();
 			parentFrame.reloadEditorList();
 		}
-		
-		        
+
+
 	}
 
 }

@@ -33,6 +33,7 @@
  */
 
 function we_parse_tag_block($attribs, $content){
+	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
 	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
 	if(($foo = attributFehltError($arr, 'name', 'block')))
 		return $foo;
@@ -42,7 +43,7 @@ function we_parse_tag_block($attribs, $content){
 		$content = str_replace('\$', '$', $content);
 	}
 	$blockName = weTag_getParserAttribute('name', $arr);
-	$name = str_replace(array('.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_'), crypt($blockName, 'bl'));
+	$name = str_replace(array('.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_'), md5($blockName)).$GLOBALS['blkCnt'];
 	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';
 	$ctlPost = ');}?>';
 
@@ -87,7 +88,7 @@ function we_condition_tag_block(&$block){
 	return true;
 }
 
-function we_tag_block($attribs, $content){
+function we_tag_block($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$showselect = weTag_getAttribute('showselect', $attribs, true, true);
 	$start = weTag_getAttribute('start', $attribs);

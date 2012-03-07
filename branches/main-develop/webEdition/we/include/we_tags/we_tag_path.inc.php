@@ -39,9 +39,7 @@ function we_tag_path($attribs){
 	$doc = we_getDocForTag($docAttr, true);
 	$pID = $doc->ParentID;
 
-	$indexArray = $index ? explode(',', $index) : array(
-		"index.html", "index.htm", "index.php", "default.htm", "default.html", "default.php"
-		);
+	$indexArray = $index ? explode(',', $index) : array("index.html", "index.htm", "index.php", "default.htm", "default.html", "default.php");
 
 	$class = $class ? ' class="' . $class . '"' : '';
 	$style = $style ? ' style="' . $style . '"' : '';

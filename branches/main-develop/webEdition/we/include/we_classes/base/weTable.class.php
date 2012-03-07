@@ -78,7 +78,7 @@ class weTable{
 		$this->fetchNewColumns();
 	}
 
-	function save($unused=true){
+	function save(){
 		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
 			$_SESSION['weBackupVars']['tablekeys'] = array();
 		}
