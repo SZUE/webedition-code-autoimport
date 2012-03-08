@@ -114,9 +114,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php
 $pl_db = new stat_db();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();
-@$result = mysql_query("SELECT websites FROM " . mysql_real_escape_string(preg_replace("/\s/", "", $pl_tables->accounttable)) . " WHERE account_username = '" . mysql_real_escape_string($_userName) . "'");
-$pl_object = mysql_fetch_object($result);
-$websites = $pl_object->websites;
+$websites = f("SELECT websites FROM " . mysql_real_escape_string(preg_replace("/\s/", "", $pl_tables->accounttable)) . " WHERE account_username = '" . mysql_real_escape_string($_userName) . "'",'websites',$GLOBALS['DB_WE']);
 $websites = str_replace("\r", "", $websites);
 $_dns = explode("\n", $websites);
 //} else {

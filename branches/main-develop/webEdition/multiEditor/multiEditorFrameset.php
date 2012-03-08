@@ -43,7 +43,7 @@ we_html_tools::protect();
 $MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
 
 for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
-	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;overflow: hidden;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;overflow: scroll;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
 }
 ?>
 	</body>
