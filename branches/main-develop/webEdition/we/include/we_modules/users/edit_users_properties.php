@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $yuiSuggest = & weSuggest::getInstance();
 we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-we_html_tools::htmlTop('',DEFAULT_CHARSET);
+we_html_tools::htmlTop('', DEFAULT_CHARSET);
 
 print STYLESHEET;
 
@@ -35,9 +35,9 @@ $user_object = new we_user();
 if(isset($_SESSION["user_session_data"])){
 	$user_object->setState($_SESSION["user_session_data"]);
 }
-echo $yuiSuggest->getYuiCssFiles();
-echo $yuiSuggest->getYuiJsFiles();
-echo we_html_element::jsScript(JS_DIR . 'images.js') .
+echo $yuiSuggest->getYuiCssFiles() .
+ $yuiSuggest->getYuiJsFiles() .
+ we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'md5.js');
 ?>

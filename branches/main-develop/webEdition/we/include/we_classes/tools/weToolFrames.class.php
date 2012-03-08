@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weToolFrames extends weModuleFrames{
 
 	var $View;
@@ -43,33 +42,47 @@ class weToolFrames extends weModuleFrames{
 
 	function getHTML($what){
 		switch($what){
-			case 'frameset': print $this->getHTMLFrameset();
+			case 'frameset':
+				print $this->getHTMLFrameset();
 				break;
-			case 'header': print $this->getHTMLHeader();
+			case 'header':
+				print $this->getHTMLHeader();
 				break;
-			case 'resize': print $this->getHTMLResize();
+			case 'resize':
+				print $this->getHTMLResize();
 				break;
-			case 'left': print $this->getHTMLLeft();
+			case 'left':
+				print $this->getHTMLLeft();
 				break;
-			case 'right': print $this->getHTMLRight();
+			case 'right':
+				print $this->getHTMLRight();
 				break;
-			case 'editor': print $this->getHTMLEditor();
+			case 'editor':
+				print $this->getHTMLEditor();
 				break;
-			case 'edheader': print $this->getHTMLEditorHeader();
+			case 'edheader':
+				print $this->getHTMLEditorHeader();
 				break;
-			case 'edbody': print $this->getHTMLEditorBody();
+			case 'edbody':
+				print $this->getHTMLEditorBody();
 				break;
-			case 'edfooter': print $this->getHTMLEditorFooter();
+			case 'edfooter':
+				print $this->getHTMLEditorFooter();
 				break;
-			case 'cmd': print $this->getHTMLCmd();
+			case 'cmd':
+				print $this->getHTMLCmd();
 				break;
-			case 'treeheader': print $this->getHTMLTreeHeader();
+			case 'treeheader':
+				print $this->getHTMLTreeHeader();
 				break;
-			case 'treefooter': print $this->getHTMLTreeFooter();
+			case 'treefooter':
+				print $this->getHTMLTreeFooter();
 				break;
-			case 'treeconst': print $this->Tree->getHTMLContruct();
+			case 'treeconst':
+				print $this->Tree->getHTMLContruct();
 				break;
-			case 'exit_doc_question': print $this->getHTMLExitQuestion();
+			case 'exit_doc_question':
+				print $this->getHTMLExitQuestion();
 				break;
 			default:
 				t_e(__FILE__ . " unknown reference: $what");
@@ -104,7 +117,7 @@ class weToolFrames extends weModuleFrames{
 
 		// set and return html code
 		$head = $js;
-		$body = $frameset->getHtml() .$noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body, $head);
 	}
@@ -186,7 +199,7 @@ class weToolFrames extends weModuleFrames{
 		include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = 'we_menu_' . $this->toolName;
-		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd',  350, 30);
+		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd', 350, 30);
 
 		$menu = '';
 		ob_start();
@@ -198,7 +211,7 @@ class weToolFrames extends weModuleFrames{
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("toolFrame"));
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url('.IMAGE_DIR.'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml()
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml()
 		);
 
 		return $this->getHTMLDocument($body);
@@ -267,7 +280,7 @@ class weToolFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				($this->Model->IsFolder ? g_l('tools', '[group]') : g_l('tools', '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>' .
-				we_html_tools::getPixel(1600,19)
+				we_html_tools::getPixel(1600, 19)
 			)
 		);
 
@@ -340,7 +353,7 @@ class weToolFrames extends weModuleFrames{
 		);
 	}
 
-	function getPercent($total, $value, $precision=0){
+	function getPercent($total, $value, $precision = 0){
 
 		if($total){
 			$result = round(($value * 100) / $total, $precision);
@@ -381,7 +394,7 @@ class weToolFrames extends weModuleFrames{
 		return $parts;
 	}
 
-	function getHTMLProperties($preselect=''){
+	function getHTMLProperties($preselect = ''){
 		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
 
 		$out = '';
@@ -502,9 +515,9 @@ class weToolFrames extends weModuleFrames{
 		}
 	}
 
-	function getHTMLDocument($body, $head=""){
+	function getHTMLDocument($body, $head = ""){
 
-		$head =we_html_tools::getHtmlInnerHead(). STYLESHEET .
+		$head = we_html_tools::getHtmlInnerHead() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			$head;
 
@@ -514,7 +527,7 @@ class weToolFrames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLChooser($title, $table=FILE_TABLE, $rootDirID=0, $IDName='ID', $IDValue='0', $PathName='Path', $cmd='', $filter='text/webedition', $disabled=false, $showtrash=false){
+	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = '0', $PathName = 'Path', $cmd = '', $filter = 'text/webedition', $disabled = false, $showtrash = false){
 		$_path = id_to_path($this->Model->$IDName, $table);
 
 		$_cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";

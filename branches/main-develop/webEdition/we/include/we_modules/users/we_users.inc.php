@@ -188,8 +188,6 @@ class we_user{
 		$this->initType(0);
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function initType($typ, $ext = 0){
 		$this->Type = $typ;
 		if($typ == 2)
@@ -206,7 +204,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
 	// Intialize the class
 
 	function initFromDB($id){
@@ -224,8 +221,6 @@ class we_user{
 		}
 		return $ret;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
@@ -301,8 +296,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function getPersistentSlotsFromDB(){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$this->DB_WE->query("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($this->ID));
@@ -314,8 +307,6 @@ class we_user{
 			}
 		}
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function saveToDB(){
 		$db_tmp = new DB_WE();
@@ -379,8 +370,6 @@ class we_user{
 		return $this->saveToSession();
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function saveToSession(){
 
 		if($this->ID != $_SESSION['user']['ID']){
@@ -430,8 +419,6 @@ class we_user{
 
 		return $save_javascript;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function mapPermissions(){
 		$this->permissions_main_titles = array();
@@ -496,8 +483,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function setPermissions(){
 		foreach($this->perm_branches as $key => $val){
 			foreach($val as $k => $v){
@@ -505,8 +490,6 @@ class we_user{
 			}
 		}
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function setPermission($perm_name, $perm_value){
 		foreach($this->permissions_slots as $key => $val){
@@ -517,8 +500,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function savePermissions(){
 		$permissions = array();
 		foreach($this->permissions_slots as $key => $val){
@@ -528,8 +509,6 @@ class we_user{
 		}
 		$this->Permissions = serialize($permissions);
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function loadWorkspaces(){
 		if($this->workSpace)
@@ -550,8 +529,6 @@ class we_user{
 		if($this->workSpaceDef)
 			$this->workspaces_defaults[FILE_TABLE] = makeArrayFromCSV($this->workSpaceDef);
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function saveWorkspaces(){
 		foreach($this->workspaces as $k => $v){
@@ -623,8 +600,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function getPreferenceSlotsFromDB(){
 		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
 		$this->DB_WE->query("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($this->ID));
@@ -637,8 +612,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function setPreference($name, $value){
 		foreach($this->preference_slots as $key => $val){
 			if($name == $val){
@@ -646,8 +619,6 @@ class we_user{
 			}
 		}
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function savePreferenceSlotsInDB($isnew = false){
 		if($this->Type != 0){
@@ -680,8 +651,6 @@ class we_user{
 			$this->DB_WE->query('INSERT INTO ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter($updt));
 		}
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function rememberPreference($settingvalue, $settingname){
 
@@ -1015,8 +984,6 @@ class we_user{
 		return $save_javascript;
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function preserveState($tab, $sub_tab){
 
 		if($tab == 0){
@@ -1159,8 +1126,6 @@ class we_user{
 		}
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function checkPermission($perm){
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $key => $val){
@@ -1175,8 +1140,6 @@ class we_user{
 		}
 		return false;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function resetOwnersCreatorModifier(){
 		$newID = intval($_SESSION["user"]["ID"]);
@@ -1253,8 +1216,6 @@ class we_user{
 		return false;
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function getPath($id = 0){
 		$db_tmp = new DB_WE();
 		$path = "";
@@ -1274,8 +1235,6 @@ class we_user{
 		}
 		return $path;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function getAllPermissions(){
 		$user_permissions = array();
@@ -1327,8 +1286,6 @@ class we_user{
 		return $user_permissions;
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function getState(){
 		$state = "";
 		$state.='$this->Name="' . $this->Name . '";';
@@ -1370,8 +1327,6 @@ class we_user{
 		return serialize($state);
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function setState($state){
 		$code = unserialize($state);
 		eval($code);
@@ -1410,8 +1365,6 @@ class we_user{
 		return $this->formGeneralData();
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function formGeneralData(){
 		if(!file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")){
 			return $this->formSmallProperties();
@@ -1424,8 +1377,6 @@ class we_user{
 			return $this->formAliasData();
 		}
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function formSmallProperties(){
 
@@ -1610,8 +1561,6 @@ class we_user{
 		return $js . we_multiIconBox::getHTML("", "100%", $parts, 30);
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function formGroupData(){
 		$_attr = array("border" => "0", "cellpadding" => "2", "cellspacing" => "0");
 		$js = we_button::create_state_changer();
@@ -1677,8 +1626,6 @@ class we_user{
 
 		return $js . we_multiIconBox::getHTML("", "100%", $parts, 30);
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function getUserfield($name, $lngkey, $type = "text", $maxlen = "255", $noNull = false, $attribs = ""){
 		$val = $this->$name;
@@ -1809,8 +1756,6 @@ class we_user{
 
 		return we_multiIconBox::getHTML("", "100%", $parts, 30);
 	}
-
-	#--------------------------------------------------------------------------#
 
 	/**
 	 * This function outputs the group of selectable user permissions
@@ -1951,8 +1896,6 @@ class we_user{
 
 		return we_multiIconBox::getHTML("", "100%", $parts, 30) . $javascript;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function formWorkspace(){
 
@@ -2186,8 +2129,6 @@ class we_user{
 
 		return $content . we_multiIconBox::getHTML("", "100%", $parts, 30);
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function formPreferences($branch = ""){
 
@@ -2728,8 +2669,6 @@ class we_user{
 		return $_settings;
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function formAliasData(){
 		$alias_text = "";
 		$parent_text = "/";
@@ -2829,8 +2768,6 @@ class we_user{
 		return we_multiIconBox::getHTML("", "100%", $parts, 30);
 	}
 
-	#--------------------------------------------------------------------------#
-
 	function formInherits($name, $value, $title){
 		$content = '
 			<table cellpadding="0" cellspacing="0" border="0" width="500">
@@ -2842,8 +2779,6 @@ class we_user{
 			</table>';
 		return $content;
 	}
-
-	#--------------------------------------------------------------------------#
 
 	function formHeader($tab = 0){
 		$big = false;

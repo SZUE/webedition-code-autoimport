@@ -911,7 +911,7 @@ class weNavigationFrames extends weToolFrames{
 		$parts[] = array(
 			'headline' => g_l('navigation', '[entries]'),
 			'html' => we_html_tools::htmlSelect(
-				'dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200;  margin: 0 0 ' . $this->_margin_bottom . ' 0;"'),
+				'dynContent', $this->View->getItems($this->Model->ID), 20, '', false, 'style="width: ' . $this->_width_size . 'px; height: 200px;  margin: 0 0 ' . $this->_margin_bottom . ' 0;"'),
 			'space' => $this->_space_size,
 			'noline' => 0
 		);
@@ -1368,7 +1368,7 @@ function onFolderSelectionChangeJS(elem) {
 		$_parts[] = array(
 			'headline' => '',
 			'html' => we_html_tools::htmlSelect(
-				'fields', $__fields, 20, '', ($_multi ? true : false), 'style="width: 300px; height: 200px; margin: ' . $this->_margin_bottom . 'px 0px ' . $this->_margin_bottom . 'px 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
+				'fields', $__fields, 20, '', ($_multi ? true : false), 'style="width: 300px; height: 200px; margin: ' . $this->_margin_bottom . ' 0px ' . $this->_margin_bottom . ' 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
 			'space' => 0
 		);
 		$button = we_button::position_yes_no_cancel(

@@ -606,7 +606,7 @@ class we_updater{
 	static function updateNavigation(){
 		self::addCol(NAVIGATION_TABLE, '`Charset`', 'varchar(255) NOT NULL default ""');
 		self::addCol(NAVIGATION_TABLE, '`Attributes`', 'text NOT NULL');
-		self::addCol(NAVIGATION_TABLE, '`FolderSelection`', 'varchar(32) NOT NULL default ""');
+		self::addCol(NAVIGATION_TABLE, '`FolderSelection`', 'enum("docLink","objLink","urlLink") NOT NULL default ""');
 		self::addCol(NAVIGATION_TABLE, '`FolderWsID`', 'bigint(20) NOT NULL default "0"');
 		self::addCol(NAVIGATION_TABLE, '`FolderParameter`', 'varchar(255) NOT NULL default ""');
 		self::addCol(NAVIGATION_TABLE, '`FolderUrl`', 'varchar(255) NOT NULL default ""');

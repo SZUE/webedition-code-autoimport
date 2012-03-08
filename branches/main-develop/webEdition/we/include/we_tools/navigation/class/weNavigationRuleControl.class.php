@@ -26,46 +26,36 @@ class weNavigationRuleControl{
 
 	var $NavigationRule;
 
-	function weNavigationRuleControl(){
-
+	function __construct(){
 		$this->NavigationRule = new weNavigationRule();
 	}
 
 	function processCommands(){
-
 		$js = '';
 		$html = '';
 
 		if(isset($_REQUEST['cmd'])){
-
 			switch($_REQUEST['cmd']){
 
 				case "save_navigation_rule" :
-
 					$isNew = $this->NavigationRule->isnew; // navigationID = 0
-
-
 					$save = true;
 
 					$this->NavigationRule->NavigationName = trim($this->NavigationRule->NavigationName);
 
 					// 1st check if name is allowed
 					//FIXME: is this correct on UTF-8??
-/*					if(!preg_match(
-							'%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
-						$js = we_message_reporting::getShowMessageCall(
-								g_l('navigation', '[rules][invalid_name]'), we_message_reporting::WE_MESSAGE_ERROR);
-						$save = false;
-					}*/
+					/* 					if(!preg_match(
+					  '%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
+					  $js = we_message_reporting::getShowMessageCall(
+					  g_l('navigation', '[rules][invalid_name]'), we_message_reporting::WE_MESSAGE_ERROR);
+					  $save = false;
+					  } */
 
 					// 2ns check if another element has same name
 					$db = new DB_WE();
 
-					$query = '
-						SELECT *
-						FROM ' . NAVIGATION_RULE_TABLE . '
-						WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '"
-							AND ID != ' . intval($this->NavigationRule->ID);
+					$query = 'SELECT * FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID != ' . intval($this->NavigationRule->ID);
 
 					$db->query($query);
 					if($db->num_rows()){
@@ -77,35 +67,20 @@ class weNavigationRuleControl{
 
 					if($save && $this->NavigationRule->save()){
 
-						$js = "
-						doc = top.frames['content'];";
-
-						if($isNew){
-							$js .= "
-						doc.weSelect.addOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');";
-						} else{
-							$js .= "
-						doc.weSelect.updateOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');";
-						}
-
-						$js .= "
-						doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
-						doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
-						";
-						$js .= we_message_reporting::getShowMessageCall(
-								sprintf(
-									g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
+						$js = "doc = top.frames['content'];
+							doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
+							doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
+							doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");" .
+							we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
 					break;
 
 				case "delete_navigation_rule" :
 					if($this->NavigationRule->delete()){
 
-						$js = "
-						doc = top.frames['content'];
+						$js = "doc = top.frames['content'];
 						doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
-						doc.weInput.setValue('ID', " . 0 . ");
-						";
+						doc.weInput.setValue('ID', " . 0 . ");";
 					} else{
 
 					}
@@ -196,9 +171,7 @@ class weNavigationRuleControl{
 				case "get_workspaces" :
 
 					if(defined('OBJECT_TABLE') && $_REQUEST['ClassID']){
-
 						$_workspaces = $this->getWorkspacesByClassID($_REQUEST['ClassID']);
-
 						$optionList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
 
 						foreach($_workspaces as $key => $value){
@@ -216,19 +189,14 @@ class weNavigationRuleControl{
 					break;
 			}
 
-			print we_html_tools::htmlTop();
-			print we_html_element::jsElement($js);
-			print "</head>
-			<body>
-				$html
-			</body>
-			</html>";
+			print we_html_tools::htmlTop() .
+				we_html_element::jsElement($js) .
+				'</head><body>' . $html . '</body></html>';
 			exit();
 		}
 	}
 
 	function getWorkspacesByClassID($classId){
-
 		$_workspaces = array();
 
 		if($classId){
@@ -239,9 +207,7 @@ class weNavigationRuleControl{
 	}
 
 	function processVariables(){
-
 		if(isset($_REQUEST['CategoriesControl']) && isset($_REQUEST['CategoriesCount'])){
-
 			$_categories = array();
 
 			for($i = 0; $i < $_REQUEST['CategoriesCount']; $i++){
@@ -255,18 +221,14 @@ class weNavigationRuleControl{
 			$categoryIds = array();
 
 			for($i = 0; $i < sizeof($_categories); $i++){
-
-				if($path = path_to_id($_categories[$i], CATEGORY_TABLE)){
-
+				if(($path = path_to_id($_categories[$i], CATEGORY_TABLE))){
 					$categoryIds[] = path_to_id($_categories[$i], CATEGORY_TABLE);
 				}
 			}
 			$categoryIds = array_unique($categoryIds);
-
 			$_catString = '';
 
 			if(sizeof($categoryIds)){
-
 				$_catString = ',';
 
 				foreach($categoryIds as $catId){
@@ -285,11 +247,7 @@ class weNavigationRuleControl{
 			}
 		}
 
-		if($this->NavigationRule->ID == 0){
-			$this->NavigationRule->isnew = true;
-		} else{
-			$this->NavigationRule->isnew = false;
-		}
+		$this->NavigationRule->isnew = ($this->NavigationRule->ID == 0);
 	}
 
 	static function getAllNavigationRules(){
@@ -299,7 +257,7 @@ class weNavigationRuleControl{
 		$navigationRules = array();
 
 		while($db->next_record()) {
-			$navigationRules[] = new weNavigationRule(false,$db->Record);
+			$navigationRules[] = new weNavigationRule(false, $db->Record);
 		}
 		return $navigationRules;
 	}
