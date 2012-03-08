@@ -141,7 +141,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[mwst]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont'), we_html_tools::htmlTextInput("mwst", 6, $feldnamen[1], "", "", "text", 50) . '&nbsp%');
+$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont'), we_html_tools::htmlTextInput("mwst", 6, $feldnamen[1], "", "", "text", 50) . '&nbsp;');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(5, 5));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), 2, "100%", false, 100));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(20, 15));
@@ -165,7 +165,7 @@ if(defined('OBJECT_TABLE')){
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[classID]'));
 	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("classID", 6, (isset($feldnamen[3]) ? $feldnamen[3] : ''), "", "", "text", 50) . '<span class="small">&nbsp' . g_l('modules_shop', '[classIDext]') . ' </span>');
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("classID", 6, (isset($feldnamen[3]) ? $feldnamen[3] : ''), "", "", "text", 50) . '<span class="small">&nbsp;' . g_l('modules_shop', '[classIDext]') . ' </span>');
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 } else{
 

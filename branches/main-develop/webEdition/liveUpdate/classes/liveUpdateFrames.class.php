@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,141 +27,139 @@
  * This class deals with the frames for the liveUpdate
  * Not much functionality here, just show the requested frame
  */
-class liveUpdateFrames {
+class liveUpdateFrames{
 
 	var $Section;
 	var $Data;
 
-	function __construct() {
+	function __construct(){
 
-		if (!isset($_REQUEST['section'])) {
+		if(!isset($_REQUEST['section'])){
 			$_REQUEST['section'] = 'frameset';
 		}
 
 		// depending on section variables execute different stuff to gather
 		// data for the frame
-		if (isset($_REQUEST['section'])) {
+		if(isset($_REQUEST['section'])){
 
 			$this->Section = $_REQUEST['section'];
 
-			switch ($_REQUEST['section']) {
+			switch($_REQUEST['section']){
 
 				case 'frameset':
 					// open frameset
-					if (isset($_REQUEST['active'])) {
+					if(isset($_REQUEST['active'])){
 						$this->Data['activeTab'] = $this->getValidTab($_REQUEST['active']);
-					} else {
+					} else{
 						$this->Data['activeTab'] = $this->getValidTab();
 					}
-				break;
+					break;
 
 				case 'tabs':
 					// frame with tabs
 					$this->Data['activeTab'] = $_REQUEST['active'];
 					$this->Data['allTabs'] = $this->getAllTabs();
-				break;
+					break;
 
 				case 'update':
 					$this->processUpdateVariables();
-				break;
+					break;
 
 				case 'beta':
 					$this->processBeta();
-				break;
+					break;
 
 				case 'updatelog':
 					$this->processUpdateLogVariables();
-				break;
+					break;
 
 				case 'languages':
 					$this->processDeleteLanguages();
-				break;
+					break;
 			}
-
 		}
 	}
 
-	function getFrame() {
+	function getFrame(){
 
-		switch ($this->Section) {
+		switch($this->Section){
 
 			case 'tabs':
 				return $this->htmlTabs();
-			break;
+				break;
 			case 'frameset':
 				return $this->htmlFrameset();
-			break;
+				break;
 
 			case 'upgrade':
 				return $this->htmlUpgrade();
-			break;
+				break;
 			case 'beta':
 				return $this->htmlBeta();
-			break;
+				break;
 			case 'update':
 				return $this->htmlUpdate();
-			break;
+				break;
 			case 'modules':
 				return $this->htmlModules();
-			break;
+				break;
 			case 'languages':
 				return $this->htmlLanguages();
-			break;
+				break;
 
 			case 'updatelog':
 				return $this->htmlUpdatelog();
-			break;
+				break;
 			case 'connect':
 				return $this->htmlConnect();
-			break;
+				break;
 
 
 			case 'nextVersion':
 				return $this->htmlNextVersion();
-			break;
+				break;
 
 
 			default:
 				print "Frame $this->Section is not known!";
-			break;
-
+				break;
 		}
 	}
 
-	function getData($name) {
+	function getData($name){
 
-		if (isset($this->Data[$name])) {
+		if(isset($this->Data[$name])){
 			return $this->Data[$name];
 		}
 	}
 
 	function processBeta(){
-		if (isset($_REQUEST['setTestUpdate']) ) {
-			$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
+		if(isset($_REQUEST['setTestUpdate'])){
+			$conf = weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
-			if (strpos($conf,'$_REQUEST[\'testUpdate\']')!==false){
-				if ($_REQUEST['setTestUpdate']==1){
-					if (strpos($conf,'$_REQUEST[\'testUpdate\'] = 0;')!==false){
-						$conf=str_replace('$_REQUEST[\'testUpdate\'] = 0;','$_REQUEST[\'testUpdate\'] = 1;',$conf);
-						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+			if(strpos($conf, '$_REQUEST[\'testUpdate\']') !== false){
+				if($_REQUEST['setTestUpdate'] == 1){
+					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 0;') !== false){
+						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 0;', '$_REQUEST[\'testUpdate\'] = 1;', $conf);
+						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
 				}
-				if ($_REQUEST['setTestUpdate']==0){
-					if (strpos($conf,'$_REQUEST[\'testUpdate\'] = 1;')!==false){
-						$conf=str_replace('$_REQUEST[\'testUpdate\'] = 1;','$_REQUEST[\'testUpdate\'] = 0;',$conf);
-						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+				if($_REQUEST['setTestUpdate'] == 0){
+					if(strpos($conf, '$_REQUEST[\'testUpdate\'] = 1;') !== false){
+						$conf = str_replace('$_REQUEST[\'testUpdate\'] = 1;', '$_REQUEST[\'testUpdate\'] = 0;', $conf);
+						weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 					}
 				}
-			} else {
-				$conf.='$_REQUEST[\'testUpdate\'] = '.$_REQUEST['setTestUpdate'].';';
-				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
+			} else{
+				$conf.='$_REQUEST[\'testUpdate\'] = ' . $_REQUEST['setTestUpdate'] . ';';
+				weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php', $conf);
 			}
 			$_REQUEST['testUpdate'] = $_REQUEST['setTestUpdate'];
 		}
 	}
 
-	function processUpdateVariables() {
-		$this->Data['lastUpdate'] = g_l('liveUpdate','[update][neverUpdated]');
+	function processUpdateVariables(){
+		$this->Data['lastUpdate'] = g_l('liveUpdate', '[update][neverUpdated]');
 
 		$query = "
 			SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date
@@ -172,22 +171,22 @@ class liveUpdateFrames {
 		$GLOBALS['DB_WE']->query($query);
 		$GLOBALS['DB_WE']->next_record();
 
-		if ($date = $GLOBALS['DB_WE']->f('date')) {
+		if($date = $GLOBALS['DB_WE']->f('date')){
 			$this->Data['lastUpdate'] = $date;
 		}
 	}
 
-	function processDeleteLanguages() {
+	function processDeleteLanguages(){
 
 		$deletedLngs = array();
 		$notDeletedLngs = array();
 
-		if (isset($_REQUEST['deleteLanguages']) && sizeof($_REQUEST['deleteLanguages'])) {
+		if(isset($_REQUEST['deleteLanguages']) && sizeof($_REQUEST['deleteLanguages'])){
 
 			// update prefs_table
 			$cond = '';
 
-			foreach ($_REQUEST['deleteLanguages'] as $lng) {
+			foreach($_REQUEST['deleteLanguages'] as $lng){
 				$cond .= ' OR Language="' . addslashes($lng) . '"';
 			}
 
@@ -202,12 +201,12 @@ class liveUpdateFrames {
 
 			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders
-			foreach ($_REQUEST['deleteLanguages'] as $lng) {
+			foreach($_REQUEST['deleteLanguages'] as $lng){
 
-				if ( strpos($lng, "..") === false && $lng != "" ) {
-					if ($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)) {
+				if(strpos($lng, "..") === false && $lng != ""){
+					if($liveUpdateFunc->deleteDir(LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_language/' . $lng)){
 						$deletedLngs[] = $lng;
-					} else {
+					} else{
 						$notDeletedLngs[] = $lng;
 					}
 				}
@@ -217,8 +216,8 @@ class liveUpdateFrames {
 		$this->Data['notDeletedLngs'] = $notDeletedLngs;
 	}
 
-	function processUpdateLogVariables() {
-		if ( !isset($_REQUEST['start']) ) {
+	function processUpdateLogVariables(){
+		if(!isset($_REQUEST['start'])){
 
 			$_REQUEST['messages'] = true;
 			$_REQUEST['notices'] = true;
@@ -230,22 +229,22 @@ class liveUpdateFrames {
 
 		$condition = " WHERE 1 ";
 
-		if (!isset($_REQUEST['messages']) ) {
+		if(!isset($_REQUEST['messages'])){
 			$condition .= " AND error != 0";
 		}
-		if (!isset($_REQUEST['notices']) ) {
+		if(!isset($_REQUEST['notices'])){
 			$condition .= " AND error != 2";
 		}
-		if (!isset($_REQUEST['errors']) ) {
+		if(!isset($_REQUEST['errors'])){
 			$condition .= " AND error != 1";
 		}
 
 		/*
 		 * process update_cmd
 		 */
-		if (isset($_REQUEST['log_cmd'])) {
+		if(isset($_REQUEST['log_cmd'])){
 
-			switch ($_REQUEST['log_cmd']) {
+			switch($_REQUEST['log_cmd']){
 
 				case "deleteEntries":
 
@@ -255,83 +254,78 @@ class liveUpdateFrames {
 
 					$_REQUEST['start'] = 0;
 
-				break;
+					break;
 				case "nextEntries":
 					$_REQUEST['start'] += $this->Data['amountPerPage'];
-				break;
+					break;
 				case "lastEntries":
 					$_REQUEST['start'] -= $this->Data['amountPerPage'];
-				break;
+					break;
 				default:
 					$_REQUEST['start'] = 0;
-				break;
+					break;
 			}
 		}
 
-		if ($_REQUEST['start'] < 0) {
+		if($_REQUEST['start'] < 0){
 			$_REQUEST['start'] = 0;
 		}
 
 		/*
 		 * Check if there are Log-Entries
 		 */
-			// complete amount
-			$queryAmount = "
+		// complete amount
+		$queryAmount = "
 				SELECT COUNT(ID) as amount, error
 				FROM " . UPDATE_LOG_TABLE . "
 				GROUP BY error
 			";
 
-			$this->Data['amountMessages'] = 0;
-			$this->Data['amountNotices'] = 0;
-			$this->Data['amountErrors'] = 0;
+		$this->Data['amountMessages'] = 0;
+		$this->Data['amountNotices'] = 0;
+		$this->Data['amountErrors'] = 0;
 
-			$this->Data['allEntries'] = 0;
+		$this->Data['allEntries'] = 0;
 
-			$this->Data['amountEntries'] = 0;
+		$this->Data['amountEntries'] = 0;
 
-			$GLOBALS['DB_WE']->query($queryAmount);
-			while ( $GLOBALS['DB_WE']->next_record() ) {
+		$GLOBALS['DB_WE']->query($queryAmount);
+		while($GLOBALS['DB_WE']->next_record()) {
 
-				$this->Data['allEntries'] += $GLOBALS['DB_WE']->f('amount');
+			$this->Data['allEntries'] += $GLOBALS['DB_WE']->f('amount');
 
-				if ($GLOBALS['DB_WE']->f('error') == 0) {
-					$this->Data['amountMessages'] = $GLOBALS['DB_WE']->f('amount');
-					if (isset($_REQUEST['messages'])) {
-						$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
-					}
-				}
-				if ($GLOBALS['DB_WE']->f('error') == 1) {
-					$this->Data['amountErrors'] = $GLOBALS['DB_WE']->f('amount');
-					if (isset($_REQUEST['errors'])) {
-						$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
-					}
-				}
-				if ($GLOBALS['DB_WE']->f('error') == 2) {
-					$this->Data['amountNotices'] = $GLOBALS['DB_WE']->f('amount');
-					if (isset($_REQUEST['notices'])) {
-						$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
-					}
+			if($GLOBALS['DB_WE']->f('error') == 0){
+				$this->Data['amountMessages'] = $GLOBALS['DB_WE']->f('amount');
+				if(isset($_REQUEST['messages'])){
+					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
+			if($GLOBALS['DB_WE']->f('error') == 1){
+				$this->Data['amountErrors'] = $GLOBALS['DB_WE']->f('amount');
+				if(isset($_REQUEST['errors'])){
+					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
+				}
+			}
+			if($GLOBALS['DB_WE']->f('error') == 2){
+				$this->Data['amountNotices'] = $GLOBALS['DB_WE']->f('amount');
+				if(isset($_REQUEST['notices'])){
+					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
+				}
+			}
+		}
 
 
-		if ($this->Data['allEntries']) {
+		if($this->Data['allEntries']){
 
 			/*
 			 * There are entries available, get them
 			 */
-			$query = "
-				SELECT DATE_FORMAT(datum, '%d.%m.%y&nbsp/&nbsp;%H:%i') AS date, aktion, versionsnummer, error
-				FROM " . UPDATE_LOG_TABLE . "
-				$condition
-				ORDER BY datum DESC
-				LIMIT " . abs($_REQUEST['start']) . ", " . abs($this->Data['amountPerPage']);
+			$query = "SELECT DATE_FORMAT(datum, '%d.%m.%y&nbsp;/&nbsp;%H:%i') AS date, aktion, versionsnummer, error FROM " . UPDATE_LOG_TABLE . " $condition ORDER BY datum DESC LIMIT " . abs($_REQUEST['start']) . ", " . abs($this->Data['amountPerPage']);
 
 			$this->Data['logEntries'] = array();
 
 			$GLOBALS['DB_WE']->query($query);
-			while ($row = $GLOBALS['DB_WE']->next_record()) {
+			while(($row = $GLOBALS['DB_WE']->next_record())) {
 
 				$this->Data['logEntries'][] = array(
 					'date' => $GLOBALS['DB_WE']->f('date'),
@@ -343,11 +337,10 @@ class liveUpdateFrames {
 		}
 	}
 
-
 	/**
 	 * @return string
 	 */
-	function htmlFrameset() {
+	function htmlFrameset(){
 
 		$activeTab = liveUpdateFrames::getValidTab($this->Data['activeTab']);
 
@@ -367,78 +360,75 @@ class liveUpdateFrames {
 		return $html;
 	}
 
-	function htmlTabs() {
+	function htmlTabs(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
 	}
 
-	function htmlUpgrade() {
+	function htmlUpgrade(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'upgrade.inc.php');
 	}
 
-	function htmlBeta() {
+	function htmlBeta(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
 	}
 
-	function htmlUpdate() {
+	function htmlUpdate(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
 	}
 
-
-	function htmlNextVersion() {
+	function htmlNextVersion(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
 	}
 
-
-	function htmlModules() {
+	function htmlModules(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'modules.inc.php');
 	}
 
-
-	function htmlLanguages() {
+	function htmlLanguages(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
 	}
 
-
-	function htmlConnect() {
+	function htmlConnect(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
 	}
-	function htmlConnectionSuccess($errorMessage='') {
+
+	function htmlConnectionSuccess($errorMessage = ''){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectSuccess.inc.php');
 	}
-	function htmlConnectionError() {
+
+	function htmlConnectionError(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectError.inc.php');
 	}
 
-	function htmlStateMessage() {
+	function htmlStateMessage(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'stateMessage.inc.php');
 	}
 
-	function htmlUpdatelog() {
+	function htmlUpdatelog(){
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
 	}
 
-
-
-	function getValidTab($showTab='') {
-		if (in_array($showTab, $GLOBALS['updatecmds'])) {
+	function getValidTab($showTab = ''){
+		if(in_array($showTab, $GLOBALS['updatecmds'])){
 			return $showTab;
 		}
 		return $GLOBALS['updatecmds'][0];
 	}
 
-	function getAllTabs() {
+	function getAllTabs(){
 
 		return $GLOBALS['updatecmds'];
 	}
+
 }

@@ -138,18 +138,18 @@ $list = array_merge($list1, $list2, $list3);
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[lc]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lc', $list, 1, $feldnamen[5]) . '<span class="small">&nbsp' . g_l('modules_shop', '[paypalLcTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lc', $list, 1, $feldnamen[5]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalLcTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalbusiness]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("ppB", 30, $feldnamen[6], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[paypalbTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("ppB", 30, $feldnamen[6], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalbTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $paypalPV = array("default" => "PayPal-Shop", "test" => "Sandbox (Test) ");
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalSB]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]) . '<span class="small">&nbsp' . g_l('modules_shop', '[paypalSBTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalSBTxt]') . ' </span>');
 
 array_push($Parts, array("html" => $_htmlTable->getHtml()));
 
@@ -167,55 +167,55 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 $saferPayLang = array("en" => "english", "de" => "deutsch", "fr" => "francais", "it" => "italiano");
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayTermLang]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lcS', $saferPayLang, 1, $feldnamen[8]) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayLcTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lcS', $saferPayLang, 1, $feldnamen[8]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayLcTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayID]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spAID", 30, $feldnamen[9], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayIDTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spAID", 30, $feldnamen[9], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayIDTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpaybusiness]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spB", 30, $feldnamen[10], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpaybTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spB", 30, $feldnamen[10], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaybTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayCollect = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayAllowCollect]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spC', $saferPayCollect, 1, $feldnamen[11]) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayAllowCollectTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spC', $saferPayCollect, 1, $feldnamen[11]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayAllowCollectTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayDelivery = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayDelivery]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spD', $saferPayDelivery, 1, $feldnamen[12]) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayDeliveryTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spD', $saferPayDelivery, 1, $feldnamen[12]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayDeliveryTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayConfirm = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayUnotify]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spCo', $saferPayConfirm, 1, $feldnamen[13]) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayUnotifyTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spCo', $saferPayConfirm, 1, $feldnamen[13]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayUnotifyTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayProviderset]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spPS", 30, $feldnamen[14], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayProvidersetTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spPS", 30, $feldnamen[14], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayProvidersetTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayCMDPath]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spcmdP", 30, $feldnamen[15], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayCMDPathTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spcmdP", 30, $feldnamen[15], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayCMDPathTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayconfPath]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpaydesc]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_class::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
+$_htmlTable->setColContent($_row++, 2, we_class::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
