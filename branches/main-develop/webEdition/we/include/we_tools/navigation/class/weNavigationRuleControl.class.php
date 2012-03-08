@@ -51,12 +51,12 @@ class weNavigationRuleControl{
 
 					// 1st check if name is allowed
 					//FIXME: is this correct on UTF-8??
-					if(!preg_match(
+/*					if(!preg_match(
 							'%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
 						$js = we_message_reporting::getShowMessageCall(
 								g_l('navigation', '[rules][invalid_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 						$save = false;
-					}
+					}*/
 
 					// 2ns check if another element has same name
 					$db = new DB_WE();
