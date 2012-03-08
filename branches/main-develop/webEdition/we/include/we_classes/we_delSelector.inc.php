@@ -66,8 +66,7 @@ function enableDelBut(){
 	}
 
 	function printFramesetJSFunctions(){
-		parent::printFramesetJSFunctions();
-		?>
+		parent::printFramesetJSFunctions();?>
 
 		function deleteEntry(){
 		if(confirm('<?php print g_l('fileselector', "[deleteQuestion]") ?>')){

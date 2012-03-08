@@ -22,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-define("SCHEDULE_TABLE",TBL_PREFIX . "tblSchedule");
-define('SCHEDULER_TRIGGER_PREDOC',0);
-define('SCHEDULER_TRIGGER_POSTDOC',1);
-define('SCHEDULER_TRIGGER_CRON',2);
+define("SCHEDULE_TABLE", TBL_PREFIX . "tblSchedule");
+define('SCHEDULER_TRIGGER_PREDOC', 0);
+define('SCHEDULER_TRIGGER_POSTDOC', 1);
+define('SCHEDULER_TRIGGER_CRON', 2);

@@ -52,26 +52,13 @@ foreach($customerTableFields as $tblField){
 if(!empty($_REQUEST["format"])){ //	save data in arrays ..
 	$_REQUEST['classID'] = isset($_REQUEST['classID']) ? trim($_REQUEST['classID']) : '';
 
-	// check if field exists
-	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_pref"';
-	$DB_WE->query($q);
-	if($DB_WE->num_rows() > 0){
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder= '" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "' WHERE strDateiname = 'shop_pref'");
-	} else{
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder, strDateiname) VALUES ('" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "','shop_pref')");
-	}
+	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strDateiname = 'shop_pref',strFelder= '" . $DB_WE->escape($_REQUEST["waehr"]) . "|" . $DB_WE->escape($_REQUEST["mwst"]) . "|" . $DB_WE->escape($_REQUEST["format"]) . "|" . $DB_WE->escape($_REQUEST["classID"]) . "|" . $DB_WE->escape($_REQUEST["pag"]) . "'");
 
 	$fields['customerFields'] = isset($_REQUEST['orderfields']) ? $_REQUEST['orderfields'] : array();
 	$fields['orderCustomerFields'] = isset($_REQUEST['ordercustomerfields']) ? $_REQUEST['ordercustomerfields'] : array();
 
 	// check if field exists
-	$q = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"';
-	$DB_WE->query($q);
-	if($DB_WE->num_rows() > 0){
-		$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($fields)) . "' WHERE strDateiname ='edit_shop_properties'");
-	} else{
-		$DB_WE->query("INSERT INTO " . ANZEIGE_PREFS_TABLE . " (strFelder,strDateiname) VALUES('" . $DB_WE->escape(serialize($fields)) . "','edit_shop_properties')");
-	}
+	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . ' SET strDateiname="edit_shop_properties", strFelder="' . $DB_WE->escape(serialize($fields)) . '"');
 
 	$CLFields['stateField'] = isset($_REQUEST['stateField']) ? $_REQUEST['stateField'] : '-';
 	$CLFields['stateFieldIsISO'] = isset($_REQUEST['stateFieldIsISO']) ? $_REQUEST['stateFieldIsISO'] : 0;
@@ -79,7 +66,7 @@ if(!empty($_REQUEST["format"])){ //	save data in arrays ..
 	$CLFields['languageFieldIsISO'] = isset($_REQUEST['languageFieldIsISO']) ? $_REQUEST['languageFieldIsISO'] : 0;
 
 	// check if field exists
-	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "',strDateiname ='shop_CountryLanguage'");
+	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strDateiname ='shop_CountryLanguage', strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "'");
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = weShopVatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
@@ -191,7 +178,7 @@ $DB_WE->next_record();
 $_entry = $DB_WE->f("strFelder");
 
 // ...
-if($fields = @unserialize($_entry)){
+if(($fields = @unserialize($_entry))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )

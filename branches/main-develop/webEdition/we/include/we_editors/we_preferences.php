@@ -25,10 +25,7 @@
 /* * ***************************************************************************
  * INCLUDES
  * *************************************************************************** */
-
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 
 /* * ***************************************************************************
  * INITIALIZATION
@@ -1950,12 +1947,12 @@ $_we_active_integrated_modules = array(
 
 			case '$_REQUEST["we_tracker_dir"]':
 
-				/*$save_javascript .= "
+				/* $save_javascript .= "
 
-                        if (parent.opener.top.header) {
-                            parent.opener.top.header.location.reload();
-                        }
-                        ";*/
+				  if (parent.opener.top.header) {
+				  parent.opener.top.header.location.reload();
+				  }
+				  "; */
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "WE_TRACKER_DIR", $settingvalue);
@@ -3088,24 +3085,10 @@ function build_dialog($selected_setting = "ui"){
 			}
 
 			$_charset = new we_html_select(array("name" => "BackendCharset", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
-			$_charset->addOption('UTF-8', 'UTF-8');
-			$_charset->addOption('ISO-8859-1', 'ISO-8859-1');
-			$_charset->addOption('ISO-8859-2', 'ISO-8859-2');
-			$_charset->addOption('ISO-8859-3', 'ISO-8859-3');
-			$_charset->addOption('ISO-8859-4', 'ISO-8859-4');
-			$_charset->addOption('ISO-8859-5', 'ISO-8859-5');
-			$_charset->addOption('ISO-8859-6', 'ISO-8859-6');
-			$_charset->addOption('ISO-8859-7', 'ISO-8859-7');
-			$_charset->addOption('ISO-8859-8', 'ISO-8859-8');
-			$_charset->addOption('ISO-8859-9', 'ISO-8859-9');
-			$_charset->addOption('ISO-8859-10', 'ISO-8859-10');
-			$_charset->addOption('ISO-8859-11', 'ISO-8859-11');
-			$_charset->addOption('ISO-8859-12', 'ISO-8859-12');
-			$_charset->addOption('ISO-8859-13', 'ISO-8859-13');
-			$_charset->addOption('ISO-8859-14', 'ISO-8859-14');
-			$_charset->addOption('ISO-8859-15', 'ISO-8859-15');
-			$_charset->addOption('Windows-1251', 'Windows-1251');
-			$_charset->addOption('Windows-1252', 'Windows-1252');
+			$c = charsetHandler::getAvailCharsets();
+			foreach($c as $char){
+				$_charset->addOption($char, $char);
+			}
 			$_charset->selectOption(get_value("ui_charset"));
 			array_push($_settings, array("headline" => g_l('prefs', '[choose_backendcharset]'), "html" => $_charset->getHtml() . "<br><br>" . $langNote, "space" => 200));
 
@@ -3149,11 +3132,7 @@ function build_dialog($selected_setting = "ui"){
 			 * *************************************************************** */
 
 			// Generate needed JS
-			$_needed_JavaScript = "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
-							" . we_button::create_state_changer(false) . "
-						//-->
-						</script>";
+			$_needed_JavaScript = we_button::create_state_changer();
 
 			// Build maximize window
 			$_seem_disabler = we_forms::checkbox(1, get_value("ui_disable_seem"), "disable_seem", g_l('prefs', '[seem_deactivate]'));
@@ -6426,10 +6405,14 @@ function render_dialog(){
 
 
 
+
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
+
 
 
 

@@ -22,10 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 define('SPELLCHECKER', 1);
 
-define('WE_SPELLCHECKER_MODULE_PATH' , '/webEdition/we/include/we_modules/spellchecker/');
-define('WE_SPELLCHECKER_MODULE_DIR' , $_SERVER['DOCUMENT_ROOT'] . WE_SPELLCHECKER_MODULE_PATH);
+define('WE_SPELLCHECKER_MODULE_PATH', '/webEdition/we/include/we_modules/spellchecker/');
+define('WE_SPELLCHECKER_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_SPELLCHECKER_MODULE_PATH);
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Configuration file for webEdition
  * =================================
@@ -33,23 +32,22 @@
  * =====
  * Edit this file ONLY if you know exactly what you are doing!
  */
-
-if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_error_conf.inc.php")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_error_conf.inc.php");
+if(file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_error_conf.inc.php")){
+	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_error_conf.inc.php");
 }
 
-/*****************************************************************************
+/* * ***************************************************************************
  * SEEMODE SETTINGS
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Enable seeMode
 define("WE_SEEM", 1);
 
 
 
-/*****************************************************************************
+/* * ***************************************************************************
  * ERROR HANDLING SETTINGS
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Show errors that occur in webEdition
 define("WE_ERROR_HANDLER", 1);
@@ -237,13 +235,13 @@ define("FORMMAIL_VIAWEDOC", 0);
 define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "0");
 
 // Default Charset wichtig: klein Leerzeichen nach/vor Komma im define, für Tarball-Setup exakt so stehen lassen
-define("DEFAULT_CHARSET","UTF-8");
+define("DEFAULT_CHARSET", "UTF-8");
 
 // Default setting for hook execution
 define("EXECUTE_HOOKS", 0);
 
 // connection charset to db wichtig: klein Leerzeichen nach/vor Komma im define
-define("DB_SET_CHARSET","utf8");
+define("DB_SET_CHARSET", "utf8");
 
 
 
@@ -366,5 +364,5 @@ define("SEOINSIDE_HIDEINWEBEDITION", 0);
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
 // decide how the scheduler works
-define('SCHEUDLER_TRIGGER',1);
+define('SCHEUDLER_TRIGGER', 1);
 ?>

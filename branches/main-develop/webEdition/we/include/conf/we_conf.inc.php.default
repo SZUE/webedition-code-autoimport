@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Configuration file for webEdition
  * =================================
@@ -32,10 +32,9 @@
  * =====
  * Edit this file ONLY if you know exactly what you are doing!
  */
-
-/*****************************************************************************
+/* * ***************************************************************************
  * SERVER SETTINGS
- *****************************************************************************/
+ * *************************************************************************** */
 
 /**
  * When adding a password protection to the webEdition directory uncomment the
@@ -44,26 +43,25 @@
  * For example "myUsername" should be changed to "whatever" if "whatever"
  * would be the username to access the directory.
  */
-
 //define('HTTP_USERNAME', 'myUsername');
 //define('HTTP_PASSWORD', 'myPassword');
 
 
-/*****************************************************************************
+/* * ***************************************************************************
  * DATABASE SETTINGS
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Domain or IP address of the database server
-define('DB_HOST','localhost');
+define('DB_HOST', 'localhost');
 
 // Name of database being used by webEdition
-define('DB_DATABASE','webedition');
+define('DB_DATABASE', 'webedition');
 
 // Username to access the database
-define('DB_USER','root');
+define('DB_USER', 'root');
 
 // Password to access the database
-define('DB_PASSWORD','root');
+define('DB_PASSWORD', 'root');
 
 // Mode how to access the database
 //
@@ -75,52 +73,51 @@ define('DB_PASSWORD','root');
 //             with the same host. Second, the connection to the database server
 //             will not be closed when execution of a script ends. Instead, the
 //             link will remain open for future use.
-
 // Don't change this line!!!
-define('DB_CONNECT','connect');
+define('DB_CONNECT', 'connect');
 
 // Prefix of tables in database for this webEdition..
-define('TBL_PREFIX','');
+define('TBL_PREFIX', '');
 
 // Charset of tables in database for this webEdition.
-define('DB_CHARSET','');
+define('DB_CHARSET', '');
 
 // Collation of tables in database for this webEdition.
-define('DB_COLLATION','');
+define('DB_COLLATION', '');
 
-/*****************************************************************************
+/* * ***************************************************************************
  * GLOBAL WEBEDITION SETTINGS
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Name of licensee
-define('WE_LIZENZ','GPL');
+define('WE_LIZENZ', 'GPL');
 
 //FIXME: Remove these entries these "settings" are not configureable!
 // Path to the templates directory
-define('TEMPLATE_DIR',$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/templates');
+define('TEMPLATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/templates');
 
 // Path to the temporary files directory
-define('TMP_DIR',$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/tmp');
+define('TMP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/tmp');
 
 // Original language of this version of webEdition, used for login-screen
-define('WE_LANGUAGE','English');
+define('WE_LANGUAGE', 'English');
 
 // Original backend charset of this version of webEdition, used for login-screen
-define('WE_BACKENDCHARSET','UIF-8');
+define('WE_BACKENDCHARSET', 'UIF-8');
 
-if (!isset($GLOBALS['WE_LANGUAGE'])) {
+if(!isset($GLOBALS['WE_LANGUAGE'])){
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-if (!isset($GLOBALS['WE_LANGUAGE'])) {
+if(!isset($GLOBALS['WE_LANGUAGE'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = WE_BACKENDCHARSET;
 }
 
 
 // PHP 5.3 date init #4353
-if (!date_default_timezone_set(@date_default_timezone_get())){
+if(!date_default_timezone_set(@date_default_timezone_get())){
 	date_default_timezone_set('Europe/Berlin');
 }
-define('DATETIME_INITIALIZED','1'); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item
+define('DATETIME_INITIALIZED', '1'); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item
 
 // printout  (as warning), every SQL Query
 //define ('WE_SQL_DEBUG', 1);

@@ -162,9 +162,7 @@ class we_catSelector extends we_multiSelector{
 
 	function printHeaderJSDef(){
 		print 'var editCatState = ' . ($this->userCanEditCat() ? 1 : 0) . ';
-';
-		print 'var changeCatState = ' . ($this->userCanChangeCat() ? 1 : 0) . ';
-';
+			var changeCatState = ' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
 	function printHeaderJS(){
@@ -243,13 +241,13 @@ function enableDelBut(){
 				d.writeln('function weonclick(e){');
 				if(makeNewFolder || makeNewCat || we_editCatID){
 				d.writeln('if(!inputklick){');
-		<?php if(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'){ ?>
+				<?php if(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'){ ?>
 					d.writeln('document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);document.we_form.submit();');
 
-		<?php } else{ ?>
+				<?php } else{ ?>
 					d.writeln('document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;document.we_form.submit();');
 
-		<?php } ?>
+				<?php } ?>
 				d.writeln('}else{  ');
 				d.writeln('inputklick=false;');
 				d.writeln('}  ');
@@ -272,10 +270,10 @@ function enableDelBut(){
 		<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
 											 d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
 
-		<?php } else{ ?>
+				<?php } else{ ?>
 					d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
 
-		<?php } ?>
+					<?php } ?>
 					if(top.we_editCatID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEENTRY; ?>" />');
 					d.writeln('<input type="hidden" name="we_editCatID" value="'+top.we_editCatID+'" />');

@@ -549,7 +549,7 @@ class we_import_files{
 		$progressbar = "";
 		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
 		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
-		$js = we_button::create_state_changer(false) . "\n";
+		$js = we_button::create_state_changer(false);
 
 		$js .= 'var weFormNum = ' . $formnum . ';
 	var weFormCount = ' . $formcount . ';

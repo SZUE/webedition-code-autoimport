@@ -36,7 +36,7 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep'.(isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0");
+		$step = 'getStep' . (isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0");
 		return self::getPage(self::$step());
 	}
 
@@ -117,7 +117,7 @@ abstract class we_versions_wizard{
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					STYLESHEET . ($dc ? "" : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) . we_html_element::htmlBody(
+					STYLESHEET . ($dc ? "" : we_button::create_state_changer()) . $js) . we_html_element::htmlBody(
 					array(
 					"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")
 					), ($dc ? $pb : $content->getHtml())));
@@ -129,9 +129,7 @@ abstract class we_versions_wizard{
 	 * @return string for now it is an empty page
 	 */
 	static function getCmd(){
-		return self::getPage(array(
-				"", ""
-			));
+		return self::getPage(array('', ''));
 	}
 
 	/**
@@ -351,7 +349,7 @@ abstract class we_versions_wizard{
 		));
 
 		$clearDate = we_button::create_button(
-			"reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
+				"reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
 
 		array_push(
 			$parts, array(
@@ -377,7 +375,7 @@ abstract class we_versions_wizard{
 		}
 
 		$nextButton = we_button::create_button(
-			"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+				"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
 
 		$js = 'window.onload = function(){
 					top.focus();
@@ -617,7 +615,7 @@ abstract class we_versions_wizard{
 		));
 
 		$clearDate = we_button::create_button(
-			"reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
+				"reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
 
 		array_push(
 			$parts, array(
@@ -643,7 +641,7 @@ abstract class we_versions_wizard{
 		}
 
 		$nextButton = we_button::create_button(
-			"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+				"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
 
 		$js = 'window.onload = function(){
 					top.focus();
@@ -1275,7 +1273,7 @@ abstract class we_versions_wizard{
 		}
 
 		$nextButton = we_button::create_button(
-			"go", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", $disabled, false);
+				"go", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
 		$js = 'window.onload = function(){

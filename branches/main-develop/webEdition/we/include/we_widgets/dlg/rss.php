@@ -553,4 +553,3 @@ print
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $sTblWidget)));
-?>

@@ -32,7 +32,7 @@ class charsetHandler{
 	 */
 	function __construct(){
 		//	First ISO-8859-charsets
-		$_charsets["west_european"]["national"] = "West Europe";		//	Here is the name of the country in mother language
+		$_charsets["west_european"]["national"] = "West Europe"; //	Here is the name of the country in mother language
 		$_charsets["west_european"]["charset"] = "ISO-8859-1";
 		$_charsets["west_european"]["international"] = g_l('charset', "[titles][west_european]"); //	Name in selected language
 
@@ -109,17 +109,11 @@ class charsetHandler{
 	 * @desc This function returns an array(key = charset / value = charset - name(international) (name(national)))
 	 */
 	function getCharsetsForTagWizzard(){
-
-		$_charsets = $this->charsets;
-
 		$retArr = array();
-		$first = true;
-
-		while(list($key, $val) = each($_charsets)) {
+		foreach($this->charsets as $val){
 
 			$retArr[$val["charset"]] = $val["charset"] . " - " . $val["international"] . " (" . $val["national"] . ")";
 		}
-		reset($_charsets);
 		return $retArr;
 	}
 
@@ -129,18 +123,13 @@ class charsetHandler{
 	 * @desc returns array (national, international, charset, when charset is known)
 	 */
 	function getCharsetArrByCharset($charset){
-
-		$_charsets = $this->charsets;
-
-		$_charsetArray = false;
-
-		while(list($key, $val) = each($_charsets)) {
+		foreach($this->charsets as $key => $val){
 
 			if(strtolower($val["charset"]) == strtolower($charset)){
-				return $_charsets[$key];
+				return $this->charsets[$key];
 			}
 		}
-		return $_charsetArray;
+		return false;
 	}
 
 	/**
@@ -149,23 +138,20 @@ class charsetHandler{
 	 * @desc This function returns an array for the property page of a webEdition document
 	 */
 	function getCharsetsByArray($availableChars){
-
-		$_charsets = $this->charsets;
-
 		$tmpCharArray = array();
 		$retArray = array();
 
-		for($i = 0; $i < sizeof($availableChars); $i++){
+		foreach($availableChars as $char){
 
-			if($charset = $this->getCharsetArrByCharset($availableChars[$i])){
-				array_push($tmpCharArray, $charset);
+			if(($charset = $this->getCharsetArrByCharset($char))){
+				$tmpCharArray[] = $charset;
 			} else{
-				array_push($tmpCharArray, array("charset" => $availableChars[$i]));
+				$tmpCharArray[] = array("charset" => $char);
 			}
 		}
 		reset($tmpCharArray);
 
-		while(list($key, $val) = each($tmpCharArray)) {
+		foreach($tmpCharArray as $val){
 
 			if(isset($val["international"])){
 				$retArr[$val["charset"]] = $val["charset"] . " - " . $val["international"] . " (" . $val["national"] . ")";
@@ -176,7 +162,6 @@ class charsetHandler{
 
 		return $retArr;
 	}
-
 
 	//FIXME: use array obove; currently this seems to complecated
 	static function getAvailCharsets(){

@@ -190,7 +190,7 @@ class we_user{
 
 	#--------------------------------------------------------------------------#
 
-	function initType($typ, $ext=0){
+	function initType($typ, $ext = 0){
 		$this->Type = $typ;
 		if($typ == 2)
 			$this->Icon = "user_alias.gif";
@@ -208,6 +208,7 @@ class we_user{
 
 	#--------------------------------------------------------------------------#
 	// Intialize the class
+
 	function initFromDB($id){
 		$ret = false;
 		if($id){
@@ -1254,7 +1255,7 @@ class we_user{
 
 	#--------------------------------------------------------------------------#
 
-	function getPath($id=0){
+	function getPath($id = 0){
 		$db_tmp = new DB_WE();
 		$path = "";
 		if($id == 0){
@@ -1679,7 +1680,7 @@ class we_user{
 
 	#--------------------------------------------------------------------------#
 
-	function getUserfield($name, $lngkey, $type="text", $maxlen="255", $noNull=false, $attribs=""){
+	function getUserfield($name, $lngkey, $type = "text", $maxlen = "255", $noNull = false, $attribs = ""){
 		$val = $this->$name;
 		if($noNull){
 			if(!$val){
@@ -2292,24 +2293,10 @@ class we_user{
 
 
 		$_charset = new we_html_select(array("name" => $this->Name . '_Preference_BackendCharset', "class" => "weSelect", "onChange" => "top.content.setHot();"));
-		$_charset->addOption('UTF-8', 'UTF-8');
-		$_charset->addOption('ISO-8859-1', 'ISO-8859-1');
-		$_charset->addOption('ISO-8859-2', 'ISO-8859-2');
-		$_charset->addOption('ISO-8859-3', 'ISO-8859-3');
-		$_charset->addOption('ISO-8859-4', 'ISO-8859-4');
-		$_charset->addOption('ISO-8859-5', 'ISO-8859-5');
-		$_charset->addOption('ISO-8859-6', 'ISO-8859-6');
-		$_charset->addOption('ISO-8859-7', 'ISO-8859-7');
-		$_charset->addOption('ISO-8859-8', 'ISO-8859-8');
-		$_charset->addOption('ISO-8859-9', 'ISO-8859-9');
-		$_charset->addOption('ISO-8859-10', 'ISO-8859-10');
-		$_charset->addOption('ISO-8859-11', 'ISO-8859-11');
-		$_charset->addOption('ISO-8859-12', 'ISO-8859-12');
-		$_charset->addOption('ISO-8859-13', 'ISO-8859-13');
-		$_charset->addOption('ISO-8859-14', 'ISO-8859-14');
-		$_charset->addOption('ISO-8859-15', 'ISO-8859-15');
-		$_charset->addOption('Windows-1251', 'Windows-1251');
-		$_charset->addOption('Windows-1252', 'Windows-1252');
+		$c = charsetHandler::getAvailCharsets();
+		foreach($c as $char){
+			$_charset->addOption($char, $char);
+		}
 		if(isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] != ''){
 			$myCompChar = $this->Preferences['BackendCharset'];
 		} else{
@@ -2617,7 +2604,7 @@ class we_user{
 		$_window_current_dimension_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 2);
 
 		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
-		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE()? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
+		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
 
 		// Build final HTML code
 		$_window_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 1);

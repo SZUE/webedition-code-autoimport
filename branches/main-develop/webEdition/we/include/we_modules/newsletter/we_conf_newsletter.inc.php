@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 define("NEWSLETTER_TABLE", TBL_PREFIX . "tblNewsletter");
 define("NEWSLETTER_BLOCK_TABLE", TBL_PREFIX . "tblNewsletterBlock");
 define("NEWSLETTER_CONFIRM_TABLE", TBL_PREFIX . "tblNewsletterConfirm");

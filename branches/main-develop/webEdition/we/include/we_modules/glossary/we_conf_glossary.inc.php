@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-define("GLOSSARY_TABLE",TBL_PREFIX . "tblglossary");
-define("WE_GLOSSARY_MODULE_PATH","/webEdition/we/include/we_modules/glossary/");
-define("WE_GLOSSARY_MODULE_DIR",$_SERVER['DOCUMENT_ROOT'].WE_GLOSSARY_MODULE_PATH);
+define("GLOSSARY_TABLE", TBL_PREFIX . "tblglossary");
+define("WE_GLOSSARY_MODULE_PATH", "/webEdition/we/include/we_modules/glossary/");
+define("WE_GLOSSARY_MODULE_DIR", $_SERVER['DOCUMENT_ROOT'] . WE_GLOSSARY_MODULE_PATH);
 
 we_loadLanguageConfig();

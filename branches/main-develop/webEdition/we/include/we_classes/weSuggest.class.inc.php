@@ -149,8 +149,7 @@ class weSuggest{
 	 * @return String
 	 */
 	function getYuiCssFiles(){
-		$out = "\n";
-		return $out;
+		return '';
 	}
 
 	/**
@@ -173,7 +172,6 @@ class weSuggest{
 			return;
 
 		$safariEventListener = "";
-		$doSafariOnTextfieldBlur = "";
 		$initVars = "	var ajaxMaxResponseTime = 1500;\n";
 		$initVars .= "	var ajaxResponseStep = 100;\n";
 		$initVars .= "	var ajaxResponseCT = 0;\n";
@@ -897,9 +895,7 @@ function doDebugResizeH(){
 	}
 
 	//not in use
-	function createAutocompleter(
-	$acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10
-	){
+	function createAutocompleter($acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10){
 
 		$this->setInputId($inputId);
 		$elog = '';
@@ -912,9 +908,9 @@ function doDebugResizeH(){
 
 		$iField = "";
 		if(is_array($inputField)){
-			foreach($inputField as $key => $val){
+			/*foreach($inputField as $key => $val){
 
-			}
+			}*/
 		} else{
 			$iField = $inputField;
 		}
