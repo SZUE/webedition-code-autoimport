@@ -33,30 +33,16 @@ $workflowFrame = new we_workflow_frames();
 $workflowFrame->View->processVariables();
 $workflowFrame->View->processCommands();
 
-if(isset($_GET["pnt"])){
-	$what = $_GET["pnt"];
-} else{
-	$what = "frameset";
-}
-
-if(isset($_GET["art"])){
-	$mode = $_GET["art"];
-} else{
-	$mode = 0;
-}
-
-if(isset($_GET["type"])){
-	$type = $_GET["type"];
-} else{
-	$type = 0;
-}
+$what = (isset($_GET["pnt"]) ? $_GET["pnt"] : "frameset");
+$mode = (isset($_GET["art"]) ? $_GET["art"] : 0);
+$type = (isset($_GET["type"]) ? $_GET["type"] : 0);
 
 switch($what){
 	case "frameset":
 		print $workflowFrame->getHTMLFrameset();
 		break;
 
-	case "header":print $what;
+	case "header":
 		print $workflowFrame->getHTMLHeader();
 		break;
 

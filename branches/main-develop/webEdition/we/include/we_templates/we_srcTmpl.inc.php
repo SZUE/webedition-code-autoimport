@@ -38,7 +38,7 @@ if($GLOBALS['we_editmode']){
 	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 	?>
 	<script  type="text/javascript">
-
+		<!--
 		var weIsTextEditor = true;
 		var wizardHeight={
 			"open" : 305,
@@ -141,7 +141,7 @@ if($GLOBALS['we_editmode']){
 editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 sizeEditor();
 
-	return;';
+return;';
 	}
 	?>
 
@@ -344,9 +344,10 @@ sizeEditor();
 			editor.replaceSelection(replaceby);
 			search(text);
 		}
+		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'          ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'               ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }
@@ -481,16 +482,14 @@ function we_getCodeMirrorCode($code){
 				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js') .
 				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js') .
 				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js') .
-				'
-							<script type="text/javascript">
+				we_html_element::jsElement('
 								if(top.we_tags==undefined) { //this is our tag cache
 									document.write("<scr"+"ipt src=\"/webEdition/editors/template/CodeMirror/contrib/webEdition/js/vocabulary.js.php\" type=\"text/javascript\"></sc"+"ript>");
 								};
-							</script>
-						';
+						');
 		}
 		$maineditor.='
-						<script type="text/javascript">
+						<script type="text/javascript"><!--
 							var getDescriptionDiv=function() {
 								var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
 								var wrap = ed.wrapping;
@@ -683,19 +682,16 @@ function we_getCodeMirrorCode($code){
 								}
 							}
 							window.orignalTemplateContent=document.getElementById("editarea").value; //this is our reference of the original content to compare with current content
+							//-->
 						</script>
 					';
 		if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //initiation depends on the use of code completion
-			$maineditor.=
-				'<script type="text/JavaScript">
+			$maineditor.=we_html_element::jsElement('
 				cscc.init("editarea");
 				var editor=cscc.editor;
-			</script>';
+			');
 		} else{
-			$maineditor.=
-				'<script type="text/JavaScript">
-				var editor = CodeMirror.fromTextArea("editarea", CMoptions);
-			</script>';
+			$maineditor.=we_html_element::jsElement('var editor = CodeMirror.fromTextArea("editarea", CMoptions);');
 		}
 	}
 	return $maineditor;
@@ -766,8 +762,7 @@ function we_getCodeMirror2Code($code){
 			$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $js);
 		}
 
-		$maineditor.='
-		<style type="text/css">' . ($toolTip ? we_getCodeMirror2Tags() : '') . '
+		$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags() : '') . '
 			.weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 				font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
 				font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -793,10 +788,8 @@ function we_getCodeMirror2Code($code){
 	span.c-like-keyword {
 		color: #000;
 		font-weight: bold;
-	}
-
-</style>
-		<script type="text/javascript">
+	}') .
+			we_html_element::jsElement('
 			var getDescriptionDiv=function() {
 				var ed=window.editor;
 				var wrap = ed.wrapping;
@@ -918,7 +911,7 @@ function we_getCodeMirror2Code($code){
 				}
 			}
 			window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
-</script>';
+');
 	}
 	return $maineditor;
 }
@@ -1013,8 +1006,7 @@ if($GLOBALS['we_editmode']){
 		}
 
 
-		$tagselect .= '
-</select>';
+		$tagselect .= '</select>';
 
 		// buttons
 		$editTagbut = we_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
@@ -1024,9 +1016,8 @@ if($GLOBALS['we_editmode']){
 		$addCursorPositionbut = we_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 		$tagWizardHtml = $CodeWizard->getJavascript();
-		$tagWizardHtml .= '
-		<script type="text/javascript">
-			function executeEditButton() {
+		$tagWizardHtml .= we_html_element::jsElement(
+				'function executeEditButton() {
 				if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_custom\') {
 					YUIdoAjax(document.getElementById(\'codesnippet_custom\').value);
 
@@ -1173,8 +1164,8 @@ if($GLOBALS['we_editmode']){
 				}
 				if (Tastencode==13) edit_wetag(document.getElementById("tagSelection").value);
 				//return false;
-			}
-		</script>
+			}') .
+			'
 		<table id="wizardTable" style="width: 700px;" class="defaultfont" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td align="right">' . $groupselect . '</td>
@@ -1211,8 +1202,8 @@ if($GLOBALS['we_editmode']){
 		$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 		$znr = 1;
 	}
-	print we_multiIconBox::getJS();
-	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+	print we_multiIconBox::getJS() .
+		'<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
 
 	<?php

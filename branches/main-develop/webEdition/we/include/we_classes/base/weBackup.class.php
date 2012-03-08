@@ -574,7 +574,7 @@ class weBackup extends we_backup{
 		return ($this->export2server ? $this->backup_dir . $this->filename : $this->dumpfilename);
 	}
 
-	#==============================================================================#
+	
 
 	/**
 	 * Function: isFixed
@@ -596,7 +596,7 @@ class weBackup extends we_backup{
 		return parent::isFixed($tab) || !$this->isWeTable($tab);
 	}
 
-#==============================================================================#
+
 
 	function getFileList($dir = "", $with_dirs = false, $rem_doc_root = true){
 		if($dir == "")

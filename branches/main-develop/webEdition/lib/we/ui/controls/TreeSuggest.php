@@ -21,7 +21,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * Includes autoload function
  */
@@ -33,46 +32,45 @@ we_core_Permissions::protect();
  * get json output
  */
 $type = "application/json";
-header("Content-Type: ".$type);
+header("Content-Type: " . $type);
 
 
-if(isset($_GET["id"])) {
+if(isset($_GET["id"])){
 	$id = urlencode($_GET["id"]);
 }
-if(isset($_GET["sessionname"])) {
+if(isset($_GET["sessionname"])){
 	$sessionName = urlencode($_GET["sessionname"]);
 }
-if(isset($_GET["table"])) {
+if(isset($_GET["table"])){
 	$table = urlencode($_GET["table"]);
 }
-if(isset($_GET["close"])) {
+if(isset($_GET["close"])){
 	$close = urlencode($_GET["close"]);
 }
-if(isset($_GET["datasource"])) {
+if(isset($_GET["datasource"])){
 	$datasource = urlencode($_GET["datasource"]);
 }
-if(isset($_GET["treeclass"])) {
+if(isset($_GET["treeclass"])){
 	$treeclass = urlencode($_GET["treeclass"]);
 	$tree = new $treeclass();
 }
 
-if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
+if(isset($sessionName) && $sessionName !== '' && isset($id) && $id !== ''){
 	/**
 	 * get the session data (open nodes) of the tree
 	 */
 	$session = new Zend_Session_Namespace($sessionName);
 
-	if(isset($close)) {
+	if(isset($close)){
 		//if id exists
-		if (FALSE !== ($key=array_search($id,$session->openNodes))) {
+		if(FALSE !== ($key = array_search($id, $session->openNodes))){
 			//if closing node
-			if($close) {
+			if($close){
 				unset($session->openNodes[$key]);
 			}
-		}
-		else {
+		} else{
 			//if opening node
-			if(!$close) {
+			if(!$close){
 				array_push($session->openNodes, $id);
 			}
 		}
@@ -80,118 +78,121 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 		return;
 	}
 
-	if(isset($table) && $table!=='' && isset($datasource) && $datasource == 'table' && is_object($tree)) {
+	if(isset($table) && $table !== '' && isset($datasource) && $datasource == 'table' && is_object($tree)){
 
-		$nodes = $tree->doSelect($table,$id);
+		$nodes = $tree->doSelect($table, $id);
 
 		/**
 		 * write json output in $response
 		 */
 		$response = '{"ResultSet":{"Result":[';
 
-		if(!empty($nodes)) {
+		if(!empty($nodes)){
 			$nodesCount = count($nodes);
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				$response .= '"'.htmlspecialchars($v['Text']).'"';
-				if($m<$nodesCount) $response .= ',';
+				$response .= '"' . htmlspecialchars($v['Text']) . '"';
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 
 			$response .= '],"Id":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				$response .= ''.$v['ID'].'';
-				if($m<$nodesCount) $response .= ',';
+				$response .= '' . $v['ID'] . '';
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 			/*
-			$response .= '],"ContentType":[';
+			  $response .= '],"ContentType":[';
 
-			$m = 0;
-			foreach ($nodes as $k => $v) {
-				$m++;
-				$response .= '"'.$v['ContentType'].'"';
-				if($m<$nodesCount) $response .= ',';
-			}
-			*/
+			  $m = 0;
+			  foreach ($nodes as $k => $v) {
+			  $m++;
+			  $response .= '"'.$v['ContentType'].'"';
+			  if($m<$nodesCount) $response .= ',';
+			  }
+			 */
 			$response .= '],"LabelStyle":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
 				$labelType = $tree->getTreeIconClass($v['ContentType']);
-				$response .= '"'.$labelType.'"';
-				if($m<$nodesCount) $response .= ',';
+				$response .= '"' . $labelType . '"';
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 
 			$response .= '],"Status":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				$response .= '"'.$v['Status'].'"';
-				if($m<$nodesCount) $response .= ',';
+				$response .= '"' . $v['Status'] . '"';
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 
 			$response .= '],"Published":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				$response .= '"'.$v['Published'].'"';//we_util_Strings::p_r($v['Published']);
-				if($m<$nodesCount) $response .= ',';
+				$response .= '"' . $v['Published'] . '"'; //we_util_Strings::p_r($v['Published']);
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 
 			$response .= '],"Classes":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				$outClasses= array();
+				$outClasses = array();
 				if($v['Published'] == 0){
 					$outClasses[] = 'unpublished';
 				}
-				if($v['Status'] !=''){
+				if($v['Status'] != ''){
 					$outClasses[] = $v['Status'];
 				}
-				if (!empty($outClasses)) {
-					$ClassesStr = implode(' ',$outClasses);
-					$ClassesStr = trim($ClassesStr,' ');
-				} else {
-					$ClassesStr='';
+				if(!empty($outClasses)){
+					$ClassesStr = implode(' ', $outClasses);
+					$ClassesStr = trim($ClassesStr, ' ');
+				} else{
+					$ClassesStr = '';
 				}
-				$response .= '"'.$ClassesStr.'"';//we_util_Strings::p_r($v['Published']);
-				if($m<$nodesCount) $response .= ',';
+				$response .= '"' . $ClassesStr . '"'; //we_util_Strings::p_r($v['Published']);
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 			$response .= '],"open":[';
 
 			$m = 0;
-			foreach ($nodes as $k => $v) {
+			foreach($nodes as $k => $v){
 				$m++;
-				if(in_array($v['ID'],$session->openNodes)) {
+				if(in_array($v['ID'], $session->openNodes)){
 					$response .= 'true';
-				}
-				else {
+				} else{
 					$response .= 'false';
 				}
-				if($m<$nodesCount) $response .= ',';
+				if($m < $nodesCount)
+					$response .= ',';
 			}
 		}
 
 		$response .= ']}}';
 
 		print $response;
-
 	}
-	else {
+	else{
 		return;
 	}
-}
-else {
+} else{
 	return;
 }
-
 ?>

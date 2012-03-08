@@ -152,7 +152,7 @@ function remember_value($settingvalue, $settingname){
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '" . abs($settingvalue) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
-				
+
 			case '$_REQUEST["Fitinside"]':
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Fitinside = '" . abs($settingvalue) . "' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
@@ -199,7 +199,7 @@ function remember_value($settingvalue, $settingname){
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Interlace = '0' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
 				break;
-				
+
 			case '$_REQUEST["Fitinside"]':
 				$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Fitinside = '0' WHERE ID = '" . abs($_REQUEST["edited_id"]) . "'");
 
@@ -471,7 +471,7 @@ function build_dialog($selected_setting = "ui"){
 			$_thumbnail_interlace = ($_GET["id"] != -1) ? f("SELECT Interlace FROM " . THUMBNAILS_TABLE . " WHERE ID=" . intval($_GET["id"]), "Interlace", $DB_WE) : -1;
 			$_thumbnail_fitinside = ($_GET["id"] != -1) ? f("SELECT Fitinside FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Fitinside", $DB_WE) : -1;
 
-			$_thumbnail_option_table = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
+			$_thumbnail_option_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 7, 1);
 
 			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), "Ratio", g_l('thumbnails', "[ratio]"), false, "defaultfont", "", ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -567,23 +567,16 @@ if(isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true"
 		save_all_values();
 
 
-		$save_javascript = we_html_element::jsElement("
-
-							   " . $save_javascript . "
-								" . we_message_reporting::getShowMessageCall(g_l('thumbnails', "[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
-
-							   self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?id=" . $_REQUEST["edited_id"] . "';
-
-					   ");
+		$save_javascript = we_html_element::jsElement(
+				$save_javascript . we_message_reporting::getShowMessageCall(g_l('thumbnails', "[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) .
+				"self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?id=" . $_REQUEST["edited_id"] . "';");
 	}
 
-	print STYLESHEET . $save_javascript . "</head>";
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . "</html>";
+	print STYLESHEET . $save_javascript . "</head>" .
+		we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . "</html>";
 } else{
 	$_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_thumbnails", "value" => "false")) . render_dialog());
 
-	print STYLESHEET . "</head>";
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), $_form) . "</html>";
+	print STYLESHEET . "</head>" .
+		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), $_form) . "</html>";
 }
