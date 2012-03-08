@@ -51,7 +51,7 @@ class we_main_header{
 		?>
 			</div>
 		<?php if($msg){ ?>
-				<div style="position:absolute;top:0px;bottom:0px;right:0px;width:60px;">
+				<div style="position:absolute;top:0px;bottom:0px;right:5px;width:60px;">
 					<?php we_messaging_headerMsg::pbody();
 					?>
 				</div>
