@@ -418,7 +418,7 @@ class weHyperlinkDialog extends weDialog{
 					<td valign="top">
 						' . $_select_type . '</td>
 				</tr>
-				<tr id="ext_tr" style="display:' . (($this->args["type"] == "ext") ? "" : "none") . ';">
+				<tr id="ext_tr" style="display:' . (($this->args["type"] == "ext") ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >
 						' . $_external_link . '</td>
 				</tr>
@@ -433,14 +433,14 @@ class weHyperlinkDialog extends weDialog{
 			$autoSuggest .= "}\n";
 			$autoSuggest .= "</script>\n";
 			$table .= '
-				<tr id="int_tr" style="display:' . (($this->args["type"] == "int") ? "" : "none") . ';">
+				<tr id="int_tr" style="display:' . (($this->args["type"] == "int") ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', "[document]") . '</td>
 					<td valign="top"> ' . $autoSuggest . '</td>
 				</tr>';
 		}
 
 		$table .= '
-				<tr id="mail_tr" style="display:' . (($this->args["type"] == "mail") ? "" : "none") . ';">
+				<tr id="mail_tr" style="display:' . (($this->args["type"] == "mail") ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', "[emaillink]") . '</td>
 					<td valign="top">
 						' . $_email_link . '</td>
@@ -448,7 +448,7 @@ class weHyperlinkDialog extends weDialog{
 
 		if(defined("OBJECT_TABLE") && isset($_object_link)){
 			$table .= '
-				<tr id="obj_tr" style="display:' . (($this->args["type"] == "obj") ? "" : "none") . ';">
+				<tr id="obj_tr" style="display:' . (($this->args["type"] == "obj") ? "table-row" : "none") . ';">
 					<td class="defaultgray" valign="top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
 					<td valign="top">
 						' . $_object_link . '</td>

@@ -153,10 +153,9 @@ class weDialog{
 		return '
 			<script  type="text/javascript"><!--
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-
-				if (!(isGecko||isOpera)) {
-					document.onkeydown = doKeyDown;
-				}
+				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';'.
+			((!(we_base_browserDetect::isGecko()||we_base_browserDetect::isOpera()))?
+			'document.onkeydown = doKeyDown;':'').'
 
 				function doKeyDown() {
 					var key = event.keyCode;

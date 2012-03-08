@@ -766,20 +766,20 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td>
 							' . $_select_type . '</td>
 					</tr>
-					<tr id="ext_tr" style="display:' . (($type == "ext") ? "" : "none") . ';">
+					<tr id="ext_tr" style="display:' . (($type == "ext") ? "table-row" : "none") . ';">
 						<td height="35" valign="top">
 							<div style="margin-top:1px;">' . $extLink . '</div></td>
 					</tr>
-					<tr id="int_tr" style="display:' . (($type == "int") ? "" : "none") . ';">
+					<tr id="int_tr" style="display:' . (($type == "int") ? "table-row" : "none") . ';">
 						<td height="35" valign="top">
 							' . $intLink . '</td>
 					</tr>
-					<tr id="mail_tr" style="display:' . (($type == "mail") ? "" : "none") . ';">
+					<tr id="mail_tr" style="display:' . (($type == "mail") ? "table-row" : "none") . ';">
 						<td height="35" valign="top">
 							<div style="margin-top:2px;">' . $emailLink . '</div></td>
 					</tr>
 ' . (defined("OBJECT_TABLE") ? '
-					<tr id="obj_tr" style="display:' . (($type == "obj") ? "" : "none") . ';">
+					<tr id="obj_tr" style="display:' . (($type == "obj") ? "table-row" : "none") . ';">
 						<td height="35" valign="top">
 							' . $objLink . '</td>
 					</tr>
@@ -797,18 +797,18 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 						<td>
 							' . $_content_select . '</td>
 					</tr>
-					<tr id="ctext_tr" style="display:' . (($ctype == "text") ? "" : "none") . ';">
+					<tr id="ctext_tr" style="display:' . (($ctype == "text") ? "table-row" : "none") . ';">
 						<td>
 							' . $ctext . '</td>
 					</tr>
-					<tr id="cext_tr" style="display:' . (($ctype == "ext") ? "" : "none") . ';">
+					<tr id="cext_tr" style="display:' . (($ctype == "ext") ? "table-row" : "none") . ';">
 						<td>
 							' . $extImg . '</td>
 					</tr>
-					<tr id="cint_tr" style="display:' . (($ctype == "int") ? "" : "none") . ';">
+					<tr id="cint_tr" style="display:' . (($ctype == "int") ? "table-row" : "none") . ';">
 						<td>' . $intImg . '</td>
 					</tr>
-					<tr id="cimgprops_tr" style="display:' . (($ctype == "text") ? "none" : "") . ';">
+					<tr id="cimgprops_tr" style="display:' . (($ctype == "text") ? "none" : "table-row") . ';">
 						<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
 					</tr>
 				</table><div></div>';
