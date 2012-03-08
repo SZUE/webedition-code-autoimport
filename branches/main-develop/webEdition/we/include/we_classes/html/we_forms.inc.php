@@ -285,7 +285,7 @@ abstract class we_forms{
 				}
 			}
 		}
-		if(preg_match_all('/src="thumbnail:(\\d+)[" ])/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="thumbnail:(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$imgID = $thumbID = 0;
 				list($imgID, $thumbID) = explode(",", $reg[1]);
@@ -296,7 +296,7 @@ abstract class we_forms{
 			}
 		}
 		if(defined("OBJECT_TABLE")){
-			if(preg_match_all('/href="object:([^" \?#]+)(\??)/i', $text, $regs, PREG_SET_ORDER)){
+			if(preg_match_all('/href="object:(\\d+)([^" \?#]+)(\??)/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
 						$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
