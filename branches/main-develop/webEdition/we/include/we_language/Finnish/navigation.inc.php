@@ -56,7 +56,6 @@ $l_navigation=array(
 	'icon_vspace'=>'pystytila',
 	'icon_width'=>'Leveys',
 	'intern'=>'Sisäinen linkki',
-	'invalid_name'=>'Nimi voi koostua vain kirjaimista, numeroista, viivasta ja alaviivasta',
 	'keyboard'=>'Näppäimistö',
 	'language'=>'Kieli',
 	'less_attributes'=>'Vähemmän ominaisuuksia',

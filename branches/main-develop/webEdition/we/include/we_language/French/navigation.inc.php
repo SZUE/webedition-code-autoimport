@@ -56,7 +56,6 @@ $l_navigation=array(
 	'icon_vspace'=>'Distance verticale',
 	'icon_width'=>'Largeur',
 	'intern'=>'Lien interne',
-	'invalid_name'=>'Le nom doit comporter seulement des lettres, traits d`union et traits bas.',
 	'keyboard'=>'Clavier',
 	'language'=>'Langue',
 	'less_attributes'=>'Moins de propriétés',

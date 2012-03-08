@@ -56,7 +56,6 @@ $l_navigation=array(
 	'icon_vspace'=>'vert. uitlijnen',
 	'icon_width'=>'Breedte',
 	'intern'=>'Interne koppeling',
-	'invalid_name'=>'De naam mag alleen bestaan uit letters, figuren, koppeltekens en underscore',
 	'keyboard'=>'Keyboard',
 	'language'=>'Taal',
 	'less_attributes'=>'Minder eigenschappen',

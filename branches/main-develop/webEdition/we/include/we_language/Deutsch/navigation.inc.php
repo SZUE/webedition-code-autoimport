@@ -56,7 +56,6 @@ $l_navigation=array(
 	'icon_vspace'=>'vert. Abstand',
 	'icon_width'=>'Breite',
 	'intern'=>'Interner Link',
-	'invalid_name'=>'Der Name darf nur aus Buchstaben, Zahlen, Binde- und Unterstrich bestehen.',
 	'keyboard'=>'Tastatur',
 	'language'=>'Sprache',
 	'less_attributes'=>'Link-Eigenschaften ausblenden',
