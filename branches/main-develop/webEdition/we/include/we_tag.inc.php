@@ -700,7 +700,7 @@ function we_tag_listviewPageNr(){
 }
 
 function we_tag_listviewPages(){
-	$cols = $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols : 1;
+//	$cols = $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols : 1;
 	return $GLOBALS['lv']->rows ? ceil(
 			((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
 }

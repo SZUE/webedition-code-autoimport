@@ -29,7 +29,7 @@ class weNavigationRuleFrames{
 	var $Controller;
 	var $db;
 
-	function weNavigationRuleFrames(){
+	function __construct(){
 		$this->Controller = new weNavigationRuleControl();
 		$this->db = new DB_WE();
 		$yuiSuggest = & weSuggest::getInstance();

@@ -134,7 +134,7 @@ class weDialog{
 		}
 	}
 
-	function getQueryString($what=""){
+	function getQueryString($what = ""){
 		$query = "";
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
@@ -153,9 +153,9 @@ class weDialog{
 		return '
 			<script  type="text/javascript"><!--
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';'.
-			((!(we_base_browserDetect::isGecko()||we_base_browserDetect::isOpera()))?
-			'document.onkeydown = doKeyDown;':'').'
+				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
+			((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
+				'document.onkeydown = doKeyDown;' : '') . '
 
 				function doKeyDown() {
 					var key = event.keyCode;
@@ -249,7 +249,7 @@ class weDialog{
 		return ""; // overwrite !!
 	}
 
-	function getHeaderHTML($printJS_Style=false){
+	function getHeaderHTML($printJS_Style = false){
 		$out = we_html_tools::htmlTop($this->dialogTitle, $this->charset);
 
 		if($printJS_Style){
@@ -266,21 +266,13 @@ class weDialog{
 			<script  type="text/javascript"><!--
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 				var textareaFocus = false;
-
-				if (isGecko) {
-					document.addEventListener("keyup",doKeyDown,true);
-				} else {
-					document.onkeydown = doKeyDown;
-				}
+				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
+					document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 				function doKeyDown(e) {
 					var key;
 
-					if (isGecko) {
-						key = e.keyCode;
-					} else {
-						key = event.keyCode;
-					}
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;':'key = event.keyCode;').'
 
 					switch (key) {
 						case 27:
@@ -350,7 +342,7 @@ class weDialog{
 		return $js;
 	}
 
-	function formColor($size, $name, $value, $width=""){
+	function formColor($size, $name, $value, $width = ""){
 		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onClick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
 	}
 
@@ -362,7 +354,7 @@ class weDialog{
 		return '</body></html>';
 	}
 
-	function getHttpVar($name, $alt=""){
+	function getHttpVar($name, $alt = ""){
 		return isset($_REQUEST["we_dialog_args"][$name]) ? $_REQUEST["we_dialog_args"][$name] : $alt;
 	}
 

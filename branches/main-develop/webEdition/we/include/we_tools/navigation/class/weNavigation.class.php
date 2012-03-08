@@ -149,24 +149,15 @@ class weNavigation extends weModelBase{
 	function _getFilterOfDocument(){
 		$_id = 0;
 		$_table = "";
-		if($this->IsFolder){
-			if($this->FolderSelection == "objLink"){
+		switch(($this->IsFolder ? $this->FolderSelection : $this->SelectionType)){
+			case "objLink":
 				$_table = OBJECT_FILES_TABLE;
 				$_id = $this->LinkID;
-			} else
-			if($this->FolderSelection == "docLink"){
+				break;
+			case "docLink":
 				$_table = FILE_TABLE;
 				$_id = $this->LinkID;
-			}
-		} else{
-			if($this->SelectionType == "objLink"){
-				$_table = OBJECT_FILES_TABLE;
-				$_id = $this->LinkID;
-			} else
-			if($this->SelectionType == "docLink"){
-				$_table = FILE_TABLE;
-				$_id = $this->LinkID;
-			}
+				break;
 		}
 
 		$this->LimitAccess = 0;
@@ -183,7 +174,7 @@ class weNavigation extends weModelBase{
 		}
 	}
 
-	function save($order = true, $rebuild=false){
+	function save($order = true, $rebuild = false){
 		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weNavigationSettingControl::saveSettings(true);
@@ -440,7 +431,6 @@ class weNavigation extends weModelBase{
 
 	function getDynamicEntries(){
 		if($this->Selection == 'dynamic'){
-			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 
 			if($this->SelectionType == 'doctype'){
 				return weDynList::getDocuments(
@@ -502,7 +492,7 @@ class weNavigation extends weModelBase{
 			$_navigation->ParentID = $this->ID;
 			$_navigation->Selection = 'static';
 
-			$_navigation->SelectionType = $this->SelectionType == 'doctype' ? 'docLink' : ($this->SelectionType == 'category' ? 'catLink' : 'objLink');
+			$_navigation->SelectionType = ($this->SelectionType == 'doctype' ? 'docLink' : ($this->SelectionType == 'category' ? 'catLink' : 'objLink'));
 			$_navigation->LinkID = $_item['id'];
 			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['ordn'] : $_k;
 			$_navigation->Depended = 1;
