@@ -63,7 +63,7 @@ $l_navigation=array(
 	'linkprops_desc'=>'Hier können Sie zusätzliche Link-Eigenschaften definieren. Für dynamische Einträge werden nur die Link-Eigenschaften Linkziel und Popup-Fenster verwendet.',
 	'linkSelection'=>'Link Auswahl',
 	'link'=>'Link',
-	'link_attribute'=>'Link Attribute',
+	'link_attribute'=>'Link Attribute (z.B. id="1", class=, ..)',
 	'link_language'=>'Link',
 	'manual_selection'=>'Manuelle Auswahl',
 	'menu_delete'=>'Löschen',

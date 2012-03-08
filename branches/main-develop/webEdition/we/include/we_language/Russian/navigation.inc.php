@@ -63,7 +63,7 @@ $l_navigation=array(
 	'linkprops_desc'=>'Here you can define the additional link properties. In dynamic items only link target and popup window properties will be applied.',
 	'linkSelection'=>'Link selection',
 	'link'=>'Link',
-	'link_attribute'=>'Link attributes',
+	'link_attribute'=>'Link attributes (e.g. id="1", class=, ...)',
 	'link_language'=>'Link',
 	'manual_selection'=>'Manual selection',
 	'menu_delete'=>'Delete',
