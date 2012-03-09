@@ -174,7 +174,7 @@ class we_langlink_listview extends listviewBase{
 			$this->Record["WE_ID"] = $this->foundlinks[$count]["LDID"];
 			$this->Record["WE_DOCUMENTLOCALE"] = $this->foundlinks[$count]["DLocale"];
 			$dLocale = explode('_', $this->foundlinks[$count]["DLocale"]);
-			$this->Record["WE_DOCUMENTCOUNTRY"] = $dLocale[1];
+			$this->Record["WE_DOCUMENTCOUNTRY"] = isset($dLocale[1])?$dLocale[1]:'';
 			$this->Record["WE_DOCUMENTLANGUAGE"] = $dLocale[0];
 			$this->Record["WE_TARGETLOCALE"] = $this->foundlinks[$count]["Locale"];
 			$Locale = explode('_', $this->foundlinks[$count]["Locale"]);

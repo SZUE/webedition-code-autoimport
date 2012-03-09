@@ -99,6 +99,7 @@ function we_tag_listview($attribs){
 
 	$we_lv_languages = isset($_REQUEST['we_lv_languages_' . $name]) ? $_REQUEST['we_lv_languages_' . $name] : weTag_getAttribute('languages', $attribs);
 	$we_lv_pagelanguage = isset($_REQUEST['we_lv_pagelanguage_' . $name]) ? $_REQUEST['we_lv_pagelanguage_' . $name] : weTag_getAttribute('pagelanguage', $attribs);
+	$showself = weTag_getAttribute('showself', $attribs, false, true);
 
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
 	$docid = weTag_getAttribute('docid', $attribs, 0);
@@ -218,7 +219,7 @@ function we_tag_listview($attribs){
 				}
 				unset($we_lv_langguagesdoc);
 			}
-			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $we_lv_pageID, $we_lv_pagelanguage, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_langlink_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_linktype, $cols, $seeMode, $we_lv_se, $cfilter, $showself, $we_lv_pageID, $we_lv_pagelanguage, $hidedirindex, $objectseourls);
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
