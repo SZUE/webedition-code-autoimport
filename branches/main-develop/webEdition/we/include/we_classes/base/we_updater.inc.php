@@ -205,7 +205,7 @@ class we_updater{
 
 	static function isColExist($tab, $col){
 		$DB_WE = $GLOBALS['DB_WE'];
-		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "';");
+		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape(trim($col,'`')) . "';");
 		return ($DB_WE->next_record());
 	}
 

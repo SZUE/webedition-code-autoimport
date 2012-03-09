@@ -298,7 +298,7 @@ class weNavigationItem{
 	function getNavigationFieldAttributes($attribs){
 		$attr = weTag_getAttribute('attributes', $attribs);
 		if($attr){
-			$_fields = makeArrayFromCSV($att);
+			$_fields = makeArrayFromCSV($attr);
 			unset($attribs['attributes']);
 			if(isset($_fields['link_attribute'])){
 				$_link_attribute = $_fields['link_attribute'];
