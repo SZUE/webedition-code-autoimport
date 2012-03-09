@@ -88,7 +88,7 @@ abstract class we_database_base{
 	/** internal seek to a specific position in result-set
 	 * @return bool if seek was successfull
 	 */
-	abstract protected function _seek($pos=0);
+	abstract protected function _seek($pos = 0);
 
 	/** internal fetch the data from DB
 	 * @param $resultType int (MYSQL_BOTH,MYSQL_ASSOC,MYSQL_NUM)
@@ -183,7 +183,7 @@ abstract class we_database_base{
 		}
 	}
 
-		/**
+	/**
 	 * called on serialize of this class, closes db connection
 	 * @return type empty array
 	 */
@@ -254,7 +254,7 @@ abstract class we_database_base{
 	 * @param bool $allowUnion this parameter is deprecated; it determines if the query is allowed to have unions
 	 * @return bool true, if the query was successfull
 	 */
-	function query($Query_String, $allowUnion=false, $unbuffered=false){
+	function query($Query_String, $allowUnion = false, $unbuffered = false){
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if($Query_String == ''){
 			/* The empty query string is passed on from the constructor,
@@ -495,9 +495,24 @@ abstract class we_database_base{
 		$ret = array();
 		foreach($arr as $key => $val){
 			if(is_object($val)){
-				t_e('warning','data error: db-field cannot contain objects','Key: '.$key,$arr);
+				t_e('warning', 'data error: db-field cannot contain objects', 'Key: ' . $key, $arr);
 			}
-			$ret[] = '`' . $key . '`=' . (is_int($val) ? $val : '"' . escape_sql_query($val) . '"');
+			//current hack: don't escape some used mysql functions
+			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
+			$escape = !is_int($val);
+			if($escape){
+				switch(strtoupper($val)){
+					case 'NOW()':
+					case 'UNIX_TIMESTAMP()':
+					case 'CURDATE()':
+					case 'CURRENT_DATE()':
+					case 'CURRENT_TIME()':
+					case 'CURRENT_TIMESTAMP()':
+					case 'CURTIME()':
+						$escape = false;
+				}
+			}
+			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
 		return implode(',', $ret);
 	}

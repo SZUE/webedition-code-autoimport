@@ -108,15 +108,10 @@ class we_shop_listviewOrderitem extends listviewBase{
 			$where = $this->condition ? (' WHERE ' . $this->condition ) : ' ';
 		}
 
-		$q = 'SELECT IntID,IntOrderID,IntArticleID,IntQuantity,Price, strSerial FROM ' . SHOP_TABLE . $where;
-
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT 1 FROM ' . SHOP_TABLE . $where);
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		$q = 'SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit ' . $this->start . ',' . $this->maxItemsPerPage) : '');
-		;
-
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 		$this->adjustRows();
 	}
@@ -184,5 +179,3 @@ class we_shop_listviewOrderitem extends listviewBase{
 	}
 
 }
-
-?>

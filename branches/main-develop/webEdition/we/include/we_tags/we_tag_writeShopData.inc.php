@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
 
 /**
  * This function writes the shop data (order) to the database
@@ -33,7 +32,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_u
  * @return         void
  */
 function we_tag_writeShopData($attribs){
-	global $DB_WE;
 
 	$name = weTag_getAttribute('name', $attribs);
 	if(($foo = attributFehltError($attribs, 'pricename', 'writeShopData'))){
@@ -51,10 +49,7 @@ function we_tag_writeShopData($attribs){
 	$shipping = weTag_getAttribute('shipping', $attribs);
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
-
-
 	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
-
 	$useVat = weTag_getAttribute('usevat', $attribs, false, true);
 
 	$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
@@ -77,7 +72,7 @@ function we_tag_writeShopData($attribs){
 			return;
 		}
 
-		$DB_WE = !isset($GLOBALS['DB_WE']) ? new DB_WE : $GLOBALS['DB_WE'];
+		$DB_WE = $GLOBALS['DB_WE'];
 
 		$DB_WE->lock(array(SHOP_TABLE => 'write', ERROR_LOG_TABLE => 'write', WE_SHOP_VAT_TABLE => 'read'));
 		$orderID = intval(f("SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE, 'max', $DB_WE)) + 1;
@@ -118,10 +113,21 @@ function we_tag_writeShopData($attribs){
 				}
 			}
 
-			$sql = "INSERT INTO " . SHOP_TABLE . " (intOrderID, IntArticleID, IntQuantity, Price, IntCustomerID, DateOrder, DateShipping, DatePayment, strSerial) ";
-			$sql .= "VALUES (" . $orderID . ", " . intval($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '" . $DB_WE->escape($preis) . "' , " . intval($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
+			if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
+					we_database_base::arraySetter((array(
+						'IntArticleID' => intval($shoppingItem['id']),
+						'IntQuantity' => abs($shoppingItem['quantity']),
+						'Price' => $preis,
+						'IntOrderID' => $orderID,
+						'IntCustomerID' => intval($_SESSION["webuser"]["ID"]),
+						'DateOrder' => 'now()',
+						'DateShipping' => 0,
+						'Datepayment' => 0,
+						//'IntPayment_Type' => ,
+						'strSerial' => serialize($shoppingItem['serial']),
+						//'strSerialOrder' =>
+					))))){
 
-			if(!$DB_WE->query($sql)){
 				echo "Data Insert Failed";
 				return;
 			}
@@ -137,8 +143,7 @@ emosBasketPageArray[$articleCount][3]='';
 emosBasketPageArray[$articleCount][4]='" . $shoppingItem['quantity'] . "';
 emosBasketPageArray[$articleCount][5]='NULL';
 emosBasketPageArray[$articleCount][6]='NULL';
-emosBasketPageArray[$articleCount][7]='NULL';
-";
+emosBasketPageArray[$articleCount][7]='NULL';";
 			}
 			$articleCount++;
 		}
@@ -173,13 +178,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
 		}
 
-		$cartSql = '
-				UPDATE ' . SHOP_TABLE . '
-				set strSerialOrder=\'' . $DB_WE->escape(serialize($cartField)) . '\'
-				WHERE intOrderID="' . $orderID . '"
-			';
-
-		if(!$DB_WE->query($cartSql)){
+		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' set strSerialOrder="' . $DB_WE->escape(serialize($cartField)) . '" WHERE intOrderID="' . $orderID . '"')){
 			echo "Data Insert Failed";
 			return;
 		}

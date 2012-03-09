@@ -212,14 +212,21 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$preis = getFieldFromShoparticle($serialDoc, 'price');
 
 				// now insert article to order:
-				$DB_WE->query("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]));
-				$DB_WE->next_record();
-
-				$sql = 'INSERT INTO ' . SHOP_TABLE . '
-						(IntArticleID,IntQuantity,Price,IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type,strSerial,strSerialOrder)
-					VALUES' .
-					"(\"$id\", \"" . $_REQUEST["anzahl"] . "\",\"" . $preis . "\", \"" . $DB_WE->f("IntOrderID") . "\", \"" . $DB_WE->f("IntCustomerID") . "\",\"" . $DB_WE->f("DateOrder") . "\",\"" . $DB_WE->f("DateShipping") . "\",\"" . $DB_WE->f("Datepayment") . "\",\"" . $DB_WE->f("IntPayment_Type") . "\",'" . addslashes(serialize($serialDoc)) . "', '$_strSerialOrder')";
-				$DB_WE->query($sql);
+				$row=getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]),$DB_WE);
+				$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
+					we_database_base::arraySetter((array(
+						'IntArticleID' => $id,
+						'IntQuantity' => $_REQUEST["anzahl"],
+						'Price' => $preis,
+						'IntOrderID' => $row["IntOrderID"],
+						'IntCustomerID' => $row["IntCustomerID"],
+						'DateOrder' => $row["DateOrder"],
+						'DateShipping' => $row["DateShipping"],
+						'Datepayment' => $row["Datepayment"],
+						'IntPayment_Type' => $row["IntPayment_Type"],
+						'strSerial' => serialize($serialDoc),
+						'strSerialOrder' => $_strSerialOrder
+					))));
 			}
 
 			break;
@@ -1139,13 +1146,9 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// first get all information about orders, we need this for the rest of the page
 	//
-	$query = "
-		SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'" . $da . "') as DateShipping, DATE_FORMAT(DatePayment,'" . $da . "') as DatePayment, DATE_FORMAT(DateOrder,'" . $da . "') as DateOrder, DATE_FORMAT(DateConfirmation,'" . $da . "') as DateConfirmation, DATE_FORMAT(DateCustomA,'" . $da . "') as DateCustomA, DATE_FORMAT(DateCustomB,'" . $da . "') as DateCustomB, DATE_FORMAT(DateCustomC,'" . $da . "') as DateCustomC, DATE_FORMAT(DateCustomD,'" . $da . "') as DateCustomD, DATE_FORMAT(DateCustomE,'" . $da . "') as DateCustomE, DATE_FORMAT(DateCustomF,'" . $da . "') as DateCustomF, DATE_FORMAT(DateCustomG,'" . $da . "') as DateCustomG, DATE_FORMAT(DateCustomH,'" . $da . "') as DateCustomH, DATE_FORMAT(DateCustomI,'" . $da . "') as DateCustomI, DATE_FORMAT(DateCustomJ,'" . $da . "') as DateCustomJ, DATE_FORMAT(DateCancellation,'" . $da . "') as DateCancellation, DATE_FORMAT(DateFinished,'" . $da . "') as DateFinished,
+	$DB_WE->query("SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'" . $da . "') as DateShipping, DATE_FORMAT(DatePayment,'" . $da . "') as DatePayment, DATE_FORMAT(DateOrder,'" . $da . "') as DateOrder, DATE_FORMAT(DateConfirmation,'" . $da . "') as DateConfirmation, DATE_FORMAT(DateCustomA,'" . $da . "') as DateCustomA, DATE_FORMAT(DateCustomB,'" . $da . "') as DateCustomB, DATE_FORMAT(DateCustomC,'" . $da . "') as DateCustomC, DATE_FORMAT(DateCustomD,'" . $da . "') as DateCustomD, DATE_FORMAT(DateCustomE,'" . $da . "') as DateCustomE, DATE_FORMAT(DateCustomF,'" . $da . "') as DateCustomF, DATE_FORMAT(DateCustomG,'" . $da . "') as DateCustomG, DATE_FORMAT(DateCustomH,'" . $da . "') as DateCustomH, DATE_FORMAT(DateCustomI,'" . $da . "') as DateCustomI, DATE_FORMAT(DateCustomJ,'" . $da . "') as DateCustomJ, DATE_FORMAT(DateCancellation,'" . $da . "') as DateCancellation, DATE_FORMAT(DateFinished,'" . $da . "') as DateFinished,
 		DATE_FORMAT(MailShipping,'" . $db . "') as MailShipping, DATE_FORMAT(MailPayment,'" . $db . "') as MailPayment, DATE_FORMAT(MailOrder,'" . $db . "') as MailOrder, DATE_FORMAT(MailConfirmation,'" . $db . "') as MailConfirmation, DATE_FORMAT(MailCustomA,'" . $db . "') as MailCustomA, DATE_FORMAT(MailCustomB,'" . $db . "') as MailCustomB, DATE_FORMAT(MailCustomC,'" . $db . "') as MailCustomC, DATE_FORMAT(MailCustomD,'" . $db . "') as MailCustomD, DATE_FORMAT(MailCustomE,'" . $db . "') as MailCustomE, DATE_FORMAT(MailCustomF,'" . $db . "') as MailCustomF, DATE_FORMAT(MailCustomG,'" . $db . "') as MailCustomG, DATE_FORMAT(MailCustomH,'" . $db . "') as MailCustomH, DATE_FORMAT(MailCustomI,'" . $db . "') as MailCustomI, DATE_FORMAT(MailCustomJ,'" . $db . "') as MailCustomJ, DATE_FORMAT(MailCancellation,'" . $db . "') as MailCancellation, DATE_FORMAT(MailFinished,'" . $db . "') as MailFinished
-		FROM " . SHOP_TABLE . "
-		WHERE IntOrderID = " . intval($_REQUEST["bid"]);
-
-	$DB_WE->query($query);
+		FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 
 	// loop through all articles
 	while($DB_WE->next_record()) {
@@ -2138,7 +2141,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 
 			}';
 
-	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished','DateShipping','DateCancellation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
+	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished', 'DateShipping', 'DateCancellation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
 		'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ');
 	foreach($all as $cur){
 		if(!$weShopStatusMails->FieldsHidden[$cur]){
