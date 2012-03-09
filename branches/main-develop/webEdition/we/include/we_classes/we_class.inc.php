@@ -659,8 +659,8 @@ abstract class we_class{
 						if(count($rows) > 1){
 							for($i = 0; $i < count($rows) - 1; $i++){
 								if($rows[$i]['LDID'] && $rows[$i + 1]['LDID']){
-									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i]['LDID']) . ", DLocale='" . $rows[$i]['Locale'] . "', LDID=" . intval($rows[$i + 1]['LDID']) . ", Locale='" . $rows[$i + 1]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type);
-									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i + 1]['LDID']) . ", DLocale=" . $rows[$i + 1]['Locale'] . ", LDID=" . intval($rows[$i]['LDID']) . ", Locale='" . $rows[$i]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type);
+									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i]['LDID']) . ", DLocale='" . $rows[$i]['Locale'] . "', LDID=" . intval($rows[$i + 1]['LDID']) . ", Locale='" . $rows[$i + 1]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
+									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i + 1]['LDID']) . ", DLocale='" . $rows[$i + 1]['Locale'] . "', LDID=" . intval($rows[$i]['LDID']) . ", Locale='" . $rows[$i]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'"); 
 								}
 							}
 						}
