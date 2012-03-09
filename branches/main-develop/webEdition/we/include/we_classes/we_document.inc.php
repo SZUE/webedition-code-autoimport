@@ -879,12 +879,16 @@ class we_document extends we_root{
 	}
 
 	protected function i_writeDocument(){
+		$update=$this->i_isMoved();
 		$doc = $this->i_getDocumentToSave();
 		if($doc || $doc == ''){
 			if(!$this->i_writeSiteDir($doc)){
 				return false;
 			}
 			if(!$this->i_writeMainDir($doc)){
+				if($update){
+					$this->rewriteNavigation();
+				}
 				return false;
 			}
 		} else{
@@ -1269,7 +1273,7 @@ class we_document extends we_root{
 			} else{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
 				$path_parts = pathinfo($path);
-				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' 
+				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''
 							&& in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}

@@ -109,8 +109,7 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function i_getDocument($includepath = ""){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weFile.class.php");
+	function i_getDocument(){
 		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
 
@@ -127,6 +126,7 @@ class we_binaryDocument extends we_document{
 			if($this->i_isMoved()){
 				we_util_File::delete($this->getRealPath(true));
 				we_util_File::delete($this->getSitePath(true));
+				$this->rewriteNavigation();
 			}
 		} else{
 			return false;

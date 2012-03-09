@@ -383,6 +383,7 @@ class we_textContentDocument extends we_textDocument{
 
 		//Bug #5505
 //		if($saveinMainDB) {
+		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
 		$this->rewriteNavigation();
 //		}
 		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
@@ -517,8 +518,9 @@ class we_textContentDocument extends we_textDocument{
 			we_util_File::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
-		if(!we_document::i_writeMainDir($doc))
+		if(!parent::i_writeMainDir($doc)){
 			return false;
+		}
 		return true;
 	}
 

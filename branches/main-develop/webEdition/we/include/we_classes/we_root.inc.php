@@ -24,11 +24,12 @@
  */
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
-	const USER_HASACCESS=1;
-	const FILE_LOCKED=-3;
-	const USER_NO_PERM=-2;
-	const USER_NO_SAVE=-4;
-	const FILE_NOT_IN_USER_WORKSPACE=-1;
+
+	const USER_HASACCESS = 1;
+	const FILE_LOCKED = -3;
+	const USER_NO_PERM = -2;
+	const USER_NO_SAVE = -4;
+	const FILE_NOT_IN_USER_WORKSPACE = -1;
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 
@@ -88,10 +89,6 @@ abstract class we_root extends we_class{
 	var $RestrictOwners = 0;
 	var $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 	var $DocStream = "";
-
-
-
-
 
 	/* Constructor */
 
@@ -235,13 +232,13 @@ abstract class we_root extends we_class{
 
 	/* creates the filename input-field */
 
-	function formFilename($text=""){
+	function formFilename($text = ""){
 		return $this->formTextInput("", "Filename", $text ? $text : g_l('weClass', "[filename]"), 24, 255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width="", $rootDirID=0, $table="", $Pathname="ParentPath", $IDName="ParentID", $cmd="", $showTitle=true){
+	function formDirChooser($width = "", $rootDirID = 0, $table = "", $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $showTitle = true){
 		$yuiSuggest = & weSuggest::getInstance();
 
 		if(!$table)
@@ -284,7 +281,7 @@ abstract class we_root extends we_class{
 		//return $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 	}
 
-	function htmlTextInput_formDirChooser($attribs=array(), $addAttribs=array()){
+	function htmlTextInput_formDirChooser($attribs = array(), $addAttribs = array()){
 		$_attribs = array(
 			'onfocus' => "this.className='wetextinputselected';",
 			'onblur' => "this.className='wetextinput';",
@@ -310,7 +307,7 @@ abstract class we_root extends we_class{
 		return getHtmlTag('input', $_attribs);
 	}
 
-	function formCreator($canChange, $width=388){
+	function formCreator($canChange, $width = 388){
 		if(!$this->CreatorID)
 			$this->CreatorID = 0;
 
@@ -349,7 +346,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function formOwners($canChange=true){
+	function formOwners($canChange = true){
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
@@ -474,7 +471,7 @@ abstract class we_root extends we_class{
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1)
 				$readers[] = $key;
 		}
-		return!we_users_util::isUserInUsers($_SESSION["user"]["ID"], $readers);
+		return !we_users_util::isUserInUsers($_SESSION["user"]["ID"], $readers);
 	}
 
 	function formCopyDocument(){
@@ -493,7 +490,7 @@ abstract class we_root extends we_class{
 	# ATTENTION !!: You have to have we_cmd function in your file and browse_user section
 
 	#
-	function formUserChooser($old_userID=-1, $width="", $in_textname="", $in_idname=""){
+	function formUserChooser($old_userID = -1, $width = "", $in_textname = "", $in_idname = ""){
 		$textname = $in_textname == "" ? 'we_' . $this->Name . '_UserName' : $in_textname;
 		$idname = $in_idname == "" ? 'we_' . $this->Name . '_UserID' : $in_idname;
 
@@ -514,7 +511,7 @@ abstract class we_root extends we_class{
 		);
 	}
 
-	function formTriggerDocument($isclass=false){
+	function formTriggerDocument($isclass = false){
 		$yuiSuggest = & weSuggest::getInstance();
 		$table = FILE_TABLE;
 		if($isclass){
@@ -551,7 +548,7 @@ abstract class we_root extends we_class{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formLanguageDocument($headline, $langkey, $LDID=0, $table = FILE_TABLE, $rootDirID=0){
+	function formLanguageDocument($headline, $langkey, $LDID = 0, $table = FILE_TABLE, $rootDirID = 0){
 		$yuiSuggest = & weSuggest::getInstance();
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
@@ -616,7 +613,7 @@ abstract class we_root extends we_class{
 
 	/* set the Data for an element */
 
-	function setElement($name, $data, $type="txt", $id=0, $autobr=0){
+	function setElement($name, $data, $type = "txt", $id = 0, $autobr = 0){
 		$this->elements[$name]["dat"] = $data;
 		$this->elements[$name]["type"] = $type;
 		if($id)
@@ -627,7 +624,7 @@ abstract class we_root extends we_class{
 
 	/* get the data from an element */
 
-	function getElement($name, $key="dat"){
+	function getElement($name, $key = "dat"){
 		return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : '');
 	}
 
@@ -640,7 +637,7 @@ abstract class we_root extends we_class{
 
 	/* returns the next element or false if the array-pointer is at the end of the array */
 
-	function nextElement($type="txt"){
+	function nextElement($type = "txt"){
 		if(is_array($this->elements)){
 			while($arr = each($this->elements)) {
 				if((isset($arr["value"]["type"]) && $arr["value"]["type"] == $type) || $type == ""){
@@ -655,11 +652,11 @@ abstract class we_root extends we_class{
 
 	/* returns the JavaScript-Code which modifies the tree-menue */
 
-	function getUpdateTreeScript($select=true){
+	function getUpdateTreeScript($select = true){
 		return $this->getMoveTreeEntryScript($select);
 	}
 
-	function getMoveTreeEntryScript($select=true){
+	function getMoveTreeEntryScript($select = true){
 		$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}
@@ -701,13 +698,13 @@ abstract class we_root extends we_class{
 
 	/* get the Real-Path of the Object (Server-Path) */
 
-	function getRealPath($old=false){
+	function getRealPath($old = false){
 		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . ($old ? $this->OldPath : $this->getPath());
 	}
 
 	/* get the Site-Path of the Object */
 
-	function getSitePath($old=false){
+	function getSitePath($old = false){
 		$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR;
 		return $path . substr(($old ? $this->OldPath : $this->getPath()), 1);
 	}
@@ -734,12 +731,12 @@ abstract class we_root extends we_class{
 		return 0;
 	}
 
-	function makeHrefByID($id, $db=""){
+	function makeHrefByID($id, $db = ""){
 		$db = $db ? $db : new DB_WE;
 		return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $this->DB_WE);
 	}
 
-	function save($resave=0, $skipHook=0){
+	function save($resave = 0, $skipHook = 0){
 		return $this->we_save($resave, $skipHook);
 	}
 
@@ -756,14 +753,14 @@ abstract class we_root extends we_class{
 		$this->ParentPath = $this->getParentPath();
 	}
 
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 
 		$this->i_getContentData($this->LoadBinaryContent);
 		$this->OldPath = $this->Path;
 	}
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
@@ -930,7 +927,7 @@ abstract class we_root extends we_class{
 		return true; // overwrite
 	}
 
-	function i_getContentData($loadBinary=0){
+	function i_getContentData($loadBinary = 0){
 
 		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($this->ID) .
 			" AND " . LINK_TABLE . ".DocumentTable='" . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
@@ -945,11 +942,11 @@ abstract class we_root extends we_class{
 				$this->elements[$Name] = unserialize($this->DB_WE->f("Dat"));
 			} else{
 				if($this->i_isElement($Name)){
-					foreach($this->DB_WE->Record as $k=>$v) {
+					foreach($this->DB_WE->Record as $k => $v){
 						if(!in_array($k, $filter) && !is_numeric($k)){
 							$k = strtolower($k);
 							$this->elements[$Name][$k] = $v;
-							}
+						}
 					}
 					$this->elements[$Name]["table"] = CONTENT_TABLE;
 				}
@@ -1024,15 +1021,15 @@ abstract class we_root extends we_class{
 
 		$replace = implode(',', $replace);
 		if($replace){
-/*			t_e($replace,$this);
-			exit();*/
+			/* 			t_e($replace,$this);
+			  exit(); */
 			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
 			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
 		}
 		return true;
 	}
 
-	function i_getPersistentSlotsFromDB($felder="*"){
+	function i_getPersistentSlotsFromDB($felder = "*"){
 		we_class::i_getPersistentSlotsFromDB($felder);
 		$this->ParentPath = $this->getParentPath();
 	}
@@ -1087,7 +1084,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Filename='" . $this->Filename . "' AND ID != '" . $this->ID . "'", "ID", new DB_WE());
+		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Filename='" . escape_sql_query($this->Filename) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
 	}
 
 	function i_urlDouble(){
@@ -1224,7 +1221,7 @@ abstract class we_root extends we_class{
 			return self::USER_HASACCESS;
 		}
 
-		if($this->userHasPerms()){	//	access to doc is not restricted, check workspaces of user
+		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user
 			if($GLOBALS['we_doc']->ID){ //	userModule installed
 				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws){ //	doc has workspaces
@@ -1255,7 +1252,6 @@ abstract class we_root extends we_class{
 	}
 
 	function lockDocument(){
-
 		if($_SESSION['user']['ID']){ // only if user->id != 0
 			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
@@ -1289,7 +1285,7 @@ abstract class we_root extends we_class{
 				$this->DB_WE->query($query);
 				$return = array();
 				while($this->DB_WE->next_record()) {
-					array_push($return, $this->DB_WE->f('ParentID'));
+					$return[] = $this->DB_WE->f('ParentID');
 				}
 				return $return;
 			} else{
@@ -1297,7 +1293,7 @@ abstract class we_root extends we_class{
 				$this->DB_WE->query($query);
 				$return = array();
 				while($this->DB_WE->next_record()) {
-					array_push($return, $this->DB_WE->f('ParentID'));
+					$return[] = $this->DB_WE->f('ParentID');
 				}
 				return $return;
 			}

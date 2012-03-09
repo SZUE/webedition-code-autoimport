@@ -29,15 +29,17 @@ class weNavigationCache{
 	static $rebuildRootCnt = 0;
 
 	static function delNavigationTree($id){
-		if(!self::$rebuildRootCnt){//is increased in next line
+		static $deleted = array();
+		if(in_array($id,$deleted)){
 			return;
 		}
 		self::delCacheNavigationEntry(0);
-		self::cacheRootNavigation();
+		//self::cacheRootNavigation();
 		$_id = $id;
 		$_c = 0;
 		while($_id != 0) {
 			self::delCacheNavigationEntry($_id);
+			$deleted[] = $_id;
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
 			$_c++;
 			if($_c > 99999){
@@ -48,7 +50,7 @@ class weNavigationCache{
 
 	static function cacheNavigationTree($id){
 		weNavigationCache::cacheNavigationBranch($id);
-		weNavigationCache::cacheRootNavigation();
+		//weNavigationCache::cacheRootNavigation();
 	}
 
 	static function cacheNavigationBranch($id){
@@ -65,7 +67,8 @@ class weNavigationCache{
 		}
 	}
 
-	static function cacheRootNavigation(){
+	/*no need for this.
+	 * static function cacheRootNavigation(){
 		if(!self::$rebuildRootCnt++){
 			return;
 		}
@@ -83,7 +86,7 @@ class weNavigationCache{
 		unset($currentRulesStorage);
 
 		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
-	}
+	}*/
 
 	static function cacheNavigation($id){
 		$_naviItemes = new weNavigationItems();
