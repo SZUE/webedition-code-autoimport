@@ -1,5 +1,6 @@
 #nav li div.click:hover ul{
 	-moz-border-radius: 5px;
+	-moz-border-radius-topleft: 0px;
 }
 
 #nav li div.click:hover ul li:hover ul,

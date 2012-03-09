@@ -1,6 +1,6 @@
 #nav li div.click:hover ul{
 	-webkit-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	-webkit-border-top-left-radius: 0px;
 }
 
 #nav li div.click:hover ul li:hover ul,

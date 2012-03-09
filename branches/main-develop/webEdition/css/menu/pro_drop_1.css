@@ -9,19 +9,27 @@ This stylesheet and the associated (x)html may be modified in any
 way to fit your requirements.
 =================================================================== */
 
+/* ================================================================
+This copyright notice must be kept untouched in the stylesheet at
+all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.stunicholls.com/menu/pro_drop_1.html
+Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
+This stylesheet and the associated (x)html may be modified in any
+way to fit your requirements.
+=================================================================== */
+
 .preload1 {
-	background: url(over_l.gif);
+	background: url(arr.gif);
 }
 .preload2 {
-	background: url(over_r.gif);
-}
-.preload3 {
-	background: url(over_click_l.gif);
+	background: url(arr_over.gif);
 }
 
 #nav {
-	padding: 0px;
-	margin: 0px;
+	padding: 0 0 0 6px;
+	margin: 0;
 	list-style: none;
 	height: 32px;
 	position: relative;
@@ -37,32 +45,36 @@ way to fit your requirements.
 }
 
 #nav li.top div {
-	height:32px;
+	position:relative;
+	top:5px;
+	border:none;
 }
 
 #nav li.top:hover {
-	background: url(over_l.gif) no-repeat left top;
 	position: relative;
 	z-index: 200;
 }
 
 #nav li.top:hover div {
-	background: url(over_r.gif) no-repeat right top;
-height:32px;
+	border-top:solid 1px #ffffff;
+	border-right:solid 1px #808080;
+	border-bottom:solid 1px #808080;
+	border-left:solid 1px #ffffff;
+	height:22px;
+	top:4px;
+	background: #3399ff;
 }
 
 #nav li.top div.click {
-	height:16px;
 }
 
 #nav li.top div.click:hover {
-	background: url(over_click_l.gif) no-repeat left top;
-	height:32px;
+	border-top:solid 1px #808080;
+	border-left:solid 1px #808080;
+	border-right:solid 1px #ffffff;
 }
 
 #nav li.top div.click:hover a.top_link {
-	background: url(over_click_r.gif) no-repeat right top;
-	height:32px;
 }
 
 #nav li.top div a.top_link {
@@ -70,22 +82,28 @@ height:32px;
 	float: left;
 	height: 20px;
 	line-height: 22px;
-	color:black;
+	color:#000000;
 	text-decoration:none;
 	font-weight:bold;
-	padding: 0 0 0 12px;
 	cursor: pointer;
 	background:none;
 }
 
 #nav li.top:hover div a.top_link {
-	color: white;
+	color: #ffffff;
 }
 
 #nav li.top div a.top_link span {
 	float: left;
 	display: block;
-	padding: 5px 24px 0 12px;
+	padding: 0px 18px 0 18px;
+	height: 16px;
+}
+
+#nav li.top:hover div a.top_link span {
+	float: left;
+	display: block;
+	padding: 0 17px 0 17px;
 	height: 16px;
 }
 
@@ -108,25 +126,25 @@ height:32px;
 	top: -9999px;
 	width: 0px;
 	height: 0px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	list-style: none;
 	z-index: 300;
 }
 
 #nav li div.click:hover ul{
-	left: 0px;
-	top: 31px;
-	background: #fff;
-	border: 1px solid #3a93d2;
+	left: -1px;
+	top: 22px;
+	background: #f0f0f0;
+    border: 1px solid #a0a0a0;
 	word-wrap: break-word;
 	width: 14em;
 	height: auto;
 	z-index: 300;
+	margin-top: 0px;
+	padding: 0 2px 4px 2px;
 	border-radius: 5px;
-	border-radius: 5px;
-	padding-bottom: 5px;
-	margin-top: 1px;
+	border-top-left-radius: 0px;
 }
 
 #nav li div.click:hover ul.sub li{
@@ -139,52 +157,62 @@ height:32px;
 
 #nav li div.click:hover ul.sub li a{
 	display: block;
-	width: 12em;
-	line-height: 3.2ex;
-	padding-left: 1em;
+	width: 11.5em;
+	line-height: 2.5ex;
+	padding-left: 1.5em;
 	padding-right: 1em;
-	text-indent: -5px;
-	color: #000;
+	text-indent: -1em;
+	margin: 4px 0 1px 0;
+	margin: 2px 0 0 0;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	color: #000000;
 	text-decoration: none;
+	
 }
 
 #nav li ul.sub li a.fly {
-	background: #fff url(arrow.gif) 99% 50% no-repeat;
+	background: #f0f0f0 url(arr.gif) 99% 50% no-repeat;
 }
 #nav li div.click:hover ul.sub li a:hover {
-	background: #3a93d2;
-	color: #fff;
+	background: #3399ff;
+	color: #ffffff;	
+	
 }
 #nav li div.click:hover ul.sub li a.fly:hover {
-	background: #3a93d2 url(arrow_over.gif) 99% 50% no-repeat;
-	color: #fff;
+	background: #3399ff url(arr_over.gif) 99% 50% no-repeat;
+	color: #ffffff;
 }
 
 #nav li div.click ul li:hover > a.fly {
-	background: #3a93d2 url(arrow_over.gif) 99% 50% no-repeat;
-	color: #fff;
+	background: #3399ff url(arr_over.gif) 99% 50% no-repeat;
+	color: #ffffff;
 }
+
+
+
 #nav li div.click:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
-	left: 14em;
+	left: 13.8em;
 	top: -1px;
-	background: #fff;
-	border: 1px solid #3a93d2;
+	background: #f0f0f0;
+	border: 1px solid #a0a0a0;
 	word-wrap: break-word;
 	width: 14em;
 	z-index: 400;
 	height:auto;
-	border-radius: 5px;
-	padding-bottom: 5px;
-
+	padding: 0 2px 5px 2px;
+	border-radius: 5px;	
 }
 
 #nav li.disabled{
 	height: 0px;
 	line-height: 0px;
-	padding: 0px;
+	padding: 0;
 	width: 14em;
-	border-bottom: 1px solid #264f94;
+	border-top: 1px solid #a0a0a0;
+	border-bottom: 1px solid #ffffff;
+	margin: 2px 0 0 0;
 }

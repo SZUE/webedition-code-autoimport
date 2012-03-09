@@ -50,7 +50,7 @@ clickMenu = function(){
 	}
 
     /* If we leave an opened menu, its position:left change to -9999px, but div.top_div keeps class .click:
-	/* On reentering toplevel menues we mus therefor remove class .click (so we must click to reopen a menue).
+	/* On reentering toplevel menues we must therefor remove class .click (so we must click to reopen a menue).
      */
 	var getElsLiTop = document.getElementById("nav").getElementsByTagName("LI");
 	for (var i = 0; i < getElsLiTop.length; i++){
