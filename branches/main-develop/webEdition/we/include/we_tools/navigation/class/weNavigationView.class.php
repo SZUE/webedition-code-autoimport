@@ -871,10 +871,9 @@ class weNavigationView{
 					}
 
 
-					$js = we_html_element::jsElement($js . '
-						' . $this->editorHeaderFrame . '.location.reload();
-						' . we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', "[save_group_ok]") : g_l('navigation', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
-						' . $this->topFrame . '.hot=0;
+					$js = we_html_element::jsElement($js .$this->editorHeaderFrame . '.location.reload();'.
+						we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', "[save_group_ok]") : g_l('navigation', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
+						$this->topFrame . '.hot=0;
 						if(' . $this->topFrame . '.makeNewDoc) {
 							setTimeout("' . $this->topFrame . '.we_cmd(\"tool_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 						}
