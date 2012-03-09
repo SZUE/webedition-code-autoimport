@@ -627,9 +627,9 @@ HTS;
 											break;
 									}
 									$_progress_text = we_html_element::htmlB(
-											g_l('contentTypes', '[' . $ref->ContentType . ']') !== false ?
+											g_l('contentTypes', '[' . $ref->ContentType . ']',true) != ''?
 												g_l('contentTypes', '[' . $ref->ContentType . ']') :
-												(g_l('import', '[' . $ref->ContentType . ']') !== false ?
+												(g_l('import', '[' . $ref->ContentType . ']',true) != ''?
 													g_l('import', '[' . $ref->ContentType . ']') : ''
 												)
 										) . '&nbsp;&nbsp;' . $_path_info;

@@ -38,9 +38,12 @@ class we_shop_shop{
 	var $ActItem;
 
 	function __construct($shoppingCart){
-
-		$this->ShoppingCart = $shoppingCart;
-		$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
+		if(isobject($shoppingCart)){
+			$this->ShoppingCart = $shoppingCart;
+			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
+		}else{
+			t_e('called with non object');
+		}
 
 		$this->IDs = array_keys($this->ShoppingCartItems);
 	}
