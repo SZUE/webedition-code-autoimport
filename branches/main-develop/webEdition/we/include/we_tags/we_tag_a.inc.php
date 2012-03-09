@@ -38,7 +38,7 @@ function we_tag_a($attribs, $content){
 	$hrefonly = weTag_getAttribute('hrefonly', $attribs, false, true);
 	$return = weTag_getAttribute('return', $attribs, false, true);
 	$target = weTag_getAttribute('target', $attribs);
-
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 	$shop = weTag_getAttribute('shop', $attribs, false, true);
 	$amount = weTag_getAttribute('amount', $attribs, 1);
 	$delarticle = weTag_getAttribute('delarticle', $attribs, false, true);
@@ -65,7 +65,7 @@ function we_tag_a($attribs, $content){
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
 	$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
 	$path_parts = pathinfo($url);
-	if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+	if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 		$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 	}
 

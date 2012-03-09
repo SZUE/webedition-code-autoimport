@@ -1268,15 +1268,16 @@ class we_document extends we_root{
 				return '';
 			} else{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
+				$path_parts = pathinfo($path); t_e("link_showseolinks_2");
+				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' 
+							&& in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
 					return $path;
 				} else{
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Published', $db);
 					if($published){
-						$path_parts = pathinfo($path);
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
-							$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-						}
 						return $path;
 					} else{
 						$GLOBALS['we_link_not_published'] = 1;

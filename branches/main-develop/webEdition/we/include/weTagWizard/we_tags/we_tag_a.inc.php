@@ -15,6 +15,7 @@ $hrefonly = new weTagData_selectAttribute('hrefonly', array(new weTagDataOption(
 $class = new weTagData_textAttribute('class', false, '');
 $style = new weTagData_textAttribute('style', false, '');
 $params = new weTagData_textAttribute('params', false, '');
+$hidedirindex = new weTagData_selectAttribute('hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $amount = new weTagData_textAttribute('amount', false, 'shop');
 $delarticle = new weTagData_selectAttribute('delarticle', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $delshop = new weTagData_selectAttribute('delshop', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'shop');
@@ -27,11 +28,11 @@ $xml = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', fa
 
 
 $this->TypeAttribute = new weTagData_typeAttribute('edit', array(
-		new weTagDataOption('-', false, '', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params), array($id)),
-		new weTagDataOption('document', false, '', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $editself, $delete), array($id)),
-		new weTagDataOption('object', false, 'object', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $editself, $delete), array($id)),
-		new weTagDataOption('shop', false, 'shop', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $amount, $delarticle, $delshop, $shopname, ), array($id)))
+		new weTagDataOption('', false, '', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex), array($id)),
+		new weTagDataOption('document', false, '', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete), array($id)),
+		new weTagDataOption('object', false, 'object', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $editself, $delete), array($id)),
+		new weTagDataOption('shop', false, 'shop', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $hidedirindex, $amount, $delarticle, $delshop, $shopname, ), array($id)))
 	, false, '');
 
 
-$this->Attributes = array($id,$target,$confirm,$button,$hrefonly,$class,$style,$params,$amount,$delarticle,$delshop,$shopname,$editself,$delete,$xml);
+$this->Attributes = array($id,$target,$confirm,$button,$hrefonly,$class,$style,$params,$hidedirindex,$amount,$delarticle,$delshop,$shopname,$editself,$delete,$xml);
