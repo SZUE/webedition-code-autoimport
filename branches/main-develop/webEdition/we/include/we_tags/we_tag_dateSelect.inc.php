@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_dateSelect($attribs){
-	$foo = attributFehltError($attribs, "name", "dateSelect");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
 	$class = weTag_getAttribute("class", $attribs);

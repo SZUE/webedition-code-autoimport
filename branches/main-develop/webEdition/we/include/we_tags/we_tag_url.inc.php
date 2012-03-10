@@ -23,7 +23,7 @@
  */
 
 function we_tag_url($attribs){
-	$foo = attributFehltError($attribs, "id", "url");
+	$foo = attributFehltError($attribs, "id", __FUNCTION__);
 	if ($foo)
 		return $foo;
 	static $urls = array();

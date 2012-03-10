@@ -25,10 +25,10 @@
 //TODO: check if we really need to set the local variable; if, we need a parser-handler
 
 function we_tag_createShop($attribs){
-	if(($foo = attributFehltError($attribs, "shopname", "createShop")))
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
 		return $foo;
 	if(!defined("SHOP_TABLE")){
-		return modulFehltError('Shop', '"createShop"');
+		return modulFehltError('Shop', __FUNCTION__);
 	}
 
 	$deleteshop = weTag_getAttribute("deleteshop", $attribs, false, true);

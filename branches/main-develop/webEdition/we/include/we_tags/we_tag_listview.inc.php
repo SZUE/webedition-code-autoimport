@@ -41,25 +41,25 @@ function we_parse_tag_listview($attribs, $content){
 			if(defined('OBJECT_TABLE')){
 				$predefinedSQL = weTag_getParserAttribute('predefinedSQL', $arr, '');
 
-				if(($foo = attributFehltError($arr, 'classid', 'listview')) && $predefinedSQL == '')
+				if(($foo = attributFehltError($arr, 'classid', __FUNCTION__)) && $predefinedSQL == '')
 					return $foo;
 			}
 			break;
 		case 'orderitem':
 			if(defined('SHOP_TABLE')){
-				if(($foo = attributFehltError($arr, 'orderid', 'listview')))
+				if(($foo = attributFehltError($arr, 'orderid', __FUNCTION__)))
 					return $foo;
 			}
 			break;
 		case 'multiobject':
 			if(defined('OBJECT_TABLE')){
-				if(($foo = attributFehltError($arr, 'name', 'listview')))
+				if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
 					return $foo;
 			}
 			break;
 		case 'banner':
 			if(defined('BANNER_TABLE')){
-				if(($foo = attributFehltError($arr, 'path', 'listview')))
+				if(($foo = attributFehltError($arr, 'path', __FUNCTION__)))
 					return $foo;
 			}
 			break;
@@ -183,7 +183,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'object':
 			if(!defined('OBJECT_TABLE')){
-				print modulFehltError('Object/DB', 'listview type="object"');
+				print modulFehltError('Object/DB', __FUNCTION__.' type="object"');
 				return;
 			}
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
@@ -223,42 +223,42 @@ function we_tag_listview($attribs){
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
-				print modulFehltError('Customer', 'listview type="customer"');
+				print modulFehltError('Customer', __FUNCTION__.' type="customer"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'onlinemonitor':
 			if(!defined('CUSTOMER_SESSION_TABLE')){
-				print modulFehltError('Customer', 'listview type="onlinemonitor"');
+				print modulFehltError('Customer', __FUNCTION__.' type="onlinemonitor"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_listview_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
 			break;
 		case 'order':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', 'listview type="order"');
+				print modulFehltError('Shop', __FUNCTION__.' type="order"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_shop_listviewOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', 'listview type="orderitem"');
+				print modulFehltError('Shop', __FUNCTION__.' type="orderitem"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_shop_listviewOrderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
 			break;
 		case 'multiobject':
 			if(!defined('OBJECT_TABLE')){
-				print modulFehltError('Object/DB', 'listview type="multiobject"');
+				print modulFehltError('Object/DB', __FUNCTION__.' type="multiobject"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_listview_multiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'banner':
 			if(!defined('BANNER_TABLE')){
-				print modulFehltError('Banner', 'listview type="banner"');
+				print modulFehltError('Banner', __FUNCTION__.' type="banner"');
 				return;
 			}
 			$usefilter = weTag_getAttribute('usefilter', $attribs);
@@ -273,7 +273,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'shopVariant':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', 'listview type="shopVariant"');
+				print modulFehltError('Shop', __FUNCTION__.' type="shopVariant"');
 				return;
 			}
 			$defaultname = weTag_getAttribute('defaultname', $attribs);

@@ -103,8 +103,8 @@ function we_tag_ifPosition($attribs){
 	if(isset($GLOBALS['we']['ll'])){
 		$attribs['type'] = 'linklist';
 	}
-	if(($missingAttrib = attributFehltError($attribs, "type", "ifPosition")
-		|| attributFehltError($attribs, "position", "ifPosition"))){
+	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__)
+		|| attributFehltError($attribs, "position", __FUNCTION__))){
 		print $missingAttrib;
 		return '';
 	}
@@ -156,7 +156,7 @@ function we_tag_ifPosition($attribs){
 			break;
 
 		case "block" : //	look in function we_tag_block for details
-			$missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
+			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
 			if($missingAttrib){
 				print $missingAttrib;
 				return "";

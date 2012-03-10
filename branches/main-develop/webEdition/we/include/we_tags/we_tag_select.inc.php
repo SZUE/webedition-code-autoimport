@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_select($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", "select"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute("name", $attribs);

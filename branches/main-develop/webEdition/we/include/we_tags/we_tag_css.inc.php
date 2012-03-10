@@ -24,8 +24,7 @@
  */
 function we_tag_css($attribs){
 
-	$foo = attributFehltError($attribs, "id", "css");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "id", __FUNCTION__)))
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);
 	$rel = weTag_getAttribute("rel", $attribs, "stylesheet");
@@ -44,7 +43,7 @@ function we_tag_css($attribs){
 		$attribs["href"] = $url;
 
 
-		return getHtmlTag("link", $attribs) . "\n";
+		return getHtmlTag("link", $attribs);
 	}
 	return "";
 }

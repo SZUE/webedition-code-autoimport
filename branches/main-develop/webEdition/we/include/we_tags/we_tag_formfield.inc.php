@@ -24,8 +24,7 @@
  */
 function we_tag_formfield($attribs){
 
-	$foo = attributFehltError($attribs, "name", "formfield");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifNotShopField($attribs) {
-	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
+function we_tag_ifNotShopField($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "reference", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "shopname", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "match", __FUNCTION__, true)))
+		return $foo;
 
 	$match = weTag_getAttribute("match", $attribs);
 
-	$attribs['type']='print';
+	$attribs['type'] = 'print';
 	unset($attribs['match']);
 
-	return we_tag('shopField',$attribs) != $match;
+	return we_tag('shopField', $attribs) != $match;
 }

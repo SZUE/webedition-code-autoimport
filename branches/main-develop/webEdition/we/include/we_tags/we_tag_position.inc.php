@@ -26,8 +26,7 @@ function we_tag_position($attribs){
 	global $lv;
 
 	//	type is required !!!
-	$missingAttrib = attributFehltError($attribs, "type", "position");
-	if($missingAttrib){
+	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
 		print $missingAttrib;
 		return "";
 	}
@@ -57,7 +56,7 @@ function we_tag_position($attribs){
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
 		case "block" : //	look in function we_tag_block for details
 			//	first we must get right array !!!
-			$missingAttrib = attributFehltError($attribs, "reference", "position");
+			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
 			if($missingAttrib){
 				print $missingAttrib;
 				return "";

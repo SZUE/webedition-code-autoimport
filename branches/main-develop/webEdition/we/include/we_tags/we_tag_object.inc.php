@@ -36,7 +36,7 @@ function we_parse_tag_object($attribs, $content){
 
 function we_tag_object($attribs){
 	if(!defined('WE_OBJECT_MODULE_DIR')){
-		print modulFehltError('Object/DB', 'object');
+		print modulFehltError('Object/DB', __FUNCTION__);
 		return false;
 	}
 

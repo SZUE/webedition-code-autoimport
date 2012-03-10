@@ -31,7 +31,7 @@ function we_tag_linkToSeeMode($attribs){
 	$xml = weTag_getAttribute("xml", $attribs);
 
 	// check for value attribute
-	$foo = attributFehltError($attribs, "value", "linkToSeeMode");
+	$foo = attributFehltError($attribs, "value", __FUNCTION__);
 	if($foo)
 		return $foo;
 

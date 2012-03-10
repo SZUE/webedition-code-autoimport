@@ -24,7 +24,7 @@
  */
 function we_parse_tag_repeatShopItem($attribs, $content){
 	eval('$attribs = ' . $attribs . ';');
-	if(($foo = attributFehltError($attribs, "shopname", "repeatShopItem"))){
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
 	}
 
@@ -34,7 +34,7 @@ function we_parse_tag_repeatShopItem($attribs, $content){
 
 function we_tag_repeatShopItem($attribs){
 	if(!defined("SHOP_TABLE")){
-		print modulFehltError('Shop', '"repeatShopitem"');
+		print modulFehltError('Shop', __FUNCTION__);
 		return;
 	}
 	$shopname = weTag_getAttribute("shopname", $attribs);
@@ -43,7 +43,7 @@ function we_tag_repeatShopItem($attribs){
 	$_type = weTag_getAttribute('_type', $attribs);
 	switch($_type){
 		case 'start':
-			if(($foo = attributFehltError($attribs, "shopname", "repeatShopItem"))){
+			if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 				print $foo;
 				return;
 			}

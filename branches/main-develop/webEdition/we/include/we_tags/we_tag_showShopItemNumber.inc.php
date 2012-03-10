@@ -26,7 +26,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop
 
 function we_tag_showShopItemNumber($attribs){
 
-	if(($foo = attributFehltError($attribs, "shopname", "showShopItemNumber"))){
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
 	}
 

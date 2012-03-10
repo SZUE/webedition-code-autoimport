@@ -79,7 +79,7 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 }
 
 function we_tag_ifVarSet($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", "ifVarSet"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return "";
 	}

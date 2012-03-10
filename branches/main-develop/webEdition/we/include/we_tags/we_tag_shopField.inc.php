@@ -23,13 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_shopField($attribs){
-	if(($foo = attributFehltError($attribs, "name", "shopField"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
-	if(($foo = attributFehltError($attribs, "reference", "shopField"))){
+	if(($foo = attributFehltError($attribs, "reference", __FUNCTION__))){
 		return $foo;
 	}
-	if(($foo = attributFehltError($attribs, "shopname", "shopField"))){
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
 	}
 

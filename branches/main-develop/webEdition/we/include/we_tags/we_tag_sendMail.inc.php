@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sendMail($attribs, $content){
-	if(($foo = attributFehltError($attribs, "recipient", "sendMail")) || ($foo = attributFehltError($attribs, "from", "sendMail"))){
+	if(($foo = attributFehltError($attribs, "recipient", __FUNCTION__)) || ($foo = attributFehltError($attribs, "from", __FUNCTION__))){
 		return $foo;
 	}
 

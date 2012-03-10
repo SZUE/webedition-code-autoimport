@@ -23,15 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifField($attribs){
-	if(($foo = attributFehltError($attribs, "name", "ifField"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return "";
 	}
-	if(($foo = attributFehltError($attribs, "match", "ifField", true))){
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
 		print($foo);
 		return "";
 	}
-	if(($foo = attributFehltError($attribs, "type", "ifField", true))){
+	if(($foo = attributFehltError($attribs, "type", __FUNCTION__, true))){
 		print($foo);
 		return "";
 	}

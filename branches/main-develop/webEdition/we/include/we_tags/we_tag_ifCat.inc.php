@@ -28,7 +28,7 @@ function we_tag_ifCat($attribs){
 	$category = weTag_getAttribute("category", $attribs);
 
 	if(strlen($categories) == 0 && strlen($category) == 0){
-		if(($foo = attributFehltError($attribs, "categories", "ifCat"))){
+		if(($foo = attributFehltError($attribs, "categories", __FUNCTION__))){
 			print($foo);
 			return "";
 		}

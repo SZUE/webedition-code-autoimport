@@ -80,8 +80,7 @@ function we_isNotEmpty($attribs){
 }
 
 function we_tag_ifEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, 'match', 'ifEmpty');
-	if($foo){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return '';
 	}

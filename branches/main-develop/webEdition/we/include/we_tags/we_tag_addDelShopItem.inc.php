@@ -24,10 +24,10 @@
  */
 function we_tag_addDelShopItem($attribs){
 	if(!defined("SHOP_TABLE")){
-		print modulFehltError('Shop', '"adddelShopitem"');
+		print modulFehltError('Shop', __FUNCTION__);
 		return;
 	}
-	if(($foo = attributFehltError($attribs, "shopname", "addDelShopItem"))){
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
 	}
 

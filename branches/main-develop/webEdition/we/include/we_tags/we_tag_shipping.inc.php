@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_shipping($attribs){
-	$foo = attributFehltError($attribs, "sum", "shipping");
+	$foo = attributFehltError($attribs, "sum", __FUNCTION__);
 	if($foo)
 		return $foo;
 

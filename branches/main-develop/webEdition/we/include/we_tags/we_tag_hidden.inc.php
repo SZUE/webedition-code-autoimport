@@ -24,7 +24,7 @@
  */
 function we_tag_hidden($attribs){
 
-	if(($foo = attributFehltError($attribs, "name", "hidden")))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 
 	$name = weTag_getAttribute("name", $attribs);

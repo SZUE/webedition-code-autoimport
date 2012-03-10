@@ -24,9 +24,9 @@
  */
 function we_parse_tag_checkForm($attribs, $content){
 	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
-	if(($foo = attributFehltError($arr, 'match', 'checkForm')))
+	if(($foo = attributFehltError($arr, 'match', __FUNCTION__)))
 		return $foo;
-	if(($foo = attributFehltError($arr, 'type', 'checkForm')))
+	if(($foo = attributFehltError($arr, 'type', __FUNCTION__)))
 		return $foo;
 
 	return '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, $content, true) . '); ?>';
@@ -45,12 +45,12 @@ function we_tag_checkForm($attribs, $content){
 	}
 
 	//  check required Fields
-	if(($missingAttrib = attributFehltError($attribs, "match", "we_tag_checkForm"))){
+	if(($missingAttrib = attributFehltError($attribs, "match", __FUNCTION__))){
 		print $missingAttrib;
 		return "";
 	}
 
-	if(($missingAttrib = attributFehltError($attribs, "type", "we_tag_checkForm"))){
+	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
 		print $missingAttrib;
 		return "";
 	}

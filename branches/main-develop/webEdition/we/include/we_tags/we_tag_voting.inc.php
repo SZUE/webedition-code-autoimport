@@ -28,13 +28,13 @@ function we_parse_tag_voting($attribs, $content){
  */
 function we_tag_voting($attribs){
 	if(!defined("VOTING_TABLE")){
-		return modulFehltError('Voting', '"voting"');
+		return modulFehltError('Voting', __FUNCTION__);
 	}
 	$id = weTag_getAttribute("id", $attribs, 0);
 	$name = weTag_getAttribute("name", $attribs);
 	$version = weTag_getAttribute("version", $attribs, 0);
 
-	if(($foo = attributFehltError($attribs, 'name', 'voting'))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 

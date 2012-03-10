@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopVat($attribs){
-	if(($foo = attributFehltError($attribs, "id", "ifShopVat")))
+	if(($foo = attributFehltError($attribs, "id", __FUNCTION__)))
 		return $foo;
 	$id = weTag_getAttribute('id', $attribs, -1);
 

@@ -316,6 +316,7 @@ function we_getDocForTag($docAttr, $maindefault = false){
 }
 
 function modulFehltError($modul, $tag){
+	$tag = str_replace(array('we_tag_','we_parse_tag_'), '', $tag);
 	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
 }
 
@@ -325,7 +326,7 @@ function parseError($text){
 }
 
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
-	$tag = str_replace('we_tag_', '', $tag);
+	$tag = str_replace(array('we_tag_','we_parse_tag_'), '', $tag);
 	if($canBeEmpty){
 		if(!isset($attribs[$attr]))
 			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));

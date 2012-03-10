@@ -24,7 +24,7 @@
  */
 function we_parse_tag_captcha($attribs){
 	eval('$attribs = ' . $attribs . ';');
-	if(($foo = attributFehltError($attribs, 'width', 'captcha')) || ($foo = attributFehltError($attribs, 'height', 'captcha'))){
+	if(($foo = attributFehltError($attribs, 'width', __FUNCTION__)) || ($foo = attributFehltError($attribs, 'height', __FUNCTION__))){
 		return $foo;
 	}
 

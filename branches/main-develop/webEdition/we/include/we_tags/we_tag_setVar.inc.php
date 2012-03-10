@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_setVar($attribs){
-	if(($foo = attributFehltError($attribs, "nameto", "setVar")))
+	if(($foo = attributFehltError($attribs, "nameto", __FUNCTION__)))
 		return $foo;
-	if(($foo = attributFehltError($attribs, "to", "setVar")))
+	if(($foo = attributFehltError($attribs, "to", __FUNCTION__)))
 		return $foo;
 
 	$nameFrom = weTag_getAttribute("namefrom", $attribs);

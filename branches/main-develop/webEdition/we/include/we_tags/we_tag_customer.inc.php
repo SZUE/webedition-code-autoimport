@@ -36,7 +36,7 @@ function we_parse_tag_customer($attribs, $content){
 
 function we_tag_customer($attribs){
 	if(!defined("WE_CUSTOMER_MODULE_DIR")){
-		print modulFehltError('Customer', 'customer');
+		print modulFehltError('Customer', __FUNCTION__);
 		return false;
 	}
 

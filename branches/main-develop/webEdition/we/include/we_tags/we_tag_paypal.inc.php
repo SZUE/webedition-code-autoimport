@@ -34,10 +34,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop
 function we_tag_paypal($attribs){
 	global $DB_WE;
 	$name = weTag_getAttribute('name', $attribs);
-	if(($foo = attributFehltError($attribs, 'pricename', 'PayPal')))
+	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__)))
 		return $foo;
 	if(!$name){
-		if(($foo = attributFehltError($attribs, 'shopname', 'PayPal')))
+		if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)))
 			return $foo;
 	}
 	$shopname = weTag_getAttribute('shopname', $attribs);

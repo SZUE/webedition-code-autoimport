@@ -23,11 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_quicktime($attribs){
-	// Include Quicktime class
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
-
-	$foo = attributFehltError($attribs, "name", "quicktime");
-	if($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 
 	$name = weTag_getAttribute("name", $attribs);

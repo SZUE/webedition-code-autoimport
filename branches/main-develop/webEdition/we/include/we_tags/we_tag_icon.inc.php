@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_icon($attribs){
-	if(($foo = attributFehltError($attribs, 'id', 'icon')))
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__)))
 		return $foo;
 	$xml = weTag_getAttribute('xml', $attribs);
 	$id = weTag_getAttribute('id', $attribs);

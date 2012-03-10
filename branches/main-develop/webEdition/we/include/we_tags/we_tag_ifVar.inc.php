@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifVar($attribs){
-	if(($foo = attributFehltError($attribs, "name", "ifVar"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return false;
 	}
-	if(($foo = attributFehltError($attribs, "match", "ifVar", true))){
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
 		print($foo);
 		return false;
 	}

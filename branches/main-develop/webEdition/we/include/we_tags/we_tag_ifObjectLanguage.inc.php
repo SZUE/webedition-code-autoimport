@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifObjectLanguage($attribs){
-	if(($foo = attributFehltError($attribs, "match", "ifObjectLanguage", true))){
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
 		print($foo);
 		return false;
 	}

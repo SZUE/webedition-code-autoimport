@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_href($attribs){
-	if(($foo = attributFehltError($attribs, 'name', 'href'))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs);
 	$type = weTag_getAttribute('type', $attribs, 'all');
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-	$include = weTag_getAttribute('include', $attribs, false, true); 
-	$reload = weTag_getAttribute('reload', $attribs, false, true); 
+	$include = weTag_getAttribute('include', $attribs, false, true);
+	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
 	if(substr($rootdir, 0, 1) != '/'){
 		$rootdirid = $rootdir;
@@ -92,7 +92,7 @@ function we_tag_href($attribs){
 				$href = $intPath;
 				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 				$path_parts = pathinfo($href);
-				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], 
+				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'],
 							explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
@@ -174,10 +174,10 @@ function we_tag_href($attribs){
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : ""; // we need include_path without hidden dirindex
 			$path_parts = pathinfo($href);
-			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], 
+			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'],
 						explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 				$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-			}				
+			}
 
 			if($GLOBALS['we_editmode']){
 				if(($directory && $file) || $file){

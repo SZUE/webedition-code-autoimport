@@ -26,12 +26,12 @@ function we_tag_write($attribs){
 	$type = weTag_getAttribute("type", $attribs, "document");
 
 	if($type == "object"){
-		if(($foo = attributFehltError($attribs, "classid", "write"))){
+		if(($foo = attributFehltError($attribs, "classid", __FUNCTION__))){
 			return $foo;
 		}
 	} else{
 		$type = 'document'; //make sure type is known!
-		if(($foo = attributFehltError($attribs, "doctype", "write"))){
+		if(($foo = attributFehltError($attribs, "doctype", __FUNCTION__))){
 			return $foo;
 		}
 	}

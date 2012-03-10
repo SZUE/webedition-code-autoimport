@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop
  * @return         bool
  */
 function we_tag_ifShopEmpty($attribs){
-	if(($foo = attributFehltError($attribs, "shopname", "ifShopEmpty")))
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
 		return $foo;
 	$shopname = weTag_getAttribute("shopname", $attribs);
 

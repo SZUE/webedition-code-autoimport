@@ -30,9 +30,9 @@
  * @desc Beschreibung eingeben...
  */
 function we_tag_xmlfeed($attribs){
-	if(($foo = attributFehltError($attribs, 'name', 'xmlfeed')))
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)))
 		return $foo;
-	if(($foo = attributFehltError($attribs, 'url', 'xmlfeed')))
+	if(($foo = attributFehltError($attribs, 'url', __FUNCTION__)))
 		return $foo;
 
 	$name = weTag_getAttribute('name', $attribs);

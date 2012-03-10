@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_banner($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", "banner")))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 
 	$bannername = weTag_getAttribute("name", $attribs);
@@ -34,7 +34,6 @@ function we_tag_banner($attribs, $content){
 	$height = weTag_getAttribute("height", $attribs, ($type == "pixel") ? "1" : "");
 	$link = weTag_getAttribute("link", $attribs, true, true);
 	$page = weTag_getAttribute("page", $attribs);
-	$pixel = weTag_getAttribute("page", $attribs, false, true);
 	$bannerclick = weTag_getAttribute("clickscript", $attribs, "/webEdition/bannerclick.php");
 	$getbanner = weTag_getAttribute("getscript", $attribs, "/webEdition/getBanner.php");
 	$xml = weTag_getAttribute('xml', $attribs, false, true);
@@ -108,14 +107,10 @@ function we_tag_banner($attribs, $content){
 			if($type == "cookie"){
 				return $noscript;
 			} else{
-				//FIXME: replace by call of jsScript
-				return '<script  type="text/javascript">
-<!--
+				return we_html_element::jsElement('
 	r = Math.random();
    document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
-//-->
-</script><noscript>' . $noscript . '</noscript>
-';
+').'<noscript>' . $noscript . '</noscript>';
 			}
 		}
 	}

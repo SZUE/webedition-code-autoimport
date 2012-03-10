@@ -26,19 +26,16 @@ function we_tag_bannerSum($attribs){
 	if(!isset($GLOBALS["lv"])){
 		return false;
 	}
-	$foo = attributFehltError($attribs, "type", "bannerSum");
+	$foo = attributFehltError($attribs, "type", __FUNCTION__);
 	if($foo)
 		return $foo;
 	$type = weTag_getAttribute("type", $attribs);
 	switch($type){
 		case "clicks":
 			return $GLOBALS["lv"]->getAllclicks();
-			break;
 		case "views":
 			return $GLOBALS["lv"]->getAllviews();
-			break;
 		case "rate":
 			return $GLOBALS["lv"]->getAllrate();
-			break;
 	}
 }

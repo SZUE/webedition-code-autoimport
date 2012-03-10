@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sessionField($attribs, $content){
-	$foo = attributFehltError($attribs, 'name', 'sessionField');
+	$foo = attributFehltError($attribs, 'name', __FUNCTION__);
 	if($foo){
 		return $foo;
 	}
@@ -312,7 +312,7 @@ function we_tag_sessionField($attribs, $content){
 			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 			if($showcontrol){
 
-				$foo = attributFehltError($attribs, 'parentid', 'sessionField');
+				$foo = attributFehltError($attribs, 'parentid', __FUNCTION__);
 				if($foo)
 					return $foo;
 			}

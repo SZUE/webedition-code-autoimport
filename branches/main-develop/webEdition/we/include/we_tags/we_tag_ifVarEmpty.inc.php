@@ -99,7 +99,7 @@ function we_isVarNotEmpty($attribs){
 }
 
 function we_tag_ifVarEmpty($attribs, $content){
-	if(($foo = attributFehltError($attribs, 'match', 'ifVarEmpty'))){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return false;
 	}

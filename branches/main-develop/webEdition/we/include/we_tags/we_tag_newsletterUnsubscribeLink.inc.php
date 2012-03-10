@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_newsletterUnsubscribeLink($attribs){
-	$foo = attributFehltError($attribs, "id", "newsletterUnsubscribeLink");
+	$foo = attributFehltError($attribs, "id", __FUNCTION__);
 	if($foo)
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);

@@ -24,7 +24,7 @@
  */
 function we_tag_bannerSelect($attribs){
 	global $DB_WE;
-	$foo = attributFehltError($attribs, "name", "banner");
+	$foo = attributFehltError($attribs, "name", __FUNCTION__);
 	if($foo)
 		return $foo;
 

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifVotingField($attribs){
-	if(($foo = attributFehltError($attribs, "match", "ifVotingField"))){
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__))){
 		print($foo);
 		return false;
 	}

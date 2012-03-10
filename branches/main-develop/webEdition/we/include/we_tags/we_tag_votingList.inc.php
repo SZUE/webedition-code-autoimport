@@ -24,7 +24,7 @@
  */
 function we_parse_tag_votingList($attribs, $content){
 	eval('$attribs = ' . $attribs . ';');
-	if(($foo = attributFehltError($attribs, 'name', 'votingList'))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 
@@ -34,7 +34,7 @@ function we_parse_tag_votingList($attribs, $content){
 
 function we_tag_votingList($attribs){
 	if(!defined("VOTING_TABLE")){
-		print modulFehltError('Voting', '"VotingList"');
+		print modulFehltError('Voting', __FUNCTION__);
 		return;
 	}
 	$name = weTag_getAttribute('name', $attribs);

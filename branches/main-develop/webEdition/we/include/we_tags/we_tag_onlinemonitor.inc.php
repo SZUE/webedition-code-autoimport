@@ -30,7 +30,7 @@ function we_parse_tag_onlinemonitor($attribs, $content){
 
 function we_tag_onlinemonitor($attribs){
 	if(!defined('WE_CUSTOMER_MODULE_DIR')){
-		print modulFehltError('Customer', 'onlinemonitor');
+		print modulFehltError('Customer', __FUNCTION__);
 		return false;
 	}
 	$condition = weTag_getAttribute("condition", $attribs, 0);

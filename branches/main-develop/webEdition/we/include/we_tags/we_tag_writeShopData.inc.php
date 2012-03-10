@@ -34,11 +34,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop
 function we_tag_writeShopData($attribs){
 
 	$name = weTag_getAttribute('name', $attribs);
-	if(($foo = attributFehltError($attribs, 'pricename', 'writeShopData'))){
+	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
 	}
 	if(!$name){
-		if(($foo = attributFehltError($attribs, 'shopname', 'writeShopData'))){
+		if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 			return $foo;
 		}
 	}

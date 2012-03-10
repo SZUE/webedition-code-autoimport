@@ -28,7 +28,7 @@ function we_parse_tag_navigationEntry($attribs, $content) {
 }
 
 function we_tag_navigationEntry($attribs, $content) {
-	if (($foo = attributFehltError($attribs, 'type', 'navigation'))) {
+	if (($foo = attributFehltError($attribs, 'type', __FUNCTION__))) {
 		echo $foo;
 		return;
 	}

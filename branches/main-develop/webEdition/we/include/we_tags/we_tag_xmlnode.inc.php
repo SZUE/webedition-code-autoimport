@@ -43,7 +43,7 @@ function we_parse_tag_xmlnode($attribs, $content){
  * @desc Beschreibung eingeben...
  */
 function we_tag_xmlnode($attribs){
-	if(($foo = attributFehltError($attribs, "xpath", "xmlnode")))
+	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__)))
 		return $foo;
 	$feed = weTag_getAttribute('feed', $attribs);
 	$url = weTag_getAttribute('url', $attribs);

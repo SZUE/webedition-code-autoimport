@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sessionLogout($attribs, $content){
-	if(($foo = attributFehltError($attribs, 'id', 'sessionLogout'))){
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);

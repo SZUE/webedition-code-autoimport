@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_flashmovie($attribs){
-	if(($foo = attributFehltError($attribs, "name", "flashmovie")))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
 	$id = $GLOBALS['we_doc']->getElement($name, "bdid");

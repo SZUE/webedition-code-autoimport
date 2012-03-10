@@ -35,7 +35,7 @@
 function we_parse_tag_block($attribs, $content){
 	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
 	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
-	if(($foo = attributFehltError($arr, 'name', 'block')))
+	if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
 		return $foo;
 
 	//cleanup content

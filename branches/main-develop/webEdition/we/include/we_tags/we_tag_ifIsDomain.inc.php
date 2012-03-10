@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifIsDomain($attribs){
-	if(($foo = attributFehltError($attribs, 'domain', 'ifIsDomain'))){
+	if(($foo = attributFehltError($attribs, 'domain', __FUNCTION__))){
 		print($foo);
 		return false;
 	}

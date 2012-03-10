@@ -35,11 +35,11 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/w
 function we_tag_saferpay($attribs) {
 	global $DB_WE;
 	$name = weTag_getAttribute('name',$attribs);
-	$foo = attributFehltError($attribs,'pricename','saferpay');
+	$foo = attributFehltError($attribs,'pricename',__FUNCTION__);
 	if($foo)
 	    return $foo;
 	if(!$name)
-		$foo = attributFehltError($attribs,'shopname','saferpay');
+		$foo = attributFehltError($attribs,'shopname',__FUNCTION__);
 	if($foo)
 		return $foo;
 

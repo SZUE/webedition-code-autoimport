@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifEqual($attribs){
-	if(($foo = attributFehltError($attribs, "name", "ifEqual"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return false;
 	}
@@ -32,14 +32,14 @@ function we_tag_ifEqual($attribs){
 	$value = weTag_getAttribute("value", $attribs);
 
 	if(!$eqname){
-		if(($foo = attributFehltError($attribs, "value", "ifEqual"))){
+		if(($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 			print($foo);
 			return false;
 		}
 		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
 
-	if(($foo = attributFehltError($attribs, "eqname", "ifEqual"))){
+	if(($foo = attributFehltError($attribs, "eqname", __FUNCTION__))){
 		print($foo);
 		return false;
 	}

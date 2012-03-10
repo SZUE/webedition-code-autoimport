@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_textarea($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", "textarea"))){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
 

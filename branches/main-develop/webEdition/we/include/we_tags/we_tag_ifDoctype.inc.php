@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifDoctype($attribs){
-	if(($foo = attributFehltError($attribs, "doctypes", "ifDoctype"))){
+	if(($foo = attributFehltError($attribs, "doctypes", __FUNCTION__))){
 		print($foo);
 		return false;
 	}

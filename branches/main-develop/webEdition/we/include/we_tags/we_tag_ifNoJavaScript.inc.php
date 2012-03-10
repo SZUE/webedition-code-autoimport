@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNoJavaScript($attribs){
-	if(($foo = attributFehltError($attribs, 'id', 'ifNoJavaScript'))){
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);

@@ -58,6 +58,6 @@ function we_tag_calculate($attribs, $content){
 			}
 			return ($print ? we_util_Strings::formatnumber($result, $num_format) : '');
 		default:
-			return attributFehltError($attribs, 'calculate', '_type');
+			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}
 }

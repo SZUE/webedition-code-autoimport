@@ -149,7 +149,7 @@ function we_isFieldNotEmpty($attribs){
 }
 
 function we_tag_ifFieldEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, 'match', 'ifFieldEmpty');
+	$foo = attributFehltError($attribs, 'match', __FUNCTION__);
 	if ($foo) {
 		print($foo);
 		return '';

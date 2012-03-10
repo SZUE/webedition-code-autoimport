@@ -24,7 +24,7 @@
  */
 function we_tag_js($attribs){
 
-	$foo = attributFehltError($attribs, "id", "js");
+	$foo = attributFehltError($attribs, "id", __FUNCTION__);
 	if($foo)
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_userInput($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", "userInput")))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 
 	$name = weTag_getAttribute("name", $attribs);
@@ -95,7 +95,7 @@ function we_tag_userInput($attribs, $content){
 
 				if($editable){
 
-					$foo = attributFehltError($attribs, "parentid", "userInput");
+					$foo = attributFehltError($attribs, "parentid", __FUNCTION__);
 					if($foo)
 						return $foo;
 
@@ -195,7 +195,7 @@ function we_tag_userInput($attribs, $content){
 
 				if($editable){
 
-					$foo = attributFehltError($attribs, "parentid", "userInput");
+					$foo = attributFehltError($attribs, "parentid", __FUNCTION__);
 					if($foo)
 						return $foo;
 
@@ -303,7 +303,7 @@ function we_tag_userInput($attribs, $content){
 
 
 				if($editable){
-					$foo = attributFehltError($attribs, "parentid", "userInput");
+					$foo = attributFehltError($attribs, "parentid", __FUNCTION__);
 					if($foo)
 						return $foo;
 
@@ -409,7 +409,7 @@ function we_tag_userInput($attribs, $content){
 
 				if($editable){
 
-					$foo = attributFehltError($attribs, "parentid", "userInput");
+					$foo = attributFehltError($attribs, "parentid", __FUNCTION__);
 					if($foo)
 						return $foo;
 
