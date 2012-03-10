@@ -994,7 +994,7 @@ abstract class we_root extends we_class{
 							$val = sprintf("%016d", $val);
 						}
 						if($fieldName != "ID"){
-							$data[$fieldName] = $val;
+							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
 						}
 					}
 					if(count($data)){
