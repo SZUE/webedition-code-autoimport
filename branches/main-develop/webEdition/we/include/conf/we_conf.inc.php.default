@@ -113,12 +113,6 @@ if(!isset($GLOBALS['WE_LANGUAGE'])){
 }
 
 
-// PHP 5.3 date init #4353
-if(!date_default_timezone_set(@date_default_timezone_get())){
-	date_default_timezone_set('Europe/Berlin');
-}
-define('DATETIME_INITIALIZED', '1'); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item
-
 // printout  (as warning), every SQL Query
 //define ('WE_SQL_DEBUG', 1);
 // printout Mem-Usage at last line of the page

@@ -32,9 +32,6 @@
  * =====
  * Edit this file ONLY if you know exactly what you are doing!
  */
-if(file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_error_conf.inc.php")){
-	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_error_conf.inc.php");
-}
 
 /* * ***************************************************************************
  * SEEMODE SETTINGS
