@@ -102,9 +102,10 @@ function we_tag_include($attribs, $content){
 				((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')) . ';font-family:' .
 				g_l('css', '[font_family]') . ';">';
 			$_name = weTag_getAttribute('_name_orig', $attribs);
-			return '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags', '[include_file]') . '</span></td></tr><tr><td>' .
+			echo '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags', '[include_file]') . '</span></td></tr><tr><td>' .
 				we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
 				'</td></tr></table>';
+			return '';
 		}
 	} else{//notEditmode
 		if($name && !($id || $path)){

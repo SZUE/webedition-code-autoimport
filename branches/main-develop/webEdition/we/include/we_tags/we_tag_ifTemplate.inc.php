@@ -26,10 +26,10 @@ function we_tag_ifTemplate($attribs){
 	$id = weTag_getAttribute("id", $attribs);
 	$workspaceID = weTag_getAttribute("workspaceID", $attribs);
 	$path = weTag_getAttribute("path", $attribs);
+	$TID = (isset($GLOBALS['we_doc']->TemplateID) ? $GLOBALS['we_doc']->TemplateID : ($GLOBALS['we_doc'] instanceof we_template && isset($GLOBALS['we_doc']->ID) ? $GLOBALS['we_doc']->ID : 0));
 
-	if(isset($GLOBALS['we_doc']->TemplateID) && $id !== ""){
-		$idArray = makeArrayFromCSV($id);
-		return in_array($GLOBALS['we_doc']->TemplateID, $idArray);
+	if($TID && $id !== ""){
+		return in_array($TID, makeArrayFromCSV($id));
 	} else{
 		if($workspaceID !== ""){
 			$TempPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates";
