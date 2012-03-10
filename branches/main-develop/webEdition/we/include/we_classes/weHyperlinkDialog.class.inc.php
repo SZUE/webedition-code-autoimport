@@ -201,7 +201,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function initByHttp(){
-		weDialog::initByHttp();
+		parent::initByHttp();
 		$href = $this->getHttpVar("href");
 		$target = $this->getHttpVar("target");
 		$param = $this->getHttpVar("param");
@@ -254,7 +254,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function defaultInit(){
-		$this->args = array(
+		$this->args = array_merge($this->args, array(
 			"href" => "document:",
 			"type" => "int",
 			"extHref" => "",
@@ -274,7 +274,7 @@ class weHyperlinkDialog extends weDialog{
 			"tabindex" => "",
 			"rel" => "",
 			"rev" => "",
-		);
+			));
 	}
 
 	function getDialogContentHTML(){
@@ -624,11 +624,10 @@ class weHyperlinkDialog extends weDialog{
 				}
 
 				function showclasss(name, val, onCh) {' .
-			(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
-				'					var classCSV = "' . $this->args["cssClasses"] . '";
+				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
+					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' :
-
-				'					classNames = top.opener.we_classNames;') . '
+					'					classNames = top.opener.we_classNames;') . '
 					document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 

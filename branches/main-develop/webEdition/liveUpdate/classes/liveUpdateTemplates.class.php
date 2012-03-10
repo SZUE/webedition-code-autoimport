@@ -57,7 +57,7 @@ class liveUpdateTemplates{
 			$contentHeight -= $buttonHeight - $gapHeight;
 		}
 
-		return '<div id="contentDiv" class="defaultfont" style="width:' . $width . 'px; height: ' . $height . ' px;">
+		return '<div id="contentDiv" class="defaultfont" style="width:' . $width . 'px; height: ' . $height . 'px;">
 			<div id="contentHeadlineDiv" style="height: ' . ($headlineHeight) . 'px;">
 			<b>' . $headline . '</b><hr />
 			</div>
