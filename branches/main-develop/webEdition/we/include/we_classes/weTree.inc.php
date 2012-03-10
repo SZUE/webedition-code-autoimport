@@ -811,12 +811,12 @@ function setUnCheckNode(imgName){
 				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
 
 				}
-					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
+					$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 
 			$js.='}';
 
 		}
-		$js.=$this->topFrame . '.drawTree();';
+		$js.="\n".$this->topFrame . '.drawTree();';
 
 		return $js;
 	}

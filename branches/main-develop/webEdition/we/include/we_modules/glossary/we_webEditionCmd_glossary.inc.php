@@ -77,16 +77,16 @@
 	if(sizeof($GLOBALS['weFrontendLanguages'])>0) {
 
 		echo '	case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' . "\n";
-		echo "		tempargs = arguments[0].split(\"\XYZ\");\n";
-		echo "		var fo=false;\n";
-		echo "		for(var k=jsWindow_count-1;k>-1;k--) {\n";
-		echo "			eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");\n";
-		echo "			if(fo) {\n";
-		echo "				break;\n";
-		echo "			}\n";
-		echo "		}\n";
-		echo "		wind.focus();\n";
-		echo "		break;\n";
+		echo "		tempargs = arguments[0].split(\"\XYZ\");
+				var fo=false;
+				for(var k=jsWindow_count-1;k>-1;k--) {
+					eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");
+					if(fo) {
+						break;
+					}
+				}
+				wind.focus();
+				break;";
 
 	}
 ?>
