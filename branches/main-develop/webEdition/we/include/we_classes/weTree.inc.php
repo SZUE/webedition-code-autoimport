@@ -804,14 +804,17 @@ function setUnCheckNode(imgName){
 
 	function getJSLoadTree($treeItems){
 		$js = '';
-		$out = '';
-		$js = "var attribs=new Array();\n";
+		$js = 'var attribs=new Array();';
 		foreach($treeItems as $item){
 			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
-			foreach($item as $k => $v)
-				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';
-					' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
-				}' . "\n";
+			foreach($item as $k => $v){
+				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
+
+				}
+					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
+
+			$js.='}';
+
 		}
 		$js.=$this->topFrame . '.drawTree();';
 
@@ -819,10 +822,7 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSInfo(){
-		return '
-			function info(text) {
-			}
-		';
+		return 'function info(text) {}';
 	}
 
 	function setItemsCount($count){

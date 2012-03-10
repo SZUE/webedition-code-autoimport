@@ -511,20 +511,15 @@ class weExportFrames extends weModuleFrames{
 				case "mainload":
 					if(isset($_REQUEST["pid"])){
 
-						include_once(WE_EXPORT_MODULE_DIR . 'weExportTreeLoader.php');
 						$treeItems = weExportTreeLoader::getItems($_REQUEST["pid"]);
 
-						$js = '
-							if(!' . $this->Tree->topFrame . '.treeData) {
+						$js = 'if(!' . $this->Tree->topFrame . '.treeData) {
 								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", we_message_reporting::WE_MESSAGE_ERROR) . '
 							}';
 
 						if(!$_REQUEST["pid"])
-							$js.='
-								' . $this->Tree->topFrame . '.treeData.clear();
-
-								' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));
-						';
+							$js.=$this->Tree->topFrame . '.treeData.clear();'.
+								$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
 
 						$js.=$this->Tree->getJSLoadTree($treeItems);
 						$out = we_html_element::jsElement($js);
