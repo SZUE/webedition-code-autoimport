@@ -285,17 +285,19 @@ class weBackupPreparer{
 	}
 
 	function getExternalFiles(){
-		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/templates', true, false);
+		$list = array();
+		weBackupPreparer::getFileList($list, TEMPLATE_DIR, true, false);
+		return $list;
 	}
 
 	function getFileLists(){
 		$list = array();
-		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/templates', true, false);
-		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache', true, false);
+		weBackupPreparer::getFileList($list, TEMPLATE_DIR, true, false);
+		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . weNavigationCache::CACHEDIR, true, false);
 		return array_merge($list, weBackupPreparer::getSiteFiles());
 	}
 
-	function getFileList(&$list, $dir='', $with_dirs=false, $rem_doc_root=true){
+	function getFileList(&$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
 		if($dir == '')
 			$dir = $_SERVER['DOCUMENT_ROOT'];
 		if(!is_readable($dir)){
@@ -324,7 +326,7 @@ class weBackupPreparer{
 		}
 	}
 
-	function addToFileList(&$list, $file, $rem_doc_root=true){
+	function addToFileList(&$list, $file, $rem_doc_root = true){
 		if($rem_doc_root){
 			$list[] = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
 		} else{
@@ -363,8 +365,8 @@ class weBackupPreparer{
 		global $DB_WE;
 		$DB_WE->query('TRUNCATE TABLE ' . VERSIONS_TABLE . ';');
 		$path = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR;
-		if($dir = opendir($path)){
-			while($file = readdir($dir)) {
+		if(($dir = opendir($path))){
+			while(($file = readdir($dir))) {
 				if(!is_dir($file) && $file != "." && $file != ".." && $file != "dummy"){
 					unlink($path . $file);
 				}

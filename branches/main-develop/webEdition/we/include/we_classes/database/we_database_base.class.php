@@ -494,8 +494,8 @@ abstract class we_database_base{
 	static function arraySetter(array $arr){
 		$ret = array();
 		foreach($arr as $key => $val){
-			if(is_object($val)){
-				t_e('warning', 'data error: db-field cannot contain objects', 'Key: ' . $key, $arr);
+			if(is_object($val) || is_array($val)){
+				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
 			}
 			//current hack: don't escape some used mysql functions
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?

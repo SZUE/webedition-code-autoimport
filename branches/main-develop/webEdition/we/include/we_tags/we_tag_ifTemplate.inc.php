@@ -23,26 +23,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifTemplate($attribs){
-	$id = weTag_getAttribute("id", $attribs);
-	$workspaceID = weTag_getAttribute("workspaceID", $attribs);
-	$path = weTag_getAttribute("path", $attribs);
+	$id = weTag_getAttribute('id', $attribs);
+	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
+	$path = weTag_getAttribute('path', $attribs);
 	$TID = (isset($GLOBALS['we_doc']->TemplateID) ? $GLOBALS['we_doc']->TemplateID : ($GLOBALS['we_doc'] instanceof we_template && isset($GLOBALS['we_doc']->ID) ? $GLOBALS['we_doc']->ID : 0));
 
-	if($TID && $id !== ""){
+	if($TID && $id !== ''){
 		return in_array($TID, makeArrayFromCSV($id));
 	} else{
-		if($workspaceID !== ""){
-			$TempPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates";
+		if($workspaceID !== ''){
 			if(isset($GLOBALS['we_doc']->TemplatePath)){ // in documents
-				$curTempPath = $GLOBALS['we_doc']->TemplatePath;
-				$curTempPath = str_replace($TempPath, '', $curTempPath);
+				$curTempPath = str_replace(TEMPLATE_DIR, '', $GLOBALS['we_doc']->TemplatePath);
 			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
 			$path = f("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", 'Path', new DB_WE());
 			return (($path != '') && strpos($curTempPath, $path) !== false && strpos($curTempPath, $path) == 0);
 		} else{
-			if($path === ""){
+			if($path === ''){
 				return true;
 			}
 			if(isset($GLOBALS['we_doc']->TemplatePath)){
