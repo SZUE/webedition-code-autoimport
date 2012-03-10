@@ -55,7 +55,7 @@ if(sizeof($_attributes)){
 $_reqAttributes = $weTag->getRequiredAttributes();
 $jsReqAttributes = "var reqAttributes = new Object();";
 foreach($_reqAttributes as $_attribName){
-	$jsReqAttributes .= "\n\t" . 'reqAttributes["' . $_attribName . '"] = 1;';
+	$jsReqAttributes .= 'reqAttributes["' . $_attribName . '"] = 1;';
 }
 
 // #3 all neccessary stuff for typeAttribute
@@ -77,34 +77,34 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 
 			if(sizeof($_allowedAttribs)){
 
-				$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array(\"";
+				$typeAttributeJs .= "typeAttributeAllows[\"" . $option->getName() . "\"] = new Array(\"";
 
 				$typeAttributeJs .= implode('","', $_allowedAttribs);
-				$typeAttributeJs .= "\");\n";
+				$typeAttributeJs .= "\");";
 			} else{
-				$typeAttributeJs .= "\ttypeAttributeAllows[\"" . $option->getName() . "\"] = new Array();\n";
+				$typeAttributeJs .= "typeAttributeAllows[\"" . $option->getName() . "\"] = new Array();";
 			}
 		}
 
 		reset($_typeOptions);
-		$typeAttributeJs .= "var typeAttributeRequires = new Object();\n";
+		$typeAttributeJs .= "var typeAttributeRequires = new Object();";
 
 		foreach($_typeOptions as $option){
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
 			if(sizeof($_reqAttribs)){
-				$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
 
 				$typeAttributeJs .= implode('","', $_reqAttribs);
-				$typeAttributeJs .= "\");\n";
+				$typeAttributeJs .= "\");";
 			} else{
-				$typeAttributeJs .= "\ttypeAttributeRequires[\"" . $option->getName() . "\"] = new Array();\n";
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
 			}
 		}
 
-		$typeAttributeJs .= "weTagWizard.typeAttributeAllows = typeAttributeAllows;\nweTagWizard.typeAttributeRequires = typeAttributeRequires;\n";
+		$typeAttributeJs .= "weTagWizard.typeAttributeAllows = typeAttributeAllows;\nweTagWizard.typeAttributeRequires = typeAttributeRequires;";
 	}
-	$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;\n";
+	$typeAttributeJs .= "weTagWizard.typeAttributeId = typeAttributeId;";
 } else{
 	$typeAttributeJs = '';
 }
@@ -116,8 +116,8 @@ print we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . '
-<script type="text/javascript">
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
+
 
 function closeOnEscape() {
 	return true;
@@ -138,9 +138,6 @@ function applyOnEnter(evt) {
 
 
 }
-
-</script>
-<script type="text/javascript">
 
 ' . $jsAllAttributes . '
 
@@ -168,7 +165,7 @@ function we_cmd(){
 			if (strWeTag = weTagWizard.getWeTag()) {
 
 				' .
-	( $openAtCursor ? '
+		( $openAtCursor ? '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
@@ -178,7 +175,7 @@ function we_cmd(){
     			contentEditor.document.we_form.elements["tag_edit_area"].select();
     			self.close();'
 
-	) . '
+		) . '
 
 
 
@@ -221,12 +218,11 @@ function we_cmd(){
 			break;
 	    }
     }
-</script>
+') . '
 </head>
 <body onload="window.focus();" class="defaultfont">
 <form name="we_form" onsubmit="we_cmd(\'saveTag\'); return false;">';
 // start building the content of the page
-
 // get all attributes
 $typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();
 $attributesCode = $weTag->getAttributesCodeForTagWizard();
