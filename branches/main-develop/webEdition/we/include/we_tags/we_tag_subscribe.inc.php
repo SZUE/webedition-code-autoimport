@@ -119,7 +119,7 @@ function we_tag_subscribe($attribs){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
 				$_optAtts['xml'] = $xml;
-				$attr = we_make_attribs($attribs, "name,type,values");
+				$attr = we_make_attribs($attribs, "name,type,values,_name_orig");
 				$options = getHtmlTag('option', $_optAtts, '', true);
 				$vals = makeArrayFromCSV($values);
 				$value = isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value;
@@ -150,7 +150,7 @@ function we_tag_subscribe($attribs){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$newAttribs['name'] = 'we_subscribe_title__';
 				$_optAtts['xml'] = $xml;
-				$attr = we_make_attribs($attribs, "name,type,values");
+				$attr = we_make_attribs($attribs, "name,type,values,_name_orig");
 				$options = getHtmlTag('option', $_optAtts, '', true);
 				$vals = makeArrayFromCSV($values);
 				$value = isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value;

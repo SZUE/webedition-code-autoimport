@@ -49,7 +49,7 @@ function we_tag_input($attribs, $content){
 				return we_html_tools::getDateInput2(
 						'we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
 			case 'checkbox':
-				$attr = we_make_attribs($attribs, 'name,value,type');
+				$attr = we_make_attribs($attribs, 'name,value,type,_name_orig');
 				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
 			case 'country':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -160,7 +160,7 @@ function we_tag_input($attribs, $content){
 					$sel.=(sizeof($vals) ? '<option>' . implode("</option>\n<option>", $vals) . "</option>\n" : '');
 					$sel .= "</select>\n";
 				}
-				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values');
+				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
 
 				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
 						$sel) ? $sel : '');
@@ -171,7 +171,7 @@ function we_tag_input($attribs, $content){
 				return $val;
 			case 'text':
 			default:
-				$attr = we_make_attribs($attribs, 'name,value,type,html');
+				$attr = we_make_attribs($attribs, 'name,value,type,html,_name_orig');
 
 				if(defined('SPELLCHECKER') && $spellcheck == 'true'){
 					return '<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">

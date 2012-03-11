@@ -31,7 +31,7 @@ function we_tag_select($attribs, $content){
 	$reload = weTag_getAttribute("reload", $attribs, false, true);
 	if($GLOBALS['we_editmode']){
 		$val = $GLOBALS['we_doc']->getElement($name);
-		$attr = we_make_attribs($attribs, "name,value,onchange");
+		$attr = we_make_attribs($attribs, "name,value,onchange,_name_orig");
 		if($val){
 			$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', "<\\1\\3>", $content);
 			if(stripos($content, '<option>') !== false){

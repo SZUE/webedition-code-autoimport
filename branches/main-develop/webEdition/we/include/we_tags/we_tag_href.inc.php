@@ -106,7 +106,7 @@ function we_tag_href($attribs){
 			$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintID . ']';
 			$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
-			$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
+			$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown,_name_orig");
 
 			if($GLOBALS['we_editmode']){
 				if(($directory && $file) || $file){
@@ -194,7 +194,7 @@ function we_tag_href($attribs){
 							"select", "javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "');");
 				}
 
-				$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
+				$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown,_name_orig");
 				$out = '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
@@ -237,7 +237,7 @@ function we_tag_href($attribs){
 							"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
 				}
 
-				$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown');
+				$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig');
 
 				$out = '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
