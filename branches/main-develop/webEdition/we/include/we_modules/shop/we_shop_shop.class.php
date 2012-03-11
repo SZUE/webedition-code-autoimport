@@ -38,7 +38,7 @@ class we_shop_shop{
 	var $ActItem;
 
 	function __construct($shoppingCart){
-		if(isobject($shoppingCart)){
+		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();
 		}else{
