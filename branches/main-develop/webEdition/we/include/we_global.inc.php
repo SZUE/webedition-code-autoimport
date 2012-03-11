@@ -2399,14 +2399,15 @@ function we_templateHead(){
 }
 
 function we_templatePreContent(){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && !isset($GLOBALS['we_templatePreContent'])){
 		print '<form name="we_form" method="post" onsubmit="return false;">';
 		print $GLOBALS['we_doc']->pHiddenTrans();
+		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : 1);
 	}
 }
 
 function we_templatePostContent(){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && (--$GLOBALS['we_templatePreContent']) == 0){
 		print '</form>';
 	} else{
 		if(defined('WE_ECONDA_STAT') && defined('WE_ECONDA_PATH') && WE_ECONDA_STAT && WE_ECONDA_PATH != '' && !$GLOBALS['we_doc']->InWebEdition){
