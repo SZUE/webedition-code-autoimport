@@ -103,7 +103,7 @@ define('TMP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/tmp');
 define('WE_LANGUAGE', 'English');
 
 // Original backend charset of this version of webEdition, used for login-screen
-define('WE_BACKENDCHARSET', 'UIF-8');
+define('WE_BACKENDCHARSET', 'UTF-8');
 
 if(!isset($GLOBALS['WE_LANGUAGE'])){
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
