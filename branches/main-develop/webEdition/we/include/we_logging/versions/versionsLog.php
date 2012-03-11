@@ -26,8 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $versionsLogView = new versionsLogView();
-$content = $versionsLogView->getContent();
-$out = $versionsLogView->printContent($content);
+$out = $versionsLogView->printContent();
 
 we_html_tools::htmlTop(g_l('versions', '[versions_log]'));
 

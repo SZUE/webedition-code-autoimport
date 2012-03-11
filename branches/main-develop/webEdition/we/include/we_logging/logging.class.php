@@ -42,9 +42,8 @@ abstract class logging{
 	function loadPresistents(){
 
 		$tableInfo = $this->db->metadata($this->table);
-		$sizeTable = count($tableInfo);
-		for($i = 0; $i < $sizeTable; $i++){
-			$columnName = $tableInfo[$i]["name"];
+		foreach($tableInfo as $t){
+			$columnName = $t["name"];
 			$this->persistent_slots[] = $columnName;
 			if(!isset($this->$columnName))
 				$this->$columnName = "";

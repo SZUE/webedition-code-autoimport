@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class versionsLog extends logging{
-	const VERSIONS_DELETE= 1;
-	const VERSIONS_RESET= 2;
-	const VERSIONS_PREFS=3;
 
+	const VERSIONS_DELETE = 1;
+	const VERSIONS_RESET = 2;
+	const VERSIONS_PREFS = 3;
 
 	public $action;
 	public $data;
@@ -35,7 +35,7 @@ class versionsLog extends logging{
 		parent::__construct(VERSIONS_TABLE_LOG);
 	}
 
-	function saveVersionsLog($logArray, $action=""){
+	function saveVersionsLog($logArray, $action = ""){
 
 		$this->action = $action;
 		$this->data = serialize($logArray);

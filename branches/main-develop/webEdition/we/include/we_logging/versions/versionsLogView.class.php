@@ -24,20 +24,17 @@
  */
 class versionsLogView{
 
-	public $db;
 	public $actionView;
 	public $versionPerPage = 10;
+	private $Model;
 
 	function __construct(){
-
-		$this->db = new DB_WE ( );
 		$this->Model = new versionsLog();
 	}
 
 	function getJS(){
 
 		$js = we_html_element::jsElement('
-
 			var ajaxURL = "/webEdition/rpc/rpc.php";
 
 			var currentId = 0;
@@ -204,8 +201,8 @@ class versionsLogView{
 		return $content;
 	}
 
-	function printContent($content){
-
+	function printContent(){
+		$content = getContent();
 		$out = "";
 
 		$out .= '<div align="center" width="100%"><table border="0" width="100%" cellpadding="0" cellspacing="0" class="middlefont">';
@@ -303,10 +300,7 @@ class versionsLogView{
 	}
 
 	function handleData($logId, $start, $anzahl){
-
-		$db = new DB_WE();
-
-		list($data, $action) = getHash('SELECT data,action FROM `' . VERSIONS_TABLE_LOG . '` WHERE ID=' . intval($logId), $db);
+		list($data, $action) = getHash('SELECT data,action FROM `' . VERSIONS_TABLE_LOG . '` WHERE ID=' . intval($logId), new DB_WE());
 
 		$data = unserialize($data);
 
