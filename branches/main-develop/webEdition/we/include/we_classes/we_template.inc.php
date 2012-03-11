@@ -294,34 +294,29 @@ class we_template extends we_document{
 
 		$head = '<?php we_templateHead();?>';
 
-		$preContent = '<?php we_templatePreContent(); ?>';
+		$preContent = '<?php we_templatePreContent();?>';
 
-		$postContent = '<?php we_templatePostContent(); ?>';
+		$postContent = '<?php we_templatePostContent();?>';
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
 			$pre_code = '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>' . $pre_code;
 
 			//#### parse base href
-			$code = preg_replace('%(</title>)%i', '\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>', $code);
+			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = str_replace('</head>', $head . '</head>', $code);
+			$code = preg_replace('%(<body[^>]*)(>)%i', '\\1<?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>\\2' . $preContent, $code);
 
-			$code = str_replace('?>', '__WE_?__WE__', str_replace('=>', '__WE_=__WE__', $code));
-
-			$code = preg_replace('%(<body[^>]*)(>)%i', "\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onunload=\"doUnload()\"'; ?>\\2$preContent", $code);
-
-			$code = str_replace('__WE_?__WE__', '?>', str_replace('__WE_=__WE__', '=>', $code));
-
-			$code = str_replace('</body>', $postContent . '</body>', $code);
+			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
+			$code = str_ireplace(array('</title>', '</head>', '</body>'), array('</title><?php if(isset($GLOBALS[\'we_baseHref\']) && $GLOBALS[\'we_baseHref\']){ ?><base href="<?php print $GLOBALS[\'we_baseHref\'] ?>" /><?php } ?>', $head . '</head>', $postContent . '</body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php if( (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>' . $head . '</head>
-<body <?php if(isset($we_editmode) && $we_editmode) print \' onUnload="doUnload()"\'; ?>>
-' . $preContent . '<?php } ?>' . $code . '<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)){ ?>' . $postContent . '
-</body></html><?php $WE_HTML_HEAD_BODY = true; } ?>';
+<body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onUnload="doUnload()"\'; ?>>
+' . $preContent . '<?php } ?>' . $code . '<?php if((!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){ ?>' . $postContent . '
+</body></html><?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; } ?>';
 		} else{
 			return parseError(g_l('parser', '[html_tags]'));
 		}
-		$code = str_replace(array('exit(', 'die(','exit;'), array('we_TemplateExit(','we_TemplateExit(','we_TemplateExit();'), $code);
+		$code = str_replace(array('exit(', 'die(', 'exit;'), array('we_TemplateExit(', 'we_TemplateExit(', 'we_TemplateExit();'), $code);
 		return $pre_code . $code . '<?php we_templatePost();';
 	}
 
@@ -352,7 +347,7 @@ class we_template extends we_document{
 		}
 	}
 
-	function i_getDocument($includepath=""){
+	function i_getDocument($includepath = ""){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
 		return preg_replace("/(;|{|})( |\t)*\?>(\n)*<\?php ?/si", "\\1\n", $this->parseTemplate());
@@ -449,7 +444,7 @@ class we_template extends we_document{
 	 * @return	array with the filed names and attributes
 	 * @param	none
 	 */
-	function readAllVariantFields($includedatefield=false){
+	function readAllVariantFields($includedatefield = false){
 		$variant_tags = array('input', 'link', 'textarea', 'img', 'select');
 		$templateCode = $this->getTemplateCode();
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
@@ -611,7 +606,7 @@ class we_template extends we_document{
 	 * @return	array with the filed names and attributes
 	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template and included templates)
 	 */
-	function getTemplateCode($completeCode=true){
+	function getTemplateCode($completeCode = true){
 		return $completeCode ? $this->getElement("completeData") : $this->getElement("data");
 	}
 
@@ -627,7 +622,7 @@ class we_template extends we_document{
 		return $att;
 	}
 
-	function setDoUpdateCode($doUpdateCode=true){
+	function setDoUpdateCode($doUpdateCode = true){
 		$this->doUpdateCode = $doUpdateCode;
 	}
 
@@ -776,7 +771,7 @@ class we_template extends we_document{
 		$this->setElement("completeData", $code);
 	}
 
-	function we_save($resave=0, $updateCode=1){
+	function we_save($resave = 0, $updateCode = 1){
 		$ct = new we_base_ContentTypes();
 		$this->Extension = $ct->getExtension('text/weTmpl');
 		if($updateCode){
@@ -810,7 +805,7 @@ class we_template extends we_document{
 		return true;
 	}
 
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		$ct = new we_base_ContentTypes();
 		$this->Extension = $ct->getExtension("text/weTmpl");
@@ -825,7 +820,7 @@ class we_template extends we_document{
 
 	// .tmpl mod
 
-	function getRealPath($old=false){
+	function getRealPath($old = false){
 		return preg_replace('/.tmpl$/i', '.php', parent::getRealPath($old));
 	}
 
