@@ -45,7 +45,8 @@ class we_langlink_listview extends listviewBase{
 	var $numorder = false; // #3846
 	var $objectseourls = false;
 	var $hidedirindex = false;
-	var $ownlanguage = '';
+	var $pagelanguage = ''; //assumed pagelanguage: choosen by using attribut pagelanguage
+	var $ownlanguage = ''; // effective language of document/object
 	var $dirsearchtable = '';
 	var $showself = false;
 
@@ -64,7 +65,7 @@ class we_langlink_listview extends listviewBase{
 	 * @param   searchable 	  boolean - if false then show also documents which are not marked as searchable
 	 * @return we_listview
 	 */
-	function __construct($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $linkType='tblFile', $cols="", $seeMode=true, $searchable=true, $customerFilterType='off', $showself=false, $id="", $ownlanguage="", $hidedirindex = false, $objectseourls=false){
+	function __construct($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $linkType='tblFile', $cols="", $seeMode=true, $searchable=true, $customerFilterType='off', $showself=false, $id="", $pagelanguage="", $ownlanguage="", $hidedirindex = false, $objectseourls=false){
 		$id=intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 
@@ -72,21 +73,20 @@ class we_langlink_listview extends listviewBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 		$this->id = $id;
-		$this->ownlanguage = $ownlanguage;
+		$this->pagelanguage = $pagelanguage;
+		$this->ownlanguage = $ownlanguage;t_e("page",$pagelanguage,"own",$ownlanguage);
 		$this->linkType = $linkType;
 		//FIXME:unused
 		//$this->seeMode = $seeMode;
 
 
 		$_languages = getWeFrontendLanguagesForBackend();
-
-		if(isset($_languages[$this->ownlanguage])){
-			unset($_languages[$this->ownlanguage]);
+		
+		// if !$showself: remove the pagelanguage (choosen by using attribute pagelanguage) from the languages-list, so the link to this language won't be found in DB
+		if(isset($_languages[$this->pagelanguage]) && !$showself){
+			unset($_languages[$this->pagelanguage]);
 		}
 
-		if($this->showself && !isset($_languages[$this->ownlanguage])){
-
-		}
 		if(stripos($this->order, " desc") !== false){//was #3849
 			$this->order = str_ireplace(" desc", "", $this->order);
 			$this->desc = true;
@@ -103,7 +103,7 @@ class we_langlink_listview extends listviewBase{
 			}
 		}
 
-		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){
+		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){t_e("langs",$_languages);
 			foreach($_languages as $langkey => $lang){
 				if($this->linkType == 'tblFile'){
 					$q = 'SELECT ' . LANGLINK_TABLE . '.DID as DID, ' . LANGLINK_TABLE . '.DLocale as DLocale, ' . LANGLINK_TABLE . '.LDID as LDID, ' . LANGLINK_TABLE . '.Locale as Locale, ' . LANGLINK_TABLE . '.IsFolder as IsFolder, ' . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . '.ID AND ' . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;
@@ -122,7 +122,12 @@ class we_langlink_listview extends listviewBase{
 					$this->getParentData($this->id, $langkey);
 				}
 			}
-			if($this->showself && !isset($_languages[$this->ownlanguage])){
+			
+			// Links to documents/objects themselves are not listet in tblLangLink. 
+			// In the following cases we must create them manually:
+			// if($this->showself == true)
+			// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
+			if($this->showself || (!$this->showself && $this->pagelanguage != $this->ownlanguage)) {
 				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? '0' : '1'), 'IsFolder' => 0);
 				if($this->linkType == 'tblFile'){
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
@@ -150,6 +155,7 @@ class we_langlink_listview extends listviewBase{
 		}
 	}
 
+	// Links to documents/objects themselves never use this method: so we do not need to fix the showself-problem in this section
 	function getParentData($myid, $langkey){
 		$pid = f("SELECT ParentID FROM " . $this->dirsearchtable . " WHERE ID=" . intval($myid), 'ParentID', $this->DB_WE);
 
@@ -174,7 +180,7 @@ class we_langlink_listview extends listviewBase{
 	function next_record(){
 		if($this->count < $this->anz_all){
 			$count = $this->count;
-			$this->Record["WE_LANG"] = $this->ownlanguage;
+			$this->Record["WE_LANG"] = $this->pagelanguage;
 			$this->Record["WE_ID"] = $this->foundlinks[$count]["LDID"];
 			$this->Record["WE_DOCUMENTLOCALE"] = $this->foundlinks[$count]["DLocale"];
 			$dLocale = explode('_', $this->foundlinks[$count]["DLocale"]);
