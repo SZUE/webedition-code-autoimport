@@ -127,11 +127,7 @@ function doNotShowFields($k){
 		"active"
 	);
 
-	if(in_array($k, $notshow)){
-		return false;
-	}
-
-	return true;
+	return !(in_array($k, $notshow));
 }
 
 function doNotMarkFields($k){
@@ -141,11 +137,7 @@ function doNotMarkFields($k){
 		"version"
 	);
 
-	if(in_array($k, $notmark)){
-		return false;
-	}
-
-	return true;
+	return !(in_array($k, $notmark));
 }
 
 $pathLength = 40;
@@ -160,7 +152,7 @@ $contentOld = "";
 $contentDiff = "";
 
 if(!($isObj || $isTempl)){
-	$contentNew = '<iframe  name="previewNew" src="' . $fileNew . '" width="980" height="680" frameborder="no" border="0"></iframe>';
+	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . $fileNew . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if($isTempl){
 	if($newDoc['documentElements']){
@@ -174,7 +166,7 @@ if($isTempl){
 	$contentNew = '<textarea style="width:99%;height:99%">' . $nDocElements['data']['dat'] . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
-	$contentOld = '<iframe name="previewOld" src="' . $fileOld . '" width="980" height="680" frameborder="no" border="0"></iframe>';
+	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . $fileOld . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){
@@ -284,7 +276,7 @@ $contentDiff .= '</table>';
 $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>';
-$contentDiff .= ($isTempl && class_exists('Text_Diff', false) ? '' : '<br/><b>PHP-Pear-Text_Diff not installed - Quirks mode.</b>');
+$contentDiff .= (class_exists('Text_Diff', false) ? '' : '<br/><b>PHP-Pear-Text_Diff not installed - Quirks mode.</b>');
 //g_l('versions','[textDiffNotInstalled]')
 $contentDiff .= '</td></tr>';
 if($newDoc['documentElements']){
@@ -355,7 +347,7 @@ if(!empty($newDocElements)){
 		}
 
 		//if one of them contains newlines, format it as pre-block
-		if($isTempl){
+		if(true || $isTempl){
 			if(preg_match("/(%0A|%0D|\\n+|\\r+)/i", $newVal) || preg_match("/(%0A|%0D|\\n+|\\r+)/i", $oldVal)){
 				$pre = '<pre style="font-size:0.9em;' . (class_exists('Text_Diff') ? '' : 'width:400px;') . 'overflow:auto;">';
 				$div = '';
@@ -369,7 +361,7 @@ if(!empty($newDocElements)){
 
 		$contentDiff .= '<tr>';
 		$contentDiff .= '<td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>';
-		if($isTempl && class_exists('Text_Diff', false) && $pre != ''){
+		if(class_exists('Text_Diff', false) && $pre != ''){
 			$oldVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $oldVal)));
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
 			$diff = new Text_Diff('native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
@@ -647,22 +639,19 @@ if(!$isObj){
 
 
 
-we_html_tools::htmlTop("webEdition - " . g_l('versions', '[versioning]'));
+we_html_tools::htmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? $newDoc['Charset'] : DEFAULT_CHARSET));
 
 print STYLESHEET;
 ?>
 
 <script type="text/javascript">
-
+	<!--
 	var activ_tab = <?php print $activTab; ?>;
 
 	function toggle(id){
 		var elem = document.getElementById(id);
-		if(elem.style.visibility == "hidden") elem.style.visibility = "visible";
-		else elem.style.visibility = "hidden";
-		if(elem.style.left == "-9999px") elem.style.left = "0px";
-		else elem.style.left = "-9999px";
-
+		if(elem.style.display == "none") elem.style.display = "block";
+		else elem.style.display = "none";
 	}
 
 	function previewVersion(ID, newID) {
@@ -670,7 +659,7 @@ print STYLESHEET;
 		//new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 
 	}
-
+	//-->
 </script>
 <?php print we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">
@@ -696,20 +685,20 @@ print STYLESHEET;
 	<div id="mytabs">
 		<?php print $tabsBody; ?>
 	</div>
-	<div id="content" style="margin: 0px; width: 980px;height: 90%;">
-		<div id="tab1" style="visibility:visible;top:30px;left:0px;height:680px;width: 980px;">
+	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
+		<div id="tab1" style="display:block;">
 
 			<?php print $_tab_1 ?>
 
 
 		</div>
-		<div id="tab2" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
+		<div id="tab2" style="display:none;height:100%;width:100%">
 
 			<?php print $_tab_2 ?>
 
 
 		</div>
-		<div id="tab3" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
+		<div id="tab3" style="display:none;height:100%;width:100%">
 
 			<?php print $_tab_3 ?>
 
@@ -717,7 +706,7 @@ print STYLESHEET;
 		</div>
 	</div>
 
-	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">
+	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:fixed;bottom:0px;width:100%">
 		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 

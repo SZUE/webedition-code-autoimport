@@ -88,6 +88,37 @@ function getInfoTable($_infoArr){
 </table>';
 }
 
+function getNavButtons($size, $start){
+	if($size > 0){
+		$count = 1;
+
+
+		$back = $start - $count;
+		$back = $back < 0 ? 0 : $back;
+
+		$next = $start + $count;
+		$next = $next > $size ? $size : $next;
+
+		$div = intval($size / 10);
+		if($div == 0){
+			$div = 1;
+		}
+		$nextDiv = $start + $div;
+		$prevDiv = $start - $div;
+
+		return '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			we_button::create_button("first", '/webEdition/errorlog.php?start=' . ($size - 1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) . '</td><td>' .
+			we_button::getButton("-" . $div, 'btn', "window.location.href='/webEdition/errorlog.php?start=" . $nextDiv . "';", we_button::WIDTH, '', ($nextDiv >= $size)) . '</td><td>' .
+			we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
+			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start) .
+			"&nbsp;" . g_l('global', '[from]') . " " . ($size) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+			we_button::create_button("next", '/webEdition/errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) . '</td><td>' .
+			we_button::getButton("+" . $div, 'btn2', "window.location.href='/webEdition/errorlog.php?start=" . $prevDiv . "';", we_button::WIDTH, '', ($prevDiv <= 0)) . '</td><td>' .
+			we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
+			"</td></tr></table>";
+	}
+}
+
 $buttons = we_button::position_yes_no_cancel(
 		we_button::create_button("delete_all", '/webEdition/errorlog.php' . "?delete"), we_button::create_button("refresh", '/webEdition/errorlog.php'), we_button::create_button("close", "javascript:self.close()")
 );
@@ -95,53 +126,18 @@ $buttons = we_button::position_yes_no_cancel(
 
 
 
-$_space_size = 10;
 $_parts = array();
-
 
 $db = new DB_WE();
 if(isset($_REQUEST['delete'])){
 	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
 }
 $size = f('SELECT COUNT(1) as cnt FROM `' . ERROR_LOG_TABLE . '`', 'cnt', $db);
-$count = 1;
+$start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
+$start = $start > $size ? $size : $start;
 
-$nextprev = "";
-if($size > 0){
-
-	$start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
-	$start = $start > $size ? $size : $start;
-
-	$back = $start - $count;
-	$back = $back < 0 ? 0 : $back;
-
-	$next = $start + $count;
-	$next = $next > $size ? $size : $next;
-
-	$div = intval($size / 10);
-	if($div == 0){
-		$div = 1;
-	}
-	$nextDiv = $start + $div;
-	$prevDiv = $start - $div;
-
-	$ind = 0;
-	$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-		we_button::create_button("first", '/webEdition/errorlog.php?start=' . ($size - 1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) . '</td><td>' .
-		we_button::getButton("-" . $div, 'btn', "window.location.href='/webEdition/errorlog.php?start=" . $nextDiv . "';", we_button::WIDTH, '', ($nextDiv >= $size)) . '</td><td>' .
-		we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
-		we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start) .
-		"&nbsp;" . g_l('global', '[from]') . " " . ($size) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
-		we_button::create_button("next", '/webEdition/errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) . '</td><td>' .
-		we_button::getButton("+" . $div, 'btn2', "window.location.href='/webEdition/errorlog.php?start=" . $prevDiv . "';", we_button::WIDTH, '', ($prevDiv <= 0)) . '</td><td>' .
-		we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
-		"</td></tr></table>";
-
-	$_parts[] = array(
-		'html' => $nextprev,
-		'space' => $_space_size
-	);
-	$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . $start . ',1', $db);
+if($size){
+	$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db);
 	$_parts[] = array(
 		'html' => getInfoTable($record),
 		'space' => $_space_size
@@ -167,7 +163,8 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 	<div id="info" style="display: block;">
 		<?php
 		print we_multiIconBox::getJS() .
-			we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto");
+			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:0px;height:100px;'), getNavButtons($size, $start)) .
+			we_html_element::htmlDiv(array('style' => 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;'), we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 		?>
 	</div>
 </body>

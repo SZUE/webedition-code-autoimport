@@ -875,7 +875,7 @@ class weVersions{
 		$db = new DB_WE();
 		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
 
-		$query = "SELECT * FROM " . VERSIONS_TABLE . " " . $where . " ";
+		$query = "SELECT * FROM " . VERSIONS_TABLE . " " . $where;
 		$db->query($query);
 		while($db->next_record()) {
 			foreach($tblFields as $k => $v){
@@ -2245,7 +2245,7 @@ class weVersions{
 				}
 				return $fieldValueText;
 			default:
-				return '';
+				return $v;
 		}
 	}
 

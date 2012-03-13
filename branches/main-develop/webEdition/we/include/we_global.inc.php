@@ -508,15 +508,13 @@ function getHttpOption(){
 	return 'fopen';
 }
 
-function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = 'http', $username = '', $password = '', $header = false){
+function getCurlHttp($server, $path, $files = array(), $header = false){
 	$_response = array(
 		'data' => '', // data if successful
 		'status' => 0, // 0=ok otherwise error
 		'error' => '' // error string
 	);
 
-	$server = str_replace($protocol . '://', '', $server);
-	$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
 	$_pathA = explode('?', $path);
 	$_url = $protocol . '://' . $server . ':' . $port . $_pathA[0];
 	$_params = array();
@@ -525,9 +523,9 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 	curl_setopt($_session, CURLOPT_URL, $_url);
 	curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
 
-	if($username != ''){
-		curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
-	}
+	/* 	if($username != ''){
+	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
+	  } */
 
 	if(isset($_pathA[1]) && $_pathA[1] != ''){
 		$_url_param = explode('&', $_pathA[1]);
@@ -585,22 +583,21 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 }
 
 //FIXME: this function assumes strict Ports
-//FIXME: this function SHOULD handle a given getServerUrl()!!! => e.g. weVersions.class.inc.php
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	$_opt = getHttpOption();
-
+	if(strpos($server, '://') === FALSE){
+		if(!$port){
+			$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
+		}
+		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port;
+	}
 	switch($_opt){
 		case 'fopen':
 
-			if(!$port){
-				$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
-			}
-
-			$foo = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port . $url;
-			$page = 'Server Error: Failed opening URL: ' . $foo;
-			$fh = @fopen($foo, 'rb');
+			$page = 'Server Error: Failed opening URL: ' . $server . $url;
+			$fh = @fopen($server . $url, 'rb');
 			if(!$fh){
-				$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $url, 'rb');
+				$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $server . $url, 'rb');
 			}
 			if($fh){
 				$page = '';
@@ -610,7 +607,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			return $page;
 		case 'curl':
-			$_response = getCurlHttp($server, $url, array(), $port, 'http', $username, $password);
+			$_response = getCurlHttp($server, $url, array());
 			return ($_response['status'] != 0 ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
