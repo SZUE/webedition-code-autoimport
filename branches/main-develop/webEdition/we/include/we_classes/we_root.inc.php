@@ -852,7 +852,7 @@ abstract class we_root extends we_class{
 			case 'text':
 			case 'input':
 				if($this->DefArray[$type . "_" . $k]["forbidphp"] == "on"){
-					$v = removePHP($v);
+					$v = we_util::rmPhp($v);
 				}
 				if($this->DefArray[$type . "_" . $k]["forbidhtml"] == "on"){
 					$v = removeHTML($v);
@@ -861,7 +861,7 @@ abstract class we_root extends we_class{
 			case 'internal'://pseudo-element for i_setElementsFromHTTP
 				break;
 			default:
-				$v = removeHTML(removePHP($v));
+				$v = removeHTML(we_util::rmPhp($v));
 				break;
 		}
 	}

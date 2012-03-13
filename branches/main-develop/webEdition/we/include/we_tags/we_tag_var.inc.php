@@ -37,13 +37,13 @@ function we_tag_var($attribs){
 			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "request" :
-			$return = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "post" :
-			$return = removePHP(isset($_POST[$name]) ? $_POST[$name] : "");
+			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "get" :
-			$return = removePHP(isset($_GET[$name]) ? $_GET[$name] : "");
+			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "global" :
 			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : "";

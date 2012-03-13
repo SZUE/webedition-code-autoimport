@@ -38,7 +38,7 @@ function we_tag_hidden($attribs){
 			$value = $_SESSION[$name];
 			break;
 		case 'request' :
-			$value = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+			$value = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
 			break;
 		default :
 			$value = $GLOBALS[$name];

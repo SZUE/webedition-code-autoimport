@@ -729,24 +729,21 @@ class weBackup extends we_backup{
 	function getExportPercent(){
 		$all = 0;
 		$db = new DB_WE();
-		$ver = getMysqlVer();
-		if($ver > 3230 || $ver == 3230){
-			$db->query("SHOW TABLE STATUS");
-			while($db->next_record()) {
-				$noprefix = $this->getDefaultTableName($db->f("Name"));
-				if(!$this->isFixed($noprefix))
-					$all += $db->f("Rows");
-			}
+		$db->query("SHOW TABLE STATUS");
+		while($db->next_record()) {
+			$noprefix = $this->getDefaultTableName($db->f("Name"));
+			if(!$this->isFixed($noprefix))
+				$all += $db->f("Rows");
+		}
 
-			$ex_files = ((int) $this->file_list_count) - ((int) count($this->file_list));
-			$all+=(int) $this->file_list_count;
-			$done = ((int) $this->row_count) + ((int) $ex_files);
-			$percent = (int) (($done / $all) * 100);
-			if($percent < 0){
-				$percent = 0;
-			} else if($percent > 100){
-				$percent = 100;
-			}
+		$ex_files = ((int) $this->file_list_count) - ((int) count($this->file_list));
+		$all+=(int) $this->file_list_count;
+		$done = ((int) $this->row_count) + ((int) $ex_files);
+		$percent = (int) (($done / $all) * 100);
+		if($percent < 0){
+			$percent = 0;
+		} else if($percent > 100){
+			$percent = 100;
 		}
 		return $percent;
 	}

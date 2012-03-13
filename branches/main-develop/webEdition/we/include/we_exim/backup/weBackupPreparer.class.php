@@ -96,16 +96,13 @@ class weBackupPreparer{
 
 		$_SESSION['weBackupVars']['row_counter'] = 0;
 		$_SESSION['weBackupVars']['row_count'] = 0;
-		$ver = getMysqlVer();
-		if($ver > 3230 || $ver == 3230){
-			$db = new DB_WE();
-			$db->query('SHOW TABLE STATUS');
-			while($db->next_record()) {
-				// fix for object tables
-				//if(in_array($db->f('Name'),$_SESSION['weBackupVars']['tables'])) {
-				if(weBackupUtil::getDefaultTableName($db->f('Name')) !== false){
-					$_SESSION['weBackupVars']['row_count'] += $db->f('Rows');
-				}
+		$db = new DB_WE();
+		$db->query('SHOW TABLE STATUS');
+		while($db->next_record()) {
+			// fix for object tables
+			//if(in_array($db->f('Name'),$_SESSION['weBackupVars']['tables'])) {
+			if(weBackupUtil::getDefaultTableName($db->f('Name')) !== false){
+				$_SESSION['weBackupVars']['row_count'] += $db->f('Rows');
 			}
 		}
 

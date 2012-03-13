@@ -267,7 +267,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 				$dates[$regs[1]][$regs[2]] = $v;
 			} else{
-				$v = removePHP($v);
+				$v = we_util::rmPhp($v);
 				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
 				$GLOBALS['we_object'][$formname]->setElement($n, $v);
 			}
@@ -297,7 +297,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 	}
 	foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
 		if($slotname != 'categories' && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
-			$v = removePHP($_REQUEST["we_ui_" . $formname . "_" . $slotname]);
+			$v = we_util::rmPhp($_REQUEST["we_ui_" . $formname . "_" . $slotname]);
 			$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
 			$GLOBALS["we_object"][$formname]->{$slotname} = $v;
 		}
@@ -363,7 +363,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 				$dates[$regs[1]][$regs[2]] = $v;
 			} else{
-				$v = removePHP($v);
+				$v = we_util::rmPhp($v);
 				$GLOBALS['we_document'][$formname]->setElement($n, $v);
 			}
 		}

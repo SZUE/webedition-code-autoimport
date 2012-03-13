@@ -308,7 +308,7 @@ abstract class we_database_base{
 		if(self::$Debug){
 			printf("Debug: query = %s<br/>\n", $Query_String);
 		}
-		$this->Query_ID = $this->_query($Query_String);
+		$this->Query_ID = $this->_query($Query_String,$unbuffered);
 
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
@@ -650,5 +650,10 @@ abstract class we_database_base{
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
+
+	public function getVersion(){
+
+	}
+
 
 }

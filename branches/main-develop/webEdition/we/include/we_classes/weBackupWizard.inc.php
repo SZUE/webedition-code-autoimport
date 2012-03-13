@@ -1132,22 +1132,11 @@ class weBackupWizard{
 					$progress = 0;
 				}
 
-				$ver = getMysqlVer();
-				if($ver >= 3230){
-					$progress = new we_progressBar($progress);
-					$progress->setStudLen(200);
-					$progress->addText($text, 0, "current_description");
-					$head.=$progress->getJSCode();
-					$body.=$progress->getHtml();
-				} else{
-					$head.=we_html_element::jsElement('
-									function setProgressText(name,text){
-									}
-									function setProgress(progress){
-									}
-							');
-					$body.=we_html_element::htmlImg(array("src" => IMAGE_DIR . "busy.gif"));
-				}
+				$progress = new we_progressBar($progress);
+				$progress->setStudLen(200);
+				$progress->addText($text, 0, "current_description");
+				$head.=$progress->getJSCode();
+				$body.=$progress->getHtml();
 				$table->setCol(0, 1, null, $body);
 				$table->setCol(1, 1, null, we_html_tools::getPixel(250, 1));
 			}

@@ -1129,7 +1129,7 @@ class we_document extends we_root{
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', $retval);
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
-					$retval = removePHP($retval);
+					$retval = we_util::rmPhp($retval);
 				}
 				$xml = weTag_getAttribute('xml', $attribs, '', true, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);

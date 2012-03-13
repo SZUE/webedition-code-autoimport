@@ -232,7 +232,7 @@ class we_objectFile extends we_document{
 			$this->OldPath = $this->Path;
 		}
 		$this->elements = $doc->elements;
-		foreach($this->elements as $n => $e){
+		foreach(array_keys($this->elements) as $n){
 			$this->elements[$n]['cid'] = 0;
 		}
 		$this->EditPageNr = 0;
@@ -493,8 +493,6 @@ class we_objectFile extends we_document{
 		return $ParentPath . $this->Text;
 	}
 
-//##################################################################### EDITOR FUNCTION ######################################################################
-
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
 		switch($this->EditPageNr){
@@ -632,16 +630,8 @@ class we_objectFile extends we_document{
 
 		$inputName = 'we_' . $this->Name . '_Charset';
 
-		$_headline = '';
-
-		if($withHeadline){
-			$_headline = '
-			<tr>
-				<td class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-			</tr>
-			';
-		}
-		$content = '
+		$_headline = ($withHeadline?'<tr><td class="defaultfont">' . g_l('weClass', "[Charset]") . '</td></tr>':'');
+		return '
 			<table border="0" cellpadding="0" cellspacing="0">
 				' . $_headline . '
 				<tr>
@@ -652,7 +642,6 @@ class we_objectFile extends we_document{
 						' . $this->htmlSelect("we_tmp_" . $this->Name . "_select[" . $name . "]", $_charsets, 1, $this->Charset, false, "  onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd(\"reload_editpage\"); onchange=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd(\"reload_editpage\");", "value", 330) . '</td>
 				</tr>
 			</table>';
-		return $content;
 	}
 
 	function formClass(){
@@ -1511,7 +1500,7 @@ class we_objectFile extends we_document{
 			}
 //javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["img_$name"]['defaultdir'])?$this->DefArray["img_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'img_".$name."\\');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();','".session_id()."', ".(isset($this->DefArray["img_$name"]['rootdir'])&&$this->DefArray["img_$name"]['rootdir']!=""?$this->DefArray["img_$name"]['rootdir']:0).",'image/*')
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-			$wecmdenc2 = '';
+			//$wecmdenc2 = '';
 			$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
 
 			$content .= we_button::create_button_table(array(we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
@@ -1613,7 +1602,7 @@ class we_objectFile extends we_document{
 		t_e('error', 'error no tableID!');
 	}
 
-	function getContentData($loadBinary = 0){
+	function getContentData(/* $loadBinary = 0 */){
 		if(!$this->TableID)
 			return;
 		$ID = $this->ObjectID;
@@ -1623,6 +1612,7 @@ class we_objectFile extends we_document{
 
 		$db->query("SELECT * FROM $DataTable WHERE ID='$ID'");
 		if($db->next_record()){
+			$regs = array();
 			for($i = 0; $i < sizeof($tableInfo); $i++){
 				if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
 					if($regs[1] != "OF"){
@@ -1800,15 +1790,15 @@ class we_objectFile extends we_document{
 	}
 
 	function add_workspace($id){
-		$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
+		//$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
 		$workspaces = makeArrayFromCSV($this->Workspaces);
 		$templates = makeArrayFromCSV($this->Templates);
-		$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
+		//$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
 
 		if(!in_array($id, $workspaces)){
-			array_push($workspaces, $id);
+			$workspaces[] = $id;
 			$tid = $this->getTemplateFromWs($id);
-			array_push($templates, $tid);
+			$templates[] = $tid;
 			$this->Workspaces = makeCSVFromArray($workspaces, true);
 			$this->Templates = makeCSVFromArray($templates, true);
 		}
@@ -1864,7 +1854,7 @@ class we_objectFile extends we_document{
 		}
 
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
-		foreach($arr as $nr => $id){
+		foreach($arr as $id){
 			if(isset($values[$id]) || (!weFileExists($id)))
 				unset($values[$id]);
 		}
@@ -1890,14 +1880,14 @@ class we_objectFile extends we_document{
 
 	function add_extraWorkspace($id){
 		$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
-		$workspaces = makeArrayFromCSV($this->Workspaces);
-		$templates = makeArrayFromCSV($this->Templates);
+		/* $workspaces = makeArrayFromCSV($this->Workspaces);
+		  $templates = makeArrayFromCSV($this->Templates); */
 		$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
 
 		if(!in_array($id, $ExtraWorkspaces)){
-			array_push($ExtraWorkspaces, $id);
+			$ExtraWorkspaces[] = $id;
 			$tid = $this->getTemplateFromWs($id);
-			array_push($extraTemplates, $tid);
+			$extraTemplates[] = $tid;
 			$this->ExtraWorkspaces = makeCSVFromArray($ExtraWorkspaces, true);
 			$this->ExtraTemplates = makeCSVFromArray($extraTemplates, true);
 		}
@@ -2014,6 +2004,7 @@ class we_objectFile extends we_document{
 		$foo = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", $this->DB_WE);
 
 		if(isset($foo["DefaultTitle"]) && $foo["DefaultTitle"] && strpos($foo["DefaultTitle"], '_')){
+			$regs = array();
 			preg_match('/(.+?)_(.*)/', $foo["DefaultTitle"], $regs);
 			if(isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== ''){
 				$elem = $this->geFieldValue($regs[2], $regs[1]);
@@ -2043,6 +2034,7 @@ class we_objectFile extends we_document{
 		$foo = getHash("SELECT DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3 FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", $this->DB_WE);
 		if(isset($foo["DefaultUrl"]) && $foo["DefaultUrl"]){
 			if(isset($foo["DefaultUrlfield0"]) && $foo["DefaultUrlfield0"]){
+				$regs = array();
 				preg_match('/(.+?)_(.*)/', $foo["DefaultUrlfield0"], $regs);
 				if(isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== ''){
 					$urlfield0 = $this->geFieldValue($regs[2], $regs[1]);
@@ -2232,11 +2224,9 @@ class we_objectFile extends we_document{
 
 			$text = str_replace(" ", "-", $text);
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
-				$text = urlencode($text);
-				$text = str_replace('%2F', '/', $text);
+				$text = str_replace('%2F', '/', urlencode($text));
 			} else{
-				$text = correctUml($text);
-				$text = preg_replace("~[^0-9a-zA-Z/._-]~", "", $text);
+				$text = preg_replace("~[^0-9a-zA-Z/._-]~", "", correctUml($text));
 			}
 			$this->Url = substr($text, 0, 256);
 		} else{
@@ -2306,7 +2296,7 @@ class we_objectFile extends we_document{
 
 	protected function i_convertElemFromRequest($type, &$v, $k){
 		if(!$type){
-			foreach($this->DefArray as $n => $foo){
+			foreach(array_keys($this->DefArray) as $n){
 				$regs = explode('_', $n, 2);
 				if(isset($regs[0])){
 					$testtype = $regs[0];
@@ -2483,6 +2473,7 @@ class we_objectFile extends we_document{
 			$DataTable = OBJECT_X_TABLE . $this->TableID;
 			$db = $this->DB_WE;
 			$tableInfo = $db->metadata($DataTable);
+			$regs = array();
 			for($i = 0; $i < sizeof($tableInfo); $i++){
 				if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
 					if($regs[1] != "OF"){
