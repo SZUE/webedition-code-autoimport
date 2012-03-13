@@ -1,73 +1,67 @@
+
 /**
  * webEdition CMS
  *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * This source is part of webEdition CMS. webEdition CMS is free software; you
+ * can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation; either version 3
+ * of the License, or any later version.
  *
  * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile license.txt
+ * http://www.gnu.org/copyleft/gpl.html. A copy is found in the textfile
+ * license.txt
  *
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
-
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+public class LineNumberPanel extends JPanel {
 
-public class LineNumberPanel extends JPanel
-{
-/**
-	 * 
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	// for this simple experiment, we keep the pane + scrollpane as members.
-	
 	JTextPane pane;
 	JScrollPane scrollPane;
 	Font NrPanelFont;
-	
-		
-	boolean userChanges=true;
-		
+	boolean userChanges = true;
+
 	public LineNumberPanel(final JTextPane pane) {
 		super();
-		
+
 		this.pane = pane;
-				
+
 		final LineNumberPanel _this = this;
-		
+
 		setMinimumSize(new Dimension(44, 0));
 		setPreferredSize(new Dimension(44, 0));
 		setMinimumSize(new Dimension(44, 0));
-		
+
 		NrPanelFont = new Font("courier", Font.PLAIN, 10);
 
-		
+
 		scrollPane = (JScrollPane) pane.getParent().getParent().getParent();
-		
-		
+
+
 		class MyAdjustmentListener implements AdjustmentListener {
-	        // This method is called whenever the value of a scrollbar is changed,
-	        // either by the user or programmatically.
-	        public void adjustmentValueChanged(AdjustmentEvent evt) {
-	        	_this.repaint();
-	        }
-	    }
+			// This method is called whenever the value of a scrollbar is changed,
+			// either by the user or programmatically.
+
+			public void adjustmentValueChanged(AdjustmentEvent evt) {
+				_this.repaint();
+			}
+		}
 		AdjustmentListener listener = new MyAdjustmentListener();
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(listener);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -75,23 +69,19 @@ public class LineNumberPanel extends JPanel
 
 
 	}
-	
-    
- 
-    public void paintComponent(Graphics g) {
+
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setClip(0,2,40,scrollPane.getViewport().getHeight());
+		g.setClip(0, 2, 40, scrollPane.getViewport().getHeight());
 		// We need to properly convert the points to match the viewport
 		// Read docs for viewport
-		 // starting pos in document
-		int start =	Math.max(0, pane.viewToModel(scrollPane.getViewport().getViewPosition()));
+		// starting pos in document
+		int start = Math.max(0, pane.viewToModel(scrollPane.getViewport().getViewPosition()));
 		// end pos in doc
 		int end = pane.viewToModel(
-		new Point(
-				scrollPane.getViewport().getViewPosition().x + pane.getWidth(),
-				scrollPane.getViewport().getViewPosition().y + pane.getHeight()
-				)
-		);
+						new Point(
+						scrollPane.getViewport().getViewPosition().x + pane.getWidth(),
+						scrollPane.getViewport().getViewPosition().y + pane.getHeight()));
 
 		// translate offsets to lines
 		Document doc = pane.getDocument();
@@ -103,8 +93,7 @@ public class LineNumberPanel extends JPanel
 		int fontDesc = g.getFontMetrics(pane.getFont()).getMaxDescent();
 		int starting_y = -1;
 
-		try
-		{
+		try {
 			starting_y = 1 + pane.modelToView(start).y - scrollPane.getViewport().getViewPosition().y + fontHeight - fontDesc;
 		} catch (BadLocationException e1) {
 			e1.printStackTrace();
@@ -116,8 +105,4 @@ public class LineNumberPanel extends JPanel
 			g.drawString(Integer.toString(line), 40 - _w, y);
 		}
 	}
-
-
 }
-
-

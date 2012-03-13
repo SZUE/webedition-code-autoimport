@@ -845,7 +845,7 @@ class weVersions{
 	 * @abstract get versions of one document / object
 	 * @return array of version-records of one document / object
 	 */
-	function loadVersionsOfId($id, $table, $where=""){
+	function loadVersionsOfId($id, $table, $where = ""){
 
 		$versionArr = array();
 		$versionArray = array();
@@ -869,7 +869,7 @@ class weVersions{
 	 * @abstract get one version of document / object
 	 * @return array of version-records of one document / object
 	 */
-	function loadVersion($where="1"){
+	function loadVersion($where = "1"){
 
 		$versionArray = array();
 		$db = new DB_WE();
@@ -1250,18 +1250,7 @@ class weVersions{
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} elseif(file_exists($siteFile) && $document["Extension"] == ".php" && ($document["ContentType"] == 'text/webedition' || $document["ContentType"] == 'text/html')){
 
-						$contents = "";
-						if(function_exists('file_get_contents')){
-							$contents = file_get_contents($siteFile);
-						} else{
-							ob_start();
-							//if there is a header(location... don't execute it
-							ob_flush();
-							flush();
-							@include($siteFile);
-							$contents = ob_get_contents();
-							ob_end_clean();
-						}
+						$contents = file_get_contents($siteFile);
 
 						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, $contents);
 					} else{
@@ -1549,7 +1538,7 @@ class weVersions{
 		weFile::save($tmpFile, $out);
 	}
 
-	function getDocContent($we_doc, $includepath=""){
+	function getDocContent($we_doc, $includepath = ""){
 
 		$contents = "";
 		set_time_limit(0);
@@ -1607,8 +1596,7 @@ class weVersions{
 				$contents = ob_get_contents();
 				ob_end_clean();
 			}
-		}
-		else{
+		}else{
 			ob_start();
 			$noSess = true;
 			$GLOBALS['WE_IS_DYN'] = 1;
@@ -1692,7 +1680,7 @@ class weVersions{
 	/**
 	 * @abstract delete version entry from db and delete version files
 	 */
-	function deleteVersion($ID="", $where=""){
+	function deleteVersion($ID = "", $where = ""){
 
 		if(isset($_SESSION["user"]["ID"])){
 			$db = new DB_WE();
@@ -1947,7 +1935,7 @@ class weVersions{
 		}
 	}
 
-	public static function showValue($k, $v, $table=''){
+	public static function showValue($k, $v, $table = ''){
 		$val = self::_showValue($k, $v, $table);
 		return ($val ? $val : '&nbsp;');
 	}

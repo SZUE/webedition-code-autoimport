@@ -1,19 +1,18 @@
+
 /**
  * webEdition CMS
  *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * This source is part of webEdition CMS. webEdition CMS is free software; you
+ * can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation; either version 3
+ * of the License, or any later version.
  *
  * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile license.txt
+ * http://www.gnu.org/copyleft/gpl.html. A copy is found in the textfile
+ * license.txt
  *
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -22,16 +21,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Vector;
-
-import javax.swing.ActionMap;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 
 abstract class Suggestor extends JPanel {
@@ -39,17 +32,14 @@ abstract class Suggestor extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public JList list = new JList();
 	public boolean processSelection = true;
-
 	protected Editor applet;
 	protected JTextPane pane;
 	protected LineNumberPanel lineNumbers;
-
 	protected String suggestedValue;
-
-	protected Vector<SuggestorListener> listeners;
+	protected ArrayList<SuggestorListener> listeners;
 
 	public Suggestor(Editor anApplet, JTextPane aPane,
-			LineNumberPanel someLineNumbers) {
+					LineNumberPanel someLineNumbers) {
 		super();
 		this.applet = anApplet;
 		this.pane = aPane;
@@ -62,31 +52,28 @@ abstract class Suggestor extends JPanel {
 		list.setFocusable(false);
 		list.setBackground(new Color(255, 255, 235));
 		JScrollPane scroll = new JScrollPane(list);
-		scroll
-				.setBorder(javax.swing.BorderFactory
-						.createLineBorder(Color.gray));
-		scroll
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll
-				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setBorder(javax.swing.BorderFactory.createLineBorder(Color.gray));
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setFocusable(false);
 		scroll.setSize(200, 200);
 		add(scroll);
 		setVisible(false);
 
 		list.addKeyListener(new KeyAdapter() {
+
 			public void keyReleased(KeyEvent e) {
 				if (isVisible()) {
 					//repaint();
 					switch (e.getKeyCode()) {
 
-					case KeyEvent.VK_ESCAPE:
-						hideSuggestor();
-						return;
+						case KeyEvent.VK_ESCAPE:
+							hideSuggestor();
+							return;
 
-					case KeyEvent.VK_ENTER:
-						_suggestorAction();
-						return;
+						case KeyEvent.VK_ENTER:
+							_suggestorAction();
+							return;
 
 					}
 				}
@@ -94,6 +81,7 @@ abstract class Suggestor extends JPanel {
 		});
 
 		list.addMouseListener(new MouseAdapter() {
+
 			public void mouseClicked(MouseEvent e) {
 				_suggestorAction();
 			}
@@ -135,8 +123,7 @@ abstract class Suggestor extends JPanel {
 			list.setModel(model);
 			try {
 
-				JScrollPane scrollPane = (JScrollPane) pane.getParent()
-						.getParent().getParent();
+				JScrollPane scrollPane = (JScrollPane) pane.getParent().getParent().getParent();
 
 				Point p = scrollPane.getViewport().getViewPosition();
 				Rectangle rect = pane.getUI().modelToView(pane, pos);
@@ -157,6 +144,7 @@ abstract class Suggestor extends JPanel {
 				setVisible(true);
 				suggestorWillShow();
 				SwingUtilities.invokeLater(new Runnable() {
+
 					public void run() {
 						processSelection = true;
 						pane.requestFocus();
@@ -208,32 +196,32 @@ abstract class Suggestor extends JPanel {
 	synchronized public void addSuggestorListener(SuggestorListener jcl) {
 
 		if (listeners == null) {
-			listeners = new Vector<SuggestorListener>();
+			listeners = new ArrayList<SuggestorListener>();
 		}
 
-		listeners.addElement(jcl);
+		listeners.add(jcl);
 	}
 
 	synchronized public void removeSuggestorListener(SuggestorListener jcl) {
 
 		if (listeners == null) {
-			listeners = new Vector<SuggestorListener>();
+			listeners = new ArrayList<SuggestorListener>();
 		}
-		listeners.removeElement(jcl);
+		listeners.remove(jcl);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void fireSuggestorEvent() {
-		Vector<SuggestorListener> targets;
+		ArrayList<SuggestorListener> targets;
 		Enumeration<SuggestorListener> en;
 		SuggestorListener jcl;
 
 		if (listeners != null && !listeners.isEmpty()) {
 			SuggestorEvent event = new SuggestorEvent(this, suggestedValue);
 			synchronized (this) {
-				targets = (Vector<SuggestorListener>) listeners.clone();
+				targets = (ArrayList<SuggestorListener>) listeners.clone();
 			}
-			en = targets.elements();
+			en = Collections.enumeration(targets);
 			while (en.hasMoreElements()) {
 				jcl = en.nextElement();
 				jcl.entrySelected(event);

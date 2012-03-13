@@ -1,19 +1,18 @@
+
 /**
  * webEdition CMS
  *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * This source is part of webEdition CMS. webEdition CMS is free software; you
+ * can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation; either version 3
+ * of the License, or any later version.
  *
  * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile license.txt
+ * http://www.gnu.org/copyleft/gpl.html. A copy is found in the textfile
+ * license.txt
  *
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
-
 public class Parameter {
 
 	// parameter
@@ -29,12 +28,14 @@ public class Parameter {
 	private int fontSize = 11;
 
 	private static final class InstanceHolder {
+
 		static final Parameter INSTANCE = new Parameter();
 	}
-	 
-	private Parameter () {}
 
-	public static Parameter getInstance () {
+	private Parameter() {
+	}
+
+	public static Parameter getInstance() {
 		return InstanceHolder.INSTANCE;
 	}
 
@@ -51,6 +52,7 @@ public class Parameter {
 		}
 		return color;
 	}
+
 	public void setWeTagColor(String weTagColor) {
 		this.weTagColor = fixColor(weTagColor);
 	}
@@ -122,7 +124,7 @@ public class Parameter {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-	
+
 	public String getContentType() {
 		return this.contentType;
 	}

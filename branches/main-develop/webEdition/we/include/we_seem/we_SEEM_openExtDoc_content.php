@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -61,13 +62,9 @@ if(isset($content)){
 	$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 	$_body = $_table->getHtml();
-	$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
+	$_body = we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_body);
 
-	print we_html_element::htmlHtml($_head . "\n" . $_body);
+	print we_html_element::htmlHtml($_head . $_body);
 }
-?>
-<script type="text/javascript">
-	<!--
-  parent.openedWithWE = 1;
-	//-->
-</script>
+
+echo we_html_element::jsElement('parent.openedWithWE = 1;');

@@ -21,10 +21,10 @@ way to fit your requirements.
 =================================================================== */
 
 .preload1 {
-	background: url(arr.gif);
+	background: url(/webEdition/images/menu/arr.gif);
 }
 .preload2 {
-	background: url(arr_over.gif);
+	background: url(/webEdition/images/menu/arr_over.gif);
 }
 
 #nav {
@@ -168,24 +168,24 @@ way to fit your requirements.
 	padding-bottom: 1px;
 	color: #000000;
 	text-decoration: none;
-	
+
 }
 
 #nav li ul.sub li a.fly {
-	background: #f0f0f0 url(arr.gif) 99% 50% no-repeat;
+	background: #f0f0f0 url(/webEdition/images/menu/arr.gif) 99% 50% no-repeat;
 }
 #nav li div.click:hover ul.sub li a:hover {
 	background: #3399ff;
-	color: #ffffff;	
-	
+	color: #ffffff;
+
 }
 #nav li div.click:hover ul.sub li a.fly:hover {
-	background: #3399ff url(arr_over.gif) 99% 50% no-repeat;
+	background: #3399ff url(/webEdition/images/menu/arr_over.gif) 99% 50% no-repeat;
 	color: #ffffff;
 }
 
 #nav li div.click ul li:hover > a.fly {
-	background: #3399ff url(arr_over.gif) 99% 50% no-repeat;
+	background: #3399ff url(/webEdition/images/menu/arr_over.gif) 99% 50% no-repeat;
 	color: #ffffff;
 }
 
@@ -204,7 +204,7 @@ way to fit your requirements.
 	z-index: 400;
 	height:auto;
 	padding: 0 2px 5px 2px;
-	border-radius: 5px;	
+	border-radius: 5px;
 }
 
 #nav li.disabled{

@@ -93,22 +93,16 @@ class weBackup extends we_backup{
 		$pattern = basename($this->filename) . "_%s";
 
 
-		if($this->isCompressed($this->filename)){
-			$this->compress = "gzip";
-		}
-		else
-			$this->compress = "none";
-
+		$this->compress = ($this->isCompressed($this->filename) ? "gzip" : "none");
 
 		$header = $this->header;
 
 		$buff = "";
 		$filename_tmp = "";
 
-		if($this->compress != "none")
-			$fh = @gzopen($this->filename, "rb");
-		else
-			$fh = @fopen($this->filename, "rb");
+		$fh = ($this->compress != "none" ?
+				@gzopen($this->filename, "rb") :
+				@fopen($this->filename, "rb"));
 
 		$num = -1;
 		$open_new = true;
@@ -211,7 +205,7 @@ class weBackup extends we_backup{
 			$tablename = $this->fixTableName($tablename);
 			if(isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)]){
 				$this->current_description = $this->description["import"][strtolower($tablename)];
-			}else{
+			} else{
 				$this->current_description = g_l('backup', "[working]");
 			}
 
@@ -247,7 +241,7 @@ class weBackup extends we_backup{
 			$index = $xmlBrowser->nodeName($nsv);
 			if(weContentProvider::needCoding($classname, $index)){
 				$content[$index] = weContentProvider::decode($xmlBrowser->getData($nsv));
-			}else{
+			} else{
 				$content[$index] = $xmlBrowser->getData($nsv);
 			}
 		}
@@ -431,7 +425,7 @@ class weBackup extends we_backup{
 
 					if(isset($this->description["export"][strtolower($table)])){
 						$this->current_description = $this->description["export"][strtolower($table)];
-					}else{
+					} else{
 						$this->current_description = g_l('backup', "[working]");
 					}
 
@@ -574,8 +568,6 @@ class weBackup extends we_backup{
 		return ($this->export2server ? $this->backup_dir . $this->filename : $this->dumpfilename);
 	}
 
-	
-
 	/**
 	 * Function: isFixed
 	 *
@@ -595,8 +587,6 @@ class weBackup extends we_backup{
 		}
 		return parent::isFixed($tab) || !$this->isWeTable($tab);
 	}
-
-
 
 	function getFileList($dir = "", $with_dirs = false, $rem_doc_root = true){
 		if($dir == "")
