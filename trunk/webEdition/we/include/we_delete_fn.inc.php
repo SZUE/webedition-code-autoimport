@@ -155,7 +155,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	$file = ((!$isTemplateFolder) ? $_SERVER["DOCUMENT_ROOT"] : TEMPLATE_DIR) . $path;
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE) {
 		if (!deleteLocalFolder($file)) {
-			if (is_array($GLOBALS["we_folder_not_del"])) {
+			if (isset($GLOBALS["we_folder_not_del"]) && is_array($GLOBALS["we_folder_not_del"])) {
 				array_push($GLOBALS["we_folder_not_del"], $file);
 			}
 		}
@@ -206,7 +206,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=".abs($id)."");
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."");
 
-		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
+		if (isset($GLOBALS['_we_active_modules']) && in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName !="we_objectFile"');
 		}
