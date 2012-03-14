@@ -1876,27 +1876,13 @@ function getDoctypeQuery($db = ''){
 			}
 		}
 	}
-	if(is_array($paths) && count($paths) > 0){
-		$q = "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='') ORDER BY DocType";
-	} else
-		$q = ' ORDER BY DocType';
-
-	return $q;
+	return (is_array($paths) && count($paths) > 0 ? "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='')" : '') . ' ORDER BY DocType';
 }
 
 function we_loadLanguageConfig(){
-
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
 	if(!file_exists($file) || !is_file($file)){
-		if(WE_LANGUAGE == 'Deutsch' || WE_LANGUAGE == 'Deutsch_UTF-8'){
-			we_writeLanguageConfig('de_DE', array(
-				'de_DE', 'en_GB'
-			));
-		} else{
-			we_writeLanguageConfig('en_GB', array(
-				'de_DE', 'en_GB'
-			));
-		}
+		we_writeLanguageConfig((WE_LANGUAGE == 'Deutsch' || WE_LANGUAGE == 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
 	}
 	include_once ($file);
 }
@@ -1926,28 +1912,23 @@ function we_writeLanguageConfig($default, $available = array()){
 		$locales .= "	'" . $Locale . "',\n";
 	}
 
-	$code = '<?php
-
-$GLOBALS["weFrontendLanguages"] = array(
-' . $locales . '
-);
-
-$GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";';
-
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
 	$fh = fopen($file, 'w+');
 	if(!$fh){
 		return false;
 	}
-	fputs($fh, $code);
+	fputs($fh, '<?php
+$GLOBALS["weFrontendLanguages"] = array(
+' . $locales . '
+);
+
+$GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";'
+	);
 	return fclose($fh);
 }
 
 function we_filenameNotValid($filename){
-	if(substr($filename, 0, 2) === '..'){
-		return true;
-	}
-	return preg_match('#[^a-z0-9._-]#i', $filename);
+	return (substr($filename, 0, 2) === '..') || preg_match('#[^a-z0-9._-]#i', $filename);
 }
 
 function we_isHttps(){
@@ -1962,11 +1943,11 @@ function pos_number($val){
 function convertCharsetEncoding($fromC, $toC, $string){
 	if($fromC != '' && $toC != ''){
 		if(function_exists('iconv')){
-			$string = iconv($fromC, $toC . '//TRANSLATE', $string);
+			return iconv($fromC, $toC . '//TRANSLATE', $string);
 		} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
-			$string = utf8_decode($string);
+			return utf8_decode($string);
 		} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){
-			$string = utf8_encode($string);
+			return utf8_encode($string);
 		}
 	}
 	return $string;
@@ -1985,8 +1966,7 @@ function serialize_fix_callback($match){
 }
 
 function correctSerDataISOtoUTF($serial_str){
-	$out = preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $serial_str);
-	return $out;
+	return preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $serial_str);
 }
 
 function getVarArray($arr, $string){
