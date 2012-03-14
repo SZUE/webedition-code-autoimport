@@ -569,8 +569,7 @@ class we_template extends we_document{
 		return $yuiSuggest->getHTML();
 	}
 
-	function isUsedByDocuments(){
-
+	private function isUsedByDocuments(){
 		$paths = array();
 
 		if($this->ID == 0){
@@ -578,7 +577,7 @@ class we_template extends we_document{
 		}
 		$this->DB_WE->query("SELECT ID, Path FROM " . FILE_TABLE . " WHERE temp_template_id=" . intval($this->ID) . " OR (temp_template_id = 0 AND TemplateID = " . intval($this->ID) . ") ORDER BY Path");
 		while($this->DB_WE->next_record()) {
-			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path');
+			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path') . ' (ID: ' . $this->DB_WE->f('ID') . ')';
 		}
 		return $paths;
 	}
