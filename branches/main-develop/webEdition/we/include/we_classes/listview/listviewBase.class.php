@@ -281,32 +281,26 @@ abstract class listviewBase{
 			} else{
 				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
-			if($only){
-				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : '');
-			} else{
-				return getHtmlTag('a', $attribs, '', false, true);
-			}
+			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
-
 			$foo = $this->start - $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-			if(strpos($attribs['href'], '?') === false){
-				$attribs['href'] = $attribs['href'] . '?';
-			} else{
-				$attribs['href'] = $attribs['href'] . '&';
-			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
-
-			if($only){
-				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : '');
-			} else{
-				return getHtmlTag('a', $attribs, '', false, true);
-			}
+			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 		} else{
 			return '';
+		}
+
+		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
+		if(strpos($attribs['href'], '?') === false){
+			$attribs['href'] = $attribs['href'] . '?';
+		} else{
+			$attribs['href'] = $attribs['href'] . '&';
+		}
+		$attribs['href'] = $attribs['href'] . $tmp_href;
+		if($only){
+			$this->close_a = false;
+			return (isset($attribs[$only]) ? $attribs[$only] : '');
+		} else{
+			return getHtmlTag('a', $attribs, '', false, true);
 		}
 	}
 
@@ -315,7 +309,7 @@ abstract class listviewBase{
 		//filter special variables
 		$filterArr = array('edit_object', 'edit_document', 'we_editObject_ID', 'we_editDocument_ID', 'we_transaction', 'we_cmd', 'we_cmd[1]', 'pv_id', 'pv_tid', 'bsuniquevid');
 		//remove potential Cookies and filter from query
-		$filterArr = array_merge($filterArr, ($filter ? explode(',', $filter) : array()),array_keys($_COOKIE));
+		$filterArr = array_merge($filterArr, ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
@@ -385,29 +379,11 @@ abstract class listviewBase{
 				}
 				$newdate = $year . '-' . $month . '-' . $day;
 			}
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-			if(strpos($attribs['href'], '?') === false){
-				$attribs['href'] = $attribs['href'] . '?';
-			} else{
-				$attribs['href'] = $attribs['href'] . '&';
-			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '='.$newdate));
-			if($only){
-				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : '');
-			} else{
-				return getHtmlTag('a', $attribs, '', false, true);
-			}
+			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-			if(strpos($attribs['href'], '?') === false){
-				$attribs['href'] = $attribs['href'] . '?';
-			} else{
-				$attribs['href'] = $attribs['href'] . '&';
-			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 			if($only){
 				$this->close_a = false;
 				return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -416,6 +392,20 @@ abstract class listviewBase{
 			}
 		} else{
 			return '';
+		}
+
+		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
+		if(strpos($attribs['href'], '?') === false){
+			$attribs['href'] = $attribs['href'] . '?';
+		} else{
+			$attribs['href'] = $attribs['href'] . '&';
+		}
+		$attribs['href'] = $attribs['href'] . $tmp_href;
+		if($only){
+			$this->close_a = false;
+			return (isset($attribs[$only]) ? $attribs[$only] : '');
+		} else{
+			return getHtmlTag('a', $attribs, '', false, true);
 		}
 	}
 
@@ -433,12 +423,12 @@ abstract class listviewBase{
 
 	//FIXME: wtf
 	function adjustRows(){
-	/*	if($this->cols && $this->anz_all){
-			// Bugfix #1715 und auch #4965
-			$_rows = floor($this->anz_all / $this->cols);
-			$_rest = ($this->anz_all % $this->cols);
-			$_add = $_rest ? $this->cols - $_rest : 0;
-		}*/
+		/* 	if($this->cols && $this->anz_all){
+		  // Bugfix #1715 und auch #4965
+		  $_rows = floor($this->anz_all / $this->cols);
+		  $_rest = ($this->anz_all % $this->cols);
+		  $_add = $_rest ? $this->cols - $_rest : 0;
+		  } */
 	}
 
 	function getCalendarField($calendar, $type){
