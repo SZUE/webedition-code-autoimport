@@ -977,34 +977,12 @@ function uniqueCSV($csv, $prePost = false){
 }
 
 function get_ws($table = FILE_TABLE, $prePostKomma = false){
-	switch($table){
-		case FILE_TABLE :
-			$type = 0;
-			break;
-		case TEMPLATES_TABLE :
-			$type = 1;
-			break;
-		case NAVIGATION_TABLE :
-			$type = 3;
-			break;
-		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
-			$type = 2;
-			break;
-		case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : -2):
-			$type = 4;
-			break;
-		default :
-			return '';
-	}
-
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
-
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return '';
 		}
-		if($_SESSION['user']['workSpace'] && $_SESSION['user']['workSpace'] != ';'){
-			$a = explode(';', $_SESSION['user']['workSpace']);
-			return makeCSVFromArray(makeArrayFromCSV($a[$type]), $prePostKomma);
+		if($_SESSION['user']['workSpace'] && $_SESSION['user']['workSpace'][$table] != ''){
+			return makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
 		}
 	}
 	return '';

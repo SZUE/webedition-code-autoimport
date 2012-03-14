@@ -37,10 +37,7 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 		case 'sessionfield' :
 			return isset($_SESSION['webuser'][$name]);
 		case 'shopField' :
-			if(isset($GLOBALS[$shopname])){
-				return $GLOBALS[$shopname]->hasCartField($name);
-			}
-			break;
+			return (isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($name) : false);
 		case 'sum' :
 			return (isset($GLOBALS['summe']) && isset($GLOBALS['summe'][$name]));
 		default :
@@ -72,20 +69,18 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 						return false;
 					return $issetElemNameDat;
 				}
-			} else{
-				return false;
 			}
+			return false;
 	}
 }
 
 function we_tag_ifVarSet($attribs, $content){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
-		return "";
+		return false;
 	}
 
-	$type = weTag_getAttribute("var", $attribs);
-	$type = $type ? $type : weTag_getAttribute("type", $attribs);
+	$type = weTag_getAttribute("var", $attribs, weTag_getAttribute("type", $attribs));
 	$doc = weTag_getAttribute("doc", $attribs);
 	$name = weTag_getAttribute("name", $attribs);
 	$formname = weTag_getAttribute("formname", $attribs, "we_global_form");

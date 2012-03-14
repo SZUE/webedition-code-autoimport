@@ -26,15 +26,15 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag
 
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
 	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
 	$name = weTag_getAttribute('name', $attribs);
 	$type = weTag_getAttribute('type', $attribs, 'txt');
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 	$property = weTag_getAttribute('property', $attribs, false, true);
 
-	if(!we_isVarSet($match, $type, $docAttr, $property, $formname))
+	if(!we_isVarSet($match, $type, $docAttr, $property, $formname)){
 		return false;
+	}
 
 	switch($type){
 		case 'request' :
@@ -75,26 +75,21 @@ function we_isVarNotEmpty($attribs){
 							$foo = $doc->getField($attribs, $type, true);
 							break;
 						case 'multiobject' :
+							//FIXME: this makes no sense
 							$attribs['name'] = $match;
 							$data = unserialize($doc->getField($attribs, $type, true));
 							if(!is_array($data['objects'])){
 								$data['objects'] = array();
 							}
-							include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_multiobject.class.php');
 							$temp = new we_listview_multiobject($match);
-							if(sizeof($temp->Record) > 0){
-								return true;
-							} else{
-								return false;
-							}
+							return (sizeof($temp->Record) > 0);
 						default :
 							$foo = $doc->getElement($match);
 					}
 					return (strlen($foo) > 0);
 				}
-			} else{
-				return false;
 			}
+			return false;
 	}
 }
 

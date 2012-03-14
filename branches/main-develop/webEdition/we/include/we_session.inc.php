@@ -132,40 +132,39 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 					$get_wsnl = $DB_WE->f("ParentWsnl");
 
 					while($pid) { //	For each group
-						array_push($_userGroups, $pid);
+						$_userGroups[] = $pid;
 
-						$db_tmp->query(
-							"SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
+						$db_tmp->query("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
 						if($db_tmp->next_record()){
 							if($get_ws){
 								$a = makeArrayFromCSV($db_tmp->f("workSpace"));
 								foreach($a as $k => $v)
 									if(!in_array($v, $f))
-										array_push($f, $v);
+										$f[] = $v;
 							}
 							if($get_wst){
 								$a = makeArrayFromCSV($db_tmp->f("workSpaceTmp"));
 								foreach($a as $k => $v)
 									if(!in_array($v, $t))
-										array_push($t, $v);
+										$t[] = $v;
 							}
 							if($get_wso){
 								$a = makeArrayFromCSV($db_tmp->f("workSpaceObj"));
 								foreach($a as $k => $v)
 									if(!in_array($v, $o))
-										array_push($o, $v);
+										$o[] = $v;
 							}
 							if($get_wsn){
 								$a = makeArrayFromCSV($db_tmp->f("workSpaceNav"));
 								foreach($a as $k => $v)
 									if(!in_array($v, $n))
-										array_push($n, $v);
+										$n[] = $v;
 							}
 							if($get_wsnl){
 								$a = makeArrayFromCSV($db_tmp->f("workSpaceNwl"));
 								foreach($a as $k => $v)
 									if(!in_array($v, $nl))
-										array_push($nl, $v);
+										$nl[] = $v;
 							}
 							$pid = $db_tmp->f("ParentID");
 							$get_ws = $db_tmp->f("ParentWs");
@@ -179,11 +178,17 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 					}
 				}
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				$_SESSION["user"]["workSpace"] = implode(",", $f);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
+				$_SESSION["user"]["workSpace"] = array(
+					FILE_TABLE => $f,
+					TEMPLATES_TABLE => $t,
+					NAVIGATION_TABLE => $n,
+				);
+				if(defined('OBJECT_FILES_TABLE')){
+					$_SESSION["user"]["workSpace"][OBJECT_FILES_TABLE] = $o;
+				}
+				if(defined('NEWSLETTER_TABLE')){
+					$_SESSION["user"]["workSpace"][NEWSLETTER_TABLE] = $nl;
+				}
 
 				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_userdata["ID"]), $DB_WE);
 				if(is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0){
@@ -203,12 +208,18 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 				$_SESSION["user"]["isWeSession"] = true; // for pageLogger, to know that it is really a webEdition session
 
 
-				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
-				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
+				$_SESSION["user"]["workSpace"] = array(
+					FILE_TABLE => $f,
+					TEMPLATES_TABLE => $t,
+					NAVIGATION_TABLE => $n,
+				);
+				if(defined('OBJECT_FILES_TABLE')){
+					$_SESSION["user"]["workSpace"][OBJECT_FILES_TABLE] = $o;
+				}
+				if(defined('NEWSLETTER_TABLE')){
+					$_SESSION["user"]["workSpace"][NEWSLETTER_TABLE] = $nl;
+				}
 
 				if(isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]){
 					$foo = new we_user();
