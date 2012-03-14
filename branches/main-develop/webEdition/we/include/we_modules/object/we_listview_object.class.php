@@ -66,7 +66,7 @@ class we_listview_object extends listviewBase{
 	 * @param	string        $categoryids
 	 *
 	 */
-	function __construct($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $classID=0, $cats="", $catOr="", $condition="", $triggerID="", $cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $workspaceID='', $customerFilterType='off', $docID=0, $customers="", $id="", $we_predefinedSQL="", $languages='', $hidedirindex=false, $objectseourls=false){
+	function __construct($name = "0", $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
@@ -117,10 +117,7 @@ class we_listview_object extends listviewBase{
 
 
 		// IMPORTANT for seeMode !!!! #5317
-		$this->LastDocPath = '';
-		if(isset($_SESSION['last_webEdition_document'])){
-			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
-		}
+		$this->LastDocPath = (isset($_SESSION['last_webEdition_document']) ? $_SESSION['last_webEdition_document']['Path'] : '');
 
 		$matrix = array();
 		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);
@@ -133,11 +130,7 @@ class we_listview_object extends listviewBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition);
 
-		if(isset($GLOBALS['we_doc'])){
-			$pid_tail = makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table);
-		} else{
-			$pid_tail = '1';
-		}
+		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
 		$cat_tail = getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids);
 
@@ -185,7 +178,7 @@ class we_listview_object extends listviewBase{
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()) {
-						array_push($this->IDs, $this->DB_WE->f('ID'));
+						$this->IDs[] = $this->DB_WE->f('ID');
 						if($calendar != ''){
 							$this->calendar_struct["storage"][$this->DB_WE->f("ID")] = (int) $this->DB_WE->f("Calendar");
 						}
@@ -196,7 +189,7 @@ class we_listview_object extends listviewBase{
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
 
-			if($this->customers === "*"){
+			if($this->customers === '*'){
 				$_idListArray = array();
 				while($this->DB_WE->next_record()) {
 					if(intval($this->DB_WE->f("OF_WebUserID")) > 0){
@@ -204,8 +197,7 @@ class we_listview_object extends listviewBase{
 					}
 				}
 				if(count($_idListArray) > 0){
-					$_idListArray = array_unique($_idListArray);
-					$_idlist = implode(",", $_idListArray);
+					$_idlist = implode(",", array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID IN($_idlist)");
 					while($db->next_record()) {
@@ -236,7 +228,7 @@ class we_listview_object extends listviewBase{
 		return false;
 	}
 
-	function fillMatrix(&$matrix, $classID, $db=''){
+	function fillMatrix(&$matrix, $classID, $db = ''){
 		if(!$db)
 			$db = new DB_WE();
 		$table = OBJECT_X_TABLE . $classID;

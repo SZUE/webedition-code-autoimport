@@ -431,13 +431,14 @@ abstract class listviewBase{
 		return ($this->count > $this->anz);
 	}
 
+	//FIXME: wtf
 	function adjustRows(){
-		if($this->cols && $this->anz_all){
+	/*	if($this->cols && $this->anz_all){
 			// Bugfix #1715 und auch #4965
 			$_rows = floor($this->anz_all / $this->cols);
 			$_rest = ($this->anz_all % $this->cols);
 			$_add = $_rest ? $this->cols - $_rest : 0;
-		}
+		}*/
 	}
 
 	function getCalendarField($calendar, $type){
