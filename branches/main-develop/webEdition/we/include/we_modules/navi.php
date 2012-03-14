@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/navi_language.inc.php");
 we_html_tools::protect();
 we_html_tools::htmlTop();
 
@@ -30,10 +29,6 @@ we_html_tools::htmlTop();
 $we_tabs = new we_tabs();
 
 $name = array();
-
-// depending on the active module is integrated or not, another menu is shown
-
-reset($_we_available_modules);
 
 //	First sort the array after the text.
 function order_available_modules($a, $b){
@@ -71,7 +66,7 @@ print $tab_header;
 				current = module;
 				top.content.location.replace('show.php?mod=' + module);
 			} else {
-				top.navi.setActiveTab(current);
+				setActiveTab(current);
 			}
 		} else {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}

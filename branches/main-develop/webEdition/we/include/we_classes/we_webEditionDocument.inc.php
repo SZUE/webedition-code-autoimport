@@ -67,6 +67,101 @@ class we_webEditionDocument extends we_textContentDocument{
 		array_push($this->persistent_slots, "TemplateID", "TemplatePath", "hidePages", "controlElement", "temp_template_id", "temp_doc_type", "temp_category");
 	}
 
+	public static function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = ''){
+		//  check if a <we:sessionStart> Tag was before
+		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
+
+		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document'])))
+			$GLOBALS['we_document'] = array();
+		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
+		if((!$session) || (!isset($_SESSION["we_document_session_$formname"]))){
+			if($session){
+				$_SESSION["we_document_session_$formname"] = array();
+			}
+			$GLOBALS['we_document'][$formname]->we_new();
+			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
+				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
+			} else{
+				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", 'ID', $GLOBALS['we_document'][$formname]->DB_WE);
+				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
+				if($tid){
+					$GLOBALS['we_document'][$formname]->setTemplateID($tid);
+				}
+				if(strlen($categories)){
+					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
+					$GLOBALS['we_document'][$formname]->Category = $categories;
+				}
+			}
+			if($session)
+				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
+		} else{
+			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
+				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
+			} else{
+				if($session){
+					$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION["we_document_session_$formname"]);
+				}
+			}
+			if(strlen($categories)){
+				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
+				$GLOBALS['we_document'][$formname]->Category = $categories;
+			}
+		}
+
+		if(isset($_REQUEST['we_returnpage'])){
+			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
+		}
+		if(isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])){
+			$dates = array();
+			foreach($_REQUEST["we_ui_$formname"] as $n => $v){
+				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
+					$dates[$regs[1]][$regs[2]] = $v;
+				} else{
+					$v = we_util::rmPhp($v);
+					$GLOBALS['we_document'][$formname]->setElement($n, $v);
+				}
+			}
+
+			foreach($dates as $k => $v){
+				$GLOBALS['we_document'][$formname]->setElement(
+					$k, mktime(
+						$dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']));
+			}
+		}
+
+		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
+			$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
+			// Bug Fix #750
+			if(is_array($cats)){
+				$cats = implode(',', $cats);
+			}
+			$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
+			$GLOBALS['we_document'][$formname]->Category = $cats;
+		}
+		if(isset($_REQUEST["we_ui_$formname" . '_Category'])){
+			if(is_array($_REQUEST["we_ui_$formname" . '_Category'])){
+				$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray($_REQUEST["we_ui_$formname" . '_Category'], true);
+			} else{
+				$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname" . '_Category']), true);
+			}
+		}
+		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
+			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
+				$GLOBALS["we_document"][$formname]->$slotname = $_REQUEST["we_ui_" . $formname . "_" . $slotname];
+			}
+		}
+
+		we_imageDocument::checkAndPrepare($formname, 'we_document');
+		we_flashDocument::checkAndPrepare($formname, 'we_document');
+		we_quicktimeDocument::checkAndPrepare($formname, 'we_document');
+		we_otherDocument::checkAndPrepare($formname, 'we_document');
+
+		if($session){
+			$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
+		}
+		return $GLOBALS['we_document'][$formname];
+	}
+
 	function makeSameNew(){
 		$TemplateID = $this->TemplateID;
 		$TemplatePath = $this->TemplatePath;
@@ -89,7 +184,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function editor($baseHref=true){
+	function editor($baseHref = true){
 		$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
 		$prot = getServerProtocol();
 		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl() . $this->Path : "";
@@ -125,7 +220,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * Form functions for generating the html of the input fields
 	 */
 
-	function formIsDynamic($leftwidth=100, $disabled=false){
+	function formIsDynamic($leftwidth = 100, $disabled = false){
 		$n = "";
 		$out = "";
 		if(!$disabled){
@@ -283,7 +378,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function xformTemplatePopup($width=50){
+	function xformTemplatePopup($width = 50){
 		$ws = get_ws(TEMPLATES_TABLE);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
@@ -546,7 +641,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @return string
 	 * @desc this function returns the code of the template this document bases on
 	 */
-	function getTemplateCode($completeCode=true){
+	function getTemplateCode($completeCode = true){
 		return f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($this->TemplateID) . ' AND ' . LINK_TABLE . '.Name="' . ($completeCode ? "completeData" : "data") . '"', 'Dat', $this->DB_WE);
 	}
 
@@ -636,7 +731,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function we_save($resave = 0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		// First off correct corupted fields
 		$this->correctFields();
 
@@ -666,11 +761,11 @@ class we_webEditionDocument extends we_textContentDocument{
 		return parent::i_writeDocument();
 	}
 
-	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
+	function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 
-	function we_unpublish($skipHook=0){
+	function we_unpublish($skipHook = 0){
 		if(!$this->ID)
 			return false;
 		return parent::we_unpublish($skipHook);
@@ -682,7 +777,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return we_document::we_delete();
 	}
 
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID=" . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", "SerializedData", $this->DB_WE));
@@ -699,7 +794,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function i_getDocument($includepath=""){
+	function i_getDocument($includepath = ""){
 		$glob = "";
 		foreach($GLOBALS as $k => $v){
 			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
@@ -729,7 +824,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if((version_compare(phpversion(), '5.0') >= 0) && isset($we_EDITOR) && $we_EDITOR){	//  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if((version_compare(phpversion(), '5.0') >= 0) && isset($we_EDITOR) && $we_EDITOR){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 
@@ -1045,7 +1140,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * called when document is initialized from outside webEdition
 	 * @param mixed $loadBinary
 	 */
-	function i_getContentData($loadBinary=0){
+	function i_getContentData($loadBinary = 0){
 		parent::i_getContentData($loadBinary);
 		if(defined('SHOP_TABLE')){
 			if($this->canHaveVariants()){ // article variants
@@ -1133,4 +1228,5 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		//drop invalid entries => is this safe???
 		$db->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $id . ' AND DocumentTable="' . $type . '" AND DLocale!="' . $lang . '"');
 	}
+
 }

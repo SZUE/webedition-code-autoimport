@@ -27,7 +27,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
-	$match = weTag_getAttribute('match', $attribs);
+	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
 	$name = weTag_getAttribute('name', $attribs);
 	$type = weTag_getAttribute('type', $attribs, 'txt');
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
@@ -98,7 +98,7 @@ function we_isVarNotEmpty($attribs){
 	}
 }
 
-function we_tag_ifVarEmpty($attribs, $content){
+function we_tag_ifVarEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		print($foo);
 		return false;

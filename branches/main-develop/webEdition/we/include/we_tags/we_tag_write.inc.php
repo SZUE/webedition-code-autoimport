@@ -65,10 +65,10 @@ function we_tag_write($attribs){
 	if(isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]){
 
 		if($type == "document"){
-			$ok = initDocument($name, $tid, $doctype, $categories);
+			$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
 		} else{
 			$parentid = weTag_getAttribute("parentid", $attribs);
-			$ok = initObject(intval($classid), $name, $categories, intval($parentid));
+			$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid));
 		}
 
 		if($ok){

@@ -37,13 +37,13 @@ function we_getModuleNameByContentType($ctype){
 	return $_moduleDir;
 }
 
-function we_getIndexFileIDs($db){
-	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )', 'IDs', $db);
-}
+/* function we_getIndexFileIDs($db){
+  return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )', 'IDs', $db);
+  }
 
-function we_getIndexObjectIDs($db){
-	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""', 'IDs', $db);
-}
+  function we_getIndexObjectIDs($db){
+  return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""', 'IDs', $db);
+  } */
 
 function correctUml($in){
 	return str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $in);
@@ -193,219 +193,6 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 		return makeCSVFromArray($cats, false, $tokken);
 	}
 	return '';
-}
-
-function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0){
-	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
-
-	if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
-		$GLOBALS['we_object'] = array();
-	}
-	$GLOBALS['we_object'][$formname] = new we_objectFile();
-	if((!$session) || (!isset($_SESSION['we_object_session_' . $formname]))){
-		if($session){
-			$_SESSION['we_object_session_' . $formname] = array();
-		}
-		$GLOBALS['we_object'][$formname]->we_new();
-		if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-			$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
-		} else{
-			$GLOBALS['we_object'][$formname]->TableID = $classID;
-			$GLOBALS['we_object'][$formname]->setRootDirID(true);
-			$GLOBALS['we_object'][$formname]->resetParentID();
-			$GLOBALS['we_object'][$formname]->restoreDefaults();
-			if(strlen($categories)){
-				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				$GLOBALS['we_object'][$formname]->Category = $categories;
-			}
-		}
-
-		// save parentid
-		if($parentid){
-			// check if parentid is in correct folder ...
-			$parentfolder = new we_class_folder();
-			$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
-
-			if($parentfolder){
-
-				if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos(
-						$parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
-					$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
-					$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
-				}
-			}
-		}
-
-		if($session){
-			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
-		}
-		$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->getDefaultValueArray();
-	} else{
-		if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-			$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
-		} else{
-			if($session){
-				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_' . $formname]);
-			}
-		}
-		if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
-			$GLOBALS['we_object'][$formname]->TableID = $classID;
-		}
-		if(strlen($categories)){
-			$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-			$GLOBALS['we_object'][$formname]->Category = $categories;
-		}
-	}
-	if(isset($_REQUEST['we_returnpage'])){
-		$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
-	}
-
-	if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
-		$dates = array();
-
-		foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
-			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
-				$dates[$regs[1]][$regs[2]] = $v;
-			} else{
-				$v = we_util::rmPhp($v);
-				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
-				$GLOBALS['we_object'][$formname]->setElement($n, $v);
-			}
-		}
-
-		foreach($dates as $k => $v){
-			$GLOBALS['we_object'][$formname]->setElement(
-				$k, mktime(
-					intval($dates[$k]["hour"]), intval($dates[$k]["minute"]), 0, intval($dates[$k]["month"]), intval($dates[$k]["day"]), intval($dates[$k]["year"])));
-		}
-	}
-	if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-		$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
-		// Bug Fix #750
-		if(is_array($cats)){
-			$cats = implode(',', $cats);
-		}
-		$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
-		$GLOBALS['we_object'][$formname]->Category = $cats;
-	}
-	if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
-		if(is_array($_REQUEST['we_ui_' . $formname . '_Category'])){
-			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true);
-		} else{
-			$_REQUEST["we_ui_$formname" . "_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
-		}
-	}
-	foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
-		if($slotname != 'categories' && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
-			$v = we_util::rmPhp($_REQUEST["we_ui_" . $formname . "_" . $slotname]);
-			$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
-			$GLOBALS["we_object"][$formname]->{$slotname} = $v;
-		}
-	}
-
-	we_imageDocument::checkAndPrepare($formname, "we_object");
-	we_flashDocument::checkAndPrepare($formname, "we_object");
-	we_quicktimeDocument::checkAndPrepare($formname, "we_object");
-	we_otherDocument::checkAndPrepare($formname, "we_object");
-
-	if($session){
-		$GLOBALS["we_object"][$formname]->saveInSession($_SESSION["we_object_session_$formname"]);
-	}
-	return $GLOBALS["we_object"][$formname];
-}
-
-function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = ''){
-	//  check if a <we:sessionStart> Tag was before
-	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
-
-	if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document'])))
-		$GLOBALS['we_document'] = array();
-	$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
-	if((!$session) || (!isset($_SESSION["we_document_session_$formname"]))){
-		if($session)
-			$_SESSION["we_document_session_$formname"] = array();
-		$GLOBALS['we_document'][$formname]->we_new();
-		if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
-			$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
-		} else{
-			$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", 'ID', $GLOBALS['we_document'][$formname]->DB_WE);
-			$GLOBALS['we_document'][$formname]->changeDoctype($dt);
-			if($tid){
-				$GLOBALS['we_document'][$formname]->setTemplateID($tid);
-			}
-			if(strlen($categories)){
-				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				$GLOBALS['we_document'][$formname]->Category = $categories;
-			}
-		}
-		if($session)
-			$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
-	} else{
-		if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
-			$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
-		} else{
-			if($session){
-				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION["we_document_session_$formname"]);
-			}
-		}
-		if(strlen($categories)){
-			$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-			$GLOBALS['we_document'][$formname]->Category = $categories;
-		}
-	}
-
-	if(isset($_REQUEST['we_returnpage'])){
-		$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
-	}
-	if(isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])){
-		$dates = array();
-		foreach($_REQUEST["we_ui_$formname"] as $n => $v){
-			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
-				$dates[$regs[1]][$regs[2]] = $v;
-			} else{
-				$v = we_util::rmPhp($v);
-				$GLOBALS['we_document'][$formname]->setElement($n, $v);
-			}
-		}
-
-		foreach($dates as $k => $v){
-			$GLOBALS['we_document'][$formname]->setElement(
-				$k, mktime(
-					$dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']));
-		}
-	}
-
-	if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-		$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
-		// Bug Fix #750
-		if(is_array($cats)){
-			$cats = implode(',', $cats);
-		}
-		$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
-		$GLOBALS['we_document'][$formname]->Category = $cats;
-	}
-	if(isset($_REQUEST["we_ui_$formname" . '_Category'])){
-		if(is_array($_REQUEST["we_ui_$formname" . '_Category'])){
-			$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray($_REQUEST["we_ui_$formname" . '_Category'], true);
-		} else{
-			$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname" . '_Category']), true);
-		}
-	}
-	foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
-		if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
-			$GLOBALS["we_document"][$formname]->$slotname = $_REQUEST["we_ui_" . $formname . "_" . $slotname];
-		}
-	}
-
-	we_imageDocument::checkAndPrepare($formname, 'we_document');
-	we_flashDocument::checkAndPrepare($formname, 'we_document');
-	we_quicktimeDocument::checkAndPrepare($formname, 'we_document');
-	we_otherDocument::checkAndPrepare($formname, 'we_document');
-
-	if($session){
-		$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
-	}
-	return $GLOBALS['we_document'][$formname];
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
@@ -801,15 +588,15 @@ function we_makeHiddenFields($filter = ''){
 	$filterArr = explode(',', $filter);
 	$hidden = '';
 	if($_REQUEST){
-		reset($_REQUEST);
-		while(list($key, $val) = each($_REQUEST)) {
+		foreach($_REQUEST as $key => $val){
 			if(!in_array($key, $filterArr)){
 				if(is_array($val)){
 					foreach($val as $v){
 						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
 					}
-				} else
+				} else{
 					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
+				}
 			}
 		}
 	}

@@ -77,6 +77,125 @@ class we_objectFile extends we_document{
 		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
 	}
 
+	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0){
+		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
+
+		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
+			$GLOBALS['we_object'] = array();
+		}
+		$GLOBALS['we_object'][$formname] = new we_objectFile();
+		if((!$session) || (!isset($_SESSION['we_object_session_' . $formname]))){
+			if($session){
+				$_SESSION['we_object_session_' . $formname] = array();
+			}
+			$GLOBALS['we_object'][$formname]->we_new();
+			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
+				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
+			} else{
+				$GLOBALS['we_object'][$formname]->TableID = $classID;
+				$GLOBALS['we_object'][$formname]->setRootDirID(true);
+				$GLOBALS['we_object'][$formname]->resetParentID();
+				$GLOBALS['we_object'][$formname]->restoreDefaults();
+				if(strlen($categories)){
+					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
+					$GLOBALS['we_object'][$formname]->Category = $categories;
+				}
+			}
+
+			// save parentid
+			if($parentid){
+				// check if parentid is in correct folder ...
+				$parentfolder = new we_class_folder();
+				$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
+
+				if($parentfolder){
+
+					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos(
+							$parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
+						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
+						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
+					}
+				}
+			}
+
+			if($session){
+				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['we_object_session_' . $formname]);
+			}
+			$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->getDefaultValueArray();
+		} else{
+			if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
+				$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
+			} else{
+				if($session){
+					$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_' . $formname]);
+				}
+			}
+			if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
+				$GLOBALS['we_object'][$formname]->TableID = $classID;
+			}
+			if(strlen($categories)){
+				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
+				$GLOBALS['we_object'][$formname]->Category = $categories;
+			}
+		}
+		if(isset($_REQUEST['we_returnpage'])){
+			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
+		}
+
+		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
+			$dates = array();
+
+			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
+				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
+					$dates[$regs[1]][$regs[2]] = $v;
+				} else{
+					$v = we_util::rmPhp($v);
+					$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
+					$GLOBALS['we_object'][$formname]->setElement($n, $v);
+				}
+			}
+
+			foreach($dates as $k => $v){
+				$GLOBALS['we_object'][$formname]->setElement(
+					$k, mktime(
+						intval($dates[$k]["hour"]), intval($dates[$k]["minute"]), 0, intval($dates[$k]["month"]), intval($dates[$k]["day"]), intval($dates[$k]["year"])));
+			}
+		}
+		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
+			$cats = $_REQUEST['we_ui_' . $formname . '_categories'];
+			// Bug Fix #750
+			if(is_array($cats)){
+				$cats = implode(',', $cats);
+			}
+			$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
+			$GLOBALS['we_object'][$formname]->Category = $cats;
+		}
+		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
+			if(is_array($_REQUEST['we_ui_' . $formname . '_Category'])){
+				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true);
+			} else{
+				$_REQUEST["we_ui_$formname" . "_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
+			}
+		}
+		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
+			if($slotname != 'categories' && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
+				$v = we_util::rmPhp($_REQUEST["we_ui_" . $formname . "_" . $slotname]);
+				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
+				$GLOBALS["we_object"][$formname]->{$slotname} = $v;
+			}
+		}
+
+		we_imageDocument::checkAndPrepare($formname, "we_object");
+		we_flashDocument::checkAndPrepare($formname, "we_object");
+		we_quicktimeDocument::checkAndPrepare($formname, "we_object");
+		we_otherDocument::checkAndPrepare($formname, "we_object");
+
+		if($session){
+			$GLOBALS["we_object"][$formname]->saveInSession($_SESSION["we_object_session_$formname"]);
+		}
+		return $GLOBALS["we_object"][$formname];
+	}
+
 	function makeSameNew(){
 		$Category = $this->Category;
 		$TableID = $this->TableID;
@@ -494,6 +613,7 @@ class we_objectFile extends we_document{
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
+
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
@@ -630,7 +750,7 @@ class we_objectFile extends we_document{
 
 		$inputName = 'we_' . $this->Name . '_Charset';
 
-		$_headline = ($withHeadline?'<tr><td class="defaultfont">' . g_l('weClass', "[Charset]") . '</td></tr>':'');
+		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', "[Charset]") . '</td></tr>' : '');
 		return '
 			<table border="0" cellpadding="0" cellspacing="0">
 				' . $_headline . '

@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
-
 class objectsearch extends we_search{
 
 	var $height;
@@ -46,7 +44,7 @@ class objectsearch extends we_search{
 		}
 	}
 
-	function init($sessDat=""){
+	function init($sessDat = ""){
 		for($i = 0; $i <= sizeof($sessDat); $i++){
 			if(isset($sessDat[$i])){
 				$v = $sessDat[$i];
@@ -56,7 +54,7 @@ class objectsearch extends we_search{
 		}
 	}
 
-	function getFields($name="obj_searchField", $size=1, $select="", $Path, $multi=""){
+	function getFields($name = "obj_searchField", $size = 1, $select = "", $Path, $multi = ""){
 
 		$objID = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'", "ID", $GLOBALS['DB_WE']);
 		$opts = '';
