@@ -220,9 +220,8 @@ class searchtoolFrames extends weToolFrames{
 				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
 				'onLoad' => 'loaded=1;setTimeout(\'init()\',200);',
 				'onresize' => 'sizeScrollContent();'
-				), we_html_element::jsElement('', array(
-					'src' => JS_DIR . 'utils/multi_edit.js?' . WE_VERSION
-				)) . we_html_element::htmlForm(
+				), we_html_element::jsScript('utils/multi_edit.js') .
+				we_html_element::htmlForm(
 					array(
 					'name' => 'we_form', 'onsubmit' => 'return false'
 					), $this->getHTMLProperties() . we_html_element::htmlHidden(
@@ -255,14 +254,10 @@ class searchtoolFrames extends weToolFrames{
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar.js"
-			)) . we_html_element::jsElement(
-				"", array(
-				"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar-setup.js"
-			));
+			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
+
 
 		return $this->getHTMLDocument(
 				$body, $head . STYLESHEET . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
@@ -343,11 +338,8 @@ class searchtoolFrames extends weToolFrames{
 			));
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement("", array(
-					"src" => JS_DIR . "attachKeyListener.js"
-				)) . we_html_element::jsElement(
-					'
-
+				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
+				we_html_element::jsElement('
           function we_save() {
             ' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
           }

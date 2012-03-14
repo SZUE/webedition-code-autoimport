@@ -137,9 +137,7 @@ function getHTMLCategory(){
 				'style' => 'cursor: pointer; width: 27px;'
 		)));
 
-	$js = we_html_element::jsElement('', array(
-			'src' => JS_DIR . 'utils/multi_edit.js?' . WE_VERSION
-		));
+	$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);
@@ -440,12 +438,11 @@ $sTblWidget = we_multiIconBox::getHTML(
 print
 	we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_element::htmlTitle(g_l('cockpit', '[my_documents]')) . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . STYLESHEET . we_html_element::jsElement(
-				"", array(
-				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "windows.js"
-			)) . we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
+			we_html_element::htmlTitle(g_l('cockpit', '[my_documents]')) . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . STYLESHEET .
+			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsElement($jsPrefs . $jsCode)) .
+		we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();startInit();"
 			), we_html_element::htmlForm(

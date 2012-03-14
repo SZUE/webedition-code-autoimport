@@ -193,15 +193,9 @@ class we_import_files{
 					refreshTree();
 					' . we_message_reporting::getShowMessageCall(
 				g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
+				}';
 
-				';
-
-		$js = we_html_element::jsElement($js) . "\n";
-		$js .= we_html_element::jsElement("", array(
-				"src" => JS_DIR . "windows.js"
-			)) . "\n";
-		return $js;
+		return we_html_element::jsElement($js) . we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getContent(){
@@ -912,9 +906,7 @@ class we_import_files{
 					'style' => 'cursor: pointer; width: 27px;'
 			)));
 
-		$js = we_html_element::jsElement('', array(
-				'src' => JS_DIR . 'utils/multi_edit.js?' . time()
-			));
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
 		$variant_js = '
 			var categories_edit = new multi_edit("categoriesDiv",document.we_startform,0,"' . $del_but . '",' . ($_width_size - 10) . ',false);

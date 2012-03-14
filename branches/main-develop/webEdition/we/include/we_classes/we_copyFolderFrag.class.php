@@ -837,9 +837,7 @@ HTS;
 					'style' => 'cursor: pointer; width: 27px;'
 			)));
 
-		$js = we_html_element::jsElement('', array(
-				'src' => JS_DIR . 'utils/multi_edit.js?' . time()
-			));
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
 		$category_js = '
 			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",478,false);

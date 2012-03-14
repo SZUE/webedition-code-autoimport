@@ -1249,9 +1249,8 @@ abstract class we_versions_wizard{
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_element::jsElement("", array(
-						"src" => JS_DIR . "we_showMessage.js"
-					)) . we_html_element::htmlTitle(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
+					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+					we_html_element::htmlTitle(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
 	}
 
 	/**
@@ -1414,14 +1413,9 @@ abstract class we_versions_wizard{
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar.js"
-			)) . we_html_element::jsElement(
-				"", array(
-				"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar-setup.js"
-			));
+			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript("jscalendar/calendar-setup.js");
 
 		$headCal .= we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js') .

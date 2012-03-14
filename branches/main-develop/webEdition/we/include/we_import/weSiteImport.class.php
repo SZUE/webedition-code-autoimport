@@ -181,20 +181,18 @@ class weSiteImport{
 						iframeObj.src = "/webEdition/we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
 					}
 				}
-				' . "\n";
+				';
 
-		$js = we_html_element::jsElement($js) . "\n";
-		$js .= we_html_element::jsElement("", array(
-				"src" => JS_DIR . "windows.js"
-			)) . "\n";
+		$js = we_html_element::jsElement($js);
+		$js .= we_html_element::jsScript(JS_DIR . "windows.js");
 		$js .= we_html_element::jsElement(
-				"\n" . 'function doUnload() {
+				'function doUnload() {
 					if (jsWindow_count) {
 						for (i = 0; i < jsWindow_count; i++) {
 							eval("jsWindow" + i + "Object.close()");
 						}
 					}
-				}' . "\n");
+				}');
 		return $js;
 	}
 

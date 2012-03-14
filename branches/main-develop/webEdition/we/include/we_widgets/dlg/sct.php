@@ -526,10 +526,8 @@ print
 	we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_element::htmlTitle(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::cssElement(
-				"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
-				"", array(
-				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_html_element::jsElement(
+				"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement(
 				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"

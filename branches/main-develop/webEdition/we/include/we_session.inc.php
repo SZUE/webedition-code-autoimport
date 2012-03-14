@@ -232,13 +232,13 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 			}
 		} else{
 			$_SESSION["user"]["Username"] = "";
-			while(list($name, $val) = each($_SESSION)) {
+			foreach(array_keys($_SESSION) as $name){
 				unset($_SESSION[$name]);
 			}
 		}
 	} else{
 		$_SESSION["user"]["Username"] = "";
-		while(list($name, $val) = each($_SESSION)) {
+		foreach(array_keys($_SESSION) as $name){
 			unset($_SESSION[$name]);
 		}
 	}

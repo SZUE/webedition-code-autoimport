@@ -114,7 +114,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php
 $pl_db = new stat_db();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();
-$websites = f("SELECT websites FROM " . mysql_real_escape_string(preg_replace("/\s/", "", $pl_tables->accounttable)) . " WHERE account_username = '" . mysql_real_escape_string($_userName) . "'",'websites',$GLOBALS['DB_WE']);
+$websites = f("SELECT websites FROM " . mysql_real_escape_string(preg_replace("/\s/", "", $pl_tables->accounttable)) . " WHERE account_username = '" . mysql_real_escape_string($_userName) . "'", 'websites', $GLOBALS['DB_WE']);
 $websites = str_replace("\r", "", $websites);
 $_dns = explode("\n", $websites);
 //} else {
@@ -185,10 +185,8 @@ print
 	we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_element::htmlTitle(g_l('cockpit', '[pagelogger]')) . STYLESHEET . we_html_element::cssElement(
-				"select{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
-				"", array(
-				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
+				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm("", $_pLogProps->getHTML())));

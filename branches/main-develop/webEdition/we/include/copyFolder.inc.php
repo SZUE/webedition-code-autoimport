@@ -112,9 +112,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 			}
 		}
 		';
-	$js = we_html_element::jsElement("", array(
-			"src" => JS_DIR . "windows.js"
-		)) . we_html_element::jsElement($js);
+	$js = we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
 
 	$yes_button = we_button::create_button("ok", "form:we_form");
 	$cancel_button = we_button::create_button("cancel", "javascript:self.close();");

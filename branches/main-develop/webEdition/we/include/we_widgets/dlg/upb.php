@@ -130,10 +130,8 @@ $sTblWidget = we_multiIconBox::getHTML(
 print
 	we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_element::htmlTitle(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsElement(
-				"", array(
-				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_html_element::jsElement(
+			we_html_element::htmlTitle(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsElement(
 				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"

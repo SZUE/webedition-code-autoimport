@@ -1243,14 +1243,9 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$js = $this->View->getJSProperty();
 
-		$js .= we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar.js"
-			)) . we_html_element::jsElement(
-				"", array(
-				"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "jscalendar/calendar-setup.js"
-			));
+		$js .= we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+			we_html_element::jsElement(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 		$js .=we_html_element::jsElement('
 					if (top.content.get_focus) {
@@ -1880,7 +1875,7 @@ class weNewsletterFrames extends weModuleFrames{
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLExportCsvMessage($mode=0){
+	function getHTMLExportCsvMessage($mode = 0){
 		if(isset($_REQUEST["lnk"])){
 			$link = $_REQUEST["lnk"];
 		}
@@ -1948,7 +1943,7 @@ class weNewsletterFrames extends weModuleFrames{
 	 * @param String $open_file
 	 * @return String
 	 */
-	function getHTMLEditFile($open_file=""){
+	function getHTMLEditFile($open_file = ""){
 		$db = new DB_WE;
 
 		$out = "";
@@ -2311,7 +2306,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', "[date_format]"), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
 		}
 
-		$link = BACKUP_DIR."download/log_" . time() . ".csv";
+		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
 		if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
 			$link = "";
 

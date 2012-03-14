@@ -450,8 +450,6 @@ class we_schedpro{
 
 	static function trigger_schedule(){
 		//FIXME: do we want to limit this query, if not called by cron?
-		$scheddyFile = array();
-		$scheddyObject = array();
 		$DB_WE = new DB_WE();
 		$now = time();
 

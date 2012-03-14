@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weNavigationRuleFrames{
 
 	var $Frameset = '/webEdition/we/include/we_tools/navigation/edit_navigation_rules_frameset.php';
@@ -49,7 +48,7 @@ class weNavigationRuleFrames{
 	}
 
 	function getHTMLFrameset(){
-		return we_html_tools::htmlTop(g_l('navigation','[menu_highlight_rules]')) . '
+		return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . '
    <frameset rows="*,' . (($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0) . '" framespacing="0" border="1" frameborder="Yes">
    <frame src="' . $this->Frameset . '?pnt=content" name="content" scrolling=no>
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
@@ -173,9 +172,7 @@ class weNavigationRuleFrames{
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$formTable = '<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-	<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
-</tr>
+<tr><td width="200">' . we_html_tools::getPixel(200, 1) . '</td></tr>
 <tr id="trFolderID">
 	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rule_folder]') . '</td>
 	<td colspan="5">' . $weAcSelector . '</td>
@@ -201,14 +198,12 @@ class weNavigationRuleFrames{
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['ClassID'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['ClassIDPath'].value");
 			$wecmdenc3 = we_cmd_enc("top.opener.we_cmd('get_workspaces');");
-			$yuiSuggest->setSelectButton(
-				we_button::create_button(
-					'select', "javascript:we_cmd('openDocselector', document.we_form.elements['ClassID'].value, '" . OBJECT_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')"), 10);
+			$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector', document.we_form.elements['ClassID'].value, '" . OBJECT_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')"), 10);
 
 			$weAcSelector = $yuiSuggest->getHTML();
 
-			$formTable .= '
-<tr id="trClassID">
+			$formTable .=
+				'<tr id="trClassID">
 	<td class="weMultiIconBoxHeadline">' . g_l('navigation', '[rule_class]') . '</td>
 	<td colspan="3">' . $weAcSelector . '</td>
 </tr>
@@ -235,18 +230,9 @@ class weNavigationRuleFrames{
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
 				g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
-		return we_html_tools::htmlTop() . STYLESHEET . '
-
-' . we_html_element::jsElement(
-				'', array(
-				'src' => JS_DIR . 'formFunctions.js'
-			)) . '
-' . we_html_element::jsElement(
-				'', array(
-				'src' => JS_DIR . 'windows.js'
-			)) . '
-
-<script type="text/javascript">
+		return we_html_tools::htmlTop() . STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 
 var allFields = new Array("FolderID", "DoctypeID", "ClassID", "WorkspaceID");
 var resetFields = new Array("NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID");
@@ -354,19 +340,17 @@ function we_cmd(){
 			new jsWindow(url,arguments[0],-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 	}
-}
-</script>
+}') . '
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
-	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
-	' . we_html_tools::hidden('cmd', '') . '
-	' . we_html_tools::hidden('ID', '0') . '
-	' . we_multiIconBox::getHTML(
+	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">' .
+			we_html_tools::hidden('cmd', '') .
+			we_html_tools::hidden('ID', '0') .
+			we_multiIconBox::getHTML(
 				'navigationRules', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[navigation_rules]')) . '
-	</form>
-	' . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . '
-</body>
-</html>';
+	</form>' .
+			$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
+			'</body></html>';
 	}
 
 	function getHTMLCategory(){
@@ -381,9 +365,7 @@ function we_cmd(){
 					'style' => 'cursor: pointer; width: 27px;'
 			)));
 
-		$js = we_html_element::jsElement('', array(
-				'src' => JS_DIR . 'utils/multi_edit.js?'
-			));
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
 		$variant_js = '
 			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);

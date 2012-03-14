@@ -1908,10 +1908,8 @@ function onFolderSelectionChangeJS(elem) {
 				"makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement("", array(
-					"src" => JS_DIR . "attachKeyListener.js"
-				)) . we_html_element::jsElement(
-					'
+				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
+			we_html_element::jsElement('
 					function we_save() {
 						' . $this->topFrame . '.makeNewDoc = document.we_form.makeNewDoc.checked;
 						' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
