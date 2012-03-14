@@ -391,7 +391,7 @@ abstract class listviewBase{
 			} else{
 				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=$newdate'));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '='.$newdate));
 			if($only){
 				$this->close_a = false;
 				return (isset($attribs[$only]) ? $attribs[$only] : '');
