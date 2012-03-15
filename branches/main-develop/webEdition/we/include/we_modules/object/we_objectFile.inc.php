@@ -241,24 +241,29 @@ class we_objectFile extends we_document{
 		if(!$db){
 			$db = new DB_WE();
 		}
-		$rootPath = '/';
 		$rootId = $classId;
+		$all = array();
 		if(defined('OBJECT_TABLE')){
+			$slash = PHP_INT_MAX;
+			$cnt = 1;
 			$ws = get_ws(OBJECT_FILES_TABLE);
 			if(intval($ws) == 0){
 				$ws = 0;
 			}
 			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
 			while($db->next_record()) {
+				$all[$db->f('Path')] = $db->f('ID');
 				if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
-					if($rootPath == '/' || strlen($db->f('Path')) < strlen($rootPath)){
-						$rootPath = $db->f('Path');
+					if(($tmp = substr_count($db->f('Path'), '/')) <= $slash){
 						$rootId = $db->f('ID');
+						$cnt = ($tmp == $slash ? $cnt : 0) + 1;
+						$path = $db->f('Path');
+						$slash = $tmp;
 					}
 				}
 			}
 		}
-		return $rootId;
+		return ($cnt == 1) ? $rootId : $all[substr($path, 0, strrpos($path, '/'))];
 	}
 
 	function formCopyDocument(){

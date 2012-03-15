@@ -31,7 +31,7 @@ class rpcResponse {
 
 	var $DataArray = array();
 
-	function rpcResponse(){
+	function __construct(){
 
     }
 

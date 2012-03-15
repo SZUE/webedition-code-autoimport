@@ -43,7 +43,7 @@ class rpcCmdShell {
 
 	var $Status = rpcCmd::STATUS_OK;
 
-	function rpcCmdShell(&$cmd,$protocol) {
+	function __construct(&$cmd,$protocol) {
 
 		$this->Protocol = $protocol;
 		$this->Cmd = $this->createCmd($cmd);

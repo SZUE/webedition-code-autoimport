@@ -894,6 +894,7 @@ function doDebugResizeH(){
 	}
 
 	//not in use
+	/*
 	function createAutocompleter($acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10){
 
 		$this->setInputId($inputId);
@@ -907,9 +908,6 @@ function doDebugResizeH(){
 
 		$iField = "";
 		if(is_array($inputField)){
-			/* foreach($inputField as $key => $val){
-
-			  } */
 		} else{
 			$iField = $inputField;
 		}
@@ -969,6 +967,7 @@ function doDebugResizeH(){
 				array("text" => $resultField . $autoSuggest . we_html_tools::getPixel($_space, 4), "valign" => "top", "style" => "height:10px"), $label, "left", "defaultfont", $_button, $_space2, $_button1
 		);
 	}
+*/
 
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
