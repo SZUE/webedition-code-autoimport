@@ -876,6 +876,9 @@ if (isset($_REQUEST['we_cmd'][0])) {
 							$topCountries = explode(',',"DE,AT,CH");
 						}
 						$topCountries = array_flip($topCountries);
+						if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+							Zend_Locale::disableCache(true);
+						}
 						foreach ($topCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
 						}

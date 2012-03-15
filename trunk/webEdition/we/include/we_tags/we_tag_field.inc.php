@@ -205,6 +205,9 @@ function we_tag_field($attribs, $content){
 			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !='' && $GLOBALS["lv"]->f($name)=='--'){
 				$out = 	WE_COUNTRIES_DEFAULT;		
 			} else {
+				if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+					Zend_Locale::disableCache(true);
+				}
 				$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'territory',$langcode));
 			}
 		break;
@@ -219,6 +222,9 @@ function we_tag_field($attribs, $content){
 			if ($lang==''){
 				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+			}
+			if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+				Zend_Locale::disableCache(true);
 			}
 			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'language',$langcode));
 		break;
