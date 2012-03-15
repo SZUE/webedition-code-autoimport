@@ -816,8 +816,7 @@
 		if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
 			//no unique def. found
 			$db=$GLOBALS['DB_WE'];
-			$res=$db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE);
-			if($res){
+			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
 				$db->query('INSERT INTO tmpLangLink SELECT * FROM '.LANGLINK_TABLE);
 				$db->query('TRUNCATE '.LANGLINK_TABLE);
 				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
@@ -825,6 +824,8 @@
 					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
 				}
 				$db->query('INSERT IGNORE INTO '.LANGLINK_TABLE.' SELECT * FROM tmpLangLink ORDER BY ID DESC');
+			}else{
+				t_e('no rights to create temp-table');
 			}
 		}
 	}
