@@ -70,7 +70,7 @@ function addUserToField(){
 		}
 	}
 	if(!bUsrExists){
-		_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.inc.php?we_cmd[0]='+
+		_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.php?we_cmd[0]='+
 			_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+
 				_oSctNumEntries.selectedIndex+';'+getBinary('display_opt')+';'+_sUsers+','+iNewUsrId;
 		_fo.method='post';
@@ -95,7 +95,7 @@ function delUser(iUsrId){
 			if(i!=iUsersLen-1) sUsers+=',';
 		}
 	}
-	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.inc.php?we_cmd[0]='+
+	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.php?we_cmd[0]='+
 		_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.selectedIndex+
 			';'+getBinary('display_opt')+';'+sUsers;
 	_fo.method='post';
