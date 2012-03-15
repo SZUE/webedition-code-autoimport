@@ -4,7 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   ID bigint(20) unsigned NOT NULL default '0',
   OID bigint(20) unsigned NOT NULL default '0',
   BText longtext NOT NULL,
-  Workspace varchar(255) NOT NULL default '',
+  Workspace varchar(1000) NOT NULL default '',
   WorkspaceID bigint(20) unsigned NOT NULL default '0',
   Category varchar(255) NOT NULL default '',
   ClassID bigint(20) unsigned NOT NULL default '0',
