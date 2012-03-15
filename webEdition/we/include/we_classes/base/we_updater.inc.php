@@ -821,6 +821,8 @@
 				$db->query('TRUNCATE '.LANGLINK_TABLE);
 				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
 					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale)');
+				}
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
 					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
 				}
 				$db->query('INSERT IGNORE INTO '.LANGLINK_TABLE.' SELECT * FROM tmpLangLink ORDER BY ID DESC');
