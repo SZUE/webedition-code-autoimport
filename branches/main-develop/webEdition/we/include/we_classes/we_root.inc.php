@@ -106,8 +106,8 @@ abstract class we_root extends we_class{
 		$tempDoc = $this->ClassName;
 		$tempDoc = new $tempDoc();
 		$tempDoc->we_new();
-		for($i = 0; $i < sizeof($tempDoc->persistent_slots); $i++){
-			$this->$tempDoc->persistent_slots[$i] = isset($tempDoc->$tempDoc->persistent_slots[$i]) ? $tempDoc->$tempDoc->persistent_slots[$i] : '';
+		foreach($tempDoc->persistent_slots as $name){
+			$this->{$name} = isset($tempDoc->{$name}) ? $tempDoc->{$name} : '';
 		}
 		$this->InWebEdition = true;
 		$this->ParentID = $ParentID;
@@ -744,7 +744,7 @@ abstract class we_root extends we_class{
 # public ##################
 
 	function we_new(){
-		we_class::we_new();
+		parent::we_new();
 		$this->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
 			$ct = new we_base_ContentTypes();

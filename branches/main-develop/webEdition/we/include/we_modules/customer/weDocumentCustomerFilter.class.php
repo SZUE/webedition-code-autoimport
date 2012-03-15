@@ -258,8 +258,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @return weDocumentCustomerFilter
 	 */
 	function getEmptyDocumentCustomerFilter(){
-		$_obj = new self();
-		return $_obj;
+		return new self();
 	}
 
 	/**

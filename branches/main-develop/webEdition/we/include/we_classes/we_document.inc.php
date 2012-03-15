@@ -29,12 +29,8 @@ if(!isset($GLOBALS['WE_IS_IMG'])){
 /* the parent class for documents */
 
 class we_document extends we_root{
-	/*
-	 * Variables
-	 */
 
-	/* Name of the class => important for reconstructing the class from outside the class */
-
+	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 
 	/* Extension of the document */
@@ -68,14 +64,14 @@ class we_document extends we_root{
 
 	function copyDoc($id){
 		if($id){
-			$doc = new self();
+			$doc = new static();
 			$doc->InitByID($id, $this->Table);
 			$parentIDMerk = $doc->ParentID;
 			if($this->ID == 0){
-				for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-					if($this->persistent_slots[$i] != 'elements'){
-						if(in_array($this->persistent_slots[$i], array_keys(get_object_vars($doc)))){
-							$this->{$this->persistent_slots[$i]} = $doc->{$this->persistent_slots[$i]};
+				foreach($this->persistent_slots as $name){
+					if($name != 'elements'){
+						if(in_array($name, array_keys(get_object_vars($doc)))){
+							$this->{$name} = $doc->{$name};
 						}
 					}
 				}
@@ -879,7 +875,7 @@ class we_document extends we_root{
 	}
 
 	protected function i_writeDocument(){
-		$update=$this->i_isMoved();
+		$update = $this->i_isMoved();
 		$doc = $this->i_getDocumentToSave();
 		if($doc || $doc == ''){
 			if(!$this->i_writeSiteDir($doc)){
@@ -1274,7 +1270,7 @@ class we_document extends we_root{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''
-							&& in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					&& in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){

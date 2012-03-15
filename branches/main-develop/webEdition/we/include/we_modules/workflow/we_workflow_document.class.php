@@ -261,7 +261,7 @@ class we_workflow_document extends we_workflow_base{
 	 * Create new workflow document
 	 *    if workflow for that document exists, function will return it
 	 */
-	function createNew($documentID, $type, $workflowID, $userID, $desc){
+	function createNew($documentID, $type, $workflowID, $userID){
 		$newWfDoc = self::find($documentID, $type);
 
 		if(isset($newWfDoc->ID)){

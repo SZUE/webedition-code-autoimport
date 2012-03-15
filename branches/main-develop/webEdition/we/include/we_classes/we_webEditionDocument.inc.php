@@ -453,8 +453,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
+		return
+			'<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">
 						' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
@@ -474,15 +474,10 @@ class we_webEditionDocument extends we_textContentDocument{
 				<tr>
 					<td colspan="2">
 						' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-				</tr>';
-
-		$content .= $this->getCharsetSelect();
-
-		$content .= $this->formLanguage(true);
-
-		$content .= '</table>';
-
-		return $content;
+				</tr>' .
+			$this->getCharsetSelect() .
+			$this->formLanguage(true) .
+			'</table>';
 	}
 
 	/**
@@ -531,43 +526,28 @@ class we_webEditionDocument extends we_textContentDocument{
 			//	Last step: get Information about the charsets
 			$retSelect = $this->htmlSelect("we_tmp_" . $name, $chars, 1, $value, false, " onblur=_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value; onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;\"", "value", "254");
 
-			return '<tr>
-						<td colspan="2">
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td><table border="0" cellpadding="0" cellspacing="0">
-		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		 			<tr>
-		 				<td>' . $retInput . '</td>
-		 				<td>' . $retSelect . '</td>
-		 			</tr>
-		 			</table>';
+			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
+					<tr><td>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
+						<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
+					</table>';
 		} else{ //	charset-tag NOT available
 			//getCharsets
-			return '<tr>
-						<td colspan="2">
-							' . we_html_tools::getPixel(2, 4) . '</td>
-					</tr>
-					<tr>
-						<td><table border="0" cellpadding="0" cellspacing="0">
-		 			<tr>
-		 				<td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		 			<tr>
-		 				<td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td>
-		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td>
-		 			</tr>
+			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
+					<tr><td>
+					<table border="0" cellpadding="0" cellspacing="0">
+		 			<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
+		 			<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td></tr>
 		 			</table>';
 		}
 	}
 
 	// for internal use
-	function setTemplatePath(){
-		if($this->TemplateID)
-			$this->TemplatePath = TEMPLATE_DIR . f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($this->TemplateID), "Path", $this->DB_WE);
-		else
-			$this->TemplatePath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_noTmpl.inc.php";
+	private function setTemplatePath(){
+		$this->TemplatePath = $this->TemplateID ?
+			TEMPLATE_DIR . f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($this->TemplateID), "Path", $this->DB_WE) :
+			$_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_noTmpl.inc.php";
 	}
 
 	function setTemplateID($templID){
@@ -597,21 +577,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	function getFieldType($tagname, $tag){
 		switch($tagname){
 			case "formfield":
-				return "formfield";
 			case "img":
-				return "img";
 			case "linklist":
-				return "linklist";
 			case "list":
-				return "list";
 			case "block":
-				return "block";
+				return $tagname;
 			case "input":
-				if(strpos($tag, 'type="date"') !== false){
-					return "date";
-				} else{
-					return "txt";
-				}
+				return (strpos($tag, 'type="date"') !== false) ?
+					"date" : "txt";
 			default:
 				return "txt";
 		}
@@ -702,7 +675,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function correctFields(){
-
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$types = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
@@ -844,15 +816,12 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_areVariantNamesValid(){
-
 		if(defined("SHOP_TABLE")){
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
 			if(sizeof($variationFields)){
-
 				$i = 0;
 				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
-
 					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]["dat"])){
 						return false;
 					}
@@ -948,9 +917,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 					$GLOBALS["DocStream"] = array();
 				}
 				$doc = $this->i_getDocument();
-				//
+
 				// --> Glossary Replacement
-				//
 				if(defined("GLOSSARY_TABLE")){
 					if(isset($this->InGlossar) && $this->InGlossar == 0){
 						$doc = weGlossaryReplace::replace($doc, $this->Language);
@@ -1051,7 +1019,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 *
 	 */
 	function setHidePages($templatecode){
-
 		if($this->InWebEdition){
 
 			//	delete exisiting hidePages ...
@@ -1085,7 +1052,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @desc disables the editpages saved in persistent_slot hidePages inside webEdition
 	 */
 	function disableHidePages(){
-
 		$MNEMONIC_EDITPAGES = array(
 			WE_EDITPAGE_PROPERTIES => 'properties', WE_EDITPAGE_CONTENT => 'edit', WE_EDITPAGE_INFO => 'information', WE_EDITPAGE_PREVIEW => 'preview', WE_EDITPAGE_SCHEDULER => 'schedpro', WE_EDITPAGE_VALIDATION => 'validation', WE_EDITPAGE_VERSIONS => 'versions'
 		);
@@ -1105,9 +1071,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				$this->EditPageNrs = array();
 			} else{
 				foreach($this->EditPageNrs AS $key => $editPage){
-
 					if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
-
 						unset($this->EditPageNrs[$key]);
 					}
 				}
@@ -1116,7 +1080,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function changeTemplate(){
-
 		// reload hidePages, controlElements
 		$this->setDocumentControlElements();
 	}
@@ -1160,7 +1123,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-
 		if(!defined('SHOP_TABLE') || ($this->TemplateID == 0)){
 			return false;
 		}
@@ -1188,15 +1150,12 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function correctVariantFields(){
-
 		if($this->canHaveVariants()){
-
 			weShopVariants::correctModelFields($this);
 		}
 	}
 
 	function initVariantDataFromDb(){
-
 		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"]){
 
 			// unserialize the variant data when loading the model

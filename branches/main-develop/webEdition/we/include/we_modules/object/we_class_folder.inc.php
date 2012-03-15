@@ -121,8 +121,7 @@ class we_class_folder extends we_folder{
 				if($pa){
 					$pid = f("SELECT ID FROM " . $this->db->escape($tblName) . " WHERE Path='$pa'", "ID", new DB_WE());
 					if(!$pid){
-						// $folder = new we_folder(); 4076 orig
-						$folder = new we_class_folder();
+						$folder = new self();
 						$folder->init();
 						$folder->Table = $tblName;
 						$folder->ParentID = $last_pid;
@@ -134,7 +133,7 @@ class we_class_folder extends we_folder{
 						  $this->IsClassFolder=$IsClassFolder;
 						 */
 						$folder->IsNotEditable = 0;
-						$folder->ClassName = 'we_class_folder';
+						//$folder->ClassName = 'we_class_folder';
 						$folder->IsClassFolder = $IsClassFolder;
 						$folder->Icon = ($IsClassFolder) ? 'we_class_folder.gif' : 'we_folder.gif';
 
