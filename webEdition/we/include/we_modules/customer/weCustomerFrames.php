@@ -167,6 +167,9 @@ class weCustomerFrames extends weModuleFrames {
 				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
 
 				$topCountries = array_flip($topCountries);
+				if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+					Zend_Locale::disableCache(true);
+				}
 				foreach ($topCountries as $countrykey => &$countryvalue) {
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}

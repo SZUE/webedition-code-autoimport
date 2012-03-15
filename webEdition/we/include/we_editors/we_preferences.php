@@ -3933,6 +3933,9 @@ function build_dialog($selected_setting = "ui") {
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
             $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+			if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+				Zend_Locale::disableCache(true);
+			}
             $zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
             $oldLocale= setlocale(LC_ALL, NULL);
             setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');

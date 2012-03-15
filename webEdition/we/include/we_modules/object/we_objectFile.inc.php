@@ -1379,6 +1379,9 @@ class we_objectFile extends we_document{
 			$topCountries = defined('WE_COUNTRIES_TOP')?explode(',',WE_COUNTRIES_TOP):explode(',','DE,AT,CH');
 
 			$topCountries = array_flip($topCountries);
+			if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+				Zend_Locale::disableCache(true);
+			}
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
 			}
@@ -1454,6 +1457,9 @@ class we_objectFile extends we_document{
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["language_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["language_".$name]['editdescription']) && $this->DefArray["language_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["language_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
 		}else{
 			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+				if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+					Zend_Locale::disableCache(true);
+				}
 				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'language',$langcode) ).'</div>';
 			} else {
 				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';

@@ -675,7 +675,9 @@ function we_tag_userInput($attribs, $content){
 					$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 					$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 				}
-
+				if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+					Zend_Locale::disableCache(true);
+				}
 				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
 				if(defined("WE_COUNTRIES_TOP")) {
 					$topCountries = explode(',',WE_COUNTRIES_TOP);
@@ -733,6 +735,9 @@ function we_tag_userInput($attribs, $content){
 				foreach ($frontendL as $lc => &$lcvalue){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue= $lccode[0];
+				}
+				if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'IIS') !==false ){
+					Zend_Locale::disableCache(true);
 				}
 				foreach ($frontendL as &$lcvalue){
 					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue,'language',$langcode);
