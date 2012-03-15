@@ -304,7 +304,8 @@ $_parts[] = array(
 <html>
 	<head>
 		<title><?php print g_l('sysinfo', '[sysinfo]') ?></title>
-		<?php echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+		<?php
+		echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 		we_html_element::jsScript(JS_DIR . 'keyListener.js');
 		?>
 		<script type="text/javascript"><!--
@@ -340,18 +341,17 @@ $_parts[] = array(
 		</div>
 		<div id="more" style="display:none;">
 			<?php
-			$_parts = array();
-
-			$_parts[] = array(
-				'headline' => '',
-				'html' => '<iframe id="phpinfo" style="width:660px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
-				'space' => $_space_size
-			);
-
-			$_parts[] = array(
-				'headline' => '',
-				'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-				'space' => 10
+			$_parts = array(
+				array(
+					'headline' => '',
+					'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
+					'space' => $_space_size
+				),
+				array(
+					'headline' => '',
+					'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
+					'space' => 10
+				),
 			);
 
 			print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);

@@ -56,7 +56,7 @@ class we_tag_tagParser{
 	private function setAllTags($code){
 		$this->tags = array();
 		$foo = array();
-		preg_match_all('%</?we:([[:alnum:]_]+)([ \t]*[[:alnum:]_]+[ \t]*=[ \t]*"[^"]*")*[ \t]*/?>?%i', $code, $foo, PREG_SET_ORDER);
+		preg_match_all('%</?we:([[:alnum:]_-]+)([ \t]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t]*/?>?%i', $code, $foo, PREG_SET_ORDER);
 		foreach($foo as $f){
 			/* 			if(substr($f[1], -1) == '<'){
 			  $f[1] = substr($f[1], 0, strlen($f[1]) - 1);
@@ -93,7 +93,7 @@ class we_tag_tagParser{
 		$foo = array();
 		$_rettags = array();
 
-		preg_match_all('%</?we:([[:alnum:]_]+)([ \t]*[[:alnum:]_]+[ \t]*=[ \t]*"[^"]*")*[ \t]*/?>?%i', $code, $foo, PREG_SET_ORDER);
+		preg_match_all('%</?we:([[:alnum:]_-]+)([ \t]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t]*/?>?%i', $code, $foo, PREG_SET_ORDER);
 
 		foreach($foo as $f){
 			/* 			if(substr($f[1], -1) == '<'){
@@ -188,7 +188,7 @@ class we_tag_tagParser{
 
 		foreach($this->tags as $_tag){
 			$_matches = array();
-			if(preg_match_all('|<(/?)we:([[:alnum:]_]+)([ \t]*[[:alnum:]_]+[ \t]*=[ \t]*"[^"]*")*[ \t]*(/)?>?|si', $_tag, $_matches)){
+			if(preg_match_all('|<(/?)we:([[:alnum:]_-]+)([ \t]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t]*(/)?>?|si', $_tag, $_matches)){
 				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
 					if(!isset($Counter[$_matches[2][0]])){
 						$Counter[$_matches[2][0]] = 0;
@@ -279,7 +279,7 @@ class we_tag_tagParser{
 		$tag = $this->tags[$ipos];
 		$regs = array();
 		//$endTag = false;
-		preg_match('%<(/?)we:([[:alnum:]_]+)([ \t]*[[:alnum:]_]+[ \t]*=[ \t]*"[^"]*")*[ \t]*(/?)(>?)%i', $tag, $regs);
+		preg_match('%<(/?)we:([[:alnum:]_-]+)([ \t]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t]*(/?)(>?)%i', $tag, $regs);
 		$endTag = ($regs[1] === '/');
 		if($endTag){
 			//there should not be any endtags
@@ -298,7 +298,7 @@ class we_tag_tagParser{
 		//tags which need an endtag are not allowed to be selfclosing
 		//FIXME: ok or not?
 		//$selfclose&=!in_array($tagname, self::$CloseTags);
-		preg_match('%</?we:[[:alnum:]_]+[ \t]*(.*)' . $regs[4] . $regs[5] . '%', $regs[0], $regs);
+		preg_match('%</?we:[[:alnum:]_-]+[ \t]*(.*)' . $regs[4] . $regs[5] . '%', $regs[0], $regs);
 		$attr = trim($regs[1]);
 
 		//FIXME: remove?!

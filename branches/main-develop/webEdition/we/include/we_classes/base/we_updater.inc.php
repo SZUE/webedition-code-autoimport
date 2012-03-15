@@ -305,7 +305,7 @@ class we_updater{
 		self::changeColTyp(USER_TABLE, "First", "VARCHAR(255)");
 		self::changeColTyp(USER_TABLE, "Second", "VARCHAR(255)");
 		self::changeColTyp(USER_TABLE, "username", "VARCHAR(255) NOT NULL");
-		self::changeColTyp(USER_TABLE, "workSpace", "VARCHAR(255)");
+		self::changeColTyp(USER_TABLE, "workSpace", "VARCHAR(1000)");
 
 
 		self::fix_path();
@@ -327,25 +327,25 @@ class we_updater{
 		self::addCol(USER_TABLE, "Handy", "VARCHAR(64) DEFAULT ''", "AFTER Fax");
 		self::addCol(USER_TABLE, "Email", "VARCHAR(255) DEFAULT ''", "AFTER Handy");
 		self::addCol(USER_TABLE, "Description", "TEXT DEFAULT ''", "AFTER Email");
-		self::addCol(USER_TABLE, "workSpaceTmp", "VARCHAR(255) DEFAULT ''", "AFTER workSpace");
-		self::addCol(USER_TABLE, "workSpaceDef", "VARCHAR(255) DEFAULT ''", "AFTER workSpaceTmp");
+		self::addCol(USER_TABLE, "workSpaceTmp", "VARCHAR(1000) DEFAULT ''", "AFTER workSpace");
+		self::addCol(USER_TABLE, "workSpaceDef", "VARCHAR(1000) DEFAULT ''", "AFTER workSpaceTmp");
 		self::addCol(USER_TABLE, "ParentPerms", "TINYINT DEFAULT '0' NOT NULL", "AFTER passwd");
 		self::addCol(USER_TABLE, "ParentWs", "TINYINT DEFAULT '0' NOT NULL", "AFTER workSpaceDef");
 		self::addCol(USER_TABLE, "ParentWst", "TINYINT DEFAULT '0' NOT NULL", "AFTER ParentWs");
 		self::addCol(USER_TABLE, "Alias", "BIGINT DEFAULT '0' NOT NULL");
 
-		self::addCol(USER_TABLE, "workSpaceObj", "VARCHAR(255) DEFAULT ''", "AFTER workSpace");
+		self::addCol(USER_TABLE, "workSpaceObj", "VARCHAR(1000) DEFAULT ''", "AFTER workSpace");
 		self::addCol(USER_TABLE, "ParentWso", "TINYINT DEFAULT '0' NOT NULL", "AFTER workSpaceDef");
-		self::addCol(USER_TABLE, "workSpaceNav", "VARCHAR(255) DEFAULT ''", "AFTER workSpace");
+		self::addCol(USER_TABLE, "workSpaceNav", "VARCHAR(1000) DEFAULT ''", "AFTER workSpace");
 		self::addCol(USER_TABLE, "ParentWsn", "TINYINT DEFAULT '0' NOT NULL", "AFTER workSpaceDef");
-		self::addCol(USER_TABLE, "workSpaceNwl", "VARCHAR(255) DEFAULT ''", "AFTER workSpace");
+		self::addCol(USER_TABLE, "workSpaceNwl", "VARCHAR(1000) DEFAULT ''", "AFTER workSpace");
 		self::addCol(USER_TABLE, "ParentWsnl", "TINYINT DEFAULT '0' NOT NULL", "AFTER workSpaceDef");
 
 		self::addCol(USER_TABLE, "LoginDenied", "TINYINT(1) DEFAULT '0' NOT NULL");
 		self::addCol(USER_TABLE, "UseSalt", "TINYINT(1) DEFAULT '0' NOT NULL");
 
 		if(self::isColExist(USER_TABLE, "workSpace")){
-			self::changeColTyp(USER_TABLE, "workSpace", "VARCHAR(255)");
+			self::changeColTyp(USER_TABLE, "workSpace", "VARCHAR(1000)");
 			$DB_WE->query("UPDATE " . USER_TABLE . " SET workSpace='' WHERE workSpace='0';");
 		}
 		if(self::isColExist(USER_TABLE, "IsFolder")){
