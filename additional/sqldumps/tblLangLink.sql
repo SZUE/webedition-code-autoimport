@@ -9,6 +9,6 @@ CREATE TABLE ###TBLPREFIX###tblLangLink (
   DocumentTable enum('tblFile','tblObjectFile','tblDocTypes') NOT NULL,
   PRIMARY KEY (ID),
   UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale),
-  UNIQUE KEY DID (DLocale,LDID,Locale,DocumentTable),  
+  UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable),
   KEY LDID (LDID,DocumentTable,Locale)
 ) ENGINE=MyISAM;
