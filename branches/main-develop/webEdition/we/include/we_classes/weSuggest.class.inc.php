@@ -101,21 +101,17 @@ class weSuggest{
 	var $doOnItemSelect = "";
 	var $doOnTextfieldBlur = "";
 
-	function &getInstance(){
-		if(!isset($GLOBALS['__weSuggest__'])){
-			$GLOBALS['__weSuggest__'] = new weSuggest();
+	static function &getInstance(){
+		static $inst = null;
+		if(!is_object($inst)){
+			$inst = new self();
 		}
-		return $GLOBALS['__weSuggest__'];
+		return $inst;
 	}
 
 	function getErrorMarkPlaceHolder($id = "errormark", $space = 3, $w = 4, $h = 20){
 		$s = $w + $space;
-		if(we_base_browserDetect::isIE()){
-			$out = '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; top:4px; visibility: hidden; z-index:1000000" />';
-		} else{
-			$out = '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:absolute; left:-' . $s . 'px; visibility:hidden;" />';
-		}
-		return $out;
+		return '<img id="' . $id . '" src="' . IMAGE_DIR . 'icons/errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE() ? 'top:4px; z-index:1000000' : '') . '" />';
 	}
 
 	function getYuiFiles(){
@@ -172,17 +168,17 @@ class weSuggest{
 			return;
 
 		$safariEventListener = "";
-		$initVars = "	var ajaxMaxResponseTime = 1500;\n";
-		$initVars .= "	var ajaxResponseStep = 100;\n";
-		$initVars .= "	var ajaxResponseCT = 0;\n";
-		$initVars .= "	var countMark = 0;\n";
-		$initVars .= "	var ajaxURL = \"/webEdition/rpc/rpc.php\";\n";
-		$weFieldWS = "	/* WORKSPACES */\n";
-		$weFieldWS .= "	var weWorkspacePathArray = new Array();\n";
-		$fildsById = "\n	/* AC-FIEDS BY ID */\n";
-		$fildsById .= "	var yuiAcFieldsById = new Array()\n";
-		$fildsObj = "\n	/* AC-FIEDS */\n";
-		$fildsObj .= "	var yuiAcFields = {\n";
+		$initVars = '	var ajaxMaxResponseTime = 1500;
+			var ajaxResponseStep = 100;
+			var ajaxResponseCT = 0;
+			var countMark = 0;
+			var ajaxURL = "/webEdition/rpc/rpc.php";';
+		$weFieldWS = "	/* WORKSPACES */
+			var weWorkspacePathArray = new Array();";
+		$fildsById = "\n	/* AC-FIEDS BY ID */
+			var yuiAcFieldsById = new Array();";
+		$fildsObj = "\n	/* AC-FIEDS */
+			var yuiAcFields = {";
 		$invalidFields = <<<HTS
 		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
 
@@ -238,22 +234,23 @@ HTS;
 
 			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};\n";
 
-			$fildsObj .= ($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {\n";
-			$fildsObj .= "			'id' : '" . $this->inputfields[$i] . "',\n";
-			$fildsObj .= "			'old': document.getElementById('" . $this->inputfields[$i] . "').value,\n";
-			$fildsObj .= "			'selector': '" . $this->selectors[$i] . "',\n";
-			$fildsObj .= "			'sel': '',\n";
-			$fildsObj .= "			'newval': null,\n";
-			$fildsObj .= "			'run': false,\n";
-			$fildsObj .= "			'found': 0,\n";
-			$fildsObj .= "			'cType': '',\n";
-			$fildsObj .= "			'valid': true,\n";
-			$fildsObj .= "			'countMark': 0,\n";
-			$fildsObj .= "			'changed': false,\n";
-			$fildsObj .= "			'table': '" . $this->tables[$i] . "',\n";
-			$fildsObj .= "			'cTypes': '" . $this->contentTypes[$i] . "',\n";
-			$fildsObj .= "			'workspace': new Array(" . $weWorkspacePathArrayJS . "),\n";
-			$fildsObj .= "			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
+			$fildsObj .=
+				($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {
+			'id' : '" . $this->inputfields[$i] . "',
+			'old': document.getElementById('" . $this->inputfields[$i] . "').value,
+			'selector': '" . $this->selectors[$i] . "',
+			'sel': '',
+			'newval': null,
+			'run': false,
+			'found': 0,
+			'cType': '',
+			'valid': true,
+			'countMark': 0,
+			'changed': false,
+			'table': '" . $this->tables[$i] . "',
+			'cTypes': '" . $this->contentTypes[$i] . "',
+			'workspace': new Array(" . $weWorkspacePathArrayJS . "),
+			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
 			$oACDSInit .= ($i > 0 ? ", " : "") . 'oACDS_' . $i;
 			$oAutoCompInit .= ($i > 0 ? ", " : "") . 'oAutoComp_' . $i;
 			$oAutoCompRes .= "	var oAutoCompRes_$i = new Array();\n";
@@ -273,9 +270,10 @@ HTS;
 						$fildsObjId .= "'" . $this->setOnSelectFields[$i][$j] . "'";
 						$fildsObjVal .= "document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value";
 						$onSelectInit .= "var yuiAcOnSelectField_" . $j . ";\n";
-						$onSelectDecl .= "if ((yuiAcOnSelectField_" . $j . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "')) && (typeof(params[" . (3) . "])!=undefined)) {\n";
-						$onSelectDecl .= "				yuiAcOnSelectField_" . $j . ".value = params[" . (3) . "];\n";
-						$onSelectDecl .= "			}\n";
+						$onSelectDecl .=
+							"if ((yuiAcOnSelectField_" . $j . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "')) && (typeof(params[" . (3) . "])!=undefined)) {
+										yuiAcOnSelectField_" . $j . ".value = params[" . (3) . "];
+							}";
 					}
 					$fildsObj .= $fildsObjId . ")" . $fildsObjVal . ")";
 				}
@@ -448,9 +446,9 @@ HTS;
 
 HTS;
 
-				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {\n";
-				$onFocus .= "			ajaxResponseCT=0;\n";
-				$onFocus .= "			oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;\n";
+				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {
+							ajaxResponseCT=0;
+							oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;\n";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						$onFocus .= "			old_" . $this->setOnSelectFields[$i][$j] . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value;\n";
@@ -518,7 +516,8 @@ HTS;
 			// EOF loop fields
 
 			$fildsObj .= "		}";
-			$declare .= 'oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);
+			$declare .=
+				'oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);
 			oACDS_' . $i . '.responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
 			oACDS_' . $i . '.maxCacheEntries = 60;
 			oACDS_' . $i . '.queryMatchSubset = false;
@@ -908,9 +907,9 @@ function doDebugResizeH(){
 
 		$iField = "";
 		if(is_array($inputField)){
-			/*foreach($inputField as $key => $val){
+			/* foreach($inputField as $key => $val){
 
-			}*/
+			  } */
 		} else{
 			$iField = $inputField;
 		}

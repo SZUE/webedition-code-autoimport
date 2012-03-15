@@ -44,9 +44,9 @@ $perm_values[$perm_group_name] = array(
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
 
-for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
+foreach($perm_values[$perm_group_name] as $entry){
 
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
+	$perm_titles[$perm_group_name][$entry] = g_l('perms_'.$perm_group_name,'['.$entry.']');
 }
 
 $perm_defaults[$perm_group_name] = array(
