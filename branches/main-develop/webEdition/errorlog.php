@@ -140,12 +140,12 @@ if($size){
 	$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db);
 	$_parts[] = array(
 		'html' => getInfoTable($record),
-		'space' => $_space_size
+		'space' => 10,
 	);
 } else{
 	$_parts[] = array(
 		'html' => 'No entries found',
-		'space' => $_space_size
+		'space' => 10,
 	);
 }
 
