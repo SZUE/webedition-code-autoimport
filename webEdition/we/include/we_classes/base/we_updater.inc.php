@@ -794,9 +794,9 @@
 				);
 			$keys=array(
 				"PRIMARY KEY"=>"(ID)",
-				"KEY DID"=>"(DID,Locale(5))"
+				"UNIQUE KEY DID" => "(DID,DocumentTable,DLocale,Locale)"
 				);
-			$this->addTable(LOCK_TABLE,$cols,$keys);
+			$this->addTable(LANGLINK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LANGLINK_TABLE,'DLocale'))  $this->addCol(LANGLINK_TABLE,'DLocale',"varchar(5) NOT NULL default ''",' AFTER DID ');
 	}
