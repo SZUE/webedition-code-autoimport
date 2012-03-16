@@ -812,7 +812,7 @@
 		}
 	}
 
-	private static function updateLangLink(){
+	private static function updateLangLinkNew(){
 		if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
 			//no unique def. found
 			$db=$GLOBALS['DB_WE'];
@@ -847,7 +847,7 @@
 		$this->updateLangLink();
 		$this->convertTemporaryDoc();
 		$this->updateTableKeys();
-		self::updateLangLink();
+		self::updateLangLinkNew();
 		}
 
 }
