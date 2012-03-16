@@ -340,6 +340,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 							$csv->setHeader($csv_fields);
 							$csv->setFile($csvFile);
 							$csv->setFromCharset($csv_charset);
+							$csv->setToCharset('UTF-8');
 							$csv->parseCSV();
 							$data = $csv->CSVFetchRow();
 							while ($data!=FALSE){
@@ -352,7 +353,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 											);
 									}
 									$rootnode["content"]=$value;
-									$code='<?xml version="1.0" encoding="'.$_language["charset"].'" standalone="yes" ?>'."\n";
+									$code='<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'."\n";
 									$code.=weCustomerEI::buildXMLElement(array($rootnode));
 									weCustomerEI::save2File($path."temp_$fcount.xml",$code,"wb");
 									$fcount++;
@@ -392,7 +393,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 					foreach($nodeSet as $node){
 						$node_name=$xp->nodeName($node);
 						$node_value=$xp->getData($node);
-						if(isset($fields[$node_name])) eval('$customer->'.$fields[$node_name].'=\''.addslashes($node_value).'\';');
+						if(isset($fields[$node_name]))
+							$customer->{$fields[$node_name]} = iconv('UTF-8', DEFAULT_CHARSET, $node_value);
 					}
 
 					$existid=f("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$db->escape($customer->Username)."' AND ID<>".abs($customer->ID),"ID",$db);
