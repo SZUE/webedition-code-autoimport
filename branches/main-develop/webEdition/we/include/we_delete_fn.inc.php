@@ -143,7 +143,7 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 	$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
 	if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
 		if(!we_util_File::deleteLocalFolder($file)){
-			if(is_array($GLOBALS["we_folder_not_del"])){
+			if(isset($GLOBALS["we_folder_not_del"]) && is_array($GLOBALS["we_folder_not_del"])){
 				array_push($GLOBALS["we_folder_not_del"], $file);
 			}
 		}

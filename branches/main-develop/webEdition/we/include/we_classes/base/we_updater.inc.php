@@ -708,7 +708,7 @@ class we_updater{
 		return true;
 	}
 
-	static function updateLangLink(){
+	private static function updateLangLink(){
 		if(!self::isTabExist(LANGLINK_TABLE)){
 			$cols = array(
 				"ID" => "int(11) NOT NULL AUTO_INCREMENT",
@@ -722,11 +722,30 @@ class we_updater{
 			);
 			$keys = array(
 				"PRIMARY KEY" => "(ID)",
-				"KEY DID" => "(DID,Locale(5))"
+				"UNIQUE KEY DID" => "(DID,DocumentTable,DLocale,Locale)"
 			);
-			self::addTable(LOCK_TABLE, $cols, $keys);
+			self::addTable(LANGLINK_TABLE, $cols, $keys);
 		}
 		self::addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
+
+
+		if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
+			//no unique def. found
+			$db=$GLOBALS['DB_WE'];
+			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
+				$db->query('INSERT INTO tmpLangLink SELECT * FROM '.LANGLINK_TABLE);
+				$db->query('TRUNCATE '.LANGLINK_TABLE);
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale)');
+				}
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
+				}
+				$db->query('INSERT IGNORE INTO '.LANGLINK_TABLE.' SELECT * FROM tmpLangLink ORDER BY ID DESC');
+			}else{
+				t_e('no rights to create temp-table');
+			}
+		}
 	}
 
 	static function convertTemporaryDoc(){
@@ -781,6 +800,7 @@ class we_updater{
 		self::updateLangLink();
 		self::convertTemporaryDoc();
 		self::updateTableKeys();
+		self::updateLangLink();
 		self::fixInconsistentTables();
 	}
 

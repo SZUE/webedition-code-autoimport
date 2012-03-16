@@ -104,6 +104,12 @@ class weCustomer extends weModelBase{
 		}
 		$this->ModifyDate = time();
 		$this->ModifiedBy = 'backend';
+		if(isset($this->setModifiedBy)){
+			$this->ModifiedBy=$this->setModifiedBy;
+		}
+		
+		$hook = new weHook('customer_preSave', '', array('customer'=>$this,'from'=>'management','type'=>($this->ID ? 'existing':'new')));
+		$ret=$hook->executeHook();
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
 		$ret = $hook->executeHook();

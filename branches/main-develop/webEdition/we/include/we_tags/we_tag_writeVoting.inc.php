@@ -39,7 +39,6 @@ function we_tag_writeVoting($attribs){
 	}
 
 	$vars = implode(',', array_keys($_REQUEST));
-
 	$_voting = array();
 
 	$matches = array();
@@ -49,7 +48,7 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if(!empty($_REQUEST[$value])){
+			if(!empty($_REQUEST[$value]) && $_REQUEST[$value]!='') {// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$_voting[$id][] = $_REQUEST[$value];
 			}
 		}
