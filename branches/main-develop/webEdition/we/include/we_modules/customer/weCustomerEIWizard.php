@@ -693,8 +693,8 @@ class weCustomerEIWizard{
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 100);
-				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, "onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 160, "defaultfont", false);
+				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, DEFAULT_CHARSET, 255, "", "text", 100);
+				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, DEFAULT_CHARSET, false, "onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 160, "defaultfont", false);
 				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
@@ -1601,7 +1601,6 @@ class weCustomerEIWizard{
 				}
 		');
 
-		//javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

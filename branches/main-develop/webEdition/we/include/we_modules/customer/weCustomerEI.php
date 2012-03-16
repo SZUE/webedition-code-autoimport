@@ -169,7 +169,7 @@ class weCustomerEI{
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
 								$value = "";
-								$value=$customer->{$k};
+								$value = $customer->{$k};
 								$customer_csv[$cid][] = $value;
 							}
 						}
@@ -336,6 +336,7 @@ class weCustomerEI{
 				$csv->setHeader($csv_fields);
 				$csv->setFile($csvFile);
 				$csv->setFromCharset($csv_charset);
+				$csv->setToCharset('UTF-8');
 				$csv->parseCSV();
 				$data = $csv->CSVFetchRow();
 				while($data != FALSE) {
@@ -348,7 +349,7 @@ class weCustomerEI{
 						);
 					}
 					$rootnode["content"] = $value;
-					$code = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n";
+					$code = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . "\n";
 					$code.=weCustomerEI::buildXMLElement(array($rootnode));
 					weCustomerEI::save2File($path . "temp_$fcount.xml", $code, "wb");
 					$fcount++;
@@ -384,7 +385,7 @@ class weCustomerEI{
 			$node_name = $xp->nodeName($node);
 			$node_value = $xp->getData($node);
 			if(isset($fields[$node_name]))
-				$customer->{$fields[$node_name]} = $node_value;
+				$customer->{$fields[$node_name]} = iconv('UTF-8', DEFAULT_CHARSET, $node_value);
 		}
 
 		$existid = f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . $db->escape($customer->Username) . "' AND ID!=" . intval($customer->ID), "ID", $db);

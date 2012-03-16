@@ -205,7 +205,7 @@ class we_updater{
 
 	static function isColExist($tab, $col){
 		$DB_WE = $GLOBALS['DB_WE'];
-		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape(trim($col,'`')) . "';");
+		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape(trim($col, '`')) . "';");
 		return ($DB_WE->next_record());
 	}
 
@@ -729,20 +729,20 @@ class we_updater{
 		self::addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
 
-		if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
+		if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DLocale')){
 			//no unique def. found
-			$db=$GLOBALS['DB_WE'];
-			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
-				$db->query('INSERT INTO tmpLangLink SELECT * FROM '.LANGLINK_TABLE);
-				$db->query('TRUNCATE '.LANGLINK_TABLE);
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
-					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale)');
+			$db = $GLOBALS['DB_WE'];
+			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
+				$db->query('INSERT INTO tmpLangLink SELECT * FROM ' . LANGLINK_TABLE);
+				$db->query('TRUNCATE ' . LANGLINK_TABLE);
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DID')){
+					weDBUtil::addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale)');
 				}
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
-					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DLocale')){
+					weDBUtil::addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
 				}
-				$db->query('INSERT IGNORE INTO '.LANGLINK_TABLE.' SELECT * FROM tmpLangLink ORDER BY ID DESC');
-			}else{
+				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . ' SELECT * FROM tmpLangLink ORDER BY ID DESC');
+			} else{
 				t_e('no rights to create temp-table');
 			}
 		}
@@ -797,7 +797,7 @@ class we_updater{
 		self::updateVersions();
 		self::updateWorkflow();
 		self::updateLock();
-		self::updateLangLink();
+		self::updateLangLinkNew();
 		self::convertTemporaryDoc();
 		self::updateTableKeys();
 		self::updateLangLink();
