@@ -442,19 +442,17 @@ function showEditFooterForNormalMode(){
 	if(!$_ctrlElem || !$_ctrlElem['hide']){
 
 		// show save button also for class_folder, if customer_filters are defined
-		if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){
+		/* 		if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){
 
-			//if (defined("CUSTOMER_TABLE")) {//Bug 4716
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		  $_normalTable->addCol(2);
+		  $_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+		  $_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
-			//}
-		} else{
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-		}
+		  } else{ */
+		$_normalTable->addCol(2);
+		$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		//}
 	}
 
 	if($we_doc->ContentType == "text/weTmpl"){

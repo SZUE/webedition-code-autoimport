@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,86 +23,82 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * Class weBinary
  *
  * Provides functions for exporting and importing backups.
  */
-	class weBinary{
+class weBinary{
 
-		var $db;
-		var $ClassName=__CLASS__;
-		var $Pseudo="weBinary";
+	var $db;
+	var $ClassName = __CLASS__;
+	var $Pseudo = "weBinary";
+	var $attribute_slots = array();
+	var $persistent_slots = array();
+	var $ID = 0;
+	var $Path = "";
+	var $Data = "";
+	var $SeqN = 0;
+	var $linkData = true;
 
-		var $attribute_slots=array();
-		var $persistent_slots=array();
-
-		var $ID=0;
-		var $Path="";
-		var $Data="";
-		var $SeqN=0;
-
-		var $linkData=true;
-
-		function __construct($id=0){
-			$this->Pseudo="weBinary";
-			$this->persistent_slots=array("ID","ClassName","Path","Data","SeqN");
-			foreach($this->persistent_slots as $slot) $this->$slot="";
-			$this->SeqN = 0;
-			$this->ClassName="weBinary";
-			$this->db=new DB_WE();
-			if($id) $this->load($id);
-		}
-
-		function load($id,$loadData=true){
-			$this->ID=$id;
-			$this->db->query("SELECT Path FROM ".FILE_TABLE." WHERE ID=".intval($id));
-			if($this->db->next_record()){
-				$this->Path=$this->db->f("Path");
-				if($this->Path && $loadData){
-					return $this->loadFile($_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path);
-				}
-				return false;
-			}
-			else return false;
-		}
-
-		function loadFile($file){
-			$path=str_replace($_SERVER['DOCUMENT_ROOT'],"",$file);
-			$path=str_replace(SITE_DIR,"",$path);
-			$this->Path=$path;
-			if($this->linkData)
-				return $this->Data=weFile::load($file);
-			else
-				return true;
-		}
-
-		function save($force=true){
-			if($this->ID){
-				$path=$_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path;
-				if(file_exists($path) && !$force) return false;
-				if(!is_dir(dirname($path))) {
-					we_util_File::createLocalFolderByPath(dirname($path));
-				}
-				weFile::save($_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
-			}
-			else{
-				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
-				if(file_exists($path) && !$force) return false;
-				if(!is_dir(dirname($path))){
-					we_util_File::createLocalFolderByPath(dirname($path));
-				}
-				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
-			}
-			return true;
-		}
-
-		//alias
-		function we_save(){
-			return $this->save();
-		}
-
+	function __construct($id = 0){
+		$this->Pseudo = "weBinary";
+		$this->persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
+		foreach($this->persistent_slots as $slot)
+			$this->$slot = "";
+		$this->SeqN = 0;
+		$this->ClassName = "weBinary";
+		$this->db = new DB_WE();
+		if($id)
+			$this->load($id);
 	}
 
+	function load($id, $loadData = true){
+		$this->ID = $id;
+		$this->db->query("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id));
+		if($this->db->next_record()){
+			$this->Path = $this->db->f("Path");
+			if($this->Path && $loadData){
+				return $this->loadFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path);
+			}
+			return false;
+		}
+		else
+			return false;
+	}
+
+	function loadFile($file){
+		$path = str_replace($_SERVER['DOCUMENT_ROOT'], "", $file);
+		$path = str_replace(SITE_DIR, "", $path);
+		$this->Path = $path;
+		return ($this->linkData ? $this->Data = weFile::load($file) : true);
+	}
+
+	function save($force = true){
+		if($this->ID){
+			$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path;
+			if(file_exists($path) && !$force)
+				return false;
+			if(!is_dir(dirname($path))){
+				we_util_File::createLocalFolderByPath(dirname($path));
+			}
+			weFile::save($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+		} else{
+			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
+			if(file_exists($path) && !$force)
+				return false;
+			if(!is_dir(dirname($path))){
+				we_util_File::createLocalFolderByPath(dirname($path));
+			}
+			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+		}
+		return true;
+	}
+
+	//alias
+	function we_save(){
+		return $this->save();
+	}
+
+}
 
