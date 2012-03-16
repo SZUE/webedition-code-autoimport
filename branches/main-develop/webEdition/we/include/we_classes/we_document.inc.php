@@ -64,7 +64,8 @@ class we_document extends we_root{
 
 	function copyDoc($id){
 		if($id){
-			$doc = new static();
+			$tmp=$this->ClassName;
+			$doc = new $tmp();
 			$doc->InitByID($id, $this->Table);
 			$parentIDMerk = $doc->ParentID;
 			if($this->ID == 0){
