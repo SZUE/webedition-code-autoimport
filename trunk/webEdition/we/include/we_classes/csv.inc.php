@@ -266,10 +266,10 @@ class CSVImport extends CSV {
 				$akt_field_value .= $akt_char;
 
 				if ($head_complete) {
-					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
+					$this->Fields[$akt_line][$akt_field] = $this->FromCharset==$this->ToCharset?trim($akt_field_value):iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 				else {
-					$this->FieldNames[$akt_field] = iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
+					$this->FieldNames[$akt_field] = $this->FromCharset==$this->ToCharset?trim($akt_field_value):iconv($this->FromCharset,$this->ToCharset.'//TRANSLIT',trim($akt_field_value));
 				}
 			}
 
@@ -382,4 +382,3 @@ class CSVFixImport extends CSV {
 		}
 	}
 }
-
