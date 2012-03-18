@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-include_once(WE_CUSTOMER_MODULE_DIR . 'weCustomerSettings.php');
 
 class weCustomerView{
 
@@ -331,7 +330,6 @@ class weCustomerView{
 	}
 
 	function getJSSortAdmin(){
-		include_once(WE_CUSTOMER_MODULE_DIR . 'weCustomerAdd.php');
 		return weCustomerAdd::getJSSortAdmin($this);
 	}
 
@@ -502,8 +500,6 @@ class weCustomerView{
 	}
 
 	function getJSSearch(){
-
-		include_once(WE_CUSTOMER_MODULE_DIR . 'weCustomerAdd.php');
 		return weCustomerAdd::getJSSearch($this);
 	}
 
@@ -618,7 +614,7 @@ class weCustomerView{
 					$tt = '';
 					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), $this->db);
 					//FIXME: needed, because format is php code
-					eval('$tt="'.$this->settings->treeTextFormat.'";');
+					eval('$tt="' . $this->settings->treeTextFormat . '";');
 					$tt = addslashes($tt != '' ? $tt : $this->customer->Text);
 					if($newone){
 						$js = '

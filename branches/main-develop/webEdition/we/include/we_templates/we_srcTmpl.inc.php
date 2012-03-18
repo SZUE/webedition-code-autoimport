@@ -294,10 +294,11 @@ return;';
 		// ############ CodeMirror Functions ################
 
 		function reindent() { // reindents code of CodeMirror
-			if(editor.selection().length)
+			if(editor.selection().length){
 				editor.reindentSelection();
-			else
+			}else{
 				editor.reindent();
+			}
 		}
 
 		function reindent2() { // reindents code of CodeMirror2
@@ -347,7 +348,7 @@ return;';
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'               ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'                ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }

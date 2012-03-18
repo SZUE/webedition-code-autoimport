@@ -215,7 +215,6 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter{
 		$_blackList = makeCSVFromArray($filterObj->getBlackList(), true);
 		$_filter = serialize($filterObj->getFilter());
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 		$this->DB_WE->query('UPDATE ' . NAVIGATION_TABLE .
 			' SET LimitAccess=' . $_limitAccess .

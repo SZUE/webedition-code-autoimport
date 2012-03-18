@@ -22,10 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weRefTable.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExIm.class.php');
 
 	class weXMLExport extends weXMLExIm{
 
@@ -148,8 +145,6 @@
 						}
 						else {
 							if (defined("OBJECT_FILES_TABLE")) {
-								include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-
 								$catss = "";
 
 								if ($categories) {

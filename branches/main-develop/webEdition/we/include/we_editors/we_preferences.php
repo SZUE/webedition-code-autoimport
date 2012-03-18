@@ -3662,7 +3662,6 @@ function build_dialog($selected_setting = "ui"){
 
 				$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 				if(!file_exists($configFile) || !is_file($configFile)){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
 					weNavigationSettingControl::saveSettings(true);
 				}
 				include($configFile);

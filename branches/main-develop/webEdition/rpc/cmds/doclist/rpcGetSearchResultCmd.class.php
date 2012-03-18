@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,23 +22,17 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSearchResultCmd extends rpcCmd{
 
-class rpcGetSearchResultCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
 		we_html_tools::protect();
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_folder.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_doclist/doclistView.class.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
-
-
 		$setView = $_REQUEST['we_cmd']['setView'];
 
-		if (isset($_REQUEST["we_transaction"])) {
+		if(isset($_REQUEST["we_transaction"])){
 			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) ? $_SESSION["we_data"][$_REQUEST["we_transaction"]] : "";
 		}
 
@@ -48,12 +43,11 @@ class rpcGetSearchResultCmd extends rpcCmd {
 
 		$content = doclistView::searchProperties();
 
-		$code = searchtoolView::tabListContent($setView,$content,$class="middlefont","doclist");
+		$code = searchtoolView::tabListContent($setView, $content, $class = "middlefont", "doclist");
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
-
 
 }

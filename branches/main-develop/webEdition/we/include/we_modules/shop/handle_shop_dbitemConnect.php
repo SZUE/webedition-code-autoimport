@@ -56,4 +56,3 @@ $dbTitlename = "shoptitle";
 $DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='$dbTitlename'");
 $DB_WE->next_record();
 $resultD = $DB_WE->f("Anzahl");
-?>

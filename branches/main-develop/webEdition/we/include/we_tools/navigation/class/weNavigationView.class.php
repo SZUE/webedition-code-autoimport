@@ -39,7 +39,7 @@ class weNavigationView{
 	var $group_pattern = '';
 	var $page = 1;
 
-	function __construct($frameset='', $topframe='top'){
+	function __construct($frameset = '', $topframe = 'top'){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -71,7 +71,7 @@ class weNavigationView{
 	//------------------------------------------------
 
 
-	function getCommonHiddens($cmds=array()){
+	function getCommonHiddens($cmds = array()){
 		$out = $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : ''));
 		$out.=$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''));
 		$out.=$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : ''));
@@ -254,8 +254,6 @@ class weNavigationView{
 		$_objFields = "\n";
 		if($this->Model->SelectionType == 'classname'){
 			if(defined('OBJECT_TABLE')){
-
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
 
 				$_class = new we_object();
 				$_class->initByID($this->Model->ClassID, OBJECT_TABLE);
@@ -650,7 +648,7 @@ class weNavigationView{
 	' . $this->getJSSubmitFunction("cmd");
 	}
 
-	function getJSSubmitFunction($def_target="edbody", $def_method="post"){
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 
 			function populateVars() {
@@ -871,9 +869,9 @@ class weNavigationView{
 					}
 
 
-					$js = we_html_element::jsElement($js .$this->editorHeaderFrame . '.location.reload();'.
-						we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', "[save_group_ok]") : g_l('navigation', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
-						$this->topFrame . '.hot=0;
+					$js = we_html_element::jsElement($js . $this->editorHeaderFrame . '.location.reload();' .
+							we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', "[save_group_ok]") : g_l('navigation', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
+							$this->topFrame . '.hot=0;
 						if(' . $this->topFrame . '.makeNewDoc) {
 							setTimeout("' . $this->topFrame . '.we_cmd(\"tool_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 						}
@@ -1041,7 +1039,6 @@ class weNavigationView{
 						$__fields = array();
 						if(defined('OBJECT_TABLE')){
 
-							include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
 							$_class = new we_object();
 							$_class->initByID($this->Model->ClassID, OBJECT_TABLE);
 							$_fields = $_class->getAllVariantFields();
@@ -1206,7 +1203,7 @@ class weNavigationView{
 		}
 	}
 
-	function new_array_splice(&$a, $start, $len=1){
+	function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if($k !== false){

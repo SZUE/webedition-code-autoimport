@@ -238,7 +238,6 @@ function we_tag_write($attribs){
 
 function checkAndCreateFlashmovie($formname, $type = "we_document"){
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
 	foreach($_REQUEST as $key => $_flashmovieDataId){
 		if(preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)){
@@ -316,7 +315,6 @@ function checkAndCreateFlashmovie($formname, $type = "we_document"){
 
 function checkAndCreateQuicktime($formname, $type = "we_document"){
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 
 	foreach($_REQUEST as $key => $_quicktimeDataId){
 		if(preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)){
@@ -393,7 +391,6 @@ function checkAndCreateQuicktime($formname, $type = "we_document"){
 
 function checkAndCreateImage($formname, $type = "we_document"){
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 	foreach($_REQUEST as $key => $_imgDataId){
 		if(preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)){
@@ -470,7 +467,6 @@ function checkAndCreateImage($formname, $type = "we_document"){
 
 function checkAndCreateBinary($formname, $type = "we_document"){
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 
 	foreach($_REQUEST as $key => $_binaryDataId){
 		if(preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)){

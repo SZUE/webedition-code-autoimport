@@ -415,7 +415,7 @@ class we_workflow_view extends we_workflow_base{
 		return $ids . $out;
 	}
 
-	function getTypeTableHTML($head, $values, $ident=0, $textalign="left", $textclass="defaultfont"){
+	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
 		$out = '<table cellpadding="0" cellspacing="0" border="0">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
 		foreach($values as $key => $val){
 			$out.='<tr><td>' . we_html_tools::getPixel($ident, 5) . '</td><td class="' . trim($textclass) . '">' . $val . '</td></tr>';
@@ -424,13 +424,13 @@ class we_workflow_view extends we_workflow_base{
 		return $out;
 	}
 
-	function getBoxHTML($w, $h, $content, $headline="", $width=120){
+	function getBoxHTML($w, $h, $content, $headline = "", $width = 120){
 		$out = "";
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($headline){
 			$out = '<table cellpadding="0" cellspacing="0" border="0">
-			<tr>'.we_html_tools::getPixel(24, 15).'</td>
-				<td>'.we_html_tools::getPixel($width, 15).'</td>
+			<tr>' . we_html_tools::getPixel(24, 15) . '</td>
+				<td>' . we_html_tools::getPixel($width, 15) . '</td>
 				<td></td>
 			</tr>
 			<tr>
@@ -439,28 +439,28 @@ class we_workflow_view extends we_workflow_base{
 				<td>' . $content . '</td>
 			</tr>
 			<tr>
-				<td>'.we_html_tools::getPixel(24, 15).'</td>
-				<td>'.we_html_tools::getPixel($width, 15).'</td>
+				<td>' . we_html_tools::getPixel(24, 15) . '</td>
+				<td>' . we_html_tools::getPixel($width, 15) . '</td>
 				<td></td>
 			</tr></table>';
 		} else{
 			$out = '<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td>'.we_html_tools::getPixel(24, 15).'</td>
+				<td>' . we_html_tools::getPixel(24, 15) . '</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>' . $content . '</td>
 			</tr>
-			<tr>'.we_html_tools::getPixel(24, 15).'</td>
+			<tr>' . we_html_tools::getPixel(24, 15) . '</td>
 				<td></td>
 			</tr></table>';
 		}
 		return $out;
 	}
 
-	function getDocTypeHTML($width=498){
+	function getDocTypeHTML($width = 498){
 
 		$pop = "";
 
@@ -477,13 +477,13 @@ class we_workflow_view extends we_workflow_base{
 		return we_html_tools::htmlFormElementTable($pop, g_l('modules_workflow', '[doctype]'));
 	}
 
-	function htmlHidden($name, $value=""){
+	function htmlHidden($name, $value = ""){
 		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" />';
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width="", $rootDirID=0, $table=FILE_TABLE, $Pathname="ParentPath", $Pathvalue="", $IDName="ParentID", $IDValue="", $cmd=""){
+	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 		$table = FILE_TABLE;
 
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
@@ -752,7 +752,8 @@ class we_workflow_view extends we_workflow_base{
 
 							function getNumOfDocs(){
 								return <?php $this->workflowDef->loadDocuments();
-			print count($this->workflowDef->documents) ?>;
+			print count($this->workflowDef->documents)
+			?>;
 							}
 
 							function sprintf(){
@@ -1388,8 +1389,8 @@ class we_workflow_view extends we_workflow_base{
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-		$out = we_html_element::jsScript(JS_DIR . 'windows.js') . '
-		<script  type="text/javascript">function openToEdit(tab,id,contentType){
+		$out = we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
@@ -1397,9 +1398,8 @@ class we_workflow_view extends we_workflow_base{
 		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
 			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		}
-	} </script>
-
-		</head>
+	}') .
+			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">' . $this->documentDef->document->hiddenTrans() . '<table cellpadding="6" cellspacing="0" border="0">';
 
@@ -1541,7 +1541,7 @@ class we_workflow_view extends we_workflow_base{
 		return $out;
 	}
 
-	function getLogForDocument($docID, $type=0){
+	function getLogForDocument($docID, $type = 0){
 		$db = new DB_WE;
 
 		$headlines = array();

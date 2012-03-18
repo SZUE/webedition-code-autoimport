@@ -270,8 +270,6 @@ class weGlossaryFrames extends weModuleFrames{
 		else
 			$offset = 0;
 
-		include_once(WE_GLOSSARY_MODULE_DIR . "weGlossaryTreeLoader.php");
-
 		$rootjs = "";
 		if(!$pid)
 			$rootjs.='

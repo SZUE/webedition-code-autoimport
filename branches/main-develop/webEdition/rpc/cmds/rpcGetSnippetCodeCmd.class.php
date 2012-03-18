@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,26 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSnippetCodeCmd extends rpcCmd{
 
-class rpcGetSnippetCodeCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/classes/weCodeWizardSnippet.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/classes/weCodeWizard.inc.php");
-
-		if (!isset($_REQUEST['we_cmd'][1])) exit();
-
-		$CodeWizard = new weCodeWizard();
-		if(!is_file($CodeWizard->SnippetPath . $_REQUEST['we_cmd'][1])) {
+		if(!isset($_REQUEST['we_cmd'][1]))
 			exit();
 
+		$CodeWizard = new weCodeWizard();
+		if(!is_file($CodeWizard->SnippetPath . $_REQUEST['we_cmd'][1])){
+			exit();
 		}
 
 		$Snippet = weCodeWizardSnippet::initByXmlFile($CodeWizard->SnippetPath . $_REQUEST['we_cmd'][1]);
 		$Code = $Snippet->getCode("UTF-8");
 
-		$resp->setData("data",$Code) ;
+		$resp->setData("data", $Code);
 
 		return $resp;
 	}
+
 }
 

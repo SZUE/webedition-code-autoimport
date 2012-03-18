@@ -1353,8 +1353,6 @@ function onFolderSelectionChangeJS(elem) {
 		} else{
 			if(defined('OBJECT_TABLE')){
 
-				include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
-
 				$_class = new we_object();
 				$_class->initByID($_selection, OBJECT_TABLE);
 				$_fields = $_class->getAllVariantFields();
@@ -1499,8 +1497,6 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 	function getHTMLWorkspace($type = 'object', $defClassID = 0, $field = 'WorkspaceID'){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
-
 		$_wsid = array();
 
 		if($type == 'class'){
@@ -1856,9 +1852,6 @@ function onFolderSelectionChangeJS(elem) {
 		$parts = array();
 		$_space_size = 50;
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilterView.class.php");
-
 		$_filter = new weNavigationCustomerFilter();
 		$_filter->initByNavModel($this->Model);
 
@@ -1909,7 +1902,7 @@ function onFolderSelectionChangeJS(elem) {
 
 		return $this->getHTMLDocument(
 				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 					function we_save() {
 						' . $this->topFrame . '.makeNewDoc = document.we_form.makeNewDoc.checked;
 						' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");

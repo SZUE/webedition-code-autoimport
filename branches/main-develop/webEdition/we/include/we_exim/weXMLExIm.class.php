@@ -365,7 +365,6 @@ class weXMLExIm{
 				}
 			} else{
 				if(defined("OBJECT_FILES_TABLE")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 
 					$catss = "";
 

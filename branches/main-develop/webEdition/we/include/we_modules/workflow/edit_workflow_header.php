@@ -31,7 +31,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$jmenu = new weJavaMenu($we_menu_workflow,"top.opener.top.load", 350, 30);
+$jmenu = new weJavaMenu($we_menu_workflow, "top.opener.top.load", 350, 30);
 echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>
 <script type="text/javascript"><!--
@@ -49,7 +49,6 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 			</td>
 			<td align="right">
 				<?php
-				include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("moduleFrame");
 				?>
 			</td>

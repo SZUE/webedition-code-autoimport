@@ -1056,7 +1056,6 @@ class we_imageDocument extends we_binaryDocument{
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]["tmp_name"][$imgName], $_SESSION[$_imgDataId]["serverPath"]);
 
-								include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_thumbnail.class.php');
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
 								if(count($we_size) == 0){

@@ -185,7 +185,6 @@ class we_schedpro{
 				$extraheadl = g_l('modules_schedule', "[doctype]");
 				break;
 			case self::CATEGORY:
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 				$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('delete_all_schedcats'," . $this->nr . ")");
 				$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID," . $this->nr . ");')");
 				$cats = new MultiDirChooser(450, $this->CategoryIDs, "delete_schedcat", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);

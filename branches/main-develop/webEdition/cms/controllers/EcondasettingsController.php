@@ -73,7 +73,7 @@ class EcondasettingsController extends Zend_Controller_Action
 			if ((isset($_FILES['emosfile']) && $_FILES['emosfile']['size']) || defined('WE_ECONDA_ID')) {
 				// do if file is uploaded or settings are changed
 
-   				include_once($GLOBALS['__WE_BASE_PATH__']."/we/include/we.inc.php");
+   				require_once($GLOBALS['__WE_BASE_PATH__']."/we/include/we.inc.php");
 
 				if (!defined('WE_ECONDA_STAT') || WE_ECONDA_STAT != $activateEconda) {
 	   				// change econda status

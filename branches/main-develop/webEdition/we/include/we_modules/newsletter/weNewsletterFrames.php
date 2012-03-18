@@ -351,8 +351,6 @@ class weNewsletterFrames extends weModuleFrames{
 		else
 			exit;
 
-		include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterTreeLoader.php");
-
 		$rootjs = "";
 		if(!$pid)
 			$rootjs.='
@@ -720,11 +718,7 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLCustomer($group){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
-		$out = "";
-
-		$out.=we_forms::checkbox($this->View->newsletter->groups[$group]->SendAll, (($this->View->newsletter->groups[$group]->SendAll == 0) ? false : true), "sendallcheck_$group", g_l('modules_newsletter', '[send_all]'), false, "defaultfont", "we_cmd('switch_sendall',$group);");
+		$out = we_forms::checkbox($this->View->newsletter->groups[$group]->SendAll, (($this->View->newsletter->groups[$group]->SendAll == 0) ? false : true), "sendallcheck_$group", g_l('modules_newsletter', '[send_all]'), false, "defaultfont", "we_cmd('switch_sendall',$group);");
 
 		if($this->View->newsletter->groups[$group]->SendAll == 0){
 			$delallbut = "";
@@ -744,30 +738,19 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLExtern($group){
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiFileChooser.inc.php");
-
-		$out = "";
-		$delallbut = "";
-		$addbut = "";
-
 		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_files'," . $group . ")");
 		$wecmdenc4 = we_cmd_enc("opener.we_cmd('add_file',top.currentID,$group);");
 		$addbut = we_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','" . $wecmdenc4 . "');");
 
 
-		$buttons = array();
-		if(we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))
-			$buttons = array($delallbut, $addbut);
-		else
-			$buttons = array($delallbut);
+		$buttons = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES")) ?
+			array($delallbut, $addbut) :
+			array($delallbut);
 		$cats = new MultiFileChooser($this->def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_button::create_button_table($buttons), "edit_file");
 
 		$cats->extraDelFn = "document.we_form.ngroup.value=$group";
-		$out.=$this->View->htmlHidden("fileselect", "");
-		$out.=$cats->get();
-
-		return $out;
+		return $this->View->htmlHidden("fileselect", "") .
+			$cats->get();
 	}
 
 	function getHTMLCustomerFilter($group){

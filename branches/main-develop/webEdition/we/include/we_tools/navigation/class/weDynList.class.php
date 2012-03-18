@@ -220,8 +220,6 @@ abstract class weDynList{
 	}
 
 	function getWorkspacesForObject($id){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
-
 		$_obj = new we_objectFile();
 		$_obj->initByID($id, OBJECT_FILES_TABLE);
 
@@ -240,8 +238,6 @@ abstract class weDynList{
 	}
 
 	function getWorkspacesForClass($id){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
-
 		$_obj = new we_object();
 		$_obj->initByID($id, OBJECT_TABLE);
 
@@ -279,7 +275,6 @@ abstract class weDynList{
 	}
 
 	function getWorkspaceFlag($id){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
 		$_clsid = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ';', 'TableID', new DB_WE());
 		$_cls = new we_object();
 		$_cls->initByID($_clsid, OBJECT_TABLE);

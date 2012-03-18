@@ -1097,7 +1097,6 @@ top.close();
 					}
 					break;
 				case "export":
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					$xmlExIm = new weXMLExIm();
 					$finalDocs = array();
 					$finalTempl = array();
@@ -1249,7 +1248,6 @@ top.close();
 					);
 					break;
 				case "do_export":
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_export/exportFunctions.class.inc.php");
 					$this->getExportVars();
 
 					$file_format = $this->exportVars["extype"];
@@ -1346,7 +1344,6 @@ top.close();
 
 					break;
 				case "do_wexport":
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					$this->getExportVars();
 
 					$file_format = $this->exportVars["extype"];
@@ -1624,9 +1621,6 @@ top.close();
 				default:
 			}
 		}
-
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		//$js=we_html_element::jsElement($this->topFrame.'.categories="'.(isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "").'";');
 

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weCustomerFilterView.class.php");
 
 /**
  *  view class for document customer filters
@@ -35,7 +34,7 @@ class weNavigationCustomerFilterView extends weCustomerFilterView{
 	 *
 	 * @return string
 	 */
-	function getFilterHTML($isDynamic=false){
+	function getFilterHTML($isDynamic = false){
 		$_filter = $this->getFilter();
 		return we_forms::checkboxWithHidden(
 				$_filter->getUseDocumentFilter(), 'wecf_useDocumentFilter', g_l('navigation', '[useDocumentFilter]'), false, 'defaultfont', 'updateView();', $isDynamic

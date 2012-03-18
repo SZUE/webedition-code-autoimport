@@ -560,7 +560,6 @@ class weExportView{
 
 					break;
 				case "start_export":
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					weXMLExIm::unsetPerserves();
 					$_REQUEST["cmd"] = "do_export";
 					$this->export->ExportFilename = ($this->export->ExportTo == 'local' ? TMP_DIR . "/" . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);

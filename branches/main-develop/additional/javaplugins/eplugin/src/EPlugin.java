@@ -74,8 +74,7 @@ public class EPlugin extends JApplet {
 				JFrame.setDefaultLookAndFeelDecorated(false);
 				/*
 				 * } catch (ClassNotFoundException e) { e.printStackTrace(); } catch
-				 * (UnsupportedLookAndFeelException e) {
-				e.printStackTrace();
+				 * (UnsupportedLookAndFeelException e) { e.printStackTrace();
 				 */
 			} catch (Exception e) {
 
@@ -308,15 +307,11 @@ public class EPlugin extends JApplet {
 	}
 
 	public void addMessage(String message) {
-
 		Messages.add(message);
-
 	}
 
 	public boolean hasMessages() {
-
 		return !Messages.isEmpty();
-
 	}
 
 	public String getMessages() {

@@ -187,7 +187,6 @@ class weImageDialog extends weDialog{
 				case "int":
 					if(isset($_REQUEST["imgChangedCmd"]) && $_REQUEST["imgChangedCmd"] && $fileID){
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
 						$width = $imgObj->getElement("width");

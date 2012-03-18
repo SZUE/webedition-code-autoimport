@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,27 +22,21 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetMouseOverDivsCmd extends rpcCmd{
 
-
-class rpcGetMouseOverDivsCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
 		we_html_tools::protect();
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_folder.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_doclist/doclistView.class.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
-
-		$whichsearch=$_REQUEST['whichsearch'];
+		$whichsearch = $_REQUEST['whichsearch'];
 		$setView = $_REQUEST['we_cmd']['setView'];
 		$anzahl = $_REQUEST['we_cmd']['anzahl'];
 		$searchstart = $_REQUEST['we_cmd']['searchstart'];
 
-		if (isset($_REQUEST["we_transaction"])) {
-			$_REQUEST['we_transaction']=(preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+		if(isset($_REQUEST["we_transaction"])){
+			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 
 			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) ? $_SESSION["we_data"][$_REQUEST["we_transaction"]] : "";
 		}
@@ -52,21 +47,20 @@ class rpcGetMouseOverDivsCmd extends rpcCmd {
 		$_REQUEST['we_cmd']['obj'] = $_document;
 
 		$code = "";
-		if($setView==1) {
+		if($setView == 1){
 			$content = doclistView::searchProperties($whichsearch);
 
-			$x = $searchstart+$anzahl;
-					if ($x>sizeof($content)) {
-						$x = $x-($x-sizeof($content));
-					}
+			$x = $searchstart + $anzahl;
+			if($x > sizeof($content)){
+				$x = $x - ($x - sizeof($content));
+			}
 
-			$code = searchtoolView::makeMouseOverDivs($x,$content,$whichsearch);
+			$code = searchtoolView::makeMouseOverDivs($x, $content, $whichsearch);
 		}
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
-
 	}
 
 }

@@ -168,7 +168,6 @@ class we_folder extends we_root{
 					$pid = f("SELECT ID FROM " . $this->DB_WE->escape($tblName) . " WHERE Path='" . $this->DB_WE->escape($pa) . "'", "ID", $this->DB_WE);
 					if(!$pid){
 						if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
-							include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 							$folder = new we_class_folder();
 						} else{
 							$folder = new we_folder();
@@ -251,7 +250,6 @@ class we_folder extends we_root{
 		if(!$this->writeFolder())
 			return false;
 		if(defined("OBJECT_TABLE") && $this->Table == OBJECT_TABLE){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 			$f = new we_class_folder();
 			$f->initByPath($this->Path, OBJECT_FILES_TABLE, 0, 1);
 		}

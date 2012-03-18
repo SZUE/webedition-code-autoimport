@@ -126,14 +126,14 @@ class weExportFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text .
-				we_html_tools::getPixel(1600,19)
+				we_html_tools::getPixel(1600, 19)
 			)
 		);
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"),
 				//	'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_html_element::htmlB(g_l('export','[export]') . ':&nbsp;'.$this->View->export->Text).'</div>' . we_html_tools::getPixel(100,3) .
-				'<div id="main" >'   . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", we_html_element::htmlB(g_l('export', '[export]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", we_html_element::htmlB(g_l('export', '[export]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 //			$js.
@@ -172,7 +172,7 @@ class weExportFrames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$col=0;
+		$col = 0;
 		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
@@ -232,7 +232,7 @@ class weExportFrames extends weModuleFrames{
 		);
 	}
 
-	function getHTMLProperties($preselect=""){
+	function getHTMLProperties($preselect = ""){
 		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
 
 		$out = "";
@@ -518,7 +518,7 @@ class weExportFrames extends weModuleFrames{
 							}';
 
 						if(!$_REQUEST["pid"])
-							$js.=$this->Tree->topFrame . '.treeData.clear();'.
+							$js.=$this->Tree->topFrame . '.treeData.clear();' .
 								$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $_REQUEST["pid"] . '\',\'root\',\'root\'));';
 
 						$js.=$this->Tree->getJSLoadTree($treeItems);
@@ -549,7 +549,6 @@ class weExportFrames extends weModuleFrames{
 							$finalObjs = array();
 							$finalClasses = array();
 						}
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExport.class.php");
 						$xmlExIm = new weXMLExport();
 						$xmlExIm->getSelectedItems($this->View->export->Selection, "wxml", "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
@@ -589,8 +588,6 @@ class weExportFrames extends weModuleFrames{
 								)
 						);
 					} else if($_SESSION['ExImPrepare']){
-
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weExportPreparer.class.php");
 						$xmlExIm = new weExportPreparer();
 
 						$xmlExIm->loadPerserves();
@@ -614,7 +611,6 @@ class weExportFrames extends weModuleFrames{
 								');
 							weFile::save($this->View->export->ExportFilename, $xmlExIm->getHeader(), "wb");
 							if($this->View->export->HandleOwners){
-								include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExport.class.php");
 								weFile::save($this->View->export->ExportFilename, weXMLExport::exportInfoMap($xmlExIm->RefTable->Users), "ab");
 							}
 
@@ -649,8 +645,6 @@ class weExportFrames extends weModuleFrames{
 								)
 						);
 					} else{
-
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExport.class.php");
 						$xmlExIm = new weXMLExport();
 						$xmlExIm->loadPerserves();
 						$exports = 0;
@@ -770,16 +764,16 @@ class weExportFrames extends weModuleFrames{
 					if(isset($_GET["exportfile"])){
 						$_filename = basename(urldecode($_GET["exportfile"]));
 
-						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename)		// Does file exist?
+						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename) // Does file exist?
 							&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 							$_size = filesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename);
 
-							if(we_isHttps()){				 // Additional headers to make downloads work using IE in HTTPS mode.
+							if(we_isHttps()){	 // Additional headers to make downloads work using IE in HTTPS mode.
 								header("Pragma: ");
 								header("Cache-Control: ");
 								header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 								header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-								header("Cache-Control: no-store, no-cache, must-revalidate");		 // HTTP 1.1
+								header("Cache-Control: no-store, no-cache, must-revalidate");	// HTTP 1.1
 								header("Cache-Control: post-check=0, pre-check=0", false);
 							} else{
 								header("Cache-control: private");
@@ -838,7 +832,7 @@ class weExportFrames extends weModuleFrames{
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onChange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname="Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}
@@ -895,8 +889,6 @@ class weExportFrames extends weModuleFrames{
 			}
 		}
 
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "Categorys", "value" => $this->View->export->Categorys)) .
 			we_html_element::htmlHidden(array("name" => "cat", "value" => (isset($_REQUEST["cat"]) ? $_REQUEST["cat"] : "")));

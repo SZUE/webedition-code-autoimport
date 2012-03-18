@@ -1752,12 +1752,6 @@ class weVersions{
 			}
 
 			if(is_array($resetArray) && !empty($resetArray)){
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $resetArray["ClassName"] . ".inc.php")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $resetArray["ClassName"] . ".inc.php");
-				} elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $resetArray["ClassName"] . ".inc.php")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $resetArray["ClassName"] . ".inc.php");
-				}
-
 				$resetDoc = new $resetArray["ClassName"]();
 
 				foreach($resetArray as $k => $v){
@@ -1834,10 +1828,8 @@ class weVersions{
 
 								$parentID = (isset($_SESSION['versions']['lastPathID'])) ? $_SESSION['versions']['lastPathID'] : 0;
 								if(defined("OBJECT_FILES_TABLE") && $resetArray["documentTable"] == OBJECT_FILES_TABLE){
-									include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 									$folder = new we_class_folder();
 								} else{
-									include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 									$folder = new we_folder();
 								}
 								$folder->we_new();

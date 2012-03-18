@@ -43,7 +43,6 @@ top.clearEntries();
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder = new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -104,7 +103,6 @@ top.clearEntries();
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;

@@ -57,7 +57,6 @@ class weCustomerTreeLoader{
 			);
 		}
 
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerSettings.php");
 		$settings = new weCustomerSettings();
 		$settings->load();
 
@@ -131,9 +130,6 @@ class weCustomerTreeLoader{
 
 	function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
 		$db = new DB_WE();
-
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerSettings.php");
-
 		$table = CUSTOMER_TABLE;
 
 		$fieldarr = array();

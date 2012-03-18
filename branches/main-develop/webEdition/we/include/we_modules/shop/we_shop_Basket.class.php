@@ -225,9 +225,6 @@ class we_shop_Basket{
 				}
 			}
 		} else if($type == "o"){
-
-			include_once(WE_OBJECT_MODULE_DIR . "we_listview_object.class.php");
-
 			$classArray = getHash("SELECT * FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), $DB_WE);
 
 			$olv = new we_listview_object("0", 1, 0, "", 0, $classArray["TableID"], "", "", " " . OBJECT_X_TABLE . $classArray["TableID"] . ".ID=" . $classArray["ObjectID"]);

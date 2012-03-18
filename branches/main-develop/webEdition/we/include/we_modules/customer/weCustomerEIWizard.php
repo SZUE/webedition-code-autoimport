@@ -1663,8 +1663,6 @@ class weCustomerEIWizard{
 		');
 
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
 		$js.=we_html_element::jsElement($this->topFrame . '.customers="' . (isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : "") . '";');
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .

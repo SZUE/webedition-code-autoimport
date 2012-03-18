@@ -22,14 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
-
 class weBackupImport{
 
-	function import($filename, &$offset, $lines=1, $iscompressed=0, $encoding='ISO-8859-1', $log=0){
+	function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupFileReader.class.php');
 		if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
 			$data = '<?xml version="1.0" encoding="' . $_SESSION['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
 				'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
@@ -48,11 +45,7 @@ class weBackupImport{
 		weBackupImport::transfer($data, $encoding, $log);
 	}
 
-	function transfer(&$data, $charset='ISO-8859-1', $log=0){
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLParser.class.php');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
-
+	function transfer(&$data, $charset = 'ISO-8859-1', $log = 0){
 		$nFactor = 5;
 
 		if($log){

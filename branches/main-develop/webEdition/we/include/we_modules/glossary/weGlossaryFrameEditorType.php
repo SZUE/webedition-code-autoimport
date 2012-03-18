@@ -97,8 +97,6 @@
 
 	        // ---> Search Start
 
-			include_once(WE_GLOSSARY_MODULE_DIR . 'weGlossarySearch.php');
-
 			$temp = explode("_", $_REQUEST['cmdid']);
 			$Language = $temp[0] . "_" . $temp[1];
 			$Type = $temp[2];

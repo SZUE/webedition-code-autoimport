@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$GLOBALS['weXmlExImNewLine'] = "\n";
 
+$GLOBALS['weXmlExImHeader'] = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
+	'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
 
-		$GLOBALS['weXmlExImNewLine'] = "\n";
+$GLOBALS['weXmlExImFooter'] = '</webEdition>';
 
-		$GLOBALS['weXmlExImHeader'] = '<?xml version="1.0" encoding="'.$GLOBALS['WE_BACKENDCHARSET'].'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
-					 '<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
-
-		$GLOBALS['weXmlExImFooter'] = '</webEdition>';
-
-		$GLOBALS['weXmlExImProtectCode'] = '<?php exit();?>';
+$GLOBALS['weXmlExImProtectCode'] = '<?php exit();?>';

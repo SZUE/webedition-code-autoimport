@@ -22,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/listview/listviewBase.class.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/weShopVariants.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 
 /**
  * class    we_listview_object
@@ -45,7 +42,7 @@ class we_shop_listviewShopVariants extends listviewBase{
 	var $hidedirindex = false;
 	var $objectseourls = false;
 
-	function __construct($name, $rows, $defaultname='default', $documentid='', $objectid='', $offset=0, $hidedirindex=false, $objectseourls=false, $triggerID=""){
+	function __construct($name, $rows, $defaultname = 'default', $documentid = '', $objectid = '', $offset = 0, $hidedirindex = false, $objectseourls = false, $triggerID = ""){
 
 		parent::__construct($name, $rows, $offset);
 
@@ -60,8 +57,6 @@ class we_shop_listviewShopVariants extends listviewBase{
 				$doc = new we_webEditionDocument();
 				$doc->initByID($this->Id);
 			} else if($objectid){
-
-				include_once(WE_OBJECT_MODULE_DIR . 'we_objectFile.inc.php');
 
 				$this->IsObjectFile = true;
 

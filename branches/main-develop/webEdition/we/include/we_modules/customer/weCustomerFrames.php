@@ -700,8 +700,6 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLTreeHeader(){
-
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerAdd.php");
 		return weCustomerAdd::getHTMLTreeHeader($this);
 	}
 
@@ -905,7 +903,6 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLSortEditor(){
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerAdd.php");
 		return weCustomerAdd::getHTMLSortEditor($this);
 	}
 
@@ -928,7 +925,6 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$select = new we_html_select(array("name" => "search_result", "style" => "width:550px;", "onDblClick" => "opener." . $this->topFrame . ".we_cmd('edit_customer',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
 		if($mode){
-			include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerAdd.php");
 			weCustomerAdd::getHTMLSearch($this, $search, $select);
 		} else{
 			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput("keyword", 80, (isset($_REQUEST["keyword"]) ? $_REQUEST["keyword"] : ""), "", 'onchange=""', "text", "550px")

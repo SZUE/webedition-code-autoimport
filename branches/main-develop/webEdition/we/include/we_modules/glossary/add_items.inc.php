@@ -338,7 +338,6 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
 	if(!file_exists($configFile) || !is_file($configFile)){
-		include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
 		weGlossarySettingControl::saveSettings(true);
 	}
 	include($configFile);

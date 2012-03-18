@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,41 +22,38 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSearchParametersCmd extends rpcCmd{
 
-class rpcGetSearchParametersCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
 		we_html_tools::protect();
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
 
 		$pos = $_REQUEST['position'];
-		$whichsearch=$_REQUEST['whichsearch'];
-		$foundItems = $_SESSION['weSearch']['foundItems'.$whichsearch.''];
-		$anzahl = $_REQUEST['we_cmd']['anzahl'.$whichsearch.''];
-		$searchstart = $_REQUEST['we_cmd']['searchstart'.$whichsearch.''];
+		$whichsearch = $_REQUEST['whichsearch'];
+		$foundItems = $_SESSION['weSearch']['foundItems' . $whichsearch . ''];
+		$anzahl = $_REQUEST['we_cmd']['anzahl' . $whichsearch . ''];
+		$searchstart = $_REQUEST['we_cmd']['searchstart' . $whichsearch . ''];
 
-		$_SESSION['weSearch']['anzahl'.$whichsearch.''] = $anzahl;
-		$_SESSION['weSearch']['searchstart'.$whichsearch.''] = $searchstart;
+		$_SESSION['weSearch']['anzahl' . $whichsearch . ''] = $anzahl;
+		$_SESSION['weSearch']['searchstart' . $whichsearch . ''] = $searchstart;
 
 		$_REQUEST['we_cmd']['obj'] = true;
 
-		if($pos=="top") {
-			$code = searchtoolView::getSearchParameterTop($foundItems,$whichsearch);
+		if($pos == "top"){
+			$code = searchtoolView::getSearchParameterTop($foundItems, $whichsearch);
 		}
-		if($pos=="bottom") {
+		if($pos == "bottom"){
 			$_REQUEST['we_cmd']['setInputSearchstart'] = 1;
-			$code = searchtoolView::getSearchParameterBottom($foundItems,$whichsearch);
+			$code = searchtoolView::getSearchParameterBottom($foundItems, $whichsearch);
 		}
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
-
 
 }
 

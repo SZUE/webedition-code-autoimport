@@ -31,7 +31,6 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function formCategory($obj, $categories){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$js = (defined("OBJECT_TABLE")) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
 		$addbut = we_button::create_button("add", "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser(410, $categories, "delete_" . $obj . "Cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
@@ -39,7 +38,6 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function formCategory2($obj, $categories){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
 		$js = (defined("OBJECT_TABLE")) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
 		$addbut = we_button::create_button("add", "javascript:top.we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser2(410, $categories, "delete_" . $obj . "Cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
@@ -54,7 +52,6 @@ class we_wizard_import extends we_wizard{
 	 * @desc returns an array with all the fields of the class with the given $classID
 	 */
 	function getClassFields($classID){
-		include_once(WE_OBJECT_MODULE_DIR . "we_objectFile.inc.php");
 		$db = new DB_WE();
 		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $classID, $db);
 		$order = makeArrayFromCSV($foo["strOrder"]);
@@ -531,7 +528,6 @@ class we_wizard_import extends we_wizard{
 			return $_return;
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 		$_import_file = $_SERVER['DOCUMENT_ROOT'] . $v['import_from'];
 		if(weBackupUtil::getFormat($_import_file) != 'xml'){
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
@@ -2322,8 +2318,6 @@ HTS;
 					break;
 			}
 
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 			$cp = new CSVImport;
 
 			$_data = '';

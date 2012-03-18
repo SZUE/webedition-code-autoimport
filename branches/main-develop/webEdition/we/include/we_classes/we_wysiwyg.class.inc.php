@@ -898,7 +898,6 @@ function tinyMCEchanged(inst){
 			}
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 			foreach($regs as $reg){
 				list($imgID, $thumbID) = explode(",", $reg[1]);
 				$thumbObj = new we_thumbnail();

@@ -122,8 +122,6 @@ class weBackupPreparer{
 			return false;
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
-
 		$_SESSION['weBackupVars']['backup_file'] = weBackupPreparer::getBackupFile();
 		if($_SESSION['weBackupVars']['backup_file'] === false){
 			return false;

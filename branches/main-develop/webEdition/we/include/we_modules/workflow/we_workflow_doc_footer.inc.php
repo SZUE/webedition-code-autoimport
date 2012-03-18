@@ -116,7 +116,6 @@ function showWorkflowFooterForSEEMMode(){
 		$_footerTable->setColContent(0, $_col++, we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 		//	Propertie-button
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		$_footerTable->setColContent(0, $_col++, we_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));

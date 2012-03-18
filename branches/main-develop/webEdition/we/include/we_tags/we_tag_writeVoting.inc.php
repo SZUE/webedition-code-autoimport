@@ -30,13 +30,7 @@ function we_tag_writeVoting($attribs){
 	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, true);
 	$writeto = weTag_getAttribute("writeto", $attribs, "voting");
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-
-	if($id){
-		$pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
-	} else{
-		$pattern = '/_we_voting_answer_([0-9]+)_?([0-9]+)?/';
-	}
+	$pattern = '/_we_voting_answer_(' . ($id ? $id : '[0-9]+') . ')_?([0-9]+)?/';
 
 	$vars = implode(',', array_keys($_REQUEST));
 	$_voting = array();
@@ -48,7 +42,7 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if(!empty($_REQUEST[$value]) && $_REQUEST[$value]!='') {// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
+			if(!empty($_REQUEST[$value]) && $_REQUEST[$value] != ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$_voting[$id][] = $_REQUEST[$value];
 			}
 		}

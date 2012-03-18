@@ -51,7 +51,6 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 			</td>
 			<td align="right">
 				<?php
-				include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("moduleFrame");
 				?>
 			</td>

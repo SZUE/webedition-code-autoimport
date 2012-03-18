@@ -26,8 +26,6 @@
   / only used for direct expression input ( exp: ) from old search of slavko
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
-
 class searchtoolExp extends we_search{
 
 	var $Operators = array(

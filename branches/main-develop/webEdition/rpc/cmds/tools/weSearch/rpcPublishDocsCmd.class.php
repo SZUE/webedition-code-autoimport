@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,9 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcPublishDocsCmd extends rpcCmd{
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
-
-class rpcPublishDocsCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$db = new DB_WE();
 
@@ -35,28 +33,28 @@ class rpcPublishDocsCmd extends rpcCmd {
 		$docs = array();
 
 		$arr = $_REQUEST['we_cmd'];
-		if(!empty($arr)) {
+		if(!empty($arr)){
 			$allDocs = explode(",", $arr[0]);
-			foreach($allDocs as $k=>$v) {
+			foreach($allDocs as $k => $v){
 				$teile = explode("_", $v, 2);
 				$docs[$teile[1]][] = $teile[0];
 			}
 		}
-		if(!empty($docs)) {
-			foreach($docs as $k=>$v) {
-				if(!empty($v)) {
-					foreach($v as $key=>$val) {
-						$ContentType = f("SELECT ContentType FROM `".$db->escape($k)."` WHERE ID=".intval($val),"ContentType",$db);
-						$object=weContentProvider::getInstance($ContentType, $val, $k);
+		if(!empty($docs)){
+			foreach($docs as $k => $v){
+				if(!empty($v)){
+					foreach($v as $key => $val){
+						$ContentType = f("SELECT ContentType FROM `" . $db->escape($k) . "` WHERE ID=" . intval($val), "ContentType", $db);
+						$object = weContentProvider::getInstance($ContentType, $val, $k);
 						we_temporaryDocument::delete($object->ID);
 						$object->initByID($object->ID);
 						$object->ModDate = $object->Published;
 						$_SESSION['versions']['doPublish'] = true;
 						$object->we_save();
 						$object->we_publish();
-						if(defined("WORKFLOW_TABLE") && $object->ContentType == "text/webedition") {
-							if(we_workflow_utility::inWorkflow($object->ID,$object->Table)){
-								we_workflow_utility::removeDocFromWorkflow($object->ID,$object->Table,$_SESSION["user"]["ID"],"");
+						if(defined("WORKFLOW_TABLE") && $object->ContentType == "text/webedition"){
+							if(we_workflow_utility::inWorkflow($object->ID, $object->Table)){
+								we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION["user"]["ID"], "");
 							}
 						}
 						unset($_SESSION['versions']['doPublish']);
@@ -65,5 +63,6 @@ class rpcPublishDocsCmd extends rpcCmd {
 			}
 		}
 	}
+
 }
 

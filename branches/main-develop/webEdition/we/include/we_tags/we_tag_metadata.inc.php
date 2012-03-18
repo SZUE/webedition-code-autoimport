@@ -36,8 +36,6 @@ function we_tag_metadata($attribs){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/listview/metadatatag.class.php");
-
 	$GLOBALS["lv"] = new metadatatag($name);
 //$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 	if(is_array($GLOBALS["we_lv_array"]))

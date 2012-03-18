@@ -69,7 +69,6 @@ class weCustomerEI{
 	}
 
 	function getCustomersFieldset(){
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomer.php");
 		$customer = new weCustomer();
 		return $customer->getFieldset();
 	}

@@ -1344,7 +1344,6 @@ class we_objectFile extends we_document{
 			if(!sizeof($link)){
 				$link = array("ctype" => "text", "type" => "ext", "href" => "#", "text" => g_l('global', "[new_link]"));
 			}
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
 			$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
@@ -1577,7 +1576,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getImageHTML($name, $attribs, $editable = true, $variant = false){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
 		if(!id_to_path($id)){
@@ -1642,7 +1640,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getBinaryHTML($name, $attribs, $editable = true){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1667,7 +1664,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getFlashmovieHTML($name, $attribs, $editable = true){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1693,7 +1689,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getQuicktimeHTML($name, $attribs, $editable = true){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -2107,7 +2102,6 @@ class we_objectFile extends we_document{
 			case "link":
 				$link = $elem ? unserialize($elem) : array();
 				if(is_array($link)){
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 					$img = new we_imageDocument();
 					$elem = parent::getLinkContent($link, 0, '', $this->DB_WE, $img);
 				} else{

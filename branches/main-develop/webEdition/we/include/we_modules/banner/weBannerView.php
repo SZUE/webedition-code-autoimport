@@ -836,8 +836,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formFiles(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
 		//javascript:top.content.setHot(); we_cmd('openDocselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_file\\',top.allIDs);','','','text/webedition','',1)
 		$wecmdenc1 = '';
@@ -851,9 +849,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formFolders(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
-
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders')");
 		//javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',1)
 		$wecmdenc1 = '';
@@ -867,9 +862,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formCategories(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
-
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_cats')");
 		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 
@@ -1016,7 +1008,6 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formCustomer(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_customers')");
 		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
 		$obj = new MultiDirChooser(508, $this->banner->Customers, "del_customer", we_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
