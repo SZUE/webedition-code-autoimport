@@ -186,4 +186,8 @@ $l_we_class["image_edit_null_not_allowed"] = "In the fields Width and Height onl
 
 $l_we_class['doctype_changed_question'] = "Should the default values for the document type be applied for this document?";
 $l_we_class['availableAfterSave'] = "The feature is only available after saving the entry.";
+
+$l_we_class["langlinks_lang_notok"] = "Corresponding documents/objects in other languages:\\n\\nThe document/object chosen for \"%s\" does not contain the correct language (\"%s\" instead of \"%s\").\\nYour selection will be reset before saving and the processing of further links abort!";
+$l_we_class["langlinks_conflicts"] = "Corresponding documents/objects in other languages:\\n\\nThe document/object chosen for \"%s\" will cause conflicts with other linked documents.\\nYour selection will be reset before saving and the processing of further links abort!";
+$l_we_class["langlinks_locale_changed"] = "Corresponding documents/objects in other languages:\\n\\nYou have changed the document's/object's language. This will cause conflicts with other documents/objects in other languages:\\nThe language links of the the actual document/object must be deleted.";
 ?>

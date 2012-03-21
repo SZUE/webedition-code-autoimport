@@ -23,7 +23,7 @@
 /**
  * Language file: we_class.inc.php
  * Provides language strings.
- * Language: Deutsch
+ * Language: Deutsch 
  */
 include_once(dirname(__FILE__)."/enc_".basename(__FILE__));
 
@@ -184,4 +184,7 @@ $l_we_class["image_edit_null_not_allowed"] = "Im Feld Breite und Höhe sind nur 
 $l_we_class['doctype_changed_question'] = "Sollen die Standardeinstellungen des Dokument-Typs für das Dokument übernommen werden?";
 $l_we_class['availableAfterSave'] = "Die Funktion steht erst nach dem Speichern des Eintrags zur Verfügung.";
 
+$l_we_class["langlinks_lang_notok"] = "... zur Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen:\\n\\nDas ausgewählte Dokument/Objekt für \"%s\" besitzt nicht die erforderliche Sprache (\"%s\" anstatt \"%s\").\\nDie Verknüpfung wird vor dem Speichern zurückgesetzt und die Bearbeitung der folgenden Einträge abgebrochen.";
+$l_we_class["langlinks_conflicts"] = "... zur Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen:\\n\\nDas ausgewählte Dokument/Objekt für die Sprache \"%s\" führt zum Konflikt mit bereits gespeicherten Einträgen.\\nDie Verknüpfung wird vor dem Speichern zurückgesetzt und die Bearbeitung der folgenden Einträge abgebrochen.";
+$l_we_class["langlinks_locale_changed"] = "... zur Verknüpfung zu den korrespondierenden Dokumenten/Objekten in anderen Sprachen:\\n\\nDurch den Wechsel der Dokument-/Objektsprache kommt es zu Konflikten mit Dokumenten/Objekten in anderen Sprachen.\\nDie Verknüpfungen des aktuellen Dokuments/Objekts werden vor dem Speichern gelöscht!";
 ?>
