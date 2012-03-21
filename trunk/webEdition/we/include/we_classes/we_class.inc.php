@@ -634,6 +634,7 @@ class we_class
 	function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
 		global $l_we_class;
 		$newLang = '';
+		$oldLang = '';
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ''){
 			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];
 			$db = new DB_WE;
@@ -647,7 +648,7 @@ class we_class
 					// what langs where linked before language changed?
 					$origLangs = array();
 					$origLinks = array();
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND DID=' . intval($this->ID);
+					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
 					$this->DB_WE->query($q);
 					while($this->DB_WE->next_record()) {
 						$origLangs[] = $this->DB_WE->Record['Locale'];
@@ -656,12 +657,28 @@ class we_class
 					// because of UNIQUE-Indexes we do first delete obsolete entries in tblLangLink
 					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE (DID=" . intval($this->ID) . " OR LDID=" . intval($this->ID) . ") AND IsFolder = 0 AND DocumentTable='" . $documentTable . "';";
 					$this->DB_WE->query($q);
-					
-					// links from folders to the document/object must be updated right here: duplicate links will be blocked
-					$q = "UPDATE IGNORE " . LANGLINK_TABLE . " SET LOCALE = '" . $newLang . "' WHERE LDID = " . intval($this->ID) . " AND IsFolder = 1;";
+
+					// links FROM folders to the document/object must be updated right here. if updating leads to conflict, we must delete a link
+					$DB_WE2 = new DB_WE;
+					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . intval($this->ID) . ' AND IsFolder = 1;';
 					$this->DB_WE->query($q);
-					
-					// if there is no conflict we can set new links
+					while($this->DB_WE->next_record()) {
+						$qr = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1;';
+						$DB_WE2->query($qr);
+						$deleteIt = false;
+						while($DB_WE2->next_record()){
+							$deleteIt = ($DB_WE2->Record['Locale'] == $newLang) ? true : $deleteIt;
+						}
+						if($deleteIt){
+							$qr = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
+							$DB_WE2->query($qr);
+						} else{
+							$qr = "UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $newLang . "' WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
+						}
+						$DB_WE2->query($qr);
+					}
+
+					// if there is no conflict we can set new links and evoke prepareSetLanguageLinks()
 					if(!in_array($newLang,$origLangs)) {
 						return ($this->prepareSetLanguageLink($LangLinkArray, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 					}
@@ -695,8 +712,6 @@ class we_class
 	 * In this method the links of $LangLinkArray are testet twice: 
 	 * 1) We only write new or changed LangLinks to db, if LangLink-Locale and Locale of the targe-document/object fit together.
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
-	 *
-	 * => what about folders? => what about backlinks && !recursive? => do objects work?
 	 */
 	function prepareSetLanguageLink($LangLinkArray, $langChange=false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
 		// unklar, ob die origArrays noetig sind, weil ja nach jeder Zeile auf den jeweils neuen Zustand getestet werden muss
