@@ -320,18 +320,18 @@ class we_folder extends we_root
 		if(!$DB_WE->query($query)) {
 			return false;
 		}
-		while($DB_WE->next_record()) {t_e("doksprache",$DB_WE->Record['Language'],"fileTable",$DB_WE->escape($this->Table));
-			if($DB_WE->Record['Language'] != $language){t_e("musst was tun!");
+		while($DB_WE->next_record()) {
+			if($DB_WE->Record['Language'] != $language){
 				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? "tblFile" : "tblObjectFile";
 				$query = "SELECT LDID, Locale FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "';";
 				$existLangLinks = false;
 				$deleteLangLinks = false;
 				if($DB_WE2->query($query)) {
 					$ldidArray = array();
-					while($DB_WE2->next_record()){t_e("langlink gefunden",$DB_WE2->Record['Locale']);
+					while($DB_WE2->next_record()){
 						$existLangLinks = true;
 						$ldidArray[] = $DB_WE2->Record['LDID'];
-						if($DB_WE2->Record['Locale'] == $language){t_e("auch das noch");
+						if($DB_WE2->Record['Locale'] == $language){
 							$deleteLangLinks = true;
 						}
 					}
@@ -359,7 +359,7 @@ class we_folder extends we_root
 		if(!$DB_WE->query($query)){
 			return false;
 		}
-		while($DB_WE->next_record()) {t_e("gefunden",$DB_WE->Record['ID']);
+		while($DB_WE->next_record()) {
 			$documentTable = "tblFile";
 			$query = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0 AND Locale = '" . $language . "';";
 			$DB_WE2->query($query);
