@@ -165,7 +165,7 @@ class we_ui_controls_Checkbox extends we_ui_abstract_AbstractInputElement
 		}
 		
 		if ($this->getHidden()) {
-			$this->_style .= 'display:none;';
+			$this->_style .= ';display:none;';
 		}
 		
 		$this->_onClick .= ';this.form.elements[\'' . $this->getName() . '\'].value=this.checked ? 1 : 0;';
