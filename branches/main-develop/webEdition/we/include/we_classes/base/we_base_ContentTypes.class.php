@@ -104,7 +104,7 @@ class we_base_ContentTypes{
 				'Icon' => 'javascript.gif',
 			),
 			'text/css' => array(
-				'Extension' => '.css',
+				'Extension' => array('.css','.less','.scss','.sass'),
 				'Permission' => 'NEW_CSS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,

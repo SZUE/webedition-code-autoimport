@@ -234,61 +234,28 @@ class we_docTypes extends we_class{
 	function formDocTypeDefaults(){
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="3">
-						' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td>
+				<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
+				<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
+					<td>' . we_html_tools::getPixel(20, 5) . '</td>
+					<td>' . we_html_tools::getPixel(200, 5) . '</td>
 				</tr>
 				<tr>
-					<td>
-						' . we_html_tools::getPixel(300, 5) . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 5) . '</td>
-					<td>
-						' . we_html_tools::getPixel(200, 5) . '</td>
+					<td>' . $this->formSubDir(300) . '</td>
+					<td>' . we_html_tools::getPixel(20, 2) . '</td>
+					<td>' . $this->formExtension(200) . '</td>
 				</tr>
+				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+				<tr><td colspan="3">' . $this->formTemplatePopup(521) . '</td></tr>
+				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 				<tr>
-					<td>
-						' . $this->formSubDir(300) . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>
-						' . $this->formExtension(200) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . we_html_tools::getPixel(2, 5) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . $this->formTemplatePopup(521) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . we_html_tools::getPixel(2, 5) . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . $this->formIsDynamic() . '</td>
+					<td>' . $this->formIsDynamic() . '</td>
 					<td></td>
-					<td>
-						' . $this->formIsSearchable() . '</td>
+					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
-				<tr>
-					<td colspan="3">
-						' . we_html_tools::getPixel(2, 5) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . $this->formLanguage(521) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . we_html_tools::getPixel(2, 5) . '</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						' . $this->formCategory(521) . '</td>
-				</tr>
+				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+				<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
+				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+				<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 			</table>';
 
 		return $content;
