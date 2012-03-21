@@ -700,7 +700,7 @@ class we_class
 						$langChange = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
 					}
 					if($langChange){
-						$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0 AND Locale = '" . $newLang . "';";
+						$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable = 'tblFile' AND IsFolder = 1 AND IsObject = " . intval($isobject) . " AND Locale = '" . $newLang . "';";
 						$this->DB_WE->query($q);
 					}
 					return ($this->prepareSetLanguageLink($LangLinkArray, false, $oldLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
