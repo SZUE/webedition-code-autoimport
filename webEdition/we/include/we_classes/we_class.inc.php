@@ -667,7 +667,8 @@ class we_class
 						$DB_WE2->query($qr);
 						$deleteIt = false;
 						while($DB_WE2->next_record()){
-							$deleteIt = ($DB_WE2->Record['Locale'] == $newLang) ? true : $deleteIt;
+							$deleteIt = ($DB_WE2->Record['Locale'] == $newLang || $this->DB_WE->Record['DLocale'] == $newLang) ? true : $deleteIt; 
+							// die zweite Bedingung muesset sich in der aeusseren Schleife pruefen lassen!
 						}
 						if($deleteIt){
 							$qr = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
