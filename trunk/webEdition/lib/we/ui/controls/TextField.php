@@ -150,7 +150,7 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement
 	protected function _renderHTML()
 	{
 		if ($this->getHidden()) {
-			$this->_style .= " display:none;";
+			$this->_style .= " ;display:none;";
 		}
 		return '<input' . $this->_getNonBooleanAttribs('id,name,value,maxlength,size,type,onChange,title') .
 				$this->_getBooleanAttribs('disabled,readonly') . 
