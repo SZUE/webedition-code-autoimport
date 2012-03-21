@@ -609,7 +609,7 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail = ""){
 	if($confirmid){
 		$_h = getHash("SELECT * FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE confirmID = '" . escape_sql_query($confirmid) . "' AND subscribe_mail='" . escape_sql_query($mail) . "'", new DB_WE());
 		if(empty($_h)){
-			$errorcode = weNewsletterBase::STATUS_CONFIR_FAILED;
+			$errorcode = weNewsletterBase::STATUS_CONFIRM_FAILED;
 		}
 		return $_h;
 	}

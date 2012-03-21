@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * @see we_app_controller_HeaderAction
  */
@@ -29,14 +29,11 @@ Zend_Loader::loadClass('we_app_controller_HeaderAction');
 
 /**
  * Base Header Controller
- * 
+ *
  * @category   webEdition
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class HeaderController extends we_app_controller_HeaderAction
-{
-
-	
+class HeaderController extends we_app_controller_HeaderAction{
 
 }

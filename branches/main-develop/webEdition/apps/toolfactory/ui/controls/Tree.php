@@ -121,7 +121,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	 * @param string $extension
 	 * @return string
 	 */
-	public static function getTreeIconClass($contentType, $extension=''){
+	public static function getTreeIconClass($contentType, $extension = ''){
 		switch($contentType){
 			case "toolfactory/item":
 				return "toolfactory_item";

@@ -63,21 +63,7 @@ class weNewsletter extends weNewsletterBase{
 		parent::__construct();
 
 		$this->table = NEWSLETTER_TABLE;
-
-		$this->persistents[] = "ID";
-		$this->persistents[] = "ParentID";
-		$this->persistents[] = "Text";
-		$this->persistents[] = "Path";
-		$this->persistents[] = "Icon";
-		$this->persistents[] = "Subject";
-		$this->persistents[] = "Sender";
-		$this->persistents[] = "Reply";
-		$this->persistents[] = "Test";
-		$this->persistents[] = "Step";
-		$this->persistents[] = "Offset";
-		$this->persistents[] = "IsFolder";
-		$this->persistents[] = "Charset";
-		$this->persistents[] = "isEmbedImages";
+		array_push($this->persistents, "ID", "ParentID", "Text", "Path", "Icon", "Subject", "Sender", "Reply", "Test", "Step", "Offset", "IsFolder", "Charset", "isEmbedImages");
 
 		$this->ID = 0;
 		$this->ParentID = 0;
@@ -133,7 +119,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @param bool $check
 	 * @return int
 	 */
-	function save(&$message, $check=true){
+	function save(&$message, $check = true){
 		//check addesses
 		if($check){
 			$ret = $this->checkEmails($message);
@@ -215,9 +201,9 @@ class weNewsletter extends weNewsletterBase{
 	function deleteChilds(){
 		$this->db->query("SELECT ID FROM " . NEWSLETTER_TABLE . " WHERE ParentID=" . intval($this->ID));
 		while($this->db->next_record()) {
-			$child = new weNewsletter($this->db->f("ID"));
+			$child = new self($this->db->f("ID"));
 			$child->delete();
-			$child = new weNewsletter();
+			$child = new self();
 		}
 	}
 
@@ -245,11 +231,11 @@ class weNewsletter extends weNewsletterBase{
 	 *
 	 * @param string $where
 	 */
-	function addBlock($where=-1){
+	function addBlock($where = -1){
 		if($where != -1){
-			if($where > count($this->blocks) - 1)
+			if($where > count($this->blocks) - 1){
 				$this->blocks[] = new weNewsletterBlock();
-			else{
+			} else{
 				$temp = array();
 				foreach($this->blocks as $k => $v){
 					if($k == $where)
@@ -258,9 +244,9 @@ class weNewsletter extends weNewsletterBase{
 				}
 				$this->blocks = $temp;
 			}
-		}
-		else
+		}else{
 			$this->blocks[] = new weNewsletterBlock();
+		}
 	}
 
 	/**
@@ -301,9 +287,11 @@ class weNewsletter extends weNewsletterBase{
 				if($v > $link)
 					$arr[$k] = $v - 1;
 			}
-			foreach($arr as $k => $v)
-				if($v == -1)
+			foreach($arr as $k => $v){
+				if($v == -1){
 					array_splice($arr, $k, 1);
+				}
+			}
 			$this->blocks[$bk]->Groups = makeCSVFromArray($arr, true);
 		}
 		array_splice($this->groups, $group, 1);
@@ -332,8 +320,9 @@ class weNewsletter extends weNewsletterBase{
 
 		foreach($this->groups as $k => $v){
 			$ret = $v->checkEmails($k + 1, $malformed);
-			if($ret != 0)
+			if($ret != 0){
 				return $ret;
+			}
 		}
 		return 0;
 	}
@@ -344,7 +333,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @param string $log
 	 * @param string $param
 	 */
-	function addLog($log, $param=""){
+	function addLog($log, $param = ""){
 		$this->db->query("INSERT INTO " . NEWSLETTER_LOG_TABLE . "(NewsletterID,LogTime,Log,Param) VALUES(" . intval($this->ID) . ",UNIX_TIMESTAMP(),'" . $this->db->escape($log) . "','" . $this->db->escape($param) . "');");
 	}
 

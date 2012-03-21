@@ -28,15 +28,15 @@
  *
  */
 class weNewsletterBase{
-	const STATUS_ERROR=-1;
-	const STATUS_SUCCESS=0;
-	const STATUS_EMAIL_EXISTS=1;
-	const STATUS_EMAIL_INVALID=2;
-	const STATUS_CONFIR_FAILED=3;
 
+	const STATUS_ERROR = -1;
+	const STATUS_SUCCESS = 0;
+	const STATUS_EMAIL_EXISTS = 1;
+	const STATUS_EMAIL_INVALID = 2;
+	const STATUS_CONFIRM_FAILED = 3;
 
 	var $db;
-	var $table = "";
+	var $table;
 	var $persistents = array();
 
 	/**
@@ -53,24 +53,24 @@ class weNewsletterBase{
 	 * @param Int $id
 	 * @return Boolean
 	 */
-	function load($id=0){
-		if($id)
+	function load($id = 0){
+		if($id){
 			$this->ID = intval($id);
-		if($this->ID){
-			$tableInfo = $this->db->metadata($this->table);
-			$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='" . $this->ID . "'");
-			if($this->db->next_record())
-				for($i = 0; $i < sizeof($tableInfo); $i++){
-					$fieldName = $tableInfo[$i]["name"];
-					if(in_array($fieldName, $this->persistents)){
-						$this->$fieldName = $this->db->f($fieldName);
-					}
-				}
-
-			return true;
-		} else{
+		}
+		if(!$this->ID){
 			return false;
 		}
+		$tableInfo = $this->db->metadata($this->table);
+		$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='" . $this->ID . "'");
+		if($this->db->next_record())
+			for($i = 0; $i < sizeof($tableInfo); $i++){
+				$fieldName = $tableInfo[$i]["name"];
+				if(in_array($fieldName, $this->persistents)){
+					$this->$fieldName = $this->db->f($fieldName);
+				}
+			}
+
+		return true;
 	}
 
 	/**
@@ -81,7 +81,7 @@ class weNewsletterBase{
 		$wheres = array();
 		foreach($this->persistents as $val){
 			if($val == "ID")
-				$wheres[] = $val . "='" . addslashes($this->$val) . "'";
+				$wheres[] = $val . "='" . $this->db->escape($this->$val) . "'";
 			if($val == "Filter"){
 				$value = unserialize($this->$val);
 				if(is_array($value)){
@@ -152,35 +152,28 @@ class weNewsletterBase{
 
 		//$exp="/[[:space:]\<_\.0-9A-Za-z-]+@([0-9a-zA-Z][0-9a-zA-Z-\.]+)(\>)?/";
 		//if(preg_match_all($exp,$email,$out,PREG_PATTERN_ORDER)){
-		$domain = weNewsletterBase::get_domain($email);
-		if($domain){
-			if(stripos($_SERVER["SERVER_SOFTWARE"], "IIS") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Microsoft") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Windows") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Win32") !== false){
-				if(gethostbyname(trim($domain)) == $domain)
-					return false;
-				else
-					return true;
-			}
-			else{
-				if(getmxrr(trim($domain), $mxhosts))
-					return true;
-				else
-					return false;
-			}
+		$domain = self::get_domain($email);
+		if(!$domain){
+			return false;
+		}
+		if(stripos($_SERVER["SERVER_SOFTWARE"], "IIS") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Microsoft") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Windows") !== false || stripos($_SERVER["SERVER_SOFTWARE"], "Win32") !== false){
+			return(gethostbyname(trim($domain)) == $domain);
+		} else{
+			return (getmxrr(trim($domain), $mxhosts));
 		}
 		//}
-
-		return false;
 	}
 
-	function get_domain($email){
+	static function get_domain($email){
 		$exp = "/[[:space:]\<_\.0-9A-Za-z-]+@([0-9a-zA-Z][0-9a-zA-Z-\.]+)(\>)?/";
-		if(preg_match_all($exp, $email, $out, PREG_PATTERN_ORDER))
+		$out = array();
+		if(preg_match_all($exp, $email, $out, PREG_PATTERN_ORDER)){
 			return $out[1][0];
-
+		}
 		return false;
 	}
 
-	function getEmailsFromList($emails, $emails_only=0, $group=0, $blocks=array()){
+	function getEmailsFromList($emails, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
 		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
@@ -203,7 +196,7 @@ class weNewsletterBase{
 		return $ret;
 	}
 
-	function getEmailsFromExtern($files, $emails_only=0, $group=0, $blocks=array()){
+	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
 		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
@@ -246,7 +239,7 @@ class weNewsletterBase{
 	 * @param int $status (0=all; 1=invalid; 2=valid )
 	 * @return unknown
 	 */
-	function getEmailsFromExtern2($files, $emails_only=0, $group=0, $blocks=array(), $status=0, &$emailkey){
+	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, $blocks = array(), $status = 0, &$emailkey){
 		$ret = array();
 		$arr = array();
 		$countEMails = 0;
@@ -287,7 +280,7 @@ class weNewsletterBase{
 		return $ret;
 	}
 
-	function htmlSelectEmailList($name, $values, $size=1, $selectedIndex="", $multiple=false, $attribs="", $compare="value", $width="", $cls="defaultfont"){
+	function htmlSelectEmailList($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont"){
 		reset($values);
 		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
 		$selIndex = makeArrayFromCSV($selectedIndex);

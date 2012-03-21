@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * @see we_app_TopFrameView
  */
@@ -34,15 +34,14 @@ Zend_Loader::loadClass('we_app_TopFrameView');
  * @package    app_views
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class toolfactory_views_TopFrameView extends we_app_TopFrameView {
+class toolfactory_views_TopFrameView extends we_app_TopFrameView{
 
 	/**
 	 * return the javascript code of the top frame
 	 *
 	 * @return string
 	 */
-	public function getJSTop()
-	{
+	public function getJSTop(){
 
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addJSFile('/webEdition/lib/we/ui/layout/Dialog.js');
@@ -82,7 +81,7 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 		$noticeMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageNotice, true);
 		$warningMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageWarning, true);
 
-		$loadingWheelFrame = $fs.".edbody.";
+		$loadingWheelFrame = $fs . ".edbody.";
 		$loadingWheelContainer = "document.getElementById('containerDivBody')";
 		$loadingWheelImg = we_ui_layout_Image::kLoading;
 
@@ -462,4 +461,5 @@ function addLoadingWheel() {
 EOS;
 		return $js;
 	}
+
 }

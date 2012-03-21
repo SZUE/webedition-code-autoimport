@@ -1,9 +1,9 @@
 
-//FIXME: this won't work any more!
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
-$GLOBALS['weTagWizard']['weTagData']['noDocuLink'] = true;
-$GLOBALS['weTagWizard']['weTagData']['DocuLink'] = 'tags.webedition.org/de/<?php print $TOOLNAME;?>/';
+//NOTE you are inside the constructor of weTagData.class.php
 
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = 'Example tag for WE-Apps';
 
-$GLOBALS['weTagWizard']['attribute']['id111_name'] = new weTagData_textAttribute('111', 'name', false, '');
-
+$this->Attributes[] = new weTagData_textAttribute('name', false, '');

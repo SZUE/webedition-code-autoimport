@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,12 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpctoolfactoryCmd extends rpcCmd{
 
-class rpctoolfactoryCmd extends rpcCmd 
-{
-	
-	function execute() 
-	{
+	function execute(){
 		$resp = new rpcResponse();
 
 		return $resp;
-		
 	}
-}
 
-?>
+}

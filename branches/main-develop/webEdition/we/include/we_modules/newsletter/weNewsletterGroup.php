@@ -52,12 +52,7 @@ class weNewsletterGroup extends weNewsletterBase{
 		parent::__construct();
 		$this->table = NEWSLETTER_GROUP_TABLE;
 
-		$this->persistents[] = "NewsletterID";
-		$this->persistents[] = "Emails";
-		$this->persistents[] = "Extern";
-		$this->persistents[] = "Customers";
-		$this->persistents[] = "SendAll";
-		$this->persistents[] = "Filter";
+		array_push($this->persistents, "NewsletterID", "Emails", "Extern", "Customers", "SendAll", "Filter");
 
 		$this->ID = 0;
 		$this->NewsletterID = 0;
@@ -142,7 +137,7 @@ class weNewsletterGroup extends weNewsletterBase{
 		return 0;
 	}
 
-	function addFilter($name="", $operator=0, $value="", $hour="", $minute=""){
+	function addFilter($name = "", $operator = 0, $value = "", $hour = "", $minute = ""){
 		$this->aFilter[] = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "", "hours" => "", "minutes" => "");
 	}
 
@@ -161,14 +156,14 @@ class weNewsletterGroup extends weNewsletterBase{
 	 * return all newsletter blocks for given newsletter id
 	 *
 	 * ***************************************************** */
-	function __getAllGroups($newsletterID){
+	static function __getAllGroups($newsletterID){
 
 		$db = new DB_WE();
 
 		$db->query("SELECT ID FROM " . NEWSLETTER_GROUP_TABLE . " WHERE NewsletterID=" . intval($newsletterID) . " ORDER BY ID");
 		$ret = array();
 		while($db->next_record()) {
-			$ret[] = new weNewsletterGroup($db->f("ID"));
+			$ret[] = new self($db->f("ID"));
 		}
 		return $ret;
 	}

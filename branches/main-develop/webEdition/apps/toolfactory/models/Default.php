@@ -252,7 +252,7 @@ class toolfactory_models_Default extends we_app_Model{
 	 *
 	 * @return boolean
 	 */
-	function save($skipHook=0){
+	function save($skipHook = 0){
 
 		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
 		include_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_version.php');
@@ -485,11 +485,7 @@ class toolfactory_models_Default extends we_app_Model{
 			$_prohibit_classnames[] = $_menuItem["classname"];
 		}
 
-		if(in_array($classname, $_prohibit_classnames)){
-			return true;
-		}
-		else
-			return false;
+		return (in_array($classname, $_prohibit_classnames));
 	}
 
 }

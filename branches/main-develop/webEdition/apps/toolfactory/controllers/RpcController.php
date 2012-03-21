@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,12 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class RpcController extends Zend_Controller_Action{
 
-class RpcController extends Zend_Controller_Action
-{
 	/**
 	 * The default action
 	 */
-	public function indexAction()
-	{
+	public function indexAction(){
 		$jsonOutput = we_net_rpc_JsonRpc::getReply('toolfactory');
 		//response for callback
 		$this->getResponse()->setHeader('Content-Type', 'application/json')->appendBody($jsonOutput);
