@@ -686,7 +686,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		// Last step is to save the webEdition document
 		$out = we_textContentDocument::we_save($resave,$skipHook);
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false);
+			$out = ($this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false)) ? $out : $out; // response deactivated
 		}
 
 		if($resave == 0){
@@ -694,7 +694,6 @@ class we_webEditionDocument extends we_textContentDocument {
 			$hy['doc'][$this->ID] = array("Table"=>$this->Table,"ModDate"=>$this->ModDate);
 			setUserPref("History",serialize($hy));
 		}
-
 		return $out;
 	}
 
