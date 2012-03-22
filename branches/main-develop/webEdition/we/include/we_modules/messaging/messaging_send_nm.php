@@ -35,7 +35,7 @@ if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])){
 
 	$res = $messaging->send($arr);
 } else{
-	include_once(WE_MESSAGING_MODULE_DIR . "messaging_interfaces.inc.php");
+	include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	$errs = array();
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
 	$res = msg_new_message($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);

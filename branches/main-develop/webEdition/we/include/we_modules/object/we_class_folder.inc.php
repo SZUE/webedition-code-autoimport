@@ -978,7 +978,7 @@ class we_class_folder extends we_folder{
 
 		$DB_WE = new DB_WE();
 
-		$modulepath = WE_OBJECT_MODULE_PATH;
+		$modulepath = WE_OBJECT_MODULE_DIR;
 
 		$ret = <<<EOF
 		<script  type="text/javascript">

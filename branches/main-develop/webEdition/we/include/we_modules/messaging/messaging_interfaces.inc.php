@@ -28,7 +28,7 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==st
 }
 /* send new email message */
 function msg_new_email(&$rcpts, $subject, $body, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_msg_email.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_msg_email.inc.php");
 
     $m = new we_msg_email();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -46,7 +46,7 @@ function msg_new_email(&$rcpts, $subject, $body, &$errs) {
 
 /* generate new webedition message */
 function msg_new_message(&$rcpts, $subject, $body, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_message.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_message.inc.php");
 
     $m = new we_message();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -65,7 +65,7 @@ function msg_new_message(&$rcpts, $subject, $body, &$errs) {
 /* generate new ToDo */
 /* return the ID of the created ToDo, 0 on error */
 function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline = 1, $priority = 5) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $m = new we_todo();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -85,7 +85,7 @@ function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline 
 /* Mark ToDo as done */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_done_todo($id, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $res = array();
 
@@ -115,7 +115,7 @@ function msg_done_todo($id, &$errs) {
 /* remove ToDo */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_rm_todo($id) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $m = new we_todo();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -170,7 +170,7 @@ function msg_create_folders($userid) {
 /* Mark ToDo as rejected */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_reject_todo($id) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $res = array();
 

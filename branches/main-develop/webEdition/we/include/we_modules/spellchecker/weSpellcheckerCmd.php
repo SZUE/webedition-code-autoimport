@@ -1,10 +1,10 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
+include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 if(empty($_SESSION["user"]["Username"])){
 	if(isset($_REQUEST['scid'])){
-		if(!file_exists(WE_SPELLCHECKER_MODULE_DIR . '/tmp/' . md5($_REQUEST['scid']))){
+		if(!file_exists(WE_SPELLCHECKER_MODULE_PATH . '/tmp/' . md5($_REQUEST['scid']))){
 			we_html_tools::protect();
 		}
 	} else{
@@ -38,7 +38,7 @@ function saveSettings($default, $active, $langs=array()){
 				' . $_lang . '
 	?>';
 
-	weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php', $_construct);
+	weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
 	$_SESSION['dictLang'] = $default;
 }
@@ -55,7 +55,7 @@ if(isset($_REQUEST['cmd'][0])){
 					$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
 				}
 
-				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
+				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 				weFile::save($_userDict, $_REQUEST['cmd'][1] . "\n", 'ab');
 			}
 			break;
@@ -76,7 +76,7 @@ if(isset($_REQUEST['cmd'][0])){
 					$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
 				}
 
-				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
+				$_userDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 				weFile::save($_userDict, implode("\n", $_words) . "\n", 'ab');
 			}
 			break;
@@ -92,24 +92,24 @@ if(isset($_REQUEST['cmd'][0])){
 		case 'removeDictFile':
 			if(strpos($_REQUEST['cmd'][1], '..') === false){
 
-				@unlink(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $_REQUEST['cmd'][1]);
+				@unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1]);
 			}
 			break;
 		case 'uploadPart':
 			$_content = '';
 			if(isset($_FILES['chunk'])){
 
-				move_uploaded_file($_FILES['chunk']['tmp_name'], WE_SPELLCHECKER_MODULE_DIR . 'chunk');
+				move_uploaded_file($_FILES['chunk']['tmp_name'], WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 
-				$_content = weFile::load(WE_SPELLCHECKER_MODULE_DIR . 'chunk');
+				$_content = weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 				$_checksum = crc32($_content);
 
 				if(sprintf("%u", $_checksum) != $_REQUEST['cmd'][2])
 					t_e('Corrupt!!!');
 
-				weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
+				weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1], $_content, 'ab');
 
-				unlink(WE_SPELLCHECKER_MODULE_DIR . 'chunk');
+				unlink(WE_SPELLCHECKER_MODULE_PATH . 'chunk');
 			} else{
 
 			}
@@ -138,7 +138,7 @@ if(isset($_REQUEST['cmd'][0])){
 			saveSettings($_default, $_active, $_langs);
 
 			$_content = $_REQUEST['defaultDict'];
-			weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php', $_content);
+			weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', $_content);
 
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
@@ -148,7 +148,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 		case 'deleteDict':
 			if(strpos($_REQUEST['cmd'][1], "..") === false){
-				unlink(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $_REQUEST['cmd'][1] . '.zip');
+				unlink(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $_REQUEST['cmd'][1] . '.zip');
 				$_mess = g_l('modules_spellchecker', '[dict_removed]');
 				$_messType = we_message_reporting::WE_MESSAGE_NOTICE;
 
@@ -195,7 +195,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 			$_langs = (isset($spellcheckerConf['lang']) && is_array($spellcheckerConf['lang'])) ? $spellcheckerConf['lang'] : array();
 
-			$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
+			$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 			$_i = 0;
 			while(false !== ($entry = $_dir->read())) {
@@ -251,7 +251,7 @@ if(isset($_REQUEST['cmd'][0])){
 </head>
 
 <body>
-	<form name="dispatcherForm" method="post" target="_self" action="<?php print WE_SPELLCHECKER_MODULE_PATH ?>weSpellcheckerCmd.php">
+	<form name="dispatcherForm" method="post" target="_self" action="<?php print WE_SPELLCHECKER_MODULE_DIR ?>weSpellcheckerCmd.php">
 		<input type="hidden" name="cmd[0]" value="" />
 		<input type="hidden" name="cmd[1]" value="" />
 	</form>

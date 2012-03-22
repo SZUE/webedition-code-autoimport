@@ -32,10 +32,10 @@ class weExportFrames extends weModuleFrames{
 	var $_width_size = 535;
 
 	function __construct(){
-		parent::__construct(WE_EXPORT_MODULE_PATH . "edit_export_frameset.php");
+		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
 		$this->Tree = new weExportTreeMain();
 		$this->SelectionTree = new weExportTree();
-		$this->View = new weExportView(WE_EXPORT_MODULE_PATH . "edit_export_frameset.php", "top.content");
+		$this->View = new weExportView(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
 		$this->setupTree(EXPORT_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
 		$this->module = "export";
 

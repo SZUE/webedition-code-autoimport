@@ -115,7 +115,7 @@ $rcpts_str = substr($rcpts_str, 0, -1);
 			}
 
 			function browse_users_window() {
-				new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_usel_browse",-1,-1,350,330,true,false,true,false);
+				new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_usel_browse",-1,-1,350,330,true,false,true,false);
 			}
 
 			function save_addrbook() {
@@ -310,7 +310,7 @@ if(isset($_REQUEST['maxsel'])){
 			echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:ok()"), "", we_button::create_button("cancel", "javascript:window.close();")));
 			?>
     </form>
-    <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php" method="post" name="addrbook_data">
+    <form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 			<?php
 			echo we_html_tools::hidden('mode', 'save_addrbook');
 			echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);

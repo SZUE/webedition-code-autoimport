@@ -22,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR . 'we_conf_messaging.inc.php');
+include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
+include_once(WE_MESSAGING_MODULE_PATH . 'we_conf_messaging.inc.php');
 /* todo object class */
 
 class we_todo extends we_msg_proto{
@@ -445,7 +445,7 @@ class we_todo extends we_msg_proto{
 			$in_folder = $this->DB->f('ID');
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
-				include_once(WE_MESSAGING_MODULE_DIR . "messaging_interfaces.inc.php");
+				include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 				if(msg_create_folders($userid) == 1){
 					$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid));
 					$this->DB->next_record();

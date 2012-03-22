@@ -33,23 +33,23 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript"><!--
 	function doSearch() {
-		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;
+		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;
 	}
 
 	function launchAdvanced() {
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_advanced.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
 	}
 
 	function clearSearch() {
 		document.we_messaging_search.messaging_search_keyword.value = "";
-		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=launch&we_transaction=<?php echo $we_transaction ?>&mode=' + top.content.viewclass;
+		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?mcmd=launch&we_transaction=<?php echo $we_transaction ?>&mode=' + top.content.viewclass;
 	}
 	//-->
 </script>
 </head>
 <body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="/webEdition/images/msg_white_bg.gif">
 <nobr>
-	<form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_frame.php" onSubmit="return doSearch()">
+	<form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_frame.php" onSubmit="return doSearch()">
 		<?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>
 
 		<table cellpadding="0" cellspacing="0" border="0">

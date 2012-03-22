@@ -32,10 +32,10 @@ class weGlossaryFrames extends weModuleFrames{
 
 	function __construct(){
 
-		parent::__construct(WE_GLOSSARY_MODULE_PATH . "edit_glossary_frameset.php");
+		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
 
 		$this->Tree = new weGlossaryTree();
-		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_PATH . "edit_glossary_frameset.php", "top.content");
+		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
 
 		$this->setupTree(GLOSSARY_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
 

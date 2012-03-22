@@ -47,7 +47,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_folder_settings'){
 
 		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 		?>
-						top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
+						top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
 						top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : "" ?>');
 						//-->
 				</script>
@@ -74,7 +74,7 @@ we_html_tools::protect();
 print STYLESHEET;
 ?>
 <body class="weDialogBody" style="border-top: 1px solid black;">
-	<form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_edit_folder.php" method="post">
+	<form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 <?php
 echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
 echo we_html_tools::hidden('mcmd', 'save_folder_settings');

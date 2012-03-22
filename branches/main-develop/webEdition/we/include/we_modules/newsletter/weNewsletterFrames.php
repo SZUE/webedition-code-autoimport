@@ -29,7 +29,7 @@ class weNewsletterFrames extends weModuleFrames{
 	var $weAutoColpleter;
 
 	function __construct(){
-		parent::__construct(WE_NEWSLETTER_MODULE_PATH . "edit_newsletter_frameset.php");
+		parent::__construct(WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php");
 		$this->View = new weNewsletterView();
 		$this->View->setFrames("top.content", "top.content.resize.left.tree", "top.content.cmd");
 

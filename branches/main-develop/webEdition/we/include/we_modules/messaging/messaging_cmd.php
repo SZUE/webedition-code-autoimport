@@ -32,9 +32,9 @@ function print_fc_html($blank = true){
 		<!--
 		top.content.update_msg_quick_view();
 		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected() ?>);
-		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH . 'messaging_fv_headers.php') . '?si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
+		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '?si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
 		if (top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview) {
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_PATH . 'messaging_show_folder_content.php'); ?>";
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 		}
 
 
@@ -136,7 +136,7 @@ switch($_REQUEST["mcmd"]){
 			?>
 			<script type="text/javascript">
 				<!--
-				top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_PATH . "messaging_message_view.php?we_transaction=" . $_REQUEST['we_transaction'] . "&id=$id" ?>";
+				top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_DIR . "messaging_message_view.php?we_transaction=" . $_REQUEST['we_transaction'] . "&id=$id" ?>";
 				//-->
 			</script>
 			<?php
@@ -148,7 +148,7 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>", "messaging_new_message",-1,-1,670,530,true,false,true,false);
+			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>", "messaging_new_message",-1,-1,670,530,true,false,true,false);
 			//-->
 		</script>
 		<?php
@@ -158,7 +158,7 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
+			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
 			//-->
 		</script>
 		<?php
@@ -168,7 +168,7 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 			//-->
 		</script>
 		<?php
@@ -179,7 +179,7 @@ switch($_REQUEST["mcmd"]){
 
 		<script type="text/javascript">
 			<!--
-			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 			//-->
 		</script>
 		<?php
@@ -189,7 +189,7 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 			<!--
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_show_folder_content.php'); ?>";
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 			//-->
 		</script>
@@ -201,7 +201,7 @@ switch($_REQUEST["mcmd"]){
 			?>
 			<script type="text/javascript">
 				<!--
-				new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+				new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 				//-->
 			</script>
 			<?php
@@ -232,8 +232,8 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_show_folder_content.php'); ?>";
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 
 		<?php
@@ -261,8 +261,8 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 			<!--
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass" + top.content.viewclass;
-			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_PATH . 'messaging_show_folder_content.php'); ?>";
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 		<?php $aid = $messaging->Folder_ID; ?>
 
@@ -297,7 +297,7 @@ switch($_REQUEST["mcmd"]){
 			?>
 			<script type="text/javascript">
 				<!--
-				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_edit_folder.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>&fid=<?php echo (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) ?>";
+				top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>&fid=<?php echo (isset($_REQUEST['fid']) ? $_REQUEST['fid'] : -1) ?>";
 				//-->
 			</script>
 			<?php
@@ -364,7 +364,7 @@ switch($_REQUEST["mcmd"]){
 		?>
 		<script type="text/javascript">
 			<!--
-			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>", "messaging_settings",-1,-   1,280,200,true,false,true,false);
+			new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=<?php echo $_REQUEST['mode'] ?>", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 			//-->
 		</script>
 		<?php

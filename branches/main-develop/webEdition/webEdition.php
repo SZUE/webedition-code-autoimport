@@ -251,7 +251,7 @@ top.weEditorFrameController.openDocument('','','','','',url,'','',parameters);
 if(defined('MESSAGING_SYSTEM')){
 	?>
 	function update_msg_quick_view() {
-		//top.header_msg.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php?r=<?php srand((double) microtime() * 1000000);
+		//top.header_msg.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>header_msg.php?r=<?php srand((double) microtime() * 1000000);
 	echo rand();
 	?>";
 		//done by users_ping
@@ -1274,18 +1274,18 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							break;
 						case "edit_settings_shop":
 <?php
-if(defined("WE_SHOP_MODULE_PATH")){
+if(defined("WE_SHOP_MODULE_DIR")){
 	?>
-									new jsWindow("<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,false,true);
+									new jsWindow("<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,false,true);
 	<?php
 }
 ?>
 							break;
 						case "edit_settings_messaging":
 <?php
-if(defined("WE_MESSAGING_MODULE_PATH")){
+if(defined("WE_MESSAGING_MODULE_DIR")){
 	?>
-									new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php?mode=1", "messaging_settings",-1,-   1,280,200,true,false,true);
+									new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php?mode=1", "messaging_settings",-1,-   1,280,200,true,false,true);
 	<?php
 }
 ?>

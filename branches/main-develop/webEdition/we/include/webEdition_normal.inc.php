@@ -220,7 +220,7 @@ function pWebEdition_Frameset(){
 				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 			</div>
 			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+				<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
 			</div>
 			<div style="height:100%;float:left;width:10%;border:0px;">
 				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>

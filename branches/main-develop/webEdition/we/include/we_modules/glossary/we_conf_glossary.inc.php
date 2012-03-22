@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define("GLOSSARY_TABLE", TBL_PREFIX . "tblglossary");
-define("WE_GLOSSARY_MODULE_PATH", "/webEdition/we/include/we_modules/glossary/");
-define("WE_GLOSSARY_MODULE_DIR", $_SERVER['DOCUMENT_ROOT'] . WE_GLOSSARY_MODULE_PATH);
+define("WE_GLOSSARY_MODULE_DIR", WE_MODULES_DIR."glossary/");
+define("WE_GLOSSARY_MODULE_PATH", $_SERVER['DOCUMENT_ROOT'] . WE_GLOSSARY_MODULE_DIR);
 
 we_loadLanguageConfig();

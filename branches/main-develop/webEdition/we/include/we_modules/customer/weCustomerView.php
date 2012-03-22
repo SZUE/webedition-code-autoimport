@@ -660,7 +660,7 @@ class weCustomerView{
 
 				case 'show_admin':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=customer_admin";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
 						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js");
@@ -879,7 +879,7 @@ class weCustomerView{
 					break;
 				case 'show_sort_admin':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=sort_admin";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
 						new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);
 					';
 					print we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -945,7 +945,7 @@ class weCustomerView{
 					break;
 				case 'show_search':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . $_REQUEST["keyword"] . '";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . $_REQUEST["keyword"] . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js");
@@ -953,7 +953,7 @@ class weCustomerView{
 					break;
 				case 'show_customer_settings':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=settings";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
 						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js");
@@ -961,7 +961,7 @@ class weCustomerView{
 					break;
 				case 'import_customer':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=import";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
 						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js");
@@ -969,7 +969,7 @@ class weCustomerView{
 					break;
 				case 'export_customer':
 					$js = '
-						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=export";
+						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);
 					';
 					print we_html_element::jsScript(JS_DIR . "windows.js");

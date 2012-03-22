@@ -54,7 +54,7 @@ $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;
 
 //$GLOBALS['we_doc']->ID = 61;
 //  $_SESSION["content"] is only used for generating a default template, it is
-//  set in WE_OBJECT_MODULE_DIR\we_object_createTemplate.inc.php
+//  set in WE_OBJECT_MODULE_PATH\we_object_createTemplate.inc.php
 $GLOBALS['we_doc']->elements["data"]["dat"] = $_SESSION["content"];
 $GLOBALS['we_doc']->elements["data"]["type"] = "txt";
 unset($_SESSION["content"]);
@@ -72,7 +72,7 @@ if($GLOBALS['we_doc']->i_filenameEmpty()){
 }
 if(isset($we_responseText)){
 	echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
-	include_once(WE_OBJECT_MODULE_DIR . "we_object_createTemplate.inc.php");
+	include_once(WE_OBJECT_MODULE_PATH . "we_object_createTemplate.inc.php");
 } else{
 	if($GLOBALS['we_doc']->we_save()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path);
@@ -82,6 +82,6 @@ self.close();');
 	} else{
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
-		include_once(WE_OBJECT_MODULE_DIR . "we_object_createTemplate.inc.php");
+		include_once(WE_OBJECT_MODULE_PATH . "we_object_createTemplate.inc.php");
 	}
 }

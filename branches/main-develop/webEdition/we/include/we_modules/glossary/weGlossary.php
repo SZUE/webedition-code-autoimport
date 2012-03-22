@@ -465,7 +465,7 @@ class weGlossary extends weModelBase{
 	}
 
 	function getExceptionFilename($language){
-		$fileDir = WE_GLOSSARY_MODULE_DIR . 'dict/';
+		$fileDir = WE_GLOSSARY_MODULE_PATH . 'dict/';
 		if(!is_dir($fileDir) && !we_util_File::createLocalFolder($fileDir)){
 			return false;
 		}

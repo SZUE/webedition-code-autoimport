@@ -65,7 +65,7 @@ if($_REQUEST["mode"] == 'forward'){
 <?php print STYLESHEET; ?>
 		<script type="text/javascript">
 			<!--
-			top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] ?>";
+			top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] ?>";
 			//-->
 		</script>
 <?php

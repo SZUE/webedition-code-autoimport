@@ -1,7 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
+include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
 
@@ -42,13 +42,13 @@ $l_param['l_uploading'] = g_l('modules_spellchecker', '[uploading]');
 $l_param['l_finished'] = g_l('modules_spellchecker', '[end]');
 
 $l_param['upload_size'] = getUploadMaxFilesize();
-$l_param['upload_url'] = getServerUrl(true) . WE_SPELLCHECKER_MODULE_PATH . 'weSpellcheckerCmd.php';
+$l_param['upload_url'] = getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php';
 
 
 // ----------------------
 if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	$l_param['scid'] = session_id();
-	$_tmp_dir = WE_SPELLCHECKER_MODULE_DIR . '/tmp';
+	$_tmp_dir = WE_SPELLCHECKER_MODULE_PATH . '/tmp';
 	if(!is_dir($_tmp_dir)){
 		we_util_File::createLocalFolder($_tmp_dir);
 	}
@@ -94,7 +94,7 @@ $table->setCol(0, 2, array('valign' => 'top', 'class' => 'small'), g_l('modules_
 $table->setCol(0, 3, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[refresh]'));
 $table->setCol(0, 4, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[delete]'));
 
-$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
+$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 $_i = 0;
 while(false !== ($entry = $_dir->read())) {
@@ -118,7 +118,7 @@ $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) act
 
 $_tab_1 =
 	we_html_tools::htmlDialogLayout('
-	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_PATH . 'weSpellcheckerCmd.php">
+	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php">
 	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
 	 	<div id="selector" class="blockWrapper" style="width: 400px; height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:#f6f6f6 ! important;">
@@ -141,7 +141,7 @@ $_tab_2 =
 	we_html_tools::htmlDialogLayout('
 
 
-					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php') > 0) ? weFile::load(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php') : '') : '') . '</textarea>
+					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? weFile::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
 					<div>' . we_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
 
 	</form>
@@ -154,8 +154,8 @@ for($_i = 0; $_i < count($_replacement); $_i++){
 	$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
 }
 
-$_applet_code = '<applet name="spellchecker" code="com/livinge/spellchecker/swing/DictEditor.class" archive="lespellchecker.jar" codebase="' . getServerUrl() . WE_SPELLCHECKER_MODULE_PATH . '" width="400" height="220" scriptable mayscript><param name="CODE" value="com/livinge/spellchecker/swing/DictEditor.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_PATH . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '.dict') : '0') . '">' . $l_params . '</applet>';
-$_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl() . WE_SPELLCHECKER_MODULE_PATH . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_PATH . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"></applet>';
+$_applet_code = '<applet name="spellchecker" code="com/livinge/spellchecker/swing/DictEditor.class" archive="lespellchecker.jar" codebase="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '" width="400" height="220" scriptable mayscript><param name="CODE" value="com/livinge/spellchecker/swing/DictEditor.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '">' . $l_params . '</applet>';
+$_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"></applet>';
 ?>
 
 <script type="text/javascript">
@@ -327,7 +327,7 @@ $_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" arc
 	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
-	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="<?php print WE_SPELLCHECKER_MODULE_PATH . 'weSpellcheckerCmd.php'; ?>"></iframe>
+	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="<?php print WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
 
 	<div id="appletPanel2" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height 0px;">
 	</div>

@@ -29,7 +29,7 @@
 		 *
 		 */
 		function start() {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
 				weGlossarySettingControl::saveSettings(true);
 			}
@@ -47,7 +47,7 @@
 		 * @param unknown_type $language
 		 */
 		function end($language) {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			include_once($configFile);
 
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
@@ -66,7 +66,7 @@
 		 * @param unknown_type $language
 		 */
 		function replace($content, $language) {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
 				weGlossarySettingControl::saveSettings(true);
 			}

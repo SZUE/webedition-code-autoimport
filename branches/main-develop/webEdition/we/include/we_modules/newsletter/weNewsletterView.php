@@ -52,7 +52,7 @@ class weNewsletterView{
 		$this->show_import_box = -1;
 		$this->show_export_box = -1;
 
-		$this->frameset = WE_NEWSLETTER_MODULE_PATH . "edit_newsletter_frameset.php";
+		$this->frameset = WE_NEWSLETTER_MODULE_DIR . "edit_newsletter_frameset.php";
 
 		$this->settings = self::getSettings();
 

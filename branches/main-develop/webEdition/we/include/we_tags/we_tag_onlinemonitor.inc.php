@@ -29,7 +29,7 @@ function we_parse_tag_onlinemonitor($attribs, $content){
 }
 
 function we_tag_onlinemonitor($attribs){
-	if(!defined('WE_CUSTOMER_MODULE_DIR')){
+	if(!defined('WE_CUSTOMER_MODULE_PATH')){
 		print modulFehltError('Customer', __FUNCTION__);
 		return false;
 	}

@@ -35,9 +35,9 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 		?>
 		</head>
 		<frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-			<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_header.php" name="header" scrolling=no noresize>
-			<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
-			<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
+			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_header.php" name="header" scrolling=no noresize>
+			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
+			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
 		</frameset>
 
 		<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">

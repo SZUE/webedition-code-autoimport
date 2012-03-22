@@ -42,12 +42,12 @@ we_html_tools::htmlTop();
 switch($_REQUEST['we_cmd'][0]){
 
 	case "in_workflow":
-		include(WE_WORKFLOW_MODULE_DIR . "we_in_workflow.inc.php");
+		include(WE_WORKFLOW_MODULE_PATH . "we_in_workflow.inc.php");
 		break;
 	case "pass":
-		include(WE_WORKFLOW_MODULE_DIR . "we_pass_workflow.inc.php");
+		include(WE_WORKFLOW_MODULE_PATH . "we_pass_workflow.inc.php");
 		break;
 	case "decline":
-		include(WE_WORKFLOW_MODULE_DIR . "we_decline_workflow.inc.php");
+		include(WE_WORKFLOW_MODULE_PATH . "we_decline_workflow.inc.php");
 		break;
 }

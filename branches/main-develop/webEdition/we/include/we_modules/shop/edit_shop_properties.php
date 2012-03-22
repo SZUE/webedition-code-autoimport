@@ -2081,7 +2081,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			}
 
 			function deleteorder(){
-				top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+				top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 				top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 			}
 
@@ -2127,7 +2127,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 		// ********************************************************************************
 	} else{ // This order has no more entries
 		echo we_html_element::jsElement('
-		top.content.shop_properties.location="' . WE_SHOP_MODULE_PATH . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
+		top.content.shop_properties.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
 		top.content.deleteEntry(' . $_REQUEST["bid"] . ');
 	') . '
 </head>

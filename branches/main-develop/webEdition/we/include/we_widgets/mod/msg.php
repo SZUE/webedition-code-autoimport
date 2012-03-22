@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 if(defined("MESSAGING_SYSTEM")){
-	include_once(WE_MESSAGING_MODULE_DIR . "we_message.inc.php");
+	include_once(WE_MESSAGING_MODULE_PATH . "we_message.inc.php");
 
 	$_SESSION['we_data'][$_transact] = array();
 

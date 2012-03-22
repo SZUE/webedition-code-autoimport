@@ -336,7 +336,7 @@ print STYLESHEET;
 <?php
 //	Document is in workflow
 if(inWorkflow($we_doc)){
-	include(WE_WORKFLOW_MODULE_DIR . "we_workflow_doc_footer.inc.php");
+	include(WE_WORKFLOW_MODULE_PATH . "we_workflow_doc_footer.inc.php");
 	exit();
 }
 

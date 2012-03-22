@@ -378,7 +378,7 @@ if(isset($we_doc) && $we_doc->ContentType == "image/*"){
 							break;
 <?php if(defined('SPELLCHECKER')){ ?>
 								case "spellcheck":
-									var win = new jsWindow("<?php print WE_SPELLCHECKER_MODULE_PATH ?>/weSpellchecker.php?editname="+(arguments[1]),"spellcheckdialog",-1,-1,500,450,true,false,true,false);
+									var win = new jsWindow("<?php print WE_SPELLCHECKER_MODULE_DIR ?>/weSpellchecker.php?editname="+(arguments[1]),"spellcheckdialog",-1,-1,500,450,true,false,true,false);
 									break;
 <?php } ?>
 								// it must be the last command

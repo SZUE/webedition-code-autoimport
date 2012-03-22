@@ -1,6 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
+include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
 
@@ -18,10 +18,10 @@ for($_i = 0; $_i < count($_replacement); $_i++){
 	$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
 }
 
-$_user_dict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
+$_user_dict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
-if(!file_exists($_user_dict) && file_exists(WE_SPELLCHECKER_MODULE_DIR . '/dict/default.inc.php')){
-	copy(WE_SPELLCHECKER_MODULE_DIR . '/dict/default.inc.php', $_user_dict);
+if(!file_exists($_user_dict) && file_exists(WE_SPELLCHECKER_MODULE_PATH . '/dict/default.inc.php')){
+	copy(WE_SPELLCHECKER_MODULE_PATH . '/dict/default.inc.php', $_user_dict);
 }
 
 $_width = 600;
@@ -30,7 +30,7 @@ $space = 5;
 $_mode = 'normal';
 $_editname = '';
 
-$_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_PATH . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_PATH . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"></applet>';
+$_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"></applet>';
 
 if(isset($_REQUEST['we_dialog_args']['editname'])){
 	$_mode = 'wysiwyg';
@@ -490,7 +490,7 @@ print we_button::create_state_changer(false);
 		<select name="dictSelect" id="dictSelect" size="1" onchange="selectDict(this.value)">
 	';
 
-	$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
+	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;
 	while(false !== ($entry = $_dir->read())) {
 		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
@@ -523,7 +523,7 @@ print we_button::create_state_changer(false);
 		</center>
 	</div>
 
-	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_PATH . 'weSpellchecker.php" method="post" target="_self">
+	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellchecker.php" method="post" target="_self">
 
 	<input name="' . ($_mode == 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $_editname . '" type="hidden" />
 	<div id="mainPanel">
@@ -534,7 +534,7 @@ print we_button::create_state_changer(false);
 	</div>
 	</form>
 	' . $_applet .
-		'<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="' . WE_SPELLCHECKER_MODULE_PATH . 'weSpellcheckerCmd.php"></iframe>'
+		'<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php"></iframe>'
 	;
 	?>
 </body>

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_SHOP_MODULE_DIR . 'shopFunctions.inc.php');
+include_once(WE_SHOP_MODULE_PATH . 'shopFunctions.inc.php');
 
 we_html_tools::protect();
 

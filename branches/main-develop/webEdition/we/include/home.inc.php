@@ -896,8 +896,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	$_transact = md5(uniqid(rand()));
 
 	echo "function newMessage(username){\n";
-	if(defined("WE_MESSAGING_MODULE_PATH")){
-		echo "	new jsWindow('" . WE_MESSAGING_MODULE_PATH . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
+	if(defined("WE_MESSAGING_MODULE_DIR")){
+		echo "	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
 	}
 	echo "}";
 	?>

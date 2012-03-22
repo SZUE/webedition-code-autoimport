@@ -35,7 +35,7 @@ function we_parse_tag_customer($attribs, $content){
 }
 
 function we_tag_customer($attribs){
-	if(!defined("WE_CUSTOMER_MODULE_DIR")){
+	if(!defined("WE_CUSTOMER_MODULE_PATH")){
 		print modulFehltError('Customer', __FUNCTION__);
 		return false;
 	}
@@ -51,7 +51,7 @@ function we_tag_customer($attribs){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	include_once(WE_CUSTOMER_MODULE_DIR . "we_customertag.inc.php");
+	include_once(WE_CUSTOMER_MODULE_PATH . "we_customertag.inc.php");
 
 	if($name){
 		if(strpos($name, " ") !== false){

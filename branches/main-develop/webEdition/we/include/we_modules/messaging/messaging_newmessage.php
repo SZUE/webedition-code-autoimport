@@ -60,7 +60,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	function selectRecipient() {
 		var rs = escape(document.compose_form.mn_recipients.value);
 
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&rs=" + rs,"messaging_usel",-1,-1,530,420,true,false,true,false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&rs=" + rs,"messaging_usel",-1,-1,530,420,true,false,true,false);
 		//	    opener.top.add_win(msg_usel);
 	}
 
@@ -97,7 +97,7 @@ if($_REQUEST["mode"] == 're'){
 
 $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 ?>
-  <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_send_nm.php" name="compose_form" method="post">
+  <form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_send_nm.php" name="compose_form" method="post">
 	<?php
 	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
 	echo we_html_tools::hidden('rcpts_string', '');

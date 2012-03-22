@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_DIR . "messaging_interfaces.inc.php");
+include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 
 /**
  * Document Definition base class

@@ -36,7 +36,7 @@ $messaging = new we_messaging($_SESSION["we_data"][$we_transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 if(!$messaging->check_folders()){
-	include_once(WE_MESSAGING_MODULE_DIR . "messaging_interfaces.inc.php");
+	include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 	if(!msg_create_folders($_SESSION["user"]["ID"])){
 		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 	}
@@ -203,7 +203,7 @@ if(isset($f)){
 							else {
 								ent_str = "";
 							}
-							messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=update_msgs" + ent_str;
+							messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=update_msgs" + ent_str;
 						}
 					}
 
@@ -244,14 +244,14 @@ if(isset($f)){
 
 					function set_frames(vc) {
 						if (vc == "message") {
-							top.content.messaging_iconbar.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>";
-							top.content.messaging_main.messaging_right.msg_work.messaging_search.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_frame.php?we_transaction=<?php echo $we_transaction ?>";
-							top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_fv_headers.php?viewclass=message&we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_iconbar.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_main.messaging_right.msg_work.messaging_search.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_frame.php?we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_fv_headers.php?viewclass=message&we_transaction=<?php echo $we_transaction ?>";
 						}
 						else if (vc == "todo") {
-							top.content.messaging_iconbar.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>todo_iconbar.php?we_transaction=<?php echo $we_transaction ?>";
-							top.content.messaging_main.messaging_right.msg_work.messaging_search.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>todo_search_frame.php?we_transaction=<?php echo $we_transaction ?>";
-							top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_fv_headers.php?viewclass=todo&we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_iconbar.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>todo_iconbar.php?we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_main.messaging_right.msg_work.messaging_search.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>todo_search_frame.php?we_transaction=<?php echo $we_transaction ?>";
+							top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_fv_headers.php?viewclass=todo&we_transaction=<?php echo $we_transaction ?>";
 						}
 						viewclass= vc;
 					}
@@ -296,59 +296,59 @@ if(isset($f)){
 									}
 									top.content.viewclass = menuDaten[ind].viewclass;
 								}
-								messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=show_folder_content&id=' + arguments[1];
+								messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=show_folder_content&id=' + arguments[1];
 								break;
 							case "edit_folder":
 								update_icon(arguments[1]);
-								top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=edit&fid=' + arguments[1];
+								top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=edit&fid=' + arguments[1];
 								break;
 							case "folder_new":
 								break;
 							case "messaging_new_message":
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=new_message&mode=new";
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=new_message&mode=new";
 								break;
 							case "messaging_new_todo":
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=new_todo";
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=new_todo";
 								break;
 							case "messaging_start_view":
 								deleteMode = false;
 								mode = "show_folder_content";
 								entries_selected = new Array();
 								drawEintraege();
-								top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_work.php?we_transaction=<?php echo $we_transaction ?>";
+								top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_work.php?we_transaction=<?php echo $we_transaction ?>";
 								top.content.usetHot();
 								break;
 							case "messaging_new_folder":
 								mode = "folder_new";
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=new";
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=new";
 								break;
 							case "messaging_delete_mode_on":
 								deleteMode = true;
 								drawEintraege();
-								top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_delete_folders.php?we_transaction=<?php echo $we_transaction ?>";
+								top.content.messaging_main.messaging_right.msg_work.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_delete_folders.php?we_transaction=<?php echo $we_transaction ?>";
 								break;
 							case "messaging_delete_folders":
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=delete_folders&folders=" + entries_selected.join(',');
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=delete_folders&folders=" + entries_selected.join(',');
 								break;
 							case "messaging_edit_folder":
 								mode = "edit_folder";
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 								break;
 							case "messaging_settings":
-								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_settings&mode=new";
+								messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=edit_settings&mode=new";
 								break;
 							case "messaging_copy":
 								if (messaging_main && messaging_main.messaging_right && messaging_main.messaging_right.msg_work && messaging_main.messaging_right.msg_work.entries_selected && messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-									messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=copy_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
+									messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=copy_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
 								}
 								break;
 							case "messaging_cut":
 								if (messaging_main && messaging_main.messaging_right && messaging_main.messaging_right.msg_work && messaging_main.messaging_right.msg_work.entries_selected && messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-									messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=cut_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
+									messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=cut_msg&entrsel=" + messaging_main.messaging_right.msg_work.entries_selected.join(',');
 								}
 								break;
 							case "messaging_paste":
-								top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=paste_msg";
+								top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=paste_msg";
 								break;
 							default:
 								for(var i = 0; i < arguments.length; i++) {
@@ -759,10 +759,10 @@ foreach($messaging->available_folders as $folder){
 </head>
 
 <frameset rows="32,40,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_header.php" name="messaging_header" scrolling="no" noresize>
-		<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_iconbar" scrolling="no" noresize>
-			<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_main.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_main" scrolling="no" noresize>
-				<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php" name="messaging_cmd" scrolling="yes" noresize>
+	<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_header.php" name="messaging_header" scrolling="no" noresize>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_iconbar.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_iconbar" scrolling="no" noresize>
+			<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_main.php?we_transaction=<?php echo $we_transaction ?>" name="messaging_main" scrolling="no" noresize>
+				<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php" name="messaging_cmd" scrolling="yes" noresize>
 					</frameset>
 
 					<body class="aqua"></body>

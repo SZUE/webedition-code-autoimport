@@ -165,13 +165,13 @@ if(isset($_REQUEST['cmd'])){
 						weBackupUtil::addLog('Exporting data for spellchecker');
 					}
 
-					$_files[] = WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php';
-					$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
+					$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
+					$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 					while(false !== ($entry = $_dir->read())) {
-						if($entry == '.' || $entry == '..' || (substr($entry, -4) == '.zip') || is_dir(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry)){
+						if($entry == '.' || $entry == '..' || (substr($entry, -4) == '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
 							continue;
 						}
-						$_files[] = WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry;
+						$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
 					}
 					$_dir->close();
 				}

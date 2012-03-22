@@ -30,7 +30,7 @@ function we_parse_tag_orderitem($attribs, $content){
 
 function we_tag_orderitem($attribs){
 
-	if(!defined('WE_SHOP_MODULE_DIR')){
+	if(!defined('WE_SHOP_MODULE_PATH')){
 		print modulFehltError('Shop', __FUNCTION__);
 		return false;
 	}

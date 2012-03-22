@@ -113,13 +113,13 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				} else {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php?ucmd=new_user&cgroup='+cgroup;
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=new_user&cgroup='+cgroup;
 				}
 				break;
 			case "check_user_display":
-				top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php?ucmd=check_user_display&uid='+arguments[1];
+				top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=check_user_display&uid='+arguments[1];
 				break;
 			case "display_user":
 				top.content.user_resize.user_right.user_editor.user_properties.focus();
@@ -138,10 +138,10 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				}
 				else {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH ?>edit_users_cmd.php?ucmd=display_user&uid='+arguments[1];
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR ?>edit_users_cmd.php?ucmd=display_user&uid='+arguments[1];
 				}
 				break;
 			case "display_alias":
@@ -162,10 +162,10 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				}
 				else {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH ?>edit_users_cmd.php?ucmd=display_user&uid='+arguments[1];
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR ?>edit_users_cmd.php?ucmd=display_user&uid='+arguments[1];
 				}
 				break;
 			case "new_group":
@@ -183,9 +183,9 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				} else {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php?ucmd=new_group&cgroup='+cgroup;
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=new_group&cgroup='+cgroup;
 				}
 				break;
 			case "new_alias":
@@ -203,28 +203,28 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				} else {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php?ucmd=new_alias&cgroup='+cgroup;
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=new_alias&cgroup='+cgroup;
 				}
 				break;
 			case "save_user":
 				if(top.content.user_resize.user_right.user_editor.user_properties.document.we_form) {
 					top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ucmd.value="save_user";
 					top.content.usetHot();
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				}
 				break;
 			case "delete_user":
-				top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php?ucmd=delete_user';
+				top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=delete_user';
 				break;
 			case "search":
-				new jsWindow('<?php print WE_USERS_MODULE_PATH; ?>edit_users_sresults.php?kwd='+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
+				new jsWindow('<?php print WE_USERS_MODULE_DIR; ?>edit_users_sresults.php?kwd='+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
 				break;
 			case "new_organization":
 				var orgname = prompt("<?php print g_l('modules_users', "[give_org_name]"); ?>","");
 				if(orgname!= null) {
-					top.content.user_cmd.location='<?php print WE_USERS_MODULE_PATH ?>edit_users_cmd.php?ucmd=new_organization&orn='+orgname;
+					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR ?>edit_users_cmd.php?ucmd=new_organization&orn='+orgname;
 				}
 				break;
 			default:
@@ -531,9 +531,9 @@ if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSIO
 </head>
 
 <frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-	<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_header.php" name="user_header" scrolling=no noresize/>
-	<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_resize.php" name="user_resize" scrolling=no/>
-	<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php" name="user_cmd" scrolling=no noresize/>
+	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_header.php" name="user_header" scrolling=no noresize/>
+	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_resize.php" name="user_resize" scrolling=no/>
+	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php" name="user_cmd" scrolling=no noresize/>
 </frameset>
 
 <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">

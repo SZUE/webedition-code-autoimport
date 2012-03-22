@@ -49,9 +49,9 @@ if(isset($_REQUEST["ucmd"])){
             $_SESSION["user_session_data"] = $user_object->getState();
 
             print we_html_element::jsElement('
-                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
-                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php";
-                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
+                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
                 ');
     	    break;
 
@@ -74,15 +74,15 @@ if(isset($_REQUEST["ucmd"])){
 
             $_SESSION["user_session_data"] = $user_object->getState();
             print we_html_element::jsElement('
-                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
-                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php";
-                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
+                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
                 ');
     	    break;
 
         case "search":
             print we_html_element::jsElement('
-                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_sresults.php?kwd='.$_REQUEST["kwd"].'";
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd='.$_REQUEST["kwd"].'";
                 ');
             break;
 
@@ -90,9 +90,9 @@ if(isset($_REQUEST["ucmd"])){
             if($uid && $ctype && $ctable){
                 print we_html_element::jsElement('
                         top.content.usetHot();
-                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
                     ');
             }
             break;

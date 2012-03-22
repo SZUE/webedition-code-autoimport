@@ -31,7 +31,7 @@ print STYLESHEET;
 <frameset rows="1,*,40" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize/>
 	<frame src="<?php print HTML_DIR ?>white.html" name="user_tree" scrolling="auto" noresize/>
-	<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_search.php" name="user_search" scrolling="no" noresize/>
+	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_search.php" name="user_search" scrolling="no" noresize/>
 </frameset>
 <noframes>
 	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">

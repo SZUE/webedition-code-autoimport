@@ -585,7 +585,7 @@ class we_workflow_view extends we_workflow_base{
 						top.content.resize.left.tree.location.reload(true);
 						break;
 					case "empty_log":
-						new jsWindow("<?php print WE_WORKFLOW_MODULE_PATH ?>edit_workflow_frameset.php?pnt=qlog","log_question",-1,-1,360,230,true,false,true);
+						new jsWindow("<?php print WE_WORKFLOW_MODULE_DIR ?>edit_workflow_frameset.php?pnt=qlog","log_question",-1,-1,360,230,true,false,true);
 						break;
 					default:
 						for(var i = 0; i < arguments.length; i++){
@@ -856,8 +856,8 @@ class we_workflow_view extends we_workflow_base{
 					$this->workflowDef = new we_workflow_workflow();
 					$this->page = 0;
 					print '<script  type="text/javascript">
-					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader";
-					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter";
+					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
+					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					</script>';
 					break;
 				case "add_cat":
@@ -987,8 +987,8 @@ class we_workflow_view extends we_workflow_base{
 					break;
 				case "reload":
 					print '<script  type="text/javascript">
-					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
-					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter";
+					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
+					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
 					</script>';
 					break;
 				case "edit_workflow":
@@ -1057,8 +1057,8 @@ class we_workflow_view extends we_workflow_base{
 						$this->page = 0;
 						$this->documentDef->load($_REQUEST["wid"]);
 						print '<script  type="text/javascript">
-					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
-					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
+					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
+					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
 					</script>';
 					}
 					break;
@@ -1533,7 +1533,7 @@ class we_workflow_view extends we_workflow_base{
 		</tr>
 			<td></td><td>' . we_html_tools::getPixel(10, 10) . '</td><td>' . we_html_tools::getPixel(15, 10) . '</td>
 		<tr>
-			<td></td><td>' . we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td><td>' . we_html_tools::getPixel(15, 10) . '</td>
+			<td></td><td>' . we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td><td>' . we_html_tools::getPixel(15, 10) . '</td>
 		</tr>
 		</table>';
 
@@ -1586,7 +1586,7 @@ class we_workflow_view extends we_workflow_base{
 
 		$nextprev = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 		if($offset){
-			$nextprev .= we_button::create_button("back", WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)); //bt_back
+			$nextprev .= we_button::create_button("back", WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)); //bt_back
 		} else{
 			$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 		}
@@ -1602,7 +1602,7 @@ class we_workflow_view extends we_workflow_base{
 		$nextprev .= we_html_tools::getPixel(5, 1) . " " . g_l('global', "[from]") . " " . we_html_tools::getPixel(5, 1) . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1);
 
 		if(($offset + $numRows) < $anz){
-			$nextprev .= we_button::create_button("next", WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows) . "&order=$order"); //bt_back
+			$nextprev .= we_button::create_button("next", WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows) . "&order=$order"); //bt_back
 		} else{
 			$nextprev .= we_button::create_button("next", "", "", 100, 22, "", "", true);
 		}

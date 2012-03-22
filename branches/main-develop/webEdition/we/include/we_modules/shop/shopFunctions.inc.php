@@ -110,7 +110,7 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 		if (we_hasPerm("EDIT_SHOP_ORDER")){
 			$orderStr .=
 			($sameModul ?
-					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
+					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
 					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
               	);
 		} else {

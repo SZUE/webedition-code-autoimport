@@ -63,7 +63,7 @@ print STYLESHEET;
 ?>
 
 <body class="weDialogBody">
-	<form name="settings" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php" method="post">
+	<form name="settings" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
 <?php
 if(isset($_REQUEST['we_transaction'])){
 	$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);

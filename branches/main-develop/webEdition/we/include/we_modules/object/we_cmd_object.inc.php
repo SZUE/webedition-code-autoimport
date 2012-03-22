@@ -68,7 +68,7 @@ switch($_REQUEST['we_cmd'][0]){
 	case 'del_extraworkspace':
 	case 'changeTempl_ob':
 	case 'ws_from_class':
-//	In this file we cant work with WE_OBJECT_MODULE_DIR, because a prefix is already set in : we_cmd.php
+//	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
 		$INCLUDE = 'we_editors/we_editor.inc.php';
 		break;
 

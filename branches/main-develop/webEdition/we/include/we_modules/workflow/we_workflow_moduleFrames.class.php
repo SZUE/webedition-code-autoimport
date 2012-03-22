@@ -214,9 +214,9 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
  ?>
  </head>
    <frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-   <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=header" name="header" scrolling=no noresize>
-   <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
-   <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
+   <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=header" name="header" scrolling=no noresize>
+   <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
+   <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
   </frameset>
 
  <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
@@ -242,18 +242,18 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
 </head>
 <?php if ((we_base_browserDetect::isGecko()) || we_base_browserDetect::isOpera()){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } else if(we_base_browserDetect::isOpera()) { ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" name="left">
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } else { //IE ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" frameborder="0" name="left">
-		<frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=right" name="right" >
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=left" scrolling="no" frameborder="0" name="left">
+		<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=right" name="right" >
 	</frameset>
 <?php } ?>
 <noframes>
@@ -288,17 +288,17 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
 </head>
 <?php if ((we_base_browserDetect::isGecko()) || we_base_browserDetect::isOpera())	{ ?>
 	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-        <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=editor" scrolling="no" noresize name="editor">
+        <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=editor" scrolling="no" noresize name="editor">
 	</frameset>
 <?php } else if(we_base_browserDetect::isSafari()) { ?>
 	<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
         <frame src="<?php print HTML_DIR; ?>safariResize.html" name="separator" noresize scrolling="no">
-        <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=editor" noresize name="editor" scrolling="no">
+        <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=editor" noresize name="editor" scrolling="no">
 	</frameset>
 <?php } else { ?>
 	<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
         <frame src="<?php print HTML_DIR; ?>ieResize.html" name="separator" noresize scrolling="no">
-        <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=editor" noresize name="editor" scrolling="no">
+        <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=editor" noresize name="editor" scrolling="no">
 	</frameset>
 <?php } ?>
 	<noframes>
@@ -316,9 +316,9 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
 ?>
 </head>
    <frameset rows="40,*,40" framespacing="0" border="0" frameborder="no">
-    <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
-    <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=edbody&home=1" name="edbody" scrolling=auto>
-    <frame src="<?php print WE_WORKFLOW_MODULE_PATH; ?>edit_workflow_frameset.php?pnt=edfooter&home=1" name="edfooter" scrolling=no>
+    <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edheader&home=1" name="edheader" noresize scrolling=no>
+    <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edbody&home=1" name="edbody" scrolling=auto>
+    <frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=edfooter&home=1" name="edfooter" scrolling=no>
 
    </frameset>
 <noframes>

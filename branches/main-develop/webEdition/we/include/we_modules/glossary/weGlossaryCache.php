@@ -81,7 +81,7 @@ class weGlossaryCache{
 	 * @abstract
 	 */
 	function cacheIdToFilename($id){
-		return WE_GLOSSARY_MODULE_DIR . "cache/cache_" . $id . ".php";
+		return WE_GLOSSARY_MODULE_PATH . "cache/cache_" . $id . ".php";
 	}
 
 	/**
@@ -93,7 +93,7 @@ class weGlossaryCache{
 	 * @abstract
 	 */
 	function filenameToCacheId($filename){
-		return intval(str_replace(array(WE_GLOSSARY_MODULE_DIR . "data/cache_", '.php'), '', $filename));
+		return intval(str_replace(array(WE_GLOSSARY_MODULE_PATH . "data/cache_", '.php'), '', $filename));
 	}
 
 	/**

@@ -50,7 +50,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	passed_dls = new Array();
 
 	function showContent(id) {
-		top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>";
+		top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>";
 	}
 
 	function check(elem, groupSel) {
@@ -145,7 +145,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function newMessage(username){
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION["we_data"][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION["we_data"][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
 	}
 	//-->
 </script>

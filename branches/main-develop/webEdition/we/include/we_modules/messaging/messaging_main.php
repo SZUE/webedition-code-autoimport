@@ -36,7 +36,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no"/>
 			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree"  scrolling="aoto"/>
 		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
 	</frameset>
 	<?php } elseif(we_base_browserDetect::isSafari()){
 	?>
@@ -45,7 +45,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no" noresize/>
 			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree" scrolling="no"/>
 		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
 	</frameset>
 	<?php } else{//IE
 	?>
@@ -54,7 +54,7 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 			<frame src="<?php print HTML_DIR ?>whiteWithTopLine.html" scrolling="no"/>
 			<frame src="<?php print HTML_DIR ?>white.html" name="messaging_tree" scrolling="no" frameborder="0"/>
 		</frameset>
-		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_right.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_right"/>
 	</frameset>
 <?php } ?>
 

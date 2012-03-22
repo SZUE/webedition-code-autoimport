@@ -91,7 +91,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 		switch (arguments[0]){
 			case "new_shop":
-				top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFrameset.php";
+				top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php";
 				break;
 			case "delete_shop":
 
@@ -116,11 +116,11 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 			case "revenue_view":
 
 <?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects              ?>
-					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
+					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects              ?>
-					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
+					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
 <?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects              ?>
-					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
+					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } ?>
 
 				break;
@@ -138,25 +138,25 @@ while($yearshop <= date("Y")) {
 }
 ?>
 				case "pref_shop":
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
 					break;
 
 				case 'edit_shop_vats':
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
 					break;
 
 				case 'edit_shop_shipping':
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 					break;
 				case 'edit_shop_status':
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
 					break;
 				case 'edit_shop_vat_country':
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 					break;
 
 				case "payment_val":
-					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_PATH ?>edit_shop_payment.inc.php","shoppref",-1,-1,520,720,true,false,true,false);
+					//var wind = new jsWindow("<?php print WE_SHOP_MODULE_DIR ?>edit_shop_payment.inc.php","shoppref",-1,-1,520,720,true,false,true,false);
 					break;
 
 				default:
@@ -183,14 +183,14 @@ while($yearshop <= date("Y")) {
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_PATH ?>edit_shop_editorFrameset.php?bid='+id;");
+				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_editorFrameset.php?bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFrameset.php?mid='+id;");
+				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php?mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFrameset.php?ViewYear='+yearView;");
+				fr.writeln("top.content.shop_properties.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFrameset.php?ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</"+"SCRIPT>");
@@ -417,8 +417,8 @@ echo "top.yearshop = '$year';";
 </head>
 <?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" border="0" frameborder="1" onLoad="start();">
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>
 
 		<frameset cols="198,*"  border="1" frameborder="1">
 			<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
@@ -427,18 +427,18 @@ echo "top.yearshop = '$year';";
 			</frameset>
 			<?php
 			if(isset($_REQUEST['bid'])){
-				print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
+				print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
 			} else{
-				print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
+				print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
 			}
 			?>
 		</frameset>
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
 	</frameset>
 <?php } else{ ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
-		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
+		<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_iconbarHeader.php" name="shop_header" scrolling=no noresize/>
 
 		<frameset cols="198,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
 			<frameset rows="1,*" framespacing="0" border="0" frameborder="NO">
@@ -455,14 +455,14 @@ echo "top.yearshop = '$year';";
 					}
 
 					if(isset($_REQUEST['bid'])){
-						print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
+						print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto/>';
 					} else{
-						print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
+						print '<frame src="' . WE_SHOP_MODULE_DIR . 'edit_shop_editorFramesetTop.php?home=1" name="shop_properties" scrolling=auto/>';
 					}
 					?>
 				</frameset>
 			</frameset>
-			<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
+			<frame src="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_cmd.php" name="shop_cmd" scrolling=no noresize/>
 		</frameset>
 	<?php } ?>
 	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">

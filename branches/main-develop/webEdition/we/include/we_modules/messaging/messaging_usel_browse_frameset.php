@@ -331,7 +331,7 @@ while($DB_WE->next_record()) {
 		 default_color = "#000000";
 
 		 function showContent(id) {
-			 top.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
+			 top.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 		 }
 
 		 function array_search(needle, haystack) {
@@ -353,7 +353,7 @@ while($DB_WE->next_record()) {
 </head>
 <frameset rows="*,40" framespacing="0" border="0" frameborder="NO" onLoad=" start();">
 	<frame src="<?php print HTML_DIR ?>white.html" name="messaging_usel_main" scrolling="auto">
-		<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel_iconbar.php" name="user_cmd" scrolling=no noresize marginwidth="0" marginheight="0">
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel_iconbar.php" name="user_cmd" scrolling=no noresize marginwidth="0" marginheight="0">
 			</frameset><noframes></noframes>
 
 			<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">

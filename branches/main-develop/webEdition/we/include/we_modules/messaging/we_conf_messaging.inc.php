@@ -32,6 +32,6 @@ define("MSG_TODO_TABLE", TBL_PREFIX . "tblTODO");
 define("MSG_TODOHISTORY_TABLE", TBL_PREFIX . "tblTODOHistory");
 
 
-define("WE_MESSAGING_MODULE_DIR", $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/messaging/");
-define("WE_MESSAGING_MODULE_PATH", "/webEdition/we/include/we_modules/messaging/");
+define("WE_MESSAGING_MODULE_DIR", WE_MODULES_DIR . "messaging/");
+define("WE_MESSAGING_MODULE_PATH", $_SERVER['DOCUMENT_ROOT'] . WE_MESSAGING_MODULE_DIR);
 

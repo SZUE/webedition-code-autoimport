@@ -431,10 +431,10 @@ class we_user{
 		$entries = array();
 		$entries = weToolLookup::getPermissionIncludes();
 
-		$d = dir(WE_USERS_MODULE_DIR . "perms");
+		$d = dir(WE_USERS_MODULE_PATH . "perms");
 		while(($file = $d->read())) {
 			if(substr($file, 0, 9) == 'we_perms_'){
-				$entries[] = WE_USERS_MODULE_DIR . "perms/" . $file;
+				$entries[] = WE_USERS_MODULE_PATH . "perms/" . $file;
 			}
 		}
 		$d->close();
@@ -2525,7 +2525,7 @@ class we_user{
 
 	function formHeader($tab = 0){
 		$big = false;
-		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")){
+		if(file_exists(WE_USERS_MODULE_PATH . "edit_users_bcmd.php")){
 			$big = true;
 		}
 

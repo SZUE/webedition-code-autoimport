@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
+include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 
 
 /* messaging object class */
@@ -118,9 +118,9 @@ class we_messaging extends we_class{
 
 	function add_msgobj($objname, $recover = 0){
 
-		$inc_files = array("we_message" => WE_MESSAGING_MODULE_DIR . "we_message.inc.php",
-			"we_todo" => WE_MESSAGING_MODULE_DIR . "we_todo.inc.php",
-			"we_msg_email" => WE_MESSAGING_MODULE_DIR . "we_msg_email.inc.php");
+		$inc_files = array("we_message" => WE_MESSAGING_MODULE_PATH . "we_message.inc.php",
+			"we_todo" => WE_MESSAGING_MODULE_PATH . "we_todo.inc.php",
+			"we_msg_email" => WE_MESSAGING_MODULE_PATH . "we_msg_email.inc.php");
 
 		if(in_array($objname, array_keys($this->send_msgobjs))){
 			return 0;

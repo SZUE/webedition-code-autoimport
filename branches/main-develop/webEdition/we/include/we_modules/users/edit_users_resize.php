@@ -29,18 +29,18 @@ we_html_tools::htmlTop();
 
 <?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
 <?php } else if(we_base_browserDetect::isSafari()){ ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
 <?php } else{ //IE  ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no" frameborder="0"/>
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_left.php" name="user_left" scrolling="no" frameborder="0"/>
+		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
 <?php } ?>
 <noframes>
