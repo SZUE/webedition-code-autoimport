@@ -23,9 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class weToolLookup{
-	const REGISTRY_NAME='weToolsRegistry';
 
-	static function getAllTools($force=false, $addInternTools=false, $includeDisabled=false){
+	const REGISTRY_NAME = 'weToolsRegistry';
+
+	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
 
 		if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['meta'])){
 			return $_SESSION[self::REGISTRY_NAME]['meta'];
@@ -60,7 +61,7 @@ abstract class weToolLookup{
 		closedir($_d);
 
 		// include autoload function
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 		Zend_Loader::loadClass('we_core_Local');
@@ -226,7 +227,7 @@ abstract class weToolLookup{
 		return in_array(dirname($filepath), weToolLookup::getTagDirs());
 	}
 
-	static function isTool($name, $includeDisabled=false){
+	static function isTool($name, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){
 			if($_tool['name'] == $name){
@@ -246,22 +247,22 @@ abstract class weToolLookup{
 		return $toolFolder . $name . '/service/views/' . $protocol . $namespace . 'rpc' . $view . 'View.class.php';
 	}
 
-	static function getAllToolTags($toolname, $includeDisabled=false){
+	static function getAllToolTags($toolname, $includeDisabled = false){
 
 		return weToolLookup::getFileRegister($toolname, '/tags', '^we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
-	static function getAllToolTagWizards($toolname, $includeDisabled=false){
+	static function getAllToolTagWizards($toolname, $includeDisabled = false){
 
 		return weToolLookup::getFileRegister($toolname, '/tagwizard', '^we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
-	static function getAllToolServices($toolname, $includeDisabled=false){
+	static function getAllToolServices($toolname, $includeDisabled = false){
 
 		return weToolLookup::getFileRegister($toolname, '/service/cmds', '^rpc', 'rpc', 'Cmd.class.php', $includeDisabled);
 	}
 
-	static function getAllToolLanguages($toolname, $subdir='/lang', $includeDisabled=false){
+	static function getAllToolLanguages($toolname, $subdir = '/lang', $includeDisabled = false){
 
 		$_founds = array();
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
@@ -279,7 +280,7 @@ abstract class weToolLookup{
 		return $_founds;
 	}
 
-	static function getFileRegister($toolname, $subdir, $filematch, $rem_before='', $rem_after='', $includeDisabled=false){
+	static function getFileRegister($toolname, $subdir, $filematch, $rem_before = '', $rem_after = '', $includeDisabled = false){
 		$_founds = array();
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		$_tooldir = $toolFolder . $toolname . $subdir;
@@ -297,7 +298,7 @@ abstract class weToolLookup{
 		return $_founds;
 	}
 
-	static function getToolTag($name, &$include, $includeDisabled=false){
+	static function getToolTag($name, &$include, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
@@ -309,7 +310,7 @@ abstract class weToolLookup{
 		return false;
 	}
 
-	static function getToolListviewTag($name, &$include, $includeDisabled=false){
+	static function getToolListviewTag($name, &$include, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
@@ -321,7 +322,7 @@ abstract class weToolLookup{
 		return false;
 	}
 
-	static function getToolListviewItemTag($name, &$include, $includeDisabled=false){
+	static function getToolListviewItemTag($name, &$include, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
@@ -333,7 +334,7 @@ abstract class weToolLookup{
 		return false;
 	}
 
-	static function getToolTagWizard($name, &$include, $includeDisabled=false){
+	static function getToolTagWizard($name, &$include, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
@@ -345,7 +346,7 @@ abstract class weToolLookup{
 		return false;
 	}
 
-	static function getToolListviewTagWizard($name, &$include, $includeDisabled=false){
+	static function getToolListviewTagWizard($name, &$include, $includeDisabled = false){
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		$toolFolder = defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/';
 		foreach($_tools as $_tool){
@@ -357,7 +358,7 @@ abstract class weToolLookup{
 		return false;
 	}
 
-	static function getPermissionIncludes($includeDisabled=false){
+	static function getPermissionIncludes($includeDisabled = false){
 		$_inc = array();
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){
@@ -369,7 +370,7 @@ abstract class weToolLookup{
 		return $_inc;
 	}
 
-	static function getToolsForBackup($includeDisabled=false){
+	static function getToolsForBackup($includeDisabled = false){
 		$_inc = array();
 		$_tools = weToolLookup::getAllTools(false, false, $includeDisabled);
 		foreach($_tools as $_tool){

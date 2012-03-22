@@ -52,7 +52,7 @@ class weJavaMenu{
 	}
 
 	function getCode($old = true){
-		return ($old ? $this->getJS():'') . $this->getHTML($old);
+		return ($old ? $this->getJS() : '') . $this->getHTML($old);
 	}
 
 	function getJS(){
@@ -100,7 +100,7 @@ class weJavaMenu{
 		if(!$showAltMenu){
 			$out .= '
 				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri('/webEdition/lib/we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
+				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
 					<param name="phpext" value=".php"/>';
 			$i = 0;
 			foreach($this->entries as $id => $m){

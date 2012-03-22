@@ -93,7 +93,7 @@ class we_net_Community{
 	 *
 	 */
 	public function __construct(){
-		$this->_configFile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_community.xml.php';
+		$this->_configFile = WE_INCLUDES_PATH . 'conf/we_community.xml.php';
 		$this->_readServerConfig();
 		if(!empty($this->_serverURI)){
 			if(!$this->_http = new we_net_Http()){
@@ -275,7 +275,7 @@ class we_net_Community{
 		if(empty($this->_uid) || empty($this->_password)){
 			return false;
 		}
-		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_community.inc.php';
+		$filename = WE_INCLUDES_PATH . 'conf/we_community.inc.php';
 		$output = '<?php' . "\n" . '$communityAccount = array("uid" => "' . $this->_uid . '","password" => "' . $this->_encryptPassword($this->_password) . '");' . "\n" . '?>';
 
 		if(!file_put_contents($filename, $output)){
@@ -291,7 +291,7 @@ class we_net_Community{
 	 * @return bool true/false
 	 */
 	private function _removeAccount(){
-		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_community.inc.php';
+		$filename = WE_INCLUDES_PATH . 'conf/we_community.inc.php';
 		$output = '<?php' . "\n" . '$communityAccount = array("uid" => "","password" => "");' . "\n" . '?>';
 
 		if(!file_put_contents($filename, $output)){

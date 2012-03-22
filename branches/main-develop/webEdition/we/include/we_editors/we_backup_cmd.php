@@ -181,7 +181,7 @@ if(isset($_REQUEST['cmd'])){
 					if($_SESSION['weBackupVars']['backup_log']){
 						weBackupUtil::addLog('Exporting settings');
 					}
-					$_files[] = '/webEdition/we/include/conf/we_conf_global.inc.php';
+					$_files[] = WE_INCLUDES_DIR.'conf/we_conf_global.inc.php';
 				}
 
 				if(count($_files)){

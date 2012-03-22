@@ -60,7 +60,7 @@ class weModuleFrames{
 	//----------HTML functions -----------------
 
 
-	function getHTMLDocument($body, $extraHead=""){
+	function getHTMLDocument($body, $extraHead = ""){
 		$head = //FIXME: missing title
 			we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n" . $extraHead;
 		return we_html_element::htmlHtml(
@@ -97,8 +97,8 @@ class weModuleFrames{
 
 	function getHTMLHeader(){
 		//	Include the menu.
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_" . $this->module . ".inc.php");
-		include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+		include(WE_INCLUDES_PATH . "java_menu/modules/module_menu_" . $this->module . ".inc.php");
+		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = "we_menu_" . $this->module;
 		$jmenu = new weJavaMenu($$lang_arr, "top.opener.top.load", 350, 30);
@@ -198,7 +198,7 @@ class weModuleFrames{
 		return $this->getHTMLDocument($body, $head);
 	}
 
-	function getHTMLBox($content, $headline="", $width="100", $height="50", $w="25", $vh="0", $ident="0", $space="5", $headline_align="left", $content_align="left"){
+	function getHTMLBox($content, $headline = "", $width = "100", $height = "50", $w = "25", $vh = "0", $ident = "0", $space = "5", $headline_align = "left", $content_align = "left"){
 		$out = "";
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($ident)

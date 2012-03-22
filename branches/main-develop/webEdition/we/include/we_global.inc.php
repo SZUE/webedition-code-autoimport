@@ -1618,7 +1618,7 @@ function getPref($name){
 	if(isset($_SESSION['prefs'][$name])){
 		return $_SESSION['prefs'][$name];
 	} else{
-		$file_name = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php';
+		$file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
 		$parser = weConfParser::getConfParserByFile($file_name);
 		$all = $parser->getData();
 		return isset($all[$name]) ? $all[$name] : '';
@@ -1733,7 +1733,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(defined('XHTML_DEBUG') && XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/xhtml.inc.php');
+			include_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
 
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
 					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
@@ -1874,7 +1874,7 @@ function getDoctypeQuery($db = ''){
 }
 
 function we_loadLanguageConfig(){
-	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
+	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
 	if(!file_exists($file) || !is_file($file)){
 		we_writeLanguageConfig((WE_LANGUAGE == 'Deutsch' || WE_LANGUAGE == 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
 	}
@@ -1906,7 +1906,7 @@ function we_writeLanguageConfig($default, $available = array()){
 		$locales .= "	'" . $Locale . "',\n";
 	}
 
-	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php';
+	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
 	$fh = fopen($file, 'w+');
 	if(!$fh){
 		return false;
@@ -2056,7 +2056,7 @@ function g_l($name, $specific, $omitErrors = false){
 }
 
 function we_templateInit(){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE;
 	}

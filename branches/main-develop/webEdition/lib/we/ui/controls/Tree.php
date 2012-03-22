@@ -134,7 +134,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/event-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/connection-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
-		$this->addJSFile('/webEdition/lib/we/core/JsonRpc.js');
+		$this->addJSFile(LIB_DIR . '/we/core/JsonRpc.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/treeview/treeview-min.js');
 	}
 
@@ -228,7 +228,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @param string $extension
 	 * @return string
 	 */
-	public static function getTreeIconClass($contentType, $extension=''){
+	public static function getTreeIconClass($contentType, $extension = ''){
 		return we_ui_layout_Image::getIconClass($contentType, $extension = '');
 	}
 
@@ -239,7 +239,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @param string $text
 	 * @return string
 	 */
-	public function getNodeObject($id, $text, $Published=1, $Status=''){
+	public function getNodeObject($id, $text, $Published = 1, $Status = ''){
 		//$doOnClick = "alert(&quot;".$id."&quot;);";
 		$doOnClick = "alert(&quot;" . $Published . "&quot;);";
 		$outClasses = array();
@@ -284,7 +284,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @param string $text
 	 * @return string
 	 */
-	public function getNodeObjectSuggest($id, $text, $Classes='', $Status=''){
+	public function getNodeObjectSuggest($id, $text, $Classes = '', $Status = ''){
 		$doOnClick = "alert(&quot;Status:-" . $Status . "- classes:" . $Classes . "-&quot;);";
 		if($Classes != ''){
 			$outClass = 'class=\"' . $Classes . '\"';
@@ -392,7 +392,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 					' . $this->getNodesJS() . '
 
 					tree_' . $this->_id . '.subscribe("collapse", function(node) {
-						var sUrl = "/webEdition/lib/we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
+						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
 					    var callback = {
 					        success: function(oResponse) {
 					        	var _node = document.getElementById(node.labelElId);
@@ -407,7 +407,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 					});
 
 					tree_' . $this->_id . '.subscribe("expand", function(node) {
-						var sUrl = "/webEdition/lib/we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
+						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
 					    var callback = {
 					        success: function(oResponse) {
 								var _node = document.getElementById(node.labelElId);
@@ -429,7 +429,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 				    var nodeLabel = encodeURI(node.label);
 
 				    //prepare URL for XHR request:
-				    var sUrl = "/webEdition/lib/we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
+				    var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
 
 				    //prepare our callback object
 				    var callback = {

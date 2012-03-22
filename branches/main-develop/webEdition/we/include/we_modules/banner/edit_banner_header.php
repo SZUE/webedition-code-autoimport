@@ -21,11 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/module_menu_banner.inc.php");
-include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once(WE_INCLUDES_PATH . "java_menu/modules/module_menu_banner.inc.php");
+include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
@@ -33,28 +31,29 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 
-    $jmenu = new weJavaMenu($we_menu_banner,"top.opener.top.load",350,30);
+$jmenu = new weJavaMenu($we_menu_banner, "top.opener.top.load", 350, 30);
 
-echo we_html_element::jsScript(JS_DIR.'images.js');
-		echo we_html_element::jsElement('
+echo we_html_element::jsScript(JS_DIR . 'images.js');
+echo we_html_element::jsElement('
 	       function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
 	    }
 
-	');?>
-	</head>
-	<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td align=left valign=top>
-					<?php $jmenu->printMenu(); ?>
-				</td>
-				<td align="right">
+	');
+?>
+</head>
+<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td align=left valign=top>
+				<?php $jmenu->printMenu(); ?>
+			</td>
+			<td align="right">
 				<?php
-					print createMessageConsole("moduleFrame");
+				print createMessageConsole("moduleFrame");
 				?>
-				</td>
-			</tr>
-		</table>
-	</body>
+			</td>
+		</tr>
+	</table>
+</body>
 </html>

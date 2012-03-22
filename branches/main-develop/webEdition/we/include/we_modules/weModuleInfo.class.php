@@ -1,7 +1,5 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
-
 abstract class weModuleInfo {
 
 	static function _orderModules($a, $b){

@@ -32,7 +32,7 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $
 
 // init document
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . "we_editors/we_init_doc.inc.php");
 $_thumbs = array();
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
@@ -56,7 +56,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 			add_enabled = switch_button_state("add", "add_enabled", "disabled");
 		}
 
-		self.showthumbs.location = "/webEdition/showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+escape(thumbs);
+		self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+escape(thumbs);
 
 	}
 
@@ -132,7 +132,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtml() . '<p align="right">' . $editbut . '</p>', "space" => 0));
 
 
-	$iframe = '<iframe name="showthumbs" id="showthumbs" src="/webEdition/showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
+	$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
 
 	array_push($_thumbs, array("headline" => "", "html" => $iframe, "space" => 0));
 

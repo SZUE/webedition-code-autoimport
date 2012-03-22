@@ -45,31 +45,30 @@ if($_memlimit < 32){
 if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 //start autoloader!
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 // Activate the webEdition error handler
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
+include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_active_integrated_modules.inc.php');
+include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	if(file_exists(
-			$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
+	if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
+		include_once (WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
 
@@ -130,10 +129,10 @@ if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
 
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
+	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_perms.inc.php");
+	include_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
 
 
 	//send header?
@@ -173,7 +172,8 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	}
 
 	if($header){
-		header('Content-Type: text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET']);
+		header('Content-Type: text/html;
+		charset = ' . $GLOBALS['WE_BACKENDCHARSET']);
 	}
 	unset($header);
 }

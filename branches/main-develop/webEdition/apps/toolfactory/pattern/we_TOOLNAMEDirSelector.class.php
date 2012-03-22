@@ -1,5 +1,5 @@
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php');
+include_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{

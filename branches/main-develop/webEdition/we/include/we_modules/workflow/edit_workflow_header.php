@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_workflow.inc.php");
-include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+include_once(WE_INCLUDES_PATH. "java_menu/modules/module_menu_workflow.inc.php");
+include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 we_html_tools::protect();
 

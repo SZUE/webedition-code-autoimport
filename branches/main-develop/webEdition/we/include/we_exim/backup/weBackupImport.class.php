@@ -170,7 +170,7 @@ class weBackupImport{
 					if(method_exists($object, 'convertCharsetEncoding'))
 						$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'], DEFAULT_CHARSET);
 				}
-				if(isset($object->Path) && $object->Path == '/webEdition/we/include/conf/we_conf_global.inc.php'){
+				if(isset($object->Path) && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 					weBackupImport::handlePrefs($object);
 				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing

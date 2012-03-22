@@ -451,7 +451,7 @@ print
 				}
 				return false;
 			}
-			// saves a note, using the function rpc() in /www/we50/webEdition/we/include/home.inc.php (750)
+			// saves a note, using the function rpc() in home.inc.php (750)
 			function saveNote(){
 				var fo=document.forms[0];
 				var _id=fo.elements['mark'].value;

@@ -2553,12 +2553,12 @@ function save_all_values(){
 
 	// we_conf.inc.php
 	$GLOBALS['config_files']['conf'] = array();
-	$GLOBALS['config_files']['conf']['filename'] = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf.inc.php";
+	$GLOBALS['config_files']['conf']['filename'] = WE_INCLUDES_PATH . "conf/we_conf.inc.php";
 	$GLOBALS['config_files']['conf']['content'] = weFile::load($GLOBALS['config_files']['conf']['filename']);
 
 	// we_conf_global.inc.php
 	$GLOBALS['config_files']['conf_global'] = array();
-	$GLOBALS['config_files']['conf_global']['filename'] = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php";
+	$GLOBALS['config_files']['conf_global']['filename'] = WE_INCLUDES_PATH . "conf/we_conf_global.inc.php";
 	$GLOBALS['config_files']['conf_global']['content'] = weFile::load($GLOBALS['config_files']['conf_global']['filename']);
 
 	// proxysettings.inc.php
@@ -2568,7 +2568,7 @@ function save_all_values(){
 
 	// we_active_integrated_modules.inc.php
 	$GLOBALS['config_files']['active_integrated_modules'] = array();
-	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
+	$GLOBALS['config_files']['active_integrated_modules']['filename'] = WE_INCLUDES_PATH . "conf/we_active_integrated_modules.inc.php";
 	$GLOBALS['config_files']['active_integrated_modules']['content'] = weFile::load($GLOBALS['config_files']['active_integrated_modules']['filename']);
 
 
@@ -2932,8 +2932,8 @@ function check_global_config($values){
 	$_rewrite_config = false;
 
 	// Read the global configuration file
-	$_file_name = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php";
-	$_temp_file_name = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/tmp_we_conf_global.inc.php";
+	$_file_name = WE_INCLUDES_PATH . "conf/we_conf_global.inc.php";
+	$_temp_file_name = WE_INCLUDES_PATH . "conf/tmp_we_conf_global.inc.php";
 	$_file = weFile::load($_file_name);
 
 	// Cut closing PHP tag from configuration file
@@ -6408,10 +6408,14 @@ function render_dialog(){
 
 
 
+
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
+
 
 
 

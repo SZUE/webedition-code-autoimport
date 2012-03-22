@@ -13,14 +13,15 @@ we_core_Local::addTranslation('default.xml', 'toolfactory');
 we_core_Local::addTranslation('default.xml', $metaInfo['classname']);
 
 $htmlPage = we_ui_layout_Dialog::getInstance();
-$htmlPage->addJSFile('/webEdition/js/windows.js');
-$htmlPage->addJSFile('/webEdition/js/we_showMessage.js');
-$htmlPage->addJSFile('/webEdition/js/images.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/yahoo-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/event-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/connection-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/json-min.js');
-$htmlPage->addJSFile('/webEdition/lib/we/core/JsonRpc.js');
+$htmlPage->addJSFile(JS_DIR . 'windows.js');
+$htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
+$htmlPage->addJSFile(JS_DIR . 'images.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/event-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
+
 $appconfig = we_app_Common::getManifest($metaInfo['classname']);
 
 
@@ -45,7 +46,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 					}
 					$html .=  $appconfig->info->copyright;
 					if(!empty($appconfig->info->copyrighturl)){
-						$html .= '</a>';				
+						$html .= '</a>';
 					}
 				}
 				$html .= '<br/>';
@@ -53,7 +54,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 
 			$html .= '<br/>';
 
-		}	
+		}
 
 		if(!empty($appconfig->dependencies->version)){
 			$we_version = we_util_Strings::version2number(WE_VERSION,false);
@@ -91,7 +92,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 		$tableExTool->setId('tabExTool');
 		$tableExTool->setMarginLeft(30);
 		$rowsExTool=array();
-		$html = '';	
+		$html = '';
 		$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
 		$rowExTool->setLeftWidth(100);
 		if(!empty($appconfig->thirdparty->www)){
@@ -109,7 +110,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 			}
 			if(!empty($appconfig->thirdparty->license)){$html .= $appconfig->thirdparty->license;} else {$html .= $appconfig->thirdparty->licenseurl;}
 			if(!empty($appconfig->thirdparty->licenseurl)){
-				$html .= '</a>';		
+				$html .= '</a>';
 			}
 		}
 		$rowExTool->addHTML($html);
@@ -120,9 +121,9 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 			$tableAuthor = new we_ui_layout_HeadlineIconTable();
 			$tableAuthor->setId('tabAuthor');
 			$tableAuthor->setMarginLeft(30);
-			$rowsAuthor=array();	
-			if(!empty($appconfig->creator)){ 
-				$cm = $appconfig->creator; 
+			$rowsAuthor=array();
+			if(!empty($appconfig->creator)){
+				$cm = $appconfig->creator;
 				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
 				$rowAuthor->setLine(0);
 				$rowAuthor->setLeftWidth(100);
@@ -172,7 +173,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 				$rowsAuthor[] = $rowAuthor;
 			}
 			if(!empty($appconfig->maintainer)){
-				$cm = $appconfig->maintainer; 
+				$cm = $appconfig->maintainer;
 				$html = '';
 				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
 				$rowMaintainer->setLeftWidth(100);
@@ -211,7 +212,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 							$html .= '</a>';
 						}
 					}
-				
+
 				}
 				if(!empty($cm->address)){
 					$html .= '<br/>'.$cm->address;
@@ -219,12 +220,12 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 				if(!empty($cm->email)){
 					$html .= '<br/><a style="color:#000000" href="mailto'.$cm->email.'">'.$cm->email.'</a>';
 				}
-				
-				$rowMaintainer->addHTML($html);			
+
+				$rowMaintainer->addHTML($html);
 				$rowsAuthor[] = $rowMaintainer;
 			}
 			$tableAuthor->setRows($rowsAuthor);
-			$htmlPage->addElement($tableAuthor);	
+			$htmlPage->addElement($tableAuthor);
 		}
 
 $button = new we_ui_controls_Button();

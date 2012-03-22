@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 we_html_tools::protect();
 
@@ -31,7 +31,7 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 //	Include javaMenu information for this module
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_shop.inc.php");
+include_once(WE_INCLUDES_PATH . "java_menu/modules/module_menu_shop.inc.php");
 
 $jmenu = new weJavaMenu($we_menu_shop, "top.opener.top.load", 350, 30);
 
@@ -55,7 +55,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 			</td>
 			<td align="right">
 				<?php
-				include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+				include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("moduleFrame");
 				?>
 			</td>

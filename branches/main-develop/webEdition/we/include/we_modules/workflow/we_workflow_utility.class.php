@@ -22,22 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/we_conf_workflow.inc.php");
+include_once(WE_MODULES_PATH . "workflow/we_conf_workflow.inc.php");
 
 class we_workflow_utility{
 
 	function getTypeForTable($table){
-		$type = 0;
-
-		if($table == FILE_TABLE)
-			$type = "0,1";
-		else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)
-			$type = "2";
-		else
-			$type = "0,1";
-
-		return $type;
+		switch($table){
+			case FILE_TABLE:
+				return "0,1";
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1):
+				return "2";
+			default:
+				return "0,1";
+		}
 	}
 
 	function insertDocInWorkflow($docID, $table, $workflowID, $userID, $desc){
@@ -57,7 +54,7 @@ class we_workflow_utility{
 		return false;
 	}
 
-	function approve($docID, $table, $userID, $desc, $force=false){
+	function approve($docID, $table, $userID, $desc, $force = false){
 		/* approve step */
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -74,7 +71,7 @@ class we_workflow_utility{
 
 	 */
 
-	function decline($docID, $table, $userID, $desc, $force=false){
+	function decline($docID, $table, $userID, $desc, $force = false){
 		/* decline step */
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -111,7 +108,7 @@ class we_workflow_utility{
 	  will be returned
 	 */
 
-	function getWorkflowDocument($docID, $table, $status=we_workflow_document::STATUS_UNKNOWN){
+	function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$type = self::getTypeForTable($table);
 		return we_workflow_document::find($docID, $type, $status);
 	}
@@ -121,7 +118,7 @@ class we_workflow_utility{
 	  workflow document id (not object)
 	 */
 
-	function getWorkflowDocumentID($docID, $table, $status=we_workflow_document::STATUS_UNKNOWN){
+	function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$doc = self::getWorkflowDocument($docID, $table, $status);
 		if(isset($doc->ID)){
 			if($doc->ID)
@@ -138,7 +135,7 @@ class we_workflow_utility{
 	  documents parameters and returns new document object
 	 */
 
-	function getWorkflowDocumentForDoc($doctype=0, $categories="", $folder=-1){
+	function getWorkflowDocumentForDoc($doctype = 0, $categories = "", $folder = -1){
 		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
@@ -151,7 +148,7 @@ class we_workflow_utility{
 	  objects parametars and returns new document object
 	 */
 
-	function getWorkflowDocumentForObject($object, $categories="", $folderID=0){
+	function getWorkflowDocumentForObject($object, $categories = "", $folderID = 0){
 		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
@@ -173,7 +170,7 @@ class we_workflow_utility{
 		}
 	}
 
-	function getAllWorkflows($status=we_workflow_workflow::STATE_ACTIVE, $table=FILE_TABLE){ // returns hash array with ID as key and Name as value
+	function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE){ // returns hash array with ID as key and Name as value
 		$type = self::getTypeForTable($table);
 		return we_workflow_workflow::getAllWorkflowsInfo($status, $type);
 	}
@@ -246,7 +243,7 @@ class we_workflow_utility{
 		return false;
 	}
 
-	function getWorkflowDocsForUser($userID, $table, $isAdmin=false, $permPublish=false, $ws=""){
+	function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
 
 		if($isAdmin){
 			return self::getAllWorkflowDocs($table);
@@ -328,7 +325,7 @@ class we_workflow_utility{
 	  Cronjob function
 	 */
 
-	function forceOverdueDocuments($userID=0){
+	function forceOverdueDocuments($userID = 0){
 
 		$db = new DB_WE();
 		$ret = "";

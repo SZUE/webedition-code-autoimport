@@ -184,15 +184,15 @@ class weBackupUtil{
 			return true;
 		}
 
-		if(empty($id) && $path == '/webEdition/we/include/conf/we_conf_global.inc.php' && $_SESSION['weBackupVars']['handle_options']['settings']){
+		if(empty($id) && $path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' && $_SESSION['weBackupVars']['handle_options']['settings']){
 			return true;
 		}
 
-		if(empty($id) && $_SESSION['weBackupVars']['options']['backup_extern'] && $path != '/webEdition/we/include/conf/we_conf_global.inc.php'){
+		if(empty($id) && $_SESSION['weBackupVars']['options']['backup_extern'] && $path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 			return true;
 		}
 
-		if(empty($id) && strpos($path, '/webEdition/we/include/we_modules/spellchecker') === 0 && $_SESSION['weBackupVars']['handle_options']['spellchecker']){
+		if(empty($id) && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weBackupVars']['handle_options']['spellchecker']){
 			return true;
 		}
 

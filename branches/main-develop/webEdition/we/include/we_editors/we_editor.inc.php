@@ -292,7 +292,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		include($we_include);
 	} else{
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/" . $we_include);
+		include(WE_INCLUDES_PATH . $we_include);
 	}
 	$contents = ob_get_contents();
 	ob_end_clean();
@@ -726,7 +726,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 				if(preg_match('#^/webEdition/we/#', $we_include)){
 					include($_SERVER['DOCUMENT_ROOT'] . $we_include);
 				} else{
-					include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/" . $we_include);
+					include(WE_INCLUDES_PATH . $we_include);
 				}
 				print $_insertReloadFooter;
 			}

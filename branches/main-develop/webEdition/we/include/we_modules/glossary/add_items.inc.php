@@ -55,8 +55,6 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	$DictBase = getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . 'dict/';
 
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/spellchecker/spellchecker.conf.inc.php');
-
 	$LanguageDict = null;
 	if(isset($spellcheckerConf['lang']) && is_array($spellcheckerConf['lang'])){
 		$LanguageDict = array_search($Language, $spellcheckerConf['lang']);

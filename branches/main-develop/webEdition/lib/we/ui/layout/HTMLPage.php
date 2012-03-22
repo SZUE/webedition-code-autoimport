@@ -256,8 +256,8 @@ var weEventController = weEC();
 
 EOS;
 		} else{
-			$this->addJSFile('/webEdition/lib/we/core/CmdController.js');
-			$this->addJSFile('/webEdition/lib/we/core/EventController.js');
+			$this->addJSFile(LIB_DIR . 'we/core/CmdController.js');
+			$this->addJSFile(LIB_DIR . 'we/core/EventController.js');
 
 			$js = <<<EOS
 

@@ -44,7 +44,7 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView{
 	public function getJSTop(){
 
 		$page = we_ui_layout_HTMLPage::getInstance();
-		$page->addJSFile('/webEdition/lib/we/ui/layout/Dialog.js');
+		$page->addJSFile(LIB_DIR . 'we/ui/layout/Dialog.js');
 
 		$translate = we_core_Local::addTranslation('apps.xml');
 		we_core_Local::addTranslation('default.xml', 'toolfactory');

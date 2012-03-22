@@ -24,8 +24,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //	Include the menu.
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_users.inc.php");
-include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+include_once(WE_INCLUDES_PATH . 'java_menu/modules/module_menu_users.inc.php');
+include_once(WE_INCLUDES_PATH . 'jsMessageConsole/messageConsole.inc.php');
 
 we_html_tools::protect();
 

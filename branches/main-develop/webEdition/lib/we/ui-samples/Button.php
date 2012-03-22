@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php'); 
+include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $buttonHref = new we_ui_controls_Button();
 $buttonHref->setTitle('go to www.webedition.org');
@@ -158,89 +158,89 @@ $newButton->setOnClick('alert("Hello!");');
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $htmlPage->setTitle('Samples Button');
 $htmlPage->addInlineCSS('
-body { 
+body {
 	padding:10px !important;
 }
 ');
 
 $htmlPage->addHTML("<br/>link<br/><br/>");
 $htmlPage->addElement($buttonHref);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonHref->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonHref->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonHref->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonHref->getId().'&quot;);">show</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:alert(we_ui_controls_Button.isDisabled(&quot;'.$buttonHref->getId().'&quot;));">isDisabled</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:alert(we_ui_controls_Button.isEnabled(&quot;'.$buttonHref->getId().'&quot;));">isEnabled</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonHref->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonHref->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonHref->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonHref->getId() . '&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:alert(we_ui_controls_Button.isDisabled(&quot;' . $buttonHref->getId() . '&quot;));">isDisabled</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:alert(we_ui_controls_Button.isEnabled(&quot;' . $buttonHref->getId() . '&quot;));">isEnabled</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>onClick<br/><br/>");
 $htmlPage->addElement($buttonOnClick);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonOnClick->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonOnClick->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonOnClick->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonOnClick->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonOnClick->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonOnClick->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonOnClick->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonOnClick->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>submit form<br/><br/>");
 $htmlPage->addHTML('<form name="myForm" action="" method="post" onSubmit="alert(\'onSubmit do something\');">');
-$inp = new we_ui_controls_TextField(array('name'=>'test', 'value'=>'default', 'width'=>100));
+$inp = new we_ui_controls_TextField(array('name' => 'test', 'value' => 'default', 'width' => 100));
 $htmlPage->addElement($inp);
 $htmlPage->addHTML("<br/><br/>");
 $htmlPage->addElement($buttonSubmitForm);
 $htmlPage->addHTML('</form>');
 
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonSubmitForm->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonSubmitForm->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonSubmitForm->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonSubmitForm->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonSubmitForm->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonSubmitForm->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonSubmitForm->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonSubmitForm->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>image - text on the right<br/><br/>");
 $htmlPage->addElement($buttonImage);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonImage->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonImage->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonImage->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonImage->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>image - text on the left <br/><br/>");
 $htmlPage->addElement($buttonImage2);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage2->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage2->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonImage2->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonImage2->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage2->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage2->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonImage2->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonImage2->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>predefined internal image<br/><br/>");
 $htmlPage->addElement($buttonImage3);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage3->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonImage3->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonImage3->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonImage3->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage3->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonImage3->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonImage3->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonImage3->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>external image and text on the left<br/><br/>");
 $htmlPage->addElement($buttonExtern);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonExtern->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonExtern->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonExtern->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonExtern->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>external image and text on the right<br/><br/>");
 $htmlPage->addElement($buttonExtern2);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern2->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern2->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonExtern2->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonExtern2->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern2->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern2->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonExtern2->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonExtern2->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 $htmlPage->addHTML("<br/>external image<br/><br/>");
 $htmlPage->addElement($buttonExtern3);
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern3->getId().'&quot;, true);">disable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;'.$buttonExtern3->getId().'&quot;, false);">enable</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;'.$buttonExtern3->getId().'&quot;);">hide</a></div>');
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;'.$buttonExtern3->getId().'&quot;);">show</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern3->getId() . '&quot;, true);">disable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.setDisabled(&quot;' . $buttonExtern3->getId() . '&quot;, false);">enable</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.hide(&quot;' . $buttonExtern3->getId() . '&quot;);">hide</a></div>');
+$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Button.show(&quot;' . $buttonExtern3->getId() . '&quot;);">show</a></div>');
 $htmlPage->addHTML("<br/><br/>");
 
 
@@ -257,5 +257,4 @@ $htmlPage->addInlineJS($js);
 $htmlPage->addHTML("<br/><br/>");
 
 print $htmlPage->getHTML();
-
 ?>

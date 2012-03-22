@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php");
 
 /**
  * class to handle hooks in webEdition and in applications
@@ -36,7 +35,7 @@ class weHook{
 	private $func;
 	private $errStr = '';
 
-	function __construct($action, $appName='', $param=array()){
+	function __construct($action, $appName = '', $param = array()){
 		if(!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)){
 			return;
 		}

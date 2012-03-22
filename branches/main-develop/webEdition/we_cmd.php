@@ -26,10 +26,11 @@ if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 //	Insert all config files for all modules.
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_active_integrated_modules.inc.php');
+include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 //start autoloader!
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
@@ -347,6 +348,7 @@ if(!$INCLUDE){
 				//	This is ONLY used in the edit-mode of the documents.
 				//	This statement prevents the page from being reloaded.
 				print we_html_element::jsElement('parent.openedWithWE = 1;');
+				t_e('error', 'command \'' . $_REQUEST['we_cmd'][0] . '\' not known!');
 				exit('command \'' . $_REQUEST['we_cmd'][0] . '\' not known!');
 			}
 	}

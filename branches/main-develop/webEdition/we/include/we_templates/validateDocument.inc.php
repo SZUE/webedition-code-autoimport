@@ -33,9 +33,9 @@ we_html_tools::htmlTop();
 //  and depending on fileending.
 
 if($we_doc->ContentType == 'text/css' || $we_doc->Extension == '.css'){
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/accessibility/services_css.inc.php');
+	include_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
 } else{
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/accessibility/services_html.inc.php');
+	include_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
 }
 
 $services = array();
@@ -163,31 +163,31 @@ print STYLESHEET;
 
 <?php print $js; ?>
 
-			function switchPredefinedService(name){
+	function switchPredefinedService(name){
 
-				var f = self.document.we_form;
+		var f = self.document.we_form;
 
-				f.host.value = host[name];
-				f.path.value = path[name];
-				f.ctype.value = ctype[name];
-				f.varname.value = varname[name];
-				f.additionalVars.value = additionalVars[name];
-				f.checkvia.value = checkvia[name];
-				f.s_method.value = s_method[name];
+		f.host.value = host[name];
+		f.path.value = path[name];
+		f.ctype.value = ctype[name];
+		f.varname.value = varname[name];
+		f.additionalVars.value = additionalVars[name];
+		f.checkvia.value = checkvia[name];
+		f.s_method.value = s_method[name];
 
 
-			}
-			function setIFrameSize(){
-				var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-				var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-				w = Math.max(w,680);
-				var iframeWidth = w - 52;
-				var validiframe = document.getElementById("validation");
-				validiframe.style.width=iframeWidth;
-				if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-					validiframe.style.height=h - 185;
-				}
-			}
+	}
+	function setIFrameSize(){
+		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+		w = Math.max(w,680);
+		var iframeWidth = w - 52;
+		var validiframe = document.getElementById("validation");
+		validiframe.style.width=iframeWidth;
+		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
+			validiframe.style.height=h - 185;
+		}
+	}
 
 </script>
 <?php

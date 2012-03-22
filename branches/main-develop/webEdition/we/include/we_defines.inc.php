@@ -71,6 +71,7 @@ define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
+define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
 define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
@@ -86,6 +87,7 @@ define('WE_APPS_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR);
 define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
 define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
 define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
+
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
 define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');

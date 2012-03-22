@@ -74,7 +74,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 		if(!$showAltMenu){
 			$out .= '
 				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri('/webEdition/lib/we/ui/controls') . '" align="baseline" width="' . $this->_width . '" height="' . $this->_height . '" mayscript scriptable>
+				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->_width . '" height="' . $this->_height . '" mayscript scriptable>
 					<param name="phpext" value=".php">';
 			if($this->_cmdTarget !== ''){
 				$out .= "\n" . '				<param name="cmdTarget" value="' . htmlspecialchars($this->_cmdTarget) . '">';

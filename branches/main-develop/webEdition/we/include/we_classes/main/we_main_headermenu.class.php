@@ -68,7 +68,7 @@ top.weSidebar = weSidebar;
 		if(isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
 			return null;
 		}
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/we_menu.inc.php");
+		include(WE_INCLUDES_PATH . "java_menu/we_menu.inc.php");
 		ksort($we_menu);
 		if(// menu for normalmode
 			isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
@@ -128,7 +128,7 @@ top.weSidebar = weSidebar;
 				<?php
 				if(count($navigationButtons)){
 					foreach($navigationButtons as $button){
-						print '<div style="float:left;margin-top:5px;" class="navigation_normal" onclick="' . $button['onclick'] . '" onmouseover="this.className=\'navigation_hover\'" onmouseout="this.className=\'navigation_normal\'"><img border="0" hspace="2" src="' . IMAGE_DIR . $button['imagepath'] . '" width="17" height="18" alt="' . $button['text'] . '" title="' . $button['text'] . '"></div>';
+						print '<div style = "float:left;margin-top:5px;" class = "navigation_normal" onclick = "' . $button['onclick'] . '" onmouseover = "this.className=\'navigation_hover\'" onmouseout = "this.className=\'navigation_normal\'"><img border = "0" hspace = "2" src = "' . IMAGE_DIR . $button['imagepath'] . '" width = "17" height = "18" alt = "' . $button['text'] . '" title = "' . $button['text'] . '"></div>';
 					}
 				}
 				?></div>
@@ -136,7 +136,7 @@ top.weSidebar = weSidebar;
 
 
 				<?php
-				include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+				include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 				print createMessageConsole("mainWindow");
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">

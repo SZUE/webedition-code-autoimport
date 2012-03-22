@@ -54,7 +54,7 @@ print STYLESHEET;
 			</div>
 			<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php print EDIT_IMAGE_DIR ?>editfooterback.gif);">
 				<?php
-				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/treeInfo.inc.php');
+				include(WE_INCLUDES_PATH . 'treeInfo.inc.php');
 				?>
 			</div>
 

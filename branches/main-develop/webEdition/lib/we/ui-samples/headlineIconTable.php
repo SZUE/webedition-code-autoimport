@@ -1,10 +1,10 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php'); 
+include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-$inp = new we_ui_controls_TextField(array('name'=>'test', 'value'=>'default', 'width'=>100));
-$inp1 = new we_ui_controls_TextField(array('name'=>'test1', 'value'=>'default', 'width'=>100));
-$inp2 = new we_ui_controls_TextField(array('name'=>'test2', 'value'=>'default', 'width'=>100));
+$inp = new we_ui_controls_TextField(array('name' => 'test', 'value' => 'default', 'width' => 100));
+$inp1 = new we_ui_controls_TextField(array('name' => 'test1', 'value' => 'default', 'width' => 100));
+$inp2 = new we_ui_controls_TextField(array('name' => 'test2', 'value' => 'default', 'width' => 100));
 
 
 
@@ -33,7 +33,7 @@ $htmlPage->addElement($table);
 
 $htmlPage->addHTML('<div><a href="javascript:appendRow();">append row</a></div>');
 
-$inp3 = new we_ui_controls_TextField(array('name'=>'input___INDEX__', 'id'=>'input___INDEX__', 'value'=>'default', 'width'=>100));
+$inp3 = new we_ui_controls_TextField(array('name' => 'input___INDEX__', 'id' => 'input___INDEX__', 'value' => 'default', 'width' => 100));
 
 $row = new we_ui_layout_HeadlineIconTableRow();
 $row->setTitle('Dynamic with Index: __INDEX__');

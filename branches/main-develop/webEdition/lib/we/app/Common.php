@@ -20,7 +20,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 //include_once ('Zend/Config/Xml.php');
-!defined('NO_SESS') && define('NO_SESS',1);
+!defined('NO_SESS') && define('NO_SESS', 1);
 require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 
 /**
@@ -332,7 +332,7 @@ class we_app_Common{
 			return self::$_config;
 		}
 		//error_log("loading config from file.");
-		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/app/defaults/config.xml';
+		$filename = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/app/defaults/config.xml';
 		if(!is_readable($filename)){
 			//error_log("Could not find the configuration file from ".$filename.". Please check your installation.");
 			return false;
@@ -641,7 +641,7 @@ class we_app_Common{
 		if(!is_null(self::$_defaultManifest)){
 			return self::$_defaultManifest;
 		}
-		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/app/defaults/manifest.xml';
+		$filename = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/app/defaults/manifest.xml';
 		if(!is_readable($filename)){
 			error_log("Could not find the default manifest file from " . $filename . ". Please check your installation.");
 			return false;

@@ -760,7 +760,7 @@ class copyFolderFrag extends taskFragment{
 						$pbText) . '");');
 			flush();
 			print we_html_element::jsElement(
-					'setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);');
+					'setTimeout(\'self.location = "' . WE_INCLUDES_DIR . 'copyFolder.inc.php?finish=1"\',100);');
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else{
 			if(defined('OBJECT_FILES_TABLE')){

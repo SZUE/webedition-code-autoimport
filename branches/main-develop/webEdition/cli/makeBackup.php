@@ -378,7 +378,7 @@ if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
 		if($_SESSION['weBackupVars']['handle_options']['settings']){
 			$fh = fopen($_SESSION['weBackupVars']['backup_file'], 'ab');
 			if($fh){
-				$file_to_export = '/webEdition/we/include/conf/we_conf_global.inc.php';
+				$file_to_export = WE_INCLUDES_DIR .'conf/we_conf_global.inc.php';
 				weBackupUtil::exportFile($file_to_export, $fh);
 				fclose($fh);
 			}

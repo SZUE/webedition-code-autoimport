@@ -45,7 +45,7 @@ $we_tabs = new we_ui_controls_Tabs(
 		)
 );
 
-$htmlPage->addJSFile('/webEdition/lib/we/app/js/EditorHeader.js');
+$htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');
 
 $htmlPage->setBodyAttributes(array('class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'));
 

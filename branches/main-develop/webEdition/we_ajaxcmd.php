@@ -37,5 +37,5 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 }
 if($include){
-	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/" . $include);
+	include(WE_INCLUDES_PATH . $include);
 }

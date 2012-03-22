@@ -274,7 +274,7 @@ class weBackup extends we_backup{
 
 		if($object->ID && $this->backup_binary){
 			$object->save(true);
-		} else if($this->handle_options["settings"] && $object->Path == "/webEdition/we/include/conf/we_conf_global.inc.php"){
+		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . "conf/we_conf_global.inc.php"){
 			weBackup::recoverPrefs($object);
 		} else if(!$object->ID && $this->backup_extern){
 			$object->save(true);
@@ -796,7 +796,7 @@ class weBackup extends we_backup{
 	}
 
 	function exportGlobalPrefs(){
-		$file = '/webEdition/we/include/conf/we_conf_global.inc.php';
+		$file = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
 		if(is_readable($_SERVER['DOCUMENT_ROOT'] . $file)){
 			$this->exportFile($file);
 		}
