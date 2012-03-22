@@ -130,7 +130,7 @@ while($j < $iMaxItems) {
 		}
 		$_hash = getHash(
 			"SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = " . $DB_WE->f(
-				"DID") . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '').' ORDER BY ModDate LIMIT 1', $_db);
+				"DID") . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
 		if(!empty($_hash)){
 			$_show = true;
 			$_bool_oft = (defined("OBJECT_FILES_TABLE")) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;

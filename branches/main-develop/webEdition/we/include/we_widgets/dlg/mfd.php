@@ -118,6 +118,7 @@ function save(){
 		var sCsv=getCsv();
 		_oCsv_.value=sCsv;
 		savePrefs();
+		opener.saveSettings();
 		if((!_bPrev&&sCsv!=_sInitCsv_)||(_bPrev&&sCsv!=_sLastPreviewCsv)){
 			refresh(false);
 		}

@@ -48,18 +48,16 @@ function isUrl(s) {
 }
 
 function populateSct(oSctRss){
-	var saf = " . (we_base_browserDetect::isSafari() ? 'true' : 'false') . ";
 	for(var i=0;_iTopRssFeedsLen>i;i++){
 		var sOptVal=opener.base64_decode(_aTopRssFeeds_[i][1]);
-		var sOptTxt=opener.base64_decode(_aTopRssFeeds_[i][0]);
-		if(!saf){
+		var sOptTxt=opener.base64_decode(_aTopRssFeeds_[i][0]);" .
+	(!we_base_browserDetect::isSafari() ? "
 			var opt=document.createElement('OPTION');
 			opt.value=opener.base64_decode(_aTopRssFeeds_[i][1]);
 			opt.text=opener.base64_decode(_aTopRssFeeds_[i][0]);
-			oSctRss.options.add(opt,i+1);
-		}else{
-			oSctRss.options[oSctRss.options.length] = new Option(sOptTxt,sOptVal);
-		}
+			oSctRss.options.add(opt,i+1);" :
+		"oSctRss.options[oSctRss.options.length] = new Option(sOptTxt,sOptVal);"
+	) . "
 	}
 }
 
