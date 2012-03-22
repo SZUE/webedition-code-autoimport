@@ -23,7 +23,7 @@ function we_tag_category($attribs, $content){
 	// initialize possible Attributes
 	$delimiter = we_getTagAttribute("delimiter", $attribs, "");
 	if ($delimiter === "") {
-		$delimiter = we_getTagAttribute("tokken", $attribs, "-");
+		$delimiter = we_getTagAttribute("tokken", $attribs, ",");
 	}
 
 	$rootdir = we_getTagAttribute("rootdir", $attribs, "");
