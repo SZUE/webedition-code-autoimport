@@ -40,14 +40,11 @@ function we_tag_category($attribs){
 
 	// end initialize possible Attributes
 	if($id){
-		$category = str_replace(
-			"\\,", ",", we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
-		return str_replace("/", $separator, $category);
+		$category = str_replace('\\,', ',', we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
+		return str_replace('/', $separator, $category);
 	}
 
-	$isInListview = isset($GLOBALS["lv"]) && (!$docAttr);
-
-	if($isInListview){
+	if(isset($GLOBALS["lv"]) && (!$docAttr)){
 		// get cats from listview object
 		switch($GLOBALS["lv"]->ClassName){
 			case "we_listview_object" :
@@ -59,14 +56,11 @@ function we_tag_category($attribs){
 			default :
 				$catIDs = $GLOBALS["lv"]->f("wedoc_Category");
 		}
-
-		$category = $catIDs ? str_replace(
-				"\\,", ",", we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) : "";
-		return str_replace("/", $separator, $category);
 	} else{
 		$doc = we_getDocForTag($docAttr, false);
-		$category = str_replace(
-			"\\,", ",", we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
-		return str_replace("/", $separator, $category);
+		$catIDs = $doc->Category;
 	}
+
+	return $catIDs ? str_replace(array('\\,', '/'), array(',', $separator), we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) :
+		'';
 }

@@ -128,71 +128,65 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 }
 
 function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
-	return we_getCatsFromIDs(
-			(isset($doc->Category) ? $doc->Category : ''), $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir);
+	return (isset($doc->Category) ?
+			we_getCatsFromIDs($doc->Category, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir) :
+			'');
 }
 
 function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
 	$db = ($db ? $db : new DB_WE());
-	if($catIDs){
-		$foo = makeArrayFromCSV($catIDs);
-		$cats = array();
-		$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
-		if($catfield){
-			$showpath = false;
+	static $cache = array();
+	if(!$catIDs){
+		return '';
+	}
+	$foo = makeArrayFromCSV($catIDs);
+	$cats = array();
+	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
+	$showpath &=!$catfield;
+	foreach($foo as $cur){
+		if(!isset($cache[$cur])){
+			$cache[$cur] = getHash('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID="' . $cur . '"', $db);
 		}
-		if(!isset($GLOBALS['WE_CATEGORY_CACHE'])){
-			$GLOBALS['WE_CATEGORY_CACHE'] = array();
-		}
-		for($i = 0; $i < sizeof($foo); $i++){
-			if(!isset($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]])){
-				$GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]] = getHash(
-					'SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID="' . $foo[$i] . '"', $db);
-			}
-			if($field == 'Title' || $field == 'Description'){
-				if($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]]['Catfields']){
-					$_arr = unserialize($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]]['Catfields']);
-					if(empty($onlyindir)){
-						array_push(
-							$cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
-					} else{
-						$pos = strpos($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]]['Path'], $onlyindir);
-						if(($pos !== false) AND ($pos == 0)){
-							array_push(
-								$cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
-						}
-					}
+		if($field == 'Title' || $field == 'Description'){
+			if($cache[$cur]['Catfields']){
+				$_arr = unserialize($cache[$cur]['Catfields']);
+				if(empty($onlyindir)){
+					array_push($cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
 				} else{
-					if(empty($onlyindir)){
-						array_push($cats, '');
-					} else{
-						$pos = strpos($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]]['Path'], $onlyindir);
-						if(($pos !== false) AND ($pos == 0)){
-							array_push($cats, '');
-						}
+					$pos = strpos($cache[$cur]['Path'], $onlyindir);
+					if(($pos !== false) AND ($pos == 0)){
+						array_push($cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
 					}
 				}
 			} else{
 				if(empty($onlyindir)){
-					array_push($cats, $GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]][$field]);
+					$cats[] = '';
 				} else{
-					$pos = strpos($GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]]['Path'], $onlyindir);
+					$pos = strpos($cache[$cur]['Path'], $onlyindir);
 					if(($pos !== false) AND ($pos == 0)){
-						array_push($cats, $GLOBALS['WE_CATEGORY_CACHE'][$foo[$i]][$field]);
+						$cats[] = '';
 					}
 				}
 			}
-		}
-		if(($showpath || $catfield == 'Path') && strlen($rootdir)){
-			for($i = 0; $i < sizeof($cats); $i++){
-				if(substr($cats[$i], 0, strlen($rootdir)) == $rootdir){
-					$cats[$i] = substr($cats[$i], strlen($rootdir));
+		} else{
+			if(empty($onlyindir)){
+				$cats[] = $cache[$cur][$field];
+			} else{
+				$pos = strpos($cache[$cur]['Path'], $onlyindir);
+				if(($pos !== false) AND ($pos == 0)){
+					$cats[] = $cache[$cur][$field];
 				}
 			}
 		}
-		return makeCSVFromArray($cats, false, $tokken);
 	}
-	return '';
+	if(($showpath || $catfield == 'Path') && strlen($rootdir)){
+		foreach($cats as &$cat){
+			if(substr($cat, 0, strlen($rootdir)) == $rootdir){
+				$cat = substr($cat, strlen($rootdir));
+			}
+		}
+	}
+	return makeCSVFromArray($cats, false, $tokken);
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
