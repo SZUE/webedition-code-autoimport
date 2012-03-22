@@ -43,7 +43,7 @@ function we_parse_tag_block($attribs, $content){
 		$content = str_replace('\$', '$', $content);
 	}
 	$blockName = weTag_getParserAttribute('name', $arr);
-	$name = str_replace(array('$','.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_','_'), md5($blockName)).$GLOBALS['blkCnt'];
+	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_', '_'), md5($blockName)) . $GLOBALS['blkCnt'];
 	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';
 	$ctlPost = ');}?>';
 
@@ -170,7 +170,7 @@ function we_tag_blockControls($attribs, $content = ''){
 				we_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")") :
 				//disabled upBtn
 				we_button::create_button('image:btn_direction_up', '', true, -1, -1, '', '', true));
-		$tabArray[] = (($attribs['pos'] == $attribs['listSize']-1) ?
+		$tabArray[] = (($attribs['pos'] == $attribs['listSize'] - 1) ?
 				//disabled downBtn
 				we_button::create_button('image:btn_direction_down', '', true, -1, -1, '', '', true) :
 				//enabled downBtn
