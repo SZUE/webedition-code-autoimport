@@ -164,9 +164,8 @@ class we_todo extends we_msg_proto{
 	}
 
 	function format_from_line($userid){
-		$tmp=getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid),new DB_WE());
+		$tmp = getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), new DB_WE());
 		return $tmp['First'] . ' ' . $tmp['Second'] . ' (' . $tmp['username'] . ')';
-
 	}
 
 	function create_folder($name, $parent, $aid = -1){
@@ -574,7 +573,7 @@ class we_todo extends we_msg_proto{
 
 			$history = array();
 			/* XXX: get the ids; use one query outside of the loop; */
-			$db2->query('SELECT u.username, t.Comment, t.Created, t.action, t.fromUserID FROM ' . we_msg_proto::TODOHISTORY_TABLE . ' as t, ' . USER_TABLE . ' as u WHERE t.ParentID=' . $this->DB->f('ID') . ' AND t.UserID=u.ID ORDER BY Created');
+			$db2->query('SELECT u.username, t.Comment, t.Created, t.action, t.fromUserID FROM ' . MSG_TODOHISTORY_TABLE . ' as t, ' . USER_TABLE . ' as u WHERE t.ParentID=' . $this->DB->f('ID') . ' AND t.UserID=u.ID ORDER BY Created');
 			while($db2->next_record()) {
 				$history[] = array('username' => $db2->f('username'),
 					'from_userid' => $db2->f('fromUserID'),
