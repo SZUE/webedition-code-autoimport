@@ -158,7 +158,7 @@ abstract class weFile{
 	static function saveTemp($content, $filename="", $flags="wb"){
 		if($filename == "")
 			$filename = weFile::getUniqueId();
-		$filename = TMP_DIR . "/" . $filename;
+		$filename = TEMP_PATH . "/" . $filename;
 		if(weFile::save($filename, $content))
 			return $filename;
 		else

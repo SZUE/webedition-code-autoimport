@@ -78,7 +78,7 @@ class weHook{
 		if($this->appName != ''){
 			$filename = 'weCustomHook_' . $this->appName . '_' . $this->action . '.inc.php';
 			// look in app folder
-			$hookFile = WE_TOOLS_DIR . $this->appName . '/hook/custom_hooks/' . $filename;
+			$hookFile = WE_APPS_PATH . $this->appName . '/hook/custom_hooks/' . $filename;
 		} else{
 			$filename = 'weCustomHook_' . $this->action . '.inc.php';
 			// look in we_hook/custom_hooks folder

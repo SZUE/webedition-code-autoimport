@@ -797,9 +797,9 @@ top.close();
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename) // Does file exist?
+			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
-				$_size = filesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename);
+				$_size = filesize(TEMP_PATH . $_filename);
 
 				if(we_isHttps()){	// Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
@@ -817,7 +817,7 @@ top.close();
 				header("Content-Description: " . trim(htmlentities($_filename)));
 				header("Content-Length: " . $_size);
 
-				$_filehandler = readfile($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename);
+				$_filehandler = readfile(TEMP_PATH . $_filename);
 
 				exit;
 			} else{
@@ -1404,7 +1404,7 @@ top.close();
 						$_SESSION["exportVars"]["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
 						$all = count($xmlExIm->RefTable);
 						$exports = 0;
-						$_SESSION["exportVars"]["filename"] = ($export_local ? TMP_DIR . "/" . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
+						$_SESSION["exportVars"]["filename"] = ($export_local ? TEMP_PATH . "/" . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 						$ret = weFile::save($_SESSION["exportVars"]["filename"], $xmlExIm->getHeader(), "wb");
 					} else{
 						$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);

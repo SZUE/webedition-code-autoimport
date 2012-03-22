@@ -332,9 +332,9 @@ class weCustomerEIWizard{
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
-			if(file_exists(TMP_DIR . "/" . $_filename) // Does file exist?
+			if(file_exists(TEMP_PATH . "/" . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
-				$_size = filesize(TMP_DIR . "/" . $_filename);
+				$_size = filesize(TEMP_PATH . "/" . $_filename);
 
 				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
@@ -352,7 +352,7 @@ class weCustomerEIWizard{
 				header("Content-Description: " . trim(htmlentities($_filename)));
 				header("Content-Length: " . $_size);
 
-				$_filehandler = readfile(TMP_DIR . "/" . $_filename);
+				$_filehandler = readfile(TEMP_PATH . "/" . $_filename);
 
 				exit;
 			} else{
@@ -661,7 +661,7 @@ class weCustomerEIWizard{
 		if($import_from == "local"){
 			if(isset($_FILES['upload']) && $_FILES["upload"]["size"]){
 				// creating a temp name and copy the file to the we tmp directory with the new temp name
-				$filename = "/webEdition/we/tmp/" . md5(uniqid(rand(), 1)) . $ext;
+				$filename = TEMP_DIR . md5(uniqid(rand(), 1)) . $ext;
 				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 				move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
 			}
@@ -914,9 +914,9 @@ class weCustomerEIWizard{
 		$table = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
-		if($tmpdir != "" && is_file(TMP_DIR . "/$tmpdir/$tmpdir.log") && is_readable(TMP_DIR . "/$tmpdir/$tmpdir.log")){
+		if($tmpdir != "" && is_file(TEMP_PATH . "/$tmpdir/$tmpdir.log") && is_readable(TEMP_PATH . "/$tmpdir/$tmpdir.log")){
 			$log = "";
-			$fh = fopen(TMP_DIR . "/$tmpdir/$tmpdir.log", "rb");
+			$fh = fopen(TEMP_PATH . "/$tmpdir/$tmpdir.log", "rb");
 			if($fh){
 				while(!feof($fh))
 					$log.=fread($fh, 4096);
@@ -924,7 +924,7 @@ class weCustomerEIWizard{
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), 1, "550"));
 				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), htmlspecialchars($log)));
 				fclose($fh);
-				unlink(TMP_DIR . "/$tmpdir/$tmpdir.log");
+				unlink(TEMP_PATH . "/$tmpdir/$tmpdir.log");
 			}
 		}
 		$parts = array();
@@ -935,8 +935,8 @@ class weCustomerEIWizard{
 			)
 		);
 
-		if(is_dir(TMP_DIR . "/" . $tmpdir))
-			rmdir(TMP_DIR . "/" . $tmpdir);
+		if(is_dir(TEMP_PATH . "/" . $tmpdir))
+			rmdir(TEMP_PATH . "/" . $tmpdir);
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('customer_modules', '[import_title]')) . STYLESHEET . we_multiIconBox::getJS()) .
@@ -1149,7 +1149,7 @@ class weCustomerEIWizard{
 					if($export_to == "server")
 						$path = isset($_REQUEST["path"]) ? $_REQUEST["path"] : "";
 					else
-						$path = "/webEdition/we/tmp";
+						$path = rtrim(TEMP_DIR,'/');
 
 					$cdata = isset($_REQUEST["cdata"]) ? $_REQUEST["cdata"] : "0";
 					$csv_delimiter = isset($_REQUEST["csv_delimiter"]) ? $_REQUEST["csv_delimiter"] : "";
@@ -1461,11 +1461,11 @@ class weCustomerEIWizard{
 					$impno = isset($_REQUEST["impno"]) ? $_REQUEST["impno"] : 0;
 
 					if(weCustomerEI::importCustomers(array(
-							"xmlfile" => TMP_DIR . "/$tmpdir/temp_$fstart.xml",
+							"xmlfile" => TEMP_PATH . "/$tmpdir/temp_$fstart.xml",
 							"field_mappings" => $field_mappings,
 							"att_mappings" => $att_mappings,
 							"same" => $same,
-							"logfile" => TMP_DIR . "/$tmpdir/$tmpdir.log"
+							"logfile" => TEMP_PATH . "/$tmpdir/$tmpdir.log"
 							)
 					))
 						$impno++;

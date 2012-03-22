@@ -187,7 +187,7 @@ class weMetaData {
 			}
 		} else {
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
-			if(!is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/tmp/",$datasource)) {
+			if(!is_readable(TEMP_PATH,$datasource)) {
 				$this->_valid = false;
 				return false;
 			}

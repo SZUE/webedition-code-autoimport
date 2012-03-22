@@ -26,7 +26,7 @@ class delBackup extends taskFragment{
 
 	var $db;
 
-	function __construct($name, $taskPerFragment, $pause=0){
+	function __construct($name, $taskPerFragment, $pause = 0){
 		$this->db = new DB_WE();
 		parent::__construct($name, $taskPerFragment, $pause);
 	}
@@ -41,7 +41,7 @@ class delBackup extends taskFragment{
 			}
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
 			while($this->db->next_record()) {
-				$this->alldata[] = TEMPLATE_DIR . "/" . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
+				$this->alldata[] = TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
 			}
 
 			if(!count($this->alldata)){

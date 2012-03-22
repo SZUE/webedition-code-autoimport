@@ -28,5 +28,5 @@ define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 define('PING_TIME', 30); // 30 sec
 define('PING_TOLERANZ', 3 * PING_TIME); // 40 sec - allows 1 Ping missing
 
-define('WE_USERS_MODULE_DIR', WE_MODULE_DIR . 'users/');
-define('WE_USERS_MODULE_PATH', WE_MODULE_PATH . 'users/');
+define('WE_USERS_MODULE_DIR', WE_MODULES_PATH . 'users/');
+define('WE_USERS_MODULE_PATH', WE_MODULES_DIR . 'users/');

@@ -140,7 +140,7 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 	if(substr($path, 0, 3) == "/.."){
 		return;
 	}
-	$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
+	$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
 	if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
 		if(!we_util_File::deleteLocalFolder($file)){
 			if(isset($GLOBALS["we_folder_not_del"]) && is_array($GLOBALS["we_folder_not_del"])){
@@ -174,7 +174,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=" . intval($id), "Path", $DB_WE);
 	deleteContentFromDB($id, $table);
 
-	$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
+	$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
 
 	if($table == TEMPLATES_TABLE){
 		$file = preg_replace('/\.tmpl$/i', '.php', $file);

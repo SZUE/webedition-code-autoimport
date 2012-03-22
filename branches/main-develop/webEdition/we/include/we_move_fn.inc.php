@@ -154,17 +154,17 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// move template file
-		if(!file_exists(TEMPLATE_DIR.$oldPath)) {
+		if(!file_exists(TEMPLATES_PATH.$oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
-		if(!copy(TEMPLATE_DIR.$oldPath, TEMPLATE_DIR.$newPath."/".$fileName)) {
+		if(!copy(TEMPLATES_PATH.$oldPath, TEMPLATES_PATH.$newPath."/".$fileName)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
-		if(!unlink(TEMPLATE_DIR.$oldPath)) {
+		if(!unlink(TEMPLATES_PATH.$oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}

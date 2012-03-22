@@ -42,7 +42,7 @@ abstract class exportFunctions{
 	static function fileCreate($format = "gxml", $filename, $path){
 		switch($format){
 			case "gxml":
-				$_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+				$_file_name = ($path == "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
 
 				$_continue = true;
 
@@ -68,7 +68,7 @@ abstract class exportFunctions{
 
 				break;
 			case "csv":
-				$_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+				$_file_name = ($path == "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
 
 				$_continue = true;
 
@@ -172,7 +172,7 @@ abstract class exportFunctions{
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => (($tableid != null) ? $_tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => (($tableid != null) ? $_tableid : ""));
 	}
 
 	/**
@@ -584,7 +584,7 @@ abstract class exportFunctions{
 
 							break;
 						case "txt":
-							if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){	// is a we:href field
+							if(preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)){ // is a we:href field
 								if(!in_array($regs[1], $hrefs)){
 									array_push($hrefs, $regs[1]);
 
@@ -643,7 +643,7 @@ abstract class exportFunctions{
 
 			exportFunctions::fileFinish($format, $_file, $_doctype, $_file_name);
 		}
-		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename;
 
 		if($file_complete){
 			exportFunctions::fileComplete($format, $_tmp_file_name);

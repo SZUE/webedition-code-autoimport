@@ -352,7 +352,7 @@ HTS;
 							flush();
 						}
 
-						$path = TMP_DIR . "/" . weFile::getUniqueId() . "/";
+						$path = TEMP_PATH . "/" . weFile::getUniqueId() . "/";
 						we_util_File::createLocalFolder($path);
 
 						if(is_dir($path)){
@@ -381,7 +381,7 @@ HTS;
 						$num_files = 0;
 						$unique_id = md5(uniqid(microtime()));
 
-						$path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $unique_id;
+						$path = TEMP_PATH . $unique_id;
 						we_util_File::createLocalFolder($path);
 
 						if($cp->isOK()){
@@ -622,9 +622,9 @@ HTS;
 											break;
 									}
 									$_progress_text = we_html_element::htmlB(
-											g_l('contentTypes', '[' . $ref->ContentType . ']',true) != ''?
+											g_l('contentTypes', '[' . $ref->ContentType . ']', true) != '' ?
 												g_l('contentTypes', '[' . $ref->ContentType . ']') :
-												(g_l('import', '[' . $ref->ContentType . ']',true) != ''?
+												(g_l('import', '[' . $ref->ContentType . ']', true) != '' ?
 													g_l('import', '[' . $ref->ContentType . ']') : ''
 												)
 										) . '&nbsp;&nbsp;' . $_path_info;
@@ -860,8 +860,8 @@ HTS;
 	function denyTMPaccess(){
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
 			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess')){
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess', $htaccessdata);
+			if(!file_exists(TEMP_PATH . '.htaccess')){
+				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
 			}
 		}
 	}

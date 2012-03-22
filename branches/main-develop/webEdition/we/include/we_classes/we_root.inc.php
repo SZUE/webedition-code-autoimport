@@ -698,7 +698,7 @@ abstract class we_root extends we_class{
 	/* get the Real-Path of the Object (Server-Path) */
 
 	function getRealPath($old = false){
-		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . ($old ? $this->OldPath : $this->getPath());
+		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . ($old ? $this->OldPath : $this->getPath());
 	}
 
 	/* get the Site-Path of the Object */

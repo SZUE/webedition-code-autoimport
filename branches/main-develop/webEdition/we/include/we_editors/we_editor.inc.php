@@ -211,7 +211,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->convert("jpg", $_REQUEST['we_cmd'][1]);
 		break;
 	case "doImage_crop":
-		$filename = TMP_DIR . '/' . weFile::getUniqueId();
+		$filename = TEMP_PATH . '/' . weFile::getUniqueId();
 		copy($we_doc->getElement("data"), $filename);
 
 
@@ -317,7 +317,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	we_util_File::insertIntoCleanUp($tempName, time());
 	/*
 	  $str = session_encode(); //serialize($arr);
-	  $fp = fopen(TMP_DIR."/$we_transaction.tmp","wb");
+	  $fp = fopen(TEMP_PATH."/$we_transaction.tmp","wb");
 	  fwrite($fp,$str);
 	  fclose($fp);
 	 */

@@ -55,7 +55,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 	}
 
 	if(isset($_FILES["we_File"]) && $_FILES["we_File"]["name"] != "" && $_FILES['we_File']["type"] && (($allowedContentTypes == "") || (!(strpos($allowedContentTypes, $_FILES['we_File']["type"]) === false)))){
-		$we_File = TMP_DIR . "/" . md5(uniqid(rand(), 1));
+		$we_File = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284

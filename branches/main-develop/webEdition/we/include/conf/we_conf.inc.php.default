@@ -92,13 +92,6 @@ define('DB_COLLATION', '');
 // Name of licensee
 define('WE_LIZENZ', 'GPL');
 
-//FIXME: Remove these entries these "settings" are not configureable!
-// Path to the templates directory
-define('TEMPLATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/templates');
-
-// Path to the temporary files directory
-define('TMP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/tmp');
-
 // Original language of this version of webEdition, used for login-screen
 define('WE_LANGUAGE', 'English');
 

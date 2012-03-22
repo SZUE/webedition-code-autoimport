@@ -323,7 +323,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 
 			$quality = $quality * 10;
-			$dataPath = TMP_DIR . "/" . weFile::getUniqueId();
+			$dataPath = TEMP_PATH . "/" . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement("data"), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 			if($_resized_image[0]){
 				$this->setElement("data", $dataPath);
@@ -362,7 +362,7 @@ class we_imageDocument extends we_binaryDocument{
 
 			$quality = $quality * 10;
 
-			$dataPath = TMP_DIR . "/" . weFile::getUniqueId();
+			$dataPath = TEMP_PATH . "/" . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement("data"), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
 
 			if($_resized_image[0]){
@@ -733,7 +733,7 @@ class we_imageDocument extends we_binaryDocument{
 
 			$quality = $quality * 10;
 
-			$dataPath = TMP_DIR . "/" . weFile::getUniqueId();
+			$dataPath = TEMP_PATH . "/" . weFile::getUniqueId();
 			$_converted_image = we_image_edit::edit_image($this->getElement("data"), $type, $dataPath, $quality, $width, $height, false);
 
 			$this->setElement("data", $dataPath);
@@ -1045,7 +1045,7 @@ class we_imageDocument extends we_binaryDocument{
 								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_imgDataId]['serverPath'] = TMP_DIR . '/' . md5(
+								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . md5(
 										uniqid(rand(), 1));
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]["tmp_name"][$imgName], $_SESSION[$_imgDataId]["serverPath"]);

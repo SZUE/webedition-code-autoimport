@@ -698,7 +698,7 @@ class we_import_files{
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
 			// initializing $we_doc
 			include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
-			$tempName = TMP_DIR . "/" . md5(uniqid(rand(), 1));
+			$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
 			if(!@move_uploaded_file($_FILES['we_File']["tmp_name"], $tempName)){
 				return array(
 					"filename" => $_FILES['we_File']["name"], "error" => "move_file_error"

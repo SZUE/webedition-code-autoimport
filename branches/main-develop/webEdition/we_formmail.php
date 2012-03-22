@@ -418,7 +418,7 @@ if($recipient){
 		if(sizeof($_FILES)){
 			foreach($_FILES as $name => $file){
 				if(isset($file['tmp_name']) && $file['tmp_name']){
-					$tempName = TMP_DIR . '/' . $file['name'];
+					$tempName = TEMP_PATH . '/' . $file['name'];
 					move_uploaded_file($file['tmp_name'], $tempName);
 					$phpmail->doaddAttachment($tempName);
 				}

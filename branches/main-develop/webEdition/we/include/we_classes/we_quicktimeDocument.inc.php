@@ -365,7 +365,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
+						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . md5(
 								uniqid(rand(), 1));
 						move_uploaded_file(
 							$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);

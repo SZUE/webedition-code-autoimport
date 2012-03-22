@@ -84,7 +84,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$we_ContentType = $we_doc->ContentType;
 
 
-			$_tmp_file = '/webEdition/we/tmp/' . basename($_filename);
+			$_tmp_file = TEMP_DIR . basename($_filename);
 
 			if(file_exists($we_doc->getElement('data'))){
 				copy($we_doc->getElement('data'), $_SERVER['DOCUMENT_ROOT'] . $_tmp_file);
@@ -143,7 +143,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
 				include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
-				$tempName = TMP_DIR . "/" . md5(uniqid(rand(), 1));
+				$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
 				move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
 
 

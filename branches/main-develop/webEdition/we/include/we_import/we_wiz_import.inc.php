@@ -436,7 +436,7 @@ class we_wizard_import extends we_wizard{
 				$_upload_error = true;
 			} else{
 
-				$v["import_from"] = "/webEdition/we/tmp/" . weFile::getUniqueId() . "_w.xml";
+				$v["import_from"] = TEMP_DIR . weFile::getUniqueId() . "_w.xml";
 				move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 			}
 		}
@@ -1254,7 +1254,7 @@ HTS;
 
 		if($v["rdofloc"] == "lLocal" && (isset($_FILES['uploaded_xml_file']) and $_FILES["uploaded_xml_file"]["size"])){
 			$uniqueId = md5(uniqid(microtime()));
-			$v["import_from"] = "/webEdition/we/tmp/we_xml_" . $uniqueId . ".xml";
+			$v["import_from"] = TEMP_DIR . "we_xml_" . $uniqueId . ".xml";
 			move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 		}
 
@@ -1812,7 +1812,7 @@ HTS;
 			switch($v["rdofloc"]){
 				case "lLocal":
 					if(isset($_FILES["uploaded_csv_file"])){
-						$v["import_from"] = "/webEdition/we/tmp/we_csv_" . $uniqueId . ".csv";
+						$v["import_from"] = TEMP_DIR . "we_csv_" . $uniqueId . ".csv";
 						move_uploaded_file($_FILES["uploaded_csv_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 						if($v["file_format"] == "mac")
 							$this->massReplace("\r", "\n", $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
@@ -1822,7 +1822,7 @@ HTS;
 					$fp = fopen($_SERVER['DOCUMENT_ROOT'] . $v["import_from"], "r");
 					$contents = fread($fp, filesize($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]));
 					fclose($fp);
-					$v["import_from"] = "/webEdition/we/tmp/we_csv_" . $uniqueId . ".csv";
+					$v["import_from"] = TEMP_DIR . "we_csv_" . $uniqueId . ".csv";
 					$replacement = preg_replace("/\r/i", "\n", $contents);
 					$fp = fopen($_SERVER['DOCUMENT_ROOT'] . $v["import_from"], "w+");
 					fputs($fp, $replacement);
@@ -2493,16 +2493,16 @@ HTS;
 	}
 
 	function getTMPaccess(){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess')){
-			unlink($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess');
+		if(file_exists(TEMP_PATH . '.htaccess')){
+			unlink(TEMP_PATH . '.htaccess');
 		}
 	}
 
 	function denyTMPaccess(){
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
 			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess')){
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/tmp/.htaccess', $htaccessdata);
+			if(!file_exists(TEMP_PATH . '.htaccess')){
+				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
 			}
 		}
 	}

@@ -59,29 +59,33 @@ if(version_compare(phpversion(), '5.1.3', '=')){
 
 
 define('WEBEDITION_DIR', '/webEdition/');
-define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
-define('WE_MODULE_PATH', WE_INCLUDES_DIR . 'we_modules/');
-define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-define('WE_TOOLS_PATH', WEBEDITION_DIR . 'apps/');
-define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
+define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
+define('TEMPLATES_DIR', WEBEDITION_DIR . 'we/templates');
+define('TEMP_DIR', WEBEDITION_DIR . 'we/tmp/');
+define('WE_MODULES_DIR', WE_INCLUDES_DIR . 'we_modules/');
+define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
+define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
+define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
+
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
 define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
-define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
-define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
 
 //all paths
-define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/');
+define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR);
+define('TEMPLATES_PATH', $_SERVER['DOCUMENT_ROOT'] . TEMPLATES_DIR);
+define('TEMP_PATH', $_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
+define('WE_APPS_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR);
 define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
 define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
-
+define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
 define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');

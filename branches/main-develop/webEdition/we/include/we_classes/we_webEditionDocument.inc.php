@@ -546,7 +546,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	// for internal use
 	private function setTemplatePath(){
 		$this->TemplatePath = $this->TemplateID ?
-			TEMPLATE_DIR . f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($this->TemplateID), "Path", $this->DB_WE) :
+			TEMPLATES_PATH . f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($this->TemplateID), "Path", $this->DB_WE) :
 			$_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_noTmpl.inc.php";
 	}
 
@@ -858,7 +858,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	// returns the filesize of the document
 	function getFilesize(){
 		/* dies führt bei manchen dokumenten zum absturz in i_getDocument, und zwar dort beim include innerhalb von ob_start
-		  $filename = TMP_DIR."/".md5(uniqid(rand()));
+		  $filename = TEMP_PATH."/".md5(uniqid(rand()));
 		  saveFile($filename,$this->i_getDocument($includepath));
 		  $fs = filesize($filename);
 		  unlink($filename);

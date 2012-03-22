@@ -204,7 +204,7 @@ class we_otherDocument extends we_binaryDocument{
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_binaryDataId]["serverPath"] = TMP_DIR . "/" . md5(
+								$_SESSION[$_binaryDataId]["serverPath"] = TEMP_PATH . "/" . md5(
 										uniqid(rand(), 1));
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]["tmp_name"][$binaryName], $_SESSION[$_binaryDataId]["serverPath"]);

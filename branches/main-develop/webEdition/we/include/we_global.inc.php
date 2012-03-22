@@ -466,10 +466,10 @@ function cleanTempFiles($cleanSessFiles = false){
 			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
 	}
-	$d = dir(TMP_DIR);
+	$d = dir(TEMP_PATH);
 	while(false !== ($entry = $d->read())) {
 		if($entry != '.' && $entry != '..'){
-			$foo = TMP_DIR . '/' . $entry;
+			$foo = TEMP_PATH . '/' . $entry;
 			if(filemtime($foo) <= (time() - 300)){
 				if(is_dir($foo))
 					we_util_File::deleteLocalFolder($foo, 1);

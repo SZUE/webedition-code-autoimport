@@ -92,7 +92,7 @@ class EcondasettingsController extends Zend_Controller_Action
 		   				$this->view->assign("prio",4);
 		   			} else {
 		   				// file uploded
-						$we_File = TMP_DIR."/".md5(uniqid(rand(),'-1'));
+						$we_File = TEMP_PATH."/".md5(uniqid(rand(),'-1'));
 						move_uploaded_file($_FILES["emosfile"]["tmp_name"],$we_File);
 
 		   				$we_doc = new we_textDocument();

@@ -296,7 +296,7 @@ class weCustomerEI{
 			$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $filename);
 			$parse->splitFile("*/" . $dataset, $xml_from, $xml_to);
 
-			$ret["tmp_dir"] = str_replace(TMP_DIR . "/", "", $parse->path);
+			$ret["tmp_dir"] = str_replace(TEMP_PATH . "/", "", $parse->path);
 			$ret["file_count"] = $parse->fileId;
 		} else if($type == "csv"){
 			$csv_delimiter = $options["csv_delimiter"];
@@ -316,7 +316,7 @@ class weCustomerEI{
 
 				// create temp dir
 				$unique = weCustomerEI::getUniqueId();
-				$path = TMP_DIR . "/" . $unique;
+				$path = TEMP_PATH . "/" . $unique;
 
 				we_util_File::createLocalFolder($path);
 				$path.="/";

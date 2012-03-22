@@ -281,13 +281,13 @@ class weBackupPreparer{
 
 	function getExternalFiles(){
 		$list = array();
-		weBackupPreparer::getFileList($list, TEMPLATE_DIR, true, false);
+		weBackupPreparer::getFileList($list, TEMPLATES_PATH, true, false);
 		return $list;
 	}
 
 	function getFileLists(){
 		$list = array();
-		weBackupPreparer::getFileList($list, TEMPLATE_DIR, true, false);
+		weBackupPreparer::getFileList($list, TEMPLATES_PATH, true, false);
 		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . weNavigationCache::CACHEDIR, true, false);
 		return array_merge($list, weBackupPreparer::getSiteFiles());
 	}

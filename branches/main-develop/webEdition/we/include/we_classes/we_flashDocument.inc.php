@@ -475,7 +475,7 @@ class we_flashDocument extends we_binaryDocument{
 								$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_flashmovieDataId]["serverPath"] = TMP_DIR . "/" . md5(
+								$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . "/" . md5(
 										uniqid(rand(), 1));
 								move_uploaded_file(
 									$_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);

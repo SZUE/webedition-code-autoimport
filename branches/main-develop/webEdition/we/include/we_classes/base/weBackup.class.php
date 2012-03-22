@@ -282,7 +282,7 @@ class weBackup extends we_backup{
 	}
 
 	function recoverPrefs(&$object){
-		$file = "/webEdition/we/tmp/we_conf_global.inc.php";
+		$file = TEMP_DIR . "we_conf_global.inc.php";
 		$object->Path = $file;
 		$object->save(true);
 		$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);

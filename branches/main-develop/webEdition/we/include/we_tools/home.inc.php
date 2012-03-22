@@ -74,7 +74,7 @@ $_y_we3 = $_y_table_back + 116;
 if($tool == 'weSearch' || $tool == 'navigation'){
 	$tooldir = '/webEdition/we/include/we_tools/';
 } else{
-	$tooldir = WE_TOOLS_PATH;
+	$tooldir = WE_APPS_DIR;
 }
 ?>
 

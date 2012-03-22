@@ -1847,7 +1847,7 @@ class weNewsletterView{
 
 					if(isset($we_File)){
 						$unique = md5(uniqid(rand(), 1));
-						$tempName = TMP_DIR . "/" . $unique;
+						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
 							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
@@ -1869,7 +1869,7 @@ class weNewsletterView{
 						$we_File = $_FILES["we_File"];
 					if(isset($we_File)){
 						$unique = md5(uniqid(rand(), 1));
-						$tempName = TMP_DIR . "/" . $unique;
+						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
 							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
@@ -2114,11 +2114,7 @@ class weNewsletterView{
 			$path = id_to_path($tmpid, TEMPLATES_TABLE);
 		}
 
-		if($path){
-			$path = TEMPLATE_DIR . $path;
-		} else{
-			$path = $we_doc->TemplatePath;
-		}
+		$path = ($path ? TEMPLATES_PATH . $path : $we_doc->TemplatePath);
 
 		if(file_exists($path)){
 			include($path);
@@ -2357,7 +2353,7 @@ class weNewsletterView{
 		$ret = array();
 
 		if(is_array($this->newsletter->groups)){
-			$keys=  array_keys($this->newsletter->groups);
+			$keys = array_keys($this->newsletter->groups);
 			foreach($keys as $gk){
 				$emails = $this->getEmails($gk + 1, 0, 1);
 

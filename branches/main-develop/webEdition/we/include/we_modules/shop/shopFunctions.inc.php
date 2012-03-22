@@ -111,7 +111,7 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 			$orderStr .=
 			($sameModul ?
 					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
-					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
+					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
               	);
 		} else {
 			$orderStr .='<td></td>';

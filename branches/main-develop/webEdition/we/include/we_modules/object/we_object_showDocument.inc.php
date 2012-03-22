@@ -253,7 +253,7 @@ if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $G
  */
 //	If in webEdition, parse the document !!!!
 if(isset($_SESSION['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
-	$contentOrig = implode('', file(TEMPLATE_DIR . $tmplPath));
+	$contentOrig = implode('', file(TEMPLATES_PATH . $tmplPath));
 
 	ob_start();
 	eval('?>' . $contentOrig);
@@ -275,7 +275,7 @@ if(isset($_SESSION['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSIO
 	// --> Include Content
 	//
 
-		include(TEMPLATE_DIR . $tmplPath);
+		include(TEMPLATES_PATH . $tmplPath);
 
 	//
 	// --> Finish Glossary Replacement

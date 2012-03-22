@@ -83,7 +83,7 @@ abstract class Captcha {
 	 * @return boolean
 	 */
 	static function getStorage() {
-		return $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/captchacodes.tmp";
+		return TEMP_PATH. 'captchacodes.tmp';
 	} /* end: check */
 
 } /* end: Class */

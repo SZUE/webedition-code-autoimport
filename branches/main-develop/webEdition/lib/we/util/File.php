@@ -144,9 +144,7 @@ abstract class we_util_File{
 	}
 
 	public static function saveTemp($content, $filename = "", $flags = "wb"){
-		if($filename == "")
-			$filename = self::getUniqueId();
-		$filename = TMP_DIR . "/" . $filename;
+		$filename = TEMP_PATH . "/" . ($filename == "" ? self::getUniqueId() : $filename);
 		return (self::save($filename, $content)) ? $filename : false;
 	}
 
@@ -658,7 +656,7 @@ abstract class we_util_File{
 	}
 
 	public static function removeTrailingSlash($value){
-		return rtrim($value,'/');
+		return rtrim($value, '/');
 	}
 
 	public static function compressDirectoy($directoy, $destinationfile){

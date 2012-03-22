@@ -738,9 +738,9 @@ class we_backup{
 	 */
 	function setTmpFilename($filename){
 		if($this->isFileInTmpDir($filename)){
-			if(is_file(TMP_DIR . "/" . $filename)){
+			if(is_file(TEMP_PATH . "/" . $filename)){
 				$this->tempfilename = $filename;
-				$this->dumpfilename = TMP_DIR . "/" . $filename;
+				$this->dumpfilename = TEMP_PATH . "/" . $filename;
 				return true;
 			}
 			else
@@ -759,7 +759,7 @@ class we_backup{
 	 * directory used for backups.
 	 */
 	function isFileInTmpDir($file_name){
-		$dir = TMP_DIR . "/";
+		$dir = TEMP_PATH . "/";
 		$d = @dir($dir);
 		$ret = false;
 		if($d){

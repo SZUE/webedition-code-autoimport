@@ -122,7 +122,7 @@ function we_tag_userInput($attribs, $content){
 						$attribs["id"] = $_SESSION[$_imgDataId]["id"];
 					}
 
-					if(isset($_SESSION[$_imgDataId]["serverPath"]) && strpos($_SESSION[$_imgDataId]["serverPath"], TMP_DIR) === false){
+					if(isset($_SESSION[$_imgDataId]["serverPath"]) && strpos($_SESSION[$_imgDataId]["serverPath"], TEMP_PATH) === false){
 						$src = substr($_SESSION[$_imgDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT']));
 						if(substr($src, 0, 1) !== "/"){
 							$src = "/" . $src;

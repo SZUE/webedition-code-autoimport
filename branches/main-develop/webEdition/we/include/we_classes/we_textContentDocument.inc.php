@@ -144,7 +144,7 @@ class we_textContentDocument extends we_textDocument{
 		} else{
 			$title = '';
 		}
-		$tempname = TMP_DIR . "/" . uniqid(md5(time()));
+		$tempname = TEMP_PATH . "/" . uniqid(md5(time()));
 		$fp = fopen($tempname, "wb");
 		fputs($fp, $code);
 		fclose($fp);

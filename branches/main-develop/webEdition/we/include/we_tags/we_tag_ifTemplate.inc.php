@@ -33,7 +33,7 @@ function we_tag_ifTemplate($attribs){
 	} else{
 		if($workspaceID !== ''){
 			if(isset($GLOBALS['we_doc']->TemplatePath)){ // in documents
-				$curTempPath = str_replace(TEMPLATE_DIR, '', $GLOBALS['we_doc']->TemplatePath);
+				$curTempPath = str_replace(TEMPLATES_PATH, '', $GLOBALS['we_doc']->TemplatePath);
 			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
