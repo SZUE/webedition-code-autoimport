@@ -458,20 +458,20 @@ abstract class we_class{
 		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	function we_load(/*$from = we_class::LOAD_MAID_DB*/){
 		$this->i_getPersistentSlotsFromDB();
 	}
 
-	function we_save($resave = 0){
+	function we_save(/*$resave = 0*/){
 		$this->wasUpdate = $this->ID ? 1 : 0;
 		return $this->i_savePersistentSlotsToDB();
 	}
 
-	function we_publish($DoNotMark = false, $saveinMainDB = true){
+	function we_publish(/*$DoNotMark = false, $saveinMainDB = true*/){
 		return true; // overwrite
 	}
 
-	function we_unpublish($DoNotMark = false){
+	function we_unpublish(/*$DoNotMark = false*/){
 		return true; // overwrite
 	}
 
@@ -660,7 +660,7 @@ abstract class we_class{
 							for($i = 0; $i < count($rows) - 1; $i++){
 								if($rows[$i]['LDID'] && $rows[$i + 1]['LDID']){
 									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i]['LDID']) . ", DLocale='" . $rows[$i]['Locale'] . "', LDID=" . intval($rows[$i + 1]['LDID']) . ", Locale='" . $rows[$i + 1]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
-									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i + 1]['LDID']) . ", DLocale='" . $rows[$i + 1]['Locale'] . "', LDID=" . intval($rows[$i]['LDID']) . ", Locale='" . $rows[$i]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'"); 
+									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i + 1]['LDID']) . ", DLocale='" . $rows[$i + 1]['Locale'] . "', LDID=" . intval($rows[$i]['LDID']) . ", Locale='" . $rows[$i]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
 								}
 							}
 						}

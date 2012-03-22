@@ -288,7 +288,7 @@ class we_base_browserDetect{
 		if(self::isGecko()){
 			return true;
 		}
-		$inst=self::inst();
+		$inst = self::inst();
 		switch($inst->getSystem()){
 			case self::SYS_WIN :
 				switch($inst->getBrowser()){

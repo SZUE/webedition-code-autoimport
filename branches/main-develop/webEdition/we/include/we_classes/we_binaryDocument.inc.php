@@ -72,17 +72,7 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	/**
-	 * @return void
-	 * @param boolean $from
-	 * @desc loads the data of the document
-	 */
-	function we_load($from = we_class::LOAD_MAID_DB){
-		parent::we_load($from);
-		//$this->i_getContentData($this->LoadBinaryContent);
-	}
-
-	function i_getContentData($loadBinary = 1){
+	function i_getContentData(){
 		parent::i_getContentData(true);
 		$_sitePath = $this->getSitePath();
 		if(file_exists($_sitePath)){
@@ -135,26 +125,23 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	protected function i_writeSiteDir($doc){
+	private function writeFile($to, $old){
 		$is_ok = false;
 		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $this->getSitePath());
+			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $to);
 			if($this->i_isMoved()){
-				we_util_File::delete($this->getSitePath(true));
+				we_util_File::delete($old);
 			}
 		}
 		return $is_ok;
 	}
 
-	protected function i_writeMainDir($doc){
-		$is_ok = false;
-		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath());
-			if($this->i_isMoved()){
-				we_util_File::delete($this->getRealPath(true));
-			}
-		}
-		return $is_ok;
+	protected function i_writeSiteDir(){
+		return $this->writeFile($this->getSitePath(),$this->getSitePath(true));
+	}
+
+	protected function i_writeMainDir(){
+		return $this->writeFile($this->getRealPath(),$this->getRealPath(true));
 	}
 
 	/* gets the filesize of the document */
@@ -311,49 +298,34 @@ class we_binaryDocument extends we_document{
 		} else{
 			$md = g_l('metadata', "[supported_types]") . ": ";
 
-			if(count($_mdtypes) > 0){
-				$_mdTypesTxt = implode(", ", $_mdtypes);
-			} else{
-				$_mdTypesTxt = g_l('metadata', "[none]");
-			}
-
-			$md .= '<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">';
-			$md.= $_mdTypesTxt;
-			$md .= '</a>';
+			$md .= '<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				(count($_mdtypes) > 0 ? implode(", ", $_mdtypes) : g_l('metadata', "[none]")) .
+				'</a>';
 		}
 
-		$foo = '<table cellpadding="0" cellspacing="0" border="0" width="500">
-		';
-		$foo .= '<tr style="vertical-align:top;">
+		return '<table cellpadding="0" cellspacing="0" border="0" width="500">
+			<tr style="vertical-align:top;">
 						<td class="defaultfont">' .
 			$uploadButton . '<br />' .
 			$fs . '<br />' .
 			$filetype . '<br />' .
 			$md . '</td>
-						<td width="100px" style="text-align:right;">';
-		$foo.=$this->getThumbnail();
-		$foo .= '</td>
+						<td width="100px" style="text-align:right;">' .
+			$this->getThumbnail() .
+			'</td>
 					</tr>
 					<tr>
 							<td>' . we_html_tools::getPixel(2, 20) . '</td>
 							<td>' . we_html_tools::getPixel(2, 20) . '</td>
 					</tr>
-					<tr>';
-		if($GLOBALS['we_doc']->getFilesize() != 0){
-			$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[upload_will_replace]"), 1, 508) . '</td>';
-		} else{
-			$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[upload_single_files]"), 1, 508) . '</td>';
-		}
-		$foo .= '</tr>';
-
-
-		$foo .= '</table>';
-
-		return $foo;
+					<tr>
+					<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), 1, 508) . '</td>
+				</tr>
+			</table>';
 	}
 
 	function getThumbnail(){
-		return ""; // TODO
+		return "";
 	}
 
 	function savebinarydata(){

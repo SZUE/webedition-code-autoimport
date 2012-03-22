@@ -83,16 +83,6 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	/**
-	 * loads the data of the document
-	 *
-	 * @return void
-	 * @param boolean $from
-	 */
-	function we_load($from = we_class::LOAD_MAID_DB){
-		parent::we_load($from);
-	}
-
-	/**
 	 * saves the data of the document
 	 *
 	 * @return boolean
@@ -403,31 +393,35 @@ class we_imageDocument extends we_binaryDocument{
 	function getHtml($dyn = false, $inc_href = true){
 		$_data = $this->getElement("data");
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
-			if($this->getElement("LinkType") == "int"){
-				$href = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = " . intval($this->getElement("LinkID")), "Path", $this->DB_WE);
-			} else if($this->getElement("LinkType") == "ext"){
-				$href = $this->getElement("LinkHref");
-			} else if($this->getElement("LinkType") == "obj"){
-				$id = $this->getElement("ObjID");
+			switch($this->getElement("LinkType")){
+				case "int":
+					$href = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = " . intval($this->getElement("LinkID")), "Path", $this->DB_WE);
+					break;
+				case "ext":
+					$href = $this->getElement("LinkHref");
+					break;
+				case "obj":
+					$id = $this->getElement("ObjID");
 
-				if(isset($GLOBALS["WE_MAIN_DOC"])){
-					$pid = $GLOBALS["WE_MAIN_DOC"]->ParentID;
-				} else{
-					$pidCvs = f("SELECT Workspaces FROM " . OBJECT_FILES_TABLE . " WHERE ID = " . intval($id), "Workspaces", $this->DB_WE);
-					$foo = makeArrayFromCSV($pidCvs);
-
-					if(sizeof($foo)){
-						$pid = $foo[0];
+					if(isset($GLOBALS["WE_MAIN_DOC"])){
+						$pid = $GLOBALS["WE_MAIN_DOC"]->ParentID;
 					} else{
-						$pid = 0;
-					}
-				}
+						$pidCvs = f("SELECT Workspaces FROM " . OBJECT_FILES_TABLE . " WHERE ID = " . intval($id), "Workspaces", $this->DB_WE);
+						$foo = makeArrayFromCSV($pidCvs);
 
-				$path = isset($GLOBALS["WE_MAIN_DOC"]) ? $GLOBALS["WE_MAIN_DOC"]->Path : "";
-				$href = getHrefForObject($this->getElement("ObjID"), $pid, $path, $this->DB_WE);
-				if(isset($GLOBALS["we_link_not_published"])){
-					unset($GLOBALS["we_link_not_published"]);
-				}
+						if(sizeof($foo)){
+							$pid = $foo[0];
+						} else{
+							$pid = 0;
+						}
+					}
+
+					$path = isset($GLOBALS["WE_MAIN_DOC"]) ? $GLOBALS["WE_MAIN_DOC"]->Path : "";
+					$href = getHrefForObject($this->getElement("ObjID"), $pid, $path, $this->DB_WE);
+					if(isset($GLOBALS["we_link_not_published"])){
+						unset($GLOBALS["we_link_not_published"]);
+					}
+					break;
 			}
 
 			$img_path = $this->Path;
@@ -596,7 +590,7 @@ class we_imageDocument extends we_binaryDocument{
 			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, true) : true; //rest is done in getHtmlTag
 			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
 				'src' => IMAGE_DIR . 'icons/no_image.gif',
-				'alt' => '',
+				'alt' => 'no-image',
 				'xml' => $xml,
 			);
 			if(isset($this->name)){

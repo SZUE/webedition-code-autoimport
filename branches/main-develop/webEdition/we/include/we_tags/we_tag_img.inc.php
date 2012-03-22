@@ -99,7 +99,7 @@ function we_tag_img($attribs){
 		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition == 1){
 			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
-			$attribs['alt'] = '';
+			$attribs['alt'] = 'no-img';
 			$out = getHtmlTag('img', $attribs);
 		} else{
 			$out = ''; //no_image war noch in der Vorscha sichtbar

@@ -55,11 +55,11 @@ class weBinary{
 
 	function load($id, $loadData = true){
 		$this->ID = $id;
-		$this->db->query("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id));
-		if($this->db->next_record()){
-			$this->Path = $this->db->f("Path");
+		$path = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), 'Path', $this->db);
+		if($path){
+			$this->Path = $path;
 			if($this->Path && $loadData){
-				return $this->loadFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path);
+				return $this->loadFile($this->Path);
 			}
 			return false;
 		}
@@ -75,23 +75,13 @@ class weBinary{
 	}
 
 	function save($force = true){
-		if($this->ID){
-			$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path;
-			if(file_exists($path) && !$force)
-				return false;
-			if(!is_dir(dirname($path))){
-				we_util_File::createLocalFolderByPath(dirname($path));
-			}
-			weFile::save($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
-		} else{
-			$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
-			if(file_exists($path) && !$force)
-				return false;
-			if(!is_dir(dirname($path))){
-				we_util_File::createLocalFolderByPath(dirname($path));
-			}
-			weFile::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
+		$path = $_SERVER['DOCUMENT_ROOT'] . ($this->ID ? SITE_DIR : '') . $this->Path;
+		if(file_exists($path) && !$force)
+			return false;
+		if(!is_dir(dirname($path))){
+			we_util_File::createLocalFolderByPath(dirname($path));
 		}
+		weFile::save($path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		return true;
 	}
 

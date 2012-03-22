@@ -161,8 +161,8 @@ class weContentProvider{
 			"weTableItem" => array("Dat", "strFelder", "strSerial", "DocumentObject",
 				"QASet", "QASetAdditions", "Catfields", "RevoteUserAgent", "agent",
 				"LogData", "strSerialOrder",
-				'documentElements','documentScheduler','documentCustomFilter'//tblVersions
-				),
+				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
+			),
 			"we_object" => array("DefaultText", "DefaultValues", "SerializedArray"),
 			"we_objectFile" => array("DefArray", "schedArr"),
 			"weBinary" => array("Data"),
@@ -206,12 +206,12 @@ class weContentProvider{
 	}
 
 	static function needCdata($classname, $prop, $content){
-/*		$encoded = array(
-			"we_element" => array("Dat"),
-			"we_object" => array("DefaultText", "DefaultValues"),
-			"weTableItem" => array("Text", "BText", "answertext"),
-			"we_category" => array("Catfields")
-		);*/
+		/* 		$encoded = array(
+		  "we_element" => array("Dat"),
+		  "we_object" => array("DefaultText", "DefaultValues"),
+		  "weTableItem" => array("Text", "BText", "answertext"),
+		  "we_category" => array("Catfields")
+		  ); */
 		return strpos($content, '<') !== FALSE || strpos($content, '>') !== FALSE || strpos($content, '&') !== FALSE;
 		/*
 		  if($classname == "weTableItem"){
@@ -239,17 +239,10 @@ class weContentProvider{
 	}
 
 	static function isExportable(&$object, $prop){
-
-		if(isset($object->Pseudo))
-			$classname = $object->Pseudo;
-		else
-			$classname = $object->ClassName;
+		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
 		if(isset($object->table) && $object->table == CONTENT_TABLE){
-			if($this->IsBinary)
-				return false;
-			else
-				return true;
+			return (!$this->IsBinary);
 		}
 
 		$noexport = array();

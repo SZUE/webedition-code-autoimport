@@ -779,12 +779,13 @@ function we_getCodeMirror2Code($code){
 			font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'Tahoma') . ';
 			font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px;
 			border: outset 1px;
-			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			box-shadow: 0 2px 2px rgba(0,0,0,0.3);'.
+		(we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-moz-border-radius: 3px;':(we_base_browserDetect::isSafari() ? '
 			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+			-webkit-border-radius: 3px;':'')).'
 			border-radius: 3px;
-			-moz-border-radius: 3px;
-			-webkit-border-radius: 3px;
 			}
 	span.c-like-keyword {
 		color: #000;

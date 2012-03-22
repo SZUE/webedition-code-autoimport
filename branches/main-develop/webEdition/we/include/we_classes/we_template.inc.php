@@ -415,14 +415,11 @@ class we_template extends we_document{
 	 * @param	none
 	 */
 	function getVariantFieldNames(){
-		if(!defined('SHOP_TABLE'))
-			return array();
-		$fields = $this->getAllVariantFields();
-		if(is_array($fields)){
-			return array_keys($fields);
-		} else{
+		if(!defined('SHOP_TABLE')){
 			return array();
 		}
+		$fields = $this->getAllVariantFields();
+		return (is_array($fields) ? array_keys($fields) : array());
 	}
 
 	/**
@@ -432,11 +429,7 @@ class we_template extends we_document{
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		if(isset($this->elements['allVariants'])){
-			return $this->elements['allVariants']['dat'];
-		} else{
-			return array();
-		}
+		return (isset($this->elements['allVariants']) ? $this->elements['allVariants']['dat'] : array());
 	}
 
 	/**
@@ -514,11 +507,10 @@ class we_template extends we_document{
 						case "block":
 						case "list":
 						case "linklist":
-							$foo = array(
+							$blocks[] = array(
 								"name" => $name,
 								"type" => $tagname
 							);
-							array_push($blocks, $foo);
 							break;
 					}
 				}
@@ -590,7 +582,6 @@ class we_template extends we_document{
 
 		$path = $this->isUsedByDocuments();
 
-
 		if(sizeof($path) == 0){
 			return g_l('weClass', "[no_documents]");
 		}
@@ -613,8 +604,8 @@ class we_template extends we_document{
 		$foo = array();
 		$attribs = '';
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+		foreach($foo as $f){
+			$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
 		}
 		$att = array();
 		@eval('$att = array(' . $attribs . ');');
