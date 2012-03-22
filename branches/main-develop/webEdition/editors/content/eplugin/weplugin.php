@@ -113,7 +113,7 @@ $js = we_html_element::jsElement('
 	}
 
 	function isInEditor(transaction) {
-		if (self.isLoaded) {
+		if (self.isLoaded && transaction!=null) {
 			return document.WePlugin.inEditor(transaction);
 		}
 		return false;
