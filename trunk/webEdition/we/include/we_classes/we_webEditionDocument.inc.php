@@ -687,6 +687,9 @@ class we_webEditionDocument extends we_textContentDocument {
 		$out = we_textContentDocument::we_save($resave,$skipHook);
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0){
 			$out = ($this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false)) ? $out : $out; // response deactivated
+		} else{
+			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
+			$this->checkRemoteLanguage($this->Table,false);
 		}
 
 		if($resave == 0){
@@ -713,7 +716,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		return we_textContentDocument::we_unpublish($skipHook);
 	}
 
-	function we_delete() {
+	function we_delete(){
 		if(!$this->ID) return false;
 		$this->we_clearCache($this->ID);
 		return we_document::we_delete();

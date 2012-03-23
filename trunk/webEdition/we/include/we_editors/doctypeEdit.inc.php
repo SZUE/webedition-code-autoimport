@@ -87,11 +87,17 @@ switch ($_REQUEST["we_cmd"][0]) {
 		}
 		$DB_WE->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
 		$del=false;
+		$DB_WE2 = new DB_WE();
 		if ($DB_WE->next_record()) {
 			$name=$DB_WE->f("DocType");
 			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST["we_cmd"][1]));
 			if (!$DB_WE->next_record()) {
-				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
+				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));t_e("del doctype hier:", abs($_REQUEST["we_cmd"][1]));
+
+				// Fast Fix for deleting entries from tblLangLink: #5840
+				$DB_WE2->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID=".abs($_REQUEST["we_cmd"][1]));
+				$DB_WE2->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND LDID=".abs($_REQUEST["we_cmd"][1]));
+
 				$we_responseText = $l_we_class["doctype_delete_ok"];
 				$we_response_type = WE_MESSAGE_NOTICE;
 				$we_responseText = sprintf($we_responseText,$name);
