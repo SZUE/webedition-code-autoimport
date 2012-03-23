@@ -92,7 +92,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 			$name=$DB_WE->f("DocType");
 			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST["we_cmd"][1]));
 			if (!$DB_WE->next_record()) {
-				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));t_e("del doctype hier:", abs($_REQUEST["we_cmd"][1]));
+				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$DB_WE2->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID=".abs($_REQUEST["we_cmd"][1]));
