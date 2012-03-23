@@ -146,7 +146,17 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 			}
 		}
 	}
-	$DB_WE->query("DELETE FROM $table WHERE ID=".abs($id)."");
+
+	// Fast Fix for deleting entries from tblLangLink: #5840
+	if($DB_WE->query("DELETE FROM $table WHERE ID=".abs($id)."")){
+		$DB_WE2 = new DB_WE();
+		if($table == FILE_TABLE){
+			$DB_WE2->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject=0 AND IsFolder=1 AND DID='".abs($id)."'");
+		}
+		if($table == OBJECT_FILES_TABLE){
+			$DB_WE2->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject=1 AND IsFolder=1 AND DID='".abs($id)."'");
+		}
+	}
 
 	deleteContentFromDB($id, $table);
 	if (substr($path, 0, 3) == "/..") {
@@ -202,7 +212,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	}
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
-	if ($table == FILE_TABLE) {
+	if ($table == FILE_TABLE) {t_e("dokument loeschen");
 		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=".abs($id)."");
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."");
 
@@ -212,6 +222,10 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		}
 		$DB_WE->query(
 				'DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID="' . abs($id) . '";');
+		
+		// Fast Fix for deleting entries from tblLangLink: #5840
+		$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject=0 AND IsFolder=0 AND DID='".abs($id)."'");
+		$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND LDID='".abs($id)."'");
 
 		// Clear cache for this document
 		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
@@ -230,7 +244,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			foreach ($foo as $testclass) {
 				if(isColExistForDelete(OBJECT_X_TABLE.$testclass['ID'],"object_".$tableID)){
 
-					//das l�schen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
+					//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
 					$qtest = "SELECT OF_ID FROM " .OBJECT_X_TABLE.$testclass['ID']. " WHERE object_".$tableID."= '".abs($id)."'";
 					$DB_WE->query($qtest);
 					$foos = $DB_WE->getAll();
@@ -251,6 +265,9 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 					$DB_WE->query($q);
 				}
 			}
+			// Fast Fix for deleting entries from tblLangLink: #5840
+			$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND DID='".abs($id)."'");
+			$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND LDID='".abs($id)."'");
 		}
 		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(

@@ -197,6 +197,7 @@ $l_prefs = array(
 		'langlink_headline' => "Unterstützung für die Verlinkung zwischen verschiedenen Sprachen",
 		'langlink_information' => "Mit dieser Option können Sie im Backend die verschiedenen korrespondierenden Sprachversionen eines Dokumentes/Objektes verwalten und diese Dokumente zuweisen, aufrufen usw.<br/>Eine Ausgabe im Frontend erfolgt dann über eine listview type=languagelink.<br/><br/>Für Verzeichnisse kann dann ein <b>Dokument</b> in der jeweiligen Sprache gewählt werden, auf das zurückgegriffen wird, wenn einzelnen Dokumenten im Verzeichnis selbst kein korrespondierendes Sprachdokument zugewiesen wurde.",
 		'langlink_support' => "Aktiviert",
+		'langlink_abandoned_options' => "<b>Hinweis:</b><br>Die beiden folgenden Optionen sind ab Version 6.2.7 auf \"true\" gesetzt und können nicht mehr verändert werden. Sprachlinks werden somit automatisch rekursiv ergänzt.",
 		'langlink_support_backlinks' => "Erzeuge automatisch die Rücklinks",
 		'langlink_support_backlinks_information' => "Rücklinks können für Dokumente (nicht Verzeichnisse!) automatisch generiert werden. Dabei sollte das verlinkte Dokument nicht in einem Editor-Tab geöffnet sein!",
 		'langlink_support_recursive' => "Erzeuge die Sprachenlinks rekursiv",

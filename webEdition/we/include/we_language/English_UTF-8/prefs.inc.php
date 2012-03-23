@@ -198,6 +198,7 @@ $l_prefs = array(
 		'langlink_headline' => "Support for setting links between different languages",
 		'langlink_information' => "With this option, you can set the links to corresponding language versions of documents/objects in the backend and open/create etc. these documents/oobjects.<br/>For the frontend you can display these links in a listview type=languagelink.<br/><br/>For folders, you can define a <b>document</b> in each language, which is used if for a document within the folder no corresponding document in the other language is set.",
 		'langlink_support' => "active",
+		'langlink_abandoned_options' => "<b>Notice:</b><br>From version 6.27 onwards the following two options are set on \"true\", and can not be changed anymore. Thus setting of language links will allways be done recursively.",
 		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
 		'langlink_support_backlinks_information' => "Back links can be generated automatically for documents/objects (not folders). The other document should not be open in an editor tab!",
 		'langlink_support_recursive' => "Generate language links recursive",// TRANSLATE
