@@ -1101,7 +1101,7 @@ class searchtoolView extends weToolView{
        + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
        + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
        + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\">"
-       + "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
+       + "<img src=\"'.IMAGE_DIR.'button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
        + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
 
 
@@ -2460,7 +2460,7 @@ class searchtoolView extends weToolView{
 						$imagesize = array(
 							0, 0
 						);
-						$thumbpath = '/webEdition/images/icons/doclist/image.gif';
+						$thumbpath = IMAGE_DIR.'icons/doclist/image.gif';
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}

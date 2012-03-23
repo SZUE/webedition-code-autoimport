@@ -183,7 +183,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_WeWysiwygEditor'));
-		$this->addJSFile("/webEdition/js/utils/prototypes.js");
+		$this->addJSFile(JS_DIR . "utils/prototypes.js");
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 	}
 

@@ -423,7 +423,7 @@ class we_image_edit{
 						break;
 				}
 				if(function_exists($fn)){
-					if(@$fn($_SERVER['DOCUMENT_ROOT'] . "/webEdition/images/foo." . $t[$i])){
+					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $t[$i])){
 						array_push($sit, $t[$i]);
 					}
 				}

@@ -53,7 +53,7 @@ $_messageTbl->setColContent(1, 5, $refreshButton);
 
 
 $_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
-$_body = we_html_element::htmlBody(array("background" => "/webEdition/images/edit/editfooterback.gif",
+$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
 		"bgcolor" => "white"), $_messageTbl->getHtml());
 
 

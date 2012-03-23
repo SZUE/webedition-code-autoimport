@@ -561,24 +561,24 @@ class weVersionsView{
 					+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
 					+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
 					+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" >"
-					+ "<img src=\"/webEdition/images/button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
-					+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
+					+ "<img src=\"' . IMAGE_DIR . 'button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
+				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
 
 
-					cell = document.createElement("TD");
-					cell.setAttribute("id", "td_search["+rowNr+"]");
-					cell.innerHTML=innerhtml;
-					row.appendChild(cell);
+				cell = document.createElement("TD");
+				cell.setAttribute("id", "td_search["+rowNr+"]");
+				cell.innerHTML = innerhtml;
+				row.appendChild(cell);
 
-					Calendar.setup({inputField:"search["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
+				Calendar.setup({inputField:"search["+rowNr+"]", ifFormat:"%d.%m.%Y", button:"date_picker_from"+rowNr+"", align:"Tl", singleClick:true});
 
-					if (delButtonTD!=null) {
-					row.removeChild(delButtonTD);
-					}
+				if (delButtonTD!=null) {
+				row.removeChild(delButtonTD);
+				}
 
-					cell = document.createElement("TD");
-					cell.setAttribute("id", "td_delButton["+rowNr+"]");
-					cell.innerHTML=\'' . we_button::create_button(
+				cell = document.createElement("TD");
+				cell.setAttribute("id", "td_delButton["+rowNr+"]");
+				cell.innerHTML = \'' . we_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 					row.appendChild(cell);
 				}

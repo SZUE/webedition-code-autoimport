@@ -1143,7 +1143,7 @@ function we_checkName() {
 }
 </script>
 ';
-		print STYLESHEET . '</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(/webEdition/images/backgrounds/aquaBackgroundLineLeft.gif);">
+		print STYLESHEET . '</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
 	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="FS_CHANGE_CAT" /><input type="hidden" name="catid" value="' . $_REQUEST["catid"] . '" />
 		' . $table->getHtml() . "<br />" . $ta . "<br />" . $saveBut . '

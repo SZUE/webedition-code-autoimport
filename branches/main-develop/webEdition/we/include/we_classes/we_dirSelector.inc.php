@@ -1054,7 +1054,7 @@ top.selectFile(top.currentID);
 					//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
 					$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
 					$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
-					$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
+					$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='".IMAGE_DIR."tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
 					$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a></td></tr>";
 					if($result['CreationDate']){
 						$previewDefauts .= "<tr class='odd'><td class='odd'>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";

@@ -81,7 +81,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
+			return '<body bgcolor="#FFFFFF" background="' . IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
 
 		$page = (isset($_GET["page"]) ? $_GET["page"] : 0);

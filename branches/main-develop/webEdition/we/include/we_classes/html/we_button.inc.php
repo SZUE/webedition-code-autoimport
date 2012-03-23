@@ -243,7 +243,7 @@ class we_button{
 		}
 
 		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? "..." : "") :
-			'<img src="/webEdition/images/button/icons/' . str_replace("btn_", "", $_button_pure_name) . '.gif" class="weBtnImage" />';
+			'<img src="' . IMAGE_DIR . 'button/icons/' . str_replace("btn_", "", $_button_pure_name) . '.gif" class="weBtnImage" />';
 
 		$title = "";
 		// Check if the button will a text button or an image button

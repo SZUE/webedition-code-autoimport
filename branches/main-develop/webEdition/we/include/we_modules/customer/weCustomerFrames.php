@@ -307,7 +307,7 @@ class weCustomerFrames extends weModuleFrames{
 
 
 		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#FFFFFF', 'background' => '/webEdition/images/backgrounds/bgGrayLineTop.gif'), ''));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#FFFFFF', 'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif'), ''));
 		}
 
 		$tabs = new we_tabs();
@@ -423,13 +423,11 @@ class weCustomerFrames extends weModuleFrames{
 
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement("
-					function we_save() {
+				we_html_element::jsElement(
+					"function we_save() {
 						top.content.we_cmd('save_customer');
-
-					}
-					") .
-				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => '/webEdition/images/edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+					}") .
+				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				)
 		);
 	}
@@ -721,7 +719,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			)
 		);
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), we_html_element::htmlForm(array("name" => "we_form"), $table->getHtml())
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), we_html_element::htmlForm(array("name" => "we_form"), $table->getHtml())
 		);
 
 		return $this->getHTMLDocument($body);

@@ -68,7 +68,7 @@ class weNewsletterFrames extends weModuleFrames{
 	 */
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => "/webEdition/images/backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
 		}
 
 		$group = 0;
@@ -306,7 +306,7 @@ class weNewsletterFrames extends weModuleFrames{
 		</script>
 		';
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
 					$table1->getHtml() .
 					$table2->getHtml() .
 					$post_js
@@ -373,14 +373,14 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLSendQuestion(){
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"), we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), "/webEdition/images/alert.gif", "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"), we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLSaveQuestion1(){
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"), we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), "/webEdition/images/alert.gif", "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"), we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), IMAGE_DIR . "alert.gif", "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
@@ -2074,7 +2074,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$content[$counter][7]["height"] = "";
 				$content[$counter][7]["align"] = "left";
 
-				$iconFolder = "/webEdition/images/icons/";
+				$iconFolder = IMAGE_DIR . "icons/";
 				$content[$counter][8]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => $iconFolder . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif"))));
 				$content[$counter][8]["height"] = "";
 				$content[$counter][8]["align"] = "center";

@@ -664,19 +664,19 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	<?php
 	if(!we_base_browserDetect::isSafari()){
 		echo '
-	if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
+if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-		var clone=gel("rpcBusy").cloneNode(true);
-		var wpNode=gel(elementId+"_wrapper");
-		var ctNode=gel(elementId+"_content");
+	var clone=gel("rpcBusy").cloneNode(true);
+	var wpNode=gel(elementId+"_wrapper");
+	var ctNode=gel(elementId+"_content");
 
-		ctNode.style.display="none";
-		wpNode.style.textAlign="center";
-		wpNode.style.verticalAlign="middle";
-		wpNode.insertBefore(clone,ctNode);
-		clone.id="rpcBusyClone_" + elementId;
-		clone.style.display="inline";
-	}';
+	ctNode.style.display="none";
+	wpNode.style.textAlign="center";
+	wpNode.style.verticalAlign="middle";
+	wpNode.insertBefore(clone,ctNode);
+	clone.id="rpcBusyClone_" + elementId;
+	clone.style.display="inline";
+}';
 	}
 	?>
 			}
@@ -704,7 +704,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				var docIFrm,iFrmScr;
 				var oInline = gel(widgetId+'_inline'); // object-inline
 
-			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
 				if(!saf) {
 					oInline.style.display='block';
 				}
@@ -837,7 +837,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				var docIFrm,iFrmScr;
 				var oInline=gel(sObjId+'_inline');
 
-			var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
+				var saf = <?php echo (we_base_browserDetect::isSafari() ? 'true' : 'false'); ?>;
 				if(!saf) {
 					oInline.style.display='block';
 				}
@@ -1093,7 +1093,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			heigth: 90%;
 		}
 		body {
-			background: #DDE7F1 url( "/webEdition/images/backgrounds/blank_editor.gif" ) no-repeat fixed bottom right;
+			background: #DDE7F1 url( "' . IMAGE_DIR . 'backgrounds/blank_editor.gif" ) no-repeat fixed bottom right;
 			height:100%;
 			margin: 0;
 			padding: 0;

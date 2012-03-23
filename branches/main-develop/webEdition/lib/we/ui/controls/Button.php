@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractFormElement
  */
@@ -33,12 +33,11 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
-{
-
+class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	/*
 	 * Path for Add Category Icon
 	 */
+
 	const kIconAddCat = '/webEdition/images/button/icons/add_cat.gif';
 
 	/*
@@ -537,8 +536,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 
 		// add needed CSS files
@@ -553,8 +551,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getText()
-	{
+	public function getText(){
 		return $this->_text;
 	}
 
@@ -563,8 +560,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_text
 	 */
-	public function setText($_text)
-	{
+	public function setText($_text){
 		$this->_text = $_text;
 	}
 
@@ -573,8 +569,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getHref()
-	{
+	public function getHref(){
 		return $this->_href;
 	}
 
@@ -583,8 +578,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_href
 	 */
-	public function setHref($_href)
-	{
+	public function setHref($_href){
 		$this->_href = $_href;
 	}
 
@@ -593,8 +587,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getTarget()
-	{
+	public function getTarget(){
 		return $this->_target;
 	}
 
@@ -603,8 +596,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_target
 	 */
-	public function setTarget($_target)
-	{
+	public function setTarget($_target){
 		$this->_target = $_target;
 	}
 
@@ -613,8 +605,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType(){
 		return $this->_type;
 	}
 
@@ -623,8 +614,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_type
 	 */
-	public function setType($_type)
-	{
+	public function setType($_type){
 		$this->_type = $_type;
 	}
 
@@ -633,8 +623,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getOnMouseOut()
-	{
+	public function getOnMouseOut(){
 		return $this->_onMouseOut;
 	}
 
@@ -643,8 +632,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_onMouseOut
 	 */
-	public function setOnMouseOut($_onMouseOut)
-	{
+	public function setOnMouseOut($_onMouseOut){
 		$this->_onMouseOut = $_onMouseOut;
 	}
 
@@ -653,8 +641,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getOnMouseDown()
-	{
+	public function getOnMouseDown(){
 		return $this->_onMouseDown;
 	}
 
@@ -663,8 +650,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_onMouseDown
 	 */
-	public function setOnMouseDown($_onMouseDown)
-	{
+	public function setOnMouseDown($_onMouseDown){
 		$this->_onMouseDown = $_onMouseDown;
 	}
 
@@ -673,8 +659,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getOnMouseUp()
-	{
+	public function getOnMouseUp(){
 		return $this->_onMouseUp;
 	}
 
@@ -683,8 +668,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_onMouseUp
 	 */
-	public function setOnMouseUp($_onMouseUp)
-	{
+	public function setOnMouseUp($_onMouseUp){
 		$this->_onMouseUp = $_onMouseUp;
 	}
 
@@ -693,8 +677,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getOnClick()
-	{
+	public function getOnClick(){
 		return $this->_onClick;
 	}
 
@@ -703,8 +686,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_onClick
 	 */
-	public function setOnClick($_onClick)
-	{
+	public function setOnClick($_onClick){
 		$this->_onClick = $_onClick;
 	}
 
@@ -713,8 +695,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getIcon()
-	{
+	public function getIcon(){
 		return $this->_icon;
 	}
 
@@ -723,8 +704,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_icon
 	 */
-	public function setIcon($_icon)
-	{
+	public function setIcon($_icon){
 		$this->_icon = $_icon;
 	}
 
@@ -733,8 +713,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getImagePath()
-	{
+	public function getImagePath(){
 		return $this->_imagePath;
 	}
 
@@ -743,8 +722,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_imagePath
 	 */
-	public function setImagePath($_imagePath)
-	{
+	public function setImagePath($_imagePath){
 		$this->_imagePath = $_imagePath;
 	}
 
@@ -753,8 +731,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function getTextPosition()
-	{
+	public function getTextPosition(){
 		return $this->_textPosition;
 	}
 
@@ -763,8 +740,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @param string $_textPosition
 	 */
-	public function setTextPosition($_textPosition)
-	{
+	public function setTextPosition($_textPosition){
 		$this->_textPosition = $_textPosition;
 	}
 
@@ -773,25 +749,24 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function _getWrapperStart()
-	{
-		if ($this->getType() == "href") {
+	public function _getWrapperStart(){
+		if($this->getType() == "href"){
 
-			if ($this->getDisabled()) {
+			if($this->getDisabled()){
 				$onClick = "return false;";
-			} else {
+			} else{
 				$onClick = "return true;";
 			}
 			return '<div style="width:' . $this->getWidth() . 'px;
 			height:' . $this->getHeight() . 'px;"><a onClick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
 		}
-		if ($this->getType() == "submit") {
+		if($this->getType() == "submit"){
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;">
 				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
 				style="position:absolute;z-index:2;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;"
-				type="image" src="/webEdition/images/pixel.gif" title="' . $this->getTitle() . '">';
+				type="image" src="'.IMAGE_DIR.'pixel.gif" title="' . $this->getTitle() . '">';
 		}
 
 		return "";
@@ -802,12 +777,11 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function _getWrapperEnd()
-	{
-		if ($this->getType() == "href") {
+	public function _getWrapperEnd(){
+		if($this->getType() == "href"){
 			return '</a></div>';
 		}
-		if ($this->getType() == "submit") {
+		if($this->getType() == "submit"){
 			return '</div>';
 		}
 
@@ -819,39 +793,38 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function _getButtonContent()
-	{
+	public function _getButtonContent(){
 		$buttonHTML = '';
 
-		if ($this->getDisabled()) {
+		if($this->getDisabled()){
 			$classLeft = self::kButtonClassDisabledLeft;
 			$classMiddle = self::kButtonClassDisabledMiddle;
 			$classRight = self::kButtonClassDisabledRight;
 			$tblClass = self::kButtonClassDisabledInnerTable;
-		} else {
+		} else{
 			$classLeft = self::kButtonClassLeft;
 			$classMiddle = self::kButtonClassMiddle;
 			$classRight = self::kButtonClassRight;
 			$tblClass = self::kButtonClassInnerTable;
 		}
-		if ($this->getImagePath() === "") {
+		if($this->getImagePath() === ""){
 			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . '>';
 		}
 		$buttonHTML .= '<table border="0" id="table_' . $this->getId() . '" cellpadding="0" cellspacing="0" class="' . $tblClass . '"><tr>';
 
-		if ($this->getIcon() !== '' || $this->getImagePath() !== '') {
+		if($this->getIcon() !== '' || $this->getImagePath() !== ''){
 			$image = '';
-			if ($this->getImagePath() !== '') {
+			if($this->getImagePath() !== ''){
 				$image = $this->getImagePath();
-			} elseif ($this->getIcon() !== '') {
+			} elseif($this->getIcon() !== ''){
 				$image = $this->getIcon();
 			}
 			$imagePath = $_SERVER['DOCUMENT_ROOT'] . $image;
-			if (file_exists($_SERVER['DOCUMENT_ROOT'] . $image) && is_readable($imagePath)) {
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $image) && is_readable($imagePath)){
 				$button = '<img src="' . $image . '" border="0" style="-khtml-user-select: none;padding:0px 5px 0px 5px;" />';
-				if ($this->getText() !== "") {
+				if($this->getText() !== ""){
 					$text = $this->getText();
-					switch ($this->getTextPosition()) {
+					switch($this->getTextPosition()){
 						case "left" :
 							$buttonHTML .= '<td>' . $text . '</td><td>' . $button . '</td>';
 							break;
@@ -859,16 +832,15 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 							$buttonHTML .= '<td>' . $button . '</td><td>' . $text . '</td>';
 							break;
 					}
-				} else {
+				} else{
 					$buttonHTML .= '<td>' . $button . '</td>';
 				}
-
 			}
-		} else {
+		} else{
 			$buttonHTML .= '<td>' . $this->getText() . '</td>';
 		}
 		$buttonHTML .= '</tr></table>';
-		if ($this->getImagePath() === "") {
+		if($this->getImagePath() === ""){
 			$buttonHTML .= '</div><div' . $this->_getComputedClassAttrib($classRight) . ' style="height:' . $this->_height . 'px"></div>';
 		}
 
@@ -881,25 +853,24 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 * @param string $attribsString comma separated string with attribute names
 	 * @return string
 	 */
-	protected function _getNonBooleanAttribs($attribsString)
-	{
+	protected function _getNonBooleanAttribs($attribsString){
 		$arr = explode(',', $attribsString);
 		$attribs = '';
-		foreach ($arr as $attribName) {
+		foreach($arr as $attribName){
 			$internalName = "_$attribName";
-			if ($internalName === "_onMouseDown") {
+			if($internalName === "_onMouseDown"){
 				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
 			}
-			if ($internalName === "_onMouseUp") {
+			if($internalName === "_onMouseUp"){
 				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
 			}
-			if ($internalName === "_onMouseOut") {
+			if($internalName === "_onMouseOut"){
 				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
 			}
-			if (isset($this->$internalName) && $this->$internalName !== '') {
-				if ($internalName === "_onClick") {
+			if(isset($this->$internalName) && $this->$internalName !== ''){
+				if($internalName === "_onClick"){
 					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
-				} else {
+				} else{
 					$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($this->$internalName) . '"';
 				}
 			}
@@ -912,19 +883,19 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	public function _renderHTML()
-	{
+	public function _renderHTML(){
 
-		if ($this->getDisabled()) {
+		if($this->getDisabled()){
 			$classNormal = self::kButtonClassDisabledNormal;
-		} else {
+		} else{
 			$classNormal = self::kButtonClassNormal;
 		}
 
-		if ($this->getHidden()) {
+		if($this->getHidden()){
 			$this->_style .= 'display:none;';
 		}
 
 		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
 	}
+
 }

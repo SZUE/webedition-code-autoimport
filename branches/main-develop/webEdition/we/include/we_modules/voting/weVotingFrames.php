@@ -98,7 +98,7 @@ class weVotingFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => "/webEdition/images/backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR."backgrounds/bgGrayLineTop.gif"), ""));
 		}
 
 		$we_tabs = new we_tabs();
@@ -202,7 +202,7 @@ class weVotingFrames extends weModuleFrames{
 
 					}
 					") .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR ."edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				)
 		);
 	}
@@ -924,7 +924,7 @@ class weVotingFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
 		);
 
 		return $this->getHTMLDocument($body);

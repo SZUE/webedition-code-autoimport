@@ -103,7 +103,7 @@ $buttonExtern->setHref('http://www.webedition.org');
 $buttonExtern->setWidth(200);
 $buttonExtern->setHeight(50);
 //$buttonExtern->setIcon(we_ui_controls_Button::kIconTrash);
-$buttonExtern->setImagePath('/webEdition/images/update/alert.gif');
+$buttonExtern->setImagePath(IMAGE_DIR . 'update/alert.gif');
 //$buttonExtern->setOnClick('');
 $buttonExtern->setTextPosition('left');
 
@@ -119,7 +119,7 @@ $buttonExtern2->setHref('http://www.webedition.org');
 $buttonExtern2->setWidth(200);
 $buttonExtern2->setHeight(50);
 //$buttonExtern2->setIcon(we_ui_controls_Button::kIconTrash);
-$buttonExtern2->setImagePath('/webEdition/images/update/alert.gif');
+$buttonExtern2->setImagePath(IMAGE_DIR . 'update/alert.gif');
 //$buttonExtern2->setOnClick('');
 $buttonExtern2->setTextPosition('right');
 
@@ -135,7 +135,7 @@ $buttonExtern3->setType('onClick');
 $buttonExtern3->setWidth(32);
 $buttonExtern3->setHeight(32);
 //$buttonExtern3->setIcon(we_ui_controls_Button::kIconTrash);
-$buttonExtern3->setImagePath('/webEdition/images/update/alert.gif');
+$buttonExtern3->setImagePath(IMAGE_DIR . 'update/alert.gif');
 $buttonExtern3->setOnClick('alert("Hello!");');
 //$buttonExtern3->setTextPosition('right');
 
@@ -150,7 +150,7 @@ $newButton->setType('onClick');
 $newButton->setWidth(150);
 //$newButton->setHeight(32);
 //$newButton->setIcon(we_ui_controls_Button::kIconTrash);
-//$newButton->setImagePath('/webEdition/images/update/alert.gif');
+//$newButton->setImagePath(IMAGE_DIR.'update/alert.gif');
 $newButton->setOnClick('alert("Hello!");');
 //$newButton->setTextPosition('right');
 

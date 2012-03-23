@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+	include_once(WE_INCLUDES_PATH .'we_exim/weXMLExImConf.inc.php');
 
 	class weXMLExport extends weXMLExIm{
 

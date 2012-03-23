@@ -73,7 +73,7 @@ function printHeader($login){
 		print we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
 
-	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
+	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico'));
 
 	$_head_javascript = 'cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
@@ -375,19 +375,19 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	<tr>
 		<td style="background-color:#386AAB;"></td>
 		<td rowspan="2">' . $_loginTable . '</td>
-		<td valign="top" style="background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/top_r.jpg')) . '</td>
+		<td valign="top" style="background-image:url(' . IMAGE_DIR . 'login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/top_r.jpg')) . '</td>
 
 	</tr>
 	<tr>
 		<td  valign="bottom" style="background-color:#386AAB;"></td>
 
-		<td valign="bottom" style="height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_r.jpg')) . '</td>
+		<td valign="bottom" style="height:296px;background-image:url(' . IMAGE_DIR . 'login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_r.jpg')) . '</td>
 
 	</tr>
 	<tr>
 		<td></td>
-		<td style="background-image:url(/webEdition/images/login/bottom.jpg);background-repeat:repeat-x;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_l.jpg')) . '</td>
-		<td>' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_r2.jpg')) . '</td>
+		<td style="background-image:url(' . IMAGE_DIR . 'login/bottom.jpg);background-repeat:repeat-x;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_l.jpg')) . '</td>
+		<td>' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_r2.jpg')) . '</td>
 	</tr>
 
 </table>';

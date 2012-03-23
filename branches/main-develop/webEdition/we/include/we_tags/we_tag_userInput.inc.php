@@ -235,7 +235,7 @@ function we_tag_userInput($attribs, $content){
 						if(isset($attribs["id"]) && $attribs["id"]){
 							$flashmovieTag = $GLOBALS['we_doc']->getField($attribs, "flashmovie");
 						} else{
-							$flashmovieTag = '<img src="/webEdition/images/icons/no_flashmovie.gif" alt="" width="64" height="64" />';
+							$flashmovieTag = '<img src="' . IMAGE_DIR . 'icons/no_flashmovie.gif" alt="" width="64" height="64" />';
 						}
 					}
 
@@ -341,7 +341,7 @@ function we_tag_userInput($attribs, $content){
 						if(isset($attribs["id"]) && $attribs["id"]){
 							$quicktimeTag = $GLOBALS['we_doc']->getField($attribs, "quicktime");
 						} else{
-							$quicktimeTag = '<img src="/webEdition/images/icons/no_quicktime.gif" alt="" width="64" height="64" />';
+							$quicktimeTag = '<img src="' . IMAGE_DIR . 'icons/no_quicktime.gif" alt="" width="64" height="64" />';
 						}
 					}
 

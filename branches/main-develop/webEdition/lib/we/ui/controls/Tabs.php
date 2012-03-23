@@ -37,6 +37,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	/**
 	 * Default class name for tab container
 	 */
+
 	const kTabs_ContainerClass = 'we_ui_controls_Tabs_Container';
 
 	/**
@@ -241,7 +242,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	protected function getTabImageBorder(){
-		return '<img src="/webEdition/images/multiTabs/tabBorder.gif" border="0" ' . $this->_getComputedClassAttrib(self::kTabImageBorder_Class) . ' height="21" />';
+		return '<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" border="0" ' . $this->_getComputedClassAttrib(self::kTabImageBorder_Class) . ' height="21" />';
 	}
 
 	/**

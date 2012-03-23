@@ -224,7 +224,7 @@ class weToolFrames extends weModuleFrames{
 	 */
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0', 'background' => '/webEdition/images/backgrounds/bgGrayLineTop.gif'), ''));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0', 'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif'), ''));
 		}
 
 
@@ -347,7 +347,7 @@ class weToolFrames extends weModuleFrames{
 					}
 					')
 				.
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() .
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() .
 						$_but_table)
 				)
 		);
@@ -435,7 +435,7 @@ class weToolFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>'
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>'
 		);
 
 		return $this->getHTMLDocument($body);

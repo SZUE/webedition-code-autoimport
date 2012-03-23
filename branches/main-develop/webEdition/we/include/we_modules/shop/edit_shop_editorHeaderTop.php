@@ -21,11 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
-	print '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
+	print '<body bgcolor="#FFFFFF" background="' . IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif"></body></html>';
 	exit;
 }
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
 we_html_tools::protect();
@@ -39,7 +39,7 @@ $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
 $cid = f("SELECT IntCustomerID FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($bid), "IntCustomerID", $DB_WE);
 $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
 if($DB_WE->next_record()){
-	$headline = sprintf(g_l('modules_shop', '[lastOrder]') , $DB_WE->f("IntOrderID") ,$DB_WE->f("orddate"));
+	$headline = sprintf(g_l('modules_shop', '[lastOrder]'), $DB_WE->f("IntOrderID"), $DB_WE->f("orddate"));
 } else{
 	$headline = "";
 }

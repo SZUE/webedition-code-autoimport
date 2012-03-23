@@ -77,7 +77,7 @@ class weNavigationFrames extends weToolFrames{
 					we_html_element::htmlBody(
 						array(
 						'bgcolor' => '#F0EFF0',
-						'background' => '/webEdition/images/backgrounds/bgGrayLineTop.gif'
+						'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif'
 						), ''));
 		}
 
@@ -1910,7 +1910,7 @@ function onFolderSelectionChangeJS(elem) {
 					') . we_html_element::htmlBody(
 					array(
 					"bgcolor" => "white",
-					"background" => "/webEdition/images/edit/editfooterback.gif",
+					"background" => IMAGE_DIR . "edit/editfooterback.gif",
 					"marginwidth" => "0",
 					"marginheight" => "0",
 					"leftmargin" => "0",

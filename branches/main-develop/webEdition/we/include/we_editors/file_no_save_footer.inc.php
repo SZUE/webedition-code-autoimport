@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $_messageTbl = new we_html_table(array("border" => 0,
 		"cellpadding" => 0,
 		"cellspacing" => 0),
@@ -36,7 +35,7 @@ $_messageTbl->setCol(1, 3, array("class" => "defaultfont"), g_l('alert', "[file_
 
 
 $_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
-$_body = we_html_element::htmlBody(array("background" => "/webEdition/images/edit/editfooterback.gif",
+$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
 		"bgcolor" => "white"), $_messageTbl->getHtml());
 
 

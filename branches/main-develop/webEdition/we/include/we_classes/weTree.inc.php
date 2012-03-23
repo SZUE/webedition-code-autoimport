@@ -593,10 +593,10 @@ class weTree{
 
 		$js = we_html_element::jsElement('
 function setCheckNode(imgName){
-	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check0.gif";}
+	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check0.gif";}
 }
 function setUnCheckNode(imgName){
-	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check1.gif";}
+	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check1.gif";}
 }');
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
@@ -809,14 +809,12 @@ function setUnCheckNode(imgName){
 			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
 			foreach($item as $k => $v){
 				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
-
-				}
-					$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
+			}
+			$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
 
 			$js.='}';
-
 		}
-		$js.="\n".$this->topFrame . '.drawTree();';
+		$js.="\n" . $this->topFrame . '.drawTree();';
 
 		return $js;
 	}

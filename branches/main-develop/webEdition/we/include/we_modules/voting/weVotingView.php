@@ -253,7 +253,7 @@ class weVotingView{
 						submitForm();
 					break;
 					case "openVotingDirselector":
-						url="/webEdition/we/include/we_modules/voting/we_votingDirSelectorFrameset.php?";
+						url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelectorFrameset.php?";
 						for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 						new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
 					break;
@@ -304,7 +304,7 @@ class weVotingView{
 
 					case "reset_ipdata":
 						if(confirm("' . g_l('modules_voting', '[delete_ipdata_question]') . '")){
-							url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
+							url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
 							new jsWindow(url,arguments[0],-1,-1,420,230,true,false,true);
 							var t = document.getElementById("ip_mem_size");
 							setVisible("delete_ip_data",false);
@@ -313,12 +313,12 @@ class weVotingView{
 					break;
 					case "delete_log":
 						if(confirm("' . g_l('modules_voting', '[delete_log_question]') . '")){
-							url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
+							url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
 							new jsWindow(url,arguments[0],-1,-1,420,230,true,false,true);
 						}
 					break;
 					case "show_log":
-						url = "/webEdition/we/include/we_modules/voting/edit_voting_frameset.php?pnt="+arguments[0];
+						url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
 						new jsWindow(url,arguments[0],-1,-1,810,600,true,true,true);
 					break;
 					break;

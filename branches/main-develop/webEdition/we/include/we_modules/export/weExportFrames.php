@@ -89,7 +89,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => "/webEdition/images/backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
 		}
 
 		$we_tabs = new we_tabs();
@@ -227,7 +227,7 @@ class weExportFrames extends weModuleFrames{
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none", "nowrap" => null), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "15", "marginheight" => "0", "leftmargin" => "15", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "15", "marginheight" => "0", "leftmargin" => "15", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				), (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
 		);
 	}
@@ -492,7 +492,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), ""
 		);
 
 		return $this->getHTMLDocument($body);
@@ -768,12 +768,12 @@ class weExportFrames extends weModuleFrames{
 							&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 							$_size = filesize(TEMP_PATH . $_filename);
 
-							if(we_isHttps()){	 // Additional headers to make downloads work using IE in HTTPS mode.
+							if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
 								header("Pragma: ");
 								header("Cache-Control: ");
 								header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 								header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-								header("Cache-Control: no-store, no-cache, must-revalidate");	// HTTP 1.1
+								header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 								header("Cache-Control: post-check=0, pre-check=0", false);
 							} else{
 								header("Cache-control: private");

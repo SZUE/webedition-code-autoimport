@@ -3066,7 +3066,7 @@ function build_dialog($selected_setting = "ui"){
 <tbody>
 <tr>
 <td style="padding-right: 10px;" valign="top">
-  <img src="/webEdition/images/info_small.gif" height="22" width="20" />
+  <img src="' . IMAGE_DIR . 'info_small.gif" height="22" width="20" />
 </td>
 <td class="middlefont">' . g_l('prefs', '[language_notice]') . '
 </td>
@@ -6410,10 +6410,12 @@ function render_dialog(){
 
 
 
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
 
 
 

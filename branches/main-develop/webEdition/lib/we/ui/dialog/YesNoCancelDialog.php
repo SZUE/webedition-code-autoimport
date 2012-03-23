@@ -81,7 +81,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 		$translate = we_core_Local::addTranslation('apps.xml');
 
 		$table = new we_ui_layout_Table(array('cellPadding' => 10));
-		$table->addHTML('<img src="/webEdition/images/alert.gif" alt="" />');
+		$table->addHTML('<img src="' . IMAGE_DIR . 'alert.gif" alt="" />');
 		$table->nextColumn();
 		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? htmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
@@ -99,7 +99,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 		$buttonTable->setCancelButton($buttonCancel);
 		$buttonTable->setStyle('margin-top:10px;margin-right:10px;margin-left:auto;');
 
-		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
+		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
 		$this->addCSSFiles($buttonTable->getCSSFiles());
 		$this->addJSFiles($buttonTable->getJSFiles());
 		$this->addHTML($buttonsHTML);

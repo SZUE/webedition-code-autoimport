@@ -35,7 +35,7 @@ class we_docSelector extends we_dirSelector{
 	var $ctp = array("image/*" => "NEW_GRAFIK", "video/quicktime" => "NEW_QUICKTIME", "application/x-shockwave-flash" => "NEW_FLASH");
 	var $ctb = array("" => "btn_add_file", "image/*" => "btn_add_image", "video/quicktime" => "btn_add_quicktime", "application/x-shockwave-flash" => "btn_add_flash");
 
-	function __construct($id, $table="", $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $we_editDirID="", $FolderText="", $filter="", $rootDirID=0, $open_doc=0, $multiple=0, $canSelectDir=0){
+	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $filter = "", $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0){
 
 		if($table == ""){
 			$table = FILE_TABLE;
@@ -120,7 +120,7 @@ class we_docSelector extends we_dirSelector{
 		}
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case self::PREVIEW:
 				$this->printPreviewHTML();
@@ -781,7 +781,7 @@ class we_docSelector extends we_dirSelector{
 					if($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
 						if($fs === 0){
 							$_imagesize = array(0, 0);
-							$_thumbpath = '/webEdition/images/icons/no_image.gif';
+							$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
 							$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
 						} else{
 							$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
@@ -806,7 +806,7 @@ class we_docSelector extends we_dirSelector{
 						"content" => (
 						$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://" .
 							$_SERVER['HTTP_HOST'] . $result['Path'] .
-							"' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
+							"' target='_blank' style='color:black'><img src='" . IMAGE_DIR . "tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
 						) . "<div style='margin-right:14px'>" . (
 						$showPriview ? "<a href='http://" . $_SERVER['HTTP_HOST'] . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
 						) . "</div>"
@@ -816,7 +816,7 @@ class we_docSelector extends we_dirSelector{
 						"caption" => "ID",
 						"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>" .
 						"<div style='float:left; vertical-align:baseline; margin-right:4px;'>" .
-						"<img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'>" .
+						"<img src='".IMAGE_DIR."tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'>" .
 						"</div></a>" .
 						"<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>" .
 						"<div>" . $this->id . "</div>" .
