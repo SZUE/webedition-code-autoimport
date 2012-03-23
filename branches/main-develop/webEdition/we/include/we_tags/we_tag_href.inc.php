@@ -86,14 +86,13 @@ function we_tag_href($attribs){
 			if(!$intID && $rootdirid){
 				$intID = $rootdirid;
 			}
-			$intPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $GLOBALS['DB_WE']);
+			list($intPath, $ct) = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']);
 
 			if($int){
 				$href = $intPath;
 				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 				$path_parts = pathinfo($href);
-				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'],
-							explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			} else{
@@ -165,17 +164,27 @@ function we_tag_href($attribs){
 				}
 				return $out;
 			} else{
+				if(defined('CUSTOMER_TABLE') && $intID){
+					$filter = weDocumentCustomerFilter::getFilterByIdAndTable($intID, FILE_TABLE);
+
+					if(is_object($filter)){
+						$obj = (object) array('ID' => $intID, 'ContentType' => $ct);
+						if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
+							return '';
+						}
+					}
+				}
+
 				return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
 			}
 
 		case "int":
 			$intID = $GLOBALS['we_doc']->getElement($nintID);
-			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($intID), "Path", $GLOBALS['DB_WE']);
+			list($intPath, $ct) = getHash("SELECT Path,ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($intID), $GLOBALS['DB_WE']);
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : ""; // we need include_path without hidden dirindex
 			$path_parts = pathinfo($href);
-			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'],
-						explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
 				$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 			}
 
@@ -217,6 +226,17 @@ function we_tag_href($attribs){
 				}
 				return $out;
 			} else{
+				if(defined('CUSTOMER_TABLE') && $intID){
+					$filter = weDocumentCustomerFilter::getFilterByIdAndTable($intID, FILE_TABLE);
+
+					if(is_object($filter)){
+						$obj = (object) array('ID' => $intID, 'ContentType' => $ct);
+						if($filter->accessForVisitor($obj, array(), true) != weDocumentCustomerFilter::ACCESS){
+							return '';
+						}
+					}
+				}
+
 				return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
 			}
 		default:
