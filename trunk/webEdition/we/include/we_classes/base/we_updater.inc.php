@@ -840,11 +840,11 @@ AND ".LANGLINK_TABLE.".DLocale = ".DOC_TYPES_TABLE.".Language AND ".LANGLINK_TAB
 
 				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
 				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".FILE_TABLE." WHERE tmpLangLink.LDID = ".FILE_TABLE.".ID
-AND tmpLangLink.Locale = ".FILE_TABLE.".Language AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
+AND tmpLangLink.Locale = ".FILE_TABLE.".Language AND ".LANGLINK_TABLE.".isObject = 0 AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
 
 				// copy links from objects (to objects) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
 				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".OBJECT_FILES_TABLE." WHERE tmpLangLink.LDID = ".OBJECT_FILES_TABLE.".ID
-AND tmpLangLink.Locale = ".OBJECT_FILES_TABLE.".Language AND tmpLangLink.DocumentTable = 'tblObjectFile' ORDER BY tmpLangLink.ID DESC");
+AND tmpLangLink.Locale = ".OBJECT_FILES_TABLE.".Language AND tmpLangLink.isObject = 1 ORDER BY tmpLangLink.ID DESC");
 
 				// copy links from doctypes (to doctypes) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
 				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".DOC_TYPES_TABLE." WHERE tmpLangLink.LDID = ".DOC_TYPES_TABLE.".ID
