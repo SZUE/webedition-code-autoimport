@@ -633,16 +633,18 @@ class we_class
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ""){
 			$type = stripTblPrefix($table);
 			$type = ($type == "tblObjectFiles") ? "tblObjectFile" : $type;
-			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];t_e($table,$this->ID,$newLang);
+			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];
+			//t_e($table,$this->ID,$newLang);
 			$isobject = ($type == "tblObjectFile") ? 1 : 0;
 			$type = ($isfolder && $isobject) ? "tblFile" : $type;
-			t_e($type,$isfolder,$isobject);
+		//	t_e($type,$isfolder,$isobject);
 
 			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID);
 			$this->DB_WE->query($q);
 			$langChange = false;
 			$delete = false;
-			while($this->DB_WE->next_record()){t_e("was gefunden");
+			while($this->DB_WE->next_record()){
+				//t_e("was gefunden");
 				$delete = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
 			}
 			if($delete){
