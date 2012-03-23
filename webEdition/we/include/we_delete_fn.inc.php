@@ -206,7 +206,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	}
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
-	if ($table == FILE_TABLE) {t_e("dokument loeschen");
+	if ($table == FILE_TABLE) {
 		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=".abs($id)."");
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."");
 
