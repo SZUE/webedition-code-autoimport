@@ -624,30 +624,36 @@ class we_class
 	protected function updateRemoteLang($db,$id,$lang,$type){
 		//overwrite if needed
 	}
-
+	
+	/**
+	 * If documents, objects, folders and docTypes are saved and there is no LANGLINK_SUPPORT we must check, whether there is a change of language:
+	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped.
+	 */
 	function checkRemoteLanguage($table,$isfolder=false) {
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ""){
-			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];
-			$isobject = ($table == FILE_TABLE) ? 0 : 1;
-			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE IsObject = ' . $isobject . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID);
-			$this->DB_WE->query($q);		
+			$type = stripTblPrefix($table);
+			$type = ($type == "tblObjectFiles") ? "tblObjectFile" : $type;
+			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];t_e($table,$this->ID,$newLang);
+			$isobject = ($type == "tblObjectFile") ? 1 : 0;
+			$type = ($isfolder && $isobject) ? "tblFile" : $type;
+			t_e($type,$isfolder,$isobject);
+
+			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID);
+			$this->DB_WE->query($q);
 			$langChange = false;
 			$delete = false;
-			while($this->DB_WE->next_record()){//
+			while($this->DB_WE->next_record()){t_e("was gefunden");
 				$delete = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
 			}
 			if($delete){
-				$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND IsFolder = " . intval($isfolder) . " AND IsObject = " . intval($isobject) . ";";
+				$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable='" . $type . "' AND IsFolder = " . intval($isfolder) . " AND IsObject = " . intval($isobject) . ";";
 				$this->DB_WE->query($q);
 				if(!$isfolder){
-					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . intval($this->ID) . " AND IsFolder = 0 AND IsObject = " . intval($isobject) . ";";
+					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . intval($this->ID) . " AND DocumentTable='" . $type . "' AND IsFolder = 0 AND IsObject = " . intval($isobject) . ";";
 					$this->DB_WE->query($q);
 				}
 			}
 		}
-		//not yet implemented for docTypes!
-		
-		
 	}
 
 	/**
@@ -674,7 +680,7 @@ class we_class
 
 					// what langs where linked before document-language changed?
 					$origLangs = array();
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
+					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
 					$this->DB_WE->query($q);
 					while($this->DB_WE->next_record()) {
 						$origLangs[] = $this->DB_WE->Record['Locale'];
@@ -682,7 +688,7 @@ class we_class
 					}
 					// because of UNIQUE-Indexes we do first delete obsolete entries in tblLangLink 
 					// => after optimizing executeSetLanguageLink() this will be obsolete!
-					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE (DID=" . intval($this->ID) . " OR LDID=" . intval($this->ID) . ") AND IsFolder = 0 AND IsObject = " . intval($isobject) . " AND DocumentTable='" . $documentTable . "';";
+					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE (DID=" . intval($this->ID) . " OR LDID=" . intval($this->ID) . ") AND IsFolder = 0 AND IsObject = " . intval($isobject) . " AND DocumentTable='" . $type . "';";
 					$this->DB_WE->query($q);
 
 					// links FROM folders to the actual we_document/object must be updated right here. 
@@ -724,7 +730,7 @@ class we_class
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, false, $oldLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
 			} else{//isfolder
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = 1 AND DID=' . intval($this->ID);//imi:could use f()
+					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = 1 AND DID=' . intval($this->ID);//imi:could use f()
 					$this->DB_WE->query($q);
 					$langChange = false;
 					while($this->DB_WE->next_record()) {
@@ -901,7 +907,7 @@ class we_class
 			} 
 			$max = count($orig);
 			//imi
-			if(!$isobject){//folders never have backlinks BUT the document linked to the folder CAn have them: leave them out!!
+			if(!$isfolder){//folders never have backlinks BUT the document linked to the folder CAn have them: leave them out!!
 				for($j = 0; $j < $max; $j++){
 					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($orig[$j]['LDID']);
 					$this->DB_WE->query($q);
