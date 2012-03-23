@@ -191,6 +191,9 @@ function we_tag_write($attribs){
 
 					}
 				}
+				if ($doWrite){
+					$GLOBALS["we_object_write_ID"]=$GLOBALS["we_doc"]->ID;
+				}
 
 				unset($GLOBALS['we_doc']);
 				if(isset($_WE_DOC_SAVE)){

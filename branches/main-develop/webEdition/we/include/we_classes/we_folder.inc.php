@@ -260,6 +260,9 @@ class we_folder extends we_root{
 		}
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0 ){
 			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',true,($this->ClassName=='we_class_folder'));
+		} else{
+			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
+			$this->checkRemoteLanguage($this->Table,true);//if language changed, we
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -278,15 +281,72 @@ class we_folder extends we_root{
 
 		$DB_WE = new DB_WE;
 		$DB_WE2 = new DB_WE;
+		$DB_WE3 = new DB_WE;
 
 		$language = $this->Language;
 
-		// Change language of published documents first
-		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET Language = '" . $DB_WE->escape($this->Language) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		// Adapt tblLangLink-entries of documents and objects to the new language (all published and unpublished)
+		
+		//$query = "SELECT ID, Language FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 
 		if(!$DB_WE->query($query)){
 			return false;
 		}
+		while($DB_WE->next_record()) {
+			if($DB_WE->Record['Language'] != $language){
+				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? "tblFile" : "tblObjectFile";
+				$query = "SELECT LDID, Locale FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "';";
+				$existLangLinks = false;
+				$deleteLangLinks = false;
+				if($DB_WE2->query($query)) {
+					$ldidArray = array();
+					while($DB_WE2->next_record()){
+						$existLangLinks = true;
+						$ldidArray[] = $DB_WE2->Record['LDID'];
+						if($DB_WE2->Record['Locale'] == $language){
+							$deleteLangLinks = true;
+						}
+					}
+					if($existLangLinks){
+						if($deleteLangLinks){
+							$didCondition = "DID = " . intval($DB_WE->Record['ID']);
+							foreach($ldidArray as $ldid){
+								$didCondition .= " OR DID = " . intval($ldid);
+							}
+							$query = "DELETE FROM " . LANGLINK_TABLE . " WHERE (" . $didCondition . ")  AND DocumentTable = '" . $documentTable . "';";
+							$DB_WE3->query($query);
+						} else{
+							$query = "UPDATE " . LANGLINK_TABLE . " SET DLOCALE = '" . $language . "' WHERE DID = " . intval($DB_WE->Record['ID']);
+							$DB_WE3->query($query);
+							$query = "UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $language . "' WHERE LDID = " . intval($DB_WE->Record['ID']);
+							$DB_WE3->query($query);
+						}
+					}
+				}
+			}
+		}
+
+		// Adapt tblLangLink-entries of folders to the new language
+		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ContentType = 'folder'";
+		if(!$DB_WE->query($query)){
+			return false;
+		}
+		while($DB_WE->next_record()) {
+			$documentTable = "tblFile";
+			$query = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0 AND Locale = '" . $language . "';";
+			$DB_WE2->query($query);
+			$query = "UPDATE " . LANGLINK_TABLE . " SET DLOCALE = '" . $language . "' WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0;";
+			$DB_WE2->query($query);
+		}
+
+		// Change language of published documents, objects
+		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET Language = '" . $DB_WE->escape($this->Language) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+
+		if(!$DB_WE->query($query)){
+			return false;
+		}		
+
 		// Change Language of unpublished documents
 		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 

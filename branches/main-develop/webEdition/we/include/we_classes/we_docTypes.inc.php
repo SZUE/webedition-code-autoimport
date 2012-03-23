@@ -80,6 +80,9 @@ class we_docTypes extends we_class{
 			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
 			}
+		} else{
+			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
+			$this->checkRemoteLanguage($this->Table,false);
 		}
 
 		return we_class::we_save($resave);

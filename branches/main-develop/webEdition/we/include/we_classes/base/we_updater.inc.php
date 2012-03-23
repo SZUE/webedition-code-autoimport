@@ -731,18 +731,42 @@ class we_updater{
 
 		if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DLocale')){
 			//no unique def. found
-			$db = $GLOBALS['DB_WE'];
-			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
-				$db->query('INSERT INTO tmpLangLink SELECT * FROM ' . LANGLINK_TABLE);
-				$db->query('TRUNCATE ' . LANGLINK_TABLE);
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DID')){
-					weDBUtil::addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale)');
+			$db=$GLOBALS['DB_WE'];
+			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
+
+				// copy links from documents or document-folders to tmpLangLink only if DID and DLocale are consistent with Language in tblFile
+				$db->query("INSERT INTO tmpLangLink SELECT ".LANGLINK_TABLE.".* FROM ".LANGLINK_TABLE.", ".FILE_TABLE." WHERE ".LANGLINK_TABLE.".DID = ".FILE_TABLE.".ID
+AND ".LANGLINK_TABLE.".DLocale = ".FILE_TABLE.".Language AND ".LANGLINK_TABLE.".IsObject = 0 AND ".LANGLINK_TABLE.".DocumentTable = 'tblFile'");
+
+				// copy links from objects or object-folders to tmpLangLink only if DID and DLocale are consistent with Language in tblObjectFiles
+				$db->query("INSERT INTO tmpLangLink SELECT ".LANGLINK_TABLE.".* FROM ".LANGLINK_TABLE.", ".OBJECT_FILES_TABLE." WHERE ".LANGLINK_TABLE.".DID = ".OBJECT_FILES_TABLE.".ID
+AND ".LANGLINK_TABLE.".DLocale = ".OBJECT_FILES_TABLE.".Language AND ".LANGLINK_TABLE.".IsObject = 1");
+
+				// copy links from doctypes to tmpLangLink only if DID and DLocale are consistent with Language in tblFile
+				$db->query("INSERT INTO tmpLangLink SELECT ".LANGLINK_TABLE.".* FROM ".LANGLINK_TABLE.", ".DOC_TYPES_TABLE." WHERE ".LANGLINK_TABLE.".DID = ".DOC_TYPES_TABLE.".ID
+AND ".LANGLINK_TABLE.".DLocale = ".DOC_TYPES_TABLE.".Language AND ".LANGLINK_TABLE.".DocumentTable = 'tblDocTypes'");
+
+				$db->query('TRUNCATE '.LANGLINK_TABLE);
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale,IsFolder,IsObject)');
 				}
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DLocale')){
-					weDBUtil::addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable)');
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable,IsFolder,IsObject)');
 				}
-				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . ' SELECT * FROM tmpLangLink ORDER BY ID DESC');
-			} else{
+
+				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
+				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".FILE_TABLE." WHERE tmpLangLink.LDID = ".FILE_TABLE.".ID
+AND tmpLangLink.Locale = ".FILE_TABLE.".Language AND tmpLangLink.IsObject = 0 AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
+
+				// copy links from objects (to objects) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
+				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".OBJECT_FILES_TABLE." WHERE tmpLangLink.LDID = ".OBJECT_FILES_TABLE.".ID
+AND tmpLangLink.Locale = ".OBJECT_FILES_TABLE.".Language AND tmpLangLink.IsObject = 1 ORDER BY tmpLangLink.ID DESC");
+
+				// copy links from doctypes (to doctypes) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
+				$db->query("INSERT IGNORE INTO ".LANGLINK_TABLE." SELECT tmpLangLink.* FROM tmpLangLink, ".DOC_TYPES_TABLE." WHERE tmpLangLink.LDID = ".DOC_TYPES_TABLE.".ID
+AND tmpLangLink.Locale = ".DOC_TYPES_TABLE.".Language AND tmpLangLink.DocumentTable = 'tblDocTypes' ORDER BY tmpLangLink.ID DESC");
+
+			}else{
 				t_e('no rights to create temp-table');
 			}
 		}

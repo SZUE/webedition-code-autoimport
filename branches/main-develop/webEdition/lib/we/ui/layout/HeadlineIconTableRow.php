@@ -242,7 +242,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 			if((!$leftContent) && $this->_leftWidth){
 				$leftContent = "&nbsp;";
 			}
-			$html .= '<div style="float:left;width:' . $this->_leftWidth . 'px">' . $leftContent . '</div>';
+			$html .= '<div style="float:left;width:' . $this->_leftWidth . 'px;'.($this->_hidden ? 'display:none':'').'">' . $leftContent . '</div>';
 		}
 
 		$html .= $rightContent;

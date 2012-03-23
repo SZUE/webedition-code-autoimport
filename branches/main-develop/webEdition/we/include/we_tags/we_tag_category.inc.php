@@ -25,10 +25,7 @@
 function we_tag_category($attribs){
 
 	// initialize possible Attributes
-	$delimiter = weTag_getAttribute("delimiter", $attribs);
-	if($delimiter === ""){
-		$delimiter = weTag_getAttribute("tokken", $attribs, ',');
-	}
+	$delimiter = weTag_getAttribute("delimiter", $attribs,weTag_getAttribute("tokken", $attribs, ','));
 
 	$rootdir = weTag_getAttribute("rootdir", $attribs);
 	$showpath = weTag_getAttribute("showpath", $attribs, false, true);

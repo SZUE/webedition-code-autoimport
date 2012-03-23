@@ -2558,6 +2558,9 @@ class we_objectFile extends we_document{
 		}
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
+		} else{
+			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
+			$this->checkRemoteLanguage($this->Table,false);
 		}
 // hook
 		if($skipHook == 0){

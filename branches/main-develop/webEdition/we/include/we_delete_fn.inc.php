@@ -134,7 +134,10 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 			}
 		}
 	}
-	$DB_WE->query("DELETE FROM $table WHERE ID=" . intval($id));
+	// Fast Fix for deleting entries from tblLangLink: #5840
+	if($DB_WE->query("DELETE FROM $table WHERE ID=".intval($id))){
+		$DB_WE->query('DELETE FROM '.LANGLINK_TABLE.' WHERE DocumentTable="'.$table.'" AND IsObject='.($table == FILE_TABLE?0:1).' AND IsFolder=1 AND DID='.intval($id));
+	}
 
 	deleteContentFromDB($id, $table);
 	if(substr($path, 0, 3) == "/.."){
@@ -196,6 +199,14 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 			$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 		}
 		$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
+		
+		// Fast Fix for deleting entries from tblLangLink: #5840
+		$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject=0 AND IsFolder=0 AND DID='".intval($id)."'");
+		$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND LDID='".intval($id)."'");
+
+		// Clear cache for this document
+		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
+		weCacheHelper::clearCache($cacheDir);
 	}
 
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
@@ -210,7 +221,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 			foreach($foo as $testclass){
 				if(isColExistForDelete(OBJECT_X_TABLE . $testclass['ID'], "object_" . $tableID)){
 
-					//das l�schen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
+					//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
 					$qtest = "SELECT OF_ID FROM " . OBJECT_X_TABLE . $testclass['ID'] . " WHERE object_" . $tableID . "= " . intval($id);
 					$DB_WE->query($qtest);
 					$foos = $DB_WE->getAll();
@@ -231,6 +242,9 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 					$DB_WE->query($q);
 				}
 			}
+			// Fast Fix for deleting entries from tblLangLink: #5840
+			$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND DID='".abs($id)."'");
+			$DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblObjectFile' AND LDID='".abs($id)."'");
 		}
 		if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
 			$DB_WE->query(
