@@ -12,7 +12,7 @@
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
- *
+ * 
  * @category   webEdition
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
