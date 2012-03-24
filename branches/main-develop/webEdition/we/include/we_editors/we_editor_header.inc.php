@@ -236,7 +236,9 @@ print STYLESHEET;
 </head>
 <body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 	<div id="main" ><?php
-print we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>' . we_html_tools::getPixel(100, 3);
+print we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) . ': ' .
+	($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
+	'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)</div>' . we_html_tools::getPixel(100, 3);
 
 if($_SESSION["we_mode"] != "seem"){
 	print $we_tabs->getHTML();
@@ -246,10 +248,10 @@ if($_SESSION["we_mode"] != "seem"){
 </html>
 <script type="text/javascript">
 
-		<?php
-		$_path = $we_doc->Path;
-		$_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
-		?>
+<?php
+$_path = $we_doc->Path;
+$_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
+?>
 
 	we_setPath("<?php print $_path; ?>", "<?php print $_text; ?>", "<?php print $we_doc->ID; ?>");
 

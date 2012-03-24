@@ -232,22 +232,19 @@ function we_tag_href($attribs){
 
 				return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
 			}
-		default:
+		case 'ext':
 			$href = $extPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 
 			if($GLOBALS['we_editmode']){
 				$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
-				$trashbut2 = we_button::create_button(
-						"image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)", true);
+				$trashbut2 = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)", true);
 
 				if(($directory && $file) || $file){
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-							"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
+					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
 				} else{
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-							"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
+					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
 				}
 
 				$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown,_name_orig');
