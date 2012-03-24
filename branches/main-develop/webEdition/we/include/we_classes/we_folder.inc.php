@@ -32,10 +32,10 @@ class we_folder extends we_root{
 	var $Table = FILE_TABLE;
 
 	/* Flag which is set, when the file is a folder  */
-	var $IsFolder = "1";
+	var $IsFolder = 1;
 
 	/* ContentType of the Object  */
-	var $ContentType = "folder";
+	var $ContentType = 'folder';
 	var $IsClassFolder = 0;
 	var $IsNotEditable = 0;
 	var $WorkspacePath = "";
@@ -52,14 +52,11 @@ class we_folder extends we_root{
 	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
 
-
-
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "SearchStart", "SearchField", "Search", "Order", "GreenOnly", "IsClassFolder", "IsNotEditable", "WorkspacePath", "WorkspaceID", "Language", "TriggerID");
-		array_push($this->persistent_slots, "searchclassFolder", "searchclassFolder_class");
+		array_push($this->persistent_slots, "SearchStart", "SearchField", "Search", "Order", "GreenOnly", "IsClassFolder", "IsNotEditable", "WorkspacePath", "WorkspaceID", "Language", "TriggerID", "searchclassFolder", "searchclassFolder_class");
 	}
 
 	function we_new(){
@@ -143,7 +140,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function initByPath($path, $tblName=FILE_TABLE, $IsClassFolder=0, $IsNotEditable=0){
+	function initByPath($path, $tblName = FILE_TABLE, $IsClassFolder = 0, $IsNotEditable = 0){
 		if(substr($path, -1) == '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
@@ -240,13 +237,15 @@ class we_folder extends we_root{
 
 	/* saves the folder */
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		$this->i_setText();
 		if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
 			$this->ClassName = "we_class_folder";
 		}
-		if(!we_root::we_save($resave))
+		if(!parent::we_save($resave)){
 			return false;
+		}
+		$update = ($this->OldPath != $this->Path);
 		if(!$this->writeFolder())
 			return false;
 		if(defined("OBJECT_TABLE") && $this->Table == OBJECT_TABLE){
@@ -255,14 +254,15 @@ class we_folder extends we_root{
 		}
 		$this->resaveWeDocumentCustomerFilter();
 
-		if($resave == 0){
-			$this->rewriteNavigation();
+		if($resave == 0 && $update){
+			t_e('update');
+			weNavigationCache::clean(true);
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0 ){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',true,($this->ClassName=='we_class_folder'));
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
+			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', true, ($this->ClassName == 'we_class_folder'));
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
-			$this->checkRemoteLanguage($this->Table,true);//if language changed, we
+			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -286,7 +286,6 @@ class we_folder extends we_root{
 		$language = $this->Language;
 
 		// Adapt tblLangLink-entries of documents and objects to the new language (all published and unpublished)
-		
 		//$query = "SELECT ID, Language FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
 		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
 
@@ -299,9 +298,9 @@ class we_folder extends we_root{
 				$query = "SELECT LDID, Locale FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "';";
 				$existLangLinks = false;
 				$deleteLangLinks = false;
-				if($DB_WE2->query($query)) {
+				if($DB_WE2->query($query)){
 					$ldidArray = array();
-					while($DB_WE2->next_record()){
+					while($DB_WE2->next_record()) {
 						$existLangLinks = true;
 						$ldidArray[] = $DB_WE2->Record['LDID'];
 						if($DB_WE2->Record['Locale'] == $language){
@@ -345,7 +344,7 @@ class we_folder extends we_root{
 
 		if(!$DB_WE->query($query)){
 			return false;
-		}		
+		}
 
 		// Change Language of unpublished documents
 		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
@@ -684,12 +683,13 @@ class we_folder extends we_root{
 
 	################ internal functions ######
 
-	function writeFolder($pub=0){
+	function writeFolder($pub = 0){
 		if($this->Path == $this->OldPath || !$this->OldPath){
 			return $this->saveToServer();
 		} else{
-			if(!$this->moveAtServer())
+			if(!$this->moveAtServer()){
 				return false;
+			}
 			$this->modifyIndexPath();
 			$this->modifyChildrenPath();
 			$this->modifyLinks();

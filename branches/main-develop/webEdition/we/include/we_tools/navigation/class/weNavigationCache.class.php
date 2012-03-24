@@ -30,7 +30,7 @@ class weNavigationCache{
 
 	static function delNavigationTree($id){
 		static $deleted = array();
-		if(in_array($id,$deleted)){
+		if(in_array($id, $deleted)){
 			return;
 		}
 		self::delCacheNavigationEntry(0);
@@ -67,26 +67,26 @@ class weNavigationCache{
 		}
 	}
 
-	/*no need for this.
+	/* no need for this.
 	 * static function cacheRootNavigation(){
-		if(!self::$rebuildRootCnt++){
-			return;
-		}
-		$_naviItemes = new weNavigationItems();
+	  if(!self::$rebuildRootCnt++){
+	  return;
+	  }
+	  $_naviItemes = new weNavigationItems();
 
-		$_naviItemes->initById(0);
+	  $_naviItemes->initById(0);
 
-		self::saveCacheNavigation(0, $_naviItemes);
+	  self::saveCacheNavigation(0, $_naviItemes);
 
-		$currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
-		foreach($currentRulesStorage as &$rule){
-			$rule->deleteDB();
-		}
-		$_content = serialize($currentRulesStorage);
-		unset($currentRulesStorage);
+	  $currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
+	  foreach($currentRulesStorage as &$rule){
+	  $rule->deleteDB();
+	  }
+	  $_content = serialize($currentRulesStorage);
+	  unset($currentRulesStorage);
 
-		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
-	}*/
+	  weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
+	  } */
 
 	static function cacheNavigation($id){
 		$_naviItemes = new weNavigationItems();
@@ -122,10 +122,12 @@ class weNavigationCache{
 	/**
 	 * Used on upgrade to remove all navigation entries
 	 */
-	//FIXME: remove in 6.4??
-	static function clean(){
+	static function clean($force = false){
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean')){
 			unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean');
+			$force = true;
+		}
+		if($force){
 			$files = scandir($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR);
 			foreach($files as $file){
 				if(strpos($file, 'navigation_') === 0){

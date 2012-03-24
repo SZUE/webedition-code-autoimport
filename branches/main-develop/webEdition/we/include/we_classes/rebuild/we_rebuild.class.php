@@ -48,7 +48,6 @@ class we_rebuild{
 				}
 				break;
 			case "thumbnail":
-				$GLOBALS["WE_IS_IMG"] = 1;
 				$imgdoc = new we_imageDocument();
 				$imgdoc->initByID($data["id"]);
 				if($printIt){

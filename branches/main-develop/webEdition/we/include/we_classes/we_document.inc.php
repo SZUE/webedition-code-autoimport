@@ -22,9 +22,7 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!isset($GLOBALS['WE_IS_IMG'])){
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
-}
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 /* the parent class for documents */
 
@@ -64,7 +62,7 @@ class we_document extends we_root{
 
 	function copyDoc($id){
 		if($id){
-			$tmp=$this->ClassName;
+			$tmp = $this->ClassName;
 			$doc = new $tmp();
 			$doc->InitByID($id, $this->Table);
 			$parentIDMerk = $doc->ParentID;
@@ -120,7 +118,7 @@ class we_document extends we_root{
 		while($this->Language == '') {
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
-				$this->Language = we_document::getDefaultLanguage();
+				$this->Language = self::getDefaultLanguage();
 				if($this->Language == ''){
 					$this->Language = 'de_DE';
 				}
@@ -175,7 +173,7 @@ class we_document extends we_root{
 
 		we_loadLanguageConfig();
 
-		$_defLang = we_document::getDefaultLanguage();
+		$_defLang = self::getDefaultLanguage();
 
 
 		$value = ($this->Language != '' ? $this->Language : $_defLang);
@@ -1108,7 +1106,7 @@ class we_document extends we_root{
 				}
 				return '';
 			case 'href':
-				return we_document::getHref($attribs, $db, $fn);
+				return self::getHref($attribs, $db, $fn);
 			default:
 				parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
@@ -1211,10 +1209,10 @@ class we_document extends we_root{
 			$hrefArr = $val ? unserialize($val) : array();
 			if(!is_array($hrefArr))
 				$hrefArr = array();
-			return we_document::getHrefByArray($hrefArr);
+			return self::getHrefByArray($hrefArr);
 		}
 
-		return we_document::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return self::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
 	}
 
 	private function getValFromSrc($fn, $name){
@@ -1302,7 +1300,7 @@ class we_document extends we_root{
 
 	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 
-		$l_href = we_document::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
+		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']){
 			unset($GLOBALS['we_link_not_published']);
@@ -1357,7 +1355,7 @@ class we_document extends we_root{
 	}
 
 	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', $db = '', $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
-		if(($l_href = we_document::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
+		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 			//    define some arrays to order the attribs to image, link or js-window ...
 			$_popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
 
@@ -1455,42 +1453,17 @@ class we_document extends we_root{
 						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $_popUpCtrl["jsposy"] . '\';';
 					}
 				}
-				if(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] != ""){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';';
-				}
-				if(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] != ""){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';';
-				}
-				if(isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=no\';';
-				}
-				if(isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=no\';';
-				}
-				if(isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=no\';';
-				}
-				if(isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=no\';';
-				}
-				if(isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=no\';';
-				}
-				if(isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"]){
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=yes\';';
-				} else{
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';
-				}
+				$js.=
+					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] != "" ?
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
+					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] != "" ?
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
