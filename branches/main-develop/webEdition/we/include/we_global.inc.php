@@ -151,11 +151,11 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 			if($cache[$cur]['Catfields']){
 				$_arr = unserialize($cache[$cur]['Catfields']);
 				if(empty($onlyindir)){
-					array_push($cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
+					$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
 				} else{
 					$pos = strpos($cache[$cur]['Path'], $onlyindir);
-					if(($pos !== false) AND ($pos == 0)){
-						array_push($cats, ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field]);
+					if(($pos !== false) && ($pos == 0)){
+						$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
 					}
 				}
 			} else{
@@ -163,7 +163,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 					$cats[] = '';
 				} else{
 					$pos = strpos($cache[$cur]['Path'], $onlyindir);
-					if(($pos !== false) AND ($pos == 0)){
+					if(($pos !== false) && ($pos == 0)){
 						$cats[] = '';
 					}
 				}
@@ -265,9 +265,7 @@ function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Ca
 	// 1st get path of id
 	$catPath = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID = ' . intval($cat), 'Path', $db);
 
-	return ($catPath ?
-			getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats) :
-			'');
+	return ($catPath ? getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats) : '');
 }
 
 function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category"){
