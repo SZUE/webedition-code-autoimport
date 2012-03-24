@@ -36,9 +36,8 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep'.(isset($_REQUEST["step"]) ? $_REQUEST["step"] : '0');
-		$contents = self::$step();
-		return self::getPage($contents);
+		$step = 'getStep' . (isset($_REQUEST["step"]) ? $_REQUEST["step"] : '0');
+		return self::getPage(self::$step());
 	}
 
 	/**
@@ -55,24 +54,23 @@ abstract class we_rebuild_wizard{
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
-		$js .= '<script type="text/javascript">'
-			. 'function showRefreshButton() {'
-			. '  prevBut = document.getElementById(\'prev\');'
-			. '  nextBut = document.getElementById(\'next\');'
-			. '  refrBut = document.getElementById(\'refresh\');'
-			. '  prevBut.style.display = \'none\';'
-			. '  nextBut.style.display = \'none\';'
-			. '  refrBut.style.display = \'\';'
-			. '}'
-			. 'function showPrevNextButton() {'
-			. '  prevBut = document.getElementById(\'prev\');'
-			. '  nextBut = document.getElementById(\'next\');'
-			. '  refrBut = document.getElementById(\'refresh\');'
-			. '  refrBut.style.display = \'none\';'
-			. '  prevBut.style.display = \'\';'
-			. '  nextBut.style.display = \'\';'
-			. '}'
-			. '</script>';
+		$js .= we_html_element::jsElement(
+				'function showRefreshButton() {'
+				. '  prevBut = document.getElementById(\'prev\');'
+				. '  nextBut = document.getElementById(\'next\');'
+				. '  refrBut = document.getElementById(\'refresh\');'
+				. '  prevBut.style.display = \'none\';'
+				. '  nextBut.style.display = \'none\';'
+				. '  refrBut.style.display = \'\';'
+				. '}'
+				. 'function showPrevNextButton() {'
+				. '  prevBut = document.getElementById(\'prev\');'
+				. '  nextBut = document.getElementById(\'next\');'
+				. '  refrBut = document.getElementById(\'refresh\');'
+				. '  refrBut.style.display = \'none\';'
+				. '  prevBut.style.display = \'\';'
+				. '  nextBut.style.display = \'\';'
+				. '}');
 
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
 		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
@@ -184,12 +182,11 @@ abstract class we_rebuild_wizard{
 			"space" => 0)
 		);
 
-		$_navRebuildHTML = '<div>
-' . we_forms::radiobutton("rebuild_navigation", ($type == "rebuild_navigation" && we_hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', "[navigation]"), false, "defaultfont", "setNavStatDocDisabled()", !we_hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', "[txt_rebuild_navigation]"), 0, 495) . '
-</div>
-<div style="padding:10px 20px;">
-' . we_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', "[rebuildStaticAfterNaviCheck]"), false, 'defaultfont', '', true, g_l('rebuild', "[rebuildStaticAfterNaviHint]"), 0, 475) . '
-</div>';
+		$_navRebuildHTML = '<div>' .
+			we_forms::radiobutton("rebuild_navigation", ($type == "rebuild_navigation" && we_hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', "[navigation]"), false, "defaultfont", "setNavStatDocDisabled()", !we_hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', "[txt_rebuild_navigation]"), 0, 495) .
+			'</div><div style="padding:10px 20px;">' .
+			we_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', "[rebuildStaticAfterNaviCheck]"), false, 'defaultfont', '', true, g_l('rebuild', "[rebuildStaticAfterNaviHint]"), 0, 475) .
+			'</div>';
 
 		array_push($parts, array(
 			"headline" => "",
@@ -216,65 +213,64 @@ abstract class we_rebuild_wizard{
 		$allbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
 
 
-		$js = "\n" .
-			'window.onload = function(){top.focus();}' . "\n" .
-			'function handle_event(what){' . "\n" .
-			'	f = document.we_form;' . "\n" .
-			'	switch(what){' . "\n" .
-			'		case "previous":' . "\n" .
-			'			break;' . "\n" .
-			'		case "next":' . "\n" .
-			'			selectedValue="";' . "\n" .
-			'			for(var i=0;i<f.type.length;i++){' . "\n" .
-			'				if(f.type[i].checked){;' . "\n" .
-			'					selectedValue = f.type[i].value;' . "\n" .
-			'		}' . "\n" .
-			'			}' . "\n" .
-			'			goTo(selectedValue)' . "\n" .
-			'			break;' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'function goTo(where){' . "\n" .
-			'	f = document.we_form;' . "\n" .
-			'	switch(where){' . "\n" .
-			'		case "rebuild_thumbnails":' . "\n" .
-			'		case "rebuild_documents":' . "\n" .
-			'			f.target="wizbody";' . "\n" .
-			'			break;' . "\n" .
-			'		case "rebuild_objects":' . "\n" .
-			'		case "rebuild_index":' . "\n" .
-			'		case "rebuild_navigation":' . "\n" .
-			'			set_button_state(1);' . "\n" .
-			'			f.target="wizcmd";' . "\n" .
-			'			f.step.value="2";' . "\n" .
-			'			break;' . "\n" .
-			'	}' . "\n" .
-			'	f.submit();' . "\n" .
-			'}' . "\n" .
-			'function set_button_state(alldis) {' . "\n" .
-			'	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){' . "\n" .
-			'		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");' . "\n" .
-			'		if(alldis){' . "\n" .
-			'			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");' . "\n" .
-			'			top.frames["wizbusy"].showRefreshButton();' . "\n" .
-			'		}else{' . "\n" .
-			'			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");' . "\n" .
-			'		}' . "\n" .
-			'	}else{' . "\n" .
-			'		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'set_button_state(' . ($allbutdisabled ? 1 : 0) . ');' . "\n";
+		$js =
+			'window.onload = function(){top.focus();}
+			function handle_event(what){
+				f = document.we_form;
+				switch(what){
+					case "previous":
+						break;
+					case "next":
+						selectedValue="";
+						for(var i=0;i<f.type.length;i++){
+							if(f.type[i].checked){;
+								selectedValue = f.type[i].value;
+					}
+						}
+						goTo(selectedValue)
+						break;
+				}
+			}
+			function goTo(where){
+				f = document.we_form;
+				switch(where){
+					case "rebuild_thumbnails":
+					case "rebuild_documents":
+						f.target="wizbody";
+						break;
+					case "rebuild_objects":
+					case "rebuild_index":
+					case "rebuild_navigation":
+						set_button_state(1);
+						f.target="wizcmd";
+						f.step.value="2";
+						break;
+				}
+				f.submit();
+			}
+			function set_button_state(alldis) {
+				if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
+					top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");
+					if(alldis){
+						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
+						top.frames["wizbusy"].showRefreshButton();
+					}else{
+						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+					}
+				}else{
+					setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+				}
+			}
+			set_button_state(' . ($allbutdisabled ? 1 : 0) . ');';
 
-		$js .= '
-	function setNavStatDocDisabled() {
+		$js .=
+			'function setNavStatDocDisabled() {
 		var radio = document.getElementById("type");
 		var check = document.getElementById("rebuildStaticAfterNavi");
 		var checkLabel = document.getElementById("label_rebuildStaticAfterNavi");
 		check.disabled=(!radio.checked);
 		checkLabel.style.color = radio.checked ? "" : "grey";
-	}
-';
+	}';
 
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
@@ -355,15 +351,15 @@ abstract class we_rebuild_wizard{
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
 
-		$js = 'function set_button_state() {' . "\n" .
-			'	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){' . "\n" .
-			'		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");' . "\n" .
-			'		top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");' . "\n" .
-			'	}else{' . "\n" .
-			'		setTimeout("set_button_state()",300);' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'set_button_state();' . "\n";
+		$js = 'function set_button_state() {
+				if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
+					top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
+					top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+				}else{
+					setTimeout("set_button_state()",300);
+				}
+			}
+			set_button_state();';
 		if(!(file_exists($taskFilename) && $currentTask)){
 			switch($type){
 				case "rebuild_documents":
@@ -446,7 +442,7 @@ abstract class we_rebuild_wizard{
 	 * @param string $folders csv value with directory IDs
 	 * @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	 */
-	static function formFolders($folders, $thumnailpage=false, $width="495"){
+	static function formFolders($folders, $thumnailpage = false, $width = "495"){
 		$delallbut = we_button::create_button("delete_all", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_button::create_button("add", "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
@@ -786,7 +782,7 @@ abstract class we_rebuild_wizard{
 			$fst->setFrameAttributes(1, array("scrolling" => "no"));
 		} else{
 			$fst = new we_html_frameset(array(
-					"rows" => "*,40,$cmdFrameHeight",
+					"rows" => '*,' . (we_base_browserDetect::isFF() ? 60 : 40) . ',' . $cmdFrameHeight,
 					"framespacing" => 0,
 					"border" => 0,
 					"frameborder" => "no")
@@ -815,169 +811,169 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 * @param string $folders csv value with directory IDs
 	 */
-	static function getPage2Js($folders="folders"){
-		$js = "\n" .
-			'function handle_event(what){' . "\n" .
-			'	f = document.we_form;' . "\n" .
-			'	switch(what){' . "\n" .
-			'		case "previous":' . "\n" .
-			'			f.step.value=0' . "\n" .
-			'			f.target="wizbody";' . "\n" .
-			'			break;' . "\n" .
-			'		case "next":' . "\n" .
-			'			if (typeof(document._errorMessage) != "undefined" && document._errorMessage !== ""){' . "\n" .
-			'				' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n" .
-			'				return;' . "\n" .
-			'			} else {' . "\n" .
-			'				top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");' . "\n" .
-			'				top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");' . "\n" .
-			'				top.frames["wizbusy"].showRefreshButton();' . "\n" .
-			'				f.step.value=2' . "\n" .
-			'				f.target="wizcmd";' . "\n" .
-			'			}' . "\n" .
-			'			break;' . "\n" .
-			'	}' . "\n" .
-			'	f.submit();' . "\n" .
-			'}' . "\n" .
-			'function we_cmd() {' . "\n" .
-			'	f = document.we_form;' . "\n" .
-			'	var args = "";' . "\n" .
-			'	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}' . "\n" .
-			'	switch (arguments[0]) {' . "\n" .
-			'	case "openDirselector":' . "\n" .
-			'		new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);' . "\n" .
-			'		break;' . "\n" .
-			'	case "openCatselector":' . "\n" .
-			'		new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);' . "\n" .
-			'		break;' . "\n" .
-			'	case "add_cat":' . "\n" .
-			'		var catsToAdd = makeArrayFromCSV(arguments[1]);' . "\n" .
-			'		var cats = makeArrayFromCSV(f.categories.value);' . "\n" .
-			'		for(var i=0;i<catsToAdd.length;i++){' . "\n" .
-			'			if(!inArray(catsToAdd[i],cats)){' . "\n" .
-			'				cats.push(catsToAdd[i]);' . "\n" .
-			'			};' . "\n" .
-			'		};' . "\n" .
-			'		f.categories.value = makeCSVFromArray(cats);' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "del_cat":' . "\n" .
-			'		var catToDel = arguments[1];' . "\n" .
-			'		var cats = makeArrayFromCSV(f.categories.value);' . "\n" .
-			'		var newcats = new Array();' . "\n" .
-			'		for(var i=0;i<cats.length;i++){' . "\n" .
-			'			if(cats[i] != catToDel){' . "\n" .
-			'				newcats.push(cats[i]);' . "\n" .
-			'			};' . "\n" .
-			'		};' . "\n" .
-			'		f.categories.value = makeCSVFromArray(newcats);' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "del_all_cats":' . "\n" .
-			'		f.categories.value = "";' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "add_folder":' . "\n" .
-			'		var foldersToAdd = makeArrayFromCSV(arguments[1]);' . "\n" .
-			'		var folders = makeArrayFromCSV(f.' . $folders . '.value);' . "\n" .
-			'		for(var i=0;i<foldersToAdd.length;i++){' . "\n" .
-			'			if(!inArray(foldersToAdd[i],folders)){' . "\n" .
-			'				folders.push(foldersToAdd[i]);' . "\n" .
-			'			};' . "\n" .
-			'		};' . "\n" .
-			'		f.' . $folders . '.value = makeCSVFromArray(folders);' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "del_folder":' . "\n" .
-			'		var folderToDel = arguments[1];' . "\n" .
-			'		var folders = makeArrayFromCSV(f.' . $folders . '.value);' . "\n" .
-			'		var newfolders = new Array();' . "\n" .
-			'		for(var i=0;i<folders.length;i++){' . "\n" .
-			'			if(folders[i] != folderToDel){' . "\n" .
-			'				newfolders.push(folders[i]);' . "\n" .
-			'			};' . "\n" .
-			'		};' . "\n" .
-			'		f.' . $folders . '.value = makeCSVFromArray(newfolders);' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "del_all_folders":' . "\n" .
-			'		f.' . $folders . '.value = "";' . "\n" .
-			'		f.step.value=1;' . "\n" .
-			'		f.submit();' . "\n" .
-			'		break;' . "\n" .
-			'	case "deselect_all_fields":' . "\n" .
-			'		var _elem = document.we_form.elements;' . "\n" .
-			'		var _elemLength = _elem.length;' . "\n" .
-			'		for (var i=0; i<_elemLength; i++) {' . "\n" .
-			'			if (_elem[i].name.substring(0,7) == "_field[") {' . "\n" .
-			'				_elem[i].checked = false;' . "\n" .
-			'			}' . "\n" .
-			'		}' . "\n" .
-			'		document._errorMessage = "' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '";' . "\n" .
-			'		break;' . "\n" .
-			'	case "select_all_fields":' . "\n" .
-			'		var _elem = document.we_form.elements;' . "\n" .
-			'		var _elemLength = _elem.length;' . "\n" .
-			'		for (var i=0; i<_elemLength; i++) {' . "\n" .
-			'			if (_elem[i].name.substring(0,7) == "_field[") {' . "\n" .
-			'				_elem[i].checked = true;' . "\n" .
-			'			}' . "\n" .
-			'		}' . "\n" .
-			'		document._errorMessage = "";' . "\n" .
-			'		break;' . "\n" .
-			'	default:' . "\n" .
-			'		for(var i = 0; i < arguments.length; i++) {' . "\n" .
-			'			args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");' . "\n" .
-			'		}' . "\n" .
-			'		eval("opener.top.we_cmd("+args+")");' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'function checkForError() {' . "\n" .
-			'	var _elem = document.we_form.elements;' . "\n" .
-			'	var _elemLength = _elem.length;' . "\n" .
-			'	var _fieldsChecked = false;' . "\n" .
-			'	for (var i=0; i<_elemLength; i++) {' . "\n" .
-			'		if (_elem[i].name.substring(0,7) == "_field[") {' . "\n" .
-			'			if(_elem[i].checked){' . "\n" .
-			'				_fieldsChecked=true;break;' . "\n" .
-			'			}' . "\n" .
-			'		}' . "\n" .
-			'	}' . "\n" .
-			'	if (_fieldsChecked === false) {' . "\n" .
-			'		document._errorMessage = "' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '";' . "\n" .
-			'	} else {' . "\n" .
-			'		document._errorMessage = "";' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'function makeArrayFromCSV(csv) {' . "\n" .
-			'	if(csv.length && csv.substring(0,1)==","){csv=csv.substring(1,csv.length);}' . "\n" .
-			'	if(csv.length && csv.substring(csv.length-1,csv.length)==","){csv=csv.substring(0,csv.length-1);}' . "\n" .
-			'	if(csv.length==0){return new Array();}else{return csv.split(/,/);};' . "\n" .
-			'}' . "\n" .
-			'function inArray(needle,haystack){' . "\n" .
-			'	for(var i=0;i<haystack.length;i++){' . "\n" .
-			'		if(haystack[i] == needle){return true;}' . "\n" .
-			'	}' . "\n" .
-			'	return false;' . "\n" .
-			'}' . "\n" .
-			'function makeCSVFromArray(arr) {' . "\n" .
-			'	if(arr.length == 0){return "";};' . "\n" .
-			'	return ","+arr.join(",")+",";' . "\n" .
-			'}' . "\n" .
-			'function set_button_state() {' . "\n" .
-			'	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){' . "\n" .
-			'		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");' . "\n" .
-			'		top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");' . "\n" .
-			'	}else{' . "\n" .
-			'		setTimeout("set_button_state()",300);' . "\n" .
-			'	}' . "\n" .
-			'}' . "\n" .
-			'set_button_state();' . "\n";
+	static function getPage2Js($folders = "folders"){
+		$js =
+			'function handle_event(what){' .
+			'	f = document.we_form;' .
+			'	switch(what){' .
+			'		case "previous":' .
+			'			f.step.value=0;
+						f.target="wizbody";
+						break;' .
+			'		case "next":' .
+			'			if (typeof(document._errorMessage) != "undefined" && document._errorMessage !== ""){' .
+			'				' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR) .
+			'				return;' .
+			'			} else {' .
+			'				top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");' .
+			'				top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");' .
+			'				top.frames["wizbusy"].showRefreshButton();' .
+			'				f.step.value=2;' .
+			'				f.target="wizcmd";' .
+			'			}' .
+			'			break;' .
+			'	}' .
+			'	f.submit();' .
+			'}' .
+			'function we_cmd() {' .
+			'	f = document.we_form;' .
+			'	var args = "";' .
+			'	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}' .
+			'	switch (arguments[0]) {' .
+			'	case "openDirselector":' .
+			'		new jsWindow(url,"we_fileselector",-1,-1,' . WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);' .
+			'		break;' .
+			'	case "openCatselector":' .
+			'		new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);' .
+			'		break;' .
+			'	case "add_cat":' .
+			'		var catsToAdd = makeArrayFromCSV(arguments[1]);' .
+			'		var cats = makeArrayFromCSV(f.categories.value);' .
+			'		for(var i=0;i<catsToAdd.length;i++){' .
+			'			if(!inArray(catsToAdd[i],cats)){' .
+			'				cats.push(catsToAdd[i]);' .
+			'			};' .
+			'		};' .
+			'		f.categories.value = makeCSVFromArray(cats);' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "del_cat":' .
+			'		var catToDel = arguments[1];' .
+			'		var cats = makeArrayFromCSV(f.categories.value);' .
+			'		var newcats = new Array();' .
+			'		for(var i=0;i<cats.length;i++){' .
+			'			if(cats[i] != catToDel){' .
+			'				newcats.push(cats[i]);' .
+			'			};' .
+			'		};' .
+			'		f.categories.value = makeCSVFromArray(newcats);' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "del_all_cats":' .
+			'		f.categories.value = "";' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "add_folder":' .
+			'		var foldersToAdd = makeArrayFromCSV(arguments[1]);' .
+			'		var folders = makeArrayFromCSV(f.' . $folders . '.value);' .
+			'		for(var i=0;i<foldersToAdd.length;i++){' .
+			'			if(!inArray(foldersToAdd[i],folders)){' .
+			'				folders.push(foldersToAdd[i]);' .
+			'			};' .
+			'		};' .
+			'		f.' . $folders . '.value = makeCSVFromArray(folders);' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "del_folder":' .
+			'		var folderToDel = arguments[1];' .
+			'		var folders = makeArrayFromCSV(f.' . $folders . '.value);' .
+			'		var newfolders = new Array();' .
+			'		for(var i=0;i<folders.length;i++){' .
+			'			if(folders[i] != folderToDel){' .
+			'				newfolders.push(folders[i]);' .
+			'			};' .
+			'		};' .
+			'		f.' . $folders . '.value = makeCSVFromArray(newfolders);' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "del_all_folders":' .
+			'		f.' . $folders . '.value = "";' .
+			'		f.step.value=1;' .
+			'		f.submit();' .
+			'		break;' .
+			'	case "deselect_all_fields":' .
+			'		var _elem = document.we_form.elements;' .
+			'		var _elemLength = _elem.length;' .
+			'		for (var i=0; i<_elemLength; i++) {' .
+			'			if (_elem[i].name.substring(0,7) == "_field[") {' .
+			'				_elem[i].checked = false;' .
+			'			}' .
+			'		}' .
+			'		document._errorMessage = "' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '";' .
+			'		break;' .
+			'	case "select_all_fields":' .
+			'		var _elem = document.we_form.elements;' .
+			'		var _elemLength = _elem.length;' .
+			'		for (var i=0; i<_elemLength; i++) {' .
+			'			if (_elem[i].name.substring(0,7) == "_field[") {' .
+			'				_elem[i].checked = true;' .
+			'			}' .
+			'		}' .
+			'		document._errorMessage = "";' .
+			'		break;' .
+			'	default:' .
+			'		for(var i = 0; i < arguments.length; i++) {' .
+			'			args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");' .
+			'		}' .
+			'		eval("opener.top.we_cmd("+args+")");' .
+			'	}' .
+			'}' .
+			'function checkForError() {' .
+			'	var _elem = document.we_form.elements;' .
+			'	var _elemLength = _elem.length;' .
+			'	var _fieldsChecked = false;' .
+			'	for (var i=0; i<_elemLength; i++) {' .
+			'		if (_elem[i].name.substring(0,7) == "_field[") {' .
+			'			if(_elem[i].checked){' .
+			'				_fieldsChecked=true;break;' .
+			'			}' .
+			'		}' .
+			'	}' .
+			'	if (_fieldsChecked === false) {' .
+			'		document._errorMessage = "' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '";' .
+			'	} else {' .
+			'		document._errorMessage = "";' .
+			'	}' .
+			'}' .
+			'function makeArrayFromCSV(csv) {' .
+			'	if(csv.length && csv.substring(0,1)==","){csv=csv.substring(1,csv.length);}' .
+			'	if(csv.length && csv.substring(csv.length-1,csv.length)==","){csv=csv.substring(0,csv.length-1);}' .
+			'	if(csv.length==0){return new Array();}else{return csv.split(/,/);};' .
+			'}' .
+			'function inArray(needle,haystack){' .
+			'	for(var i=0;i<haystack.length;i++){' .
+			'		if(haystack[i] == needle){return true;}' .
+			'	}' .
+			'	return false;' .
+			'}' .
+			'function makeCSVFromArray(arr) {' .
+			'	if(arr.length == 0){return "";};' .
+			'	return ","+arr.join(",")+",";' .
+			'}' .
+			'function set_button_state() {' .
+			'	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){' .
+			'		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");' .
+			'		top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");' .
+			'	}else{' .
+			'		setTimeout("set_button_state()",300);' .
+			'	}' .
+			'}' .
+			'set_button_state();';
 		return $js;
 	}
 
@@ -995,8 +991,7 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlHead(
 					STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') .
 					($contents[0] ?
-						we_html_element::jsElement($contents[0]) :
-						"")) .
+						we_html_element::jsElement($contents[0]) : '')) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
 					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
