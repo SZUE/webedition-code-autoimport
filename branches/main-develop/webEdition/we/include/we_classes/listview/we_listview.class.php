@@ -147,9 +147,9 @@ class we_listview extends listviewBase{
 				default:
 					if($this->search){
 						$order[] = 'ranking';
-						$order[] = '(SELECT cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = f.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
+						$order[] = '(SELECT cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = '.FILE_TABLE.'.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
 					} else{
-						$order[] = '(SELECT ' . ($this->numorder ? '0+' : '') . 'cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = f.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
+						$order[] = '(SELECT ' . ($this->numorder ? '0+' : '') . 'cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = '.FILE_TABLE.'.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
 					}
 					break;
 			}
