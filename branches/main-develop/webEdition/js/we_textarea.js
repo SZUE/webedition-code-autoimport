@@ -118,7 +118,9 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 	out += rows ? ' rows="'+rows+'"' : '';
 	out += id ? ' id="'+id+'"' : '';
 	out += style ? ' style="'+style+'"' : '';
-	out += ' '+changehandler+'="if (_EditorFrame){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'';
+	out += ' '+changehandler+'="if (_EditorFrame && this.value != this.form.elements[\'';
+	out += name;
+	out += '\'].value){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'';
 	out += name;
 	out += '\'].value=(';
 	out += this.name;
