@@ -46,15 +46,14 @@ function f($query, $field, $DB_WE){
 
 function doUpdateQuery($DB_WE, $table, $hash, $where){
 	$tableInfo = $DB_WE->metadata($table);
-	$sql = 'UPDATE `' . $table . '` SET ';
+	$fn = array();
 	for($i = 0; $i < sizeof($tableInfo); $i++){
 		$fieldName = $tableInfo[$i]["name"];
 		if($fieldName != "ID"){
-			$sql .= '`' . $fieldName . '`=\'' . (isset($hash[$fieldName]) ? $DB_WE->escape($hash[$fieldName]) : '') . '\',';
+			$fn[$fieldName] = isset($hash[$fieldName]) ? $hash[$fieldName] : '';
 		}
 	}
-	$sql = rtrim($sql, ',') . ' ' . $where;
-	return $DB_WE->query($sql);
+	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
 }
 
 function escape_sql_query($inp){
@@ -73,7 +72,7 @@ function doInsertQuery($DB_WE, $table, $hash){
 	$fn = array();
 	foreach($tableInfo as $t){
 		$fieldName = $t['name'];
-		$fn[$fieldName]=isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
+		$fn[$fieldName] = isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
 	}
 
 	return $DB_WE->query('INSERT INTO `' . $table . '` SET ' . we_database_base::arraySetter($fn));

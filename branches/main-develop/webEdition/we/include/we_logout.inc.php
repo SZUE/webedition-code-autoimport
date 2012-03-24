@@ -34,7 +34,7 @@ $DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID=" . intval($_SESSIO
 cleanTempFiles(true);
 
 if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
-	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . intval($_SESSION["prefs"]["userID"]));
+	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], ' WHERE userID=' . intval($_SESSION["prefs"]["userID"]));
 }
 
 //	getJSCommand
