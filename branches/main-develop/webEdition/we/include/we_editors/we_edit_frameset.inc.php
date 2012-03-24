@@ -73,11 +73,15 @@ function getTabs($classname, $predefined = 0){
 $we_Table = $_REQUEST['we_cmd'][1];
 
 if($_REQUEST['we_cmd'][2]){
-	$we_ID = $_REQUEST['we_cmd'][2];
+	$we_ID = intval($_REQUEST['we_cmd'][2]);
 }
 
 if(isset($_REQUEST['we_cmd'][3])){
 	$we_ContentType = $_REQUEST['we_cmd'][3];
+	if(empty($we_ContentType)){
+		//get ct from DB
+		$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID), 'ContentType', $GLOBALS['DB_WE']);
+	}
 }
 
 // init document
@@ -465,16 +469,17 @@ if($GLOBALS['we_doc']->ContentType != "text/weTmpl"){
 			<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 			<?php if($showContentEditor){ ?>
 				<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
-				<frame  src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor");
+				<frame  src="<?php
+		$we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor");
 		print (isset($parastr) ? "&" . $parastr : "");
 				?>" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
-			<?php } else{ ?>
+							<?php } else{ ?>
 				<frame <?php print setOnload(); ?> src="<?php
-		$we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor");
-		isset($parastr) ? print "&" . $parastr  : print "";
-		?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
+						$we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor");
+						isset($parastr) ? print "&" . $parastr  : print "";
+								?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 				<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
-	<?php } ?>
+			<?php } ?>
 			<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>" name="editFooter" scrolling=no noresize/>
 		</frameset>
 		<?php
