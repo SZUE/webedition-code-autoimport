@@ -142,18 +142,14 @@ class we_listview extends listviewBase{
 				case 'we_published':
 					$order[] = FILE_TABLE . '.Published' . ($this->desc ? ' DESC' : '');
 					break;
+				case '':
+					break;
 				default:
 					if($this->search){
-						$cond_where .=$this->order ? ' AND ' . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "'" : '';
 						$order[] = 'ranking';
-						if($this->order){
-							$order[] = CONTENT_TABLE . '.Dat' . ($this->desc ? ' DESC' : '');
-						}
+						$order[] = '(SELECT cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = f.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
 					} else{
-						$cond_where .=$this->order ? ' AND ' . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "'" : '';
-						if($this->order){
-							$order[] = ($this->numorder ? '0+' : '') . CONTENT_TABLE . '.Dat' . ($this->desc ? ' DESC' : '');
-						}
+						$order[] = '(SELECT ' . ($this->numorder ? '0+' : '') . 'cc.Dat FROM ' . LINK_TABLE . ' ll, ' . CONTENT_TABLE . ' cc WHERE ll.DID = f.ID AND ll.DocumentTable = "' . stripTblPrefix(FILE_TABLE) . '" AND ll.Name = "' . $this->DB_WE->escape($ord) . '" AND ll.CID = cc.ID)' . ($this->desc ? ' DESC' : '');
 					}
 					break;
 			}
