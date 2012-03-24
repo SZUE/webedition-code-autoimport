@@ -1,3 +1,5 @@
+Options -Indexes
+
 <FilesMatch "\.inc.php$">
 Order Allow,Deny
 Deny from all

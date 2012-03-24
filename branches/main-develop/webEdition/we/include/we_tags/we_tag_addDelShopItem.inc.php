@@ -54,7 +54,7 @@ function we_tag_addDelShopItem($attribs){
 					//	reset the Array
 					reset($_REQUEST["shop_anzahl_und_id"]);
 					$shop_articleid_variant = $shop_anzahl = '';
-					while(list($shop_articleid_variant, $shop_anzahl) = each($_REQUEST["shop_anzahl_und_id"])) {
+					foreach($_REQUEST["shop_anzahl_und_id"] as $shop_articleid_variant => $shop_anzahl){
 						$articleInfo = explode("_", $shop_articleid_variant);
 						$shop_artikelid = intval($articleInfo[0]);
 						$shop_artikeltype = $articleInfo[1];
