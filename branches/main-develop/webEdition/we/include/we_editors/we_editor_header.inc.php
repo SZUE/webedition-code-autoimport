@@ -246,7 +246,7 @@ if($_SESSION["we_mode"] != "seem"){
 ?></div>
 </body>
 </html>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 <?php
 $_path = $we_doc->Path;
@@ -254,5 +254,5 @@ $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $
 ?>
 
 	we_setPath("<?php print $_path; ?>", "<?php print $_text; ?>", "<?php print $we_doc->ID; ?>");
-
+//-->
 </script>
