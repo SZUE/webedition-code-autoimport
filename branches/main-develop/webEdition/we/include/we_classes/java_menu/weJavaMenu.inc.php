@@ -81,7 +81,7 @@ class weJavaMenu{
 						$mtext = ($e["text"] ? $e["text"] : "");
 					}
 					$menus[] = array('id' => $id,
-						'code' => '<li class="top"><div class="top_div"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
+						'code' => '<li class="top" onmouseover="topMenuHover();"><div class="top_div" onclick="topMenuClick()"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
 					);
 				}
 			}
