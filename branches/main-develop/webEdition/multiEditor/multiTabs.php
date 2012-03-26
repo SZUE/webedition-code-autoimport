@@ -338,7 +338,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	div.tab{
 		margin: 0px; padding: 0px;
 <?php echo $tabBorder; ?>
-		display:inline;
+		display:inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
 		background-repeat: repeat-x;
 		line-height:21px;
@@ -348,7 +348,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	div.tabOver{
 		margin: 0px; padding: 0px;
 <?php echo $tabBorder; ?>
-		display:inline;
+		display:inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_over.gif);
 		background-repeat: repeat-x;
 <?php echo $tabBG; ?>
@@ -359,7 +359,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	div.tabActive{
 		margin: 0px; padding: 0px;
 <?php echo $tabBorder; ?>
-		display: inline;
+		display: inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_active.gif);
 		background-repeat: repeat-x;
 <?php echo $tabBG; ?>

@@ -91,7 +91,7 @@ div.tabNormal {
 	margin: 0px; padding: 0;
 	$tabBorder
 	float:left;
-	display: inline;
+	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
 	background-repeat: repeat-x;
 	$tabBG
@@ -103,7 +103,7 @@ div.tabActive {
 	margin: 0px; padding: 0;
 	$tabBorder
 	float:left;
-	display: inline;
+	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_active2.gif);
 	background-repeat: repeat-x;
 	$tabBG
