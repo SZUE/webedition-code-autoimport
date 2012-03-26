@@ -99,9 +99,11 @@ if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUE
 	$sid = strip_tags($_REQUEST['weSessionId']);
 	$sid = htmlspecialchars($sid);
 	session_id($sid);
+//	session_name(SESSION_NAME);
 	@session_start();
 }
 if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
+//	session_name(SESSION_NAME);
 	@session_start();
 }
 if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){

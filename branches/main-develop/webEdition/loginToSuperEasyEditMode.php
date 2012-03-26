@@ -26,8 +26,10 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
 we_error_handler(false);
 
-if(!isset($_SESSION))
+if(!isset($_SESSION)){
+//	session_name(SESSION_NAME);
 	@session_start();
+}
 
 while(list($name, $val) = each($_SESSION)) {
 	if($name != "webuser"){

@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//session_name(SESSION_NAME);
 session_start();
 ?>
 <html>

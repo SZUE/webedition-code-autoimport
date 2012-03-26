@@ -31,16 +31,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @abstract
  */
 class rpcCmd{
-	const STATUS_OK=0;
-	const STATUS_NO_PERMISSION=1;
-	const STATUS_NOT_ALLOWED_VIEW=2;
-	const STATUS_LOGIN_FAILED=3;
-	const STATUS_REQUEST_MALFORMED=4;
-	const STATUS_NO_CMD=5;
-	const STATUS_NO_CIEW=6;
-	const STATUS_NO_SESSION=7;
-	const STATUS_NO_VIEW= 8;
 
+	const STATUS_OK = 0;
+	const STATUS_NO_PERMISSION = 1;
+	const STATUS_NOT_ALLOWED_VIEW = 2;
+	const STATUS_LOGIN_FAILED = 3;
+	const STATUS_REQUEST_MALFORMED = 4;
+	const STATUS_NO_CMD = 5;
+	const STATUS_NO_CIEW = 6;
+	const STATUS_NO_SESSION = 7;
+	const STATUS_NO_VIEW = 8;
 
 	var $CmdShell;
 	var $ExtraViews = array();
@@ -105,6 +105,7 @@ class rpcCmd{
 		return true;
 	}
 
+	//FIXME: remove this - session is already started by we.inc
 	function startSession(){
 
 		if(isset($_REQUEST["weSessionId"])){

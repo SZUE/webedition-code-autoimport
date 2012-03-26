@@ -298,23 +298,36 @@ function getVariableMax($var, $db = ''){
 			$ret = (isset($_REQUEST) ? print_r($_REQUEST, true) : ' - ');
 			break;
 		case 'Session':
-			if(isset($_SESSION)){
-				$ret = '';
-				$clone = array_diff_key($_SESSION, array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => ''));
-				if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])){
-					$ret.= 'ID: ' . $_SESSION['webuser']['ID'] . ' Username: ' . $_SESSION['webuser']['Username'] .'('.$_SESSION['webuser']['Forename'].' '.$_SESSION['webuser']['Surname'].')'. "\n";
-				}
-				if(isset($_SESSION['perms'])){
-					$ret.= print_r(array_filter($_SESSION['perms']), true);
-				}
-				$ret.= print_r($clone, true);
-			} else{
-				$ret = '-';
+			if(!isset($_SESSION)){
+				$ret = ' - ';
+				break;
 			}
+			$ret = '';
+			$clone = array_diff_key($_SESSION, array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => ''));
+			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])){
+				$ret.= 'ID: ' . $_SESSION['webuser']['ID'] . ' Username: ' . $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')' . "\n";
+			}
+			if(isset($_SESSION['perms'])){
+				$ret.= print_r(array_filter($_SESSION['perms']), true);
+			}
+			$ret.= print_r($clone, true);
 
 			break;
 		case 'Global':
-			$ret = (isset($GLOBALS) ? print_r($GLOBALS, true) : ' - ');
+			if(!isset($GLOBALS)){
+				$ret = ' - ';
+				break;
+			}
+			$ignore = array('GLOBALS', '_GET', '_POST', '_REQUEST', '_COOKIE', '_FILES', '_SERVER', '_SESSION',
+				'we', 'DB_WE', 'we_doc', 'WE_MAIN_DOC', 'loader', 'WE_MAIN_DOC_REF');
+			$clone = array();
+			foreach($GLOBALS as $key => $val){
+				if(!in_array($key, $ignore)){
+					$clone[] = $val;
+				}
+			}
+			$ret.= print_r($clone, true);
+
 			break;
 		case 'Server':
 			$ret = (isset($_SERVER) ? print_r($_SERVER, true) : ' - ');
@@ -339,7 +352,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 	if($skipBT === false){
 		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
 	} else if(is_string($skipBT)){
-				$_detailedError = $skipBT;
+		$_detailedError = $skipBT;
 	}
 
 	// Error type

@@ -153,6 +153,7 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
+define('SESSION_NAME','WESESSION');
 
 (!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
