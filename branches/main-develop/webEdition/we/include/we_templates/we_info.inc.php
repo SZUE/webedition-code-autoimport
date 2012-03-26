@@ -146,8 +146,6 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
 
-	//$_loginTable->setCol($loginRow++, 1, array('width'=> $_logoPart, 'rowspan' => '5', 'valign' => 'bottom'), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput("username", 25, "", 100, "id=\"username\" style=\"width: 250px;\" ", "text", 0, 0));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::getPixel(5, 5));
@@ -235,7 +233,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	);
 
 	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), $_content);
-	$_loginTable->setCol($loginRow++, 1, array('width' => $_logoPart, 'rowspan' => '5', 'height' => 60), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
+//	$_loginTable->setCol($loginRow++, 1, array('width' => $_logoPart, 'rowspan' => '5', 'height' => 60), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 
 	$_table->addRow(4);
 
