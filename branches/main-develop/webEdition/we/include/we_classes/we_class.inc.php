@@ -592,12 +592,12 @@ abstract class we_class{
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
-		//overwrite if needed
+		//overwrite if needed <= diese verwenden!
 	}
 
 	/**
 	 * If documents, objects, folders and docTypes are saved and there is no LANGLINK_SUPPORT we must check, whether there is a change of language:
-	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped.
+	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped. <= TODO: Merge this with next method!
 	 */
 	function checkRemoteLanguage($table,$isfolder=false) {
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ""){
@@ -634,6 +634,7 @@ abstract class we_class{
 		if(!(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT)) {
 			return true;
 		}
+		//global $l_we_class;
 		$newLang = '';
 		$oldLang = '';
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ''){
@@ -677,7 +678,7 @@ abstract class we_class{
 						}
 						if($deleteIt){
 							$qr = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
-							$DB_WE2->query($qr);
+							//$DB_WE2->query($qr);
 						} else{
 							$qr = "UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $newLang . "' WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
 						}
@@ -689,7 +690,7 @@ abstract class we_class{
 						return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 					}
 					else {
-						$we_responseText = g_l('weClass','[langlinks_locale_changed]');//,$we_doc->Path
+						$we_responseText = g_l('weClass','[languageLinksLocaleChanged]');//,$we_doc->Path
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
@@ -720,7 +721,7 @@ abstract class we_class{
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
 	 */
 	function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange=false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable) {
-		$documentTable = ($type == "tblObjectFile") ? "tblObjectFiles" : $type;
+		$documentTable = ($type == "tblObjectFile") ? "tblObjectFiles" : $type; // we could take these  from setLanguageLink()...
 		$ownDocumentTable = ($isfolder && $isobject) ? TBL_PREFIX . "tblFile" : TBL_PREFIX . $documentTable;
 
 		if(in_array(0,$LangLinkArray) || in_array("",$LangLinkArray)){
@@ -766,7 +767,7 @@ abstract class we_class{
 
 				if($fileLang = f("SELECT Language FROM " . TBL_PREFIX . $documentTable . " WHERE ID = " . intval($LDID),'Language',$this->DB_WE)){
 					if($fileLang != $locale){
-						$we_responseText = g_l('weClass','[langlinks_lang_notok]');
+						$we_responseText = g_l('weClass','[languageLinksLangNotok]');
 						$we_responseText= sprintf($we_responseText,$locale,$fileLang,$locale);
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
@@ -817,7 +818,7 @@ abstract class we_class{
 								$this->executeSetLanguageLink($preparedLinkArray, $type, $isfolder, $isobject);
 							}
 							else {
-								$we_responseText = g_l('weClass','[langlinks_conflicts]');
+								$we_responseText = g_l('weClass','[languageLinksConflicts]');
 								$we_responseText= sprintf($we_responseText,$locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
@@ -837,7 +838,7 @@ abstract class we_class{
 								$actualLinks[$locale] = $LDID;
 								$this->executeSetLanguageLink($actualLinks, $type, $isfolder, $isobject);
 							} else{
-								$we_responseText = g_l('weClass','[langlinks_conflicts]');
+								$we_responseText = g_l('weClass','[languageLinksConflicts]');
 								$we_responseText= sprintf($we_responseText,$locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
@@ -872,8 +873,7 @@ abstract class we_class{
 				$orig[] = $this->DB_WE->Record;
 			}
 			$max = count($orig);
-			//imi
-			if(!$isfolder){//folders never have backlinks BUT the document linked to the folder CAn have them: leave them out!!
+			if(!$isfolder){//folders never have backlinks BUT the document linked to the folder CAN have them if linked to another document
 				for($j = 0; $j < $max; $j++){
 					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($orig[$j]['LDID']));
 					while($this->DB_WE->next_record()) {
@@ -882,7 +882,7 @@ abstract class we_class{
 				}
 			}
 
-			foreach($LangLinkArray as $locale => $LDID){
+			foreach($LangLinkArray as $locale => $LDID){ //obsolete if we call executeSetLanguageLink with only the link to bechanged (instead of whole $LangLinkArray)
 				if(($ID = f("SELECT ID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($this->ID) . " AND Locale='" . $locale . "' AND isFolder='" . intval($isfolder) . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 					$this->DB_WE->query("UPDATE " . LANGLINK_TABLE . " SET LDID=" . intval($LDID) . ",DLocale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
 				} else{
@@ -900,7 +900,7 @@ abstract class we_class{
 						if($LDID > 0){
 							$this->DB_WE->query("UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ",Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
 						}
-						if($LDID < 0){// here we could make
+						if($LDID < 0){// here we could delete istead of update (and then delete later...)
 							$this->DB_WE->query("UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID='0',Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
 						}
 					} else{
@@ -919,7 +919,7 @@ abstract class we_class{
 
 			if(!$isfolder){
 				foreach($LangLinkArray as $locale => $LDID){
-					if($LDID > 0){//test, if with links from folders all works fine!
+					if($LDID > 0){
 						$rows = array();
 						$this->DB_WE->query("SELECT * FROM " . LANGLINK_TABLE . " WHERE  DID=" . intval($this->ID) . "  AND DocumentTable='" . $type . "' AND IsObject=" . intval($isobject));
 						while($this->DB_WE->next_record()) {

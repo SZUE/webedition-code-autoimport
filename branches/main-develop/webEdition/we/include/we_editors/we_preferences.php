@@ -4032,7 +4032,7 @@ EOF;
 
 				// Build dialog element if users has permission
 				array_push($_settings, array("headline" => g_l('prefs', '[locale_add]'), "html" => $_add_html, "space" => 200));
-
+?><?php
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false);
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_headline]'), "html" => $_information, "space" => 0, "noline" => 1));
 				$_php_setting = new we_html_select(array("name" => "langlink_support", "class" => "weSelect"));
@@ -4040,15 +4040,18 @@ EOF;
 				$_php_setting->addOption(1, "true");
 				$_php_setting->selectOption(get_value("langlink_support"));
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), 2, 450, false);
+				array_push($_settings, array("headline" => '', "html" => $_information, "space" => 0,"noline" => 1));
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_backlinks_information]'), 2, 250, false, 40);
 				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
 				$_php_setting = new we_html_select(array("name" => "langlink_support_backlinks", "class" => "weSelect"));
 				//$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support_backlinks]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_recursive_information]'), 2, 250, false, 40);
 				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
 				$_php_setting = new we_html_select(array("name" => "langlink_support_recursive", "class" => "weSelect"));
