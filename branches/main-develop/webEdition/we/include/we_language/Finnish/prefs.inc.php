@@ -153,6 +153,7 @@ $l_prefs=array(
 	'install_plugin'=>'Jotta Editor PlugIn -laajennusta voidaan käyttää Mozillan ActiveX Plugin on asennettava.',
 	'ip_address'=>'IP osoite',
 	'juplod_not_installed'=>'JUpload ei ole asennettu!',
+	'langlink_abandoned_options'=>'',
 	'langlink_headline'=>'Support for setting links between different languages',
 	'langlink_information'=>'With this option, you can set the links to corresponding language versions of documents/objects in the backend and open/create etc. these documents/oobjects.<br/>For the frontend you can display these links in a listview type=languagelink.<br/><br/>For folders, you can define a <b>document</b> in each language, which is used if for a document within the folder no corresponding document in the other language is set.',
 	'langlink_support'=>'active',

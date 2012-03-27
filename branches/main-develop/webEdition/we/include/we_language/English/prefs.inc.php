@@ -153,6 +153,7 @@ $l_prefs=array(
 	'install_plugin'=>'To be able to use the Editor PlugIn the Mozilla ActiveX PlugIn must be installed.',
 	'ip_address'=>'IP address',
 	'juplod_not_installed'=>'JUpload is not installed!',
+	'langlink_abandoned_options'=>'',
 	'langlink_headline'=>'Support for setting links between different languages',
 	'langlink_information'=>'With this option, you can set the links to corresponding language versions of documents/objects in the backend and open/create etc. these documents/oobjects.<br/>For the frontend you can display these links in a listview type=languagelink.<br/><br/>For folders, you can define a <b>document</b> in each language, which is used if for a document within the folder no corresponding document in the other language is set.',
 	'langlink_support'=>'active',

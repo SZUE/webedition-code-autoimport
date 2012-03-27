@@ -153,6 +153,7 @@ $l_prefs=array(
 	'install_plugin'=>'Um das Editor PlugIn in Ihrem Browser benutzen zu können, muss das Mozilla ActiveX PlugIn installiert werden.',
 	'ip_address'=>'IP Adresse',
 	'juplod_not_installed'=>'JUpload ist nicht installiert!',
+	'langlink_abandoned_options'=>'',
 	'langlink_headline'=>'Unterstützung für die Verlinkung zwischen verschiedenen Sprachen',
 	'langlink_information'=>'Mit dieser Option können Sie im Backend die verschiedenen korrespondierenden Sprachversionen eines Dokumentes/Objektes verwalten und diese Dokumente zuweisen, aufrufen usw.<br/>Eine Ausgabe im Frontend erfolgt dann über eine listview type=languagelink.<br/><br/>Für Verzeichnisse kann dann ein <b>Dokument</b> in der jeweiligen Sprache gewählt werden, auf das zurückgegriffen wird, wenn einzelnen Dokumenten im Verzeichnis selbst kein korrespondierendes Sprachdokument zugewiesen wurde.',
 	'langlink_support'=>'Aktiviert',
