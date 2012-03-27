@@ -722,14 +722,14 @@ class we_updater{
 			);
 			$keys = array(
 				"PRIMARY KEY" => "(ID)",
-				"UNIQUE KEY DID" => "(DID,DocumentTable,DLocale,Locale)"
+				"UNIQUE KEY DID" => "(DID,DocumentTable,DLocale,Locale,IsFolder,IsObject)",
+				"UNIQUE KEY DLocale" => "(DLocale,LDID,Locale,DocumentTable,IsFolder,IsObject)"
 			);
 			self::addTable(LANGLINK_TABLE, $cols, $keys);
 		}
 		self::addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
-
-		if(!weDBUtil::isKeyExist(LANGLINK_TABLE, 'DLocale')){
+		if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE, 'DLocale')){
 			//no unique def. found
 			$db=$GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
@@ -744,10 +744,10 @@ class we_updater{
 				$db->query("INSERT INTO tmpLangLink SELECT ".LANGLINK_TABLE.".* FROM ".LANGLINK_TABLE.", ".DOC_TYPES_TABLE." WHERE ".LANGLINK_TABLE.".DID = ".DOC_TYPES_TABLE.".ID AND ".LANGLINK_TABLE.".DLocale = ".DOC_TYPES_TABLE.".Language AND ".LANGLINK_TABLE.".DocumentTable = 'tblDocTypes'");
 
 				$db->query('TRUNCATE '.LANGLINK_TABLE);
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DID')){
+				if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE,'DID')){
 					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale,IsFolder,IsObject)');
 				}
-				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,'DLocale')){
+				if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE,'DLocale')){
 					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable,IsFolder,IsObject)');
 				}
 
@@ -815,7 +815,6 @@ class we_updater{
 		self::updateVersions();
 		self::updateWorkflow();
 		self::updateLock();
-		self::updateLangLinkNew();
 		self::convertTemporaryDoc();
 		self::updateTableKeys();
 		self::updateLangLink();

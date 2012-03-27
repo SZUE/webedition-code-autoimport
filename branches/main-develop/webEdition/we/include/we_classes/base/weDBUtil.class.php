@@ -153,7 +153,7 @@ abstract class weDBUtil{
 		}
 		return false;
 	}
-
+	
 	static function isKeyExist($tab, $key){
 		global $DB_WE;
 		$create = f("SHOW CREATE TABLE " . $DB_WE->escape($tab), 'Create Table', $DB_WE);
@@ -163,6 +163,21 @@ abstract class weDBUtil{
 				if(trim(rtrim($v, ',')) == $key)
 					return true;
 			}
+		}
+		return false;
+	}
+
+	static function isUniqueKeyExist($tab, $key){ // does not work correctly if key-name == 'UNIQUE'
+		$keyArr = array();
+		$keyParts = array();
+		$k = '';
+		
+		$keyArr = self::getTableKeyArray($tab);
+		foreach($keyArr as $k){
+				$keyParts = explode("(", $k);
+				if(strrpos($keyParts[0],$key) !== false && strrpos($keyParts[0],'UNIQUE') !== false){
+					return true;
+				}
 		}
 		return false;
 	}
