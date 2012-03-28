@@ -96,8 +96,9 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
 					($dc ? "" : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) .
 				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
@@ -799,10 +800,10 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::htmlTitle(g_l('rebuild', "[rebuild]"))) . $fst->getHtml());
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]"))
+				) . $fst->getHtml());
 	}
 
 	/**
@@ -987,9 +988,10 @@ abstract class we_rebuild_wizard{
 		if(!sizeof($contents)){
 			return "";
 		}
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
+					STYLESHEET .
 					($contents[0] ?
 						we_html_element::jsElement($contents[0]) : '')) .
 				we_html_element::htmlBody(array(

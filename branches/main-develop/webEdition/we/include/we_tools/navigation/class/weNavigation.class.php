@@ -198,16 +198,14 @@ class weNavigation extends weModelBase{
 		$this->setPath();
 
 		if($order){
-			$_ord_count = f(
-				'SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ';', 'OrdCount', $this->db);
+			$_ord_count = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ';', 'OrdCount', $this->db);
 			if($this->ID == 0){
 				$this->Ordn = $_ord_count;
 			} else{
 				if($this->Ordn > ($_ord_count - 1)){
 					$this->Ordn = $_ord_count;
 				}
-				$_oldPid = f(
-					'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
 			}
 		}
 
@@ -828,7 +826,7 @@ class weNavigation extends weModelBase{
 		}
 		$_db = new DB_WE();
 		while(empty($_charset)) {
-			$_hash = getHash('SELECT ParentID,Charset FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . abs($pid), $_db);
+			$_hash = getHash('SELECT ParentID,Charset FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid), $_db);
 			if(isset($_hash['ParentID'])){
 				if(isset($_hash['Charset']) && !empty($_hash['Charset'])){
 					$_charset = $_hash['Charset'];

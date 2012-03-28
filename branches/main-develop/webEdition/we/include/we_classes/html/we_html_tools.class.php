@@ -707,6 +707,7 @@ HTS;
 	}
 
 	static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
+		self::headerCtCharset('text/html',($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 

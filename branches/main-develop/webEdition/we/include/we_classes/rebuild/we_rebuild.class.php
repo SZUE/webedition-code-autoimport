@@ -24,7 +24,7 @@
  */
 class we_rebuild{
 
-	function rebuild($data, $printIt=false){
+	function rebuild($data, $printIt = false){
 		if($printIt){
 			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
 		}
@@ -40,8 +40,10 @@ class we_rebuild{
 					print 'Rebuilding Navigation Item with Id: ' . $data['id'];
 				}
 				weNavigationCache::delCacheNavigationEntry($data['id']);
-				$nav=new weNavigation($data['id']);
-				$nav->save(false,true);
+				if($data['id']){ //don't save id=0
+					$nav = new weNavigation($data['id']);
+					$nav->save(false, true);
+				}
 				if($printIt){
 					print ("   done$_newLine");
 					flush();
@@ -117,7 +119,7 @@ class we_rebuild{
 					default:
 						return false;
 				}
-				$tmp=$data['cn'];
+				$tmp = $data['cn'];
 				$GLOBALS['we_doc'] = new $tmp();
 				$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
 				if($printIt){
@@ -177,7 +179,7 @@ class we_rebuild{
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 * @param int $templateID ID of a template (All documents of this template should be rebuilded)
 	 */
-	function getDocuments($btype='rebuild_all', $categories='', $catAnd=false, $doctypes='', $folders='', $maintable=false, $tmptable=false, $templateID=0){
+	function getDocuments($btype = 'rebuild_all', $categories = '', $catAnd = false, $doctypes = '', $folders = '', $maintable = false, $tmptable = false, $templateID = 0){
 		switch($btype){
 			case "rebuild_all":
 				return we_rebuild::getAllDocuments($maintable, $tmptable);
@@ -514,7 +516,7 @@ class we_rebuild{
 	 * @param string $thumbs csv value of IDs which thumbs to create
 	 * @param string $thumbsFolders csv value of directory IDs => Create Thumbs for images in these directories.
 	 */
-	function getThumbnails($thumbs="", $thumbsFolders=""){
+	function getThumbnails($thumbs = "", $thumbsFolders = ""){
 		$data = array();
 		if(we_hasPerm("REBUILD_THUMBS")){
 			$_folders_query = "";

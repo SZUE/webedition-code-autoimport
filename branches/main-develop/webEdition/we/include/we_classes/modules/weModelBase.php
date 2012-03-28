@@ -134,9 +134,11 @@ class weModelBase{
 
 	function isKeyDefined(){
 		$defined = true;
-		foreach($this->keys as $prim)
-			if(!isset($this->$prim))
+		foreach($this->keys as $prim){
+			if(!isset($this->$prim)){
 				$defined = false;
+			}
+		}
 		return $defined;
 	}
 
