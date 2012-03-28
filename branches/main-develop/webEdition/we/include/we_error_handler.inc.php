@@ -117,64 +117,37 @@ function we_error_handler($in_webEdition = true){
 
 //Note: Errors can only have ONE type - in case of changed typenames, rename DB's enum
 function translate_error_type($type){
-	if(!defined('E_STRICT')){
-		define('E_STRICT', 2048);
-	}
-
-	if(!defined('E_DEPRECATED')){
-		define('E_DEPRECATED', 8192);
-	}
-
-	/* 	if(!defined('E_USER_DEPRECATED')){
-	  define('E_USER_DEPRECATED', 16384);
-	  } */
-
 	switch($type){
 		case E_ERROR:
 			return 'Error';
-
 		case E_WARNING:
 			return 'Warning';
-
 		case E_PARSE:
 			return 'Parse error';
-
 		case E_NOTICE:
 			return 'Notice';
-
 		case E_CORE_ERROR:
 			return 'Core error';
-
 		case E_CORE_WARNING:
 			return 'Core warning';
-
 		case E_COMPILE_ERROR:
 			return 'Compile error';
-
 		case E_COMPILE_WARNING:
 			return 'Compile warning';
-
 		case E_USER_ERROR:
 			return 'User error';
-
 		case E_USER_WARNING:
 			return 'User warning';
-
 		case E_USER_NOTICE:
 			return 'User notice';
-
-		case E_DEPRECATED:
+		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
 			return 'Deprecated notice';
-
-		case E_STRICT:
+		case (defined('E_STRICT') ? E_STRICT : 2048):
 			return 'Strict Error';
-
-		case E_USER_DEPRECATED:
+		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
 			return 'User deprecated notice';
-
 		case E_SQL:
 			return 'SQL Error';
-
 		default:
 			return 'unknown Error';
 	}
