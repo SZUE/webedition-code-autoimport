@@ -237,13 +237,13 @@ class weNavigation extends weModelBase{
 		}
 
 		// Clear the Cache if the option is set
-		$ClearCache = false;
-		if($this->isnew && $GLOBALS['weNavigationCacheDeleteAfterAdd']){
-			$ClearCache = true;
-		} else
-		if(!$this->isnew && $GLOBALS['weNavigationCacheDeleteAfterEdit']){
-			$ClearCache = true;
-		}
+		/* $ClearCache = false;
+		  if($this->isnew && $GLOBALS['weNavigationCacheDeleteAfterAdd']){
+		  $ClearCache = true;
+		  } else
+		  if(!$this->isnew && $GLOBALS['weNavigationCacheDeleteAfterEdit']){
+		  $ClearCache = true;
+		  } */
 
 		parent::save();
 
@@ -275,14 +275,17 @@ class weNavigation extends weModelBase{
 			//cache is written on demand, just make sure current entry is deleted
 			weNavigationCache::delCacheNavigationEntry($this->ID);
 		} else{
-			if($ClearCache){
-				weNavigationCache::delNavigationTree(0);
+			weNavigationCache::delNavigationTree($this->ID);
+			if(isset($_oldPid) && $_oldPid != $this->ParentID){
+				weNavigationCache::delNavigationTree($this->ParentID);
+				weNavigationCache::delNavigationTree($_oldPid);
 			}
-			if($this->IsFolder){
-				weNavigationCache::cacheNavigationTree($this->ID);
-			} else{
-				weNavigationCache::cacheNavigationTree($this->ParentID);
-			}
+			/* Cache is written on demand
+			 * if($this->IsFolder){
+			  weNavigationCache::cacheNavigationTree($this->ID);
+			  } else{
+			  weNavigationCache::cacheNavigationTree($this->ParentID);
+			  } */
 		}
 	}
 
@@ -796,7 +799,7 @@ class weNavigation extends weModelBase{
 
 		if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 			$dirindexnames = makeArrayFromCSV(NAVIGATION_DIRECTORYINDEX_NAMES);
-			$_path = str_replace('/'.$dirindexnames, '/', $_path);
+			$_path = str_replace('/' . $dirindexnames, '/', $_path);
 		}
 
 		return $_path;
