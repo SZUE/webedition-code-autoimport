@@ -1056,7 +1056,7 @@ top.selectFile(top.currentID);
 				} else{
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				}
-				$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+				$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']',true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
 				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
 				switch($result['ContentType']){

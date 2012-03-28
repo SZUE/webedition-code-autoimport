@@ -2044,13 +2044,14 @@ function g_l($name, $specific, $omitErrors = false){
 				t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
 				return '??';
 			}
-			return '';
+			return false;
 		}
 	}
 	if(!$omitErrors){
 		t_e('Language file "' . $file . '" not found with entry ' . $specific);
+		return '?';
 	}
-	return '?';
+	return false;
 }
 
 function we_templateInit(){
