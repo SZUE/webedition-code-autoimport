@@ -182,6 +182,7 @@ if(isset($_REQUEST['cmd'])){
 						weBackupUtil::addLog('Exporting settings');
 					}
 					$_files[] = WE_INCLUDES_DIR.'conf/we_conf_global.inc.php';
+					$_files[] = WE_INCLUDES_DIR.'conf/we_conf_language.inc.php';
 				}
 
 				if(count($_files)){
@@ -371,18 +372,17 @@ if(isset($_REQUEST['cmd'])){
 				}
 
 				print we_html_element::jsElement('
-									top.checker.location = "' . HTML_DIR . 'white.html";
-									var op = top.opener.top.makeFoldersOpenString();
-									top.opener.top.we_cmd("load",top.opener.top.treeData.table);
-									'.we_main_headermenu::getMenuReloadCode().'
-									top.opener.top.initClickMenu();
-									top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
+								top.checker.location = "' . HTML_DIR . 'white.html";
+								var op = top.opener.top.makeFoldersOpenString();
+								top.opener.top.we_cmd("load",top.opener.top.treeData.table);
+								'.we_main_headermenu::getMenuReloadCode().'
+								//top.opener.top.initClickMenu();
+								top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 								' . (( $_SESSION['weBackupVars']['options']['rebuild']) ? ('
 									top.cmd.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";
 								 ') : ('
 								top.body.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=4&temp_filename=' . $_SESSION['weBackupVars']['backup_file'] . '";
 								')) . '
-
 
 								if(top.busy.setProgressText){
 									top.busy.setProgressText("current_description","' . g_l('backup', '[finished]') . '");
@@ -391,8 +391,7 @@ if(isset($_REQUEST['cmd'])){
 								if(top.busy.setProgress){
 									top.busy.setProgress(100);
 								}
-
-							');
+								');
 
 				if($_SESSION['weBackupVars']['backup_log']){
 					weBackupUtil::addLog('Backup import finished');

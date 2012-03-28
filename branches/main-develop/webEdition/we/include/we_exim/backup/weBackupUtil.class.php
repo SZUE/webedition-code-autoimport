@@ -184,11 +184,11 @@ class weBackupUtil{
 			return true;
 		}
 
-		if(empty($id) && $path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' && $_SESSION['weBackupVars']['handle_options']['settings']){
+		if(empty($id) && ($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weBackupVars']['handle_options']['settings']){
 			return true;
 		}
 
-		if(empty($id) && $_SESSION['weBackupVars']['options']['backup_extern'] && $path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
+		if(empty($id) && $_SESSION['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
 			return true;
 		}
 
