@@ -458,20 +458,20 @@ abstract class we_class{
 		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
 	}
 
-	function we_load(/*$from = we_class::LOAD_MAID_DB*/){
+	function we_load(/* $from = we_class::LOAD_MAID_DB */){
 		$this->i_getPersistentSlotsFromDB();
 	}
 
-	function we_save(/*$resave = 0*/){
+	function we_save(/* $resave = 0 */){
 		$this->wasUpdate = $this->ID ? 1 : 0;
 		return $this->i_savePersistentSlotsToDB();
 	}
 
-	function we_publish(/*$DoNotMark = false, $saveinMainDB = true*/){
+	function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){
 		return true; // overwrite
 	}
 
-	function we_unpublish(/*$DoNotMark = false*/){
+	function we_unpublish(/* $DoNotMark = false */){
 		return true; // overwrite
 	}
 
@@ -494,8 +494,7 @@ abstract class we_class{
 				default:
 					$deltype = '';
 			}
-			$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $deltype . "' AND DID=" . intval($this->ID));
-			$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $deltype . "' AND LDID=" . intval($this->ID));
+			$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $deltype . "' AND (DID=" . intval($this->ID) . ' OR LDID=' . intval($this->ID) . ')');
 		}
 		return $this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID));
 	}
@@ -599,7 +598,7 @@ abstract class we_class{
 	 * If documents, objects, folders and docTypes are saved and there is no LANGLINK_SUPPORT we must check, whether there is a change of language:
 	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped. <= TODO: Merge this with next method!
 	 */
-	function checkRemoteLanguage($table,$isfolder=false) {
+	function checkRemoteLanguage($table, $isfolder = false){
 		if(isset($_REQUEST["we_" . $this->Name . "_Language"]) && $_REQUEST["we_" . $this->Name . "_Language"] != ""){
 			$type = stripTblPrefix($table);
 			$type = ($type == "tblObjectFiles") ? "tblObjectFile" : $type;
@@ -613,7 +612,7 @@ abstract class we_class{
 			$this->DB_WE->query($q);
 			$langChange = false;
 			$delete = false;
-			while($this->DB_WE->next_record()){
+			while($this->DB_WE->next_record()) {
 				//t_e("was gefunden");
 				$delete = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
 			}
@@ -631,7 +630,7 @@ abstract class we_class{
 	 * existing LangLinks from and to this document.
 	 */
 	function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
-		if(!(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT)) {
+		if(!(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT)){
 			return true;
 		}
 		//global $l_we_class;
@@ -647,70 +646,55 @@ abstract class we_class{
 			if(!$isfolder){
 				$oldLang = f('SELECT Language FROM ' . $ownDocumentTable . ' WHERE ID=' . intval($this->ID), 'Language', $db);
 				if($newLang != $oldLang){// language changed
-
 					// what langs where linked before document-language changed?
 					$origLangs = array();
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
-					$this->DB_WE->query($q);
+					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 					while($this->DB_WE->next_record()) {
 						$origLangs[] = $this->DB_WE->Record['Locale'];
 						$origLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 					}
 					// because of UNIQUE-Indexes we do first delete obsolete entries in tblLangLink
 					// => after optimizing executeSetLanguageLink() this will be obsolete!
-					$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE (DID=" . intval($this->ID) . " OR LDID=" . intval($this->ID) . ") AND IsFolder = 0 AND IsObject = " . intval($isobject) . " AND DocumentTable='" . $type . "';";
-					$this->DB_WE->query($q);
+					$this->DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE (DID=" . intval($this->ID) . " OR LDID=" . intval($this->ID) . ") AND IsFolder = 0 AND IsObject = " . intval($isobject) . " AND DocumentTable='" . $type . "'");
 
 					// links FROM folders to the actual we_document/object must be updated right here.
 					// if updating leads to conflict, we must delete a link
 					$DB_WE2 = new DB_WE;
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . intval($this->ID) . ' AND IsFolder = 1;';
-					$this->DB_WE->query($q);
+					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . intval($this->ID) . ' AND IsFolder = 1');
 					while($this->DB_WE->next_record()) {
 						$deleteIt = false;
 						$deleteIt = ($this->DB_WE->Record['DLocale'] == $newLang) ? true : $deleteIt;
 						if(!$deleteIt){
 							$qr = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1;';
 							$DB_WE2->query($qr);
-							while($DB_WE2->next_record()){
+							while($DB_WE2->next_record()) {
 								$deleteIt = ($DB_WE2->Record['Locale'] == $newLang) ? true : $deleteIt;
 							}
 						}
 						if($deleteIt){
-							$qr = "DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
-							//$DB_WE2->query($qr);
+							$DB_WE2->query("DELETE FROM " . LANGLINK_TABLE . " WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1");
 						} else{
-							$qr = "UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $newLang . "' WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1;";
+							$DB_WE2->query("UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $newLang . "' WHERE LDID = " . $this->DB_WE->Record['LDID'] . " AND DID = " . $this->DB_WE->Record['DID'] . " AND IsFolder = 1");
 						}
-						$DB_WE2->query($qr);
 					}
 
 					// if there is no conflict we can set new links and evoke prepareSetLanguageLinks()
-					if(!in_array($newLang,$origLangs)) {
+					if(!in_array($newLang, $origLangs)){
 						return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
-					}
-					else {
-						$we_responseText = g_l('weClass','[languageLinksLocaleChanged]');//,$we_doc->Path
+					} else{
+						$we_responseText = g_l('weClass', '[languageLinksLocaleChanged]'); //,$we_doc->Path
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					}
-
 				} else{//default case: there was now change of page language. Loop method call to another method, preparing LangLinks
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, false, $oldLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
 			} else{//isfolder
-					$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = 1 AND DID=' . intval($this->ID);//imi:could use f()
-					$this->DB_WE->query($q);
-					$langChange = false;
-					while($this->DB_WE->next_record()) {
-						$langChange = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
-					}
-					if($langChange){
-						$q = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable = 'tblFile' AND IsFolder = 1 AND IsObject = " . intval($isobject) . ";";
-						$this->DB_WE->query($q);
-					}
-					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, false, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
+				if(f('SELECT DLocale FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = 1 AND DID=' . intval($this->ID), 'DLocale', $this->DB_WE) != $newLang){
+					$this->DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable = 'tblFile' AND IsFolder = 1 AND IsObject = " . intval($isobject));
+				}
+				return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, false, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 			}
 		}
 	}
@@ -720,15 +704,14 @@ abstract class we_class{
 	 * 1) We only write new or changed LangLinks to db, if LangLink-Locale and Locale of the targe-document/object fit together.
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
 	 */
-	function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange=false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable) {
+	function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange = false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
 		$documentTable = ($type == "tblObjectFile") ? "tblObjectFiles" : $type; // we could take these  from setLanguageLink()...
 		$ownDocumentTable = ($isfolder && $isobject) ? TBL_PREFIX . "tblFile" : TBL_PREFIX . $documentTable;
 
-		if(in_array(0,$LangLinkArray) || in_array("",$LangLinkArray)){
+		if(in_array(0, $LangLinkArray) || in_array("", $LangLinkArray)){
 			if(!$langChange){
 				$origLinks = array();
-				$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . ' AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder);
-				$this->DB_WE->query($q);
+				$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . ' AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder));
 				while($this->DB_WE->next_record()) {
 					$origLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 				}
@@ -738,24 +721,23 @@ abstract class we_class{
 
 				if(!($LDID == '' || $LDID == 0 || $LDID == -1)){
 					$tmpLangLinkArray[$locale] = $LDID;
-				} else if (array_key_exists($locale,$origLinks)){
+				} else if(array_key_exists($locale, $origLinks)){
 					$tmpLangLinkArray[$locale] = -1;
 				}
-
 			}
 			$LangLinkArray = $tmpLangLinkArray;
 		}
 
 		$k = 0;
 		foreach($LangLinkArray as $locale => $LDID){
-			$k = ($locale == $ownLocale) ? $k : $k+1;
+			$k = ($locale == $ownLocale) ? $k : $k + 1;
 			$newOrChanged = false;
-			if($actualLDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE Locale='".$locale."' AND DID=".intval($this->ID)." AND DocumentTable='" . $type . "' AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder),'LDID',$this->DB_WE)){
+			if(($actualLDID = f("SELECT LDID FROM " . LANGLINK_TABLE . " WHERE Locale='" . $locale . "' AND DID=" . intval($this->ID) . " AND DocumentTable='" . $type . "' AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder), 'LDID', $this->DB_WE))){
 				if($actualLDID != $LDID){
-					$newOrChanged = true;//changed
+					$newOrChanged = true; //changed
 				}
 			} else{
-				$newOrChanged = true;//new
+				$newOrChanged = true; //new
 			}
 			if(($newOrChanged || $langChange) && !($LDID == -1)){
 
@@ -765,21 +747,19 @@ abstract class we_class{
 				// from Folders, links lead only to documents, never to objects
 				$fileTable = $isfolder ? FILE_TABLE : $fileTable;
 
-				if($fileLang = f("SELECT Language FROM " . TBL_PREFIX . $documentTable . " WHERE ID = " . intval($LDID),'Language',$this->DB_WE)){
+				if($fileLang = f("SELECT Language FROM " . TBL_PREFIX . $documentTable . " WHERE ID = " . intval($LDID), 'Language', $this->DB_WE)){
 					if($fileLang != $locale){
-						$we_responseText = g_l('weClass','[languageLinksLangNotok]');
-						$we_responseText= sprintf($we_responseText,$locale,$fileLang,$locale);
+						$we_responseText = g_l('weClass', '[languageLinksLangNotok]');
+						$we_responseText = sprintf($we_responseText, $locale, $fileLang, $locale);
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
-					}
-					else {
+					} else{
 						if(!$isfolder){
 							$setThisLink = true;
 							$actualLangs = array();
 							$actualLinks = array();
-							$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
-							$this->DB_WE->query($q);
+							$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 							while($this->DB_WE->next_record()) {
 								$actualLangs[] = $this->DB_WE->Record['Locale'];
 								$actualLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
@@ -788,14 +768,13 @@ abstract class we_class{
 
 							$targetLangs = array();
 							$targetLinks = array();
-							$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder);
-							$this->DB_WE->query($q);
+							$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 							while($this->DB_WE->next_record()) {
 								$targetLangs[] = $this->DB_WE->Record['Locale'];
 								$targetLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 							}
 
-							if(count($actualLangs) > 1 || count($targetLangs) > 0) {
+							if(count($actualLangs) > 1 || count($targetLangs) > 0){
 								$intersect = array();
 								$intersect = array_intersect($actualLangs, $targetLangs);
 								$setThisLink = count($intersect) > 0 ? false : true;
@@ -816,10 +795,9 @@ abstract class we_class{
 									$preparedLinkArray[$targetLocale] = $targetLDID;
 								}
 								$this->executeSetLanguageLink($preparedLinkArray, $type, $isfolder, $isobject);
-							}
-							else {
-								$we_responseText = g_l('weClass','[languageLinksConflicts]');
-								$we_responseText= sprintf($we_responseText,$locale);
+							} else{
+								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
+								$we_responseText = sprintf($we_responseText, $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
@@ -827,19 +805,19 @@ abstract class we_class{
 						}//!isfolder
 						else{
 							$double = 0;
-							$double = f("SELECT DID FROM " . LANGLINK_TABLE . " WHERE DocumentTable = '" . $type . "' AND DLocale = '" . $ownLocale . "' AND Locale = '" . $locale . "' AND LDID = " . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = 1","DID",$this->DB_WE);
+							$double = f("SELECT DID FROM " . LANGLINK_TABLE . " WHERE DocumentTable = '" . $type . "' AND DLocale = '" . $ownLocale . "' AND Locale = '" . $locale . "' AND LDID = " . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = 1", "DID", $this->DB_WE);
 
 							if($double == 0){
 								$actualLinks = array();
-								$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
+								$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 								while($this->DB_WE->next_record()) {
 									$actualLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 								}
 								$actualLinks[$locale] = $LDID;
 								$this->executeSetLanguageLink($actualLinks, $type, $isfolder, $isobject);
 							} else{
-								$we_responseText = g_l('weClass','[languageLinksConflicts]');
-								$we_responseText= sprintf($we_responseText,$locale);
+								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
+								$we_responseText = sprintf($we_responseText, $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
@@ -848,9 +826,9 @@ abstract class we_class{
 					}
 				}
 			}// end of new or changed link
-			else {//delete links
+			else{//delete links
 				$actualLinks = array();
-				$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
+				$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 				while($this->DB_WE->next_record()) {
 					$actualLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 				}
@@ -863,12 +841,11 @@ abstract class we_class{
 	}
 
 	// in this method tblLangLink.ID is used and a lot of things are obsolete => to be cleaned in 6.3.1
-	function executeSetLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false) {
+	function executeSetLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
 		$db = new DB_WE;
 		if(is_array($LangLinkArray)){
-			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . ' AND IsFolder=' . intval($isfolder) . ' AND IsObject=' . intval($isobject);
 			$orig = array();
-			$this->DB_WE->query($q);
+			$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . ' AND IsFolder=' . intval($isfolder) . ' AND IsObject=' . intval($isobject));
 			while($this->DB_WE->next_record()) {
 				$orig[] = $this->DB_WE->Record;
 			}
@@ -888,15 +865,14 @@ abstract class we_class{
 				} else{
 					if($locale != $this->Language){
 						if($LDID > 0){
-							$q = "INSERT INTO " . LANGLINK_TABLE . " SET DID=" . intval($this->ID) . ",DLocale='" . $this->Language . "',IsFolder=" . intval($isfolder) . ", IsObject=" . intval($isobject) . ", LDID=" . intval($LDID) . ", Locale='" . $locale . "', DocumentTable='" . $type . "';";
-							$this->DB_WE->query($q);
+							$this->DB_WE->query("INSERT INTO " . LANGLINK_TABLE . " SET DID=" . intval($this->ID) . ",DLocale='" . $this->Language . "',IsFolder=" . intval($isfolder) . ", IsObject=" . intval($isobject) . ", LDID=" . intval($LDID) . ", Locale='" . $locale . "', DocumentTable='" . $type . "'");
 						}
 					}
 				}
 
 				if(!$isfolder && $LDID && $LDID != $this->ID){
 					$q = '';
-					if($ID = f("SELECT ID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($LDID) . " AND Locale='" . $this->Language . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE)){
+					if(($ID = f("SELECT ID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($LDID) . " AND Locale='" . $this->Language . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 						if($LDID > 0){
 							$this->DB_WE->query("UPDATE " . LANGLINK_TABLE . " SET DID=" . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ",Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
 						}
@@ -927,7 +903,7 @@ abstract class we_class{
 						}
 						if(count($rows) > 1){
 							for($i = 0; $i < count($rows); $i++){
-								$j = ($i+1)%count($rows);
+								$j = ($i + 1) % count($rows);
 								if($rows[$i]['LDID'] && $rows[$j]['LDID']){
 									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$i]['LDID']) . ", DLocale='" . $rows[$i]['Locale'] . "', LDID=" . intval($rows[$j]['LDID']) . ", Locale='" . $rows[$j]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
 									$this->DB_WE->query("REPLACE INTO " . LANGLINK_TABLE . " SET DID=" . intval($rows[$j]['LDID']) . ", DLocale='" . $rows[$j]['Locale'] . "', LDID=" . intval($rows[$i]['LDID']) . ", Locale='" . $rows[$i]['Locale'] . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
@@ -938,21 +914,23 @@ abstract class we_class{
 					if($LDID < 0){
 						foreach($orig as $origrow){
 							if($origrow['DLocale'] == $locale){
-								$q = "SELECT ID FROM " . LANGLINK_TABLE . " WHERE  DID=" . intval($origrow['DID']) . " AND DLocale='" . $locale . "' AND DocumentTable='" . $type . "' AND IsObject=" . intval($isobject);
-								$this->DB_WE->query($q);
+								$this->DB_WE->query("SELECT ID FROM " . LANGLINK_TABLE . " WHERE  DID=" . intval($origrow['DID']) . " AND DLocale='" . $locale . "' AND DocumentTable='" . $type . "' AND IsObject=" . intval($isobject));
+								$ids = array();
 								while($this->DB_WE->next_record()) {
-									$delRowID = $this->DB_WE->Record['ID'];
-									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID) . ' AND DocumentTable="' . $type . '"';
-									$db->query($qd);
+									$ids[] = $this->DB_WE->Record['ID'];
+								}
+								if(count($ids)){
+									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $type . '"');
 								}
 							}
 							if($origrow['Locale'] == $locale){
-								$q = "SELECT ID FROM " . LANGLINK_TABLE . " WHERE  LDID=" . intval($origrow['LDID']) . " AND Locale='" . $locale . "' AND DocumentTable='" . $type . "' AND IsObject=" . intval($isobject);
-								$this->DB_WE->query($q);
+								$this->DB_WE->query("SELECT ID FROM " . LANGLINK_TABLE . " WHERE  LDID=" . intval($origrow['LDID']) . " AND Locale='" . $locale . "' AND DocumentTable='" . $type . "' AND IsObject=" . intval($isobject));
+								$ids = array();
 								while($this->DB_WE->next_record()) {
-									$delRowID = $this->DB_WE->Record['ID'];
-									$qd = "UPDATE " . LANGLINK_TABLE . " SET LDID='0' WHERE ID=" . intval($delRowID) . ' AND DocumentTable="' . $type . '"';
-									$db->query($qd);
+									$ids[] = $this->DB_WE->Record['ID'];
+								}
+								if(count($ids)){
+									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ' AND DocumentTable="' . $type . '"');
 								}
 							}
 						}
@@ -964,8 +942,8 @@ abstract class we_class{
 		}
 	}
 
+	/*	 * returns error-messages recorded during an operation, currently only save is used */
 
-	/**returns error-messages recorded during an operation, currently only save is used*/
 	function getErrMsg(){
 		return ($this->errMsg != '' ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
 	}

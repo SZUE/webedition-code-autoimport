@@ -26,7 +26,7 @@ we_html_tools::protect();
 
 //	user
 $_isUsedByUser = $we_doc->isLockedByUser();
-$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($_isUsedByUser), "username", $DB_WE);
+$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($_isUsedByUser), "username", $GLOBALS['DB_WE']);
 
 
 $_messageTbl = new we_html_table(array("border" => 0,

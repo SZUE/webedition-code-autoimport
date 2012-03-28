@@ -308,7 +308,7 @@ abstract class we_database_base{
 		if(self::$Debug){
 			printf("Debug: query = %s<br/>\n", $Query_String);
 		}
-		$this->Query_ID = $this->_query($Query_String,$unbuffered);
+		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
 			$this->_query('FLUSH TABLES');
@@ -499,7 +499,7 @@ abstract class we_database_base{
 			}
 			//current hack: don't escape some used mysql functions
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
-			$escape = !is_int($val);
+			$escape = !(is_int($val) || is_float($val));
 			if($escape){
 				switch(strtoupper($val)){
 					case 'NOW()':
@@ -654,6 +654,5 @@ abstract class we_database_base{
 	public function getVersion(){
 
 	}
-
 
 }

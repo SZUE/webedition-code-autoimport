@@ -45,6 +45,6 @@ for($i = 0; $i < sizeof($_ids); $i++){
 
 foreach($queries as $table => $ids){
 	//don't clean all locks! - is this really a needed statement???
-	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE  tbl ="' . $DB_WE->escape($table) . '" AND ID in (' . implode(', ', $ids) . ') AND sessionID="' . session_id() . '" AND UserID=' . intval($_REQUEST['we_cmd'][2]));
+	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE  tbl ="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID in (' . implode(', ', $ids) . ') AND sessionID="' . session_id() . '" AND UserID=' . intval($_REQUEST['we_cmd'][2]));
 }
 ?>UNLOCKED

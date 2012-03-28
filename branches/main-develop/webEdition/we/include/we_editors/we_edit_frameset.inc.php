@@ -227,10 +227,10 @@ if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 
 
 if(!isset($we_doc->IsClassFolder)){
-
-	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
 	//update already offline users
 	$DB_WE2 = new DB_WE;
+
+	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
 	$DB_WE2->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
 
 	$_filelocked = ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]);

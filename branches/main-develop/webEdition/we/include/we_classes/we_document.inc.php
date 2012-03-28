@@ -906,7 +906,7 @@ class we_document extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
+		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 	function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', $db = '', $classID = '', $fn = 'this'){

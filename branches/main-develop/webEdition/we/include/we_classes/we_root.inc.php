@@ -731,7 +731,6 @@ abstract class we_root extends we_class{
 	}
 
 	function makeHrefByID($id, $db = ""){
-		$db = $db ? $db : new DB_WE;
 		return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $this->DB_WE);
 	}
 
@@ -1083,7 +1082,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Filename='" . escape_sql_query($this->Filename) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
+		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Filename='" . escape_sql_query($this->Filename) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 	function i_urlDouble(){
@@ -1203,8 +1202,8 @@ abstract class we_root extends we_class{
 	  -4	if user has not the right to save a file.
 	 */
 	function userHasAccess(){
-
-		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
+		$uid = $this->isLockedByUser();
+		if($uid > 0 && $uid != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
 			return self::FILE_LOCKED;
 		}
 
@@ -1239,23 +1238,15 @@ abstract class we_root extends we_class{
 	  or 0 when file is not locked
 	 */
 	function isLockedByUser(){
-
-		$DB_WE = new DB_WE();
 		//select only own ID if not in same session
-		$DB_WE->query('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $DB_WE->escape($this->Table) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()');
-		$_userId = 0;
-		while($DB_WE->next_record()) {
-			$_userId = $DB_WE->f("UserID");
-		}
-		return $_userId;
+		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()', 'UserID', $this->DB_WE));
 	}
 
 	function lockDocument(){
 		if($_SESSION['user']['ID']){ // only if user->id != 0
-			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
-			$DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION["user"]["ID"]) . ',tbl="' . $DB_WE->escape($this->Table) . '",sessionID="' . session_id() . '",lockTime=DATE_ADD( NOW( ) , INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND)
-				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION["user"]["ID"]) . ',sessionID="' . session_id() . '",lockTime=DATE_ADD( NOW( ) , INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND)');
+			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION["user"]["ID"]) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
+				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION["user"]["ID"]) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
 		}
 	}
 

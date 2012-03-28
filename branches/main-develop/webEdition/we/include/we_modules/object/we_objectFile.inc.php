@@ -2952,7 +2952,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID=" . $this->ParentID . " AND Text='" . escape_sql_query($this->Text) . "' AND ID!=" . intval($this->ID), "ID", new DB_WE());
+		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID=" . $this->ParentID . " AND Text='" . escape_sql_query($this->Text) . "' AND ID!=" . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 	function i_urlDouble(){

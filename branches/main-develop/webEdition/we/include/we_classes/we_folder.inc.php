@@ -476,7 +476,7 @@ class we_folder extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . escape_sql_query($this->Table) . " WHERE Path='" . escape_sql_query($this->Path) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
+		return f("SELECT ID FROM " . escape_sql_query($this->Table) . " WHERE Path='" . escape_sql_query($this->Path) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 	function i_filenameEmpty(){

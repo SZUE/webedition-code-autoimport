@@ -2294,7 +2294,7 @@ class we_object extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
+		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
 	}
 
 	function i_checkPathDiffAndCreate(){
@@ -2488,8 +2488,8 @@ class we_object extends we_document{
 	}
 
 	function userHasAccess(){
-
-		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
+		$uid=$this->isLockedByUser();
+		if($uid > 0 && $uid != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
 			return self::FILE_LOCKED;
 		}
 

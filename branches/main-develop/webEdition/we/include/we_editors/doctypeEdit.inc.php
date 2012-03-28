@@ -81,18 +81,15 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$GLOBALS['DB_WE']->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
+		$name = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]), 'DocType', $GLOBALS['DB_WE']);
 		$del = false;
-		$DB_WE2 = new DB_WE();
-		if($GLOBALS['DB_WE']->next_record()){
-			$name = $GLOBALS['DB_WE']->f("DocType");
-			$GLOBALS['DB_WE']->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=" . intval($_REQUEST['we_cmd'][1]) . " OR temp_doc_type=" . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
+		if($name){
+			$GLOBALS['DB_WE']->query("SELECT 1 FROM " . FILE_TABLE . " WHERE DocType=" . intval($_REQUEST['we_cmd'][1]) . " OR temp_doc_type=" . $GLOBALS['DB_WE']->escape($_REQUEST['we_cmd'][1]));
 			if(!$GLOBALS['DB_WE']->next_record()){
 				$GLOBALS['DB_WE']->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($_REQUEST['we_cmd'][1]));
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$DB_WE2->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblDocTypes' AND DID = " . intval($_REQUEST["we_cmd"][1]));
-				$DB_WE2->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND LDID = " . intval($_REQUEST["we_cmd"][1]));
+				$GLOBALS['DB_WE']->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . intval($_REQUEST["we_cmd"][1]) . ' OR LDID=' . intval($_REQUEST["we_cmd"][1]) . ')');
 
 				$we_responseText = g_l('weClass', "[doctype_delete_ok]");
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -105,9 +102,10 @@ switch($_REQUEST['we_cmd'][0]){
 				$we_responseText = sprintf($we_responseText, $name);
 			}
 			if($del){
-				$GLOBALS['DB_WE']->query("SELECT ID FROM " . DOC_TYPES_TABLE . " ORDER BY DocType");
-				if($GLOBALS['DB_WE']->next_record())
-					$we_doc->initByID($GLOBALS['DB_WE']->f("ID"), DOC_TYPES_TABLE);
+				$id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " ORDER BY DocType", 'ID', $GLOBALS['DB_WE']);
+				if($id){
+					$we_doc->initByID($id, DOC_TYPES_TABLE);
+				}
 			} else{
 				$we_doc->initByID($_REQUEST['we_cmd'][1], DOC_TYPES_TABLE);
 			}
