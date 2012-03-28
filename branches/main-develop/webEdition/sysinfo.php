@@ -300,14 +300,8 @@ $_parts[] = array(
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '...</a>',
 	'space' => 10
 );
+we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
 ?>
-<html>
-	<head>
-		<title><?php print g_l('sysinfo', '[sysinfo]') ?></title>
-		<?php
-		echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-		we_html_element::jsScript(JS_DIR . 'keyListener.js');
-		?>
 		<script type="text/javascript"><!--
 			function closeOnEscape() {
 				return true;
