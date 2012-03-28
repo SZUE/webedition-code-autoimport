@@ -729,7 +729,7 @@ class we_updater{
 		}
 		self::addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
-		if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE, 'DLocale')){
+		if(!weDBUtil::isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`LDID`,`Locale`,`IsFolder`,`IsObject`,`DocumentTable`)")){
 			//no unique def. found
 			$db=$GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE '.LANGLINK_TABLE)){
@@ -744,11 +744,11 @@ class we_updater{
 				$db->query("INSERT INTO tmpLangLink SELECT ".LANGLINK_TABLE.".* FROM ".LANGLINK_TABLE.", ".DOC_TYPES_TABLE." WHERE ".LANGLINK_TABLE.".DID = ".DOC_TYPES_TABLE.".ID AND ".LANGLINK_TABLE.".DLocale = ".DOC_TYPES_TABLE.".Language AND ".LANGLINK_TABLE.".DocumentTable = 'tblDocTypes'");
 
 				$db->query('TRUNCATE '.LANGLINK_TABLE);
-				if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE,'DID')){
-					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DocumentTable,DLocale,Locale,IsFolder,IsObject)');
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,"UNIQUE KEY `DID` (`DID`,`IsFolder`,`DLocale`,`Locale`,`IsObject`,`DocumentTable`)")){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DID (DID,DLocale,Locale,IsFolder,IsObject,DocumentTable)');
 				}
-				if(!weDBUtil::isUniqueKeyExist(LANGLINK_TABLE,'DLocale')){
-					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,DocumentTable,IsFolder,IsObject)');
+				if(!weDBUtil::isKeyExist(LANGLINK_TABLE,"UNIQUE KEY `DLocale` (`DLocale`,`LDID`,`Locale`,`IsFolder`,`IsObject`,`DocumentTable`)")){
+					weDBUtil::addKey(LANGLINK_TABLE,'UNIQUE KEY DLocale (DLocale,LDID,Locale,IsFolder,IsObject,DocumentTable)');
 				}
 
 				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
