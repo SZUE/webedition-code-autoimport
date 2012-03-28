@@ -198,16 +198,12 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
 			$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 		}
-		
+
 		$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
-		
+
 		// Fast Fix for deleting entries from tblLangLink: #5840
 		$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND IsObject = 0 AND IsFolder = 0 AND DID = '" . intval($id) . "'");
 		$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND LDID = '" . intval($id) . "'");
-
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
 	}
 
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
