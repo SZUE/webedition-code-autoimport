@@ -441,7 +441,7 @@ abstract class we_class{
 		$this->ID = intval($ID);
 		$this->Table = $Table;
 		$this->we_load($from);
-		$GLOBALS["we_ID"] = $ID; //FIXME: look if we need this !!
+		$GLOBALS["we_ID"] = $ID; //FIXME: check if we need this !!
 		$GLOBALS["we_Table"] = $Table;
 		// init Customer Filter !!!!
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){

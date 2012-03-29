@@ -24,7 +24,7 @@
 
 /* Create a global instance of the concrete DB-Class (mysql/mysqli) */
 
-//FIXME: this file will be obsolete, if we.inc is included everywhere, or a new db-connection is instantiated otherwise
+//FIXME: remove in 6.4
 
 if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();

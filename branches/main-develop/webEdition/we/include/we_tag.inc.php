@@ -269,10 +269,8 @@ function cutText($text, $max = 0){
 		return '';
 	}
 
-	$text = strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>');
+	$text = we_util::html2uml(strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>'));
 	$htmlfree = strip_tags($text);
-	$text = we_util::html2uml($text);
-	$htmlfree = we_util::html2uml($htmlfree);
 	$left = substr($htmlfree, 0, $max);
 	//FIXME: ereg
 	$left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
@@ -290,8 +288,7 @@ function cutText($text, $max = 0){
 	$regs = array();
 	if(preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)){
 		$text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
-	} else
-	if(preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)){
+	} else if(preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)){
 		$text = $regs[1];
 	}
 	return $text . '...';

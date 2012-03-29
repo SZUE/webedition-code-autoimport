@@ -22,11 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TODO: check if we really need to set the local variable; if, we need a parser-handler
 
 function we_tag_createShop($attribs){
-	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
+	}
 	if(!defined("SHOP_TABLE")){
 		return modulFehltError('Shop', __FUNCTION__);
 	}
@@ -43,19 +43,9 @@ function we_tag_createShop($attribs){
 
 	if(isset($_SESSION[$shopname . '_save']) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"] == 1 || $deleteshop == true)){ // delete shop
 		unset($_SESSION[$shopname . '_save']);
-		/* never used
-		  if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
-		  header("Location: ".$follow);
-		  exit;
-		  } */
 	}
 	if(isset($GLOBALS["WE_LOGOUT"]) && $GLOBALS["WE_LOGOUT"] && $deleteshoponlogout){
 		unset($_SESSION[$shopname . '_save']);
-		/* never used
-		  if(isset($follow) && (!empty($follow))) {  // we have to check where $follow is set ???? - nowhere
-		  header("Location: ".$follow);
-		  exit;
-		  } */
 	}
 
 	$GLOBALS[$shopname] = new we_shop_Basket();

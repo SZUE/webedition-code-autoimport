@@ -37,8 +37,6 @@ function we_tag_orderitem($attribs){
 
 	$condition = weTag_getAttribute("condition", $attribs, 0);
 	$we_orderitemid = weTag_getAttribute("id", $attribs, 0);
-	//FIXME: unused
-	$we_orderid = weTag_getAttribute("orderid", $attribs, 0);
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 

@@ -117,8 +117,6 @@ class we_listview_multiobject extends listviewBase{
 		$this->classID = $data['class'];
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
-		//FIXME:unused
-		//$this->seeMode = $seeMode; //	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 
@@ -234,7 +232,6 @@ class we_listview_multiobject extends listviewBase{
 		if($calendar != ''){
 			$this->postFetchCalendar();
 		}
-		$this->adjustRows();
 	}
 
 	function tableInMatrix($matrix, $table){

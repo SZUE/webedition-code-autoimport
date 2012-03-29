@@ -125,7 +125,6 @@ class we_shop_listviewOrder extends listviewBase{
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-		$this->adjustRows();
 	}
 
 	function next_record(){

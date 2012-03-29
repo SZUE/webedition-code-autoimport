@@ -219,7 +219,6 @@ class we_search_listview extends listviewBase{
 		}
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-		$this->adjustRows();
 	}
 
 	function next_record(){

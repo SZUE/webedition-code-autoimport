@@ -319,7 +319,6 @@ class we_listview extends listviewBase{
 		}
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
-		$this->adjustRows();
 		if($calendar != '')
 			$this->postFetchCalendar();
 	}

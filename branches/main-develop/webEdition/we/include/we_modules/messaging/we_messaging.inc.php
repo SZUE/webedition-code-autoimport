@@ -180,7 +180,7 @@ class we_messaging extends we_class{
 		if(empty($this->ids_selected))
 			return '';
 
-		return '"' . implode('","', $this->ids_selected) . '"';
+		return implode(',', $this->ids_selected);
 	}
 
 	function set_ids_selected($entrsel){
@@ -224,13 +224,7 @@ class we_messaging extends we_class{
 
 	function check_folders(){
 		/* XXX: Use defines for folder constants, instead of class variables in we_msg_proto.inc.php */
-		$this->DB->query('SELECT count(ID) as c FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13)');
-		$this->DB->next_record();
-		if($this->DB->f('c') < 5){
-			return false;
-		}
-
-		return true;
+		return intval(f('SELECT count(ID) as c FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13)', 'c', $this->DB)) >= 5;
 	}
 
 	/* Clipboard methods */
@@ -240,8 +234,10 @@ class we_messaging extends we_class{
 		$this->clipboard = array();
 		foreach($ids as $id){
 			$offs = array_ksearch('ID', $id, $this->selected_set);
-			$this->clipboard[] = array('ID' => $this->selected_set[$offs]['int_hdrs']['_ID'],
-				'ClassName' => $this->selected_set[$offs]['hdrs']['ClassName']);
+			$this->clipboard[] = array(
+				'ID' => $this->selected_set[$offs]['int_hdrs']['_ID'],
+				'ClassName' => $this->selected_set[$offs]['hdrs']['ClassName']
+			);
 		}
 
 		$this->clipboard_action = $mode;

@@ -85,7 +85,6 @@ class we_catListview extends listviewBase{
 		$this->anz = $this->DB_WE->num_rows();
 
 		$this->count = 0;
-		$this->adjustRows();
 	}
 
 	function next_record(){

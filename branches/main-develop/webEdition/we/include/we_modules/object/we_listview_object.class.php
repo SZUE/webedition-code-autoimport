@@ -215,7 +215,6 @@ class we_listview_object extends listviewBase{
 		if($calendar != ''){
 			$this->postFetchCalendar();
 		}
-		$this->adjustRows();
 	}
 
 	function tableInMatrix($matrix, $table){

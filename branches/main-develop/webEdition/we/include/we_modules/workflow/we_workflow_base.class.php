@@ -33,7 +33,7 @@ class we_workflow_base{
 	var $db;
 	var $persistents = array();
 	var $table = "";
-	var $ClassName=__CLASS__;
+	var $ClassName = __CLASS__;
 	var $Log;
 
 	function __construct(){
@@ -58,26 +58,21 @@ class we_workflow_base{
 	function save(){
 		$sets = array();
 		$wheres = array();
-		foreach($this->persistents as $key => $val){
-			//FIXME: remove eval
-			if($val == "ID")
-				eval('$wheres[]="' . $val . '=\'".$this->' . $val . '."\'";');
-			eval('$sets[]="' . $val . '=\'".$this->' . $val . '."\'";');
+		foreach($this->persistents as $val){
+			if($val == "ID"){
+				$wheres[] = $val . '="' . $this->{$val} . '"';
+			}
+			$sets[] = $val . '="' . $this->{$val} . '"';
 		}
-		$where = implode(",", $wheres);
-		$set = implode(",", $sets);
+		$where = implode(',', $wheres);
+		$set = implode(',', $sets);
 
 		if($this->ID == 0){
-
-			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
-			$this->db->query($query);
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
-			$this->db->query("SELECT LAST_INSERT_ID()");
-			$this->db->next_record();
-			$this->ID = $this->db->f(0);
+			$this->ID = $this->db->getInsertId();
 		} else{
-			$query = 'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 	}
 
@@ -97,7 +92,7 @@ class we_workflow_base{
 		$res = msg_new_message($rcpts, $subject, $description, $errs);
 	}
 
-	function sendMail($userID, $subject, $description, $contecttype='text/plain'){
+	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
 		$errs = array();
 		$foo = f("SELECT Email FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "Email", $this->db);
 		if(!empty($foo) && we_check_email($foo)){

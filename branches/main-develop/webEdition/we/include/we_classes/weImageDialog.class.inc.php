@@ -76,10 +76,8 @@ class weImageDialog extends weDialog{
 				$this->args["fileID"] = $id;
 				$this->args["fileSrc"] = $tokkens[0];
 				$this->args["thumbnail"] = $thumb;
-				//$this->args["src"] .= "?id=".$id;
 			} else{
 				$this->args["type"] = "ext";
-				//FIXME: ereg
 				$this->args["extSrc"] = preg_replace('|^/webEdition/|', '', preg_replace('|^/webEdition/we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";

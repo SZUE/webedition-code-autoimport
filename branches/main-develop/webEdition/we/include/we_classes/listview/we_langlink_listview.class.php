@@ -76,12 +76,9 @@ class we_langlink_listview extends listviewBase{
 		$this->pagelanguage = $pagelanguage;
 		$this->ownlanguage = $ownlanguage;t_e("page",$pagelanguage,"own",$ownlanguage);
 		$this->linkType = $linkType;
-		//FIXME:unused
-		//$this->seeMode = $seeMode;
-
 
 		$_languages = getWeFrontendLanguagesForBackend();
-		
+
 		// if !$showself: remove the pagelanguage (choosen by using attribute pagelanguage) from the languages-list, so the link to this language won't be found in DB
 		if(isset($_languages[$this->pagelanguage]) && !$showself){
 			unset($_languages[$this->pagelanguage]);
@@ -122,8 +119,8 @@ class we_langlink_listview extends listviewBase{
 					$this->getParentData($this->id, $langkey);
 				}
 			}
-			
-			// Links to documents/objects themselves are not listet in tblLangLink. 
+
+			// Links to documents/objects themselves are not listet in tblLangLink.
 			// In the following cases we must create them manually:
 			// if($this->showself == true)
 			// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
@@ -147,7 +144,6 @@ class we_langlink_listview extends listviewBase{
 			$this->anz_all = count($this->foundlinks);
 			$this->anz = $this->anz_all;
 			$this->count = 0;
-			$this->adjustRows();
 		} else{
 			$this->anz_all = 0;
 			$this->anz = $this->anz_all;

@@ -73,8 +73,8 @@ abstract class listviewBase{
 	function __construct($name = '0', $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = '0', $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = ''){
 
 		$this->name = $name;
-		//FIXME: broken String due to UTF-8 conversion
-		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? '���������' : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
+		//? strange setting - don't know what it is supposed to be
+		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? -1 : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE;
 		$this->rows = $rows;
@@ -418,16 +418,6 @@ abstract class listviewBase{
 
 	function tdEmpty(){
 		return ($this->count > $this->anz);
-	}
-
-	//FIXME: wtf
-	function adjustRows(){
-		/* 	if($this->cols && $this->anz_all){
-		  // Bugfix #1715 und auch #4965
-		  $_rows = floor($this->anz_all / $this->cols);
-		  $_rest = ($this->anz_all % $this->cols);
-		  $_add = $_rest ? $this->cols - $_rest : 0;
-		  } */
 	}
 
 	static function getCalendarField($calendar, $type){
