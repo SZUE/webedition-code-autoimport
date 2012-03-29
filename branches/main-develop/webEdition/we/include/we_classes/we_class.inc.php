@@ -678,7 +678,7 @@ abstract class we_class{
 						}
 					}
 
-					// if there is no conflict we can set new links and evoke prepareSetLanguageLinks()
+					// if there is no conflict we can set new links and call prepareSetLanguageLinks()
 					if(!in_array($newLang, $origLangs)){
 						return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 					} else{
@@ -690,6 +690,7 @@ abstract class we_class{
 				} else{//default case: there was now change of page language. Loop method call to another method, preparing LangLinks
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, false, $oldLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
+
 			} else{//isfolder
 				if(f('SELECT DLocale FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = 1 AND DID=' . intval($this->ID), 'DLocale', $this->DB_WE) != $newLang){
 					$this->DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($this->ID) . " AND DocumentTable = 'tblFile' AND IsFolder = 1 AND IsObject = " . intval($isobject));
