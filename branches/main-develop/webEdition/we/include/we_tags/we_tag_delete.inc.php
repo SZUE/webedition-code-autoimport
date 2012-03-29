@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_delete($attribs){
-	$type = weTag_getAttribute("type", $attribs, "document");
+	$type = weTag_getAttribute("type", $attribs, 'document');
 	$userid = weTag_getAttribute("userid", $attribs); // deprecated  use protected=true instead
 	$protected = weTag_getAttribute("protected", $attribs, false, true);
 	$admin = weTag_getAttribute("admin", $attribs);

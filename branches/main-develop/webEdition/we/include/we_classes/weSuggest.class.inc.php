@@ -213,8 +213,9 @@ HTS;
 			if(is_array($weWorkspacePathArray)){
 				$ix = 0;
 				foreach($weWorkspacePathArray as $val){
-					if($ix > 0)
+					if($ix > 0){
 						$weWorkspacePathArrayJS .= ",";
+					}
 					$weWorkspacePathArrayJS .= '"' . $val . '"';
 					$ix++;
 				}
@@ -354,12 +355,12 @@ HTS;
 HTS;
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
-				$initVars .= "	var oldInputVal_" . $i . ";\n";
-				$initVars .= "	var newInputVal_" . $i . ";\n";
+				$initVars .= "	var oldInputVal_" . $i . ";
+					var newInputVal_" . $i . ";";
 				$additionalFields = "";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-						$initVars .= "	var old_" . $this->setOnSelectFields[$i][$j] . ";\n";
+						$initVars .= "	var old_" . $this->setOnSelectFields[$i][$j] . ";";
 						$additionalFields .= ($j > 0 ? "," : "") . $this->setOnSelectFields[$i][$j];
 					}
 				}

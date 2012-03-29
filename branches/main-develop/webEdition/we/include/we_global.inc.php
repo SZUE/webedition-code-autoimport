@@ -361,7 +361,6 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	return $_response;
 }
 
-//FIXME: this function assumes strict Ports
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){

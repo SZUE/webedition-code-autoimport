@@ -199,7 +199,7 @@ function we_tag_a($attribs, $content){
 			} else{
 				$did = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID) && $editself) ? $GLOBALS['we_doc']->ID : 0;
 			}
-			if($delete){
+			if($delete){//FIXME: make sure only the selected object can be deleted - sth unique not user-known has to be added to prevent denial of service
 				if($did){
 					$urladd = ($urladd ? $urladd . '&' : '?') . 'we_delDocument_ID=' . $did;
 				}

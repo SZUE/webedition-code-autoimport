@@ -489,70 +489,28 @@ class copyFolderFrag extends taskFragment{
 		$we_doc->elements["data"]["dat"] = str_replace(
 			$this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $we_doc->elements["data"]["dat"]);
 
-		$ChangeTags = array();
-
-		$ChangeTags["a"] = array(
-			"id"
-		);
-		$ChangeTags["url"] = array(
-			"id"
-		);
-		$ChangeTags["img"] = array(
-			"id"
-		);
-		$ChangeTags["listview"] = array(
-			"triggerid", "workspaceID"
-		);
-		$ChangeTags["ifSelf"] = array(
-			"id"
-		);
-		$ChangeTags["ifNotSelf"] = array(
-			"id"
-		);
-		$ChangeTags["form"] = array(
-			"id", "onsuccess", "onerror", "onmailerror"
-		);
-		$ChangeTags["include"] = array(
-			"id"
-		);
-		$ChangeTags["addDelNewsletterEmail"] = array(
-			"mailid", "id"
-		);
-		$ChangeTags["css"] = array(
-			"id"
-		);
-		$ChangeTags["icon"] = array(
-			"id"
-		);
-		$ChangeTags["js"] = array(
-			"id"
-		);
-		$ChangeTags["linkToSEEM"] = array(
-			"id"
-		);
-		$ChangeTags["linkToSeeMode"] = array(
-			"id"
-		);
-		$ChangeTags["listdir"] = array(
-			"id"
-		);
-		$ChangeTags["printVersion"] = array(
-			"triggerid"
-		);
-		$ChangeTags["quicktime"] = array(
-			"id"
-		);
-		$ChangeTags["sendMail"] = array(
-			"id"
-		);
-		$ChangeTags["write"] = array(
-			"triggerid"
-		);
-		$ChangeTags["flashmovie"] = array(
-			"id"
-		);
-		$ChangeTags["delete"] = array(
-			"pid"
+		$ChangeTags = array(
+			"a" => array("id"),
+			"url" => array("id"),
+			"img" => array("id"),
+			"listview" => array("triggerid", "workspaceID"),
+			"ifSelf" => array("id"),
+			"ifNotSelf" => array("id"),
+			"form" => array("id", "onsuccess", "onerror", "onmailerror"),
+			"include" => array("id"),
+			"addDelNewsletterEmail" => array("mailid", "id"),
+			"css" => array("id"),
+			"icon" => array("id"),
+			"js" => array("id"),
+			"linkToSEEM" => array("id"),
+			"linkToSeeMode" => array("id"),
+			"listdir" => array("id"),
+			"printVersion" => array("triggerid"),
+			"quicktime" => array("id"),
+			"sendMail" => array("id"),
+			"write" => array("triggerid"),
+			"flashmovie" => array("id"),
+			"delete" => array("pid"),
 		);
 
 		$changed = false;

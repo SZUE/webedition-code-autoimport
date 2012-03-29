@@ -544,7 +544,7 @@ abstract class we_class{
 		return $in;
 	}
 
-	function i_savePersistentSlotsToDB($felder = ""){
+	protected function i_savePersistentSlotsToDB($felder = ""){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();

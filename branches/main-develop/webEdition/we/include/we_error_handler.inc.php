@@ -101,7 +101,6 @@ function we_error_handler($in_webEdition = true){
 		ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
 		set_error_handler('error_handler', $_error_level);
 		register_shutdown_function('shutdown_handler');
-		//FIXME: add exception-handler
 		set_exception_handler('we_exception_handler');
 	} else{
 		//disable strict & deprecated errors
@@ -541,7 +540,6 @@ function shutdown_handler(){
 }
 
 function we_exception_handler($exception){
-	//FIMXE: add data from $exception
 	$type = E_ERROR;
 	$message = $exception->getMessage();
 	$file = $exception->getFile();

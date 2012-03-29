@@ -237,9 +237,8 @@ class we_todo extends we_msg_proto{
 		}
 
 		if(isset($data['todo_comment'])){
-			/* XXX: use current assignee instead of userid */
+			//use current assignee instead of userid
 			if($this->history_update($msg['_ID'], $userid, $userid, $data['todo_comment'], we_msg_proto::ACTION_COMMENT)){
-				/* XXX: ? */
 				$ret['msg'] = g_l('modules_messaging', '[update_successful]');
 				$ret['changed'] = 1;
 			} else{

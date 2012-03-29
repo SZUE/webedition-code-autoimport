@@ -247,13 +247,11 @@ class we_object extends we_document{
 
 			$we_sort = $this->getElement("we_sort");
 
-			$this->strOrder = implode(",", $we_sort);
+			$this->strOrder = implode(',', $we_sort);
 
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
-			//FIXME: this sounds NOT good! is this really true on every transaction? Why is  this value not set by i_savePersistentSlotsToDB?
-			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM " . $this->DB_WE->escape($this->Table), "LastID", $this->DB_WE));
 			$ctable = OBJECT_X_TABLE . ($this->ID);
 
 			// Charset and Collation

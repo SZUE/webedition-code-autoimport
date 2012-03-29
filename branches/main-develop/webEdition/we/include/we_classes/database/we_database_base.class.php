@@ -736,11 +736,10 @@ abstract class we_database_base{
 
 	function getTableKeyArray($tab){
 		$myarray = array();
-		$create = f('SHOW CREATE TABLE ' . $this->escape($tab), 'Create Table', $this);
-		if(!$create){
+		$zw = $this->getTableCreateArray($tab);
+		if(!$zw){
 			return false;
 		}
-		$zw = explode("\n", $create);
 		foreach($zw as $v){
 			$vv = trim($v);
 			$posP = strpos($vv, 'PRIMARY KEY');
@@ -764,9 +763,8 @@ abstract class we_database_base{
 		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
 		$key = $matches[1];
 
-		$create = f("SHOW CREATE TABLE " . $this->escape($tab), 'Create Table', $this);
-		if($create){
-			$zw = explode("\n", $create);
+		$zw = $this->getTableCreateArray($tab);
+		if($zw){
 			foreach($zw as $v){
 				if(preg_match('|.*KEY *`?' . $key . '`? \(|', $v)){
 					return $key;
@@ -783,9 +781,8 @@ abstract class we_database_base{
 	 * @return boolean true, if the exact definition is met, false otherwise
 	 */
 	function isKeyExist($tab, $key){
-		$create = f("SHOW CREATE TABLE " . $this->escape($tab), 'Create Table', $this);
-		if(!$create){
-			$zw = explode("\n", $create);
+		$zw = $this->getTableCreateArray($tab);
+		if($zw){
 			foreach($zw as $v){
 				if(trim(rtrim($v, ',')) == $key)
 					return true;
@@ -831,6 +828,23 @@ abstract class we_database_base{
 	function moveCol($tab, $colName, $newPos){
 		//TODO: to implement
 		//get the old col def, use for alter table.
+		$zw = $this->getTableCreateArray($tab);
+		if(!$zw){
+			return false;
+		}
+		$colName = '`' . trim($colName, '`') . '`';
+		unset($zw[0]);
+		$found = false;
+		foreach($zw as $def){
+			if(strpos($def, $colName) !== FALSE){
+				$found = $def;
+				break;
+			}
+		}
+		if($found){
+			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . $newPos);
+		}
+		return false;
 	}
 
 }
