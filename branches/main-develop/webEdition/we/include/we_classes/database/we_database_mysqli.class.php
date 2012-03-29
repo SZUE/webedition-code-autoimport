@@ -60,6 +60,10 @@ class DB_WE extends we_database_base{
 		return $this->Link_ID->error;
 	}
 
+	protected function info(){
+		return $this->Query_ID->info;
+	}
+
 	protected function fetch_array($resultType){
 		return (is_object($this->Query_ID)) ?
 			$this->Query_ID->fetch_array($resultType) :

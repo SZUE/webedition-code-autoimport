@@ -157,4 +157,7 @@ class DB_WE extends we_database_base{
 		return mysql_error();
 	}
 
+	protected function info(){
+		return mysql_info();
+	}
 }

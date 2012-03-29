@@ -85,6 +85,11 @@ abstract class we_database_base{
 	 */
 	abstract protected function errno();
 
+	/** get info of latest executed query
+	 * @return String
+	 */
+	abstract protected function info();
+
 	/** internal seek to a specific position in result-set
 	 * @return bool if seek was successfull
 	 */
@@ -337,7 +342,7 @@ abstract class we_database_base{
 						return $tmp;
 					}
 				default:
-					trigger_error('MYSQL-ERROR' . "\n" . 'Fehler: ' . $this->Errno . "\n" . 'Detail: ' . $this->Error . "\n" . 'Query: ' . $Query_String . "\n", E_USER_WARNING);
+					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error .  "\nInfo:" . $this->info() ."\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
 						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
 					}
@@ -649,10 +654,6 @@ abstract class we_database_base{
 	protected function haltmsg($msg){
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
-	}
-
-	public function getVersion(){
-
 	}
 
 }
