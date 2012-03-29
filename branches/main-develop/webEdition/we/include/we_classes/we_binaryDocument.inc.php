@@ -48,6 +48,9 @@ class we_binaryDocument extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, "html", "DocChanged");
+		if(defined("CUSTOMER_TABLE")){
+			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
+		}
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -62,6 +65,8 @@ class we_binaryDocument extends we_document{
 				return "we_templates/we_editor_info.inc.php";
 			case WE_EDITPAGE_CONTENT:
 				return "we_templates/we_editor_binaryContent.inc.php";
+			case WE_EDITPAGE_WEBUSER:
+				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
 			case WE_EDITPAGE_VERSIONS:
 				return "we_versions/we_editor_versions.inc.php";
 				break;
@@ -137,11 +142,11 @@ class we_binaryDocument extends we_document{
 	}
 
 	protected function i_writeSiteDir(){
-		return $this->writeFile($this->getSitePath(),$this->getSitePath(true));
+		return $this->writeFile($this->getSitePath(), $this->getSitePath(true));
 	}
 
 	protected function i_writeMainDir(){
-		return $this->writeFile($this->getRealPath(),$this->getRealPath(true));
+		return $this->writeFile($this->getRealPath(), $this->getRealPath(true));
 	}
 
 	/* gets the filesize of the document */
@@ -293,39 +298,29 @@ class we_binaryDocument extends we_document{
 			$filetype .= substr($this->Extension, 1);
 		}
 
-		if($_SESSION["we_mode"] == "seem"){
-			$md = "";
-		} else{
-			$md = g_l('metadata', "[supported_types]") . ": ";
-
-			$md .= '<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+		$md = ($_SESSION["we_mode"] == "seem" ?
+				'' :
+				g_l('metadata', "[supported_types]") . ': ' .
+				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
 				(count($_mdtypes) > 0 ? implode(", ", $_mdtypes) : g_l('metadata', "[none]")) .
-				'</a>';
-		}
+				'</a>');
+
 
 		return '<table cellpadding="0" cellspacing="0" border="0" width="500">
-			<tr style="vertical-align:top;">
-						<td class="defaultfont">' .
+			<tr style="vertical-align:top;"><td class="defaultfont">' .
 			$uploadButton . '<br />' .
 			$fs . '<br />' .
 			$filetype . '<br />' .
-			$md . '</td>
-						<td width="100px" style="text-align:right;">' .
+			$md . '</td><td width="100px" style="text-align:right;">' .
 			$this->getThumbnail() .
-			'</td>
-					</tr>
-					<tr>
-							<td>' . we_html_tools::getPixel(2, 20) . '</td>
-							<td>' . we_html_tools::getPixel(2, 20) . '</td>
-					</tr>
-					<tr>
-					<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), 1, 508) . '</td>
-				</tr>
+			'</td></tr>
+			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>
+			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() != 0 ? "[upload_will_replace]" : "[upload_single_files]")), 1, 508) . '</td></tr>
 			</table>';
 	}
 
 	function getThumbnail(){
-		return "";
+		return '';
 	}
 
 	function savebinarydata(){
@@ -337,4 +332,3 @@ class we_binaryDocument extends we_document{
 	}
 
 }
-

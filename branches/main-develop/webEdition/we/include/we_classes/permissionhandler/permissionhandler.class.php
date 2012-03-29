@@ -108,14 +108,11 @@ abstract class permissionhandler{
 		//  An array is returned, check the rights.
 		if(is_array($neededPerm)){
 
-			while(list($key, $val) = each($neededPerm)) {
-
+			foreach($neededPerm as $key => $val){
 				$allowed = true;
-
-				$perms = explode(",", $val);
-				for($i = 0; $i < sizeof($perms); $i++){
-
-					if(!we_hasPerm($perms[$i])){
+				$perms = explode(',', $val);
+				foreach($perms as $perm){
+					if(!we_hasPerm($perm)){
 						$allowed = false;
 						break;
 					}

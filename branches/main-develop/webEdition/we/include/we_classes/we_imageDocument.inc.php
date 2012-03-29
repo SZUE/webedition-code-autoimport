@@ -75,11 +75,10 @@ class we_imageDocument extends we_binaryDocument{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, "Thumbs");
-		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT);
-		array_push($this->EditPageNrs, WE_EDITPAGE_THUMBNAILS);
-		if(defined("CUSTOMER_TABLE")){
-			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
-		}
+		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT, WE_EDITPAGE_THUMBNAILS);
+		/* 		if(defined("CUSTOMER_TABLE")){
+		  array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
+		  } */
 	}
 
 	/**
@@ -176,8 +175,6 @@ class we_imageDocument extends we_binaryDocument{
 			case WE_EDITPAGE_THUMBNAILS:
 				return "we_templates/we_editor_thumbnails.inc.php";
 
-			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
 			default:
 				return parent::editor();
 		}

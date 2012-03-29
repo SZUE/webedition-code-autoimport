@@ -58,8 +58,7 @@ if(isset($GLOBALS['we_doc'])){
 	echo we_html_element::jsScript(JS_DIR . 'seeMode.php?EditPage=' . $GLOBALS['we_doc']->EditPageNr . '&ContentType=' . $GLOBALS['we_doc']->ContentType);
 }
 ?>
-<script  type="text/javascript">
-	<!--
+<script  type="text/javascript"><!--
 	var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;
 
 
@@ -113,47 +112,48 @@ if(isset($GLOBALS['we_doc'])){
 				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
 					_parentid = _elem.value;
 					if ( _parentid != _oldparentid ) {
-						top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"]))
+						top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php
+	if(isset($_REQUEST["we_transaction"]))
 		print $_REQUEST["we_transaction"];
 	?>&table=<?php print $GLOBALS['we_doc']->Table; ?>&classname=<?php print $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback );
-							_oldparentid = _parentid;
-						}
+						_oldparentid = _parentid;
 					}
 				}
+			}
 
-				// check If Filename was changed..
-				function pathOfDocumentChanged() {
+			// check If Filename was changed..
+			function pathOfDocumentChanged() {
 
-					var _oldfilepath = '';
+				var _oldfilepath = '';
 
-					var _filetext = '';
-					var _filepath = '';
-					var elem = false;
+				var _filetext = '';
+				var _filepath = '';
+				var elem = false;
 
-					elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Filename"]; // documents
-					if (!elem) { // object
-						elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Text"]
+				elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Filename"]; // documents
+				if (!elem) { // object
+					elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Text"]
+				}
+
+				if (elem) {
+
+					// text
+					_filetext = elem.value;
+					// Extension if there
+					if (document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"]) {
+						_filetext += document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"].value;
 					}
 
-					if (elem) {
+					// path
+					if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentPath"]) {
+						_filepath = _elem.value;
+					}
+					if (_filepath != "/") {
+						_filepath += "/";
+					}
 
-						// text
-						_filetext = elem.value;
-						// Extension if there
-						if (document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"]) {
-							_filetext += document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"].value;
-						}
-
-						// path
-						if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentPath"]) {
-							_filepath = _elem.value;
-						}
-						if (_filepath != "/") {
-							_filepath += "/";
-						}
-
-						_filepath += _filetext;
-						parent.frames[0].we_setPath(_filepath, _filetext, -1);
+					_filepath += _filetext;
+					parent.frames[0].we_setPath(_filepath, _filetext, -1);
 	<?php
 	if(defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)){
 		// only use this when customer filters are possible
@@ -318,16 +318,17 @@ if(isset($GLOBALS['we_doc'])){
 					case "check_glossary":
 						new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 						break;
-<?php }
+<?php
+}
 
 if(isset($we_doc) && $we_doc->ContentType == "image/*"){
 	?>
 
-						case "add_thumbnail":
-							new jsWindow(url,"we_add_thumbnail",-1,-1,400,410,true,true,true);
-							break;
-						case "image_resize":
-							if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
+							case "add_thumbnail":
+								new jsWindow(url,"we_add_thumbnail",-1,-1,400,410,true,true,true);
+								break;
+							case "image_resize":
+								if (typeof CropTool == 'object' && CropTool.triggered) CropTool.drop();
 	<?php if($we_doc->gd_support()){ ?>
 									new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType() == "jpg") ? 250 : 190; ?>,true,false,true);
 		<?php

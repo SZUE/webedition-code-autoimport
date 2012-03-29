@@ -33,20 +33,19 @@ class we_otherDocument extends we_binaryDocument{
 	var $ContentType = "application/*";
 
 	/* buffer for pdf text creation */
-	var $_buffer = "";
 
-
+//	private $_buffer = "";
 
 	/* Constructor */
 
 	function __construct(){
-		/* Begin: Do we use this? */
+		//Begin: Do we use this?
 		switch($this->Extension){
 			case ".pdf":
 				$this->Icon = "pdf.gif";
 				break;
 		}
-		/* End: Do we use this? */
+		// End: Do we use this?
 		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
 	}
@@ -64,14 +63,12 @@ class we_otherDocument extends we_binaryDocument{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn=false){
-		global $lngDir, $we_transaction;
+	function getHtml($dyn = false){
 		$_data = $this->getElement("data");
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
-			$this->html = '<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>';
-		} else{
-			$this->html = g_l('global', "[no_file_uploaded]");
-		}
+		$this->html = ($this->ID || ($_data && !is_dir($_data) && is_readable($_data)) ?
+				'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
+				g_l('global', "[no_file_uploaded]"));
+
 		return $this->html;
 	}
 
@@ -79,16 +76,16 @@ class we_otherDocument extends we_binaryDocument{
 		return $this->htmlFormElementTable($this->htmlTextInput("we_" . $this->Name . "_Extension", 5, $this->Extension, "", 'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', "[extension]"));
 	}
 
-	function we_save($resave=0){
+	function we_save($resave = 0){
 		$ct = new we_base_ContentTypes();
 		$this->Icon = $ct->getIcon($this->ContentType, '', $this->Extension);
 		return parent::we_save($resave);
 	}
 
 	function insertAtIndex(){
-		$text = "";
+		$text = '';
 		$this->resetElements();
-		while(list($k, $v) = $this->nextElement("")) {
+		while(list($k, $v) = $this->nextElement('')) {
 			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 			if(!is_array($foo)){
 				if(isset($v["type"]) && $v["type"] == "txt"){
@@ -104,7 +101,7 @@ class we_otherDocument extends we_binaryDocument{
 		  } */
 
 		for($i = 0; $i < 48; $i++){
-			$content = str_replace(chr($i), "", $content);
+			$content = str_replace(chr($i), '', $content);
 		}
 
 		$text = trim(strip_tags($text) . $content);
@@ -116,7 +113,7 @@ class we_otherDocument extends we_binaryDocument{
 		}
 		$text = addslashes($text);
 
-		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
 
 			$set = array('DID' => intval($this->ID),
@@ -129,7 +126,7 @@ class we_otherDocument extends we_binaryDocument{
 				'Title' => $this->getElement("Title"),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
 		return true;
 	}
@@ -142,42 +139,45 @@ class we_otherDocument extends we_binaryDocument{
 		return false;
 	}
 
-	function nextline(){
-		$pos = strpos($this->_buffer, "\r");
-		if($pos === false){
-			return false;
-		}
-		$line = substr($this->_buffer, 0, $pos);
-		$this->_buffer = substr($this->_buffer, $pos + 1);
-		if($line == "stream"){
-			$endpos = strpos($this->_buffer, "endstream");
-			$stream = substr($this->_buffer, 1, $endpos - 1);
-			$stream = gzuncompress($stream);
-			$this->_buffer = $stream . substr($this->_buffer, $endpos + 9);
-		}
-		return $line;
-	}
+	/*
+	  function nextline(){
+	  $pos = strpos($this->_buffer, "\r");
+	  if($pos === false){
+	  return false;
+	  }
+	  $line = substr($this->_buffer, 0, $pos);
+	  $this->_buffer = substr($this->_buffer, $pos + 1);
+	  if($line == "stream"){
+	  $endpos = strpos($this->_buffer, "endstream");
+	  $stream = substr($this->_buffer, 1, $endpos - 1);
+	  $stream = gzuncompress($stream);
+	  $this->_buffer = $stream . substr($this->_buffer, $endpos + 9);
+	  }
+	  return $line;
+	  }
 
-	function txtline(){
-		$line = $this->nextline();
-		if($line === false){
-			return false;
-		}
-		if(preg_match("/[^\\\\]\\((.+)[^\\\\]\\)/", $line, $match)){
-			$line = preg_replace("/\\\\(\d+)/e", "chr(0\\1);", $match[1]);
-			return stripslashes($line);
-		}
-		return $this->txtline();
-	}
+	  function txtline(){
+	  $line = $this->nextline();
+	  if($line === false){
+	  return false;
+	  }
+	  $match = array();
+	  if(preg_match('/[^\\\\]\\((.+)[^\\\\]\\)/', $line, $match)){
+	  $line = preg_replace("/\\\\(\d+)/e", "chr(0\\1);", $match[1]);
+	  return stripslashes($line);
+	  }
+	  return $this->txtline();
+	  }
 
-	function getPDFText($str){
-		$out = "";
-		$this->_buffer = $str;
-		while(($line = $this->txtline()) !== false) {
-			$out .= $line;
-		}
-		return $out;
-	}
+	  function getPDFText($str){
+	  $out = '';
+	  $this->_buffer = $str;
+	  while(($line = $this->txtline()) !== false) {
+	  $out .= $line;
+	  }
+	  return $out;
+	  }
+	 */
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
