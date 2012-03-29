@@ -967,13 +967,9 @@ class weBackupWizard{
 			$_down = $_SESSION['weBackupVars']['backup_file'];
 			if(is_file($_SESSION['weBackupVars']['backup_file'])){
 
-				$_php_version = phpversion();
-				$_link = weBackupUtil::getHttpLink(
-						$_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '')
-				);
+				$_link = weBackupUtil::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
 
-
-				$table->setCol(2, 0, array('class' => 'defaultfont'), weBrowser::getDownloadLinkText() . '<br><br>' .
+				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br><br>' .
 					we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))
 				);
 
@@ -1714,6 +1710,27 @@ class weBackupWizard{
  				}
  			}
  			setTimeout("reloadFrame()",' . $_execute . ');');
+	}
+
+	static function getDownloadLinkText(){
+
+		switch(we_base_browserDetect::inst()->getBrowser()){
+			case we_base_browserDetect::SAFARI:
+			case we_base_browserDetect::APPLE:
+				$out = g_l('browser', '[save_link_as_SAFARI]');
+				break;
+			case we_base_browserDetect::IE:
+				$out = g_l('browser', '[save_link_as_IE]');
+				break;
+			case we_base_browserDetect::FF:
+				$out = g_l('browser', '[save_link_as_FF]');
+				break;
+			case we_base_browserDetect::OPERA:
+			default:
+				$out = g_l('browser', '[save_link_as_DEFAULT]');
+		}
+
+		return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i', "\n", $out)));
 	}
 
 }

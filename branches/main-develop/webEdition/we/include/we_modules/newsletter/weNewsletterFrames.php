@@ -1874,7 +1874,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
 
-			$table->setCol(3, 0, array("class" => "defaultfont"), weBrowser::getDownloadLinkText());
+			$table->setCol(3, 0, array("class" => "defaultfont"), weBackupWizard::getDownloadLinkText());
 			$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
 			$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => $down), g_l('modules_newsletter', '[csv_download]')
 				)

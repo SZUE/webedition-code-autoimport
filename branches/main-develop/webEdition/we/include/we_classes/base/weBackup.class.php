@@ -818,18 +818,15 @@ class weBackup extends we_backup{
 	}
 
 	function delOldTables(){
-		if(!defined("OBJECT_X_TABLE"))
+		if(!defined("OBJECT_X_TABLE") || !isset($this->handle_options["object"]) || !$this->handle_options["object"]){
 			return;
-		if(!isset($this->handle_options["object"]))
-			return;
-		if(!$this->handle_options["object"])
-			return;
+		}
 		$this->backup_db->query("SHOW TABLE STATUS");
 		while($this->backup_db->next_record()) {
 			$table = $this->backup_db->f("Name");
 			$name = stripTblPrefix($this->backup_db->f("Name"));
 			if(substr(strtolower($name), 0, 10) == strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE), '', strtolower($table)))){
-				weDBUtil::delTable($table);
+				$GLOBALS['DB_WE']->delTable($table);
 			}
 		}
 	}

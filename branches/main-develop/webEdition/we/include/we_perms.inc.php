@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-//FIXME: remove
+//FIXME: remove in 6.4
 function protect(){
 	t_e('deprecated', 'old protect called! remove this!');
 	we_html_tools::protect();

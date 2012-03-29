@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Class weTable
  *
  * Provides functions for loading and saving db tables.
  */
-
 class weTable{
 
 	var $ClassName = __CLASS__;
@@ -37,7 +37,7 @@ class weTable{
 	var $persistent_slots = array();
 	var $attribute_slots = array();
 
-	function __construct($table, $force_columns=false){
+	function __construct($table, $force_columns = false){
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->elements = array();
@@ -61,8 +61,8 @@ class weTable{
 	}
 
 	function getColumns(){
-		if(weDBUtil::isTabExist($this->table)){
-			$metadata = $this->db->query("SHOW COLUMNS FROM $this->table;");
+		if($this->db->isTabExist($this->table)){
+			$this->db->query("SHOW COLUMNS FROM $this->table;");
 			while($this->db->next_record()) {
 				$this->elements[$this->db->f("Field")] = array(
 					"Field" => $this->db->f("Field"),
@@ -82,8 +82,8 @@ class weTable{
 		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
 			$_SESSION['weBackupVars']['tablekeys'] = array();
 		}
-		$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
-		weDBUtil::delTable($this->table);
+		$_SESSION['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
+		$this->db->delTable($this->table);
 		$cols = array();
 		$keys = array();
 
@@ -102,8 +102,7 @@ class weTable{
 		}
 
 		if(!empty($cols)){
-
-			return weDBUtil::addTable($this->table, $cols, $keys);
+			return $this->db->addTable($this->table, $cols, $keys);
 		}
 
 		return false;
@@ -145,13 +144,13 @@ class weTableAdv extends weTable{
 
 	var $ClassName = __CLASS__;
 
-	function __construct($table, $force_columns=false){
+	function __construct($table, $force_columns = false){
 		parent::__construct($table, $force_columns);
 	}
 
 	function getColumns(){
-		if(weDBUtil::isTabExist($this->table)){
-			$metadata = $this->db->query("SHOW CREATE TABLE $this->table;");
+		if($this->db->isTabExist($this->table)){
+			$this->db->query("SHOW CREATE TABLE $this->table;");
 			if($this->db->next_record()){
 				$zw = explode("\n", $this->db->f("Create Table"));
 				if(TBL_PREFIX != ''){
@@ -166,7 +165,7 @@ class weTableAdv extends weTable{
 		//$this->fetchNewColumns();
 	}
 
-	function save($unused=true){
+	function save(){
 		global $DB_WE;
 		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
 			$_SESSION['weBackupVars']['tablekeys'] = array();
@@ -177,9 +176,9 @@ class weTableAdv extends weTable{
 		} else{
 			$doConvert = false;
 		}
-		if(weDBUtil::isTabExist($this->table)){
-			$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
-			weDBUtil::delTable($this->table);
+		if($this->db->isTabExist($this->table)){
+			$_SESSION['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
+			$this->db->delTable($this->table);
 		}
 		$myarray = $this->elements['create'];
 		unset($myarray['Field']);

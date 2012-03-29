@@ -342,7 +342,7 @@ abstract class we_database_base{
 						return $tmp;
 					}
 				default:
-					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error .  "\nInfo:" . $this->info() ."\nQuery: " . $Query_String, E_USER_WARNING);
+					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
 						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
 					}
@@ -654,6 +654,183 @@ abstract class we_database_base{
 	protected function haltmsg($msg){
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
+	}
+
+	function isColExist($tab, $col){
+		if($tab == '' || $col == ''){
+			return false;
+		}
+		$this->query('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"');
+		return ($this->next_record());
+	}
+
+	function isTabExist($tab){
+		if($tab == ''){
+			return false;
+		}
+		$this->query('SHOW TABLES LIKE "' . $this->escape($tab) . '"');
+		return ($this->next_record());
+	}
+
+	function addTable($tab, $cols, $keys = array()){
+		if(!is_array($cols) || !count($cols)){
+			return;
+		}
+		$cols_sql = array();
+		foreach($cols as $name => $type){
+			$cols_sql[] = "`" . $name . "` " . $type;
+		}
+		if(count($keys)){
+			foreach($keys as $key){
+				$cols_sql[] = $key;
+			}
+		}
+
+		// Charset and Collation
+		$charset_collation = "";
+		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
+			$Charset = DB_CHARSET;
+			$Collation = DB_COLLATION;
+			$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
+		}
+
+		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . $charset_collation . ';');
+	}
+
+	function delTable($tab){
+		$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
+	}
+
+	function addCol($tab, $col, $typ, $pos = ''){
+		if($GLOBALS['DB_WE']->isColExist($tab, $col)){
+			return;
+		}
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $col . ' ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+	}
+
+	function changeColType($tab, $col, $newtyp){
+		if(!$GLOBALS['DB_WE']->isColExist($tab, $col)){
+			return;
+		}
+
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE ' . $col . ' ' . $col . ' ' . $newtyp);
+	}
+
+	function getColTyp($tab, $col){
+		return f('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', 'Type', $this);
+	}
+
+	function delCol($tab, $col){
+		if(!$GLOBALS['DB_WE']->isColExist($tab, $col)){
+			return;
+		}
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . $col);
+	}
+
+	function getTableCreateArray($tab){
+		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
+		return ($this->next_record()) ?
+			explode("\n", $this->f("Create Table")) :
+			false;
+	}
+
+	function getTableKeyArray($tab){
+		$myarray = array();
+		$create = f('SHOW CREATE TABLE ' . $this->escape($tab), 'Create Table', $this);
+		if(!$create){
+			return false;
+		}
+		$zw = explode("\n", $create);
+		foreach($zw as $v){
+			$vv = trim($v);
+			$posP = strpos($vv, 'PRIMARY KEY');
+			$posU = strpos($vv, 'UNIQUE KEY');
+			$posK = strpos($vv, 'KEY');
+			if(($posP !== false && $posP == 0) || ($posU !== false && $posU == 0) || ($posK !== false && $posK == 0)){
+				$myarray[] = trim(rtrim($v, ','));
+			}
+		}
+		return $myarray;
+	}
+
+	/**
+	 * checks if a key with a full key definition exists
+	 * @param type $tab table to check
+	 * @param string $key full key definition what is used in a create statement
+	 * @return string|boolean extracted key name
+	 */
+	function isKeyExistAtAll($tab, $key){
+		$matches = array();
+		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
+		$key = $matches[1];
+
+		$create = f("SHOW CREATE TABLE " . $this->escape($tab), 'Create Table', $this);
+		if($create){
+			$zw = explode("\n", $create);
+			foreach($zw as $v){
+				if(preg_match('|.*KEY *`?' . $key . '`? \(|', $v)){
+					return $key;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * check if a key matches the EXACT definition given by $key
+	 * @param string $tab tablename
+	 * @param string $key full key definition what is used in a create statement
+	 * @return boolean true, if the exact definition is met, false otherwise
+	 */
+	function isKeyExist($tab, $key){
+		$create = f("SHOW CREATE TABLE " . $this->escape($tab), 'Create Table', $this);
+		if(!$create){
+			$zw = explode("\n", $create);
+			foreach($zw as $v){
+				if(trim(rtrim($v, ',')) == $key)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * add a key/index to a table
+	 * @param string $tab tablename
+	 * @param string $fullKey full key definition what is used in a create statement
+	 */
+	function addKey($tab, $fullKey){
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $fullKey);
+	}
+
+	/**
+	 * delete a key/index from a table
+	 * @param string $tab tablename
+	 * @param string $keyname ONLY the keyname is wanted here
+	 */
+	function delKey($tab, $keyname){
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP INDEX `' . $keyname . '`');
+	}
+
+	/**
+	 * rename a Col to a new Name
+	 * @param string $tab tablename
+	 * @param string $oldcol old col-name
+	 * @param string $newcol new col-name
+	 */
+	function renameCol($tab, $oldcol, $newcol){
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
+	}
+
+	/**
+	 * move a column to a new position inside the table
+	 * @param string $tab tablename
+	 * @param string $colName the name of the col to move
+	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
+	 */
+	function moveCol($tab, $colName, $newPos){
+		//TODO: to implement
+		//get the old col def, use for alter table.
 	}
 
 }

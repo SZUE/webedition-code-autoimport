@@ -34,9 +34,9 @@ class weTableItem extends weModelBase{
 	var $attribute_slots = array();
 
 	function __construct($table){
-		if(weDBUtil::isTabExist($table))
+		if($GLOBALS['DB_WE']->isTabExist($table)){
 			parent::__construct($table);
-		else{
+		}else{
 			$this->db = new DB_WE();
 			$this->table = $table;
 		}
