@@ -57,22 +57,24 @@ function we_tag_field($attribs){
 	}
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
 
-	if($orgAlt == 'we_path')
-		$alt = 'WE_PATH';
-	else if($orgAlt == 'we_text')
-		$alt = 'WE_TEXT';
+	$alt = ($orgAlt == 'we_path' ? 'WE_PATH' : ($orgAlt == 'we_text' ? 'WE_TEXT' : $alt));
 
-	if($orgName == 'we_path')
-		$name = 'WE_PATH';
-	else if($orgName == 'we_text')
-		$name = 'WE_TEXT';
+	$name = ($orgName == 'we_path' ? 'WE_PATH' : ($orgName == 'we_text' ? 'WE_TEXT' : $name));
 
 	if(isset($attribs['winprops'])){
 		unset($attribs['winprops']);
 	}
 
-	$classid = $classid ? $classid : (isset($GLOBALS['lv']) ? (isset($GLOBALS['lv']->object->classID) ? $GLOBALS['lv']->object->classID : (isset(
-					$GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : '')) : (isset($GLOBALS['we_doc']->TableID) ? $GLOBALS['we_doc']->TableID : 0));
+	$classid = ($classid ?
+			$classid :
+			(isset($GLOBALS['lv']) ?
+				(isset($GLOBALS['lv']->object->classID) ?
+					$GLOBALS['lv']->object->classID :
+					(isset($GLOBALS['lv']->classID) ?
+						$GLOBALS['lv']->classID : '')) :
+				(isset($GLOBALS['we_doc']->TableID) ?
+					$GLOBALS['we_doc']->TableID :
+					0)));
 	$isImageDoc = false;
 	if(isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == 'image/*'){
 		$isImageDoc = true;
@@ -95,23 +97,26 @@ function we_tag_field($attribs){
 	switch($type){
 		case 'binary' :
 			$t = we_document::getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-			if($only == '' || $only == 'name'){
-				$out = $t[0];
-			}
-			if($only == 'path'){
-				$out = $t[1];
-			}
-			if($only == 'parentpath'){
-				$out = $t[2];
-			}
-			if($only == 'filename'){
-				$out = $t[3];
-			}
-			if($only == 'extension'){
-				$out = $t[4];
-			}
-			if($only == 'filesize'){
-				$out = $t[5];
+			switch($only){
+				case '':
+				case 'name':
+					$out = $t[0];
+					break;
+				case 'path':
+					$out = $t[1];
+					break;
+				case 'parentpath':
+					$out = $t[2];
+					break;
+				case 'filename':
+					$out = $t[3];
+					break;
+				case 'extension':
+					$out = $t[4];
+					break;
+				case 'filesize':
+					$out = $t[5];
+					break;
 			}
 			$href = (empty($href) ? $t[1] : $href);
 			break;
@@ -129,14 +134,8 @@ function we_tag_field($attribs){
 					'xml' => $xml,
 				);
 
-				$_imgAtts = array_merge(
-					$_imgAtts, useAttribs(
-						$attribs, array(
-						'alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'
-					))); //  use some atts form attribs array
-				$_imgAtts = removeEmptyAttribs($_imgAtts, array(
-					'alt'
-					));
+				$_imgAtts = array_merge($_imgAtts, useAttribs($attribs, array('alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'))); //  use some atts form attribs array
+				$_imgAtts = removeEmptyAttribs($_imgAtts, array('alt'));
 
 				$out = getHtmlTag('img', $_imgAtts);
 				break;
@@ -151,6 +150,10 @@ function we_tag_field($attribs){
 				$out = '';
 			} else{
 				$out = we_document::getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
+			}
+			if($type == 'date'){
+				$tmp = new DateTime((is_numeric($out) ? '@' : '') . $out);
+				$out = $tmp->format($format);
 			}
 			break;
 		case 'day' :
@@ -214,9 +217,7 @@ function we_tag_field($attribs){
 			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['lv']->f($name), 'language', $langcode));
 			break;
 		case 'shopVat' :
-
 			if(defined('SHOP_TABLE')){
-
 				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
 				$out = weShopVats::getVatRateForSite($normVal);
@@ -225,8 +226,9 @@ function we_tag_field($attribs){
 		case 'href' :
 			if(isset($GLOBALS['lv']) && ($GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag')){
 				$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
-				if(!is_array($hrefArr))
+				if(!is_array($hrefArr)){
 					$hrefArr = array();
+				}
 				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
@@ -241,10 +243,7 @@ function we_tag_field($attribs){
 					$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL');
 				}
 			} else{
-				$testtype = $type;
-				if($type == 'select' && $usekey){
-					$testtype = 'text';
-				}
+				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
 				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
@@ -262,11 +261,7 @@ function we_tag_field($attribs){
 				foreach($GLOBALS['lv']->DB_WE->Record as $_glob_key => $_val){
 
 					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
-						$testtype = $type;
-						if($type == 'select' && $usekey){
-							$testtype = 'text';
-						}
-						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
 					if($normVal != ''){
