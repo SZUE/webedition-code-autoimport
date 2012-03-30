@@ -774,7 +774,7 @@ abstract class we_class{
 
 							if(count($actualLangs) > 1 || count($targetLangs) > 0){
 								$intersect = array();
-								$intersect = array_intersect($actualLangs, $targetLangs);t_e("intersect",$intersect,"actalLangs",$actualLangs,"targetLangs",$targetLangs);
+								$intersect = array_intersect($actualLangs, $targetLangs);
 								$setThisLink = count($intersect) > 0 ? false : true;
 							}
 							

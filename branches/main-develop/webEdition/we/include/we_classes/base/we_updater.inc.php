@@ -651,15 +651,9 @@ class we_updater{
 			$GLOBALS['DB_WE']->addTable(LANGLINK_TABLE, $cols, $keys);
 		}
 		$GLOBALS['DB_WE']->addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
-		if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`IsObject`,`IsFolder`,DocumentTable`)")){
-			t_e("yes at all");
-			if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`IsObject`,`IsFolder`,DocumentTable`)")){
-				t_e("but not exact!");
-			}
-		}
 
 		if((!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)"))
-					|| (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){t_e("enter schleife");
+					|| (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){
 			//no unique def. found
 			$db = $GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
