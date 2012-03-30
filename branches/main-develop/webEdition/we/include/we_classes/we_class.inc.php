@@ -603,17 +603,14 @@ abstract class we_class{
 			$type = stripTblPrefix($table);
 			$type = ($type == "tblObjectFiles") ? "tblObjectFile" : $type;
 			$newLang = $_REQUEST["we_" . $this->Name . "_Language"];
-			//t_e($table,$this->ID,$newLang);
 			$isobject = ($type == "tblObjectFile") ? 1 : 0;
 			$type = ($isfolder && $isobject) ? "tblFile" : $type;
-			//t_e($type,$isfolder,$isobject);
 
 			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID);
 			$this->DB_WE->query($q);
 			$langChange = false;
 			$delete = false;
 			while($this->DB_WE->next_record()) {
-				//t_e("was gefunden");
 				$delete = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
 			}
 			if($delete){
@@ -683,7 +680,7 @@ abstract class we_class{
 						return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 					} else{
 						$we_responseText = g_l('weClass', '[languageLinksLocaleChanged]'); //,$we_doc->Path
-						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
+						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					}
@@ -749,10 +746,10 @@ abstract class we_class{
 				$fileTable = $isfolder ? FILE_TABLE : $fileTable;
 
 				if($fileLang = f("SELECT Language FROM " . TBL_PREFIX . $documentTable . " WHERE ID = " . intval($LDID), 'Language', $this->DB_WE)){
-					if($fileLang != $locale){
+					if($fileLang != $locale){t_e("lang nok");
 						$we_responseText = g_l('weClass', '[languageLinksLangNotok]');
 						$we_responseText = sprintf($we_responseText, $locale, $fileLang, $locale);
-						$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
+						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_WARNING);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					} else{
@@ -799,7 +796,7 @@ abstract class we_class{
 							} else{
 								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
 								$we_responseText = sprintf($we_responseText, $locale);
-								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
+								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
@@ -819,7 +816,7 @@ abstract class we_class{
 							} else{
 								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
 								$we_responseText = sprintf($we_responseText, $locale);
-								$_js = we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
+								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
@@ -931,7 +928,7 @@ abstract class we_class{
 									$ids[] = $this->DB_WE->Record['ID'];
 								}
 								if(count($ids)){
-									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ' AND DocumentTable="' . $type . '"');
+									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $type . '"');
 								}
 							}
 						}
