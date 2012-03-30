@@ -74,7 +74,7 @@ class we_langlink_listview extends listviewBase{
 		$this->hidedirindex = $hidedirindex;
 		$this->id = $id;
 		$this->pagelanguage = $pagelanguage;
-		$this->ownlanguage = $ownlanguage;t_e("page",$pagelanguage,"own",$ownlanguage);
+		$this->ownlanguage = $ownlanguage;
 		$this->linkType = $linkType;
 
 		$_languages = getWeFrontendLanguagesForBackend();
@@ -100,7 +100,7 @@ class we_langlink_listview extends listviewBase{
 			}
 		}
 
-		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){t_e("langs",$_languages);
+		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){
 			foreach($_languages as $langkey => $lang){
 				if($this->linkType == 'tblFile'){
 					$q = 'SELECT ' . LANGLINK_TABLE . '.DID as DID, ' . LANGLINK_TABLE . '.DLocale as DLocale, ' . LANGLINK_TABLE . '.LDID as LDID, ' . LANGLINK_TABLE . '.Locale as Locale, ' . LANGLINK_TABLE . '.IsFolder as IsFolder, ' . LANGLINK_TABLE . ".IsObject as IsObject, " . LANGLINK_TABLE . ".DocumentTable as DocumentTable, " . FILE_TABLE . ".Path as Path, " . FILE_TABLE . ".ParentID as ParentID  FROM " . LANGLINK_TABLE . "," . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".Locale='" . $langkey . "' AND " . LANGLINK_TABLE . ".LDID = " . FILE_TABLE . '.ID AND ' . FILE_TABLE . ".Published >0 AND " . LANGLINK_TABLE . ".DocumentTable='" . $this->linkType . "' AND " . LANGLINK_TABLE . '.DID=' . $this->id;

@@ -746,10 +746,10 @@ abstract class we_class{
 				$fileTable = $isfolder ? FILE_TABLE : $fileTable;
 
 				if($fileLang = f("SELECT Language FROM " . TBL_PREFIX . $documentTable . " WHERE ID = " . intval($LDID), 'Language', $this->DB_WE)){
-					if($fileLang != $locale){t_e("lang nok");
+					if($fileLang != $locale){
 						$we_responseText = g_l('weClass', '[languageLinksLangNotok]');
 						$we_responseText = sprintf($we_responseText, $locale, $fileLang, $locale);
-						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_WARNING);
+						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					} else{
@@ -774,8 +774,12 @@ abstract class we_class{
 
 							if(count($actualLangs) > 1 || count($targetLangs) > 0){
 								$intersect = array();
-								$intersect = array_intersect($actualLangs, $targetLangs);
+								$intersect = array_intersect($actualLangs, $targetLangs);t_e("intersect",$intersect,"actalLangs",$actualLangs,"targetLangs",$targetLangs);
 								$setThisLink = count($intersect) > 0 ? false : true;
+							}
+							
+							if(!$newOrChanged){
+								$setThisLink = true;
 							}
 
 							if($setThisLink){
