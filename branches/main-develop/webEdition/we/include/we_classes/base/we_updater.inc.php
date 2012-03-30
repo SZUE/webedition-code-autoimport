@@ -652,7 +652,8 @@ class we_updater{
 		}
 		$GLOBALS['DB_WE']->addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
-		if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
+		if((!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)"))
+					|| (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){t_e("geh hier rein!");
 			//no unique def. found
 			$db = $GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
@@ -668,9 +669,11 @@ class we_updater{
 
 				$db->query('TRUNCATE ' . LANGLINK_TABLE);
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){
+					$db->query("ALTER TABLE " . LANGLINK_TABLE . " DROP INDEX DID");
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable)');
 				}
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
+					$db->query("ALTER TABLE " . LANGLINK_TABLE . " DROP INDEX DLocale");
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
 				}
 
