@@ -645,14 +645,14 @@ class we_updater{
 			);
 			$keys = array(
 				"PRIMARY KEY" => "(ID)",
-				"UNIQUE KEY DID" => "(DID,DocumentTable,DLocale,Locale,IsFolder,IsObject)",
-				"UNIQUE KEY DLocale" => "(DLocale,LDID,Locale,DocumentTable,IsFolder,IsObject)"
+				"UNIQUE KEY DID" => "(DID,DLocale,IsObject,IsFolder,Locale,DocumentTable)",
+				"UNIQUE KEY DLocale" => "(DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)"
 			);
 			$GLOBALS['DB_WE']->addTable(LANGLINK_TABLE, $cols, $keys);
 		}
 		$GLOBALS['DB_WE']->addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
-		if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`LDID`,`Locale`,`IsFolder`,`IsObject`,`DocumentTable`)")){
+		if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 			//no unique def. found
 			$db = $GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
@@ -667,11 +667,11 @@ class we_updater{
 				$db->query("INSERT INTO tmpLangLink SELECT " . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . DOC_TYPES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . DOC_TYPES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . DOC_TYPES_TABLE . ".Language AND " . LANGLINK_TABLE . ".DocumentTable = 'tblDocTypes'");
 
 				$db->query('TRUNCATE ' . LANGLINK_TABLE);
-				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`IsFolder`,`DLocale`,`Locale`,`IsObject`,`DocumentTable`)")){
-					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DLocale,Locale,IsFolder,IsObject,DocumentTable)');
+				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){
+					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable)');
 				}
-				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`LDID`,`Locale`,`IsFolder`,`IsObject`,`DocumentTable`)")){
-					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,LDID,Locale,IsFolder,IsObject,DocumentTable)');
+				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
+					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
 				}
 
 				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
