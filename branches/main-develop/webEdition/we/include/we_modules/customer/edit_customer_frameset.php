@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //We need to set this (and in corresponding frames, since the data in database is formated this way
 we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-we_html_tools::htmlTop('',DEFAULT_CHARSET);
+we_html_tools::htmlTop('', DEFAULT_CHARSET);
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'frameset';
 $mode = isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0;
@@ -35,63 +35,81 @@ $ExImport = $weFrame = null;
 if($what == "export" || $what == "eibody" || $what == "eifooter" || $what == "eiload" || $what == "import" || $what == "eiupload"){
 	$ExImport = new weCustomerEIWizard();
 
-	if(isset($_REQUEST["step"]))
-		$step = $_REQUEST["step"];
-	else
-		$step = 0;
-}
-else{
+	$step = (isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0);
+} else{
 	$weFrame = new weCustomerFrames();
 	$weFrame->View->processVariables();
 	$weFrame->View->processCommands();
 }
 
 switch($what){
-	case "frameset": print $weFrame->getHTMLFrameset();
+	case "frameset":
+		print $weFrame->getHTMLFrameset();
 		break;
-	case "header": print $weFrame->getHTMLHeader();
+	case "header":
+		print $weFrame->getHTMLHeader();
 		break;
-	case "resize": print $weFrame->getHTMLResize();
+	case "resize":
+		print $weFrame->getHTMLResize();
 		break;
-	case "left": print $weFrame->getHTMLLeft();
+	case "left":
+		print $weFrame->getHTMLLeft();
 		break;
-	case "right": print $weFrame->getHTMLRight();
+	case "right":
+		print $weFrame->getHTMLRight();
 		break;
-	case "editor": print $weFrame->getHTMLEditor();
+	case "editor":
+		print $weFrame->getHTMLEditor();
 		break;
-	case "edheader": print $weFrame->getHTMLEditorHeader();
+	case "edheader":
+		print $weFrame->getHTMLEditorHeader();
 		break;
-	case "edbody": print $weFrame->getHTMLEditorBody();
+	case "edbody":
+		print $weFrame->getHTMLEditorBody();
 		break;
-	case "edfooter": print $weFrame->getHTMLEditorFooter();
+	case "edfooter":
+		print $weFrame->getHTMLEditorFooter();
 		break;
-	case "cmd": print $weFrame->getHTMLCmd();
+	case "cmd":
+		print $weFrame->getHTMLCmd();
 		break;
-	case "treeheader": print $weFrame->getHTMLTreeHeader();
+	case "treeheader":
+		print $weFrame->getHTMLTreeHeader();
 		break;
-	case "treefooter": print $weFrame->getHTMLTreeFooter();
+	case "treefooter":
+		print $weFrame->getHTMLTreeFooter();
 		break;
-	case "customer_admin": print $weFrame->getHTMLCustomerAdmin();
+	case "customer_admin":
+		print $weFrame->getHTMLCustomerAdmin();
 		break;
-	case "branch_editor": print $weFrame->getHTMLFieldEditor("branch", $mode);
+	case "branch_editor":
+		print $weFrame->getHTMLFieldEditor("branch", $mode);
 		break;
-	case "field_editor": print $weFrame->getHTMLFieldEditor("field", $mode);
+	case "field_editor":
+		print $weFrame->getHTMLFieldEditor("field", $mode);
 		break;
-	case "sort_admin": print $weFrame->getHTMLSortEditor();
+	case "sort_admin":
+		print $weFrame->getHTMLSortEditor();
 		break;
-	case "search": print $weFrame->getHTMLSearch();
+	case "search":
+		print $weFrame->getHTMLSearch();
 		break;
-	case "settings": print $weFrame->getHTMLSettings();
+	case "settings":
+		print $weFrame->getHTMLSettings();
 		break;
 
 	case "export":
-	case "import": print $ExImport->getHTMLFrameset($what);
+	case "import":
+		print $ExImport->getHTMLFrameset($what);
 		break;
-	case "eibody":print $ExImport->getHTMLStep($mode, $step);
+	case "eibody":
+		print $ExImport->getHTMLStep($mode, $step);
 		break;
-	case "eifooter":print $ExImport->getHTMLFooter($mode, $step);
+	case "eifooter":
+		print $ExImport->getHTMLFooter($mode, $step);
 		break;
-	case "eiload":print $ExImport->getHTMLLoad();
+	case "eiload":
+		print $ExImport->getHTMLLoad();
 		break;
 
 	default:

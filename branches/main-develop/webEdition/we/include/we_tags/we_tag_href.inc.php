@@ -86,7 +86,8 @@ function we_tag_href($attribs){
 			if(!$intID && $rootdirid){
 				$intID = $rootdirid;
 			}
-			list($intPath, $ct) = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']);
+
+			list($intPath, $ct) = ($intID ? getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']) : array('', ''));
 
 			if($int){
 				$href = $intPath;
