@@ -147,10 +147,12 @@ function we_tag_date($attribs){
 	}
 }
 
-function correctDateFormat($format, $t = ''){
+function correctDateFormat($format, $t = 0){
 	if(!$t){
 		$t = time();
 	}
+	$dt = is_object($t) ? $t : new DateTime((is_numeric($t) ? '@' : '') . $t);
+
 	$escapes = array('d' => '\\d', 'D' => '\\D', 'j' => '\\j', 'l' => '\\l', 'N' => '\\N', 'S' => '\\S', 'w' => '\\w', 'Z' => '\\Z',
 		'W' => '\\W', 'F' => '\\F', 'M' => '\\M', 'm' => '\\m', 'n' => '\\n', 't' => '\\t', 'L' => '\\L', 'o' => '\\o', 'Y' => '\\Y',
 		'y' => '\\y', 'a' => '\\a', 'A' => '\\A', 'B' => '\\B', 'g' => '\\g', 'G' => '\\G', 'h' => '\\h', 'H' => '\\H', 'i' => '\\i', 's' => '\\s',
@@ -163,10 +165,10 @@ function correctDateFormat($format, $t = ''){
 	}
 
 	$rep = array(
-		'##1##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][short][' . date('w', $t) . ']')),
-		'##2##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
-		'##3##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][long][' . date('w', $t) . ']')),
-		'##4##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
+		'##1##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][short][' . $dt->format('w') . ']')),
+		'##2##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][long][' . ($dt->format('n') - 1) . ']')),
+		'##3##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][long][' . $dt->format('w') . ']')),
+		'##4##' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][short][' . ($dt->format('n') - 1) . ']'))
 	);
 
 	$format = str_replace(array_keys($rep), array_values($rep), //make sure we don't replace chars in dayname strings

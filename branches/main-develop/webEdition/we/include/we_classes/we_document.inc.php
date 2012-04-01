@@ -1084,12 +1084,14 @@ class we_document extends we_root{
 					$val = time();
 				}
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE'){
+				//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
+				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
 				} else{
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
-					return date(correctDateFormat($format, $val), $val);
+					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
+					return $dt->format(correctDateFormat($format, $dt));
 				}
 				return $zwdate;
 			case 'select':

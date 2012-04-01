@@ -151,10 +151,6 @@ function we_tag_field($attribs){
 			} else{
 				$out = we_document::getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 			}
-			if($type == 'date'){
-				$tmp = new DateTime((is_numeric($out) ? '@' : '') . $out);
-				$out = $tmp->format($format);
-			}
 			break;
 		case 'day' :
 		case 'dayname' :
