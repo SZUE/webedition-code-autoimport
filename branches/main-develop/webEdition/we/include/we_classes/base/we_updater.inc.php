@@ -472,7 +472,7 @@ class we_updater{
 				$GLOBALS['DB_WE']->addCol($_table, 'WebUserID', 'BIGINT(20) NOT NULL', ' AFTER Language ');
 			}
 
-			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';', 'MaxTID', $_db) + 1;
+			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE, 'MaxTID', $_db) + 1;
 			for($i = 1; $i < $_maxid; $i++){
 				$_table = OBJECT_X_TABLE . $i;
 				if($GLOBALS['DB_WE']->isTabExist($_table)){
@@ -527,17 +527,17 @@ class we_updater{
 	}
 
 	static function updateNavigation(){
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`Charset`', 'varchar(255) NOT NULL default ""');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`Attributes`', 'text NOT NULL');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`FolderSelection`', 'enum("docLink","objLink","urlLink") NOT NULL default ""');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`FolderWsID`', 'bigint(20) NOT NULL default "0"');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`FolderParameter`', 'varchar(255) NOT NULL default ""');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`FolderUrl`', 'varchar(255) NOT NULL default ""');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`LimitAccess`', 'tinyint(4) NOT NULL default 0');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`AllCustomers`', 'tinyint(4) NOT NULL default 0');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`ApplyFilter`', 'tinyint(4) NOT NULL default 0');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`Customers`', 'text NOT NULL');
-		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, '`CustomerFilter`', 'text NOT NULL');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Charset', 'varchar(255) NOT NULL default ""');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Attributes', 'text NOT NULL');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'FolderSelection', 'enum("docLink","objLink","urlLink") NOT NULL default ""');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'FolderWsID', 'bigint(20) NOT NULL default "0"');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'FolderParameter', 'varchar(255) NOT NULL default ""');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'FolderUrl', 'varchar(255) NOT NULL default ""');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'LimitAccess', 'tinyint(4) NOT NULL default 0');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'AllCustomers', 'tinyint(4) NOT NULL default 0');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'ApplyFilter', 'tinyint(4) NOT NULL default 0');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Customers', 'text NOT NULL');
+		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'CustomerFilter', 'text NOT NULL');
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Published', 'int(11) NOT NULL DEFAULT "1"', ' AFTER Path ');
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Display', 'varchar(255) NOT NULL ', ' AFTER Text ');
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'CurrentOnUrlPar', 'tinyint(1) NOT NULL DEFAULT 0', ' AFTER Text ');
@@ -653,7 +653,7 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(LANGLINK_TABLE, 'DLocale', "varchar(5) NOT NULL default ''", ' AFTER DID ');
 
 		if((!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)"))
-					|| (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){
+			|| (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){
 			//no unique def. found
 			$db = $GLOBALS['DB_WE'];
 			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
@@ -676,7 +676,8 @@ class we_updater{
 				}
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
-						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');;
+						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');
+						;
 					}
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
 				}
@@ -701,8 +702,8 @@ class we_updater{
 			$GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
 			$GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
 			$GLOBALS['DB_WE']->delCol(TEMPORARY_DOC_TABLE, 'ID');
-			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE ' . TEMPORARY_DOC_TABLE . '  DROP PRIMARY KEY ');
-			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE ' . TEMPORARY_DOC_TABLE . ' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+			$GLOBALS['DB_WE']->delKey(TEMPORARY_DOC_TABLE, 'PRIMARY');
+			$GLOBALS['DB_WE']->addKey(TEMPORARY_DOC_TABLE, 'PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
 		}
 	}
 

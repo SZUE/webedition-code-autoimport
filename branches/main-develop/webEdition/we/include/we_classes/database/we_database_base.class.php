@@ -660,8 +660,8 @@ abstract class we_database_base{
 		if($tab == '' || $col == ''){
 			return false;
 		}
-		$this->query('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"');
-		return ($this->next_record());
+		$col = trim($col, '`');
+		return f('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', 'Path', $this) != '';
 	}
 
 	function isTabExist($tab){
@@ -702,18 +702,20 @@ abstract class we_database_base{
 	}
 
 	function addCol($tab, $col, $typ, $pos = ''){
-		if($GLOBALS['DB_WE']->isColExist($tab, $col)){
+		$col = trim($col, '`');
+		if($this->isColExist($tab, $col)){
 			return;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $col . ' ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
 	}
 
 	function changeColType($tab, $col, $newtyp){
-		if(!$GLOBALS['DB_WE']->isColExist($tab, $col)){
+		$col = trim($col, '`');
+		if(!$this->isColExist($tab, $col)){
 			return;
 		}
 
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE ' . $col . ' ' . $col . ' ' . $newtyp);
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
 	}
 
 	function getColTyp($tab, $col){
@@ -721,7 +723,7 @@ abstract class we_database_base{
 	}
 
 	function delCol($tab, $col){
-		if(!$GLOBALS['DB_WE']->isColExist($tab, $col)){
+		if(!$this->isColExist($tab, $col)){
 			return;
 		}
 		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . $col);
@@ -806,7 +808,7 @@ abstract class we_database_base{
 	 * @param string $keyname ONLY the keyname is wanted here
 	 */
 	function delKey($tab, $keyname){
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP INDEX `' . $keyname . '`');
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . ($keyname == 'PRIMARY' ? 'PRIMARY KEY' : 'INDEX `' . $keyname . '`'));
 	}
 
 	/**
