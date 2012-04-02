@@ -261,22 +261,6 @@ function get_value($settingvalue){
 		case "extension_html":
 			return (defined("DEFAULT_HTML_EXT") ? DEFAULT_HTML_EXT : '.html');
 
-		/*		 * *******************************************************************
-		 * CACHING
-		 * ******************************************************************* */
-
-		/* 		case "cache_type":
-		  return defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
-		  break;
-
-		  case "cache_lifetime":
-		  return defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		  break;
-		 */
-		/*		 * *******************************************************************
-		 * LANGUAGE
-		 * ******************************************************************* */
-
 		case "locale_locales":
 			we_loadLanguageConfig();
 			return getWeFrontendLanguagesForBackend();
@@ -616,10 +600,6 @@ function get_value($settingvalue){
 			return (defined("WE_TRACKER_DIR") && WE_TRACKER_DIR) ? WE_TRACKER_DIR : '';
 
 		case "use_jupload":
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar')){
-				$_SESSION['prefs']['use_jupload'] = 0;
-				return 0;
-			}
 			if(isset($_SESSION['prefs']['use_jupload'])){
 				return $_SESSION["prefs"]['use_jupload'];
 			}
@@ -689,74 +669,50 @@ function get_value($settingvalue){
 
 		case "version_image/*":
 			return (defined("VERSIONING_IMAGE")) ? VERSIONING_IMAGE : 0;
-			break;
 		case "version_text/html":
 			return (defined("VERSIONING_TEXT_HTML")) ? VERSIONING_TEXT_HTML : 0;
-			break;
 		case "version_text/webedition":
 			return (defined("VERSIONING_TEXT_WEBEDITION")) ? VERSIONING_TEXT_WEBEDITION : 0;
-			break;
 		case "version_text/js":
 			return (defined("VERSIONING_TEXT_JS")) ? VERSIONING_TEXT_JS : 0;
-			break;
 		case "version_text/css":
 			return (defined("VERSIONING_TEXT_CSS")) ? VERSIONING_TEXT_CSS : 0;
-			break;
 		case "version_text/plain":
 			return (defined("VERSIONING_TEXT_PLAIN")) ? VERSIONING_TEXT_PLAIN : 0;
-			break;
 		case "version_text/htaccess":
 			return (defined("VERSIONING_TEXT_HTACCESS")) ? VERSIONING_TEXT_HTACCESS : 0;
-			break;
 		case "version_text/weTmpl": //#4120
 			return (defined("VERSIONING_TEXT_WETMPL")) ? VERSIONING_TEXT_WETMPL : 0;
-			break;
 		case "version_application/x-shockwave-flash":
 			return (defined("VERSIONING_FLASH")) ? VERSIONING_FLASH : 0;
-			break;
 		case "version_video/quicktime":
 			return (defined("VERSIONING_QUICKTIME")) ? VERSIONING_QUICKTIME : 0;
-			break;
 		case "version_application/*":
 			return (defined("VERSIONING_SONSTIGE")) ? VERSIONING_SONSTIGE : 0;
-			break;
 		case "version_text/xml":
 			return (defined("VERSIONING_TEXT_XML")) ? VERSIONING_TEXT_XML : 0;
-			break;
 		case "version_objectFile":
 			return (defined("VERSIONING_OBJECT")) ? VERSIONING_OBJECT : 0;
-			break;
 		case "versions_time_days":
 			return (defined("VERSIONS_TIME_DAYS")) ? VERSIONS_TIME_DAYS : -1;
-			break;
 		case "versions_time_weeks":
 			return (defined("VERSIONS_TIME_WEEKS")) ? VERSIONS_TIME_WEEKS : -1;
-			break;
 		case "versions_time_years":
 			return (defined("VERSIONS_TIME_YEARS")) ? VERSIONS_TIME_YEARS : -1;
-			break;
 		case "versions_anzahl":
 			return (defined("VERSIONS_ANZAHL")) ? VERSIONS_ANZAHL : "";
-			break;
 		case "versions_create":
 			return (defined("VERSIONS_CREATE")) ? VERSIONS_CREATE : 0;
-			break;
 		case "versions_time_days_tmpl":
 			return (defined("VERSIONS_TIME_DAYS_TMPL")) ? VERSIONS_TIME_DAYS_TMPL : -1;
-			break;
 		case "versions_time_weeks_tmpl":
 			return (defined("VERSIONS_TIME_WEEKS_TMPL")) ? VERSIONS_TIME_WEEKS_TMPL : -1;
-			break;
 		case "versions_time_years_tmpl":
 			return (defined("VERSIONS_TIME_YEARS_TMPL")) ? VERSIONS_TIME_YEARS_TMPL : -1;
-			break;
 		case "versions_anzahl_tmpl":
 			return (defined("VERSIONS_ANZAHL_TMPL")) ? VERSIONS_ANZAHL_TMPL : "";
-			break;
-
 		case "versions_create_tmpl":
 			return (defined("VERSIONS_CREATE_TMPL")) ? VERSIONS_CREATE_TMPL : 1;
-			break;
 	}
 }
 
@@ -2985,13 +2941,7 @@ function build_dialog($selected_setting = "ui"){
 			 * SAVE DIALOG
 			 * *************************************************************** */
 
-			$_settings = array();
-
-			/**
-			 * Saving
-			 */
-			// Build dialog
-			array_push($_settings, array("headline" => "", "html" => g_l('prefs', '[save]'), "space" => 0));
+			$_settings = array($_settings, array("headline" => "", "html" => g_l('prefs', '[save]'), "space" => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
@@ -3006,13 +2956,7 @@ function build_dialog($selected_setting = "ui"){
 			 * SAVED SUCCESSFULLY DIALOG
 			 * *************************************************************** */
 
-			$_settings = array();
-
-			/**
-			 * Saved
-			 */
-			// Build dialog
-			array_push($_settings, array("headline" => "", "html" => g_l('prefs', '[saved]'), "space" => 0));
+			$_settings = array(array("headline" => "", "html" => g_l('prefs', '[saved]'), "space" => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
@@ -3039,11 +2983,7 @@ function build_dialog($selected_setting = "ui"){
 				if($entry != "." && $entry != ".."){
 					if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
 						$_language[$entry] = $entry;
-					} else{
-						// do nothing
 					}
-				} else{
-					// do nothing
 				}
 			}
 			global $_languages;
@@ -3124,7 +3064,7 @@ function build_dialog($selected_setting = "ui"){
 				}
 			}
 
-			array_push($_settings, array("headline" => g_l('prefs', '[cockpit_amount_columns]'), "html" => $_amount->getHtml(), "space" => 200));
+			$_settings[] = array("headline" => g_l('prefs', '[cockpit_amount_columns]'), "html" => $_amount->getHtml(), "space" => 200);
 
 
 			/*			 * ***************************************************************
@@ -3149,8 +3089,7 @@ function build_dialog($selected_setting = "ui"){
 			if(we_hasPerm("CHANGE_START_DOCUMENT")){
 
 				// Generate needed JS
-				$_needed_JavaScript .= "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+				$_needed_JavaScript .= we_html_element::jsElement("
 							function selectSidebarDoc() {
 								myWind = false;
 
@@ -3185,12 +3124,10 @@ function build_dialog($selected_setting = "ui"){
 									}
 								}
 								if(document.getElementById('seem_start_type').value == 'object') {
-								";
-				if(defined("OBJECT_FILES_TABLE")){
-					$_needed_JavaScript .= "parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);";
-				}
-				$_needed_JavaScript .= "
-								} else {
+								" .
+						(defined("OBJECT_FILES_TABLE") ?
+							"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
+						"} else {
 									parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
@@ -3209,10 +3146,9 @@ function build_dialog($selected_setting = "ui"){
 										document.getElementById('seem_start_document').style.display = 'block';
 									}
 
-							";
-				if(defined("OBJECT_FILES_TABLE")){
-					$_needed_JavaScript .= "
-								} else if(val == 'object') {
+							" .
+						(defined("OBJECT_FILES_TABLE") ?
+							"} else if(val == 'object') {
 									if(!!document.getElementById('selectordummy')) {
 										document.getElementById('selectordummy').style.display = 'none';
 									}
@@ -3225,9 +3161,7 @@ function build_dialog($selected_setting = "ui"){
 									if(!!document.getElementById('seem_start_object')) {
 										document.getElementById('seem_start_object').style.display = 'block';
 									}
-							";
-				}
-				$_needed_JavaScript .= "
+							" : '') . "
 								} else if(val == 'weapp'){
 									if(!!document.getElementById('selectordummy')) {
 										document.getElementById('selectordummy').style.display = 'none';
@@ -3256,9 +3190,7 @@ function build_dialog($selected_setting = "ui"){
 									}
 
 								}
-							}
-						//-->
-						</script>";
+							}");
 
 				// Cockpit
 				$_object_path = "";
@@ -3314,8 +3246,6 @@ function build_dialog($selected_setting = "ui"){
 					$showStartType = true;
 					$permitedStartTypes[] = "cockpit";
 				}
-
-				$selectorSpace = we_base_browserDetect::isIE() ? 8 : 160;
 
 				$_seem_document_chooser = "";
 				if(we_hasPerm("CAN_SEE_DOCUMENTS")){
@@ -3388,7 +3318,7 @@ function build_dialog($selected_setting = "ui"){
 					$_seem_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 2, 1);
 					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtml());
 					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
-					array_push($_settings, array("headline" => g_l('prefs', '[seem_startdocument]'), "html" => $_seem_html->getHtml() . '<script  type="text/javascript">show_seem_chooser("' . $_seem_start_type . '");</script>', "space" => 200));
+					$_settings[] = array("headline" => g_l('prefs', '[seem_startdocument]'), "html" => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), "space" => 200);
 				}
 
 				// Build dialog if user has permission
@@ -3398,14 +3328,10 @@ function build_dialog($selected_setting = "ui"){
 			 * Sidebar
 			 * ******************************************************* */
 			if(we_hasPerm("ADMINISTRATOR")){
-
 				// Settings
 				$_sidebar_disable = get_value("ui_sidebar_disable");
-				if($_sidebar_disable){
-					$_sidebar_show = "none";
-				} else{
-					$_sidebar_show = "block";
-				}
+				$_sidebar_show = ($_sidebar_disable) ? "none" : "block";
+
 				$_sidebar_show_on_startup = get_value("ui_sidebar_show_on_startup");
 				$_sidebar_width = get_value("ui_sidebar_width");
 				$_sidebar_id = get_value("ui_sidebar_file");
@@ -3467,9 +3393,10 @@ function build_dialog($selected_setting = "ui"){
 				$_sidebar_html2->setCol(7, 0, array("colspan" => 3), $yuiSuggest->getHTML());
 
 				// Build dialog if user has permission
-				array_push($_settings, array("headline" => g_l('prefs', '[sidebar]'), "html" => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[sidebar]'), "html" => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), "space" => 200);
 			}
 
+			$_settings[] = array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, ''), "space" => 200);
 
 
 			/*			 * ***************************************************************
@@ -3513,14 +3440,10 @@ function build_dialog($selected_setting = "ui"){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-			array_push($_settings, array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, $jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">(' . g_l('prefs', '[juplod_not_installed]') . ')</span>' : ""), "space" => 200));
-			array_push($_settings, array("headline" => g_l('prefs', '[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . "<br>" . $_file_tree_count->getHtml(), "space" => 200));
+			$_settings[] = array("headline" => g_l('prefs', '[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . "<br>" . $_file_tree_count->getHtml(), "space" => 200);
 
 
-			/*			 * ***************************************************************
-			 * WINDOW DIMENSIONS
-			 * *************************************************************** */
+			//WINDOW DIMENSIONS
 
 			/**
 			 * Window dimensions
@@ -3574,31 +3497,8 @@ function build_dialog($selected_setting = "ui"){
 			$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
 
 			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200));
-
-			/**
-			 * Predefined window dimensions
-			 */
-			// Create predefined window dimension buttons
-			$_window_predefined_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
-
-			$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '800';document.getElementsByName('weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1024';document.getElementsByName('weHeight')[0].value = '768';", true))));
-			$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1280';document.getElementsByName('weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1600';document.getElementsByName('weHeight')[0].value = '1200';", true))));
-
-			$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
-
-			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), "space" => 200));
-
-			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
-
-			/**
-			 * BUILD FINAL DIALOG
-			 */
-			$_tabUi = (we_hasPerm("CHANGE_START_DOCUMENT") ? 7 : 6);
-
-
-			$_dialog = create_dialog("settings_predefined", g_l('prefs', '[tab_ui]'), $_settings, $_tabUi, g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_settings_cookie, (isset($_needed_JavaScript) ? $_needed_JavaScript : ""));
+			$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
+			$_dialog = create_dialog("", g_l('prefs', '[tab_ui]'), $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ""));
 
 			break;
 
@@ -4032,7 +3932,7 @@ EOF;
 
 				// Build dialog element if users has permission
 				array_push($_settings, array("headline" => g_l('prefs', '[locale_add]'), "html" => $_add_html, "space" => 200));
-?><?php
+
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false);
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_headline]'), "html" => $_information, "space" => 0, "noline" => 1));
 				$_php_setting = new we_html_select(array("name" => "langlink_support", "class" => "weSelect"));
@@ -4040,9 +3940,9 @@ EOF;
 				$_php_setting->addOption(1, "true");
 				$_php_setting->selectOption(get_value("langlink_support"));
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
-				
+
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), 2, 450, false);
-				array_push($_settings, array("headline" => '', "html" => $_information, "space" => 0,"noline" => 1));
+				array_push($_settings, array("headline" => '', "html" => $_information, "space" => 0, "noline" => 1));
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_backlinks_information]'), 2, 250, false, 40);
 				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
@@ -4075,7 +3975,6 @@ EOF;
 			/*			 * ***************************************************************
 			 * FILE EXTENSIONS
 			 * *************************************************************** */
-
 
 			$_settings = array();
 
@@ -4175,7 +4074,7 @@ EOF;
 			 * ******************************************************************* */
 
 
-			$_needed_JavaScript = '<script  type="text/javascript">
+			$_needed_JavaScript = we_html_element::jsElement('
 
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_specify_jeditor_colors").disabled = disabled;
@@ -4325,9 +4224,7 @@ else {
 	window.onload = function(e) {
 		initEditorMode();
 	};
-}
-
-			</script>';
+}');
 
 			/**
 			 * Information
@@ -4551,8 +4448,7 @@ else {
 			$_settings = array();
 
 			// Generate needed JS
-			$_needed_JavaScript = "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+			$_needed_JavaScript = we_html_element::jsElement("
 							var hot = false;
 
 							" . (!we_hasPerm("CHANGE_START_DOCUMENT") ? we_button::create_state_changer(false) : "") . "
@@ -4717,9 +4613,7 @@ else {
 								formmail_span.disabled = !flag;
 								formmail_trials.disabled = !flag;
 								formmail_blocktime.disabled = !flag;
-							}
-						//-->
-						</script>";
+							}");
 
 			/**
 			 * Information
@@ -4979,8 +4873,7 @@ else {
 			 * Proxy server
 			 */
 			// Generate needed JS
-			$_needed_JavaScript = "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+			$_needed_JavaScript = we_html_element::jsElement("
 							function set_state() {
 								if (document.getElementsByName('useproxy')[0].checked == true) {
 									_new_state = false;
@@ -4992,9 +4885,7 @@ else {
 								document.getElementsByName('proxyport')[0].disabled = _new_state;
 								document.getElementsByName('proxyuser')[0].disabled = _new_state;
 								document.getElementsByName('proxypass')[0].disabled = _new_state;
-							}
-						//-->
-						</script>";
+							}");
 
 			/**
 			 * Information
@@ -5237,7 +5128,6 @@ else {
 
 			if(we_hasPerm("ADMINISTRATOR")){
 				$_settings = array();
-				$_needed_JavaScript = "";
 
 				$_we_max_upload_size = abs(get_value("we_max_upload_size"));
 				$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
@@ -5245,7 +5135,7 @@ else {
 					g_l('prefs', '[we_max_upload_size_hint]') .
 					'</td></tr></table>';
 				array_push($_settings, array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200));
-				$_needed_JavaScript .= '<script type="text/javascript">function IsDigit(e) {
+				$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
 					var key;
 
 					if (e != null && e.charCode) {
@@ -5255,8 +5145,7 @@ else {
 					}
 
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-				}
-				</script>';
+				}');
 
 				$_we_new_folder_mod = get_value("we_new_folder_mod");
 				$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
@@ -5304,11 +5193,8 @@ else {
 
 				array_push($_settings, array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200));
 
-				//$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-				//array_push($_settings, array('headline' => g_l('prefs','[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload',array(g_l('prefs','[no]'),g_l('prefs','[yes]')),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.g_l('prefs','[juplod_not_installed]').')</span>' : ""), "space" => 200));
 				// Generate needed JS
-				$_needed_JavaScript .= "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+				$_needed_JavaScript .= we_html_element::jsElement("
 							function set_state_auth() {
 								if (document.getElementsByName('useauthEnabler')[0].checked == true) {
                                     document.getElementsByName('useauth')[0].value = 1;
@@ -5320,9 +5206,7 @@ else {
 
 								document.getElementsByName('authuser')[0].disabled = _new_state;
 								document.getElementsByName('authpass')[0].disabled = _new_state;
-							}
-						//-->
-						</script>";
+							}");
 
 				// Check authentication settings  ...
 				$_auth = get_value("auth_auth");
@@ -5564,8 +5448,7 @@ else {
 			$_settings = array();
 
 			// Generate needed JS
-			$_needed_JavaScript = "
-						<script language=\"JavaScript\" type=\"text/javascript\"><!--
+			$_needed_JavaScript = we_html_element::jsElement("
 							function set_state_mail() {
 								if (document.getElementsByName('error_mail_errors')[0].checked == true) {
 									if (document.getElementsByName('error_mail_errors')[0].disabled == false) {
@@ -5616,18 +5499,13 @@ else {
 
 								document.getElementById('label_error_display_errors').style.cursor = _new_cursor;
 								document.getElementById('label_error_log_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;";
-			if(version_compare(PHP_VERSION, '5.3.0') >= 0){
-				$_needed_JavaScript .= "
+								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;" .
+					(version_compare(PHP_VERSION, '5.3.0') >= 0 ? "
 								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
 								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
-								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;";
-			}
-			$_needed_JavaScript .= "
-								set_state_mail();
-							}
-						//-->
-						</script>";
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;" : '') .
+					"set_state_mail();
+							}");
 
 			/**
 			 * Error handler
@@ -5755,8 +5633,7 @@ else {
 
 			$_val = get_value('message_reporting');
 
-			$_js = '
-			<script type="text/javascript">
+			$_js = we_html_element::jsElement('
 			function handle_message_reporting_click() {
 				val = 0;
 				var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
@@ -5768,9 +5645,7 @@ else {
 				}
 				document.getElementById("message_reporting").value = val;
 
-			}
-			</script>
-			';
+			}');
 
 
 			$_settings = array();
@@ -5813,9 +5688,7 @@ else {
 
 			$_settings = array();
 
-			$js = '
-            <script type="text/javascript">
-
+			$js = we_html_element::jsElement('
             mainXhtmlFields  = Array("setXhtml_remove_wrong","setXhtml_show_wrong");
             showXhtmlFields = Array("setXhtml_show_wrong_text","setXhtml_show_wrong_js","setXhtml_show_wrong_error_log");
 
@@ -5837,8 +5710,7 @@ else {
 
             function set_xhtml_field(val, field){
                 document.forms[0][field].value = (val ? 1 : 0);
-            }
-            </script>';
+            }');
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5901,8 +5773,6 @@ else {
 		 * BACKUP
 		 * ******************************************************************* */
 		case "backup":
-
-
 			$_settings = array();
 
 			$perf = new we_html_table(array("width" => "420", "border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
@@ -5965,9 +5835,6 @@ else {
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
 			if(we_hasPerm('ADMINISTRATOR')){
-
-
-
 				$_emailSelect = we_html_tools::htmlSelect('mailer_type', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('mailer_type'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
 
 				array_push($_settings, array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1));
@@ -6042,34 +5909,23 @@ else {
 				}
 			}
 
-			$js = '
-	            <script type="text/javascript">
-
+			$js = we_html_element::jsElement('
 	            	function checkAll(val) {
-
-		            	if(val.checked) {
-		            		checked = 1;
-		            	}
-		            	else {
-		            		checked = 0;
-		            	}
+		            	checked=(val.checked)?1:0;
 						' . $jsCheckboxCheckAll . ';
 
 					}
 
 	            	function checkAllRevert() {
-
 	            		var checkbox = document.getElementById("version_all");
 						checkbox.checked = false;
 	            	}
 
 	            	function openVersionWizard() {
-
 						parent.opener.top.we_cmd("versions_wizard");
 
-					}
+					}');
 
-	            </script>';
 
 			$_SESSION['versions']['Prefs'] = array(
 				"version_image/*",
@@ -6331,11 +6187,7 @@ else {
 			break;
 	}
 
-	if(isset($_dialog)){
-		return $_dialog;
-	} else{
-		return "";
-	}
+	return (isset($_dialog)) ? $_dialog : '';
 }
 
 /**
@@ -6350,133 +6202,28 @@ function render_dialog(){
 	check_global_config($global_config);
 
 	// Render setting groups
-	if($tabname == "setting_ui")
-		$_output = we_html_element::htmlDiv(array("id" => "setting_ui"), build_dialog("ui"));
-	else
-		$_output = we_html_element::htmlDiv(array("id" => "setting_ui", "style" => "display: none;"), build_dialog("ui"));
-
-	if($tabname == "setting_extensions")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_extensions"), build_dialog("extensions"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_extensions", "style" => "display: none;"), build_dialog("extensions"));
-
-	if($tabname == "setting_editor")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_editor"), build_dialog("editor"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_editor", "style" => "display: none;"), build_dialog("editor"));
-
-	if($tabname == "setting_recipients")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_recipients"), build_dialog("recipients"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_recipients", "style" => "display: none;"), build_dialog("recipients"));
-
-	if($tabname == "setting_proxy")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_proxy"), build_dialog("proxy"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_proxy", "style" => "display: none;"), build_dialog("proxy"));
-
-	if($tabname == "setting_advanced")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_advanced"), build_dialog("advanced"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_advanced", "style" => "display: none;"), build_dialog("advanced"));
-
-	if($tabname == "setting_system")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_system"), build_dialog("system"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_system", "style" => "display: none;"), build_dialog("system"));
-
-	if($tabname == "setting_seolinks")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_seolinks"), build_dialog("seolinks"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_seolinks", "style" => "display: none;"), build_dialog("seolinks"));
-
-	if($tabname == "setting_error_handling")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_error_handling"), build_dialog("error_handling"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_error_handling", "style" => "display: none;"), build_dialog("error_handling"));
-
-	if($tabname == "setting_backup")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_backup"), build_dialog("backup"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_backup", "style" => "display: none;"), build_dialog("backup"));
-
-	if($tabname == "setting_validation")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_validation"), build_dialog("validation"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
-
-	if(false && $tabname == "setting_cache")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-		else$_output .= we_html_element::htmlDiv(array("id" => "setting_cache", "style" => "display: none;"), build_dialog("cache"));
-
-
-	if($tabname == "setting_language")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_language"), build_dialog("language"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_language", "style" => "display: none;"), build_dialog("language"));
-
-	if($tabname == "setting_countries")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_countries"), build_dialog("countries"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_countries", "style" => "display: none;"), build_dialog("countries"));
-
-	if($tabname == "setting_message_reporting")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_message_reporting"), build_dialog("message_reporting"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_message_reporting", "style" => "display: none;"), build_dialog("message_reporting"));
-
-	if($tabname == "setting_active_integrated_modules")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_active_integrated_modules"), build_dialog("active_integrated_modules"));
-	else
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_active_integrated_modules", "style" => "display: none;"), build_dialog("active_integrated_modules"));
-
-	if($tabname == "setting_email")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_email"), build_dialog("email"));
-	$_output .= we_html_element::htmlDiv(array("id" => "setting_email", "style" => "display: none;"), build_dialog("email"));
-
-	if($tabname == "setting_versions")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_versions"), build_dialog("versions"));
-	$_output .= we_html_element::htmlDiv(array("id" => "setting_versions", "style" => "display: none;"), build_dialog("versions"));
-
-	// Render save screen
-	if($tabname == "setting_save")
-		$_output .= we_html_element::htmlDiv(array("id" => "setting_save"), build_dialog("save"));
-	$_output .= we_html_element::htmlDiv(array("id" => "setting_save", "style" => "display: none;"), build_dialog("save"));
-
-
-	// Hide preload screen
-	$_output .= we_html_element::jsElement("
-					<!--
-						setTimeout(\"top.we_cmd('show_tabs');\", 50);
-					//-->
-				", array());
-
-	return $_output;
+	return
+		we_html_element::htmlDiv(array("id" => "setting_ui", 'style' => ($tabname == "setting_ui" ? '' : 'display: none;')), build_dialog("ui")) .
+		we_html_element::htmlDiv(array("id" => "setting_extensions", 'style' => ($tabname == "setting_extensions" ? '' : 'display: none;')), build_dialog("extensions")) .
+		we_html_element::htmlDiv(array("id" => "setting_editor", 'style' => ($tabname == "setting_editor" ? '' : 'display: none;')), build_dialog("editor")) .
+		we_html_element::htmlDiv(array("id" => "setting_recipients", 'style' => ($tabname == "setting_recipients" ? '' : 'display: none;')), build_dialog("recipients")) .
+		we_html_element::htmlDiv(array("id" => "setting_proxy", 'style' => ($tabname == "setting_proxy" ? '' : 'display: none;')), build_dialog("proxy")) .
+		we_html_element::htmlDiv(array("id" => "setting_advanced", 'style' => ($tabname == "setting_advanced" ? '' : 'display: none;')), build_dialog("advanced")) .
+		we_html_element::htmlDiv(array("id" => "setting_system", 'style' => ($tabname == "setting_system" ? '' : 'display: none;')), build_dialog("system")) .
+		we_html_element::htmlDiv(array("id" => "setting_seolinks", 'style' => ($tabname == "setting_seolinks" ? '' : 'display: none;')), build_dialog("seolinks")) .
+		we_html_element::htmlDiv(array("id" => "setting_error_handling", 'style' => ($tabname == "setting_error_handling" ? '' : 'display: none;')), build_dialog("error_handling")) .
+		we_html_element::htmlDiv(array("id" => "setting_backup", 'style' => ($tabname == "setting_backup" ? '' : 'display: none;')), build_dialog("backup")) .
+		we_html_element::htmlDiv(array("id" => "setting_validation", 'style' => ($tabname == "setting_validation" ? '' : 'display: none;')), build_dialog("validation")) .
+		we_html_element::htmlDiv(array("id" => "setting_language", 'style' => ($tabname == "setting_language" ? '' : 'display: none;')), build_dialog("language")) .
+		we_html_element::htmlDiv(array("id" => "setting_countries", 'style' => ($tabname == "setting_countries" ? '' : 'display: none;')), build_dialog("countries")) .
+		we_html_element::htmlDiv(array("id" => "setting_message_reporting", 'style' => ($tabname == "setting_message_reporting" ? '' : 'display: none;')), build_dialog("message_reporting")) .
+		we_html_element::htmlDiv(array("id" => "setting_active_integrated_modules", 'style' => ($tabname == "setting_active_integrated_modules" ? '' : 'display: none;')), build_dialog("active_integrated_modules")) .
+		we_html_element::htmlDiv(array("id" => "setting_email", 'style' => ($tabname == "setting_email" ? '' : 'display: none;')), build_dialog("email")) .
+		we_html_element::htmlDiv(array("id" => "setting_versions", 'style' => ($tabname == "setting_versions" ? '' : 'display: none;')), build_dialog("versions")) .
+		// Render save screen
+		we_html_element::htmlDiv(array("id" => "setting_save", 'style' => ($tabname == "setting_save" ? '' : 'display: none;')), build_dialog("save")) .
+		// Hide preload screen
+		we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
 /* * ***************************************************************************
