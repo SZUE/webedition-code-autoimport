@@ -76,7 +76,7 @@ class weNavigationRuleFrames{
 		$yuiSuggest = & weSuggest::getInstance();
 		array_push(
 			$parts, array(
-			'headline' => g_l('navigation', '[available_rules]'),
+			'headline' => g_l('navigation', '[rules][available_rules]'),
 			'space' => 200,
 			'html' => $yuiSuggest->getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
@@ -97,7 +97,7 @@ class weNavigationRuleFrames{
 
 		array_push(
 			$parts, array(
-			'headline' => g_l('navigation', '[rule_name]'),
+			'headline' => g_l('navigation', '[rules][rule_name]'),
 			'space' => 200,
 			'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
 			'noline' => 1
@@ -120,7 +120,7 @@ class weNavigationRuleFrames{
 
 		array_push(
 			$parts, array(
-			'headline' => g_l('navigation', '[rule_navigation_link]'),
+			'headline' => g_l('navigation', '[rules][rule_navigation_link]'),
 			'space' => 200,
 			'html' => $weAcSelector,
 			'noline' => 1
@@ -134,7 +134,7 @@ class weNavigationRuleFrames{
 
 		array_push(
 			$parts, array(
-			'headline' => g_l('navigation', '[rule_applies_for]'),
+			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => 200,
 			'html' => we_html_tools::htmlSelect(
 				'SelectionType', $selectionTypes, 1, 0, false, "style=\"width: 275px;\" onchange=\"switchType(this.value);\"")
@@ -174,11 +174,11 @@ class weNavigationRuleFrames{
 		$formTable = '<table border="0" cellspacing="0" cellpadding="0">
 <tr><td width="200">' . we_html_tools::getPixel(200, 1) . '</td></tr>
 <tr id="trFolderID">
-	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rule_folder]') . '</td>
+	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rules][rule_folder]') . '</td>
 	<td colspan="5">' . $weAcSelector . '</td>
 </tr>
 <tr id="trDoctypeID">
-	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rule_doctype]') . '</td>
+	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
 				'DoctypeID', $docTypes, 1, 0, false, "style=\"width: 275px;\"") . '</td>
 </tr>';
@@ -204,18 +204,18 @@ class weNavigationRuleFrames{
 
 			$formTable .=
 				'<tr id="trClassID">
-	<td class="weMultiIconBoxHeadline">' . g_l('navigation', '[rule_class]') . '</td>
+	<td class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_class]') . '</td>
 	<td colspan="3">' . $weAcSelector . '</td>
 </tr>
 <tr id="trWorkspaceID">
-	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rule_workspace]') . '</td>
+	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
 					'WorkspaceID', array(), 1, '', false, "style=\"width: 275px;\"") . '</td>
 </tr>';
 		}
 		$formTable .= '
 <tr id="trCategories">
-	<td style="width: 200px;" valign="top" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rule_categories]') . '</td>
+	<td style="width: 200px;" valign="top" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_categories]') . '</td>
 	<td colspan="4">
 		' . $this->getHTMLCategory() . '
 	</td>
@@ -347,7 +347,7 @@ function we_cmd(){
 			we_html_tools::hidden('cmd', '') .
 			we_html_tools::hidden('ID', '0') .
 			we_multiIconBox::getHTML(
-				'navigationRules', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[navigation_rules]')) . '
+				'navigationRules', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>' .
 			$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
 			'</body></html>';
