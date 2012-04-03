@@ -4,7 +4,7 @@
 $this->NeedsEndTag = false;
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
-
+if(defined('CUSTOMER_TABLE')){
 $name = new weTagData_sqlColAttribute('name', CUSTOMER_TABLE, true, array(), '');
 $size = new weTagData_textAttribute('size', false, '');
 $maxlength = new weTagData_textAttribute('maxlength', false, '');
@@ -75,4 +75,5 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 
 $this->Attributes=array($name,$size,$maxlength,$rows,$cols,$onchange,$choice,$checked,$value,$values,$dateformat,$xml,$id,$removefirstparagraph,$autofill,
 $parentid,$width,$height,$quality,$keepratio,$maximize,$bordercolor,$checkboxstyle,$inputstyle,$checkboxclass,$inputclass,$checkboxtext,$showcontrol,
-	$thumbnail,$ascountry,$aslanguage,$outputlanguage,$languageautofill,$doc,$to,$nameto,$usevalue,$minyear,$maxyear,$pure,$wysiwyg,$autobr,$html,$htmlspecialchars,$php,$abbr,$spellcheck,$commands);
+$thumbnail,$ascountry,$aslanguage,$outputlanguage,$languageautofill,$doc,$to,$nameto,$usevalue,$minyear,$maxyear,$pure,$wysiwyg,$autobr,$html,$htmlspecialchars,$php,$abbr,$spellcheck,$commands);
+}

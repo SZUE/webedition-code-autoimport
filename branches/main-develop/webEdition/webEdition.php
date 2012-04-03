@@ -29,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
 
-if($_SESSION["we_mode"] == "normal"){ //	working in normal mode
+if(!isset($_SESSION["we_mode"])||$_SESSION["we_mode"] == "normal"){ //	working in normal mode
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/webEdition_normal.inc.php");
 } else if($_SESSION["we_mode"] == "seem"){ //	working in super-easy-edit-mode
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/webEdition_seem.inc.php");
