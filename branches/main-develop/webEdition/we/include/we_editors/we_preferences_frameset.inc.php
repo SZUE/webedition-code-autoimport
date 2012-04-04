@@ -107,7 +107,6 @@ $_javascript .= <<< END_OF_SCRIPT
 			//we_preferences.document.getElementById('setting_modules').style.display = 'none';
 			we_preferences.document.getElementById('setting_backup').style.display = 'none';
 			we_preferences.document.getElementById('setting_validation').style.display = 'none';
-			we_preferences.document.getElementById('setting_cache').style.display = 'none';
 			we_preferences.document.getElementById('setting_language').style.display = 'none';
 			we_preferences.document.getElementById('setting_countries').style.display = 'none';
 			we_preferences.document.getElementById('setting_message_reporting').style.display = 'none';

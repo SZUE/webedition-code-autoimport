@@ -43,10 +43,6 @@ $we_tabs = new we_tabs();
 $we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab_ui]'), ($tabname == "setting_ui" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('ui');"));
 
 
-if(false && (we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE"))){
-	$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab_cache]'), ($tabname == "setting_cache" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('cache');"));
-}
-
 if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
 	$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab_extensions]'), ($tabname == "setting_extensions" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('extensions');"));
 }

@@ -1202,15 +1202,17 @@ class we_document extends we_root{
 			case 'flashmovie':
 			case 'quicktime':
 				$val = $this->getElement($attribs['name'], 'bdid');
-				if($val)
+				if($val){
 					break;
+				}
 			default:
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
 		if($type == 'href' && ((isset($this->TableID) && $this->TableID) || ($this->ClassName == 'we_objectFile'))){
 			$hrefArr = $val ? unserialize($val) : array();
-			if(!is_array($hrefArr))
-				$hrefArr = array();
+			if(!is_array($hrefArr)){
+				return '';
+			}
 			return self::getHrefByArray($hrefArr);
 		}
 

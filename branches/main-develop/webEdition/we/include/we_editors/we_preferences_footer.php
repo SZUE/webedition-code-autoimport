@@ -70,7 +70,6 @@ function we_save() {
 	top.we_preferences.document.getElementById('setting_editor').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_recipients').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_proxy').style.display = 'none';
-	top.we_preferences.document.getElementById('setting_cache').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_advanced').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_system').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_seolinks').style.display = 'none';
