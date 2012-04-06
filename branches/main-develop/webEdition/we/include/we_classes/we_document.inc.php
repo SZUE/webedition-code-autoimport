@@ -174,23 +174,11 @@ class we_document extends we_root{
 		we_loadLanguageConfig();
 
 		$_defLang = self::getDefaultLanguage();
-
-
 		$value = ($this->Language != '' ? $this->Language : $_defLang);
-
 		$inputName = 'we_' . $this->Name . '_Language';
-
 		$_languages = getWeFrontendLanguagesForBackend();
+		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
 
-		$_headline = '';
-
-		if($withHeadline){
-			$_headline = '
-				<tr>
-					<td class="defaultfont">' . g_l('weClass', '[language]') . '</td>
-				</tr>
-			';
-		}
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
@@ -202,43 +190,23 @@ class we_document extends we_root{
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID) . '</div>';
 				$langkeys[] = $langkey;
 			}
-			$content = '
+			return '
 			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 4) . '</td>
-				</tr>
+				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 				' . $_headline . '
-				<tr>
-					<td>
-						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 20) . '</td>
-				</tr>
-				<tr>
-					<td class="defaultfont" align="left">
-						' . g_l('weClass', '[languageLinks]') . '</td>
-				</tr>
-			</table>';
-			$content .= "<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
+			</table>' .
+				"<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else{
-			$content = '
+			return '
 			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 4) . '</td>
-				</tr>
+				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 				' . $_headline . '
-				<tr>
-					<td>
-						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
-				</tr>
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
 			</table>';
 		}
-
-		return $content;
 	}
 
 	function formInGlossar($leftwidth = 100){
@@ -292,24 +260,16 @@ class we_document extends we_root{
 		$content = $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>
-						' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
+				<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
 					<td></td>
-					<td>
-						' . $this->formExtension2() . '</td>
+					<td>' . $this->formExtension2() . '</td>
 				</tr>
 				<tr>
-					<td>
-						' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>
-						' . we_html_tools::getPixel(100, 2) . '</td>
+					<td>' . we_html_tools::getPixel(20, 4) . '</td>
+					<td>' . we_html_tools::getPixel(20, 2) . '</td>
+					<td>' . we_html_tools::getPixel(100, 2) . '</td>
 				</tr>
-				<tr>
-					<td colspan="3">
-						' . $this->formDirChooser(388) . '</td>
-				</tr>
+				<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
 			</table>';
 		return $content;
 	}
@@ -401,13 +361,7 @@ class we_document extends we_root{
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			if($ordn == 'end'){
-				$_ord = 10000;
-			} else if(is_numeric($ordn) && $ordn > 0){
-				$_ord = $ordn;
-			} else{
-				$_ord = 0;
-			}
+			$_ord = ($ordn == 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = $_ppath == '/' ? $_ppath . $text : $_ppath . '/' . $text;
@@ -528,8 +482,8 @@ class we_document extends we_root{
 			// clear value
 			$names = $this->getNamesFromContent($content);
 
-			for($i = 0; $i < sizeof($names); $i++){
-				$this->setElement($names[$i] . '_' . $new_nr, '');
+			foreach($names as $_name){
+				$this->setElement($_name . '_' . $new_nr, '');
 			}
 
 			array_push($listarray, '_' . $new_nr);
@@ -540,8 +494,8 @@ class we_document extends we_root{
 
 	function getMaxListArrayNr($la){
 		$maxnr = 0;
-		for($i = 0; $i < sizeof($la); $i++){
-			$nr = abs(str_replace('_', '', $la[$i]));
+		foreach($la as $val){
+			$nr = intval(str_replace('_', '', $val));
 			$maxnr = max($maxnr, $nr);
 		}
 		return $maxnr;
@@ -667,10 +621,11 @@ class we_document extends we_root{
 	}
 
 	function getNamesFromContent($content){
+		$result = array();
 		preg_match_all('/< ?we:[^>]+name="([^"]+)"[^>]*>/i', $content, $result, PREG_SET_ORDER);
 		$arr = array();
-		for($i = 0; $i < sizeof($result); $i++){
-			array_push($arr, $result[$i][1]);
+		foreach($result as $val){
+			$arr[] = $val[1];
 		}
 		return $arr;
 	}
@@ -957,10 +912,7 @@ class we_document extends we_root{
 					unset($img->elements['width']);
 				}
 				if(sizeof($attribs)){
-					if(isset($attribs['hyperlink']))
-						unset($attribs['hyperlink']);
-					if(isset($attribs['target']))
-						unset($attribs['target']);
+					$attribs = removeAttribs($attribs, array('hyperlink', 'target'));
 					$img->initByAttribs($attribs);
 				}
 				if(isset($GLOBALS['lv'])){
@@ -1135,18 +1087,21 @@ class we_document extends we_root{
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 
 					if(isset($attribs['num_format'])){
-						if($attribs['num_format'] == 'german'){
-							$retval = we_util::std_numberformat($retval);
-							$retval = number_format($retval, $precision, ',', '.');
-						} else if($attribs['num_format'] == 'french'){
-							$retval = we_util::std_numberformat($retval);
-							$retval = number_format($retval, $precision, ',', ' ');
-						} else if($attribs['num_format'] == 'english'){
-							$retval = we_util::std_numberformat($retval);
-							$retval = number_format($retval, $precision, '.', '');
-						} else if($attribs['num_format'] == 'swiss'){
-							$retval = we_util::std_numberformat($retval);
-							$retval = number_format($retval, $precision, '.', '\'');
+						$retval = we_util::std_numberformat($retval);
+						switch($attribs['num_format']){
+							default:
+							case 'german':
+								$retval = number_format($retval, $precision, ',', '.');
+								break;
+							case 'french':
+								$retval = number_format($retval, $precision, ',', ' ');
+								break;
+							case 'english':
+								$retval = number_format($retval, $precision, '.', '');
+								break;
+							case 'swiss':
+								$retval = number_format($retval, $precision, '.', '\'');
+								break;
 						}
 					}
 				}
@@ -1279,8 +1234,7 @@ class we_document extends we_root{
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
 					return $path;
 				} else{
-					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Published', $db);
-					if($published){
+					if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Published', $db)){
 						return $path;
 					} else{
 						$GLOBALS['we_link_not_published'] = 1;
@@ -1289,7 +1243,6 @@ class we_document extends we_root{
 				}
 			}
 		} else if(isset($link['type']) && ($link['type'] == 'obj')){
-
 			return getHrefForObject($link['obj_id'], $parentID, $path, $db, $hidedirindex, $objectseourls);
 		} else if(isset($link['type'])){
 
@@ -1473,13 +1426,9 @@ class we_document extends we_root{
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
 				$_linkAttribs['onclick'] = $foo;
 			}
-			if(isset($_linkAttribs['hidedirindex']))
-				unset($_linkAttribs['hidedirindex']);
-			if(isset($_linkAttribs['objectseourls']))
-				unset($_linkAttribs['objectseourls']);
+			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
 			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
-		}
-		else{
+		} else{
 			if((isset($GLOBALS["we_link_not_published"])) && ($GLOBALS["we_link_not_published"])){
 				unset($GLOBALS["we_link_not_published"]);
 			}
@@ -1517,7 +1466,7 @@ class we_document extends we_root{
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if(sizeof($_REQUEST)){
-			$dates = array();
+			$dates = $regs = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
 					$rest = $regs[1];
@@ -1588,10 +1537,10 @@ class we_document extends we_root{
 		$times = array();
 		foreach($this->schedArr as $s){
 			if($s['task'] == we_schedpro::SCHEDULE_FROM && $s['active']){
-				array_push($times, we_schedpro::getNextTimestamp($s, time()));
+				$times[]= we_schedpro::getNextTimestamp($s, time());
 			}
 		}
-		if(sizeof($times)){
+		if(count($times)){
 			sort($times);
 			return $times[0];
 		}
@@ -1635,14 +1584,6 @@ class we_document extends we_root{
 		$inputName = 'we_' . $this->Name . "_txt[$name]";
 
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
-
-		if($withHeadline){
-			$_headline = '
-			<tr>
-				<td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td>
-			</tr>
-			';
-		}
 
 		return '<table border="0" cellpadding="0" cellspacing="0">' . $_headline .
 			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, "  onblur=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\" onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\"", "value", 330) . '</td></tr>' .

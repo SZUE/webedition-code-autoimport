@@ -350,7 +350,7 @@ class we_template extends we_document{
 	function i_getDocument($includepath = ""){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace("/(;|{|})( |\t)*\?>(\n)*<\?php ?/si", "\\1\n", $this->parseTemplate());
+		return preg_replace("/(;|{|})(\n| |\t)*\?>(\n)*<\?php ?/si", "\\1\\2\n", $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir($doc){
