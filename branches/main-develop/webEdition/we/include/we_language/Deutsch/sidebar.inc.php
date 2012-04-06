@@ -8,7 +8,7 @@ $l_sidebar=array(
 			'text'=>'Einstellungen zur Sidebar, wie individuelle Startdokumente, Breite oder Deaktivierung der Sidebar, finden Sie unter Extras > Einstellungen > Allgemein... auf dem Karteireiter "Oberfläche".',
 	),),
 	'confirm_to_close_sidebar'=>'Möchten Sie die Sidebar wirklich schließen?',
-	
+
 	'default'=>array(
 		'0'=>array(
 			'headline'=>'Herzlich Willkommen!',
@@ -29,7 +29,7 @@ $l_sidebar=array(
 		'3'=>array(
 			'headline'=>'Tagreferenz',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'http://tags.webedition.org/wiki/de/',
+			'link'=>'http://tags.webedition.org',
 			'text'=>'Hier finden Sie eine Auflistung aller in webEdition verwendeten we:Tags mit Attributen und Anwendungsbeispielen.',
 		),
 		'4'=>array(
