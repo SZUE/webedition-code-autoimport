@@ -1247,10 +1247,10 @@ abstract class we_versions_wizard{
 			));
 		}
 
-		return we_html_element::htmlHtml(
+		return  we_html_element::htmlDocType() .we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::htmlTitle(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
+					we_html_tools::getHtmlInnerHead(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
 	}
 
 	/**

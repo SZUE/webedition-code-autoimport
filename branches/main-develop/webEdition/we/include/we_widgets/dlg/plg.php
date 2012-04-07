@@ -181,10 +181,10 @@ $_pLogProps = new we_html_table(array(
 $_pLogProps->setCol(0, 0, null, $sMultibox);
 $_pLogProps->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
-print
+print we_html_element::htmlDocType() .
 	we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_element::htmlTitle(g_l('cockpit', '[pagelogger]')) . STYLESHEET . we_html_element::cssElement(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[pagelogger]')) . STYLESHEET . we_html_element::cssElement(
 				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
 			array(
