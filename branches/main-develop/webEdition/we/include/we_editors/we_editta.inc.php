@@ -58,8 +58,8 @@ if(isset($_REQUEST["ok"])){
 		. '}';
 }
 
-print we_html_element::htmlDocType() . '<html>' . we_html_element::htmlHead(//FIXME: missing title
-		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET);
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(//FIXME: missing title
+			we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '"><input type="hidden" name="ok" value="1" />';
 

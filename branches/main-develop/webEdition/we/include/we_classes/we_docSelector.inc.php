@@ -658,10 +658,8 @@ class we_docSelector extends we_dirSelector{
 					$result = $this->db->Record;
 				}
 				$path = isset($result['Path']) ? $result['Path'] : "";
-				$out = '<html>
-<head>
+				$out = we_html_tools::getHtmlTop().'
 ' . STYLESHEET . '
-' . we_html_element::jsScript(JS_DIR . "attachKeyListener.js") . '
 <style type="text/css">
 	body {
 		margin:0px;

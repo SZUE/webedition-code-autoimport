@@ -27,23 +27,21 @@ we_html_tools::protect();
 $messaging = new we_messaging($_SESSION["we_data"]['we_messagin_setting']);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"]['we_messagin_setting']);
+we_html_tools::htmlTop(g_l('modules_messaging', '[settings]'));
+echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
-<html>
-	<head>
-    <title><?php echo g_l('modules_messaging', '[settings]') ?></title>
-<?php echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js'); ?>
-    <script type="text/javascript">
-			<!--
-		<?php
-		if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])){
-			if($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))){
-				print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				?>
-					 window.close();
-					 //-->
-		    </script>
-			</head>
-			<body></body>
+<script type="text/javascript">
+	<!--
+<?php
+if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])){
+	if($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))){
+		print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		?>
+					window.close();
+					//-->
+		</script>
+		</head>
+		<body></body>
 		</html>
 		<?php
 		exit;
@@ -64,19 +62,19 @@ print STYLESHEET;
 
 <body class="weDialogBody">
 	<form name="settings" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
-<?php
-if(isset($_REQUEST['we_transaction'])){
-	$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
-}
-echo we_html_tools::hidden('mcmd', 'save_settings');
+		<?php
+		if(isset($_REQUEST['we_transaction'])){
+			$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
+			echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+		}
+		echo we_html_tools::hidden('mcmd', 'save_settings');
 
-$heading = g_l('modules_messaging', '[settings]');
-$t_vals = array('-1' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '10' => '10', '15' => '15', '30' => '30', '45' => '45', '60' => '60');
-$settings = $messaging->get_settings();
-$check_step = isset($settings['check_step']) ? $settings['check_step'] : "";
+		$heading = g_l('modules_messaging', '[settings]');
+		$t_vals = array('-1' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '10' => '10', '15' => '15', '30' => '30', '45' => '45', '60' => '60');
+		$settings = $messaging->get_settings();
+		$check_step = isset($settings['check_step']) ? $settings['check_step'] : "";
 
-$input_tbl = '<table>
+		$input_tbl = '<table>
 <tr>
     <td class="defaultfont">' . g_l('modules_messaging', '[check_step]') . '</td>
     <td>' . we_html_tools::html_select('check_step', 1, $t_vals, $check_step) . '</td>
@@ -84,12 +82,12 @@ $input_tbl = '<table>
 </tr>
 </table>';
 
-$_buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:save()"), "", we_button::create_button("cancel", "javascript:window.close();")
-	)
-;
+		$_buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:save()"), "", we_button::create_button("cancel", "javascript:window.close();")
+			)
+		;
 
-echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);
-?>
+		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);
+		?>
 	</form>
 </body>
 </html>

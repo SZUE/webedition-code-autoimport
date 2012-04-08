@@ -30,12 +30,10 @@ if(isset($_SESSION)){
 }
 $_SESSION = array();
 header("location: " . WEBEDITION_DIR . "index.php");
+we_html_tools::htmlTop();
 ?>
-<html>
-	<head>
-		<title>webEdition</title>
-	</head>
-	<body>
-<?php echo g_l('global', "[redirect_to_login_failed]") . '<a href="' . WEBEDITION_DIR . 'index.php">' . g_l('global', "[redirect_to_login_name]") . '</a>'; ?>
-	</body>
+</head>
+<body>
+	<?php echo g_l('global', "[redirect_to_login_failed]") . '<a href="' . WEBEDITION_DIR . 'index.php">' . g_l('global', "[redirect_to_login_name]") . '</a>'; ?>
+</body>
 </html>

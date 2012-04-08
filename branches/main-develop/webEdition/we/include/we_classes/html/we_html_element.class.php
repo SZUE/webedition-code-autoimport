@@ -318,8 +318,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlHtml($content){
-		return self::htmlDocType() . we_baseElement::getHtmlCode(new we_baseElement('html', true, array(), $content));
+	static function htmlHtml($content, $close = true){
+		return self::htmlDocType() . we_baseElement::getHtmlCode(new we_baseElement('html', $close, array(), $content));
 	}
 
 	/**
@@ -327,8 +327,8 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlHead($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('head', true, array(), $content));
+	static function htmlHead($content, $close = true){
+		return we_baseElement::getHtmlCode(new we_baseElement('head', $close, array(), $content));
 	}
 
 	static function htmlMeta($attribs = array()){

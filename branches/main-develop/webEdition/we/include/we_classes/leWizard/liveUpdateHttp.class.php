@@ -24,11 +24,11 @@
  */
 class liveUpdateHttp{
 
-	function getServerProtocol($addslashes=true){
+	function getServerProtocol($addslashes = true){
 		return getServerProtocol($addslashes);
 	}
 
-	function connectFopen($server, $url, $parameters=array()){
+	function connectFopen($server, $url, $parameters = array()){
 
 		// try fopen first
 		$parameterStr = '';
@@ -98,7 +98,7 @@ class liveUpdateHttp{
 		}
 	}
 
-	function getHttpResponse($server, $url, $parameters=array()){
+	function getHttpResponse($server, $url, $parameters = array()){
 
 		$_opt = liveUpdateHttp::getHttpOption();
 
@@ -170,7 +170,7 @@ class liveUpdateHttp{
 		return 'fopen';
 	}
 
-	function getFopenHttpResponse($server, $url, $parameters=array()){
+	function getFopenHttpResponse($server, $url, $parameters = array()){
 
 		if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use']){
 			return liveUpdateHttp::connectProxy($server, $url, $parameters);
@@ -189,25 +189,17 @@ class liveUpdateHttp{
 		$params = '';
 		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 
-			if(is_array($LU_value)){
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(serialize($LU_value)) . "\" />\n";
-			} else{
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode($LU_value) . "\" />\n";
-			}
+			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? serialize($LU_value) : $LU_value)) . '" />';
 		}
 
-		return '<html>
-<head>
-<head>
-<body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="http://' . LE_ONLINE_INSTALLER_SERVER . LE_ONLINE_INSTALLER_SERVER_SCRIPT . '" method="post">
+		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead('') . we_html_element::htmlBody(array('onload' => "document.getElementById('liveUpdateForm').submit();"), '<form id="liveUpdateForm" action="http://' . LE_ONLINE_INSTALLER_SERVER . LE_ONLINE_INSTALLER_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
 	<input type="hidden" name="detail" value="' . $_REQUEST['detail'] . '" />
 	' . $params . '
 </form>
-</body>
-</html>';
+'));
 	}
 
 }

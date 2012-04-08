@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * webEdition CMS
  *
@@ -23,48 +21,46 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 $yearView = isset($_REQUEST["ViewYear"]) ? $_REQUEST["ViewYear"] : 0;
 $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 
+we_html_tools::htmlTop();
 ?>
-<html>
-<head>
 </head>
-   <frameset rows="40,*" framespacing="0" border="0" frameborder="no">
-    <frame src="edit_shop_editorHeader.php?home=<?php print $home; ?>&mid=<?php print $mid . $yearView; ?>&bid=<?php print $bid; ?>" name="edheader" noresize scrolling=no>
-   <?php if($home){ ?>
+<frameset rows="40,*" framespacing="0" border="0" frameborder="no">
+	<frame src="edit_shop_editorHeader.php?home=<?php print $home; ?>&mid=<?php print $mid . $yearView; ?>&bid=<?php print $bid; ?>" name="edheader" noresize scrolling=no>
+<?php if($home){ ?>
 
-      <frame src="/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop" name="edbody" scrolling=auto>,
+		<frame src="/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop" name="edbody" scrolling=auto>,
 
-   <!--
-    <frame src="edit_shop_pref.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
-    -->
+		<!--
+		 <frame src="edit_shop_pref.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
+		-->
 
-	<?php }elseif($mid){
+<?php
+} elseif($mid){
 
-		$year = substr($mid, (strlen($mid)-4));
-		$month = str_replace($year,'',$_REQUEST["mid"]);
+	$year = substr($mid, (strlen($mid) - 4));
+	$month = str_replace($year, '', $_REQUEST["mid"]);
 
-		print '<frame src="edit_shop_revenueTop.php?ViewYear='.$year.'&ViewMonth='.$month.'" name="edbody" scrolling=auto>';
-
+	print '<frame src="edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month . '" name="edbody" scrolling=auto>';
 	?>
 
-	<?php }elseif($yearView){
+	<?php
+	} elseif($yearView){
 
 		$year = $yearView;
 
 
 		print "<frame src=\"edit_shop_revenueTop.php?ViewYear=$year\" name=\"edbody\" scrolling=auto>";
+		?>
 
-	?>
-
-   <?php }else{ ?>
-    <frame src="edit_shop_properties.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
-   <?php } ?>
-   </frameset>
-  <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
- </body>
+	<?php } else{ ?>
+		<frame src="edit_shop_properties.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
+	<?php } ?>
+</frameset>
+<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+</body>
 </html>

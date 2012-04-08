@@ -40,101 +40,79 @@ if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])){
 	$rcpts = array(urldecode($_REQUEST['rcpts_string'])); /* user names */
 	$res = msg_new_message($rcpts, $_REQUEST['mn_subject'], $_REQUEST['mn_body'], $errs);
 }
-?>
-<html>
-	<head>
-		<title><?php echo g_l('modules_messaging', '[message_send]') ?></title>
-		<?php
-		print STYLESHEET;
 
-		if(!empty($res['ok'])){
-			if(substr($_REQUEST["mode"], 0, 2) != 'u_'){
-				echo '
-                        <script language="javascript">
+we_html_tools::htmlTop(g_l('modules_messaging', '[message_send]'));
+print STYLESHEET;
+
+if(!empty($res['ok'])){
+	if(substr($_REQUEST["mode"], 0, 2) != 'u_'){
+		echo we_html_element::jsElement('
                             if (opener && opener.top && opener.top.content) {
                                 opener.top.content.update_messaging();
                                 opener.top.content.update_msg_quick_view();
-                            }
-                        </script>
-                    ';
-			} else{
-				echo '
-                        <script language="javascript">
+                            }');
+	} else{
+		echo we_html_element::jsElement('
                             if (opener && opener.top && opener.top.content) {
                                   opener.top.content.update_msg_quick_view();
                             }
-                        </script>
-                    ';
-			}
-		}
-		?>
-	</head>
+                    ');
+	}
+}
+?>
+</head>
 
-	<body class="weDialogBody">
-		<?php
-		$tbl = '
-            <table align="center" cellpadding="7" cellspacing="3" width="100%">
-        ';
-		if($res['ok']){
-			$tbl .= '
-                <tr>
+<body class="weDialogBody">
+	<?php
+	$tbl = '<table align="center" cellpadding="7" cellspacing="3" width="100%">';
+	if($res['ok']){
+		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('messaging', '[s_sent_to]') . ':</td>
                     <td class="defaultfont">
-                        <ul>
-            ';
+                        <ul>';
 
-			foreach($res['ok'] as $ok){
-				$tbl .= '<li>' . htmlspecialchars($ok) . '</li>';
-			}
-
-			$tbl .= '
-                        </ul>
-                    </td>
-                </tr>
-            ';
+		foreach($res['ok'] as $ok){
+			$tbl .= '<li>' . htmlspecialchars($ok) . '</li>';
 		}
 
-		if($res['failed']){
-			$tbl .= '
-                <tr>
+		$tbl .= '</ul>
+                    </td>
+                </tr>';
+	}
+
+	if($res['failed']){
+		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('messaging', '[n_sent_to]') . ':</td>
                     <td class="defaultfont">
-                        <ul>
-            ';
+                        <ul>';
 
-			foreach($res['failed'] as $failed){
-				$tbl .= '<li>' . htmlspecialchars($failed) . '</li>';
-			}
-
-			$tbl .= '
-                        </ul>
-                    </td>
-                </tr>
-            ';
+		foreach($res['failed'] as $failed){
+			$tbl .= '<li>' . htmlspecialchars($failed) . '</li>';
 		}
 
-		if($res['err']){
-			$tbl .= '
-                <tr>
+		$tbl .= '</ul>
+                    </td>
+                </tr>';
+	}
+
+	if($res['err']){
+		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('messaging', '[occured_errs]') . ':</td>
                     <td class="defaultfont">
-                        <ul>
-            ';
+                        <ul>';
 
-			foreach($res['err'] as $error){
-				$tbl .= '<li>' . $error . '</li>';
-			}
-
-			$tbl .= '
-                        </ul>
-                    </td>
-                </tr>
-            ';
+		foreach($res['err'] as $error){
+			$tbl .= '<li>' . $error . '</li>';
 		}
 
-		$tbl .= '</table>';
-		echo we_html_tools::htmlDialogLayout($tbl, g_l('messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
-		?>
-	</body>
+		$tbl .= '</ul>
+                    </td>
+                </tr>';
+	}
+
+	$tbl .= '</table>';
+	echo we_html_tools::htmlDialogLayout($tbl, g_l('messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
+	?>
+</body>
 
 </html>

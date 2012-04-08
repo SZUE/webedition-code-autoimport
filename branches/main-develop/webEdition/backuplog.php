@@ -54,34 +54,29 @@ if(we_hasPerm("BACKUPLOG")){
 		'space' => 10
 	);
 }
-?>
-<html>
-	<head>
-
-		<title><?php print g_l('backup', "[view_log]"); ?></title>
-<?php
-echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+echo we_html_tools::htmlTop(g_l('backup', "[view_log]")) .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('
 	function closeOnEscape() {
 		return true;
 	}
-');
-print STYLESHEET;
+') .
+ STYLESHEET;
 ?>
 
-	</head>
+</head>
 
-	<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
-		<div id="info" style="display: block;">
-<?php
-$buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("close", "javascript:self.close()"), '', ''
-);
+<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
+	<div id="info" style="display: block;">
+		<?php
+		$buttons = we_button::position_yes_no_cancel(
+				we_button::create_button("close", "javascript:self.close()"), '', ''
+		);
 
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
-?>
-		</div>
+		print we_multiIconBox::getJS();
+		print we_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		?>
+	</div>
 
-	</body>
+</body>
 </html>

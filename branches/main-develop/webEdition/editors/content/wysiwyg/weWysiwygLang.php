@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,13 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-?><html>
-	<head>
-<?php
-print we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-
-print '<script type="text/javascript">
+we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) .
+	print we_html_element::htmlhtml(
+			we_html_element::htmlHead(
+				we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) .
+				we_html_element::jsElement('
 					parent.we_wysiwyg_lng = {};
 					parent.we_wysiwyg_lng["mozilla_paste"] = "' . g_l('wysiwyg', "[mozilla_paste]") . '";
 					parent.we_wysiwyg_lng["cut"] = "' . g_l('wysiwyg', "[cut2]") . '";
@@ -74,8 +73,5 @@ print '<script type="text/javascript">
 					parent.we_wysiwyg_lng["applystyle"] = "' . g_l('wysiwyg', "[css_style2]") . '";
 					parent.we_wysiwyg_lng["removeformat_warning"] = "' . g_l('wysiwyg', "[removeformat_warning]") . '";
 					parent.we_wysiwyg_lng["removetags_warning"] = "' . g_l('wysiwyg', "[removetags_warning]") . '";
-				</script>';
-?></head>
-	<body></body>
-
-</html>
+				')
+			));

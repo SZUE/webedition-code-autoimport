@@ -346,10 +346,8 @@ class liveUpdateFrames{
 
 		$show = "?section=$activeTab";
 		$active = "&active=$activeTab";
-
-		$html = we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).'<html>
-<head>
-	<title>webEdition Update</title>'.we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']).'
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
+		return we_html_tools::getHtmlTop('webEdition Update') . '
 </head>
 <frameset rows="30, *, 0" border="0" framespacing="0" frameborder="no">
 	<frame name="updatetabs" src="' . $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active . '"  noresize scrolling="no" />
@@ -357,11 +355,9 @@ class liveUpdateFrames{
 	<frame name="updateload" src="about:blank" />
 </frameset>
 </html>';
-		return $html;
 	}
 
 	function htmlTabs(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
 	}
 

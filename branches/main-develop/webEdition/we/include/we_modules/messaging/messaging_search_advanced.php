@@ -31,27 +31,22 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+we_html_tools::htmlTop(g_l('modules_messaging', '[search_advanced]'));
+print STYLESHEET;
 ?>
-
-<html>
-	<head>
-    <title><?php echo g_l('modules_messaging', '[search_advanced]') ?></title>
-		<?php
-		print STYLESHEET;
-		?>
-    <script type="text/javascript">
-			<!--
+<script type="text/javascript">
+	<!--
 <?php
 if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 	$messaging->set_search_settings($_REQUEST['search_fields'], (isset($_REQUEST['search_folders']) && is_array($_REQUEST['search_folders'])) ? $_REQUEST['search_folders'] : array());
 	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	?>
-					self.close();
-					//-->
-			</script>
-		</head>
-		<body>
-		</body>
+		self.close();
+		//-->
+	</script>
+	</head>
+	<body>
+	</body>
 	</html>
 	<?php
 } else{

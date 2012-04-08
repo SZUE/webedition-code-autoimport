@@ -24,10 +24,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-?><html>
-	<head>
-
-		<script type="text/javascript"><!--
+we_html_tools::htmlTop();
+echo we_html_element::jsElement(<<<EOF
 			function we_cmd(){
 				var args = "";
 				for(var i = 0; i < arguments.length; i++){
@@ -35,9 +33,9 @@ we_html_tools::protect();
 				}
 				eval('parent.we_cmd('+args+')');
 			}
-			//-->
-		</script>
-
+EOF
+	);
+?>
 	</head>
 	<body style="margin:0px;"><?php
 $MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;

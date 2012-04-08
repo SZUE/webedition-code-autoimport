@@ -40,17 +40,13 @@ class we_errorHandling{
 	 */
 	function errormessage($statuscode = "403 Forbidden", $message = "You don't have permission to access / on this server."){
 		// Build the message
-		$_message = "<html><head>\n";
-		$_message .= "<title>" . $statuscode . "</title>\n";
-		$_message .= "</head><body>\n";
-		$_message .= "<h1>" . substr($statuscode, 4) . "</h1>\n";
-		$_message .= "<p>" . $message . "</p>\n";
-		$_message .= "<hr />\n";
-		$_message .= "<address>" . $_SERVER["SERVER_SOFTWARE"] . " at " . $_SERVER["SERVER_NAME"] . " Port " . $_SERVER["SERVER_PORT"] . "</address>\n";
-		$_message .= "</body></html>";
-
-		// Now return the message
-		return $_message;
+		return we_html_tools::getHtmlTop($statuscode) .
+			'</head>' . we_html_element::htmlBody(
+				"<h1>" . substr($statuscode, 4) . "</h1>
+		<p>" . $message . "</p>
+		<hr />
+		<address>" . $_SERVER["SERVER_SOFTWARE"] . " at " . $_SERVER["SERVER_NAME"] . " Port " . $_SERVER["SERVER_PORT"] . "</address>
+		") . '</html>';
 	}
 
 	/**

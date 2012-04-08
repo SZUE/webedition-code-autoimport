@@ -41,7 +41,7 @@ class liveUpdateHttpWizard extends liveUpdateHttp{
 			}
 		}
 
-		$html = '<html>
+		$html = we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html>
 <head>
 	' . LIVEUPDATE_CSS . '
 <head>

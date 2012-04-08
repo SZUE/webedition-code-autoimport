@@ -51,9 +51,8 @@ $dbTitlename = "shoptitle";
 $DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape($dbTitlename) . "'");
 $DB_WE->next_record();
 $resultD = $DB_WE->f("Anzahl");
+we_html_tools::htmlTop();
 ?>
-<html>
-	<head>
 	</head>
 	<frameset rows="40,*" framespacing="0" border="0" frameborder="no">
     <frame src="edit_shop_editorHeaderTop.php?mid=<?php print $mid; ?>&bid=<?php print $bid; ?>&home=<?php print $home; ?>&typ=object&ViewClass=<?php print $classid; ?>" name="edheader" noresize scrolling=no>

@@ -499,19 +499,14 @@ class weToolFrames extends weModuleFrames{
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $_REQUEST['delayCmd'] . '","' . $_REQUEST['delayParam'] . '");self.close();';
 			$_cancel = 'self.close();';
 
-			return
-				'<html>
-			<head>
-			' .
+			return we_html_tools::getHtmlTop() .
 				STYLESHEET . '
 			</head>
 
 			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">
 					' . we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . '
 			</body>
-
-			</html>
-			';
+			</html>';
 		}
 	}
 

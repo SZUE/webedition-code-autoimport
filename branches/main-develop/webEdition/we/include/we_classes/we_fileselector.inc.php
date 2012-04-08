@@ -561,8 +561,8 @@ class we_fileselector{
 			##############################################
 
 			function printBodyHTML(){
-				print '<html><head></head>' . "\n";
-				print '<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>' . "\n";
+				print we_html_element::htmlDocType().'<html><head></head>
+				<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>';
 			}
 
 			function getJS_attachKeyListener(){

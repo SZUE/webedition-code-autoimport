@@ -83,7 +83,7 @@ class delBackup extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		print "<html><head><title></title></head>";
+		print we_html_tools::htmlTop().'</head>';
 	}
 
 }

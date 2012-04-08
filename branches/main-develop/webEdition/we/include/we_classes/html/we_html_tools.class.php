@@ -707,13 +707,15 @@ HTS;
 	}
 
 	static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
-		self::headerCtCharset('text/html',($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
+		self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
-		return we_html_element::htmlDocType($doctype) . '<html><head>' .
-			self::getHtmlInnerHead($title, $charset);
+		return we_html_element::htmlDocType($doctype) .
+			we_html_element::htmlhtml(we_html_element::htmlHead(
+					self::getHtmlInnerHead($title, $charset), false)
+				, false);
 	}
 
 	static function getHtmlInnerHead($title = 'webEdition', $charset = ''){

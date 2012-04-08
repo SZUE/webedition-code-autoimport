@@ -78,7 +78,7 @@ class liveUpdateTemplatesWizarad extends liveUpdateTemplates {
 
 		}
 
-		return '<html>
+		return we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html>
 	<head>
 	' . liveUpdateTemplates::getHtmlHead() . '
 	' . $header . '

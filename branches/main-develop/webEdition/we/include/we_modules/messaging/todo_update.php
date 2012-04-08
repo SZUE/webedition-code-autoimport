@@ -54,31 +54,25 @@ $res = $messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->sele
 $messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
 
 $messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
-?>
-
-<html>
-	<head>
-		<title><?php echo $heading ?></title>
-<?php print STYLESHEET; ?>
-		<script type="text/javascript">
+we_html_tools::htmlTop($heading);
+print STYLESHEET . we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {
 				top.opener.top.content.update_messaging();
 				top.opener.top.content.update_msg_quick_view();
-			}
-		</script>
-	</head>
+			}');
+?>
+</head>
 
-	<body class="weDialogBody">
-<?php
-$tbl = '
-				<table align="center" cellpadding="0" cellspacing="0" width="100%">
+<body class="weDialogBody">
+	<?php
+	$tbl = '<table align="center" cellpadding="0" cellspacing="0" width="100%">
 					<tr>
 						<td class="defaultfont" align="center">
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
-?>
-	</body>
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+	?>
+</body>
 
 </html>

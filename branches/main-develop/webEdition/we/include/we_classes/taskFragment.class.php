@@ -265,7 +265,8 @@ class taskFragment{
 	 *
 	 */
 	function printHeader(){
-		print "<html>\n<head></head>\n";
+		we_html_tools::htmlTop();
+		print '</head>';
 	}
 
 	/**

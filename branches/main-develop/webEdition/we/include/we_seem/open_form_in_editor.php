@@ -21,23 +21,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?><html>
-<head>
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+we_html_tools::protect();
+we_html_tools::htmlTop();
+?>
 </head>
 <body>
-<?php
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-	we_html_tools::protect();
-
+	<?php
 	// build url from REQUEST ...
-	$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd", "original_action") );
+	$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd", "original_action"));
 	$action = $_REQUEST['original_action'] . "?1" . $paraStr;
 
-    //	The following will translate a given URL to a we_cmd.
-    //	When pressing a link in edit-mode this functionality
-    //	is needed to reopen the document (if possible) with webEdition
+	//	The following will translate a given URL to a we_cmd.
+	//	When pressing a link in edit-mode this functionality
+	//	is needed to reopen the document (if possible) with webEdition
 
 	print we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . str_replace(" ", "+", $action) . "\">"));
-?>
+	?>
 </body>
 </html>

@@ -949,10 +949,8 @@ top.selectFile(top.currentID);
 				$result['Templates'] = $this->db->f('Templates');
 			}
 			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id), "Path", $this->db);
-			$out = '<html>
-<head>
+			$out = we_html_tools::getHtmlTop().'
 ' . STYLESHEET . '
-' . we_html_element::jsScript(JS_DIR . "attachKeyListener.js") . '
 <style type="text/css">
 	body {
 		margin:0px;

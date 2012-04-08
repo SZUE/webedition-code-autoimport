@@ -196,17 +196,15 @@ class leWizardTemplateBase{
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				$this->Javascript .= '<script type="text/javascript"><!--';
 				foreach($this->_Javascripts as $Javascript){
-					$this->Javascript .= $Javascript . "\n";
+					$this->Javascript .= $Javascript;
 				}
-				$this->Javascript .= "//-->\n" . '</script>';
+				$this->Javascript .= "//-->" . '</script>';
 			}
 
 			$Content = (isset($CurrentStep->Language['content']) && trim($CurrentStep->Language['content']) != "") ? trim($CurrentStep->Language['content']) . "<br />" : "";
 			$Content .= $CurrentStep->Content;
 
-			$Output = <<<EOF
-<html>
-<head>
+			return we_html_tools::htmlTop() . <<<EOF
 </head>
 <body>
 	<div id="leWizardContent">
@@ -219,8 +217,6 @@ class leWizardTemplateBase{
 </body>
 </html>
 EOF;
-
-			return $Output;
 		} else{
 			return $this->Output;
 		}

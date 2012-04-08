@@ -24,7 +24,7 @@
  */
 class rebuildFragment extends taskFragment{
 
-	function __construct($name, $taskPerFragment, $pause=0, $bodyAttributes="", $initdata=""){
+	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
@@ -50,10 +50,11 @@ class rebuildFragment extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		//print "<html><head><title></title></head>";
+		we_html_tools::htmlTop();
+		echo '</head>';
 	}
 
-	function printBodyTag($attributes=""){
+	function printBodyTag($attributes = ""){
 
 	}
 

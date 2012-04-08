@@ -46,9 +46,8 @@
 
 
     //	we also need some functionality here to check if the location of the doc was cahnged
-    ?>
-<html>
-<head>
+we_html_tools::htmlTop();
+?>
 <script type="text/javascript">
 
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);

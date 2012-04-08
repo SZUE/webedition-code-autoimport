@@ -57,10 +57,8 @@ class versionFragment extends taskFragment{
 		if($_REQUEST['type'] == "reset_versions"){
 			$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
-		print
-			'<script type="text/javascript">
-			' . we_message_reporting::getShowMessageCall(
-				addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(
+					addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 
@@ -81,14 +79,14 @@ class versionFragment extends taskFragment{
 			top.opener.we_cmd("load", top.opener.treeData.table ,0);
 
 			top.close();
-		</script>
-		</head>
-		</html>';
+		') .
+			'</head></html>';
 	}
 
 	function printHeader(){
 		we_html_tools::protect();
-		//print "<html><head><title></title></head>";
+		we_html_tools::htmlTop();
+		echo '</head>';
 	}
 
 	function printBodyTag($attributes = ""){
@@ -100,5 +98,3 @@ class versionFragment extends taskFragment{
 	}
 
 }
-
-?>

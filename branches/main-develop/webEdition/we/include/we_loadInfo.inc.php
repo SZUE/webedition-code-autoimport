@@ -21,19 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::htmlTop();
+print STYLESHEET;
 ?>
-<html>
-	<head>
-		<title></title>
+</head>
+<body>
+	<span class="defaultfont">
 		<?php
-		print STYLESHEET;
+		print g_l('global', '[load_menu_info]');
 		?>
-	</head>
-	<body>
-		<span class="defaultfont">
-			<?php
-			print g_l('global', '[load_menu_info]');
-			?>
-		</span>
-	</body>
+	</span>
+</body>
 </html>
