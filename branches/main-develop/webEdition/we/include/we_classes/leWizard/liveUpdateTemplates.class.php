@@ -36,8 +36,7 @@ abstract class liveUpdateTemplates {
 	function getContainer($headline, $content) {
 
 
-		return "
-		<div id=\"leWizardContent\" class=\"defaultfont\">
+		return "<div id=\"leWizardContent\" class=\"defaultfont\">
 			<h1>{$headline}</h1>
 			<p>
 				{$content}
@@ -54,7 +53,7 @@ abstract class liveUpdateTemplates {
 	 */
 	function getHtmlHead() {
 
-		return "";
+		return we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 	}
 
 	/**
@@ -70,21 +69,17 @@ abstract class liveUpdateTemplates {
 	 */
 	function getHtml($headline, $content, $header='', $append = false) {
 
-		if($appendContent) {
+/*		if($appendContent) {
 			$PushJs = 'parent.leWizardContent.appendElement(document.getElementById("leWizardContent"));';
 
-		} else {
+		} else {*/
 			$PushJs = 'parent.leWizardContent.replaceElement(document.getElementById("leWizardContent"));';
 
-		}
+		//}
 
-		return '<html>
-	<head>
-	' . liveUpdateTemplates::getHtmlHead() . '
+		return we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html><head>' . liveUpdateTemplates::getHtmlHead() . '
 	' . $header . '
-	</head>
-	<body>
-	' . liveUpdateTemplates::getContainer($headline, $content) . we_html_element::jsElement($PushJs) . '
+	</head><body>' . liveUpdateTemplates::getContainer($headline, $content) . we_html_element::jsElement($PushJs) . '
 	</body>
 </html>';
 	}
