@@ -37,7 +37,7 @@ EOF
 	);
 ?>
 	</head>
-	<body style="margin:0px;"><?php
+	<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;"><?php
 $MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
 
 for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
