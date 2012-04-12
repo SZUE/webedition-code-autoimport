@@ -90,7 +90,9 @@ class we_object extends we_document{
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
-		$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");\n" . $this->getUpdateTreeScript();
+		$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
+			$this->getUpdateTreeScript().
+			we_main_headermenu::getMenuReloadCode('top.');
 	}
 
 	function saveToDB(){

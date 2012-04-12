@@ -728,8 +728,7 @@ class we_objectFile extends we_document{
 	<tr>
 		<td colspan="3">' . $this->formTriggerDocument() . '</td>
 	</tr>
-</table>
-';
+</table>';
 		return $content;
 	}
 

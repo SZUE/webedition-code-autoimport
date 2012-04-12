@@ -49,7 +49,7 @@ class we_shop_listviewOrder extends listviewBase{
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false, $condition="", $cols="", $docID=0, $hidedirindex=false){
+	function __construct($name = "0", $rows = 100000000, $offset = 0, $order = "", $desc = false, $condition = "", $cols = "", $docID = 0, $hidedirindex = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
@@ -60,15 +60,9 @@ class we_shop_listviewOrder extends listviewBase{
 			$this->condition = str_replace('ID', 'IntID', $this->condition);
 		}
 		// und nun sind alle anderen kaputt und werden repariert
-		if(strpos($this->condition, 'OrderIntID') !== false){
-			$this->condition = str_replace('OrderIntID', 'OrderID', $this->condition);
-		}
-		if(strpos($this->condition, 'CustomerIntID') !== false){
-			$this->condition = str_replace('CustomerIntID', 'CustomerID', $this->condition);
-		}
-		if(strpos($this->condition, 'ArticleIntID') !== false){
-			$this->condition = str_replace('ArticleIntID', 'ArticleID', $this->condition);
-		}
+		$this->condition = str_replace('OrderIntID', 'OrderID', $this->condition);
+		$this->condition = str_replace('CustomerIntID', 'CustomerID', $this->condition);
+		$this->condition = str_replace('ArticleIntID', 'ArticleID', $this->condition);
 
 		if(strpos($this->condition, 'OrderID') !== false && strpos($this->condition, 'IntOrderID') === false){
 			$this->condition = str_replace('OrderID', 'IntOrderID', $this->condition);
@@ -86,17 +80,11 @@ class we_shop_listviewOrder extends listviewBase{
 			$this->condition = str_replace('Payment_Type', 'Payment_Type', $this->condition);
 		}
 
-		if($this->docID){
-			$this->Path = id_to_path($this->docID, FILE_TABLE, $this->DB_WE);
-		} else{
-			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-		}
+		$this->Path = $this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
+
 		$this->hidedirindex = $hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
-		$this->LastDocPath = '';
-		if(isset($_SESSION['last_webEdition_document'])){
-			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
-		}
+		$this->LastDocPath = (isset($_SESSION['last_webEdition_document'])) ? $_SESSION['last_webEdition_document']['Path'] : '';
 
 		$group = " GROUP BY IntOrderID ";
 
@@ -115,15 +103,10 @@ class we_shop_listviewOrder extends listviewBase{
 
 		$where = $this->condition ? (' WHERE ' . $this->condition) . $group : $group;
 
-		$q = 'SELECT * FROM ' . SHOP_TABLE . $where;
-		$this->DB_WE->query($q);
-		$this->anz_all = $this->DB_WE->num_rows();
+		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . $where, 'a', $this->DB_WE);
 
-		$q = 'SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder, UNIX_TIMESTAMP(DateShipping) as DateShipping, UNIX_TIMESTAMP(DatePayment) as DatePayment, UNIX_TIMESTAMP(DateOrder) as DateOrder, UNIX_TIMESTAMP(DateConfirmation) as DateConfirmation, UNIX_TIMESTAMP(DateCustomA) as DateCustomA, UNIX_TIMESTAMP(DateCustomB) as DateCustomB, UNIX_TIMESTAMP(DateCustomC) as DateCustomC, UNIX_TIMESTAMP(DateCancellation) as DateCancellation, UNIX_TIMESTAMP(DateFinished) as DateFinished,
-		UNIX_TIMESTAMP(MailShipping) as MailShipping, UNIX_TIMESTAMP(MailPayment) as MailPayment, UNIX_TIMESTAMP(MailOrder) as MailOrder, UNIX_TIMESTAMP(MailConfirmation) as MailConfirmation, UNIX_TIMESTAMP(MailCustomA) as MailCustomA, UNIX_TIMESTAMP(MailCustomB) as MailCustomB, UNIX_TIMESTAMP(MailCustomC) as MailCustomC, UNIX_TIMESTAMP(MailCancellation) as MailCancellation, UNIX_TIMESTAMP(MailFinished) as MailFinished FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit ' . $this->start . ',' . $this->maxItemsPerPage) : '');
-		;
-
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder, UNIX_TIMESTAMP(DateShipping) as DateShipping, UNIX_TIMESTAMP(DatePayment) as DatePayment, UNIX_TIMESTAMP(DateOrder) as DateOrder, UNIX_TIMESTAMP(DateConfirmation) as DateConfirmation, UNIX_TIMESTAMP(DateCustomA) as DateCustomA, UNIX_TIMESTAMP(DateCustomB) as DateCustomB, UNIX_TIMESTAMP(DateCustomC) as DateCustomC, UNIX_TIMESTAMP(DateCancellation) as DateCancellation, UNIX_TIMESTAMP(DateFinished) as DateFinished,
+		UNIX_TIMESTAMP(MailShipping) as MailShipping, UNIX_TIMESTAMP(MailPayment) as MailPayment, UNIX_TIMESTAMP(MailOrder) as MailOrder, UNIX_TIMESTAMP(MailConfirmation) as MailConfirmation, UNIX_TIMESTAMP(MailCustomA) as MailCustomA, UNIX_TIMESTAMP(MailCustomB) as MailCustomB, UNIX_TIMESTAMP(MailCustomC) as MailCustomC, UNIX_TIMESTAMP(MailCancellation) as MailCancellation, UNIX_TIMESTAMP(MailFinished) as MailFinished FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
