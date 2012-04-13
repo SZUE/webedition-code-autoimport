@@ -28,22 +28,22 @@
  *
  */
 abstract class weAbstractCustomerFilter{
-	const OFF=0;
-	const ALL=1;
-	const SPECIFIC=2;
-	const FILTER=3;
-	const NONE=4;
 
-	const OP_EQ=0;
-	const OP_NEQ=1;
-	const OP_LESS=2;
-	const OP_LEQ=3;
-	const OP_GREATER=4;
-	const OP_GEQ=5;
-	const OP_STARTS_WITH=6;
-	const OP_ENDS_WITH=7;
-	const OP_CONTAINS=8;
-	const OP_IN=9;
+	const OFF = 0;
+	const ALL = 1;
+	const SPECIFIC = 2;
+	const FILTER = 3;
+	const NONE = 4;
+	const OP_EQ = 0;
+	const OP_NEQ = 1;
+	const OP_LESS = 2;
+	const OP_LEQ = 3;
+	const OP_GREATER = 4;
+	const OP_GEQ = 5;
+	const OP_STARTS_WITH = 6;
+	const OP_ENDS_WITH = 7;
+	const OP_CONTAINS = 8;
+	const OP_IN = 9;
 
 	/**
 	 * Mode. Can be OFF, ALL, SPECIFIC, FILTER
@@ -91,7 +91,7 @@ abstract class weAbstractCustomerFilter{
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function __construct($mode=self::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()){
+	function __construct($mode = self::OFF, $specificCustomers = array(), $blackList = array(), $whiteList = array(), $filter = array()){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		if(is_array($blackList)){
@@ -119,7 +119,7 @@ abstract class weAbstractCustomerFilter{
 			case self::ALL:
 				return self::customerIsLogedIn();
 			case self::NONE:
-				return!self::customerIsLogedIn();
+				return !self::customerIsLogedIn();
 			case self::SPECIFIC:
 				if(!self::customerIsLogedIn()){
 					return false;
@@ -336,7 +336,8 @@ abstract class weAbstractCustomerFilter{
 		foreach($arr as &$cur){
 			$cur = str_replace('__WE_COMMA__', ',', $cur);
 		}
-		return in_array($value, $arr);
+		$value = explode(',', $value);
+		return count(array_intersect($value, $arr)) > 0;
 	}
 
 	/**

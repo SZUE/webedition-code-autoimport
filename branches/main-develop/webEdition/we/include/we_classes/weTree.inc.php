@@ -675,8 +675,7 @@ function setUnCheckNode(imgName){
 
 	function zeichne(startEntry,zweigEintrag){
 			draw(startEntry,zweigEintrag);
-	}
-	';
+	}';
 	}
 
 	function getJSCustomDraw($click_handler = ""){
@@ -753,12 +752,10 @@ function setUnCheckNode(imgName){
 				row+="&nbsp;&nbsp;<br/>";';
 
 		$out["item"] = '
-					row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
-
-					' . $click_handler;
+			row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";' .
+			$click_handler;
 
 		$out["group"] = '
-
 					var newAst = zweigEintrag;
 
 					var zusatz = (ai == nf.len) ? "end" : "";
