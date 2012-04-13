@@ -152,11 +152,10 @@ class we_binaryDocument extends we_document{
 	/* gets the filesize of the document */
 
 	function getFilesize(){
-		$size = filesize($this->elements["data"]["dat"]);
-		if(!$size){
-			t_e('filesize 0 in ' . $this->elements["data"]["dat"], $this->getSitePath());
-		}
-		return $size;
+		return filesize($this->elements["data"]["dat"]);
+		/* 		if(!$size){
+		  t_e('filesize 0 in ' . $this->elements["data"]["dat"], $this->getSitePath());
+		  } */
 	}
 
 	function insertAtIndex(){
