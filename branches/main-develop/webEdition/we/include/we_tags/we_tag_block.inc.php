@@ -98,6 +98,11 @@ function we_tag_block($attribs){
 
 	if($list){
 		$list = unserialize($list);
+		if(count($list) && ((count($list)-1) != max(array_keys($list)))){
+			//reorder list!
+			$list = array_values($list);
+			$GLOBALS['we_doc']->setElement($name,serialize($list));
+		}
 	} else if($start){
 		$list = array();
 		if($limit && $limit > 0 && $limit < $start){

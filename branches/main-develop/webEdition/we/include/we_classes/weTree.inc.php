@@ -750,16 +750,12 @@ function setUnCheckNode(imgName){
 					row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>";
 					if(nf[ai].disabled!=1) row+="</a>";
 				}
-				row+="&nbsp;&nbsp;<br>\n";
-
-		';
+				row+="&nbsp;&nbsp;<br/>";';
 
 		$out["item"] = '
 					row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
 
-					' . $click_handler . '
-
-		';
+					' . $click_handler;
 
 		$out["group"] = '
 
@@ -776,7 +772,7 @@ function setUnCheckNode(imgName){
 
 					oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
-					row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
+					row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\" Alt=\"\"></a>";
 
 					var folder_icon;
 					folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
@@ -786,17 +782,17 @@ function setUnCheckNode(imgName){
 					' . $click_handler . '
 
 					if (nf[ai].open==1){
-						newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
+						newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
 						row+=draw(nf[ai].id,newAst);
 					}
 		';
 
 		$out["threedots"] = '
-					row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
+					row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
 						row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onClick=\"' . $this->topFrame . '.setSegment(\'"+nf[ai].id+"\');return true;\">";
 					row+="<img src=\"' . $this->tree_image_dir . '/"+nf[ai].icon+"\" width=\"100\" height=\"7\" align=\"absmiddle\" border=\"0\" alt=\"\">";
 						row+="</a>";
-						row+="&nbsp;&nbsp;<br>\n";
+						row+="&nbsp;&nbsp;<br/>";
 		';
 
 		return $out;

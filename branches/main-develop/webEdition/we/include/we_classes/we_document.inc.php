@@ -486,10 +486,9 @@ class we_document extends we_root{
 				$this->setElement($_name . '_' . $new_nr, '');
 			}
 
-			array_push($listarray, '_' . $new_nr);
+			$listarray[] = '_' . $new_nr;
 		}
-		$list = serialize($listarray);
-		$this->setElement($name, $list);
+		$this->setElement($name, serialize(array_values($listarray)));
 	}
 
 	function getMaxListArrayNr($la){
@@ -523,8 +522,7 @@ class we_document extends we_root{
 			$listarray[$nr] = '_' . $new_nr;
 		}
 
-		$list = serialize($listarray);
-		$this->setElement($name, $list);
+		$this->setElement($name, serialize(array_values($listarray)));
 	}
 
 	function upEntryAtList($name, $nr, $number = 1){
@@ -533,15 +531,15 @@ class we_document extends we_root{
 			return;
 		}
 		$listarray = unserialize($list);
-		if($nr - $number < 0){
-			$number = $nr;
+		$newPos = $nr - $number;
+		if($newPos < 0){
+			$newPos = 0;
 		}
-		$temp = $listarray[$nr - $number];
-		$listarray[$nr - $number] = $listarray[$nr];
+		$temp = $listarray[$newPos];
+		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
-		$list = serialize($listarray);
-		$this->setElement($name, $list);
+		$this->setElement($name, serialize($listarray));
 	}
 
 	function downEntryAtList($name, $nr, $number = 1){
@@ -550,31 +548,30 @@ class we_document extends we_root{
 			return;
 		}
 		$listarray = unserialize($list);
-		$max = max(array_keys($listarray));
-		if($nr + $number > $max){
-			$number = $max - $nr;
+		$newPos = $nr + $number;
+		if($newPos > count($listarray) - 1){
+			$newPos = count($listarray) - 1;
 		}
-		$temp = $listarray[$nr + $number];
-		$listarray[$nr + $number] = $listarray[$nr];
+		$temp = $listarray[$newPos];
+		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
-		$list = serialize($listarray);
-		$this->setElement($name, $list);
+		$this->setElement($name, serialize($listarray));
 	}
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
 		$list = $this->getElement($name);
 		$listarray = $list ? unserialize($list) : array();
 		if($list){
-			$namesArray = $names ? explode(',', $names) : array();
-			for($i = 0; $i < sizeof($namesArray); $i++){
-				unset($this->elements[$namesArray[$i] . ($isBlock ? ('blk_' . $name . '_') : '') . $listarray[$nr]]);
+			$namesArray = $names ? explode(',', $names) : array($names);
+			foreach($namesArray as $element){
+				unset($this->elements[$element . $listarray[$nr]]);
 			}
 			if(is_array($listarray)){// Bug #4079
 				unset($listarray[$nr]);
 			}
 		}
 
-		$this->setElement($name, serialize($listarray));
+		$this->setElement($name, serialize(array_values($listarray)));
 	}
 
 	function addLinkToLinklist($name){
@@ -1537,7 +1534,7 @@ class we_document extends we_root{
 		$times = array();
 		foreach($this->schedArr as $s){
 			if($s['task'] == we_schedpro::SCHEDULE_FROM && $s['active']){
-				$times[]= we_schedpro::getNextTimestamp($s, time());
+				$times[] = we_schedpro::getNextTimestamp($s, time());
 			}
 		}
 		if(count($times)){
