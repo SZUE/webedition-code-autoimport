@@ -56,7 +56,7 @@ class we_button{
 	 * @static
 	 */
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
-		return '<table ' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') .
+		return '<table  ' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
 			'"' . we_button::getInlineStyleByParam($width, '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . htmlspecialchars($cmd) . ';}">' .

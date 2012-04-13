@@ -411,13 +411,20 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 color: black;
 font-size: <?php print (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? "10px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "9px")); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
+border-width: 0px;
+border-collapse: collapse;
+padding: 0px;
 }
 
 .tree a {
 text-decoration:none;
 }
 
-
+.tree img {
+width: 19px;
+height: 18px;
+vertical-align: middle;
+}
 
 .selector {
 color: black;

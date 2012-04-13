@@ -15,7 +15,7 @@
  * @category   webEdition
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
+*/
 
 .weBtn, .weBtnLeft, .weBtnMiddle, .weBtnRight, .weBtnClicked, .weBtnLeftClicked, .weBtnMiddleClicked, .weBtnRightClicked, .weBtnDisabled, .weBtnLeftDisabled, .weBtnMiddleDisabled, .weBtnRightDisabled {
 	height:22px ! important;
@@ -43,7 +43,9 @@
 
 .weBtn{
 	cursor:pointer;
-	border: 0px;
+	border-width: 0px;
+	border-collapse: collapse;
+	padding: 0px;
 }
 
 .weBtnLeft{
@@ -51,14 +53,17 @@
 }
 
 .weBtnImage{
-	border: 0px;
+	border-width: 0px;
+	margin: 0px;
+	padding:0px;
+	display:block;
 }
 
 
 .weBtnLeft, .weBtnMiddle, .weBtnRight, .weBtnMiddleDisabled, .weBtnMiddleClicked, .weBtnRightClicked, .weBtnRightDisabled,.weBtnLeftDisabled,.weBtnLeftClicked{
-		border: 0px ! important;
-		margin: 0px ! important;
-		padding: 0px ! important;
+	border: 0px ! important;
+	margin: 0px ! important;
+	padding: 0px ! important;
 }
 
 .weBtnMiddle,.weBtnMiddleClicked,.weBtnMiddleDisabled{
@@ -98,6 +103,6 @@
 
 .weBtnDisabled{
 	cursor:default;
-	border: 0px;
+	border-width: 0px;
 }
 
