@@ -81,7 +81,7 @@ print STYLESHEET .
 
 ?>
 
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 
 	self.focus();
 
@@ -1446,6 +1446,7 @@ if($_table_to_load){
 pWebEdition_JSFunctions();
 ?>
 						var cockpitFrame;
+						//-->
 </script>
 <?php
 we_main_header::pCSS();

@@ -890,7 +890,7 @@ class we_import_files{
 		$yuiSuggest = & weSuggest::getInstance();
 		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js .
 			$yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles();
-		return we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 	}
 
 	function getHTMLCategory(){

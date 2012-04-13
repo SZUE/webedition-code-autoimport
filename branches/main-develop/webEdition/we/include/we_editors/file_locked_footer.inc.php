@@ -57,4 +57,4 @@ $_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editf
 		"bgcolor" => "white"), $_messageTbl->getHtml());
 
 
-print we_html_element::htmlHtml($_head . "\n" . $_body);
+print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);

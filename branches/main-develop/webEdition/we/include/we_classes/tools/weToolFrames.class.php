@@ -516,7 +516,7 @@ class weToolFrames extends weModuleFrames{
 			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			$head;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);

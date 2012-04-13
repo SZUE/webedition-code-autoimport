@@ -50,4 +50,4 @@ $_body = we_html_element::htmlBody(array("bgcolor" => "#ffffff",
 		"onload" => "setFrameSize();",
 		"onresize" => "setFrameSize()"), $bodyContent);
 
-print we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . "\n" . $_body);
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . "\n" . $_body);

@@ -96,7 +96,7 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
@@ -800,7 +800,7 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]"))
 				) . $fst->getHtml());
@@ -988,7 +988,7 @@ abstract class we_rebuild_wizard{
 		if(!sizeof($contents)){
 			return "";
 		}
-		return we_html_element::htmlDocType('4Trans') . we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .

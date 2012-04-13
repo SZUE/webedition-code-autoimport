@@ -214,7 +214,7 @@ $body = we_html_element::htmlBody(array("bgcolor" => "#ffffff"));
 
 $head = we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js);
 
-print we_html_element::htmlHtml(
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead($head) .
 		$body
 	);

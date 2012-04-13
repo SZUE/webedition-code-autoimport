@@ -61,4 +61,4 @@ $_body = we_html_element::htmlBody(array("bgcolor" => "white",
 		"leftmargin" => 0,
 		"topmargin" => 0), $_body);
 
-print we_html_element::htmlHtml("\n" . $_head . "\n" . $_body);
+print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);

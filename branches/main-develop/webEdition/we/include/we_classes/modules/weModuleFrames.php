@@ -63,7 +63,7 @@ class weModuleFrames{
 	function getHTMLDocument($body, $extraHead = ""){
 		$head = //FIXME: missing title
 			we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n" . $extraHead;
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);

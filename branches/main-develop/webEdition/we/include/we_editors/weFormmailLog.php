@@ -126,7 +126,7 @@ function clearLog() {
 
 function getHTMLDocument($body, $head=""){
 	$head = we_html_tools::getHtmlInnerHead(g_l('prefs', '[formmail_log]')) . STYLESHEET . $head;
-	return we_html_element::htmlHtml(
+	return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead($head) .
 			$body
 	);

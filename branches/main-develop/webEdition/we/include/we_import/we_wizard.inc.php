@@ -99,7 +99,7 @@ function _executeAjaxRequest(method, aUrl, callback, ajaxData){
 
 HTS;
 
-		return  we_html_element::htmlDocType() .we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', "[title]")) .
 					we_html_element::jsScript(WEBEDITION_DIR . "js/windows.js") .
@@ -212,7 +212,7 @@ HTS;
 			$a["enctype"] = "multipart/form-data";
 		eval('list($js, $content)=$this->get' . $type . 'Step' . $step . '();');
 		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
 					we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -277,7 +277,7 @@ HTS;
 				'
 		);
 
-		print we_html_element::htmlHtml(
+		print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
 					we_html_element::jsElement(we_button::create_state_changer(false))) .
@@ -780,7 +780,7 @@ HTS;
 					we_html_element::htmlHidden(array("name" => "cid", "value" => "")));
 		}
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::jsElement(
 						"function addField(form, fieldType, fieldName, fieldValue) {\n" .

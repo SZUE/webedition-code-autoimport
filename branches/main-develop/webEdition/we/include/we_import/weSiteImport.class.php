@@ -2099,7 +2099,7 @@ class weSiteImport{
 	function _getHtmlPage($body, $js = ""){
 		$head = //FIXME: missing title
 			we_html_tools::getHtmlInnerHead() . STYLESHEET . $js;
-		return we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 	}
 
 }

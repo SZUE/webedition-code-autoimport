@@ -214,7 +214,7 @@ if($we_Table == FILE_TABLE && $we_ContentType == "folder" && isset($we_ID) && !e
 
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	//	show errorMessage - no view for this document (we:hidePages)
-	print we_html_element::htmlHtml(
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
 				we_html_element::jsElement("top.toggleBusy(0);") .
 				STYLESHEET

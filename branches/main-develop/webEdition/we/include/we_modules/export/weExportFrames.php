@@ -582,7 +582,7 @@ class weExportFrames extends weModuleFrames{
 							we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 							we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
 
-						$out = we_html_element::htmlHtml(
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead('') .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
 								)
@@ -639,7 +639,7 @@ class weExportFrames extends weModuleFrames{
 							we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 							we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
 
-						$out = we_html_element::htmlHtml(
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead('') .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
@@ -716,7 +716,7 @@ class weExportFrames extends weModuleFrames{
 							we_html_tools::getHtmlInnerHead() . STYLESHEET;
 
 						if($all > $exports){
-							$out = we_html_element::htmlHtml(
+							$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 									we_html_element::htmlHead($head) .
 									we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 									)
@@ -741,7 +741,7 @@ class weExportFrames extends weModuleFrames{
 									''
 								);
 
-							$out = we_html_element::htmlHtml(
+							$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 									we_html_element::htmlHead($head . $_progress_update) .
 									we_html_element::htmlBody(
 										array(

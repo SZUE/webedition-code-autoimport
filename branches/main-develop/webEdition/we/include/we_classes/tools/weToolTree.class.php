@@ -248,7 +248,7 @@ class weToolTree extends weMainTree{
 		foreach($this->styles as $st)
 			$style_code.=$st . "\n";
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .

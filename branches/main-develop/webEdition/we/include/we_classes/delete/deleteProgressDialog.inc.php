@@ -35,7 +35,7 @@ class deleteProgressDialog{
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($pb, g_l('delete', "[delete]"), $cancelButton);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
 					$js) .
@@ -59,7 +59,7 @@ class deleteProgressDialog{
 
 		$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "delcmd"));
 		$fst->setFrameAttributes(1, array("scrolling" => "no"));
-		return we_html_element::htmlDocType() .we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('delete', "[delete]")) .
 					we_html_element::jsScript(JS_DIR . "we_showMessage.js")

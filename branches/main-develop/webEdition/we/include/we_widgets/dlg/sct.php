@@ -522,8 +522,7 @@ $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $can
 $sTblWidget = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		"sctProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
-print we_html_element::htmlDocType() .
-	we_html_element::htmlHtml(
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::cssElement(
 				"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .

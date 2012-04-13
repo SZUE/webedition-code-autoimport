@@ -184,7 +184,7 @@ class weExportWizard{
 		$head = we_html_tools::getHtmlInnerHead(g_l('export', '[title]')) . STYLESHEET . $js;
 		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -254,7 +254,7 @@ class weExportWizard{
 		}
 
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
@@ -314,7 +314,7 @@ top.close();
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('export', "[wizard_title]")) . STYLESHEET . $js;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 						we_html_element::htmlHidden(array("name" => "step", "value" => "2")) .
@@ -399,7 +399,7 @@ top.close();
 		array_push($parts, array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1));
 
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
@@ -427,7 +427,7 @@ top.close();
 			we_html_element::htmlHidden(array("name" => "selection", "value" => "manual")) .
 			we_html_element::htmlHidden(array("name" => "step", "value" => "2"));
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						//we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
@@ -553,7 +553,7 @@ top.close();
 			)
 		);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
 					STYLESHEET .
@@ -682,9 +682,8 @@ top.close();
 
 		array_push($parts, array("headline" => g_l('export', "[export_depth]"), "html" => we_html_element::htmlLabel(null, g_l('export', "[to_level]")) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space));
 
-		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(STYLESHEET . "\n" . $js) .
-				"\n" .
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead(STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 						we_html_element::htmlHidden(array("name" => "step", "value" => "7")) .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[options]"))
@@ -761,9 +760,8 @@ top.close();
 
 		array_push($parts, array("headline" => g_l('export', "[export_to]"), "html" => $table->getHtml(), "space" => $_space));
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . "\n" . $js) .
-				"\n" .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "export")) .
 						we_html_element::htmlHidden(array("name" => "step", "" => "7")) .
@@ -782,7 +780,7 @@ top.close();
 
 		unset($_SESSION['exportVars']);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET .
 					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=body&step=50&exportfile=" . $filename))) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', "[step10]"))
@@ -862,7 +860,7 @@ top.close();
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), ($returned_message[1] ? (g_l('export', "[error]") . "<br><br>") : "") . $returned_message[0]);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, ($returned_message[1] ? g_l('export', "[step99]") : g_l('export', "[step99_notice]")))
 				)
@@ -969,7 +967,7 @@ top.close();
 				}
 		');
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $js2 .
 					$table->getHtml() .
@@ -1070,7 +1068,7 @@ top.close();
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
 				) .
@@ -1241,7 +1239,7 @@ top.close();
 
 					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
-					$out = we_html_element::htmlHtml(
+					$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => ($start_export ? ($this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&mode=progress&step=4';document.we_form.submit()") : ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=99&error=" . $export_error . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 							)
@@ -1320,7 +1318,7 @@ top.close();
 					if((count($remaining_docs) > 0) || (count($remaining_objs) > 0)){
 						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
-						$out = we_html_element::htmlHtml(
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
@@ -1329,7 +1327,7 @@ top.close();
 						if(!$export_local)
 							unset($_SESSION['exportVars']);
 						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
-						$out = we_html_element::htmlHtml(
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(
 									array(
@@ -1438,7 +1436,7 @@ top.close();
 					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 					if($all > $exports){
-						$out = we_html_element::htmlHtml(
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
 								)
@@ -1446,11 +1444,9 @@ top.close();
 					} else{
 						if(is_writable($filename))
 							weFile::save($filename, $xmlExIm->getFooter(), "ab");
-						$_progress_update = "\n" .
-							we_html_element::jsElement('
-								if (top.footer.setProgress) top.footer.setProgress(100);
-						') . "\n";
-						$out = we_html_element::htmlHtml(
+						$_progress_update =
+							we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);');
+						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
 								we_html_element::htmlHead($head . $_progress_update) .
 								we_html_element::htmlBody(
 									array(

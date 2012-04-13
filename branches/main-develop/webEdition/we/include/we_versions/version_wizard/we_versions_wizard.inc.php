@@ -115,7 +115,7 @@ abstract class we_versions_wizard{
 				), $content2->getHtml());
 		}
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET . ($dc ? "" : we_button::create_state_changer()) . $js) . we_html_element::htmlBody(
 					array(
@@ -1247,7 +1247,7 @@ abstract class we_versions_wizard{
 			));
 		}
 
-		return  we_html_element::htmlDocType() .we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 					we_html_tools::getHtmlInnerHead(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
@@ -1422,7 +1422,7 @@ abstract class we_versions_wizard{
 			we_html_element::jsScript('/webEdition/js/libs/yui/event-min.js') .
 			we_html_element::jsScript('/webEdition/js/libs/yui/connection-min.js');
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					$headCal . STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') . ($contents[0] ? we_html_element::jsElement(
 							"<!--\n" . $contents[0] . "\n//-->") : "")) . we_html_element::htmlBody(

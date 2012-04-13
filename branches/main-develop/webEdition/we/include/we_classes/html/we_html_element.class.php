@@ -319,7 +319,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlHtml($content, $close = true){
-		return self::htmlDocType() . we_baseElement::getHtmlCode(new we_baseElement('html', $close, array(), $content));
+		return we_baseElement::getHtmlCode(new we_baseElement('html', $close, array(), $content));
 	}
 
 	/**

@@ -63,7 +63,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	$buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align"=>"right"), 1, 1);
 	$buttons->setCol(0,0,null,we_button::create_button("close","javascript:self.close();"));
-	print we_html_element::htmlHtml(
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
 				//FIXME: missing title
 				we_html_tools::getHtmlInnerHead()

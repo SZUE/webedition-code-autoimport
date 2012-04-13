@@ -194,4 +194,4 @@ $_head = //FIXME: missing title
 	we_html_element::jsScript('/webEdition/js/libs/yui/connection-min.js') .
 	we_html_element::jsElement($_js);
 
-print we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);

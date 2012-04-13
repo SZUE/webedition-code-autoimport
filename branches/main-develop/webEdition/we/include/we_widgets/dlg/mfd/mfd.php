@@ -168,8 +168,7 @@ while($j < $iMaxItems) {
 
 $lastModified .= "</table>\n";
 
-print we_html_element::htmlDocType() .
-	we_html_element::htmlHtml(
+print	we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::jsElement(
 				$sJsCode)) . we_html_element::htmlBody(

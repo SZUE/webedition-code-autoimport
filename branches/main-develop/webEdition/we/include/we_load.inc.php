@@ -257,7 +257,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}';
 	}
 
-	print we_html_element::htmlHtml(we_html_element::htmlHead(
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
 				we_html_tools::getHtmlInnerHead('File-Tree') .
 				we_html_element::jsElement($js)
 			) . we_html_element::htmlBody(array("bgcolor" => "white"))

@@ -64,7 +64,7 @@ if(isset($content)){
 	$_body = $_table->getHtml();
 	$_body = we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_body);
 
-	print we_html_element::htmlHtml($_head . $_body);
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
 }
 
 echo we_html_element::jsElement('parent.openedWithWE = 1;');

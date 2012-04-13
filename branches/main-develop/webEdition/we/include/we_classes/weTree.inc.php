@@ -598,7 +598,7 @@ function setCheckNode(imgName){
 function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check1.gif";}
 }');
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .

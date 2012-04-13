@@ -142,8 +142,7 @@ if($_SESSION["we_mode"] == "seem"){
 	} else{
 		$_js = we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
-	print
-		we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 	exit();
 }
 

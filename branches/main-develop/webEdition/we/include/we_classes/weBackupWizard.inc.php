@@ -318,7 +318,7 @@ class weBackupWizard{
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]')) . STYLESHEET;
 		$body = $frameset->getHtml() . $noframeset->getHTML();
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -357,7 +357,7 @@ class weBackupWizard{
 		);
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -396,7 +396,7 @@ class weBackupWizard{
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -739,7 +739,7 @@ class weBackupWizard{
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -776,7 +776,7 @@ class weBackupWizard{
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -948,7 +948,7 @@ class weBackupWizard{
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title_export]")) . STYLESHEET . $js;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -1008,7 +1008,7 @@ class weBackupWizard{
 				)
 		);
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -1097,7 +1097,7 @@ class weBackupWizard{
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				$body
 		);
@@ -1258,7 +1258,7 @@ class weBackupWizard{
 			}
 		}
 
-		return we_html_element::htmlHtml(
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
 				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $table->getHtml()
 				)

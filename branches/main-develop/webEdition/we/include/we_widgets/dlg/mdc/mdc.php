@@ -84,8 +84,7 @@ if(isset($_query) && $DB_WE->query($_query) && !empty($_csv)){
 	$mdc .= '</table>';
 }
 
-print we_html_element::htmlDocType() .
-	we_html_element::htmlHtml(
+print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . STYLESHEET . we_html_element::jsElement(
 				$js)) . we_html_element::htmlBody(

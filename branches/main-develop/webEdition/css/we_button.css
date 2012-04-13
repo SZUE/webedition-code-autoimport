@@ -43,6 +43,7 @@
 
 .weBtn{
 	cursor:pointer;
+	border: 0px;
 }
 
 .weBtnLeft{
@@ -50,7 +51,7 @@
 }
 
 .weBtnImage{
-	border: 0;
+	border: 0px;
 }
 
 
@@ -97,5 +98,6 @@
 
 .weBtnDisabled{
 	cursor:default;
+	border: 0px;
 }
 

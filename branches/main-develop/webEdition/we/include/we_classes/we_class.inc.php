@@ -681,7 +681,7 @@ abstract class we_class{
 					} else{
 						$we_responseText = g_l('weClass', '[languageLinksLocaleChanged]'); //,$we_doc->Path
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
-						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+						print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					}
 				} else{//default case: there was now change of page language. Loop method call to another method, preparing LangLinks
@@ -750,7 +750,7 @@ abstract class we_class{
 						$we_responseText = g_l('weClass', '[languageLinksLangNotok]');
 						$we_responseText = sprintf($we_responseText, $locale, $fileLang, $locale);
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
-						print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+						print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					} else{
 						if(!$isfolder){
@@ -777,7 +777,7 @@ abstract class we_class{
 								$intersect = array_intersect($actualLangs, $targetLangs);
 								$setThisLink = count($intersect) > 0 ? false : true;
 							}
-							
+
 							if(!$newOrChanged){
 								$setThisLink = true;
 							}
@@ -801,7 +801,7 @@ abstract class we_class{
 								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
 								$we_responseText = sprintf($we_responseText, $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
-								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+								print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
 						}//!isfolder
@@ -821,7 +821,7 @@ abstract class we_class{
 								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
 								$we_responseText = sprintf($we_responseText, $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
-								print we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
+								print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
 						}

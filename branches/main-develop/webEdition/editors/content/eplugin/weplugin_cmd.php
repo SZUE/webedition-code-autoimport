@@ -178,7 +178,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 		}
 	}
 //FIXME: charset
-	print we_html_element::htmlHtml(
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(
 				$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
 			) .
