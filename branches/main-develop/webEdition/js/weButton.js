@@ -100,18 +100,10 @@ weButton.show = function(id){
 
 weButton.isDisabled = function(id) {
 	var el = document.getElementById(id);
-	if(el != null && el.className == "weBtnDisabled") {
-		return true
-
-	} else {
-		return false;
-
-	}
-
+	return (el != null && el.className == "weBtnDisabled");
 }
 
 
 weButton.isEnabled = function(id) {
 	return !this.isDisabled(id);
-
 }
