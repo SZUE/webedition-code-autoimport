@@ -609,7 +609,8 @@ class copyFolderFrag extends taskFragment{
 					case "linklist" :
 						$ll = new we_linklist($we_doc->elements[$k]["dat"]);
 						$changed = false;
-						for($i = 0; $i < sizeof($ll->listArray); $i++){
+						$cnt = $ll->length();
+						for($i = 0; $i < $cnt; $i++){
 							$id = $ll->getID($i);
 							$path = id_to_path($id, FILE_TABLE, $DB_WE);
 							if($this->mustChange($path)){
@@ -621,7 +622,7 @@ class copyFolderFrag extends taskFragment{
 						}
 
 						if($changed){
-							$we_doc->elements[$k]["dat"] = serialize($ll->listArray);
+							$we_doc->elements[$k]["dat"] = $ll->getString();
 						}
 
 						break;
