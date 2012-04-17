@@ -56,6 +56,7 @@ new weTagDataOption('textinput', false, '', array($name, $property, $editable, $
  new weTagDataOption('choice', false, '', array($name, $property, $editable, $size, $maxlength, $value, $values, $class, $style), array($name)),
  new weTagDataOption('select', false, '', array($name, $property, $editable, $size, $value, $values, $class, $style), array($name)),
  new weTagDataOption('hidden', false, '', array($name, $property), array($name)),
+ new weTagDataOption('print', false, '', array($name, $property), array($name)),
 	new weTagDataOption('date', false, '', array($name, $property, $editable, $format, $value, $minyear, $maxyear, $hidden), array($name)),
  new weTagDataOption('password', false, '', array(array())),
  new weTagDataOption('img', false, 'customer', array($name, $editable, $size, $value, $width, $height, $thumbnail, $parentid, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext), array($name, $parentid)),

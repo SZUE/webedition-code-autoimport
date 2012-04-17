@@ -791,6 +791,8 @@ function we_tag_userInput($attribs, $content){
 					'xml' => $xml,
 				);
 				return getHtmlTag('input', $attsHidden);
+			case "print" :			
+				return  $orgVal;	
 			case "choice" :
 				$atts = removeAttribs(
 					$attribs, array(
