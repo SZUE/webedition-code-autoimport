@@ -187,7 +187,7 @@ if(!$seeMode){
 
 // File > New > Directory > Object
 
-	$we_menu['1011100']['parent'] = '1010000'; // separator
+/*	$we_menu['1011100']['parent'] = '1010000'; // separator
 // File > New > Wizards
 	$we_menu['1011200']['text'] = g_l('javaMenu_global', '[wizards]') . '...';
 	$we_menu['1011200']['parent'] = '1010000';
@@ -201,6 +201,7 @@ if(!$seeMode){
 	$we_menu['1011201']['enabled'] = '1';
 
 	$we_menu['1020000']['parent'] = '1000000'; // separator
+ */
 }
 // File > Open
 $we_menu['1030000']['text'] = g_l('javaMenu_global', '[open]');
