@@ -421,7 +421,7 @@ text-decoration:none;
 }
 
 .tree img {
-width: 19px;
+width: 16px;
 height: 18px;
 vertical-align: middle;
 }
