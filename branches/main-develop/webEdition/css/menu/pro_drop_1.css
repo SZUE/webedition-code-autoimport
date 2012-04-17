@@ -136,7 +136,7 @@ way to fit your requirements.
 	left: -1px;
 	top: 22px;
 	background: #f0f0f0;
-    border: 1px solid #a0a0a0;
+	border: 1px solid #a0a0a0;
 	word-wrap: break-word;
 	width: 14em;
 	height: auto;
@@ -162,13 +162,11 @@ way to fit your requirements.
 	padding-left: 1.5em;
 	padding-right: 1em;
 	text-indent: -1em;
-	margin: 4px 0px 1px 0px;
 	margin: 2px 0px 0px 0px;
 	padding-top: 1px;
 	padding-bottom: 1px;
 	color: #000000;
 	text-decoration: none;
-
 }
 
 #nav li ul.sub li a.fly {

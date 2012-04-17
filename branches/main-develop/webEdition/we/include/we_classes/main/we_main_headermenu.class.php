@@ -34,6 +34,9 @@ class we_main_headermenu{
 				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_FF.css');
 				break;
 		}
+		if(we_base_browserDetect::inst()->isMAC()){
+			print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_mac.css');
+		}
 		print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
 	}
 
