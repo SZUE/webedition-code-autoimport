@@ -363,7 +363,7 @@ abstract class we_database_base{
 
 	/** shorthand notation for num_rows */
 	public function nf(){
-		return $this->num_rows();
+		return $this->num_fields();
 	}
 
 	/** shorthand for print num_rows
