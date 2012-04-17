@@ -20,6 +20,10 @@
 	color:#000000;
 }
 
+#nav li.top div a.top_link {
+	font-size: 10pt;
+}
+
 #nav li.top:hover div a.top_link {
 	color: #000000;
 }
