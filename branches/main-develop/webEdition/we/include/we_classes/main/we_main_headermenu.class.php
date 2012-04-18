@@ -30,6 +30,9 @@ class we_main_headermenu{
 			case we_base_browserDetect::SAFARI:
 				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
 				break;
+			case we_base_browserDetect::CHROME:
+				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
+				break;
 			case we_base_browserDetect::FF:
 				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_FF.css');
 				break;

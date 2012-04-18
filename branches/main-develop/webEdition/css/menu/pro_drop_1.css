@@ -26,6 +26,8 @@ way to fit your requirements.
 .preload2 {
 	background: url(/webEdition/images/menu/arr_over.gif);
 }
+.preload3 {
+}
 
 #nav {
 	padding: 0px 0px 0px 6px;
@@ -45,9 +47,9 @@ way to fit your requirements.
 }
 
 #nav li.top div {
-	position:relative;
-	top:5px;
-	border:none;
+	position: relative;
+	top: 5px;
+	border: none;
 }
 
 #nav li.top:hover {
@@ -56,25 +58,19 @@ way to fit your requirements.
 }
 
 #nav li.top:hover div {
-	border-top:solid 1px #ffffff;
-	border-right:solid 1px #808080;
-	border-bottom:solid 1px #808080;
-	border-left:solid 1px #ffffff;
-	height:22px;
-	top:4px;
+	border-top: solid 1px #ffffff;
+	border-right: solid 1px #808080;
+	border-bottom: solid 1px #808080;
+	border-left: solid 1px #ffffff;
+	height: 22px;
+	top: 4px;
 	background: #3399ff;
 }
 
-#nav li.top div.click {
-}
-
 #nav li.top div.click:hover {
-	border-top:solid 1px #808080;
-	border-left:solid 1px #808080;
-	border-right:solid 1px #ffffff;
-}
-
-#nav li.top div.click:hover a.top_link {
+	border-top: solid 1px #808080;
+	border-left: solid 1px #808080;
+	border-right: solid 1px #ffffff;
 }
 
 #nav li.top div a.top_link {
@@ -82,11 +78,11 @@ way to fit your requirements.
 	float: left;
 	height: 20px;
 	line-height: 22px;
-	color:#000000;
-	text-decoration:none;
-	font-weight:bold;
+	color: #000000;
+	text-decoration: none;
+	font-weight: bold;
 	cursor: pointer;
-	background:none;
+	background: none;
 }
 
 #nav li.top:hover div a.top_link {
@@ -138,26 +134,34 @@ way to fit your requirements.
 	background: #f0f0f0;
 	border: 1px solid #a0a0a0;
 	word-wrap: break-word;
-	width: 14em;
+	width: 16em;
 	height: auto;
 	z-index: 300;
-	margin-top: 0px;
-	padding: 0px 2px 4px 2px;
+	margin-top: 0;
+	padding: 0 2px 4px 2px;
 	border-radius: 5px;
-	border-top-left-radius: 0px;
+	border-top-left-radius: 0;
+	box-shadow: 3px 3px 10px #bbbbbb;
 }
 
 #nav li div.click:hover ul.sub li{
 	display: block;
 	position: relative;
 	float: left;
-	width: 14em;
+	width: 16em;
+	font-weight: normal;
+}
+
+#nav li div.click:hover ul.sub li ul li{
+	display: block;
+	position: relative;
+	float: left;
+	width: 14.5em;
 	font-weight: normal;
 }
 
 #nav li div.click:hover ul.sub li a{
 	display: block;
-	width: 11.5em;
 	line-height: 2.5ex;
 	padding-left: 1.5em;
 	padding-right: 1em;
@@ -175,7 +179,6 @@ way to fit your requirements.
 #nav li div.click:hover ul.sub li a:hover {
 	background: #3399ff;
 	color: #ffffff;
-
 }
 #nav li div.click:hover ul.sub li a.fly:hover {
 	background: #3399ff url(/webEdition/images/menu/arr_over.gif) 99% 50% no-repeat;
@@ -187,29 +190,31 @@ way to fit your requirements.
 	color: #ffffff;
 }
 
-
-
 #nav li div.click:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul li:hover ul,
 #nav li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
-	left: 13.8em;
+	left: 14.2em;
 	top: -1px;
 	background: #f0f0f0;
 	border: 1px solid #a0a0a0;
 	word-wrap: break-word;
-	width: 14em;
+	width: 14.5em;
 	z-index: 400;
-	height:auto;
+	height: auto;
 	padding: 0px 2px 5px 2px;
 	border-radius: 5px;
+	box-shadow: 3px 3px 10px #bbbbbb;
+}
+
+#nav li div.click:hover ul li:hover ul{
+	left: 15.7em;
 }
 
 #nav li.disabled{
 	height: 0px;
 	line-height: 0px;
-	padding: 0px;
-	width: 14em;
+	padding: 0;
 	border-top: 1px solid #a0a0a0;
 	border-bottom: 1px solid #ffffff;
 	margin: 2px 0px 0px 0px;
