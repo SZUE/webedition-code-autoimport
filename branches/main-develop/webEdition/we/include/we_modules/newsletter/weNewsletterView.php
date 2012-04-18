@@ -2559,7 +2559,7 @@ class weNewsletterView{
 					$this->settings['customer_firstname_field'] . ',' .
 					$this->settings['customer_lastname_field']
 				);
-			$this->db->query('SELECT ' . $select . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql != '' ? ' AND (' . $filtersql . ')' : ''));
+			$this->db->query('SELECT ID,' . $select . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $customers . ')' . ($filtersql != '' ? ' AND (' . $filtersql . ')' : ''));
 			while($this->db->next_record()) {
 				if($this->db->f($this->settings["customer_email_field"])){
 					$email = trim($this->db->f($this->settings["customer_email_field"]));
