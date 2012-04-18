@@ -838,7 +838,7 @@ function we_getCodeMirror2Code($code){
 				workTime: 300,
 				workDelay: 800,
 				height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
-				textWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
+				lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
 				 initCallback: function() {
 					window.setTimeout(function(){ //without timeout this will raise an exception in firefox
 						if (document.addEventListener) {
