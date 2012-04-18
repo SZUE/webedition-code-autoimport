@@ -63,7 +63,7 @@ function we_tag_sessionField($attribs, $content){
 				$orgVal = time();
 			}
 			return we_html_tools::getDateInput2(
-					"s[we_date_" . $name . "]", ($orgVal ? new DateTime($orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
+					"s[we_date_" . $name . "]", ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : new DateTime()), false, $format, '', '', $xml, $minyear, $maxyear);
 			break;
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
