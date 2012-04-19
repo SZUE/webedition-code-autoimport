@@ -21,6 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 $bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 $yearView = isset($_REQUEST["ViewYear"]) ? $_REQUEST["ViewYear"] : 0;
