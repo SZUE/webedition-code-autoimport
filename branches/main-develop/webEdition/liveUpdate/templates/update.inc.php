@@ -27,9 +27,13 @@
  * before searching for an update
  *
  */
-
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
+	$alsoBeta='&setTestUpdate=1';			
+} else {
+	$alsoBeta='';
+}
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-$searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate');
+$searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate'.$alsoBeta);
 if(isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000'){
 	$clientSubVersion = ' (SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] . ')';
 } else{

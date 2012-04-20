@@ -210,7 +210,7 @@ class we_linklist{
 			} else{
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=no\';';
 			}
-			if($jswinAttribs["jstoolbar"]){
+			if (isset($jswinAttribs["jstoolbar"]) && $jswinAttribs["jstoolbar"]) {
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=yes\';';
 			} else{
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';

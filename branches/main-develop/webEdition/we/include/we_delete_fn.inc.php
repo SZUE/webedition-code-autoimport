@@ -132,7 +132,7 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 	}
 	// Fast Fix for deleting entries from tblLangLink: #5840
 	if($DB_WE->query("DELETE FROM $table WHERE ID=" . intval($id))){
-		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
+		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="'.$table.'" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
 	}
 
 	deleteContentFromDB($id, $table);
