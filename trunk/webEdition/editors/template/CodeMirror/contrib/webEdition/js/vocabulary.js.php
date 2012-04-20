@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -23,7 +28,7 @@
  * };
  *
  * Tag description and attributes are taken right from the tag descriptor files.
- * 
+ *
  * 2 examples of array elements:
  *
  *   top.we_tags["we:tag"] = {
@@ -37,7 +42,7 @@
  *         "anotherAttribute": 2 // 2 indicates, this attribute has no default options
  *      }
  *   };
- * 
+ *
  *   top.we_tags["we:anotherTag"] = {
  *      "desc": "This is the tags description",
  *      "attributes": 1 // 1 indicates this tag has no default attributes
@@ -48,52 +53,46 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * @author     Daniel Schroeder  <deemes79 at googlemail.com>
  */
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
-	protect();
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/taged.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_tag.inc.php');
-	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
-	echo 'top.we_tags=new Array();';
-	$allWeTags = weTagWizard::getExistingWeTags();
-	foreach($allWeTags as $tagName) {
-		$GLOBALS['TagRefURLName'] = strtolower($tagName);
-		unset($GLOBALS['weTagWizard']['attribute']); //yes, webedition saves this in a global, which is absolutley unhandy in this situation
-		if(isset($weTag))
-			unset($weTag);
-		$weTag = weTagData::getTagData($tagName);
-		echo sprintf('top.we_tags["we:%s"]= {',$tagName);
-		echo sprintf('"desc": "%s",',addslashes($weTag->Description));
-		echo '"attributes":';
-		if(isset($weTag->Attributes) && is_array($weTag->Attributes) && count($weTag->Attributes)) {
-			echo '{';
-			$attributes=array();
-			foreach($weTag->Attributes as $attribute) {
-				if(get_class($attribute)=='weTagData_cmdAttribute')
-					continue;
-				$attributeString=sprintf('"%s":',$attribute->getName());
-				if(isset($attribute->Options) && is_array($attribute->Options) && count($attribute->Options)) {
-					$attributeString.='{';
-					$options=array();
-					foreach($attribute->Options as $option) {
-						if($option->Value != '-')
-							$options[]=sprintf('"%s": 3',$option->Value);
+echo 'top.we_tags=new Array();';
+$allWeTags = weTagWizard::getExistingWeTags();
+foreach($allWeTags as $tagName){
+	$GLOBALS['TagRefURLName'] = strtolower($tagName);
+	if(isset($weTag))
+		unset($weTag);
+	$weTag = weTagData::getTagData($tagName);
+	echo sprintf('top.we_tags["we:%s"]= {', $tagName);
+	echo sprintf('"desc": "%s",', addslashes($weTag->getDescription()));
+	echo '"attributes":';
+	$attr = $weTag->getAllAttributes();
+
+	if(count($attr)){
+		echo '{';
+		$attributes = array();
+		foreach($attr as $attribute){
+			$attributeString = sprintf('"%s":', $attribute);
+			$options = $weTag->getTypeAttributeOptions();
+			if($options){
+				$attributeString.='{';
+				$optionsJS = array();
+				foreach($options as $option){
+					if($option->Value != '-'){
+						$optionsJS[] = sprintf('"%s": 3', $option->Value);
 					}
-					$attributeString.=implode(',',$options);
-					$attributeString.='}';
 				}
-				else {
-					$attributeString.='2';
-				}
-				$attributes[]=$attributeString;
+				$attributeString.=implode(',', $optionsJS);
+				$attributeString.='}';
+			} else{
+				$attributeString.='2';
 			}
-			echo implode(',',$attributes);
-			echo '}';
+			$attributes[] = $attributeString;
 		}
-		else {
-			echo '1';
-		}
-		echo '};';
+		echo implode(',', $attributes);
+		echo '}';
+	} else{
+		echo '1';
 	}
-?>
+	echo '};';
+}

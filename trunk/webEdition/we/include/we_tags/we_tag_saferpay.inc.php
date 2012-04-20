@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/modules/shop.inc.php');
-
 
 
 /**
@@ -32,36 +32,34 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GL
  *
  * @return         void
  */
-function we_tag_saferpay($attribs,$content) {
+function we_tag_saferpay($attribs) {
 	global $DB_WE;
-	$name = we_getTagAttribute('name',$attribs);
-	$foo = attributFehltError($attribs,'pricename','saferpay');
+	$name = weTag_getAttribute('name',$attribs);
+	$foo = attributFehltError($attribs,'pricename',__FUNCTION__);
 	if($foo)
 	    return $foo;
 	if(!$name)
-		$foo = attributFehltError($attribs,'shopname','saferpay');
+		$foo = attributFehltError($attribs,'shopname',__FUNCTION__);
 	if($foo)
 		return $foo;
 
-	$shopname = we_getTagAttribute('shopname',$attribs);
+	$shopname = weTag_getAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute('pricename',$attribs);
-	$shipping = we_getTagAttribute('shipping',$attribs);
-	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
-	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
-	$languagecode = we_getTagAttribute('languagecode',$attribs);
+	$pricename = weTag_getAttribute('pricename',$attribs);
+	$shipping = weTag_getAttribute('shipping',$attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet',$attribs,false,true);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate',$attribs);
+	$languagecode = weTag_getAttribute('languagecode',$attribs);
 
-	$onsuccess = we_getTagAttribute('onsuccess',$attribs);
-	$onfailure = we_getTagAttribute('onfailure',$attribs);
-	$onabortion = we_getTagAttribute('onabortion',$attribs);
+	$onsuccess = weTag_getAttribute('onsuccess',$attribs);
+	$onfailure = weTag_getAttribute('onfailure',$attribs);
+	$onabortion = weTag_getAttribute('onabortion',$attribs);
 
 
-	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
-	$useVat = we_getTagAttribute('usevat',$attribs,'true', true);
+	$netprices = weTag_getAttribute('netprices',$attribs,true, true);
+	$useVat = weTag_getAttribute('usevat',$attribs,false, true);
 
 	if ($useVat) {
-		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
 		if (isset($_SESSION['webuser'])) {
 			$_customer = $_SESSION['webuser'];
 		} else {
@@ -148,15 +146,15 @@ function we_tag_saferpay($attribs,$content) {
 
 /* ***** get the further links ***** */
 				$successprelink= id_to_path($onsuccess);
-                $successlink = "http://".$_SERVER['SERVER_NAME'].$successprelink;
+                $successlink = getServerUrl().$successprelink;
                 //print $successlink;
 
                 $failureprelink= id_to_path($onfailure);
-                $failurelink = "http://".$_SERVER['SERVER_NAME'].$failureprelink;
+                $failurelink = getServerUrl().$failureprelink;
                 //print $failurelink;
 
                 $abortionprelink= id_to_path($onabortion);
-                $abortionlink = "http://".$_SERVER['SERVER_NAME'].$abortionprelink;
+                $abortionlink = getServerUrl().$abortionprelink;
                 //print $failurelink;
 /* ***** get the further links ***** */
 
@@ -168,7 +166,6 @@ function we_tag_saferpay($attribs,$content) {
       $itemPrice = (isset($item['serial']["we_".$pricename]) ? $item['serial']["we_".$pricename] : $item['serial'][$pricename]);
 
         // foreach article we must determine the correct tax-rate
-			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 			$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 			if ($shopVat) { // has selected or standard shop rate
@@ -195,11 +192,10 @@ function we_tag_saferpay($attribs,$content) {
 
 
 	       //get the shipping costs
-	        require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 
 			$weShippingControl = weShippingControl::getShippingControl();
 
-			if (we_tag('ifRegisteredUser',array(), '')) { // check if user is registered
+			if (we_tag('ifRegisteredUser')) { // check if user is registered
 			 $customer = $_SESSION['webuser'];
 		    } else {
 			 $customer = false;
@@ -289,7 +285,7 @@ function we_tag_saferpay($attribs,$content) {
 $command = $execPath."saferpay -payinit -p $confPath $strAttributes";
 
  if (!$execPath || !$confPath ){
- 	 print $GLOBALS["l_shop"]["saferpayError"];
+ 	 print g_l('modules_shop','[saferpayError]');
  	 print $strAttributes;
      exit;
  }else{
@@ -303,7 +299,7 @@ $payinit_url = str_replace("\r","",$payinit_url);
 if($payinit_url){
 	print $processOK;
 
- 	echo '<script language="JavaScript">
+ 	echo '<script type="text/javascript">
 	<!--
 	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');
 	//-->

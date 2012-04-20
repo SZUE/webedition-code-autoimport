@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,9 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weTableDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+	we_html_tools::protect();
 }
 $dialog = new weTableDialog();
 // MS-Fix
@@ -41,7 +44,7 @@ $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoTblJS");
 
 if(!$_REQUEST["we_dialog_args"]["edit"]){
-	$dialog->dialogTitle = $GLOBALS["l_wysiwyg"]["insert_table"];
+	$dialog->dialogTitle = g_l('wysiwyg', "[insert_table]");
 }
 print $dialog->getHTML();
 
@@ -66,4 +69,5 @@ editorObj.edittable(edit_table,rows,cols,border,cellpadding,cellspacing,bgcolor,
 top.close();
 ';
 }
+
 ?>

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weRefTable.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExIm.class.php');
+	include_once(WE_INCLUDES_PATH .'we_exim/weXMLExImConf.inc.php');
 
 	class weXMLExport extends weXMLExIm{
 
@@ -40,7 +41,7 @@
 			@set_time_limit(0);
 			$doc=weContentProvider::getInstance($ct,$id,$table);
 			// add binary data separately to stay compatible with the new binary feature in v5.1
-			if(isset($doc->ContentType) && (ereg("^image/",$doc->ContentType) || ereg("^application/",$doc->ContentType) || ereg("^video/",$doc->ContentType))) {
+			if(isset($doc->ContentType) && (strpos($doc->ContentType,"image/")===0 || strpos($doc->ContentType,"application/")===0 || strpos($doc->ContentType,"video/")===0)) {
 				$doc->setElement("data",weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 			}
 
@@ -67,7 +68,7 @@
 			}
 
 			if($classname=="weTable"){
-				if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table,0,10))==strtolower(substr(OBJECT_X_TABLE, strlen(TBL_PREFIX)))) $doc->getColumns();
+				if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table,0,10))==strtolower(stripTblPrefix(OBJECT_X_TABLE))) $doc->getColumns();
 			    if(defined("CUSTOMER_TABLE")) $doc->getColumns();
 			}
 
@@ -84,11 +85,11 @@
 				weContentProvider::object2xml($doc,$fh,$attribute);
 			}
 
-			fwrite($fh,we_htmlElement::htmlComment("webackup")."\n");
+			fwrite($fh,we_html_element::htmlComment("webackup")."\n");
 
 			if($classname=="weTableItem" && $export_binary){
 				if(strtolower($doc->table)==strtolower(FILE_TABLE)){
-					if($doc->ContentType=="image/*" || eregi("application/",$doc->ContentType)){
+					if($doc->ContentType=="image/*" || stripos($doc->ContentType,"application/")!==false){
 						$bin=weContentProvider::getInstance("weBinary",$doc->ID);
 						if(isset($bin->attribute_slots)) $attribute=$bin->attribute_slots;
 						else $attribute=array();
@@ -144,8 +145,6 @@
 						}
 						else {
 							if (defined("OBJECT_FILES_TABLE")) {
-								include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
-
 								$catss = "";
 
 								if ($categories) {
@@ -166,7 +165,7 @@
 
 					$ids=array();
 					foreach($selDocs as $k=>$v){
-						$ct=f("Select ContentType FROM ".FILE_TABLE." WHERE ID=".abs($v).";","ContentType",$this->db);
+						$ct=f("Select ContentType FROM ".FILE_TABLE." WHERE ID=".intval($v).";","ContentType",$this->db);
 						$this->RefTable->add2(array(
 								"ID"=>$v,
 								"ContentType"=>$ct,
@@ -248,7 +247,7 @@
 			$allow = $this->queryForAllowed($table);
 			foreach($selIDs as $v){
 				if ($v){
-					$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID='".abs($v)."'","IsFolder",$db);
+					$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID=".intval($v),"IsFolder",$db);
 					if ($isfolder){
 						we_readChilds($v,$tmp,$table,false,$allow);
 						if($with_dirs) $tmp[]=$v;
@@ -258,7 +257,7 @@
 			}
 			if($with_dirs) return $tmp;
 			foreach($tmp as $v){
-				$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID='".abs($v)."'","IsFolder",new DB_WE());
+				$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID=".intval($v),"IsFolder",new DB_WE());
 				if (!$isfolder) $ret[]=$v;
 			}
 			return $ret;
@@ -266,25 +265,15 @@
 
 		function prepareExport(){
 			//$this->RefTable = new RefTable();
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weExportPreparer.class.php');
 			$_preparer = new weExportPreparer($this->options,$this->RefTable);
 			$_preparer->prepareExport();
 		}
 
 		function getHeader($encoding=''){
-
 			return $GLOBALS['weXmlExImHeader'];
-
-			/*if($encoding==''){
-				$encoding = $GLOBALS["_language"]["charset"];
-			}
-			return "<?xml version=\"1.0\" encoding=\"" . $encoding . "\" standalone=\"yes\"?>"."\n".
-					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">"."\n";*/
 		}
 
 		function getFooter(){
-
-
 			return $GLOBALS['weXmlExImFooter'];
 		}
 
@@ -299,7 +288,7 @@
 				$out.="></we:map>";
 			}
 			$out.="</we:info>";
-			$out.=we_htmlElement::htmlComment("webackup")."\n";
+			$out.=we_html_element::htmlComment("webackup")."\n";
 			return $out;
 		}
 

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,22 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weNavigationTree extends weToolTree{
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolTree.class.php');
-
-class weNavigationTree extends weToolTree
-{
-
-	function weNavigationTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = '')
-	{
-		parent::weToolTree($frameset, $topFrame, $treeFrame, $cmdFrame);
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 	}
 
-	function getJSTreeFunctions()
-	{
-		
+	function getJSTreeFunctions(){
+
 		$out = weTree::getJSTreeFunctions();
-		
+
 		$out .= '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
@@ -41,17 +40,13 @@ class weNavigationTree extends weToolTree
 				' . $this->topFrame . '.loaded=1;
 			';
 		return $out;
-	
 	}
 
-	function getJSTreeCode()
-	{
-		return parent::getJSTreeCode() . we_htmlElement::jsElement(
+	function getJSTreeCode(){
+		return parent::getJSTreeCode() . we_html_element::jsElement(
 				'
  					drawTree.selection_table="' . NAVIGATION_TABLE . '";
  				');
 	}
 
 }
-
-?>

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,35 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * Class we_category
  *
  * Provides functions for handling webEdition category.
  */
+class we_category extends weModelBase{
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."modules/weModelBase.php");
+	var $ClassName = __CLASS__;
+	var $ContentType = "category";
 
-	class we_category extends weModelBase{
-
-		var $ClassName="we_category";
-		var $ContentType="category";
-
-		function we_category(){
-			weModelBase::weModelBase(CATEGORY_TABLE);
-		}
-
-		function we_save(){
-			if(isset($this->Catfields) && is_array($this->Catfields)){
-				$this->Catfields = serialize($this->Catfields);
-			}
-
-			weModelBase::save();
-
-		}
-
-
-
+	function __construct(){
+		parent::__construct(CATEGORY_TABLE);
 	}
-	
+
+	function we_save(){
+		if(isset($this->Catfields) && is_array($this->Catfields)){
+			$this->Catfields = serialize($this->Catfields);
+		}
+
+		weModelBase::save();
+	}
+
+}

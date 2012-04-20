@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,44 +22,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+//FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
-//include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
 
-//protect();
-
-if(!isset($_REQUEST['id']) || $_REQUEST['id']==''||
-				!isset($_REQUEST['path']) || $_REQUEST['path']==''||
-				!isset($_REQUEST['size']) || $_REQUEST['size']==''||
-				!isset($_REQUEST['extension']) || $_REQUEST['extension']=='') {
+if(!isset($_REQUEST['id']) || $_REQUEST['id'] == '' ||
+	!isset($_REQUEST['path']) || $_REQUEST['path'] == '' ||
+	!isset($_REQUEST['size']) || $_REQUEST['size'] == '' ||
+	!isset($_REQUEST['extension']) || $_REQUEST['extension'] == ''){
 	exit();
 }
 
 $imageId = $_REQUEST['id'];
 $imagePath = $_REQUEST['path'];
 $imageSizeW = $_REQUEST['size'];
-if (isset($_REQUEST['size2'])){
-	$imageSizeH =$_REQUEST['size2'];
-} else {
-	$imageSizeH =$imageSizeW ;
-}
+$imageSizeH = (isset($_REQUEST['size2']) ? $_REQUEST['size2'] : $imageSizeW);
 
-$whiteList = array();
-$exts = isset($GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"]) ? $GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"] : "";
-if(!empty($exts)){
-	$whiteList = makeArrayFromCSV($exts);
-}
 
-if (!in_array(strtolower($_REQUEST['extension']), $whiteList)) {
+$ct = new we_base_ContentTypes();
+$whiteList = $ct->getExtension('image/*');
+
+if(!in_array(strtolower($_REQUEST['extension']), $whiteList)){
 	exit();
 }
 
 $imageExt = substr($_REQUEST['extension'], 1, strlen($_REQUEST['extension']));
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-
 $thumbpath = we_image_edit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($_REQUEST['extension'], 1));
-header("Content-type: image/" . $imageExt . "");
-readfile($_SERVER["DOCUMENT_ROOT"] . $thumbpath);
+header("Content-type: image/" . $imageExt);
+readfile($_SERVER['DOCUMENT_ROOT'] . $thumbpath);

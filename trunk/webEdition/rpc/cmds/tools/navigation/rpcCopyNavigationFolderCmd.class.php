@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +32,6 @@ class rpcCopyNavigationFolderCmd extends rpcCmd {
 				isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
 				(strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) ===false || strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) > 0)
 		){
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 			$db = new DB_WE();
 			$query = "SELECT * FROM " . NAVIGATION_TABLE . " WHERE Path LIKE '".$db->escape($_REQUEST['we_cmd'][2])."/%' ORDER BY Path";

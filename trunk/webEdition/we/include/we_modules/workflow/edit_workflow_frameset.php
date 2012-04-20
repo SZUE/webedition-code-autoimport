@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,85 +22,68 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
+we_html_tools::htmlTop();
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowFrames.php");
+print STYLESHEET;
 
-	protect();
-	htmlTop();
+$workflowFrame = new we_workflow_frames();
+$workflowFrame->View->processVariables();
+$workflowFrame->View->processCommands();
 
-	print STYLESHEET;
+$what = (isset($_GET["pnt"]) ? $_GET["pnt"] : "frameset");
+$mode = (isset($_GET["art"]) ? $_GET["art"] : 0);
+$type = (isset($_GET["type"]) ? $_GET["type"] : 0);
 
-	$workflowFrame=new weWorkflowFrames();
-	$workflowFrame->View->processVariables();
-	$workflowFrame->View->processCommands();
+switch($what){
+	case "frameset":
+		print $workflowFrame->getHTMLFrameset();
+		break;
 
-	if(isset($_GET["pnt"])){
-	    $what = $_GET["pnt"];
-	} else {
-	    $what="frameset";
-	}
+	case "header":
+		print $workflowFrame->getHTMLHeader();
+		break;
 
-	if(isset($_GET["art"])){
-	    $mode=$_GET["art"];
-	} else {
-	    $mode=0;
-	}
+	case "resize":
+		print $workflowFrame->getHTMLResize();
+		break;
 
-	if(isset($_GET["type"])){
-	    $type=$_GET["type"];
-	} else {
-	    $type=0;
-	}
+	case "left":
+		print $workflowFrame->getHTMLLeft();
+		break;
+	case "right":
+		print $workflowFrame->getHTMLRight();
+		break;
 
-	switch($what){
-		case "frameset":
-			print $workflowFrame->getHTMLFrameset();
-			break;
+	case "editor":
+		print $workflowFrame->getHTMLEditor();
+		break;
 
-		case "header":print $what;
-			print $workflowFrame->getHTMLHeader();
-			break;
+	case "edheader":
+		print $workflowFrame->getHTMLEditorHeader($mode);
+		break;
 
-		case "resize":
-			print $workflowFrame->getHTMLResize();
-			break;
+	case "edbody":
+		print $workflowFrame->getHTMLEditorBody();
+		break;
 
-		case "left":
-			print $workflowFrame->getHTMLLeft();
-			break;
-		case "right":
-			print $workflowFrame->getHTMLRight();
-			break;
+	case "edfooter":
+		print $workflowFrame->getHTMLEditorFooter($mode);
+		break;
 
-		case "editor":
-			print $workflowFrame->getHTMLEditor();
-			break;
+	case "qlog":
+		print $workflowFrame->getHTMLLogQuestion();
+		break;
 
-		case "edheader":
-			print $workflowFrame->getHTMLEditorHeader($mode);
-			break;
+	case "log":
+		print $workflowFrame->getHTMLLog($mode, $type);
+		break;
 
-		case "edbody":
-			print $workflowFrame->getHTMLEditorBody();
-			break;
+	case "cmd":
+		print $workflowFrame->getHTMLCmd();
+		break;
 
-		case "edfooter":
-			print $workflowFrame->getHTMLEditorFooter($mode);
-			break;
-
-		case "qlog":
-			print $workflowFrame->getHTMLLogQuestion();
-			break;
-
-		case "log":
-			print $workflowFrame->getHTMLLog($mode,$type);
-			break;
-
-		case "cmd":
-			print $workflowFrame->getHTMLCmd();
-			break;
-
-		default:
-	}
+	default:
+}

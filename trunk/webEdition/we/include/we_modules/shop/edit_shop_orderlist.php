@@ -1,7 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,32 +21,26 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once(WE_SHOP_MODULE_PATH . 'shopFunctions.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once(WE_SHOP_MODULE_DIR . 'shopFunctions.inc.php');
+we_html_tools::protect();
 
-if(defined("SHOP_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/shop.inc.php");
-}
-
-protect();
-
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
-if(isset($_REQUEST["cid"]) ){
-	
-	$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . abs($_REQUEST["cid"]) . "'",$DB_WE);
-	if (is_array($foo)){
-		$Kundenname = $foo["Forename"]." ".$foo["Surname"];
+$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
+if(isset($_REQUEST["cid"])){
+
+	$foo = getHash("SELECT Forename,Surname FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($_REQUEST["cid"]), $DB_WE);
+	if(is_array($foo)){
+		$Kundenname = $foo["Forename"] . " " . $foo["Surname"];
 	}
 	$orderList = getCustomersOrderList($_REQUEST["cid"]);
 }
 ?>
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
-<?php print  htmlDialogLayout($orderList,$l_shop["order_liste"]."&nbsp;".$Kundenname);?>   
+	<?php print we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
 </body></html>

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$oTblCont = new we_htmlTable(array(
+$oTblCont = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 1);
 $oTblCont->setCol(
 		0,
 		0,
 		null,
-		we_htmlElement::htmlDiv(
+		we_html_element::htmlDiv(
 				array(
 
 						"id" => "m_" . $iCurrId . "_inline",
@@ -33,6 +37,5 @@ $oTblCont->setCol(
 				),
 				$lastModified));
 $aLang = array(
-	$l_cockpit["last_modified"], ""
+	g_l('cockpit',"[last_modified]"), ""
 );
-

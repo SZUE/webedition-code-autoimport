@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,13 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_icon($attribs, $content){
-	if (($foo=attributFehltError($attribs, 'id', 'icon'))) return $foo;
-	$xml = we_getTagAttribute('xml', $attribs, '');
-	$id = we_getTagAttribute('id', $attribs);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), new DB_WE());
-	if (count($row)) {
+function we_tag_icon($attribs){
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__)))
+		return $foo;
+	$xml = weTag_getAttribute('xml', $attribs);
+	$id = weTag_getAttribute('id', $attribs);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
+	if(count($row)){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 		return getHtmlTag('link', array('rel' => 'shortcut icon', 'href' => $url, 'xml' => $xml));
 	}

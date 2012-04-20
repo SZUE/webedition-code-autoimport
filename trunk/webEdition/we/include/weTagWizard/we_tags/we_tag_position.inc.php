@@ -1,11 +1,13 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['attribute']['id409_type'] = new weTagData_choiceAttribute('409', 'type', array(new weTagDataOption('block', false, ''), new weTagDataOption('linklist', false, ''), new weTagDataOption('listdir', false, ''), new weTagDataOption('listview', false, '')), true,false, '');
-$GLOBALS['weTagWizard']['attribute']['id410_format'] = new weTagData_choiceAttribute('410', 'format', array(new weTagDataOption('1', false, ''), new weTagDataOption('a', false, ''), new weTagDataOption('A', false, '')), false,false, '');
-$GLOBALS['weTagWizard']['attribute']['id411_reference'] = new weTagData_textAttribute('411', 'reference', false, '');
-$GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+
+$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('block', false, ''), new weTagDataOption('linklist', false, ''), new weTagDataOption('listdir', false, ''), new weTagDataOption('listview', false, '')), true,false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('format', array(new weTagDataOption('1', false, ''), new weTagDataOption('a', false, ''), new weTagDataOption('A', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_textAttribute('reference', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,37 +25,35 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
+$nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
 
-require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . LIVEUPDATE_LANGUAGE . '/javaMenu/module_information.inc.php');
 
 if (sizeof($GLOBALS['LU_Variables']['clientInstalledModules'])) {
-	
+
 	$moduleString = "<ul>";
 	foreach ($GLOBALS['LU_Variables']['clientInstalledModules'] as $moduleKey) {
-		
-		if ( isset($l_javaMenu["module_information"][$moduleKey]["text"]) ) {
-			
+
+		if ( g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]')!==false ) {
+
 			$moduleString .= "
-			<li>" . $l_javaMenu["module_information"][$moduleKey]["text"] . "</li>";
+			<li>" . g_l('javaMenu_moduleInformation','['.$moduleKey.'][text]') . "</li>";
 		}
 	}
 	$moduleKey .= '</ul>';
-	
+
 } else {
-	
-	$moduleString = $GLOBALS['l_liveUpdate']['modules']['noModulesInstalled'];
+
+	$moduleString = g_l('liveUpdate','[modules][noModulesInstalled]');
 }
 
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr class="valignTop">
-	<td>' . $GLOBALS['l_liveUpdate']['modules']['installedModules'] . '</td>
+	<td>' . g_l('liveUpdate','[modules][installedModules]') . '</td>
 	<td>' . $moduleString . '</td>
 </tr>
 <tr>
@@ -61,12 +63,10 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['modules']['showModules'] . '</td>
+	<td>' . g_l('liveUpdate','[modules][showModules]') . '</td>
 	<td>' . $nextButton . '</td>
 </tr>
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['modules']['headline'], $content);
-
-?>
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[modules][headline]'), $content);

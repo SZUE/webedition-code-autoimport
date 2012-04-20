@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,10 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/we_listview.class.php");
-
-
 class metadatatag{
 
 	var $DB_WE;
-	var $ClassName = "metadatatag";
+	var $ClassName = __CLASS__;
 	var $object = "";
 	var $avail = false;
 	var $id = 0;
@@ -37,37 +35,36 @@ class metadatatag{
 
 		if($name){
 			$unique = md5(uniqid(rand()));
-			if (!isset($GLOBALS["lv"])) {
+			if(!isset($GLOBALS["lv"])){
 				// determine the id of the element
-				$_value = $GLOBALS["we_doc"]->getElement($name,"bdid");
-				if (!$_value) {
-					$_value = $GLOBALS["we_doc"]->getElement($name);
+				$_value = $GLOBALS['we_doc']->getElement($name, "bdid");
+				if(!$_value){
+					$_value = $GLOBALS['we_doc']->getElement($name);
 				}
-			} else {
+			} else{
 				$_value = $GLOBALS["lv"]->f($name);
 			}
 			$this->id = 0;
-			if (is_numeric($_value)) {
+			if(is_numeric($_value)){
 				// it is an id
 				$this->id = $_value;
 			} else if($_value){
 				// is this possible
 				//TODO: check if this can happen
 			}
-			if ($this->id) {
-				$this->object = new we_listview($unique,1,0,"",false,"","",false,false,0,"","",false,"","","","","","","off",true,"",$this->id);
+			if($this->id){
+				$this->object = new we_listview($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id);
 				if($this->object->next_record()){
 					$this->avail = true;
 				}
-
 			}
 		}
- 	}
+	}
 
 	function f($key){
 		if($this->id){
 			return $this->object->f($key);
-		}else{
+		} else{
 			return "";
 		}
 	}

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,40 +23,51 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("WECF_OFF", 0);
-define("WECF_ALL", 1);
-define("WECF_SPECIFIC", 2);
-define("WECF_FILTER", 3);
-define("WECF_NONE", 4);
-
 /**
  * Base Class for all Customer Filters (Model)
  *
  */
-class weAbstractCustomerFilter {
+abstract class weAbstractCustomerFilter{
+
+	const OFF = 0;
+	const ALL = 1;
+	const SPECIFIC = 2;
+	const FILTER = 3;
+	const NONE = 4;
+	const OP_EQ = 0;
+	const OP_NEQ = 1;
+	const OP_LESS = 2;
+	const OP_LEQ = 3;
+	const OP_GREATER = 4;
+	const OP_GEQ = 5;
+	const OP_STARTS_WITH = 6;
+	const OP_ENDS_WITH = 7;
+	const OP_CONTAINS = 8;
+	const OP_IN = 9;
+
 	/**
-	 * Mode. Can be WECF_OFF, WECF_ALL, WECF_SPECIFIC, WECF_FILTER
+	 * Mode. Can be OFF, ALL, SPECIFIC, FILTER
 	 *
 	 * @var integer
 	 */
-	var $_mode = WECF_OFF;
+	var $_mode = self::OFF;
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_SPECIFIC
+	 * Array with customer ids. Only relevant when $_mode is SPECIFIC
 	 *
 	 * @var array
 	 */
 	var $_specificCustomers = array();
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_FILTER
+	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
 	var $_blackList = array();
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_FILTER
+	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
@@ -64,10 +80,9 @@ class weAbstractCustomerFilter {
 	 */
 	var $_filter = array();
 
-	/*################### CONSTRUCTOR ####################*/
+	/* ################### CONSTRUCTOR #################### */
 
 	/**
-	 * Constructor for PHP4
 	 *
 	 * @param integer $mode
 	 * @param array $specificCustomers
@@ -76,7 +91,7 @@ class weAbstractCustomerFilter {
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function weAbstractCustomerFilter($mode=WECF_OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
+	function __construct($mode = self::OFF, $specificCustomers = array(), $blackList = array(), $whiteList = array(), $filter = array()){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		if(is_array($blackList)){
@@ -90,46 +105,31 @@ class weAbstractCustomerFilter {
 		}
 	}
 
-	/**
-	 * Constructor for PHP5
-	 *
-	 * @param integer $mode
-	 * @param array $specificCustomers
-	 * @param array $blackList
-	 * @param array $whiteList
-	 * @param array $filter
-	 * @return weAbstractCustomerFilter
-	 */
-	function __construct($mode=WECF_OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
-		$this->weAbstractCustomerFilter($mode, $specificCustomers, $blackList, $whiteList, $filter);
-	}
-
-	/*##################### End of constructor ################################*/
-
+	/* ##################### End of constructor ################################ */
 
 	/**
 	 * checks if customer has access with the actual filter object
 	 *
 	 * @return boolean
 	 */
-	function customerHasAccess() {
-		switch ($this->_mode) {
-			case WECF_OFF:
+	function customerHasAccess(){
+		switch($this->_mode){
+			case self::OFF:
 				return true;
-			case WECF_ALL:
-				return weAbstractCustomerFilter::customerIsLogedIn();
-			case WECF_NONE:
-				return !weAbstractCustomerFilter::customerIsLogedIn();
-			case WECF_SPECIFIC:
-				if (!weAbstractCustomerFilter::customerIsLogedIn()) {
+			case self::ALL:
+				return self::customerIsLogedIn();
+			case self::NONE:
+				return !self::customerIsLogedIn();
+			case self::SPECIFIC:
+				if(!self::customerIsLogedIn()){
 					return false;
 				}
 				return in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
-			case WECF_FILTER:
-				if (!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )) {
+			case self::FILTER:
+				if(!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )){
 					return false;
 				}
-				return weAbstractCustomerFilter::customerHasFilterAccess();
+				return self::customerHasFilterAccess();
 		}
 		return false;
 	}
@@ -139,50 +139,42 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return boolean
 	 */
-	function customerHasFilterAccess() {
+	function customerHasFilterAccess(){
 
-		if (in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
+		if(in_array($_SESSION["webuser"]["ID"], $this->_blackList)){
 			return false;
-		} else if (in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
+		} else if(in_array($_SESSION["webuser"]["ID"], $this->_whiteList)){
 			return true;
 		}
 
 		$_filter_op = array(
-			'0'=>'%s==%s',
-			'1'=>'%s<>%s',
-			'2'=>'%s<%s',
-			'3'=>'%s<=%s',
-			'4'=>'%s>%s',
-			'5'=>'%s>=%s',
-			'6'=>'weAbstractCustomerFilter::startsWith(%s,%s)',
-			'7'=>'weAbstractCustomerFilter::endsWith(%s,%s)',
-			'8'=>'weAbstractCustomerFilter::contains(%s,%s)',
-			'9'=>'weAbstractCustomerFilter::in(%s,%s)'
-
+			self::OP_EQ => '%s==%s',
+			self::OP_NEQ => '%s<>%s',
+			self::OP_LESS => '%s<%s',
+			self::OP_LEQ => '%s<=%s',
+			self::OP_GREATER => '%s>%s',
+			self::OP_GEQ => '%s>=%s',
+			self::OP_STARTS_WITH => 'self::startsWith(%s,%s)',
+			self::OP_ENDS_WITH => 'self::endsWith(%s,%s)',
+			self::OP_CONTAINS => 'self::contains(%s,%s)',
+			self::OP_IN => 'self::in(%s,%s)'
 		);
 
 		$_conditions = array();
 
 		$_flag = false;
-		foreach ( $this->_filter as $_filter ) {
-			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"]=="AND" ? " && " : " || ") : "") . sprintf(
-				$_filter_op[$_filter["operation"]],
-				weAbstractCustomerFilter::quote4Eval($_SESSION["webuser"][$_filter["field"]]),
-				weAbstractCustomerFilter::quote4Eval($_filter["value"])
+		foreach($this->_filter as $_filter){
+			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == 'AND' ? ' && ' : ' || ') : '') . sprintf(
+					$_filter_op[$_filter["operation"]], self::quote4Eval($_SESSION["webuser"][$_filter["field"]]), self::quote4Eval($_filter["value"])
 			);
 			$_flag = true;
 		}
 
 		$_hasPermission = false;
-		$_cond = "if (" . implode("", $_conditions) . ") { \$_hasPermission = true; }";
-		eval( $_cond );
+		eval('if (' . implode('', $_conditions) . ') { $_hasPermission = true; }');
 
 		return $_hasPermission;
 	}
-
-	/*#########################################################################################
-	#################################### static methods #######################################
-	#########################################################################################*/
 
 	/**
 	 * Creates and returns the filter array from $_REQUEST
@@ -190,34 +182,33 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getFilterFromRequest() {
+	static function getFilterFromRequest(){
 		$_filter = array();
 
-		if(isset($_REQUEST['filterSelect_0'])) {
+		if(isset($_REQUEST['filterSelect_0'])){
 
 
 			$_parse = true;
 			$_count = 0;
 
-			while ($_parse) {
-				if(isset($_REQUEST['filterSelect_'.$_count])) {
+			while($_parse) {
+				if(isset($_REQUEST['filterSelect_' . $_count])){
 
-					if(isset($_REQUEST['filterLogic_'.$_count]) && $_REQUEST['filterLogic_'.$_count]=='OR') {
+					if(isset($_REQUEST['filterLogic_' . $_count]) && $_REQUEST['filterLogic_' . $_count] == 'OR'){
 						$_logic = 'OR';
-					} else {
+					} else{
 						$_logic = 'AND';
 					}
-					if(isset($_REQUEST['filterValue_'.$_count]) && trim($_REQUEST['filterValue_'.$_count])<>'') {
+					if(isset($_REQUEST['filterValue_' . $_count]) && trim($_REQUEST['filterValue_' . $_count]) <> ''){
 						$_filter[] = array(
-								'logic' => $_logic,
-								'field' => $_REQUEST['filterSelect_'.$_count],
-								'operation' => $_REQUEST['filterOperation_'.$_count],
-								'value' => $_REQUEST['filterValue_'.$_count]
-
+							'logic' => $_logic,
+							'field' => $_REQUEST['filterSelect_' . $_count],
+							'operation' => $_REQUEST['filterOperation_' . $_count],
+							'value' => $_REQUEST['filterValue_' . $_count]
 						);
 					}
 					$_count++;
-				} else {
+				} else{
 					$_parse = false;
 				}
 			}
@@ -231,16 +222,16 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getSpecificCustomersFromRequest() {
+	static function getSpecificCustomersFromRequest(){
 		$_customers = array();
 
-		if (isset($_REQUEST['specificCustomersEditControl'])){
+		if(isset($_REQUEST['specificCustomersEditControl'])){
 			$i = 0;
-			while (true){
+			while(true) {
 				if(isset($_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i])){
 					$_customers[] = $_REQUEST[$_REQUEST['specificCustomersEditControl'] . '_variant0_' . $_REQUEST['specificCustomersEditControl'] . '_item' . $i];
 					$i++;
-				} else {
+				} else{
 					break;
 				}
 			}
@@ -254,16 +245,16 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getBlackListFromRequest() {
+	static function getBlackListFromRequest(){
 		$_blackList = array();
 
-		if (isset($_REQUEST['blackListEditControl'])){
+		if(isset($_REQUEST['blackListEditControl'])){
 			$i = 0;
-			while (true){
+			while(true) {
 				if(isset($_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i])){
 					$_blackList[] = $_REQUEST[$_REQUEST['blackListEditControl'] . '_variant0_' . $_REQUEST['blackListEditControl'] . '_item' . $i];
 					$i++;
-				} else {
+				} else{
 					break;
 				}
 			}
@@ -277,16 +268,16 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getWhiteListFromRequest() {
+	static function getWhiteListFromRequest(){
 		$_whiteList = array();
 
-		if (isset($_REQUEST['whiteListEditControl'])){
+		if(isset($_REQUEST['whiteListEditControl'])){
 			$i = 0;
-			while (true){
+			while(true) {
 				if(isset($_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i])){
 					$_whiteList[] = $_REQUEST[$_REQUEST['whiteListEditControl'] . '_variant0_' . $_REQUEST['whiteListEditControl'] . '_item' . $i];
 					$i++;
-				} else {
+				} else{
 					break;
 				}
 			}
@@ -302,7 +293,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return boolean
 	 */
-	function startsWith($haystack, $needle) {
+	static function startsWith($haystack, $needle){
 		return (strpos($haystack, $needle) === 0);
 	}
 
@@ -314,7 +305,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return boolean
 	 */
-	function endsWith($haystack, $needle) {
+	static function endsWith($haystack, $needle){
 		$pos = strlen($haystack) - strlen($needle);
 		return (strpos($haystack, $needle) === $pos);
 	}
@@ -327,7 +318,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return boolean
 	 */
-	function contains($haystack, $needle) {
+	static function contains($haystack, $needle){
 		return (strpos($haystack, $needle) !== false);
 	}
 
@@ -339,14 +330,14 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return boolean
 	 */
-	function in($value, $comp) {
-		$comp = str_replace("\\,", "__WE_COMMA__", $comp);
-		$arr = explode(",", $comp);
-		$l = count($arr);
-		for ($i=0; $i<$l; $i++) {
-			$arr[$i] = str_replace("__WE_COMMA__", ",", $arr[$i]);
+	static function in($value, $comp){
+		$comp = str_replace('\\,', '__WE_COMMA__', $comp);
+		$arr = explode(',', $comp);
+		foreach($arr as &$cur){
+			$cur = str_replace('__WE_COMMA__', ',', $cur);
 		}
-		return in_array($value, $arr);
+		$value = explode(',', $value);
+		return count(array_intersect($value, $arr)) > 0;
 	}
 
 	/**
@@ -354,7 +345,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return boolean
 	 */
-	function customerIsLogedIn() {
+	static function customerIsLogedIn(){
 		return isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]);
 	}
 
@@ -365,24 +356,24 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return string
 	 */
-	function quote4Eval($in) {
-		if (is_numeric($in)) {
+	static function quote4Eval($in){
+		if(is_numeric($in)){
 			return $in;
-		} else {
+		} else{
 			return '"' . str_replace("\\'", "'", addslashes($in)) . '"';
 		}
 	}
 
-	/*#########################################################################################
-	############################### mutator and accessor methods ##############################
-	#########################################################################################*/
+	/* #########################################################################################
+	  ############################### mutator and accessor methods ##############################
+	  ######################################################################################### */
 
 	/**
 	 * mutator method for $this->_mode
 	 *
 	 * @param integer $mode
 	 */
-	function setMode($mode) {
+	function setMode($mode){
 		$this->_mode = $mode;
 	}
 
@@ -391,7 +382,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return integer
 	 */
-	function getMode() {
+	function getMode(){
 		return $this->_mode;
 	}
 
@@ -400,7 +391,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @param array $mode
 	 */
-	function setSpecificCustomers($specificCustomers) {
+	function setSpecificCustomers($specificCustomers){
 		$this->_specificCustomers = $specificCustomers;
 	}
 
@@ -409,7 +400,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return array
 	 */
-	function getSpecificCustomers() {
+	function getSpecificCustomers(){
 		return $this->_specificCustomers;
 	}
 
@@ -418,7 +409,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @param array $mode
 	 */
-	function setBlackList($blackList) {
+	function setBlackList($blackList){
 		$this->_blackList = $blackList;
 	}
 
@@ -427,7 +418,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return array
 	 */
-	function getBlackList() {
+	function getBlackList(){
 		return $this->_blackList;
 	}
 
@@ -436,7 +427,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @param array $mode
 	 */
-	function setWhiteList($whiteList) {
+	function setWhiteList($whiteList){
 		$this->_whiteList = $whiteList;
 	}
 
@@ -445,7 +436,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return array
 	 */
-	function getWhiteList() {
+	function getWhiteList(){
 		return $this->_whiteList;
 	}
 
@@ -454,7 +445,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @param array $mode
 	 */
-	function setFilter($filter) {
+	function setFilter($filter){
 		$this->_filter = $filter;
 	}
 
@@ -463,9 +454,8 @@ class weAbstractCustomerFilter {
 	 *
 	 * @return array
 	 */
-	function getFilter() {
+	function getFilter(){
 		return $this->_filter;
 	}
-
 
 }

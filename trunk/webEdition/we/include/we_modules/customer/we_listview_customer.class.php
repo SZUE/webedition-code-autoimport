@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,24 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/"."listviewBase.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_db_tools.inc.php");
-
 /**
-* class    we_listview_customer
-* @desc    class for tag <we:listview type="banner">
-*
-*/
+ * class    we_listview_customer
+ * @desc    class for tag <we:listview type="banner">
+ *
+ */
+class we_listview_customer extends listviewBase{
 
-class we_listview_customer extends listviewBase {
-
-	var $ClassName = "we_listview_customer";
-	var $condition="";
-	var $Path="";
-	var	$docID=0;
+	var $ClassName = __CLASS__;
+	var $condition = "";
+	var $Path = "";
+	var $docID = 0;
 	var $hidedirindex = false;
+
 	/**
 	 * we_listview_object()
 	 * @desc    constructor of class
@@ -49,62 +49,60 @@ class we_listview_customer extends listviewBase {
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
+	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false, $condition="", $cols="", $docID=0, $hidedirindex=false){
 
-	function we_listview_customer($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$hidedirindex=false){
-
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
 
 		if($this->docID){
-			$this->Path = id_to_path($this->docID,FILE_TABLE,$this->DB_WE);
-		}else{
-			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
+			$this->Path = id_to_path($this->docID, FILE_TABLE, $this->DB_WE);
+		} else{
+			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 		}
-		$this->hidedirindex=$hidedirindex;
+		$this->hidedirindex = $hidedirindex;
 
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
-		if (isset($_SESSION['last_webEdition_document'])) {
+		if(isset($_SESSION['last_webEdition_document'])){
 			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
 		}
 
-		if($this->desc && $this->order!='' && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && $this->order != '' && (!preg_match("|.+ desc$|i", $this->order))){
 			$this->order .= " DESC";
 		}
 
 		$orderstring = $extra = '';
 		if($this->order == 'random()'){
-			$extra=', RAND() as RANDOM';
-			$orderstring=' ORDER BY RANDOM';
-		}else if ($this->order != '') {
-			$orderstring = ' ORDER BY '.$this->order;
+			$extra = ', RAND() as RANDOM';
+			$orderstring = ' ORDER BY RANDOM';
+		} else if($this->order != ''){
+			$orderstring = ' ORDER BY ' . $this->order;
 		}
 
 		$where = $this->condition ? (' WHERE ' . $this->condition) : '';
 
-		$this->anz_all=f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where,'cnt',$this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where, 'cnt', $this->DB_WE);
 
-		$q = 'SELECT * '.$extra.' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT '.$this->start.','.$this->maxItemsPerPage) : '');;
+		$q = 'SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+		;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
-
-		$this->adjustRows();
 	}
 
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
-		if ($ret) {
-			$this->DB_WE->Record["wedoc_Path"] = $this->Path."?we_cid=".$this->DB_WE->Record["ID"];
-			$this->DB_WE->Record["WE_PATH"] = $this->Path."?we_cid=".$this->DB_WE->Record["ID"];
+		if($ret){
+			$this->DB_WE->Record["wedoc_Path"] = $this->Path . "?we_cid=" . $this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["WE_PATH"] = $this->Path . "?we_cid=" . $this->DB_WE->Record["ID"];
 			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["Username"];
 			$this->DB_WE->Record["WE_ID"] = $this->DB_WE->Record["ID"];
-			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_cid=".$this->DB_WE->Record["ID"];
+			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_cid=" . $this->DB_WE->Record["ID"];
 			$this->count++;
 			return true;
-		}else {
+		} else{
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 				$this->DB_WE->Record = array();

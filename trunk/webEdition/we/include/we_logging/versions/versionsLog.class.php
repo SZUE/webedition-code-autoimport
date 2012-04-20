@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,41 +22,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-define("WE_LOGGING_VERSIONS_DELETE", 1);
-define("WE_LOGGING_VERSIONS_RESET", 2);
-define("WE_LOGGING_VERSIONS_PREFS", 3);
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/logging.class.php");
-
-
 class versionsLog extends logging{
 
+	const VERSIONS_DELETE = 1;
+	const VERSIONS_RESET = 2;
+	const VERSIONS_PREFS = 3;
 
 	public $action;
 	public $data;
 
-
-	function __construct() {
-
-		$this->table = VERSIONS_TABLE_LOG;
-		parent::__construct();
-
+	function __construct(){
+		parent::__construct(VERSIONS_TABLE_LOG);
 	}
 
-	function saveVersionsLog($logArray, $action=""){
+	function saveVersionsLog($logArray, $action = ""){
 
 		$this->action = $action;
 		$this->data = serialize($logArray);
 
 		$this->saveLog();
-
-	}
-
-	function __destruct() {
-
-		parent::__destruct();
-
 	}
 
 }

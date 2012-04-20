@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,24 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifWorkspace($attribs, $content){
-	$required_path = we_getTagAttribute('path', $attribs, "");
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+function we_tag_ifWorkspace($attribs){
+	$required_path = weTag_getAttribute('path', $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
-	$id = we_getTagAttribute('id', $attribs);
+	$id = explode(',', weTag_getAttribute('id', $attribs));
 
-	if (!$required_path) {
-		$required_path = id_to_path($id);
+	if($required_path){
+		$required_path = array(substr($required_path, 0, 1) != '/' ? '/' . $required_path : $required_path);
 	}
 
-	if (!$required_path) {
+	if(!$required_path){
+		$required_path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+	}
+
+	if(!$required_path){
 		return false;
 	}
 
-	if (substr($required_path, 0, 1) != '/') {
-		$required_path = '/' . $required_path;
+	foreach($required_path as $path){
+		if(strpos($doc->Path, $path) === 0){
+			return true;
+		}
 	}
 
-	return (strpos($doc->Path, $required_path) === 0);
+	return false;
 }

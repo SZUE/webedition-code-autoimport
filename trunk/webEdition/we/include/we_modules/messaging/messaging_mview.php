@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,22 +21,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
-
 ?>
-    </head>
-     <frameset rows="10,5,*" framespacing="0" border="0" frameborder="NO">
-       <frame src="<?php echo HTML_DIR?>aqua_nb.html" scrolling="no" noresize>
-       <frame src="<?php print HTML_DIR?>msg_white_fr.html" noresize scrolling="no">
-       <frame src="<?php print HTML_DIR?>white_inc.html" name="messaging_msg_view" noresize>
-     </frameset>
-  <body>
-  </body>
+</head>
+<frameset rows="10,5,*" framespacing="0" border="0" frameborder="NO">
+	<frame src="<?php echo HTML_DIR ?>aqua_nb.html" scrolling="no" noresize/>
+	<frame src="<?php print HTML_DIR ?>msg_white_fr.html" noresize scrolling="no"/>
+	<frame src="<?php print HTML_DIR ?>white_inc.html" name="messaging_msg_view" noresize/>
+</frameset>
+<body>
+</body>
 </html>

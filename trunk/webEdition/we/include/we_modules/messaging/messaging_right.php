@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,38 +21,34 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-if (!eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
-
 ?>
-  </head>
+</head>
 
-<?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>
-<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
-<?php } else { ?>
-<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
+<?php if(we_base_browserDetect::isGecko()){ ?>
+	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
+<?php } else if(we_base_browserDetect::isSafari()){ ?>
+	<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize/>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
+<?php } else{ ?>
+	<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize/>
+		<frame src="<?php print WE_MESSAGING_MODULE_DIR ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
 <?php } ?>
 
-  <body>
-  </body>
+<body>
+</body>
 </body>

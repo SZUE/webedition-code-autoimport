@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +24,21 @@
 
 define('LIVEUPDATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');
 
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+if(function_exists('we_error_setHandleAll')){
+	we_error_setHandleAll();
+}
+if(!defined('WE_ERROR_HANDLER_SET')){
+	we_error_handler();
+}
+
+if(isset($_REQUEST['PHPSESSID'])){
+	session_id($_REQUEST['PHPSESSID']);
+	unset($_REQUEST['PHPSESSID']);
+	unset($_GET['PHPSESSID']);
+	unset($_POST['PHPSESSID']);
+}
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateResponse.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateFrames.class.php');
@@ -40,5 +59,3 @@ if(is_readable(LIVEUPDATE_DIR . 'updateClient/liveUpdateResponseServer.class.php
 if(is_readable(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php')) {
 	require_once(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php');
 }
-
-?>

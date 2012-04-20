@@ -27,5 +27,5 @@
 					eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
 					if(fo) break;
 				}
-				<?php if(isset($GLOBALS['BROWSER']) && $GLOBALS['BROWSER']=='IE') print "wind.focus()"; ?>;
+				<?php if(we_base_browserDetect::isIE()) print "wind.focus()"; ?>;
 				break;

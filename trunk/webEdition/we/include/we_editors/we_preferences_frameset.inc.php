@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,27 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-/*****************************************************************************
+/* * ***************************************************************************
  * INCLUDES
- *****************************************************************************/
+ * *************************************************************************** */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
-/*****************************************************************************
+/* * ***************************************************************************
  * INITIALIZATION
- *****************************************************************************/
+ * *************************************************************************** */
 
-protect();
+we_html_tools::protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
-$tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "setting_ui");
-/*****************************************************************************
+$tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "setting_ui");
+/* * ***************************************************************************
  * CREATE JAVASCRIPT
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
@@ -52,23 +53,23 @@ function we_cmd() {
 		case "message_reporting":
 END_OF_SCRIPT;
 
-if (we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE")) {
-	$_javascript .=	"
+if(we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE")){
+	$_javascript .= "
 		case \"cache\":";
 }
 
-if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
-	$_javascript .=	"
+if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
+	$_javascript .= "
 		case \"extensions\":";
 }
 
-if (we_hasPerm("EDIT_SETTINGS_DEF_EXT")) {
-	$_javascript .=	"
+if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
+	$_javascript .= "
 		case \"recipients\":";
 }
 
-if (we_hasPerm("ADMINISTRATOR")) {
-	$_javascript .=	"
+if(we_hasPerm("ADMINISTRATOR")){
+	$_javascript .= "
 		case \"proxy\":
 		case \"advanced\":
 		case \"system\":
@@ -81,11 +82,10 @@ if (we_hasPerm("ADMINISTRATOR")) {
 		case \"active_integrated_modules\":
 		case \"versions\":
 		case \"email\":";
-
 }
 
-if (we_hasPerm("FORMMAIL")) {
-	$_javascript .=	"
+if(we_hasPerm("FORMMAIL")){
+	$_javascript .= "
 		case \"recipients\":";
 }
 
@@ -107,7 +107,6 @@ $_javascript .= <<< END_OF_SCRIPT
 			//we_preferences.document.getElementById('setting_modules').style.display = 'none';
 			we_preferences.document.getElementById('setting_backup').style.display = 'none';
 			we_preferences.document.getElementById('setting_validation').style.display = 'none';
-			we_preferences.document.getElementById('setting_cache').style.display = 'none';
 			we_preferences.document.getElementById('setting_language').style.display = 'none';
 			we_preferences.document.getElementById('setting_countries').style.display = 'none';
 			we_preferences.document.getElementById('setting_message_reporting').style.display = 'none';
@@ -122,7 +121,7 @@ END_OF_SCRIPT;
 
 $_javascript .= "
 		case \"show_tabs\":
-			we_preferences_header.document.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_preferences_header.php".($tabname!="" ? "?tabname=".$tabname : "")."';
+			we_preferences_header.document.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_preferences_header.php" . ($tabname != "" ? "?tabname=" . $tabname : "") . "';
 
 			break;
 	}
@@ -143,17 +142,17 @@ function saveOnKeyBoard() {
 //-->
 ";
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
-print we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
-	  we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . "</head>";
+print we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
+	we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
-$frameset = new we_htmlFrameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0",  "frameborder" => "no"), 0);
+$frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0", "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" => "we_preferences_header", "scrolling" => "no", "noresize" => "noresize"));
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui".($tabname!="" ? "&tabname=".$tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
+$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences_footer.php", "name" => "we_preferences_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";
 

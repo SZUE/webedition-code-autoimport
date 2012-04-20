@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,56 +22,43 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_logout.inc.php") {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
 
-$DB_WE->query('
-	DELETE
-	FROM ' . LOCK_TABLE . '
-	WHERE UserID="' . abs($_SESSION["user"]["ID"]) . '" AND sessionID="'.session_id().'"');
+$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query("
-	UPDATE " . USER_TABLE . "
-	SET Ping=0
-	WHERE ID='" . abs($_SESSION["user"]["ID"]) . "'");
+$DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID=" . intval($_SESSION["user"]["ID"]));
 
-?>
-<script language="JavaScript" type="text/javascript">
-<!--
-<?php
+cleanTempFiles(true);
 
-cleanTempFiles(1);
-
-if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, when userId is available
-	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . abs($_SESSION["prefs"]["userID"]));
+if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
+	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], ' WHERE userID=' . intval($_SESSION["prefs"]["userID"]));
 }
 
 //	getJSCommand
-if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with tag:linkToSuperEasyEditMode
-	
-
+if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
 	$_path = $_SESSION["SEEM"]["startPath"];
-	
-	$jsCommand = "top.location.replace('" . $_path . "');";
-	
-	while (list($name, $val) = each($_SESSION)) {
-		if ($name != "webuser") {
+
+	while(list($name, $val) = each($_SESSION)) {
+		if($name != "webuser"){
 			unset($_SESSION[$name]);
 		}
 	}
-
-} else { //	normal logout from webEdition.
-	
-
-	$jsCommand = "top.close();\n";
-
+} else{ //	normal logout from webEdition.
+	unset($_SESSION["user"]);
+	if(isset($_SESSION['weS'])){
+		unset($_SESSION['weS']);
+	}
+	$_path = WEBEDITION_DIR;
 }
 
-print $jsCommand;
-
-?>
-//-->
-</script>
+echo we_html_element::jsElement('
+for(i=0;i<top.jsWindow_count;i++){
+	eval("var obj=top.jsWindow"+i+"Object");
+	try{
+		obj.close();
+	}catch(err){}
+}
+top.location.replace("' . $_path . '");');

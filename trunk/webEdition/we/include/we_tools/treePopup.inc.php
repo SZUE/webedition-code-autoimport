@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,16 +49,15 @@ class treePopup{
 		return array("name" => $name,"vorfahr" => $vorfahr, "text" => $text, "IsFolder" => $IsFolder );
 	}
 	function search($eintrag,$filter){
-		global $DB_WE;
 		if($this->showEntries){
-			$query = "SELECT * from ".$DB_WE->escape($this->table)." WHERE ParentID='".abs($eintrag)."'".(($filter) ? (" AND ($filter)") : "")." ORDER BY Text";
+			$query = "SELECT * from ".$DB_WE->escape($this->table)." WHERE ParentID=".intval($eintrag).' '.(($filter) ? (" AND ($filter)") : "")." ORDER BY Text";
 		}else{
-			$query = "SELECT * from ".$DB_WE->escape($this->table)." WHERE IsFolder=1 AND ParentID='".abs($eintrag)."'".(($filter) ? (" AND ($filter)") : "")." ORDER BY Text";
+			$query = "SELECT * from ".$DB_WE->escape($this->table)." WHERE IsFolder=1 AND ParentID=".intval($eintrag).' '.(($filter) ? (" AND ($filter)") : "")." ORDER BY Text";
 		}
-		$DB_WE->query($query);
+		$GLOBALS['DB_WE']->query($query);
 		$container = array();
-		while($DB_WE->next_record()){
-			array_push($container,$this->dirEntry($DB_WE->f("ID"),$DB_WE->f("ParentID"),$DB_WE->f("Text"),$DB_WE->f("IsFolder")));
+		while($GLOBALS['DB_WE']->next_record()){
+			array_push($container,$this->dirEntry($GLOBALS['DB_WE']->f("ID"),$GLOBALS['DB_WE']->f("ParentID"),$GLOBALS['DB_WE']->f("Text"),$GLOBALS['DB_WE']->f("IsFolder")));
 		}
 		return $container;
 	}

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,29 +27,26 @@
 //	---> Includes
 //
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_tag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/js_gui/weOrderContainer.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tag.inc.php");
 
-protect();
+we_html_tools::protect();
 
 //
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"])){	//	send charset which might be determined in template
-	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+if(isset($we_doc->elements["Charset"]["dat"])&&$we_doc->elements["Charset"]["dat"]){	//	send charset which might be determined in template
+	$charset=$we_doc->elements["Charset"]["dat"];
+} else{
+	$charset = DEFAULT_CHARSET;
 }
-
+we_html_tools::headerCtCharset('text/html', $charset);
 
 //
 //	---> initialize some vars
 //
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
-$we_button = new we_button();
 $parts = array();
 
 
@@ -53,7 +54,7 @@ $parts = array();
 //	---> Output the HTML Header
 //
 
-htmlTop();
+we_html_tools::htmlTop('',$charset);
 
 //
 //	---> Loading the Stylesheets
@@ -64,7 +65,7 @@ if($we_doc->CSS){
 	foreach($cssArr as $cs){
 		$path=id_to_path($cs);
 		if($path){
-			print '<link href="'.$path.'" rel="styleSheet" type="text/css" />'."\n";
+			print we_html_element::cssLink($path);
 		}
 
 	}
@@ -76,23 +77,23 @@ print STYLESHEET;
 //	---> Loading some Javascript
 //
 
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script  type="text/javascript">
 <!--
 function we_checkObjFieldname(i){
 	if(i.value.search(/^([a-zA-Z0-9_])*$/)){
-		<?php print we_message_reporting::getShowMessageCall( $GLOBALS["l_object"]["fieldNameNotValid"], WE_MESSAGE_ERROR ); ?>
+		<?php print we_message_reporting::getShowMessageCall( g_l('modules_object','[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR ); ?>
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	}else if(i.value=='Title' || i.value=='Description'){
-		<?php print we_message_reporting::getShowMessageCall( $GLOBALS["l_object"]["fieldNameNotTitleDesc"], WE_MESSAGE_ERROR ); ?>
+		<?php print we_message_reporting::getShowMessageCall( g_l('modules_object','[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR ); ?>
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	}else if(i.value.length==0){
-		<?php print we_message_reporting::getShowMessageCall( $GLOBALS["l_object"]["fieldNameEmpty"], WE_MESSAGE_ERROR ); ?>
+		<?php print we_message_reporting::getShowMessageCall( g_l('modules_object','[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR ); ?>
 //		i.focus(); # 1052
 //		i.select();
 		i.value = i.getAttribute("oldValue");
@@ -104,14 +105,12 @@ function we_checkObjFieldname(i){
 </script>
 <?php
 	echo $jsGUI->getJS(WEBEDITION_DIR."js");
-?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
+ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 
 </head>
 
 <body onUnload="doUnload()" class="weEditorBody">
-<form name="we_form" method="post"><?php $we_doc->pHiddenTrans(); ?>
-<?php
+<form name="we_form" method="post"><?php $we_doc->pHiddenTrans();
 
 if($we_doc->ID){
 	$ctable = OBJECT_X_TABLE.$we_doc->ID;
@@ -124,7 +123,7 @@ $count = $we_doc->getElement("Sortgesamt");
 $uniquename = md5(uniqid(rand(), true));
 $width = 800;
 
-$we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 echo we_multiIconBox::_getBoxStart("100%", $uniquename);
 
@@ -135,11 +134,11 @@ echo 	'<div id="'.$uniquename.'_div">'
 	.	'<tr>'
 	.	'<td valign="top"></td>'
 	.	'<td class="defaultfont">'
-	.	$we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$_REQUEST['we_transaction']."');")
+	.	we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$_REQUEST['we_transaction']."');")
 	.	'</td>'
 	.	'</tr>'
 	.	'<tr>'
-	.	'<td>'.getPixel(0,15).'</td>'
+	.	'<td>'.we_html_tools::getPixel(0,15).'</td>'
 	.	'<td></td>'
 	.	'</tr>'
 	.	'</table>'
@@ -151,10 +150,10 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 	$identifier = $we_doc->getSortIndex($i);
 	$uniqid = "entry_".$identifier;
 
-	$upbut      = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-	$downbut    = $we_button->create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-	$plusbut    = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
-	$trashbut   = $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
+	$upbut      = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+	$downbut    = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+	$plusbut    = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
+	$trashbut   = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
 
 	$content =		'<div id="'.$uniqid.'">'
 				.	'<a name="f'.$uniqid.'"></a>'
@@ -167,7 +166,7 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 				.	'</td>'
 				.	'<td width="150" class = "defaultfont" valign="top">';
 
-	$content	.= $we_button->create_button_table(
+	$content	.= we_button::create_button_table(
 								array(
 									$plusbut,
 									$upbut,
@@ -178,7 +177,7 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 	$content .= 	'</td>'
 				.	'</tr>'
 				.	'</table>'
-				.	'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.getPixel(1,1).'</div>'.getPixel(2,10)
+				.	'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.we_html_tools::getPixel(1,1).'</div>'.we_html_tools::getPixel(2,10)
 				.	'</div>'
 				.	'<script type="text/javascript">'
 				.	'classEntry.add(document, \''.$uniqid.'\', null);'
@@ -192,7 +191,6 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 
 
 ?>
-
 </form>
 </body>
 

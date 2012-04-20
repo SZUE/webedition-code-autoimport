@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +21,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-
-if (isset($_SESSION)){
-    while(list($name, $val) = each($_SESSION)){
-        unset($_SESSION[$name]);
-    }
+if(isset($_SESSION)){
+	while(list($name, $val) = each($_SESSION)) {
+		unset($_SESSION[$name]);
+	}
 }
 $_SESSION = array();
-header("location: " . WEBEDITION_DIR ."index.php");
-
-
+header("location: " . WEBEDITION_DIR . "index.php");
+we_html_tools::htmlTop();
 ?>
-<html>
-<head>
-<title>webEdition</title>
 </head>
 <body>
-<?php echo $GLOBALS["l_global"]["redirect_to_login_failed"] . '<a href="' . WEBEDITION_DIR .'index.php">' . $GLOBALS["l_global"]["redirect_to_login_name"] . '</a>'; ?> 
+	<?php echo g_l('global', "[redirect_to_login_failed]") . '<a href="' . WEBEDITION_DIR . 'index.php">' . g_l('global', "[redirect_to_login_name]") . '</a>'; ?>
 </body>
 </html>

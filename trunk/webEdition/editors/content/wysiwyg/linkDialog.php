@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,9 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weHyperlinkDialog.class.inc.php");
-if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1)){
+	we_html_tools::protect();
 }
 $dialog = new weHyperlinkDialog();
 $dialog->initByHttp();
@@ -30,16 +33,15 @@ print $dialog->getHTML();
 
 function weDoLinkCmd($args){
 
-	if((!isset($args["href"])) || $args["href"] == "http://") $args["href"] = "";
+	if((!isset($args["href"])) || $args["href"] == "http://")
+		$args["href"] = "";
 
-	$param = ($args["param"] ? "?".str_replace("?","",$args["param"]) : "");
-	$param=trim($param,'&');
-	$href = $args["href"] . $param . ($args["anchor"] ? "#".$args["anchor"] : "");
-	return '<script language="JavaScript" type="text/javascript">
+	$param = ($args["param"] ? "?" . str_replace("?", "", $args["param"]) : "");
+	$param = trim($param, '&');
+	$href = $args["href"] . $param . ($args["anchor"] ? "#" . $args["anchor"] : "");
 
-top.opener.weWysiwygObject_'.$args["editname"].'.createLink("'.$href.'","'.$args["target"].'","'.$args["class"].'","'.$args["lang"].'","'.$args["hreflang"].'","'.$args["title"].'","'.$args["accesskey"].'","'.$args["tabindex"].'","'.$args["rel"].'","'.$args["rev"].'");
+	return we_html_element::jsElement(
+			'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
 top.close();
-</script>
-';
+');
 }
-?>

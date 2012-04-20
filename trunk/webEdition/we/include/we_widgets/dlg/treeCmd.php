@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,20 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-protect();
-if (isset($_REQUEST["cmd"])) {
-	switch ($_REQUEST["cmd"]) {
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+if(isset($_REQUEST["cmd"])){
+	switch($_REQUEST["cmd"]){
 		case "load" :
-			if (isset($_REQUEST["pid"])) {
-				print 
-						we_htmlElement::jsElement(
-								"self.location='/webEdition/we/include/we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset(
-										$_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=top'");
+			if(isset($_REQUEST["pid"])){
+				print
+					we_html_element::jsElement(
+						"self.location='/webEdition/we/include/we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset(
+							$_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=top'");
 			}
 			break;
 	}
 }
-
-?>

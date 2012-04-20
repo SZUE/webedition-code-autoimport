@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+we_html_tools::protect();
+$id = $_REQUEST['we_cmd'][1];
 
-protect();
-		$id = $_REQUEST["we_cmd"][1];
+$JSIDName = we_cmd_dec(2);
+$JSTextName = we_cmd_dec(3);
+$JSCommand = we_cmd_dec(4);
 
-		$JSIDName = we_cmd_dec(2);
-		$JSTextName = we_cmd_dec(3);
-		$JSCommand = we_cmd_dec(4);
-
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php");

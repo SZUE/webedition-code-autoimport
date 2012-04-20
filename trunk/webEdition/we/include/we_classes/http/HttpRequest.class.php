@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +50,7 @@ class HttpRequest{
     var $errstr = 0;
 
 
-    function HttpRequest($path, $host, $method='POST', $protocol='HTTP/1.0'){
+    function __construct($path, $host, $method='POST', $protocol='HTTP/1.0'){
 
         $this->http_path     = $path;
         $this->http_host     = $host;
@@ -272,7 +276,7 @@ class HttpRequest{
 
                     $var = $this->vars[$i];
                     $body .= "--" . $boundary . "\r\n";
-                    $body .= "Content-Disposition: form-data; name=\"" . $var["name"] . "\"" . "\r\n";
+                    $body .= "Content-Disposition: form-data; name=\"" . $var["name"] . "\"\r\n";
                     $body .= "\r\n" . $var["value"] . "\r\n";
                 }
                 //  at last boundary we must attach '--'

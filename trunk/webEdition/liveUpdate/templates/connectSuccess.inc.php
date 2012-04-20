@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +27,12 @@
  * different ways.
  */
 
-$we_button = new we_button();
-$checkButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection');
+$checkButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection');
 
 if ($errorMessage) { // servers response is error string
 	$content = '
 <div class="defaultfont">
-	' . $GLOBALS['l_liveUpdate']['connect']['connectionSuccessError'] . '
+	' . g_l('liveUpdate','[connect][connectionSuccessError]') . '
 	<div class="errorDiv">
 		<code>' . $errorMessage . '</code>
 	</div>
@@ -38,11 +41,9 @@ if ($errorMessage) { // servers response is error string
 } else {
 	$content = '
 <div class="defaultfont">
-	' . $GLOBALS['l_liveUpdate']['connect']['connectionSuccess'] . '
+	' . g_l('liveUpdate','[connect][connectionSuccess]') . '
 </div>
 ';
 }
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['connect']['headline'], $content);
-
-?>
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[connect][headline]'), $content);

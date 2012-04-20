@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,10 +22,9 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
-
-$isUTF8 = substr($GLOBALS['WE_LANGUAGE'], -5) == 'UTF-8';
+$isUTF8 = $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8';
 
 $translate = we_core_Local::addTranslation('default.xml', 'toolfactory');
 
@@ -28,21 +32,21 @@ $perm_group_name = "toolfactory";
 $perm_group_title[$perm_group_name] = $isUTF8 ? $translate->_('toolfactory') : utf8_decode($translate->_('toolfactory'));
 
 $perm_values[$perm_group_name] = array(
-	"USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY","PUBLISH_APP_TOOLFACTORY","GENTOC_APP_TOOLFACTORY"
+	"USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY", "PUBLISH_APP_TOOLFACTORY", "GENTOC_APP_TOOLFACTORY"
 );
 
 $perm_titles[$perm_group_name] = array();
 
 $translated = array(
-		$translate->_('The user is allowed to use toolfactory'), 
-		$translate->_('The user is allowed to create new items in toolfactory'), 
-		$translate->_('The user is allowed to delete items from toolfactory'), 
-		$translate->_('The user is allowed to edit items toolfactory'),
-		$translate->_('The user is allowed to publish items toolfactory'),
-		$translate->_('The user is allowed to regenerate the application toc.xml') 
+	$translate->_('The user is allowed to use toolfactory'),
+	$translate->_('The user is allowed to create new items in toolfactory'),
+	$translate->_('The user is allowed to delete items from toolfactory'),
+	$translate->_('The user is allowed to edit items toolfactory'),
+	$translate->_('The user is allowed to publish items toolfactory'),
+	$translate->_('The user is allowed to regenerate the application toc.xml')
 );
 
-foreach ($translated as $i => $value) {
+foreach($translated as $i => $value){
 	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $isUTF8 ? $value : utf8_decode($value);
 }
 

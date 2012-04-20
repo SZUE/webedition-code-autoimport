@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,16 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifShopFieldEmpty($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "reference", __FUNCTION__)))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
+		return $foo;
 
-function we_tag_ifShopFieldEmpty($attribs,$content) {
-	$foo = attributFehltError($attribs, "name", "ifShopFieldEmpty");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "ifShopFieldEmpty");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "ifShopFieldEmpty");if($foo) return $foo;
-
-	$name      = we_getTagAttribute("name", $attribs);
-	$reference = we_getTagAttribute("reference", $attribs);
-	$shopname  = we_getTagAttribute("shopname", $attribs);
-	$attribs['type']='print';//Bug #4895
-
-	return (we_tag('shopField',$attribs, "") == '');
+	return (we_tag('shopField', $attribs) == '');
 }

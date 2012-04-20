@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,13 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-
-class weTagData_sqlColAttribute extends weTagData_selectAttribute
-{
+class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 
 	/**
 	 * @var string
@@ -36,26 +35,24 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function weTagData_sqlColAttribute($id, $name, $table, $required = false, $filter = array(), $module = '')
-	{
+	function __construct($name, $table, $required = false, $filter = array(), $module = '', $description='', $deprecated=false){
 
 		$this->Table = $table;
-
-		global $DB_WE;
 
 		$options = array();
 
 		// get options from choosen table
 		$items = array();
-		$tableInfo = $DB_WE->metadata($this->Table);
+		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
 		sort($tableInfo); // #3490
 
-		for ($i = 0; $i < sizeof($tableInfo); $i++) {
+		for($i = 0; $i < sizeof($tableInfo); $i++){
 
-			if (!in_array($tableInfo[$i]['name'], $filter)) {
+			if(!in_array($tableInfo[$i]['name'], $filter)){
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);
 			}
 		}
-		parent::weTagData_selectAttribute($id, $name, $options, $required, $module);
+		parent::__construct($name, $options, $required, $module, $description, $deprecated);
 	}
+
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,24 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
-if (defined("OBJECT_FILES_TABLE") ) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
-
-}
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php");
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/customerFilter.inc.php");
-
 class copyWeDocumentCustomerFilterFrag extends taskFragment{
 
 	function init(){
@@ -42,49 +29,37 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		// init the fragment
 		// REQUEST[we_cmd][1] = id of folder
 		// REQUEST[we_cmd][2] = table
-		$_id = $_REQUEST["we_cmd"][1];
-		$_table = $_REQUEST["we_cmd"][2];
+		$_id = $_REQUEST['we_cmd'][1];
+		$_table = $_REQUEST['we_cmd'][2];
 
 		// if we_cmd 3 is set, take filters of that folder as parent!!
-		if (isset($_REQUEST["we_cmd"][3])) {
-			$_idForFilter = $_REQUEST["we_cmd"][3];
+		$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
 
-		} else {
-			$_idForFilter = $_id;
-
+		if($id==0){
+			t_e('called function with invalid id');
+			die();
 		}
-
 		$_theFolder = new we_folder();
 		$_theFolder->initByID($_id, $_table);
 
 		$_db = new DB_WE();
 		// now get all childs of this folder
-		$_query = "
-		SELECT *, ID, ContentType
-		FROM ".$_db->escape($_table)."
-		WHERE
-			( ContentType = \"folder\" OR ContentType = \"text/webedition\" OR ContentType=\"objectFile\" )
-			AND PATH LIKE \"" . $_theFolder->Path . "/%\"
-		";
 
-		$_db->query( $_query );
+		$_db->query('SELECT *, ID, ContentType FROM ' . $_db->escape($_table) . ' WHERE	( ContentType = "folder" OR ContentType = "text/webedition" OR ContentType="objectFile" )
+			AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
 		$this->alldata = array();
 
-		if ($_db->num_rows()) {
-
-			while ($_db->next_record()) {
-				array_push(
-					$this->alldata,
-					array(
-						"folder_id" => $_id,
-						"table" => $_table,
-						"idForFilter" => $_idForFilter,
-						"id" => $_db->f("ID"),
-						"contenttype" => $_db->f("ContentType"),
-					)
-				);
-			}
+		while($_db->next_record()) {
+			array_push(
+				$this->alldata, array(
+				"folder_id" => $_id,
+				"table" => $_table,
+				"idForFilter" => $_idForFilter,
+				"id" => $_db->f("ID"),
+				"contenttype" => $_db->f("ContentType"),
+				)
+			);
 		}
 	}
 
@@ -92,104 +67,76 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 
 		// getFilter of base-folder
 		$_theFolder = new we_folder();
-		$_theFolder->initByID( $this->data["idForFilter"], $this->data["table"] );
+		$_theFolder->initByID($this->data["idForFilter"], $this->data["table"]);
 
 		// getTarget-Document
 		$_targetDoc = null;
-		switch ($this->data["contenttype"]) {
+		switch($this->data["contenttype"]){
 			case "folder":
 				$_targetDoc = new we_folder();
-			break;
+				break;
 			case "text/webedition":
 				$_targetDoc = new we_webEditionDocument();
-			break;
+				break;
 			case "objectFile":
 				$_targetDoc = new we_objectFile();
-			break;
+				break;
 		}
 		$_targetDoc->initById($this->data["id"], $this->data["table"]);
 
-		if ($_theFolder->documentCustomerFilter) {
-			$_targetDoc->documentCustomerFilter = $_theFolder->documentCustomerFilter;
-
-		} else {
-			$_targetDoc->documentCustomerFilter = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
-		}
+		$_targetDoc->documentCustomerFilter = ($_theFolder->documentCustomerFilter ?
+				$_theFolder->documentCustomerFilter :
+				weDocumentCustomerFilter::getEmptyDocumentCustomerFilter());
 
 		// write filter to target document
-
-
 		// save filter
 		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
+		$_targetDoc->rewriteNavigation();
 
-		print we_htmlElement::jsElement("
-			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . shortenPath($_targetDoc->Path, 55) . "');
-			parent.setProgress(" . number_format( ( ( $this->currentTask ) / $this->numberOfTasks) *100 , 0 ) . ");
-		");
+		print we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . shortenPath($_targetDoc->Path, 55) . "');
+			parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 
 	function finish(){
 
-		print we_htmlElement::jsElement("
-			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . $GLOBALS["l_customerFilter"]["apply_filter_done"] . "');
+		print we_html_element::jsElement("
+			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', "[apply_filter_done]") . "');
 			parent.setProgress(100);
-			" . we_message_reporting::getShowMessageCall( $GLOBALS["l_customerFilter"]["apply_filter_done"], WE_MESSAGE_NOTICE) . "
+			" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', "[apply_filter_done]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
 			window.setTimeout('parent.top.close()', 2000);
 		");
 	}
+
 }
 
-
-if (isset($_REQUEST["startCopy"])) { // start the fragment
-
+if(isset($_REQUEST["startCopy"])){ // start the fragment
 	$_theFrag = new copyWeDocumentCustomerFilterFrag("copyWeDocumentCustomerFilter", 1, 200);
-
-} else { // print the window
-
+} else{ // print the window
 	// if any childs of the folder are open - bring message to close them
+	// REQUEST[we_cmd][1] = id of folder
+	// REQUEST[we_cmd][2] = table
+	$_id = $_REQUEST['we_cmd'][1];
+	$_table = $_REQUEST['we_cmd'][2];
 
-		// REQUEST[we_cmd][1] = id of folder
-		// REQUEST[we_cmd][2] = table
-		$_id = $_REQUEST["we_cmd"][1];
-		$_table = $_REQUEST["we_cmd"][2];
+	// if we_cmd 3 is set, take filters of that folder as parent!!
+	$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
 
-		// if we_cmd 3 is set, take filters of that folder as parent!!
-		if (isset($_REQUEST["we_cmd"][3])) {
-			$_idForFilter = $_REQUEST["we_cmd"][3];
 
-		} else {
-			$_idForFilter = $_id;
+	$_theFolder = new we_folder();
+	$_theFolder->initByID($_id, $_table);
 
-		}
+	// now get all childs of this folder
+	$_db = new DB_WE();
 
-		$_theFolder = new we_folder();
-		$_theFolder->initByID($_id, $_table);
+	$_db->query('SELECT ID, ContentType FROM ' . $_db->escape($_table) . ' WHERE ( ContentType = "folder" OR ContentType = "text/webedition" OR ContentType="objectFile" )
+			AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
-		// now get all childs of this folder
-		$_db = new DB_WE();
-		$_query = "
-		SELECT *, ID, ContentType
-		FROM ".$_db->escape($_table)."
-		WHERE
-			( ContentType = \"folder\" OR ContentType = \"text/webedition\" OR ContentType=\"objectFile\" )
-			AND PATH LIKE \"" . $_theFolder->Path . "/%\"
-		";
+	$_allChildsJS = 'var _allChilds = new Object();';
 
-		$_db->query( $_query );
-
-		$allChilds = array();
-		$_allChildsJS = "
-			var _allChilds = new Object();";
-
-		if ($_db->num_rows()) {
-
-			while ($_db->next_record()) {
-				$_allChildsJS .= "
-				_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
-			}
-		}
-		$_js = '
-			var _openChilds = Array();
+	while($_db->next_record()) {
+		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
+	}
+	$_js = 'var _openChilds = Array();
 			var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
 
 			for (frameId in _usedEditors) {
@@ -200,37 +147,31 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 						_openChilds.push( frameId );
 					}
 				}
-			}
-			';
-
-	$we_button = new we_button();
-	$js = "";
+			}';
 
 	$pb = new we_progressBar(0, 0, true);
 	$pb->addText("&nbsp;", 0, "copyWeDocumentCustomerFilterText");
 	$pb->setStudWidth(10);
 	$pb->setStudLen(300);
-	$js .= $pb->getJS();
-	$js .= $pb->getJSCode();
+	$js = $pb->getJS() . $pb->getJSCode();
 
 	// image and progressbar
 	$content = $pb->getHTML();
 
-	$buttonBar = $we_button->create_button("cancel", "javascript:top.close();");
+	$buttonBar = we_button::create_button("cancel", "javascript:top.close();");
 
-	$_iframeLocation = "/webEdition/we_cmd.php?we_cmd[0]=" . $_REQUEST["we_cmd"][0] . "&we_cmd[1]=" . $_REQUEST["we_cmd"][1] . "&we_cmd[2]=" . $_REQUEST["we_cmd"][2] . (isset($_REQUEST["we_cmd"][3]) ? "&we_cmd[3]=" . $_REQUEST["we_cmd"][3] : "" ) ."&startCopy=1";
+	$_iframeLocation = '/webEdition/we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=' . $_REQUEST['we_cmd'][1] . "&we_cmd[2]=" . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? "&we_cmd[3]=" . $_REQUEST['we_cmd'][3] : "" ) . '&startCopy=1';
 
-	htmlTop();
+	we_html_tools::htmlTop(g_l('modules_customerFilter', '[apply_filter]'));
 	print STYLESHEET;
-	print we_htmlElement::jsElement("
-
+	print we_html_element::jsElement("
 		function checkForOpenChilds() {
 
 			$_allChildsJS
 			$_js
 
 			if (_openChilds.length) {
-				if ( confirm(\"" . $GLOBALS['l_customerFilter']["apply_filter_cofirm_close"] . "\") ) {
+				if ( confirm(\"" . g_l('modules_customerFilter', "[apply_filter_cofirm_close]") . "\") ) {
 					// close all
 					for (i=0;i<_openChilds.length;i++) {
 						_usedEditors[_openChilds[i]].setEditorIsHot(false);
@@ -248,14 +189,10 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 		}
 
 	");
-	print "</head>
-<body class=\"weDialogBody\" onload=\"checkForOpenChilds()\">
-" . $js . "
-" . htmlDialogLayout($content, $GLOBALS['l_customerFilter']["apply_filter"], $buttonBar) . "
-<div style=\"display: none;\"> <!-- hidden -->
-	<iframe style=\"position: absolute; top: 150; height: 1px; width: 1px;\" name=\"iframeCopyWeDocumentCustomerFilter\" id=\"iframeCopyWeDocumentCustomerFilter\" src=\"about:blank\"></iframe>
+	print '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
+		$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
+		'<div style="display: none;"> <!-- hidden -->
+	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
 </div>
-</html>
-";
-
+</html>';
 }

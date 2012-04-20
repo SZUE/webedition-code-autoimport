@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,12 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifMailingListEmpty($attribs, $content) {
-	if (isset($GLOBALS["WE_MAILING_LIST_EMPTY"])) {
-		return (($GLOBALS["WE_MAILING_LIST_EMPTY"]==1) ? true : false);
-	} else {
-		return false;
-	}
+function we_tag_ifMailingListEmpty(){
+	return (isset($GLOBALS["WE_MAILING_LIST_EMPTY"])) && ($GLOBALS["WE_MAILING_LIST_EMPTY"] == 1);
 }

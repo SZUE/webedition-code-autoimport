@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +22,15 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weImportRtfDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+	we_html_tools::protect();
 }
 $dialog = new weImportRtfDialog();
 $dialog->initByHttp();
 if(isset($dialog->args["ntxt"]) && $dialog->args["ntxt"]){
-	$dialog->registerOkJsFN("weDoRtfJSTxt");	
-}else{
+	$dialog->registerOkJsFN("weDoRtfJSTxt");
+} else{
 	$dialog->registerOkJsFN("weDoRtfJS");
 }
 print $dialog->getHTML();
@@ -39,6 +42,7 @@ editorObj.replaceText(document.we_form.elements["we_dialog_args[htmltxt]"].value
 top.close();
 ';
 }
+
 function weDoRtfJSTxt(){
 	return '
 eval("var taObj = top.opener."+document.we_form.elements["we_dialog_args[taname]"].value+"Object");
@@ -46,4 +50,3 @@ taObj.appendText(document.we_form.elements["we_dialog_args[htmltxt]"].value);
 top.close();
 ';
 }
-?>

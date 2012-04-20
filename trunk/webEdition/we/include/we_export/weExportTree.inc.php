@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMainTree.inc.php");
-
 class weExportTree extends weMainTree{
 
 	function getJSInfo(){
@@ -28,31 +29,30 @@ class weExportTree extends weMainTree{
 			function info(text) {
 			}
 		';
-
 	}
 
 	function getJSOpenClose(){
 
- 		return '
+		return '
 		function openClose(id){
 
 			if(id=="") return;
-		
+
 			var eintragsIndex = indexOfEntry(id);
 			var status;
-	
+
 			if(treeData[eintragsIndex].open==0) openstatus=1;
 			else openstatus=0;
-			treeData[eintragsIndex].open=openstatus;		
+			treeData[eintragsIndex].open=openstatus;
 			if(openstatus && treeData[eintragsIndex].loaded!=1){
- 				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=load&tab="+'.$this->topFrame.'.table+"&cmd=load&pid="+id;
- 				'.$this->topFrame.'.openFolders['.$this->topFrame.'.table]+=","+id;
+ 				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&tab="+' . $this->topFrame . '.table+"&cmd=load&pid="+id;
+ 				' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]+=","+id;
 			}else{
- 				var arr = '.$this->topFrame.'.openFolders['.$this->topFrame.'.table].split(",");
- 				'.$this->topFrame.'.openFolders['.$this->topFrame.'.table]="";
+ 				var arr = ' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table].split(",");
+ 				' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]="";
  				for(var t=0;t<arr.length;t++){
-					if(arr[t]!="" && arr[t]!=id){ 				
- 						'.$this->topFrame.'.openFolders['.$this->topFrame.'.table]+=","+arr[t];
+					if(arr[t]!="" && arr[t]!=id){
+ 						' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]+=","+arr[t];
 					}
  				}
 				drawTree();
@@ -60,14 +60,13 @@ class weExportTree extends weMainTree{
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
  		}
  		';
-
 	}
 
 	function getJSLoadTree($treeItems){
-			$js="";
-			$out="";
+		$js = "";
+		$out = "";
 
-			$js='
+		$js = '
 			function in_array(arr,item){
 				for(i=0;i<arr.length;i++){
 					if(arr[i]==item) return true;
@@ -76,94 +75,93 @@ class weExportTree extends weMainTree{
 			}
 			';
 
-			$js.="var attribs=new Array();\n";
-			$js.=$this->topFrame.".treeData.table=".$this->topFrame.".table;\n";
+		$js.="var attribs=new Array();\n";
+		$js.=$this->topFrame . ".treeData.table=" . $this->topFrame . ".table;\n";
 
-			foreach($treeItems as $item){
-				//if(strpos($item["contenttype"], "text") !== false || strpos($item["contenttype"], "folder") !== false || strpos($item["contenttype"], "object") !== false){
+		foreach($treeItems as $item){
+			//if(strpos($item["contenttype"], "text") !== false || strpos($item["contenttype"], "folder") !== false || strpos($item["contenttype"], "object") !== false){
 
-					$js.="		if(".$this->topFrame.".indexOfEntry('".$item["id"]."')<0){ \n";
-					foreach($item as $k=>$v){
-						if(strtolower($k)=="checked")
-						$js.='
-							if(in_array('.$this->topFrame.'.SelectedItems[attribs["table"]],"'.$item["id"].'"))
-								attribs["'.strtolower($k).'"]=\'1\';
-							else
-								attribs["'.strtolower($k).'"]=\''.$v.'\';
-						';
-						else
-						$js.='
-								attribs["'.strtolower($k).'"]=\''.$v.'\';
-						';
-					}
+			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			foreach($item as $k => $v){
+				if(strtolower($k) == "checked")
 					$js.='
-						'.$this->topFrame.'.treeData.addSort(new '.$this->topFrame.'.node(attribs));
+							if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '"))
+								attribs["' . strtolower($k) . '"]=\'1\';
+							else
+								attribs["' . strtolower($k) . '"]=\'' . $v . '\';
+						';
+				else
+					$js.='
+								attribs["' . strtolower($k) . '"]=\'' . $v . '\';
+						';
+			}
+			$js.='
+						' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 					}
 					';
-				//}
-			}
-			$js.=$this->topFrame.'.treeData.setstate('.$this->topFrame.'.treeData.tree_states["select"]);';
+			//}
+		}
+		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);';
 
-			$js.=$this->topFrame.'.drawTree();';
+		$js.=$this->topFrame . '.drawTree();';
 
-			return $js;
-
+		return $js;
 	}
 
 	function getJSStartTree(){
-		return 'function startTree(){				
-				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=load&cmd=load&tab="+'.$this->topFrame.'.table+"&pid=0&openFolders="+'.$this->topFrame.'.openFolders['.$this->topFrame.'.table];
+		return 'function startTree(){
+				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
 			}';
 	}
 
 	function getJSTreeCode(){
-		$js=weMainTree::getJSTreeCode();
-		$js.=we_htmlElement::jsElement($this->getJSStartTree());
+		$js = weMainTree::getJSTreeCode();
+		$js.=we_html_element::jsElement($this->getJSStartTree());
 
 		return $js;
 	}
 
 	function getJSDrawTree(){
 
- 		return '
+		return '
  		function drawTree(){
-			var out=\'<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td>'.getPixel(5,7).'</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
+			var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
 			out+=draw(treeData.startloc,"");
 			out+="</nobr>\n</td></tr></table>\n";
-			'.$this->treeFrame.'.document.getElementById("treetable").innerHTML=out;
+			' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 			/*nurl="treeMain.php";
 			win=window.open(nurl);
 			win.document.open();
 			win.document.write(top.treeHTML.innerHTML);
-			win.document.close();*/	
-   		} 
-				
- 		'.$this->getJSDraw();
+			win.document.close();*/
+   		}
+
+ 		' . $this->getJSDraw();
 	}
-	
-  	function getJSCheckNode(){
-	return '
+
+	function getJSCheckNode(){
+		return '
  	function checkNode(imgName) {
 		var object_name = imgName.substring(4,imgName.length);
 		for(i=1;i<=treeData.len;i++) {
 			if(treeData[i].id == object_name) {
-				'.$this->treeFrame.'.populate(treeData[i].id,treeData.table);
+				' . $this->treeFrame . '.populate(treeData[i].id,treeData.table);
 				if(treeData[i].checked==1) {
 					if(document.images) {
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
 					}
 					treeData[i].checked=0;
-					if('.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length>1){
+					if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length>1){
 						found=false;
-						'.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length='.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length+1;
-						for(z=0;z<'.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length;z++){
-							if('.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table][z]==treeData[i].id) found=true;
+						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length+1;
+						for(z=0;z<' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length;z++){
+							if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]==treeData[i].id) found=true;
 							if(found)
-								'.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table][z]='.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table][z+1];
+								' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z+1];
 						}
-						'.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length='.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].length-2;
+						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
 					}
-					else '.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table]=new Array();
+					else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
 
 					treeData[i].applylayout();
 					break;
@@ -173,7 +171,7 @@ class weExportTree extends weMainTree{
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
 					}
 					treeData[i].checked=1;
-					'.$this->topFrame.'.SelectedItems['.$this->topFrame.'.table].push(treeData[i].id);
+					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].push(treeData[i].id);
 					treeData[i].applylayout();
 					break;
 				}
@@ -188,72 +186,70 @@ class weExportTree extends weMainTree{
 		if(!document.images) drawTree();
 		}
 		';
- 	}
+	}
 
- 	 	
- 	function getHTMLMultiExplorer($width=500,$height=250){
- 		global $l_export;		
-
-		$js=$this->getJSTreeCode().we_htmlElement::jsElement('
+	function getHTMLMultiExplorer($width=500, $height=250){
+		$js = $this->getJSTreeCode() . we_html_element::jsElement('
 			function populate(id,table){
 
 			}
 
 			function setHead(tab){
-				'.$this->topFrame.'.table=tab;
-				'.$this->topFrame.'.document.we_form.table.value=tab;
-				setTimeout("'.$this->topFrame.'.startTree()",100);
-			}					
-			
+				' . $this->topFrame . '.table=tab;
+				' . $this->topFrame . '.document.we_form.table.value=tab;
+				setTimeout("' . $this->topFrame . '.startTree()",100);
+			}
+
 			var SelectedItems= new Array();
-			SelectedItems["'.FILE_TABLE.'"]=new Array();' .
-			(defined("OBJECT_FILES_TABLE") ? (
-				'SelectedItems["'.OBJECT_FILES_TABLE.'"]=new Array();
-				SelectedItems["'.OBJECT_TABLE.'"]=new Array();
+			SelectedItems["' . FILE_TABLE . '"]=new Array();' .
+				(defined("OBJECT_FILES_TABLE") ? (
+					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
+				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
 				') : '') . '
 
-			SelectedItems["'.TEMPLATES_TABLE.'"]=new Array();
+			SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
 
 			var openFolders= new Array();
-			openFolders["'.FILE_TABLE.'"]="";' .
-			(defined("OBJECT_FILES_TABLE") ? ('
-			openFolders["'.OBJECT_FILES_TABLE.'"]="";
-			openFolders["'.OBJECT_TABLE.'"]="";
+			openFolders["' . FILE_TABLE . '"]="";' .
+				(defined("OBJECT_FILES_TABLE") ? ('
+			openFolders["' . OBJECT_FILES_TABLE . '"]="";
+			openFolders["' . OBJECT_TABLE . '"]="";
 			') : '') . '
-			openFolders["'.TEMPLATES_TABLE.'"]="";
+			openFolders["' . TEMPLATES_TABLE . '"]="";
 
 
-		'.$this->getJSStartTree());
+		' . $this->getJSStartTree());
 
-		$parts=array();
+		$parts = array();
 
-		$style_code="";
-		if(isset($this->SelectionTree->styles)) foreach($this->SelectionTree->styles as $st) $style_code.=$st."\n";
+		$style_code = "";
+		if(isset($this->SelectionTree->styles))
+			foreach($this->SelectionTree->styles as $st)
+				$style_code.=$st . "\n";
 
-		$header = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0, "border" => "0"), 3, 1);
+		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => "0"), 3, 1);
 
-		$header->setCol(0,0,array("bgcolor"=>"white"),getPixel(5,5));
-		
+		$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
+
 		$captions = array();
-		
+
 		if(we_hasPerm("CAN_SEE_DOCUMENTS")){
-			$captions[FILE_TABLE] = $l_export["documents"];
+			$captions[FILE_TABLE] = g_l('export', "[documents]");
 		}
 		if(we_hasPerm("CAN_SEE_TEMPLATES")){
-			$captions[TEMPLATES_TABLE] = $l_export["templates"];
+			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
 		}
-		if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")) {
-			$captions[OBJECT_FILES_TABLE] = $l_export["objects"];
+		if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 		}
-		if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")) {
-			$captions[OBJECT_TABLE] = $l_export["classes"];
+		if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")){
+			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 		}
 
-		$header->setColContent(1,0,htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));		
-		$header->setColContent(2,0,getPixel(5,5));		
+		$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, (isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0), false, 'onChange="setHead(this.value);"', 'value', $width));
+		$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 
-		return $js.$header->getHtmlCode().we_htmlElement::htmlDiv(array('id'=>'treetable','class'=>'blockwrapper','style'=>'width: '.$width.'px; height: '.$height.'px; border:1px #dce6f2 solid;'),'');
+		return $js . $header->getHtml() . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockwrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
+	}
 
- 	}
- 	
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,23 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
-
-function we_tag_ifShopVat($attribs,$content) {
-	$foo = attributFehltError($attribs,"id","ifShopVat");if($foo) return $foo;
-	$id = we_getTagAttribute('id', $attribs, -1);
+function we_tag_ifShopVat($attribs){
+	if(($foo = attributFehltError($attribs, "id", __FUNCTION__)))
+		return $foo;
+	$id = weTag_getAttribute('id', $attribs, -1);
 
 	$vatId = 0;
 
-	if (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)) {
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)){
 		$vatId = $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME);
-	} else {
+	} else{
 		$vatId = $GLOBALS['we_doc']->getField(WE_SHOP_VAT_FIELD_NAME);
 	}
 
-	if (!$vatId) {
+	if(!$vatId){
 		$shopVat = weShopVats::getStandardShopVat();
-		if ($shopVat) {
+		if($shopVat){
 			$vatId = $shopVat->id;
 		}
 	}

@@ -1,7 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,74 +21,67 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-
-
-
-htmlTop();
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+we_html_tools::htmlTop('ping');
 if($_SESSION["user"]["ID"]){
-	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
-	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
+	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
+	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 }
 
+echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 ?>
+<script  type="text/javascript">
+	<!--
 
-<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
-
-<script language="JavaScript" type="text/javascript">
-
-
-
-
-var ajaxURL = "/webEdition/rpc/rpc.php";
-var ajaxCallback = {
-	success: function(o) {
-		if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
-			eval("var result=" + o.responseText);
-			if (result.Success) {
-				var num_users = result.DataArray.num_users;
-				if (top.weEditorFrameController) {
-					var _ref = top.weEditorFrameController.getActiveDocumentReference();
-					if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
-						_ref.setUsersOnline(num_users);
-						var usersHTML = result.DataArray.users;
-						if (usersHTML) {
-							_ref.setUsersListOnline(usersHTML);
+	var ajaxURL = "/webEdition/rpc/rpc.php";
+	var weRpcFailedCnt = 0;
+	var ajaxCallback = {
+		success: function(o) {
+			if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
+				eval("var result=" + o.responseText);
+				if (result.Success) {
+					var num_users = result.DataArray.num_users;
+					weRpcFailedCnt = 0;
+					if (top.weEditorFrameController) {
+						var _ref = top.weEditorFrameController.getActiveDocumentReference();
+						if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
+							_ref.setUsersOnline(num_users);
+							var usersHTML = result.DataArray.users;
+							if (usersHTML) {
+								_ref.setUsersListOnline(usersHTML);
+							}
 						}
 					}
+<?php if(defined("MESSAGING_SYSTEM")){ ?>
+						if (top.header_msg_update) {
+							var newmsg_count = result.DataArray.newmsg_count;
+							var newtodo_count = result.DataArray.newtodo_count;
+
+							top.header_msg_update(newmsg_count, newtodo_count);
+						}
+
+<?php } ?>
 				}
-			<?php if (defined("MESSAGING_SYSTEM")) { ?>
-				if (top.header.header_msg.update) {
-					var newmsg_count = result.DataArray.newmsg_count;
-					var newtodo_count = result.DataArray.newtodo_count;
-
-					top.header.header_msg.update(newmsg_count, newtodo_count);
-				}
-
-			<?php } ?>
-				setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-
+			}
+		},
+		failure: function(o) {
+			if(weRpcFailedCnt++ > 5){
+				//in this case, rpc failed 5 times, this is severe, user should be in informed!
+				alert("<?php echo g_l('global', "[unable_to_call_ping]"); ?>");
 			}
 		}
-	},
-	failure: function(o) {
-		alert("<?php echo $GLOBALS["l_global"]["unable_to_call_ping"];?>");
+	}
+
+	function YUIdoAjax() {
+		YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
 		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
 	}
-}
-
-function YUIdoAjax() {
-	YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-}
-
-//setTimeout("self.location='we_users_ping.php?r=<?php print rand() ?>'",<?php print PING_TIME ?>*1000);
+	//-->
 </script>
 </head>
-<body bgcolor="white" onLoad="YUIdoAjax();">
+<body bgcolor="white" onload="YUIdoAjax();">
 </body>
 </html>

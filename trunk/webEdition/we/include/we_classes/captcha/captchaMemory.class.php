@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +103,7 @@ class CaptchaMemory {
 	 * @param string $file
 	 * @return void
 	 */
-	function readData($file) {
+	static function readData($file) {
 		if(file_exists($file.".php")) {
 			include($file.".php");
 			if(isset($data)) {
@@ -116,7 +120,7 @@ class CaptchaMemory {
 	 * @param string $file
 	 * @return void
 	 */
-	function writeData($file, $data) {
+	static function writeData($file, $data) {
 		if(sizeof($data) < 1) {
 			if(file_exists($file.".php")) {
 				unlink($file.".php");

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-define("BANNER_TABLE",TBL_PREFIX . "tblbanner");
-define("BANNER_CLICKS_TABLE",TBL_PREFIX . "tblbannerclicks");
-define("BANNER_PREFS_TABLE",TBL_PREFIX . "tblbannerprefs");
-define("BANNER_VIEWS_TABLE",TBL_PREFIX . "tblbannerviews");
-define("WE_BANNER_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/");
+define("BANNER_TABLE", TBL_PREFIX . "tblbanner");
+define("BANNER_CLICKS_TABLE", TBL_PREFIX . "tblbannerclicks");
+define("BANNER_PREFS_TABLE", TBL_PREFIX . "tblbannerprefs");
+define("BANNER_VIEWS_TABLE", TBL_PREFIX . "tblbannerviews");

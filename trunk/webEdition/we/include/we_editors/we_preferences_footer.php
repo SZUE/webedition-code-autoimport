@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,31 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
 
-/*****************************************************************************
- * INCLUDES
- *****************************************************************************/
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/prefs.inc.php");
-
-/*****************************************************************************
- * INITIALIZATION
- *****************************************************************************/
-
-protect();
-
-htmlTop();
-
-/*****************************************************************************
- * CREATE JAVASCRIPT
- *****************************************************************************/
+we_html_tools::htmlTop();
 
 // Define needed JS
-$acErrorMsg = we_message_reporting::getShowMessageCall($l_alert['save_error_fields_value_not_valid'],WE_MESSAGE_ERROR);
+$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 $_javascript = <<< END_OF_SCRIPT
 <!--
 var countSaveTrys = 0;
@@ -82,7 +70,6 @@ function we_save() {
 	top.we_preferences.document.getElementById('setting_editor').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_recipients').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_proxy').style.display = 'none';
-	top.we_preferences.document.getElementById('setting_cache').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_advanced').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_system').style.display = 'none';
 	top.we_preferences.document.getElementById('setting_seolinks').style.display = 'none';
@@ -112,7 +99,7 @@ function we_save() {
 
 END_OF_SCRIPT;
 
-if (we_hasPerm("FORMMAIL")) {
+if(we_hasPerm("FORMMAIL")){
 	$_javascript .= "top.we_preferences.send_recipients();";
 }
 
@@ -124,16 +111,13 @@ $_javascript .= <<< END_OF_SCRIPT
 //-->
 END_OF_SCRIPT;
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
-print STYLESHEET . we_htmlElement::jsElement($_javascript) . "</head>";
+print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 
-$we_button = new we_button();
+$okbut = we_button::create_button("save", "javascript:we_save();");
+$cancelbut = we_button::create_button("cancel", "javascript:top.close()");
 
-$okbut = $we_button->create_button("save", "javascript:we_save();");
-$cancelbut = $we_button->create_button("cancel", "javascript:top.close()");
-
-print we_htmlElement::htmlBody(array("class" => "weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");
-
+print we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");

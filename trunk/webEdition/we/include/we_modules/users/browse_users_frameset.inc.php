@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
-
-$id = $_REQUEST["we_cmd"][4];
+$id = $_REQUEST['we_cmd'][4];
 $table = USER_TABLE;
 
 $JSIDName = we_cmd_dec(1);
 $JSTextName = we_cmd_dec(2);
 $JSCommand = we_cmd_dec(5);
-$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : 0;
-$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : 0;
-$filter = $_REQUEST["we_cmd"][3];
-$multiple = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : 0;
+$sessionID = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : 0;
+$rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : 0;
+$filter = $_REQUEST['we_cmd'][3];
+$multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : 0;
 
-include_once(WE_USERS_MODULE_DIR . "we_usersSelect.php");
+include_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

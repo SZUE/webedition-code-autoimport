@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,87 +22,119 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weNavigationCache{
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_live_tools.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
+	const CACHEDIR = '/webEdition/we/include/we_tools/navigation/cache/';
 
-class weNavigationCache
-{
+	static $rebuildRootCnt = 0;
 
-	function createCacheDir()
-	{
-		
-		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/';
-		if (!is_dir($_cacheDir)) {
-			createLocalFolder($_cacheDir);
+	static function delNavigationTree($id){
+		static $deleted = array();
+		if(in_array($id, $deleted)){
+			return;
 		}
-		return $_cacheDir;
-	}
-
-	function cacheNavigationTree($id)
-	{
-		
-		weNavigationCache::cacheNavigationBranch($id);
-		weNavigationCache::cacheRootNavigation();
-	
-	}
-
-	function cacheNavigationBranch($id)
-	{
-		
-		$_cacheDir = weNavigationCache::createCacheDir();
-		
+		self::delCacheNavigationEntry(0);
+		//self::cacheRootNavigation();
 		$_id = $id;
 		$_c = 0;
-		while ($_id != 0) {
-			weNavigationCache::cacheNavigation($_id);
-			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . abs($_id) . ';', 'ParentID', new DB_WE());
+		while($_id != 0) {
+			self::delCacheNavigationEntry($_id);
+			$deleted[] = $_id;
+			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
 			$_c++;
-			if ($_c > 99999) {
+			if($_c > 99999){
 				break;
 			}
 		}
-	
 	}
 
-	function cacheRootNavigation()
-	{
-		
-		$_cacheDir = weNavigationCache::createCacheDir();
-		
-		$_naviItemes = new weNavigationItems();
-		
-		$_naviItemes->initById(0);
-		
-		$_content = serialize($_naviItemes->items);
-		
-		weFile::save($_cacheDir . 'navigation_0.php', $_content);
-		
-		$currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
-		foreach ($currentRulesStorage as &$rule){
-					$rule->deleteDB();
-				}
-		$_content = serialize($currentRulesStorage);
-		unset($currentRulesStorage);
-		
-		weFile::save($_cacheDir . 'rules.php', $_content);
-	
+	static function cacheNavigationTree($id){
+		weNavigationCache::cacheNavigationBranch($id);
+		//weNavigationCache::cacheRootNavigation();
 	}
 
-	function cacheNavigation($id)
-	{
-		
-		$_cacheDir = weNavigationCache::createCacheDir();
-		
+	static function cacheNavigationBranch($id){
+		$_id = $id;
+		$_c = 0;
+		$db = new DB_WE();
+		while($_id != 0) {
+			self::cacheNavigation($_id);
+			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
+			$_c++;
+			if($_c > 99999){
+				break;
+			}
+		}
+	}
+
+	/* no need for this.
+	 * static function cacheRootNavigation(){
+	  if(!self::$rebuildRootCnt++){
+	  return;
+	  }
+	  $_naviItemes = new weNavigationItems();
+
+	  $_naviItemes->initById(0);
+
+	  self::saveCacheNavigation(0, $_naviItemes);
+
+	  $currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
+	  foreach($currentRulesStorage as &$rule){
+	  $rule->deleteDB();
+	  }
+	  $_content = serialize($currentRulesStorage);
+	  unset($currentRulesStorage);
+
+	  weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php', $_content);
+	  } */
+
+	static function cacheNavigation($id){
 		$_naviItemes = new weNavigationItems();
-		
 		$_naviItemes->initById($id);
-		
-		$_content = serialize($_naviItemes->items);
-		
-		weFile::save($_cacheDir . 'navigation_' . $id . '.php', $_content);
-	
+		self::saveCacheNavigation($id, $_naviItemes);
+	}
+
+	static function delCacheNavigationEntry($id){
+		weFile::delete($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php');
+	}
+
+	static function saveCacheNavigation($id, $_naviItemes){
+		weFile::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
+	}
+
+	static function getCacheFromFile($parentid){
+		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
+
+		if(file_exists($_cache)){
+			return @unserialize(@gzinflate(weFile::load($_cache)));
+		}
+		return false;
+	}
+
+	static function getCachedRule(){
+		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php';
+		if(file_exists($_cache)){
+			return $navigationRulesStorage = weFile::load($_cache);
+		}
+		return false;
+	}
+
+	/**
+	 * Used on upgrade to remove all navigation entries
+	 */
+	static function clean($force = false){
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean')){
+			unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean');
+			$force = true;
+		}
+		if($force){
+			$files = scandir($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR);
+			foreach($files as $file){
+				if(strpos($file, 'navigation_') === 0){
+					unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . $file);
+				}
+			}
+		}
 	}
 
 }

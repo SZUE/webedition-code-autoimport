@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,28 +23,24 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
-
-define("FS_SETDIR",5);
-
 class we_bannerSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function we_bannerSelector($id,
+	function __construct($id,
 								$JSIDName="",
 								$JSTextName="",
 								$JSCommand="",
 								$order=""){
 
-		$this->we_multiSelector($id,
+		parent::__construct($id,
 								BANNER_TABLE,
 								$JSIDName,
 								$JSTextName,
 								$JSCommand,
 								$order);
 
+		$this->title = g_l('fileselector', '[bannerSelector][title]');
 
 	}
 
@@ -70,13 +70,13 @@ function doClick(id,ct){
   	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_banner"]["name"].'</a></b></td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -89,7 +89,7 @@ function doClick(id,ct){
 	function printFramesetJSsetDir(){
 ?>
 function setDir(id){
-	top.fscmd.location.replace(top.queryString(<?php print FS_SETDIR; ?>,id));
+	top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
 }
 
 
@@ -104,7 +104,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-if(abs($this->dir)==0){
+if(intval($this->dir)==0){
 	print 'top.fsheader.disableRootDirButs();
 ';
 }else{
@@ -118,24 +118,24 @@ top.parentID = "'.$this->values["ParentID"].'";
 		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
 	}
 
-	function printHTML($what=FS_FRAMESET){
+	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case FS_HEADER:
+			case we_fileselector::HEADER:
 			$this->printHeaderHTML();
 			break;
-			case FS_FOOTER:
+			case we_fileselector::FOOTER:
 			$this->printFooterHTML();
 			break;
-			case FS_BODY:
+			case we_fileselector::BODY:
 			$this->printBodyHTML();
 			break;
-			case FS_CMD:
+			case we_fileselector::CMD:
 			$this->printCmdHTML();
 			break;
-			case FS_SETDIR:
+			case we_multiSelector::SETDIR:
 			$this->printSetDirHTML();
 			break;
-			case FS_FRAMESET:
+			case we_fileselector::FRAMESET:
 			default:
 			$this->printFramesetHTML();
 		}

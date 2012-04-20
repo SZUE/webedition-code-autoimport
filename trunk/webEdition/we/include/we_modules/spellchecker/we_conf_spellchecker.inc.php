@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 define('SPELLCHECKER', 1);
 
-define('WE_SPELLCHECKER_MODULE_PATH' , '/webEdition/we/include/we_modules/spellchecker/');
-define('WE_SPELLCHECKER_MODULE_DIR' , $_SERVER["DOCUMENT_ROOT"] . WE_SPELLCHECKER_MODULE_PATH);
+define('WE_SPELLCHECKER_MODULE_DIR', WE_MODULES_DIR . 'spellchecker/');
+define('WE_SPELLCHECKER_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_SPELLCHECKER_MODULE_DIR);
 
-?>

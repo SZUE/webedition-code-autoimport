@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,22 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_bannerSum($attribs,$content){
+function we_tag_bannerSum($attribs){
 	if(!isset($GLOBALS["lv"])){
-			return false;
+		return false;
 	}
-	$foo = attributFehltError($attribs,"type","bannerSum");if($foo) return $foo;
-	$type = we_getTagAttribute("type",$attribs);
-	switch ($type){
+	$foo = attributFehltError($attribs, "type", __FUNCTION__);
+	if($foo)
+		return $foo;
+	$type = weTag_getAttribute("type", $attribs);
+	switch($type){
 		case "clicks":
 			return $GLOBALS["lv"]->getAllclicks();
-			break;
 		case "views":
 			return $GLOBALS["lv"]->getAllviews();
-			break;
 		case "rate":
 			return $GLOBALS["lv"]->getAllrate();
-			break;
 	}
 }

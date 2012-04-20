@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifHasEntries($attribs = array(), $content = ''){
-	if (isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])) {
+function we_tag_ifHasEntries(){
+	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
 		$element = $GLOBALS['weNavigationItemArray'][(sizeof($GLOBALS['weNavigationItemArray']) - 1)];
-		if (sizeof($element->items)) {
-			$hasEntries=false;
-			foreach ($element->items as $item){
-				if ($item->visible) {$hasEntries=true;};	
+		if(sizeof($element->items)){
+			foreach($element->items as $item){
+				if($item->visible){
+					return true;
+				}
 			}
-			return $hasEntries;
 		}
-		return false;
 	}
+	return false;
 }

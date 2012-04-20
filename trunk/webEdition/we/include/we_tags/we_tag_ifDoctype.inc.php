@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,32 +22,30 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifDoctype($attribs, $content){
-	$foo = attributFehltError($attribs, "doctypes", "ifDoctype");
-	if ($foo) {
+function we_tag_ifDoctype($attribs){
+	if(($foo = attributFehltError($attribs, "doctypes", __FUNCTION__))){
 		print($foo);
-		return "";
+		return false;
 	}
-	$match = we_getTagAttribute("doctypes", $attribs);
+	$match = weTag_getAttribute("doctypes", $attribs);
 
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
-	if ($docAttr == "listview" && isset($GLOBALS['lv'])) {
+	if($docAttr == "listview" && isset($GLOBALS['lv'])){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
-	} else {
+	} else{
 		$doc = we_getDocForTag($docAttr);
-		if ($doc->ClassName == "we_template") {
+		if($doc->ClassName == "we_template"){
 			return false;
 		}
 		$doctype = $doc->DocType;
 	}
 	$matchArr = makeArrayFromCSV($match);
 
-	if (isset($doctype) && $doctype != false) {
-		foreach ($matchArr as $match) {
-			$matchID = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='".escape_sql_query($match)."'", "ID", new DB_WE());
-			if ($matchID == $doctype) {
+	if(isset($doctype) && $doctype != false){
+		foreach($matchArr as $match){
+			$matchID = f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($match) . "'", "ID", new DB_WE());
+			if($matchID == $doctype){
 				return true;
 			}
 		}

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $translate = we_core_Local::addTranslation('apps.xml');
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
@@ -25,25 +29,25 @@ $htmlPage = we_ui_layout_HTMLPage::getInstance();
 $propertiesTitle = $translate->_('Properties');
 
 $we_tabs = new we_ui_controls_Tabs(
-	array(
-		'contentFrame'=>'parent.edbody.',
-		'tabs'=>array(
-			array(
-				'id'=>'idPropertyTab', 
-				'text'=>$propertiesTitle, 
-				'bottomline' => false,
-				'reload'=>true,
-				'active'=>true, 
-				'title'=>$propertiesTitle,
-				'hidden'=>false
+		array(
+			'contentFrame' => 'parent.edbody.',
+			'tabs' => array(
+				array(
+					'id' => 'idPropertyTab',
+					'text' => $propertiesTitle,
+					'bottomline' => false,
+					'reload' => true,
+					'active' => true,
+					'title' => $propertiesTitle,
+					'hidden' => false
+				)
 			)
 		)
-	)
 );
-		
-$htmlPage->addJSFile('/webEdition/lib/we/app/js/EditorHeader.js');
 
-$htmlPage->setBodyAttributes(array('class'=>'weEditorHeader', 'onload'=>'setFrameSize()', 'onresize'=>'setFrameSize()'));
+$htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');
+
+$htmlPage->setBodyAttributes(array('class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'));
 
 $titlePathGroup = htmlspecialchars($this->model->IsFolder ? $translate->_('Folder') : $translate->_('Entry'));
 $titlePathName = htmlspecialchars($this->model->Text);
@@ -51,12 +55,12 @@ $titlePathName = htmlspecialchars($this->model->Text);
 $htmlPage->addHTML(
 	'<div id="main">
 		<div style="margin:3px 0px 3px 0px;" id="headrow">
-			&nbsp;<strong><span id="titlePathGroup">'.
-			$titlePathGroup . '</span>:&nbsp;<span id="titlePathName">'. 
-			$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>'.'
+			&nbsp;<strong><span id="titlePathGroup">' .
+	$titlePathGroup . '</span>:&nbsp;<span id="titlePathName">' .
+	$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>
 		</div>
-	');			
-		
+	');
+
 $htmlPage->addElement($we_tabs);
 
 $htmlPage->addHTML('</div>');
@@ -81,7 +85,7 @@ $js = <<<EOS
 		self.mark();
 	});
 
-	
+
 EOS;
 
 $htmlPage->addInlineJS($js);

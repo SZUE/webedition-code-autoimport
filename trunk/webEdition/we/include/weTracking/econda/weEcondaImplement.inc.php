@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +28,7 @@
  * In /webEdition/we/include/weClasses/we_template.inc.php is checked if ECONDA is activated and if the ECONDA-JS file is integrated.
  * If it is done the code to include this file in each template before the body-tag will be executed.
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEmos.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/weTracking/econda/weEmos.class.inc.php");
 $emos = new weEmos();
 $emosJsCode = "";
 //if (isset($_REQUEST["we_oid"]) ||) ) {
@@ -63,7 +67,7 @@ switch (true){
 		// login
 		$emos->emosLogin();
 		break;
-	case isset($_GLOBALS['weEconda']) && isset($_GLOBALS['weEconda']['emosBasket']):
+	case isset($GLOBALS['weEconda']) && isset($GLOBALS['weEconda']['emosBasket']):
 		// shoping basket
 		$emos->emosShopingBasket();
 		break;
@@ -85,4 +89,5 @@ echo $emos->getEmosJsFooter();
 ?>
 //-->
 </script>
-<script type="text/javascript" src="<?php print id_to_path(WE_ECONDA_ID); ?>"></script>
+<?php
+echo we_html_element::jsScript(id_to_path(WE_ECONDA_ID));

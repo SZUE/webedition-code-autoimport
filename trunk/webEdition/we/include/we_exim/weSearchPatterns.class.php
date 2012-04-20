@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +36,7 @@
 		var $special_patterns = array();
 
 
-		function weSearchPatterns(){
+		function __construct(){
 			$this->doc_patterns=array("id"=>array(),"path"=>array());
 			$this->obj_patterns=array("id"=>array(),"path"=>array());
 			$this->class_patterns=array();
@@ -140,4 +144,3 @@
 
 
 	}
-	

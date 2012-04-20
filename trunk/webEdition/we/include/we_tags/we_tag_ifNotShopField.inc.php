@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,27 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifNotShopField($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "reference", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "shopname", __FUNCTION__))||
+		($foo = attributFehltError($attribs, "match", __FUNCTION__, true)))
+		return $foo;
 
-function we_tag_ifNotShopField($attribs,$content) {
-	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
+	$match = weTag_getAttribute("match", $attribs);
 
-	$match = we_getTagAttribute("match", $attribs);
-
-	$name      = we_getTagAttribute("name", $attribs);
-	$reference = we_getTagAttribute("reference", $attribs);
-	$shopname  = we_getTagAttribute("shopname", $attribs);
-
-	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$matchA = explode("blk_",$match);
-		$match = $matchA[0];
-	}
-	$attribs['type']='print';
+	$attribs['type'] = 'print';
 	unset($attribs['match']);
 
-	$realvalue = we_tag('shopField',$attribs, "");
-	return $realvalue != $match;
+	return we_tag('shopField', $attribs) != $match;
 }

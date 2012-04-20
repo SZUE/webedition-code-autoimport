@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET . "\n";
-
 ?>
 </head>
-<body bgcolor="white" marginwidth="0" marginheight="0" leftmargin="0"
-	topmargin="0" onBlur="self.close()" onClick="self.close()"
-	onload="self.focus();">
-<center>
-			<?php
-			include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_templates/we_info.inc.php");
-			?>
-		</center>
+<body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;" onBlur="self.close()" onClick="self.close()" onload="self.focus();">
+	<center><?php
+include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_info.inc.php");
+?>
+	</center>
 </body>
 </html>

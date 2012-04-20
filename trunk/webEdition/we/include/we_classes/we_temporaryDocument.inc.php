@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +25,6 @@
 /**
  * include connection with webEdition
  */
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-
-
-
 /**
  * name of table in database where will be stored all temporary documents
  *
@@ -51,8 +51,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
  *
  * @static
  * @package WebEdition.Classes
- * @version 1.1
- * @date 06.07.2002
  */
 abstract class we_temporaryDocument{
 
@@ -65,11 +63,10 @@ abstract class we_temporaryDocument{
 	 * @param int documentID ID for document which will be stored in database
 	 * @param object mixed document object
 	 */
-	static function save($documentID, $table="", $document="", $db=""){
+	static function save($documentID, $table='', $document='', $db=''){
 		$table = ($table ? $table : FILE_TABLE);
 
 		$db = $db ? $db : new DB_WE();
-
 		$docSer = addslashes(serialize($document));
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
@@ -83,7 +80,7 @@ abstract class we_temporaryDocument{
 		return $ret;
 	}
 
-	static function resave($documentID, $table="", $document="", $db=""){
+	static function resave($documentID, $table='', $document='', $db=''){
 		$table = ($table ? $table : FILE_TABLE);
 
 		$db = $db ? $db : new DB_WE();
@@ -100,7 +97,7 @@ abstract class we_temporaryDocument{
 	 * @param int documentID Document ID
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
-	static function load($documentID, $table="", $db=""){
+	static function load($documentID, $table='', $db=''){
 		$table = ($table ? $table : FILE_TABLE);
 		$db = $db ? $db : new DB_WE();
 
@@ -126,8 +123,7 @@ abstract class we_temporaryDocument{
 
 		if(isset($id)){
 			$db = $db ? $db : new DB_WE();
-			$ret = f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db);
-			return ($ret == '1');
+			return f('SELECT 1 AS a FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', 'a', $db)=='1';
 		} else{
 			return false;
 		}

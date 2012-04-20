@@ -1,8 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id417_name'] = new weTagData_textAttribute('417', 'name', true, '');
-$GLOBALS['weTagWizard']['attribute']['id418_endofday'] = new weTagData_selectAttribute('418', 'endofday', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', true, '');
+$this->Attributes[] = new weTagData_selectAttribute('endofday', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');

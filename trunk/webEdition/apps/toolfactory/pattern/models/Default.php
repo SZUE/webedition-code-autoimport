@@ -1,13 +1,13 @@
 /**
  * Base class for app models
- * 
+ *
  * @category   app
  * @package    app_models
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
- 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
- 
+
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+
 class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 {
 	/**
@@ -16,7 +16,7 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 	 * @var string
 	 */
 	public $ContentType = "<?php print $TOOLNAME;?>/item";
-	
+
 	/**
 	 * _appName attribute
 	 *
@@ -26,7 +26,7 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $<?php print $TOOLNAME;?>ID
 	 * @return void
 	 */
@@ -40,12 +40,12 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 		<?php if(!isset($TABLECONSTANT) || !$TABLEEXISTS || (isset($TABLECONSTANT) && empty($TABLECONSTANT))) {?>
 			$this->setPersistentSlots(array('ID', 'Text'));
 		<?php } ?>
-	
+
 	}
-	
+
 	/**
 	 * set Fields
-	 * 
+	 *
 	 * @param array $fields
 	 * @return void
 	 */
@@ -55,22 +55,22 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 			$this->setPath();
 		<?php } ?>
 	}
-	
+
 	<?php if(!isset($TABLECONSTANT) || !$TABLEEXISTS || (isset($TABLECONSTANT) && empty($TABLECONSTANT))) {?>
 	/**
 	 * Load entry
-	 * 
-	 * @param integer $id 
+	 *
+	 * @param integer $id
 	 * @return boolean returns true on success, otherwise false
 	 */
 	function load($id)
 	{
 		return true;
 	}
-	
+
 	/**
 	 * Save entry
-	 * 
+	 *
 	 * @return boolean returns true on success, otherwise false
 	 */
 	function save($skipHook=0)
@@ -81,7 +81,7 @@ class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
         }
-	
+
 		return true;
 	}
 	<?php } ?>

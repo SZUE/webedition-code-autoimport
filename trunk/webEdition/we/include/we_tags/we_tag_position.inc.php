@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,35 +22,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_position($attribs, $content){
+function we_tag_position($attribs){
 	global $lv;
 
 	//	type is required !!!
-	$missingAttrib = attributFehltError($attribs, "type", "position");
-	if ($missingAttrib) {
+	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
 		print $missingAttrib;
 		return "";
 	}
 
 	//	here we get the needed attributes
-	$type = we_getTagAttribute("type", $attribs);
-	$_reference = we_getTagAttribute("reference", $attribs);
-	$format = we_getTagAttribute("format", $attribs, 1);	
+	$type = weTag_getAttribute("type", $attribs);
+	$_reference = weTag_getAttribute("reference", $attribs);
+	$format = weTag_getAttribute("format", $attribs, 1);
 	//	this value we will return later
 	$_retPos = "";
 
-	switch ($type) {
+	switch($type){
 
 		case "listview" : //	inside a listview, we take direct global listview object
 			$_retPos = ($lv->start + $lv->count);
 			break;
 
 		case "listdir" : //	inside a listview
-			if (isset($GLOBALS['we_position']['listdir'])) {
+			if(isset($GLOBALS['we_position']['listdir'])){
 				$_content = $GLOBALS['we_position']['listdir'];
 			}
-			if (isset($_content) && $_content['position']) {
+			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}
 			break;
@@ -53,27 +56,27 @@ function we_tag_position($attribs, $content){
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
 		case "block" : //	look in function we_tag_block for details
 			//	first we must get right array !!!
-			$missingAttrib = attributFehltError($attribs, "reference", "position");
-			if ($missingAttrib) {
+			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
+			if($missingAttrib){
 				print $missingAttrib;
 				return "";
 			}
-			foreach ($GLOBALS['we_position'][$type] as $name => $arr) {
+			foreach($GLOBALS['we_position'][$type] as $name => $arr){
 
-				if (strpos($name, $_reference) === 0) {
-					if (is_array($arr)) {
+				if(strpos($name, $_reference) === 0){
+					if(is_array($arr)){
 						$_content = $arr;
 					}
 				}
 			}
-			if (isset($_content) && $_content['position']) {
+			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}
 			break;
 	}
 
 	//	convert to desired format
-	switch ($format) {
+	switch($format){
 
 		case "a" :
 			return number2System($_retPos);

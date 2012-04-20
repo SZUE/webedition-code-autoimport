@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,33 +22,36 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/backup.inc.php");
+if(isset($_REQUEST["pnt"]))
+	$what = $_REQUEST["pnt"];
+else
+	$what = "frameset";
 
+if(isset($_REQUEST["step"]))
+	$step = $_REQUEST["step"];
+else
+	$step = 1;
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weBackupWizard.inc.php");
+$weBackupWizard = new weBackupWizard("/webEdition/we/include/we_editors/we_recover_backup.php", weBackupWizard::RECOVER);
 
-	protect();
-
-	if(isset($_REQUEST["pnt"])) $what=$_REQUEST["pnt"];
-	else $what="frameset";
-
-	if(isset($_REQUEST["step"])) $step=$_REQUEST["step"];
-	else $step=1;
-
-	$weBackupWizard=new weBackupWizard("/webEdition/we/include/we_editors/we_recover_backup.php",RECOVER_MODE);
-
-	switch($what){
-		case "frameset": print $weBackupWizard->getHTMLFrameset();break;
-		case "body": print $weBackupWizard->getHTMLStep($step);break;
-		case "cmd": print $weBackupWizard->getHTMLCmd();break;
-		case "busy":  print $weBackupWizard->getHTMLBusy();break;
-		case "extern":  print $weBackupWizard->getHTMLExtern();break;
-		case "checker":  print $weBackupWizard->getHTMLChecker();break;
-		default:
-			error_log(__FILE__ . " unknown reference: $what");
-	}
+switch($what){
+	case "frameset": print $weBackupWizard->getHTMLFrameset();
+		break;
+	case "body": print $weBackupWizard->getHTMLStep($step);
+		break;
+	case "cmd": print $weBackupWizard->getHTMLCmd();
+		break;
+	case "busy": print $weBackupWizard->getHTMLBusy();
+		break;
+	case "extern": print $weBackupWizard->getHTMLExtern();
+		break;
+	case "checker": print $weBackupWizard->getHTMLChecker();
+		break;
+	default:
+		t_e(__FILE__ . " unknown reference: $what");
+}
 

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,25 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 header('Content-type: text/plain');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 
-protect();
+we_html_tools::protect();
 
-if (!isset($_REQUEST["we_cmd"][1]) || !isset($_REQUEST["we_cmd"][2])) exit();
+if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2]))
+	exit();
 
 // protection against sql injection
-$table = preg_replace('/\s/','',$_REQUEST["we_cmd"][2]);
+$table = preg_replace('/\s/', '', $_REQUEST['we_cmd'][2]);
 
 $selectorSuggest = new weSelectorQuery();
-$contentTypes = isset($_REQUEST["we_cmd"][3]) ? explode(",",$_REQUEST["we_cmd"][3]) : null;
-$selectorSuggest->search($_REQUEST["we_cmd"][1], $table, $contentTypes);
+$contentTypes = isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : null;
+$selectorSuggest->search($_REQUEST['we_cmd'][1], $table, $contentTypes);
 $suggests = $selectorSuggest->getResult();
 $return = "";
-if (is_array($suggests)) {
-	foreach ($suggests as $sug) {
+if(is_array($suggests)){
+	foreach($suggests as $sug){
 		$return .= $sug['Path'] . "	" . $sug['ID'] . "\n";
 	}
 }

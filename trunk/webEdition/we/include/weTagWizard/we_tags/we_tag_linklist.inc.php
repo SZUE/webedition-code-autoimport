@@ -1,10 +1,14 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->DefaultValue = '<we:link /><we:postlink><br /></we:postlink>';
+$this->Deprecated = true;
 
-$GLOBALS['weTagWizard']['attribute']['id339_name'] = new weTagData_textAttribute('339', 'name', true, '');
-$GLOBALS['weTagWizard']['attribute']['id649_limit'] = new weTagData_textAttribute('649', 'limit', false, '');
-$GLOBALS['weTagWizard']['attribute']['id884_hidedirindex'] = new weTagData_selectAttribute('884', 'hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id885_objectseourls'] = new weTagData_selectAttribute('885', 'objectseourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', true, '');
+$this->Attributes[] = new weTagData_textAttribute('limit', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('hidedirindex', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('objectseourls', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');

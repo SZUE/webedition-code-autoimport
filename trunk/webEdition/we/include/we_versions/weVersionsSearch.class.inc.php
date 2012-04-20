@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/versions.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 
 class weVersionsSearch {
@@ -96,7 +96,7 @@ class weVersionsSearch {
 		$where = "";
 		$modConst = array();
 
-		if(($this->mode!=0) || (isset($_REQUEST["we_cmd"]["mode"]) && $_REQUEST["we_cmd"]["mode"]!=0)) {
+		if(($this->mode!=0) || (isset($_REQUEST['we_cmd']["mode"]) && $_REQUEST['we_cmd']["mode"]!=0)) {
 
 			foreach ($_REQUEST['we_cmd'] as $k => $v) {
 				if (stristr($k, 'searchFields[')) {
@@ -134,19 +134,19 @@ class weVersionsSearch {
 
                                   switch ($_REQUEST['location'][$k]) {
 										case "IS":
-											$where .= " AND ".$v." BETWEEN '" . abs($timestampStart) . "' AND '" . abs($timestampEnd)."'";
+											$where .= " AND ".$v." BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 										break;
 										case "<":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampStart) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
 										break;
 										case "<=":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampEnd) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
 										break;
 										case ">":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampEnd) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
 										break;
 										case ">=":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampStart) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
 										break;
 									}
                              }
@@ -233,7 +233,7 @@ class weVersionsSearch {
 
 		foreach($this->version->modFields as $k => $v) {
 			if($k!="status") {
-				$modFields[$k] = $GLOBALS['l_versions'][$k];
+				$modFields[$k] = g_l('versions','['.$k.']');
 			}
 		}
 
@@ -249,10 +249,10 @@ class weVersionsSearch {
 	function getFields() {
 
 		$tableFields = array(
-			'allModsIn' => $GLOBALS['l_versions']['allModsIn'],
-			'timestamp' => $GLOBALS['l_versions']['modTime'],
-			'modifierID' => $GLOBALS['l_versions']['modUser'],
-			'status' => $GLOBALS['l_versions']['status']
+			'allModsIn' => g_l('versions','[allModsIn]'),
+			'timestamp' => g_l('versions','[modTime]'),
+			'modifierID' => g_l('versions','[modUser]'),
+			'status' => g_l('versions','[status]')
 		);
 
 		return $tableFields;
@@ -265,7 +265,15 @@ class weVersionsSearch {
 	*/
 	function getLocation($whichFilterCategory = "")	{
 
-		$locations = array('CONTAIN' => $GLOBALS['l_weSearch']['CONTAIN'], 'IS' => $GLOBALS['l_weSearch']['IS'], 'START' => $GLOBALS['l_weSearch']['START'], 'END' => $GLOBALS['l_weSearch']['END'], '<' => $GLOBALS['l_weSearch']['<'], '<=' => $GLOBALS['l_weSearch']['<='], '>=' => $GLOBALS['l_weSearch']['>='], '>' => $GLOBALS['l_weSearch']['>']);
+		$locations = array(
+				'CONTAIN' => g_l('searchtool','[CONTAIN]'),
+				'IS' => g_l('searchtool','[IS]'),
+				'START' => g_l('searchtool','[START]'),
+				'END' => g_l('searchtool','[END]'),
+				'<' => g_l('searchtool','[<]'),
+				'<=' => g_l('searchtool','[<=]'),
+				'>=' => g_l('searchtool','[>=]'),
+				'>' => g_l('searchtool','[>]'));
 
 		if ($whichFilterCategory == "date") {
 			unset($locations["CONTAIN"]);
@@ -287,7 +295,7 @@ class weVersionsSearch {
 		$_db = new DB_WE();
 		$vals = array();
 
-		$_db->query("SELECT ID, Text FROM " . USER_TABLE . "");
+		$_db->query("SELECT ID, Text FROM " . USER_TABLE );
 		while ($_db->next_record()) {
 			$v = $_db->f("ID");
 			$t = $_db->f("Text");
@@ -306,10 +314,10 @@ class weVersionsSearch {
 
 		$vals = array();
 
-		$vals["published"] = $GLOBALS['l_versions']['published'];
-		$vals["unpublished"] = $GLOBALS['l_versions']['unpublished'];
-		$vals["saved"] = $GLOBALS['l_versions']['saved'];
-		$vals["deleted"] = $GLOBALS['l_versions']['deleted'];
+		$vals["published"] = g_l('versions','[published]');
+		$vals["unpublished"] = g_l('versions','[unpublished]');
+		$vals["saved"] = g_l('versions','[saved]');
+		$vals["deleted"] = g_l('versions','[deleted]');
 
 		return $vals;
 
@@ -322,18 +330,15 @@ class weVersionsSearch {
 	*/
 	function getDateSelector($_label, $_name, $_btn, $value) {
 
-		$we_button = new we_button();
-		$btnDatePicker = $we_button->create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
+		$btnDatePicker = we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
 
-		$oSelector = new we_htmlTable(array("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"), 1, 5);
-		$oSelector->setCol(0, 2, null, htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
+		$oSelector = new we_html_table(array("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"), 1, 5);
+		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
-		$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array("href" => "#"), $btnDatePicker));
+		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 
-		return $oSelector->getHTMLCode();
+		return $oSelector->getHTML();
 
 	}
 
 }
-
-?>

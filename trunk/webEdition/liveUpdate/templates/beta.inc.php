@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +25,22 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
 $ischecked=0;
-if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
-	$ischecked=1;			
-}
+/*//FIXME: Funktioniert so nicht, und verwirrt mehr als es hilft!
+ *
+ * if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
+	$ischecked=1;
+}*/
 if (isset($_REQUEST["setTestUpdate"])){
 	 $ischecked = $_REQUEST["setTestUpdate"];
 }
 if($ischecked){
 	require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 	$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
-	
+
 	if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){
 		$conf=str_replace('$'."_REQUEST['testUpdate'] = 0;",'$'."_REQUEST['testUpdate'] = 1;",$conf);
 		weFile::save(LIVEUPDATE_DIR . 'conf/conf.inc.php',$conf);
@@ -44,11 +50,11 @@ if($ischecked){
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['actualVersion'] . '</td>
+	<td>' . g_l('liveUpdate','[update][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['lastUpdate'] . '</td>
+	<td>' . g_l('liveUpdate','[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
 <tr>
@@ -64,7 +70,7 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td colspan="2">'. $GLOBALS['l_liveUpdate']['beta']['warning'].'
+	<td colspan="2">'. g_l('liveUpdate','[beta][warning]').'
 		<br />
 		<br />
 	</td>
@@ -73,6 +79,4 @@ $content = '
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['beta']['headline'], $content);
-
-?>
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[beta][headline]'), $content);

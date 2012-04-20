@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +25,7 @@
 class rpcGenericJSONView extends rpcView {
 
 	function getResponse($response) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/JSON.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/JSON.php");
 		$json = new Services_JSON();
 		return $json->encode($response);
 	}

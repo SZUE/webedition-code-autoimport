@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 
 ?>
 
@@ -39,7 +42,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 
 			} else {
-				<?php print we_message_reporting::getShowMessageCall($l_glossary["glossary_check_not_avalaible"], WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[glossary_check_not_avalaible]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 
 			}
 			break;
@@ -74,16 +77,16 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	if(sizeof($GLOBALS['weFrontendLanguages'])>0) {
 
 		echo '	case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' . "\n";
-		echo "		tempargs = arguments[0].split(\"\XYZ\");\n";
-		echo "		var fo=false;\n";
-		echo "		for(var k=jsWindow_count-1;k>-1;k--) {\n";
-		echo "			eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");\n";
-		echo "			if(fo) {\n";
-		echo "				break;\n";
-		echo "			}\n";
-		echo "		}\n";
-		echo "		wind.focus();\n";
-		echo "		break;\n";
+		echo "		tempargs = arguments[0].split(\"\XYZ\");
+				var fo=false;
+				for(var k=jsWindow_count-1;k>-1;k--) {
+					eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");
+					if(fo) {
+						break;
+					}
+				}
+				wind.focus();
+				break;";
 
 	}
 ?>

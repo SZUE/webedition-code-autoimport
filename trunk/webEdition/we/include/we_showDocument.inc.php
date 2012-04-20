@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,88 +22,77 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_showDocument.inc.php") {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 
-if (isset($noSess) && $noSess) {
-	if (!defined("NO_SESS")) {
-		define("NO_SESS", 1);
-	}
+if(isset($noSess) && $noSess && !defined('NO_SESS')){
+	define('NO_SESS', 1);
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_live_tools.inc.php");
+//leave this
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
 //  Sie kommen von showDoc.php
-$id = abs(isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "");
-$tmplID = abs(isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "");
-$baseHref = addslashes(isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "");
-$we_editmode = addslashes(isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "");
-$createFromTmpFile = addslashes(isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "");
+$id = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
+$tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
+$baseHref = addslashes(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '');
+$we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
+$createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
 
 $we_ID = $id;
 $we_Table = FILE_TABLE;
 
-$we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
+$we_dt = isset($_SESSION['we_data'][$we_transaction]) ? $_SESSION['we_data'][$we_transaction] : '';
 
 // init document
-include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_doc.inc.php');
 
-if (isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != "ResetVersion" && $_REQUEST['cmd'] != "PublishDocs") {
-	if (isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC) { // when called showDoc.php
-		$publ = $we_doc->Published;
-		$prot = getServerProtocol();
-		$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
-
-		if ((!$we_doc->IsDynamic) && $publ && (!$tmplID)) { // if the document is not a dynamic php-doc and is published we make a redirect to the static page
-			header("Location: " . $preurl . $we_doc->Path);
+if(isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != 'ResetVersion' && $_REQUEST['cmd'] != 'PublishDocs'){
+	if(isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC){ // when called showDoc.php
+		if((!$we_doc->IsDynamic) && (!$tmplID)){ // if the document is not a dynamic php-doc and is published we make a redirect to the static page
+			header('Location: ' . getServerUrl() . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
 			exit();
-		} else
-			if ($we_doc->IsDynamic && (!$publ) && (!$tmplID)) { // if the document is a dynamic php-doc and is not published we make a redirect to dummy page that does not exist, so the user gets a 404-Errpr Page from the server
-				header("Location: $preurl/this_file_does_not_exist_on_this_server");
-				exit();
-			}
+		}
 	}
 }
-if(isset($_REQUEST['vers_we_obj']) && ($_REQUEST['vers_we_obj']))  {
-	$f = $_SERVER["DOCUMENT_ROOT"] . VERSION_DIR.'tmpSavedObj.txt';
-	$_REQUEST['vers_we_obj'] = false;
- 	$tempFile =weFile::load($f);
- 	$obj = unserialize($tempFile);
- 	$we_doc = $obj;
-}
+if(isset($_REQUEST['vers_we_obj'])){
+	if($_REQUEST['vers_we_obj']){
+		$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
+		$_REQUEST['vers_we_obj'] = false;
+		$tempFile = weFile::load($f);
+		$obj = unserialize($tempFile);
+		$we_doc = $obj;
+	}
 
 // deal with customerFilter
 // @see we_object_showDocument.inc.php
-if(!isset($_REQUEST['vers_we_obj'])) {
-	if ($we_doc->documentCustomerFilter && !isset($GLOBALS["getDocContentVersioning"])) {
+} else if($we_doc->documentCustomerFilter && !isset($GLOBALS['getDocContentVersioning'])){
 
-		// call session_start to init session, otherwise NO customer can exist
+	// call session_start to init session, otherwise NO customer can exist
+	if(!isset($_SESSION)){
 		@session_start();
+		//FIXME: remove in 6.4; due to upgrade!
+		if(isset($_SESSION['we'])){
+			unset($_SESSION['we']);
+		}
+	}
 
-		if (($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))) {
+	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
 
-			if (!($_visitorHasAccess == WECF_ACCESS || $_visitorHasAccess == WECF_CONTROLONTEMPLATE)) {
-
-				// user has NO ACCESS => show errordocument
-				$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
-				if (($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))) { // use given document instead !
-					if($_errorDocId){
+		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
+			// user has NO ACCESS => show errordocument
+			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
+			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
+				if($_errorDocId){
 					unset($_errorDocId);
-//					header("Location: " . getServerProtocol(true) . $_SERVER["HTTP_HOST"] . $_errorDocPath);
-					@include($_SERVER["DOCUMENT_ROOT"].$_errorDocPath);
+					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
-					}
-					//exit();
-					return;
-
-				} else {
-					die("Customer has no access to this document");
-
 				}
+				return;
+			} else{
+				die('Customer has no access to this document');
 			}
 		}
 	}
@@ -106,107 +100,44 @@ if(!isset($_REQUEST['vers_we_obj'])) {
 
 $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 
-if ($tmplID && ($we_doc->ContentType == "text/webedition")) { // if the document should displayed with an other template
+if($tmplID && ($we_doc->ContentType == 'text/webedition')){ // if the document should displayed with an other template
 	$we_doc->setTemplateID($tmplID);
 }
 
-$we_doc->setCache();
+//$we_doc->setCache();
 
-if ($we_include = $we_doc->editor($baseHref)) {
-	if (substr(strtolower($we_include), 0, strlen($_SERVER["DOCUMENT_ROOT"])) == strtolower($_SERVER["DOCUMENT_ROOT"])) {
-		if ((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]) { //	send charset which might be determined in template
-			define("WE_CONTENT_TYPE_SET", 1);
+if(($we_include = $we_doc->editor($baseHref))){
+	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
+		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
+			define('WE_CONTENT_TYPE_SET', 1);
 			//	@ -> to aware of unproper use of this element, f. ex in include-File
-			@header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+			@we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 		}
 
-		// use the Document Cache
-		if (($we_doc->CacheType == 'document' || $we_doc->CacheType == 'full') && $we_doc->CacheLifeTime > 0) {
-			$GLOBALS['weCacheOutput'] = false;
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCache.class.php");
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weDocumentCache.class.php");
+		// --> Glossary Replacement
 
-			$weDocumentCache = new weDocumentCache($GLOBALS["we_doc"]->ID, $we_doc->CacheLifeTime);
+		if((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) &&
+			(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
 
-			if ($weDocumentCache->start()) {
-
-				// The weDocumentCache must be pushed to a stack because otherwise it could be
-				// overwritten in one of the potential includes
-				if (!isset($weDocumentCaches) || !is_array($weDocumentCaches)) {
-					$weDocumentCaches = array();
-
-				}
-				array_push($weDocumentCaches, $weDocumentCache);
-
-				include ($we_include);
-
-				// get the last weDocumentCache from the stack
-				$weDocumentCache = array_pop($weDocumentCaches);
-
-				$weDocumentCache->end();
-
-			}
-			$GLOBALS['weCacheOutput'] = true;
-
-			ob_start();
-			include ($weDocumentCache->getCacheFilename());
-			$content = ob_get_contents();
-			ob_end_clean();
-
-			//
-			// --> Start Glossary Replacement
-			//
-
-
-			if (defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-				if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryCache.php");
-					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryReplace.php");
-
-					weGlossaryReplace::start();
-				}
-
-			}
-
-			//
-			// --> Include Content
-			//
-			eval("?>" . $content);
-
-			//
-			// --> Finish Glossary Replacement
-			//
-
-
-			if (defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-				if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-					weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
-				}
-
-			}
-
-		// do not cache the document
-		} else {
+			weGlossaryReplace::start();
+			include ($we_include);
+			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
+		} else{
 			// --> Glossary Replacement
 
-			if ((defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) &&
-				(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) ){
-					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryCache.php");
-					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryReplace.php");
-
-					weGlossaryReplace::start();
-					include ($we_include);
-					weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
-			}else{
-					include ($we_include);
+			if((defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS['we_doc'])) &&
+				(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
+				weGlossaryReplace::start();
+				include ($we_include);
+				weGlossaryReplace::end($GLOBALS['we_doc']->Language);
+			} else{
+				include ($we_include);
 			}
 		}
-
-	} else {
-		protect(); //	only inside webEdition !!!
-		include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . $we_include);
+	} else{
+		we_html_tools::protect(); //	only inside webEdition !!!
+		include(WE_INCLUDES_PATH . $we_include);
 	}
-} else {
-	exit("Nothing to include ...");
+} else{
+	exit('Nothing to include ...');
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,34 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-//protect();
-switch($_REQUEST["we_cmd"][1]) {
+we_html_tools::protect();
+switch($_REQUEST['we_cmd'][1]){
 	case "image/*":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
-		$we_doc=new we_imageDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
+		$we_doc = new we_imageDocument();
+		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $we_doc->getElement("type");
 		break;
 	case "application/x-shockwave-flash":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
-		$we_doc=new we_flashDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
-		$contenttype = $_REQUEST["we_cmd"][1];
+		$we_doc = new we_flashDocument();
+		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
 	case "video/quicktime":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
-		$we_doc=new we_quicktimeDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
-		$contenttype = $_REQUEST["we_cmd"][1];
+		$we_doc = new we_quicktimeDocument();
+		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
 	case "application/*":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
-		$we_doc=new we_otherDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
-		switch($we_doc->Extension) {
+		$we_doc = new we_otherDocument();
+		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		switch($we_doc->Extension){
 			case ".zip":
 				$contenttype = "application/zip";
 				break;
@@ -70,21 +68,23 @@ switch($_REQUEST["we_cmd"][1]) {
 				$contenttype = "application/octet-stream";
 		}
 		break;
+	default:
+		die('unsupported request');
 }
-header("Content-disposition: filename=".$we_doc->Text);
+header("Content-disposition: filename=" . $we_doc->Text);
 header("Content-Type: $contenttype");
 header("Pragma: no-cache");
 header("Expires: 0");
 
 $dataPath = $we_doc->getElement("data");
-if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){ // create thumbnail
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){ // create thumbnail
 	if(we_image_edit::gd_version()){
 		$thumbObj = new we_thumbnail();
-		$thumbObj->initByThumbID($_REQUEST["we_cmd"][3],$we_doc->ID,$we_doc->Filename,$we_doc->Path,$we_doc->Extension,$we_doc->getElement("origwidth"),$we_doc->getElement("origheight"),$we_doc->getDocument());
+		$thumbObj->initByThumbID($_REQUEST['we_cmd'][3], $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
 		$thumbObj->getThumb($out);
 		unset($thumbObj);
-		print $out;exit();
+		print $out;
+		exit();
 	}
 }
 

@@ -28,7 +28,7 @@
 * website of the RSS working group (http://www.purl.org/rss/).
 *
 * @author Martin Jansen <mj@php.net>
-* @version $Revision: 1.1 $
+* @version $Revision$
 * @access  public
 */
 class XML_RSS extends XML_Parser

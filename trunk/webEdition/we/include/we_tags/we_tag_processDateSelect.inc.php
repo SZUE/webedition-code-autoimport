@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,18 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_processDateSelect($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "dateSelect");
-	if ($foo)
+function we_tag_processDateSelect($attribs){
+	$foo = attributFehltError($attribs, "name", __FUNCTION__);
+	if($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$endofday = we_getTagAttribute("endofday", $attribs, "", true);
+	$name = weTag_getAttribute("name", $attribs);
+	$endofday = weTag_getAttribute("endofday", $attribs, false, true);
 	$GLOBALS[$name] = $_REQUEST[$name] = mktime(
-			$endofday ? 23 : 0,
-			$endofday ? 59 : 0,
-			$endofday ? 59 : 0,
-			isset($_REQUEST[$name . "_month"]) ? $_REQUEST[$name . "_month"] : 0,
-			isset($_REQUEST[$name . "_day"]) ? $_REQUEST[$name . "_day"] : 0,
-			isset($_REQUEST[$name . "_year"]) ? $_REQUEST[$name . "_year"] : 0);
+		$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, isset($_REQUEST[$name . "_month"]) ? $_REQUEST[$name . "_month"] : 0, isset($_REQUEST[$name . "_day"]) ? $_REQUEST[$name . "_day"] : 0, isset($_REQUEST[$name . "_year"]) ? $_REQUEST[$name . "_year"] : 0);
 }

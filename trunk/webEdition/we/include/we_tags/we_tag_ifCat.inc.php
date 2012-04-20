@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,46 +22,44 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifCat($attribs){
 
-function we_tag_ifCat($attribs, $content){
+	$categories = weTag_getAttribute("categories", $attribs);
+	$category = weTag_getAttribute("category", $attribs);
 
-	$categories = we_getTagAttribute("categories", $attribs);
-	$category = we_getTagAttribute("category", $attribs);
-
-	if (strlen($categories) == 0 && strlen($category) == 0) {
-		$foo = attributFehltError($attribs, "categories", "ifCat");
-		if ($foo) {
+	if(strlen($categories) == 0 && strlen($category) == 0){
+		if(($foo = attributFehltError($attribs, "categories", __FUNCTION__))){
 			print($foo);
 			return "";
 		}
 	}
 
-	$parent = we_getTagAttribute("parent", $attribs, "", true);
+	$parent = weTag_getAttribute("parent", $attribs, false, true);
 
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
 	$match = $categories ? $categories : $category;
 	$db = new DB_WE();
 	$matchArray = makeArrayFromCSV($match);
 
-	if ($docAttr == 'listview' && isset($GLOBALS['lv'])) {
+	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
 		$DocCatsPaths = id_to_path($GLOBALS['lv']->f('wedoc_Category'), CATEGORY_TABLE, $db, true, false, $parent);
-	} else {
+	} else{
 		$doc = we_getDocForTag($docAttr);
 		$DocCatsPaths = id_to_path($doc->Category, CATEGORY_TABLE, $db, true, false, $parent);
 	}
 
-	foreach ($matchArray as $match) {
+	foreach($matchArray as $match){
 
-		if (substr($match, 0, 1) != "/") {
+		if(substr($match, 0, 1) != "/"){
 			$match = "/" . $match;
 		}
-		if ($parent) {
-			if (strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false) {
+		if($parent){
+			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
 				return true;
 			}
-		} else {
-			if (!(strpos($DocCatsPaths, "," . $match . ",") === false)) {
+		} else{
+			if(!(strpos($DocCatsPaths, "," . $match . ",") === false)){
 				return true;
 			}
 		}

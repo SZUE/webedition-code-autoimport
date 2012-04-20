@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define("EXPORT_TABLE", TBL_PREFIX . "tblexport");
 
-
-
-define("EXPORT_TABLE",TBL_PREFIX . "tblexport");
-
-define("WE_EXPORT_MODULE_PATH","/webEdition/we/include/we_modules/export/");
-define("WE_EXPORT_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"].WE_EXPORT_MODULE_PATH);
+define("WE_EXPORT_MODULE_DIR", "/webEdition/we/include/we_modules/export/");
 

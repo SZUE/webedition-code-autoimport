@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,21 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/newsletter.inc.php");
-
-function we_tag_ifMale($attribs, $content){
-	global $l_newsletter;
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) return true;
-	if(isset($GLOBALS["WE_SALUTATION"])&& $GLOBALS["WE_SALUTATION"]){
-		$maleSalutation = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='male_salutation'","pref_value",$GLOBALS["DB_WE"]);
-		if ($maleSalutation == "") {
-			$maleSalutation = $l_newsletter["default"]["male"];
-		}
-		if($GLOBALS["WE_SALUTATION"] == $maleSalutation) return true;
-		else return false;
-	}else{
-		return false;
+function we_tag_ifMale(){
+	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+		return true;
 	}
+	if(isset($GLOBALS["WE_SALUTATION"]) && $GLOBALS["WE_SALUTATION"]){
+		$maleSalutation = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='male_salutation'", "pref_value", $GLOBALS['DB_WE']);
+		if($maleSalutation == ""){
+			$maleSalutation = g_l('modules_newsletter', '[default][male]');
+		}
+		return ($GLOBALS["WE_SALUTATION"] == $maleSalutation);
+	}
+	return false;
 }

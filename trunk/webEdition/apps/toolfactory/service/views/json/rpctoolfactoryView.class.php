@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,15 +22,13 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpctoolfactoryView extends rpcView{
 
-class rpctoolfactoryView extends rpcView 
-{
-	function getResponse($response) 
-	{
-		
+	function getResponse($response){
+
 		$html = 'Hello World! My name is toolfactory and I am a webEdition-Application.';
-		
+
 		return $html;
-		
 	}
+
 }

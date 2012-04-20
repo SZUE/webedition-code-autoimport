@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +22,35 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataOption {
+class weTagDataOption{
 
 	/**
 	 * @var string
 	 */
-	var $Name;
+	public $Name;
+
 	/**
 	 * value of this option, if differs from $Name
 	 * @var string
 	 */
-	var $Value;
+	public $Value;
+
 	/**
 	 * all allowed attributes, when selecting this option
 	 * @var array
 	 */
-	var $AllowedAttributes;
+	public $AllowedAttributes;
+
 	/**
 	 * required attributes, when selecting this option
 	 * @var array
 	 */
-	var $RequiredAttributes;
+	public $RequiredAttributes;
+
 	/**
 	 * @var string
 	 */
-	var $Module;
+	public $Module;
 
 	/**
 	 * @param string $name
@@ -50,15 +58,9 @@ class weTagDataOption {
 	 * @param array $allowedAttributes
 	 * @param array $requiredAttributes
 	 */
-	function weTagDataOption($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()) {
-
+	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()){
 		$this->Name = $name;
-
-		if ($value === false) {
-			$this->Value = $name;
-		} else {
-			$this->Value = $value;
-		}
+		$this->Value = ($value === false) ? $name : $value;
 
 		// clean allowed and required attributes in case not all modules are installed
 		$this->AllowedAttributes = $allowedAttributes;
@@ -69,29 +71,31 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getAssoziation() {
+	function getAssoziation(){
 		return array(
-				"$this->Value" => "$this->Name"
+			"$this->Value" => "$this->Name"
 		);
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 
 	/**
 	 * @return array
 	 */
-	function getAllowedAttributes($tagAttributes = array()) {
-
+	function getAllowedAttributes(){
 		$arr = array();
-		foreach ($this->AllowedAttributes as $attribute) {
-			if (in_array($attribute, $tagAttributes)) {
-				$arr[] = $attribute;
+		foreach($this->AllowedAttributes as $attribute){
+			if(!is_object($attribute)){
+				t_e($attribute);
+				continue;
 			}
+			$attr = $attribute->getIdName();
+			$arr[] = $attr;
 		}
 		return $arr;
 	}
@@ -99,27 +103,26 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getRequiredAttributes($tagAttributes = array()) {
+	function getRequiredAttributes(){
 
 		$arr = array();
-		foreach ($this->RequiredAttributes as $attribute) {
-			if (in_array($attribute, $tagAttributes)) {
-				$arr[] = $attribute;
-			}
+		foreach($this->RequiredAttributes as $attribute){
+			$attr = $attribute->getIdName();
+			$arr[] = $attr;
 		}
 		return $arr;
+	}
+
+	function addTypeAttribute($attr){
+		array_unshift($this->AllowedAttributes, $attr);
 	}
 
 	/**
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function useOption() {
-
-		if ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules'])) {
-			return true;
-		}
-		return false;
+	function useOption(){
+		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_integrated_modules']));
 	}
 
 }

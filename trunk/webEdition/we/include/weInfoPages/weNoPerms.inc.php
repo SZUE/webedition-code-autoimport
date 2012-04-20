@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,30 +21,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect();
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-
-protect();
-
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$content = "<p class=\"defaultfont\">" . $l_alert["no_perms_action"] . "</p>";
-
+$content = '<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>';
 ?>
-<script language="JavaScript" type="text/javascript">
-top.toggleBusy(0);
-var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-_EditorFrame.setEditorIsLoading(false);
+<script  type="text/javascript">
+	top.toggleBusy(0);
+	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+	_EditorFrame.setEditorIsLoading(false);
 </script>
 </head>
 
-<body class="weDialogBody">
-<?php
-print htmlDialogLayout($content, $l_alert["no_perms_title"]);
+<body class="weDialogBody"><?php
+print we_html_tools::htmlDialogLayout($content, g_l('alert', "[no_perms_title]"));
 ?>
-    </body>
+</body>
 </html>

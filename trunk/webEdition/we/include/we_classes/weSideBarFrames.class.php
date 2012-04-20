@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,24 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sidebar.inc.php");
-
-class weSideBarFrames {
+class weSideBarFrames{
 
 	var $_frameset = "";
 
-	function weSideBar() {
+	function weSideBar(){
 
 		$_frameset = WEBEDITION_DIR . "we/includes/sidebar.php";
-
 	}
-
 
 	function getHTML($what){
 
-		switch($what) {
+		switch($what){
 
 			case 'header':
 				print $this->getHTMLHeader();
@@ -52,124 +51,117 @@ class weSideBarFrames {
 			default:
 				print $this->getHTMLFrameset();
 				break;
-
 		}
-
 	}
 
+	function getHTMLFrameset(){
+		?>
+		</head>
 
-	function getHTMLFrameset() {
-?>
-</head>
+		<frameset rows="22,*,40" framespacing="0" border="1" frameborder="NO">
+			<frame src="<?php print $this->_frameset; ?>?pnt=header" name="weSidebarHeader" scrolling="no" noresize/>
+			<frame src="<?php print $this->_frameset; ?>?pnt=content" name="weSidebarContent" scrolling="auto" noresize/>
+			<frame src="<?php print $this->_frameset; ?>?pnt=footer" name="weSidebarFooter" scrolling="no" noresize/>
+		</frameset>
 
-<frameset rows="22,*,40" framespacing="0" border="1" frameborder="NO">
-	<frame src="<?php print $this->_frameset; ?>?pnt=header" name="weSidebarHeader" scrolling="no" noresize>
-	<frame src="<?php print $this->_frameset; ?>?pnt=content" name="weSidebarContent" scrolling="auto" noresize>
-	<frame src="<?php print $this->_frameset; ?>?pnt=footer" name="weSidebarFooter" scrolling="no" noresize>
-</frameset>
+		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+		</body>
 
-<body bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-</body>
-
-</html>
+		</html>
 		<?php
 	}
 
-
 	function getHTMLHeader(){
-?>
-<style type="text/css">
-body {
-	margin			: 0px;
-	padding			: 0px;
-	border			: 0px;
-	border-top		: 1px solid #000000;
-	font-family		: Verdana, Arial, sans-serif;
-	font-size		: 10px;
-	color			: #000000;
-	background-color: silver;
-	background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');
-}
-#Headline {
-	padding-left	: 5px;
-	line-height		: 20px;
-	vertical-align	: middle;
-	float			: left;
-	width			: 80%;
-}
-#CloseButton {
-	padding-top		: 3px;
-	padding-right	: 4px;
-	float			: right;
-}
-</style>
-</head>
-<body>
-<div id="Headline">
-	<?php echo $GLOBALS['l_sidebar']['headline']; ?>
-</div>
-<div id="CloseButton">
-	<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
-</div>
+		?>
+		<style type="text/css">
+			body {
+				margin			: 0px;
+				padding			: 0px;
+				border			: 0px;
+				border-top		: 1px solid #000000;
+				font-family		: Verdana, Arial, sans-serif;
+				font-size		: 10px;
+				color			: #000000;
+				background-color: silver;
+				background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');
+			}
+			#Headline {
+				padding-left	: 5px;
+				line-height		: 20px;
+				vertical-align	: middle;
+				float			: left;
+				width			: 80%;
+			}
+			#CloseButton {
+				padding-top		: 3px;
+				padding-right	: 4px;
+				float			: right;
+			}
+		</style>
+		</head>
+		<body>
+			<div id="Headline">
+				<?php echo g_l('sidebar', '[headline]'); ?>
+			</div>
+			<div id="CloseButton">
+				<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src='<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
+			</div>
 
-</body>
+		</body>
 
-</html>
-<?php
+		</html>
+		<?php
 	}
-
 
 	function getHTMLFooter(){
-?>
-</head>
-<body bgcolor="#f0f0f0"  background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
-</body>
+		?>
+		</head>
+		<body bgcolor="#f0f0f0"  background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
+		</body>
 
-</html>
-<?php
+		</html>
+		<?php
 	}
 
+	function getHTMLContent(){
 
-	function getHTMLContent() {
-
-		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+		$params = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 		define("WE_SIDEBAR", true);
 
-		if(eregi("^http://", $file) || eregi("^https://", $file)) {
+		if(stripos($file, "http://") === 0 || stripos($file, "https://") === 0){
 			//not implemented
 			//header("Location: " . $file);
 			exit();
-
 		}
 
-		if(!eregi("^/", $file)) {
+		if(strpos($file, '/') !== 0){
 			$file = id_to_path($file, FILE_TABLE);
-
 		}
 
-		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)) {
-			if(defined("SIDEBAR_DEFAULT_DOCUMENT")) {
+		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
+			if(defined("SIDEBAR_DEFAULT_DOCUMENT")){
 				$file = id_to_path(SIDEBAR_DEFAULT_DOCUMENT, FILE_TABLE);
 			}
-			if($file == "" || eregi("/$", $file) || $file == "default") {
-				$file = WEBEDITION_DIR . "sidebar/default.php";
-
+			if($file == '' || substr($file, -1) == '/' || $file == 'default'){
+				$file = WEBEDITION_DIR . 'sidebar/default.php';
 			}
-
 		}
 
+		//manipulate GET/REQUEST for document
+		$_GET = array();
+		parse_str($params, $_GET);
+		$_REQUEST = $_GET;
 		ob_start();
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
 
 		$SrcCode = ob_get_contents();
 		ob_end_clean();
 
-        $SrcCode = we_SEEM::parseDocument($SrcCode);
-		echo $SrcCode;
+		echo we_SEEM::parseDocument($SrcCode);
 
 		exit();
-
 	}
 
-
 }
+

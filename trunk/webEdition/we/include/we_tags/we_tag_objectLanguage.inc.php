@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,38 +22,37 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_objectLanguage($attribs){
+	$type = weTag_getAttribute("type", $attribs, "complete");
+	$case = weTag_getAttribute("case", $attribs, "unchanged");
 
-function we_tag_objectLanguage($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "complete");
-	$case = we_getTagAttribute("case", $attribs, "unchanged");
-
-	if (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
-		$lang=$GLOBALS['lv']->object->DB_WE->Record['OF_Language'];
-	} elseif (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->DB_WE->Record['OF_Language'])) {
-		$lang=$GLOBALS['lv']->DB_WE->Record['OF_Language'];
-	} else {
-		$lang='';
+	if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
+		$lang = $GLOBALS['lv']->object->DB_WE->Record['OF_Language'];
+	} elseif(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->DB_WE->Record['OF_Language'])){
+		$lang = $GLOBALS['lv']->DB_WE->Record['OF_Language'];
+	} else{
+		$lang = '';
 	}
-	$out="";
-	switch ($type){
+	$out = "";
+	switch($type){
 		case "language":
-			$out=substr($lang,0,2);
+			$out = substr($lang, 0, 2);
 			break;
 		case "country":
-			$out=substr($lang,3,2);
+			$out = substr($lang, 3, 2);
 			break;
 		default:
-			$out=$lang;
+			$out = $lang;
 	}
-	switch ($case){
+	switch($case){
 		case "uppercase":
-			$out= strtoupper ($out);
+			$out = strtoupper($out);
 			break;
 		case "lowercase":
-			$out= strtolower ($out);
+			$out = strtolower($out);
 			break;
 		default:
-			$out=$out;
+			$out = $out;
 	}
 	return $out;
 }

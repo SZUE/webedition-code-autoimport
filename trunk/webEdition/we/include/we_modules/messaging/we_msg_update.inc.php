@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 
 /* clipboard object class */
 class we_msg_update extends we_class {
@@ -29,7 +33,7 @@ class we_msg_update extends we_class {
 	/*****************************************************************/
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName = 'we_msg_class';
+	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
 	var $persistent_slots = array();
 	/* Name of the Object that was createt from this class */

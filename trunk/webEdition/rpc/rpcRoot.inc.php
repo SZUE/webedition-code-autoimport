@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +27,5 @@ define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'],'',RPC_DIR));
 
 ini_set('include_path',	ini_get('include_path') . PATH_SEPARATOR . RPC_DIR);
 
-define('NO_SESS',1);
+//define('NO_SESS',1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');

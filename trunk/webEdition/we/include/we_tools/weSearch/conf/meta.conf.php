@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/weSearch/conf/define.conf.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/weSearch/conf/define.conf.php");
 
 $metaInfo = array(
-		'name' => 'weSearch', 
-		'classname' => 'searchtool', 
-		'maintable' => SUCHE_TABLE, 
-		'datasource' => 'table:' . SUCHE_TABLE, 
+		'name' => 'weSearch',
+		'classname' => 'searchtool',
+		'maintable' => SUCHE_TABLE,
+		'datasource' => 'table:' . SUCHE_TABLE,
 		'startpermission' => '',
 		'supportshooks' => 0
 );
-
-?>

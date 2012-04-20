@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,14 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifEmailInvalid($attribs, $content){
-	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==2);
-	}else if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==2);
-	}else{
+function we_tag_ifEmailInvalid(){
+	if(isset($GLOBALS['WE_REMOVENEWSLETTER_STATUS'])){
+		return ($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] == weNewsletterBase::STATUS_EMAIL_INVALID);
+	} else if(isset($GLOBALS['WE_WRITENEWSLETTER_STATUS'])){
+		return ($GLOBALS['WE_WRITENEWSLETTER_STATUS'] == weNewsletterBase::STATUS_EMAIL_INVALID);
+	} else{
 		return false;
 	}
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,25 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_hidden($attribs){
 
-function we_tag_hidden($attribs, $content){
-
-	$foo = attributFehltError($attribs, "name", "hidden");
-	if ($foo)
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
 
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs, '');
-	$xml = we_getTagAttribute("xml", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
 
 	$value = '';
-	switch ($type) {
+	switch($type){
 		case 'session' :
 
 			$value = $_SESSION[$name];
 			break;
 		case 'request' :
-			$value = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
+			$value = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
 			break;
 		default :
 			$value = $GLOBALS[$name];
@@ -43,6 +46,6 @@ function we_tag_hidden($attribs, $content){
 	}
 
 	return getHtmlTag('input', array(
-		'type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml
-	));
+			'type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml
+		));
 }

@@ -18,7 +18,6 @@
 //
 // $Id: Getopt.php,v 1.4 2007/06/12 14:58:56 cellog Exp $
 
-//require_once 'PEAR.php';
 
 /**
  * Command-line options parsing class.
@@ -270,10 +269,8 @@ class Console_Getopt {
     * @access public
     * @return mixed the $argv PHP array or PEAR error if not registered
     */
-    function readPHPArgv()
-    {
-        global $argv;
-        if (!is_array($argv)) {
+    function readPHPArgv(){
+        if (!is_array($GLOBALS['argv'])) {
             if (!@is_array($_SERVER['argv'])) {
                 if (!@is_array($GLOBALS['HTTP_SERVER_VARS']['argv'])) {
                     return PEAR::raiseError("Console_Getopt: Could not read cmd args (register_argc_argv=Off?)");
@@ -282,7 +279,7 @@ class Console_Getopt {
             }
             return $_SERVER['argv'];
         }
-        return $argv;
+        return $GLOBALS['argv'];
     }
 
 }

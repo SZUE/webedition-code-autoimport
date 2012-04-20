@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,40 +21,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-
-protect();
-
-$cols = array();
-$frames = "";
-
-for ($i=0;$i<MULTIEDITOR_AMOUNT;$i++) {
-	
-	$cols[] = "*";
-	$frames .= '	<frame src="about:blank" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize />'."\n";
-}
-
-?><html>
-<head>
-
-<script type="text/javascript">
-	function we_cmd(){
-		var args = "";
-		for(var i = 0; i < arguments.length; i++){
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-		}
-		eval('parent.we_cmd('+args+')');
-	}
-</script>
-
-</head>
-<frameset id="multiEditorFrameset" cols="<?php print implode(",", $cols); ?>" border="0" frameborder="no" framespacing="0" noresize>
-<?php
-
-print $frames;
-
+we_html_tools::protect();
+we_html_tools::htmlTop();
+echo we_html_element::jsElement(<<<EOF
+			function we_cmd(){
+				var args = "";
+				for(var i = 0; i < arguments.length; i++){
+					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+				}
+				eval('parent.we_cmd('+args+')');
+			}
+EOF
+	);
 ?>
-</frameset>
+	</head>
+	<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;"><?php
+$MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
+
+for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
+	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;overflow: hidden;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+}
+?>
+	</body>
 </html>

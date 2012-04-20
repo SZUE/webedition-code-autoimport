@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +24,15 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
-
-protect();
+we_html_tools::protect();
 $ok = false;
 
 if($_SESSION["perms"]["ADMINISTRATOR"]){
-	$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST["we_cmd"][1])?$_REQUEST["we_cmd"][1]:0);
+	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:0);
 	// init document
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_init_doc.inc.php");
+	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 	$childs = array();
 	pushChilds($childs,$we_doc->ID,$we_doc->Table);
@@ -46,16 +46,8 @@ if($_SESSION["perms"]["ADMINISTRATOR"]){
 	}
 }
 
-htmlTop();
-?>
-<script language="JavaScript" type="text/javascript"><!--
-	<?php if($ok): ?>
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_users"]["grant_owners_ok"], WE_MESSAGE_NOTICE); ?>
-	<?php else: ?>
-		<?php print we_message_reporting::getShowMessageCall($GLOBALS["l_users"]["grant_owners_notok"], WE_MESSAGE_ERROR); ?>
-	<?php endif ?>
-//-->
-</script>
+we_html_tools::htmlTop();
+	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_ok]"), ($ok?we_message_reporting::WE_MESSAGE_NOTICE:we_message_reporting::WE_MESSAGE_ERROR))); ?>
 </head>
 
 <body>

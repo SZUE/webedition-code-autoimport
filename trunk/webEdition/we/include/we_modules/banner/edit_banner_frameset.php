@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,35 +22,39 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+we_html_tools::htmlTop();
+print STYLESHEET;
+
+$bannerFrame = new weBannerFrames();
+$bannerFrame->View->processVariables();
+$bannerFrame->View->processCommands();
+
+$what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : "frameset";
+$mode = (isset($_REQUEST["art"])) ? $_REQUEST["art"] : 0;
 
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once(WE_BANNER_MODULE_DIR."weBannerFrames.php");
-	protect();
-	htmlTop();
-	print STYLESHEET;
-
-	$bannerFrame=new weBannerFrames();
-	$bannerFrame->View->processVariables();
-	$bannerFrame->View->processCommands();
-
-	if(isset($_REQUEST["pnt"])) $what=$_REQUEST["pnt"];
-	else $what="frameset";
-
-	if(isset($_REQUEST["art"])) $mode=$_REQUEST["art"];
-	else $mode=0;
-
-
-	switch($what){
-		case "frameset": print $bannerFrame->getHTMLFrameset();break;
-		case "header": print $bannerFrame->getHTMLHeader();break;
-		case "resize": print $bannerFrame->getHTMLResize();break;
-		case "left": print $bannerFrame->getHTMLLeft();break;
-		case "right": print $bannerFrame->getHTMLRight();break;
-		case "editor": print $bannerFrame->getHTMLEditor();break;
-		case "edheader": print $bannerFrame->getHTMLEditorHeader($mode);break;
-		case "edbody": print $bannerFrame->getHTMLEditorBody();break;
-		case "edfooter": print $bannerFrame->getHTMLEditorFooter($mode);break;
-		case "cmd": print $bannerFrame->getHTMLCmd();break;
-      default:
-	}
+switch($what){
+	case "frameset": print $bannerFrame->getHTMLFrameset();
+		break;
+	case "header": print $bannerFrame->getHTMLHeader();
+		break;
+	case "resize": print $bannerFrame->getHTMLResize();
+		break;
+	case "left": print $bannerFrame->getHTMLLeft();
+		break;
+	case "right": print $bannerFrame->getHTMLRight();
+		break;
+	case "editor": print $bannerFrame->getHTMLEditor();
+		break;
+	case "edheader": print $bannerFrame->getHTMLEditorHeader($mode);
+		break;
+	case "edbody": print $bannerFrame->getHTMLEditorBody();
+		break;
+	case "edfooter": print $bannerFrame->getHTMLEditorFooter($mode);
+		break;
+	case "cmd": print $bannerFrame->getHTMLCmd();
+		break;
+	default:
+}

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,15 +76,6 @@ class weMetaData {
 	var $_valid = true;
 
 	/**
-	 * @abstract constructor method for PHP5
-	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. "mp3")
-	 * @return bool returns false if no spezialisation for the given filetype is available
-	 */
-	function __construct($source = "") {
-		$this->weMetaData($source);
-	}
-
-	/**
 	 * @abstract constructor for PHP4
 	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. "mp3")
 	 * @return bool returns false if no spezialisation for the given filetype is available
@@ -90,7 +85,7 @@ class weMetaData {
 			$this->_valid = false;
 			return false;
 		}
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
 		$this->dataTypeMapping = $dataTypeMapping; // from mapping.inc.php
 		$this->imageTypeMap = $imageTypeMap; // from mapping.inc.php
 
@@ -192,7 +187,7 @@ class weMetaData {
 			}
 		} else {
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
-			if(!is_readable($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/tmp/",$datasource)) {
+			if(!is_readable(TEMP_PATH,$datasource)) {
 				$this->_valid = false;
 				return false;
 			}
@@ -262,8 +257,7 @@ class weMetaData {
 	 */
 	function _getInstance($value="") {
 		if(!$this->_valid) return false;
-		if(is_readable($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php");
+		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
 			$className = "weMetaData_".$value;
 			$this->_instance[$value] = new $className($this->filetype);
 			if(!$this->_instance[$value]->_checkDependencies()) {

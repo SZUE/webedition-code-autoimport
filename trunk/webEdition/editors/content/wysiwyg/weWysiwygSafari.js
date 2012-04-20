@@ -22,7 +22,6 @@ var we_styleSheets;
 var we_classNames;
 var we_styleString = "";
 var we_parentRef = null;
-var we_parentRef = null;
 var weMainWinRef = self;
 var weCssEntries = new Array();
 
@@ -237,8 +236,8 @@ weWysiwyg.prototype.writeHTMLDocument = function(){
 	var parentRef = null;
 	var normal = false;
 	if(top.opener && top.opener.top.weEditorFrameController && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){  // inline
-		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_"+this.hiddenName)){
-			parentRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_"+this.hiddenName);
+		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_"+this.hiddenName)){
+			parentRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_"+this.hiddenName);
 			we_parentRef = parentRef;
 		}
 	}else if(isFullScreen && top.opener && top.opener.document.getElementById(this.fullScreenRef+"_table")){ // fullscreen
@@ -507,7 +506,7 @@ weWysiwyg.prototype.cleanCode = function(code){
 	code = code.replace(re, '</li');
 	re = new RegExp(String.fromCharCode(160)+'</li',"gi");
 	code = code.replace(re, '</li');
-	
+
 	//Bug#3995
 	var LS = String.fromCharCode(8232);
 	var PS = String.fromCharCode(8233);
@@ -519,7 +518,7 @@ weWysiwyg.prototype.cleanCode = function(code){
 	var MACX = String.fromCharCode(14844072);
 	var re = new RegExp(MACX,"gi");
 	code = code.replace(re,"");
-	
+
 	return code;
 }
 
@@ -675,7 +674,15 @@ weWysiwyg.prototype.toggleBorders = function(){
 
 weWysiwyg.prototype.setButtonState = function(cmd, obj){
 	if(this.hasCmd(cmd)){
-		var enabled = this.queryCommandEnabled(cmd,obj);
+		var enabled=false;
+		switch(cmd){
+			case 'removetags':
+				enabled = true;
+				break;
+			default:
+				enabled = this.queryCommandEnabled(cmd,obj);
+				break;
+		}
 		if(enabled){
 			this.buttons[cmd].enable();
 		}else{
@@ -1271,8 +1278,8 @@ weWysiwyg.prototype.execCommand = function(cmd){
 				dialog.append("align", null, table);
 				dialog.append("background", null, table);
 				dialog.append("summary", null, table);
-				
-	
+
+
 				var rows = weDOM.getNumTableRows(table);
 				var cols = weDOM.getNumTableCols(table);
 				dialog.append("rows", rows);
@@ -1280,7 +1287,7 @@ weWysiwyg.prototype.execCommand = function(cmd){
 				dialog.append("cssClasses", this.cssClasses);
 				dialog.append("edit", 1);
 				dialog.open(500, 340);
-				
+
 			}else{
 				top.we_showMessage(we_wysiwyg_lng["no_table_selected"], WE_MESSAGE_ERROR, window);
 			}
@@ -1339,7 +1346,7 @@ function weWysiwygDialog(editorName, action) {
 			val = val.replace(/([0-9]+)px/gi,"$1");
 			hidden.value = (val) ? val : "";
 		} else {
-		
+
 			if (value != null) {
 				hidden.value=value;
 			} else {
@@ -1347,15 +1354,15 @@ function weWysiwygDialog(editorName, action) {
 			}
 		}
 		this.form.appendChild(hidden);
-	
+
 	}
-		
+
 	this.append("editname", editorName);
-	
+
 
 	this.open = function(w,h) {
 		var ref = "win_" + new Date().getTime();
-		var win = new jsWindow("about:blank",ref,-1,-1,w,h,true,false,true,false);		
+		var win = new jsWindow("about:blank",ref,-1,-1,w,h,true,false,true,false);
 		this.form.target = ref;
 		this.form.submit();
 		document.body.removeChild(this.form);

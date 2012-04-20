@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,34 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+we_html_tools::protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-
-protect();
 /**
  * Checks if the start-document is a valid document. Content Type text/webedition or text/html
  * @return bool
  * @param int $id
  */
-function checkIfValidStartdocument( $id , $type = "document"){
+function checkIfValidStartdocument($id, $type = "document"){
 
-	if($type == "object") {
-		$ctype = f("SELECT ContentType FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS["DB_WE"]);
+	if($type == 'object'){
+		$ctype = f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']);
 
-		if($ctype == "objectFile"){
-			return true;
-		} else {
-			return false;
-		}
+		return ($ctype == 'objectFile');
+	} else{
+		$ctype = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']);
 
-	} else {
-		$ctype = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS["DB_WE"]);
-
-		if($ctype == "text/webedition"){
-			return true;
-		} else {
-			return false;
-		}
+		return ($ctype == "text/webedition");
 	}
 }
 
@@ -54,26 +48,24 @@ function checkIfValidStartdocument( $id , $type = "document"){
 //	in several functions, for SEEM, normal or edit_include-Mode.
 
 
-function _buildJsCommand($cmdArray = array( "", "", "cockpit", "open_cockpit","","","","","" ) ) {
+function _buildJsCommand($cmdArray = array("", "", "cockpit", "open_cockpit", "", "", "", "", "")){
 	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
 }
 
 $jsCommand = _buildJsCommand();
 
-
-if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] == 'SEEM_edit_include' ){ // Edit-Include-Mode
-	// in multiEditorFrameset we_cmd[1] can be set to reach this
+if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] == 'SEEM_edit_include'){ // Edit-Include-Mode
+// in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
-	for ($i=1;$i<sizeof($_REQUEST["we_cmd"]) && $i<4; $i++) {
-		$directCmd[] = $_REQUEST["we_cmd"][$i];
+	for($i = 1; $i < sizeof($_REQUEST['we_cmd']) && $i < 4; $i++){
+		$directCmd[] = $_REQUEST['we_cmd'][$i];
 	}
 	$jsCommand = _buildJsCommand($directCmd);
+} else{ // check preferences for which document to open at startup
+// <we:linkToSeeMode> !!!!
+	if(isset($_SESSION["SEEM"]) && isset($_SESSION["SEEM"]["open_selected"])){
 
-} else { // check preferences for which document to open at startup
-	// <we:linkToSeeMode> !!!!
-	if (isset($_SESSION["SEEM"]) && isset($_SESSION["SEEM"]["open_selected"])) {
-
-		if ( isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'document' && checkIfValidStartdocument($_SESSION["SEEM"]["startId"]) ) ) {
+		if(isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'document' && checkIfValidStartdocument($_SESSION["SEEM"]["startId"]) )){
 
 			$directCmd = array(
 				FILE_TABLE,
@@ -81,8 +73,7 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 				'text/webedition',
 			);
 			$jsCommand = _buildJsCommand($directCmd);
-
-		} else if (isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'object')) {
+		} else if(isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'object')){
 
 			$directCmd = array(
 				OBJECT_FILES_TABLE,
@@ -93,50 +84,37 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 		}
 		unset($_SESSION["SEEM"]["open_selected"]);
 
-	// normal mode, start document depends on settings
-	} else if (isset( $_SESSION["prefs"]["seem_start_type"] )) {
-		if($_SESSION["prefs"]["seem_start_type"] == "object" && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"], "object")){	//	if a stardocument is already selected - show this
-
+// normal mode, start document depends on settings
+	} else if(isset($_SESSION["prefs"]["seem_start_type"])){
+		if($_SESSION["prefs"]["seem_start_type"] == "object" && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"], "object")){ //	if a stardocument is already selected - show this
 			$directCmd = array(
 				OBJECT_FILES_TABLE,
 				$_SESSION["prefs"]["seem_start_file"],
 				'objectFile',
 			);
 			$jsCommand = _buildJsCommand($directCmd);
-
-		} else if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "")&& $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){	//	if a stardocument is already selected - show this
-
+		} else if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "") && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){ //	if a stardocument is already selected - show this
 			$directCmd = array(
 				FILE_TABLE,
 				$_SESSION["prefs"]["seem_start_file"],
 				'text/webedition',
 			);
 			$jsCommand = _buildJsCommand($directCmd);
-		} else if( $_SESSION["prefs"]["seem_start_type"] == "weapp" && $_SESSION["prefs"]["seem_start_weapp"] != ''){	//	if a we-app is choosen
-
+		} else if($_SESSION["prefs"]["seem_start_type"] == "weapp" && $_SESSION["prefs"]["seem_start_weapp"] != ''){ //	if a we-app is choosen
 			$directCmd = array(
-				'','','','tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
-				
+				'', '', '', 'tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
 			);
 			$jsCommand = _buildJsCommand();
 			$jsCommand .= _buildJsCommand($directCmd);
-				
-		} else if (($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
+		} else if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
 			$_SESSION["prefs"]["seem_start_type"] = "cockpit";
 			$jsCommand = _buildJsCommand();
 		}
 	}
-	// :ToDO: alert Box when no vald start document is selected => open cockpit then
+// :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
-if ($_SESSION["prefs"]["seem_start_type"] !== "") {
-	print we_htmlElement::jsElement(
-		$jsCommand
-
-	);
-} else {
-	print we_htmlElement::jsElement(
-		"top.weEditorFrameController.toggleFrames();"
-
-	);
+if($_SESSION["prefs"]["seem_start_type"] !== ""){
+	print we_html_element::jsElement($jsCommand);
+} else{
+	print we_html_element::jsElement("top.weEditorFrameController.toggleFrames();");
 }
-

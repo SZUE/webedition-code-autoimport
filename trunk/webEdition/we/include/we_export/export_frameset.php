@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,26 +22,26 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_export/weExportWizard.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $frames = new weExportWizard("/webEdition/we/include/we_export/export_frameset.php");
-protect();
+we_html_tools::protect();
 //	Starting output .
 
 if(isset($_REQUEST["pnt"])){
 	$what = $_REQUEST["pnt"];
-} else {
+} else{
 	$what = "frameset";
 }
 
 if(isset($_REQUEST["step"])){
-	$step= $_REQUEST["step"];
+	$step = $_REQUEST["step"];
 }
-else $step=0;
+else
+	$step = 0;
 
 
-switch ($what) {
+switch($what){
 
 	case "frameset" :
 		print $frames->getHTMLFrameset();

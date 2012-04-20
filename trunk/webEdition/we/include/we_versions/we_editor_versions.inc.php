@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +23,24 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
-protect();
-  
-htmlTop();
+we_html_tools::protect();
 
-echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
+we_html_tools::htmlTop();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_editors/we_editor_script.inc.php");
+echo we_html_element::jsScript(JS_DIR.'windows.js').
+we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
+we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js');
 
-$headCal = we_htmlElement::linkElement(array("rel"=>"stylesheet","type"=>"text/css","href"=>JS_DIR."jscalendar/skins/aqua/theme.css","title"=>"Aqua")).
-		   we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).
-		   we_htmlElement::jsElement("",array("src"=>WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js")).
-		   we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar-setup.js"));
-	
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+
+$headCal = we_html_element::cssLink(JS_DIR."jscalendar/skins/aqua/theme.css").
+		   we_html_element::jsScript(JS_DIR."jscalendar/calendar.js").
+		   we_html_element::jsScript(WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js").
+		   we_html_element::jsScript(JS_DIR."jscalendar/calendar-setup.js");
+
 echo $headCal;
 
 $_view = new weVersionsView();
@@ -46,15 +50,15 @@ echo $_view->getJS();
 print STYLESHEET;
 
 echo '
-<style type="text/css" media="screen"> 
+<style type="text/css" media="screen">
 #scrollContent {overflow: auto; }
 #searchTable {display: block; }
 #eintraege_pro_seite {display: inline;margin-right:10px; }
 #anzahl {display: inline;margin-right:10px;  }
 #eintraege {display: none; }
 #print {display: inline;}
-#zurueck {display: ;}
-#weiter {display: ;}
+#zurueck {display: block;}
+#weiter {display: block;}
 #pageselect {display: inline;}
 #bottom{display: inline;}
 #beschreibung_print {display: none; }
@@ -65,7 +69,7 @@ echo '
 #deleteButton{display: block; }
 </style>
 
-<style type="text/css" media="print"> 
+<style type="text/css" media="print">
 #scrollContent {overflow: visible; }
 #searchTable {display: none; }
 #eintraege_pro_seite {display: none; }

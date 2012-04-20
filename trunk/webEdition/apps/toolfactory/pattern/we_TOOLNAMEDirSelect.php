@@ -1,7 +1,8 @@
 
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/<?php print $TOOLNAME; ?>/we_<?php print $TOOLNAME; ?>DirSelector.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/tools.inc.php");
-protect();
+
+we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = '/webEdition/apps/<?php print $TOOLNAME; ?>/we_<?php print $TOOLNAME; ?>DirSelect.php';
 $fs = new we_<?php print $TOOLNAME; ?>DirSelector(isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')),
 							isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : (isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '')),
@@ -10,5 +11,5 @@ $fs = new we_<?php print $TOOLNAME; ?>DirSelector(isset($id) ? $id : (isset($_RE
 							isset($order) ? $order : (isset($_REQUEST['order']) ? $_REQUEST['order'] : ''),
 							isset($we_editDirID) ? $we_editDirID : (isset($_REQUEST['we_editDirID']) ? $_REQUEST['we_editDirID'] : ''),
 							isset($we_FolderText) ? $we_FolderText : (isset($_REQUEST['we_FolderText']) ? $_REQUEST['we_FolderText'] : ''));
-							
-$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : FS_FRAMESET);
+
+$fs->printHTML(isset($_REQUEST['what']) ? $_REQUEST['what'] : we_fileselector::FRAMESET);

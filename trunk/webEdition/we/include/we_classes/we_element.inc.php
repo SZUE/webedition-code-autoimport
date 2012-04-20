@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +23,9 @@
  */
 
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."modules/weModelBase.php");
-
-
 	class we_element{
 
-		var $ClassName="we_element";
+		var $ClassName=__CLASS__;
 
 		var $DID=0;
 		var $Name="";
@@ -48,7 +48,7 @@
 
 		var $linked=false;
 
-		function we_element($link_props=true,$options=array()){
+		function __construct($link_props=true,$options=array()){
 			$this->DID=0;
 			$this->Link=new weModelBase(LINK_TABLE);
 			$this->Link->setKeys(array("DID","CID"));
@@ -82,10 +82,14 @@
 			if(is_array($options)){
 				foreach($options as $k=>$v){
 					foreach($this->link_attribs as $k=>$v){
-						eval('if(isset($options["'.$k.'"]) && isset($this->Link->'.$k.')) $this->Link->'.$k.'=$options["'.$k.'"];');
+						if(isset($options[$k]) && isset($this->Link->$k)){
+							$this->Link->$k=$options[$k];
+						}
 					}
 					foreach($this->content_attribs as $k=>$v){
-						eval('if(isset($options["'.$k.'"]) && isset($this->Content->'.$k.')) $this->Content->'.$k.'=$options["'.$k.'"];');
+						if(isset($options[$k]) && isset($this->Content->$k)){
+							$this->Content->$k=$options[$k];
+						}
 					}
 
 				}

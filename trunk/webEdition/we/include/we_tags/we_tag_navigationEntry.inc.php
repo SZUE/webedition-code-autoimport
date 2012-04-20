@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,29 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
+function we_parse_tag_navigationEntry($attribs, $content) {
+	return '<?php printElement('.we_tag_tagParser::printTag('navigationEntry',$attribs,$content,true).');?>';
+}
 
-function we_tag_navigationEntry($attribs, $content = ''){
+function we_tag_navigationEntry($attribs, $content) {
+	if (($foo = attributFehltError($attribs, 'type', __FUNCTION__))) {
+		echo $foo;
+		return;
+	}
 
-	$foo = attributFehltError($attribs, 'type', 'navigation');
-	if ($foo)
-		return $foo;
+	$navigationName = weTag_getAttribute('navigationname', $attribs, "default");
+	$type = weTag_getAttribute('type', $attribs);
+	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
+	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
+	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
 
-	$navigationName = we_getTagAttribute('navigationname', $attribs, "default");
-	$type = we_getTagAttribute('type', $attribs);
-	$level = we_getTagAttribute('level', $attribs, 'defaultLevel');
-	$current = we_getTagAttribute('current', $attribs, 'defaultCurrent');
-	$position = we_getTagAttribute('position', $attribs, 'defaultPosition');
-
-	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
-
-	$tp->parseTags($tags, $content);
-
-	$_positions = makeArrayFromCSV($position);
-
-	for ($i = 0; $i < sizeof($_positions); $i++) {
-		$position = $_positions[$i];
+	foreach ($positions as $position) {
 		if ($position == 'first') {
 			$position = 1;
 		}

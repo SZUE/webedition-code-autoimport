@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,30 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class versionsLogView{
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/logging.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/contenttypes.inc.php');
-
-class versionsLogView {
-
-	public $db;
 	public $actionView;
 	public $versionPerPage = 10;
+	private $Model;
 
-
-	function __construct() {
-
-		$this->db = new DB_WE ( );
+	function __construct(){
 		$this->Model = new versionsLog();
-
 	}
 
-	function getJS() {
+	function getJS(){
 
-		$js = we_htmlElement::jsElement('
-
+		$js = we_html_element::jsElement('
 			var ajaxURL = "/webEdition/rpc/rpc.php";
 
 			var currentId = 0;
@@ -83,7 +77,7 @@ class versionsLogView {
 				var newshowNumber = Elements.length;
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
 
-				document.getElementById("showAll_"+id).innerHTML = "'.$GLOBALS['l_logging']['defaultView'].'";
+				document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[defaultView]') . '";
 				document.getElementById("showAll_"+id).onclick = function(){
 					showDefault(id);
 				};
@@ -95,7 +89,7 @@ class versionsLogView {
 			function showDefault(id) {
 				var Elements = document.getElementsByName(id+"_list");
 				for(var i=0;i<Elements.length;i++) {
-					if(i>='.$this->versionPerPage.') {
+					if(i>=' . $this->versionPerPage . ') {
 						Elements[i].style.display = "none";
 					}
 					else {
@@ -106,13 +100,13 @@ class versionsLogView {
 				var newstartNumber = 1;
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
-				var newshowNumber = '.$this->versionPerPage.';
+				var newshowNumber = ' . $this->versionPerPage . ';
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
 
 				document.getElementById("back_"+id).style.display = "none";
 				document.getElementById("next_"+id).style.display = "inline";
 
-				document.getElementById("showAll_"+id).innerHTML = "'.$GLOBALS['l_logging']['all'].'";
+				document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[all]') . '";
 				document.getElementById("showAll_"+id).onclick = function(){
 					showAll(id);
 				};
@@ -123,11 +117,11 @@ class versionsLogView {
 
 			function next(id) {
 				var start = document.getElementsByName("start_"+id)[0].value;
-				var newStart = parseInt(start) + '.$this->versionPerPage.';
+				var newStart = parseInt(start) + ' . $this->versionPerPage . ';
 
 				var Elements = document.getElementsByName(id+"_list");
 				for(var i=0;i<Elements.length;i++) {
-					if(i>=newStart && i<(newStart + '.$this->versionPerPage.')) {
+					if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
 						Elements[i].style.display = "";
 					}
 					else {
@@ -136,7 +130,7 @@ class versionsLogView {
 
 				}
 
-				if(newStart>(Elements.length-'.$this->versionPerPage.')) {
+				if(newStart>(Elements.length-' . $this->versionPerPage . ')) {
 					document.getElementById("next_"+id).style.display = "none";
 				}
 				else {
@@ -148,8 +142,8 @@ class versionsLogView {
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 				var newshowNumber = Elements.length;
-				if(Elements.length>(newStart+'.$this->versionPerPage.')) {
-					newshowNumber = (newStart+'.$this->versionPerPage.');
+				if(Elements.length>(newStart+' . $this->versionPerPage . ')) {
+					newshowNumber = (newStart+' . $this->versionPerPage . ');
 				}
 
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
@@ -161,11 +155,11 @@ class versionsLogView {
 
 			function back(id) {
 				var start = document.getElementsByName("start_"+id)[0].value;
-				var newStart = parseInt(start) - '.$this->versionPerPage.';
+				var newStart = parseInt(start) - ' . $this->versionPerPage . ';
 
 				var Elements = document.getElementsByName(id+"_list");
 				for(var i=0;i<Elements.length;i++) {
-					if(i>=newStart && i<(newStart + '.$this->versionPerPage.')) {
+					if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
 						Elements[i].style.display = "";
 					}
 					else {
@@ -187,7 +181,7 @@ class versionsLogView {
 				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 
-				newshowNumber = (newstartNumber+'.$this->versionPerPage.');
+				newshowNumber = (newstartNumber+' . $this->versionPerPage . ');
 				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
 
 				document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
@@ -198,154 +192,142 @@ class versionsLogView {
 		');
 
 		return $js;
-
 	}
 
-	function getContent() {
+	function getContent(){
 
 		$content = $this->Model->load();
 
 		return $content;
 	}
 
-	function printContent($content) {
-
+	function printContent(){
+		$content = getContent();
 		$out = "";
 
 		$out .= '<div align="center" width="100%"><table border="0" width="100%" cellpadding="0" cellspacing="0" class="middlefont">';
 //		$out .= '<thead>';
 //		$out .= '<tr>';
 //		$out .= '<th style="width:150px;">';
-//		$out .= $GLOBALS['l_logging']['date'];
+//		$out .= g_l('logging','[date]');
 //		$out .= '</th>';
 //		$out .= '<th style="width:100px;">';
-//		$out .= $GLOBALS['l_logging']['user'];
+//		$out .= g_l('logging','[user]');
 //		$out .= '</th>';
 //		$out .= '<th style="width:350px;">';
-//		$out .= $GLOBALS['l_logging']['logEntry'];
+//		$out .= g_l('logging','[logEntry]');
 //		$out .= '</th>';
 //		$out .= '</tr>';
 //		$out .= '</thead>';
 		$anz = count($content);
 
-		for($i=0;$i<$anz;$i++) {
+		for($i = 0; $i < $anz; $i++){
 			$out .= '<tr>';
 			$out .= '<td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">';
-			$out .= $GLOBALS['l_logging']['date'].":";
+			$out .= g_l('logging', '[date]') . ":";
 			$out .= '</td>';
 			$out .= '<td width="200">';
-			$out .= date("d.m.y - H:i:s",$content[$i]['timestamp']);
+			$out .= date("d.m.y - H:i:s", $content[$i]['timestamp']);
 			$out .= '</td>';
 			$out .= '<td width="auto">';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1, 1);
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '<tr>';
 			$out .= '<td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">';
-			$out .= $GLOBALS['l_logging']['user'].":";
+			$out .= g_l('logging', '[user]') . ":";
 			$out .= '</td>';
 			$out .= '<td width="auto">';
-			$out .= f("SELECT Text FROM `".USER_TABLE."` WHERE ID='".abs($content[$i]['userID'])."'","Text", new DB_WE());
+			$out .= f("SELECT Text FROM `" . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE());
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '<tr>';
 			$out .= '<td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">';
-			$out .= $GLOBALS['l_logging']['logEntry'].":";
+			$out .= g_l('logging', '[logEntry]') . ":";
 			$out .= '</td>';
 			$out .= '<td width="auto">';
-			$showLog = $this->showLog($content[$i]['action'],$content[$i]['ID']);
+			$showLog = $this->showLog($content[$i]['action'], $content[$i]['ID']);
 			$out .= $showLog;
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '<tr>';
 			$out .= '<td colspan="3" style="padding:5px 15px 5px 15px;">';
-			$out .= '<div id="dataContent_'.$content[$i]['ID'].'" name="dataContent">';
-			$out .= $this->handleData($content[$i]['ID'],0,$this->versionPerPage);
+			$out .= '<div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">';
+			$out .= $this->handleData($content[$i]['ID'], 0, $this->versionPerPage);
 			$out .= '</div>';
 			$out .= '<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1, 1);
 			$out .= '</div>';
 			$out .= '</td>';
 			$out .= '</tr>';
-
 		}
 
 		$out .= '</table></div>';
 
 
 		return $out;
-
 	}
 
-	function showLog($action,$logID) {
+	function showLog($action, $logID){
 
 
 		$out = "";
 
-		switch($action) {
+		switch($action){
 
-			case WE_LOGGING_VERSIONS_DELETE:
+			case versionsLog::VERSIONS_DELETE:
 
-				$title = $GLOBALS['l_logging']['versions']." ".$GLOBALS['l_logging']['deleted'];
+				$title = g_l('logging', '[versions]') . " " . g_l('logging', '[deleted]');
 
-			break;
+				break;
 
-			case WE_LOGGING_VERSIONS_RESET:
+			case versionsLog::VERSIONS_RESET:
 
-				$title = $GLOBALS['l_logging']['versions']." ".$GLOBALS['l_logging']['reset'];
+				$title = g_l('logging', '[versions]') . " " . g_l('logging', '[reset]');
 
-			break;
+				break;
 
-			case WE_LOGGING_VERSIONS_PREFS:
+			case versionsLog::VERSIONS_PREFS:
 
-				$title = $GLOBALS['l_logging']['prefsVersionChanged'];
+				$title = g_l('logging', '[prefsVersionChanged]');
 
-			break;
-
+				break;
 		}
 
-		$out .= $title.".";
+		$out .= $title . ".";
 
 		return $out;
-
 	}
 
-	function handleData($logId, $start, $anzahl) {
-
-		$db = new DB_WE();
-
-		$db->query("SELECT data,action FROM `".VERSIONS_TABLE_LOG."` WHERE ID='".abs($logId)."'");
-		while($db->next_record()){
-			$data = $db->f("data");
-			$action = $db->f("action");
-		}
+	function handleData($logId, $start, $anzahl){
+		list($data, $action) = getHash('SELECT data,action FROM `' . VERSIONS_TABLE_LOG . '` WHERE ID=' . intval($logId), new DB_WE());
 
 		$data = unserialize($data);
 
-		$out = "";
+		$out = '';
 
-		if($action==WE_LOGGING_VERSIONS_DELETE || $action==WE_LOGGING_VERSIONS_RESET) {
+		if($action == versionsLog::VERSIONS_DELETE || $action == versionsLog::VERSIONS_RESET){
 
 			$out .= '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">';
 			$out .= '<thead>';
 			$out .= '<tr style="background-color:#dddddd;font-weight:bold;">';
 			$out .= '<td>';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1, 1);
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= $GLOBALS['l_logging']['ID']."";
+			$out .= g_l('logging', '[ID]');
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= $GLOBALS['l_logging']['name']."";
+			$out .= g_l('logging', '[name]');
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= $GLOBALS['l_logging']['path'];
+			$out .= g_l('logging', '[path]');
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= $GLOBALS['l_logging']['version'];
+			$out .= g_l('logging', '[version]');
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= $GLOBALS['l_logging']['contenttype'];
+			$out .= g_l('logging', '[contenttype]');
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '</thead>';
@@ -353,24 +335,24 @@ class versionsLogView {
 			$anzGesamt = count($data);
 
 			$orderedArray = array();
-			foreach($data as $k=>$v) {
+			foreach($data as $k => $v){
 				$orderedArray[] = $v;
 			}
 
 			$showNumber = 0;
 			//for($i=$start;$i<$anzahl;$i++) {
-			foreach($orderedArray as $k=>$v) {
+			foreach($orderedArray as $k => $v){
 
 				$display = "none";
-				$m = $k+1;
-				$name = $logId.'_list';
-				if($k>=$start && $k<$anzahl) {
+				$m = $k + 1;
+				$name = $logId . '_list';
+				if($k >= $start && $k < $anzahl){
 					$display = "";
 					$showNumber++;
 				}
-				$out .= '<tr id="'.$name.'" name="'.$name.'" style="display:'.$display.';">';
+				$out .= '<tr id="' . $name . '" name="' . $name . '" style="display:' . $display . ';">';
 				$out .= '<td align="left">';
-				$out .= $m.".";
+				$out .= $m . ".";
 				$out .= '</td>';
 				$out .= '<td align="left">';
 				$out .= $v['documentID'];
@@ -379,7 +361,7 @@ class versionsLogView {
 				$out .= shortenPath($v['Text'], 18);
 				$out .= '</td>';
 				$out .= '<td align="left">';
-				$out .= shortenPath($v['Path'],40);
+				$out .= shortenPath($v['Path'], 40);
 				$out .= '</td>';
 				$out .= '<td align="left">';
 				$out .= $v['Version'];
@@ -388,117 +370,106 @@ class versionsLogView {
 				$out .= $v['ContentType'];
 				$out .= '</td>';
 				$out .= '</tr>';
-
 			}
 			$out .= '<tr style="background-color:#dddddd;">';
 			$out .= '<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;" align="right" colspan="6">';
-			$out .= '<span id="startNumber_'.$logId.'">'.($start+1).'</span> - <span id="showNumber_'.$logId.'">'.$showNumber.'</span> <span>'.$GLOBALS['l_logging']['of'].'</span> <span style="margin-right:20px;">'.$anzGesamt.'</span>';
-			$out .= ($anzGesamt>$this->versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_'.$logId.'" href="#" onclick="showAll('.$logId.');">'.$GLOBALS['l_logging']['all'].'</a></span>' : "";
-			$out .= '<span style="margin-right:5px;"><a title="'.$GLOBALS['l_logging']['back'].'" href="#" onclick="back('.$logId.');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_'.$logId.'" style="display:none;border:2px solid #DDD;"  /></a></span>';
-			$out .= ($anzGesamt>$this->versionPerPage) ? '<span style="margin-right:5px;"><a title="'.$GLOBALS['l_logging']['next'].'" href="#" onclick="next('.$logId.');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_'.$logId.'" style="border:2px solid #DDD;" /></a></span>' : "";
-			$out .= hidden("start_".$logId ,$start);
+			$out .= '<span id="startNumber_' . $logId . '">' . ($start + 1) . '</span> - <span id="showNumber_' . $logId . '">' . $showNumber . '</span> <span>' . g_l('logging', '[of]') . '</span> <span style="margin-right:20px;">' . $anzGesamt . '</span>';
+			$out .= ($anzGesamt > $this->versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : "";
+			$out .= '<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"  /></a></span>';
+			$out .= ($anzGesamt > $this->versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : "";
+			$out .= we_html_tools::hidden("start_" . $logId, $start);
 			$out .= '</td>';
 			$out .= '</tr>';
 
 			$out .= '</table>';
-
-		}
-		elseif($action==WE_LOGGING_VERSIONS_PREFS) {
+		} elseif($action == versionsLog::VERSIONS_PREFS){
 
 			$secondsDay = 86400;
 			$secondsWeek = 604800;
 			$secondsYear = 31449600;
 
-			foreach($data as $k=>$v) {
+			foreach($data as $k => $v){
 
-				switch($k) {
+				switch($k){
 					case "version_image/*":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['image/*'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[image/*]') . ": " . $val;
+						break;
 					case "version_text/html":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/html'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/html]') . ": " . $val;
+						break;
 					case "version_text/webedition":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/webedition'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/webedition]') . ": " . $val;
+						break;
 					case "version_text/js":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/js'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/js]') . ": " . $val;
+						break;
 					case "version_text/css":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/css'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/css]') . ": " . $val;
+						break;
 					case "version_text/plain":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/plain'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/plain]') . ": " . $val;
+						break;
 					case "version_text/htaccess":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/htaccess'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/htaccess]') . ": " . $val;
+						break;
 					case "version_text/weTmpl"://#4120
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/weTmpl'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/weTmpl]') . ": " . $val;
+						break;
 					case "version_application/x-shockwave-flash":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['application/x-shockwave-flash'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[application/x-shockwave-flash]') . ": " . $val;
+						break;
 					case "version_video/quicktime":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['video/quicktime'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[video/quicktime]') . ": " . $val;
+						break;
 					case "version_application/*":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['application/*'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[application/*]') . ": " . $val;
+						break;
 					case "version_text/xml":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['text/xml'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/xml]') . ": " . $val;
+						break;
 					case "version_objectFile":
-						$val = (isset($v) && $v) ? $GLOBALS['l_logging']['activated'] : $GLOBALS['l_logging']['deactivated'] ;
-						$out .= "-> ".$GLOBALS['l_logging']['contenttype']." ".$GLOBALS['l_contentTypes']['objectFile'].": ".$val;
-					break;
+						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$out .= "-> " . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[objectFile]') . ": " . $val;
+						break;
 					case "versions_time_days":
-						$val = (isset($v) && $v!="" && $v!=-1) ? ($v/$secondsDay) : "" ;
-						$out .= "-> ".$GLOBALS['l_logging']['zeitraum']." ".$GLOBALS['l_logging']['days'].": ".$val;
-					break;
+						$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsDay) : "";
+						$out .= "-> " . g_l('logging', '[zeitraum]') . " " . g_l('logging', '[days]') . ": " . $val;
+						break;
 					case "versions_time_weeks":
-						$val = (isset($v) && $v!="" && $v!=-1) ? ($v/$secondsWeek) : "" ;
-						$out .= "-> ".$GLOBALS['l_logging']['zeitraum']." ".$GLOBALS['l_logging']['weeks'].": ".$val;
-					break;
+						$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsWeek) : "";
+						$out .= "-> " . g_l('logging', '[zeitraum]') . " " .
+							g_l('logging', '[weeks]') . ": " . $val;
+						break;
 					case "versions_time_years":
-						$val = (isset($v) && $v!="" && $v!=-1) ? ($v/$secondsYear) : "" ;
-						$out .= "-> ".$GLOBALS['l_logging']['zeitraum']." ".$GLOBALS['l_logging']['years'].": ".$val;
-					break;
+						$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsYear) : "";
+						$out .= "-> " . g_l('logging', '[zeitraum]') . " " .
+							g_l('logging', '[years]') . ": " . $val;
+						break;
 					case "versions_anzahl":
-						$val = (isset($v) && $v!="") ? $v : "" ;
-						$out .= "-> ".$GLOBALS['l_logging']['anzahlVersions'].": ".$val;
-					break;
+						$val = (isset($v) && $v != "") ? $v : "";
+						$out .= "-> " . g_l('logging', '[anzahlVersions]') . ": " . $val;
+						break;
 				}
 				$out .= "<br/>";
 			}
 
 
 			$out .= "<br/>";
-
-
 		}
 
 		return $out;
-
 	}
-
-	function __destruct() {
-
-
-	}
-
 
 }
-	

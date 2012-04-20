@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,60 +21,50 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/versions.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLogView.class.php");
-
-protect();
+we_html_tools::protect();
 
 $versionsLogView = new versionsLogView();
-$content = $versionsLogView->getContent();
-$out = $versionsLogView->printContent($content);
+$out = $versionsLogView->printContent();
 
-htmlTop($GLOBALS["l_versions"]["versions_log"]);
+we_html_tools::htmlTop(g_l('versions', '[versions_log]'));
 
 print STYLESHEET;
 
-echo '<script language="JavaScript" type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
 print $versionsLogView->getJS();
 
-$we_button = new we_button();
-
-$closeButton = $we_button->create_button("close", "javascript:window.close();");
-
-
+$closeButton = we_button::create_button("close", "javascript:window.close();");
 ?>
 <style type="text/css">
 
-#headlineDiv {
-	height				: 40px;
-}
-#headlineDiv div {
-	padding				: 10px 0 0 15px;
-}
+	#headlineDiv {
+		height				: 40px;
+	}
+	#headlineDiv div {
+		padding				: 10px 0 0 15px;
+	}
 
-#versionsDiv {
-	background			: #fff;
-	overflow			: auto;
-	height				: 420px ! important;
-	margin				: 0px ! important;
-}
+	#versionsDiv {
+		background			: #fff;
+		overflow			: auto;
+		height				: 420px ! important;
+		margin				: 0px ! important;
+	}
 
-.dialogButtonDiv {
-	left				: 0;
-	height				: 40px;
-	background-image	: url(/webEdition/images/edit/editfooterback.gif);
-	position			: absolute;
-	bottom				: 0;
-	width				: 100%;
-}
+	.dialogButtonDiv {
+		left				: 0;
+		height				: 40px;
+		background-image	: url(/webEdition/images/edit/editfooterback.gif);
+		position			: absolute;
+		bottom				: 0;
+		width				: 100%;
+	}
 
 
 </style>
@@ -79,23 +73,21 @@ $closeButton = $we_button->create_button("close", "javascript:window.close();");
 
 <body class="weDialogBody">
 
-<div id="headlineDiv">
-	<div class="weDialogHeadline">
-		<?php print $GLOBALS["l_versions"]["versions_log"] ?>
+	<div id="headlineDiv">
+		<div class="weDialogHeadline">
+<?php print g_l('versions', '[versions_log]') ?>
+		</div>
 	</div>
-</div>
-<div id="versionsDiv">
-	<?php 
-	
-	print $out;
-	
-	?>
-	
-</div>
-<div class="dialogButtonDiv">
-	<div style="position:absolute;top:10px;right:20px;">
+	<div id="versionsDiv">
+<?php
+print $out;
+?>
+
+	</div>
+	<div class="dialogButtonDiv">
+		<div style="position:absolute;top:10px;right:20px;">
 		<?php print $closeButton; ?>
+		</div>
 	</div>
-</div>
 </body>
 </html>

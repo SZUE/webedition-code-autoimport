@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,48 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_html_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-
-###### protect #################################################################
-### protect()
-### protects a page. Guests can not see this page
-
-
-function protect()
-{
-	global $l_alert;
-	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
-
-		print htmlTop();
-		print
-				we_htmlElement::jsElement(
-						we_message_reporting::getShowMessageCall(
-								$l_alert["perms_no_permissions"],
-								WE_MESSAGE_ERROR) . "top.close();");
-		print "</body></html>";
-		exit();
-	}
-}
-
-###### login ###################################################################
-### login()
-### the same as protect but with an othe error message. It is used after the login
-
-
-function login()
-{
-	global $l_alert;
-	if ($_SESSION["user"]["Username"] == "") {
-
-		print htmlTop();
-		print
-				we_htmlElement::jsElement(
-						we_message_reporting::getShowMessageCall($l_alert["login_failed"], WE_MESSAGE_ERROR) . "history.back();");
-		print "</body></html>";
-		exit();
-
-	}
+//FIXME: remove in 6.4
+function protect(){
+	t_e('deprecated', 'old protect called! remove this!');
+	we_html_tools::protect();
 }

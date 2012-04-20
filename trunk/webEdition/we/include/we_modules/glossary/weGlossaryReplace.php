@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +29,8 @@
 		 *
 		 */
 		function start() {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
-				include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
 				weGlossarySettingControl::saveSettings(true);
 			}
 			include_once($configFile);
@@ -44,7 +47,7 @@
 		 * @param unknown_type $language
 		 */
 		function end($language) {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			include_once($configFile);
 
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
@@ -63,9 +66,8 @@
 		 * @param unknown_type $language
 		 */
 		function replace($content, $language) {
-			$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
+			$configFile = WE_GLOSSARY_MODULE_PATH . "/we_conf_glossary_settings.inc.php";
 			if(!file_exists($configFile) || !is_file($configFile)) {
-				include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossarySettingControl.class.php");
 				weGlossarySettingControl::saveSettings(true);
 			}
 			include($configFile);
@@ -165,7 +167,7 @@
 			@set_time_limit(0);
 			foreach($replacements as $k => $rep) {
 				//forbid self-reference links
-				if(stripos($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS["we_doc"]->Path)!==FALSE) {
+				if(stripos($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS['we_doc']->Path)!==FALSE) {
 					unset($replacements[$k]);
 				}
 			}

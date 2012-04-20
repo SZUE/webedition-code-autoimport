@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +43,14 @@
 			var $slots=array("ID","ParentID","Path","Table","ContentType","TemplateID","DocType","Category");
 
 			function init($object,$extra=array()){
-				foreach($this->slots as $slot) eval('if(isset($object->'.$slot.')) $this->'.$slot.'=$object->'.$slot.';');
-				foreach($extra as $ek=>$ev) eval('$this->'.$ek.'="'.$ev.'";');
+				foreach($this->slots as $slot){
+					if(isset($object->$slot)){
+						$this->$slot=$object->$slot;
+					}
+				}
+				foreach($extra as $ek=>$ev){
+					$this->$ek=$ev;
+				}
 			}
 
 			function match($param){
@@ -106,7 +116,7 @@
 				$allowed = true;
 				if($rd->Table != DOC_TYPES_TABLE && $rd->Table != CATEGORY_TABLE){
 					$q = weXMLExIm::queryForAllowed($rd->Table);
-					$id = f('SELECT ID FROM '.escape_sql_query($rd->Table).' WHERE ID=\''.abs($rd->ID).'\' '.$q,'ID',new DB_WE());
+					$id = f('SELECT ID FROM '.escape_sql_query($rd->Table).' WHERE ID='.intval($rd->ID).' '.$q,'ID',new DB_WE());
 					$allowed = $id ? true : false;
 				}
 				if($rd->Table == FILE_TABLE) return $allowed && we_hasPerm('CAN_SEE_DOCUMENTS');
@@ -167,7 +177,7 @@
 		function setProp($id,$name,$value){
 			foreach($this->Storage as $ref){
 				if($ref->match($id)){
-					eval('$this->'.$name.'="'.addslashes($value).'";');
+					$this->$name=$value;
 					return true;
 				}
 			}
@@ -233,9 +243,10 @@
 		}
 
 		function getNewOwnerID($id){
+			$db=new DB_WE();
 			foreach ($this->Users as $user){
 				if($user['id']==$id){
-					$newid = f('SELECT ID FROM '.USER_TABLE.' WHERE Username=\''.escape_sql_query($user['user']).'\'','ID',new DB_WE());
+					$newid = f('SELECT ID FROM '.USER_TABLE.' WHERE Username=\''.$db->escape($user['user']).'\'','ID',$db);
 
 					if($newid){
 						return $newid;

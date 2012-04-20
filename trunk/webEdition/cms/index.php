@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +34,7 @@ $controller->setControllerDirectory('./controllers');
 // disables automatic view rendering
 $controller->setParam('noViewRenderer', true);
 
-$controller->throwExceptions(true);  
+$controller->throwExceptions(true);
 
 // alerts a message and exits when a user is not logged in or when the session is expired
 we_core_Permissions::protect();

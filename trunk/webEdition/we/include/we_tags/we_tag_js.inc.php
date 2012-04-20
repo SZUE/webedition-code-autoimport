@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,16 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_js($attribs){
 
-function we_tag_js($attribs, $content){
-
-	$foo = attributFehltError($attribs, "id", "js");
-	if ($foo)
+	$foo = attributFehltError($attribs, "id", __FUNCTION__);
+	if($foo)
 		return $foo;
-	$id = we_getTagAttribute("id", $attribs);
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
+	$id = weTag_getAttribute("id", $attribs);
+	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($id), new DB_WE());
 
-	if (count($row)) {
+	if(count($row)){
 
 		$url = $row["Path"] . ($row["IsFolder"] ? "/" : "");
 
@@ -35,11 +39,10 @@ function we_tag_js($attribs, $content){
 
 		$attribs = removeAttribs($attribs, array(
 			"id"
-		));
+			));
 
 		//	prepare $attribs for output:
 		return getHtmlTag("script", $attribs, "", true) . "\n";
-
 	}
 	return "";
 }

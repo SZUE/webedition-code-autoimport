@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,22 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if(!isset($_REQUEST["we_cmd"])){
+if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
 $include = "";
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-protect();
+we_html_tools::protect();
 
-switch($_REQUEST["we_cmd"][0]){
+switch($_REQUEST['we_cmd'][0]){
 	case "selectorSuggest" :
-		$include = "we_ajax/weSelectorSuggest.inc.php";
 		break;
 }
-if ($include) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/".$include);
+if($include){
+	include(WE_INCLUDES_PATH . $include);
 }

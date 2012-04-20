@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +22,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class DownloadFiles extends leWizardStepBase
-{
+class DownloadFiles extends leWizardStepBase {
 
 	var $EnabledButtons = array(
-		'reload'
+			'reload'
 	);
-
 	var $ProgressBarVisible = true;
 
-	function execute(&$Template)
-	{
-		
+	function execute(&$Template) {
+
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardHeadline').innerHTML = '" . $this->Language['headline'] . "';");
+						"top.document.getElementById('leWizardHeadline').innerHTML = '" . $this->Language['headline'] . "';");
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardContent').innerHTML = '<p>" . $this->Language['content'] . "</p>';");
+						"top.document.getElementById('leWizardContent').innerHTML = '<p>" . $this->Language['content'] . "</p>';");
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardDescription').innerHTML = '<p>" . $this->Language['description'] . "</p>';");
-		
+						"top.document.getElementById('leWizardDescription').innerHTML = '<p>" . $this->Language['description'] . "</p>';");
+
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
-		
+
 		return LE_WIZARDSTEP_NEXT;
-	
 	}
 
 }
-
-?>

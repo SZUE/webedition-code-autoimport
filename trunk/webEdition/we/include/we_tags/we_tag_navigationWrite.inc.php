@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,19 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_navigationWrite($attribs){
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
+	$name = weTag_getAttribute("navigationname", $attribs, "default");
+	$depth = weTag_getAttribute("depth", $attribs);
 
-function we_tag_navigationWrite($attribs, $content = ''){
-
-	$name = we_getTagAttribute("navigationname", $attribs, "default");
-	$depth = we_getTagAttribute("depth", $attribs);
-
-	if (!$depth) {
+	if(!$depth){
 		$depth = false;
 	}
 
-	if (isset($GLOBALS['we_navigation'][$name])) {
+	if(isset($GLOBALS['we_navigation'][$name])){
 
 		$GLOBALS['weNavigationDepth'] = $depth;
 		print $GLOBALS['we_navigation'][$name]->writeNavigation($depth);

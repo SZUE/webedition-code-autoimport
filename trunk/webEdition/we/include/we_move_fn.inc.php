@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/weContentProvider.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weContentProvider.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 $notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
 
 if (!$notprotect) {
-	protect();
+	we_html_tools::protect();
 }
 
 function moveTreeEntries($dontMoveClassFolders = false)
@@ -68,7 +71,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 {
 	$DB_WE = new DB_WE();
 	// check if entry is a folder
-	$row = getHash("SELECT Path, Text, IsFolder FROM " . $DB_WE->escape($table) . " WHERE  ID=" . abs($id), $DB_WE);
+	$row = getHash("SELECT Path, Text, IsFolder FROM " . $DB_WE->escape($table) . " WHERE  ID=" . intval($id), $DB_WE);
 	if (sizeof($row) == 0 || $row["IsFolder"]) {
 		return -1;
 	}
@@ -84,7 +87,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move)
 	// add the item to the item names which could be moved
 	array_push($items2move, $text);
 
-	$DB_WE->query("SELECT Text,Path FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . abs($targetDirectoryID));
+	$DB_WE->query("SELECT Text,Path FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . intval($targetDirectoryID));
 	while ($DB_WE->next_record()) {
 		// check if there is a item with the same name in the target directory
 		if (in_array($DB_WE->f('Text'), $items2move)) {
@@ -116,7 +119,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !$targetDirectoryID) {
 		return false;
 	} elseif ($targetDirectoryID) {
-		$row = getHash("SELECT IsFolder,Path,ID FROM " . $DB_WE->escape($table) . " WHERE ID=" . abs($targetDirectoryID), $DB_WE);
+		$row = getHash("SELECT IsFolder,Path,ID FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($targetDirectoryID), $DB_WE);
 		if (sizeof($row) == 0 || !$row["IsFolder"]) {
 			return false;
 		}
@@ -133,7 +136,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 	if ($table == TEMPLATES_TABLE) {
 		/*
 		// get information about the template which has to be moved
-		$row = getHash("SELECT Text,Path,IsFolder,Icon FROM ".$table." WHERE ID=".abs($id),$DB_WE);
+		$row = getHash("SELECT Text,Path,IsFolder,Icon FROM ".$table." WHERE ID=".intval($id),$DB_WE);
 		$fileName = $row['Text'];
 		$oldPath = $row['Path'];
 		$isFolder = ($row["IsFolder"] == 1 ? true : false);
@@ -151,23 +154,23 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// move template file
-		if(!file_exists(TEMPLATE_DIR.$oldPath)) {
+		if(!file_exists(TEMPLATES_PATH.$oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
-		if(!copy(TEMPLATE_DIR.$oldPath, TEMPLATE_DIR.$newPath."/".$fileName)) {
+		if(!copy(TEMPLATES_PATH.$oldPath, TEMPLATES_PATH.$newPath."/".$fileName)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
-		if(!unlink(TEMPLATE_DIR.$oldPath)) {
+		if(!unlink(TEMPLATES_PATH.$oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
 		// update table
-		$q = "UPDATE ".$table." SET ParentID=".$parentID.", Path='".$newPath."/".$fileName."' WHERE ID=".abs($id);
+		$q = "UPDATE ".$table." SET ParentID=".$parentID.", Path='".$newPath."/".$fileName."' WHERE ID=".intval($id);
 		$DB_WE->query($q);
 
 		return true;
@@ -195,7 +198,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 
 		// get information about the document which has to be moved
 		$row = getHash(
-				"SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . abs($id),
+				"SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id),
 				$DB_WE);
 		$fileName = $row['Text'];
 		$oldPath = $row['Path'];
@@ -211,32 +214,32 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// move document file
-		if (!file_exists($_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath)) {
+		if (!file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 		if (!copy(
-				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath,
-				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $newPath . "/" . $fileName)) {
+				$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath,
+				$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . "/" . $fileName)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
-		if (!unlink($_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath)) {
+		if (!unlink($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
 		// move published document file
 		if ($isPublished) {
-			if (!file_exists($_SERVER["DOCUMENT_ROOT"] . $oldPath)) {
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}
-			if (!copy($_SERVER["DOCUMENT_ROOT"] . $oldPath, $_SERVER["DOCUMENT_ROOT"] . $newPath . "/" . $fileName)) {
+			if (!copy($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . "/" . $fileName)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}
-			if (!unlink($_SERVER["DOCUMENT_ROOT"] . $oldPath)) {
+			if (!unlink($_SERVER['DOCUMENT_ROOT'] . $oldPath)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}
@@ -249,7 +252,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 			$tempOldParentID = $object->ParentID;
 			$tempNewParentID = $parentID;
 			$tempOldPath = $object->Path;
-			$tempNewPath = "" . $newPath . "/" . $fileName . "";
+			$tempNewPath = "" . $newPath . "/" . $fileName ;
 			$object->Path = $tempNewPath;
 			$object->ParentID = $tempNewParentID;
 			if (empty($version_exists)) {
@@ -264,7 +267,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// update table
-		$q = "UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . abs($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . abs(
+		$q = "UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval(
 				$id);
 		$DB_WE->query($q);
 
@@ -275,7 +278,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 
 		// get information about the object which has to be moved
 		$row = getHash(
-				"SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . abs($id),
+				"SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id),
 				$DB_WE);
 		$tableID = $row['TableID'];
 		$oldPath = $row['Path'];
@@ -297,7 +300,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 			$tempOldParentID = $object->ParentID;
 			$tempNewParentID = $parentID;
 			$tempOldPath = $object->Path;
-			$tempNewPath = "" . $newPath . "/" . $fileName . "";
+			$tempNewPath = "" . $newPath . "/" . $fileName ;
 			$object->Path = $tempNewPath;
 			$object->ParentID = $tempNewParentID;
 			if (empty($version_exists)) {
@@ -312,10 +315,10 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// update table
-		$q = "UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . abs($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . abs(
+		$q = "UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval(
 				$id);
 		$DB_WE->query($q);
-		$q = "UPDATE " . OBJECT_X_TABLE . $tableID . " SET OF_ParentID=" . abs($parentID) . ", OF_Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE OF_ID=" . abs(
+		$q = "UPDATE " . OBJECT_X_TABLE . $tableID . " SET OF_ParentID=" . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE OF_ID=" . intval(
 				$id);
 		$DB_WE->query($q);
 
@@ -331,7 +334,7 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE)
 {
 
 	$DB_WE = new DB_WE();
-	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ".$DB_WE->escape($table)." WHERE ID=".abs($id)."", $DB_WE);
+	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ".$DB_WE->escape($table)." WHERE ID=".intval($id), $DB_WE);
 
 	if (($_SESSION["user"]["ID"] == $row["CreatorID"]) || $_SESSION["perms"]["ADMINISTRATOR"]) { //	Owner or admin
 		return true;

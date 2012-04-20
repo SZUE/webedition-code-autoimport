@@ -1,5 +1,5 @@
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ('meta.conf.php');
 
 $translate = we_core_Local::addTranslation('apps.xml');

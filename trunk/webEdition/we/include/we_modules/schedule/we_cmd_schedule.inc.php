@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-switch ($_REQUEST["we_cmd"][0]) {
-//	case "edit_schedule_ifthere":
-//	case "edit_schedule":
-//		$mod="schedule";
-//		$INCLUDE = "we_modules/show_frameset.php";
-//		break;
-
-	case "add_schedule":
-	case "del_schedule":
-	case "add_schedcat":
-	case "delete_all_schedcats":
-	case "delete_schedcat":
-		$INCLUDE = "we_editors/we_editor.inc.php";
+switch($_REQUEST['we_cmd'][0]){
+	case 'add_schedule':
+	case 'del_schedule':
+	case 'add_schedcat':
+	case 'delete_all_schedcats':
+	case 'delete_schedcat':
+		$INCLUDE = 'we_editors/we_editor.inc.php';
 		break;
-
 }

@@ -1,7 +1,11 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,19 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-		switch($_REQUEST["we_cmd"][0]){
-				case "edit_voting_ifthere":
-		        case "edit_voting":
-		        	$mod="voting";
-			        $INCLUDE = "we_modules/show_frameset.php";
-			        break;
-				case "openVotingDirselector":
-					//$INCLUDE = "we_modules/voting/we_votingDirSelectorFrameset.php";
-					break;		
-	        	break;                                                                                
-                }
-        
- 
-?>
+switch($_REQUEST['we_cmd'][0]){
+	case 'edit_voting_ifthere':
+	case 'edit_voting':
+		$mod = 'voting';
+		$INCLUDE = 'we_modules/show_frameset.php';
+		break;
+	case 'openVotingDirselector':
+		//$INCLUDE = 'we_modules/voting/we_votingDirSelectorFrameset.php';
+		break;
+}

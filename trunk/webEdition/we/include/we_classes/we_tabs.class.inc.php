@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_tab.class.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/"."we.inc.php");
 
 class we_tabs {
 
@@ -38,20 +38,19 @@ class we_tabs {
 	var $bodyAttribs;
 	var $JSonResize;
 
-	function we_tabs() {
-		global $BROWSER, $SYSTEM;
+	function __construct() {
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
 		$this->containerEnd   = "</div>\n";
 
-		switch ($BROWSER) {
-			case "SAFARI":
+		switch (we_base_browserDetect::inst()->getBrowser()) {
+			case we_base_browserDetect::SAFARI:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
 				$this->tabBG ="";
 				break;
-			case "IE":
+			case we_base_browserDetect::IE:
 				$this->heightPlus = "";
 				$this->textvalign = "middle";
 				$this->frameDefaultHeight = 21;
@@ -61,7 +60,7 @@ class we_tabs {
 			default:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
-				$frameDefaultHeight = 21;
+				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border: 0px;";
 		}
 	}
@@ -92,7 +91,7 @@ div.tabNormal {
 	margin: 0px; padding: 0;
 	$tabBorder
 	float:left;
-	display: inline;
+	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
 	background-repeat: repeat-x;
 	$tabBG
@@ -104,7 +103,7 @@ div.tabActive {
 	margin: 0px; padding: 0;
 	$tabBorder
 	float:left;
-	display: inline;
+	display: inline-block;
 	background-image:url(/webEdition/images/multiTabs/tabsBG_active2.gif);
 	background-repeat: repeat-x;
 	$tabBG
@@ -225,9 +224,9 @@ function getPathInfos(){
 
 HTS;
 
-		$out = we_htmlElement::cssElement($styles);
-		$out.= we_htmlElement::jsElement($script);
-		$out.= we_htmlElement::jsElement("", array("src" => JS_DIR . "attachKeyListener.js"));
+		$out = we_html_element::cssElement($styles);
+		$out.= we_html_element::jsElement($script);
+		$out.= we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 
 		return $out;
 	}

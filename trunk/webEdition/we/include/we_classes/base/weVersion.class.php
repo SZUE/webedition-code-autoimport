@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +29,10 @@
  * Provides functions for exporting and importing backups.
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weFile.class.php");
-
 	class weVersion{
 
 		var $db;
-		var $ClassName="weVersion";
+		var $ClassName=__CLASS__;
 		var $Pseudo="weVersion";
 
 		var $attribute_slots=array();
@@ -44,7 +45,7 @@
 
 		var $linkData=true;
 
-		function weVersion($id=0){
+		function __construct($id=0){
 			$this->Pseudo="weVersion";
 			$this->persistent_slots=array("ID", "ClassName","Path","Data","SeqN");
 			foreach($this->persistent_slots as $slot) $this->$slot="";
@@ -56,11 +57,11 @@
 
 		function load($id,$loadData=true){
 			$this->ID=$id;
-			$this->db->query("SELECT binaryPath FROM ".VERSIONS_TABLE." WHERE ID='".abs($id)."';");
+			$this->db->query("SELECT binaryPath FROM ".VERSIONS_TABLE." WHERE ID=".intval($id));
 			if($this->db->next_record()){
 				$this->Path=$this->db->f("binaryPath");
 				if($this->Path && $loadData){
-					return $this->loadFile($_SERVER["DOCUMENT_ROOT"].SITE_DIR.$this->Path);
+					return $this->loadFile($_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path);
 				}
 				return false;
 			}
@@ -68,7 +69,7 @@
 		}
 
 		function loadFile($file){
-			$path=stri_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
+			$path=stri_replace($_SERVER['DOCUMENT_ROOT'],"",$file);
 			$path=stri_replace(SITE_DIR,"",$path);
 			$this->Path=$path;
 			if($this->linkData)
@@ -79,20 +80,20 @@
 
 		function save($force=true){
 			if($this->ID){
-				$path=$_SERVER["DOCUMENT_ROOT"].$this->Path;
+				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))) {
-					createLocalFolderByPath(dirname($path));
+					we_util_File::createLocalFolderByPath(dirname($path));
 				}
-				weFile::save($_SERVER["DOCUMENT_ROOT"].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
+				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}
 			else{
-				$path=$_SERVER["DOCUMENT_ROOT"].$this->Path;
+				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))){
-					createLocalFolderByPath(dirname($path));
+					we_util_File::createLocalFolderByPath(dirname($path));
 				}
-				weFile::save($_SERVER["DOCUMENT_ROOT"].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
+				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}
 			return true;
 		}

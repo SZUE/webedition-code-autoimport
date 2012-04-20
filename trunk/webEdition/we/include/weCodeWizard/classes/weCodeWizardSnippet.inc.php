@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/xml_parser.inc.php");
 
 /**
  * Code Snipptes are used in templates inside webEdition
@@ -27,6 +30,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/xml
  * @see dtd:http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd
  *
  */
+
 class weCodeWizardSnippet {
 
 	/**
@@ -79,7 +83,7 @@ class weCodeWizardSnippet {
 	function initByXmlFile($file) {
 
 		$Snippet = new weCodeWizardSnippet();
-		$Parser = new XML_Parser($file);
+		$Parser = new we_xml_parser($file);
 
 		// set the title
 		if ($Parser->execMethod_count("/topic[1]", "title") > 0) {
@@ -121,8 +125,8 @@ class weCodeWizardSnippet {
 		if ($charset == "") {
 			$charset = $GLOBALS['we_doc']->getElement('Charset');
 			if ($charset == "") {
-				include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
-				$charset = $_language["charset"];
+				$charset = $GLOBALS['WE_BACKENDCHARSET'];
+
 			}
 		}
 

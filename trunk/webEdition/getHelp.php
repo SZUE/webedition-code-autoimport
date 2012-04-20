@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::htmlTop();
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-htmlTop();
-
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<script language="JavaScript" type="text/javascript"><!--
-url="http://help.webedition.org/index.php?language=<?php print $GLOBALS["WE_LANGUAGE"] ?>";
-self.location=url;              
-//-->
+<script type="text/javascript"><!--
+	url="http://help.webedition.org/index.php?language=<?php print $GLOBALS["WE_LANGUAGE"] ?>";
+	self.location=url;
+	//-->
 </script>
 </head>
 

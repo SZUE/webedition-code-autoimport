@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
-
 class weShippingControl {
 
 	var $stateField = '';
@@ -30,7 +32,7 @@ class weShippingControl {
 	var $vatRate = 0;
 
 
-	function weShippingControl($stateField, $isNet, $vatId, $shippings) {
+	function __construct($stateField, $isNet, $vatId, $shippings) {
 
 		$this->stateField = $stateField;
 		$this->isNet = $isNet;
@@ -78,7 +80,7 @@ class weShippingControl {
 			$newShipping = new weShipping(
 				$req['weShippingId'],
 				$req['weShipping_text'],
-				weShippingControl::makeArrayFromReq($req['weShipping_countries']),
+				self::makeArrayFromReq($req['weShipping_countries']),
 				$req['weShipping_cartValue'],
 				$req['weShipping_shipping'],
 				($req['weShipping_default'] == '1' ? 1 : 0)
@@ -99,7 +101,7 @@ class weShippingControl {
 	function getNewEmptyShipping() {
 		return new weShipping(
 			uniqid('weShipping_'),
-			$GLOBALS['l_shop']['new_entry'],
+			g_l('modules_shop','[new_entry]'),
 			array('Deutschland'),
 			array('10','20','100'),
 			array('15','5','0'),
@@ -108,8 +110,8 @@ class weShippingControl {
 	}
 
 	function save() {
-
-		global $DB_WE;
+		//FIXME: change Primary Key!!
+		$DB_WE=$GLOBALS['DB_WE'];
 		// check if already inserted
 		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
 
@@ -120,8 +122,7 @@ class weShippingControl {
 			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShippingControl"';
 
 		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")
-			';
+			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")';
 		}
 
 		if ($DB_WE->query($query)) {

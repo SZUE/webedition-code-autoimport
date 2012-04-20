@@ -1,7 +1,5 @@
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_dirSelector.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$GLOBALS["WE_LANGUAGE"].'/tools.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
 include_once('conf/define.conf.php');
 
 class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
@@ -37,13 +35,13 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
   	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS['l_tools']['name'].'</a></b></td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
+					<td class="selector"colspan="2"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('tools','[name]').'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -55,15 +53,14 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print '<?php print $htmltop; ?>';?>'); Geht nicht im IE
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+	d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 	d.writeln('<?php print '<?php print STYLESHEET_SCRIPT;?>';?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
@@ -115,21 +112,21 @@ function writeBody(d){
 	d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 	d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 	d.writeln('}');
-<?php print '<?php if($this->multiple): ?>';?>
+<?php print '<?php if($this->multiple){ ?>';?>
 	d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-<?php print '<?php else: ?>';?>
+<?php print '<?php }else{ ?>';?>
 	d.writeln('top.unselectAllFiles();');
-<?php print '<?php endif ?>';?>
+<?php print '<?php } ?>';?>
 	}
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 	d.writeln('<form name="we_form" target="fscmd" action="<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>">');
 	if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_DORENAMEFOLDER; ?>';?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print self::DORENAMEFOLDER; ?>';?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print FS_CREATEFOLDER; ?>';?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print '<?php print self::CREATEFOLDER; ?>';?>" />');
 	}
 	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
 	d.writeln('<input type="hidden" name="rootDirID" value="<?php print '<?php print $this->rootDirID; ?>';?>" />');
@@ -138,35 +135,35 @@ function writeBody(d){
 	d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
-		d.writeln('<td align="center"><img src="<?php print '<?php print WE_TOOLS_PATH;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print '<?php print $GLOBALS["l_tools"]["newFolder"]?>';?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td align="center"><img src="<?php print '<?php print WE_APPS_DIR;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('tools','[newFolder]');?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('tools','[newFolder]');?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php print '<?php echo ($BROWSER=="IE"?"this":"event")?>';?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var onclick = ' onClick="weonclick(<?php print '<?php echo (we_base_browserDetect::isIE()?"this":"event")?>';?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
+		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' >');
 		d.writeln('<td class="selector" width="25" align="center">');
-		d.writeln('<img src="<?php print '<?php print WE_TOOLS_PATH;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/'+entries[i].icon+'" width="16" height="18" border="0">');
+		d.writeln('<img src="<?php print '<?php print WE_APPS_DIR;?>' . $TOOLNAME;?>/ui/themes/default/shared/icons/small/'+entries[i].icon+'" width="16" height="18" border="0">');
 		d.writeln('</td>');
 		if(we_editDirID == entries[i].ID){
 			d.writeln('<td class="selector">');
 			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
-			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on">');
+			d.writeln('<td class="selector" style="" >');
 			//d.writeln(cutText(entries[i].text,24));
 			d.writeln(entries[i].text);
 		}
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="3"><?php print '<?php print getPixel(2,1); ?>';?></td></tr>');
+		d.writeln('</tr><tr><td colspan="3"><?php print '<?php print we_html_tools::getPixel(2,1); ?>';?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print '<?php print getPixel(25,2)?>';?></td>');
-	d.writeln('<td><?php print '<?php print getPixel(200,2)?>';?></td>');
+	d.writeln('<td width="25"><?php print '<?php print we_html_tools::getPixel(25,2)?>';?></td>');
+	d.writeln('<td><?php print '<?php print we_html_tools::getPixel(200,2)?>';?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
-		d.writeln('<scr'+'ipt language="JavaScript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
+		d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
 	}
 	d.writeln('</body>');
 	d.close();
@@ -182,7 +179,7 @@ function writeBody(d){
 function queryString(what,id,o,we_editDirID){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
-	return '<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>?what='+what+'&rootDirID=<?php print '<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>';?>&table=<?php print '<?php print $this->table; ?>';?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+	return '<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>?what='+what+'&rootDirID=<?php print '<?php print $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>';?>&table=<?php print '<?php print $this->table; ?>';?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 }
 
 <?php print '<?php';?>
@@ -235,8 +232,8 @@ function addEntry(ID,icon,text,isFolder,path){
   	}
 
 	function printCreateFolderHTML(){
-		htmlTop();
-protect();
+		we_html_tools::htmlTop();
+we_html_tools::protect();
 
 		print '<script>top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -245,9 +242,9 @@ protect();
 			$txt = rawurldecode($_REQUEST['we_FolderText_tmp']);
 		}
 		if($txt==''){
-			print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['wrongtext'], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('tools','[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/'.'we_classes/we_folder.inc.php');
+			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 			//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/apps/<?php print $TOOLNAME; ?>/class/<?php print $CLASSNAME; ?>.class.php');
 			$folder= new we_folder();
 			$folder->we_new();
@@ -258,10 +255,10 @@ protect();
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."'");
 			if($this->db->next_record()){
-				print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['folder_path_exists'], WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('tools','[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(<?php print $CLASSNAME; ?>::textNotValid($folder->Text)){
-					print we_message_reporting::getShowMessageCall($GLOBALS['l_tools']['wrongtext'], WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall(g_l('tools','[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
 		         	print 'var ref = top.opener.top.content;
@@ -301,8 +298,8 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();
-		protect();
+		we_html_tools::htmlTop();
+		we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();
@@ -310,24 +307,23 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==''){
-			print we_message_reporting::getShowMessageCall($GLOBALS['l_<?php print $TOOLNAME; ?>']['folder_empty'], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall($GLOBALS['l_<?php print $TOOLNAME; ?>']['folder_empty'], we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 			$folder= new we_folder();
 			$folder->initByID($this->we_editDirID,$this->table);
 			$folder->Text=$txt;
 			$folder->Filename=$txt;
 			$folder->Path=$folder->getPath();
-			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf($GLOBALS["l_<?php print $TOOLNAME; ?>"]["folder_exists"],$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = $GLOBALS["l_<?php print $TOOLNAME; ?>"]["wrongtext"];
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref = top.opener.top.content;
 if(ref.updateEntry){

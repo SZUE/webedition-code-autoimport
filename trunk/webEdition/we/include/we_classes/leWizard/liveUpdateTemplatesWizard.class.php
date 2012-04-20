@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,16 +78,13 @@ class liveUpdateTemplatesWizarad extends liveUpdateTemplates {
 
 		}
 
-		return '<html>
+		return we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html>
 	<head>
 	' . liveUpdateTemplates::getHtmlHead() . '
 	' . $header . '
 	</head>
 	<body>
-	' . liveUpdateTemplates::getContainer($headline, $content) . '
-	<script type="text/javascript">
-	' . $PushJs . '
-	</script>
+	' . liveUpdateTemplates::getContainer($headline, $content) . we_html_element::jsElement($PushJs) . '
 	</body>
 </html>';
 	}

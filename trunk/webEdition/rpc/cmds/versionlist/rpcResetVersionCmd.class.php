@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
-
 class rpcResetVersionCmd extends rpcCmd {
 
 	function execute() {
@@ -31,7 +32,7 @@ class rpcResetVersionCmd extends rpcCmd {
 
 		$id = $_REQUEST["id"];
 
-		protect();
+		we_html_tools::protect();
 
 		if(stristr($id, ',')) {
 			$ids = explode(",", $id);
@@ -58,7 +59,7 @@ class rpcResetVersionCmd extends rpcCmd {
 				$version = $_REQUEST["version"];
 			}
 			else {
-				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID='".abs($id)."' ","version",$db);
+				$version = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE ID=".intval($id),"version",$db);
 			}
 
 			$docID = (isset($_REQUEST["documentID"]) && $_REQUEST["documentID"]!=0) ? $_REQUEST["documentID"] : "";
@@ -70,7 +71,7 @@ class rpcResetVersionCmd extends rpcCmd {
 
 		if(!empty($_SESSION['versions']['logResetIds'])) {
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'],WE_LOGGING_VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'],versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['versions']['logResetIds']);
 

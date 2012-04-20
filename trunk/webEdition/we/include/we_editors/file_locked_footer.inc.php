@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,44 +22,39 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect();
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
-	protect();
-
-	//	user
-	$_isUsedByUser = $we_doc->isLockedByUser();
-	$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=".abs($_isUsedByUser)."","username",$DB_WE);
+//	user
+$_isUsedByUser = $we_doc->isLockedByUser();
+$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($_isUsedByUser), "username", $GLOBALS['DB_WE']);
 
 
-	$_messageTbl = new we_htmlTable(	array(	"border"      => 0,
-												"cellpadding" => 0,
-												"cellspacing" => 0),
-									2,
-									6);
+$_messageTbl = new we_html_table(array("border" => 0,
+		"cellpadding" => 0,
+		"cellspacing" => 0),
+		2,
+		6);
 
 
-	$refreshButton = "";
+$refreshButton = "";
 
-	if(!isset($_REQUEST["SEEM_edit_include"]) || $_REQUEST["SEEM_edit_include"]== "false" ){
+if(!isset($_REQUEST["SEEM_edit_include"]) || $_REQUEST["SEEM_edit_include"] == "false"){
 
-		$we_button = new we_button();
-		$refreshButton = $we_button->create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
-	}
+	$refreshButton = we_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();");
+}
 
-	//	spaceholder
-	$_messageTbl->setColContent(0,0, getPixel(20,7));
-	$_messageTbl->setColContent(1,1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-	$_messageTbl->setColContent(1,2, getPixel(5,2));
-	$_messageTbl->setCol(1,3, array("class" => "defaultfont"), sprintf($l_alert["file_locked_footer"], $_username));
-	$_messageTbl->setColContent(1,4, getPixel(5,2));
-	$_messageTbl->setColContent(1,5, $refreshButton);
-
-
-	$_head = we_htmlElement::htmlHead(we_htmlElement::jsElement("\n<!--\ntop.toggleBusy(0);\n-->\n") . STYLESHEET);
-	$_body = we_htmlElement::htmlBody(	array(	"background" => "/webEdition/images/edit/editfooterback.gif",
-												"bgcolor"    => "white"),
-										$_messageTbl->getHtmlCode());
+//	spaceholder
+$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
+$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+$_messageTbl->setColContent(1, 2, we_html_tools::getPixel(5, 2));
+$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), sprintf(g_l('alert', "[file_locked_footer]"), $_username));
+$_messageTbl->setColContent(1, 4, we_html_tools::getPixel(5, 2));
+$_messageTbl->setColContent(1, 5, $refreshButton);
 
 
-	print we_htmlElement::htmlHtml($_head . "\n" . $_body);
+$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
+$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
+		"bgcolor" => "white"), $_messageTbl->getHtml());
+
+
+print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);

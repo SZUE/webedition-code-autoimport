@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//session_name(SESSION_NAME);
 session_start();
 ?>
 <html>
@@ -25,7 +30,7 @@ session_start();
 </head>
 <body>
 <!-- ping -->
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 	setTimeout("self.location='stay_alive.php?r=<?php print rand(); ?>'", (5 *60000) );
 //-->

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_returnPage($attribs){
 
-function we_tag_returnPage($attribs, $content){
+	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
 
-	$xml = we_getTagAttribute("xml", $attribs, "");
-
-	return isset($_REQUEST["we_returnpage"]) ? (getXmlAttributeValueAsBoolean($xml) ? htmlspecialchars(
-			$_REQUEST["we_returnpage"]) : $_REQUEST["we_returnpage"]) : "";
+	return isset($_REQUEST["we_returnpage"]) ?
+		($xml ?
+			htmlspecialchars($_REQUEST["we_returnpage"]) :
+			$_REQUEST["we_returnpage"]) :
+		"";
 }

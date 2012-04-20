@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,68 +22,66 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-
-class XML_Import extends XML_Parser {
+class XML_Import extends we_xml_parser{
 
 	var $current_table = "";
 	var $attribs = array();
-
 	var $element_id = 0;
 	var $content_id = 0;
 	var $db;
-
 	var $store_docs = 0;
 	var $store_templ = 0;
 
-	function XML_Import($file) {
+	function __construct($file){
 		$this->getFile($file);
 		$this->db = new DB_WE();
 
 		$node_set = $this->evaluate("*/child::*");
-		foreach($node_set as $node) $this->import($node);
+		foreach($node_set as $node)
+			$this->import($node);
 	}
 
-	function import($absoluteXPath) {
+	function import($absoluteXPath){
 		$this->updateFlds($absoluteXPath);
 		$this->importElement($absoluteXPath);
-		if ($this->current_table != "" && count($this->attribs) > 0) {
-			if ($this->current_table == CONTENT_TABLE) $this->content_id = $this->flushCurrent();
-			else $this->element_id = $this->flushCurrent();
+		if($this->current_table != "" && count($this->attribs) > 0){
+			if($this->current_table == CONTENT_TABLE)
+				$this->content_id = $this->flushCurrent();
+			else
+				$this->element_id = $this->flushCurrent();
 		}
 		$this->updateIDs();
 	}
 
-	function setImportDirs($doc_id = 0,$temp_id = 0) {
+	function setImportDirs($doc_id = 0, $temp_id = 0){
 		$this->store_docs = $doc_id;
 		$this->store_templ = $temp_id;
 	}
 
-	function importElement($absoluteXPath) {
-		if ($this->current_table != "" && count($this->attribs) > 0) {
-			if ($this->current_table == CONTENT_TABLE)
+	function importElement($absoluteXPath){
+		if($this->current_table != "" && count($this->attribs) > 0){
+			if($this->current_table == CONTENT_TABLE)
 				$this->content_id = $this->flushCurrent();
 			else
 				$this->element_id = $this->flushCurrent();
 		}
 
-		if ($this->nodeName($absoluteXPath) == "template") $this->current_table = TEMPLATES_TABLE;
-		elseif ($this->nodeName($absoluteXPath) == "document") $this->current_table = FILE_TABLE;
+		if($this->nodeName($absoluteXPath) == "template")
+			$this->current_table = TEMPLATES_TABLE;
+		elseif($this->nodeName($absoluteXPath) == "document")
+			$this->current_table = FILE_TABLE;
 
-		$node_set = $this->evaluate($absoluteXPath."/child::*");
-		foreach($node_set as $node) {
-			if ($this->nodeName($node) == "attrib") {
+		$node_set = $this->evaluate($absoluteXPath . "/child::*");
+		foreach($node_set as $node){
+			if($this->nodeName($node) == "attrib"){
 				$this->importAttrib($this->getAttributes($node), $this->getData($node));
 			}
-			if ($this->nodeName($node) == "content") {
+			if($this->nodeName($node) == "content"){
 				$this->importContent($this->getAttributes($node), $node);
-				if ($this->current_table != "" && count($this->attribs) > 0) {
-					if ($this->current_table == CONTENT_TABLE) {
+				if($this->current_table != "" && count($this->attribs) > 0){
+					if($this->current_table == CONTENT_TABLE){
 						$this->content_id = $this->flushCurrent();
-					}
-					else {
+					} else{
 						$this->element_id = $this->flushCurrent();
 					}
 				}
@@ -86,9 +89,9 @@ class XML_Import extends XML_Parser {
 		}
 	}
 
-	function importAttrib($attribute, $data) {
+	function importAttrib($attribute, $data){
 		$new = array();
-		foreach($attribute as $k=>$v) {
+		foreach($attribute as $k => $v){
 			$new[$k] = $v;
 		}
 		$new["data"] = $data;
@@ -100,42 +103,44 @@ class XML_Import extends XML_Parser {
 		$insert_arr = array();
 		$retID = 0;
 
-		foreach($this->attribs as $att) {
-			if ($att["name"] == "ID") $oldid = $att["data"];
-			else $insert_arr[$att["name"]] = $att["data"];
+		foreach($this->attribs as $att){
+			if($att["name"] == "ID")
+				$oldid = $att["data"];
+			else
+				$insert_arr[$att["name"]] = $att["data"];
 		}
 
-		$insert = "INSERT INTO ".$this->current_table."(".implode(",", array_keys($insert_arr)).") VALUES ('".implode("','", $insert_arr)."');";
+		$insert = "INSERT INTO " . $this->current_table . "(" . implode(",", array_keys($insert_arr)) . ") VALUES ('" . implode("','", $insert_arr) . "');";
 
 		$this->db->query($insert);
-		if ($this->current_table == FILE_TABLE || $this->current_table == TEMPLATES_TABLE  || $this->current_table == CONTENT_TABLE)
-			$retID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->current_table,"LastID",$this->db);
+		if($this->current_table == FILE_TABLE || $this->current_table == TEMPLATES_TABLE || $this->current_table == CONTENT_TABLE)
+			$retID = $this->db->getInsertId();
 
-		$this->idTable[$this->current_table][(isset($oldid))?$oldid:0] = $retID;
+		$this->idTable[$this->current_table][(isset($oldid)) ? $oldid : 0] = $retID;
 		$this->attribs = array();
 
 		return $retID;
 	}
 
-	function importContent($link, $absoluteXPath) {
-		if ($this->current_table != "" && count($this->attribs) > 0) {
-			if ($this->current_table == CONTENT_TABLE) {
+	function importContent($link, $absoluteXPath){
+		if($this->current_table != "" && count($this->attribs) > 0){
+			if($this->current_table == CONTENT_TABLE){
 				$this->content_id = $this->flushCurrent();
-			}
-			else {
+			} else{
 				$this->element_id = $this->flushCurrent();
 			}
 		}
 		$this->current_table = CONTENT_TABLE;
 
-		$node_set = $this->evaluate($absoluteXPath."/child::*");
-		foreach($node_set as $node) {
-			if ($this->nodeName($node) == "attrib") {
+		$node_set = $this->evaluate($absoluteXPath . "/child::*");
+		foreach($node_set as $node){
+			if($this->nodeName($node) == "attrib"){
 				$attrs = $this->getAttributes($node);
-				if ($attrs["name"] == "Dat") {
+				if($attrs["name"] == "Dat"){
 					$this->importAttrib($attrs, addslashes(base64_decode($this->getData($node))));
 				}
-				else $this->importAttrib($attrs, $this->getData($node));
+				else
+					$this->importAttrib($attrs, $this->getData($node));
 			}
 		}
 
@@ -143,35 +148,35 @@ class XML_Import extends XML_Parser {
 
 		$this->current_table = "tblLink";
 
-		$this->importAttrib(array("name"=>"DID"), $this->element_id);
-		$this->importAttrib(array("name"=>"CID"), $this->content_id);
-		foreach($link as $k=>$v) {
-			$this->importAttrib(array("name"=>$k), $v);
+		$this->importAttrib(array("name" => "DID"), $this->element_id);
+		$this->importAttrib(array("name" => "CID"), $this->content_id);
+		foreach($link as $k => $v){
+			$this->importAttrib(array("name" => $k), $v);
 		}
 
-		$this->content_id=$this->flushCurrent();
+		$this->content_id = $this->flushCurrent();
 	}
 
-	function queryPath($absoluteXPath) {
+	function queryPath($absoluteXPath){
 		global $DB_WE;
-		$path = $this->getData($absoluteXPath."/attrib[9]");
+		$path = $this->getData($absoluteXPath . "/attrib[9]");
 		$parent = $this->nodeName($absoluteXPath);
-		$this->db->query("SELECT ID FROM ".(($parent=="document")? FILE_TABLE : TEMPLATES_TABLE)." WHERE Path='".$this->db->escape($path)."'");
+		$this->db->query("SELECT ID FROM " . (($parent == "document") ? FILE_TABLE : TEMPLATES_TABLE) . " WHERE Path='" . $this->db->escape($path) . "'");
 		return ($this->db->num_rows());
 	}
 
-	function updateFlds($XPath) {
+	function updateFlds($XPath){
 		$id = 1;
-		while ($this->queryPath($XPath)!=0) {
+		while($this->queryPath($XPath) != 0) {
 			$list = array("Text", "Path", "Filename");
 			$s = array();
-			$node_set = $this->evaluate($XPath."/child::*");
+			$node_set = $this->evaluate($XPath . "/child::*");
 
-			foreach($node_set as $node) {
+			foreach($node_set as $node){
 				$attrs = $this->getAttributes($node);
-				foreach ($attrs as $k=>$v) {
-					if ($k=="name") {
-						if ($v==$list[0]||$v==$list[1]||$v==$list[2]) {
+				foreach($attrs as $k => $v){
+					if($k == "name"){
+						if($v == $list[0] || $v == $list[1] || $v == $list[2]){
 							$s[$v]["node"] = $node;
 							$s[$v]["data"] = $this->getData($node);
 						}
@@ -180,43 +185,45 @@ class XML_Import extends XML_Parser {
 			}
 
 			$dat = $s[$list[2]]["data"];
-			$arr = explode("_",$dat);
+			$arr = explode("_", $dat);
 
-			if (count($arr)!=1) $arr[count($arr)-1] = "_".$id;
-			else $arr[0].= "_".$id;
+			if(count($arr) != 1)
+				$arr[count($arr) - 1] = "_" . $id;
+			else
+				$arr[0].= "_" . $id;
 
-			foreach($list as $item) {
-				$this->replaceData($s[$item]["node"],str_replace($dat,implode("",$arr),$s[$item]["data"]));
+			foreach($list as $item){
+				$this->replaceData($s[$item]["node"], str_replace($dat, implode("", $arr), $s[$item]["data"]));
 			}
 			$id++;
 		}
 	}
 
-	function updateIDs() {
+	function updateIDs(){
 		global $DB_WE;
 
-		foreach($this->idTable as $key=>$val) {
+		foreach($this->idTable as $key => $val){
 			$ids = implode(",", $val);
-			if ($key == FILE_TABLE || $key == TEMPLATES_TABLE) {
-				$store = $key == FILE_TABLE ?  $this->store_docs : $this->store_templ;
-				if ($ids!="") $this->db->query("UPDATE $key SET ParentID=".abs($store)." WHERE ID IN($ids);");
+			if($key == FILE_TABLE || $key == TEMPLATES_TABLE){
+				$store = $key == FILE_TABLE ? $this->store_docs : $this->store_templ;
+				if($ids != "")
+					$this->db->query("UPDATE $key SET ParentID=" . intval($store) . " WHERE ID IN($ids);");
 
-				if ($key==FILE_TABLE || $key == TEMPLATES_TABLE) {
-					foreach($val as $k=>$v) {
-						if ($key == TEMPLATES_TABLE) {
-							$this->db->query("SELECT ID FROM ".FILE_TABLE." WHERE TemplateID=".abs($k));
+				if($key == FILE_TABLE || $key == TEMPLATES_TABLE){
+					foreach($val as $k => $v){
+						if($key == TEMPLATES_TABLE){
+							$this->db->query("SELECT ID FROM " . FILE_TABLE . " WHERE TemplateID=" . intval($k));
 							while($this->db->next_record()) {
-								$DB_WE->query("UPDATE ".FILE_TABLE." SET TemplateID='".abs($v)."' WHERE ID='".abs($this->db->f("ID"))."';");
+								$DB_WE->query("UPDATE " . FILE_TABLE . " SET TemplateID=" . intval($v) . " WHERE ID=" . intval($this->db->f("ID")));
 							}
 						}
 
-                        $new_path = f("SELECT Path FROM $key WHERE ID=".abs($store),"Path",$this->db);
-                        $text = f("SELECT Text FROM $key WHERE ID=".abs($v),"Text",$this->db);
+						$new_path = f("SELECT Path FROM $key WHERE ID=" . intval($store), "Path", $this->db);
+						$text = f("SELECT Text FROM $key WHERE ID=" . intval($v), "Text", $this->db);
 
-                        $this->db->query("UPDATE $key SET Path='".$this->db->escape(($new_path!="" ? $new_path : "/").$text)."' WHERE ID=".abs($v).";");
+						$this->db->query("UPDATE $key SET Path='" . $this->db->escape(($new_path != "" ? $new_path : "/") . $text) . "' WHERE ID=" . intval($v) . ";");
 					}
 				}
-
 			}
 		}
 	}

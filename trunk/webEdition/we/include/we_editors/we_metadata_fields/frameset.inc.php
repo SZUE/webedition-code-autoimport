@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,44 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/*****************************************************************************
+/* * ***************************************************************************
  * INCLUDES
- *****************************************************************************/
+ * *************************************************************************** */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php');
 
-/*****************************************************************************
- * INITIALIZATION
- *****************************************************************************/
+we_html_tools::protect();
 
-protect();
+we_html_tools::htmlTop(g_l('metadata', '[headline]'));
 
-htmlTop();
-
-/*****************************************************************************
- * CREATE JAVASCRIPT
- *****************************************************************************/
 
 // Define needed JS
-$_javascript = "
-<!--
-	self.focus();
-//-->
-";
+$_javascript = 'self.focus();';
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
 print
-	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
-	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
-	we_htmlElement::jsElement(
-		"
+	we_html_element::jsElement($_javascript) .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsElement("
 			function closeOnEscape() {
 				return true;
 
@@ -66,10 +54,10 @@ print
 
 			}"
 	) .
-"</head>";
+	"</head>";
 
-$frameset = new we_htmlFrameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
+$frameset = new we_html_frameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1", "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/editor.php", "name" => "we_metadatafields", "scrolling" => "auto", "noresize" => "noresize"));
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=".(isset($_REQUEST["we_cmd"][1]) ? rawurlencode($_REQUEST["we_cmd"][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
+$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=" . (isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";

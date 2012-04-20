@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -24,9 +29,9 @@
  * @param string $content
  * @desc returns true if calendar date is same with current date
  */
-function we_tag_ifCurrentDate($attribs, $content){
-	if (isset($GLOBALS["lv"]->calendar_struct)) {
-		switch ($GLOBALS["lv"]->calendar_struct["calendar"]) {
+function we_tag_ifCurrentDate(){
+	if(isset($GLOBALS["lv"]->calendar_struct)){
+		switch($GLOBALS["lv"]->calendar_struct["calendar"]){
 			case "day" :
 				return (date("d-m-Y H", $GLOBALS["lv"]->calendar_struct["date"]) == date("d-m-Y H"));
 				break;

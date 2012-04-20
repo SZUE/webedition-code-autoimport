@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * @see we_app_controller_EditorAction
  */
@@ -25,26 +29,25 @@ Zend_Loader::loadClass('we_app_controller_EditorAction');
 
 /**
  * Base Editor Controller
- * 
+ *
  * @category   webEdition
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class EditorController extends we_app_controller_EditorAction
-{
-public function deletedocquestionAction()
-	{
+class EditorController extends we_app_controller_EditorAction{
+
+	public function deletedocquestionAction(){
 		$this->_setupModel();
 		$this->_processPostVars();
 		$this->_renderDefaultView('editor/deleteDocQuestion.php');
-/*
-		$this->view = new Zend_View();
-		$this->view->setScriptPath('views/scripts');
-		$this->_setupModel();
-		$this->view->model= $this->model;
-		$this->view->cmdstack = $this->getRequest()->getParam('cmdstack');
-		echo $this->view->render('editor/deleteDocQuestion.php');
-		*/
+		/*
+		  $this->view = new Zend_View();
+		  $this->view->setScriptPath('views/scripts');
+		  $this->_setupModel();
+		  $this->view->model= $this->model;
+		  $this->view->cmdstack = $this->getRequest()->getParam('cmdstack');
+		  echo $this->view->render('editor/deleteDocQuestion.php');
+		 */
 	}
 
 }

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/JSON.php");
-
 
 class weSidebarDocumentParser {
 
@@ -85,7 +86,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
+			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 		return $parameters;
@@ -107,7 +108,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
+			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 
@@ -130,7 +131,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
+			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 
@@ -153,7 +154,7 @@ class weSidebarDocumentParser {
 			if ($parameters->dt == "/") {
 				return 0;
 			}
-			$parameters->dt = abs(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
+			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'","ID",$db));
 
 		}
 

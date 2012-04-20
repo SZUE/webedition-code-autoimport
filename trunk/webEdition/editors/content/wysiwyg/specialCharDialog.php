@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +22,10 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSpecialCharDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 //make sure we know which browser is used
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+	we_html_tools::protect();
 }
 $dialog = new weSpecialCharDialog();
 $dialog->initByHttp();
@@ -34,7 +36,7 @@ function weDoRuleJS(){
 	return '
 eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 var ch = document.we_form.elements["we_dialog_args[char]"].value;
-var isSafari = '.($GLOBALS['BROWSER']=='SAFARI'?'true':'false').';
+var isSafari = ' . (we_base_browserDetect::isSafari() ? 'true' : 'false') . ';
 
 if (isSafari) {
 	ch = ch.replace(/^&/,"_xx_WE_AMP_xx_");
@@ -49,4 +51,5 @@ if (isSafari) {
 top.close();
 ';
 }
+
 ?>

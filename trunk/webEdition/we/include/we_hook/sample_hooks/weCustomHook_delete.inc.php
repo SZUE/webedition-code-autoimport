@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,14 +42,6 @@
 		/*$obj=$param[0];
 		switch(get_class($obj)){
 		}*/
-
-		/**
-		 * e.g.:
-		 *
-		 * ob_start("error_log");
-		 * print_r($param);
-		 * ob_end_clean();
-		 */
 
 
 	}

@@ -1,25 +1,25 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlRowAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id145_name'] = new weTagData_textAttribute('145', 'name', true, '');
-$GLOBALS['weTagWizard']['attribute']['id146_width'] = new weTagData_textAttribute('146', 'width', false, '');
-$GLOBALS['weTagWizard']['attribute']['id147_height'] = new weTagData_textAttribute('147', 'height', false, '');
-$GLOBALS['weTagWizard']['attribute']['id824_wmode'] = new weTagData_selectAttribute('824', 'wmode', array(new weTagDataOption('window', false, ''), new weTagDataOption('opaque', false, ''),new weTagDataOption('transparent', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id148_alt'] = new weTagData_textAttribute('148', 'alt', false, '');
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id820_startid'] = new weTagData_selectorAttribute('820', 'startid',FILE_TABLE, 'folder', false, ''); }
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id821_parentid'] = new weTagData_selectorAttribute('821', 'parentid',FILE_TABLE, 'folder', false, ''); }
-$GLOBALS['weTagWizard']['attribute']['id633_showcontrol'] = new weTagData_textAttribute('633', 'showcontrol', false, '');
-$GLOBALS['weTagWizard']['attribute']['id150_showflash'] = new weTagData_selectAttribute('150', 'showflash', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id848_sizingrel'] = new weTagData_textAttribute('848', 'sizingrel', false, '');
-$GLOBALS['weTagWizard']['attribute']['id860_sizingstyle'] = new weTagData_selectAttribute('860', 'sizingstyle', array(new weTagDataOption('none', false, ''), new weTagDataOption('em', false, ''), new weTagDataOption('ex', false, ''), new weTagDataOption('%', false, ''), new weTagDataOption('px', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id861_sizingbase'] = new weTagData_textAttribute('861', 'sizingbase', false, '');
-$GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', true, '');
+$this->Attributes[] = new weTagData_textAttribute('width', false, '');
+$this->Attributes[] = new weTagData_textAttribute('height', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('wmode', array(new weTagDataOption('window', false, ''), new weTagDataOption('opaque', false, ''),new weTagDataOption('transparent', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('alt', false, '');
+if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('startid',FILE_TABLE, 'folder', false, ''); }
+if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('parentid',FILE_TABLE, 'folder', false, ''); }
+$this->Attributes[] = new weTagData_textAttribute('showcontrol', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('showflash', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('sizingrel', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('sizingstyle', array(new weTagDataOption('none', false, ''), new weTagDataOption('em', false, ''), new weTagDataOption('ex', false, ''), new weTagDataOption('%', false, ''), new weTagDataOption('px', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('sizingbase', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
 
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

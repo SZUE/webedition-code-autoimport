@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-		switch($_REQUEST["we_cmd"][0]){
-				case "edit_export_ifthere":
-		        case "edit_export":
-		        	$mod="export";
-			        $INCLUDE = "we_modules/show_frameset.php";
-			        break;
-				case "openExportDirselector":
-					$INCLUDE = "we_modules/export/we_exportDirSelectorFrameset.php";
-					break;
-	        	break;
-                }
+switch($_REQUEST['we_cmd'][0]){
+	case 'edit_export_ifthere':
+	case 'edit_export':
+		$mod = 'export';
+		$INCLUDE = 'we_modules/show_frameset.php';
+		break;
+	case 'openExportDirselector':
+		$INCLUDE = 'we_modules/export/we_exportDirSelectorFrameset.php';
+		break;
+		break;
+}
 
 

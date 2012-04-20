@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define("NO_SESS", 1);
 
-define("NO_SESS",1);
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once(WE_BANNER_MODULE_DIR."weBanner.php");
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : 0;
 $did = isset($_REQUEST["did"]) ? $_REQUEST["did"] : 0;
@@ -33,19 +36,19 @@ $db = new DB_WE();
 if(!$id){
 	$bannername = $_REQUEST["bannername"];
 
-	if($bannername && isset($_COOKIE["webid_".$bannername])){
-		$id = $_COOKIE["webid_".$bannername];
+	if($bannername && isset($_COOKIE["webid_" . $bannername])){
+		$id = $_COOKIE["webid_" . $bannername];
 	}
 	if(!$id){
-		$id = f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$db);
+		$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $db);
 	}
 }
 
-if($id && is_numeric($id) && $did>0){
+if($id && is_numeric($id) && $did > 0){
 	$url = weBanner::getBannerURL($id);
 	if(!$nocount){
-		$db->query("INSERT INTO ".BANNER_CLICKS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) :  ""))."','".abs($did)."','".$db->escape($page)."')");
-		$db->query("UPDATE ".BANNER_TABLE." SET clicks=clicks+1 WHERE ID='".abs($id)."'");
+		$db->query("INSERT INTO " . BANNER_CLICKS_TABLE . " (ID,Timestamp,IP,Referer,DID,Page) VALUES(" . intval($id) . ",UNIX_TIMESTAMP(),'" . $db->escape($_SERVER["REMOTE_ADDR"]) . "','" . ($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) : "")) . "'," . intval($did) . ",'" . $db->escape($page) . "')");
+		$db->query("UPDATE " . BANNER_TABLE . " SET clicks=clicks+1 WHERE ID=" . intval($id));
 	}
 	header("Location: $url");
 }

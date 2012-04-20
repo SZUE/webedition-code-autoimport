@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,30 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardProgress {
+class leWizardProgress{
 
 	var $id = "";
-
 	var $width = 0;
 
-	function __construct($id = "leWizardProgress", $width = 500) {
+	function __construct($id = "leWizardProgress", $width = 500){
 
 		$this->leWizardProgress($id, $width);
-
 	}
 
-
-	function leWizardProgress($id = "leWizardProgress", $width = 500) {
+	function leWizardProgress($id = "leWizardProgress", $width = 500){
 
 		$this->id = $id;
 		$this->width = $width;
-
 	}
 
-
-	function getCSS() {
+	function getCSS(){
 
 		$BackgroundWidth = $this->width - 40;
 
@@ -74,14 +72,12 @@ class leWizardProgress {
 EOF;
 
 		return $CSS;
-
 	}
 
-
-	function getJSCode() {
+	function getJSCode(){
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardProgress() {}
 
 
@@ -138,16 +134,15 @@ leWizardProgress.enable = function(status) {
 	}
 
 }
+//-->
 </script>
 
 EOF;
 
 		return $JS;
-
 	}
 
-
-	function get() {
+	function get(){
 
 		return '<div id="' . $this->id . '"><table align="left" cellpadding="0" cellspacing="0" border="0">
 <tr>
@@ -157,7 +152,6 @@ EOF;
 	<td valign="top" align="right" id="' . $this->id . 'Percent">0%</td>
 </tr>
 </table></div>';
-
 	}
 
 }

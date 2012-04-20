@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,27 +22,21 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardStatus {
+class leWizardStatus{
 
 	var $id = "";
 
-	function __construct($id = "leWizardStatus") {
+	function __construct($id = "leWizardStatus"){
 
 		$this->leWizardStatus($id);
-
 	}
 
-
-	function leWizardStatus($id = "leWizardStatus") {
+	function leWizardStatus($id = "leWizardStatus"){
 
 		$this->id = $id;
-
 	}
 
-
-	function getCSS() {
+	function getCSS(){
 
 		$IMAGE_DIR = IMAGE_DIR;
 
@@ -109,14 +108,12 @@ ul li ul li.{$this->id}ActiveStep {
 EOF;
 
 		return $CSS;
-
 	}
 
-
-	function getJSCode() {
+	function getJSCode(){
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardStatus() {}
 
 
@@ -206,92 +203,78 @@ leWizardStatus.update = function(wizard, step) {
 	}
 
 }
+//-->
 </script>
 
 EOF;
 
 		return $JS;
-
 	}
 
-
-	function get(&$WizardCollection, $ShowMoreComponents = true, $Wizard = null, $Step = null) {
+	function get(&$WizardCollection, $ShowMoreComponents = true, $Wizard = null, $Step = null){
 
 		$StatusBar = "<ul id=\"" . $this->id . "Bar\">";
 
-		if($Wizard != null) {
+		if($Wizard != null){
 			$NextWizardStyle = "FinishedStep";
-
-		} else {
+		} else{
 			$NextWizardStyle = "UpcomingStep";
-
 		}
 
 		// wizardnames/stepnames for the progress on left side
-		foreach ($WizardCollection->Wizards as $_wizard) {
+		foreach($WizardCollection->Wizards as $_wizard){
 
-			if($Wizard == $_wizard->Name) {
+			if($Wizard == $_wizard->Name){
 				$WizardStyle = "ActiveStep";
 				$NextWizardStyle = "UpcomingStep";
-
-			} else {
+			} else{
 				$WizardStyle = $NextWizardStyle;
 			}
 
-			$StatusBar	.= "<li id=\"liWizard_{$_wizard->Name}\" class=\"{$this->id}{$WizardStyle}\">" . $GLOBALS['lang']['Wizard'][$_wizard->Name]['title']
-						. "<ul id=\"ulWizard_{$_wizard->Name}\" class=\"{$this->id}{$WizardStyle}\">";
+			$StatusBar .= "<li id=\"liWizard_{$_wizard->Name}\" class=\"{$this->id}{$WizardStyle}\">" . $GLOBALS['lang']['Wizard'][$_wizard->Name]['title']
+				. "<ul id=\"ulWizard_{$_wizard->Name}\" class=\"{$this->id}{$WizardStyle}\">";
 
 
 			$Steps = $_wizard->WizardSteps;
-			if (sizeof($Steps)) {
+			if(sizeof($Steps)){
 
-				if($Step != null) {
+				if($Step != null){
 					$NextStepStyle = "FinishedStep";
-
-				} else {
+				} else{
 					$NextStepStyle = "UpcomingStep";
-
 				}
 
-				foreach ($Steps as $_step) {
+				foreach($Steps as $_step){
 
-					if($Step == $_step->Name) {
+					if($Step == $_step->Name){
 						$StepStyle = "ActiveStep";
 						$NextStepStyle = "UpcomingStep";
 						$NextWizardStyle = "UpcomingStep";
-
-					} else {
+					} else{
 						$StepStyle = $NextStepStyle;
 					}
 
 					$Attribute = "";
-					if(!$_step->ShowInStatusBar) {
+					if(!$_step->ShowInStatusBar){
 						$Attribute .= " style=\"display: none;\"";
 					}
 
-					if ($_step->IterationStep) {
+					if($_step->IterationStep){
 						$Attribute .= " iterationStep=\"true\"";
-
 					}
 					$StatusBar .= "<li$Attribute id=\"liWizardStep_" . $_wizard->Name . "__" . $_step->Name . "\" class=\"{$this->id}{$StepStyle}\">" . $_step->Language['title'] . "</li>";
-
-
 				}
-
 			}
 			$StatusBar .= "</ul></li>";
-
 		}
 
-		if($ShowMoreComponents) {
+		if($ShowMoreComponents){
 			$StatusBar .= "<li id=\"_replaceableWizardStep\" class=\"{$this->id}UpcomingStep\">" . $GLOBALS['lang']['Template']['moreComponentsToCome'] . "</li>";
-
 		}
 
 		$StatusBar .= "</ul>";
 
 		return $StatusBar;
-
 	}
 
 }

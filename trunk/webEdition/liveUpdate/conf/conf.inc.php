@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +43,7 @@ if(isset($_REQUEST['section'])) {
 
 }
 
-define('LIVEUPDATE_SERVER_SCRIPT', '/server/we/liveUpdate.p' . 'hp');
+define('LIVEUPDATE_SERVER_SCRIPT', '/server/we/liveUpdate.php');
 
 define('LIVEUPDATE_SOFTWARE_DIR', $_SERVER['DOCUMENT_ROOT']);
 define('LIVEUPDATE_CLIENT_DOCUMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');
@@ -54,7 +58,8 @@ if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && 
 	@set_time_limit(180);
 }
 
-//Beta-Switch
+//Beta-Switch default muss so drin bleiben
+$_REQUEST['testUpdate'] = 0;
+$_REQUEST['testUpdate'] = 0;
 $_REQUEST['testUpdate'] = 0;
 
-?>

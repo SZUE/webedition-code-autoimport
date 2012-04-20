@@ -184,7 +184,7 @@ oWidget.appendMaskClone=function(aTbl){
 	oNewDiv.style.height=document.body.offsetHeight+'px';
 	oNewDiv.style.left='0px';
 	oNewDiv.style.top='0px';
-	oNewDiv.style.backgroundImage='url(/webedition/images/pixel.gif)';
+	oNewDiv.style.backgroundImage='url(/webEdition/images/pixel.gif)';
 	document.body.appendChild(oNewDiv);
 };
 
@@ -265,24 +265,24 @@ function onInsertNode(){
 	// set height, if it is narrow
 	if ( iOffsetW <= 300) {
 		oNodeInsert.style.width = iOffsetW+"px";
-		
+
 	} else {
 		oNodeInsert.style.width = "100%";
-		
+
 	}
-	
+
 	this.node.parentNode.insertBefore(oNodeInsert,this.node.nextSibling);
 	this.node.style.position='absolute';
-	
+
 	this.node.style.zIndex=100;
 	this.node.style.left=iOffsetTrue+'px';
 	this.node.style.top=iOffsetFalse+'px';
-	
+
 	oWidget.show();
 	oWidget.appendMaskClone(this);
-	
+
 	oNodeInsert.style.height=iOffsetH+'px'; // IMPORTANT set height late otherwise the screen "jumps" 727
-	
+
 	this.bSet=false;
 	return false;
 }

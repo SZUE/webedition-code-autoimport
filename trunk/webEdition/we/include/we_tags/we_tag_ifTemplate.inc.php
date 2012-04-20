@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,31 +22,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifTemplate($attribs){
+	$id = weTag_getAttribute('id', $attribs);
+	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
+	$path = weTag_getAttribute('path', $attribs);
+	$TID = (isset($GLOBALS['we_doc']->TemplateID) ? $GLOBALS['we_doc']->TemplateID : ($GLOBALS['we_doc'] instanceof we_template && isset($GLOBALS['we_doc']->ID) ? $GLOBALS['we_doc']->ID : 0));
 
-function we_tag_ifTemplate($attribs, $content){
-	$id = we_getTagAttribute("id", $attribs);
-	$workspaceID = we_getTagAttribute("workspaceID", $attribs);
-	$path = we_getTagAttribute("path", $attribs);
-
-	if (isset($GLOBALS['we_doc']->TemplateID) && $id !== "") {
-		$idArray = makeArrayFromCSV($id);
-		return in_array($GLOBALS['we_doc']->TemplateID, $idArray);
-	} else {
-		if ($workspaceID !== "") {
-			$TempPath = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates";
-			if (isset($GLOBALS['we_doc']->TemplatePath)) { // in documents
-				$curTempPath = $GLOBALS['we_doc']->TemplatePath;
-				$curTempPath = str_replace($TempPath,'',$curTempPath);
-			} else { // in templates
+	if($TID && $id !== ''){
+		return in_array($TID, makeArrayFromCSV($id));
+	} else{
+		if($workspaceID !== ''){
+			if(isset($GLOBALS['we_doc']->TemplatePath)){ // in documents
+				$curTempPath = str_replace(TEMPLATES_PATH, '', $GLOBALS['we_doc']->TemplatePath);
+			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($workspaceID)." LIMIT 1", new DB_WE());
-			if (isset($row['Path']) && strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
-		} else {
-			if ($path === "") {
+			$path = f("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", 'Path', new DB_WE());
+			return (($path != '') && strpos($curTempPath, $path) !== false && strpos($curTempPath, $path) == 0);
+		} else{
+			if($path === ''){
 				return true;
 			}
-			if (isset($GLOBALS['we_doc']->TemplatePath)) {
+			if(isset($GLOBALS['we_doc']->TemplatePath)){
 				$pathReg = "|^" . str_replace("\\*", ".*", preg_quote($path, "|")) . "\$|";
 				return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
 			}

@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +24,21 @@
  */
 
 
-switch ($_REQUEST["we_cmd"][0]) {
-	case "finish_workflow":
-		$INCLUDE = "we_modules/workflow/we_finish_workflow.inc.php";
+switch ($_REQUEST['we_cmd'][0]) {
+	case 'finish_workflow':
+		$INCLUDE = 'we_modules/workflow/we_finish_workflow.inc.php';
 		break;
 
-	case "in_workflow":
-	case "pass":
-	case "decline":
-		$INCLUDE = "we_modules/workflow/we_workflow_win.inc.php";
+	case 'in_workflow':
+	case 'pass':
+	case 'decline':
+		$INCLUDE = 'we_modules/workflow/we_workflow_win.inc.php';
 		break;
 
-	case "edit_workflow":
-	case "edit_workflow_ifthere":
-		$mod="workflow";
-		$INCLUDE = "we_modules/show_frameset.php";
+	case 'edit_workflow':
+	case 'edit_workflow_ifthere':
+		$mod='workflow';
+		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
 
 }
-
-?>

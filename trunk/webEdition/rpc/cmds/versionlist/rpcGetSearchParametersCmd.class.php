@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,14 +22,11 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSearchParametersCmd extends rpcCmd{
 
-class rpcGetSearchParametersCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
-
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
 		$pos = $_REQUEST['position'];
 
@@ -43,20 +45,19 @@ class rpcGetSearchParametersCmd extends rpcCmd {
 
 		$_REQUEST['we_cmd']['obj'] = 1;
 
-		if($pos=="top") {
+		if($pos == "top"){
 			$code = weVersionsView::getParameterTop($foundItems);
 		}
 
-		if($pos=="bottom") {
+		if($pos == "bottom"){
 			$_REQUEST['we_cmd']['setInputSearchstart'] = 1;
 			$code = weVersionsView::getParameterBottom($foundItems);
 		}
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
-
 
 }
 

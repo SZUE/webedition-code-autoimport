@@ -31,7 +31,7 @@ var stringStream = function(source){
       pos = 0;
       try {current = source.next();}
       catch (e) {
-        if (e != StopIteration) throw e;
+        if (e != "StopIteration") throw e;
         else return false;
       }
     }
@@ -51,7 +51,7 @@ var stringStream = function(source){
         if (accum.length > 0)
           throw "End of stringstream reached without emptying buffer ('" + accum + "').";
         else
-          throw StopIteration;
+          throw "StopIteration";
       }
       return current.charAt(pos++);
     },

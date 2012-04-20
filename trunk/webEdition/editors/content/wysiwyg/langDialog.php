@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +22,12 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weLangDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+	we_html_tools::protect();
 }
 $appendJS = "";
-if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1) {
-
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
+if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
 
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
@@ -39,18 +37,14 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
 	$Glossary->setPath();
 
-	if($Glossary->Text=="" || $Glossary->getAttribute('lang')=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_empty'], WE_MESSAGE_ERROR) . '</script>';
-
-	} else if($Glossary->pathExists($Glossary->Path)) {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_exists'], WE_MESSAGE_ERROR) . '</script>';
-
-	} else {
+	if($Glossary->Text == "" || $Glossary->getAttribute('lang') == ""){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else if($Glossary->pathExists($Glossary->Path)){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else{
 		$Glossary->save();
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['entry_saved'], WE_MESSAGE_NOTICE) . 'top.close();</script>';
-
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 	}
-
 }
 
 $dialog = new weLangDialog();

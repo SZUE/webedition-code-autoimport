@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,34 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/*****************************************************************************
+/* * ***************************************************************************
  * INCLUDES
- *****************************************************************************/
+ * *************************************************************************** */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/metadata.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-/*****************************************************************************
+/* * ***************************************************************************
  * INITIALIZATION
- *****************************************************************************/
+ * *************************************************************************** */
 
-protect();
+we_html_tools::protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
-/*****************************************************************************
+/* * ***************************************************************************
  * CREATE JAVASCRIPT
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Define needed JS
 
-$_meta_field_empty_messsage = addslashes($GLOBALS['l_metadata']['error_meta_field_empty_msg']);
-$_meta_field_wrong_chars_messsage = addslashes($GLOBALS['l_metadata']['meta_field_wrong_chars_messsage']);
-$_meta_field_wrong_name_messsage = addslashes($GLOBALS['l_metadata']['meta_field_wrong_name_messsage']);
+$_meta_field_empty_messsage = addslashes(g_l('metadata', '[error_meta_field_empty_msg]'));
+$_meta_field_wrong_chars_messsage = addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]'));
+$_meta_field_wrong_name_messsage = addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]'));
 
 $_javascript = <<< END_OF_SCRIPT
 <!--
@@ -101,15 +101,14 @@ function checkMetaFieldName(inpElem, nr) {
 //-->
 END_OF_SCRIPT;
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
-print STYLESHEET . we_htmlElement::jsElement($_javascript) . "</head>";
+print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 
-$we_button = new we_button();
 
-$okbut = $we_button->create_button("ok", "javascript:we_save();");
-$cancelbut = $we_button->create_button("cancel", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
+$okbut = we_button::create_button("ok", "javascript:we_save();");
+$cancelbut = we_button::create_button("cancel", "javascript:" . ((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ? ($_REQUEST["closecmd"] . ";") : "") . "top.close()");
 
-print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
+print we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");

@@ -5,6 +5,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' .
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,98 +24,116 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' .
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataAttribute {
+class weTagDataAttribute{
 
 	/**
 	 * @var string
 	 */
-	var $Id;
+	protected $Id;
+
 	/**
 	 * @var string
 	 */
-	var $Name;
+	protected $Name;
+
 	/**
 	 * @var boolean
 	 */
-	var $Required;
+	protected $Required;
+
 	/**
 	 * @var string
 	 */
-	var $Module;
+	protected $Module;
+
 	/**
 	 * @var string
 	 */
-	var $Value;
+	protected $Value;
+	protected $Description;
+	protected $Deprecated;
 
 	/**
 	 * @param string $name
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function weTagDataAttribute($id, $name, $required, $module = '') {
-
-		$this->Id = $id;
+	function __construct($name, $required, $module = '', $description='', $deprecated=false){
+		static $count = 0;
+		$this->Id = ++$count;
 		$this->Name = $name;
 		$this->Required = $required;
 		$this->Module = $module;
 		// set value occasionally
 		$this->Value = (isset($_REQUEST['attributes']) && isset($_REQUEST['attributes'][$name])) ? $_REQUEST['attributes'][$name] : false;
+		$this->Description = $description;
+		$this->Deprecated = $deprecated;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getLabelCodeForTagWizard() {
-
-		return we_htmlElement::htmlLabel(
-						array(
-				'id' => 'label_' . $this->getIdName(),
-				'class' => 'defaultfont',
-				'for' => $this->getIdName()
-						), $this->Name . ($this->Required ? '*' : ''));
+	function getLabelCodeForTagWizard(){
+		$tmp = array(
+			'id' => 'label_' . $this->getIdName(),
+			'class' => 'defaultfont',
+			'for' => $this->getIdName()
+		);
+		if($this->Description != ''){
+			$tmp['style'] = 'border-bottom-style: dotted;border-bottom-width: 1px;border-spacing: 2px;cursor:help;';
+			$tmp['title'] = $this->Description;
+		}
+		if($this->Deprecated){
+			$tmp['style'] .= 'text-decoration:line-through;';
+		}
+		return we_html_element::htmlLabel($tmp, $this->Name . ($this->Required ? '*' : ''));
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getIdName() {
+	function getIdName(){
 		return 'id' . $this->Id . '_' . $this->Name;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	function IsRequired() {
+	function IsRequired(){
 		return $this->Required;
+	}
+
+	function IsDeprecated(){
+		return $this->Deprecated;
+	}
+
+	function getDescription(){
+		return $this->Description;
 	}
 
 	/**
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function useAttribute() {
-		if ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules'])) {
-			return true;
-		}
-		return false;
+	function useAttribute(){
+		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_integrated_modules']));
 	}
 
 	/**
 	 * checks if this option should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function getUseOptions($options) {
-
+	static function getUseOptions($options){
 		$useOptions = array();
-		foreach ($options as $option) {
-			if ($option->useOption()) {
+		foreach($options as $option){
+			if($option->useOption()){
 				$useOptions[] = $option;
 			}
 		}

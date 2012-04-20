@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,13 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-
 $parts = array();
 
-array_push($parts,array("icon"=>"path.gif", "headline"=>$GLOBALS["l_we_class"]["path"],"html"=>$GLOBALS['we_doc']->formPath(),"space"=>120));
-array_push($parts,array("icon"=>"default.gif", "headline"=>$GLOBALS["l_we_class"]["other"],"html"=>$GLOBALS['we_doc']->formOther(),"space"=>120));
+array_push($parts, array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 120));
+array_push($parts, array("icon" => "default.gif", "headline" => g_l('weClass', "[other]"), "html" => $GLOBALS['we_doc']->formOther(), "space" => 120));
 
 print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("weQuickProp","100%",$parts,20);
+print we_multiIconBox::getHTML("weQuickProp", "100%", $parts, 20);

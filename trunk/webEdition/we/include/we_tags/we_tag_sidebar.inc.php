@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,33 +27,37 @@ function we_tag_sidebar($attribs, $content){
 
 	if (we_tag('ifNotSidebar',$attribs, $content) && we_tag('ifEditmode',$attribs, $content)) {
 
-		$id = we_getTagAttribute("id", $attribs, 0);
-		$file = we_getTagAttribute("file", $attribs);
-		$url = we_getTagAttribute("url", $attribs);
-		$anchor = we_getTagAttribute("anchor", $attribs);
-		$width = we_getTagAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
+		$id = weTag_getAttribute("id", $attribs, 0);
+		$file = weTag_getAttribute("file", $attribs);
+		$url = weTag_getAttribute("url", $attribs);
+		$anchor = weTag_getAttribute("anchor", $attribs);
+		$width = weTag_getAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
+		$params = weTag_getAttribute('params', $attribs);
+		if($urladd && strpos($urladd, '?')===0){
+			$urladd=substr($urladd,1);
+		}
+
 
 		removeAttribs($attribs, array(
-			'id', 'file', 'url', 'width', 'href'
+			'id', 'file', 'url', 'width', 'href','params'
 		));
 
-		if (trim($content) == "") {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/tags.inc.php");
-			$content = $GLOBALS["l_tags"]["open_sidebar"];
+		if (trim($content) == '') {
+			$content = g_l('tags',"[open_sidebar]");
 
 		}
 
 		$href = "#";
 		if ($id == 0){
 			if($file != "") {
-			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ");";
+			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'".$params."');";
 			} else if($url != "") {
-				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ");";
+				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ",'".$params."');";
 			}else{
 				return;
 			}
 		}else{
-				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
+				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'".$params."');";
 		}
 		$attribs['href'] = $href;
 

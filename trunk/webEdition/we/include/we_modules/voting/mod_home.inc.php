@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,19 +25,11 @@
 
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+$createVoting = we_button::create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
+$createVotingGroup = we_button::create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
 
 
-$we_button = new we_button();
-
-$createVoting = $we_button->create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
-$createVotingGroup = $we_button->create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, -1, -1, "", "", !we_hasPerm("NEW_VOTING"));
-
-
-$content = $createVoting  . getPixel(2,14) . $createVotingGroup;
+$content = $createVoting  . we_html_tools::getPixel(2,14) . $createVotingGroup;
 
 $modimage = "voting.gif";
 
-?>

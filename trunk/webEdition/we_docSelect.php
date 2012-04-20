@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,25 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_docSelector.inc.php");
-protect();
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = "/webEdition/we_docSelect.php";
 $fs = new we_docSelector(isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ),
-							isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE),
-							isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ""),
-							isset($JSTextName) ? $JSTextName : ( isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : "" ),
-							isset($JSCommand) ? $JSCommand : ( isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : "" ),
-							isset($order) ? $order : ( isset($_REQUEST["order"]) ? $_REQUEST["order"] : ""),
-							isset($sessionID) ? $sessionID : ( isset($_REQUEST["sessionID"]) ? $_REQUEST["sessionID"] : ""),
-							isset($we_editDirID) ? $we_editDirID : ( isset($_REQUEST["we_editDirID"]) ? $_REQUEST["we_editDirID"] : "" ),
-							isset($we_FolderText) ? $we_FolderText : ( isset($_REQUEST["we_FolderText"]) ? $_REQUEST["we_FolderText"] : "" ),
-							isset($filter) ? $filter : ( isset($_REQUEST["filter"]) ? $_REQUEST["filter"] : "" ),
-							isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "" ),
-							isset($open_doc) ? $open_doc : ( isset($_REQUEST["open_doc"]) ? $_REQUEST["open_doc"] : "" ),
-							isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : "" ),
-							isset($canSelectDir) ? $canSelectDir : ( isset($_REQUEST["canSelectDir"]) ? $_REQUEST["canSelectDir"] : "" ));
+		isset($table) ? $table : ( isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE),
+		isset($JSIDName) ? $JSIDName : ( isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ""),
+		isset($JSTextName) ? $JSTextName : ( isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : "" ),
+		isset($JSCommand) ? $JSCommand : ( isset($_REQUEST["JSCommand"]) ? $_REQUEST["JSCommand"] : "" ),
+		isset($order) ? $order : ( isset($_REQUEST["order"]) ? $_REQUEST["order"] : ""),
+		isset($sessionID) ? $sessionID : ( isset($_REQUEST["sessionID"]) ? $_REQUEST["sessionID"] : ""),
+		isset($we_editDirID) ? $we_editDirID : ( isset($_REQUEST["we_editDirID"]) ? $_REQUEST["we_editDirID"] : "" ),
+		isset($we_FolderText) ? $we_FolderText : ( isset($_REQUEST["we_FolderText"]) ? $_REQUEST["we_FolderText"] : "" ),
+		isset($filter) ? $filter : ( isset($_REQUEST["filter"]) ? $_REQUEST["filter"] : "" ),
+		isset($rootDirID) ? $rootDirID : ( isset($_REQUEST["rootDirID"]) ? $_REQUEST["rootDirID"] : "" ),
+		isset($open_doc) ? $open_doc : ( isset($_REQUEST["open_doc"]) ? $_REQUEST["open_doc"] : "" ),
+		isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : "" ),
+		isset($canSelectDir) ? $canSelectDir : ( isset($_REQUEST["canSelectDir"]) ? $_REQUEST["canSelectDir"] : "" ));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
 

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,137 +22,159 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 // exit if script called directly
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we.inc.php") {
+if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 
 // remove trailing slash
-if (isset($_SERVER["DOCUMENT" . "_ROOT"]) && substr($_SERVER["DOCUMENT" . "_ROOT"], -1) == "/") {
-	$_SERVER["DOCUMENT" . "_ROOT"] = substr($_SERVER["DOCUMENT" . "_ROOT"], 0, -1);
+if(isset($_SERVER['DOCUMENT_ROOT'])){
+	$_SERVER['DOCUMENT_ROOT'] = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
 }
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_inc_min.inc.php');//	New absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
-include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_classes/we_util.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
+// Set PHP flags
+@$_memlimit = intval(ini_get('memory_limit'));
+if($_memlimit < 32){
+	@ini_set('memory_limit', '32M');
+}
+@ini_set('allow_url_fopen', '1');
+@ini_set('file_uploads', '1');
+@ini_set('session.use_trans_sid', '0');
+
+//prepare space for we-variables; $_SESSION['we'] is set in we_session
+if(!isset($GLOBALS['we'])){
+	$GLOBALS['we'] = array();
+}
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+//start autoloader!
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+
+// Activate the webEdition error handler
+include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
+if(!defined('WE_ERROR_HANDLER_SET')){
+	we_error_handler();
+}
+
+include_once (WE_INCLUDES_PATH . 'we_global.inc.php');
+
+include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_installed_modules.inc.php");
+include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules
-// we_installed_modules - all installed (none integrated) modules
 // we_active_integrated_modules - all active integrated modules
-// we_active_modules - all active modules integrated and none integrated
-// merge we_installed_modules and we_active_integrated_modules to we_active_modules
-$_we_active_modules = array_merge($_we_active_integrated_modules, $_we_installed_modules);
 
-for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
-	if (file_exists(
-			$_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_conf_" . $_we_active_modules[$i] . ".inc.php")) {
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_conf_" . $_we_active_modules[$i] . ".inc.php");
+foreach($GLOBALS['_we_active_integrated_modules'] as $active){
+	if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
+		include_once (WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db_tools.inc.php");
-//include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_defines.inc.php"); moved to we_inc_min
-
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
-}
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
+if(!isset($GLOBALS['DB_WE'])){
+	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
 
-
-if (!defined("NO_SESS")) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_session.inc.php");
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+if(!defined('NO_SESS')){
+	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_session.inc.php");
 	$_tooldefines = weToolLookup::getDefineInclude();
-	if (!empty($_tooldefines)) {
-		foreach ($_tooldefines as $_tooldefine) {
+	if(!empty($_tooldefines)){
+		foreach($_tooldefines as $_tooldefine){
 			@include_once ($_tooldefine);
 		}
 	}
-	$_tooltagdirs = weToolLookup::getTagDirs();
+	//$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
-if (isset($_SESSION) && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem") {
-	define("MULTIEDITOR_AMOUNT", 1);
-} else {
-	define("MULTIEDITOR_AMOUNT", 16);
+if(defined('WE_WEBUSER_LANGUAGE')){
+	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
+} else{
+	$sid = '';
+}
+//set new sessionID from dw-extension
+if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
+	$sid = strip_tags($_REQUEST['weSessionId']);
+	$sid = htmlspecialchars($sid);
+	session_id($sid);
+//	session_name(SESSION_NAME);
+	@session_start();
+}
+if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
+//	session_name(SESSION_NAME);
+	@session_start();
+}
+if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
+	if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])){
+		$GLOBALS['WE_LANGUAGE'] = $_SESSION['prefs']['Language'];
+	} else{ //  bugfix #4229
+		$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
+		$_SESSION['prefs']['Language'] = WE_LANGUAGE;
+	}
+} else{
+	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
+}
+if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
+	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
+} else{
+	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 }
 
-if (defined("WE_WEBUSER_LANGUAGE")) {
-	$GLOBALS["WE_LANGUAGE"] = WE_WEBUSER_LANGUAGE;
-} else
-	$sid = "";
-	//set new sessionID from dw-extension
-	if((isset($_SESSION["user"]["ID"]) && isset($_REQUEST["weSessionId"]) && $_REQUEST["weSessionId"]!="" && isset($_REQUEST["cns"]) && $_REQUEST["cns"]=='dw')) {
-		$sid = strip_tags($_REQUEST["weSessionId"]);
-		$sid = htmlspecialchars($sid);
-		session_id($sid);
-		@session_start();
-	}
-	if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
-		@session_start();
-	}
-	if (isset($_SESSION["prefs"]["Language"]) && $_SESSION["prefs"]["Language"] != "") {
-		if (is_dir($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $_SESSION["prefs"]["Language"])) {
-			$GLOBALS["WE_LANGUAGE"] = $_SESSION["prefs"]["Language"];
-		} else { //  bugfix #4229
-			$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
-			$_SESSION["prefs"]["Language"] = WE_LANGUAGE;
+if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
+	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
+}
+if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
+	$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
+}
+
+
+if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
+	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+	include_once (WE_INCLUDES_PATH . 'we_available_modules.inc.php');
+	//FIXME: needed by liveupdate, calls old protect directly remove in 6.4
+	include_once (WE_INCLUDES_PATH . 'we_perms.inc.php');
+
+
+	//send header?
+	if(isset($_REQUEST['we_cmd'][0])){
+		switch($_REQUEST['we_cmd'][0]){
+			case 'edit_link':
+			case 'edit_linklist':
+			case 'show_newsletter':
+			case 'save_document':
+			case 'load_editor':
+				$header = false;
+				break;
+			case 'reload_editpage':
+				$header = (!($_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW ||
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_CONTENT ||
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_PROPERTIES
+					));
+				break;
+			case 'switch_edit_page':
+				$header = (!($_REQUEST['we_cmd'][1] == WE_EDITPAGE_CONTENT ||
+					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PREVIEW ||
+					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PROPERTIES
+					));
+				break;
+			case 'load_editor':
+				$header = (!(isset($_REQUEST['we_transaction']) &&
+					isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) &&
+					$_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW
+					));
+				break;
+			default:
+				$header = true;
 		}
-	} else {
-		$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
+	} else{
+		$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
 	}
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/define_styles.inc.php");
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
-}
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
-}
-
-$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
-
-
-if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_perms.inc.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_available_modules.inc.php");
-	//	At last we set the charset, as determined from the choosen language
-	include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/charset/charset.inc.php");
-	define("WE_DEFAULT_TITLE", 'webEdition::');
-	define(
-			"WE_DEFAULT_HEAD",
-			'
-		<title>' . WE_DEFAULT_TITLE . '</title>
-		<meta http-equiv="expires" content="0">
-		<meta http-equiv="pragma" content="no-cache">
-		<meta http-equiv="content-type" content="text/html; charset=' . $_language["charset"] . '">
-		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>
-		<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
-');
-
-	if (isset($_REQUEST["we_cmd"][0]) && (//	header when not in preview mode of documents
-$_REQUEST["we_cmd"][0] == "edit_link" || $_REQUEST["we_cmd"][0] == "edit_linklist" || $_REQUEST["we_cmd"][0] == "show_newsletter" || $_REQUEST["we_cmd"][0] == "save_document" || $_REQUEST["we_cmd"][0] == "load_editor" || $_REQUEST["we_cmd"][0] == "reload_editpage" && ($_SESSION["EditPageNr"] == WE_EDITPAGE_PREVIEW || $_SESSION["EditPageNr"] == WE_EDITPAGE_CONTENT || $_SESSION["EditPageNr"] == WE_EDITPAGE_PROPERTIES) || $_REQUEST["we_cmd"][0] == "switch_edit_page" && ($_REQUEST["we_cmd"][1] == WE_EDITPAGE_CONTENT || $_REQUEST["we_cmd"][1] == WE_EDITPAGE_PREVIEW || $_REQUEST["we_cmd"][1] == WE_EDITPAGE_PROPERTIES) || $_REQUEST["we_cmd"][0] == "load_editor" && isset(
-			$_REQUEST["we_transaction"]) && isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) && $_SESSION["we_data"][$_REQUEST["we_transaction"]][0]["Table"] == FILE_TABLE && $_SESSION["EditPageNr"] == WE_EDITPAGE_PREVIEW) || isset(
-			$show_stylesheet) && $show_stylesheet) {
-		//	dont send charset, it is determined from document itself
-	} else {
-		header("Content-Type: text/html; charset=" . $_language["charset"]);
+	if($header){
+		header('Content-Type: text/html; charset = ' . $GLOBALS['WE_BACKENDCHARSET']);
 	}
+	unset($header);
 }
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/parser.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_message_reporting/we_message_reporting.class.php");
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/weModuleInfo.class.php");

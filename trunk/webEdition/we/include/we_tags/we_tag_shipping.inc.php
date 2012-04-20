@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,95 +22,93 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_shipping($attribs){
+	$foo = attributFehltError($attribs, "sum", __FUNCTION__);
+	if($foo)
+		return $foo;
 
-function we_tag_shipping($attribs, $content) {
-	$foo = attributFehltError($attribs,"sum","shipping");if($foo) return $foo;
-
-	$sumName = we_getTagAttribute('sum', $attribs);
-	$num_format = we_getTagAttribute('num_format', $attribs);
-	$type = we_getTagAttribute('type', $attribs, '');
+	$sumName = weTag_getAttribute('sum', $attribs);
+	$num_format = weTag_getAttribute('num_format', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
 	$shippingCost = 0;
 
 	// shipping depends on total value of basket
-	if (isset($GLOBALS['summe'][$sumName])) {
-
-		require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
+	if(isset($GLOBALS['summe'][$sumName])){
 
 		$orderVal = $GLOBALS['summe'][$sumName];
 		$weShippingControl = weShippingControl::getShippingControl();
 
-		if (we_tag('ifRegisteredUser',array(), '')) { // check if user is registered
+		if(we_tag('ifRegisteredUser')){ // check if user is registered
 			$customer = $_SESSION['webuser'];
-		} else {
+		} else{
 			$customer = false;
 		}
 
 		$shippingCost = $weShippingControl->getShippingCostByOrderValue($orderVal, $customer);
 
 		// get calculated value if needed
-		if ($type) {
+		if($type){
 			// if user must NOT pay vat always return net prices
-			$mustPayVat = we_tag('ifShopPayVat',array(), ''); // alayways return net prices
+			$mustPayVat = we_tag('ifShopPayVat'); // alayways return net prices
 
-			if ($mustPayVat) {
+			if($mustPayVat){
 
-				switch ($type) {
+				switch($type){
 
 					case 'net':
-						if (!$weShippingControl->isNet) {
+						if(!$weShippingControl->isNet){
 							// y = x * (100/116)
-							$shippingCost = $shippingCost * (100/ ((1 + ($weShippingControl->vatRate/100)) * 100) );
+							$shippingCost = $shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) );
 						}
-					break;
+						break;
 
 					case 'gros':
-						if ($weShippingControl->isNet) {
+						if($weShippingControl->isNet){
 							// y = x * (1.16)
-							$shippingCost = $shippingCost * (1 + ($weShippingControl->vatRate/100));
+							$shippingCost = $shippingCost * (1 + ($weShippingControl->vatRate / 100));
 						}
-					break;
+						break;
 
 					case 'vat':
-						if ($weShippingControl->isNet) {
+						if($weShippingControl->isNet){
 							// y = x * 0.16
-							$shippingCost = $shippingCost * ($weShippingControl->vatRate/100);
-						} else {
+							$shippingCost = $shippingCost * ($weShippingControl->vatRate / 100);
+						} else{
 							// y = x /116 * 16
-							$shippingCost = $shippingCost / ( ((1 + ($weShippingControl->vatRate/100)) * 100) ) * $weShippingControl->vatRate;
+							$shippingCost = $shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate;
 						}
-					break;
+						break;
 				}
-
-			} else { // always return net prices
-				switch ($type) {
+			} else{ // always return net prices
+				switch($type){
 
 					case 'gros':
 					case 'net':
-						if (!$weShippingControl->isNet) {
+						if(!$weShippingControl->isNet){
 							// y = x * (100/116)
-							$shippingCost = $shippingCost * (100/ ((1 + ($weShippingControl->vatRate/100)) * 100) );
+							$shippingCost = $shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) );
 						}
-					break;
+						break;
 					case 'vat':
 						$shippingCost = 0;
-					break;
+						break;
 				}
 			}
 		}
 
 		switch($num_format){
-		case 'french':
-			$shippingCost=number_format($shippingCost,2,","," ");
-			break;
-		case 'english':
-			$shippingCost=number_format($shippingCost,2,".","");
-			break;
-		case 'swiss':
-			$shippingCost=number_format($shippingCost,2,".", "'");
-			break;
-		case 'german':
-		default:
-			$shippingCost=number_format($shippingCost,2,",",".");
+			case 'french':
+				$shippingCost = number_format($shippingCost, 2, ",", " ");
+				break;
+			case 'english':
+				$shippingCost = number_format($shippingCost, 2, ".", "");
+				break;
+			case 'swiss':
+				$shippingCost = number_format($shippingCost, 2, ".", "'");
+				break;
+			case 'german':
+			default:
+				$shippingCost = number_format($shippingCost, 2, ",", ".");
 		}
 		return $shippingCost;
 	}

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR."messaging_defs.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/messaging_interfaces.inc.php") {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
 	exit();
 }
 /* send new email message */
 function msg_new_email(&$rcpts, $subject, $body, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_msg_email.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_msg_email.inc.php");
 
     $m = new we_msg_email();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -45,7 +46,7 @@ function msg_new_email(&$rcpts, $subject, $body, &$errs) {
 
 /* generate new webedition message */
 function msg_new_message(&$rcpts, $subject, $body, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_message.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_message.inc.php");
 
     $m = new we_message();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -64,7 +65,7 @@ function msg_new_message(&$rcpts, $subject, $body, &$errs) {
 /* generate new ToDo */
 /* return the ID of the created ToDo, 0 on error */
 function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline = 1, $priority = 5) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $m = new we_todo();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -84,7 +85,7 @@ function msg_new_todo(&$rcpts, $subject, $body, &$errs, $ct = 'text', $deadline 
 /* Mark ToDo as done */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_done_todo($id, &$errs) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $res = array();
 
@@ -93,7 +94,7 @@ function msg_done_todo($id, &$errs) {
     $i_headers = array('_ID' => $id);
 
     $db = new DB_WE();
-    $db->query('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . abs($id));
+    $db->query('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . intval($id));
     $db->next_record();
     $userid = $db->f('UserID');
 
@@ -114,7 +115,7 @@ function msg_done_todo($id, &$errs) {
 /* remove ToDo */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_rm_todo($id) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $m = new we_todo();
     $m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
@@ -126,8 +127,6 @@ function msg_rm_todo($id) {
 
 /* Create the default folders for the given $userid */
 function msg_create_folders($userid) {
-    global $l_messaging;
-
     $default_folders = array(1 => array(5 => "sent",
 					3 => "messages"),
 			     2 => array(13 => "done",
@@ -139,7 +138,7 @@ function msg_create_folders($userid) {
     $pfolders = array(1 => -1,
 		      2 => -1);
 
-    $db->query('SELECT ID, msg_type, obj_type FROM '.MSG_FOLDERS_TABLE.' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . abs($userid));
+    $db->query('SELECT ID, msg_type, obj_type FROM '.MSG_FOLDERS_TABLE.' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . intval($userid));
     while ($db->next_record()) {
     	if (isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])) {
     	    if ($db->f('obj_type') == 3)
@@ -153,7 +152,7 @@ function msg_create_folders($userid) {
     	if ($pfolders[$mt] != -1)
     	    $pf_id = $pfolders[$mt];
     	else {
-    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, " . abs($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
+    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, " . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
     	    $db->query('SELECT LAST_INSERT_ID() as pf_id');
     	    $db->next_record();
     	    $pf_id = $db->f('pf_id');
@@ -161,7 +160,7 @@ function msg_create_folders($userid) {
     	}
 
     	foreach ($farr as $df => $fname) {
-    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . abs($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
+    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . intval($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
     	}
     }
 
@@ -171,7 +170,7 @@ function msg_create_folders($userid) {
 /* Mark ToDo as rejected */
 /* $id - value of the 'ID' field in MSG_TODO_TABLE */
 function msg_reject_todo($id) {
-    include_once(WE_MESSAGING_MODULE_DIR . "we_todo.inc.php");
+    include_once(WE_MESSAGING_MODULE_PATH . "we_todo.inc.php");
 
     $res = array();
 
@@ -179,7 +178,7 @@ function msg_reject_todo($id) {
 
     $db = new DB_WE();
 
-    $userid = f('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . abs($id),'UserID',$db);
+    $userid = f('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . intval($id),'UserID',$db);
 
     $m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
     $m->init();

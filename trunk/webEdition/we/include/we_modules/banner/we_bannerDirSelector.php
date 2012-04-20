@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +23,11 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/banner.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
-
 class we_bannerDirSelector extends we_dirSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function we_bannerDirSelector($id,
+	function __construct($id,
 								$JSIDName="",
 								$JSTextName="",
 								$JSCommand="",
@@ -35,7 +35,7 @@ class we_bannerDirSelector extends we_dirSelector{
 								$we_editDirID="",
 								$FolderText=""){
 
-		$this->we_dirSelector($id,
+		parent::__construct($id,
 								BANNER_TABLE,
 								$JSIDName,
 								$JSTextName,
@@ -44,21 +44,22 @@ class we_bannerDirSelector extends we_dirSelector{
 								"",
 								$we_editDirID,
 								$FolderText);
+		$this->title = g_l('fileselector', '[bannerDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 
 	}
 
 
   	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
+		print '<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.$GLOBALS["l_banner"]["name"].'</a></b></td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -66,18 +67,16 @@ class we_bannerDirSelector extends we_dirSelector{
   	}
 
 	function printFooterTable() {
-		$we_button = new we_button();
-		print '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		print '<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
-		$cancel_button = $we_button->create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = $we_button->create_button("ok", "javascript:press_ok_button();");
-		$buttons = $we_button->position_yes_no_cancel(
+		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_button::position_yes_no_cancel(
 												$yes_button,
 												null,
 												$cancel_button);
@@ -85,50 +84,48 @@ class we_bannerDirSelector extends we_dirSelector{
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b>'.$GLOBALS["l_banner"]["name"].'</b>
+						<b>'.g_l('modules_banner','[name]').'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}
 
 
 	function printHeaderTableExtraCols(){
-		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
+		print '                <td width="10">'.we_html_tools::getPixel(10,10).'</td><td width="40">
 ';
         $makefolderState = we_hasPerm("NEW_BANNER");
-       	print '<script language="JavaScript">makefolderState='.$makefolderState.';</script>';
- 		$we_button = new we_button();
-		print $we_button->create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
+       	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
+		print we_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
  		print '               </td>
 ';
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		global $BROWSER;
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+	d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>""><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 	d.writeln('<?php print STYLESHEET_SCRIPT;?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
@@ -181,21 +178,21 @@ function writeBody(d){
 	d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 	d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 	d.writeln('}');
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 	d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-<?php else: ?>
+<?php }else{ ?>
 	d.writeln('top.unselectAllFiles();');
-<?php endif ?>
+<?php } ?>
 	}
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 	if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 	}
 	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
 	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
@@ -205,13 +202,13 @@ function writeBody(d){
 	if(makeNewFolder){
 		d.writeln('<tr style="background-color:#DFE9F5;">');
 		d.writeln('<td align="center"><img src="<?php print ICON_DIR?>folder.gif" width="16" height="18" border="0" /></td>');
-		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print $GLOBALS["l_banner"]["newbannergroup"]?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print $GLOBALS["l_banner"]["newbannergroup"]?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
+		d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('modules_banner','[newbannergroup]')?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('modules_banner','[newbannergroup]')?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 		d.writeln('</tr>');
 	}
 	for(i=0;i < entries.length; i++){
-		var onclick = ' onClick="weonclick(<?php echo ($BROWSER=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
+	var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE()?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '-moz-user-select: none;' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
+		d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + '>');
 		d.writeln('<td class="selector" width="25" align="center">');
 		d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 		d.writeln('</td>');
@@ -219,19 +216,19 @@ function writeBody(d){
 			d.writeln('<td class="selector">');
 			d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
 		}else{
-			d.writeln('<td class="selector" style="-moz-user-select: none;" unselectable="on">');
+			d.writeln('<td class="selector" style="" >');
 			d.writeln(cutText(entries[i].text,24));
 		}
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="3"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(200,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(200,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
-		d.writeln('<scr'+'ipt language="JavaScript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
+		d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
 	}
 	d.writeln('</body>');
 	d.close();
@@ -247,7 +244,7 @@ function writeBody(d){
 function queryString(what,id,o,we_editDirID){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
-	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 }
 
 <?php
@@ -294,8 +291,8 @@ function addEntry(ID,icon,text,isFolder,path){
   	}
 
 	function printCreateFolderHTML(){
-		htmlTop();
-protect();
+		we_html_tools::htmlTop();
+we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();
@@ -303,9 +300,8 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_banner"]["group_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
 			$folder= new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -315,12 +311,12 @@ top.clearEntries();
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID FROM ".$this->table." WHERE Path='".$this->db->escape($folder->Path)."'");
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
-					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					$we_responseText = g_l('modules_banner','[wrongtext]');
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
 		         	print 'var ref;
@@ -358,8 +354,8 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();
-		protect();
+		we_html_tools::htmlTop();
+		we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();
@@ -367,24 +363,23 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall($GLOBALS["l_banner"]["group_empty"], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_folder.inc.php");
 			$folder= new we_folder();
 			$folder->initByID($this->we_editDirID,$this->table);
 			$folder->Text=$txt;
 			$folder->Filename=$txt;
 			$folder->Path=$folder->getPath();
-			$this->db->query("SELECT ID,Text FROM ".$this->table." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".abs($this->we_editDirID));
+			$this->db->query("SELECT ID,Text FROM ".$this->table." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf($GLOBALS["l_banner"]["group_path_exists"],$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
-					$we_responseText = $GLOBALS["l_banner"]["wrongtext"];
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					$we_responseText = g_l('modules_banner','[wrongtext]');
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".$this->table." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
+					if(f('SELECT Text FROM '.$this->table.' WHERE ID='.intval($this->we_editDirID),'Text',$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.content.updateEntry){

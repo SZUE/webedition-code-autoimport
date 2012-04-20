@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,27 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-/*****************************************************************************
- * INCLUDES
- *****************************************************************************/
+we_html_tools::protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+we_html_tools::htmlTop();
 
-/*****************************************************************************
- * INITIALIZATION
- *****************************************************************************/
-
-protect();
-
-htmlTop();
-
-/*****************************************************************************
+/* * ***************************************************************************
  * CREATE JAVASCRIPT
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
@@ -56,16 +50,15 @@ function we_save() {
 //-->
 END_OF_SCRIPT;
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
-print STYLESHEET . we_htmlElement::jsElement($_javascript) . "</head>";
+print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 
-$we_button = new we_button();
 
-$okbut = $we_button->create_button("save", "javascript:we_save();");
-$cancelbut = $we_button->create_button("close", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
+$okbut = we_button::create_button("save", "javascript:we_save();");
+$cancelbut = we_button::create_button("close", "javascript:" . ((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ? ($_REQUEST["closecmd"] . ";") : "") . "top.close()");
 
-print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
+print we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");
 

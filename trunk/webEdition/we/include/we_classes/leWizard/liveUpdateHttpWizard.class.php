@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,32 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class liveUpdateHttpWizard extends liveUpdateHttp {
+class liveUpdateHttpWizard extends liveUpdateHttp{
 
 	/**
 	 * returns html page with formular to init session on the server
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm() {
+	function getServerSessionForm(){
 
 		$params = '';
-		foreach ($GLOBALS['LU_Variables'] as $LU_name => $LU_value) {
+		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 
-			if (is_array($LU_value)) {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode( serialize($LU_value) ) . "\" />\n";
-			} else {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode( $LU_value ) . "\" />\n";
+			if(is_array($LU_value)){
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(serialize($LU_value)) . "\" />\n";
+			} else{
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode($LU_value) . "\" />\n";
 			}
 		}
 
-		$html = '<html>
+		$html = we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html>
 <head>
 	' . LIVEUPDATE_CSS . '
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="' . 'http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
+<form id="liveUpdateForm" action="http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" /><br />
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
@@ -53,4 +57,5 @@ class liveUpdateHttpWizard extends liveUpdateHttp {
 </html>';
 		return $html;
 	}
+
 }

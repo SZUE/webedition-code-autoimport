@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +22,13 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weAcronymDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 $appendJS = "";
-if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1) {
+if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
 
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
-	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/glossary.inc.php");
 	if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-		protect();
+		we_html_tools::protect();
 	}
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
@@ -39,27 +39,23 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 	$Glossary->setAttribute('lang', $_REQUEST['we_dialog_args']['lang']);
 	$Glossary->setPath();
 
-	if($Glossary->Title=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['title_empty'], WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();</script>';
-	} else if($Glossary->getAttribute('lang')=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['lang_empty'], WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();</script>';
-	} else if($Glossary->Text=="") {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_empty'], WE_MESSAGE_ERROR) . '</script>';
-
-	} else if($Glossary->pathExists($Glossary->Path)) {
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['name_exists'], WE_MESSAGE_ERROR) . '</script>';
-
-	} else {
+	if($Glossary->Title == ""){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();');
+	} else if($Glossary->getAttribute('lang') == ""){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();');
+	} else if($Glossary->Text == ""){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else if($Glossary->pathExists($Glossary->Path)){
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+	} else{
 		$Glossary->save();
 
 		$Cache = new weGlossaryCache($_REQUEST['language']);
 		$Cache->write();
 		unset($Cache);
 
-		$appendJS = '<script type="text/javascript">' . we_message_reporting::getShowMessageCall($l_glossary['entry_saved'], WE_MESSAGE_NOTICE) . 'top.close();</script>';
-
+		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 	}
-
 }
 
 $dialog = new weAcronymDialog();
@@ -77,4 +73,3 @@ editorObj.editAcronym(title,lang);
 top.close();
 ';
 }
-?>

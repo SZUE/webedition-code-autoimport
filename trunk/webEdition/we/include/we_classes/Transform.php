@@ -29,7 +29,6 @@
 /**
  * Include for error handling
  */
-//require_once 'PEAR.php';
 
 /**
  * Error code for unsupported library, image format or methods
@@ -222,10 +221,13 @@ class Image_Transform
             return PEAR::raiseError('Image library not supported... aborting.',
                 IMAGE_TRANSFORM_ERROR_UNSUPPORTED);
         }
-        $obj =& new $classname;
+        if(isset($obj)){
+					unset($obj);
+				}
+				$obj =new $classname;
 
         // Check startup error
-        if ($error =& $obj->isError()) {
+        if (($error =& $obj->isError())) {
             $obj =& $error;
         }
         return $obj;

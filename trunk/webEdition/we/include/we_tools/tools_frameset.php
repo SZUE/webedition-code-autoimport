@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,42 +21,37 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/tools.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/navigation.inc.php');
-include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/searchtool.inc.php');
-
-protect();
+we_html_tools::protect();
 
 // include autoload function
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 Zend_Loader::loadClass('we_core_Local');
 
 
-		
+
 $title = 'webEdition ';
-if(isset($_REQUEST['tool'])) {
-	$tool = $_REQUEST['tool'];
-	if($tool=='weSearch') {
-		$title .= $l_tools['tools']. ' - '.$GLOBALS['l_weSearch']['weSearch'];
+if(isset($_REQUEST['tool'])){
+	switch($_REQUEST['tool']){
+		case 'weSearch':
+			$title .= g_l('tools', '[tools]') . ' - ' . g_l('searchtool', '[weSearch]');
+			break;
+		case 'navigation':
+			$title .= g_l('tools', '[tools]') . ' - ' . g_l('navigation', '[navigation]');
+			break;
+		default:
+			$translate = we_core_Local::addTranslation('apps.xml');
+			we_core_Local::addTranslation('default.xml', $_REQUEST['tool']);
+			$title .= $translate->_('Applications') . ' - ' . $translate->_($_REQUEST['tool']);
+			break;
 	}
-	elseif($tool=='navigation') {
-		$title .= $l_tools['tools']. ' - '.$GLOBALS['l_navigation']['navigation'];
-	}
-	else {
-		$translate = we_core_Local::addTranslation('apps.xml');
-		we_core_Local::addTranslation('default.xml', $tool);
-		$title .= $translate->_('Applications'). ' - '.$translate->_($tool);
-	}
-} 
+}
 
-htmlTop($title);
+we_html_tools::htmlTop($title);
 
-print we_htmlElement::jsElement('
+print we_html_element::jsElement('
 
 	top.weToolWindow = true;
 
@@ -73,66 +72,67 @@ print we_htmlElement::jsElement('
 
 ');
 
-if($tool=="weSearch") {
-	if(isset($_REQUEST['we_cmd'][1])) {
+if($_REQUEST['tool'] == "weSearch"){
+	if(isset($_REQUEST['we_cmd'][1])){
 		$_SESSION["weSearch"]["keyword"] = $_REQUEST['we_cmd'][1];
 	}
 	//look which search is activ
-	if(isset($_REQUEST['we_cmd'][2])) {
-		
-		if(defined("OBJECT_FILES_TABLE")) {
+	if(isset($_REQUEST['we_cmd'][2])){
+
+		if(defined("OBJECT_FILES_TABLE")){
 			$objectFilesTable = OBJECT_FILES_TABLE;
-		}
-		else {
+		} else{
 			$objectFilesTable = "";
 		}
-		if(defined("OBJECT_TABLE")) {
+		if(defined("OBJECT_TABLE")){
 			$objectTable = OBJECT_TABLE;
-		}
-		else {
+		} else{
 			$objectTable = "";
 		}
-		
+
 		$table = $_REQUEST['we_cmd'][2];
-		switch ($table) {
-			
+		switch($table){
+
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION["weSearch"]["checkWhich"] = 1;
-			break;
+				break;
 			case TEMPLATES_TABLE:
 				$tab = 2;
 				$_SESSION["weSearch"]["checkWhich"] = 2;
-			break;
+				break;
 			case $objectFilesTable:
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 3;
-			break;
+				break;
 			case $objectTable:
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 4;
-			break;
-		
-			default: 
+				break;
+
+			default:
 				$tab = $_REQUEST['we_cmd'][2];
 		}
 	}
-	
-	if(isset($_REQUEST['we_cmd'][3])) {
+
+	if(isset($_REQUEST['we_cmd'][3])){
 		$modelid = $_REQUEST['we_cmd'][3];
 	}
 }
 
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/yahoo-min.js")) ;
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/event-min.js")) ;
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/connection-min.js")) ;
-
+print we_html_element::jsScript(JS_DIR . "keyListener.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
-	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
-		<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $tool; ?>" name="navi" noresize scrolling="no">
-		<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php echo $tool; ?><?php echo (isset($modelid)) ?('&modelid=' . $modelid) : ''; ?><?php echo (isset($tab)) ?('&tab=' . $tab) : ''; ?>" name="content" noresize scrolling="no">
-	</frameset>
-	<body bgcolor="#ffffff"></body>
+<frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
+	<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no"/>
+	<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php
+echo $_REQUEST['tool'];
+echo (isset($modelid)) ? ('&modelid=' . $modelid) : '';
+echo (isset($tab)) ? ('&tab=' . $tab) : '';
+?>" name="content" noresize scrolling="no"/>
+</frameset>
+<body bgcolor="#ffffff"></body>
 </html>

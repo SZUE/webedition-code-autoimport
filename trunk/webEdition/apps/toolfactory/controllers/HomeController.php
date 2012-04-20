@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,28 +22,24 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 require_once 'Zend/Controller/Action.php';
 
 /**
  * Base Home Controller
- * 
+ *
  * @category   webEdition
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class HomeController extends Zend_Controller_Action
-{
+class HomeController extends Zend_Controller_Action{
 
 	/**
 	 * The default action - show the home page
 	 */
-	public function indexAction()
-	{
+	public function indexAction(){
 		$homePage = new toolfactory_app_HomePage();
-		$homePage->setBodyAttributes(array('class'=>'weAppHome'));
+		$homePage->setBodyAttributes(array('class' => 'weAppHome'));
 		echo $homePage->getHTML();
 	}
-	
+
 }

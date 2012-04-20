@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-require_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
-
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $tagName = isset($_REQUEST['tagName']) ? $_REQUEST['tagName'] : "";
 
 // Remove . / \ because of security reasons
-$tagName = str_replace('.','',$tagName);
-$tagName = str_replace('/','',$tagName);
-$tagName = str_replace('\\','',$tagName);
+$tagName = str_replace('.', '', $tagName);
+$tagName = str_replace('/', '', $tagName);
+$tagName = str_replace('\\', '', $tagName);
 
-$xml = '<?xml version="1.0" encoding="utf-8"?'.'>' . "\n";
+$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $xml .= "<attributes>\n";
 
-if ($tagName) {
-	
+if($tagName){
+
 	$tagData = weTagData::getTagData($tagName);
 	foreach($tagData->getAllAttributes() as $attr){
-		$xml .= "\t". '<attribute name="' . $attr . '" />'."\n";
+		$xml .= "\t" . '<attribute name="' . $attr . '" />' . "\n";
 	}
 }
 

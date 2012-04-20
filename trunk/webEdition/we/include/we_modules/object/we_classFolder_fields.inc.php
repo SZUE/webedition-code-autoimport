@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/date.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/object.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/object_classfoldersearch.inc.php');
-
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
-
-include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 $javascript = '';
-if (isset($_REQUEST['do'])) {
-	switch ($_REQUEST['do']) {
+if(isset($_REQUEST['do'])){
+	switch($_REQUEST['do']){
 		case 'delete':
 			$javascript .= $we_doc->deleteObjects();
 			break;
@@ -64,16 +57,16 @@ if (isset($_REQUEST['do'])) {
 
 
 
-protect();
+we_html_tools::protect();
 // Ausgabe beginnen
-htmlTop();
+we_html_tools::htmlTop();
 
-echo '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 echo $we_doc->getSearchJS();
 
-if ($javascript != '') {
-	echo '<script language="JavaScript" type="text/javascript">' . $javascript . '</script>';
+if($javascript != ''){
+	echo '<script  type="text/javascript">' . $javascript . '</script>';
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');

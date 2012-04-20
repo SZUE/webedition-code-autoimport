@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_language/' . $GLOBALS["WE_LANGUAGE"] . '/weCodeWizard.inc.php');
-
-class weCodeWizard {
+class weCodeWizard{
 
 	/**
 	 * Directory where the snippets are located
@@ -35,20 +36,20 @@ class weCodeWizard {
 	 * PHP 5 constructor
 	 *
 	 */
-	function __construct() {
+	function __construct(){
 		$this->SnippetPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/data/";
 
 		// identify language for code snippets. currently there are only german and english translations so
 		// english has also to be used for other languages than german/german-utf8 and english:
 
 
-		if (isset($GLOBALS["WE_LANGUAGE"]) && !empty($GLOBALS["WE_LANGUAGE"])) {
+		if(isset($GLOBALS["WE_LANGUAGE"]) && !empty($GLOBALS["WE_LANGUAGE"])){
 			$this->SnippetLanguage = $GLOBALS["WE_LANGUAGE"];
-		} else {
+		} else{
 			$this->SnippetLanguage = WE_LANGUAGE;
 		}
-		if (!is_dir($this->SnippetPath . $this->SnippetLanguage)) {
-			$this->SnippetLanguage = "English_UTF-8";
+		if(!is_dir($this->SnippetPath . $this->SnippetLanguage)){
+			$this->SnippetLanguage = "English";
 		}
 	}
 
@@ -57,7 +58,7 @@ class weCodeWizard {
 	 *
 	 * @return weCodeWizard
 	 */
-	function weCodeWizard() {
+	function weCodeWizard(){
 		$this->__construct();
 	}
 
@@ -66,12 +67,13 @@ class weCodeWizard {
 	 *
 	 * @return array
 	 */
-	function _getCustomSnippets() {
+	function _getCustomSnippets(){
+
 
 		$SnippetDir = $this->SnippetPath . "custom";
-		if (!is_dir($SnippetDir)) {
+		if(!is_dir($SnippetDir)){
 			return array();
-		} else {
+		} else{
 			return $this->_getSnippetsByDir("custom");
 		}
 	}
@@ -81,13 +83,13 @@ class weCodeWizard {
 	 *
 	 * @return array
 	 */
-	function _getStandardSnippets() {
+	function _getStandardSnippets(){
 
 		$SnippetDir = $this->SnippetPath . $this->SnippetLanguage;
 
-		if (!is_dir($SnippetDir)) {
+		if(!is_dir($SnippetDir)){
 			return array();
-		} else {
+		} else{
 			return $this->_getSnippetsByDir($this->SnippetLanguage);
 		}
 	}
@@ -97,49 +99,49 @@ class weCodeWizard {
 	 *
 	 * @return array
 	 */
-	function _getSnippetsByDir($SnippetDir, $Depth = 0) {
+	function _getSnippetsByDir($SnippetDir, $Depth = 0){
 
 		$Snippets = array();
 
 		$Depth++;
 		$_dir = dir($this->SnippetPath . $SnippetDir);
-		while (false !== ($_entry = $_dir->read())) {
+		while(false !== ($_entry = $_dir->read())) {
 
 			// ignore files . and ..
-			if ($_entry == "." || $_entry == "..") {
+			if($_entry == "." || $_entry == ".."){
 				// ignore these
 				// get the snippets by file if extension is xml
 			} else
-			if (!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && eregi(".xml$", $_entry)) {
+			if(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
 				// get the snippet
 				$_snippet = weCodeWizardSnippet::initByXmlFile(
-												$this->SnippetPath . $SnippetDir . "/" . $_entry);
+						$this->SnippetPath . $SnippetDir . "/" . $_entry);
 				$_item = array(
-						'type' => 'option',
-						'name' => $_snippet->getName(),
-						'value' => $SnippetDir . "/" . $_entry
+					'type' => 'option',
+					'name' => $_snippet->getName(),
+					'value' => $SnippetDir . "/" . $_entry
 				);
 				$Snippets[] = $_item;
 
 				// enter subdirectory only if depth is smaller than 2
 			} else
-			if (is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2) {
+			if(is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2){
 
 				$information = array();
 				$_infoFile = $this->SnippetPath . $SnippetDir . "/" . $_entry . "/" . "_information.php";
-				if (file_exists($_infoFile) && is_file($_infoFile)) {
+				if(file_exists($_infoFile) && is_file($_infoFile)){
 					include ($_infoFile);
 				}
 
 				$_foldername = $_entry;
-				if (isset($information['foldername'])) {
+				if(isset($information['foldername'])){
 					$_foldername = $information['foldername'];
 				}
 
 				$_folder = array(
-						'type' => 'optgroup',
-						'name' => $_foldername,
-						'value' => $this->_getSnippetsByDir($SnippetDir . "/" . $_entry, $Depth)
+					'type' => 'optgroup',
+					'name' => $_foldername,
+					'value' => $this->_getSnippetsByDir($SnippetDir . "/" . $_entry, $Depth)
 				);
 				$Snippets[] = $_folder;
 			}
@@ -157,11 +159,11 @@ class weCodeWizard {
 	 * @param string $type
 	 * @return string
 	 */
-	function getSelect($type = 'standard') {
+	function getSelect($type = 'standard'){
 
 		$_options = array();
 
-		switch ($type) {
+		switch($type){
 			case 'custom' :
 				$_options = $this->_getCustomSnippets();
 				break;
@@ -172,19 +174,19 @@ class weCodeWizard {
 		}
 
 		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"weButton.enable('btn_direction_right_applyCode')\">\n";
-		foreach ($_options as $option) {
-			if ($option['type'] == 'optgroup' && sizeof($option['value']) > 0) {
+		foreach($_options as $option){
+			if($option['type'] == 'optgroup' && sizeof($option['value']) > 0){
 				$_select .= "<optgroup label=\"" . $option['name'] . "\">\n";
 
-				foreach ($option['value'] as $optgroupoption) {
+				foreach($option['value'] as $optgroupoption){
 
-					if ($optgroupoption['type'] == 'option') {
+					if($optgroupoption['type'] == 'option'){
 						$_select .= "<option value=\"" . $optgroupoption['value'] . "\">" . $optgroupoption['name'] . "</option>\n";
 					}
 				}
 				$_select .= "</optgroup>\n";
 			} else
-			if ($option['type'] == 'option') {
+			if($option['type'] == 'option'){
 				$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
 			}
 		}
@@ -198,12 +200,11 @@ class weCodeWizard {
 	 *
 	 * @return string
 	 */
-	function getJavascript() {
-
-		$Js = <<<JS
-<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
+	function getJavascript(){
+		return we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
+			<<<JS
 
 <script type="text/javascript">
 
@@ -225,8 +226,6 @@ function YUIdoAjax(value) {
 
 </script>
 JS;
-
-		return $Js;
 	}
 
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,31 +22,34 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 
+function we_parse_tag_addPercent($attribs, $content){
+	eval('$attribs = ' . $attribs . ';');
+	$attribs['_type'] = 'stop';
+	return '<?php ' . we_tag_tagParser::printTag('addPercent', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('addPercent', $attribs) . ');?>';
+}
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tagParser.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_util.inc.php");
-
-function we_tag_addPercent($attribs,$content){
-	$foo = attributFehltError($attribs,"percent","addPercent");if($foo) return $foo;
-	$percent = we_getTagAttribute("percent",$attribs);
-	$num_format = we_getTagAttribute("num_format",$attribs);
-
-	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
-	$GLOBALS["calculate"]=1;
-	$tp->parseTags($tags,$content);
-	$GLOBALS["calculate"]=0;
-	$content=we_util::std_numberformat($content);
-	$result = ($content/100)*(100+$percent);
-	if($num_format=="german"){
-		$result=number_format($result,2,",",".");
-	}else if($num_format=="french"){
-		$result=number_format($result,2,","," ");
-	}else if($num_format=="english"){
-		$result=number_format($result,2,".","");
-	} else if ($num_format == "swiss") {
-		$result = number_format($result, 2, ".", "'");
+function we_tag_addPercent($attribs, $content){
+	//internal Attribute
+	$_type = weTag_getAttribute('_type', $attribs);
+	switch($_type){
+		case 'start':
+			$GLOBALS['calculate'] = 1;
+			ob_start();
+			return;
+		case 'stop':
+			$content = we_util::std_numberformat(ob_get_contents());
+			ob_end_clean();
+			unset($GLOBALS['calculate']);
+			if(($foo = attributFehltError($attribs, 'percent', __FUNCTION__))){
+				return $foo;
+			}
+			$percent = weTag_getAttribute('percent', $attribs);
+			$num_format = weTag_getAttribute('num_format', $attribs);
+			$result = ($content / 100) * (100 + $percent);
+			return we_util_Strings::formatnumber($result, $num_format);
+		default:
+			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}
-	return $result;
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,8 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-class liveUpdateResponse {
+class liveUpdateResponse{
 
 	var $Type;
 	var $Headline;
@@ -28,17 +34,14 @@ class liveUpdateResponse {
 	var $EncodedCode;
 	var $Encoding = false;
 
-	function liveUpdateResponse() {
-	}
+	function initByArray($respArray){
 
-	function initByArray($respArray) {
-
-		foreach ($respArray as $key => $value) {
+		foreach($respArray as $key => $value){
 
 			$this->$key = $value;
 		}
 
-		if ($this->Encoding && $this->EncodedCode) {
+		if($this->Encoding && $this->EncodedCode){
 			$this->Code = base64_decode($this->EncodedCode);
 		}
 	}
@@ -49,52 +52,50 @@ class liveUpdateResponse {
 	 * @param string $response
 	 * @return boolean
 	 */
-	function initByHttpResponse($response) {
+	function initByHttpResponse($response){
 
-		if ($respArr = liveUpdateResponse::responseToArray($response)) {
+		if($respArr = liveUpdateResponse::responseToArray($response)){
 
 			$this->initByArray($respArr);
 			return true;
-		} else {
+		} else{
 			return false;
 		}
 	}
 
-	function isError() {
+	function isError(){
 
-		if ($this->Type == 'state' && $this->State == 'error') {
+		if($this->Type == 'state' && $this->State == 'error'){
 			return true;
 		}
 		return false;
 	}
 
-	function getField($fieldname) {
-		if (isset($this->$fieldname)) {
+	function getField($fieldname){
+		if(isset($this->$fieldname)){
 			return $this->$fieldname;
 		}
 		return '';
 	}
 
-	function responseToArray($response) {
+	function responseToArray($response){
 
 		$respArray = unserialize($response);
 
-		if (is_array($respArray)) {
+		if(is_array($respArray)){
 			return $respArray;
-		} else {
+		} else{
 			return false;
 		}
 	}
 
-	function getOutput() {
+	function getOutput(){
 
-		switch ($this->Type) {
+		switch($this->Type){
 
 			case 'template':
 				return liveUpdateTemplates::getHtml(
-					$this->Headline,
-					$this->Content,
-					$this->Header
+						$this->Headline, $this->Content, $this->Header
 				);
 				break;
 
@@ -111,4 +112,5 @@ class liveUpdateResponse {
 				break;
 		}
 	}
+
 }

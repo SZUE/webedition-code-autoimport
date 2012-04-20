@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +25,17 @@
 class rpcChangeDocTypeCmd extends rpcCmd {
 
 	function execute() {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import.inc.php");
 		$resp = new rpcResponse();
 		$categories = "<tr><td style='font-size:8px'>&nbsp;</td></tr>";
 		//$categories = "";
 		if (isset($_REQUEST['docType'])) {
 			if ($_REQUEST['docType'] >= 0) {
-				$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".abs($_REQUEST['docType'])."'",$GLOBALS["DB_WE"]);
+				$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID=".intval($_REQUEST['docType']),$GLOBALS['DB_WE']);
 
 				$ids_arr = makeArrayFromCSV($values["Templates"]);
 
 				$paths_arr = id_to_path($values["Templates"],TEMPLATES_TABLE,"",false,true);
-				$TPLselect = new we_htmlSelect(array(
+				$TPLselect = new we_html_select(array(
 					"name"		=> "docTypeTemplateId",
 					"size"		=> "1",
 					"class"		=> "weSelect",
@@ -45,7 +48,7 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 					$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 					$optid++;
 				}
-				$templateElement = htmlFormElementTable($TPLselect->getHTMLCode(), $l_import['template'], "left", "defaultfont");
+				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import','[template]'), "left", "defaultfont");
 				if ($values["Category"]!="") {
 					$categories = $this->getCategories("doc",$values["Category"],'v[docCategories]');
 				}
@@ -59,7 +62,7 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 				}
 				$_templateName = "";
 				if (isset($values["TemplateID"]) && $values["TemplateID"]>0) {
-					$_templateName = f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . abs($values["TemplateID"]), "Path" ,$GLOBALS["DB_WE"]);
+					$_templateName = f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($values["TemplateID"]), "Path" ,$GLOBALS['DB_WE']);
 				}
 				$resp->setData("elements",
 						array(
@@ -104,7 +107,6 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 	}
 
 	function getCategories($obj, $categories, $catField="") {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
 		$cats = new MultiDirChooser2(410,$categories,"delete_".$obj."Cat","","","Icon,Path",CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);

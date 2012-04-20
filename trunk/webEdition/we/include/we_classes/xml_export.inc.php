@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,20 +31,20 @@ class XML_Export {
 	var $docs_exported = array();
 	var $temps_exported = array();
 
-	function XML_Export() {print "init";}
+	function __construct() {print "init";}
 
 	function parse_we_tag($we_tag, $document_id) {
 		global $DB_WE;
 		$endTag = false;
 		$out = -1;
 /*
-		eregi("<(/?)we:(.+)>?", $we_tag, $regs);
+		preg_match("<(/?)we:(.+)>?", $we_tag, $regs);
 		if ($regs[1]) $endTag = true;
 
 		$foo = (substr($foo,-1) == "/") ? $regs[2] : ($regs[2]."/");
-		eregi("([^ >/]+) ?(.*)", $foo, $regs);
+		preg_match("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
-		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
+		$attr = trim(preg_replace("(.*)/$", "\\1", $regs[2]));
 
 		if (!$endTag) {
 			$attribs = "";
@@ -48,7 +52,7 @@ class XML_Export {
 			for ($i = 0; $i < sizeof($foo); $i++) {
 				$attribs .= '"'.trim($foo[$i][1]).'"=>'.trim($foo[$i][2]).',';
 			}
-			$arrstr = "array(".ereg_replace('(.+),$', "\\1", $attribs).")";
+			$arrstr = "array(".preg_replace('(.+),$', "\\1", $attribs).")";
 			eval('$arr = '.$arrstr.';');
 
 			switch ($tagname) {
@@ -127,12 +131,12 @@ class XML_Export {
 		$content_format = "<content Name='%s' Type='%s' DocumentTable='%s'>\n";
 		$out = array("");
 
-		$DB_WE->query("SELECT * FROM ".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".$DB_WE->escape($table)."' AND ".LINK_TABLE.".DID=".abs($id));
+		$DB_WE->query("SELECT * FROM ".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".$DB_WE->escape($table)."' AND ".LINK_TABLE.".DID=".intval($id));
 		$metadata = $DB_WE->metadata(CONTENT_TABLE);
 
 		while ($DB_WE->next_record()) {
 			$out[0] .= sprintf($content_format, $DB_WE->f("Name"), $DB_WE->f("Type"), $DB_WE->f("DocumentTable"));
-			$db_tmp->query("SELECT * FROM ".CONTENT_TABLE." WHERE ID=".abs($DB_WE->f("CID")).";");
+			$db_tmp->query("SELECT * FROM ".CONTENT_TABLE." WHERE ID=".intval($DB_WE->f("CID")));
 
 			while ($db_tmp->next_record()) {
 				foreach ($metadata as $field) {
@@ -170,7 +174,7 @@ class XML_Export {
 		$out = "";
 
 		$metadata = $DB_WE->metadata($table);
-		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($table)." WHERE ID=".abs($id));
+		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($table)." WHERE ID=".intval($id));
 
 		while ($DB_WE->next_record()) {
 			foreach ($metadata as $field) {
@@ -195,11 +199,11 @@ class XML_Export {
 		$where = "WHERE ";
 		if (is_array($pid)) {
 			for ($i = 0; $i < sizeOf($pid); $i++) {
-				$where .= "ID=".abs(trim($pid[$i]));
+				$where .= "ID=".intval(trim($pid[$i]));
 				if ($i != sizeOf($pid)-1) $where .= " OR ";
 			}
 		}
-		else $where.= "ID=".abs(trim($pid));
+		else $where.= "ID=".intval(trim($pid));
 
 		$db_main = new DB_WE();
 		$db_main->query("SELECT ID FROM ".FILE_TABLE." ".$where);
@@ -225,7 +229,7 @@ class XML_Export {
 			}
 
 			// template node
-			$template_id = f("SELECT TemplateID FROM ".FILE_TABLE." WHERE ID=".abs($document_id), "TemplateID", $DB_WE);
+			$template_id = f("SELECT TemplateID FROM ".FILE_TABLE." WHERE ID=".intval($document_id), "TemplateID", $DB_WE);
 
 			if ($template_id && !in_array($template_id, $this->temps_exported)) { // prevent double export
 				$template_node = "<template>\n";

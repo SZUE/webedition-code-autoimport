@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +23,7 @@
  */
 
 
-class XML_Validate extends XML_Parser {
+class XML_Validate extends we_xml_parser {
 	/**
 	 * This array contains all child elements of the "we:document" node.
 	 * @var array
@@ -104,7 +108,7 @@ class XML_Validate extends XML_Parser {
 	* @param string $file
 	* @desc Parses the given XML file.
 	*/
-	function XML_Validate($file = "") {
+	function __construct($file = "") {
 		if (!empty($file)) {
 			// Read and try to parse the given file.
 			$this->getFile($file);

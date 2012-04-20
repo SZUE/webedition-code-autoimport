@@ -21,7 +21,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 
 	var foo_w = w;
 	var foo_h = h;
-	
+
 	if (window.screen) {
 		var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;
 		screen_height = screen_height - 40;
@@ -57,9 +57,10 @@ function  jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 	properties += ",left="+this.x+",top="+this.y;
 	try{
 		this.wind = window.open(this.url, this.ref, properties);
-		this.wind.moveTo(this.x,this.y);
+//Bug mit chrome:
+//		this.wind.moveTo(this.x,this.y);
 		this.wind.focus();
-		
+
 	}catch(e) {
 	 	if (noPopupErrorMsg != undefined &&  noPopupErrorMsg.length) {
 			if (!this.wind) {

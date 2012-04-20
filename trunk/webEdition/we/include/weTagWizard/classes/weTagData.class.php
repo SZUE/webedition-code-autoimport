@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,99 +22,135 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_cmdAttribute.class.php');
 
-class weTagData {
+class weTagData{
+
+	private $Exists = false;
 
 	/**
 	 * @var string
 	 */
-	var $Name;
+	public $Name;
+
 	/**
 	 * @var string
 	 */
-	var $TypeAttribute = null;
+	private $TypeAttribute = null;
+
 	/**
 	 * @var array
 	 */
-	var $Attributes;
+	private $Attributes = array();
+	private $UsedAttributes = null;
+
 	/**
 	 * @var string
 	 */
-	var $Description;
+	private $Description;
+
 	/**
 	 * @var string
 	 */
-	var $DefaultValue;
+	private $DefaultValue;
+
 	/**
 	 * @var string
 	 */
-	var $NeedsEndTag;
+	private $NeedsEndTag = false;
+	private $Module = 'basis';
+	private $Groups = array();
+	private $Deprecated = false;
 
-	/**
-	 * @param string $name
-	 * @param weTagDataAttribute $typeAttribute
-	 * @param array $attributes
-	 * @param string $description
-	 * @param boolean $needsendtag
-	 * @param string $defaultvalue
-	 */
-	function weTagData($name, $attributes = array(), $description = '', $needsendtag = false, $defaultvalue = '', $noDocuLink=false, $DocuLink='') {
-
-		// only use attributes allowed regarding the installed modules
-		// set attributes for this tag
-
-
-		$attribs = array();
-		foreach ($attributes as $attribute) {
-
-			if ($attribute->useAttribute()) {
-
-				if (strtolower(get_class($attribute)) == strtolower("weTagData_typeAttribute")) {
-
-					$this->TypeAttribute = $attribute;
-				}
-				$attribs[] = $attribute;
+	private function __construct($tagName){
+		$this->Name = $tagName;
+		// include the selected tag, its either normal, or custom tag
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')){
+			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
+			$this->Exists = true;
+		} else
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
+			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
+			$this->Exists = true;
+			$this->Groups[] = 'custom';
+		} else{
+			//Application Tags
+			$apptags = array();
+			$alltools = weToolLookup::getAllTools(true);
+			$allapptags = array();
+			$allapptagnames = array();
+			foreach($alltools as $tool){
+				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
+				$allapptags = array_merge($allapptags, $apptags);
+				$apptagnames = array_keys($apptags);
+				$allapptagnames = array_merge($allapptagnames, $apptagnames);
+			}
+			if(in_array($tagName, $allapptagnames)){
+				require_once ($allapptags[$tagName]);
+				$this->Exists = true;
+				$this->Groups[] = 'apptags';
+			} else{
+				t_e('requested help entry of tag ' . $tagName . ' not found');
+				return;
 			}
 		}
 
-		// Feature #4535
-		if ($DocuLink != '') {
-			$GLOBALS['TagRefURL'] = $DocuLink; //??? Where does this come from? When does it occur? If this is beeing used it wont work with we_cmd
-		}
-		if ($this->TypeAttribute) {
-			foreach ($this->TypeAttribute->Options as &$value) {
-				$value->AllowedAttributes[] = 'idTagRef_' . $this->TypeAttribute->Name . '_' . $value->Value . '_TagReferenz';
-				if ($value->Value != '-') {
-					if (!$noDocuLink) {
-						$attribs[] = new weTagData_cmdAttribute('TagRef_' . $this->TypeAttribute->Name . '_' . $value->Value, 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName'] . '-' . $this->TypeAttribute->Name . '-' . $value->Name), $GLOBALS['l_taged']['tagreference_linktext']);
+		if($this->TypeAttribute){
+			if(!is_array($this->TypeAttribute->Options)){
+				t_e('Error in TypeAttribute of we:' . $this->Name);
+			} else{
+				foreach($this->TypeAttribute->Options as &$value){
+					$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
+					$value->AllowedAttributes[] = $tmp;
+					if($value->Value != '-'){
+						$this->Attributes[] = $tmp;
 					}
 				}
 			}
-		} else {
-			if (!$noDocuLink) {
-				$attribs[] = new weTagData_cmdAttribute('TagRef_', 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName']), $GLOBALS['l_taged']['tagreference_linktext']);
+		} else{
+			$value->AllowedAttributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]'));
+		}
+	}
+
+	private function updateUsedAttributes(){
+		$this->UsedAttributes = array();
+		if($this->TypeAttribute){
+			$this->UsedAttributes[] = $this->TypeAttribute;
+		}
+		foreach($this->Attributes as $attr){
+			if($attr === null){
+				continue;
+			}
+			if(!is_object($attr)){
+				t_e('Error in Attributes of we:' . $this->Name, $attr);
+			} else if($attr->useAttribute()){
+				$this->UsedAttributes[] = $attr;
 			}
 		}
-
-		$this->Name = $name;
-		$this->Attributes = $attribs;
-		$this->Description = $description;
-		$this->NeedsEndTag = $needsendtag;
-		$this->DefaultValue = $defaultvalue;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 
+	function getModule(){
+		return $this->Module;
+	}
+
+	function getGroups(){
+		return $this->Groups;
+	}
+
+	function isDeprecated(){
+		return $this->Deprecated;
+	}
+
 	/**
 	 * @return string
 	 */
-	function getDescription() {
+	function getDescription(){
 		return $this->Description;
 	}
 
@@ -118,74 +158,40 @@ class weTagData {
 	 * @param string $tagName
 	 * @return weTagData
 	 */
-	function getTagData($tagName) {
-
-		// include the selected tag, its either normal, or custom tag
-		if (file_exists(
-										$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')) {
-			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
-		} else
-		if (file_exists(
-										$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')) {
-			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
-		} else {
-			//Application Tags
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
-			$apptags = array();
-			$alltools = weToolLookup::getAllTools(true);
-			$allapptags = array();
-			$allapptagnames = array();
-			foreach ($alltools as $tool) {
-				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
-				$allapptags = array_merge($allapptags, $apptags);
-				$apptagnames = array_keys($apptags);
-				$allapptagnames = array_merge($allapptagnames, $apptagnames);
+	static function getTagData($tagName){
+		static $tags = array();
+		if(isset($tags[$tagName])){
+			$tag = $tags[$tagName];
+		} else{
+			$tag = new weTagData($tagName);
+			if(!$tag->Exists){
+				return null;
 			}
-			if (in_array($tagName, $allapptagnames)) {
-				require_once ($allapptags[$tagName]);
-			} else {
-				return false;
-			}
+			$tags[$tagName] = $tag;
 		}
-		if (isset($GLOBALS['l_we_tag'][$tagName]['description'])) {
-			$description = isset($GLOBALS['l_we_tag'][$tagName]['description']);
-		} else {
-			if (isset($GLOBALS['weTagWizard']['weTagData']['description'])) {
-				$description = $GLOBALS['weTagWizard']['weTagData']['description'];
-			} else {
-				$description = '';
-			}
-		}
-		return new weTagData(
-						$tagName,
-						isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(),
-						$description,
-						$GLOBALS['weTagWizard']['weTagData']['needsEndtag'],
-						isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '',
-						isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink'] : '',
-						isset($GLOBALS['weTagWizard']['weTagData']['DocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['DocuLink'] : ''
-		);
+		$tag->updateUsedAttributes();
+		return $tag;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	function needsEndTag() {
+	function needsEndTag(){
 		return $this->NeedsEndTag;
 	}
 
 	/**
 	 * @return array
 	 */
-	function getAllAttributes($idPrefix = false) {
+	function getAllAttributes($idPrefix = false){
 
 		$attribs = array();
 
-		foreach ($this->Attributes as $attrib) {
+		foreach($this->UsedAttributes as $attrib){
 
-			if ($idPrefix) {
+			if($idPrefix){
 				$attribs[] = $attrib->getIdName();
-			} else {
+			} else{
 				$attribs[] = $attrib->getName();
 			}
 		}
@@ -195,20 +201,19 @@ class weTagData {
 	/**
 	 * @return mixed
 	 */
-	function getTypeAttribute() {
-
+	function getTypeAttribute(){
 		return $this->TypeAttribute;
 	}
 
 	/**
 	 * @return array
 	 */
-	function getRequiredAttributes() {
+	function getRequiredAttributes(){
 
 		$req = array();
 
-		foreach ($this->Attributes as $attrib) {
-			if ($attrib->IsRequired()) {
+		foreach($this->UsedAttributes as $attrib){
+			if($attrib->IsRequired()){
 				$req[] = $attrib->getIdName();
 			}
 		}
@@ -218,9 +223,9 @@ class weTagData {
 	/**
 	 * @return array
 	 */
-	function getTypeAttributeOptions() {
+	function getTypeAttributeOptions(){
 
-		if ($this->TypeAttribute) {
+		if($this->TypeAttribute){
 			return $this->TypeAttribute->getOptions();
 		}
 		return null;
@@ -229,26 +234,22 @@ class weTagData {
 	/**
 	 * @return string
 	 */
-	function getAttributesCodeForTagWizard() {
+	function getAttributesCodeForTagWizard(){
 
 		$ret = '';
 
 		$typeAttrib = $this->getTypeAttribute();
 
-		if (sizeof($this->Attributes) > 1 || (sizeof($this->Attributes) && !$typeAttrib)) {
+		if(sizeof($this->UsedAttributes) > 1 || (sizeof($this->UsedAttributes) && !$typeAttrib)){
 
-			$ret = '
-		<ul>';
-			foreach ($this->Attributes as $attribute) {
+			$ret = '<ul>';
+			foreach($this->UsedAttributes as $attribute){
 
-				if ($attribute != $this->TypeAttribute) {
-					$ret .= '
-			<li ' . ($typeAttrib ? 'style="display:none;"' : '') . ' id="li_' . $attribute->getIdName() . '">' . $attribute->getCodeForTagWizard() . '
-			</li>';
+				if($attribute != $this->TypeAttribute){
+					$ret .= '<li ' . ($typeAttrib ? 'style="display:none;"' : '') . ' id="li_' . $attribute->getIdName() . '">' . $attribute->getCodeForTagWizard() . '</li>';
 				}
 			}
-			$ret .= '
-		</ul>';
+			$ret .= '</ul>';
 		}
 		return $ret;
 	}
@@ -256,36 +257,26 @@ class weTagData {
 	/**
 	 * @return string
 	 */
-	function getTypeAttributeCodeForTagWizard() {
-
-		$ret = '';
-
-		if ($this->TypeAttribute) {
-
-			$ret = '
-			<ul>';
-
-			$ret .= '
-				<li>' . $this->TypeAttribute->getCodeForTagWizard() . '
-				</li>';
-			$ret .= '
-			</ul>';
+	function getTypeAttributeCodeForTagWizard(){
+		if($this->TypeAttribute){
+			return '<ul>' .
+				'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
+				'</ul>';
 		}
-
-		return $ret;
+		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	function getDefaultValueCodeForTagWizard() {
+	function getDefaultValueCodeForTagWizard(){
 
-		return we_htmlElement::htmlTextArea(
-						array(
+		return we_html_element::htmlTextArea(
+				array(
 				'name' => 'weTagData_defaultValue',
 				'id' => 'weTagData_defaultValue',
 				'class' => 'wetextinput wetextarea'
-						), $this->DefaultValue);
+				), $this->DefaultValue);
 	}
 
 }

@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,48 +22,47 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
-	data of variaiations have the following format in document
+  data of variaiations have the following format in document
 
-	we_doc->elements[WE_SHOP_VARIANTS_ELEMENT_NAME] = array(
-		[0] => array(
-			'VARIATIONNAME1' => array(
-				'fieldName1' => array(
-					'type' = 'txt',
-					'dat' = 'Text'
-				),
-				'fieldName2' => array(
-					'type' = 'img',
-					'dat' = 152
-				)
-			),
-		[1] => array(
-			'VARIATIONNAME2' => array(
-				'fieldName1' => array(
-					'type' = 'txt',
-					'dat' = 'CU'
-				),
-				'fieldName2' => array(
-					'type' = 'img',
-					'dat' = 155
-				)
-			)
-		)
-	)
-	=====>>
+  we_doc->elements[WE_SHOP_VARIANTS_ELEMENT_NAME] = array(
+  [0] => array(
+  'VARIATIONNAME1' => array(
+  'fieldName1' => array(
+  'type' = 'txt',
+  'dat' = 'Text'
+  ),
+  'fieldName2' => array(
+  'type' = 'img',
+  'dat' = 152
+  )
+  ),
+  [1] => array(
+  'VARIATIONNAME2' => array(
+  'fieldName1' => array(
+  'type' = 'txt',
+  'dat' = 'CU'
+  ),
+  'fieldName2' => array(
+  'type' = 'img',
+  'dat' = 155
+  )
+  )
+  )
+  )
+  =====>>
 
-	in editmode available in document
-	we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME1');
-	we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'Text');
-	we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName2] = array('type' = 'img', 'dat' = 152);
+  in editmode available in document
+  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME1');
+  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'Text');
+  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName2] = array('type' = 'img', 'dat' = 152);
 
-	we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME2');
-	we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'CU');
-	...
-*/
+  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME2');
+  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'CU');
+  ...
+ */
 
-class weShopVariants {
+class weShopVariants{
 
 	/**
 	 * Searchs all elements of document/object
@@ -70,22 +73,21 @@ class weShopVariants {
 	 * @param object $model
 	 * @param boolean $save
 	 */
-	function correctModelFields(&$model, $save=true) {
+	function correctModelFields(&$model, $save=true){
 
 		$elements = $model->elements;
 
 		// all variant fields must be stored in one single field of the content table
-
 		// store variationfields in one array
 		$variationElements = array();
 
-		foreach ($elements as $element => $elemArr) {
+		foreach($elements as $element => $elemArr){
 
 
-			if (strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false) {
+			if(strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false){
 
 				$variationElements[$element] = $elemArr;
-				if ($save) {
+				if($save){
 					$model->elements[$element] = null;
 					unset($model->elements[$element]);
 				}
@@ -100,20 +102,17 @@ class weShopVariants {
 
 		// :ATTENTION: if nr of variants is > 10 a ksort of the elements is not
 		// enough to build blocks of data of a single variant.
-		foreach ($variationElements as $element => $data) {
+		foreach($variationElements as $element => $data){
 
 			$elemNr = weShopVariants::getNrFromElemName($element);
 
-			if (!isset($nameOfPosition["nameof_$elemNr"])) {
+			if(!isset($nameOfPosition["nameof_$elemNr"])){
 				$nameOfPosition["nameof_$elemNr"] = $data['dat'];
 				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]] = array();
-
-			} else {
+			} else{
 				$fieldName = weShopVariants::getFieldNameFromElemName($element);
 				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]][$fieldName] = $data;
-
 			}
-
 		}
 
 		// now create element for the model
@@ -123,25 +122,25 @@ class weShopVariants {
 	}
 
 	/**
-	* this function is reverse function to correctModelFields
-	* initialises variant data in the model and stores them in special fields
-	* @param object $model
-	* @param boolean $unserialize
-	*/
-	function setVariantDataForModel(&$model, $unserialize=false) {
+	 * this function is reverse function to correctModelFields
+	 * initialises variant data in the model and stores them in special fields
+	 * @param object $model
+	 * @param boolean $unserialize
+	 */
+	function setVariantDataForModel(&$model, $unserialize=false){
 
 		// set variation data from array and
 
 		$elements = $model->elements;
 
-		if (isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])) {
+		if(isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 
-			if ($unserialize) {
+			if($unserialize){
 				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] =
 					is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
 					$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
 					(
-						(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'],0,2) == "a:") ?
+					(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:") ?
 						unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
 						array()
 					);
@@ -151,20 +150,20 @@ class weShopVariants {
 
 			$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			for ($i = 0; $i <sizeof($variations); $i++) {
+			for($i = 0; $i < sizeof($variations); $i++){
 
 				$variation = $variations[$i];
 
-				if (is_array($variation)) {
+				if(is_array($variation)){
 
-					foreach ($variation as $name => $varArr) {
+					foreach($variation as $name => $varArr){
 
 						$model->elements[WE_SHOP_VARIANTS_PREFIX . $i] = array(
 							'type' => 'txt',
-							'dat'  => $name
+							'dat' => $name
 						);
 
-						foreach ($varArr as $name => $datArr) {
+						foreach($varArr as $name => $datArr){
 
 							$model->elements[WE_SHOP_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
 						}
@@ -174,7 +173,7 @@ class weShopVariants {
 		}
 	}
 
-	function getNrFromElemName($elemName) {
+	function getNrFromElemName($elemName){
 
 		$elemPos = substr($elemName, strlen(WE_SHOP_VARIANTS_PREFIX));
 		$elemPos = preg_replace('/_(.*)/', '', $elemPos);
@@ -182,21 +181,21 @@ class weShopVariants {
 		return $elemPos;
 	}
 
-	function getFieldNameFromElemName($elemName) {
+	function getFieldNameFromElemName($elemName){
 
 		$fieldNameTmp = substr($elemName, strlen(WE_SHOP_VARIANTS_PREFIX));
 		$fieldName = preg_replace("/(\d+_*)/", "", $fieldNameTmp, 1);
 
-		if ($fieldNameTmp == $fieldName) {
+		if($fieldNameTmp == $fieldName){
 			return '';
-		} else {
+		} else{
 			return $fieldName;
 		}
 	}
 
-	function getNumberOfVariants(&$model) {
+	function getNumberOfVariants(&$model){
 
-		if ( isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
+		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 
 			return sizeof($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 		}
@@ -204,13 +203,13 @@ class weShopVariants {
 		return 0;
 	}
 
-	function insertVariant(&$model, $position) {
+	function insertVariant(&$model, $position){
 
 		$amount = weShopVariants::getNumberOfVariants($model);
 
 		// init model->elements if neccessary
 
-		if (!isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) || !isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
+		if(!isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) || !isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME] = array();
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = array();
@@ -218,46 +217,44 @@ class weShopVariants {
 
 		// add new element at end of array, move it when neccesary
 		array_push(
-			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'],
-			weShopVariants::createNewVariantElement($model)
+			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], weShopVariants::createNewVariantElement($model)
 		);
 
 		// now move element, it is actually at last position
-		if ($amount > $position) { // move all elements
-
+		if($amount > $position){ // move all elements
 			$newElemPos = $amount;
-			while ($position < $newElemPos) {
+			while($position < $newElemPos) {
 				weShopVariants::changeVariantPosition($newElemPos, --$newElemPos, $model);
 			}
 		}
 	}
 
-	function createNewVariantElement(&$model) {
+	function createNewVariantElement(&$model){
 
 		// :TODO: improve me
 		return array();
 	}
 
-	function getAllVariationFields($model, $pos=false) {
+	function getAllVariationFields($model, $pos=false){
 
 		$elements = $model->elements;
 
 		$variationElements = array();
 
-		foreach ($elements as $element => $elemArr) {
+		foreach($elements as $element => $elemArr){
 
-			if (strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false) {
+			if(strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false){
 
 				$variationElements[$element] = $elemArr;
 			}
 		}
 		ksort($variationElements);
 
-		if ($pos === false) {
+		if($pos === false){
 			return $variationElements;
-		} else {
-			foreach ($variationElements as $name => $value) {
-				if (weShopVariants::getNrFromElemName($name) != $pos) {
+		} else{
+			foreach($variationElements as $name => $value){
+				if(weShopVariants::getNrFromElemName($name) != $pos){
 					unset($variationElements[$name]);
 				}
 			}
@@ -265,13 +262,13 @@ class weShopVariants {
 		}
 	}
 
-	function moveVariant(&$model, $pos, $direction) {
+	function moveVariant(&$model, $pos, $direction){
 
 		// check if a move is possible
-		if ($direction == 'up') {
-			weShopVariants::changeVariantPosition($pos, ($pos-1), $model);
-		} else {
-			weShopVariants::changeVariantPosition($pos, ($pos+1), $model);
+		if($direction == 'up'){
+			weShopVariants::changeVariantPosition($pos, ($pos - 1), $model);
+		} else{
+			weShopVariants::changeVariantPosition($pos, ($pos + 1), $model);
 		}
 	}
 
@@ -280,7 +277,7 @@ class weShopVariants {
 	 * @param integer $pos2
 	 * @param array $model
 	 */
-	function changeVariantPosition($pos1, $pos2, &$model) {
+	function changeVariantPosition($pos1, $pos2, &$model){
 
 		// first move all fields in the $modell
 		$tmp = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$pos1];
@@ -292,61 +289,57 @@ class weShopVariants {
 
 		// backup pos 1
 		$tmp = array();
-		foreach ($variationElements_1 as $name => $arr) {
+		foreach($variationElements_1 as $name => $arr){
 			$tmp[$name] = $arr;
 			unset($model->elements[$name]);
 		}
 
 		// overwrite pos 1 with pos 2
-		foreach ($variationElements_2 as $name => $arr) {
+		foreach($variationElements_2 as $name => $arr){
 			$model->elements[weShopVariants::getNameForPosition($name, $pos1)] = $model->elements[$name];
 			unset($model->elements[$name]);
-
 		}
 
 		// restore pos 1 to pos2
-		foreach ($tmp as $name => $arr) {
+		foreach($tmp as $name => $arr){
 			$model->elements[weShopVariants::getNameForPosition($name, $pos2)] = $tmp[$name];
 		}
 		// delete backup
 		unset($tmp);
 	}
 
-	function getNameForPosition($name, $pos) {
+	function getNameForPosition($name, $pos){
 
-		if (($fieldName = weShopVariants::getFieldNameFromElemName($name)) == '') {
+		if(($fieldName = weShopVariants::getFieldNameFromElemName($name)) == ''){
 			return WE_SHOP_VARIANTS_PREFIX . $pos;
-		} else {
+		} else{
 			return WE_SHOP_VARIANTS_PREFIX . $pos . '_' . weShopVariants::getFieldNameFromElemName($name);
 		}
 	}
 
-	function removeVariant(&$model, $delPos) {
+	function removeVariant(&$model, $delPos){
 
 		$total = weShopVariants::getNumberOfVariants($model);
 
 		$lastPos = $total - 1;
 
 		// move at last position, then remove it
-		while ($delPos < $lastPos) {
+		while($delPos < $lastPos) {
 
-			weShopVariants::moveVariant($model,$delPos++,'down');
+			weShopVariants::moveVariant($model, $delPos++, 'down');
 		}
 
 		// first remove all fields from doc
 		$variationFields = weShopVariants::getAllVariationFields($model, $delPos);
-		foreach ($variationFields as $name => $dat) {
+		foreach($variationFields as $name => $dat){
 			unset($model->elements[$name]);
 		}
-		if (is_array( ($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]) )) {
+		if(is_array(($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]))){
 			unset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]);
 		}
 	}
 
-	function getVariantsEditorMultiBoxArrayObjectFile($model) {
-
-		$we_button = new we_button();
-
+	function getVariantsEditorMultiBoxArrayObjectFile($model){
 		$variantFields = $model->getVariantFields();
 
 		$count = weShopVariants::getNumberOfVariants($model);
@@ -355,13 +348,13 @@ class weShopVariants {
 		$ret = '';
 		$parts = array();
 
-		if ($count > 0) {
+		if($count > 0){
 
-			for ($i=0; $i<$count; $i++) {
-				$plusBut = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','".($i)."');",true,40);
-				$upbut   = ($i == 0 ? $we_button->create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','".($i)."');"));
-				$downbut = ($i == ($count-1) ? $we_button->create_button("image:btn_direction_down", "", true, 21, 22, "", "", true): $we_button->create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','".($i)."');"));
-				$trashbut   = $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','".($i)."');",true,30);
+			for($i = 0; $i < $count; $i++){
+				$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
+				$upbut = ($i == 0 ? we_button::create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
+				$downbut = ($i == ($count - 1) ? we_button::create_button("image:btn_direction_down", "", true, 21, 22, "", "", true) : we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
+				$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 
 				$content = '<table border="0" class="defaultgray" width="700">
 <tr>
@@ -381,12 +374,12 @@ class weShopVariants {
 		</td>
 	</tr>';
 
-				foreach ($variantFields as $realName => $attributes) {
+				foreach($variantFields as $realName => $attributes){
 
-					$fieldInfo = explode('_', $realName);// Verursacht Bug #4682
+					$fieldInfo = explode('_', $realName); // Verursacht Bug #4682
 					$type = $fieldInfo[0];
 					$realname = $fieldInfo[1];
-					if (preg_match('/(.+?)_(.*)/',$realName,$regs) ){//und hier der fix #4682
+					if(preg_match('/(.+?)_(.*)/', $realName, $regs)){//und hier der fix #4682
 						$type = $regs[1];
 						$realname = $regs[2];
 					}
@@ -399,33 +392,30 @@ class weShopVariants {
 						<td>' . $model->getFieldHTML($name, $type, $attributes, true, true) . '</td>
 						</tr>
 						<tr>
-							<td>' . getPixel(1,8) . '</td>
+							<td>' . we_html_tools::getPixel(1, 8) . '</td>
 						</tr>
 					';
 				}
 				$content .= '</table>';
-				array_push($parts, array(	'headline'=>'',
-											'html' => $content,
-											'space' => 0
-									)
+				array_push($parts, array('headline' => '',
+					'html' => $content,
+					'space' => 0
+					)
 				);
 			}
 		}
-		$plusBut = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','".($i)."');");
+		$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
 		$content = $plusBut;
 
-		array_push($parts, array(	'headline'=>'',
-									'html' => $content,
-									'space' => 0
-								)
+		array_push($parts, array('headline' => '',
+			'html' => $content,
+			'space' => 0
+			)
 		);
 		return $parts;
 	}
 
-	function getVariantsEditorMultiBoxArray($model) {
-
-		$we_button = new we_button();
-
+	function getVariantsEditorMultiBoxArray($model){
 		$variationFields = $model->getVariantFields();
 
 		$count = weShopVariants::getNumberOfVariants($model);
@@ -434,14 +424,14 @@ class weShopVariants {
 		$ret = '';
 		$parts = array();
 
-		if ($count > 0) {
+		if($count > 0){
 
-			for ($i=0; $i<$count; $i++) {
-				$plusBut = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','".($i)."');",true,40);
-				$upbut   = ($i == 0 ? $we_button->create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','".($i)."');"));
-				$downbut = ($i == ($count-1) ? $we_button->create_button("image:btn_direction_down", "", true, 21, 22, "", "", true): $we_button->create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','".($i)."');"));
-				$trashbut   = $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','".($i)."');",true,30);
-				$previewBut = $we_button->create_button("image:btn_function_view", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','".($model->getElement(WE_SHOP_VARIANTS_PREFIX . $i))."');",true,30);
+			for($i = 0; $i < $count; $i++){
+				$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
+				$upbut = ($i == 0 ? we_button::create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
+				$downbut = ($i == ($count - 1) ? we_button::create_button("image:btn_direction_down", "", true, 21, 22, "", "", true) : we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
+				$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
+				$previewBut = we_button::create_button("image:btn_function_view", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(WE_SHOP_VARIANTS_PREFIX . $i)) . "');", true, 30);
 
 				$content = '<table border="0" class="defaultgray" width="700">
 <tr>
@@ -463,7 +453,7 @@ class weShopVariants {
 		</td>
 	</tr>';
 
-				foreach ($variationFields as $name => $fieldInformation) {
+				foreach($variationFields as $name => $fieldInformation){
 
 					$fieldInformation['attributes']['name'] = WE_SHOP_VARIANTS_PREFIX . $i . '_' . $fieldInformation['attributes']['name'];
 					$content .= '<tr>';
@@ -477,39 +467,39 @@ class weShopVariants {
 				}
 				$content .= '</table>';
 
-				array_push($parts, array(	'headline'=>'',
-											'html' => $content,
-											'space' => 0
-									)
+				array_push($parts, array('headline' => '',
+					'html' => $content,
+					'space' => 0
+					)
 				);
 			}
 		}
-		$plusBut = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','".($i)."');");
+		$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
 		$content = $plusBut;
 
-		array_push($parts, array(	'headline'=>'',
-									'html' => $content,
-									'space' => 0
-								)
+		array_push($parts, array('headline' => '',
+			'html' => $content,
+			'space' => 0
+			)
 		);
 		return $parts;
 	}
 
-	function useVariant(&$model, $name) {
+	static function useVariant(&$model, $name){
 
 		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
 		$model->Variant = $name;
 
-		for ($i=0; $i<sizeof($variantDatArray); $i++) {
+		for($i = 0; $i < sizeof($variantDatArray); $i++){
 
 			$variant = $variantDatArray[$i];
-			if (is_array($variant)) {
-				foreach ($variant as $variantName => $variantData) {
-	
-					if ($variantName == $name) {
-	
-						foreach ($variantData as $elementName => $elementData) {
+			if(is_array($variant)){
+				foreach($variant as $variantName => $variantData){
+
+					if($variantName == $name){
+
+						foreach($variantData as $elementName => $elementData){
 							$model->elements[$elementName] = $elementData;
 						}
 					}
@@ -518,7 +508,6 @@ class weShopVariants {
 		}
 	}
 
-
 	/**
 	 * This function sets variant data for serialised document in the shopping basket
 	 * different function, due to performance reasons and the shop itself
@@ -526,25 +515,25 @@ class weShopVariants {
 	 * @param array $record
 	 * @param string $name
 	 */
-	function useVariantForShop(&$record, $name) {
+	function useVariantForShop(&$record, $name){
 
-		if (isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])) {
+		if(isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 
 			$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
 
-			for ($i=0; $i<sizeof($variantDatArray); $i++) {
+			for($i = 0; $i < sizeof($variantDatArray); $i++){
 
 				$variant = $variantDatArray[$i];
 
-				foreach ($variant as $variantName => $variantData) {
+				foreach($variant as $variantName => $variantData){
 
-					if ($variantName == $name) {
+					if($variantName == $name){
 
-						foreach ($variantData as $elementName => $elementData) {
+						foreach($variantData as $elementName => $elementData){
 
-							if ($elementData['type'] == 'img') {
+							if($elementData['type'] == 'img'){
 								$record[$elementName] = $elementData['bdid'];
-							} else {
+							} else{
 								$record[$elementName] = $elementData['dat'];
 							}
 						}
@@ -562,27 +551,27 @@ class weShopVariants {
 	 * @param string $name
 	 * @param we_objectFile $model
 	 */
-	function useVariantForShopObject(&$record, $name, $model) {
+	function useVariantForShopObject(&$record, $name, $model){
 
 
-		if (isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])) {
+		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 
 			$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			for ($i=0; $i<sizeof($variantDatArray); $i++) {
+			for($i = 0; $i < sizeof($variantDatArray); $i++){
 
 				$variant = $variantDatArray[$i];
 
-				foreach ($variant as $variantName => $variantData) {
+				foreach($variant as $variantName => $variantData){
 
-					if ($variantName == $name) {
+					if($variantName == $name){
 
-						foreach ($variantData as $elementName => $elementData) {
+						foreach($variantData as $elementName => $elementData){
 
 							// fields have the prefix we_
-							if ($elementData['type'] == 'img') {
+							if($elementData['type'] == 'img'){
 								$record["we_$elementName"] = isset($elementData['bdid']) ? $elementData['bdid'] : '';
-							} else {
+							} else{
 								$record["we_$elementName"] = isset($elementData['dat']) ? $elementData['dat'] : '';
 							}
 						}
@@ -592,56 +581,64 @@ class weShopVariants {
 		}
 	}
 
-	function getVariantData($model, $defaultname) {
+	function getVariantData($model, $defaultname){
 
-		if (isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])) {
+		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 
 			// add default data to listview
 			$elements = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 			//this elemets contains only the variant fields, not the non-variant fields of the object
-			
+
 			$newPos = sizeof($elements);
 
-			if($newPos>0) {
+			if($newPos > 0){
 
 				$elemdata = $elements[0];
-				if (is_array($elemdata) && $defaultname!=''){
-					if (strpos($defaultname,'FIRST')===false){$noFirst = true;} else {$noFirst = false;}
-					foreach ( $elemdata as $name => $varArr) {
-	
-						foreach ($varArr as $key => $fieldArr) {
-	
-							if (isset($model->elements[$key])) {
-								if ($noFirst) {$elements[$newPos][$defaultname][$key] = $model->elements[$key];} 
-								else {$elementF[$defaultname][$key] = $model->elements[$key];}
+				if(is_array($elemdata) && $defaultname != ''){
+					if(strpos($defaultname, 'FIRST') === false){
+						$noFirst = true;
+					} else{
+						$noFirst = false;
+					}
+					foreach($elemdata as $name => $varArr){
+
+						foreach($varArr as $key => $fieldArr){
+
+							if(isset($model->elements[$key])){
+								if($noFirst){
+									$elements[$newPos][$defaultname][$key] = $model->elements[$key];
+								} else{
+									$elementF[$defaultname][$key] = $model->elements[$key];
+								}
 							}
 						}
 					}
-					if (!$noFirst) {array_unshift($elements,$elementF);}
+					if(!$noFirst){
+						array_unshift($elements, $elementF);
+					}
 				}
-
 			}
 			// attemot to add the other fields
-			$modelelemets = $model->elements;//get a copy of the non variant fields
+			$modelelemets = $model->elements; //get a copy of the non variant fields
 			unset($modelelemets[WE_SHOP_VARIANTS_ELEMENT_NAME]); // get rid of some keys
-			foreach ($modelelemets as $key => $value){
-				if( strpos($key,WE_SHOP_VARIANTS_PREFIX) !== false &&  strpos($key,WE_SHOP_VARIANTS_PREFIX)==0){
+			foreach($modelelemets as $key => $value){
+				if(strpos($key, WE_SHOP_VARIANTS_PREFIX) !== false && strpos($key, WE_SHOP_VARIANTS_PREFIX) == 0){
 					unset($modelelemets[$key]);
-				}	
+				}
 			}
-			foreach ($elements as $name => &$varArr){//now add the elements
-				foreach ($varArr as $key => &$fieldArr){
-					$fieldArr=array_merge($modelelemets,$fieldArr);
-				}			
+			foreach($elements as $name => &$varArr){//now add the elements
+				foreach($varArr as $key => &$fieldArr){
+					$fieldArr = array_merge($modelelemets, $fieldArr);
+				}
 			}
 			//
 			return $elements;
-
-		} else {
+		} else{
 
 			return array();
 		}
-
 	}
+
 }
+
 ?>

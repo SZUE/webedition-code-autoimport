@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +21,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+ 
+ 
+function we_parse_tag_title($attribs, $content){
+	return '<?php printElement('.we_tag_tagParser::printTag('title',$attribs,$content,true).');?>';
+} 
 
 function we_tag_title($attribs, $content){
-	$htmlspecialchars = we_getTagAttribute('htmlspecialchars', $attribs, '', true);
-	$prefix=we_getTagAttribute('prefix', $attribs, '');
-	$suffix=we_getTagAttribute('suffix', $attribs, '');
-	$delimiter=we_getTagAttribute('delimiter', $attribs, '');
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+	$prefix=weTag_getAttribute('prefix', $attribs);
+	$suffix=weTag_getAttribute('suffix', $attribs);
+	$delimiter=weTag_getAttribute('delimiter', $attribs);
 
 	$attribs = removeAttribs($attribs, array('htmlspecialchars','prefix','suffix','delimiter'));
 	if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition) { //	normally meta tags are edited on property page

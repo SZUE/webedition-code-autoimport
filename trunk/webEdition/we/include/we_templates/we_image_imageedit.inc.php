@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,74 +21,63 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define("WE_EDIT_IMAGE", true);
 
-define("WE_EDIT_IMAGE",true);
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+we_html_tools::htmlTop();
 
-htmlTop();
-
-if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doImage_convert"){
-	print '<script language="JavaScript" type="text/javascript">parent.frames[0].we_setPath("'.$we_doc->Path.'","' . $we_doc->Text . '");</script>'."\n";
+if(isset($_REQUEST['we_cmd'][0]) && substr($_REQUEST['we_cmd'][0], 0, 15) == "doImage_convert"){
+	print '<script  type="text/javascript">parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");</script>' . "\n";
 }
 
-?>
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-
-<?php
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
-
-	print STYLESHEET;
-
+print STYLESHEET;
 ?>
 </head>
 
 <body class="weEditorBody" style="padding:20px;">
 
 	<form name="we_form" method="post" onsubmit="return false;">
-		<?php $we_doc->pHiddenTrans(); ?>
-		<?php
-				$_headline = $GLOBALS["l_we_class"]["image"];
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+<?php
+$we_doc->pHiddenTrans();
+$_headline = g_l('weClass', "[image]");
 
-				$_gdtype = $we_doc->getGDType();
+$_gdtype = $we_doc->getGDType();
 
-				$editselect = '<select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\''.$we_transaction.'\');}this.selectedIndex=0"'.(($we_doc->getElement("data") && we_image_edit::is_imagetype_read_supported($_gdtype) && we_image_edit::gd_version() > 0) ? "" : ' disabled="disabled"').'>
-<option value="">'.$l_we_class["edit"].'</option>
-<option value="image_resize">'.$l_we_class["resize"].'...</option>
-<option value="image_rotate">'.$l_we_class["rotate"].'...</option>
-<option value="image_crop">'.$l_we_class["crop"].'...</option>
-<option value="" disabled="disabled" style="color:grey">'.$l_we_class["convert"].'</option>
-'.((in_array("jpg", we_image_edit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;'.$l_we_class["convert_jpg"].'...</option>' : '').'
-'.(($_gdtype != "gif" && in_array("gif", we_image_edit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;'.$l_we_class["convert_gif"].'</option>' : '').'
-'.(($_gdtype != "png" && in_array("png", we_image_edit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;'.$l_we_class["convert_png"].'</option>' : '').'
+$editselect = '<select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_image_edit::is_imagetype_read_supported($_gdtype) && we_image_edit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+<option value="">' . g_l('weClass', "[edit]") . '</option>
+<option value="image_resize">' . g_l('weClass', "[resize]") . '...</option>
+<option value="image_rotate">' . g_l('weClass', "[rotate]") . '...</option>
+<option value="image_crop">' . g_l('weClass', "[crop]") . '...</option>
+<option value="" disabled="disabled" style="color:grey">' . g_l('weClass', "[convert]") . '</option>
+' . ((in_array("jpg", we_image_edit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;' . g_l('weClass', "[convert_jpg]") . '...</option>' : '') . '
+' . (($_gdtype != "gif" && in_array("gif", we_image_edit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;' . g_l('weClass', "[convert_gif]") . '</option>' : '') . '
+' . (($_gdtype != "png" && in_array("png", we_image_edit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;' . g_l('weClass', "[convert_png]") . '</option>' : '') . '
 </select>';
-				$_html = '<table cellpadding="0" cellspacing="0" border="0">
+$_html = '<table cellpadding="0" cellspacing="0" border="0">
 ';
-				if($we_doc->EditPageNr==15) {
-					$_html .= '<tr>
+if($we_doc->EditPageNr == 15){
+	$_html .= '<tr>
 								<td>' . $editselect . '</td>
 							</tr>
 							<tr>
-									<td>' . getPixel(2, 10) . '</td>
+									<td>' . we_html_tools::getPixel(2, 10) . '</td>
 							</tr>
 							<tr>
-									<td>' . getPixel(2, 10) . '</td>
+									<td>' . we_html_tools::getPixel(2, 10) . '</td>
 							</tr>
 							';
-				}
+}
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/crop.inc.php");
-			$_html .= '
+$_html .= '
                         <tr>
-							<td>' . $we_doc->getHtml(true) .  '</td>
+							<td>' . $we_doc->getHtml(true) . '</td>
 						</tr>
 
 			';
 
-			$_html .= '</table>';
+$_html .= '</table>';
 
-			print $_html;
+print $_html;

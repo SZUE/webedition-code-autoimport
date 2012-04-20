@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,13 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-define("CSS_DIR", "/webEdition/css/");
-define("SCRIPT_BUTTONS_ONLY", '<script type="text/javascript" src="' . JS_DIR . 'weButton.js"></script>');
-define("STYLESHEET_BUTTONS_ONLY", '<link href="' . CSS_DIR . 'we_button.css" rel="styleSheet" type="text/css" />');
-define(
-		'STYLESHEET',
-		'<link href="' . CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '" rel="styleSheet" type="text/css" />' . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
-define(
-		'STYLESHEET_SCRIPT',
-		'<link href="' . CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '" rel="styleSheet" type="text/css" />' . STYLESHEET_BUTTONS_ONLY);
+define('CSS_DIR', '/webEdition/css/');
+define('SCRIPT_BUTTONS_ONLY', we_html_element::jsScript(JS_DIR . 'weButton.js'));
+define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css'));
+define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php').STYLESHEET_BUTTONS_ONLY);
+define('STYLESHEET', STYLESHEET_SCRIPT. SCRIPT_BUTTONS_ONLY);

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,15 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$we_doc = new we_imageDocument();
+$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][1]]);
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
-
-$we_doc=new we_imageDocument();
-$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][1]]);
-
-header("Content-Type: ".$we_doc->getElement("type"));
+header("Content-Type: " . $we_doc->getElement("type"));
 $dataPath = $we_doc->getElement("data");
 readfile($dataPath);
-

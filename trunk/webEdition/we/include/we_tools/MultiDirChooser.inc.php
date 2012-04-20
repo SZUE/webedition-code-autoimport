@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class MultiDirChooser{
 
@@ -44,7 +44,7 @@ class MultiDirChooser{
 	var $extraDelFn = "";
 	var $thirdDelPar = "";
 
-	function MultiDirChooser($width,$ids,$cmd_del,$addbut,$ws="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont",$thirdDelPar="",$extraDelFn=""){
+	function __construct($width,$ids,$cmd_del,$addbut,$ws="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont",$thirdDelPar="",$extraDelFn=""){
 		$this->db = new DB_WE();
 		$this->db2 = new DB_WE();
 		$this->width = $width;
@@ -67,14 +67,13 @@ class MultiDirChooser{
 	}
 
 	function getLine($lineNr){
-		$we_button = new we_button();
 		switch($lineNr){
 			case 0:
 				return '<tr>
 	<td><img src="'.ICON_DIR.$this->db->f($this->fieldsArr[0]).'" width="16" height="18" /></td>
 	<td class="'.$this->css.'">'.$this->db->f($this->fieldsArr[1]).'</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','".$this->db->f("ID")."'".(strlen($this->thirdDelPar) ? ",'".$this->thirdDelPar."'" : "").");")  :
+			we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','".$this->db->f("ID")."'".(strlen($this->thirdDelPar) ? ",'".$this->thirdDelPar."'" : "").");")  :
 			"").'</td>
 </tr>
 ';
@@ -83,15 +82,13 @@ class MultiDirChooser{
 
 	function getRootLine($lineNr){
 
-		$we_button = new we_button();
-
 		switch($lineNr){
 			case 0:
 				return '<tr>
 	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18" /></td>
 	<td class="'.$this->css.'">/</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") :
+			we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") :
 			"").'</td>
 </tr>
 ';
@@ -111,7 +108,7 @@ class MultiDirChooser{
 
 	function get(){
 		$out = '<table border="0" cellpadding="0" cellspacing="0" width="'.abs($this->width-20).'">
-	<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(abs($this->width-66),2).'</td><td>'.getPixel(26,2).'</td></tr>
+	<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(abs($this->width-66),2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>
 ';
 
 		$this->nr=0;
@@ -119,7 +116,7 @@ class MultiDirChooser{
 
 		if(sizeof($idArr)){
 			foreach($idArr as $id){
-				$this->db->query("SELECT ID,".$this->fields." FROM ".$this->db->escape($this->table)." WHERE ID ='".abs($id)."'");
+				$this->db->query("SELECT ID,".$this->fields." FROM ".$this->db->escape($this->table)." WHERE ID =".intval($id));
 				if($this->db->next_record()){
 					for($i=0;$i<$this->lines;$i++){
 						$out .= $this->getLine($i);
@@ -132,14 +129,14 @@ class MultiDirChooser{
 				$this->nr++;
 			}
 		}
-		$out .= '	<tr><td>'.getPixel(20,sizeof($idArr) ? 2 : 12).'</td><td>'.getPixel($this->width-66,2).'</td><td>'.getPixel(26,2).'</td></tr>
+		$out .= '	<tr><td>'.we_html_tools::getPixel(20,sizeof($idArr) ? 2 : 12).'</td><td>'.we_html_tools::getPixel($this->width-66,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>
 </table>
 ';
 
 
 			return '<table border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'">
 <tr><td><div style="background-color:white;" class="multichooser">'.$out.'</div></td></tr>
-'.($this->addbut ? ('<tr><td>'.getPixel(2,5).'</td></tr>
+'.($this->addbut ? ('<tr><td>'.we_html_tools::getPixel(2,5).'</td></tr>
 <tr><td align="right">'.$this->addbut.'</td></tr>') : '').'</table>'."\n";
 
 

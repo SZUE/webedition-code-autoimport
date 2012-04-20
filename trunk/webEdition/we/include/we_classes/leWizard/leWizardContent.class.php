@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,51 +22,30 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardContent {
+class leWizardContent{
 
 	var $id = "";
 	var $headlineId = "";
 	var $descriptionId = "";
 
-	function __construct($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription") {
+	function __construct($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription"){
 
 		$this->leWizardContent($id, $headlineId, $descriptionId);
-
 	}
 
-
-	function leWizardContent($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription") {
+	function leWizardContent($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription"){
 
 		$this->id = $id;
 		$this->headlineId = $headlineId;
 		$this->descriptionId = $descriptionId;
-
 	}
 
-	function getCSS() {
+	function getCSS(){
+		$FontSizeH1 = (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px");
+		$LineHeightH1 = (we_base_browserDetect::isMAC()) ? "17px" : ((we_base_browserDetect::isUNIX()) ? "19px" : "18px");
 
-
-		if(eregi("X11",$_SERVER["HTTP_USER_AGENT"])) {
-
-			$System = "X11";
-		} else if(eregi("Win",$_SERVER["HTTP_USER_AGENT"])) {
-			$System = "WIN";
-
-		} else if(eregi("Mac",$_SERVER["HTTP_USER_AGENT"])) {
-			$System = "MAC";
-
-		} else {
-			$System = "UNKNOWN";
-
-		}
-
-		$FontSizeH1 = ($System == "MAC") ? "11px" : (($System == "X11") ? "13px" : "12px");
-		$LineHeightH1 = ($System == "MAC") ? "17px" : (($System == "X11") ? "19px" : "18px");
-
-		$FontSize = ($System == "MAC") ? "9px" : (($System == "X11") ? "11px" : "10px");
-		$LineHeight = ($System == "MAC") ? "15px" : (($System == "X11") ? "17px" : "16px");
+		$FontSize = (we_base_browserDetect::isMAC()) ? "9px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "10px");
+		$LineHeight = (we_base_browserDetect::isMAC()) ? "15px" : ((we_base_browserDetect::isUNIX()) ? "17px" : "16px");
 
 		$IMAGE_DIR = IMAGE_DIR;
 
@@ -103,14 +87,12 @@ class leWizardContent {
 EOF;
 
 		return $CSS;
-
 	}
 
-
-	function getJSCode() {
+	function getJSCode(){
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardContent() {}
 
 leWizardContent.appendElement = function(element) {
@@ -161,16 +143,15 @@ leWizardContent.scrollDown = function() {
 	document.getElementById("{$this->id}").scrollTop = 100000;
 
 }
+//-->
 </script>
 
 EOF;
 
 		return $JS;
-
 	}
 
-
-	function get() {
+	function get(){
 
 		$Html = <<<EOF
 <div id="{$this->id}">
@@ -179,11 +160,9 @@ EOF;
 EOF;
 
 		return $Html;
-
 	}
 
-
-	function getDescription() {
+	function getDescription(){
 
 		$Html = <<<EOF
 <div id="{$this->descriptionId}">
@@ -192,6 +171,6 @@ EOF;
 EOF;
 
 		return $Html;
-
 	}
+
 }

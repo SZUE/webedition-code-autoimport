@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,50 +22,44 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weToolModel extends weModelBase{
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
-
-class weToolModel extends weModelBase {
-
-	var $ID=0;
+	var $ID = 0;
 	var $Text;
-	var $ParentID=0;
+	var $ParentID = 0;
 	var $Path;
 	var $Icon;
 	var $IsFolder;
-
 	var $ModelClassName = 'weToolModel';
 	var $toolName = '';
-
 	var $requiredFields = array();
 
-	function weToolModel($table){
+	function __construct($table){
 
-		weModelBase::weModelBase($table);
-
+		parent::__construct($table);
 	}
 
-	function saveInSession() {
+	function saveInSession(){
 		$_SESSION[$this->toolName . '_session'] = serialize($this);
 	}
 
 	function clearSessionVars(){
 		if(!empty($this->toolName) && isset($_SESSION[$this->toolName . '_session'])){
-				unset($_SESSION[$this->toolName . '_session']);
-			}
+			unset($_SESSION[$this->toolName . '_session']);
+		}
 	}
 
-	function filenameNotValid() {
+	function filenameNotValid(){
 		return false;
 	}
 
-	function isRequiredField($fieldname) {
-		return in_array($fieldname,$this->requiredFields);
+	function isRequiredField($fieldname){
+		return in_array($fieldname, $this->requiredFields);
 	}
 
-	function hasRequiredFields(&$failed) {
-		foreach ($this->requiredFields as $_req) {
-			if(empty($this->$_req)) {
+	function hasRequiredFields(&$failed){
+		foreach($this->requiredFields as $_req){
+			if(empty($this->$_req)){
 				$failed[] = $_req;
 			}
 		}
@@ -68,30 +67,33 @@ class weToolModel extends weModelBase {
 	}
 
 	function setPath(){
-		$ppath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . abs($this->ParentID) . ';','Path',$this->db);
-		$this->Path=$ppath."/".$this->Text;
+		$ppath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ParentID) . ';', 'Path', $this->db);
+		$this->Path = $ppath . "/" . $this->Text;
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM '.$this->db->escape($this->table).' WHERE Path = \''.$this->db->escape($path).'\' AND ID <> \''.abs($this->ID).'\';');
-		if($this->db->next_record()) return true;
-		else return false;
+		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID != ' . intval($this->ID));
+		if($this->db->next_record())
+			return true;
+		else
+			return false;
 	}
 
 	function isSelf(){
-		if($this->ID) {
+		if($this->ID){
 			$_count = 0;
 			$_parentid = $this->ParentID;
-			while($_parentid!=0) {
-				if($_parentid==$this->ID) return true;
-				$_parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) .' WHERE ID=' . abs($_parentid),'ParentID',$this->db);
+			while($_parentid != 0) {
+				if($_parentid == $this->ID)
+					return true;
+				$_parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
 				$_count++;
-				if($_count==9999) {
+				if($_count == 9999){
 					return false;
 				}
 			}
 			return false;
-		} else {
+		} else{
 			return false;
 		}
 	}
@@ -100,60 +102,62 @@ class weToolModel extends weModelBase {
 		return true;
 	}
 
-	function evalPath($id=0) {
-		$db_tmp=new DB_WE();
+	function evalPath($id=0){
+		$db_tmp = new DB_WE();
 		$path = '';
-		if($id==0) {
-			$id=$this->ParentID;
-			$path=$this->Text;
+		if($id == 0){
+			$id = $this->ParentID;
+			$path = $this->Text;
 		}
 
-		$foo=getHash("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID='".abs($id)."';",$db_tmp);
-		$path='/'. (isset($foo['Text']) ? $foo['Text'] : '') .$path;
+		$foo = getHash("SELECT Text,ParentID FROM " . $db_tmp->escape($this->table) . " WHERE ID=" . intval($id), $db_tmp);
+		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
-		$pid=isset($foo['ParentID']) ? $foo['ParentID'] : '';
+		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-				$db_tmp->query("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID='".abs($pid)."'");
-				while($db_tmp->next_record()) {
-					$path = '/' . $db_tmp->f('Text') . $path;
-					$pid = $db_tmp->f('ParentID');
-				}
+			$db_tmp->query("SELECT Text,ParentID FROM " . $db_tmp->escape($this->table) . " WHERE ID='" . intval($pid));
+			while($db_tmp->next_record()) {
+				$path = '/' . $db_tmp->f('Text') . $path;
+				$pid = $db_tmp->f('ParentID');
+			}
 		}
 		return $path;
 	}
 
-	function updateChildPaths($oldpath) {
-		if($this->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->Path) {
+	function updateChildPaths($oldpath){
+		if($this->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->Path){
 			$db_tmp = new DB_WE();
-			$this->db->query('SELECT ID FROM ' . $db_tmp->escape($this->table) . ' WHERE Path LIKE \'' . $db_tmp->escape($oldpath) . '%\' AND ID<>\''.abs($this->ID).'\';');
+			$this->db->query('SELECT ID FROM ' . $db_tmp->escape($this->table) . ' WHERE Path LIKE \'' . $db_tmp->escape($oldpath) . '%\' AND ID!=' . intval($this->ID));
 			while($this->db->next_record()) {
-				$db_tmp->query('UPDATE ' . $db_tmp->escape($this->table) . ' SET Path=\'' . $db_tmp->escape($this->evalPath($this->db->f("ID"))) . '\' WHERE ID=\'' . abs($this->db->f("ID")) . '\';');
+				$db_tmp->query('UPDATE ' . $db_tmp->escape($this->table) . ' SET Path=\'' . $db_tmp->escape($this->evalPath($this->db->f("ID"))) . '\' WHERE ID=' . intval($this->db->f("ID")));
 			}
 		}
 	}
 
-	function setIsFolder($value) {
+	function setIsFolder($value){
 		$this->IsFolder = $value;
-		if($value) {
+		if($value){
 			$this->Icon = 'folder.gif';
-		} else {
+		} else{
 			$this->Icon = 'link.gif';
 		}
 	}
 
 	function deleteChilds(){
-		$this->db->query('SELECT ID FROM '. $this->db->escape($this->table) . ' WHERE ParentID="'.abs($this->ID).'"');
-		while($this->db->next_record()){
-			$child=new $this->ModelClassName($this->db->f("ID"));
+		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->ID));
+		while($this->db->next_record()) {
+			$child = new $this->ModelClassName($this->db->f("ID"));
 			$child->delete();
 		}
 	}
 
-	function delete() {
+	function delete(){
 
-		if (!$this->ID) return false;
+		if(!$this->ID)
+			return false;
 
-		if($this->IsFolder) $this->deleteChilds();
+		if($this->IsFolder)
+			$this->deleteChilds();
 
 		parent::delete();
 

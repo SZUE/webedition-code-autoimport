@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,32 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_util.inc.php");
-
-function we_tag_sum($attribs,$content){
-
-	$foo = attributFehltError($attribs,"name","sum");if($foo) return $foo;
-	$name = we_getTagAttribute("name",$attribs);
-	$num_format = we_getTagAttribute("num_format",$attribs);
-	if(isset($GLOBALS["summe"][$name])){
-    	$result=we_util::std_numberformat($GLOBALS["summe"][$name]);
-    } else {
-        $result = 0;
-    }
-
-	if(isset($attribs["num_format"])){
-    	if($attribs["num_format"]=="german"){
-		    $result=number_format($result,2,",",".");
-	    }else if($attribs["num_format"]=="french"){
-    		$result=number_format($result,2,","," ");
-    	}else if($attribs["num_format"]=="english"){
-		    $result=number_format($result,2,".","");
-		}else if($attribs["num_format"]=="swiss"){
-	    	$result=number_format($result,2,".","'");
-	    }
+function we_tag_sum($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+		return $foo;
 	}
-	return $result;
+	$name = weTag_getAttribute("name", $attribs);
+	$num_format = weTag_getAttribute("num_format", $attribs);
+	$result = (isset($GLOBALS["summe"][$name]) ? we_util::std_numberformat($GLOBALS["summe"][$name]) : 0);
 
+	switch($num_format){
+		case "german":
+			return number_format($result, 2, ",", ".");
+		case "french":
+			return number_format($result, 2, ",", " ");
+		case "english":
+			return number_format($result, 2, ".", "");
+		case "swiss":
+			return number_format($result, 2, ".", "'");
+		default:
+			return $result;
+	}
 }

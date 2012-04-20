@@ -1,7 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,29 +21,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-protect();
-htmlTop();
-print we_htmlElement::jsElement('
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+we_html_tools::htmlTop();
+print we_html_element::jsElement('
 	function toggleBusy(){
 	}
 	var makeNewEntry = 0;
 	var publishWhenSave = 0;
 	var weModuleWindow = true;
 ');
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
-if(isset($_REQUEST['mod']) && !isset($mod)) {
+print we_html_element::jsScript(JS_DIR . "keyListener.js");
+if(isset($_REQUEST['mod']) && !isset($mod)){
 	$mod = $_REQUEST['mod'];
 }
 ?>
-	</head>
-	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">
-		<frame src="<?php print WE_MODULE_PATH; ?>navi.php?mod=<?php echo $mod ?>" name="navi" noresize scrolling="no">
-		<frame src="<?php print WE_MODULE_PATH; ?>show.php?mod=<?php echo $mod . (empty($_REQUEST["we_cmd"][1]) ? '' : "&msg_param=" . $_REQUEST["we_cmd"][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''); ?>" name="content" noresize scrolling="no">
-	</frameset><noframes></noframes>
-	<body bgcolor="#ffffff"></body>
+</head>
+<frameset rows="26,*" border="0" framespacing="0" frameborder="no">
+	<frame src="<?php print WE_MODULES_DIR; ?>navi.php?mod=<?php echo $mod ?>" name="navi" noresize scrolling="no"/>
+	<frame src="<?php print WE_MODULES_DIR; ?>show.php?mod=<?php echo $mod . (empty($_REQUEST['we_cmd'][1]) ? '' : "&msg_param=" . $_REQUEST['we_cmd'][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''); ?>" name="content" noresize scrolling="no"/>
+</frameset><noframes></noframes>
+<body bgcolor="#ffffff"></body>
 </html>

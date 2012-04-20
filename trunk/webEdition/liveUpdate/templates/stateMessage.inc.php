@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +28,9 @@
  */
 
 if ($this->State == 'true') {
-	$description = $GLOBALS['l_liveUpdate']['state']['descriptionTrue'];
+	$description = g_l('liveUpdate','[state][descriptionTrue]');
 } else {
-	$description = $GLOBALS['l_liveUpdate']['state']['descriptionError'];
+	$description = g_l('liveUpdate','[state][descriptionError]');
 }
 
 
@@ -40,6 +44,4 @@ $content = '
 </div>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['state']['headline'], $content);
-
-?>
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[state][headline]'), $content);

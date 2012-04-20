@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,30 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect();
 
+we_html_tools::htmlTop();
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
-protect ();
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-htmlTop ();
-
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_doclist/doclistView.class.inc.php");
-
-echo '<script language="JavaScript" type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
-
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
-
-$headCal = we_htmlElement::linkElement ( array ("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar-setup.js" ) );
+$headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+	we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 echo $headCal;
 
 $_view = new doclistView ( );
 
-echo $_view->getSearchJS ();
+echo $_view->getSearchJS();
 
 print STYLESHEET;
 
@@ -52,14 +54,14 @@ echo '<div id="mouseOverDivs_doclist"></div>';
 
 echo '<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
 
-$_parts = array ( );
-$_parts [] = array ("html" => $_view->getSearchDialog () );
-$content = $_view->searchProperties ();
-$headline = $_view->makeHeadLines ();
+$_parts = array();
+$_parts [] = array("html" => $_view->getSearchDialog());
+$content = $_view->searchProperties();
+$headline = $_view->makeHeadLines();
 $foundItems = (isset($_SESSION['weSearch']['foundItems'])) ? $_SESSION['weSearch']['foundItems'] : 0;
-$_parts [] = array ("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop ( $foundItems ) . "</div>" . searchtoolView::tblList ( $content, $headline, "doclist" ) . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom ( $foundItems ) . "</div>" );
+$_parts [] = array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . searchtoolView::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>");
 
-echo $_view->getHTMLforDoclist ( $_parts );
+echo $_view->getHTMLforDoclist($_parts);
 
 echo '
 </form>

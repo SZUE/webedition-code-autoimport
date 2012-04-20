@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,39 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolTreeDataSource.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/searchtool.inc.php');
-
-class searchtoolTreeDataSource extends weToolTreeDataSource
-{
+class searchtoolTreeDataSource extends weToolTreeDataSource{
 
 	var $treeItems = array();
 
-	function searchtoolTreeDataSource($ds)
-	{
-		weToolTreeDataSource::weToolTreeDataSource($ds);
+	function __construct($ds){
+		parent::__construct($ds);
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = '')
-	{
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = $this->SourceName;
 		$openFolders = array();
 
-		if (isset($_SESSION["weSearch"]["modelidForTree"])) {
+		if(isset($_SESSION["weSearch"]["modelidForTree"])){
 			$id = $_SESSION["weSearch"]["modelidForTree"];
 			$pid = f("
         SELECT ParentID
         FROM " . $db->escape($table) . "
-        WHERE ID='".abs($id)."'", "ParentID", $db);
+        WHERE ID=" . intval($id), "ParentID", $db);
 			$openFolders[] = $pid;
-			while ($pid > 0) {
+			while($pid > 0) {
 				$pid = f("
           SELECT ParentID
-          FROM ".$db->escape($table)."
-          WHERE ID='" . abs($pid) . "'", "ParentID", $db);
+          FROM " . $db->escape($table) . "
+          WHERE ID=" . intval($pid), "ParentID", $db);
 				$openFolders[] = $pid;
 			}
 		}
@@ -57,44 +54,46 @@ class searchtoolTreeDataSource extends weToolTreeDataSource
 		$wsQuery = '';
 		$prevoffset = $offset - $segment;
 		$prevoffset = ($prevoffset < 0) ? 0 : $prevoffset;
-		if ($offset && $segment) {
+		if($offset && $segment){
 			$this->treeItems[] = array(
-
-					'icon' => 'arrowup.gif',
-					'id' => 'prev_' . $ParentID,
-					'parentid' => $ParentID,
-					'text' => 'display (' . $prevoffset . '-' . $offset . ')',
-					'contenttype' => 'arrowup',
-					'table' => $table,
-					'typ' => 'threedots',
-					'open' => 0,
-					'published' => 0,
-					'disabled' => 0,
-					'tooltip' => '',
-					'offset' => $prevoffset
+				'icon' => 'arrowup.gif',
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'table' => $table,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=".abs($ParentID)." " . $addWhere;
+		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
 
 		$db->query(
-				"SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT ".abs($offset).",".abs($segment).";" : ";"));
+			"SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";"));
 
-		while ($db->next_record()) {
-			if (($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined(
-					'OBJECT_TABLE') || !we_hasPerm('CAN_SEE_OBJECTFILES'))) {
-			} elseif (($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !we_hasPerm(
-					'CAN_SEE_DOCUMENTS')) {
-			} elseif (($db->f('Path') == '/Versionen' || $db->f('Path') == '/Versionen/Dokumente' || $db->f('Path') == '/Versionen/Objekte' || $db->f(
+		while($db->next_record()) {
+			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined(
+					'OBJECT_TABLE') || !we_hasPerm('CAN_SEE_OBJECTFILES'))){
+
+			} elseif(($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !we_hasPerm(
+					'CAN_SEE_DOCUMENTS')){
+
+			} elseif(($db->f('Path') == '/Versionen' || $db->f('Path') == '/Versionen/Dokumente' || $db->f('Path') == '/Versionen/Objekte' || $db->f(
 					'Path') == '/Versionen/Dokumente/gel�schte Dokumente' || $db->f('Path') == '/Versionen/Objekte/gel�schte Objekte') && !we_hasPerm(
-					'SEE_VERSIONS')) {
-			} else {
-				if (in_array($db->f('ID'), $openFolders))
+					'SEE_VERSIONS')){
+
+			} else{
+				if(in_array($db->f('ID'), $openFolders))
 					$OpenCloseStatus = 1;
 				else
 					$OpenCloseStatus = 0;
 
-				if ($db->f('IsFolder') == 1)
+				if($db->f('IsFolder') == 1)
 					$typ = array(
 						'typ' => 'group'
 					);
@@ -114,12 +113,10 @@ class searchtoolTreeDataSource extends weToolTreeDataSource
 
 				$fields = array();
 
-				foreach ($db->Record as $k => $v) {
-					if (!is_numeric($k))
+				foreach($db->Record as $k => $v){
+					if(!is_numeric($k))
 						$fields[strtolower($k)] = $v;
 				}
-
-				global $l_weSearch;
 
 				$_text = htmlspecialchars(searchtool::getLangText($db->f('Path'), $db->f('Text')));
 
@@ -127,31 +124,32 @@ class searchtoolTreeDataSource extends weToolTreeDataSource
 
 				$this->treeItems[] = array_merge($fields, $typ);
 
-				if ($typ['typ'] == "group" && $OpenCloseStatus == 1)
+				if($typ['typ'] == "group" && $OpenCloseStatus == 1)
 					$this->getItemsFromDB($db->f('ID'), 0, $segment);
 			}
 		}
 
-		$total = f("SELECT COUNT(*) as total FROM ".escape_sql_query($table)." $where;", 'total', $db);
+		$total = f('SELECT COUNT(1) as total FROM `' . escape_sql_query($table) . "` $where;", 'total', $db);
 		$nextoffset = $offset + $segment;
-		if ($segment && ($total > $nextoffset)) {
+		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(
-
-					'icon' => 'arrowdown.gif',
-					'id' => 'next_' . $ParentID,
-					'parentid' => $ParentID,
-					'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
-					'contenttype' => 'arrowdown',
-					'table' => $table,
-					'typ' => 'threedots',
-					'open' => 0,
-					'disabled' => 0,
-					'tooltip' => '',
-					'offset' => $nextoffset
+				'icon' => 'arrowdown.gif',
+				'id' => 'next_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => $table,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
 			);
 		}
 
 		return $this->treeItems;
 	}
+
 }
+
 ?>

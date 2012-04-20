@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +25,9 @@
 
 
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/perms/customer.inc.php");
-
 $perm_group_name="customer";
 
-$perm_group_title[$perm_group_name] = $l_perm["customer"]["perm_group_title"];
+$perm_group_title[$perm_group_name] = g_l('perms_customer',"[perm_group_title]");
 
 $perm_values[$perm_group_name] = array(
 	'NEW_CUSTOMER',
@@ -38,12 +40,11 @@ $perm_values[$perm_group_name] = array(
 	'CAN_CHANGE_DOCS_CUSTOMER');
 
 //	Here the array of the permission-titles is set.
-//	$perm_titles[$perm_group_name]["NAME OF PERMISSION"] = $l_perm[$perm_group_name]["NAME OF PERMISSION"]
 $perm_titles[$perm_group_name] = array();
 
 for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
 
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $l_perm[$perm_group_name][$perm_values[$perm_group_name][$i]];
+	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
 }
 
 $perm_defaults[$perm_group_name] = array(
@@ -55,4 +56,3 @@ $perm_defaults[$perm_group_name] = array(
 	'CUSTOMER_AUTOLOGINID_VISIBLE' => 0,
  	'CAN_EDIT_CUSTOMERFILTER' => 1,
  	'CAN_CHANGE_DOCS_CUSTOMER' => 1);
-?>

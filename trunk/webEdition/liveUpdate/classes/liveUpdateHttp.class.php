@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,26 +22,25 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class liveUpdateHttp{
 
-class liveUpdateHttp {
-
-	function getServerProtocol($addslashes=true) {
+	function getServerProtocol($addslashes = true){
 		return getServerProtocol($addslashes);
 	}
 
-	function connectFopen($server, $url, $parameters=array()) {
+	function connectFopen($server, $url, $parameters = array()){
 
 		// try fopen first
 		$parameterStr = '';
-		foreach ($parameters as $key => $value) {
+		foreach($parameters as $key => $value){
 			$parameterStr .= "$key=" . urlencode($value) . "&";
 		}
 
 		$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 		$response = false;
 
-		$fh = @fopen($address,"rb");
-		if($fh) {
+		$fh = @fopen($address, "rb");
+		if($fh){
 			$response = "";
 			while(!feof($fh)) {
 				$response .= fgets($fh, 1024);
@@ -46,84 +50,79 @@ class liveUpdateHttp {
 		return $response;
 	}
 
-	function connectProxy($server, $url, $parameters) {
-
-		global $error;
-
+	function connectProxy($server, $url, $parameters){
 		$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 		$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 		$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
 		$proxy_pass = defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
 
-		$response = @fsockopen($proxyhost, $proxyport, $errno, $errstr,20);
+		$response = @fsockopen($proxyhost, $proxyport, $errno, $errstr, 20);
 
-		if( !$response ){
+		if(!$response){
 
 			return false;
-
-		}else{
+		} else{
 
 			$parameterStr = '';
-			foreach ($parameters as $key => $value) {
+			foreach($parameters as $key => $value){
 				$parameterStr .= "$key=" . urlencode($value) . "&";
 			}
 
 			$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 
-			$realm = base64_encode($proxy_user.":".$proxy_pass);
+			$realm = base64_encode($proxy_user . ":" . $proxy_pass);
 
 			// send headers
 			fputs($response, "GET $address HTTP/1.0\r\n");
 			//fputs($response, "Proxy-Connection: Keep-Alive\r\n");
-			fputs($response, "User-Agent: PHP ".phpversion()."\r\n");
+			fputs($response, "User-Agent: PHP " . phpversion() . "\r\n");
 			fputs($response, "Pragma: no-cache\r\n");
-			if($proxy_user!=""){
+			if($proxy_user != ""){
 				fputs($response, "Proxy-authorization: Basic $realm\r\n");
 			}
 			fputs($response, "\r\n");
 
 			$zeile = "";
-			while(!feof($response)){
-				$zeile =$zeile.fread($response,4096);
+			while(!feof($response)) {
+				$zeile = $zeile . fread($response, 4096);
 			}
 			fclose($response);
 
-			return substr($zeile,strpos($zeile,"\r\n\r\n")+4);
+			return substr($zeile, strpos($zeile, "\r\n\r\n") + 4);
 		}
-
 	}
 
-	function getCurlHttpResponse($server, $url, $parameters) {
+	function getCurlHttpResponse($server, $url, $parameters){
 
 		$_address = $server . $url;
 
 		$_parameters = '';
-		foreach ($parameters as $key => $value) {
+		foreach($parameters as $key => $value){
 			$_parameters .= "$key=" . urlencode($value) . "&";
 		}
 
 		$session = curl_init();
-		curl_setopt($session,CURLOPT_URL,$_address);
-		curl_setopt($session, CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($session, CURLOPT_URL, $_address);
+		curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
 
-		if($_parameters!='') {
+		if($_parameters != ''){
 			curl_setopt($session, CURLOPT_POST, 1);
-			curl_setopt($session,CURLOPT_POSTFIELDS, $_parameters);
+			curl_setopt($session, CURLOPT_POSTFIELDS, $_parameters);
 		}
 
-		if (defined('WE_PROXYHOST') && WE_PROXYHOST != '') {
+		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
 
 			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
 			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : '80';
 			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
 			$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
 
-			if($_proxyhost!='') {
-				curl_setopt ($session, CURLOPT_PROXY, $_proxyhost . ":" . $_proxyport);
-				if($_proxy_user!='') {
+			if($_proxyhost != ''){
+				curl_setopt($session, CURLOPT_PROXY, $_proxyhost . ":" . $_proxyport);
+				if($_proxy_user != ''){
 					curl_setopt($session, CURLOPT_PROXYUSERPWD, $_proxy_user . ':' . $_proxy_pass);
 				}
-				curl_setopt ($session, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($session, CURLOPT_SSL_VERIFYPEER, FALSE);
 			}
 		}
 
@@ -132,16 +131,15 @@ class liveUpdateHttp {
 		curl_close($session);
 
 		return $_data;
-
 	}
 
-	function getHttpOption() {
+	function getHttpOption(){
 		if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
 			@ini_set('allow_url_fopen', '1');
 			if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
-				if(function_exists('curl_init')) {
-						return 'curl';
-				} else {
+				if(function_exists('curl_init')){
+					return 'curl';
+				} else{
 					return 'none';
 				}
 			}
@@ -149,24 +147,23 @@ class liveUpdateHttp {
 		return 'fopen';
 	}
 
-	function getHttpResponse($server, $url, $parameters=array()) {
+	function getHttpResponse($server, $url, $parameters = array()){
 
 		$_opt = liveUpdateHttp::getHttpOption();
 
-		if($_opt=='fopen') {
+		if($_opt == 'fopen'){
 			return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
-		} else if($_opt=='curl') {
+		} else if($_opt == 'curl'){
 			return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
-		} else {
+		} else{
 			return null; // return null otherwise php error
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 		}
-
 	}
 
-	function getFopenHttpResponse($server, $url, $parameters=array()) {
+	function getFopenHttpResponse($server, $url, $parameters = array()){
 
-		if (defined("WE_PROXYHOST") && WE_PROXYHOST != "") {
+		if(defined("WE_PROXYHOST") && WE_PROXYHOST != ""){
 
 			return liveUpdateHttp::connectProxy($server, $url, $parameters);
 		}
@@ -179,24 +176,24 @@ class liveUpdateHttp {
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm() {
+	function getServerSessionForm(){
 
 		$params = '';
-		foreach ($GLOBALS['LU_Variables'] as $LU_name => $LU_value) {
+		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 
-			if (is_array($LU_value)) {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(base64_encode( serialize($LU_value) )) . "\" />\n";
-			} else {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode( $LU_value ) . "\" />\n";
+			if(is_array($LU_value)){
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(base64_encode(serialize($LU_value))) . "\" />\n";
+			} else{
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode($LU_value) . "\" />\n";
 			}
 		}
 
-		$html = '<html>
+		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
 <head>
 	' . LIVEUPDATE_CSS . '
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="' . 'http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
+<form id="liveUpdateForm" action="http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
 	<input type="hidden" name="detail" value="' . $_REQUEST['detail'] . '" />
@@ -204,9 +201,8 @@ class liveUpdateHttp {
 </form>
 </body>
 </html>';
-
-		return $html;
 	}
+
 }
 
 ?>

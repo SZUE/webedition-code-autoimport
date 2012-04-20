@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,13 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/newsletter/weNewsletterBase.php");
-
 /**
-* Definition of WebEdition Newsletter Block
-*
-*/
+ * Definition of WebEdition Newsletter Block
+ *
+ */
 class weNewsletterGroup extends weNewsletterBase{
 
 	// properties start
@@ -36,147 +38,143 @@ class weNewsletterGroup extends weNewsletterBase{
 	var $SendAll;
 	var $Filter;
 	var $settings;
+	// properties end
 
-   // properties end
+	var $aFilter;
 
-   var $aFilter;
+	/*	 * *****************************************************
+	 * Default Constructor
+	 * Can load or create new Newsletter Group depends of parameter
+	 * ****************************************************** */
 
-   /*******************************************************
-	* Default Constructor
-	* Can load or create new Newsletter Group depends of parameter
-	********************************************************/
-   function weNewsletterGroup($groupID = 0)
-	{
+	function __construct($groupID = 0){
 
-		parent::weNewsletterBase();
-		$this->table=NEWSLETTER_GROUP_TABLE;
+		parent::__construct();
+		$this->table = NEWSLETTER_GROUP_TABLE;
 
-		$this->persistents[]="NewsletterID";
-		$this->persistents[]="Emails";
-		$this->persistents[]="Extern";
-		$this->persistents[]="Customers";
-		$this->persistents[]="SendAll";
-		$this->persistents[]="Filter";
+		array_push($this->persistents, "NewsletterID", "Emails", "Extern", "Customers", "SendAll", "Filter");
 
 		$this->ID = 0;
-		$this->NewsletterID=0;
-		$this->Emails="";
-		$this->Customers="";
-		$this->SendAll=1;
-		$this->Filter="";
+		$this->NewsletterID = 0;
+		$this->Emails = "";
+		$this->Customers = "";
+		$this->SendAll = 1;
+		$this->Filter = "";
 
-		$this->aFilter=array();
+		$this->aFilter = array();
 
-		$this->settings = $this->getSettings();
+		$this->settings = self::getSettings();
 
-      	$this->Extern = isset($this->settings["global_mailing_list"]) ? $this->settings["global_mailing_list"] : "";
+		$this->Extern = isset($this->settings["global_mailing_list"]) ? $this->settings["global_mailing_list"] : "";
 
-		if ($groupID)
-		{
-			$this->ID=$groupID;
+		if($groupID){
+			$this->ID = $groupID;
 			$this->load($groupID);
 		}
 	}
 
+	/*	 * **************************************
+	 * load mailing list from database
+	 *
+	 * *************************************** */
 
-	/****************************************
-	* load mailing list from database
-	*
-	*****************************************/
 	function load($groupID){
-	  parent::load($groupID);
-		$this->aFilter=unserialize($this->Filter);
+		parent::load($groupID);
+		$this->aFilter = unserialize($this->Filter);
 		return true;
 	}
 
-	/****************************************
-	* save mailing list to database
-	*
-	*****************************************/
+	/*	 * **************************************
+	 * save mailing list to database
+	 *
+	 * *************************************** */
+
 	function save(){
-	  $this->Filter=serialize($this->aFilter);
-	  parent::save();
+		$this->Filter = serialize($this->aFilter);
+		parent::save();
 		return true;
 	}
 
-	/****************************************
-	* delete mailing list from database
-	*
-	*****************************************/
+	/*	 * **************************************
+	 * delete mailing list from database
+	 *
+	 * *************************************** */
+
 	function delete(){
-	  parent::delete();
+		parent::delete();
 		return true;
 	}
 
-	/************************************
-	* check email syntax
-	*
-	************************************/
-	function checkEmails($group,&$malformed){
+	/*	 * **********************************
+	 * check email syntax
+	 *
+	 * ********************************** */
+
+	function checkEmails($group, &$malformed){
 
 		if(defined("CUSTOMER_TABLE")){
-			$customers=makeArrayFromCSV($this->Customers);
+			$customers = makeArrayFromCSV($this->Customers);
 			foreach($customers as $customer){
-				$customer_mail=f("SELECT ".$this->settings["customer_email_field"]." FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer),$this->settings["customer_email_field"],$this->db);
+				$customer_mail = f("SELECT " . $this->settings["customer_email_field"] . " FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($customer), $this->settings["customer_email_field"], $this->db);
 				if(!$this->check_email($customer_mail)){
-					$malformed=$customer_mail;
+					$malformed = $customer_mail;
 					return $group;
 				}
 			}
 		}
 
-	  $emails=$this->getEmailsFromList($this->Emails,1);
-      $extern=$this->getEmailsFromExtern($this->Extern,1);
-	  $emails=array_merge($extern,$emails);
+		$emails = $this->getEmailsFromList($this->Emails, 1);
+		$extern = $this->getEmailsFromExtern($this->Extern, 1);
+		$emails = array_merge($extern, $emails);
 
 
-	  foreach($emails as $email){
-		 if(!$this->check_email($email)){
-				$malformed=$email;
+		foreach($emails as $email){
+			if(!$this->check_email($email)){
+				$malformed = $email;
 				return $group;
 			}
 		}
-	  return 0;
+		return 0;
 	}
 
-	function addFilter($name="",$operator=0,$value="",$hour="", $minute=""){
-		$this->aFilter[]=array("fieldname"=>"","operator"=>"","fieldvalue"=>"","logic"=>"","hours"=>"","minutes"=>"");
+	function addFilter($name = "", $operator = 0, $value = "", $hour = "", $minute = ""){
+		$this->aFilter[] = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "", "hours" => "", "minutes" => "");
 	}
 
 	function delFilter(){
-	  array_pop($this->aFilter);
+		array_pop($this->aFilter);
 	}
 
 	function delallFilter(){
-		$this->Filter="";
-		$this->aFilter=array();
+		$this->Filter = "";
+		$this->aFilter = array();
 	}
 
 	//---------------------------------- STATIC FUNCTIONS -------------------------------
 
-	/******************************************************
-	* return all newsletter blocks for given newsletter id
-	*
-	*******************************************************/
-	function __getAllGroups($newsletterID){
+	/*	 * ****************************************************
+	 * return all newsletter blocks for given newsletter id
+	 *
+	 * ***************************************************** */
+	static function __getAllGroups($newsletterID){
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM ".NEWSLETTER_GROUP_TABLE." WHERE NewsletterID=".abs($newsletterID)." ORDER BY ID");
+		$db->query("SELECT ID FROM " . NEWSLETTER_GROUP_TABLE . " WHERE NewsletterID=" . intval($newsletterID) . " ORDER BY ID");
 		$ret = array();
-		while ($db->next_record()){
-			$ret[] = new weNewsletterGroup($db->f("ID"));
+		while($db->next_record()) {
+			$ret[] = new self($db->f("ID"));
 		}
 		return $ret;
 	}
 
-
-	function getSettings(){
-		$db=new DB_WE();
-		$ret=array();
-		$db->query("SELECT * FROM ".NEWSLETTER_PREFS_TABLE);
-		while($db->next_record()) $ret[$db->f("pref_name")]=$db->f("pref_value");
+	static function getSettings(){
+		$db = new DB_WE();
+		$ret = array();
+		$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE);
+		while($db->next_record())
+			$ret[$db->f('pref_name')] = $db->f("pref_value");
 		return $ret;
-
 	}
+
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,8 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_deleteShop($attribs){
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
+		return $foo;
+	if(!defined("SHOP_TABLE")){
+		return modulFehltError('Shop', __FUNCTION__);
+	}
+	$shopname = weTag_getAttribute("shopname", $attribs);
 
-
-function we_tag_deleteShop($attribs,$content){
-		$foo = attributFehltError($attribs,"shopname","deleteShop");if($foo) return $foo;
+	unset($_SESSION[$shopname . '_save']);
 }

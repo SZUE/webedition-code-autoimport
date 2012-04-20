@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,12 +22,11 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
 
-include_once($GLOBALS['__WE_BASE_PATH__']. DIRECTORY_SEPARATOR .'we'. DIRECTORY_SEPARATOR .'include'. DIRECTORY_SEPARATOR.'we_version.php');
+include_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_version.php');
 
 $activTab = isset($_REQUEST['activTab']) ? ($_REQUEST['activTab']) : 'idPropertyTab';
 
@@ -37,10 +41,10 @@ $rowGeneral = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate-
 
 $labelName = new we_ui_controls_Label();
 $labelName->setStyle('display:block;');
-$labelName->setText($translate->_('Name'). ($this->model->isRequiredField('Text') ? ' ['.$translate->_('Mandatory field').']' : ''));
+$labelName->setText($translate->_('Name') . ($this->model->isRequiredField('Text') ? ' [' . $translate->_('Mandatory field') . ']' : ''));
 $inputName = new we_ui_controls_TextField();
 $inputName->setName('Text');
-if(!empty($this->model->ID)) {
+if(!empty($this->model->ID)){
 	$inputName->setDisabled(true);
 }
 $inputName->setValue($this->model->Text);
@@ -52,12 +56,12 @@ $rowGeneral->addElement($inputName);
 
 $labelClass = new we_ui_controls_Label();
 $labelClass->setStyle('margin-top:20px;display:block;');
-$labelClass->setText($translate->_('Name of the model class'). ($this->model->isRequiredField('classname') ? ' ['.$translate->_('Mandatory field').']' : ''));
+$labelClass->setText($translate->_('Name of the model class') . ($this->model->isRequiredField('classname') ? ' [' . $translate->_('Mandatory field') . ']' : ''));
 $inputClass = new we_ui_controls_TextField();
 $inputClass->setName('classname');
 $inputClass->setID('classname');
 
-if(!empty($this->model->ID)) {
+if(!empty($this->model->ID)){
 	$inputClass->setDisabled(true);
 }
 $inputClass->setValue($this->model->classname);
@@ -67,15 +71,15 @@ $rowGeneral->addElement($labelClass);
 $rowGeneral->addElement($inputClass);
 
 $labelDatasource = new we_ui_controls_Label();
-$labelDatasource->setText($translate->_('Datasource'). ($this->model->isRequiredField('datasource') ? ' ['.$translate->_('Mandatory field').']' : ''));
+$labelDatasource->setText($translate->_('Datasource') . ($this->model->isRequiredField('datasource') ? ' [' . $translate->_('Mandatory field') . ']' : ''));
 $labelDatasource->setStyle('margin-top:20px;display:block;');
-if(!empty($this->model->ID)) {
+if(!empty($this->model->ID)){
 	$labelDatasource->setHidden(true);
 }
 $selectDatasource = new we_ui_controls_Select();
 $optDatasource = array(
-		'custom:'=>'custom', 
-		'table:'=>$translate->_('Maintable')
+	'custom:' => 'custom',
+	'table:' => $translate->_('Maintable')
 );
 $selectDatasource->setOptions($optDatasource);
 $selectDatasource->setSelectedValue($this->model->datasource);
@@ -83,17 +87,17 @@ $selectDatasource->setName('datasource');
 $selectDatasource->setWidth($this->inputWidth);
 $selectDatasource->setOnChange('weEventController.fire("docChanged");if(this.value==\'table:\') document.getElementById(\'datasourceConf\').style.display=\'block\'; else  document.getElementById(\'datasourceConf\').style.display=\'none\';');
 $selectDatasource->setWidth($this->inputWidth);
-if(empty($this->model->ID)) {
+if(empty($this->model->ID)){
 	$rowGeneral->addElement($labelDatasource);
 	$rowGeneral->addElement($selectDatasource);
 }
 
 $divMaintable = new we_ui_layout_Div();
 $divMaintable->setId('datasourceConf');
-if(empty($this->model->ID)) {
+if(empty($this->model->ID)){
 	$divMaintable->setStyle('margin-left: 10px;');
 }
-if(substr($this->model->datasource, 0, 6) !='table:') {
+if(substr($this->model->datasource, 0, 6) != 'table:'){
 	$divMaintable->setHidden(true);
 }
 
@@ -102,12 +106,12 @@ $labelMaintable->setText($translate->_('Maintable'));
 $labelMaintable->setStyle('margin-top:20px;display:block;');
 $inputMaintable = new we_ui_controls_TextField();
 $inputMaintable->setName('maintable');
-if(!empty($this->model->ID)) {
+if(!empty($this->model->ID)){
 	$inputMaintable->setDisabled(true);
 }
 $inputMaintable->setValue($this->model->maintable);
 $inputMaintable->setWidth($this->inputWidth - 10);
-if(!empty($this->model->ID)) {
+if(!empty($this->model->ID)){
 	$inputMaintable->setWidth($this->inputWidth);
 }
 $inputMaintable->setOnChange('weEventController.fire("docChanged")');
@@ -117,7 +121,7 @@ $divMaintable->addElement($inputMaintable);
 
 $rowGeneral->addElement($divMaintable);
 
-if(empty($this->model->ID)) {
+if(empty($this->model->ID)){
 	$checkboxMakeTags = new we_ui_controls_Checkbox();
 	$checkboxMakeTags->setId('makeTags');
 	$checkboxMakeTags->setName('makeTags');
@@ -127,7 +131,7 @@ if(empty($this->model->ID)) {
 	$checkboxMakeTags->setLabel($translate->_('Create Support for webEdition-Tags and the Pattern-Tag'));
 	$checkboxMakeTags->setStyle('margin-top:20px;');
 	$rowGeneral->addElement($checkboxMakeTags);
-	
+
 	$checkboxMakeServices = new we_ui_controls_Checkbox();
 	$checkboxMakeServices->setId('makeServices');
 	$checkboxMakeServices->setName('makeServices');
@@ -136,7 +140,7 @@ if(empty($this->model->ID)) {
 	$checkboxMakeServices->setValue($this->model->makeServices);
 	$checkboxMakeServices->setLabel($translate->_('Create Support for webEdition-Services and the Pattern-Service'));
 	$rowGeneral->addElement($checkboxMakeServices);
-	
+
 	$checkboxMakePerms = new we_ui_controls_Checkbox();
 	$checkboxMakePerms->setId('makePerms');
 	$checkboxMakePerms->setName('makePerms');
@@ -145,7 +149,7 @@ if(empty($this->model->ID)) {
 	$checkboxMakePerms->setValue($this->model->makePerms);
 	$checkboxMakePerms->setLabel($translate->_('Create Support for webEdition-Permissions and the Pattern-Permission'));
 	$rowGeneral->addElement($checkboxMakePerms);
-	
+
 	$checkboxMakeBackup = new we_ui_controls_Checkbox();
 	$checkboxMakeBackup->setId('makeBackup');
 	$checkboxMakeBackup->setName('makeBackup');
@@ -157,7 +161,7 @@ if(empty($this->model->ID)) {
 }
 
 // create div for content of property tab
-$propertyTab = new we_ui_layout_Div(array('id'=>'idPropertyTab'));
+$propertyTab = new we_ui_layout_Div(array('id' => 'idPropertyTab'));
 
 $tableGeneral = new we_ui_layout_HeadlineIconTable();
 $tableGeneral->setId('tab_1');
@@ -166,200 +170,205 @@ $tableGeneral->setRows(array($rowGeneral));
 
 $propertyTab->addElement($tableGeneral);
 
-if(!empty($this->model->ID)) {
-	if ($this->model->appconfig){
+if(!empty($this->model->ID)){
+	if($this->model->appconfig){
 		if(!empty($this->model->appconfig->info->title)){
 			$tableTitle = new we_ui_layout_HeadlineIconTable();
 			$tableTitle->setId('tabTitle');
 			$tableTitle->setMarginLeft(30);
-			$rowsTitle=array();
-			$rowTitle = new we_ui_layout_HeadlineIconTableRow(array('title' => ''));	
-			$lang=we_core_Local::getLocale();
-			
-			if (!empty($this->model->appconfig->info->title->$lang)){
+			$rowsTitle = array();
+			$rowTitle = new we_ui_layout_HeadlineIconTableRow(array('title' => ''));
+			$lang = we_core_Local::getLocale();
+
+			if(!empty($this->model->appconfig->info->title->$lang)){
 				$title = $this->model->appconfig->info->title->$lang;
-			} else {
+			} else{
 				$title = $this->model->appconfig->info->title->de;
 			}
-			if (!empty($this->model->appconfig->info->description->$lang)){
+			if(!empty($this->model->appconfig->info->description->$lang)){
 				$description = $this->model->appconfig->info->description->$lang;
-			} else {
+			} else{
 				$description = $this->model->appconfig->info->description->de;
 			}
-			$html = '<strong>'.$title.'</strong><br/>';
+			$html = '<strong>' . $title . '</strong><br/>';
 			$html .= $description;
 			$rowTitle->addHTML($html);
 			$rowsTitle[] = $rowTitle;
 			$tableTitle->setRows($rowsTitle);
 			$propertyTab->addElement($tableTitle);
 		}
-		if (!empty($this->model->appconfig->creator) || !empty($this->model->appconfig->maintainer)){
+		if(!empty($this->model->appconfig->creator) || !empty($this->model->appconfig->maintainer)){
 			$tableAuthor = new we_ui_layout_HeadlineIconTable();
 			$tableAuthor->setId('tabAuthor');
 			$tableAuthor->setMarginLeft(30);
-			$rowsAuthor=array();	
-			if(!empty($this->model->appconfig->creator)){ 
-				$cm = $this->model->appconfig->creator; 
+			$rowsAuthor = array();
+			if(!empty($this->model->appconfig->creator)){
+				$cm = $this->model->appconfig->creator;
 				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
 				$rowAuthor->setLine(0);
 				$html = '';
 				if(!empty($cm->company)){
-					$html .= '<strong>'.$cm->company.'</strong><br/>';
+					$html .= '<strong>' . $cm->company . '</strong><br/>';
 				}
 				if(!empty($cm->authors->author)){
-					if(is_object($cm->authors->author) ){
-						$authornames= $cm->authors->author->toArray();
-					} else {$authornames = $cm->authors->author;}
-					if(!empty($cm->authorlinks->www) && is_object($cm->authorlinks->www) ){
-						$authorlinks= $cm->authorlinks->www->toArray();
-					} else {$authorlinks= $cm->authorlinks->www;}
-					if (is_array($authornames)){
+					if(is_object($cm->authors->author)){
+						$authornames = $cm->authors->author->toArray();
+					} else{
+						$authornames = $cm->authors->author;
+					}
+					if(!empty($cm->authorlinks->www) && is_object($cm->authorlinks->www)){
+						$authorlinks = $cm->authorlinks->www->toArray();
+					} else{
+						$authorlinks = $cm->authorlinks->www;
+					}
+					if(is_array($authornames)){
 						$authorentry = array();
-						for ($i=0; $i < count($authornames);$i++){
+						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
-								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
+								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
 								$htmla .= '</a>';
 							}
-							$authorentry[]=$htmla;
+							$authorentry[] = $htmla;
 						}
-						$html = implode(', ',$authorentry);
-					} else {
+						$html = implode(', ', $authorentry);
+					} else{
 						$html = '';
 						if(isset($authorlinks) && !empty($authorlinks)){
-								$html .= '<a href="'.$authorlinks.'" target="_blank" >';
-							}
-							$html .= $authornames;
-							if(isset($authorlinks) && !empty($authorlinks)){
-								$html .= '</a>';
-							}
-					}
-				}
-				if(!empty($cm->address)){
-					$html .= '<br/>'.$cm->address;
-				}
-				if(!empty($cm->email)){
-					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
-				}
-				$rowAuthor->addHTML($html);
-				$rowsAuthor[] = $rowAuthor;
-			}
-			if(!empty($this->model->appconfig->maintainer)){
-				$cm = $this->model->appconfig->maintainer; 
-				$html = '';
-				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
-				$rowMaintainer->setLine(0);
-				if(!empty($cm->company)){
-					$html .= '<strong>'.$cm->company.'</strong><br/>';
-				}
-				if(!empty($cm->authors->author)){
-					if(is_array($cm->authors->author)){
-						$authornames= $cm->authors->author->toArray();
-					} else {$authornames= $cm->authors->author;}
-					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
-						$authorlinks= $cm->authorlinks->www->toArray();
-					} else {$authorlinks= $cm->authorlinks->www;}
-					if (is_array($authornames)){
-						$authorentry = array();
-						for ($i=0; $i < count($authornames);$i++){
-							$htmla = '';
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
-								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
-							}
-							$htmla .= $authornames[$i];
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
-								$htmla .= '</a>';
-							}
-							$authorentry[]=$htmla;
-						}
-						$html .= implode(', ',$authorentry);
-					} else {
-						$html .= '';
-						if(isset($authorlinks) && !empty($authorlinks)){
-							$html .= '<a href="'.$authorlinks.'" target="_blank" >';
+							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
 						}
 						$html .= $authornames;
 						if(isset($authorlinks) && !empty($authorlinks)){
 							$html .= '</a>';
 						}
 					}
-				
 				}
 				if(!empty($cm->address)){
-					$html .= '<br/>'.$cm->address;
+					$html .= '<br/>' . $cm->address;
 				}
 				if(!empty($cm->email)){
-					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
+					$html .= '<br/><a href="mailto' . $cm->email . '">' . $cm->email . '</a>';
 				}
-				
+				$rowAuthor->addHTML($html);
+				$rowsAuthor[] = $rowAuthor;
+			}
+			if(!empty($this->model->appconfig->maintainer)){
+				$cm = $this->model->appconfig->maintainer;
+				$html = '';
+				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
+				$rowMaintainer->setLine(0);
+				if(!empty($cm->company)){
+					$html .= '<strong>' . $cm->company . '</strong><br/>';
+				}
+				if(!empty($cm->authors->author)){
+					if(is_array($cm->authors->author)){
+						$authornames = $cm->authors->author->toArray();
+					} else{
+						$authornames = $cm->authors->author;
+					}
+					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
+						$authorlinks = $cm->authorlinks->www->toArray();
+					} else{
+						$authorlinks = $cm->authorlinks->www;
+					}
+					if(is_array($authornames)){
+						$authorentry = array();
+						for($i = 0; $i < count($authornames); $i++){
+							$htmla = '';
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
+							}
+							$htmla .= $authornames[$i];
+							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+								$htmla .= '</a>';
+							}
+							$authorentry[] = $htmla;
+						}
+						$html .= implode(', ', $authorentry);
+					} else{
+						$html .= '';
+						if(isset($authorlinks) && !empty($authorlinks)){
+							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
+						}
+						$html .= $authornames;
+						if(isset($authorlinks) && !empty($authorlinks)){
+							$html .= '</a>';
+						}
+					}
+				}
+				if(!empty($cm->address)){
+					$html .= '<br/>' . $cm->address;
+				}
+				if(!empty($cm->email)){
+					$html .= '<br/><a href="mailto' . $cm->email . '">' . $cm->email . '</a>';
+				}
+
 				$rowMaintainer->addHTML($html);
-				
+
 				$rowsAuthor[] = $rowMaintainer;
 			}
 			$tableAuthor->setRows($rowsAuthor);
 			$propertyTab->addElement($tableAuthor);
-			
-	
 		}
 
-	
-	
+
+
 		if(!empty($this->model->appconfig->info->version) || !empty($this->model->appconfig->dependencies->version)){
 			$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppStatus')));
 			$html = '';
 			if(!empty($this->model->appconfig->info->version)){
-				$html .= '<strong>'.$translate->_('Version').': '.$this->model->appconfig->info->version.'</strong>';
+				$html .= '<strong>' . $translate->_('Version') . ': ' . $this->model->appconfig->info->version . '</strong>';
 				if(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl)){
 					$html .= ' &copy; ';
 					if(!empty($this->model->appconfig->info->copyrighturl)){
-						$html .= ' <a href="http://'.$this->model->appconfig->info->copyrighturl.'" target="_blank">';
+						$html .= ' <a href="http://' . $this->model->appconfig->info->copyrighturl . '" target="_blank">';
 					}
-					$html .=  $this->model->appconfig->info->copyright;
+					$html .= $this->model->appconfig->info->copyright;
 					if(!empty($this->model->appconfig->info->copyrighturl)){
-						$html .= '</a>';				
+						$html .= '</a>';
 					}
 				}
 				$html .= '<br/>';
-			}	
+			}
 			if(!empty($this->model->appconfig->dependencies->version)){
-				$we_version = we_util_Strings::version2number(WE_VERSION,false);
-				if ($we_version < $this->model->appconfig->dependencies->version){
-					$html .= $translate->_('MinWeVersion').': <strong><span style="color:red">'.we_util_Strings::number2version($this->model->appconfig->dependencies->version,false).'</span></strong> '.$translate->_('AktWeVersion').' <strong>' .WE_VERSION.'</strong>';
-				} else {
-					$html .= $translate->_('MinWeVersion').': <strong>'.we_util_Strings::number2version($this->model->appconfig->dependencies->version,false).'</strong>';
+				$we_version = we_util_Strings::version2number(WE_VERSION, false);
+				if($we_version < $this->model->appconfig->dependencies->version){
+					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
+				} else{
+					$html .= $translate->_('MinWeVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</strong>';
 				}
 			}
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
-				$html .= '<br/>'.$translate->_('SdkVersion').': <strong>'.we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion,false).'</strong>';
+				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion, false) . '</strong>';
 			}
 			if($this->model->appconfig){
-				$html .= '<br/>'.$translate->_('The application manifest is available');
-			} else {
-				$html .= '<br/>'.$translate->_('The application manifest is not available');
+				$html .= '<br/>' . $translate->_('The application manifest is available');
+			} else{
+				$html .= '<br/>' . $translate->_('The application manifest is not available');
 			}
 			if($this->model->appconfig->info->deactivatable == "true"){
-				$html .= '<br/>'.$translate->_('The application can be deactivated.');
-			} else {
-				$html .= '<br/>'.$translate->_('The application can not be deactivated!');
+				$html .= '<br/>' . $translate->_('The application can be deactivated.');
+			} else{
+				$html .= '<br/>' . $translate->_('The application can not be deactivated!');
 			}
 			if($this->model->appconfig->info->deinstallable == "true"){
-				$html .= '<br/>'.$translate->_('The application is deletable.');
-			} else {
-				$html .= '<br/>'.$translate->_('The application can not be deleted!');
+				$html .= '<br/>' . $translate->_('The application is deletable.');
+			} else{
+				$html .= '<br/>' . $translate->_('The application can not be deleted!');
 			}
 			if($this->model->appconfig->info->updatable == "true"){
-				$html .= '<br/>'.$translate->_('The application can be updated.');
-			} else {
-				$html .= '<br/>'.$translate->_('The application can not be updated.');
+				$html .= '<br/>' . $translate->_('The application can be updated.');
+			} else{
+				$html .= '<br/>' . $translate->_('The application can not be updated.');
 			}
-			$html .= '<br/>'.$translate->_('AppStatus').': <strong>';
+			$html .= '<br/>' . $translate->_('AppStatus') . ': <strong>';
 			if(!we_app_Common::isActive($this->model->classname)){
-				$html .= $translate->_('AppStatusDiabled').'</strong>';
-			} else {
-				$html .= $translate->_('AppStatusActive').'</strong>';
+				$html .= $translate->_('AppStatusDiabled') . '</strong>';
+			} else{
+				$html .= $translate->_('AppStatusActive') . '</strong>';
 			}
 			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
 			$rowVersion->addHTML($html);
@@ -369,29 +378,37 @@ if(!empty($this->model->ID)) {
 			$tableVersion->setRows(array($rowVersion));
 			$propertyTab->addElement($tableVersion);
 		}
-		if (!empty($this->model->appconfig->thirdparty)){
+		if(!empty($this->model->appconfig->thirdparty)){
 			$tableExTool = new we_ui_layout_HeadlineIconTable();
 			$tableExTool->setId('tabExTool');
 			$tableExTool->setMarginLeft(30);
-			$rowsExTool=array();
-			$html = '';	
+			$rowsExTool = array();
+			$html = '';
 			$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
 			if(!empty($this->model->appconfig->thirdparty->www)){
-					$html .= ' <a href="'.$this->model->appconfig->thirdparty->www.'" target="_blank">';
-					if(!empty($this->model->appconfig->thirdparty->name)){$html .= $this->model->appconfig->thirdparty->name;} else {$html .= $this->model->appconfig->thirdparty->www;}
-					$html .= '</a>';
+				$html .= ' <a href="' . $this->model->appconfig->thirdparty->www . '" target="_blank">';
+				if(!empty($this->model->appconfig->thirdparty->name)){
+					$html .= $this->model->appconfig->thirdparty->name;
+				} else{
+					$html .= $this->model->appconfig->thirdparty->www;
+				}
+				$html .= '</a>';
 			}
 			if(!empty($this->model->appconfig->thirdparty->version)){
-				$html .= ', '.$translate->_('Version'). ' '.$this->model->appconfig->thirdparty->version;
+				$html .= ', ' . $translate->_('Version') . ' ' . $this->model->appconfig->thirdparty->version;
 			}
 			if(!empty($this->model->appconfig->thirdparty->license)){
-				$html .= '<br/> '.$translate->_('LicenseType').' ';
+				$html .= '<br/> ' . $translate->_('LicenseType') . ' ';
 				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
-					$html .= ' <a href="'.$this->model->appconfig->thirdparty->licenseurl.'" target="_blank">';
+					$html .= ' <a href="' . $this->model->appconfig->thirdparty->licenseurl . '" target="_blank">';
 				}
-				if(!empty($this->model->appconfig->thirdparty->license)){$html .= $this->model->appconfig->thirdparty->license;} else {$html .= $this->model->appconfig->thirdparty->licenseurl;}
+				if(!empty($this->model->appconfig->thirdparty->license)){
+					$html .= $this->model->appconfig->thirdparty->license;
+				} else{
+					$html .= $this->model->appconfig->thirdparty->licenseurl;
+				}
 				if(!empty($this->model->appconfig->thirdparty->licenseurl)){
-					$html .= '</a>';		
+					$html .= '</a>';
 				}
 			}
 			$rowExTool->addHTML($html);
@@ -401,10 +418,10 @@ if(!empty($this->model->ID)) {
 	}
 	$rowTags = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Tags')));
 	$html = '';
-	foreach ($this->model->tags as $_tag=>$_incfile) {
-		$html .= '<strong>'. $_tag .'</strong>';
+	foreach($this->model->tags as $_tag => $_incfile){
+		$html .= '<strong>' . $_tag . '</strong>';
 		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'] ,'',$_incfile);
+		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
 		$html .= '<br/><br/>';
 	}
 	$rowTags->addHTML($html);
@@ -413,13 +430,13 @@ if(!empty($this->model->ID)) {
 	$tableTags->setMarginLeft(30);
 	$tableTags->setRows(array($rowTags));
 	$propertyTab->addElement($tableTags);
-	
+
 	$rowServices = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Services')));
 	$html = '';
-	foreach ($this->model->services as $_service=>$_incfile) {
-		$html .= '<strong>'. $_service .'</strong>';
+	foreach($this->model->services as $_service => $_incfile){
+		$html .= '<strong>' . $_service . '</strong>';
 		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'] ,'',$_incfile);
+		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
 		$html .= '<br/><br/>';
 	}
 	$rowServices->addHTML($html);
@@ -428,13 +445,13 @@ if(!empty($this->model->ID)) {
 	$tableServices->setMarginLeft(30);
 	$tableServices->setRows(array($rowServices));
 	$propertyTab->addElement($tableServices);
-	
+
 	$rowLanguage = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Language')));
 	$html = '';
-	foreach ($this->model->languages as $_lan=>$_incfile) {
-		$html .= '<strong>'. $_lan .'</strong>';
+	foreach($this->model->languages as $_lan => $_incfile){
+		$html .= '<strong>' . $_lan . '</strong>';
 		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'] ,'',$_incfile);
+		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
 		$html .= '<br/><br/>';
 	}
 	$rowLanguage->addHTML($html);
@@ -443,11 +460,11 @@ if(!empty($this->model->ID)) {
 	$tableLanguage->setMarginLeft(30);
 	$tableLanguage->setRows(array($rowLanguage));
 	$propertyTab->addElement($tableLanguage);
-	
+
 	$rowPermissions = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Permissions')));
 	$html = '';
-	foreach ($this->model->permissions as $_key=>$_value) {
-		$html .= '<strong>'. $_key .'</strong>';
+	foreach($this->model->permissions as $_key => $_value){
+		$html .= '<strong>' . $_key . '</strong>';
 		$html .= '<br/>';
 		$html .= $translate->_('default') . ':&nbsp;' . $_value;
 		$html .= '<br/><br/>';
@@ -458,10 +475,10 @@ if(!empty($this->model->ID)) {
 	$tablePermissions->setMarginLeft(30);
 	$tablePermissions->setRows(array($rowPermissions));
 	$propertyTab->addElement($tablePermissions);
-	
+
 	$rowBackupTable = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Backup table')));
 	$html = '';
-	foreach ($this->model->backupTables as $_table) {
+	foreach($this->model->backupTables as $_table){
 		$html .= $_table;
 		$html .= '<br/>';
 	}
@@ -481,39 +498,36 @@ $tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-$htmlPage->addJSFile('/webEdition/js/windows.js');
-$htmlPage->addJSFile('/webEdition/js/we_showMessage.js');
-$htmlPage->addJSFile('/webEdition/js/images.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/yahoo-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/event-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/connection-min.js');
-$htmlPage->addJSFile('/webEdition/js/libs/yui/json-min.js');
-$htmlPage->addJSFile('/webEdition/lib/we/core/JsonRpc.js');
+$htmlPage->addJSFile(JS_DIR . 'windows.js');
+$htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
+$htmlPage->addJSFile(JS_DIR . 'images.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/event-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
+$htmlPage->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
 $filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$filenameEmptyMessage, 
-				we_core_MessageReporting::kMessageWarning
-	);
-	
+		$filenameEmptyMessage, we_core_MessageReporting::kMessageWarning
+);
+
 $classnameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name of the model class could not be empty!'), false);
 $classnameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$classnameEmptyMessage, 
-				we_core_MessageReporting::kMessageWarning
-	);
+		$classnameEmptyMessage, we_core_MessageReporting::kMessageWarning
+);
 
 $noTablenameMessage = we_util_Strings::quoteForJSString($translate->_('The tablename is missing.'), false);
 $noTablenameMessageCall = we_core_MessageReporting::getShowMessageCall(
-			$noTablenameMessage, 
-			we_core_MessageReporting::kMessageWarning
-	);
+		$noTablenameMessage, we_core_MessageReporting::kMessageWarning
+);
 
 
 $js = '
 
 function submitForm(target, action, method) {
-	
+
 	var f = self.document.we_form;
 	if (target) {
 		f.target = target;
@@ -526,7 +540,7 @@ function submitForm(target, action, method) {
 	if (method) {
 		f.method = method;
 	}
-	
+
 	f.submit();
 }
 
@@ -539,27 +553,27 @@ function __updateIdEventHandler__(data, sender) {
 weEventController.register("save", __updateIdEventHandler__);
 
 
-weCmdController.register("save_body", "app_'.$appName.'_save", null, self, function(cmdObj) 
+weCmdController.register("save_body", "app_' . $appName . '_save", null, self, function(cmdObj)
 {
 
 	var form = document.we_form;
-		
+
 	if (form.Text.value === "") {
-		'. $filenameEmptyMessageCall . '
+		' . $filenameEmptyMessageCall . '
 		form.Text.focus();
 		form.Text.select();
 		return false;
 	}
-	
+
 	if (form.classname.value === "") {
-		'. $classnameEmptyMessageCall . '
+		' . $classnameEmptyMessageCall . '
 		form.classname.focus();
 		form.classname.select();
 		return false;
 	}
 
 	if (form.datasource.value=="table:" && form.maintable.value=="") {
-		'.$noTablenameMessageCall.'
+		' . $noTablenameMessageCall . '
 		form.maintable.focus();
 		form.maintable.select();
 		return false;
@@ -572,19 +586,19 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 YAHOO.util.Event.addListener(window, "unload", function(e){
 	weCmdController.unregister("save_body");
 	weEventController.unregister("save", __updateIdEventHandler__);
-}); 
+});
 
 function setClassField(classname) {
 
 	var form = document.we_form;
 	var newClassname = classname.toLowerCase();
-	newClassname = newClassname.replace(/[^a-z0-9]/g, \'\'); 
+	newClassname = newClassname.replace(/[^a-z0-9]/g, \'\');
 	var firstCharIsNum = false;
 	if(newClassname!="") {
 		firstCharIsNum = firstCharNum(newClassname);
 	}
 	if(firstCharIsNum) {
-		newClassname = newClassname.replace(/[^a-z]/g, \'\'); 
+		newClassname = newClassname.replace(/[^a-z]/g, \'\');
 	}
 	form.classname.value = newClassname;
 }
@@ -595,7 +609,7 @@ function firstCharNum(str) {
    var IsNumber=true;
    var char;
 
-   char = str.charAt(0); 
+   char = str.charAt(0);
    if (numbers.indexOf(char) == -1) {
        IsNumber = false;
    }

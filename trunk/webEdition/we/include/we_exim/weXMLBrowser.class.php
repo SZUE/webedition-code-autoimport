@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/xml_parser.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
-
-
-class weXMLBrowser extends XML_Parser{
+class weXMLBrowser extends we_xml_parser{
 
 	var $cache;
 
-	function weXMLBrowser($filename="",$mode="backup"){
-		parent::XML_Parser();
+	function __construct($filename="",$mode="backup"){
+		parent::__construct();
 		$this->mode=$mode;
 		$this->xmlExt = FALSE;
 		if(!empty($filename)) $this->getFile($filename);
@@ -41,9 +39,9 @@ class weXMLBrowser extends XML_Parser{
 		return $this->evaluate($xpath);
 	}
 
-	function setCache($location){
+	/*function setCache($location){
 		$this->cache=$location;
-	}
+	}*/
 
 	function saveCache($cache='',$expire=0){
 		if(empty($cache)){
@@ -56,16 +54,16 @@ class weXMLBrowser extends XML_Parser{
 		}
 
 		if (defined("WE_NEW_FOLDER_MOD")){
-			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) .';');
+			$mod = octdec(WE_NEW_FOLDER_MOD);
 		} else {
 			$mod = 0755;
 		}
 
 		if(!is_dir(dirname($cache))) {
-			createLocalFolder(dirname($cache));
+			we_util_File::createLocalFolder(dirname($cache));
 		}
 		if(weFile::save($cache,serialize($this->nodes))){
-			insertIntoCleanUp($cache,$expire);
+			we_util_File::insertIntoCleanUp($cache,$expire);
 		}
 	}
 
@@ -85,7 +83,7 @@ class weXMLBrowser extends XML_Parser{
 		foreach ($nodeSet as $node) {
 			$nodeattribs=array();
 			if ($this->hasAttributes($node)) {
-				$attrs = $attrs + array("@n:"=>$l_customer["none"]);
+				$attrs = $attrs + array("@n:"=>g_l('modules_customer','[none]'));
 				$attributes = $this->getAttributes($node);
 				foreach ($attributes as $name=>$value) {
 					$nodeattribs[$name] = $value;
@@ -111,12 +109,12 @@ class weXMLBrowser extends XML_Parser{
 
 
 	function getFile($file) {
-		if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/updateinclude/proxysettings.php")) {
-			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/updateinclude/proxysettings.php");
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php")) {
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php");
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName=$file;
-		
+
 		switch ($url) {
 			case 'fopen':
 				if (defined("WE_PROXYHOST")) {
@@ -191,6 +189,6 @@ class weXMLBrowser extends XML_Parser{
 		fclose($file);
 
 		return $ret;
-		
+
 	}
 }

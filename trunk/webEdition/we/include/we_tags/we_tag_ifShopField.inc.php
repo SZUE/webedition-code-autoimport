@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,43 +22,40 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifShopField($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "reference", __FUNCTION__)))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
+		return $foo;
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true)))
+		return $foo;
 
-function we_tag_ifShopField($attribs,$content) {
-	$foo = attributFehltError($attribs, "name", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "reference", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
-	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
+	$match = weTag_getAttribute("match", $attribs);
 
-	$match = we_getTagAttribute("match", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$reference = weTag_getAttribute("reference", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs);
+	$operator = weTag_getAttribute("operator", $attribs);
 
-	$name      = we_getTagAttribute("name", $attribs);
-	$reference = we_getTagAttribute("reference", $attribs);
-	$shopname  = we_getTagAttribute("shopname", $attribs);
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$atts = removeAttribs($attribs, array('match', 'operator'));
+	$atts['type'] = 'print';
+	$realvalue = we_tag('shopField', $atts);
 
-	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$matchA = explode("blk_",$match);
-		$match = $matchA[0];
-	}
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-		$match = (int) $match;
-	}
-	$attribs['type']='print';
-	$atts = removeAttribs($attribs,array('match','operator'));
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-		$realvalue = (int) we_tag('shopField',$atts, "");
-	}else {
-		$realvalue = we_tag('shopField',$atts, "");
-	}
-
-	switch ($operator) {
-		case "equal": return $realvalue == $match; break;
-		case "less": return $realvalue < $match; break;
-		case "less|equal": return $realvalue <= $match; break;
-		case "greater": return $realvalue > $match; break;
-		case "greater|equal": return $realvalue >= $match; break;
-		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
-		default: return $realvalue == $match;
+	switch($operator){
+		default:
+		case "equal":
+			return $realvalue == $match;
+		case "less":
+			return intval($realvalue) < intval($match);
+		case "less|equal":
+			return intval($realvalue) <= intval($match);
+		case "greater":
+			return intval($realvalue) > intval($match);
+		case "greater|equal":
+			return intval($realvalue) >= intval($match);
+		case "contains":
+			return (strpos($realvalue, $match) !== false);
 	}
 }

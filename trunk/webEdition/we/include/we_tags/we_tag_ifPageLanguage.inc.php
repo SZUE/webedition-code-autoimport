@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,20 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifPageLanguage($attribs, $content){
-	$foo = attributFehltError($attribs, "match", "ifPageLanguage", true);
-	if ($foo) {
+function we_tag_ifPageLanguage($attribs){
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
 		print($foo);
-		return "";
+		return false;
 	}
 
-	$match = we_getTagAttribute("match", $attribs,'',false,false,true);
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$match = weTag_getAttribute("match", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
 	$matchArray = makeArrayFromCSV($match);
-	foreach ($matchArray as $match) {
-		if ($doc->Language ==$match) {return true;}
+	foreach($matchArray as $match){
+		if($doc->Language == $match){
+			return true;
+		}
 	}
 	return false;
 }

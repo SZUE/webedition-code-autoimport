@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,12 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifUnsubscribe($attribs, $content) {
-	if (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) {
-		return (($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == 0) ? true : false);
-	} else {
-		return false;
-	}
+function we_tag_ifUnsubscribe(){
+	return (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) && ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == weNewsletterBase::STATUS_SUCCESS);
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,33 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_author($attribs, $content){
+function we_tag_author($attribs){
 	// attributes
-	$type = we_getTagAttribute("type", $attribs);
-	$creator = we_getTagAttribute("creator", $attribs, '', true);
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$creator = weTag_getAttribute("creator", $attribs, false, true);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 
 	$doc = we_getDocForTag($docAttr, true);
 
 	$foo = getHash(
-			"SELECT Username,First,Second FROM " . USER_TABLE . " WHERE ID='" . abs($creator ? $doc->CreatorID : $doc->ModifierID) . "'",
-			new DB_WE());
+		"SELECT Username,First,Second FROM " . USER_TABLE . " WHERE ID=" . intval($creator ? $doc->CreatorID : $doc->ModifierID), new DB_WE());
 
-	switch ($type) {
+	switch($type){
 		case "name" :
 			$out = trim(($foo["First"] ? ($foo["First"] . " ") : "") . $foo["Second"]);
-			if (!$out) {
+			if(!$out){
 				$out = $foo["Username"];
 			}
 			return $out;
 		case "initials" :
 			$out = trim(
-					($foo["First"] ? substr($foo["First"], 0, 1) : "") . ($foo["Second"] ? substr(
-							$foo["Second"],
-							0,
-							1) : ""));
-			if (!$out) {
+				($foo["First"] ? substr($foo["First"], 0, 1) : "") . ($foo["Second"] ? substr(
+						$foo["Second"], 0, 1) : ""));
+			if(!$out){
 				$out = $foo["Username"];
 			}
 			return $out;

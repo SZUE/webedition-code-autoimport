@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * @see we_app_controller_TreeAction
  */
@@ -25,13 +29,11 @@ Zend_Loader::loadClass('we_app_controller_TreeAction');
 
 /**
  * Base Tree Controller
- * 
+ *
  * @category   webEdition
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class TreeController extends we_app_controller_TreeAction
-{
+class TreeController extends we_app_controller_TreeAction{
 
-	
 }

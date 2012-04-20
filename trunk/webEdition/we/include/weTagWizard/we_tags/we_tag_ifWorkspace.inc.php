@@ -1,10 +1,12 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['attribute']['id296_path'] = new weTagData_textAttribute('296', 'path', false, '');
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']
-['id742_id'] = new weTagData_selectorAttribute('742', 'id',FILE_TABLE, 'folder', false, ''); } $GLOBALS['weTagWizard']['attribute']['id297_doc'] = new weTagData_selectAttribute('297', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, ''); ?>
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+
+$this->Attributes[] = new weTagData_textAttribute('path', false, '');
+if(defined("FILE_TABLE")) {
+	$this->Attributes[]= new weTagData_selectorAttribute('id',FILE_TABLE, 'folder', false, ''); } $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, ''); ?>

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +21,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-
-htmlTop();
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$loc=filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
+header('Location: '.$loc);
+we_html_tools::htmlTop();
 ?>
-</head>
-<frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">
-<frame src="<?php print filter_var($_REQUEST["url"], FILTER_VALIDATE_URL); ?>" name="contBrowse" scrolling="auto">
-</frameset>
-<body bgcolor="white">
-</body>
-</html>
+<meta HTTP-EQUIV="REFRESH" content="0; url=<?php echo $loc;?>">
+</head><body></body></html>

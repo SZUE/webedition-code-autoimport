@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,54 +23,43 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * Class we_dynamicControls
  *
  * Provides functions for creating layers that can hide and unhide.
  */
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/dynamic_controls.inc.php");
-
-class we_dynamicControls {
-
-	/*************************************************************************
+class we_dynamicControls{
+	/*	 * ***********************************************************************
 	 * VARIABLES
-	 *************************************************************************/
+	 * *********************************************************************** */
 
 	var $_arrow_image_closed;
 	var $_arrow_image_opened;
-
 	var $_arrow_hint_closed;
 	var $_arrow_hint_opened;
 
-	/*************************************************************************
+	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
-	 *************************************************************************/
+	 * *********************************************************************** */
 
 	/**
 	 * Constructor of class.
 	 *
 	 * @return     we_dynamicControls
 	 */
-
-	function we_dynamicControls() {
-		// Get global variables
-		global $l_dynamic_controls;
-
+	function __construct(){
 		// Set path to images for the groups arrows
 		$this->_arrow_image_closed = IMAGE_DIR . "modules/users/arrow_open.gif";
 		$this->_arrow_image_opened = IMAGE_DIR . "modules/users/arrow_close.gif";
 
 		// Set hint text for the groups arrows
-		$this->_arrow_hint_closed = $l_dynamic_controls["expand_group"];
-		$this->_arrow_hint_opened = $l_dynamic_controls["fold_group"];
+		$this->_arrow_hint_closed = g_l('dynamicControls', '[expand_group]');
+		$this->_arrow_hint_opened = g_l('dynamicControls', '[fold_group]');
 	}
 
-	/*************************************************************************
+	/*	 * ***********************************************************************
 	 * FUNCTIONS
-	 *************************************************************************/
+	 * *********************************************************************** */
 
 	/**
 	 * This function creates the JavaScript needed to fold or unfold groups
@@ -78,11 +72,10 @@ class we_dynamicControls {
 	 *
 	 * @return     string
 	 */
-
-	function js_fold_checkbox_groups($groups, $filter, $use_with_user_module) {
+	function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
 		// Define start of JavaScript
 		$_JavaScript_start = '
-			<script language="JavaScript" type="text/javascript">
+			<script  type="text/javascript">
 			<!--';
 
 		// Define end of JavaScript
@@ -131,26 +124,26 @@ class we_dynamicControls {
 		$i = 0;
 
 		// Build array of all groups
-		foreach ($groups as $_groups_key=>$_groups_value) {
+		foreach($groups as $_groups_key => $_groups_value){
 			// Filter out groups not to be shown
 			$_count_filters = count($filter);
 			$_show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for ($count = 0; $count < $_count_filters; $count++) {
-				if(isset($filter[$count])) {
-					if ($_groups_key == $filter[$count]) {
+			for($count = 0; $count < $_count_filters; $count++){
+				if(isset($filter[$count])){
+					if($_groups_key == $filter[$count]){
 						$_show_group = false;
 					}
 				}
 			}
 
 			// Now build string representing the array of all groups if this group is visible
-			if ($_show_group) {
+			if($_show_group){
 				$_groups_array .= "_all_groups[" . $i . "] = \"" . $_groups_key . "\";\n";
 
-			// Increase counter
-			$i++;
+				// Increase counter
+				$i++;
 			}
 		}
 
@@ -281,11 +274,7 @@ class we_dynamicControls {
 	 *
 	 * @return     string
 	 */
-
-	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE") {
-		// Get global variables
-		global $l_dynamic_controls;
-
+	function fold_checkbox_groups($groups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -296,20 +285,20 @@ class we_dynamicControls {
 		$_seperator_counter = 0;
 
 		// Go through all groups to be displayed
-		foreach ($groups as $_groups_key=>$_groups_value) {
+		foreach($groups as $_groups_key => $_groups_value){
 			// Filter out groups not to be shown
 			$_count_filters = count($filter);
 			$_show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for ($i = 0; $i < $_count_filters; $i++) {
-				if ($_groups_key == $filter[$i]) {
+			for($i = 0; $i < $_count_filters; $i++){
+				if($_groups_key == $filter[$i]){
 					$_show_group = false;
 				}
 			}
 
 			// Now only show the group if it was not found in the groups not to be shown
-			if ($_show_group) {
+			if($_show_group){
 
 				// Set variable for painting of seperator
 				$_seperator_counter++;
@@ -319,10 +308,9 @@ class we_dynamicControls {
 
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
-
 				// Build header of group
 				$_contentTable[$main_titles[$_groups_key]] = '
-					<table cellpadding="0" cellspacing="0" border="0" width="'. $width . '">';
+					<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
 
 				$_seperator_color = $seperator_color;
 
@@ -330,32 +318,32 @@ class we_dynamicControls {
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $_seperator_color . '">
 						<td>
-							' . getPixel(10, 1) . '</td>
+							' . we_html_tools::getPixel(10, 1) . '</td>
 						<td>
-							' . getPixel($width, 1) . '</td>
+							' . we_html_tools::getPixel($width, 1) . '</td>
 					</tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $bgcolor . '">
 						<td width="30" nowrap>
-							' . getPixel(5, 24) . '
+							' . we_html_tools::getPixel(5, 24) . '
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
 				$_show_open = false;
 
 				// Check, if current group is in groups to be shown opened
-				if ($_groups_key == $open_group) {
+				if($_groups_key == $open_group){
 					$_show_open = true;
 				}
 
-				if ($_show_open) {
+				if($_show_open){
 					// Define various values for expanded groups
 					$_arrow_image = $this->_arrow_image_opened;
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
-				} else {
+				} else{
 					// Define various values for folded groups
 					$_arrow_image = $this->_arrow_image_closed;
 					$_arrow_hint = $this->_arrow_hint_closed;
@@ -370,9 +358,9 @@ class we_dynamicControls {
 						</tr>
 						<tr valign="middle" bgcolor="' . $bgcolor . '">
 							<td>
-								' . getPixel(10, 1) . '</td>
+								' . we_html_tools::getPixel(10, 1) . '</td>
 							<td>
-								' . getPixel($width, 1) . '</td>
+								' . we_html_tools::getPixel($width, 1) . '</td>
 						</tr>
 					</table>';
 
@@ -381,25 +369,24 @@ class we_dynamicControls {
 
 				// first of all order all the entries
 				$_groups = array();
-				foreach ( $groups[$_groups_key] as $_group_item_key=>$_group_item_value ) {
+				foreach($groups[$_groups_key] as $_group_item_key => $_group_item_value){
 
 					$_groups[$_groups_key][$titles[$_groups_key][$_group_item_key]] = array(
 						'perm' => $_group_item_key,
 						'value' => $_group_item_value
 					);
-
 				}
 
-				foreach ( $_groups as $_groups_key => $_group_item ) {
+				foreach($_groups as $_groups_key => $_group_item){
 
 					ksort($_group_item);
 
-					foreach ( $_group_item as $_group_item_text => $_group_item_values ) {
+					foreach($_group_item as $_group_item_text => $_group_item_values){
 
 						$_group_item_key = $_group_item_values['perm'];
 						$_group_item_value = $_group_item_values['value'];
 
-						if (($check_permissions && we_hasPerm($_group_item_key)) || !$check_permissions) {
+						if(($check_permissions && we_hasPerm($_group_item_key)) || !$check_permissions){
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
 								<tr>
@@ -408,11 +395,10 @@ class we_dynamicControls {
 										' . we_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
 								<tr>
 									<td>
-										' . getPixel(15, 3) . '</td>
+										' . we_html_tools::getPixel(15, 3) . '</td>
 								</tr>';
 						}
 					}
-
 				}
 
 				// Finish output of table
@@ -449,12 +435,7 @@ class we_dynamicControls {
 	 *
 	 * @return     string
 	 */
-
-	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE") {
-
-		// Get global variables
-		global $l_dynamic_controls;
-
+	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = "500", $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
 		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
@@ -465,22 +446,22 @@ class we_dynamicControls {
 		$_seperator_counter = 0;
 
 		// Go through all groups to be displayed
-		foreach ($groups as $_groups_key=>$_groups_value) {
+		foreach($groups as $_groups_key => $_groups_value){
 			// Filter out groups not to be shown
 			$_count_filters = count($filter);
 			$_show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for ($i = 0; $i < $_count_filters; $i++) {
-				if(isset($filter[$i])) {
-					if ($_groups_key == $filter[$i]) {
+			for($i = 0; $i < $_count_filters; $i++){
+				if(isset($filter[$i])){
+					if($_groups_key == $filter[$i]){
 						$_show_group = false;
 					}
 				}
 			}
 
 			// Now only show the group if it was not found in the groups not to be shown
-			if ($_show_group) {
+			if($_show_group){
 
 				// Set variable for painting of seperator
 				$_seperator_counter++;
@@ -490,10 +471,9 @@ class we_dynamicControls {
 
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
-
 				// Build header of group
 				$_contentTable[$main_titles[$_groups_key]] = '
-					<table cellpadding="0" cellspacing="0" border="0" width="'. $width . '">';
+					<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
 
 				$_seperator_color = $seperator_color;
 
@@ -501,32 +481,32 @@ class we_dynamicControls {
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $_seperator_color . '">
 						<td>
-							' . getPixel(10, 1) . '</td>
+							' . we_html_tools::getPixel(10, 1) . '</td>
 						<td>
-							' . getPixel($width, 1) . '</td>
+							' . we_html_tools::getPixel($width, 1) . '</td>
 					</tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $bgcolor . '">
 						<td width="30" nowrap>
-							' . getPixel(5, 24) . '
+							' . we_html_tools::getPixel(5, 24) . '
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
 				$_show_open = false;
 
 				// Check, if current group is in groups to be shown opened
-				if ($_groups_key == $open_group) {
+				if($_groups_key == $open_group){
 					$_show_open = true;
 				}
 
-				if ($_show_open) {
+				if($_show_open){
 					// Define various values for expanded groups
 					$_arrow_image = $this->_arrow_image_opened;
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
-				} else {
+				} else{
 					// Define various values for folded groups
 					$_arrow_image = $this->_arrow_image_closed;
 					$_arrow_hint = $this->_arrow_hint_closed;
@@ -541,38 +521,36 @@ class we_dynamicControls {
 						</tr>
 						<tr valign="middle" bgcolor="' . $bgcolor . '">
 							<td>
-								' . getPixel(10, 1) . '</td>
+								' . we_html_tools::getPixel(10, 1) . '</td>
 							<td>
-								' . getPixel($width, 1) . '</td>
+								' . we_html_tools::getPixel($width, 1) . '</td>
 						</tr>
 					</table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . getPixel(30,10) . '</td><td colspan="2">' . getPixel($width,10) . '</td></tr>';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30, 10) . '</td><td colspan="2">' . we_html_tools::getPixel($width, 10) . '</td></tr>';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
 
-						if (!isset($c["headline"])) $c["headline"] = '';
-							$_contentTable[$main_titles[$_groups_key]] .= '
+					if(!isset($c["headline"]))
+						$c["headline"] = '';
+					$_contentTable[$main_titles[$_groups_key]] .= '
 								<tr>
 									<td></td>
-									<td valign="top" align="left"><span  id="headline_'.$i.'" class="weMultiIconBoxHeadline">'.$c["headline"].'</span></td>
-									<td class="defaultfont">'.$c["html"].'</td>
+									<td valign="top" align="left"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
+									<td class="defaultfont">' . $c["html"] . '</td>
 								</tr>
 								<tr>
 									<td></td>
-									<td>'.getPixel($c["space"],15).'</td>
+									<td>' . we_html_tools::getPixel($c["space"], 15) . '</td>
 									<td></td>
 								</tr>';
-						if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){
-							$_contentTable[$main_titles[$_groups_key]] .= '<tr><td></td><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
-						}
-
-
+					if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){
+						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td></td><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
+					}
 				}
 				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
-
 			}
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)

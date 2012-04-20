@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +22,11 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetSearchParametersCmd extends rpcCmd{
 
-
-class rpcGetSearchParametersCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_doclist/doclistView.class.inc.php');
 
 		$pos = $_REQUEST['position'];
 
@@ -39,19 +39,17 @@ class rpcGetSearchParametersCmd extends rpcCmd {
 
 		$_REQUEST['we_cmd']['obj'] = true;
 
-		if($pos=="top") {
+		if($pos == "top"){
 			$code = doclistView::getSearchParameterTop($foundItems);
 		}
-		if($pos=="bottom") {
+		if($pos == "bottom"){
 			$_REQUEST['we_cmd']['setInputSearchstart'] = 1;
 			$code = doclistView::getSearchParameterBottom($foundItems);
-
 		}
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
-
 
 }

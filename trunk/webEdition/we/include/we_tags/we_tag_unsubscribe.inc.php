@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_unsubscribe($attribs, $content){
+function we_tag_unsubscribe($attribs){
 
 	$attribs['type'] = 'text';
 	$attribs['name'] = 'we_unsubscribe_email__';
 
 	if(isset($_REQUEST["we_unsubscribe_email__"])){
-	    $attribs['value'] = htmlspecialchars($_REQUEST["we_unsubscribe_email__"]);
-	} else {
-	    $attribs['value'] = "";
+		$attribs['value'] = htmlspecialchars($_REQUEST["we_unsubscribe_email__"]);
+	} else{
+		$attribs['value'] = "";
 	}
 
 	return getHtmlTag('input', $attribs);

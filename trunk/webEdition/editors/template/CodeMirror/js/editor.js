@@ -162,7 +162,7 @@ var Editor = (function(){
 
     // Advance to next node, return string for current node.
     function next() {
-      if (!start) throw StopIteration;
+      if (!start) throw "StopIteration";
       var node = start;
       start = node.nextSibling;
 
@@ -1367,7 +1367,7 @@ var Editor = (function(){
       }
       // Create a part corresponding to a given token.
       function tokenPart(token){
-        var part = makePartSpan(token.value, self.doc);     
+        var part = makePartSpan(token.value, self.doc);
         part.className = token.style;
         return part;
       }
@@ -1445,7 +1445,7 @@ var Editor = (function(){
               select.snapshotMove(old.firstChild, part && (part.firstChild || part), 0);
             }
           }
-          
+
           return part;
         }
       };
@@ -1478,13 +1478,13 @@ var Editor = (function(){
 
           // If the target argument wasn't an integer, go at least
           // until that node.
-          if (endTime == null && part == target) throw StopIteration;
+          if (endTime == null && part == target) throw "StopIteration";
 
           // A clean line with more than one node means we are done.
           // Throwing a StopIteration is the way to break out of a
           // MochiKit forEach loop.
           if ((endTime != null && time() >= endTime) || (!lineDirty && !prevLineDirty && lineNodes > 1 && !cleanLines))
-            throw StopIteration;
+            throw "StopIteration";
           prevLineDirty = lineDirty; lineDirty = false; lineNodes = 0;
           parts.next();
         }

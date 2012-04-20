@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,31 +22,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_setVar($attribs, $content){
-	$foo = attributFehltError($attribs, "nameto", "setVar");
-	if ($foo)
+function we_tag_setVar($attribs){
+	if(($foo = attributFehltError($attribs, "nameto", __FUNCTION__)))
 		return $foo;
-	$foo = attributFehltError($attribs, "to", "setVar");
-	if ($foo)
+	if(($foo = attributFehltError($attribs, "to", __FUNCTION__)))
 		return $foo;
 
-	$nameFrom = we_getTagAttribute("namefrom", $attribs);
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$typeFrom = we_getTagAttribute("typefrom", $attribs, "text");
-	$to = we_getTagAttribute("to", $attribs);
-	$from = we_getTagAttribute("from", $attribs);
-	$propertyTo = we_getTagAttribute("propertyto", $attribs, "", true);
-	$propertyFrom = we_getTagAttribute("propertyfrom", $attribs, "", true);
-	$striptags = we_getTagAttribute("striptags", $attribs, "", true);
-	$formnameTo = we_getTagAttribute("formnameto", $attribs, "we_global_form");
-	$formnameFrom = we_getTagAttribute("formnamefrom", $attribs, "we_global_form");
-	if (isset($attribs["value"])) {
-		$valueFrom = we_getTagAttribute("value", $attribs);
-	} else {
+	$nameFrom = weTag_getAttribute("namefrom", $attribs);
+	$nameTo = weTag_getAttribute("nameto", $attribs);
+	$typeFrom = weTag_getAttribute("typefrom", $attribs, "text");
+	$to = weTag_getAttribute("to", $attribs);
+	$from = weTag_getAttribute("from", $attribs);
+	$propertyTo = weTag_getAttribute("propertyto", $attribs, false, true);
+	$propertyFrom = weTag_getAttribute("propertyfrom", $attribs, false, true);
+	$striptags = weTag_getAttribute("striptags", $attribs, false, true);
+	$formnameTo = weTag_getAttribute("formnameto", $attribs, "we_global_form");
+	$formnameFrom = weTag_getAttribute("formnamefrom", $attribs, "we_global_form");
+	if(isset($attribs["value"])){
+		$valueFrom = weTag_getAttribute("value", $attribs);
+	} else{
 
 		$valueFrom = "";
-		switch ($from) {
+		switch($from){
 			case "request" :
 				$valueFrom = isset($_REQUEST[$nameFrom]) ? $_REQUEST[$nameFrom] : "";
 				break;
@@ -58,55 +60,44 @@ function we_tag_setVar($attribs, $content){
 				$valueFrom = isset($_SESSION[$nameFrom]) ? $_SESSION[$nameFrom] : "";
 				break;
 			case "top" :
-				if ($propertyFrom) {
-					eval(
-							'$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->' . $nameFrom . ') ? $GLOBALS["WE_MAIN_DOC"]->' . $nameFrom . ' : "";');
-				} else {
-					if ($typeFrom == "href") {
+				if($propertyFrom){
+					$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->$nameFrom) ? $GLOBALS["WE_MAIN_DOC"]->$nameFrom : '';
+				} else{
+					if($typeFrom == "href"){
 						$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS["WE_MAIN_DOC"]->getField(
 								array(
-									"name" => $nameFrom
-								),
-								$typeFrom,
-								true) : "";
-					} else {
+								"name" => $nameFrom
+								), $typeFrom, true) : "";
+					} else{
 						$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->elements[$nameFrom]) ? $GLOBALS["WE_MAIN_DOC"]->getField(
 								array(
-									"name" => $nameFrom
-								),
-								$typeFrom,
-								true) : "";
+								"name" => $nameFrom
+								), $typeFrom, true) : "";
 					}
 				}
 				break;
 			case "self" :
-				if ($propertyFrom) {
-					eval(
-							'$valueFrom = isset($GLOBALS["we_doc"]->' . $nameFrom . ') ? $GLOBALS["we_doc"]->' . $nameFrom . ' : "";');
-				} else {
-					if ($typeFrom == "href") {
-						$valueFrom = isset($GLOBALS["we_doc"]->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS["we_doc"]->getField(
+				if($propertyFrom){
+					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
+				} else{
+					if($typeFrom == "href"){
+						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS['we_doc']->getField(
 								array(
-									"name" => $nameFrom
-								),
-								$typeFrom,
-								true) : "";
-					} else {
-						$valueFrom = isset($GLOBALS["we_doc"]->elements[$nameFrom]) ? $GLOBALS["we_doc"]->getField(
+								"name" => $nameFrom
+								), $typeFrom, true) : "";
+					} else{
+						$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom]) ? $GLOBALS['we_doc']->getField(
 								array(
-									"name" => $nameFrom
-								),
-								$typeFrom,
-								true) : "";
+								"name" => $nameFrom
+								), $typeFrom, true) : "";
 					}
 				}
 				break;
 			case "object" :
 			case "document" :
-				if ($propertyFrom) {
-					eval(
-							'$valueFrom = isset($GLOBALS["we_' . $from . '"][$formnameFrom]->' . $nameFrom . ') ? $GLOBALS["we_' . $from . '"][$formnameFrom]->' . $nameFrom . ' : "";');
-				} else {
+				if($propertyFrom){
+					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '';
+				} else{
 					$valueFrom = isset($GLOBALS["we_" . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS["we_" . $from][$formnameFrom]->getElement(
 							$nameFrom) : "";
 				}
@@ -118,36 +109,35 @@ function we_tag_setVar($attribs, $content){
 				$valueFrom = listviewBase::getCalendarFieldValue($GLOBALS["lv"]->calendar_struct, $nameFrom);
 				break;
 			case "listview" :
-				if (!isset($GLOBALS["lv"])) {
-					return parseError($GLOBALS["l_parser"]["setVar_lv_not_in_lv"]);
+				if(!isset($GLOBALS["lv"])){
+					return parseError(g_l('parser', '[setVar_lv_not_in_lv]'));
 				}
-				$valueFrom = we_tag('field',array(
+				$valueFrom = we_tag('field', array(
 					'name' => $nameFrom, 'type' => $typeFrom
-				), "");
+					));
 				break;
 			case "block" :
+				$nameFrom.=$GLOBALS['postTagName'];
+				if($typeFrom == "href"){
 
-				if ($typeFrom == "href") {
-
-					if ($GLOBALS["we_doc"]->elements[$nameFrom . "_we_jkhdsf_int"]["dat"]) {
+					if($GLOBALS['we_doc']->elements[$nameFrom . "_we_jkhdsf_int"]["dat"]){
 						$nameFrom .= "_we_jkhdsf_intPath";
 					}
 				}
 				$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->elements[$nameFrom]) ? $GLOBALS["WE_MAIN_DOC"]->getField(
 						array(
-							"name" => $nameFrom
-						),
-						$typeFrom,
-						true) : "";
+						"name" => $nameFrom
+						), $typeFrom, true) : "";
 				break;
 			case "listdir" :
 				$valueFrom = isset($GLOBALS['we_position']['listdir'][$nameFrom]) ? $GLOBALS['we_position']['listdir'][$nameFrom] : "";
 				break;
-
 		}
 	}
-	if($striptags){$valueFrom=strip_tags(htmlentities($valueFrom));}
-	switch ($to) {
+	if($striptags){
+		$valueFrom = strip_tags($valueFrom);
+	}
+	switch($to){
 		case "request" :
 			$_REQUEST[$nameTo] = $valueFrom;
 			break;
@@ -164,33 +154,34 @@ function we_tag_setVar($attribs, $content){
 			$_SESSION[$nameTo] = $valueFrom;
 			break;
 		case "top" :
-			if ($propertyTo) {
-				eval('$GLOBALS["WE_MAIN_DOC_REF"]->' . $nameTo . ' = $valueFrom;');
-			} else {
+			if($propertyTo){
+				$GLOBALS["WE_MAIN_DOC_REF"]->$nameTo = $valueFrom;
+			} else{
 				$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $valueFrom);
 			}
 			break;
 		case "block" :
+			$nameTo.=$GLOBALS['postTagName'];
 		case "self" :
-			if ($propertyTo) {
-				eval('$GLOBALS["we_doc"]->' . $nameTo . ' = $valueFrom;');
-			} else {
-				$GLOBALS["we_doc"]->setElement($nameTo, $valueFrom);
+			if($propertyTo){
+				$GLOBALS['we_doc']->$nameTo = $valueFrom;
+				;
+			} else{
+				$GLOBALS['we_doc']->setElement($nameTo, $valueFrom);
 			}
 			break;
 		case "object" :
 		case "document" :
-			if ($propertyTo) {
-				if (isset($GLOBALS["we_$to"][$formnameTo]))
-					eval('$GLOBALS["we_$to"][$formnameTo]->' . $nameTo . ' = $valueFrom;');
-			} else {
-				if (isset($GLOBALS["we_$to"][$formnameTo]))
+			if($propertyTo){
+				if(isset($GLOBALS["we_$to"][$formnameTo]))
+					$GLOBALS['we_' . $to][$formnameTo]->$nameTo = $valueFrom;
+			} else{
+				if(isset($GLOBALS["we_$to"][$formnameTo]))
 					$GLOBALS["we_$to"][$formnameTo]->setElement($nameTo, $valueFrom);
 			}
 			break;
 		case "sessionfield" :
-			if (isset($_SESSION["webuser"][$nameTo]))
+			if(isset($_SESSION["webuser"][$nameTo]))
 				$_SESSION["webuser"][$nameTo] = $valueFrom;
 	}
-
 }

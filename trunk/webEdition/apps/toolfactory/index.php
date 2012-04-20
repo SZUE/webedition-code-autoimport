@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,8 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 // include autoload function
 include_once('../../lib/we/core/autoload.php');
 
@@ -38,8 +41,8 @@ $controller->throwExceptions(true);
 $controller->setParam('noViewRenderer', true);
 
 // set some app specific parameter
-$controller->setParam('appDir',dirname($_SERVER['SCRIPT_NAME']));
-$controller->setParam('appPath',dirname($_SERVER['SCRIPT_FILENAME']));
+$controller->setParam('appDir', dirname($_SERVER['SCRIPT_NAME']));
+$controller->setParam('appPath', dirname($_SERVER['SCRIPT_FILENAME']));
 $controller->setParam('appName', 'toolfactory');
 
 // alerts a message and exits if a user is not logged in or when the session is expired

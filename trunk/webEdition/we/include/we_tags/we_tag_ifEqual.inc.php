@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,39 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifEqual($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "ifEqual");
-	if ($foo) {
+function we_tag_ifEqual($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
-		return "";
+		return false;
 	}
-	$name = we_getTagAttribute("name", $attribs);
-	$eqname = we_getTagAttribute("eqname", $attribs);
-	$value = we_getTagAttribute("value", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$eqname = weTag_getAttribute("eqname", $attribs);
+	$value = weTag_getAttribute("value", $attribs);
 
-	if (!$eqname) {
-		$foo = attributFehltError($attribs, "value", "ifEqual");
-		if ($foo) {
+	if(!$eqname){
+		if(($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 			print($foo);
-			return "";
-		}
-		return ($GLOBALS["we_doc"]->getElement($name) == $value);
-	}
-
-	$foo = attributFehltError($attribs, "eqname", "ifEqual");
-	if ($foo) {
-		print($foo);
-		return "";
-	}
-	if ($GLOBALS["we_doc"]->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($eqname)) {
-		return ($GLOBALS["we_doc"]->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
-	} else {
-		if (isset($GLOBALS[$eqname])) {
-			return $GLOBALS[$eqname] == $GLOBALS["we_doc"]->getElement($name);
-		} else {
 			return false;
 		}
+		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
+
+	if(($foo = attributFehltError($attribs, "eqname", __FUNCTION__))){
+		print($foo);
+		return false;
+	}
+	if($GLOBALS['we_doc']->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($eqname)){
+		return ($GLOBALS['we_doc']->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
+	} else{
+		return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $GLOBALS['we_doc']->getElement($name));
+	}
+	return false;
 }

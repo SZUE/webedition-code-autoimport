@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +26,12 @@
 define("LIVEUPDATE_SERVER", "update.webedition.org");
 
 // Live Update Server Script
-define("LIVEUPDATE_SERVER_SCRIPT", "/we5/snippets.p" . "hp");
+define("LIVEUPDATE_SERVER_SCRIPT", "/we5/snippets.php");
 
 // Css
 define("LIVEUPDATE_CSS", "");
 
 // Temp Dir for downloaded files
-define("LIVEUPDATE_CLIENT_DOCUMENT_DIR", $_SERVER["DOCUMENT_ROOT"] . WEBEDITION_DIR . "liveUpdate");
+define("LIVEUPDATE_CLIENT_DOCUMENT_DIR", $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . "liveUpdate");
 
 ?>

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])) {
+if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])){
 	session_id($_REQUEST['csid']);
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_import_files.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/import_files.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-protect();
+we_html_tools::protect();
 
 $import_files = new we_import_files();
 
@@ -35,9 +36,11 @@ if(isset($_SESSION['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
+$_SESSION['weS']['importDir'] = $_REQUEST['pathinfo0'];
+
 $_counter = 0;
-foreach($_FILES as $_index=>$_file) {
-	if(strpos($_index,'File')===0 && $_file['error']==0) {
+foreach($_FILES as $_index => $_file){
+	if(strpos($_index, 'File') === 0 && $_file['error'] == 0){
 		$_FILES['we_File'] = $_file;
 
 		$error = $import_files->importFile();
@@ -46,13 +49,13 @@ foreach($_FILES as $_index=>$_file) {
 			if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 				$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
 			}
-			array_push($_SESSION["WE_IMPORT_FILES_ERRORs"],$error);
+			array_push($_SESSION["WE_IMPORT_FILES_ERRORs"], $error);
 		}
 
 		flush();
 		unset($_FILES['we_File']);
 		$_counter++;
-	} else {
+	} else{
 		break;
 	}
 }
@@ -60,7 +63,7 @@ foreach($_FILES as $_index=>$_file) {
 if(isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 	print_r($_SESSION["WE_IMPORT_FILES_ERRORs"]);
 	echo "\n";
-}else{
+} else{
 	echo "SUCCESS\n";
 }
 

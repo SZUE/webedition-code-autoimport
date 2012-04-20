@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +21,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-protect();
-$foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=".abs($we_user_locked)."",$DB_WE);
+we_html_tools::protect();
+$foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($we_user_locked), $DB_WE);
 ?>
-<script language="JavaScript" type="text/javascript"><!--
-<?php print we_message_reporting::getShowMessageCall(sprintf( $l_alert["file_locked"], $foo["Vorname"], $foo["Nachname"] ), WE_MESSAGE_NOTICE); ?>
-//-->
+<script  type="text/javascript"><!--
+<?php print we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[file_locked]"), $foo["Vorname"], $foo["Nachname"]), we_message_reporting::WE_MESSAGE_NOTICE); ?>
+	//-->
 </script>

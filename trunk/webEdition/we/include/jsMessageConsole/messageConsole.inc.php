@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,24 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/messageConsole.inc.php");
-
 /**
  * creates a new messageConsole
  *
  * @param string $consoleName
  * @return string
  */
-function createMessageConsole($consoleName="NoName") {
+function createMessageConsole($consoleName="NoName"){
 
-	return "
-<script type=\"text/javascript\" src=\"" . JS_DIR . "messageConsoleImages.js\"></script>
-<script type=\"text/javascript\" src=\"" . JS_DIR . "messageConsoleView.js\"></script>
+	return we_html_element::jsScript(JS_DIR . "messageConsoleImages.js") . we_html_element::jsScript(JS_DIR . "messageConsoleView.js") . "
 <script type=\"text/javascript\">
 
-var _msgNotice  = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["notice"] . "\";
-var _msgWarning = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["warning"] . "\";
-var _msgError   = \"" . $GLOBALS["l_messageConsole"]["iconBar"]["error"] . "\";
+var _msgNotice  = \"" . g_l('messageConsole', "[iconBar][notice]") . "\";
+var _msgWarning = \"" . g_l('messageConsole', "[iconBar][warning]") . "\";
+var _msgError   = \"" . g_l('messageConsole', "[iconBar][error]") . "\";
 
 
 var _console_$consoleName = new messageConsoleView( '$consoleName', window );
@@ -46,7 +47,7 @@ onunload=function() {
 }
 
 </script>
-<div>
+<div style=\"position:relative;float:left;\">
 	<table>
 	<tr>
 		<td valign=\"middle\">

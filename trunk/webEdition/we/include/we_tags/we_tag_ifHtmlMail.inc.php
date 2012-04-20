@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,20 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifHtmlMail($attribs, $content) {
-	if ((isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)) {
+function we_tag_ifHtmlMail(){
+	if((isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)){
 		return true;
 	}
 
-	if (isset($GLOBALS["WE_HTMLMAIL"])) {
-		if ($GLOBALS["WE_HTMLMAIL"]) {
+	if(isset($GLOBALS["WE_HTMLMAIL"])){
+		if($GLOBALS["WE_HTMLMAIL"]){
 			return true;
-		} else {
+		} else{
 			return false;
 		}
-	} else {
-		return true;
 	}
+	return true;
 }

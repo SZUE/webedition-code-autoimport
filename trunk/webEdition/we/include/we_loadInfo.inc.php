@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/inlcude/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/inlcude/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/global.inc.php");
-
+we_html_tools::htmlTop();
+print STYLESHEET;
 ?>
-
-<html>
-<head>
-<title></title>
-		<?php
-		print STYLESHEET;
-		?>
-	</head>
-
+</head>
 <body>
-<span class="defaultfont">
-			<?php
-			print $l_global["load_menu_info"];
-			?>
-		</span>
+	<span class="defaultfont">
+		<?php
+		print g_l('global', '[load_menu_info]');
+		?>
+	</span>
 </body>
-
 </html>

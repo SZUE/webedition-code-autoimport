@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * @see we_app_controller_FramesetAction
  */
@@ -25,19 +29,17 @@ Zend_Loader::loadClass('we_app_controller_FramesetAction');
 
 /**
  * Base Frameset Controller
- * 
+ *
  * @category   webEdition
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class FramesetController extends we_app_controller_FramesetAction
-{
+class FramesetController extends we_app_controller_FramesetAction{
 
 	/**
 	 * The default action - show the home page
 	 */
-	public function indexAction()
-	{
+	public function indexAction(){
 		$this->view = new toolfactory_views_TopFrameView();
 		$this->view->appDir = $this->getFrontController()->getParam('appDir');
 		$this->view->appName = $this->getFrontController()->getParam('appName');

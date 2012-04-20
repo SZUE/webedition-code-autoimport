@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +23,7 @@
  */
 
 $jsPrefs = "
-var _sObjId='" . $_REQUEST["we_cmd"][0] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][0] . "';
 var _sCls_=opener.gel(_sObjId+'_cls').value;
 var _fo,_sInitCls,_oSctCls;
 var _iInitCls=0;
@@ -53,28 +57,26 @@ function exitPrefs(){
 }
 ";
 
-$oSctCls = new we_htmlSelect(
+$oSctCls = new we_html_select(
 		array(
-			
-				"name" => "sct_cls", 
-				"size" => "1", 
-				"class" => "defaultfont", 
+
+				"name" => "sct_cls",
+				"size" => "1",
+				"class" => "defaultfont",
 				"style" => "width:120px;border:#AAAAAA solid 1px"
 		));
-$oSctCls->insertOption(0, "white", $l_cockpit['white']);
-$oSctCls->insertOption(1, "lightCyan", $l_cockpit['lightcyan']);
-$oSctCls->insertOption(2, "blue", $l_cockpit['blue']);
-$oSctCls->insertOption(3, "green", $l_cockpit['green']);
-$oSctCls->insertOption(4, "orange", $l_cockpit['orange']);
-$oSctCls->insertOption(5, "yellow", $l_cockpit['yellow']);
-$oSctCls->insertOption(6, "red", $l_cockpit['red']);
+$oSctCls->insertOption(0, "white", g_l('cockpit','[white]'));
+$oSctCls->insertOption(1, "lightCyan", g_l('cockpit','[lightcyan]'));
+$oSctCls->insertOption(2, "blue", g_l('cockpit','[blue]'));
+$oSctCls->insertOption(3, "green", g_l('cockpit','[green]'));
+$oSctCls->insertOption(4, "orange", g_l('cockpit','[orange]'));
+$oSctCls->insertOption(5, "yellow", g_l('cockpit','[yellow]'));
+$oSctCls->insertOption(6, "red", g_l('cockpit','[red]'));
 
-$oSelCls = new we_htmlTable(array(
+$oSelCls = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 2);
 $oSelCls->setCol(0, 0, array(
 	"width" => 130, "class" => "defaultfont"
-), $l_cockpit['bgcolor']);
-$oSelCls->setCol(0, 1, null, $oSctCls->getHTMLCode());
-
-?>
+), g_l('cockpit','[bgcolor]'));
+$oSelCls->setCol(0, 1, null, $oSctCls->getHTML());

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,63 +22,46 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class versionFragment extends taskFragment{
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_versions/version_wizard/we_version.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_logging/versions/versionsLog.class.php");
-
-class versionFragment extends taskFragment
-{
-
-	function versionFragment($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = "")
-	{
-		parent::taskFragment($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
-	
+	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
+		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
-	function doTask()
-	{
+	function doTask(){
 		we_version::todo($this->data);
 		$this->updateProgressBar();
 	}
 
-	function updateProgressBar()
-	{
+	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		print 
-				'<script language="JavaScript" type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
-						shortenPath(
-								$this->data["path"] . " - " . $GLOBALS["l_versions"]['version'] . " " . $this->data["version"], 
-								33)) . '" : "' . "test" . addslashes(
-						shortenPath(
-								$this->data["path"] . " - " . $GLOBALS["l_versions"]['version'] . " " . $this->data["version"], 
-								60)) . '") );parent.wizbusy.setProgress(' . $percent . ');</script>';
-	
+		print
+			'<script type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
+				shortenPath(
+					$this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
+				shortenPath(
+					$this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');</script>';
 	}
 
-	function finish()
-	{
-		if (!empty($_SESSION['versions']['logResetIds'])) {
+	function finish(){
+		if(!empty($_SESSION['versions']['logResetIds'])){
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'], WE_LOGGING_VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['versions']['logResetIds']);
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
-		htmlTop();
-		if ($_REQUEST['type'] == "delete_versions") {
-			$responseText = $GLOBALS["l_versions"]["deleteDateVersionsOK"];
+		we_html_tools::htmlTop();
+		if($_REQUEST['type'] == "delete_versions"){
+			$responseText = g_l('versions', '[deleteDateVersionsOK]');
 		}
-		if ($_REQUEST['type'] == "reset_versions") {
-			$responseText = $GLOBALS["l_versions"]["resetAllVersionsOK"];
+		if($_REQUEST['type'] == "reset_versions"){
+			$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
-		print 
-				'<script language="JavaScript" type="text/javascript">
-			' . we_message_reporting::getShowMessageCall(
-						addslashes($responseText ? $responseText : ""), 
-						WE_MESSAGE_NOTICE) . '
-			
+		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(
+					addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+
 			// reload current document => reload all open Editors on demand
-						
+
 			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
@@ -89,27 +77,24 @@ class versionFragment extends taskFragment
 
 			//reload tree
 			top.opener.we_cmd("load", top.opener.treeData.table ,0);
-			
+
 			top.close();
-		</script>
-		</head>
-		</html>';
+		') .
+			'</head></html>';
 	}
 
-	function printHeader()
-	{
-		protect();
-		//print "<html><head><title></title></head>";
+	function printHeader(){
+		we_html_tools::protect();
+		we_html_tools::htmlTop();
+		echo '</head>';
 	}
 
-	function printBodyTag($attributes = "")
-	{
-	
+	function printBodyTag($attributes = ""){
+
 	}
 
-	function printFooter()
-	{
+	function printFooter(){
 		$this->printJSReload();
 	}
+
 }
-?>

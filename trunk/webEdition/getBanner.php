@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,16 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define('NO_SESS', 1);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-define("NO_SESS",1);
 
-$id = isset($_GET["id"]) ? $_GET["id"] : 0;
-$bid = isset($_GET["bid"]) ? $_GET["bid"] : 0;
-$did = isset($_GET["did"]) ? $_GET["did"] : 0;
+$id = intval(isset($_GET["id"]) ? $_GET["id"] : 0);
+$bid = intval(isset($_GET["bid"]) ? $_GET["bid"] : 0);
+$did = intval(isset($_GET["did"]) ? $_GET["did"] : 0);
 $paths = isset($_GET["paths"]) ? $_GET["paths"] : "";
 $target = isset($_GET["target"]) ? $_GET["target"] : "";
-$height = isset($_GET["height"]) ? $_GET["height"] : 0;
-$width = isset($_GET["width"]) ? $_GET["width"] : 0;
+$height = intval(isset($_GET["height"]) ? $_GET["height"] : 0);
+$width = intval(isset($_GET["width"]) ? $_GET["width"] : 0);
 $bannerclick = isset($_GET["bannerclick"]) ? $_GET["bannerclick"] : "/webEdition/bannerclick.php";
 $referer = isset($_GET["referer"]) ? $_GET["referer"] : "";
 $type = isset($_GET["type"]) ? $_GET["type"] : "";
@@ -41,60 +47,53 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
-	$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-	$prot = getServerProtocol();
-	$code = weBanner::getBannerCode($did,$paths,$target,$width,$height,$dt,$cats,$bannername,$link,$referer,$bannerclick,$prot."://".SERVER_NAME.$port.$_SERVER['SCRIPT_NAME'],$type, $page, $nocount, $xml);
+	$code = weBanner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
 }
-if($type=="js"){
+switch($type){
+	case "js":
 
-	$code = str_replace("\r\n","\n",$code);
-	$code = str_replace("\r","\n",$code);
-	$code = str_replace("'","\\'",$code);
-	$jsarr = explode("\n",$code);
+		$code = str_replace("\r\n", "\n", $code);
+		$code = str_replace("\r", "\n", $code);
+		$code = str_replace("'", "\\'", $code);
+		$jsarr = explode("\n", $code);
 
 
-	header("Content-type: application/x-javascript");
+		header("Content-type: application/x-javascript");
 
-	foreach($jsarr as $line){
-		print "document.writeln('".$line."');\n";
-	}
-}else if($type=="iframe"){
-	print $code;
-}else{
-	if(!$id){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
-		$bannerData = weBanner::getBannerData($did,$paths,$dt,$cats,$bannername);
-		$id = $bannerData["ID"];
-		$bid = $bannerData["bannerID"];
-	}else{
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_defines.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_conf_banner.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
-	}
-	if(!$bid){
-		$id=f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$DB_WE);
-		$bid=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".abs($id),"bannerID",$DB_WE);
+		foreach($jsarr as $line){
+			print "document.writeln('" . $line . "');\n";
+		}
+		break;
+	case "iframe":
+		print $code;
+		break;
+	default:
+		if(!$id){
+			$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername);
+			$id = $bannerData["ID"];
+			$bid = $bannerData["bannerID"];
+		}
+		if(!$bid){
+			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $DB_WE);
+			$bid = f("SELECT bannerID FROM " . BANNER_TABLE . " WHERE ID=" . intval($id), "bannerID", $DB_WE);
+		}
 
-	}
+		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid), "Path", $DB_WE);
 
-	$bannerpath = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($bid),"Path",$DB_WE);
+		if(($type == "pixel" || (!$nocount) && $id && $c)){
+			$DB_WE->query("INSERT INTO " . BANNER_VIEWS_TABLE . " (ID,Timestamp,IP,Referer,DID,Page) VALUES(" . intval($id) . "," . time() . ",'" . $DB_WE->escape($_SERVER["REMOTE_ADDR"]) . "','" . $DB_WE->escape($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "")) . "'," . intval($did) . ",'" . $DB_WE->escape($page) . "')");
+			$DB_WE->query("UPDATE " . BANNER_TABLE . " SET views=views+1 WHERE ID=" . intval($id));
+			setcookie("webid_$bannername", intval($id));
+		}
 
-	if(($type=="pixel" || (!$nocount) && $id && $c)){
-		$DB_WE->query("INSERT INTO ".BANNER_VIEWS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$DB_WE->escape($_SERVER["REMOTE_ADDR"])."','".$DB_WE->escape($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] :  ""))."',".abs($did).",'".$DB_WE->escape($page)."')");
-		$DB_WE->query("UPDATE ".BANNER_TABLE." SET views=views+1 WHERE ID=".abs($id));
-		setcookie("webid_$bannername",abs($id));
-	}
+		if($bannerpath){
+			//header("Location: $bannerpath");exit();
 
-	if($bannerpath){
-		//header("Location: $bannerpath");exit();
-
-		if($c){
-			$ext = ereg_replace('.*\.(.+)$','\1',$bannerpath);
+			if(!$c){
+				header("Location: $bannerpath");
+				exit();
+			}
+			$ext = preg_replace('/.*\.(.+)$/', '\1', $bannerpath);
 			switch($ext){
 				case "jpg":
 				case "jpeg":
@@ -111,24 +110,17 @@ if($type=="js"){
 			header("Cache-Control: no-cache");
 			header("Pragma: no-cache");
 			header("Expires: -1");
-			header("Content-disposition: filename=".basename($bannerpath));
+			header("Content-disposition: filename=" . basename($bannerpath));
 			header("Content-Type: $contenttype");
 
-			readfile($_SERVER["DOCUMENT_ROOT"].$bannerpath);
-		}else{
-			header("Location: $bannerpath");exit();
+			readfile($_SERVER['DOCUMENT_ROOT'] . $bannerpath);
+		} else{
+			header("Content-type: image/gif");
+			print chr(0x47) . chr(0x49) . chr(0x46) . chr(0x38) . chr(0x39) . chr(0x61) . chr(0x01) . chr(0x00) .
+				chr(0x01) . chr(0x00) . chr(0x80) . chr(0x00) . chr(0x00) . chr(0x04) . chr(0x02) . chr(0x04) .
+				chr(0x00) . chr(0x00) . chr(0x00) . chr(0x21) . chr(0xF9) . chr(0x04) . chr(0x01) . chr(0x00) .
+				chr(0x00) . chr(0x00) . chr(0x00) . chr(0x2C) . chr(0x00) . chr(0x00) . chr(0x00) . chr(0x00) .
+				chr(0x01) . chr(0x00) . chr(0x01) . chr(0x00) . chr(0x00) . chr(0x02) . chr(0x02) . chr(0x44) .
+				chr(0x01) . chr(0x00) . chr(0x3B);
 		}
-
-	}else{
-		header 	 ("Content-type: image/gif");
-		print chr(0x47).chr(0x49).chr(0x46).chr(0x38).chr(0x39).chr(0x61).chr(0x01).chr(0x00).
-			chr(0x01).chr(0x00).chr(0x80).chr(0x00).chr(0x00).chr(0x04).chr(0x02).chr(0x04).
-			chr(0x00).chr(0x00).chr(0x00).chr(0x21).chr(0xF9).chr(0x04).chr(0x01).chr(0x00).
-			chr(0x00).chr(0x00).chr(0x00).chr(0x2C).chr(0x00).chr(0x00).chr(0x00).chr(0x00).
-			chr(0x01).chr(0x00).chr(0x01).chr(0x00).chr(0x00).chr(0x02).chr(0x02).chr(0x44).
-			chr(0x01).chr(0x00).chr(0x3B);
-	}
-
-
 }
-

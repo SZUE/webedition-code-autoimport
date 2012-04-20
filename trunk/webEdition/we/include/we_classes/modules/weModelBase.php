@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,36 +22,35 @@
  * @package    webEdition_modules
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**
  * Definition of webEdition Base Model
  *
  */
-class weModelBase {
+class weModelBase{
 
 	var $db;
 	var $table = '';
 	var $persistent_slots = array();
-	var $keys = array("ID");
+	var $keys = array('ID');
 	var $isnew = true;
 
 	/**
 	 * Default Constructor
 	 */
-	function weModelBase($table) {
+	function __construct($table){
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->loadPresistents();
 	}
 
-	function loadPresistents() {
+	function loadPresistents(){
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
-		for ($i = 0; $i < sizeof($tableInfo); $i++) {
-			$fname = $tableInfo[$i]["name"];
+		foreach($tableInfo as $info){
+			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
-			if (!isset($this->$fname))
+			if(!isset($this->$fname))
 				$this->$fname = "";
 		}
 	}
@@ -54,60 +58,56 @@ class weModelBase {
 	/**
 	 * Load entry from database
 	 */
-	function load($id="0") {
-		$ids = explode(",", $id);
-		foreach ($ids as $k => $v) {
-			eval('$this->' . $this->keys[$k] . '="' . escape_sql_query($v) . '";');
-		}
-
-		if ($this->isKeyDefined()) {
+	function load($id=0){
+		if($this->isKeyDefined()){
+			if($id){
+				$this->ID = $id;
+			}
 			$tableInfo = $this->db->metadata($this->table);
-			$this->db->query("SELECT * FROM " . $this->table . " WHERE " . $this->getKeyWhere() . ";");
-			if ($this->db->next_record()) {
-				for ($i = 0; $i < sizeof($tableInfo); $i++) {
-					$fieldName = $tableInfo[$i]["name"];
-					if (in_array($fieldName, $this->persistent_slots)) {
-						$foo = $this->db->f($fieldName);
-						eval('$this->' . $fieldName . '=$foo;');
+			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
+
+			if(count($data)){
+				foreach($tableInfo as $info){
+					$fieldName = $info["name"];
+					if(in_array($fieldName, $this->persistent_slots)){
+						$this->{$fieldName} = $data[$fieldName];
 					}
 				}
 				$this->isnew = false;
 				return true;
-			}else
-				return false;
-		}else {
-			return false;
+			}
 		}
+		return false;
 	}
 
 	/**
 	 * save entry in database
 	 */
-	function save($force_new=false) {
+	function save($force_new=false){
 		$sets = array();
 		$wheres = array();
-		if ($force_new)
+		if($force_new)
 			$this->isnew = true;
-		foreach ($this->persistent_slots as $key => $val) {
+		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
-			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".escape_sql_query($this->' . $val . ')."\'";');
+			if(isset($this->{$val})){
+				$sets[$val] = $this->{$val};
+			}
 		}
 		$where = $this->getKeyWhere();
-		$set = implode(",", $sets);
+		$set = we_database_base::arraySetter($sets);
 
-		if ($this->isKeyDefined() && $this->isnew) {
-			$query = 'REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
-
-			$this->db->query($query);
-			# get ID #
-			$this->ID = $this->db->getInsertId();
-			$this->isnew = false;
-			return true;
-		}
-		else if ($this->isKeyDefined()) {
-			$query = 'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
-			return true;
+		if($this->isKeyDefined()){
+			if($this->isnew){
+				$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set, false, true);
+				# get ID #
+				if($ret){
+					$this->ID = $this->db->getInsertId();
+					$this->isnew = false;
+				}
+				return $ret;
+			}
+			return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
 		return false;
@@ -116,30 +116,33 @@ class weModelBase {
 	/**
 	 * delete entry from database
 	 */
-	function delete() {
-		if (!$this->isKeyDefined()) {
+	function delete(){
+		if(!$this->isKeyDefined()){
 			return false;
 		}
-		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere() . ';');
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere());
 		return true;
 	}
 
-	function getKeyWhere() {
+	function getKeyWhere(){
 		$wheres = array();
-		foreach ($this->keys as $f) {
-			eval('$wheres[]="' . $f . '=\'".escape_sql_query($this->' . $f . ')."\'";');
+		foreach($this->keys as $f){
+			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->$f) . '"';
 		}
-		return implode(" AND ", $wheres);
+		return implode(' AND ', $wheres);
 	}
 
-	function isKeyDefined() {
+	function isKeyDefined(){
 		$defined = true;
-		foreach ($this->keys as $prim)
-			eval('if(!isset($this->' . $prim . ')) $defined=false;');
+		foreach($this->keys as $prim){
+			if(!isset($this->$prim)){
+				$defined = false;
+			}
+		}
 		return $defined;
 	}
 
-	function setKeys($keys) {
+	function setKeys($keys){
 		$this->keys = $keys;
 	}
 

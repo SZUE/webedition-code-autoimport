@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,24 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weExportTreeMain extends weTree{
 
+	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weTree.inc.php");
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	}
 
-
-	class weExportTreeMain extends weTree{
-
-
-		function weExportTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
-
-				weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
-
-
-
-		}
-
-		function getJSOpenClose(){
- 			return '
+	function getJSOpenClose(){
+		return '
   			function openClose(id){
 				var sort="";
 				if(id=="") return;
@@ -49,20 +45,19 @@
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
 					if(sort!="")
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
 					else
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&cmd=mainload&pid="+id;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id;
 				}else{
 					drawTree();
 				}
 				if(openstatus==1) treeData[eintragsIndex].loaded=1;
  			}
  			';
+	}
 
-		}
-
- 		function getJSUpdateItem(){
- 			return '
+	function getJSUpdateItem(){
+		return '
  				function updateEntry(id,text,pid){
         			var ai = 1;
         			while (ai <= treeData.len) {
@@ -75,55 +70,53 @@
 					drawTree();
  				}
 			';
- 		}
+	}
 
-		function getJSTreeFunctions(){
-			global $l_export;
-			$out=weTree::getJSTreeFunctions();
+	function getJSTreeFunctions(){
+		$out = weTree::getJSTreeFunctions();
 
-			$out.='
+		$out.='
 				function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.$l_export["save_changed_export"].'")) {
+						if(confirm("' . g_l('export', "[save_changed_export]") . '")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_export");
 						} else {
 							top.content.usetHot();
 							cmd = "edit_export";
-							var node='.$this->topFrame.'.get(id);
-							'.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+'.$this->topFrame.'.activ_tab;
+							var node=' . $this->topFrame . '.get(id);
+							' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
 						cmd = "edit_export";
-						var node='.$this->topFrame.'.get(id);
-						'.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+'.$this->topFrame.'.activ_tab;
+						var node=' . $this->topFrame . '.get(id);
+						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 				}
-				'.$this->topFrame.'.loaded=1;
+				' . $this->topFrame . '.loaded=1;
 			';
-			return $out;
-		}
+		return $out;
+	}
 
-		function getJSStartTree(){
+	function getJSStartTree(){
 
-			return 'function startTree(){
-				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&cmd=mainload&pid=0";
+		return 'function startTree(){
+				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid=0";
 				drawTree();
 			}';
+	}
 
-		}
+	function getJSIncludeFunctions(){
 
-		function getJSIncludeFunctions(){
+		$out = weTree::getJSIncludeFunctions();
+		$out.="\n" . $this->getJSStartTree() . "\n";
 
-			$out=weTree::getJSIncludeFunctions();
-			$out.="\n".$this->getJSStartTree()."\n";
+		return $out;
+	}
 
-			return $out;
-		}
-
-		function getJSMakeNewEntry(){
-	 		return '
+	function getJSMakeNewEntry(){
+		return '
 			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 					if(treeData[indexOfEntry(pid)]){
 						if(treeData[indexOfEntry(pid)].loaded){
@@ -155,8 +148,7 @@
 					}
 			}
 			';
-		}
-
-
 	}
+
+}
 

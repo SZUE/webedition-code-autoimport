@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,8 +27,7 @@
  * This class contains all functions needed for the update process
  * TBD if we divide this class in several classes
  */
-class liveUpdateFunctions {
-
+class liveUpdateFunctions{
 
 	/**
 	 * Decode encoded strings submit from liveupdater
@@ -31,11 +35,10 @@ class liveUpdateFunctions {
 	 * @param string $string
 	 * @return string
 	 */
-	function decodeCode($string) {
+	function decodeCode($string){
 
 		return base64_decode($string);
 	}
-
 
 	/**
 	 * prepares given php-code
@@ -44,14 +47,13 @@ class liveUpdateFunctions {
 	 *
 	 * @return string
 	 */
-	function preparePhpCode($content, $needle, $replace) {
+	function preparePhpCode($content, $needle, $replace){
 
 		$content = $this->replaceExtensionInContent($content, $needle, $replace);
 		$content = $this->checkReplaceDocRoot($content);
 
 		return $content;
 	}
-
 
 	/**
 	 * replaces extension of content
@@ -61,7 +63,7 @@ class liveUpdateFunctions {
 	 * @param unknown_type $needle
 	 * @return unknown
 	 */
-	function replaceExtensionInContent($content, $needle, $replace) {
+	function replaceExtensionInContent($content, $needle, $replace){
 
 		$content = str_replace($needle, $replace, $content);
 		return $content;
@@ -74,14 +76,14 @@ class liveUpdateFunctions {
 	 * @param string $content
 	 * @return string
 	 */
-	function checkReplaceDocRoot($content) {
+	function checkReplaceDocRoot($content){
 
-		if (!(isset($_SERVER['DOCUMENT_' . 'ROOT']) && $_SERVER['DOCUMENT_' . 'ROOT'] == LIVEUPDATE_SOFTWARE_DIR) ) {
+		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
 
-			$content = str_replace('$_SERVER[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$_SERVER["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$_SERVER[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$_SERVER["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$GLOBALS[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$GLOBALS["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -95,19 +97,19 @@ class liveUpdateFunctions {
 	 *
 	 * @param array $allFiles
 	 */
-	function getFilesOfDir(&$allFiles, $baseDir) {
+	function getFilesOfDir(&$allFiles, $baseDir){
 
-		if (file_exists($baseDir)) {
+		if(file_exists($baseDir)){
 			$dh = opendir($baseDir);
-			while( $entry = readdir($dh) ){
-				if( $entry != "" && $entry != "." && $entry != ".." ){
+			while($entry = readdir($dh)) {
+				if($entry != "" && $entry != "." && $entry != ".."){
 					$_entry = $baseDir . "/" . $entry;
-		            if( !is_dir( $_entry ) ){
-		                $allFiles[] = $_entry;
-		            }
+					if(!is_dir($_entry)){
+						$allFiles[] = $_entry;
+					}
 
-					if(is_dir( $_entry )){
-						$this->getFilesOfDir( $allFiles, $_entry);
+					if(is_dir($_entry)){
+						$this->getFilesOfDir($allFiles, $_entry);
 					}
 				}
 			}
@@ -120,31 +122,31 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $dir
 	 */
-	function deleteDir($dir) {
+	function deleteDir($dir){
 
-		if (strpos($dir, './') !== false) {
+		if(strpos($dir, './') !== false){
 			return true;
 		}
 
-		if (!file_exists($dir)) {
+		if(!file_exists($dir)){
 			return true;
 		}
 
 		$dh = opendir($dir);
-		if ($dh) {
-			while( $entry = readdir($dh) ){
-				if( $entry != "" && $entry != "." && $entry != ".." ){
+		if($dh){
+			while($entry = readdir($dh)) {
+				if($entry != "" && $entry != "." && $entry != ".."){
 					$_entry = $dir . "/" . $entry;
-					if (is_dir($_entry)) {
+					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
-					} else {
+					} else{
 						unlink($_entry);
 					}
 				}
 			}
 			closedir($dh);
 			return rmdir($dir);
-		} else {
+		} else{
 			return true;
 		}
 	}
@@ -155,11 +157,11 @@ class liveUpdateFunctions {
 	 * @param string $filePath
 	 * @return string
 	 */
-	function getFileContent($filePath) {
+	function getFileContent($filePath){
 
 		$content = '';
 		$fh = fopen($filePath, 'rb');
-		if ($fh) {
+		if($fh){
 			$content = fread($fh, filesize($filePath));
 			fclose($fh);
 		}
@@ -174,21 +176,18 @@ class liveUpdateFunctions {
 	 * @param string $newContent
 	 * @return boolean
 	 */
-	function filePutContent($filePath, $newContent) {
+	function filePutContent($filePath, $newContent){
 
-		if ($this->checkMakeDir( dirname($filePath) )) {
+		if($this->checkMakeDir(dirname($filePath))){
 			$fh = fopen($filePath, 'wb');
-			if ($fh) {
+			if($fh){
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
-				if(!chmod($filePath, 0755)) {
+				if(!chmod($filePath, 0755)){
 					return false;
-
 				}
 				return true;
-
 			}
-
 		}
 		return false;
 	}
@@ -199,25 +198,24 @@ class liveUpdateFunctions {
 	 * @param string $dirPath
 	 * @return boolean
 	 */
-	function checkMakeDir($dirPath, $mod=0755) {
+	function checkMakeDir($dirPath, $mod=0755){
 
 		// open_base_dir - seperate document-root from rest
 		$dirPath = str_replace("///", "/", $dirPath);
 		$dirPath = str_replace("//", "/", $dirPath);
 
 		// remove trailing slash
-		$dirPath = rtrim($dirPath,'/');
+		$dirPath = rtrim($dirPath, '/');
 
 		// remove doubble slash
-		$le_installer_path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/";
+		$le_installer_path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/";
 		$le_installer_path = str_replace("///", "/", $le_installer_path);
 		$le_installer_path = str_replace("//", "/", $le_installer_path);
 
-		if (strpos($dirPath, $le_installer_path) === 0) {
+		if(strpos($dirPath, $le_installer_path) === 0){
 			$preDir = $le_installer_path;
 			$dir = substr($dirPath, strlen($le_installer_path));
-
-		} else {
+		} else{
 			$preDir = '';
 			$dir = $dirPath;
 		}
@@ -225,20 +223,20 @@ class liveUpdateFunctions {
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
 
-		for($i=0;$i<sizeof($pathArray); $i++){
+		for($i = 0; $i < sizeof($pathArray); $i++){
 			$path .= $pathArray[$i];
 			if($pathArray[$i] != "" && !is_dir($path)){
-				if( !(file_exists($path) || mkdir($path, $mod)) ){
+				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
 			}
 			$path .= "/";
 		}
 
-		if(!is_writable($dirPath)) {
-		if(!chmod($dirPath, $mod)) {
-			return false;
-		}
+		if(!is_writable($dirPath)){
+			if(!chmod($dirPath, $mod)){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -247,10 +245,10 @@ class liveUpdateFunctions {
 	 * @param string $file
 	 * @return boolean true if the file is not existent after this call
 	 */
-	function deleteFile($file) {
+	function deleteFile($file){
 		if(file_exists($file)){
 			return @unlink($file);
-		} else {
+		} else{
 			return true;
 		}
 	}
@@ -262,28 +260,27 @@ class liveUpdateFunctions {
 	 * @param string $destination
 	 * @return boolean false if move was not successful
 	 */
-	function moveFile($source, $destination) {
+	function moveFile($source, $destination){
 
-		if($source==$destination){
+		if($source == $destination){
 			return true;
 		}
 
-		if ($this->checkMakeDir(dirname($destination))) {
+		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
 				//rename seems to have problems - we do it old school way: copy, on success delete
 				//return rename($source, $destination);
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
-				return true;
-				}else{
+					return true;
+				} else{
 					return false;
 				}
-			} else {
+			} else{
 				return false;
 			}
-
-		} else {
+		} else{
 			return false;
 		}
 	}
@@ -294,13 +291,13 @@ class liveUpdateFunctions {
 	 * @param string $path
 	 * @return boolean
 	 */
-	function isPhpFile($path) {
+	function isPhpFile($path){
 
 		$pattern = "/\.([^\..]+)$/";
 
-		if (preg_match($pattern, $path, $matches)) {
+		if(preg_match($pattern, $path, $matches)){
 			$ext = strtolower($matches[1]);
-			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
+			if(($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql')){
 				return false;
 			}
 		}
@@ -317,26 +314,19 @@ class liveUpdateFunctions {
 	 * @param string $needle
 	 * @return boolean
 	 */
-	function replaceCode($filePath, $replace, $needle='') {
+	function replaceCode($filePath, $replace, $needle=''){
 
 		// decode parameters
 		$needle = $this->decodeCode($needle);
 		$replace = $this->decodeCode($replace);
 
-		if (file_exists($filePath)) {
+		if(file_exists($filePath)){
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
-			if ($needle) {
-				$newContent = ereg_replace($needle, $replace, $oldContent);
+			$newContent = ($needle ? preg_replace('/'.preg_quote($needle).'/', $replace, $oldContent) : $replace );
 
-			} else {
-				$newContent = $replace;
-			}
-
-			if (!$this->filePutContent($filePath, $newContent)) {
-				return false;
-			}
-		} else {
+			return ($this->filePutContent($filePath, $newContent));
+		} else{
 			return false;
 		}
 		return true;
@@ -352,16 +342,16 @@ class liveUpdateFunctions {
 	 * @param string $path
 	 * @return boolean
 	 */
-	function executePatch($path) {
+	function executePatch($path){
 
-		if (file_exists($path)) {
+		if(file_exists($path)){
 
 			$code = $this->getFileContent($path);
 			eval('?>' . $code);
 
-			if ($patchSuccess) {
+			if($patchSuccess){
 				return true;
-			} else {
+			} else{
 				return false;
 			}
 		}
@@ -378,7 +368,7 @@ class liveUpdateFunctions {
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getFieldsOfTable($tableName) {
+	function getFieldsOfTable($tableName){
 
 		$db = new le_MySQL_DB();
 
@@ -386,7 +376,7 @@ class liveUpdateFunctions {
 
 		$db->query("DESCRIBE $tableName");
 
-		while ($db->next_record()) {
+		while($db->next_record()) {
 			$fieldsOfTable[$db->f('Field')] = array(
 				'Field' => $db->f('Field'),
 				'Type' => $db->f('Type'),
@@ -405,25 +395,25 @@ class liveUpdateFunctions {
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getKeysFromTable($tableName) {
+	function getKeysFromTable($tableName){
 		$db = new le_MySQL_DB();
 		$keysOfTable = array();
 		$db->query("SHOW INDEX FROM $tableName");
-		while ($db->next_record()) {
-			if ($db->f('Key_name') == 'PRIMARY') {
+		while($db->next_record()) {
+			if($db->f('Key_name') == 'PRIMARY'){
 				$indexType = 'PRIMARY';
-			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
+			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends from mysqlVersion
 				$indexType = 'FULLTEXT';
-			} else if ( $db->f('Non_unique') == '0' ) {
+			} else if($db->f('Non_unique') == '0'){
 				$indexType = 'UNIQUE';
-			} else {
+			} else{
 				$indexType = 'INDEX';
 			}
 
-			if (!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])) {
+			if(!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])){
 				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
 			}
-			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')]=$db->f('Column_name').($db->f('Sub_part')?'('.$db->f('Sub_part').')':'');
+			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')] = $db->f('Column_name') . ($db->f('Sub_part') ? '(' . $db->f('Sub_part') . ')' : '');
 		}
 
 		return $keysOfTable;
@@ -438,36 +428,36 @@ class liveUpdateFunctions {
 	 * @param boolean $newField
 	 * @return unknown
 	 */
-	function getAlterTableForFields($fields, $tableName, $isNew=false) {
+	function getAlterTableForFields($fields, $tableName, $isNew=false){
 
 		$queries = array();
 
-		foreach ($fields as $fieldName => $fieldInfo) {
+		foreach($fields as $fieldName => $fieldInfo){
 
 			$extra = '';
 			$default = '';
 
-           $null = (strtoupper($fieldInfo['Null']) == "YES"?' NULL':' NOT NULL');
+			$null = (strtoupper($fieldInfo['Null']) == "YES" ? ' NULL' : ' NOT NULL');
 
-           if (($fieldInfo['Default']) != "") {
-						 $default ='DEFAULT '.(($fieldInfo['Default']) == 'CURRENT_TIMESTAMP'?'CURRENT_TIMESTAMP':'\'' . $fieldInfo['Default'] . '\'');
-			} else {
-               if (strtoupper($fieldInfo['Null']) == "YES") {
-                   $default = ' DEFAULT NULL';
+			if(($fieldInfo['Default']) != ""){
+				$default = 'DEFAULT ' . (($fieldInfo['Default']) == 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
+			} else{
+				if(strtoupper($fieldInfo['Null']) == "YES"){
+					$default = ' DEFAULT NULL';
 				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 
-					 if((strpos($extra,'AUTO_INCREMENT') !== false)&& ($fieldInfo['Key']=='')){
-						 //set an index, if there is none - this prevents from failing the query
-						 //temporary index is dropped on next update
-						 $extra .= ', ADD INDEX _temp ('.$fieldInfo['Field'].')';
-					 }
+			if((strpos($extra, 'AUTO_INCREMENT') !== false) && ($fieldInfo['Key'] == '')){
+				//set an index, if there is none - this prevents from failing the query
+				//temporary index is dropped on next update
+				$extra .= ', ADD INDEX _temp (' . $fieldInfo['Field'] . ')';
+			}
 
-			if ($isNew) {
+			if($isNew){
 
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			} else {
+			} else{
 
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
@@ -483,30 +473,30 @@ class liveUpdateFunctions {
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	function getAlterTableForKeys($fields, $tableName, $isNew) {
+	function getAlterTableForKeys($fields, $tableName, $isNew){
 		$queries = array();
 
-		foreach ($fields as $key => $indexes) {
+		foreach($fields as $key => $indexes){
 			//escape all index fields
-			array_walk($indexes,'addslashes');
+			array_walk($indexes, 'addslashes');
 
-			$type=$indexes['index'];
-			$mysl='`';
-			if($type=='PRIMARY'){
-				$key='KEY';
-				$mysl='';
+			$type = $indexes['index'];
+			$mysl = '`';
+			if($type == 'PRIMARY'){
+				$key = 'KEY';
+				$mysl = '';
 			}
 			//index is not needed any more and disturbs implode
 			unset($indexes['index']);
-			$myindexes=array();
-			foreach ($indexes as $index){
-				if (strpos($index,'(') === false){
-					$myindexes[] = '`'.$index.'`';
-				} else {
-					$myindexes[] = '`'.str_replace('(','`(',$index);
+			$myindexes = array();
+			foreach($indexes as $index){
+				if(strpos($index, '(') === false){
+					$myindexes[] = '`' . $index . '`';
+				} else{
+					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
-			$queries[] = 'ALTER TABLE `'.$tableName.'` '.($isNew?'':' DROP '.($type=='PRIMARY'?$type:'INDEX').' '.$mysl.$key.$mysl.' , ').' ADD ' . $type. ' '.$mysl.$key.$mysl . ' ('.implode(',',$myindexes).')';
+			$queries[] = 'ALTER TABLE `' . $tableName . '` ' . ($isNew ? '' : ' DROP ' . ($type == 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
 		}
 		return $queries;
 	}
@@ -517,7 +507,7 @@ class liveUpdateFunctions {
 	 * @param string $path
 	 * @return boolean
 	 */
-	function isInsertQueriesFile($path) {
+	function isInsertQueriesFile($path){
 
 		return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
 	}
@@ -531,18 +521,22 @@ class liveUpdateFunctions {
 	 * @param string $path
 	 * @return boolean
 	 */
-	function executeDropQueries($queries) {
+	function executeDropQueries($queries){
 
 		$leDB = new le_MySQL_DB();
 
 		$success = true;
 
-		foreach ($queries as $query) {
+		foreach($queries as $query){
 
-		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
-		$query=str_replace('###UPDATEONLY###', '', $query);
+			$query = str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+			$query = str_replace('###UPDATEONLY###', '', $query);
+			if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
+				$leDB->query('SHOW COLUMNS FROM ' . $matches[2] . ' WHERE Field="' . $matches[1] . '"');
+				$query = ($leDB->num_rows() ? 'ALTER TABLE ' . $matches[2] . ' DROP COLUMN `' . $matches[1] . '`' : '');
+			}
 
-			if (!$leDB->query($query)) {
+			if(!$leDB->query($query)){
 
 				$success = false;
 			}
@@ -560,26 +554,25 @@ class liveUpdateFunctions {
 	 * @param string $path
 	 * @return boolean
 	 */
-	function executeQueriesInFiles($path) {
+	function executeQueriesInFiles($path){
 
-		if ($this->isInsertQueriesFile($path)) {
+		if($this->isInsertQueriesFile($path)){
 			$success = true;
 			$queryArray = file($path);
-			if ($queryArray) {
-				foreach ($queryArray as $query) {
-					if (trim($query)) {
+			if($queryArray){
+				foreach($queryArray as $query){
+					if(trim($query)){
 						$success &= $this->executeUpdateQuery($query);
 					}
 				}
 			}
-
-		} else {
+		} else{
 			$content = $this->getFileContent($path);
 			$content = $this->getFileContent($path);
-			$queries = explode("/* query separator */",$content);
+			$queries = explode("/* query separator */", $content);
 			//$success = $this->executeUpdateQuery($content);
 			$success = true;
-			foreach($queries as $query) {
+			foreach($queries as $query){
 				$success &= $this->executeUpdateQuery($query);
 			}
 		}
@@ -591,7 +584,7 @@ class liveUpdateFunctions {
 	 *
 	 * @param string $query
 	 */
-	function executeUpdateQuery($query) {
+	function executeUpdateQuery($query){
 
 		$db = new le_MySQL_DB();
 
@@ -599,90 +592,88 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
-		
-		if (strpos($query,'###INSTALLONLY###')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+
+		if(strpos($query, '###INSTALLONLY###') !== false){// nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
 
-		$query=str_replace('###UPDATEONLY###', '', $query);
-		if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
-
-			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
-			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
+		$query = str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		$query = str_replace('###UPDATEONLY###', '', $query);
+		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
+			$db->query('SHOW COLUMNS FROM ' . $matches[2] . ' WHERE Field="' . $matches[1] . '"');
+			$query = ($db->num_rows() ? 'ALTER TABLE ' . $matches[2] . ' DROP COLUMN `' . $matches[1] . '`' : '');
 		}
-		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		/* if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
-			// second, we need to check if there is a collation
-			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
-				if(eregi("^CREATE TABLE ", $query)) {
-					$Charset = DB_CHARSET;
-					$Collation = DB_COLLATION;
-					if($Charset == 'UTF-8'){//#4661
-						$Charset='utf8';
-					}
-					if($Collation == 'UTF-8'){//#4661
-						$Collation='utf8_general_ci';
-					}
-					$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
+		  $query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+		  $query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+
+		  $query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
+		  } */
+
+		// second, we need to check if there is a collation
+		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
+			if(stripos($query, "CREATE TABLE ") === 0){
+				$Charset = DB_CHARSET;
+				$Collation = DB_COLLATION;
+				if($Charset == 'UTF-8'){//#4661
+					$Charset = 'utf8';
 				}
-
+				if($Collation == 'UTF-8'){//#4661
+					$Collation = 'utf8_general_ci';
+				}
+				$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 			}
+		}
 
-		if ($db->query($query) ) {
+		if($db->query($query)){
 			return true;
-		} else {
+		} else{
 
-			switch ($db->Errno) {
+			switch($db->Errno){
 
 				case '1050': // this table already exists
-
 					// the table already exists,
 					// make tmptable and check these tables ...
 					$namePattern = "/CREATE TABLE (\w+) \(/";
 					preg_match($namePattern, $query, $matches);
 
-					if ($matches[1]) {
+					if($matches[1]){
 
 						// get name of table and build name of temptable
-
 						// realname of the new table
 						$tableName = $matches[1];
 
 						// clean installation drop tables if exist
-						if (isset($_SESSION["DatabaseAction"]) && $_SESSION["DatabaseAction"] == "Install") {
+						if(isset($_SESSION["DatabaseAction"]) && $_SESSION["DatabaseAction"] == "Install"){
 
 							// 1st drop table,
-							$dropQuery = "DROP TABLE IF EXISTS ".mysql_real_escape_string($tableName)."";
+							$dropQuery = "DROP TABLE IF EXISTS " . mysql_real_escape_string($tableName);
 							$db->query($dropQuery);
 
 							// 2nd reinstall table
-							if ($db->query(trim($query))) {
+							if($db->query(trim($query))){
 
 								$this->QueryLog['tableReCreated'][] = $tableName;
-							} else {
+							} else{
 
 								$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $_query -->";
 								$success = false;
 							}
-
-						} else { // use update stuff
-
+						} else{ // use update stuff
 							// tmpname - this table is to compare the incoming dump
 							// with existing table
 							$tmpName = '__we_delete_update_temp_table__';
 
-							$db->query("DROP TABLE IF EXISTS ".mysql_real_escape_string($tmpName).";"); // delete table if already exists
-
+							$db->query("DROP TABLE IF EXISTS " . mysql_real_escape_string($tmpName) . ";"); // delete table if already exists
 							// create temptable
-							$tmpQuery = preg_replace($namePattern, "CREATE TABLE ".mysql_real_escape_string($tmpName)." (", $query);
+							$tmpQuery = preg_replace($namePattern, "CREATE TABLE " . mysql_real_escape_string($tmpName) . " (", $query);
 							$db->query(trim($tmpQuery));
 
 							// get information from existing and new table
@@ -698,13 +689,13 @@ class liveUpdateFunctions {
 							$changeFields = array(); // array with changed fields
 							$addFields = array(); // array with new fields
 
-							foreach ($newTable as $fieldName => $newField) {
+							foreach($newTable as $fieldName => $newField){
 
-								if (isset($origTable[$fieldName])) { // field exists
-									if ( !($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra']) ) {
+								if(isset($origTable[$fieldName])){ // field exists
+									if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
 										$changeFields[$fieldName] = $newField;
 									}
-								} else { // field does not exist
+								} else{ // field does not exist
 									$addFields[$fieldName] = $newField;
 								}
 							}
@@ -712,22 +703,22 @@ class liveUpdateFunctions {
 							// determine new keys
 							$addKeys = array();
 							$changedKeys = array();
-							foreach ($newTableKeys as $keyName => $indexes) {
+							foreach($newTableKeys as $keyName => $indexes){
 
-								if (isset($origTableKeys[$keyName])) {
+								if(isset($origTableKeys[$keyName])){
 
 									if($origTableKeys[$keyName]['index'] != $indexes['index']){
 										$changedKeys[$keyName] = $indexes;
 										continue;
 									}
 
-									for ($i=1;$i<sizeof($indexes);$i++) {
-										if (!in_array($indexes[$i], $origTableKeys[$keyName])) {
+									for($i = 1; $i < sizeof($indexes); $i++){
+										if(!in_array($indexes[$i], $origTableKeys[$keyName])){
 											$changedKeys[$keyName] = $indexes;
 											break;
 										}
 									}
-								} else {
+								} else{
 									$addKeys[$keyName] = $indexes;
 								}
 							}
@@ -736,58 +727,57 @@ class liveUpdateFunctions {
 							$alterQueries = array();
 
 							// get all queries to change existing fields
-							if (sizeof($changeFields)) {
+							if(sizeof($changeFields)){
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 							}
-							if (sizeof($addFields)) {
+							if(sizeof($addFields)){
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 							}
 
 							// get all queries to change existing keys
-							if (sizeof($addKeys)) {
+							if(sizeof($addKeys)){
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 							}
 
-							if (sizeof($changedKeys)) {
+							if(sizeof($changedKeys)){
 								$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 							}
 
-						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
-						if (isset($origTableKeys['_temp'])) {
-							$alterQueries = array_merge(array('ALTER TABLE `'.$tableName.'` DROP INDEX _temp'),$alterQueries);
-						}
+							//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+							if(isset($origTableKeys['_temp'])){
+								$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
+							}
 
-							if (sizeof($alterQueries)) {
+							if(sizeof($alterQueries)){
 								// execute all queries
 								$success = true;
-								foreach ($alterQueries as $_query) {
+								foreach($alterQueries as $_query){
 
-									if ($db->query(trim($_query))) {
+									if($db->query(trim($_query))){
 										$this->QueryLog['success'][] = $_query;
-									} else {
+									} else{
 										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
 										$success = false;
 									}
 								}
-								if ($success) {
+								if($success){
 									$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
 								}
-
-							} else {
+							} else{
 								$this->QueryLog['tableExists'][] = $tableName;
 							}
 
 							$db->query("DROP TABLE $tmpName");
 						}
 					}
-				break;
+					break;
 				case '1062':
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
-				break;
+					break;
 				default:
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;
-				break;
+					break;
 			}
 			return false;
 		}
@@ -798,7 +788,7 @@ class liveUpdateFunctions {
 	 * returns log array for db-queries
 	 * @return array
 	 */
-	function getQueryLog() {
+	function getQueryLog(){
 
 		return $this->QueryLog;
 	}
@@ -806,7 +796,7 @@ class liveUpdateFunctions {
 	/**
 	 * resets query log, this is done after each query file.
 	 */
-	function clearQueryLog() {
+	function clearQueryLog(){
 
 		$this->QueryLog = array();
 	}
@@ -815,25 +805,24 @@ class liveUpdateFunctions {
 	 * Functions for error handler, etc
 	 */
 
-
 	/**
 	 * returns array with all installed languages
 	 *
 	 * @return array
 	 */
-	function getInstalledLanguages() {
+	function getInstalledLanguages(){
 
 		clearstatcache();
 
 		//	Get all installed Languages ...
 		$_installedLanguages = array();
 		//	Look which languages are installed ...
-		$_language_directory = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language");
+		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
 
-		while (false !== ($entry = $_language_directory->read())) {
-			if ($entry != "." && $entry != "..") {
-				if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry) &&
-					is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+		while(false !== ($entry = $_language_directory->read())) {
+			if($entry != "." && $entry != ".."){
+				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry) &&
+					is_file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry . "/translation.inc.php")){
 					$_installedLanguages[] = $entry;
 				}
 			}
@@ -852,17 +841,16 @@ class liveUpdateFunctions {
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
-		global $liveUpdateError;
-
-		$liveUpdateError["errorNr"] = $errno;
-		$liveUpdateError["errorString"] = $errstr;
-		$liveUpdateError["errorFile"] = $errfile;
-		$liveUpdateError["errorLine"] = $errline;
+		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
+		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
+		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
+		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
 
 //		ob_start('error_log');
 //		var_dump($liveUpdateError);
 //		ob_end_clean();
 	}
+
 }

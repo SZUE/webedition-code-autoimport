@@ -23,7 +23,7 @@ body {
 	margin-top: 20px;
 	width: 100%;
 	height: 100%;
-	
+
 	background-image: url('/webEdition/liveUpdate/images/updateBackground.gif');
 	background-position: right bottom;
 	background-repeat: no-repeat;
@@ -37,7 +37,7 @@ body {
 div#contentDiv {
 	text-align: left;
 	margin: auto;
-	padding: auto;
+	padding: 1px;
 	line-height: 150%;
 }
 
@@ -47,7 +47,7 @@ div.errorDiv {
 	border: 1px solid black;
 	padding: 5px;
 	overflow: auto;
-	margin: 5px 0 5px 0;
+	margin: 5px 0px 5px 0px;
 }
 
 div.errorDiv {
@@ -89,7 +89,7 @@ li {
 }
 
 table#updateLogTable {
-	margin: 0; 
+	margin: 0;
 	border-collapse: collapse;
 	border: 1px solid black;
 	background: white;
@@ -114,7 +114,7 @@ table#updateLogTable th {
 
 .logNotice {
 	color: darkgray;
-	
+
 }
 .logError {
 	color: red;
@@ -143,7 +143,7 @@ li.upcomingStep {
 div#messageLog {
 	border: 1px solid #ccc;
 	height: 220px;
-	margin: 0;
+	margin: 0px;
 	overflow: auto;
 	background-color: #fff;
 	background: #EBEBEB;

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,15 +34,7 @@ class liveUpdateFunctions {
 	 * Functions for updatelog
 	 */
 	function insertUpdateLogEntry($action, $version, $errorCode) {
-
-		global $DB_WE;
-
-		$query =
-			"INSERT INTO " . UPDATE_LOG_TABLE . "
-			(datum, aktion, versionsnummer, error)
-			VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode);";
-
-		$DB_WE->query($query);
+		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode)");
 	}
 
 	/**
@@ -112,12 +108,12 @@ class liveUpdateFunctions {
 	 */
 	function checkReplaceDocRoot($content) {
 
-		if (!(isset($_SERVER['DOCUMENT_' . 'ROOT']) && $_SERVER['DOCUMENT_' . 'ROOT'] == LIVEUPDATE_SOFTWARE_DIR) ) {
+		if (!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR) ) {
 
-			$content = str_replace('$_SERVER[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$_SERVER["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$_SERVER[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$_SERVER["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$GLOBALS[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			$content = str_replace('$GLOBALS["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -355,7 +351,7 @@ class liveUpdateFunctions {
 				$newneedle= preg_quote($needle, '~');
 				$newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
 				*/
-				$newContent = ereg_replace($needle, $replace, $oldContent);
+				$newContent = preg_replace('/'.preg_quote($needle).'/', $replace, $oldContent);
 
 			} else {
 				$newContent = $replace;
@@ -613,7 +609,7 @@ class liveUpdateFunctions {
 			return true;
 		}
 
-		$query=str_replace('###UPDATEONLY###', '', $query);
+		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 		$query=str_replace('###UPDATEONLY###', '', $query);
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
 			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
@@ -832,8 +828,7 @@ class liveUpdateFunctions {
 
 		while (false !== ($entry = $_language_directory->read())) {
 			if ($entry != "." && $entry != "..") {
-				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry) &&
-					is_file($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry) ) {
 					$_installedLanguages[] = $entry;
 				}
 			}

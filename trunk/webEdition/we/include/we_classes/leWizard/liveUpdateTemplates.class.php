@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class liveUpdateTemplates {
+abstract class liveUpdateTemplates {
 
 	/**
 	 * returns standard html container for output
@@ -32,8 +36,7 @@ class liveUpdateTemplates {
 	function getContainer($headline, $content) {
 
 
-		return "
-		<div id=\"leWizardContent\" class=\"defaultfont\">
+		return "<div id=\"leWizardContent\" class=\"defaultfont\">
 			<h1>{$headline}</h1>
 			<p>
 				{$content}
@@ -50,7 +53,7 @@ class liveUpdateTemplates {
 	 */
 	function getHtmlHead() {
 
-		return "";
+		return we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 	}
 
 	/**
@@ -66,24 +69,17 @@ class liveUpdateTemplates {
 	 */
 	function getHtml($headline, $content, $header='', $append = false) {
 
-		if($appendContent) {
+/*		if($appendContent) {
 			$PushJs = 'parent.leWizardContent.appendElement(document.getElementById("leWizardContent"));';
 
-		} else {
+		} else {*/
 			$PushJs = 'parent.leWizardContent.replaceElement(document.getElementById("leWizardContent"));';
 
-		}
+		//}
 
-		return '<html>
-	<head>
-	' . liveUpdateTemplates::getHtmlHead() . '
+		return we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']).we_html_element::htmlDocType().'<html><head>' . liveUpdateTemplates::getHtmlHead() . '
 	' . $header . '
-	</head>
-	<body>
-	' . liveUpdateTemplates::getContainer($headline, $content) . '
-	<script type="text/javascript">
-	' . $PushJs . '
-	</script>
+	</head><body>' . liveUpdateTemplates::getContainer($headline, $content) . we_html_element::jsElement($PushJs) . '
 	</body>
 </html>';
 	}

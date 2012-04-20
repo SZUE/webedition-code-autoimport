@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
-
-
 class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
 
 	function execute() {
@@ -28,7 +29,7 @@ class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
 		$resp = new rpcResponse();
 
 		$queryClass = new weSelectorQuery();
-		eval('$table = ' . $_REQUEST["table"] . ';');
+		$table = $_REQUEST["table"];
 
 		// if a value is already inserted in a selector, we get an i, not a parentID
 		if (isset($_REQUEST["id"])) {

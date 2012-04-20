@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +25,15 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
-$we_button = new we_button();
-$searchButton = $we_button->create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
+$searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['upgrade']['actualVersion'] . '</td>
+	<td>' . g_l('liveUpdate','[upgrade][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>
 </tr>
 <tr>
@@ -40,12 +43,10 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['upgrade']['lookForUpdate'] . '</td>
+	<td>' . g_l('liveUpdate','[upgrade][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['upgrade']['headline'], $content);
-
-?>
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[upgrade][headline]'), $content);

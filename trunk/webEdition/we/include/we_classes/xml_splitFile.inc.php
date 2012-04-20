@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,16 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
-
-
 /**
-* Class XML_SplitFile()
-*
-* This class offers methods to split a XML document using the XPath language.
-* The xml document will be split into self-contained XML files.
-*/
-class XML_SplitFile extends XML_Parser {
+ * Class XML_SplitFile()
+ *
+ * This class offers methods to split a XML document using the XPath language.
+ * The xml document will be split into self-contained XML files.
+ */
+class XML_SplitFile extends we_xml_parser{
 
 	/**
 	 * Number of exported XML files.
@@ -63,10 +65,10 @@ class XML_SplitFile extends XML_Parser {
 	 * load and parse a file.
 	 *
 	 * @param      string $file
-	 * @see        XML_Parser::getFile()
+	 * @see        we_xml_parser::getFile()
 	 */
-	function XML_SplitFile($file = "") {
-		if (!empty($file)) {
+	function __construct($file = ""){
+		if(!empty($file)){
 			// Read and try to parse the given file.
 			$this->getFile($file);
 		}
@@ -81,28 +83,29 @@ class XML_SplitFile extends XML_Parser {
 	 * @see        XML_Parser::parserHasContent(), XML_Parser::hasChildNodes(),
 	 *             XML_Parser::evaluate(), getUniqueId(), exportAsXML()
 	 */
-	function splitFile($absoluteXPath="*/descendant::*", $start=false, $end=false, $dpth=1) {
+	function splitFile($absoluteXPath = "*/descendant::*", $start = false, $end = false, $dpth = 1){
 		// Check if a XML file was loaded, either by the constructor or by the
 		// getFile method.
-		if (!$this->parserHasContent()) return FALSE;
+		if(!$this->parserHasContent())
+			return FALSE;
 
 		// Save the path consisting of the temporary directory and a unique id.
-		$this->path = (defined("TMP_DIR"))? TMP_DIR : $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp";
-		$this->path .= "/".$this->getUniqueId();
+		$this->path = TEMP_PATH;
+		$this->path .= "/" . $this->getUniqueId();
 
 		// Make the current directory.
-		createLocalFolder($this->path);
+		we_util_File::createLocalFolder($this->path);
 
 		// Node-set with paths of the descendant nodes.
 		$nodeSet = $this->evaluate($absoluteXPath);
 		$desc = 0;
 
 		// Run through the descendant nodes.
-		foreach ($nodeSet as $node) {
+		foreach($nodeSet as $node){
 			// Split the XML data at each node that has children.
-			if ($this->hasChildNodes($node)) {
+			if($this->hasChildNodes($node)){
 				$desc++;
-				if ((!$start || ($desc>=$start)) && (!$end || ($desc<=$end))) {
+				if((!$start || ($desc >= $start)) && (!$end || ($desc <= $end))){
 					$xml = "";
 					// Add the XML declaration.
 					$xml .= "<?xml version=\"1.0\" " . ($this->mainXmlEncoding ? "encoding=\"" . $this->mainXmlEncoding . "\"" : "sandalone=\"yes\"") . "?>\n";
@@ -123,57 +126,59 @@ class XML_SplitFile extends XML_Parser {
 	 * @param      int $lvl
 	 * @return     string The returned string contains the XML data
 	 */
-	function exportAsXML($node, $dpth, $lvl = 1) {
-		$xml="";
+	function exportAsXML($node, $dpth, $lvl = 1){
+		$xml = "";
 		// Calculate the indentation.
 		$indent = "";
-		for($i=0; $i < (($lvl-1)*$this->indent); $i++) $indent .= " ";
+		for($i = 0; $i < (($lvl - 1) * $this->indent); $i++)
+			$indent .= " ";
 
 		// Add the start tag of the new root element.
 		$root = $this->nodes[$node];
-		$xml .= $indent."<".$root["name"].$this->getAttributeString($root).">\n";
+		$xml .= $indent . "<" . $root["name"] . $this->getAttributeString($root) . ">\n";
 
 		// Run through the child nodes.
-		foreach ($this->nodes[$node]["children"] as $tagname => $id) {
+		foreach($this->nodes[$node]["children"] as $tagname => $id){
 
 			// Run through all siblings with the same name.
-			for ($sibl = 1; $sibl <= $id; $sibl++) {
+			for($sibl = 1; $sibl <= $id; $sibl++){
 
 				// Leave out the child nodes which will be processed in the
 				// next call of this method.
-				$absoluteXPath = $node."/".$tagname."[".$sibl."]";
+				$absoluteXPath = $node . "/" . $tagname . "[" . $sibl . "]";
 
 				$sibling = $this->nodes[$absoluteXPath];
-				if (!$this->hasChildNodes($absoluteXPath)) {
+				if(!$this->hasChildNodes($absoluteXPath)){
 
 					// Add the additional indentation.
-					for($i=0; $i < $this->indent; $i++) $xml .= " ";
+					for($i = 0; $i < $this->indent; $i++)
+						$xml .= " ";
 					// Add the start tag of the element.
-					$xml .= "<".$tagname.$this->getAttributeString($sibling);
+					$xml .= "<" . $tagname . $this->getAttributeString($sibling);
 					$hasText = $this->hasCdata($absoluteXPath);
-					if ($hasText) {
+					if($hasText){
 						$xml .= ">";
 						// Add the character data and insert it within a CDATA
 						// section if necessary.
 						$hasSection = $this->hasCdataSection($absoluteXPath);
 						$text = stripslashes($sibling["data"]);
-						$xml .= (!$hasSection)? $this->replaceEntities($text) : "<![CDATA[".$text."]]>";
+						$xml .= (!$hasSection) ? $this->replaceEntities($text) : "<![CDATA[" . $text . "]]>";
 
 						// Add the end tag of the element.
-						if ($hasText) $xml .= "</".$tagname.">\n";
+						if($hasText)
+							$xml .= "</" . $tagname . ">\n";
 					}
-					else {
+					else{
 						// Auto-close the tag.
 						$xml .= "/>\n";
 					}
-				}
-				else if ($dpth > $lvl) {
-					$xml .= $this->exportAsXML($absoluteXPath, $dpth, $lvl+1)."\n";
+				} else if($dpth > $lvl){
+					$xml .= $this->exportAsXML($absoluteXPath, $dpth, $lvl + 1) . "\n";
 				}
 			}
 		}
 		// Add the end tag of the new root element.
-		$xml .= $indent."</".$root["name"].">";
+		$xml .= $indent . "</" . $root["name"] . ">";
 
 		return $xml;
 	}
@@ -187,21 +192,23 @@ class XML_SplitFile extends XML_Parser {
 	 * @throws     FALSE on error
 	 * @see        exportAsXML()
 	 */
-	function exportToFile($data) {
+	function exportToFile($data){
 		// The current file.
-		$file = "temp_".$this->fileId.".xml";
+		$file = "temp_" . $this->fileId . ".xml";
 
 		// Open the file.
-		$hFile = fopen($this->path."/".$file, "wb");
+		$hFile = fopen($this->path . "/" . $file, "wb");
 
 		// Check if the file was opened correctly.
-		if (!$hFile) return FALSE;
-		else {
+		if(!$hFile)
+			return FALSE;
+		else{
 			// Acquire an exclusive lock.
 			flock($hFile, LOCK_EX);
 
 			// Write the xml data to the file.
-			if (!fwrite($hFile, $data)) return FALSE;
+			if(!fwrite($hFile, $data))
+				return FALSE;
 
 			// Flush the output to the file.
 			fflush($hFile);
@@ -209,7 +216,8 @@ class XML_SplitFile extends XML_Parser {
 			flock($hFile, LOCK_UN);
 
 			// Close the file.
-			if (!fclose($hFile)) return FALSE;
+			if(!fclose($hFile))
+				return FALSE;
 		}
 		// Increase the number of exported xml files.
 		$this->fileId++;
@@ -222,15 +230,15 @@ class XML_SplitFile extends XML_Parser {
 	 * @param      integer $len
 	 * @return     string The returned string contains alphanumeric code
 	 */
-	 function getUniqueString($len = 8) {
-	 	$str = "";
+	function getUniqueString($len = 8){
+		$str = "";
 		$set = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$set .= "abcdefghijklmnopqrstuvwxyz";
 		$set .= "0123456789";
 		// Seed with microseconds since last 'whole' second.
-		srand((double)microtime()*1234567);
-		for($i = 0; $i < $len; $i++) {
-			$str .= substr($set, (rand()%(strlen($set))), 1);
+		srand((double) microtime() * 1234567);
+		for($i = 0; $i < $len; $i++){
+			$str .= substr($set, (rand() % (strlen($set))), 1);
 		}
 		return $str;
 	}
@@ -240,7 +248,7 @@ class XML_SplitFile extends XML_Parser {
 	 *
 	 * @return     string The returned string contains hexadecimal code
 	 */
-	function getUniqueId() {
+	function getUniqueId(){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid prevents from simultanious access, within a microsecond.
 		return md5(uniqid(microtime()));
@@ -252,10 +260,10 @@ class XML_SplitFile extends XML_Parser {
 	 * @param      string $text
 	 * @return     string
 	 */
-	function replaceEntities($text) {
-		$text = str_replace("<","&lt;",$text);
-		$text = str_replace(">","&gt;",$text);
-		$text = str_replace("&nbsp;","&amp;nbsp;",$text);
+	function replaceEntities($text){
+		$text = str_replace("<", "&lt;", $text);
+		$text = str_replace(">", "&gt;", $text);
+		$text = str_replace("&nbsp;", "&amp;nbsp;", $text);
 		return $text;
 	}
 

@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +22,9 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weColorDialog.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
-	protect();
+	we_html_tools::protect();
 }
 $dialog = new weColorDialog();
 $dialog->initByHttp();
@@ -37,7 +39,7 @@ var type = document.we_form.elements["we_dialog_args[type]"].value;
 var color = document.we_form.elements["we_dialog_args[color]"].value;
 var editorObj;
 var name;
- 
+
 if(type == "forecolor" || type == "backcolor"){
 	eval("editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 }else{
@@ -58,6 +60,4 @@ switch(type){
 }
 top.close();
 ';
-
 }
-?>

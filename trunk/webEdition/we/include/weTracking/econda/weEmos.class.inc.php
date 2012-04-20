@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,8 +46,8 @@ class weEmos{
 		$this->emosJsFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["JS"]) ? $GLOBALS["weEconda"]["JS"] : "";
 		$this->emosHTMLFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["HTML"]) ? $GLOBALS["weEconda"]["HTML"] : "";
 /*
-		if (isset($GLOBALS["we_doc"]) && isset($GLOBALS["we_doc"]["Language"])) {
-			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS["we_doc"]["Language"],0,2).'" rev=""></a>'."\n";
+		if (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']["Language"])) {
+			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS['we_doc']["Language"],0,2).'" rev=""></a>'."\n";
 		}
 */
 		if (isset($_REQUEST['emosScontact']) && $_REQUEST['emosScontact'] != "") {
@@ -55,34 +59,34 @@ class weEmos{
 		if (isset($GLOBALS["weEconda"]["content"]["from"])) {
 			switch ($GLOBALS["weEconda"]["content"]["from"]){
 				case 'path':
-					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				case 'navigation':
-					if(isset($GLOBALS["we_doc"]->NavigationItems) && $GLOBALS["we_doc"]->NavigationItems != "") {
-						$navItems = explode(",",$GLOBALS["we_doc"]->NavigationItems);
+					if(isset($GLOBALS['we_doc']->NavigationItems) && $GLOBALS['we_doc']->NavigationItems != "") {
+						$navItems = explode(",",$GLOBALS['we_doc']->NavigationItems);
 						$contentLabel = $navItems[1];
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
-						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					}
 					break;
 				case 'category':
-					if(isset($GLOBALS["we_doc"]->Category) && $GLOBALS["we_doc"]->Category != "") {
-						$catIds = explode(",",$GLOBALS["we_doc"]->Category);
-						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . abs($catIds[1]), "Path", $GLOBALS["DB_WE"]);
+					if(isset($GLOBALS['we_doc']->Category) && $GLOBALS['we_doc']->Category != "") {
+						$catIds = explode(",",$GLOBALS['we_doc']->Category);
+						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($catIds[1]), "Path", $GLOBALS['DB_WE']);
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
-						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					}
 					break;
 				case 'input':
-//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				case 'hidden':
-//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				default:
-					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 			}
 			$this->emosHTMLFooter .= "\n";
 		}
@@ -119,11 +123,10 @@ emosECPageArray['var3']		= 'NULL';
 	function weAddRemoveArticle($type, $complete=false){
 		if ($type=="doc") {
 			$article = new we_document();
-			$article->initByID($_REQUEST["shop_artikelid"]);
+			$article->initByID(intval($_REQUEST["shop_artikelid"]));
 		} else {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 			$article = new we_objectFile();
-			$article->initByID($_REQUEST["shop_artikelid"], OBJECT_FILES_TABLE);
+			$article->initByID(intval($_REQUEST["shop_artikelid"]), OBJECT_FILES_TABLE);
 		}
 
 		if (isset($_REQUEST['we_variant']) && count($article->elements['weInternVariantElement']['dat'])>0) {
@@ -155,7 +158,7 @@ emosECPageArray['var3']		= 'NULL';
 		$this->emosJsFooter .= "
 if(typeof emosECPageArray == 'undefined') var emosECPageArray = new Array();
 emosECPageArray['event'] 	= '" . $emosEvent . "';
-emosECPageArray['id']		= 'd_" . abs($_REQUEST["shop_artikelid"]) . "';
+emosECPageArray['id']		= 'd_" . intval($_REQUEST["shop_artikelid"]) . "';
 emosECPageArray['name']		= '" . rawurlencode($emosName) . "';
 emosECPageArray['preis']	= '" . $emosPreis . "';
 emosECPageArray['group']	= '" . rawurlencode(isset($_REQUEST['catId']) ? id_to_path($_REQUEST['catId'],CATEGORY_TABLE) :  $article->ParentPath ) . "';
@@ -195,7 +198,7 @@ emosECPageArray['var3']		= 'NULL';
 	}
 
 	function emosShopingBasket(){
-		$this->emosJsFooter .= $_GLOBALS['weEconda']['emosBasket'];
+		$this->emosJsFooter .= $GLOBALS['weEconda']['emosBasket'];
 	}
 
 

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,26 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_newsletterConfirmLink($attribs, $content){
 
-
-function we_tag_newsletterConfirmLink($attribs, $content="") {
-
-	$plain = we_getTagAttribute("plain",$attribs,false,true);
+	$plain = weTag_getAttribute("plain", $attribs, false, true);
 
 	$content = trim($content);
 	$link = isset($GLOBALS["WE_CONFIRMLINK"]) ? $GLOBALS["WE_CONFIRMLINK"] : "";
-	if (strlen($content) < 1) {
+	if(strlen($content) < 1){
 		$content = $link;
 	}
 
-	if (strlen($link) > 0) {
-		if(!$plain) {
+	if(strlen($link) > 0){
+		if(!$plain){
 			$attribs["href"] = $link;
 			return getHtmlTag("a", $attribs, $content);
-		} else {
+		} else{
 			return $link;
 		}
-	} else {
+	} else{
 		return "";
 	}
 }

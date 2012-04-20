@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+	//FIXME: this should be determined on-the-fly
+
 	$tableKeys = array();
 
 	$tableKeys[strtolower(CLEAN_UP_TABLE)] = array('Path');
 
 	$tableKeys[strtolower(LINK_TABLE)] = array('DID','CID');
-
-	$tableKeys[strtolower(PASSWD_TABLE)] = array('username');
 
 	$tableKeys[strtolower(PREFS_TABLE)] = array('userID');
 
@@ -41,6 +45,11 @@
 	if(defined('SHOP_TABLE')) {
 		$tableKeys[strtolower(SHOP_TABLE)] = array('IntID');
 	}
+
+	/*TODO: change this prim. Key
+	 * if(defined('ANZEIGE_PREFS_TABLE')){
+		$tableKeys[strtolower(ANZEIGE_PREFS_TABLE)] = array('strDateiname');
+	}*/
 
 	if(defined('SCHEDULE_TABLE')) {
 		$tableKeys[strtolower(SCHEDULE_TABLE)] = array('DID','Wann');

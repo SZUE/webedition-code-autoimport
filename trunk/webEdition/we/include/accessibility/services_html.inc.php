@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +29,7 @@
                             $i++,
                             'default',
                             'xhtml',
-                            $l_validation['service_xhtml_upload'],
+                            g_l('validation','[service_xhtml_upload]'),
                             'validator.w3.org',
                             '/check',
                             'post',
@@ -40,7 +44,7 @@
                             $i++,
                             'default',
                             'xhtml',
-                            $l_validation['service_xhtml_url'],
+                            g_l('validation','[service_xhtml_url]'),
                             'validator.w3.org',
                             '/check',
                             'get',
@@ -54,7 +58,7 @@
 
 /*
 $service['bobby'] = array(
-                        'name'     => $l_validation['service_bobby'],
+                        'name'     => g_l('validation','[service_bobby]'),
                         'host'     => 'bobby.watchfire.com',
                         'path'     => '/bobby/bobbyServlet',
                         'method'   => 'get',

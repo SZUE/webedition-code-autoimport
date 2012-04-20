@@ -32,7 +32,7 @@ class weShopVats {
 
 		if (!isset($GLOBALS['weShopVats']['getShopVATById']["$id"])) {
 
-			$query = 'SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . abs($id);
+			$query = 'SELECT * FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id);
 
 			$GLOBALS['DB_WE']->query($query);
 
@@ -112,13 +112,13 @@ class weShopVats {
 			';
 
 			if ($GLOBALS['DB_WE']->query($query)) {
-				return mysql_insert_id();
+				return $GLOBALS['DB_WE']->getInsertId();
 			}
 
 		} else { // update existing vat
 
 			$query = 'UPDATE ' . WE_SHOP_VAT_TABLE . ' SET text="' . $GLOBALS['DB_WE']->escape($weShopVat->text) . '", vat="' . $GLOBALS['DB_WE']->escape($weShopVat->vat) . '", standard=' . $GLOBALS['DB_WE']->escape($weShopVat->standard) . '
-				WHERE id=' . abs($weShopVat->id) . '
+				WHERE id=' . intval($weShopVat->id) . '
 			';
 
 			if ($GLOBALS['DB_WE']->query($query)) {
@@ -131,7 +131,7 @@ class weShopVats {
 
 	function deleteVatById($id) {
 
-		$query = 'DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . abs($id);
+		$query = 'DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id);
 		return $GLOBALS['DB_WE']->query($query);
 	}
 }

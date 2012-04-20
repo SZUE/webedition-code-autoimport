@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_listviewEnd(){
 
-function we_tag_listviewEnd($attribs, $content){
-	
-	return $GLOBALS["lv"]->rows ? min(
-			($GLOBALS["lv"]->start - abs($GLOBALS["lv"]->offset)) + ($GLOBALS["lv"]->maxItemsPerPage),
-			($GLOBALS["lv"]->anz_all - abs($GLOBALS["lv"]->offset))) : ($GLOBALS["lv"]->anz_all - abs(
-			$GLOBALS["lv"]->offset));
+	return $GLOBALS['lv']->rows ? min(
+			($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage), ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs(
+			$GLOBALS['lv']->offset));
 }

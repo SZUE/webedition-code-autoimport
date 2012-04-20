@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +22,6 @@
  * @package    webEdition_cli
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * The script makes a rebuild like in the rebuild dialog of webEdition
  * webEdition must be installed
@@ -127,7 +130,7 @@ $_REQUEST['verbose'] = true;
 //  END OF OPTIONS
 
 
-/*#################################### Don't change anything below ############################*/
+/* #################################### Don't change anything below ############################ */
 
 
 
@@ -137,12 +140,12 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
 if(!defined('WE_ERROR_SHOW')){
-	define('WE_ERROR_SHOW',1);
+	define('WE_ERROR_SHOW', 1);
 }
 if(!defined('WE_ERROR_LOG')){
-	define('WE_ERROR_LOG',1);
+	define('WE_ERROR_LOG', 1);
 }
 
 we_error_handler(false);
@@ -159,19 +162,18 @@ $_SESSION["perms"]["ADMINISTRATOR"] = true;
 $_SESSION["user"]["Username"] = 1;
 
 
-if (!isset($_SERVER['SERVER_NAME'])) {
+if(!isset($_SERVER['SERVER_NAME'])){
 	$_SERVER['SERVER_NAME'] = $SERVER_NAME;
 }
 
 // include needed libraries
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/rebuild/we_rebuild.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Getopt.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
-define('NO_ARGS',10);
-define('INVALID_OPTION',11);
+define('NO_ARGS', 10);
+define('INVALID_OPTION', 11);
 
 // Reading the incoming arguments - same as $argv
 $args = Console_Getopt::readPHPArgv();
@@ -226,9 +228,9 @@ Options to use when type is set to "thumbnails":
 ';
 
 // Make sure we got them (for non CLI binaries)
-if (PEAR::isError($args)) {
-   fwrite(STDERR,$args->getMessage()."\n");
-   exit(NO_ARGS);
+if(PEAR::isError($args)){
+	fwrite(STDERR, $args->getMessage() . "\n");
+	exit(NO_ARGS);
 }
 
 // Short options
@@ -236,112 +238,106 @@ $short_opts = 'vt:';
 
 // Long options
 $long_opts = array(
-   'type=',
-   'rewriteMaintable=',
-   'rewriteTmptable=',
-   'categories=',
-   'catAnd',
-   'doctypes=',
-   'directories=',
-   'thumbnails=',
-   'verbose',
-   'help'
-   );
+	'type=',
+	'rewriteMaintable=',
+	'rewriteTmptable=',
+	'categories=',
+	'catAnd',
+	'doctypes=',
+	'directories=',
+	'thumbnails=',
+	'verbose',
+	'help'
+);
 
 // Convert the arguments to options - check for the first argument
-if ( count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__ ) {
-   $options = Console_Getopt::getOpt($args,$short_opts,$long_opts);
-} else {
-   $options = Console_Getopt::getOpt2($args,$short_opts,$long_opts);
+if(count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
+	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
+} else{
+	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
 }
 
 // Check the options are valid
-if (PEAR::isError($options)) {
-   fwrite(STDERR,$options->getMessage()."\n");
-   fwrite(STDERR,$_cliHelp."\n");
-   exit(INVALID_OPTION);
+if(PEAR::isError($options)){
+	fwrite(STDERR, $options->getMessage() . "\n");
+	fwrite(STDERR, $_cliHelp . "\n");
+	exit(INVALID_OPTION);
 }
 
-if (count($args) ) {
+if(count($args)){
 	$_REQUEST['verbose'] = false;
 	$_REQUEST['catAnd'] = false;
 	$_REQUEST['rewriteMaintable'] = false;
 	$_REQUEST['rewriteTmptable'] = false;
 }
 
-foreach ($options[0] as $opt) {
-	switch ($opt[0]) {
+foreach($options[0] as $opt){
+	switch($opt[0]){
 		case '--type':
 		case 't':
 			$_REQUEST['type'] = $opt[1];
-		break;
+			break;
 
 		case 'v':
 		case '--verbose':
 			$_REQUEST['verbose'] = true;
-		break;
+			break;
 
 		case '--catAnd':
 			$_REQUEST['catAnd'] = true;
-		break;
+			break;
 
 		case '--rewriteMaintable':
 			$_REQUEST['rewriteMaintable'] = true;
-		break;
+			break;
 
 		case '--rewriteTmptable':
 			$_REQUEST['rewriteTmptable'] = true;
-		break;
+			break;
 
 		case '--help':
 			print $_cliHelp;
 			exit(0);
-		break;
+			break;
 
 		default:
 			$_REQUEST[preg_replace('/^--/', '', $opt[0])] = $opt[1];
 	}
-
 }
 
-switch ($_REQUEST['type']) {
+switch($_REQUEST['type']){
 
 	case 'static':
 		$_REQUEST['type'] = "filter";
 	case 'all':
 	case 'templates':
 		$data = we_rebuild::getDocuments(
-			"rebuild_" . $_REQUEST['type'],
-			$_REQUEST['categories'],
-			$_REQUEST['catAnd'],
-			$_REQUEST['doctypes'],
-			$_REQUEST['directories'],
-			$_REQUEST['rewriteMaintable'],
-			$_REQUEST['rewriteTmptable']
+				"rebuild_" . $_REQUEST['type'], $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
 		);
-	break;
+		break;
 
 	case 'objects':
 		$data = we_rebuild::getObjects();
-	break;
+		break;
 
 	case 'navigation':
 		$data = we_rebuild::getNavigation();
-	break;
+		break;
 
 	case 'index':
 		$data = we_rebuild::getIndex();
-	break;
+		break;
 
 	case 'thumbnails':
 		$_thumbNames = makeArrayFromCSV($_REQUEST['thumbnails']);
 		$_thumbIds = array();
-		foreach ($_thumbNames as $_thumbName) {
-			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='".escape_sql_query($_thumbName)."'", "ID", new DB_WE());
+		$db = new DB_WE();
+		foreach($_thumbNames as $_thumbName){
+			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", "ID", $db);
 		}
 		$_thumbIds = makeCSVFromArray($_thumbIds);
 		$data = we_rebuild::getThumbnails($_thumbIds);
-	break;
+		break;
 
 	default:
 		print "ERROR: rebuild type is not set!";
@@ -350,6 +346,6 @@ switch ($_REQUEST['type']) {
 
 // start rebuild
 
-foreach($data as $d) {
+foreach($data as $d){
 	we_rebuild::rebuild($d, $_REQUEST['verbose']);
 }

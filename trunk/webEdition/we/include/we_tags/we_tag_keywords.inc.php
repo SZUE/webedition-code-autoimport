@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,16 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_keywords($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('keywords', $attribs, $content, true) . ');?>';
+}
 
 function we_tag_keywords($attribs, $content){
-	$htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true);
+	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
 		'htmlspecialchars'
-	));
+		));
 
-	if ($GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS["we_doc"]->InWebEdition) { //	normally meta tags are edited on property page
-
-
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Keywords"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	}
 	$keys = $GLOBALS['KEYWORDS'] ? $GLOBALS['KEYWORDS'] : $content;

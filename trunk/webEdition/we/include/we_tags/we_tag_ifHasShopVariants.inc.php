@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * This function returns if an article has variants
  *
@@ -26,14 +30,6 @@
  *
  * @return	boolean
  */
-function we_tag_ifHasShopVariants($attribs,$content) {
-
-	global $we_doc;
-
-	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
-	if (weShopVariants::getNumberOfVariants($we_doc) > 0) {
-		return true;
-	} else {
-		return false;
-	}
+function we_tag_ifHasShopVariants(){
+	return (weShopVariants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
 }

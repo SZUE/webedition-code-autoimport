@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-echo weWorkflowUtility::forceOverdueDocuments();
+//FIXME: remove in 6.4
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/triggerWEtasks.php');
+t_e('called old weWorkflowCron - please replace this by triggerWEtasks.php');
 ?>
 OK

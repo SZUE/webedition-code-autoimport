@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,22 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifSearch($attribs){
+	$name = weTag_getAttribute('name', $attribs, '0');
+	$set = weTag_getAttribute('set', $attribs, true, true);
 
-function we_tag_ifSearch($attribs, $content){
-	$name = we_getTagAttribute('name', $attribs, '0');
-	$set = we_getTagAttribute('set', $attribs, 1, true);
-
-	if ($set) {
+	if($set){
 		return isset($_REQUEST['we_lv_search_' . $name]);
-	} else {
+	} else{
 		return isset($_REQUEST['we_lv_search_' . $name]) && strlen(
 				str_replace(
-						'"',
-						'',
-						str_replace(
-								'\\"',
-								'',
-								(isset($_REQUEST['we_lv_search_' . $name]) ? trim(
-										$_REQUEST['we_lv_search_' . $name]) : ''))));
+					'"', '', str_replace(
+						'\\"', '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim(
+								$_REQUEST['we_lv_search_' . $name]) : ''))));
 	}
 }

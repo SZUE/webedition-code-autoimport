@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +21,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/alert.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
-protect();
-htmlTop($l_global["question"]);
+we_html_tools::protect();
+we_html_tools::htmlTop(g_l('global', '[question]'));
 
 $yesCmd = "yes_cmd_pressed();";
 $cancelCmd = "self.close();";
 
-$nextCmd = $_REQUEST["we_cmd"][1];
+$nextCmd = $_REQUEST['we_cmd'][1];
 
 $allowedCmds = array("dologout", "close_all_documents");
-if (!in_array($nextCmd,$allowedCmds)) {
+if(!in_array($nextCmd, $allowedCmds)){
 	$nextCmd = "";
 }
 
@@ -41,12 +38,12 @@ if (!in_array($nextCmd,$allowedCmds)) {
 $ctLngs = '
 var ctLngs = new Object();';
 
-foreach ($l_contentTypes as $key => $lng) {
+foreach(g_l('contentTypes', '') as $key => $lng){
 	$ctLngs .= "
 	ctLngs[\"$key\"] = \"$lng\";";
 }
 
-$untitled = $GLOBALS["l_global"]["untitled"];
+$untitled = g_l('global', "[untitled]");
 
 print <<< EOFEOF
 <script type="text/javascript">
@@ -54,13 +51,13 @@ print <<< EOFEOF
 $ctLngs
 
 function yes_cmd_pressed() {
-	
+
 	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
 	for (frameId in allHotDocuments) {
-		
+
 		if ( allHotDocuments[frameId].getEditorIsHot() ) {
 			allHotDocuments[frameId].setEditorIsHot(false);
-		
+
 		}
 	}
 	top.opener.top.we_cmd("$nextCmd");
@@ -68,40 +65,40 @@ function yes_cmd_pressed() {
 }
 
 function setHotDocuments() {
-	
+
 	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
 	var liStr = "";
-	
+
 	var _hotDocumentsOfCt = new Object();
-	
+
 	for (frameId in allHotDocuments) {
-		
+
 		if ( allHotDocuments[frameId].getEditorIsHot() ) {
-			
+
 			if ( !_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] ) {
 				_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] = new Array();
-			
+
 			}
 			_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()].push( allHotDocuments[frameId] );
 		}
 	}
-	
+
 	for ( ct in _hotDocumentsOfCt ) {
-		
+
 		var liCtElem = document.createElement("li");
 		liCtElem.innerHTML = ctLngs[ct];
-		
+
 		var ulCtElem = document.createElement("ul");
 		for (var i=0; i<_hotDocumentsOfCt[ct].length; i++) {
-		
+
 			var liPathElem = document.createElement("li");
-			
+
 			if ( _hotDocumentsOfCt[ct][i].getEditorDocumentText() ) {
 				liPathElem.innerHTML = _hotDocumentsOfCt[ct][i].getEditorDocumentPath();
 			} else {
 				liPathElem.innerHTML = "<em>$untitled</em>";
 			}
-			
+
 			ulCtElem.appendChild(liPathElem);
 		}
 		liCtElem.appendChild( ulCtElem );
@@ -134,12 +131,12 @@ EOFEOF;
 
 $content = '
 <div>
-	' . $l_alert["exit_multi_doc_question"] . '
+	' . g_l('alert', "[exit_multi_doc_question]") . '
 	<br />
 	<br />
 	<div style="width: 350px; height: 150px; background: white; overflow: auto;">
 		<ul id="ulHotDocuments">
-		
+
 		</ul>
 	</div>
 </div>
@@ -150,7 +147,7 @@ print STYLESHEET;
 </head>
 
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-	<?php print htmlYesNoCancelDialog($content,IMAGE_DIR."alert.gif",true,false,true,$yesCmd,"",$cancelCmd); ?>
+<?php print we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
 
 </html>

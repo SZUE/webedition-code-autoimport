@@ -1,7 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,34 +21,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/modules/users.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
-
-protect();
-
-$yuiSuggest =& weSuggest::getInstance();
-
-htmlTop();
+$yuiSuggest = & weSuggest::getInstance();
+we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
+we_html_tools::htmlTop('', DEFAULT_CHARSET);
 
 print STYLESHEET;
 
 $user_object = new we_user();
-if(isset($_SESSION["user_session_data"]) ){
+if(isset($_SESSION["user_session_data"])){
 	$user_object->setState($_SESSION["user_session_data"]);
 }
-echo $yuiSuggest->getYuiCssFiles();
-echo $yuiSuggest->getYuiJsFiles();
+echo $yuiSuggest->getYuiCssFiles() .
+ $yuiSuggest->getYuiJsFiles() .
+ we_html_element::jsScript(JS_DIR . 'images.js') .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'md5.js');
 ?>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>md5.js"></script>
-	<script language="JavaScript" type="text/javascript">
+<script type="text/javascript"><!--
 
 	var loaded = 0;
 	function we_submitForm(target,url){
@@ -56,7 +52,7 @@ echo $yuiSuggest->getYuiJsFiles();
 		if (f.input_pass) {
 			if (f.oldtab.value == 0) {
 				if (f.input_pass.value.length < 4 && f.input_pass.value.length != 0) {
-					<?php print we_message_reporting::getShowMessageCall($l_users["password_alert"], WE_MESSAGE_ERROR); ?>
+<?php print we_message_reporting::getShowMessageCall(g_l('modules_users', "[password_alert]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				} else {
 					if (f.input_pass.value != "") {
@@ -79,7 +75,7 @@ echo $yuiSuggest->getYuiJsFiles();
 
 	function switchPage(page) {
 		document.we_form.tab.value = page;
-		return we_submitForm(self.name, "<?php print WE_USERS_MODULE_PATH; ?>edit_users_properties.php");
+		return we_submitForm(self.name, "<?php print WE_USERS_MODULE_DIR; ?>edit_users_properties.php");
 	}
 
 
@@ -90,7 +86,7 @@ echo $yuiSuggest->getYuiJsFiles();
 			}
 		}
 	}
-	
+
 	function we_cmd(){
 		var args = "";
 		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -110,11 +106,11 @@ echo $yuiSuggest->getYuiJsFiles();
 				for(k=top.opener.top.jsWindow_count;k>-1;k--){
 
 					eval("if(top.opener.top.jsWindow" + k + "Object){" +
-						 "	if(top.opener.top.jsWindow" + k + "Object.ref == 'edit_module'){" +
-						 "		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties;" +
-						 "		myWindStr = 'top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties';" +
-						 "	}" +
-						 "}");
+						"	if(top.opener.top.jsWindow" + k + "Object.ref == 'edit_module'){" +
+						"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties;" +
+						"		myWindStr = 'top.jsWindow" + k + "Object.wind.content.user_resize.user_right.user_editor.user_properties';" +
+						"	}" +
+						"}");
 					if(myWind){
 						break;
 					}
@@ -135,45 +131,44 @@ echo $yuiSuggest->getYuiJsFiles();
 					url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 				}
 				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
-			break;
+				break;
 			default:
 				for (var i = 0; i < arguments.length; i++) {
 					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
 				}
 				eval('top.content.we_cmd('+args+')');
 				break;
+			}
 		}
-	}
-
-	</script>
- </head>
- <body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1;">
-   <form name="we_form" method="post" onSubmit="return false">
-	<input type="hidden" name="ucmd" value="" />
-	<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? abs($_REQUEST["tab"]) : ""); ?>" />
-	<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? abs($_REQUEST["tab"]) : ""); ?>" />
-	<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-	<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
-	<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />
-	<input type="hidden" name="uid" value="<?php print $user_object->ID?>" />
-	<input type="hidden" name="ctype" value="<?php print (isset($_REQUEST["ctype"]) ? htmlspecialchars($_REQUEST["ctype"]) : ""); ?>" />
-	<input type="hidden" name="ctable" value="<?php print (isset($_REQUEST["ctable"]) ? htmlspecialchars($_REQUEST["ctable"]) : ""); ?>" />
-	<input type="hidden" name="sd" value="0" />
-	<?php
-	 if($user_object){
-		if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"]) ){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
-			$user_object->preserveState($_REQUEST["oldtab"],$_REQUEST["old_perm_branch"]);
-			$_SESSION["user_session_data"]=$user_object->getState();
+		//-->
+</script>
+</head>
+<body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1;">
+	<form name="we_form" method="post" onSubmit="return false">
+		<input type="hidden" name="ucmd" value="" />
+		<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
+		<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
+		<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
+		<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
+		<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />
+		<input type="hidden" name="uid" value="<?php print $user_object->ID ?>" />
+		<input type="hidden" name="ctype" value="<?php print (isset($_REQUEST["ctype"]) ? htmlspecialchars($_REQUEST["ctype"]) : ""); ?>" />
+		<input type="hidden" name="ctable" value="<?php print (isset($_REQUEST["ctable"]) ? htmlspecialchars($_REQUEST["ctable"]) : ""); ?>" />
+		<input type="hidden" name="sd" value="0" />
+		<?php
+		if($user_object){
+			if(isset($_REQUEST["oldtab"]) && isset($_REQUEST["old_perm_branch"])){ // && isset($_REQUEST["old_perm_branch"]) added for 4705
+				$user_object->preserveState($_REQUEST["oldtab"], $_REQUEST["old_perm_branch"]);
+				$_SESSION["user_session_data"] = $user_object->getState();
+			}
+			if(isset($_REQUEST["seem_start_file"])){
+				$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
+			}
+			print $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "", isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
 		}
-		if(isset($_REQUEST["seem_start_file"])){
-			$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
-		}
-		print $user_object->formDefinition(isset($_REQUEST["tab"]) ? $_REQUEST["tab"] : "" ,isset($_REQUEST["perm_branch"]) ? $_REQUEST["perm_branch"] : 0);
-
-	 }
-	 print $yuiSuggest->getYuiCss();
-	 print $yuiSuggest->getYuiJs();
-	 ?>
-   </form>
- </body>
- </html>
+		print $yuiSuggest->getYuiCss();
+		print $yuiSuggest->getYuiJs();
+		?>
+	</form>
+</body>
+</html>

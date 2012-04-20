@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,17 +25,9 @@
 
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/modules/shop.inc.php');
-
-require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
-protect();
-htmlTop();
+we_html_tools::protect();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -54,7 +50,7 @@ $jsFunction = '
 			}
 		}
 	}
-			
+
 	function we_cmd(){
 
 		switch (arguments[0]) {
@@ -85,7 +81,6 @@ if (isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveVatRule') {
 }
 
 // array with all rules
-$we_button = new we_button();
 
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
 foreach ($customerTableFields as $tblField) {
@@ -97,30 +92,30 @@ $parts = array();
 // default value f�r mwst
 	$defaultInput = we_class::htmlSelect('defaultValue', array('true'=>'true', 'false' => 'false'), 1, $weShopVatRule->defaultValue);
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['defaultReturn'],
+			'headline' => g_l('modules_shop','[vat_country][defaultReturn]'),
 			'space' => 300,
 			'html' => $defaultInput,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['vat_country']['defaultReturn_desc'], 2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][defaultReturn_desc]'), 2,600),
 			'space' => 0
 		)
 	);
 
 // select field containing land
 	$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $weShopVatRule->stateField);
-	$countrySelectISO = we_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', $l_shop['preferences']['ISO-Kodiert'],false,"defaultfont");
+	$countrySelectISO = we_forms::checkboxWithHidden($weShopVatRule->stateFieldIsISO, 'stateFieldIsISO', g_l('modules_shop','[preferences][ISO-Kodiert]'),false,"defaultfont");
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['stateField']. ':',
+			'headline' => g_l('modules_shop','[vat_country][stateField]'). ':',
 			'space' => 300,
 			'html' => $countrySelect.$countrySelectISO,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['vat_country']['stateField_desc'], 2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][stateField_desc]'), 2,600),
 			'space' => 0
 		)
 	);
@@ -131,14 +126,14 @@ $parts = array();
 	$textAreaLiableStates = we_class::htmlTextArea('liableToVat', 3, 30, implode("\n", $weShopVatRule->liableToVat));
 
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['statesLiableToVat'] . ':',
+			'headline' => g_l('modules_shop','[vat_country][statesLiableToVat]') . ':',
 			'space' => 300,
 			'html' => $textAreaLiableStates,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['vat_country']['statesLiableToVat_desc'],2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesLiableToVat_desc]'),2,600),
 			'space' => 0
 		)
 	);
@@ -148,14 +143,14 @@ $parts = array();
 	$textAreaNotLiableStates = we_class::htmlTextArea('notLiableToVat', 3, 30, implode("\n", $weShopVatRule->notLiableToVat));
 
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['statesNotLiableToVat'] . ':',
+			'headline' => g_l('modules_shop','[vat_country][statesNotLiableToVat]') . ':',
 			'space' => 300,
 			'html' => $textAreaNotLiableStates,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['vat_country']['statesNotLiableToVat_desc'],2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesNotLiableToVat_desc]'),2,600),
 			'space' => 0
 		)
 	);
@@ -168,31 +163,31 @@ $parts = array();
 
 	$conditionTextarea = we_class::htmlTextArea('conditionalStates[]', 3, 30, implode("\n", $actCondition['states']));
 	$conditionField = we_class::htmlSelect('conditionalCustomerField[]', $selectFields, 1, $actCondition['customerField']);
-	$conditionSelect = we_class::htmlSelect('conditionalCondition[]', array('is_empty' => $l_shop['vat_country']['condition_is_empty'], 'is_set' => $l_shop['vat_country']['condition_is_set']), 1, $actCondition['condition']);
+	$conditionSelect = we_class::htmlSelect('conditionalCondition[]', array('is_empty' => g_l('modules_shop','[vat_country][condition_is_empty]'), 'is_set' => g_l('modules_shop','[vat_country][condition_is_set]')), 1, $actCondition['condition']);
 	$conditionReturn = we_class::htmlSelect('conditionalReturn[]', array('false' => 'false', 'true' => 'true'), 1, $actCondition['returnValue']);
 
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['statesSpecialRules'] .':',
+			'headline' => g_l('modules_shop','[vat_country][statesSpecialRules]') .':',
 			'space' => 300,
 			'html' => $conditionTextarea,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox($l_shop['vat_country']['statesSpecialRules_desc'],2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesSpecialRules_desc]'),2,600),
 			'space' => 0,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['statesSpecialRules_condition'],
+			'headline' => g_l('modules_shop','[vat_country][statesSpecialRules_condition]'),
 			'space' => 300,
 			'html' =>  $conditionField . ' ' . $conditionSelect,
 			'noline' => 1
 		)
 	);
 	array_push($parts, array(
-			'headline' => $l_shop['vat_country']['statesSpecialRules_result'],
+			'headline' => g_l('modules_shop','[vat_country][statesSpecialRules_result]'),
 			'space' => 300,
 			'html' => $conditionReturn
 		)
@@ -216,16 +211,16 @@ print we_multiIconBox::getHTML(
 	"100%",
 	$parts,
 	30,
-	$we_button->position_yes_no_cancel(
-		$we_button->create_button('save', 'javascript:we_cmd(\'save\');'),
+	we_button::position_yes_no_cancel(
+		we_button::create_button('save', 'javascript:we_cmd(\'save\');'),
 		'',
-		$we_button->create_button('cancel', 'javascript:we_cmd(\'close\');')
+		we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 	),
 	-1,
 	'',
 	'',
 	false,
-	$l_shop['vat_country']['box_headline'],'',741
+	g_l('modules_shop','[vat_country][box_headline]'),'',741
 );
 
 

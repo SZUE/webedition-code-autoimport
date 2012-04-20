@@ -73,7 +73,7 @@ weDOM.prototype.getRange = function() {
 		var reverse = false;
 
 		if (	(this.selection.baseNode == this.selection.extentNode) &&
-				(this.selection.baseOffset > this.selection.extentOffset)
+			(this.selection.baseOffset > this.selection.extentOffset)
 			) {
 			reverse = true;
 		} else {
@@ -99,21 +99,21 @@ weDOM.prototype.getRange = function() {
 
 
 		if (	(this.selection.type == 'Range') &&
-				(selTxt.length > 0) &&
-				(baseNode.nodeType == weDOM.TEXT_NODE) &&
-				(baseOffset == baseNode.nodeValue.length) &&
-				(baseNode.parentNode.nextSibling != null) &&
-				(baseNode.parentNode.nextSibling.nodeType == weDOM.TEXT_NODE) &&
-				(baseNode.parentNode.nextSibling.nodeValue.substring(0,selTxt.length) == selTxt)
+			(selTxt.length > 0) &&
+			(baseNode.nodeType == weDOM.TEXT_NODE) &&
+			(baseOffset == baseNode.nodeValue.length) &&
+			(baseNode.parentNode.nextSibling != null) &&
+			(baseNode.parentNode.nextSibling.nodeType == weDOM.TEXT_NODE) &&
+			(baseNode.parentNode.nextSibling.nodeValue.substring(0,selTxt.length) == selTxt)
 			)  {
 			baseNode = baseNode.parentNode.nextSibling;
 			baseOffset = 0;
 			extentNode = baseNode;
 			extentOffset = selTxt.length;
 		} else if (	(this.selection.type == 'Range') &&
-				(baseNode == extentNode) &&
-				(baseOffset == extentOffset) &&
-				(baseNode.nodeType == weDOM.TEXT_NODE)
+			(baseNode == extentNode) &&
+			(baseOffset == extentOffset) &&
+			(baseNode.nodeType == weDOM.TEXT_NODE)
 			){
 			var sel = "" +this.selection;
 			var ind = baseNode.nodeValue.lastIndexOf(sel,baseOffset);
@@ -133,18 +133,18 @@ weDOM.prototype.getRange = function() {
 				}
 			}
 		} else if (	(this.selection.type == 'Range') &&
-					(baseNode.nodeType == weDOM.TEXT_NODE) &&
-					(baseNode.nodeValue.length == baseOffset) &&
-					(extentNode.nodeType == weDOM.TEXT_NODE) &&
-					(extentNode.nodeValue.length == extentOffset)
-				) {
+			(baseNode.nodeType == weDOM.TEXT_NODE) &&
+			(baseNode.nodeValue.length == baseOffset) &&
+			(extentNode.nodeType == weDOM.TEXT_NODE) &&
+			(extentNode.nodeValue.length == extentOffset)
+			) {
 			baseNode = extentNode;
 			baseOffset = 0;
 		} else if (	(baseNode.nodeType == weDOM.TEXT_NODE) &&
-					(baseNode.nodeValue.length == baseOffset) &&
-					(extentNode.nodeType != weDOM.TEXT_NODE) &&
-					(extentNode==baseNode.nextSibling)
-				) {
+			(baseNode.nodeValue.length == baseOffset) &&
+			(extentNode.nodeType != weDOM.TEXT_NODE) &&
+			(extentNode==baseNode.nextSibling)
+			) {
 			baseNode = extentNode;
 			baseOffset = 0;
 			extentOffset = 1;
@@ -342,8 +342,8 @@ weDOM.prototype.insertNode = function(node) {
 			} else {
 				try {
 					if (	(container.nodeName.toLowerCase() != "br") &&
-							(container.nodeName.toLowerCase() != "hr") &&
-							(container.nodeName.toLowerCase() != "img")
+						(container.nodeName.toLowerCase() != "hr") &&
+						(container.nodeName.toLowerCase() != "img")
 						) {
 						container.appendChild(node);
 						outNode = node;
@@ -409,10 +409,10 @@ weDOM.prototype.getImageFromSelection = function(updateRange) {
 	if (this.range.startContainer == this.range.endContainer && this.range.startContainer.nodeName.toLowerCase() == "img") {
 		return this.range.startContainer;
 	} else if (	this.range.startContainer.childNodes &&
-				this.range.startContainer.childNodes.length &&
-				this.range.startContainer.childNodes.length - 1 >= this.range.startOffset &&
-				this.range.startContainer.childNodes[this.range.startOffset].nodeName.toLowerCase() == "img") {
-					return this.range.startContainer.childNodes[this.range.startOffset];
+		this.range.startContainer.childNodes.length &&
+		this.range.startContainer.childNodes.length - 1 >= this.range.startOffset &&
+		this.range.startContainer.childNodes[this.range.startOffset].nodeName.toLowerCase() == "img") {
+		return this.range.startContainer.childNodes[this.range.startOffset];
 	}
 	return null;
 }
@@ -448,8 +448,8 @@ weDOM.prototype.getParentNodeFromSelection = function() {
 		} else {
 			// Safari td selection endContainer is maybe at start of next Container => correct it
 			if (	(this.range.endOffset == 0) &&
-					(this.range.endContainer.nodeName.toLowerCase() == '#text') &&
-					(this.range.endContainer.parentNode.nodeName.toLowerCase() == "td")
+				(this.range.endContainer.nodeName.toLowerCase() == '#text') &&
+				(this.range.endContainer.parentNode.nodeName.toLowerCase() == "td")
 				) {
 				startnode=this.range.startContainer;
 				while (startnode && (startnode.nodeName.toLowerCase() != "body")) {
@@ -506,12 +506,12 @@ weDOM.prototype.getCommonAncestorContainer = function() {
 weDOM.prototype.getLastSurroundNode = function(updateRange) {
 	if (updateRange) this.updateRange();
 	if (	this.range &&
-			this.range.startContainer.parentNode ==  this.range.endContainer.parentNode &&
-			this.range.startContainer == this.range.startContainer.parentNode.firstChild &&
-			this.range.startOffset == 0 &&
-			this.range.endContainer == this.range.endContainer.parentNode.lastChild &&
-			(this.range.endOffset == (this.range.endContainer.nodeType == weDOM.TEXT_NODE) ? this.range.endContainer.length :  1)
-	) {
+		this.range.startContainer.parentNode ==  this.range.endContainer.parentNode &&
+		this.range.startContainer == this.range.startContainer.parentNode.firstChild &&
+		this.range.startOffset == 0 &&
+		this.range.endContainer == this.range.endContainer.parentNode.lastChild &&
+		(this.range.endOffset == (this.range.endContainer.nodeType == weDOM.TEXT_NODE) ? this.range.endContainer.length :  1)
+		) {
 		var node = this.range.startContainer.parentNode;
 		while (node.parentNode && node.parentNode.firstChild == node.parentNode.lastChild) {
 			node = node.parentNode;
@@ -570,7 +570,7 @@ weDOM.prototype.getHTMLCode = function(rootNode, outputRootNode){
 		return '';
 	}
 	switch (rootNode.nodeType) {
-	    case weDOM.DOCUMENT_FRAGMENT_NODE: // document fragment
+		case weDOM.DOCUMENT_FRAGMENT_NODE: // document fragment
 			var nodeHTML = '';
 			var childnode = rootNode.firstChild;
 			while (childnode) {
@@ -578,7 +578,7 @@ weDOM.prototype.getHTMLCode = function(rootNode, outputRootNode){
 				childnode = childnode.nextSibling;
 			}
 			return nodeHTML;
-	    case weDOM.ELEMENT_NODE: // element
+		case weDOM.ELEMENT_NODE: // element
 			var closed;
 			var i;
 			var root_tag = (rootNode.nodeType == weDOM.ELEMENT_NODE) ? rootNode.nodeName.toLowerCase() : '';
@@ -598,7 +598,7 @@ weDOM.prototype.getHTMLCode = function(rootNode, outputRootNode){
 					var a = attrs.item(i);
 					var name=a.nodeName.toLowerCase();
 					if(root_tag == "area" && a.nodeValue){
-						// do nothing
+					// do nothing
 					}else if (!a.specified) {
 						continue;
 					}
@@ -670,23 +670,23 @@ weDOM.prototype.getHTMLCode = function(rootNode, outputRootNode){
 				this.pre = false;
 			}
 			break;
-	    case weDOM.TEXT_NODE: // Text
-	    	if(rootNode.nodeValue){
+		case weDOM.TEXT_NODE: // Text
+			if(rootNode.nodeValue){
 
-	    		if(this.nodeDone == rootNode){
-	    			this.nodeDone = null;
-	    			break;
-	    		}
-	    		if(isIE){
-	    			this.nodeDone = rootNode;
-	    		}
-	    		if(rootNode.nodeValue == "\n"){
-	    			break;
-	    		}
+				if(this.nodeDone == rootNode){
+					this.nodeDone = null;
+					break;
+				}
+				if(isIE){
+					this.nodeDone = rootNode;
+				}
+				if(rootNode.nodeValue == "\n"){
+					break;
+				}
 				html = rootNode.nodeValue.trim2().htmlentities();
 			}
 			break;
-	    case weDOM.COMMENT_NODE: // Comment
+		case weDOM.COMMENT_NODE: // Comment
 			html = "<!--" + rootNode.nodeValue + "-->";
 			break;
 	}
@@ -837,9 +837,9 @@ weDOM.prototype.changeParentnode = function(node, newNode) {
 weDOM.prototype.getTableCell = function() {
 	var cell = this.getParentNodeFromSelection();
 	while (	(cell) &&
-			(cell.nodeName.toLowerCase() != "td") &&
-			(cell.nodeName.toLowerCase() !=  "th") &&
-			(cell.nodeName.toLowerCase() != "body")
+		(cell.nodeName.toLowerCase() != "td") &&
+		(cell.nodeName.toLowerCase() !=  "th") &&
+		(cell.nodeName.toLowerCase() != "body")
 		) {
 		cell = cell.parentNode;
 	}
@@ -857,9 +857,9 @@ weDOM.prototype.isSurrounded = function(tagName, blockTags) {
 
 	parentNode = this.getParentNodeFromSelection();
 	while (	(parentNode != null) &&
-			(parentNode.nodeName.toLowerCase() != "body") &&
-			(blockTags || (weDOM.inlineTags.indexOf(" " + parentNode.nodeName.toLowerCase() + " ") != -1)) &&
-			(parentNode.nodeName.toLowerCase() != tagName.toLowerCase())
+		(parentNode.nodeName.toLowerCase() != "body") &&
+		(blockTags || (weDOM.inlineTags.indexOf(" " + parentNode.nodeName.toLowerCase() + " ") != -1)) &&
+		(parentNode.nodeName.toLowerCase() != tagName.toLowerCase())
 		) {
 		parentNode = parentNode.parentNode;
 	}
@@ -876,8 +876,8 @@ weDOM.prototype.getSurroundedBlockTag = function() {
 
 	parentNode = this.getParentNodeFromSelection();
 	while (	(parentNode != null) &&
-			(parentNode.nodeName.toLowerCase() != "body") &&
-			(weDOM.inlineTags.indexOf(" " + parentNode.nodeName.toLowerCase() + " ") != -1)
+		(parentNode.nodeName.toLowerCase() != "body") &&
+		(weDOM.inlineTags.indexOf(" " + parentNode.nodeName.toLowerCase() + " ") != -1)
 		) {
 		parentNode = parentNode.parentNode;
 	}
@@ -958,7 +958,7 @@ weDOM.getNodePath = function(node) {
 	obj.nodeNumber = weDOM.getNodeNumber(node);
 	nodePath.push(obj);
 	while (	(node = node.parentNode) &&
-			(node.nodeName.toLowerCase() != "body")
+		(node.nodeName.toLowerCase() != "body")
 		) {
 		obj = new Object();
 		obj.nodeName = node.nodeName;
@@ -1026,11 +1026,11 @@ String.prototype.htmlentities = function() {
 }
 
 String.prototype.trim = function() {
-   return this.replace(/^\s+|\s+$/g,"");
+	return this.replace(/^\s+|\s+$/g,"");
 }
 
 String.prototype.trim2 = function() {
-   return this.replace(/^\s{2,}|\s{2,}$/g," ");
+	return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
 // call this function only when you know that cursor is within <nodeName>
@@ -1038,14 +1038,14 @@ weDOM.prototype.selectionAtEndOfNode = function(nodeName) {
 	var node = this.range.endContainer;
 	nodeName = nodeName.toLowerCase();
 	while (	node != null &&
-			node.nodeName.toLowerCase() != nodeName &&
-			(node == node.parentNode.lastChild || node.parentNode.lastChild.nodeName.toLowerCase() == "br" || (node.parentNode.lastChild.nodeValue && node.parentNode.lastChild.nodeValue.trim().length == 0))
-	) {
+		node.nodeName.toLowerCase() != nodeName &&
+		(node == node.parentNode.lastChild || node.parentNode.lastChild.nodeName.toLowerCase() == "br" || (node.parentNode.lastChild.nodeValue && node.parentNode.lastChild.nodeValue.trim().length == 0))
+		) {
 		node = node.parentNode;
 	}
 	if (	(node.nodeName.toLowerCase() == nodeName) &&
-			(	(this.range.endContainer == node && this.range.endOffset == 0) ||
-				(this.range.endContainer.nodeValue && this.range.endContainer.nodeValue.length == this.range.endOffset)
+		(	(this.range.endContainer == node && this.range.endOffset == 0) ||
+			(this.range.endContainer.nodeValue && this.range.endContainer.nodeValue.length == this.range.endOffset)
 			)
 		){
 		return node;
@@ -1058,11 +1058,11 @@ weDOM.prototype.selectionAtStartOfNode = function(nodeName) {
 	var node = this.range.startContainer;
 	nodeName = nodeName.toLowerCase();
 	while (node != null && node.nodeName.toLowerCase() != nodeName &&
-			(node == node.parentNode.firstChild || (node.parentNode.firstChild.nodeType==weDOM.TEXT_NODE && node.parentNode.firstChild.nodeValue.length==0)) ) {
+		(node == node.parentNode.firstChild || (node.parentNode.firstChild.nodeType==weDOM.TEXT_NODE && node.parentNode.firstChild.nodeValue.length==0)) ) {
 		node = node.parentNode;
 	}
 	if (	(node.nodeName.toLowerCase() == nodeName) &&
-			(this.range.startOffset == 0)
+		(this.range.startOffset == 0)
 		){
 		return node;
 	}
@@ -1102,9 +1102,9 @@ weDOM.getLastChild = function(node) {
 
 weDOM.isLastNodeOfParent = function(node, parent) {
 	while (	node != null &&
-			node != parent &&
-			node == weDOM.getLastChild(node.parentNode)
-	) {
+		node != parent &&
+		node == weDOM.getLastChild(node.parentNode)
+		) {
 		node = node.parentNode;
 	}
 	return node == parent;
@@ -1118,14 +1118,14 @@ weDOM.emptyNode = function(node) {
 
 weDOM.isBreakedListNode = function(li) {
 	return 		(	li.childNodes.length == 1 &&
-					li.firstChild.nodeName.toLowerCase() == "br"
-				 ) ||
-				 (	li.childNodes.length == 2 &&
-				 	li.firstChild.nodeName.toLowerCase() == "br" &&
-				 	li.lastChild.nodeValue &&
-				 	li.lastChild.nodeValue.length == 1 &&
-				 	li.lastChild.nodeValue.charCodeAt(0) == 10
-				 );
+		li.firstChild.nodeName.toLowerCase() == "br"
+		) ||
+	(	li.childNodes.length == 2 &&
+		li.firstChild.nodeName.toLowerCase() == "br" &&
+		li.lastChild.nodeValue &&
+		li.lastChild.nodeValue.length == 1 &&
+		li.lastChild.nodeValue.charCodeAt(0) == 10
+		);
 }
 
 weDOM.getSameNextSibling = function(node) {

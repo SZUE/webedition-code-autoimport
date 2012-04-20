@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,98 +21,83 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-protect();
+we_html_tools::protect();
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 if(isset($_REQUEST['td_deadline_hour'])){
-    $deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
+	$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
 }
 
-if ($_REQUEST["mode"] == 'forward') {
-    $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
-    $res = $messaging->forward($arr);
-    $heading = $l_messaging['forwarding_todo'];
-    $action = $l_messaging['forwarded_to'];
-    $s_action = $l_messaging['todo_s_forwarded'];
-    $n_action = $l_messaging['todo_n_forwarded'];
-} elseif ($_REQUEST["mode"] == 'reject') {
-    $arr = array('body' => $_REQUEST['mn_body']);
-    $res = $messaging->reject($arr);
-    $heading = $l_messaging['rejecting_todo'];
-    $action = $l_messaging['rejected_to'];
-    $s_action = $l_messaging['todo_s_rejected'];
-    $n_action = $l_messaging['todo_n_rejected'];
-} else {
-    $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
-    $res = $messaging->send($arr, "we_todo");
-    $heading = $l_messaging['creating_todo'];
-    $s_action = $l_messaging['todo_s_created'];
-    $n_action = $l_messaging['todo_n_created'];
-
-
+switch($_REQUEST["mode"]){
+	case 'forward':
+		$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
+		$res = $messaging->forward($arr);
+		$heading = g_l('modules_messaging', '[forwarding_todo]');
+		$action = g_l('modules_messaging', '[forwarded_to]');
+		$s_action = g_l('modules_messaging', '[todo_s_forwarded]');
+		$n_action = g_l('modules_messaging', '[todo_n_forwarded]');
+		break;
+	case 'reject':
+		$arr = array('body' => $_REQUEST['mn_body']);
+		$res = $messaging->reject($arr);
+		$heading = g_l('modules_messaging', '[rejecting_todo]');
+		$action = g_l('modules_messaging', '[rejected_to]');
+		$s_action = g_l('modules_messaging', '[todo_s_rejected]');
+		$n_action = g_l('modules_messaging', '[todo_n_rejected]');
+		break;
+	default:
+		$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
+		$res = $messaging->send($arr, "we_todo");
+		$heading = g_l('modules_messaging', '[creating_todo]');
+		$s_action = g_l('modules_messaging', '[todo_s_created]');
+		$n_action = g_l('modules_messaging', '[todo_n_created]');
+		break;
 }
-?>
-<html>
-    <head>
-        <title><?php echo $heading ?></title>
-        <?php print STYLESHEET; ?>
-        <script language="JavaScript" type="text/javascript">
-        <!--
-        top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction']?>";
-        //-->
-        </script>
-		<?php
-        if(!empty($res['ok'])){
-		    echo "
-        <script language=\"javascript\">
+we_html_tools::htmlTop($heading);
+print STYLESHEET . we_html_element::jsElement('
+			top.opener.top.content.messaging_cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] . '";');
+if(!empty($res['ok'])){
+	echo we_html_element::jsElement('
         if (opener && opener.top && opener.top.content) {
 		    top.opener.top.content.update_messaging();
 		    top.opener.top.content.update_msg_quick_view();
-        }
-		</script>
-		    ";
-		    }
-		?>
-    </head>
+        }');
+}
+?>
+</head>
 
-    <body class="weDialogBody">
-    <?php
-    
-    $res['ok'] = array_map('htmlspecialchars', $res['ok']);
-    $res['failed'] = array_map('htmlspecialchars', $res['failed']);
-    $res['err'] = array_map('htmlspecialchars', $res['err']);
-    
-    
-    $tbl = '<table align="center" cellpadding="7" cellspacing="3">
+<body class="weDialogBody">
+	<?php
+	$res['ok'] = array_map('htmlspecialchars', $res['ok']);
+	$res['failed'] = array_map('htmlspecialchars', $res['failed']);
+	$res['err'] = array_map('htmlspecialchars', $res['err']);
+
+
+	$tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
-		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? $l_messaging['nobody'] : join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
+		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
 		    </tr>
 		    ' . (empty($res['failed']) ? '' : '<tr>
 		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
-		    (empty($res['err']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . $l_messaging['occured_errs'] . ':</td>
+		(empty($res['err']) ? '' : '<tr>
+		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>
 	';
-	$we_button = new we_button();
-	echo htmlDialogLayout($tbl, $heading, $we_button->create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
-    ?>
-    </body>
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+	?>
+</body>
 </html>

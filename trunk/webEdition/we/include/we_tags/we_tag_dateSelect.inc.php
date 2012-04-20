@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,17 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_dateSelect($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "dateSelect");
-	if ($foo)
+function we_tag_dateSelect($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$class = we_getTagAttribute("class", $attribs);
-	$style = we_getTagAttribute("style", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$class = weTag_getAttribute("class", $attribs);
+	$style = weTag_getAttribute("style", $attribs);
 
-	$tmp_from = we_getTagAttribute("start", $attribs, "");
-	$tmp_to = we_getTagAttribute("end", $attribs, "");
+	$tmp_from = weTag_getAttribute("start", $attribs);
+	$tmp_to = weTag_getAttribute("end", $attribs);
 
 	$from = array();
 	$to = array();
@@ -35,22 +38,20 @@ function we_tag_dateSelect($attribs, $content){
 	$checkDate = "";
 	$minyear = "";
 	$maxyear = "";
-	if ($tmp_from != "" && $tmp_to != "") {
+	if($tmp_from != "" && $tmp_to != ""){
 		$from = array(
-
-				'year' => substr($tmp_from, 0, 4),
-				'month' => (substr($tmp_from, 5, 2)) - 1,
-				'day' => substr($tmp_from, 8, 2),
-				'hour' => strlen($tmp_from) == 16 ? substr($tmp_from, 11, 2) : 0,
-				'minute' => strlen($tmp_from) == 16 ? substr($tmp_from, 14, 2) : 0
+			'year' => substr($tmp_from, 0, 4),
+			'month' => (substr($tmp_from, 5, 2)) - 1,
+			'day' => substr($tmp_from, 8, 2),
+			'hour' => strlen($tmp_from) == 16 ? substr($tmp_from, 11, 2) : 0,
+			'minute' => strlen($tmp_from) == 16 ? substr($tmp_from, 14, 2) : 0
 		);
 		$to = array(
-
-				'year' => substr($tmp_to, 0, 4),
-				'month' => (substr($tmp_to, 5, 2)) - 1,
-				'day' => substr($tmp_to, 8, 2),
-				'hour' => strlen($tmp_to) == 16 ? substr($tmp_to, 11, 2) : 0,
-				'minute' => strlen($tmp_to) == 16 ? substr($tmp_to, 14, 2) : 0
+			'year' => substr($tmp_to, 0, 4),
+			'month' => (substr($tmp_to, 5, 2)) - 1,
+			'day' => substr($tmp_to, 8, 2),
+			'hour' => strlen($tmp_to) == 16 ? substr($tmp_to, 11, 2) : 0,
+			'minute' => strlen($tmp_to) == 16 ? substr($tmp_to, 14, 2) : 0
 		);
 		$minyear = $from['year'];
 		$maxyear = $to['year'];
@@ -157,16 +158,7 @@ WE_checkDate_' . $name . '();
 		$checkDate = "WE_checkDate_" . $name . "();";
 	}
 
-	$submitonchange = we_getTagAttribute("submitonchange", $attribs, "", true);
-	return getDateInput2(
-			"$name%s",
-			(((!isset($_REQUEST[$name])) || $_REQUEST[$name] == -1) ? time() : $_REQUEST[$name]),
-			false,
-			"dmy",
-			$submitonchange ? $checkDate . "we_submitForm();" : $checkDate,
-			$class,
-			"",
-			$minyear,
-			$maxyear,
-			$style) . $js;
+	$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, true);
+	return we_html_tools::getDateInput2(
+			"$name%s", (((!isset($_REQUEST[$name])) || $_REQUEST[$name] == -1) ? time() : $_REQUEST[$name]), false, "dmy", $submitonchange ? $checkDate . "we_submitForm();" : $checkDate, $class, "", $minyear, $maxyear, $style) . $js;
 }

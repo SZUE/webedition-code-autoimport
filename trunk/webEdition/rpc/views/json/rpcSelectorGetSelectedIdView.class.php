@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +24,12 @@
 
 
 class rpcSelectorGetSelectedIdView extends rpcView {
-	
-	
+
+
 	function getResponse($response) {
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");		
+		$suggests = $response->getData("data");
 		$html = "";
 		if (is_array($suggests)) {
 			$html .= $suggests[0]['ID'];
@@ -33,7 +37,3 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 		return $html;
 	}
 }
-
-
-
-?>

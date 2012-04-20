@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,24 +22,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_ifCaptcha($attribs){
+	$name = weTag_getAttribute('name', $attribs);
+	$formname = weTag_getAttribute('formname', $attribs);
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaImage.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captchaMemory.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captcha.class.php');
-
-function we_tag_ifCaptcha($attribs, $content){
-	$name = we_getTagAttribute('name', $attribs);
-	$formname = we_getTagAttribute('formname', $attribs, '');
-
-	if (!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])) {
-		return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);
-	} else
-		if (empty($formname) && isset($_REQUEST['we_ui_we_global_form'][$name])) {
+	if(!empty($formname)){
+		if(isset($_REQUEST['we_ui_' . $formname][$name]))
+			return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);
+	} else{
+		if(isset($_REQUEST['we_ui_we_global_form'][$name])){
 			return Captcha::check($_REQUEST['we_ui_we_global_form'][$name]);
-		} else
-			if (empty($formname) && isset($_REQUEST[$name])) {
-				return Captcha::check($_REQUEST[$name]);
-			} else {
-				return false;
-			}
+		}
+		if(isset($_REQUEST[$name])){
+			return Captcha::check($_REQUEST[$name]);
+		}
+	}
+	return false;
 }

@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,57 +22,45 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-function we_tag_ifField($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "ifField");
-	if ($foo) {
+function we_tag_ifField($attribs){
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return "";
 	}
-	$foo = attributFehltError($attribs, "match", "ifField", true);
-	if ($foo) {
+	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
 		print($foo);
 		return "";
 	}
-	$foo = attributFehltError($attribs, "type", "ifField", true);
-	if ($foo) {
+	if(($foo = attributFehltError($attribs, "type", __FUNCTION__, true))){
 		print($foo);
 		return "";
 	}
 
-	$match = we_getTagAttribute("match", $attribs);
-	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$matchA = explode("blk_",$match);
-		$match = $matchA[0];
-	}
-	// quickfix 4192
+	$match = weTag_getAttribute("match", $attribs);
 	$matchArray = makeArrayFromCSV($match);
 
-	$operator  = we_getTagAttribute("operator", $attribs);
-
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-    	$match = (int) $match;
-	}
+	$operator = weTag_getAttribute("operator", $attribs);
 
 	//Bug #4815
-	if($attribs["type"]=='float' || $attribs["type"]=='int'){$attribs["type"]='text';}
-
-	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-		$realvalue = (int) we_tag('field',$attribs, "");;
-	}else {
-		$realvalue = we_tag('field',$attribs, "");;
+	if($attribs["type"] == 'float' || $attribs["type"] == 'int'){
+		$attribs["type"] = 'text';
 	}
 
-	switch ($operator) {
-		case "equal": return $realvalue == $match; break;
-		case "less": return $realvalue < $match; break;
-		case "less|equal": return $realvalue <= $match; break;
-		case "greater": return $realvalue > $match; break;
-		case "greater|equal": return $realvalue >= $match; break;
-		case "contains": if (strpos($realvalue,$match)!== false) {return true;} else {return false;} break;
-		default: return $realvalue == $match;
-	}
+	$realvalue = we_tag('field', $attribs);
 
+	switch($operator){
+		default:
+		case "equal":
+			return $realvalue == $match;
+		case "less":
+			return intval($realvalue) < intval($match);
+		case "less|equal":
+			return intval($realvalue) <= intval($match);
+		case "greater":
+			return intval($realvalue) > intval($match);
+		case "greater|equal":
+			return intval($realvalue) >= intval($match);
+		case "contains":
+			return (strpos($realvalue, $match) !== false);
+	}
 }

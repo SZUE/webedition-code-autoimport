@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +23,15 @@
  */
 
 function we_tag_printVersion($attribs, $content){
-	$foo = attributFehltError($attribs, "tid", "printVersion");
-	if ($foo)
-		return $foo;
+	if (($foo = attributFehltError($attribs, "tid", __FUNCTION__)))	return $foo;
 
-	$tid = we_getTagAttribute("tid", $attribs);
-	$triggerID = we_getTagAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program
-	$triggerID = $triggerID ? $triggerID : we_getTagAttribute("triggerid", $attribs);
+	$tid = weTag_getAttribute("tid", $attribs);
+	$triggerID = weTag_getAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program
+	$triggerID = $triggerID ? $triggerID : weTag_getAttribute("triggerid", $attribs);
 
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	if (!$docAttr) {
-		$docAttr = we_getTagAttribute("type", $attribs);
+		$docAttr = weTag_getAttribute("type", $attribs);
 	}
 
 	$link = isset($attribs["Link"]) ? $attribs["Link"] : "";
@@ -44,20 +46,13 @@ function we_tag_printVersion($attribs, $content){
 	$_query_string = "";
 
 	$hideQuery = array(
-		"we_objectID", "tid", "id", "pv_tid", "pv_id", "we_cmd", "responseText", "we_mode", "btype"
+		"we_objectID", "tid", "id", "pv_tid", "pv_id", 'we_cmd', "responseText", "we_mode", "btype"
 	);
 	if (isset($_SESSION)) {
 		array_push($hideQuery, session_name());
 	}
-	if (isset($_POST)) {
-		foreach ($_POST as $k => $v) {
-			if ((!is_array($v)) && (!in_array($k, $hideQuery))) {
-				$_query_string .= "&" . rawurlencode($k) . "=" . rawurlencode($v);
-			}
-		}
-	}
-	if (isset($_GET)) {
-		foreach ($_GET as $k => $v) {
+	if (isset($_REQUEST)) {
+		foreach ($_REQUEST as $k => $v) {
 			if ((!is_array($v)) && (!in_array($k, $hideQuery))) {
 				$_query_string .= "&" . rawurlencode($k) . "=" . rawurlencode($v);
 			}
@@ -82,12 +77,12 @@ function we_tag_printVersion($attribs, $content){
 			$url = $loc . 'we_cmd[1]=' . $id . '&amp;we_cmd[4]=' . $tid . $_query_string;
 		}
 	}
-	$attr = we_make_attribs($attribs, "tid,doc,link,Link,triggerid");
 
 	if ($link == "off" || $link == "false") {
 		return $url;
 	} else {
-		$GLOBALS["we_tag_start_printVersion"] = 1;
-		return '<a href="' . $url . '"' . ($attr ? " $attr" : '') . '>';
+		$attribs = removeAttribs($attribs, array('tid','triggerID','triggerid','doc','type','link','Link')); //	not html - valid
+		$attribs['href']=$url;
+		return getHtmlTag('a', $attribs, $content, true);
 	}
 }

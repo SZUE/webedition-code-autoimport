@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-protect();
+we_html_tools::protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/rebuild/we_rebuild_wizard.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuild/we_rebuild_wizard.inc.php");
 
 
 $fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : "";

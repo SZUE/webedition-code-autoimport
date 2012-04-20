@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,22 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/"."listviewBase.class.php");
-
 /**
-* class    we_listview
-* @desc    class for tag <we:listview>
-*
-*/
+ * class    we_listview
+ * @desc    class for tag <we:listview>
+ *
+ */
+class we_catListview extends listviewBase{
 
-class we_catListview extends listviewBase {
-
-	var $parentID=0;
-	var $catID=0;
-	var $variant='default';
-	var $ClassName = "we_catListview";
+	var $parentID = 0;
+	var $catID = 0;
+	var $variant = 'default';
+	var $ClassName = __CLASS__;
 	var $hidedirindex = false;
+
 	/**
 	 * we_listview()
 	 * constructor of class
@@ -48,65 +50,46 @@ class we_catListview extends listviewBase {
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-
-	function we_catListview($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $parentID=0, $catID=0, $variant="default", $cols="", $parentidname='we_parentid',$hidedirindex=false){
-
-
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, "", $cols);
-		$this->parentID = isset($_REQUEST[$parentidname]) ? abs($_REQUEST[$parentidname]) : abs($parentID);
+	function __construct($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $parentID=0, $catID=0, $variant="default", $cols="", $parentidname='we_parentid', $hidedirindex=false){
+		parent::__construct($name, $rows, $offset, $order, $desc, "", false, "", $cols);
+		$this->parentID = isset($_REQUEST[$parentidname]) ? intval($_REQUEST[$parentidname]) : intval($parentID);
 		$this->catID = trim($catID);
 
 		$this->variant = $variant;
-		if(stripos($this->order," desc") !== false){//was #3849
-			$this->order = str_ireplace(" desc","",$this->order);
+		if(stripos($this->order, " desc") !== false){//was #3849
+			$this->order = str_ireplace(" desc", "", $this->order);
 			$this->desc = true;
 		}
 
 		$this->order = trim($this->order);
 
-		$orderstring = $this->order ? (" ORDER BY " . $this->order . ($this->desc ? " DESC" : "")) : '' ;
+		$orderstring = $this->order ? (' ORDER BY ' . $this->order . ($this->desc ? ' DESC' : '')) : '';
 
-		$this->hidedirindex=$hidedirindex;
+		$this->hidedirindex = $hidedirindex;
 
-		if ($this->catID) {
-			$cids = explode(",",$this->catID);
+		if($this->catID){
+			$cids = explode(",", $this->catID);
 			$tail = "";
-			foreach ($cids as $cid) {
-				$tail .= 'ID="'.abs($cid).'" OR ';
+			foreach($cids as $cid){
+				$tail .= 'ID=' . intval($cid) . ' OR ';
 			}
-			$tail = preg_replace('/^(.+) OR /','$1',$tail);
-			$tail = '('.$tail.')';
-		} else {
-			$tail = ' ParentID="'.abs($this->parentID).'" ';
+			$tail = preg_replace('/^(.+) OR /', '$1', $tail);
+			$tail = '(' . $tail . ')';
+		} else{
+			$tail = ' ParentID=' . intval($this->parentID) . ' ';
 		}
 
-		if($this->order == "random()"){
-			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM";
-		}else{
-			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring";
-		}
+		$this->anz_all = f('SELECT COUNT(1) AS max FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail, 'max', $this->DB_WE);
 
-		$this->DB_WE->query($q);
-		$this->anz_all = $this->DB_WE->num_rows();
-
-		if($this->order == "random()"){
-			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
-		}else{
-			$q = "SELECT * FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
-		}
-
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT *' . ($this->order == 'random()' ? ', RAND() as RANDOM' : '') . ' FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail . ' ' . ($this->order == 'random()' ? 'ORDER BY RANDOM' : $orderstring) . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 
 		$this->count = 0;
-		$this->adjustRows();
-
-
 	}
 
 	function next_record(){
 		if($this->DB_WE->next_record()){
-			$count=$this->count;
+			$count = $this->count;
 			$arr = $this->DB_WE->f("Catfields");
 			$arr = $arr ? unserialize($arr) : array();
 
@@ -123,10 +106,10 @@ class we_catListview extends listviewBase {
 
 			$this->count++;
 			return true;
-		} else {
+		} else{
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->Record=array();
+				$this->Record = array();
 				$this->DB_WE->Record = array();
 				$this->DB_WE->Record["WE_PATH"] = "";
 				$this->DB_WE->Record["WE_TEXT"] = "";
@@ -139,8 +122,7 @@ class we_catListview extends listviewBase {
 	}
 
 	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : "";
+		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
-
 
 }

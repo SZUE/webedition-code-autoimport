@@ -1,14 +1,16 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlColAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id340_value'] = new weTagData_textAttribute('340', 'value', true, '');
-$GLOBALS['weTagWizard']['attribute']['id341_doc'] = new weTagData_selectAttribute('341', 'doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id342_id'] = new weTagData_selectorAttribute('342', 'id',FILE_TABLE, 'text/webedition', false, ''); }
-if(defined("OBJECT_FILES_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id343_oid'] = new weTagData_selectorAttribute('343', 'oid',OBJECT_FILES_TABLE, 'objectFile', false, ''); }
-$GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id345_permission'] = new weTagData_sqlColAttribute('345', 'permission', CUSTOMER_TABLE, false, array(), '');
+$this->Attributes[] = new weTagData_textAttribute('value', true, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, '')), false, '');
+if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', false, ''); }
+if(defined("OBJECT_FILES_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('oid',OBJECT_FILES_TABLE, 'objectFile', false, ''); }
+$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+if(defined('CUSTOMER_TABLE')){
+	$this->Attributes[] = new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, array(), '');
+}

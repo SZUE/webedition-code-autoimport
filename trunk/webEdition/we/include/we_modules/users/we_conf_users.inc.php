@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define('USER_TABLE', TBL_PREFIX . 'tblUser');
+define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 
+define('PING_TIME', 30); // 30 sec
+define('PING_TOLERANZ', 3 * PING_TIME); // 40 sec - allows 1 Ping missing
 
-define("USER_TABLE",TBL_PREFIX .  "tblUser");
-define("LOCK_TABLE",TBL_PREFIX . "tblLock");
-
-define("WE_LANGUAGE_ID","0");
-define("PING_TIME","30"); // 30 sec
-define("PING_TOLERANZ","40"); // 40 sec - allows 1 Ping missing
-
-define("WE_USERS_MODULE_DIR", $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/");
-define("WE_USERS_MODULE_PATH","/webEdition/we/include/we_modules/users/");
-
-@include(WE_USERS_MODULE_DIR."we_conf_userpro.inc.php");
+define('WE_USERS_MODULE_PATH', WE_MODULES_PATH . 'users/');
+define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');

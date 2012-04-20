@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,4 +27,3 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/conf/mapping.in
 $LU_ParameterNames[] = 'leWizard';
 $LU_ParameterNames[] = 'leStep';
 
-?>

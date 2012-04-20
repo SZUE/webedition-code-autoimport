@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,46 +22,43 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_categorySelect($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute('name', $attribs);
 	$isuserinput = (strlen($name) == 0);
-	$name = $isuserinput ? "we_ui_" . $GLOBALS["WE_FORM"] . "_categories" : $name;
+	$name = $isuserinput ? 'we_ui_' . $GLOBALS['WE_FORM'] . '_categories' : $name;
 
-	$type = we_getTagAttribute("type", $attribs);
-	$rootdir = we_getTagAttribute("rootdir", $attribs, "/");
-	$firstentry = we_getTagAttribute("firstentry", $attribs);
-	$showpath = we_getTagAttribute("showpath", $attribs, "", true);
-	$indent = we_getTagAttribute("indent", $attribs, "");
+	$type = weTag_getAttribute("type", $attribs);
+	$rootdir = weTag_getAttribute("rootdir", $attribs, "/");
+	$firstentry = weTag_getAttribute("firstentry", $attribs);
+	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
+	$indent = weTag_getAttribute("indent", $attribs);
+	$multiple = weTag_getAttribute("multiple", $attribs, false, true);
 
-	$values = "";
-	if ($isuserinput && $GLOBALS["WE_FORM"]) {
-		$objekt = isset($GLOBALS["we_object"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_object"][$GLOBALS["WE_FORM"]] : (isset(
-				$GLOBALS["we_document"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_document"][$GLOBALS["WE_FORM"]] : (isset(
-				$GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : false));
-		if ($objekt) {
+	$values = '';
+	if($isuserinput && $GLOBALS["WE_FORM"]){
+		$objekt = isset($GLOBALS["we_object"][$GLOBALS["WE_FORM"]]) ?
+			$GLOBALS["we_object"][$GLOBALS["WE_FORM"]] :
+			(isset($GLOBALS["we_document"][$GLOBALS["WE_FORM"]]) ?
+				$GLOBALS["we_document"][$GLOBALS["WE_FORM"]] :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
+					false));
+		if($objekt){
 			$values = $objekt->Category;
 		}
 		$valuesArray = makeArrayFromCSV(id_to_path($values, CATEGORY_TABLE));
-	} else {
-		if ($type == "request") {
+	} else{
+		if($type == "request"){
 			// Bug Fix #750
-			if (isset($_REQUEST[$name])) {
-				if (is_array($_REQUEST[$name])) {
-					$values = implode(",", $_REQUEST[$name]);
-				} else {
-					$values = $_REQUEST[$name];
-				}
-			} else {
-				$values = "";
-			}
-		} else {
+			$values = (isset($_REQUEST[$name]) ?
+					(is_array($_REQUEST[$name]) ?
+						implode(",", $_REQUEST[$name]) :
+						$_REQUEST[$name]) :
+					'');
+		} else{
 			// Bug Fix #750
-			if (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) {
-				$values = implode(",", $GLOBALS[$name]);
-			} else {
-				$values = $GLOBALS[$name];
-			}
+			$values = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
+				implode(",", $GLOBALS[$name]) :
+				$GLOBALS[$name];
 		}
 		$valuesArray = makeArrayFromCSV($values, CATEGORY_TABLE);
 	}
@@ -64,62 +66,48 @@ function we_tag_categorySelect($attribs, $content){
 	$attribs["name"] = $name;
 
 	// Bug Fix #750
-	if (isset($attribs["multiple"]) && $attribs["multiple"] == "true") {
+	if($multiple){
 		$attribs["name"] .= "[]";
 		$attribs["multiple"] = "multiple";
-	} else {
-		$attribs = removeAttribs($attribs, array(
-			'size', 'multiple'
-		));
+	} else{
+		$attribs = removeAttribs($attribs, array('size', 'multiple'));
 	}
 
-	$attribs = removeAttribs($attribs, array(
-		'showpath', 'rootdir', 'firstentry', 'type'
-	));
+	$attribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'type'));
 
-	if (!$content) {
-		if ($firstentry) {
-			$content .= getHtmlTag('option', array(
-				'value' => ''
-			), $firstentry) . "\n";
+	if(!$content){
+		if($firstentry){
+			$content .= getHtmlTag('option', array('value' => ''), $firstentry);
 		}
 		$db = new DB_WE();
-		$dbfield = $showpath ? "Path" : "Category";
-		$db->query("SELECT Path,Category FROM " . CATEGORY_TABLE . " WHERE Path like '".$db->escape($rootdir)."%' ORDER BY $dbfield");
-		while ($db->next_record()) {
-			$deep = sizeof(explode("/", $db->f('Path'))) - 2;
+		$dbfield = $showpath ? 'Path' : 'Category';
+		$db->query('SELECT Path,Category FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($rootdir) . '%" ORDER BY ' . $dbfield);
+		while($db->next_record()) {
+			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = $db->f($dbfield);
-			if ($rootdir && $rootdir != "/" && $showpath) {
-				$field = ereg_replace('^' . quotemeta($rootdir) . '(.*)$', '\1', $field);
+			if($rootdir && ($rootdir != '/') && $showpath){
+				$field = preg_replace('|^' . preg_quote($rootdir) . '|', '', $field);
 			}
-			if ($field) {
-				if (in_array($db->f("Path"), $valuesArray)) {
+			if($field){
+				if(in_array($db->f("Path"), $valuesArray)){
 					$content .= getHtmlTag(
-							'option',
-							array(
-								'value' => $db->f("Path"), 'selected' => 'selected'
-							),
-							str_repeat($indent, $deep) . $field) . "\n";
-				} else {
+						'option', array(
+						'value' => $db->f("Path"), 'selected' => 'selected'
+						), str_repeat($indent, $deep) . $field);
+				} else{
 					$content .= getHtmlTag('option', array(
 						'value' => $db->f("Path")
-					), str_repeat($indent, $deep) . $field) . "\n";
+						), str_repeat($indent, $deep) . $field);
 				}
 			}
 		}
-	} else {
-		foreach ($valuesArray as $catPaths) {
-			if (eregi("<option>", $content)) {
-				$content = eregi_replace(
-						'<option>' . quotemeta($catPaths) . '( ?[<\n\r\t])',
-						'<option selected="selected">' . $catPaths . '\1',
-						$content);
+	} else{
+		foreach($valuesArray as $catPaths){
+			if(stripos($content, '<option>') !== false){
+				$content = preg_replace('/<option>' . preg_quote($catPaths) . '( ?[<\n\r\t])/i', '<option selected="selected">' . $catPaths . '\1', $content);
 			}
-			$content = str_replace(
-					'<option value="' . $catPaths . '">',
-					'<option value="' . $catPaths . '" selected="selected">',
-					$content);
+			$content = str_replace('<option value="' . $catPaths . '">', '<option value="' . $catPaths . '" selected="selected">', $content);
 		}
 	}
-	return getHtmlTag('select', $attribs, $content, true) . "\n";
+	return getHtmlTag('select', $attribs, $content, true);
 }

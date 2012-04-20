@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +22,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$oTblCont = new we_htmlTable(array(
+$oTblCont = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 1);
 $oTblCont->setCol(
-		0, 
-		0, 
-		null, 
-		we_htmlElement::htmlDiv(
+		0,
+		0,
+		null,
+		we_html_element::htmlDiv(
 				array(
-					
-						"id" => "m_" . $iCurrId . "_inline", 
-						"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-				), 
-				$sc->getHtmlCode()));
-$aLang = array(
-	$l_cockpit['shortcuts'], ''
-);
 
-?>
+						"id" => "m_" . $iCurrId . "_inline",
+						"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+				),
+				$sc->getHtml()));
+$aLang = array(
+	g_l('cockpit','[shortcuts]'), ''
+);

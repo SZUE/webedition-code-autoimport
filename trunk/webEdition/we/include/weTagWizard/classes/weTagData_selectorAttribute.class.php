@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,11 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-
-class weTagData_selectorAttribute extends weTagDataAttribute
-{
+class weTagData_selectorAttribute extends weTagDataAttribute{
 
 	/**
 	 * @var string
@@ -39,59 +40,50 @@ class weTagData_selectorAttribute extends weTagDataAttribute
 	 * @param string $selectable
 	 * @param boolean $required
 	 */
-	function weTagData_selectorAttribute($id, $name, $table, $selectable, $required = false, $module = '')
-	{
-
+	function __construct($name, $table, $selectable, $required = false, $module = '', $description='', $deprecated=false){
 		$this->Table = $table;
 		$this->Selectable = $selectable;
 
-		parent::weTagDataAttribute($id, $name, $required, $module);
+		parent::__construct($name, $required, $module, $description, $deprecated);
 	}
 
 	/**
 	 * @return string
 	 */
-	function getCodeForTagWizard()
-	{
-
-		global $we_button;
+	function getCodeForTagWizard(){
 
 		$weCmd = 'openDocselector';
 
-		if ($this->Selectable == 'folder') {
+		if($this->Selectable == 'folder'){
 			$weCmd = 'openDirselector';
 		}
 
-		if ($this->Table == CATEGORY_TABLE) {
+		if($this->Table == CATEGORY_TABLE){
 			$weCmd = 'openCatselector';
 			$this->Selectable = '';
 		}
 
-		if ($this->Table == NAVIGATION_TABLE) {
+		if($this->Table == NAVIGATION_TABLE){
 			$weCmd = 'openSelector';
 		}
 
-		$input = we_htmlElement::htmlInput(
+		$input = we_html_element::htmlInput(
 				array(
+					'name' => $this->Name,
+					'value' => $this->Value,
+					'id' => $this->getIdName(),
+					'class' => 'wetextinput'
+			));
+		$wecmdenc1 = we_cmd_enc("document.getElementById('" . $this->getIdName() . "').value");
+		$button = we_button::create_button(
+				"select", "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . $wecmdenc1 . "', '', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
 
-						'name' => $this->Name,
-						'value' => $this->Value,
-						'id' => $this->getIdName(),
-						'class' => 'wetextinput'
-				));
-		$wecmdenc1= we_cmd_enc("document.getElementById('" . $this->getIdName() . "').value");
-		$button = $we_button->create_button(
-				"select",
-				"javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','".$wecmdenc1."', '', '', '" . session_id() . "', '', '" . $this->Selectable . "')");
-
-		return '
-					<table class="attribute">
-					<tr>
+		return '<table class="attribute"><tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
 						<td class="attributeField">' . $input . '</td>
 						<td class="attributeButton">' . $button . '</td>
-					</tr>
-					</table>';
+					</tr></table>';
 	}
+
 }
 

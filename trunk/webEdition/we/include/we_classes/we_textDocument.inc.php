@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,40 +22,25 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_document.inc.php");
-if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-}
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_linklist.inc.php");
-
 /*  a class for handling text-documents */
-class we_textDocument extends we_document
-{
-	######################################################################################################################################################
-	##################################################################### Variables ######################################################################
-	######################################################################################################################################################
-
+class we_textDocument extends we_document{
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_textDocument";
+
+	var $ClassName = __CLASS__;
 
 	/* Icon which is shown at the tree-menue  */
-	var $Icon="link.gif";
+	var $Icon = "link.gif";
 
 	/* defines which Tabs should be shown in editor  */
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT,WE_EDITPAGE_VALIDATION);
-
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
+	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION);
 
 
 	/* Constructor */
-	function we_textDocument(){
-		$this->we_document();
+
+	function __construct(){
+		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
-		if(defined('DEFAULT_CHARSET')) {
+		if(defined('DEFAULT_CHARSET')){
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
 	}
@@ -60,10 +50,11 @@ class we_textDocument extends we_document
 
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
+
 	function editor($baseHref=true){
-		$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
+		$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
 		$prot = getServerProtocol();
-		$GLOBALS["we_baseHref"] = $baseHref ? $prot."://".SERVER_NAME.$port.$this->Path : "";
+		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl() . $this->Path : "";
 
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
@@ -75,20 +66,20 @@ class we_textDocument extends we_document
 				return "we_templates/we_srcTmpl.inc.php";
 			case WE_EDITPAGE_PREVIEW:
 				if($GLOBALS["we_EDITOR"]){
-					$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR."/".md5(uniqid(rand())).$this->Extension;
-					saveFile($GLOBALS["we_file_to_delete_after_include"],$this->i_getDocument());
+					$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . "/" . md5(uniqid(rand())) . $this->Extension;
+					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 					return $GLOBALS["we_file_to_delete_after_include"];
-				}else{
+				} else{
 					$GLOBALS["we_editmode"] = false;
 					return "we_templates/we_srcTmpl.inc.php";
 					break;
 				}
-            case WE_EDITPAGE_VALIDATION:
-                return "we_templates/validateDocument.inc.php";
-                break;
-            case WE_EDITPAGE_VERSIONS:
+			case WE_EDITPAGE_VALIDATION:
+				return "we_templates/validateDocument.inc.php";
+				break;
+			case WE_EDITPAGE_VERSIONS:
 				return "we_versions/we_editor_versions.inc.php";
-			break;
+				break;
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
@@ -97,26 +88,23 @@ class we_textDocument extends we_document
 		return $this->TemplatePath;
 	}
 
-
 	function we_new(){
-		we_document::we_new();
-		$this->Filename=$this->i_getDefaultFilename();
-
+		parent::we_new();
+		$this->Filename = $this->i_getDefaultFilename();
 	}
 
-	function isValidEditPage($editPageNr) {
+	function isValidEditPage($editPageNr){
 
-		if ($editPageNr == WE_EDITPAGE_VALIDATION) {
-			if ($this->ContentType != "text/css") {
+		if($editPageNr == WE_EDITPAGE_VALIDATION){
+			if($this->ContentType != "text/css"){
 				return false;
-			} else {
+			} else{
 				return true;
 			}
 		}
 
-		if (is_array($this->EditPageNrs)) {
+		if(is_array($this->EditPageNrs)){
 			return in_array($editPageNr, $this->EditPageNrs);
-
 		}
 		return false;
 	}

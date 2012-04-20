@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +29,8 @@
  */
 
 // Some constants for LiveUpdate Functions
-if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php");
+if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php")){
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php");
 
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/define.inc.php');
@@ -38,18 +42,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/classes/liveUpd
 
 // Some constants for Wizard
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/includes/define.inc.php');
-
-// Wizard Classes
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizard.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardCollection.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardContent.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardProgress.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardStatus.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardStepBase.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/leWizardTemplateBase.class.php');
-
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/liveUpdateFunctions.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/liveUpdateResponse.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/liveUpdateHttpWizard.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leWizard/liveUpdateTemplatesWizard.class.php');
 

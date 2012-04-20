@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +21,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
-
-protect();
+we_html_tools::protect();
 
 $_cmd_string = '';
 
-if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
-	for ($i=1; $i<4; $i++) {
+if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']){
+	for($i = 1; $i < 4; $i++){
 		$_cmd_string .= ",'" . $_REQUEST['we_cmd'][$i] . "'";
-
 	}
 	$_cmd_string .= ",'SEEM_edit_include'";
 }
 
-?><html>
-<head>
-<script type="text/javascript">
+we_html_tools::htmlTop();
+?>
+<script type="text/javascript"><!--
 	function we_cmd(){
 		var args = "";
 		for(var i = 0; i < arguments.length; i++){
@@ -53,45 +54,20 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 		we_cmd('start_multi_editor'<?php print $_cmd_string; ?>);
 
 	}
-
+	//-->
 </script>
+<?php
+include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/multiEditor/EditorFrameController.inc.php');
+?>
 </head>
-<?php if (($GLOBALS["BROWSER"] == "NN6") || ($GLOBALS["BROWSER"] == "OPERA"))	{ ?>
-<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-
-	<frameset <?php
-		if ($GLOBALS["BROWSER"] != "OPERA") echo 'onload="startMultiEditor();"';
-			?> rows="22,*,0" id="multiEditorContainer">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame <?php
-		if ($GLOBALS["BROWSER"] == "OPERA") echo 'onload="startMultiEditor();"';
-			?>name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
-	</frameset>
-
-</frameset>
-
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-<frameset cols="1,*,1" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
-
-	<frameset rows="22,*,0" id="multiEditorContainer"  border="0" frameborder="NO">
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" />
-		<frame onload="doSafariLoad();" name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame onload="startMultiEditor();" name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" />
-	</frameset>
-	<frame src="<?php print HTML_DIR ?>whiteWithLeftLine.html" name="bm_resize" scrolling="no" noresize>
-
-</frameset>
-<?php } else { ?>
-<frameset cols="2,*,2" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-	<frameset onload="startMultiEditor();" rows="22,*,0" border="1" id="multiEditorContainer" noresize>
-		<frame name="multiEditorDocumentTabsFrame" id="multiEditorDocumentTabsFrame" scrolling="No" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" noresize />
-		<frame name="multiEditorEditorFramesets" id="multiEditorEditorFramesets" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" />
-		<frame name="multiEditorDocumentControllerFrame" id="multiEditorDocumentControllerFrame" src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" />
-	</frameset>
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-</frameset>
-<?php } ?>
+<body>
+	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
+		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver;" id="multiEditorDocumentTabsFrameDiv">
+			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" onload="startMultiEditor()" style="border:0px;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
+		</div>
+		<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv">
+			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		</div>
+	</div>
+</body>
 </html>

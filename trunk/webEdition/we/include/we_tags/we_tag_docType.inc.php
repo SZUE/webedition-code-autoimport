@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,33 +22,26 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_docType($attribs, $content){
-	$docAttr = we_getTagAttribute("doc", $attribs);
+function we_tag_docType($attribs){
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	$doctype = "";
-	switch ($docAttr) {
+	switch($docAttr){
 		case "self" :
-			if ($GLOBALS["we_doc"]->DocType) {
+			if($GLOBALS['we_doc']->DocType){
 				$doctype = f(
-						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . escape_sql_query($GLOBALS["we_doc"]->DocType),
-						"DocType",
-						new DB_WE());
+					"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->DocType), "DocType", new DB_WE());
 			}
 			break;
 		case "top" :
 		default :
-			if (isset($GLOBALS["WE_MAIN_DOC"])) {
-				if ($GLOBALS["WE_MAIN_DOC"]->DocType) {
+			if(isset($GLOBALS["WE_MAIN_DOC"])){
+				if($GLOBALS["WE_MAIN_DOC"]->DocType){
 					$doctype = f(
-							"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . escape_sql_query($GLOBALS["WE_MAIN_DOC"]->DocType),
-							"DocType",
-							new DB_WE());
+						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS["WE_MAIN_DOC"]->DocType), "DocType", new DB_WE());
 				}
-			} elseif ($GLOBALS["we_doc"]->DocType) { // if we_doc is the "top-document"
+			} elseif($GLOBALS['we_doc']->DocType){ // if we_doc is the "top-document"
 				$doctype = f(
-						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . escape_sql_query($GLOBALS["we_doc"]->DocType),
-						"DocType",
-						new DB_WE());
+					"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->DocType), "DocType", new DB_WE());
 			}
 			break;
 	}

@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +23,7 @@
  */
 
 
-class Captcha {
+abstract class Captcha {
 
 
 	/**
@@ -27,7 +31,7 @@ class Captcha {
 	 *
 	 * @return void
 	 */
-	function display($image, $type = "gif") {
+	static function display($image, $type = "gif") {
 
 		$code = "";
 		$im = $image->get($code);
@@ -66,7 +70,7 @@ class Captcha {
 	 *
 	 * @return boolean
 	 */
-	function check($captcha) {
+	static function check($captcha) {
 
 		return CaptchaMemory::isValid($captcha, Captcha::getStorage());
 
@@ -78,8 +82,8 @@ class Captcha {
 	 *
 	 * @return boolean
 	 */
-	function getStorage() {
-		return $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/captchacodes.tmp";
+	static function getStorage() {
+		return TEMP_PATH. 'captchacodes.tmp';
 	} /* end: check */
 
 } /* end: Class */

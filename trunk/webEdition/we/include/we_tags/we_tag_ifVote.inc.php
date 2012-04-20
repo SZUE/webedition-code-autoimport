@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifVote($attribs, $content){
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"]==VOTING_SUCCESS);
+function we_tag_ifVote(){
+	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"] == weVoting::SUCCESS);
 }

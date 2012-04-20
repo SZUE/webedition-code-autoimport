@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -17,32 +18,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+we_html_tools::protect();
 
-protect();
-
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
-
-$filename = $_SERVER['DOCUMENT_ROOT'].$_GET['file'];
-$mimetype='';
-if (file_exists ($filename)){
+$filename = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['file'];
+$mimetype = '';
+if(file_exists($filename)){
 	if(function_exists('mime_content_type')){
 		$mimetype = mime_content_type($filename);
-    } else {
+	} else{
 		if(function_exists('getimagesize')){
-			$mysize=getimagesize($filename);
+			$mysize = getimagesize($filename);
 			if(isset($mysize['mime'])){
-				$mimetype=$mysize['mime'];
+				$mimetype = $mysize['mime'];
 			}
 		}
 	}
-	if ($mimetype){
-		header('Content-Type: '.$mimetype);
+	if($mimetype){
+		header('Content-Type: ' . $mimetype);
 	}
 	ob_clean();
-    flush();
+	flush();
 
 	readfile($filename);
 }

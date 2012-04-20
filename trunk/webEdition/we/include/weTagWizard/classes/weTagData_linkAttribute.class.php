@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-
-class weTagData_linkAttribute extends weTagDataAttribute {
+class weTagData_linkAttribute extends weTagDataAttribute{
 
 	/**
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function weTagData_linkAttribute($id, $name, $required = false, $module = '', $value='') {
+	function __construct($name, $required = false, $module = '', $value='', $description='', $deprecated=false){
 
-		parent::weTagDataAttribute($id, $name, $required, $module);
+		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Value = $value;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getCodeForTagWizard() {
-		return '
-					<table class="attribute">
-					<tr>
-						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_htmlElement::htmlSpan(
-						array(
+	function getCodeForTagWizard(){
+		return '<table class="attribute"><tr>
+						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_html_element::htmlSpan(
+				array(
 				'name' => $this->Name,
 				'id' => $this->getIdName(),
 				'value' => '',
 				'class' => 'defaultfont'
-						), '<a href="http://' . $this->Value . '" target="TagRef">' . $GLOBALS['l_taged']['tagreference_linktext'] . '</a>') . '</td>
-					</tr>
-					</table>';
+				), '<a href="http://' . $this->Value . '" target="TagRef">' . g_l('taged', '[tagreference_linktext]') . '</a>') . '</td>
+					</tr></table>';
 	}
 
 }

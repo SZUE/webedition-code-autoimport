@@ -1,6 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,31 +22,32 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_tag_registeredUser($attribs){
 
-function we_tag_registeredUser($attribs, $content){
-
-	$id = we_getTagAttribute("id", $attribs);
-	$show = we_getTagAttribute("show", $attribs);
-	$docAttr = we_getTagAttribute("doc", $attribs);
-
-	if (ereg("^field:(.+)$", $id, $regs)) {
+	$id = weTag_getAttribute("id", $attribs);
+	$show = weTag_getAttribute("show", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs);
+	$regs = array();
+	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);
 		$field = $regs[1];
-		if (strlen($field))
+		if(strlen($field))
 			$id = $doc->getElement($field);
 	}
-	if ($id) {
+	if($id){
 		$db = new DB_WE();
-		$h = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE id='$id'", $db);
-		if ($show) {
+		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE id=' . intval($id), $db);
+		unset($h['Password']);
+		if($show){
+			$foo = array();
 			preg_match_all("|%([^ ]+) ?|i", $show, $foo, PREG_SET_ORDER);
-			for ($i = 0; $i < sizeof($foo); $i++) {
+			for($i = 0; $i < sizeof($foo); $i++){
 				$show = str_replace("%" . $foo[$i][1], $h[$foo[$i][1]], $show);
 			}
 			return $show;
-		} else {
+		} else{
 			return $h["Username"];
 		}
 	}
-	return "";
+	return '';
 }
