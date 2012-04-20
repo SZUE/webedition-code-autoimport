@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +19,6 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see Zend_Translate
  */
@@ -26,13 +26,12 @@ Zend_Loader::loadClass('Zend_Translate');
 
 /**
  * Base class for translations
- * 
+ *
  * @category   we
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_Translate extends Zend_Translate
-{
+class we_core_Translate extends Zend_Translate{
 
 	/**
 	 * Adapter
@@ -41,12 +40,6 @@ class we_core_Translate extends Zend_Translate
 	 */
 	private $_adapter;
 
-	/**
-	 * cache attribute
-	 *
-	 * @var NULL
-	 */
-	private static $_cache = null;
 
 	/**
 	 * Generates the standard translation object
@@ -58,8 +51,7 @@ class we_core_Translate extends Zend_Translate
 	 * @param  array               $options  OPTIONAL options for the adapter
 	 * @throws Zend_Translate_Exception
 	 */
-	public function __construct($adapter, $data, $locale = null, array $options = array())
-	{
+	public function __construct($adapter, $data, $locale = null, array $options = array()){
 		$this->setAdapter($adapter, $data, $locale, $options);
 	}
 
@@ -72,9 +64,8 @@ class we_core_Translate extends Zend_Translate
 	 * @param  array               $options  OPTIONAL Options to use
 	 * @throws Zend_Translate_Exception
 	 */
-	public function setAdapter($adapter, $data, $locale = null, array $options = array())
-	{
-		switch (strtolower($adapter)) {
+	public function setAdapter($adapter, $data, $locale = null, array $options = array()){
+		switch(strtolower($adapter)){
 			case 'array' :
 				$adapter = 'Zend_Translate_Adapter_Array';
 				break;
@@ -100,13 +91,11 @@ class we_core_Translate extends Zend_Translate
 				$adapter = 'Zend_Translate_Adapter_XmlTm';
 				break;
 		}
-		
+
 		@Zend_Loader::loadClass($adapter);
-		if (self::$_cache !== null) {
-			call_user_func(array($adapter, 'setCache'), self::$_cache);
-		}
+
 		$this->_adapter = new $adapter($data, $locale, $options);
-		if (!$this->_adapter instanceof Zend_Translate_Adapter) {
+		if(!$this->_adapter instanceof Zend_Translate_Adapter){
 			require_once 'Zend/Translate/Exception.php';
 			throw new Zend_Translate_Exception("Adapter " . $adapter . " does not extend Zend_Translate_Adapter'");
 		}
@@ -114,24 +103,23 @@ class we_core_Translate extends Zend_Translate
 
 	/**
 	 * Calls all methods from the adapter
-	 * 
+	 *
 	 * @return string
 	 */
-	public function __call($method, array $options)
-	{
+	public function __call($method, array $options){
 		$charset = we_core_Local::getComputedUICharset();
-		
-		if (method_exists($this->_adapter, $method)) {
+
+		if(method_exists($this->_adapter, $method)){
 			$text = call_user_func_array(array($this->_adapter, $method), $options);
-			if (strlen($method) == 1 && $method === '_') {
-				if ($charset != 'UTF-8' && (!isset($options[2]) || (isset($options[2]) && !$options[2]))) {
+			if(strlen($method) == 1 && $method === '_'){
+				if($charset != 'UTF-8' && (!isset($options[2]) || (isset($options[2]) && !$options[2]))){
 					$text = utf8_decode($text);
 				}
 			}
 			return $text;
-		
 		}
 		require_once 'Zend/Translate/Exception.php';
 		throw new Zend_Translate_Exception("Unknown method '" . $method . "' called!");
 	}
+
 }

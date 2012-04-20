@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
 
 /**
  * Class which creates a form
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
@@ -103,7 +103,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve the action attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAction()
@@ -113,7 +113,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve the method attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getMethod()
@@ -123,7 +123,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve the onsubmit attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOnSubmit()
@@ -133,7 +133,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Sets the action attribute
-	 * 
+	 *
 	 * @param string $action
 	 * @return void
 	 */
@@ -144,7 +144,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Sets the method attribute
-	 * 
+	 *
 	 * @param string $method
 	 * @return void
 	 */
@@ -155,7 +155,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Sets the onsubmit attribute
-	 * 
+	 *
 	 * @param string $onSubmit
 	 * @return void
 	 */
@@ -168,10 +168,10 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement
 	{
 		$this->_enctype = $val;
 	}
-	
+
 	/**
 	 * Returns the HTML for a hidden field
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $value
 	 * @param string $attribs

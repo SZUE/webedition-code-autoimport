@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -18,13 +19,12 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
-
 /*
  * Sets some global variables which are needed
  * for other classes and scripts and defines
  * the __autoload() function
  */
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 
 // Absolute Server Path to the webEdition base directory
 $GLOBALS['__WE_BASE_PATH__'] = realpath(dirname(str_replace('\\', '/', __FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
@@ -53,6 +53,15 @@ $GLOBALS['__WE_CMS_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/cms';
 // add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
 ini_set('include_path', $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__'] . PATH_SEPARATOR . ini_get('include_path'));
 
+require_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_classes' . DIRECTORY_SEPARATOR . 'we_autoloader.class.php');
+
+//make we_autoloader the first autoloader
+$ret = spl_autoload_register('we_autoloader::autoload', false, true);
+//workaround php 5.2
+if($ret != true){
+	spl_autoload_register('we_autoloader::autoload', true);
+}
+
 // include Zend_Autoloader  #3815
 require_once('Zend/Loader/Autoloader.php');
 
@@ -60,15 +69,17 @@ $loader = Zend_Loader_Autoloader::getInstance(); #3815
 $loader->setFallbackAutoloader(true); #3815
 $loader->suppressNotFoundWarnings(true);
 
+spl_autoload_register('we_autoloader::finalLoad', true);
+
 // include configuration file of webEdition
 include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
 
-if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
-	if (!date_default_timezone_set(@date_default_timezone_get())){
+if(!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
+	if(!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');
 	}
-	define("DATETIME_INITIALIZED","1");
+	define("DATETIME_INITIALIZED", "1");
 }
-if (!isset($_SERVER['TMP'])){
-	$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR .'zendcache';
+if(!isset($_SERVER['TMP'])){
+	$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'zendcache';
 }

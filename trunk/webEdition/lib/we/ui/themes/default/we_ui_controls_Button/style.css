@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -18,7 +18,7 @@
  * @subpackage we_ui_themes
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
- 
+
 .we_ui_controls_Button {
 	cursor: pointer;
 	position:relative;
@@ -38,21 +38,18 @@
 }
 
 .we_ui_controls_Button td {
-	-moz-user-select: none ! important;
 	font-family: verdana, arial, helvetica;
 	font-size: 10px ! important;
 	color: black ! important;
 }
 
 .we_ui_controls_Disabled_Button td {
-	-moz-user-select: none ! important;
 	font-family: verdana, arial, helvetica;
 	font-size: 10px ! important;
 	color: black ! important;
 }
 
 .we_ui_controls_Clicked_Button td {
-	-moz-user-select: none ! important;
 	font-family: verdana, arial, helvetica;
 	font-size: 10px ! important;
 	color: black ! important;
@@ -60,7 +57,6 @@
 
 .we_ui_controls_Button,.we_ui_controls_Button_Left,.we_ui_controls_Button_Middle,.we_ui_controls_Button_Right,.we_ui_controls_Clicked_Button,.we_ui_controls_Clicked_Button_Left,.we_ui_controls_Clicked_Button_Middle,.we_ui_controls_Clicked_Button_Right,.we_ui_controls_Disabled_Button,.we_ui_controls_Disabled_Button_Left,.weBtnMiddleDisabled,.we_ui_controls_Disabled_Button_Right
 	{
-	-moz-user-select: none ! important;
 	-khtml-user-select: none ! important;
 }
 

@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,30 +19,31 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+!defined('NO_SESS') && define('NO_SESS',1);
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**
  * Base class for all webEdition SDK classes
- * 
+ *
  * @category   we
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-abstract class we_core_AbstractObject
-{
+abstract class we_core_AbstractObject{
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
-		if (!is_null($properties)) {
-			foreach ($properties as $key => $val) {
+	public function __construct($properties = null){
+		if(!is_null($properties)){
+			foreach($properties as $key => $val){
 				$methodName = 'set' . ucfirst($key);
-				if (method_exists($this, $methodName)) {
+				if(method_exists($this, $methodName)){
 					$this->$methodName($val);
 				}
 			}

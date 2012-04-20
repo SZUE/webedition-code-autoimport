@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,17 +22,16 @@
 
 /**
  * class for handling client information
- * 
+ *
  * @category   we
  * @package    we_ui
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_Client
-{
-
+class we_ui_Client{
 	/**
 	 * constant for IE Browser
 	 */
+
 	const kBrowserIE = 0;
 
 	/**
@@ -72,71 +71,71 @@ class we_ui_Client
 
 	/**
 	 * _system attribute
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_system;
 
 	/**
 	 * _browser attribute
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_browser;
 
 	/**
 	 * _version attribute
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_version;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Set user agent properties
-	 * 
+	 *
 	 * @param string $userAgent
 	 * @return void
 	 */
-	function __construct($userAgent = '')
-	{
-		if ($userAgent === '') {
-			$userAgent = $_SERVER['HTTP_USER_AGENT'];
+	function __construct($userAgent = ''){
+		$inst = we_base_browserDetect::inst();
+		$this->_version = $inst->getBrowserVersion();
+
+		switch($inst->getBrowser()){
+			case we_base_browserDetect::IE:
+				$this->_browser = self::kBrowserIE;
+				break;
+			case we_base_browserDetect::FF:
+				$this->_browser = self::kBrowserGecko;
+				break;
+			case we_base_browserDetect::APPLE:
+				$this->_browser = self::kBrowserWebkit;
+				break;
+			default:
+				$this->_browser = self::kBrowserOther;
 		}
-		
-		if (preg_match('/MSIE ([0-9\.]+)/i', $userAgent, $regs)) {
-			$this->_browser = self::kBrowserIE;
-			$this->_version = $regs[1];
-		} else if (preg_match('/Gecko\/([0-9]+)/i', $userAgent, $regs)) {
-			$this->_browser = self::kBrowserGecko;
-			$this->_version = $regs[1];
-		} else if (preg_match('/AppleWebKit\/([0-9\.]+)/', $userAgent, $regs)) {
-			$this->_browser = self::kBrowserWebkit;
-			$this->_version = $regs[1];
-		} else {
-			$this->_browser = self::kBrowserOther;
-			$this->_version = 0;
-		}
-		
-		if (preg_match('/(Mac_PowerPC)|(Macintosh)/', $userAgent)) {
-			$this->_system = self::kSystemMacOS;
-		} else if (preg_match('/(Windows)|(WinNT)|(Win98)|(Win95)/', $userAgent)) {
-			$this->_system = self::kSystemWindows;
-		} else {
-			$this->_system = self::kSystemOther;
+
+		switch($inst->getSystem()){
+			case we_base_browserDetect::SYS_MAC:
+				$this->_system = self::kSystemMacOS;
+				break;
+			case we_base_browserDetect::SYS_WIN:
+				$this->_system = self::kSystemWindows;
+				break;
+			default:
+				$this->_system = self::kSystemOther;
 		}
 	}
 
 	/**
 	 * returns instance
-	 * 
+	 *
 	 * @param string $userAgent
 	 * @return instance
 	 */
-	public static function getInstance($userAgent = '')
-	{
-		if (!self::$instance instanceof self) {
+	public static function getInstance($userAgent = ''){
+		if(!self::$instance instanceof self){
 			self::$instance = new self($userAgent);
 		}
 		return self::$instance;
@@ -144,34 +143,29 @@ class we_ui_Client
 
 	/**
 	 * retrieve browser
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getBrowser()
-	{
+	public function getBrowser(){
 		return $this->_browser;
 	}
 
 	/**
 	 * retrieve system
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getSystem()
-	{
+	public function getSystem(){
 		return $this->_system;
 	}
 
 	/**
 	 * retrieve version
-	 * 
+	 *
 	 * @return version
 	 */
-	public function getVersion()
-	{
+	public function getVersion(){
 		return $this->_version;
 	}
 
 }
-
-?>

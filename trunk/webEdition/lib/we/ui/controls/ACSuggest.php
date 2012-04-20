@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -23,14 +23,13 @@
 
 /**
  * Class to display an autoselector
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_ACSuggest
-{
+class we_ui_controls_ACSuggest{
 
 	/**
 	 * inputfields attribute
@@ -344,8 +343,8 @@ class we_ui_controls_ACSuggest
 	 * Constructor
 	 *
 	 */
-	public function __construct()
-	{
+	public function __construct(){
+
 	}
 
 	/**
@@ -353,9 +352,8 @@ class we_ui_controls_ACSuggest
 	 *
 	 * @var string
 	 */
-	public function &getInstance()
-	{
-		if (!isset($GLOBALS['__weSuggest__'])) {
+	public function &getInstance(){
+		if(!isset($GLOBALS['__weSuggest__'])){
 			$GLOBALS['__weSuggest__'] = new we_ui_controls_ACSuggest();
 		}
 		return $GLOBALS['__weSuggest__'];
@@ -363,21 +361,19 @@ class we_ui_controls_ACSuggest
 
 	/**
 	 * Retrieve onChange attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOnChange()
-	{
+	public function getOnChange(){
 		return $this->_onChange;
 	}
 
 	/**
 	 * Set onChange attribute
-	 * 
+	 *
 	 * @param string $_onChange
 	 */
-	public function setOnChange($_onChange)
-	{
+	public function setOnChange($_onChange){
 		$this->_onChange = $_onChange;
 	}
 
@@ -386,10 +382,8 @@ class we_ui_controls_ACSuggest
 	 *
 	 * @param string $_disabled
 	 */
-	function setInputDisabled($_disabled)
-	{
+	function setInputDisabled($_disabled){
 		$this->inputDisabled = $_disabled;
-	
 	}
 
 	/**
@@ -397,8 +391,7 @@ class we_ui_controls_ACSuggest
 	 *
 	 * @return String
 	 */
-	function getYuiJs()
-	{
+	function getYuiJs(){
 		$client = we_ui_Client::getInstance();
 		/**
 		 * @todo 	1. value
@@ -409,10 +402,10 @@ class we_ui_controls_ACSuggest
 		 */
 		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
-		
-		if (is_array($this->inputfields) && !count($this->inputfields))
+
+		if(is_array($this->inputfields) && !count($this->inputfields))
 			return;
-		
+
 		$safariEventListener = "";
 		$doSafariOnTextfieldBlur = "";
 		$initVars = "	var ajaxMaxResponseTime = 1500;\n";
@@ -436,7 +429,7 @@ class we_ui_controls_ACSuggest
 			}
 		}
 HTS;
-		
+
 		$inputfields = "";
 		$tables = "";
 		$oACDS = "";
@@ -451,23 +444,23 @@ HTS;
 		$weAcFields = "";
 		$postData = "protocol=text&cmd=SelectorGetSelectedId";
 		// loop fields
-		for ($i = 0; $i < count($this->inputfields); $i++) {
+		for($i = 0; $i < count($this->inputfields); $i++){
 			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);\n";
 			$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
 			//$weWorkspacePathArray = we_util_Strings::makeArrayFromCSV(we_util_Path::id2Path(get_ws($this->tables[$i])));
 			$weWorkspacePathArray = "";
 			$weWorkspacePathArrayJS = "";
-			if (is_array($weWorkspacePathArray)) {
+			if(is_array($weWorkspacePathArray)){
 				$ix = 0;
-				foreach ($weWorkspacePathArray as $val) {
-					if ($ix > 0)
+				foreach($weWorkspacePathArray as $val){
+					if($ix > 0)
 						$weWorkspacePathArrayJS .= ",";
 					$weWorkspacePathArrayJS .= '"' . $val . '"';
 					$ix++;
 				}
 			}
 			$weFieldWS .= "\tweWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);\n";
-			
+
 			$weAcFields .= <<<HTS
 if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) {
 	parent.weAutoCompetionFields[$i] = {
@@ -478,9 +471,9 @@ if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) 
 }
 
 HTS;
-			
+
 			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};\n";
-			
+
 			$fildsObj .= ($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {\n";
 			$fildsObj .= "			'id' : '" . $this->inputfields[$i] . "',\n";
 			$fildsObj .= "			'old': document.getElementById('" . $this->inputfields[$i] . "').value,\n";
@@ -500,16 +493,16 @@ HTS;
 			$oACDSInit .= ($i > 0 ? ", " : "") . 'oACDS_' . $i;
 			$oAutoCompInit .= ($i > 0 ? ", " : "") . 'oAutoComp_' . $i;
 			$oAutoCompRes .= "	var oAutoCompRes_$i = new Array();\n";
-			
-			if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
+
+			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				$initVars .= "	var selInputVal_" . $i . ";\n";
 				$onSelectInit = "";
 				$onSelectDecl = "";
-				if (count($this->setOnSelectFields[$i])) {
+				if(count($this->setOnSelectFields[$i])){
 					$fildsObjId = ",\n			'fields_id': new Array(";
 					$fildsObjVal = ",\n			'fields_val': new Array(";
-					for ($j = 0; $j < count($this->setOnSelectFields[$i]); $j++) {
-						if ($j > 0) {
+					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
+						if($j > 0){
 							$fildsObjId .= ",";
 							$fildsObjVal .= ",";
 						}
@@ -546,7 +539,7 @@ HTS;
 			resultID = yuiAcFields.set_$i.fields_id[0];
 			{$this->_doOnItemSelect[$i]}
 		},
-		
+
 
 		doOnDataRequestEvent_$i: function() {
 			yuiAcFields.set_$i.found = 0;
@@ -554,7 +547,7 @@ HTS;
 			yuiAcFields.set_$i.changed = true;
 		},
 
-		
+
 		doOnDataReturnEvent_$i: function(param1,param2) {
 			param=param2.toString();
 			params=param.split(',');
@@ -579,32 +572,31 @@ HTS;
 			yuiAcFields.set_$i.run = false;
 		},
 
-		
+
 		doOnDataErrorEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 			yuiAcFields.set_$i.valid = false;
 		},
-		
-		
+
+
 		doOnDataReturnEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
-		
+
+
 		doOnUnmatchedItemSelectEvent_$i: function() {
 			yuiAcFields.set_$i.run = false;
 		},
-		
+
 
 HTS;
-			
 			}
-			if (isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]) {
+			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
 				$initVars .= "	var oldInputVal_" . $i . ";\n";
 				$initVars .= "	var newInputVal_" . $i . ";\n";
 				$additionalFields = "";
-				if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
-					for ($j = 0; $j < count($this->setOnSelectFields[$i]); $j++) {
+				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
+					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						$initVars .= "	var old_" . $this->setOnSelectFields[$i][$j] . ";\n";
 						$additionalFields .= ($j > 0 ? "," : "") . $this->setOnSelectFields[$i][$j];
 					}
@@ -613,8 +605,8 @@ HTS;
 		doSafariOnTextfieldBlur_$i: function(e) {
 			YAHOO.autocoml.doOnTextfieldBlur_$i();
 		},
-		
-		
+
+
 		doOnTextfieldBlur_$i: function() {
 			//document.getElementById(yuiAcFields.set_$i.id).blur();
 			wsValid_$i = true;
@@ -683,7 +675,7 @@ HTS;
 			{$this->_doOnTextfieldBlur[$i]}
 			yuiAcFields.set_$i.changed=false;
 		},
-		
+
 
 		doOnContainerCollapse_$i: function(){
 			//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i()',100);
@@ -691,33 +683,33 @@ HTS;
 
 
 HTS;
-				
+
 				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {\n";
 				$onFocus .= "			ajaxResponseCT=0;\n";
 				$onFocus .= "			oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;\n";
-				if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
-					for ($j = 0; $j < count($this->setOnSelectFields[$i]); $j++) {
+				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
+					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						$onFocus .= "			old_" . $this->setOnSelectFields[$i][$j] . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value;\n";
 					}
 				}
-				
+
 				//$onFocus .= "			YAHOO.autocoml.unmarkNotValid($i);";
 				$onFocus .= "			if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[yuiAcFields.set_{$i}.id] = false;\n";
 				$onFocus .= "			yuiAcFields.set_$i.set = '';\n";
-				
+
 				$onFocus .= "		},\n";
 				$doAjax .= <<<HTS
 
 		doAjax: function(callback, postdata) {
 			var request = YAHOO.util.Connect.asyncRequest('POST', ajaxURL, callback, postdata);
 		},
-		
-		
+
+
 HTS;
-				
+
 				$initVars .= <<<HTS
 
-				
+
 	var ajaxCallback_$i = {
 		success: function(o) {
 			if(o.responseText != undefined && o.responseText != ''){
@@ -755,13 +747,12 @@ HTS;
 			yuiAcFields.set_$i.newval = '';
 		}
 	};
-	
-	
+
+
 HTS;
-			
 			}
 			// EOF loop fields
-			
+
 
 			$fildsObj .= "		}";
 			$declare .= 'oACDS_' . $i . ' = new YAHOO.widget.DS_XHR(ajaxURL, ["\n", "\t"]);
@@ -775,7 +766,7 @@ HTS;
 			oAutoComp_' . $i . ' = new YAHOO.widget.AutoComplete(myInput,myContainer,oACDS_' . $i . ');
 			oAutoComp_' . $i . '.maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
 			oAutoComp_' . $i . '.queryDelay = 0;';
-			if (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])) {
+			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ');';
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');';
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
@@ -783,7 +774,7 @@ HTS;
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');';
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
 			}
-			if (isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]) {
+			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ');';
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');';
 				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
@@ -807,7 +798,7 @@ HTS;
 
 			';
 		}
-		
+
 		$declare .= <<<HTS
 /*
 		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
@@ -817,10 +808,10 @@ HTS;
 		}
 		*/
 HTS;
-		
+
 		$fildsObj .= "\n	};\n";
 		$out = "
-<script type=\"text/javascript\">
+<script type=\"text/javascript\"><!--
 
 YAHOO.autocoml = function(){
 $weFieldWS
@@ -930,8 +921,8 @@ $doAjax
 				return false;
 			}
 		},
-		counter: 0,		
-				
+		counter: 0,
+
 		isValid: function(){
 			var isValid = true;
 			for(fId in yuiAcFieldsById){
@@ -1057,7 +1048,7 @@ function doDebugResizeH(){
 	}
 	document.getElementById('damd').style.height=debugsizeH;
 }
-
+//-->
 </script>
 <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
 	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
@@ -1072,9 +1063,8 @@ function doDebugResizeH(){
 	 *
 	 * @return unknown
 	 */
-	function getYuiCss()
-	{
-		
+	function getYuiCss(){
+
 		$client = we_ui_Client::getInstance();
 		$inputfields = "";
 		$containerfields = "";
@@ -1086,18 +1076,18 @@ function doDebugResizeH(){
 		$yuAcHighlight = "";
 		$layer = "";
 		$layerZ = "";
-		for ($i = 0; $i < count($this->inputfields); $i++) {
-			if ($client->getBrowser() == we_ui_Client::kBrowserIE) {
+		for($i = 0; $i < count($this->inputfields); $i++){
+			if($client->getBrowser() == we_ui_Client::kBrowserIE){
 				$width = $this->containerwidth[$i] - 4;
 				$overflow = 'overflow:hidden;';
-			} else {
+			} else{
 				$width = $this->containerwidth[$i] - 8;
 				$overflow = '';
 			}
-			
+
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
-			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {	
+			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {
 				position:absolute;
 				left:0px;
 				" . $overflow . "
@@ -1111,12 +1101,12 @@ function doDebugResizeH(){
 			$li .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li";
 			$yuAcHighlight .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li.yui-ac-highlight";
 		}
-		for ($i = 0; $i < count($this->layer); $i++) {
+		for($i = 0; $i < count($this->layer); $i++){
 			$layer .= ($i > 0 ? ", " : "") . "#" . $this->layer[$i];
 			$layerZ .= "#" . $this->layer[$i] . " {z-index:" . (9010 - $i) . ";}\n";
 		}
 		$out = "";
-		if ($client->getBrowser() == we_ui_Client::kBrowserIE) {
+		if($client->getBrowser() == we_ui_Client::kBrowserIE){
 			$out .= "$inputfields {
 				position:relative;
 				width:100%;
@@ -1159,7 +1149,7 @@ function doDebugResizeH(){
 				padding:0px;
 				list-style:none;
 			}\n";
-		} else {
+		} else{
 			$out .= "$inputfields {
 				position:relative;
 				width:100%;
@@ -1199,7 +1189,7 @@ function doDebugResizeH(){
 			}\n";
 		}
 		$out .= "";
-		
+
 		return empty($inputfields) ? "" : $out;
 	}
 
@@ -1208,37 +1198,34 @@ function doDebugResizeH(){
 	 *
 	 * @param String $name
 	 * @param String $value
-	 * @param Array $attribs 
-	 * @param Boolean $disabled 
+	 * @param Array $attribs
+	 * @param Boolean $disabled
 	 */
-	function setInput($name, $value = "", $attribs = "", $disabled = false, $markHot = "")
-	{
+	function setInput($name, $value = "", $attribs = "", $disabled = false, $markHot = ""){
 		$this->inputId = '';
 		$this->inputName = $name;
 		$this->inputValue = $value;
 		$this->inputAttribs = "";
-		
+
 		$this->inputDisabled = $disabled;
-	
 	}
 
 	/**
 	 * get HTML of autocompleter
-	 * 
+	 *
 	 * @return string
 	 */
-	function getHTML()
-	{
-		
+	function getHTML(){
+
 		$selectButtonSpace = $this->selectButtonSpace;
 		$inputId = empty($this->inputId) ? "yuiAcInput" . $this->acId : $this->inputId;
 		$resultId = empty($this->resultId) ? "yuiAcResult" . $this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth) ? $this->width : $this->containerWidth);
-		
+
 		$client = we_ui_Client::getInstance();
-		
+
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, ($client->getBrowser() == we_ui_Client::kBrowserIE ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty);
-		
+
 		$input = new we_ui_controls_TextField();
 		$input->setId($inputId);
 		$input->setName($this->inputName);
@@ -1248,12 +1235,12 @@ function doDebugResizeH(){
 		$input->setWidth($this->width);
 		$input->setDisabled($this->inputDisabled);
 		$input->setOnChange($this->getOnChange());
-		
+
 		$inputField = $input->getHTML();
 		$resultField = we_ui_layout_Form::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
-		
+
 		$autoSuggest = "<div style=\"width:" . $this->width . "px;\" id=\"yuiAcLayer{$this->acId}\" >" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>";
-		
+
 		$table = new we_ui_layout_Table();
 		$table->addHTML($resultField . $autoSuggest, 0, 0);
 		$table->setId('table_' . $inputId);
@@ -1261,7 +1248,7 @@ function doDebugResizeH(){
 		$table->addHTML(we_ui_layout_Image::getPixel($selectButtonSpace, 4), 1, 0);
 		$table->nextColumn();
 		$table->addHTML($this->selectButton, 2, 0);
-		
+
 		$this->acId = "";
 		$this->containerWidth = "";
 		$this->containerWidthForAll = 0;
@@ -1281,31 +1268,30 @@ function doDebugResizeH(){
 		$this->width = 280;
 		$this->doOnItemSelect = "";
 		$this->doOnTextfieldBlur = "";
-		
+
 		return $table->getHTML();
 	}
 
 	/**
 	 * get inputId
-	 * 
+	 *
 	 * @return integer
 	 */
-	function getInputId()
-	{
+	function getInputId(){
 		return $this->inputId;
 	}
 
-	/****************************************************************/
+	/*	 * ************************************************************* */
 	/*                             setter                           */
-	/****************************************************************/
+	/*	 * ************************************************************* */
+
 	/**
 	 * set AcId and rootDir
-	 * 
+	 *
 	 * @param integer $val
 	 * @param string $rootDir
 	 */
-	function setAcId($val, $rootDir = "")
-	{
+	function setAcId($val, $rootDir = ""){
 		$this->acId = $val;
 		$this->rootDir = $rootDir;
 	}
@@ -1315,8 +1301,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setAddJS($val)
-	{
+	function setAddJS($val){
 		$this->addJS = $val;
 	}
 
@@ -1326,8 +1311,7 @@ function doDebugResizeH(){
 	 * @param Int $containerWidth
 	 * @param Boolean $containerWidthforAll
 	 */
-	function setContainerWidth($containerWidth)
-	{
+	function setContainerWidth($containerWidth){
 		$this->containerWidth = $containerWidth;
 	}
 
@@ -1336,8 +1320,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setContentType($val)
-	{
+	function setContentType($val){
 		$this->contentType = $val;
 	}
 
@@ -1346,8 +1329,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setDoOnItemSelect($val)
-	{
+	function setDoOnItemSelect($val){
 		$this->doOnItemSelect = $val;
 	}
 
@@ -1356,8 +1338,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setDoOnTextfieldBlur($val)
-	{
+	function setDoOnTextfieldBlur($val){
 		$this->doOnTextfieldBlur = $val;
 	}
 
@@ -1366,11 +1347,10 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setInputId($val = '')
-	{
-		if ($val == '') {
+	function setInputId($val = ''){
+		if($val == ''){
 			$this->inputId = "yuiAcInput" . $this->acId;
-		} else {
+		} else{
 			$this->inputId = $val;
 		}
 	}
@@ -1380,8 +1360,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setInputName($val)
-	{
+	function setInputName($val){
 		$this->inputName = $val;
 	}
 
@@ -1390,8 +1369,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setInputValue($val)
-	{
+	function setInputValue($val){
 		$this->inputValue = $val;
 	}
 
@@ -1400,8 +1378,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setMaxResults($val)
-	{
+	function setMaxResults($val){
 		$this->maxResults = $val;
 	}
 
@@ -1410,8 +1387,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setMayBeEmpty($val)
-	{
+	function setMayBeEmpty($val){
 		$this->mayBeEmpty = $val;
 	}
 
@@ -1420,8 +1396,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setLabel($val)
-	{
+	function setLabel($val){
 		$this->label = $val;
 	}
 
@@ -1431,8 +1406,7 @@ function doDebugResizeH(){
 	 * @param unknown_type $resultID
 	 * @param unknown_type $resultValue
 	 */
-	function setResult($resultName, $resultValue = "", $resultID = "")
-	{
+	function setResult($resultName, $resultValue = "", $resultID = ""){
 		$this->resultName = $resultName;
 		$this->resultId = $resultID;
 		$this->resultValue = $resultValue;
@@ -1443,8 +1417,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setResultId($val)
-	{
+	function setResultId($val){
 		$this->resultId = $val;
 	}
 
@@ -1453,8 +1426,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setResultName($val)
-	{
+	function setResultName($val){
 		$this->resultValue = $val;
 	}
 
@@ -1463,8 +1435,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setResultValue($val)
-	{
+	function setResultValue($val){
 		$this->resultValue = $val;
 	}
 
@@ -1474,8 +1445,7 @@ function doDebugResizeH(){
 	 * @param unknown_type $val
 	 * @param integer $space
 	 */
-	function setSelectButton($val, $space = 20)
-	{
+	function setSelectButton($val, $space = 20){
 		$this->selectButton = $val;
 		$this->selectButtonSpace = $space;
 	}
@@ -1485,8 +1455,7 @@ function doDebugResizeH(){
 	 *
 	 * @param String $val
 	 */
-	function setSelector($val)
-	{
+	function setSelector($val){
 		$this->selector = $val;
 	}
 
@@ -1495,8 +1464,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $val
 	 */
-	function setTable($val)
-	{
+	function setTable($val){
 		$this->table = $val;
 	}
 
@@ -1506,8 +1474,7 @@ function doDebugResizeH(){
 	 * @param unknown_type $val
 	 * @param integer $space
 	 */
-	function setTrashButton($val, $space = 10)
-	{
+	function setTrashButton($val, $space = 10){
 		$this->trashButton = $val;
 		$this->trashButtonSpace = $space;
 	}
@@ -1517,8 +1484,7 @@ function doDebugResizeH(){
 	 *
 	 * @param unknown_type $var
 	 */
-	function setWidth($var)
-	{
+	function setWidth($var){
 		$this->width = $var;
 	}
 
@@ -1536,8 +1502,7 @@ function doDebugResizeH(){
 	 * @param unknown_type $checkFieldsValue
 	 * @param unknown_type $containerwidth
 	 */
-	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true')
-	{
+	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = true){
 		array_push($this->inputfields, $inputFieldId);
 		array_push($this->containerfields, $containerFieldId);
 		array_push($this->tables, $table);
@@ -1550,7 +1515,7 @@ function doDebugResizeH(){
 		array_push($this->checkFieldsValues, $checkFieldsValue);
 		array_push($this->containerwidth, $containerwidth);
 		array_push($this->inputMayBeEmpty, $inputMayBeEmpty);
-		switch ($contentType) {
+		switch($contentType){
 			case "dirSelector" :
 				array($this->ct, "folder");
 				break;
@@ -1569,4 +1534,5 @@ function doDebugResizeH(){
 		array_push($this->_doOnTextfieldBlur, $this->doOnTextfieldBlur);
 		$this->doOnTextfieldBlur = "";
 	}
+
 }

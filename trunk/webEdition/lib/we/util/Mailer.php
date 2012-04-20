@@ -25,7 +25,7 @@ include_once $GLOBALS['__WE_LIB_PATH__'] . '/Zend/Mail.php';
  * PHP email transport class
  *
  */
-class we_util_Mailer extends Zend_Mail {
+class we_util_Mailer extends Zend_Mail{
 
 	/**
 	 * Type of Message, either text/html or text/plain
@@ -33,54 +33,63 @@ class we_util_Mailer extends Zend_Mail {
 	 * @var String
 	 */
 	protected $ContentType = 'text/html';
+
 	/**
 	 * Flag for embed images
 	 *
 	 * @var Bool
 	 */
 	protected $isEmbedImages = false;
+
 	/**
 	 * Enter description here...
 	 *
 	 * @var String
 	 */
 	protected $basedir = '';
+
 	/**
 	 * Flag for using <base href
 	 *
 	 * @var Bool
 	 */
 	protected $isUseBaseHref = true;
+
 	/**
 	 * MessageBody (html)
 	 *
 	 * @var String
 	 */
 	protected $Body = '';
+
 	/**
 	 * MessageBody (text)
 	 *
 	 * @var String
 	 */
 	protected $AltBody = '';
+
 	/**
 	 * Flag if message is finally constructed and ready to send
 	 *
 	 * @var Bool
 	 */
 	protected $messageBuilt = false;
+
 	/**
 	 * Enter description here...
 	 *
 	 * @var array
 	 */
 	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf', 'GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF', 'SWF');
+
 	/**
 	 * Enter description here...
 	 *
 	 * @var array
 	 */
 	protected $inlineAtt = array();
+
 	/**
 	 * Internal storage for the subject to survive change of charset
 	 *
@@ -97,36 +106,33 @@ class we_util_Mailer extends Zend_Mail {
 	 * @param String $reply
 	 * @param Bool $isEmbedImages
 	 */
-	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0) {
-		if (isset($GLOBALS["_language"]["charset"])) {
-			$this->setCharSet($GLOBALS["_language"]["charset"]);
-		} else {
-			setCharSet('UTF-8');
-		}
-		if (defined("WE_MAILER")) {
-			switch (WE_MAILER) {
+	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0){
+		$this->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
+
+		if(defined("WE_MAILER")){
+			switch(WE_MAILER){
 				case 'smtp' :
 
-					if (defined('SMTP_SERVER')) {
+					if(defined('SMTP_SERVER')){
 						$smtp_config = array();
-						if (defined('SMTP_PORT')) {
+						if(defined('SMTP_PORT')){
 							$smtp_config['port'] = SMTP_PORT;
 						}
-						if (defined('SMTP_AUTH') && SMTP_AUTH) {
-							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterstützte Version - Zend kann auch plain und crammd5
-							if (defined('SMTP_USERNAME')) {
+						if(defined('SMTP_AUTH') && SMTP_AUTH){
+							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterst�tzte Version - Zend kann auch plain und crammd5
+							if(defined('SMTP_USERNAME')){
 								$smtp_config['username'] = SMTP_USERNAME;
 							}
-							if (defined('SMTP_PASSWORD')) {
+							if(defined('SMTP_PASSWORD')){
 								$smtp_config['password'] = SMTP_PASSWORD;
 							}
 						}
-						if (defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != '') {//sitzt wohl auf 5 Minuten fest, keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht
+						if(defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != ''){//sitzt wohl auf 5 Minuten fest, keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht
 						}
-						if (defined('SMTP_HALO')) {//keine Möglichkeit gefunden das zu ändern, aber auch nicht lange gesucht, scheint den Host zu übergeben
+						if(defined('SMTP_HALO')){//keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht, scheint den Host zu �bergeben
 						}
-						if (defined('SMTP_ENCRYPTION')) {
-							if ((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != '') {
+						if(defined('SMTP_ENCRYPTION')){
+							if((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != ''){
 								$smtp_config['ssl'] = SMTP_ENCRYPTION;
 							}
 						}
@@ -135,49 +141,47 @@ class we_util_Mailer extends Zend_Mail {
 					}
 					break;
 				default :
+
 					//this should set return-path
 					$safeMode = ini_get('safe_mode');
-					$suhosin = in_array('suhosin',get_loaded_extensions());
+					$suhosin = in_array('suhosin', get_loaded_extensions());
 					if($reply != '' && !$safeMode && !$suhosin){
 						$_reply = $this->parseEmailUser($reply);
-						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_reply['email']);
-					}
-					else {
+						$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
+					} else{
 						$_sender = $this->parseEmailUser($sender);
-						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode && !$suhosin){
-							$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
-						} else {
+						if(isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin){
+							$tr = new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']);
+						} else{
 							$tr = new Zend_Mail_Transport_Sendmail();
 						}
 					}
 					Zend_Mail::setDefaultTransport($tr);
 					break;
 			}
-			
 		}
 
 
-		if (is_array($to) && count($to) > 0) {
-			foreach ($to as $_to) {
+		if(is_array($to) && count($to) > 0){
+			foreach($to as $_to){
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
 			}
-		} else if ($to != "") {
+		} else if($to != ""){
 			$_to = $this->parseEmailUser($to);
 			$this->addTo($_to['email'], $_to['name']);
 		}
 
-		if (is_array($reply) && count($reply) > 0) {
-			foreach ($reply as $_reply) {
+		if(is_array($reply) && count($reply) > 0){
+			foreach($reply as $_reply){
 				$_reply = $this->parseEmailUser($_reply);
 				$this->setReplyTo($_reply['email'], $_reply['name']);
 			}
-		} else if ($reply != "") {
+		} else if($reply != ""){
 			$_reply = $this->parseEmailUser($reply);
 			$this->setReplyTo($_reply['email'], $_reply['name']);
 		}
-
-		if ($sender != '') {
+		if($sender != ''){
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
 		}
@@ -186,43 +190,43 @@ class we_util_Mailer extends Zend_Mail {
 		$this->setIsUseBaseHref(true);
 	}
 
-	public function setCC($toCC) {
-		if (is_array($toCC) && count($toCC) > 0) {
-			foreach ($toCC as $_toCC) {
+	public function setCC($toCC){
+		if(is_array($toCC) && count($toCC) > 0){
+			foreach($toCC as $_toCC){
 				$_toCC = $this->parseEmailUser($_toCC);
 				$this->addCc($_toCC['email'], $_toCC['name']);
 			}
-		} else if ($toCC != "") {
+		} else if($toCC != ""){
 			$_toCC = $this->parseEmailUser($toCC);
 			$this->addCc($_toCC['email'], $_toCC['name']);
 		}
 	}
 
-	public function setBCC($toBCC) {
-		if (is_array($toBCC) && count($toBCC) > 0) {
-			foreach ($toBCC as $_toBCC) {
+	public function setBCC($toBCC){
+		if(is_array($toBCC) && count($toBCC) > 0){
+			foreach($toBCC as $_toBCC){
 				$_toBCC = $this->parseEmailUser($_toBCC);
 				$this->addBcc($_toBCC['email'], $_toBCC['name']);
 			}
-		} else if ($toBCC != "") {
+		} else if($toBCC != ""){
 			$_toBCC = $this->parseEmailUser($toBCC);
 			$this->addBcc($_toBCC['email'], $_toBCC['name']);
 		}
 	}
 
-	public function parseEmailUser($user) {
+	public function parseEmailUser($user){
 		if(is_array($user) && isset($user['email'])){
 			$email = trim($user['email']);
-			if (isset($user['name'])){
+			if(isset($user['name'])){
 				$name = $user['name'];
-			} else {
+			} else{
 				$name = "";
 			}
-		} else {
-			if (preg_match("/<(.)*>/", $user, $_user)) {
+		} else{
+			if(preg_match("/<(.)*>/", $user, $_user)){
 				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
 				$name = substr($user, 0, strpos($user, "<"));
-			} else {
+			} else{
 				$email = $user;
 				$name = "";
 			}
@@ -230,41 +234,41 @@ class we_util_Mailer extends Zend_Mail {
 		return array("email" => trim($email), "name" => trim($name));
 	}
 
-	public function formatEMail($email, $name) {
+	public function formatEMail($email, $name){
 		return $this->_formatAddress($email, $name);
 	}
 
-	public function addHTMLPart($val) {
+	public function addHTMLPart($val){
 		$this->ContentType = 'text/html';
 		$this->Body = $val;
 	}
 
-	public function addTextPart($val) {
+	public function addTextPart($val){
 		$this->AltBody = $val;
 	}
 
-	public function addAddressList($list) {
-		if (is_array($list) && count($list) > 0) {
-			foreach ($list as $_to) {
+	public function addAddressList($list){
+		if(is_array($list) && count($list) > 0){
+			foreach($list as $_to){
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
 			}
 		}
 	}
 
-	public function buildMessage() {
-		if ($this->Body != '') {
-			if ($this->isEmbedImages) {
+	public function buildMessage(){
+		if($this->Body != ''){
+			if($this->isEmbedImages){
 				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
-				foreach ($images[2] as $i => $url) {
+				foreach($images[2] as $i => $url){
 					// only images that from the own server will be embeded
-					if (preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)) {
+					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$directory = dirname($url);
 						($directory == '.') ? $directory = '' : '';
 						$directory = str_replace("..", "", "$directory");
-						if ($pos = stripos($directory, $_SERVER['HTTP_HOST'])) {
+						if(($pos = stripos($directory, $_SERVER['HTTP_HOST']))){
 							$directory = substr($directory, (strlen($_SERVER['HTTP_HOST']) + $pos), strlen($directory));
 						}
 
@@ -272,16 +276,16 @@ class we_util_Mailer extends Zend_Mail {
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
 
-						if ($this->basedir == "") {
+						if($this->basedir == ""){
 							$this->basedir = $_SERVER['DOCUMENT_ROOT'];
 						}
-						if (strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') {
+						if(strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/'){
 							$this->basedir .= '/';
 						}
-						if (strlen($directory) > 1 && substr($directory, -1) != '/') {
+						if(strlen($directory) > 1 && substr($directory, -1) != '/'){
 							$directory .= '/';
 						}
-						if (in_array($ext, $this->embedImages)) {
+						if(in_array($ext, $this->embedImages)){
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 
@@ -295,13 +299,13 @@ class we_util_Mailer extends Zend_Mail {
 
 			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'], "/"), "", $_SERVER['SERVER_PROTOCOL']));
 
-			if ($this->isUseBaseHref) {//Bug #3735
-				if ($this->ContentType == 'text/html' && !strpos($this->Body, "<base")) {
+			if($this->isUseBaseHref){//Bug #3735
+				if($this->ContentType == 'text/html' && !strpos($this->Body, "<base")){
 					$this->Body = str_replace("</head>", "<base href='" . ($protocol == "" ? "" : $protocol . "://") . $_SERVER['HTTP_HOST'] . "' />\n</head>", $this->Body);
 				}
 			}
 
-			if ($this->AltBody == "") { // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
+			if($this->AltBody == ""){ // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
 				//	$this->parseHtml2TextPart($this->Body);
 			}
 		}
@@ -315,18 +319,18 @@ class we_util_Mailer extends Zend_Mail {
 		 * Für das notwendige Konstruct siehe http://www.phpeveryday.com/articles/PHP-Email-Using-Embedded-Images-in-HTML-Email-P113.html
 		 * Das was Zend Mail da produziert entspricht nicht ganz diesen Vorgaben, scheint aber zu funktionieren
 		 */
-		if ($this->Body != '') { // es gibt einen HTML-Part
-			if (!empty($this->inlineAtt)) { // es gibt Inline-Bilder
-				$this->setType(Zend_Mime::MULTIPART_RELATED);	// dann brauchen wir diesen Typ
-				foreach ($this->inlineAtt as $at) {
+		if($this->Body != ''){ // es gibt einen HTML-Part
+			if(!empty($this->inlineAtt)){ // es gibt Inline-Bilder
+				$this->setType(Zend_Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ
+				foreach($this->inlineAtt as $at){
 					$this->addAttachment($at);
 				}
 			}
 			$this->setBodyHtml(trim($this->Body));
 		}
-		if ($this->AltBody != '') { //Es gibt einen Text-Part
+		if($this->AltBody != ''){ //Es gibt einen Text-Part
 			$this->setBodyText(trim($this->AltBody));
-		} else {
+		} else{
 			$this->parseHtml2TextPart($this->Body);
 			$this->setBodyText(trim($this->AltBody));
 		}
@@ -334,7 +338,7 @@ class we_util_Mailer extends Zend_Mail {
 		$this->messageBuilt = true;
 	}
 
-	public function parseHtml2TextPart($html) {
+	public function parseHtml2TextPart($html){
 		$lineBreacks = array("\n" => "", "\r" => "", "</h1>" => "</h1>\n\n", "</h2>" => "</h2>\n\n", "</h3>" => "</h3>\n\n", "</h4>" => "</h4>\n\n", "</h5>" => "</h5>\n\n", "</h6>" => "</h6>\n\n", "</p>" => "</p>\n\n", "</div>" => "</div>\n", "</li>" => "</li>\n", "&lt;" => "<", "&gt;" => ">");
 
 		$textpart = strtr($html, $lineBreacks);
@@ -343,8 +347,8 @@ class we_util_Mailer extends Zend_Mail {
 		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $textpart)));
 	}
 
-	public function doaddAttachmentInline($attachmentpath) {
-		if ($attachmentpath != '') {
+	public function doaddAttachmentInline($attachmentpath){
+		if($attachmentpath != ''){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 			$binarydata = weFile::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
@@ -370,8 +374,8 @@ class we_util_Mailer extends Zend_Mail {
 	 * @access public
 	 * @return mime type of ext
 	 */
-	public function doaddAttachment($attachmentpath) {
-		if ($attachmentpath != '') {
+	public function doaddAttachment($attachmentpath){
+		if($attachmentpath != ''){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 			$binarydata = weFile::load($attachmentpath);
 			$at = new Zend_Mime_Part($binarydata);
@@ -396,95 +400,95 @@ class we_util_Mailer extends Zend_Mail {
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public function get_mime_type($ext = '', $name='') {
+	public function get_mime_type($ext = '', $name=''){
 		$mimetypes = array(
-				'hqx' => 'application/mac-binhex40',
-				'cpt' => 'application/mac-compactpro',
-				'doc' => 'application/msword',
-				'bin' => 'application/macbinary',
-				'dms' => 'application/octet-stream',
-				'lha' => 'application/octet-stream',
-				'lzh' => 'application/octet-stream',
-				'exe' => 'application/octet-stream',
-				'class' => 'application/octet-stream',
-				'psd' => 'application/octet-stream',
-				'so' => 'application/octet-stream',
-				'sea' => 'application/octet-stream',
-				'dll' => 'application/octet-stream',
-				'oda' => 'application/oda',
-				'pdf' => 'application/pdf',
-				'ai' => 'application/postscript',
-				'eps' => 'application/postscript',
-				'ps' => 'application/postscript',
-				'smi' => 'application/smil',
-				'smil' => 'application/smil',
-				'mif' => 'application/vnd.mif',
-				'xls' => 'application/vnd.ms-excel',
-				'ppt' => 'application/vnd.ms-powerpoint',
-				'wbxml' => 'application/vnd.wap.wbxml',
-				'wmlc' => 'application/vnd.wap.wmlc',
-				'dcr' => 'application/x-director',
-				'dir' => 'application/x-director',
-				'dxr' => 'application/x-director',
-				'dvi' => 'application/x-dvi',
-				'gtar' => 'application/x-gtar',
-				'php' => 'application/x-httpd-php',
-				'php4' => 'application/x-httpd-php',
-				'php3' => 'application/x-httpd-php',
-				'phtml' => 'application/x-httpd-php',
-				'phps' => 'application/x-httpd-php-source',
-				'js' => 'application/x-javascript',
-				'swf' => 'application/x-shockwave-flash',
-				'sit' => 'application/x-stuffit',
-				'tar' => 'application/x-tar',
-				'tgz' => 'application/x-tar',
-				'xhtml' => 'application/xhtml+xml',
-				'xht' => 'application/xhtml+xml',
-				'zip' => 'application/zip',
-				'mid' => 'audio/midi',
-				'midi' => 'audio/midi',
-				'mpga' => 'audio/mpeg',
-				'mp2' => 'audio/mpeg',
-				'mp3' => 'audio/mpeg',
-				'aif' => 'audio/x-aiff',
-				'aiff' => 'audio/x-aiff',
-				'aifc' => 'audio/x-aiff',
-				'ram' => 'audio/x-pn-realaudio',
-				'rm' => 'audio/x-pn-realaudio',
-				'rpm' => 'audio/x-pn-realaudio-plugin',
-				'ra' => 'audio/x-realaudio',
-				'rv' => 'video/vnd.rn-realvideo',
-				'wav' => 'audio/x-wav',
-				'bmp' => 'image/bmp',
-				'gif' => 'image/gif',
-				'jpeg' => 'image/jpeg',
-				'jpg' => 'image/jpeg',
-				'jpe' => 'image/jpeg',
-				'png' => 'image/png',
-				'tiff' => 'image/tiff',
-				'tif' => 'image/tiff',
-				'css' => 'text/css',
-				'html' => 'text/html',
-				'htm' => 'text/html',
-				'shtml' => 'text/html',
-				'txt' => 'text/plain',
-				'text' => 'text/plain',
-				'log' => 'text/plain',
-				'rtx' => 'text/richtext',
-				'rtf' => 'text/rtf',
-				'xml' => 'text/xml',
-				'xsl' => 'text/xml',
-				'mpeg' => 'video/mpeg',
-				'mpg' => 'video/mpeg',
-				'mpe' => 'video/mpeg',
-				'qt' => 'video/quicktime',
-				'mov' => 'video/quicktime',
-				'avi' => 'video/x-msvideo',
-				'movie' => 'video/x-sgi-movie',
-				'doc' => 'application/msword',
-				'word' => 'application/msword',
-				'xl' => 'application/excel',
-				'eml' => 'message/rfc822'
+			'hqx' => 'application/mac-binhex40',
+			'cpt' => 'application/mac-compactpro',
+			'doc' => 'application/msword',
+			'bin' => 'application/macbinary',
+			'dms' => 'application/octet-stream',
+			'lha' => 'application/octet-stream',
+			'lzh' => 'application/octet-stream',
+			'exe' => 'application/octet-stream',
+			'class' => 'application/octet-stream',
+			'psd' => 'application/octet-stream',
+			'so' => 'application/octet-stream',
+			'sea' => 'application/octet-stream',
+			'dll' => 'application/octet-stream',
+			'oda' => 'application/oda',
+			'pdf' => 'application/pdf',
+			'ai' => 'application/postscript',
+			'eps' => 'application/postscript',
+			'ps' => 'application/postscript',
+			'smi' => 'application/smil',
+			'smil' => 'application/smil',
+			'mif' => 'application/vnd.mif',
+			'xls' => 'application/vnd.ms-excel',
+			'ppt' => 'application/vnd.ms-powerpoint',
+			'wbxml' => 'application/vnd.wap.wbxml',
+			'wmlc' => 'application/vnd.wap.wmlc',
+			'dcr' => 'application/x-director',
+			'dir' => 'application/x-director',
+			'dxr' => 'application/x-director',
+			'dvi' => 'application/x-dvi',
+			'gtar' => 'application/x-gtar',
+			'php' => 'application/x-httpd-php',
+			'php4' => 'application/x-httpd-php',
+			'php3' => 'application/x-httpd-php',
+			'phtml' => 'application/x-httpd-php',
+			'phps' => 'application/x-httpd-php-source',
+			'js' => 'application/x-javascript',
+			'swf' => 'application/x-shockwave-flash',
+			'sit' => 'application/x-stuffit',
+			'tar' => 'application/x-tar',
+			'tgz' => 'application/x-tar',
+			'xhtml' => 'application/xhtml+xml',
+			'xht' => 'application/xhtml+xml',
+			'zip' => 'application/zip',
+			'mid' => 'audio/midi',
+			'midi' => 'audio/midi',
+			'mpga' => 'audio/mpeg',
+			'mp2' => 'audio/mpeg',
+			'mp3' => 'audio/mpeg',
+			'aif' => 'audio/x-aiff',
+			'aiff' => 'audio/x-aiff',
+			'aifc' => 'audio/x-aiff',
+			'ram' => 'audio/x-pn-realaudio',
+			'rm' => 'audio/x-pn-realaudio',
+			'rpm' => 'audio/x-pn-realaudio-plugin',
+			'ra' => 'audio/x-realaudio',
+			'rv' => 'video/vnd.rn-realvideo',
+			'wav' => 'audio/x-wav',
+			'bmp' => 'image/bmp',
+			'gif' => 'image/gif',
+			'jpeg' => 'image/jpeg',
+			'jpg' => 'image/jpeg',
+			'jpe' => 'image/jpeg',
+			'png' => 'image/png',
+			'tiff' => 'image/tiff',
+			'tif' => 'image/tiff',
+			'css' => 'text/css',
+			'html' => 'text/html',
+			'htm' => 'text/html',
+			'shtml' => 'text/html',
+			'txt' => 'text/plain',
+			'text' => 'text/plain',
+			'log' => 'text/plain',
+			'rtx' => 'text/richtext',
+			'rtf' => 'text/rtf',
+			'xml' => 'text/xml',
+			'xsl' => 'text/xml',
+			'mpeg' => 'video/mpeg',
+			'mpg' => 'video/mpeg',
+			'mpe' => 'video/mpeg',
+			'qt' => 'video/quicktime',
+			'mov' => 'video/quicktime',
+			'avi' => 'video/x-msvideo',
+			'movie' => 'video/x-sgi-movie',
+			'doc' => 'application/msword',
+			'word' => 'application/msword',
+			'xl' => 'application/excel',
+			'eml' => 'message/rfc822'
 		);
 		return (!isset($mimetypes[strtolower($ext)])) ? 'application/octet-stream' : $mimetypes[strtolower($ext)] . '; name="' . $name . '"';
 	}
@@ -499,24 +503,24 @@ class we_util_Mailer extends Zend_Mail {
 	 *
 	 * @param Array $vars
 	 */
-	public function setClassVars($vars) {
-		if (is_array($vars) && count($vars) > 0) {
-			foreach ($vars as $var => $val) {
+	public function setClassVars($vars){
+		if(is_array($vars) && count($vars) > 0){
+			foreach($vars as $var => $val){
 				$this->set($var, $val);
 			}
 		}
 	}
 
-	public function setCharSet($val = 'UTF-8') {
+	public function setCharSet($val = 'UTF-8'){
 		$this->_charset = $val;
 		$this->setSubject($this->internal_subject);
 	}
 
-	public function setContentType($val = 'text/plain') {
+	public function setContentType($val = 'text/plain'){
 		$this->ContentType = $val;
 	}
 
-	public function setEncoding($val = '8bit') {
+	public function setEncoding($val = '8bit'){
 		$this->Encoding = $val;
 	}
 
@@ -531,37 +535,37 @@ class we_util_Mailer extends Zend_Mail {
 	  $this->FromName = $val;
 	  }
 	 */
-	public function setSender($val) {
+	public function setSender($val){
 		$this->Sender = $val;
 	}
 
-	public function setSubject($val) {
+	public function setSubject($val){
 		$this->internal_subject = $val;
 		$this->clearSubject();
 		parent::setSubject($this->internal_subject);
 	}
 
-	public function setBaseDir($val) {
+	public function setBaseDir($val){
 		$this->basedir = $val;
 	}
 
-	public function setIsEmbedImages($val = false) {
+	public function setIsEmbedImages($val = false){
 		$this->isEmbedImages = $val;
 	}
 
-	public function setIsUseBaseHref($val = true) {
+	public function setIsUseBaseHref($val = true){
 		$this->isUseBaseHref = $val;
 	}
 
-	public function setBody($val) {
+	public function setBody($val){
 		$this->Body = $val;
 	}
 
-	public function Send() {
-		try {
+	public function Send(){
+		try{
 			$t = parent::send();
-		} catch (Zend_Exception $e) {
-			t_e('warning','Error while sending mail: ',$e);
+		} catch (Zend_Exception $e){
+			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
 		return true;
@@ -572,8 +576,8 @@ class we_util_Mailer extends Zend_Mail {
 	  Quelle: http://www.zfsnippets.com/snippets/view/id/64/zendmail-inline-picture-attachments
 	  Ersatz / Erweiterung mit interessantem Ansatz für inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
 	 */
-	public function setBodyHtml2($html, $charset = null, $encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true) {
-		if ($preload_images) {
+	public function setBodyHtml2($html, $charset = null, $encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true){
+		if($preload_images){
 			$this->setType(Zend_Mime::MULTIPART_RELATED);
 
 			$dom = new DOMDocument(null, $this->getCharset());
@@ -581,14 +585,14 @@ class we_util_Mailer extends Zend_Mail {
 
 			$images = $dom->getElementsByTagName('img');
 
-			for ($i = 0; $i < $images->length; $i++) {
+			for($i = 0; $i < $images->length; $i++){
 				$img = $images->item($i);
 				$url = $img->getAttribute('src');
 
 				$image_http = new Zend_Http_Client($url);
 				$response = $image_http->request();
 
-				if ($response->getStatus() == 200) {
+				if($response->getStatus() == 200){
 					$image_content = $response->getBody();
 
 					$pathinfo = pathinfo($url);

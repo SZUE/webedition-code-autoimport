@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_layout_ButtonTable
  */
@@ -27,15 +27,13 @@ Zend_Loader::loadClass('we_ui_layout_ButtonTable');
 
 /**
  * Class to display a ButtonTable Yes / No / Cancel Choice
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable
-{
-
+class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable{
 	/**
 	 * Default class name for button
 	 */
@@ -64,61 +62,55 @@ class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable
 
 	/**
 	 * Retrieve yes or ok button
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getYesOkButton()
-	{
+	public function getYesOkButton(){
 		return $this->_yesOkButton;
 	}
 
 	/**
 	 * Set yes or ok button
-	 * 
+	 *
 	 * @param string $_yesOkButton
 	 */
-	public function setYesOkButton($_yesOkButton)
-	{
+	public function setYesOkButton($_yesOkButton){
 		$this->_yesOkButton = $_yesOkButton;
 	}
 
 	/**
 	 * Retrieve no button
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getNoButton()
-	{
+	public function getNoButton(){
 		return $this->_noButton;
 	}
 
 	/**
 	 * Set no button
-	 * 
+	 *
 	 * @param string $_noButton
 	 */
-	public function setNoButton($_noButton)
-	{
+	public function setNoButton($_noButton){
 		$this->_noButton = $_noButton;
 	}
 
 	/**
 	 * Retrieve cancel button
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getCancelButton()
-	{
+	public function getCancelButton(){
 		return $this->_cancelButton;
 	}
 
 	/**
 	 * Set cancel button
-	 * 
+	 *
 	 * @param string $_cancelButton
 	 */
-	public function setCancelButton($_cancelButton)
-	{
+	public function setCancelButton($_cancelButton){
 		$this->_cancelButton = $_cancelButton;
 	}
 
@@ -131,37 +123,35 @@ class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable
 	 *
 	 * @return string
 	 */
-	
-	function preparesButtonTableYesNo()
-	{
+	function preparesButtonTableYesNo(){
 		$yes_ok_button = $this->getYesOkButton();
 		$no_button = $this->getNoButton();
 		$cancel_button = $this->getCancelButton();
 		$client = we_ui_Client::getInstance();
-		
-		if ($client->getSystem() == we_ui_Client::kSystemMacOS) {
-			if (is_object($no_button)) {
+
+		if($client->getSystem() == we_ui_Client::kSystemMacOS){
+			if(is_object($no_button)){
 				$this->addElement($no_button);
 				$this->nextColumn();
 			}
-			if (is_object($cancel_button)) {
+			if(is_object($cancel_button)){
 				$this->addElement($cancel_button);
 				$this->nextColumn();
 			}
-			if (is_object($yes_ok_button)) {
+			if(is_object($yes_ok_button)){
 				$this->addElement($yes_ok_button);
 				$this->nextColumn();
 			}
-		} else {
-			if (is_object($yes_ok_button)) {
+		} else{
+			if(is_object($yes_ok_button)){
 				$this->addElement($yes_ok_button);
 				$this->nextColumn();
 			}
-			if (is_object($no_button)) {
+			if(is_object($no_button)){
 				$this->addElement($no_button);
 				$this->nextColumn();
 			}
-			if (is_object($cancel_button)) {
+			if(is_object($cancel_button)){
 				$this->addElement($cancel_button);
 				$this->nextColumn();
 			}
@@ -170,15 +160,14 @@ class we_ui_layout_ButtonTableYesNo extends we_ui_layout_ButtonTable
 
 	/**
 	 * called before _renderHTML() is called
-	 * for HTMLDocuments we don't need to do anything here, 
+	 * for HTMLDocuments we don't need to do anything here,
 	 * so we overwrite it with an empty function
 	 *
 	 * @return void
 	 */
-	protected function _willRenderHTML()
-	{
+	protected function _willRenderHTML(){
 		$this->preparesButtonTableYesNo();
-		
+
 		parent::_willRenderHTML();
 	}
 
