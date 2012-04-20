@@ -601,12 +601,12 @@ class weNewsletterFrames extends weModuleFrames{
 
 				$radio_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 				$radio_table->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(25, 5));
-				$radio_table->setCol(0, 1, array("class" => "defaultfont"), g_l('modules_newsletter', '[' . $radio . ']') . ":&nbsp;");
+				$radio_table->setCol(0, 1, array("class" => "defaultfont"), htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')) . ":&nbsp;");
 				$radio_table->setCol(0, 2, array(), we_html_tools::getPixel(5, 5));
 				$radio_table->setCol(0, 3, array("class" => "defaultfont"), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
 				$radios_code.=$radio_table->getHtml();
 			} else{
-				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, g_l('modules_newsletter', '[' . $radio . ']'), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
+				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio,htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
 			}
 		}
 
