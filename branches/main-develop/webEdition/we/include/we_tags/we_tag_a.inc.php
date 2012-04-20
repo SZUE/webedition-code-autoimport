@@ -31,7 +31,7 @@ function we_tag_a($attribs, $content){
 
 	$id = weTag_getAttribute('id', $attribs);
 	if($id == 'self'){
-		$GLOBALS['WE_MAIN_DOC']->ID;
+		$id=$GLOBALS['WE_MAIN_DOC']->ID;
 	}
 	$confirm = weTag_getAttribute('confirm', $attribs);
 	$button = weTag_getAttribute('button', $attribs, false, true);
@@ -59,7 +59,6 @@ function we_tag_a($attribs, $content){
 		$editself = weTag_getAttribute('editself', $attribs, false, true);
 		$listview = isset($GLOBALS['lv']);
 	}
-
 	// init variables
 	$db = new DB_WE();
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $db);
