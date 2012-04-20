@@ -149,7 +149,7 @@ function we_tag_a($attribs, $content){
 				$foo = $GLOBALS['lv']->count - 1;
 
 				$customReq = '';
-				if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'shop'){
+				if(isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_shop'){
 
 					$idd = $GLOBALS['lv']->ActItem['id'];
 					$type = $GLOBALS['lv']->ActItem['type'];
