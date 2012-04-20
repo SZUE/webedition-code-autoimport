@@ -13,12 +13,14 @@
   }
   var phpConfig = {
     name: "clike",
-    keywords: keywords("abstract and array as break case catch cfunction class clone const continue declare " +
-                       "default do else elseif enddeclare endfor endforeach endif endswitch endwhile extends " +
-                       "final for foreach function global goto if implements interface instanceof namespace " +
-                       "new or private protected public static switch throw try use var while xor return" +
-	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "+
-                       "die echo empty exit eval include include_once isset list require require_once print unset"),
+    keywords: keywords("abstract and array as break case catch class clone const continue declare default " +
+                       "do else elseif enddeclare endfor endforeach endif endswitch endwhile extends final " +
+                       "for foreach function global goto if implements interface instanceof namespace " +
+                       "new or private protected public static switch throw trait try use var while xor " +
+                       "die echo empty exit eval include include_once isset list require require_once return " +
+                       "print unset __halt_compiler self static parent" +
+	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "),
+>>>>>>> 3359e345ee0bbbc53b670c62fa1911c9cd37b795
     blockKeywords: keywords("catch do else elseif for foreach if switch try while"),
     atoms: keywords("true false null TRUE FALSE NULL"),
     multiLineStrings: true,
