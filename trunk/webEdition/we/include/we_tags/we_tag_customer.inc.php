@@ -51,8 +51,6 @@ function we_tag_customer($attribs){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	include_once(WE_CUSTOMER_MODULE_PATH . "we_customertag.inc.php");
-
 	if($name){
 		if(strpos($name, " ") !== false){
 			print parseError(sprintf(g_l('parser', '[name_with_space]'), "object"));
@@ -63,7 +61,7 @@ function we_tag_customer($attribs){
 		$we_cid = $we_doc->getElement($name) ? $we_doc->getElement($name) : $we_cid;
 
 		$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["we_cid"] : 0);
-		$path = f("SELECT Path FROM " . CUSTOMER_TABLE . " WHERE ID=" . abs($we_cid), "Path", $GLOBALS["DB_WE"]);
+		$path = f("SELECT Path FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($we_cid), "Path", $GLOBALS["DB_WE"]);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = CUSTOMER_TABLE;

@@ -48,7 +48,7 @@ function we_tag_repeatShopItem($attribs){
 				return;
 			}
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-			$_SESSION["we_shopname"] = "' . $shopname . '";
+			$_SESSION["we_shopname"] = $shopname;
 
 			if(!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])){
 				echo parseError(sprintf(g_l('parser', '[missing_createShop]'), 'repeatShopItem'));

@@ -73,8 +73,9 @@ function we_error_handler($in_webEdition = true){
 	  $GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
 	 */
 	// Get way of how to show errors
-	if($in_webEdition){
+	if(defined('NO_SESS')){
 		$GLOBALS['we']['errorhandler']['display'] = false;
+		ini_set('display_errors', false);
 		if(!defined('WE_ERROR_HANDLER_SET')){
 			define('WE_ERROR_HANDLER_SET', 1);
 		}
@@ -98,7 +99,7 @@ function we_error_handler($in_webEdition = true){
 			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
 			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
-		ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
+		//ini_set('display_errors', $GLOBALS['we']['errorhandler']['display']);
 		set_error_handler('error_handler', $_error_level);
 		register_shutdown_function('shutdown_handler');
 		set_exception_handler('we_exception_handler');
