@@ -26,7 +26,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   `IsDynamic` tinyint(1) unsigned NOT NULL,
   `IsSearchable` tinyint(1) unsigned NOT NULL,
   `ClassName` varchar(64) NOT NULL,
-  `DocType` varchar(64) NOT NULL,
+  `DocType` smallint(6) NOT NULL,
   `Category` text NOT NULL,
   `RestrictOwners` tinyint(1) unsigned NOT NULL,
   `Owners` varchar(255) NOT NULL,
@@ -52,5 +52,6 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   PRIMARY KEY  (`ID`),
   KEY documentID (documentID),
   KEY `timestamp` (`timestamp`,`CreationDate`),
-  KEY `binaryPath` (`binaryPath`)
+  KEY `binaryPath` (`binaryPath`),
+  KEY `version` (`version`)
 ) ENGINE=MyISAM ;

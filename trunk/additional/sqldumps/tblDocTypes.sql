@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblDocTypes (
-  ID int(11) unsigned NOT NULL auto_increment,
+  ID smallint(6) unsigned NOT NULL auto_increment,
   DocType varchar(64) NOT NULL default '',
   Extension varchar(10) NOT NULL default '',
   ParentID int(11) unsigned NOT NULL default '0',

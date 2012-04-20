@@ -26,10 +26,10 @@ import java.util.*;
 public class menuapplet extends Applet{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 0L;
-	
+
 	String	SERVER_NAME;
 	Image 	imageBackground;
 	String php_ext;
@@ -37,10 +37,10 @@ public class menuapplet extends Applet{
 	String cmdURL;
 
 	public void init(){
-		
+
 		enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.ACTION_EVENT_MASK);
-            
-		Vector me;		
+
+		Vector me;
 		MenuEntry m2;
 		MenuItem item;
 		me = new Vector();
@@ -63,7 +63,7 @@ public class menuapplet extends Applet{
 		StringTokenizer st;
 		String[] par = new String[5];
 		int enabled = 0;
-		
+
 		String oldtext;
 		String newtext;
 
@@ -78,7 +78,7 @@ public class menuapplet extends Applet{
 				par[z] = st.nextToken();
 				par[z] = par[z].equals("#") ? "" : par[z];
 				z++;
-			} 
+			}
 			Character ch;
 			int umlPos = par[3].indexOf("%auml%");
 			if(umlPos > -1){
@@ -146,20 +146,20 @@ public class menuapplet extends Applet{
 
 			oldtext="";
 			newtext="";
-			
+
 			count++;
 
 			try {
 				newtext = new String(oldtext.getBytes(),"Cp1251");
-				
+
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
-			}			
+			}
 			me.addElement(new MenuEntry(Integer.parseInt(par[0]),Integer.parseInt(par[1]),par[2],par[3],Integer.parseInt(par[4])));
-		} 
-		
+		}
 
-		// creating Action Listener		
+
+		// creating Action Listener
 		ActionListener al = new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				String command = e.getActionCommand();
@@ -171,8 +171,8 @@ public class menuapplet extends Applet{
 		// get FontMetrics for calculating width of the Menubutton
 
 
-		g.setFont(new Font("verdana",Font.BOLD,12));		
-		FontMetrics fm = g.getFontMetrics();                	
+		g.setFont(new Font("verdana",Font.BOLD,12));
+		FontMetrics fm = g.getFontMetrics();
 
 		//adding menus to the applet
 		for(i=0;i<me.size();i++){
@@ -182,14 +182,14 @@ public class menuapplet extends Applet{
 			cmd = m2.getCmd();
 			text = m2.getText();
 			enabled = m2.getEnabled();
-			
+
 			if(pid == 0){
 				p = new PopupMenu();
 				add(p);
 				p.addActionListener(al);
 				b = new MenuButton(this,p,text);
-				w = fm.stringWidth(text) + 20;				
-								b.setLocation(new Point(x, 4));                                
+				w = fm.stringWidth(text) + 20;
+								b.setLocation(new Point(x, 4));
 				b.setSize(new Dimension(w, 20));
 				x += w;
 				b.setVisible(true);
@@ -240,42 +240,42 @@ public class menuapplet extends Applet{
 					p.addSeparator();
 				}else{
 					mm = (Menu) submenus.get(new Integer(pid));
-					if(mm != null){						
+					if(mm != null){
 												mm.addSeparator();
 
 					}
 				}
-			
+
 			}
 		}
-		
-            
+
+
 		php_ext=getParameter("phpext");
 		if(php_ext==null) php_ext=".php";
-            
+
 		cmdTarget=getParameter("cmdTarget");
 		if(cmdTarget==null) cmdTarget="load";
-            
+
 		cmdURL=getParameter("cmdURL");
 		if(cmdURL==null) cmdURL="/webEdition/we_lcmd"+php_ext+"?wecmd0=";
-		
+
 		URL codeBase = getCodeBase();
 		SERVER_NAME = codeBase.getHost();
 		int port=(getDocumentBase()).getPort();
 		String protocol=(getDocumentBase()).getProtocol();
-				
+
 		try{
 			URL backgroundURL = new URL(protocol, SERVER_NAME, port, "/webEdition/images/java_menu/background.gif");
-			imageBackground = getImage(backgroundURL,"background.gif"); 
+			imageBackground = getImage(backgroundURL,"background.gif");
 		}catch(MalformedURLException ex){
 					System.err.println(ex);
 		}
-			
-		setLocation(new java.awt.Point(0, 0));
-		setLayout(new FlowLayout(FlowLayout.LEFT,4,4));                                
-                
 
-	}  
+		setLocation(new java.awt.Point(0, 0));
+		setLayout(new FlowLayout(FlowLayout.LEFT,4,4));
+
+
+	}
 
 	public void start() {
 		repaint();
@@ -288,8 +288,8 @@ public class menuapplet extends Applet{
 	public void doCmd(String cmd)   {
 		String url="";
 		int port;
-				
-		try{			
+
+		try{
 			port=(getDocumentBase()).getPort();
 			String protocol=(getDocumentBase()).getProtocol();
 
@@ -297,14 +297,14 @@ public class menuapplet extends Applet{
 						if(port!=-1)
 							url = protocol+"://"+SERVER_NAME+":"+port+cmdURL+cmd;
 						else
-							url = protocol+"://"+SERVER_NAME+cmdURL+cmd;                                                
-                        
+							url = protocol+"://"+SERVER_NAME+cmdURL+cmd;
+
 			getAppletContext().showDocument(new URL(url),cmdTarget);
 		}catch(MalformedURLException ex){
 			System.err.println(ex);
 		}
 
-	}      
+	}
 
 	public void paint(Graphics g) {
 		g.drawImage(imageBackground,0,0,this);
@@ -336,7 +336,7 @@ public class menuapplet extends Applet{
 
 		return result.toString();
 	}
-    
+
  }
 
  class MenuEntry {
@@ -347,7 +347,7 @@ public class menuapplet extends Applet{
 	private String Cmd;
 	private String Text;
 
-	
+
 	public MenuEntry(int ID, int ParentID, String Cmd, String Text,int Enabled){
 		this.ID=ID;
 		this.ParentID = ParentID;
@@ -370,11 +370,11 @@ public class menuapplet extends Applet{
 
 	public void setText(String Text){
 		this.Text = Text;
-	}	
-	
+	}
+
 	public void setEnabled(int Enabled){
 		this.Enabled = Enabled;
-	}	
+	}
 
 	public int getID(){
 		return this.ID;
@@ -400,14 +400,14 @@ public class menuapplet extends Applet{
 
 
  class MenuButton extends Canvas{
-     
-    
+
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1585446351088778635L;
-	
-	private PopupMenu	_popup; 
+
+	private PopupMenu	_popup;
 	private int 	_state		=	0;
 	private Applet	_applet		=	null;
 	private String	_text		=	"My Button";
@@ -415,30 +415,30 @@ public class menuapplet extends Applet{
 	Image 	imageBackground;
 		Image   offscreen;
 		Graphics buffG;
-        
+
 	public MenuButton(Applet applet, PopupMenu popup,String text){
 		super();
-		
+
 		URL codeBase = applet.getCodeBase();
 		String SERVER_NAME = codeBase.getHost();
 		int port=(applet.getDocumentBase()).getPort();
 		String protocol=(applet.getDocumentBase()).getProtocol();
 		try{
 			URL backgroundURL = new URL(protocol, SERVER_NAME, port, "/webEdition/images/java_menu/background.gif");
-			imageBackground = applet.getImage(backgroundURL,"background.gif"); 
+			imageBackground = applet.getImage(backgroundURL,"background.gif");
 		}catch(MalformedURLException ex){
 					System.err.println(ex);
-		}		
-		
+		}
+
 		try {
 			_text = text;
 			_font = new Font("verdana",Font.BOLD,12);
-			
+
 			_popup = popup;
 			_applet = applet;
 			addMouseListener( new Clicked() );
 			//imageBackground = _applet.getImage(_applet.getCodeBase(),"bg.gif");
-					
+
 			//disableEvents( AWTEvent.FOCUS_EVENT_MASK);
 			//disableEvents( AWTEvent.KEY_EVENT_MASK);
 
@@ -449,16 +449,16 @@ public class menuapplet extends Applet{
 			e.printStackTrace();
 		}
 	}
-    
+
 	public void setState(int state){
 		_state = state;
 	}
 
 	public void paint(Graphics g) {
-		
+
 		Dimension dim=getSize();
 		offscreen = createImage(dim.width,dim.height);
-		buffG = offscreen.getGraphics(); 
+		buffG = offscreen.getGraphics();
 
 		Rectangle r;
 		buffG.drawImage(imageBackground,0,0,this);
@@ -471,23 +471,21 @@ public class menuapplet extends Applet{
 		buffG.setFont(_font);
 		buffG.setColor(Color.black);
 		FontMetrics fm = g.getFontMetrics();
-		
+
 		//int x = (r.width - fm.stringWidth(_text)) / 2;
 		//int y = r.height - ((r.height - (fm.getHeight() - 5)) / 2);
 		int x = 10;
 		int y = r.height - ((r.height - (fm.getHeight() - 5)) / 2);
-			
-				
-		
+
 		buffG.drawString(_text,x + ((_state==2) ? 1 : 0),y + ((_state==2) ? 1 : 0));
 		g.drawImage(offscreen,0,0,this);
 
 	}
-        
-	public void update(Graphics g){ 
+
+	public void update(Graphics g){
 		  paint(g);
 	}
- 
+
 	private void paintThinBorder(Graphics g, int x,int y,int w,int h,boolean raised) {
 		paint3dRect(g, x, y, w, h, Color.white, Color.gray, raised);
 	}
@@ -522,7 +520,7 @@ public class menuapplet extends Applet{
 
 		class Clicked extends MouseAdapter {
 		public void mousePressed(MouseEvent e){
-			showMenu(); 
+			showMenu();
 		}
 
 		public void mouseEntered(MouseEvent e) {
@@ -535,9 +533,6 @@ public class menuapplet extends Applet{
 
 		}
 	}
-
-
-
 }
 
 class RefreshThread extends Thread{

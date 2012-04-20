@@ -17,5 +17,5 @@
 CREATE TABLE ###TBLPREFIX###tblNewsletterPrefs (
   pref_name varchar(30) NOT NULL default '',
   pref_value longtext NOT NULL,
-  PRIMARY KEY pref_name (pref_name(30))
+  PRIMARY KEY (pref_name)
 ) ENGINE=MyISAM;
