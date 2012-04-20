@@ -73,7 +73,7 @@ function we_error_handler($in_webEdition = true){
 	  $GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
 	 */
 	// Get way of how to show errors
-	if($in_webEdition){
+	if(defined('NO_SESS')){
 		$GLOBALS['we']['errorhandler']['display'] = false;
 		if(!defined('WE_ERROR_HANDLER_SET')){
 			define('WE_ERROR_HANDLER_SET', 1);
