@@ -30,7 +30,6 @@ class weCodeWizard{
 	 * @var string
 	 */
 	var $SnippetPath = "";
-	var $SnippetLanguage = "";
 
 	/**
 	 * PHP 5 constructor
@@ -38,19 +37,6 @@ class weCodeWizard{
 	 */
 	function __construct(){
 		$this->SnippetPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/data/";
-
-		// identify language for code snippets. currently there are only german and english translations so
-		// english has also to be used for other languages than german/german-utf8 and english:
-
-
-		if(isset($GLOBALS["WE_LANGUAGE"]) && !empty($GLOBALS["WE_LANGUAGE"])){
-			$this->SnippetLanguage = $GLOBALS["WE_LANGUAGE"];
-		} else{
-			$this->SnippetLanguage = WE_LANGUAGE;
-		}
-		if(!is_dir($this->SnippetPath . $this->SnippetLanguage)){
-			$this->SnippetLanguage = "English";
-		}
 	}
 
 	/**
@@ -70,11 +56,11 @@ class weCodeWizard{
 	function _getCustomSnippets(){
 
 
-		$SnippetDir = $this->SnippetPath . "custom";
+		$SnippetDir = $this->SnippetPath . 'custom';
 		if(!is_dir($SnippetDir)){
 			return array();
 		} else{
-			return $this->_getSnippetsByDir("custom");
+			return $this->_getSnippetsByDir('custom');
 		}
 	}
 
@@ -85,12 +71,12 @@ class weCodeWizard{
 	 */
 	function _getStandardSnippets(){
 
-		$SnippetDir = $this->SnippetPath . $this->SnippetLanguage;
+		$SnippetDir = $this->SnippetPath . 'default';
 
 		if(!is_dir($SnippetDir)){
 			return array();
 		} else{
-			return $this->_getSnippetsByDir($this->SnippetLanguage);
+			return $this->_getSnippetsByDir('default');
 		}
 	}
 
@@ -206,7 +192,7 @@ class weCodeWizard{
 			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
 			<<<JS
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 var ajaxURL = "/webEdition/rpc/rpc.php";
 var ajaxCallback = {
@@ -223,7 +209,7 @@ var ajaxCallback = {
 function YUIdoAjax(value) {
 	YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value);
 }
-
+//-->
 </script>
 JS;
 	}

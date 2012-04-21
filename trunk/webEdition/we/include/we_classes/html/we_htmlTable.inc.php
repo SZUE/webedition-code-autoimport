@@ -43,7 +43,7 @@ class we_htmlTable extends we_baseCollection {
 	 * @return     we_htmlTable
 	 */
 
-	function we_htmlTable($attribs=array(), $rows_num = 0, $cols_num = 0) {
+	function __construct($attribs=array(), $rows_num = 0, $cols_num = 0) {
 		$this->we_baseCollection("table", true, $attribs);
 		$this->addRow($rows_num);
 		$this->addCol($cols_num);
@@ -211,7 +211,7 @@ class we_htmlTable extends we_baseCollection {
 			}
 		}
 
-		return we_baseCollection::getHtmlCode($copy);
+		return parent::getHtmlCode($copy);
 	}
 
 }
