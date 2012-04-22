@@ -2941,7 +2941,7 @@ function build_dialog($selected_setting = "ui"){
 			 * SAVE DIALOG
 			 * *************************************************************** */
 
-			$_settings = array($_settings, array("headline" => "", "html" => g_l('prefs', '[save]'), "space" => 0));
+			$_settings = array(array("headline" => "", "html" => g_l('prefs', '[save]'), "space" => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
