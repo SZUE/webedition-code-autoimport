@@ -22,6 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+ 
+//Notices direkt nach Update
+$GLOBALS["WE_LANGUAGE"]=str_replace('_UTF-8','',$GLOBALS["WE_LANGUAGE"]); 
+ 
 $_we_available_modules = array(
 	'users' => array(
 		"name" => "users",
