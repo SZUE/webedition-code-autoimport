@@ -405,16 +405,14 @@ abstract class we_util_File{
 	}
 
 	public static function saveFile($file_name, $sourceCode = ''){
-		self::createLocalFolderByPath(str_replace('\\', '/', dirname($file_name)));
+		if(!self::createLocalFolderByPath(str_replace('\\', '/', dirname($file_name)))){
+			return false;
+		}
 		$fh = @fopen($file_name, 'wb');
 		if(!$fh){
 			return false;
 		}
-		if($sourceCode){
-			$ret = fwrite($fh, $sourceCode);
-		} else{
-			$ret = true;
-		}
+		$ret = ($sourceCode ? fwrite($fh, $sourceCode) : true);
 		fclose($fh);
 		return $ret;
 	}
@@ -427,8 +425,9 @@ abstract class we_util_File{
 
 		$returnValue = true;
 
-		if(self::checkAndMakeFolder($completeDirPath, true))
+		if(self::checkAndMakeFolder($completeDirPath, true)){
 			return $returnValue;
+		}
 
 		$cf = array($completeDirPath);
 
