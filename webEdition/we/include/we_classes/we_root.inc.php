@@ -665,8 +665,7 @@ abstract class we_root extends we_class{
 	/* returns the Path dynamically (use it, when the class-variable Path is not set)  */
 
 	function getPath(){
-		$ParentPath = $this->getParentPath();
-		$ParentPath .= ($ParentPath != "/") ? "/" : "";
+		$ParentPath = rtrim($this->getParentPath(), '/') . '/';
 		$text = ( isset($this->Filename) ? $this->Filename : "" ) . ( isset($this->Extension) ? $this->Extension : "" );
 		return $ParentPath . $text;
 	}

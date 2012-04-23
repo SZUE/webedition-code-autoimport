@@ -681,10 +681,10 @@ class we_document extends we_root{
 			return false;
 		}
 		$ret = $this->i_writeDocument();
-		$this->OldPath = $this->Path;
 		if(!$ret || ($this->errMsg != '')){
 			return false;
 		}
+		$this->OldPath = $this->Path;
 
 		if($resave == 0){ // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
@@ -828,18 +828,14 @@ class we_document extends we_root{
 	protected function i_writeDocument(){
 		$update = $this->i_isMoved();
 		$doc = $this->i_getDocumentToSave();
-		if($doc || $doc == ''){
-			if(!$this->i_writeSiteDir($doc)){
-				return false;
-			}
-			if(!$this->i_writeMainDir($doc)){
-				if($update){
-					$this->rewriteNavigation();
-				}
-				return false;
-			}
-		} else{
+		if(!($doc || $doc == '')){
 			return false;
+		}
+		if(!$this->i_writeSiteDir($doc) || !$this->i_writeMainDir($doc)){
+			return false;
+		}
+		if($update){
+			$this->rewriteNavigation();
 		}
 		return true;
 	}
