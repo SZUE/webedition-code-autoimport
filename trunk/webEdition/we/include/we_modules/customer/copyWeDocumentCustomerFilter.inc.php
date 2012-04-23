@@ -35,7 +35,7 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		// if we_cmd 3 is set, take filters of that folder as parent!!
 		$_idForFilter = (isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : $_id);
 
-		if($id==0){
+		if($_id==0){
 			t_e('called function with invalid id');
 			die();
 		}
