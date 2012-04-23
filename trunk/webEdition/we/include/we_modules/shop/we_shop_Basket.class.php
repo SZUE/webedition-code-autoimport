@@ -77,9 +77,8 @@ class we_shop_Basket{
 		return isset($this->CartFields[$name]);
 	}
 
-
 	function getCartField($name){
-		return isset($this->CartFields[$name])?$this->CartFields[$name]:'';
+		return isset($this->CartFields[$name]) ? $this->CartFields[$name] : '';
 	}
 
 	/**
@@ -121,7 +120,7 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Add_Item($id, $quantity=1, $type='w', $variant='', $customFields=array()){
+	function Add_Item($id, $quantity = 1, $type = 'w', $variant = '', $customFields = array()){
 
 		// check if this item is already in the shoppingCart
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
@@ -174,92 +173,92 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return string
 	 */
-	function getserial($id, $type, $variant=false, $customFields=array()){
+	function getserial($id, $type, $variant = false, $customFields = array()){
 
 		$DB_WE = new DB_WE;
 
 		$Record = array();
 
-		if($type == "w"){
+		switch($type){
+			case "w":
 
-			// unfortunately this is not made with initDocById,
-			// but its much faster -> so we use it
-			$DB_WE->query("SELECT " . CONTENT_TABLE . ".BDID as BDID, " . CONTENT_TABLE . ".Dat as Dat, " . LINK_TABLE . ".Name as Name FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=$id AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'");
-			while($DB_WE->next_record()) {
-				if($DB_WE->f("BDID")){
-					$Record[$DB_WE->f("Name")] = $DB_WE->f("BDID");
-				} else{
-					$Record[$DB_WE->f("Name")] = $DB_WE->f("Dat");
+				// unfortunately this is not made with initDocById,
+				// but its much faster -> so we use it
+				$DB_WE->query("SELECT " . CONTENT_TABLE . ".BDID as BDID, " . CONTENT_TABLE . ".Dat as Dat, " . LINK_TABLE . ".Name as Name FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . '.DID=' . intval($id) . ' AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				while($DB_WE->next_record()) {
+					$tmp = ($DB_WE->f("BDID"));
+					$Record[$DB_WE->f("Name")] = $tmp ? $tmp : $DB_WE->f("Dat");
 				}
-			}
-
-			if($variant){
-				weShopVariants::useVariantForShop($Record, $variant);
-			}
-
-
-			$DB_WE->query("SELECT * FROM " . FILE_TABLE . " WHERE ID=" . intval($id));
-			if($DB_WE->next_record()){
-				foreach($DB_WE->Record as $key => $val){
-					$Record["wedoc_$key"] = $val;
-				}
-			}
-
-			$Record["WE_PATH"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-			$Record["WE_TEXT"] = f("SELECT Text FROM " . INDEX_TABLE . " WHERE DID=" . intval($id), "Text", $DB_WE);
-			$Record["WE_VARIANT"] = $variant;
-			$Record["WE_ID"] = $id;
-
-			// at last add custom fields to record and to path
-			if(sizeof($customFields)){
 
 				if($variant){
-					$Record['WE_PATH'] .= '&amp;';
-				} else{
-					$Record['WE_PATH'] .= '?';
+					weShopVariants::useVariantForShop($Record, $variant);
 				}
 
-				foreach($customFields as $name => $value){
-					$Record[$name] = $value;
-					$Record['WE_PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value&amp;";
+
+				$DB_WE->query("SELECT * FROM " . FILE_TABLE . " WHERE ID=" . intval($id));
+				if($DB_WE->next_record()){
+					foreach($DB_WE->Record as $key => $val){
+						$Record["wedoc_$key"] = $val;
+					}
 				}
-			}
-		} else if($type == "o"){
-			$classArray = getHash("SELECT * FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), $DB_WE);
 
-			$olv = new we_listview_object("0", 1, 0, "", 0, $classArray["TableID"], "", "", " " . OBJECT_X_TABLE . $classArray["TableID"] . ".ID=" . $classArray["ObjectID"]);
-			$olv->next_record();
+				$Record["WE_PATH"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
+				$Record["WE_TEXT"] = f("SELECT Text FROM " . INDEX_TABLE . " WHERE DID=" . intval($id), "Text", $DB_WE);
+				$Record["WE_VARIANT"] = $variant;
+				$Record["WE_ID"] = $id;
 
-			$Record = $olv->DB_WE->Record;
+				// at last add custom fields to record and to path
+				if(sizeof($customFields)){
 
-			if($variant){
+					if($variant){
+						$Record['WE_PATH'] .= '&amp;';
+					} else{
+						$Record['WE_PATH'] .= '?';
+					}
 
-				// init model to detect variants
-				// :TODO: change this to match above version
-				$obj = new we_objectFile();
-				$obj->initByID($id, OBJECT_FILES_TABLE);
-
-				weShopVariants::useVariantForShopObject($Record, $variant, $obj);
-
-				// add variant to path ...
-				$Record['we_WE_PATH'] = $Record['we_WE_PATH'] . '&amp;' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;
-			}
-			$Record['WE_VARIANT'] = $variant;
-			$Record['we_obj'] = $id;
-
-			// at last add custom fields to record and to path
-			if(sizeof($customFields)){
-				foreach($customFields as $name => $value){
-					$Record[$name] = $value;
-					$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value";
+					foreach($customFields as $name => $value){
+						$Record[$name] = $value;
+						$Record['WE_PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value&amp;";
+					}
 				}
-			}
+				break;
+			case "o":
+				$classArray = getHash("SELECT * FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), $DB_WE);
 
-			// when using objects all fields have 'we_' as prename
-			if(isset($Record['we_' . WE_SHOP_VAT_FIELD_NAME])){
-				$Record[WE_SHOP_VAT_FIELD_NAME] = $Record['we_' . WE_SHOP_VAT_FIELD_NAME];
-				unset($Record['we_' . WE_SHOP_VAT_FIELD_NAME]);
-			}
+				$olv = new we_listview_object("0", 1, 0, "", 0, $classArray["TableID"], "", "", " " . OBJECT_X_TABLE . $classArray["TableID"] . ".ID=" . $classArray["ObjectID"]);
+				$olv->next_record();
+
+				$Record = $olv->DB_WE->Record;
+
+				if($variant){
+
+					// init model to detect variants
+					// :TODO: change this to match above version
+					$obj = new we_objectFile();
+					$obj->initByID($id, OBJECT_FILES_TABLE);
+
+					weShopVariants::useVariantForShopObject($Record, $variant, $obj);
+
+					// add variant to path ...
+					$Record['we_WE_PATH'] = $Record['we_WE_PATH'] . '&amp;' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;
+				}
+				$Record['WE_VARIANT'] = $variant;
+				$Record['we_obj'] = $id;
+
+				// at last add custom fields to record and to path
+				if(sizeof($customFields)){
+					foreach($customFields as $name => $value){
+						$Record[$name] = $value;
+						$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]=$value";
+					}
+				}
+
+				// when using objects all fields have 'we_' as prename
+				if(isset($Record['we_' . WE_SHOP_VAT_FIELD_NAME])){
+					$Record[WE_SHOP_VAT_FIELD_NAME] = $Record['we_' . WE_SHOP_VAT_FIELD_NAME];
+					unset($Record['we_' . WE_SHOP_VAT_FIELD_NAME]);
+				}
+				break;
 		}
 
 		// at last add custom fields and vat to shopping card
@@ -286,9 +285,8 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Del_Item($id, $type, $variant='', $customFields=array()){
-
-		if($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields)){
+	function Del_Item($id, $type, $variant = '', $customFields = array()){
+		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){
 			unset($this->ShoppingItems[$key]);
 		}
 	}
@@ -310,7 +308,7 @@ class we_shop_Basket{
 	 * @param string $type
 	 * @param string $variant
 	 */
-	function Set_Item($id, $quantity=1, $type="w", $variant='', $customFields=array()){
+	function Set_Item($id, $quantity = 1, $type = "w", $variant = '', $customFields = array()){
 
 		if($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields)){ // item already in cart
 			if($quantity > 0){
@@ -346,7 +344,7 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return mixed
 	 */
-	function getShoppingItemIndex($id, $type='w', $variant='', $customFields=array()){
+	function getShoppingItemIndex($id, $type = 'w', $variant = '', $customFields = array()){
 
 		foreach($this->ShoppingItems as $index => $item){
 			if($item['id'] == $id && $item['type'] == $type && $item['variant'] == $variant && $customFields == $item['customFields']){
@@ -363,5 +361,4 @@ class we_shop_Basket{
 	function setOrderID($id){
 		$this->orderID = $id;
 	}
-
 }
