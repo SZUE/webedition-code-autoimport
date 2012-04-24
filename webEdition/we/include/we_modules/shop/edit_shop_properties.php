@@ -102,7 +102,7 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 }
 
 function getFieldFromOrder($bid, $field){
-	return f('SELECT ' . $DB_WE->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), $field, $GLOBALS['DB_WE']);
+	return f('SELECT ' . $GLOBALS['DB_WE']->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), $field, $GLOBALS['DB_WE']);
 }
 
 function updateFieldFromOrder($orderId, $fieldname, $value){
