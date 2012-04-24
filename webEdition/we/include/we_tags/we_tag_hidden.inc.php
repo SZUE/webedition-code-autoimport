@@ -24,8 +24,9 @@
  */
 function we_tag_hidden($attribs){
 
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
+	}
 
 	$name = weTag_getAttribute("name", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
@@ -34,7 +35,6 @@ function we_tag_hidden($attribs){
 	$value = '';
 	switch($type){
 		case 'session' :
-
 			$value = $_SESSION[$name];
 			break;
 		case 'request' :
@@ -45,7 +45,5 @@ function we_tag_hidden($attribs){
 			break;
 	}
 
-	return getHtmlTag('input', array(
-			'type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml
-		));
+	return getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml));
 }
