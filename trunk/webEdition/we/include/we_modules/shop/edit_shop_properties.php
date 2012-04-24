@@ -34,7 +34,7 @@ $weShopVatRule = weShopVatRule::getShopVatRule();
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
 // Get Country and Lanfield Data
-$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $GLOBALS['DB_WE']);
 if($strFelder !== ''){
 	$CLFields = unserialize($strFelder);
 } else{
@@ -112,7 +112,7 @@ function updateFieldFromOrder($orderId, $fieldname, $value){
 }
 
 // config
-$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $DB_WE));
+$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
 
 $waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
 $dbTitlename = "shoptitle";
@@ -211,8 +211,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$preis = getFieldFromShoparticle($serialDoc, 'price');
 
 				// now insert article to order:
-				$row=getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]),$DB_WE);
-				$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
+				$row=getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]),$GLOBALS['DB_WE']);
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
 						'IntQuantity' => $_REQUEST["anzahl"],
@@ -249,13 +249,13 @@ if(isset($_REQUEST['we_cmd'][0])){
 			';
 
 			if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
-				$query .= ' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $DB_WE->escape($_REQUEST['searchArticle']) . '%"';
+				$query .= ' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
 			}
 
-			$DB_WE->query($query);
+			$GLOBALS['DB_WE']->query($query);
 
-			while($DB_WE->next_record()) {
-				$shopArticles[$DB_WE->f('documentId') . '_d'] = $DB_WE->f("shopTitle") . ' [' . $DB_WE->f("documentId") . ']' . g_l('modules_shop', '[isDoc]');
+			while($GLOBALS['DB_WE']->next_record()) {
+				$shopArticles[$GLOBALS['DB_WE']->f('documentId') . '_d'] = $GLOBALS['DB_WE']->f("shopTitle") . ' [' . $GLOBALS['DB_WE']->f("documentId") . ']' . g_l('modules_shop', '[isDoc]');
 			}
 
 			if(defined('OBJECT_TABLE')){
@@ -271,12 +271,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 					if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
 						$query .= '
-							AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $DB_WE->escape($_REQUEST['searchArticle']) . '%"';
+							AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
 					}
 
-					$DB_WE->query($query);
-					while($DB_WE->next_record()) {
-						$shopArticles[$DB_WE->f('objectId') . '_o'] = $DB_WE->f('shopTitle') . ' [' . $DB_WE->f('objectId') . ']' . g_l('modules_shop', '[isObj]');
+					$GLOBALS['DB_WE']->query($query);
+					while($GLOBALS['DB_WE']->next_record()) {
+						$shopArticles[$GLOBALS['DB_WE']->f('objectId') . '_o'] = $GLOBALS['DB_WE']->f('shopTitle') . ' [' . $GLOBALS['DB_WE']->f('objectId') . ']' . g_l('modules_shop', '[isObj]');
 					}
 				}
 				unset($_classId);
@@ -912,7 +912,7 @@ print STYLESHEET;
 
 if(isset($_REQUEST["deletethisorder"])){
 
-	$DB_WE->query("DELETE FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $_REQUEST["bid"]);
+	$GLOBALS['DB_WE']->query("DELETE FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $_REQUEST["bid"]);
 	echo we_html_element::jsElement('
 	top.content.deleteEntry(' . $_REQUEST["bid"] . ')') . '
 	</head>
@@ -927,9 +927,9 @@ if(isset($_REQUEST["deletethisorder"])){
 
 if(isset($_REQUEST["deleteaartikle"])){
 
-	$DB_WE->query("DELETE FROM " . SHOP_TABLE . " WHERE IntID = " . $_REQUEST["deleteaartikle"]);
-	$DB_WE->query("SELECT IntID from " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$l = $DB_WE->num_rows();
+	$GLOBALS['DB_WE']->query("DELETE FROM " . SHOP_TABLE . " WHERE IntID = " . $_REQUEST["deleteaartikle"]);
+	$GLOBALS['DB_WE']->query("SELECT IntID from " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$l = $GLOBALS['DB_WE']->num_rows();
 	if($l < 1){
 		$letzerartikel = 1;
 	}
@@ -937,21 +937,21 @@ if(isset($_REQUEST["deleteaartikle"])){
 // Get Customer data
 $query = "SELECT IntID, IntCustomerID	FROM " . SHOP_TABLE . "	WHERE IntOrderID = " . intval($_REQUEST["bid"]);
 
-$DB_WE->query($query);
-$DB_WE->next_record();
+$GLOBALS['DB_WE']->query($query);
+$GLOBALS['DB_WE']->next_record();
 
 // get all needed information for order-data
-$_REQUEST["cid"] = $DB_WE->f("IntCustomerID");
+$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
 
-$DB_WE->query(
+$GLOBALS['DB_WE']->query(
 	'SELECT strFelder
 		FROM ' . ANZEIGE_PREFS_TABLE . '
 		WHERE strDateiname = "edit_shop_properties"'
 );
 
-$DB_WE->next_record();
+$GLOBALS['DB_WE']->next_record();
 
-$strFelder = $DB_WE->f("strFelder");
+$strFelder = $GLOBALS['DB_WE']->f("strFelder");
 
 if($fields = @unserialize($strFelder)){
 	// we have an array with following syntax:
@@ -1000,84 +1000,84 @@ if(isset($_REQUEST["DatePayment"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DatePayment"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DatePayment='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DatePayment='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Payment', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateConfirmation"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateConfirmation"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateConfirmation='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateConfirmation='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Confirmation', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomA"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomA"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomA='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomA='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomA', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomB"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomB"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomB='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomB='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomB', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomC"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomC"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomC='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomC='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomC', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomD"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomD"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomD='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomD='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomD', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomE"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomE"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomE='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomE='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomE', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomF"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomF"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomF='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomF='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomF', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomG"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomG"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomG='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomG='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomG', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomH"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomH"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomH='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomH='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomH', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomI"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomI"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomI='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomI='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomI', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateCustomJ"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomJ"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCustomJ='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomJ='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('CustomJ', $_REQUEST["bid"], $_customer);
 }
 
@@ -1085,14 +1085,14 @@ if(isset($_REQUEST["DateCancellation"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateCancellation"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateCancellation='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCancellation='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Cancellation', $_REQUEST["bid"], $_customer);
 }
 if(isset($_REQUEST["DateFinished"])){
 
 	$DateOrder_ARR = explode(".", $_REQUEST["DateFinished"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateFinished='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateFinished='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Finished', $_REQUEST["bid"], $_customer);
 }
 
@@ -1103,41 +1103,41 @@ if(isset($_REQUEST["DateOrder"])){
 	$DateOrder_ARR = explode(".", $_REQUEST["DateOrder"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
 
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateOrder='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateOrder='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Order', $_REQUEST["bid"], $_customer);
 
-	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
-	$DB_WE->next_record();
+	$GLOBALS['DB_WE']->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
+	$GLOBALS['DB_WE']->next_record();
 }
 
 if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
 	$DateOrder_ARR = explode(".", $_REQUEST["DateShipping"]);
 	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
 
-	$DB_WE->query("UPDATE " . SHOP_TABLE . " SET DateShipping='" . $DB_WE->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateShipping='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 	$weShopStatusMails->checkAutoMailAndSend('Shipping', $_REQUEST["bid"], $_customer);
 
-	$DB_WE->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
-	$DB_WE->next_record();
+	$GLOBALS['DB_WE']->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
+	$GLOBALS['DB_WE']->next_record();
 }
 if(isset($_REQUEST["article"])){
 	if(isset($_REQUEST["preis"])){
-		$DB_WE->query("UPDATE " . SHOP_TABLE . " SET Price='" . abs($_REQUEST["preis"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET Price='" . abs($_REQUEST["preis"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
 	} else if(isset($_REQUEST["anzahl"])){
-		$DB_WE->query("UPDATE " . SHOP_TABLE . " SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
 	} else if(isset($_REQUEST['vat'])){
 
-		$DB_WE->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $DB_WE->escape($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $GLOBALS['DB_WE']->escape($_REQUEST["article"]));
 
-		if($DB_WE->num_rows() == 1){
+		if($GLOBALS['DB_WE']->num_rows() == 1){
 
-			$DB_WE->next_record();
+			$GLOBALS['DB_WE']->next_record();
 
-			$strSerial = $DB_WE->f('strSerial');
+			$strSerial = $GLOBALS['DB_WE']->f('strSerial');
 			$tmpDoc = @unserialize($strSerial);
 			$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
-			$DB_WE->query("UPDATE " . SHOP_TABLE . " SET strSerial='" . $DB_WE->escape(serialize($tmpDoc)) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+			$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET strSerial='" . $GLOBALS['DB_WE']->escape(serialize($tmpDoc)) . "' WHERE IntID = " . intval($_REQUEST["article"]));
 			unset($strSerial);
 			unset($tmpDoc);
 		}
@@ -1148,55 +1148,55 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// first get all information about orders, we need this for the rest of the page
 	//
-	$DB_WE->query("SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'" . $da . "') as DateShipping, DATE_FORMAT(DatePayment,'" . $da . "') as DatePayment, DATE_FORMAT(DateOrder,'" . $da . "') as DateOrder, DATE_FORMAT(DateConfirmation,'" . $da . "') as DateConfirmation, DATE_FORMAT(DateCustomA,'" . $da . "') as DateCustomA, DATE_FORMAT(DateCustomB,'" . $da . "') as DateCustomB, DATE_FORMAT(DateCustomC,'" . $da . "') as DateCustomC, DATE_FORMAT(DateCustomD,'" . $da . "') as DateCustomD, DATE_FORMAT(DateCustomE,'" . $da . "') as DateCustomE, DATE_FORMAT(DateCustomF,'" . $da . "') as DateCustomF, DATE_FORMAT(DateCustomG,'" . $da . "') as DateCustomG, DATE_FORMAT(DateCustomH,'" . $da . "') as DateCustomH, DATE_FORMAT(DateCustomI,'" . $da . "') as DateCustomI, DATE_FORMAT(DateCustomJ,'" . $da . "') as DateCustomJ, DATE_FORMAT(DateCancellation,'" . $da . "') as DateCancellation, DATE_FORMAT(DateFinished,'" . $da . "') as DateFinished,
+	$GLOBALS['DB_WE']->query("SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'" . $da . "') as DateShipping, DATE_FORMAT(DatePayment,'" . $da . "') as DatePayment, DATE_FORMAT(DateOrder,'" . $da . "') as DateOrder, DATE_FORMAT(DateConfirmation,'" . $da . "') as DateConfirmation, DATE_FORMAT(DateCustomA,'" . $da . "') as DateCustomA, DATE_FORMAT(DateCustomB,'" . $da . "') as DateCustomB, DATE_FORMAT(DateCustomC,'" . $da . "') as DateCustomC, DATE_FORMAT(DateCustomD,'" . $da . "') as DateCustomD, DATE_FORMAT(DateCustomE,'" . $da . "') as DateCustomE, DATE_FORMAT(DateCustomF,'" . $da . "') as DateCustomF, DATE_FORMAT(DateCustomG,'" . $da . "') as DateCustomG, DATE_FORMAT(DateCustomH,'" . $da . "') as DateCustomH, DATE_FORMAT(DateCustomI,'" . $da . "') as DateCustomI, DATE_FORMAT(DateCustomJ,'" . $da . "') as DateCustomJ, DATE_FORMAT(DateCancellation,'" . $da . "') as DateCancellation, DATE_FORMAT(DateFinished,'" . $da . "') as DateFinished,
 		DATE_FORMAT(MailShipping,'" . $db . "') as MailShipping, DATE_FORMAT(MailPayment,'" . $db . "') as MailPayment, DATE_FORMAT(MailOrder,'" . $db . "') as MailOrder, DATE_FORMAT(MailConfirmation,'" . $db . "') as MailConfirmation, DATE_FORMAT(MailCustomA,'" . $db . "') as MailCustomA, DATE_FORMAT(MailCustomB,'" . $db . "') as MailCustomB, DATE_FORMAT(MailCustomC,'" . $db . "') as MailCustomC, DATE_FORMAT(MailCustomD,'" . $db . "') as MailCustomD, DATE_FORMAT(MailCustomE,'" . $db . "') as MailCustomE, DATE_FORMAT(MailCustomF,'" . $db . "') as MailCustomF, DATE_FORMAT(MailCustomG,'" . $db . "') as MailCustomG, DATE_FORMAT(MailCustomH,'" . $db . "') as MailCustomH, DATE_FORMAT(MailCustomI,'" . $db . "') as MailCustomI, DATE_FORMAT(MailCustomJ,'" . $db . "') as MailCustomJ, DATE_FORMAT(MailCancellation,'" . $db . "') as MailCancellation, DATE_FORMAT(MailFinished,'" . $db . "') as MailFinished
 		FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
 
 	// loop through all articles
-	while($DB_WE->next_record()) {
+	while($GLOBALS['DB_WE']->next_record()) {
 
 		// get all needed information for order-data
-		$_REQUEST["cid"] = $DB_WE->f("IntCustomerID");
-		$SerialOrder[] = $DB_WE->f("strSerialOrder");
-		$_REQUEST["DateOrder"] = $DB_WE->f("DateOrder");
-		$_REQUEST["DateConfirmation"] = $DB_WE->f("DateConfirmation");
-		$_REQUEST["DateCustomA"] = $DB_WE->f("DateCustomA");
-		$_REQUEST["DateCustomB"] = $DB_WE->f("DateCustomB");
-		$_REQUEST["DateCustomC"] = $DB_WE->f("DateCustomC");
-		$_REQUEST["DateCustomD"] = $DB_WE->f("DateCustomD");
-		$_REQUEST["DateCustomE"] = $DB_WE->f("DateCustomE");
-		$_REQUEST["DateCustomF"] = $DB_WE->f("DateCustomF");
-		$_REQUEST["DateCustomG"] = $DB_WE->f("DateCustomG");
-		$_REQUEST["DateCustomH"] = $DB_WE->f("DateCustomH");
-		$_REQUEST["DateCustomI"] = $DB_WE->f("DateCustomI");
-		$_REQUEST["DateCustomJ"] = $DB_WE->f("DateCustomJ");
-		$_REQUEST["DatePayment"] = $DB_WE->f("DatePayment");
-		$_REQUEST["DateShipping"] = $DB_WE->f("DateShipping");
-		$_REQUEST["DateCancellation"] = $DB_WE->f("DateCancellation");
-		$_REQUEST["DateFinished"] = $DB_WE->f("DateFinished");
-		$_REQUEST["MailOrder"] = $DB_WE->f("MailOrder");
-		$_REQUEST["MailConfirmation"] = $DB_WE->f("MailConfirmation");
-		$_REQUEST["MailCustomA"] = $DB_WE->f("MailCustomA");
-		$_REQUEST["MailCustomB"] = $DB_WE->f("MailCustomB");
-		$_REQUEST["MailCustomC"] = $DB_WE->f("MailCustomC");
-		$_REQUEST["MailCustomD"] = $DB_WE->f("MailCustomD");
-		$_REQUEST["MailCustomE"] = $DB_WE->f("MailCustomE");
-		$_REQUEST["MailCustomF"] = $DB_WE->f("MailCustomF");
-		$_REQUEST["MailCustomG"] = $DB_WE->f("MailCustomG");
-		$_REQUEST["MailCustomH"] = $DB_WE->f("MailCustomH");
-		$_REQUEST["MailCustomI"] = $DB_WE->f("MailCustomI");
-		$_REQUEST["MailCustomJ"] = $DB_WE->f("MailCustomJ");
-		$_REQUEST["MailPayment"] = $DB_WE->f("MailPayment");
-		$_REQUEST["MailShipping"] = $DB_WE->f("MailShipping");
-		$_REQUEST["MailCancellation"] = $DB_WE->f("MailCancellation");
-		$_REQUEST["MailFinished"] = $DB_WE->f("MailFinished");
+		$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
+		$SerialOrder[] = $GLOBALS['DB_WE']->f("strSerialOrder");
+		$_REQUEST["DateOrder"] = $GLOBALS['DB_WE']->f("DateOrder");
+		$_REQUEST["DateConfirmation"] = $GLOBALS['DB_WE']->f("DateConfirmation");
+		$_REQUEST["DateCustomA"] = $GLOBALS['DB_WE']->f("DateCustomA");
+		$_REQUEST["DateCustomB"] = $GLOBALS['DB_WE']->f("DateCustomB");
+		$_REQUEST["DateCustomC"] = $GLOBALS['DB_WE']->f("DateCustomC");
+		$_REQUEST["DateCustomD"] = $GLOBALS['DB_WE']->f("DateCustomD");
+		$_REQUEST["DateCustomE"] = $GLOBALS['DB_WE']->f("DateCustomE");
+		$_REQUEST["DateCustomF"] = $GLOBALS['DB_WE']->f("DateCustomF");
+		$_REQUEST["DateCustomG"] = $GLOBALS['DB_WE']->f("DateCustomG");
+		$_REQUEST["DateCustomH"] = $GLOBALS['DB_WE']->f("DateCustomH");
+		$_REQUEST["DateCustomI"] = $GLOBALS['DB_WE']->f("DateCustomI");
+		$_REQUEST["DateCustomJ"] = $GLOBALS['DB_WE']->f("DateCustomJ");
+		$_REQUEST["DatePayment"] = $GLOBALS['DB_WE']->f("DatePayment");
+		$_REQUEST["DateShipping"] = $GLOBALS['DB_WE']->f("DateShipping");
+		$_REQUEST["DateCancellation"] = $GLOBALS['DB_WE']->f("DateCancellation");
+		$_REQUEST["DateFinished"] = $GLOBALS['DB_WE']->f("DateFinished");
+		$_REQUEST["MailOrder"] = $GLOBALS['DB_WE']->f("MailOrder");
+		$_REQUEST["MailConfirmation"] = $GLOBALS['DB_WE']->f("MailConfirmation");
+		$_REQUEST["MailCustomA"] = $GLOBALS['DB_WE']->f("MailCustomA");
+		$_REQUEST["MailCustomB"] = $GLOBALS['DB_WE']->f("MailCustomB");
+		$_REQUEST["MailCustomC"] = $GLOBALS['DB_WE']->f("MailCustomC");
+		$_REQUEST["MailCustomD"] = $GLOBALS['DB_WE']->f("MailCustomD");
+		$_REQUEST["MailCustomE"] = $GLOBALS['DB_WE']->f("MailCustomE");
+		$_REQUEST["MailCustomF"] = $GLOBALS['DB_WE']->f("MailCustomF");
+		$_REQUEST["MailCustomG"] = $GLOBALS['DB_WE']->f("MailCustomG");
+		$_REQUEST["MailCustomH"] = $GLOBALS['DB_WE']->f("MailCustomH");
+		$_REQUEST["MailCustomI"] = $GLOBALS['DB_WE']->f("MailCustomI");
+		$_REQUEST["MailCustomJ"] = $GLOBALS['DB_WE']->f("MailCustomJ");
+		$_REQUEST["MailPayment"] = $GLOBALS['DB_WE']->f("MailPayment");
+		$_REQUEST["MailShipping"] = $GLOBALS['DB_WE']->f("MailShipping");
+		$_REQUEST["MailCancellation"] = $GLOBALS['DB_WE']->f("MailCancellation");
+		$_REQUEST["MailFinished"] = $GLOBALS['DB_WE']->f("MailFinished");
 
 		// all information for article
-		$ArticleId[] = $DB_WE->f("IntArticleID"); // id of article (object or document) in shopping cart
-		$tblOrdersId[] = $DB_WE->f("IntID");
-		$Quantity[] = $DB_WE->f("IntQuantity");
-		$Serial[] = $DB_WE->f("strSerial"); // the serialised doc
-		$Price[] = str_replace(',', '.', $DB_WE->f("Price")); // replace , by . for float values
+		$ArticleId[] = $GLOBALS['DB_WE']->f("IntArticleID"); // id of article (object or document) in shopping cart
+		$tblOrdersId[] = $GLOBALS['DB_WE']->f("IntID");
+		$Quantity[] = $GLOBALS['DB_WE']->f("IntQuantity");
+		$Serial[] = $GLOBALS['DB_WE']->f("strSerial"); // the serialised doc
+		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
 
