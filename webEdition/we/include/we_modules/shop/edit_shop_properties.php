@@ -107,8 +107,7 @@ function getFieldFromOrder($bid, $field){
 
 function updateFieldFromOrder($orderId, $fieldname, $value){
 
-	$upQuery = 'UPDATE ' . SHOP_TABLE . ' SET ' . $DB_WE->escape($fieldname) . '="' . $DB_WE->escape($value) . '"WHERE IntOrderID=' . intval($_REQUEST['bid']);
-
+	$upQuery = 'UPDATE ' . SHOP_TABLE . ' SET ' . $GLOBALS['DB_WE']->escape($fieldname) . '="' . $GLOBALS['DB_WE']->escape($value) . '"WHERE IntOrderID=' . intval($_REQUEST['bid']);
 	return ($GLOBALS['DB_WE']->query($upQuery) ? true : false);
 }
 
