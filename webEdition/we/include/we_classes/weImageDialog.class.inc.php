@@ -90,7 +90,7 @@ class weImageDialog extends weDialog{
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}
 
-	function initAttributes($width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
+	function initAttributes($width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
 		$tokkens = explode("?", $longdesc);
 		$longdescid = "";
 		if(sizeof($tokkens) == 2){
@@ -122,7 +122,7 @@ class weImageDialog extends weDialog{
 		$this->args["ratio"] = isset($_REQUEST["we_dialog_args"]["ratio"]) ? $_REQUEST["we_dialog_args"]["ratio"] : 1;
 	}
 
-	function initByFileID($fileID, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $thumb = "", $class = "", $title = "", $longdesc = ""){
+	function initByFileID($fileID, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = "", $align = "", $name = "", $thumb = "", $class = "", $title = "", $longdesc = ""){
 		if($fileID){
 			$this->args["type"] = "int";
 			$this->args["extSrc"] = "";
@@ -503,8 +503,8 @@ function checkWidthHeight(field){
 					document.writeln(\'</select>\');
 				}
 
-var ratioh = ' . (($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : "0") . ';
-var ratiow = ' . (($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : "0") . ';
+var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : "0") . ';
+var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : "0") . ';
 
 function fsubmit(e) {
 	return false;
