@@ -101,6 +101,8 @@ class liveUpdateResponse {
 				);
 			break;
 
+			case 'executePatches':
+				return  liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
 				return eval('?>' . $this->Code);
 			break;
@@ -119,6 +121,3 @@ class liveUpdateResponse {
 		}
 	}
 }
-
-
-?>
