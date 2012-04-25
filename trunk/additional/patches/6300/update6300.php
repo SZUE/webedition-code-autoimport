@@ -14,6 +14,7 @@ function up6300_updatePrefs(){
 	$db = new DB_WE();
 	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE Language NOT LIKE "%_UTF-8%" AND BackendCharset=""');
 	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE Language LIKE "%_UTF-8%" AND BackendCharset=""');
+	$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_SESSION["prefs"]["userID"]), $db);
 	return true;
 }
 
@@ -69,9 +70,9 @@ function up6300_removeFiles(){
 		we_util_File::delete($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php');
 	}
 }
-up6300_updatePrefs();t_e('Update Prefs OK');
-up6300_updateLang();t_e('Update Lang OK');
-up6300_updateActiveModules();t_e('Update modules OK');
-up6300_updateConf();t_e('Update Conf OK');
-up6300_removeFiles();t_e('Update Files OK');
+up6300_updatePrefs();
+up6300_updateLang();
+up6300_updateActiveModules();
+up6300_updateConf();
+up6300_removeFiles();
 return true;
