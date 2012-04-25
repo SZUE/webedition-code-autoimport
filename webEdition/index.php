@@ -42,10 +42,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_browser'] === 'true');
 
-/* * ***************************************************************************
- * FUNCTIONS
- * *************************************************************************** */
-
 function getValueLoginMode($val){
 	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : 'normal';
 	switch($val){

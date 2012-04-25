@@ -190,11 +190,7 @@ class liveUpdateFrames{
 				$cond .= ' OR Language="' . addslashes($lng) . '"';
 			}
 
-			$query = "
-				UPDATE " . PREFS_TABLE . "
-				SET Language = '" . WE_LANGUAGE . "'
-				WHERE ( 0 $cond )
-			";
+			$query = 'UPDATE ' . PREFS_TABLE . " SET Language = '" . WE_LANGUAGE . "' WHERE ( 0 $cond )";
 			$GLOBALS['DB_WE']->query($query);
 
 

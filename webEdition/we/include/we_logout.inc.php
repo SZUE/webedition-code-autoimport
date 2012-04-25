@@ -29,7 +29,7 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 $DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID=" . intval($_SESSION["user"]["ID"]));
+$DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSION["user"]["ID"]));
 
 cleanTempFiles(true);
 
@@ -41,9 +41,10 @@ if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when
 if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
 	$_path = $_SESSION["SEEM"]["startPath"];
 
-	while(list($name, $val) = each($_SESSION)) {
-		if($name != "webuser"){
-			unset($_SESSION[$name]);
+	$keys = array_keys($_SESSION);
+	foreach($keys as $key){
+		if($key != "webuser"){
+			unset($_SESSION[$key]);
 		}
 	}
 } else{ //	normal logout from webEdition.

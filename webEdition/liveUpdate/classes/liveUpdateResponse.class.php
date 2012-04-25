@@ -108,9 +108,6 @@ class liveUpdateResponse {
 			break;
 
 			case 'state':
-
-
-
 				return liveUpdateFrames::htmlStateMessage();
 				return 'Meldung vom Server:<br />Status: ' . $this->State . '<br />Meldung: ' . $this->Message;
 			break;

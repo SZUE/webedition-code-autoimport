@@ -76,13 +76,9 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "Text", "VARCHAR(64) DEFAULT ''");
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "Path", "VARCHAR(255)  DEFAULT ''");
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "Icon", "VARCHAR(64) DEFAULT 'cat.gif'");
-		$DB_WE->query("SELECT * FROM " . CATEGORY_TABLE);
-		while($DB_WE->next_record()) {
-			if(($DB_WE->f("Text") == ""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Text='" . $db2->escape($DB_WE->f("Category")) . "' WHERE ID=" . intval($DB_WE->f("ID")));
-			if(($DB_WE->f("Path") == ""))
-				$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='/" . $db2->escape($DB_WE->f("Category")) . "' WHERE ID=" . intval($DB_WE->f("ID")));
-		}
+
+		$DB_WE->query('UPDATE ' . CATEGORY_TABLE.' SET Text=Category WHERE Text=""');
+		$DB_WE->query('UPDATE ' . CATEGORY_TABLE.' SET Path=CONCAT("/",Category) WHERE Path=""');
 
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_file", "INT");
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_type", "VARCHAR(10) DEFAULT ''");
