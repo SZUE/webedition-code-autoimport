@@ -10,14 +10,14 @@ if(!is_readable("../../we/include/conf/we_conf.inc.php")) {
 //die Vorbilder includen mehr, aber wozu?
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
-function updatePrefs(){
+function up6300_updatePrefs(){
 	$db = new DB_WE();
 	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE Language NOT LIKE "%_UTF-8%" AND BackendCharset=""');
 	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE Language LIKE "%_UTF-8%" AND BackendCharset=""');
 	return true;
 }
 
-function updateLang(){
+function up6300_updateLang(){
 	we_loadLanguageConfig();
 	if (is_array($GLOBALS['weFrontendLanguages'])){
 		$FLkeys = array_keys($GLOBALS['weFrontendLanguages']);
@@ -34,7 +34,7 @@ function updateLang(){
 	return true;
 
 }
-function updateActiveModules(){
+function up6300_updateActiveModules(){
 	$dir=$_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/';
 	$file='we_active_integrated_modules.inc.php';
 	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file) ){
@@ -43,7 +43,7 @@ function updateActiveModules(){
 		return true;
 	}
 }
-function updateConf(){
+function up6300_updateConf(){
 	$filename= $_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/conf/we_conf.inc.php';
 	$conf=file_get_contents($filename);
 	if (strpos($conf,'_UTF-8')!==false){
@@ -58,7 +58,7 @@ function updateConf(){
 
 	return file_put_contents($filename,$conf);
 }
-function removeFiles(){
+function up6300_removeFiles(){
 	$toRemove = array('Deutsch_UTF-8','Dutch_UTF-8','English_UTF-8','Finnish_UTF-8','French_UTF-8','Polish_UTF-8','Russian_UTF-8','Spanish_UTF-8');
 	foreach ($toRemove as $datei){
 		if(file_exists($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$datei) ){
@@ -69,9 +69,9 @@ function removeFiles(){
 		we_util_File::delete($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php');
 	}
 }
-updatePrefs();t_e('Update Prefs OK');
-updateLang();t_e('Update Lang OK');
-updateActiveModules();t_e('Update modules OK');
-updateConf();t_e('Update Conf OK');
-removeFiles();t_e('Update Files OK');
+up6300_updatePrefs();t_e('Update Prefs OK');
+up6300_updateLang();t_e('Update Lang OK');
+up6300_updateActiveModules();t_e('Update modules OK');
+up6300_updateConf();t_e('Update Conf OK');
+up6300_removeFiles();t_e('Update Files OK');
 return true;
