@@ -22,11 +22,11 @@ function we_tag_saveRegisteredUser($attribs){
 	$userexists = weTag_getAttribute('userexists', $attribs);
 	$userempty = weTag_getAttribute('userempty', $attribs);
 	$passempty = weTag_getAttribute('passempty', $attribs);
-	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs,'true',true);
+	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, true);
 	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
-	$GLOBALS["we_customer_writen"]=false;
+	$GLOBALS['we_customer_writen'] = false;
 
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
 		if(isset($_REQUEST['s']['Password2'])){
@@ -64,18 +64,18 @@ function we_tag_saveRegisteredUser($attribs){
 
 					if(count($set)){
 						// User in DB speichern
-						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . implode(',', $set));
+						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
 
 						// User in session speichern
 						$uID = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', 'ID', $GLOBALS['DB_WE']);
-						$GLOBALS["we_customer_write_ID"]=$uID;
-						$GLOBALS["we_customer_writen"]=true;
+						$GLOBALS["we_customer_write_ID"] = $uID;
+						$GLOBALS["we_customer_writen"] = true;
 						if($uID && $changesessiondata){
 							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID, $GLOBALS['DB_WE']);
 							$_SESSION['webuser']['registered'] = true;
 
 							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
-									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy=\'frontend\' WHERE ID=' . $_SESSION['webuser']['ID']);
+									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
 							if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 								echo '<a name="emos_name" title="register" rel="' . md5($_SESSION["webuser"]['ID']) . '" rev="0" ></a>';
 							}
@@ -147,8 +147,9 @@ function we_tag_saveRegisteredUser($attribs){
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
 					}
 					if(sizeof($set_a)){
-						$set = implode(',', $set_a);
-						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ',ModifyDate=UNIX_TIMESTAMP(),ModifiedBy=\'frontend\' WHERE ID=' . intval($_REQUEST['s']['ID']));
+						$set_a['ModifyDate'] = 'UNIX_TIMESTAMP()';
+						$set_a['ModifiedBy'] = 'frontend';
+						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
 					}
 				}
 			} else{
@@ -306,10 +307,10 @@ function we_tag_saveRegisteredUser_processRequest(){
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
-				$set[] = 'Username="' . $GLOBALS['DB_WE']->escape($val) . '"';
-				$set[] = 'Path="/' . $GLOBALS['DB_WE']->escape($val) . '"';
-				$set[] = 'Text="' . $GLOBALS['DB_WE']->escape($val) . '"';
-				$set[] = 'Icon="customer.gif"';
+				$set['Username'] = $val;
+				$set['Path'] = $val;
+				$set['Text'] = $val;
+				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
 			case 'Path':
@@ -317,7 +318,7 @@ function we_tag_saveRegisteredUser_processRequest(){
 			case 'ID':
 				break;
 			default:
-				$set[] = '`' . $name . '`="' . $GLOBALS["DB_WE"]->escape($val) . '"';
+				$set[$name] = $val;
 				break;
 		}
 	}
