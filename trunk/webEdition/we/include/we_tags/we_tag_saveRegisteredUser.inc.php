@@ -122,8 +122,7 @@ function we_tag_saveRegisteredUser($attribs){
 			// existierender User (Daten werden von User geaendert)!!
 			$Username = isset($_REQUEST['s']['Username']) ? $_REQUEST['s']['Username'] : $_SESSION['webuser']['Username'];
 
-			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_REQUEST["s"]["ID"]));
-			if(!$GLOBALS['DB_WE']->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+			if(f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_REQUEST['s']['ID']), 'a', $GLOBALS['DB_WE']) != '1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 				if(isset($_REQUEST['s'])){
 
 
@@ -153,11 +152,7 @@ function we_tag_saveRegisteredUser($attribs){
 					}
 				}
 			} else{
-
-				if(!$userexists){
-					$userexists = g_l('customer', '[username_exists]');
-				}
-
+				$userexists = $userexists ? $userexists : g_l('customer', '[username_exists]');
 				print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 

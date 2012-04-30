@@ -31,11 +31,12 @@
 class we_message_reporting{
 // contansts for messaging!
 // these are binray checked like permissions in unix, DON'T change indexes
-	const WE_MESSAGE_INFO=-1;
-	const WE_MESSAGE_FRONTEND= -2;
-	const WE_MESSAGE_NOTICE=1;
-	const WE_MESSAGE_WARNING=2;
-	const WE_MESSAGE_ERROR=4;
+
+	const WE_MESSAGE_INFO = -1;
+	const WE_MESSAGE_FRONTEND = -2;
+	const WE_MESSAGE_NOTICE = 1;
+	const WE_MESSAGE_WARNING = 2;
+	const WE_MESSAGE_ERROR = 4;
 
 	/**
 	 * returns js-call for the showMessage function
@@ -45,21 +46,21 @@ class we_message_reporting{
 	 * @param boolean $isJsMsg
 	 * @return string
 	 */
-	static function getShowMessageCall($message, $priority, $isJsMsg=false, $isOpener=false){
+	static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
 
 		if($priority == self::WE_MESSAGE_INFO || $priority == self::WE_MESSAGE_FRONTEND){
 
 			if($isJsMsg){ // message is build from scripts, just print it!
 				return "alert( $message );";
 			} else{
-				return 'alert("' . str_replace('"', '\\"', $message) . '");';
+				return 'alert("' . str_replace(array('\\', '"'), array('\\\\', '\\"'), $message) . '");';
 			}
 		} else{
 
 			if($isJsMsg){ // message is build from scripts, just print it!
-				return ($isOpener ? "top.opener." : "") . "top.we_showMessage($message, $priority, window);";
+				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage('.$message.', '.$priority.', window);';
 			} else{
-				return ($isOpener ? "top.opener." : "") . "top.we_showMessage(\"" . str_replace("\"", "\\\"", $message) . "\", $priority, window);";
+				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array('\\', '"'), array('\\\\', '\\"'), $message) . '", '.$priority.', window);';
 			}
 		}
 	}
