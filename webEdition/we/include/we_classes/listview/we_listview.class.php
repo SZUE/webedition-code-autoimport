@@ -284,7 +284,7 @@ class we_listview extends listviewBase{
 		}
 
 		while($this->DB_WE->next_record()) {
-			array_push($this->IDs, $this->DB_WE->f('ID'));
+			$this->IDs[] = $this->DB_WE->f('ID');
 			if($calendar != ''){
 				$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 			}
@@ -328,7 +328,7 @@ class we_listview extends listviewBase{
 			$count = $this->count;
 			$fetch = false;
 			if($this->calendar_struct['calendar'] != ''){
-				listviewBase::next_record();
+				parent::next_record();
 				$count = $this->calendar_struct['count'];
 				$fetch = $this->calendar_struct['forceFetch'];
 			}

@@ -341,7 +341,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function filenameNotValid($text){
-		$_tmp = str_replace("]", "", str_replace("[", "", $text));
+//		$_tmp = str_replace("]", "", str_replace("[", "", $text));
 		if(strpos($text, "/") !== false){
 			return true;
 		}
@@ -686,7 +686,6 @@ class weNavigation extends weModelBase{
 	}
 
 	function getHref(&$storage, $id = 0){
-
 		if($this->IsFolder){
 
 			$_path = '';
@@ -708,11 +707,7 @@ class weNavigation extends weModelBase{
 					} else{
 						$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 					}
-					if($objecttriggerid){
-						$_id = $objecttriggerid;
-					} else{
-						$_id = weDynList::getFirstDynDocument($this->FolderWsID);
-					}
+					$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->FolderWsID));
 				} else{
 					$_id = $this->LinkID;
 				}
@@ -727,12 +722,7 @@ class weNavigation extends weModelBase{
 				}
 			}
 		} else{
-
-			if($id){
-				$_id = $id;
-			} else{
-				$_id = $this->LinkID;
-			}
+			$_id = ($id ? $id : $this->LinkID);
 
 			$_path = '';
 			//FIXME: remove eval
@@ -767,11 +757,7 @@ class weNavigation extends weModelBase{
 					} else{
 						$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}
-					if($objecttriggerid){
-						$_id = $objecttriggerid;
-					} else{
-						$_id = weDynList::getFirstDynDocument($this->WorkspaceID);
-					}
+					$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->WorkspaceID));
 				}
 
 				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
@@ -798,8 +784,8 @@ class weNavigation extends weModelBase{
 		$_path = str_replace('&', '&amp;', $_path);
 
 		if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
-			$dirindexnames = makeArrayFromCSV(NAVIGATION_DIRECTORYINDEX_NAMES);
-			$_path = str_replace('/' . $dirindexnames, '/', $_path);
+			$dirindexnames = explode(',','/'.str_replace(',',',/', NAVIGATION_DIRECTORYINDEX_NAMES));
+			$_path = str_replace($dirindexnames, '/', $_path);
 		}
 
 		return $_path;
