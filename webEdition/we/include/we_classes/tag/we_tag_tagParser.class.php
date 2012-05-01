@@ -352,7 +352,7 @@ class we_tag_tagParser{
 					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
 			}
 		}
-		$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs, ',') . ')'); // workarround Bug Nr 6318
+		$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
 		//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
 
 		$parseFn = 'we_parse_tag_' . $tagname;
