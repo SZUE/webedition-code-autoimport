@@ -383,12 +383,6 @@ abstract class listviewBase{
 
 			$foo = $this->start + $this->maxItemsPerPage;
 			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
-			if($only){
-				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : '');
-			} else{
-				return getHtmlTag('a', $attribs, '', false, true);
-			}
 		} else{
 			return '';
 		}
