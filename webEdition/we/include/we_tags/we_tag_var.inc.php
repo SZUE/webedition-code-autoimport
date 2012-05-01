@@ -25,8 +25,7 @@
 function we_tag_var($attribs){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	$name = weTag_getAttribute("_name_orig", $attribs);
+	$docAttr = weTag_getAttribute('doc', $attribs);
 	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
 	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true); // #3771
@@ -34,19 +33,26 @@ function we_tag_var($attribs){
 
 	switch($type){
 		case "session" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "request" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "post" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_POST[$name]) ? $_POST[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "get" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
 			$return = we_util::rmPhp(isset($_GET[$name]) ? $_GET[$name] : "");
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case "global" :
-			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : "";
+			$name = weTag_getAttribute("name", $attribs);
+			$name_orig = weTag_getAttribute("_name_orig", $attribs);
+
+			$return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : 	((isset($GLOBALS[$name_orig])) ? $GLOBALS[$name_orig]:'');
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
@@ -57,6 +63,8 @@ function we_tag_var($attribs){
 			}
 
 		case "property" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
+
 			if(isset($GLOBALS['we_obj'])){
 				return $GLOBALS['we_obj']->$name;
 			} else{
@@ -82,6 +90,7 @@ function we_tag_var($attribs){
 					foreach($doc->DefArray as $_glob_key => $_val){
 
 						if(substr($_glob_key, 0, 7) == "object_"){
+							$name = weTag_getAttribute("_name_orig", $attribs);
 
 							$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 7));
 						}

@@ -26,30 +26,33 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag
 
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
-	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
+	$match_orig = weTag_getAttribute('match', $attribs);
+	$match = we_tag_getPostName($match);
+
 	$name = weTag_getAttribute('name', $attribs);
+
 	$type = weTag_getAttribute('type', $attribs, 'txt');
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 	$property = weTag_getAttribute('property', $attribs, false, true);
 
-	if(!we_isVarSet($match, $type, $docAttr, $property, $formname)){
+	if(!we_isVarSet($match, $match_orig, $type, $docAttr, $property, $formname)){
 		return false;
 	}
 
 	switch($type){
 		case 'request' :
-			return (strlen($_REQUEST[$match]) > 0);
+			return (strlen($_REQUEST[$match_orig]) > 0);
 		case 'post' :
-			return (strlen($_POST[$match]) > 0);
+			return (strlen($_POST[$match_orig]) > 0);
 		case 'get' :
-			return (strlen($_GET[$match]) > 0);
+			return (strlen($_GET[$match_orig]) > 0);
 		case 'global' :
-			return (strlen($GLOBALS[$match]) > 0);
+			return (strlen($GLOBALS[$match_orig]) > 0);
 		case 'session' :
-			$foo = isset($_SESSION[$match]) ? $_SESSION[$match] : '';
+			$foo = isset($_SESSION[$match_orig]) ? $_SESSION[$match_orig] : '';
 			return (strlen($foo) > 0);
 		case 'sessionfield' :
-			return (strlen($_SESSION['webuser'][$match]) > 0);
+			return (strlen($_SESSION['webuser'][$match_orig]) > 0);
 		default :
 			$doc = false;
 			switch($docAttr){
@@ -65,18 +68,19 @@ function we_isVarNotEmpty($attribs){
 			}
 			if($doc){
 				if($property){
-					$retVal = isset($doc->$match) ? $doc->$match : '';
-					return $retVal;
+					return isset($doc->$match_orig) ? $doc->$match_orig : '';
 				} else{
 					$name = $match;
 					switch($type){
 						case 'href' :
 							$attribs['name'] = $match;
+							$attribs['_name_orig'] = $match_orig;
 							$foo = $doc->getField($attribs, $type, true);
 							break;
 						case 'multiobject' :
 							//FIXME: this makes no sense
 							$attribs['name'] = $match;
+							$attribs['_name_orig'] = $match_orig;
 							$data = unserialize($doc->getField($attribs, $type, true));
 							if(!is_array($data['objects'])){
 								$data['objects'] = array();
@@ -85,6 +89,9 @@ function we_isVarNotEmpty($attribs){
 							return (sizeof($temp->Record) > 0);
 						default :
 							$foo = $doc->getElement($match);
+							if(!$foo){
+								$foo = $doc->getElement($match_orig);
+							}
 					}
 					return (strlen($foo) > 0);
 				}

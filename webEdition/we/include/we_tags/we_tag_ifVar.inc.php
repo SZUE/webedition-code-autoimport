@@ -33,7 +33,6 @@ function we_tag_ifVar($attribs){
 	}
 
 	$match = weTag_getAttribute("match", $attribs);
-	$name = weTag_getAttribute("_name_orig", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
 	$operator = weTag_getAttribute("operator", $attribs);
 
@@ -43,6 +42,8 @@ function we_tag_ifVar($attribs){
 	switch($type){
 		case "customer" :
 		case "sessionfield" :
+			$name = weTag_getAttribute("_name_orig", $attribs);
+
 			if($_size == 1 && $operator != '' && isset($_SESSION["webuser"][$name])){
 				switch($operator){
 					case "equal":
@@ -62,6 +63,10 @@ function we_tag_ifVar($attribs){
 				return (isset($_SESSION["webuser"][$name]) && in_array($_SESSION["webuser"][$name], $matchArray));
 			}
 		case "global" :
+			$name = weTag_getAttribute('name', $attribs);
+			$name_orig = weTag_getAttribute('_name_orig', $attribs);
+			$name = isset($GLOBALS[$name]) ? $name : (isset($GLOBALS[$name_orig]) ? $name_orig : $name);
+
 			if($_size == 1 && $operator != '' && isset($GLOBALS[$name])){
 				switch($operator){
 					case "equal":
@@ -81,6 +86,7 @@ function we_tag_ifVar($attribs){
 				return (isset($GLOBALS[$name]) && in_array($GLOBALS[$name], $matchArray));
 			}
 		case "request" :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 			if(isset($_REQUEST[$name])){
 				if($_size == 1 && $operator != '' && isset($_REQUEST[$name])){
 					switch($operator){
@@ -104,6 +110,7 @@ function we_tag_ifVar($attribs){
 				return false;
 			}
 		case "post" :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 			if(isset($_POST[$name])){
 				if($_size == 1 && $operator != '' && isset($_POST[$name])){
 					switch($operator){
@@ -127,6 +134,7 @@ function we_tag_ifVar($attribs){
 				return false;
 			}
 		case "get" :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 			if(isset($_GET[$name])){
 				if($_size == 1 && $operator != '' && isset($_GET[$name])){
 					switch($operator){
@@ -150,6 +158,7 @@ function we_tag_ifVar($attribs){
 				return false;
 			}
 		case "session" :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 			if(isset($_SESSION[$name])){
 				if($_size == 1 && $operator != '' && isset($_SESSION[$name])){
 					switch($operator){
@@ -173,6 +182,7 @@ function we_tag_ifVar($attribs){
 				return false;
 			}
 		case "property" :
+			$name = weTag_getAttribute('_name_orig', $attribs);
 			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
 			$var = $doc->$name;
@@ -198,23 +208,25 @@ function we_tag_ifVar($attribs){
 		default :
 			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
+			$val=	$doc->getField($attribs, $type, true);
+
 			if($_size == 1 && $operator != ''){
 				switch($operator){
 					case "equal":
-						return $doc->getElement($name) == $match;
+						return $val == $match;
 					case "less":
-						return $doc->getElement($name) < $match;
+						return $val < $match;
 					case "less|equal":
-						return $doc->getElement($name) <= $match;
+						return $val <= $match;
 					case "greater":
-						return $doc->getElement($name) > $match;
+						return $val > $match;
 					case "greater|equal":
-						return $doc->getElement($name) >= $match;
+						return $val >= $match;
 					case "contains":
-						return (strpos($doc->getElement($name), $match) !== false);
+						return (strpos($val, $match) !== false);
 				}
 			} else{
-				return in_array($doc->getElement($name), $matchArray);
+				return in_array($val, $matchArray);
 			}
 	}
 }
