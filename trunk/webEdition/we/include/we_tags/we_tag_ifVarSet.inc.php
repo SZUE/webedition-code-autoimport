@@ -22,24 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', $shopname = ''){
+function we_isVarSet($name, $orig,$type, $docAttr, $property = false, $formname = '', $shopname = ''){
 	switch($type){
 		case 'request' :
-			return isset($_REQUEST[$name]);
+			return isset($_REQUEST[$orig]);
 		case 'post' :
-			return isset($_POST[$name]);
+			return isset($_POST[$orig]);
 		case 'get' :
-			return isset($_GET[$name]);
+			return isset($_GET[$orig]);
 		case 'global' :
-			return isset($GLOBALS[$name]);
+			return isset($GLOBALS[$name])||isset($GLOBALS[$orig]);
 		case 'session' :
-			return isset($_SESSION[$name]);
+			return isset($_SESSION[$orig]);
 		case 'sessionfield' :
-			return isset($_SESSION['webuser'][$name]);
+			return isset($_SESSION['webuser'][$orig]);
 		case 'shopField' :
-			return (isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($name) : false);
+			return (isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($orig) : false);
 		case 'sum' :
-			return (isset($GLOBALS['summe']) && isset($GLOBALS['summe'][$name]));
+			return (isset($GLOBALS['summe']) && isset($GLOBALS['summe'][$orig]));
 		default :
 			$doc = false;
 			switch($docAttr){
@@ -55,8 +55,7 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 			}
 			if($doc){
 				if($property){
-					$retval = isset($doc->$name);
-					return $retval;
+					return isset($doc->$name)||isset($doc->orig);
 				} else{
 					if($type == 'href'){
 						if($doc->elements[$name . '_we_jkhdsf_int']['dat']){
@@ -83,9 +82,10 @@ function we_tag_ifVarSet($attribs, $content){
 	$type = weTag_getAttribute("var", $attribs, weTag_getAttribute("type", $attribs));
 	$doc = weTag_getAttribute("doc", $attribs);
 	$name = weTag_getAttribute("name", $attribs);
+	$name_orig = weTag_getAttribute("_name_orig", $attribs);
 	$formname = weTag_getAttribute("formname", $attribs, "we_global_form");
 	$property = weTag_getAttribute("property", $attribs, false, true);
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
-	return we_isVarSet($name, $type, $doc, $property, $formname, $shopname);
+	return we_isVarSet($name, $name_orig,$type, $doc, $property, $formname, $shopname);
 }
