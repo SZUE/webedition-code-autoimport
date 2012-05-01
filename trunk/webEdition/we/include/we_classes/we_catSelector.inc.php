@@ -96,10 +96,9 @@ class we_catSelector extends we_multiSelector{
 	function printHeaderTable(){
 		$editCatState = $this->userCanEditCat() ? 1 : 0;
 		$changeCatState = $this->userCanChangeCat() ? 1 : 0;
-		print '<script  type="text/javascript">editCatState=' . $editCatState . ';</script>';
+		print we_html_element::jsElement('editCatState=' . $editCatState . ';');
 
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-';
+		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">';
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
@@ -133,19 +132,14 @@ class we_catSelector extends we_multiSelector{
 						' . we_button::create_button("image:btn_function_trash", "javascript:if(changeCatState==1){top.deleteEntry();}", true, 27, 22, "", "", !$changeCatState, false) . '
 					</td>
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-				</tr>
- ';
+				</tr>';
 		$this->printHeaderTableSpaceRow();
 
-		print '			</table>
-';
+		print '			</table>';
 	}
 
 	function printHeaderTableSpaceRow(){
-		print '				<tr>
-					<td colspan="15">' . we_html_tools::getPixel(5, 10) . '</td>
-				</tr>
-';
+		print '<tr><td colspan="15">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
 	function userCanEditCat(){
@@ -207,18 +201,12 @@ function enableDelBut(){
 	}
 
 	function getExitClose(){
-		$out = '	function exit_close(){
-';
-		if(!$this->noChoose){
-			$out .= '		if(hot){
+		return '	function exit_close(){' .
+			(!$this->noChoose ? '		if(hot){
 			opener.setScrollTo();opener.top.we_cmd("reload_editpage");
-		}
-';
-		}
-		$out .= '		self.close();
-	}
-';
-		return $out;
+		}' : '') .
+			'		self.close();
+	}';
 	}
 
 	function printFramesetJSFunctioWriteBody(){
@@ -1115,7 +1103,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 		print we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . '
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function we_cmd(){
 	var args = "";
 	var url = "/webEdition/we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -1141,15 +1129,15 @@ function we_checkName() {
 		document.we_form.submit();
 	}
 }
+//-->
 </script>
 ';
 		print STYLESHEET . '</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="FS_CHANGE_CAT" /><input type="hidden" name="catid" value="' . $_REQUEST["catid"] . '" />
+	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.self::CHANGE_CAT.'" /><input type="hidden" name="catid" value="' . $_REQUEST["catid"] . '" />
 		' . $table->getHtml() . "<br />" . $ta . "<br />" . $saveBut . '
 	</div>		' : '' ) . '
 </body></html>';
 	}
 
 }
-
