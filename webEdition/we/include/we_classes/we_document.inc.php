@@ -1178,22 +1178,20 @@ class we_document extends we_root{
 	}
 
 	function getHref($attribs, $db = '', $fn = 'this'){
-		if(!$db)
-			$db = new_DB_WE();
+		$db = $db ? $db : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
 		$int = $this->getValFromSrc($fn, $nint);
-		$int = ($int == "") ? 0 : $int;
+		$int = ($int == '') ? 0 : $int;
 		if($int){
-			$nintID = $n . '_we_jkhdsf_intID';
-			$intID = $this->getValFromSrc($fn, $nintID);
+			$intID = $this->getValFromSrc($fn, $n . '_we_jkhdsf_intID');
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
 			return $this->getValFromSrc($fn, $n);
 		}
 	}
 
-	function getHrefByArray($hrefArr){
+	static function getHrefByArray($hrefArr){
 		$int = isset($hrefArr['int']) ? $hrefArr['int'] : false;
 		if($int){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
