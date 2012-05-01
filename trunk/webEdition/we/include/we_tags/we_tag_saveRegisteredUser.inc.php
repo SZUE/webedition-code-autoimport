@@ -76,9 +76,6 @@ function we_tag_saveRegisteredUser($attribs){
 
 							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
 									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy="frontend" WHERE ID=' . $_SESSION['webuser']['ID']);
-							if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){//Bug 3808, this prevents invalid code if econda is not active, but if active ...
-								echo '<a name="emos_name" title="register" rel="' . md5($_SESSION["webuser"]['ID']) . '" rev="0" ></a>';
-							}
 						}
 					}
 				} else{ // Username existiert schon!
@@ -88,9 +85,6 @@ function we_tag_saveRegisteredUser($attribs){
 
 					// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 					we_tag_saveRegisteredUser_keepInput();
-					if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){//Bug 3808, this prevents invalid code if econda is not active, but if active ...
-						echo '<a name="emos_name" title="register" rel="' . md5($_REQUEST["s"]["ID"]) . '" rev="1" ></a>';
-					}
 
 					print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 				}
@@ -111,9 +105,6 @@ function we_tag_saveRegisteredUser($attribs){
 
 					if(!$passempty){
 						$passempty = g_l('customer', '[password_empty]');
-					}
-					if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){//Bug 3808, this prevents invalid code if econda is not active, but if active ...
-						echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
 					}
 					print getHtmlTag('script', array('type' => 'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($passempty, we_message_reporting::WE_MESSAGE_FRONTEND));
 				}

@@ -334,9 +334,6 @@ abstract class we_autoloader{
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
 			'weTagWizard' => 'weTagWizard.class.php',
 		),
-		'weTracking/econda' => array(
-			'weEmos' => 'weEmos.class.inc.php',
-		),
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.inc.php',
 		),
