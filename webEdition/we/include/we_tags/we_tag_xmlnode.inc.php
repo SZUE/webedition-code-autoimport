@@ -33,7 +33,8 @@ function we_parse_tag_xmlnode($attribs, $content){
 			  print ' . $unq . '->getFeedData();
 			}
 			array_pop($GLOBALS["xstack"]);
-			unset(' . $unq . ')';
+			unset(' . $unq . ')
+		}';
 }
 
 /**
