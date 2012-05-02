@@ -1036,6 +1036,7 @@ class we_document extends we_root{
 				} else{
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
 					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
+					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get()));//Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
 				}
 				return $zwdate;
