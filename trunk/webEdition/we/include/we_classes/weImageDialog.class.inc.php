@@ -441,7 +441,7 @@ class weImageDialog extends weDialog{
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		return weDialog::getJs() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return parent::getJs() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -486,10 +486,10 @@ function checkWidthHeight(field){
 
 				function showclasss(name, val, onCh) {
 ' .
-				(isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?
+				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?
 					'					var classCSV = "' . $this->args["cssClasses"] . '";
 					classNames = classCSV.split(/,/);' :
-					'					classNames = top.opener.we_classNames;' .
+					'					classNames = top.opener.we_classNames;') .
 					'
 					document.writeln(\'<select class="defaul	qqtfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
