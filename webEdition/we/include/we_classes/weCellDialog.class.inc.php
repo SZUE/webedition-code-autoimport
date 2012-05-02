@@ -91,7 +91,7 @@ class weCellDialog extends weDialog{
 						</select>';
 		$valign = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[valignment]"));
 
-		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");</script>';
+		$foo = we_html_element::jsElement( 'showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 
 		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg', "[isheader]"));
@@ -129,16 +129,12 @@ class weCellDialog extends weDialog{
 	}
 
 	function getJs(){
-		$js = weDialog::getJs() . '	<script language=javascript>
-				function showclasss(name, val, onCh) {
-';
-		if(isset($this->args["cssClasses"]) && $this->args["cssClasses"]){
-			$js .= '					var classCSV = "' . $this->args["cssClasses"] . '";
-					classNames = classCSV.split(/,/);';
-		} else{
-			$js .= '					classNames = top.opener.we_classNames;';
-		}
-		$js .= '
+		return parent::getJs() . we_html_element::jsElement('function showclasss(name, val, onCh) {' .
+				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?
+					'					var classCSV = "' . $this->args["cssClasses"] . '";
+					classNames = classCSV.split(/,/);' :
+					'					classNames = top.opener.we_classNames;') .
+				'
 	document.writeln(\'<select class="defaultfont"  name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\' style="width:380px">\');
 	document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 	for(var i=0;i<classNames.length;i++){
@@ -148,10 +144,7 @@ class weCellDialog extends weDialog{
 		document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>\'+classNames[i]);
 	}
 	document.writeln(\'</select>\');
-}
-	</script>
-';
-		return $js;
+}');
 	}
 
 }

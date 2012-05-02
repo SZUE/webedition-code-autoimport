@@ -262,8 +262,7 @@ class weDialog{
 	}
 
 	function getJs(){
-		$js = we_html_element::jsScript(JS_DIR . 'windows.js') . '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 				var textareaFocus = false;
 				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
@@ -272,32 +271,27 @@ class weDialog{
 				function doKeyDown(e) {
 					var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
 					switch (key) {
 						case 27:
 							top.close();
-							break;';
-
-		if($this->pageNr == $this->numPages && $this->JsOnly){
-			$js .= '
+							break;' .
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 								case 13:
 									if (!textareaFocus) {
 										weDoOk();
 									}
-									break;';
-		}
-		$js .= '	}
+									break;' : '') .
+				'	}
 				}
 
-				function weDoOk() {';
-		if($this->pageNr == $this->numPages && $this->JsOnly){
-			$js .= '
+				function weDoOk() {' .
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 							if (!textareaFocus) {
 								' . $this->getOkJs() . '
-							}';
-		}
-		$js .= '
+							}' : '') .
+				'
 				}
 
 				function IsDigit(e) {
@@ -335,11 +329,7 @@ class weDialog{
 					}
 				}
 
-				self.focus();
-			//-->
-			</script>';
-
-		return $js;
+				self.focus();');
 	}
 
 	function formColor($size, $name, $value, $width = ""){
