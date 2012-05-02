@@ -97,7 +97,7 @@ function save_all_values(){
 		$truncateQuery = "truncate table " . METADATA_TABLE . ";";
 		$_insertQuery = array();
 		foreach($_definedFields as $key => $value){
-			$_insertQuery[] = "insert into " . METADATA_TABLE . " 	values('','" . $DB_WE->escape($value['tag']) . "','" . $DB_WE->escape($value['type']) . "','" . $DB_WE->escape($value['importFrom']) . "');";
+			$_insertQuery[] = "insert into " . METADATA_TABLE . " 	values('','" . $GLOBALS['DB_WE']->escape($value['tag']) . "','" . $GLOBALS['DB_WE']->escape($value['type']) . "','" . $GLOBALS['DB_WE']->escape($value['importFrom']) . "');";
 		}
 
 		$GLOBALS['DB_WE']->query($truncateQuery);
