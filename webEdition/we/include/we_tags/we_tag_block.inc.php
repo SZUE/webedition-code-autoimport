@@ -43,7 +43,7 @@ function we_parse_tag_block($attribs, $content){
 		$content = str_replace('\$', '$', $content);
 	}
 	$blockName = weTag_getParserAttribute('name', $arr);
-	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_', '_'), md5($blockName)) . $GLOBALS['blkCnt'];
+	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '_', md5($blockName)) . $GLOBALS['blkCnt'];
 	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';
 	$ctlPost = ');}?>';
 
