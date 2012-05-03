@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_xmlnode($attribs, $content){
-	$unq = '$_xmlnode' . str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '',uniqid(rand()));
-	return '<?php '.$unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
+	$unq = '$_xmlnode' . str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', uniqid(rand()));
+	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 		while(' . $unq . '->next()){
 			if(' . $unq . '->hasChild()){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
@@ -45,7 +45,7 @@ function we_parse_tag_xmlnode($attribs, $content){
 function we_tag_xmlnode($attribs){
 	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){
 		print $foo;
-	return false;
+		return false;
 	}
 	$feed = weTag_getAttribute('feed', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
@@ -64,7 +64,7 @@ function we_tag_xmlnode($attribs){
 
 	$ind_name = count($GLOBALS["xpaths"]) + 1;
 	$GLOBALS["xpaths"][$ind_name] = array();
-	$GLOBALS["xpaths"][$ind_name]["xpath"] = $attr["xpath"];
+	$GLOBALS["xpaths"][$ind_name]["xpath"] = $attribs["xpath"];
 	$GLOBALS["xpaths"][$ind_name]["parent"] = $parent_name;
 
 	$got_name = false;

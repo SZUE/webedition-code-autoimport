@@ -484,13 +484,11 @@ function checkWidthHeight(field){
 	return true;
 }
 
-				function showclasss(name, val, onCh) {
-' .
-				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?
-					'					var classCSV = "' . $this->args["cssClasses"] . '";
-					classNames = classCSV.split(/,/);' :
-					'					classNames = top.opener.we_classNames;') .
-					'
+				function showclasss(name, val, onCh) {' .
+				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?'
+					var classCSV = "' . $this->args["cssClasses"] . '";
+					classNames = classCSV.split(/,/);' :'
+					classNames = top.opener.we_classNames;') .'
 					document.writeln(\'<select class="defaul	qqtfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 
