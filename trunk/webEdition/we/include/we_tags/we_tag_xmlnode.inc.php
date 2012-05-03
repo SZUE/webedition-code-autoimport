@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_xmlnode($attribs, $content){
-	$unq = '$_xmlnode' . str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', uniqid(rand()));
+	$unq = '$_xmlnode' .  uniqid(rand());
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 		while(' . $unq . '->next()){
 			if(' . $unq . '->hasChild()){
@@ -54,7 +54,7 @@ function we_tag_xmlnode($attribs){
 		$GLOBALS["xpaths"] = array();
 	if(!isset($GLOBALS["xstack"]))
 		$GLOBALS["xstack"] = array();
-	$pind_name = count($GLOBALS["xstack"]) - 1;
+	$pind_name = count($GLOBALS["xstack"]);
 	if($pind_name < 0){
 		$pind_name = 0;
 		$parent_name = '';
