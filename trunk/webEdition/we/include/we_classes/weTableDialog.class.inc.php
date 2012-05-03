@@ -108,7 +108,7 @@ class weTableDialog extends weDialog{
 						</select>';
 		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[alignment]"));
 
-		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");</script>';
+		$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 
 		$table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -129,16 +129,16 @@ class weTableDialog extends weDialog{
 	}
 
 	function getJs(){
-		$js = weDialog::getJs() . '	<script language=javascript>
+		return parent::getJs() . we_html_element::jsElement('
 				function showclasss(name, val, onCh) {
-';
-		if(isset($this->args["cssClasses"]) && $this->args["cssClasses"]){
-			$js .= '					var classCSV = "' . $this->args["cssClasses"] . '";
-					classNames = classCSV.split(/,/);';
-		} else{
-			$js .= '					classNames = top.opener.we_classNames;';
-		}
-		$js .= '
+'.
+		(isset($this->args["cssClasses"]) && $this->args["cssClasses"]?
+			'					var classCSV = "' . $this->args["cssClasses"] . '";
+					classNames = classCSV.split(/,/);':
+
+			'					classNames = top.opener.we_classNames;').
+
+		'
 					document.writeln(\'<select class="defaultfont" style="width:380px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 
@@ -150,9 +150,7 @@ class weTableDialog extends weDialog{
 					}
 					document.writeln(\'</select>\');
 				}
-	</script>
-';
-		return $js;
+');
 	}
 
 }
