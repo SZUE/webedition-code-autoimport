@@ -25,6 +25,7 @@
 function we_parse_tag_xmlnode($attribs, $content){
 	$unq = '$_xmlnode' . str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '',uniqid(rand()));
 	return '<?php '.$unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
+		if(is_object('.$unq.')){
 		while(' . $unq . '->next()){
 			if(' . $unq . '->hasChild()){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
@@ -33,7 +34,7 @@ function we_parse_tag_xmlnode($attribs, $content){
 			}
 			array_pop($GLOBALS["xstack"]);
 			unset(' . $unq . ');
-		}?>';
+		}}?>';
 }
 
 /**
@@ -43,8 +44,10 @@ function we_parse_tag_xmlnode($attribs, $content){
  * @desc Beschreibung eingeben...
  */
 function we_tag_xmlnode($attribs){
-	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__)))
-		return $foo;
+	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){
+		print $foo;
+	return false;
+	}
 	$feed = weTag_getAttribute('feed', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
 
