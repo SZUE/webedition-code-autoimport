@@ -24,7 +24,9 @@
  */
 function we_isFieldNotEmpty($attribs){
 	$type = weTag_getAttribute('type', $attribs);
-	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
+	$match = weTag_getAttribute('match', $attribs);
+	$match = ($GLOBALS['lv']->f($match) ? $match : we_tag_getPostName($match));
+
 	switch($type){
 		case 'calendar' :
 			if(isset($GLOBALS['lv']->calendar_struct)){
