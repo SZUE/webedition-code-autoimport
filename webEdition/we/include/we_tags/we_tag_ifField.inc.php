@@ -37,7 +37,7 @@ function we_tag_ifField($attribs){
 	}
 
 	$match = weTag_getAttribute("match", $attribs);
-	$matchArray = makeArrayFromCSV($match);
+//	$matchArray = makeArrayFromCSV($match);
 
 	$operator = weTag_getAttribute("operator", $attribs);
 
