@@ -242,10 +242,10 @@ class we_objectFile extends we_document{
 			$db = new DB_WE();
 		}
 		$rootId = $classId;
+		$cnt = 1;
 		$all = array();
 		if(defined('OBJECT_TABLE')){
 			$slash = PHP_INT_MAX;
-			$cnt = 1;
 			$ws = get_ws(OBJECT_FILES_TABLE);
 			if(intval($ws) == 0){
 				$ws = 0;
@@ -2559,7 +2559,7 @@ class we_objectFile extends we_document{
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
-			$this->checkRemoteLanguage($this->Table,false);
+			$this->checkRemoteLanguage($this->Table, false);
 		}
 // hook
 		if($skipHook == 0){
