@@ -79,7 +79,7 @@ class DB_WE extends we_database_base{
 		@mysql_free_result($this->Query_ID);
 	}
 
-	protected function _query($Query_String, $unbuffered=false){
+	protected function _query($Query_String, $unbuffered = false){
 		return ($unbuffered ?
 				@mysql_unbuffered_query($Query_String, $this->Link_ID) :
 				@mysql_query($Query_String, $this->Link_ID));
@@ -88,8 +88,8 @@ class DB_WE extends we_database_base{
 	public function close(){
 		if($this->Link_ID){
 			@mysql_close($this->Link_ID);
-			$this->Link_ID = 0;
 		}
+		$this->Link_ID = 0;
 	}
 
 	protected function fetch_array($resultType){
@@ -98,7 +98,7 @@ class DB_WE extends we_database_base{
 
 	/* public: position in result set */
 
-	protected function _seek($pos=0){
+	protected function _seek($pos = 0){
 		return @mysql_data_seek($this->Query_ID, $pos);
 	}
 
@@ -145,19 +145,20 @@ class DB_WE extends we_database_base{
 			'</td></tr><tr><td>protocol:</td><td>' . mysql_get_proto_info() .
 			'</td></tr><tr><td>client:</td><td>' . mysql_get_client_info() .
 			'</td></tr><tr><td>host:</td><td>' . mysql_get_host_info() .
-			'</td></tr><tr><td>server:</td><td>' . mysql_get_server_info().
-			'</td></tr><tr><td>encoding:</td><td>'.mysql_client_encoding().'</td></tr></table>';
+			'</td></tr><tr><td>server:</td><td>' . mysql_get_server_info() .
+			'</td></tr><tr><td>encoding:</td><td>' . mysql_client_encoding() . '</td></tr></table>';
 	}
 
 	protected function errno(){
-		return mysql_errno();
+		return $this->Link_ID ? mysql_errno($this->Link_ID) : 2006;
 	}
 
 	protected function error(){
-		return mysql_error();
+		return $this->Link_ID ? mysql_error($this->Link_ID) : 'no Link to DB';
 	}
 
 	protected function info(){
-		return mysql_info();
+		return $this->Link_ID ? mysql_info($this->Link_ID) : 'no Link to DB';
 	}
+
 }

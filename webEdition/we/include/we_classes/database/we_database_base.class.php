@@ -210,7 +210,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->Link_ID){
+		if(!$this->Link_ID||!$this->ping()){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -337,7 +337,7 @@ abstract class we_database_base{
 					if(!$this->retry){
 						$this->retry = true;
 						$this->Link_ID = 0;
-						$tmp = $this->query($Query_String, $allowUnion);
+						$tmp = $this->query($Query_String, $allowUnion, $unbuffered);
 						$this->retry = false;
 						return $tmp;
 					}

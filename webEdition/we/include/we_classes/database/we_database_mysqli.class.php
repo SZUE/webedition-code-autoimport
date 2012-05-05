@@ -61,7 +61,7 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function info(){
-		return $this->Query_ID->info;
+		return $this->Link_ID->info;
 	}
 
 	protected function fetch_array($resultType){
