@@ -233,9 +233,7 @@ function tinyMCEchanged(inst){
 						height: auto ! important;
 					}
 
-				</style>
-
-				<script  type="text/javascript"><!--
+				</style>'.we_html_element::jsElement('
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
 					//FIXME: recognize in browser_check an set according
@@ -304,11 +302,7 @@ function tinyMCEchanged(inst){
     					} catch(e) {
 							// Nothing
     					}
-					}
-
-
-				-->
-				</script>' .
+					}') .
 					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 					(we_base_browserDetect::isSafari() ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwygSafari.js') .
 						we_html_element::jsScript(JS_DIR . 'weDOM_Safari.js') : we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwyg.js'));

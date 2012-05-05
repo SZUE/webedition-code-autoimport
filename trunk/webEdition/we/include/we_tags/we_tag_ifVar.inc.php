@@ -46,6 +46,7 @@ function we_tag_ifVar($attribs){
 
 			if($_size == 1 && $operator != '' && isset($_SESSION["webuser"][$name])){
 				switch($operator){
+					default:
 					case "equal":
 						return $_SESSION["webuser"][$name] == $match;
 					case "less":
@@ -69,6 +70,7 @@ function we_tag_ifVar($attribs){
 
 			if($_size == 1 && $operator != '' && isset($GLOBALS[$name])){
 				switch($operator){
+					default:
 					case "equal":
 						return $GLOBALS[$name] == $match;
 					case "less":
@@ -90,6 +92,7 @@ function we_tag_ifVar($attribs){
 			if(isset($_REQUEST[$name])){
 				if($_size == 1 && $operator != '' && isset($_REQUEST[$name])){
 					switch($operator){
+						default:
 						case "equal":
 							return $_REQUEST[$name] == $match;
 						case "less":
@@ -114,6 +117,7 @@ function we_tag_ifVar($attribs){
 			if(isset($_POST[$name])){
 				if($_size == 1 && $operator != '' && isset($_POST[$name])){
 					switch($operator){
+						default:
 						case "equal":
 							return $_POST[$name] == $match;
 						case "less":
@@ -138,6 +142,7 @@ function we_tag_ifVar($attribs){
 			if(isset($_GET[$name])){
 				if($_size == 1 && $operator != '' && isset($_GET[$name])){
 					switch($operator){
+						default:
 						case "equal":
 							return $_GET[$name] == $match;
 						case "less":
@@ -162,6 +167,7 @@ function we_tag_ifVar($attribs){
 			if(isset($_SESSION[$name])){
 				if($_size == 1 && $operator != '' && isset($_SESSION[$name])){
 					switch($operator){
+						default:
 						case "equal":
 							return $_SESSION[$name] == $match;
 						case "less":
@@ -188,6 +194,7 @@ function we_tag_ifVar($attribs){
 			$var = $doc->$name;
 			if($_size == 1 && $operator != '' && isset($var)){
 				switch($operator){
+					default:
 					case "equal":
 						return $var == $match;
 					case "less":
@@ -208,10 +215,11 @@ function we_tag_ifVar($attribs){
 		default :
 			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
-			$val=	$doc->getField($attribs, $type, true);
+			$val = $doc->getField($attribs, $type, true);
 
 			if($_size == 1 && $operator != ''){
 				switch($operator){
+					default:
 					case "equal":
 						return $val == $match;
 					case "less":
