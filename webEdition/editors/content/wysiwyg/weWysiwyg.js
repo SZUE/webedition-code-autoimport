@@ -1294,13 +1294,16 @@ function weWysiwyg_setMenuState(cmd){
 }
 
 
-function weWysiwyg_getHTML(){
+function weWysiwyg_getHTML(regular){
+	regular=(typeof regular == 'undefined')?0:regular;
 	this.pre = false;
 	var out = "";
 	//document.forms[0].debug.value="";
 	this.nodeDone = null;
 	if(this.xml){
-		this.eDocument.body.innerHTML = this.cleanCode(this.eDocument.body.innerHTML); //.replace(/\&nbsp;/gi,"<!-- ###WE_NBSP### -->");
+		if(!regular){
+			this.eDocument.body.innerHTML = this.cleanCode(this.eDocument.body.innerHTML); //.replace(/\&nbsp;/gi,"<!-- ###WE_NBSP### -->");
+		}
 		out =  this.getHTMLCode(this.eDocument.body,false);
 		//out = out.replace(/<\!-- ###WE_NBSP### -->/gi, "&nbsp;");
 		if(!(isGecko||isOpera)){
@@ -1615,16 +1618,17 @@ function weWysiwyg_cleanAnchor(code){
 	return code;
 }
 
-function weWysiwyg_setHiddenText(){
+function weWysiwyg_setHiddenText(regular){
+	regular=(typeof regular == 'undefined')?0:regular;
 	var sb = this.showBorders;
-	if(sb && (!this.sourceMode)){
+	if(!regular && sb && (!this.sourceMode)){
 		this.toggleBorders();
 	}
 	if(!this.fullScreenRef){
 		var c1 = this.editHTML;
 		c1 = c1.replace(/\n/gi,"");
 		c1 = c1.replace(/\r/gi,"");
-		var c2 = this.getEditHTML();
+		var c2 = this.getEditHTML(regular);
 		c2 = c2.replace(/\n/gi,"");
 		c2 = c2.replace(/\r/gi,"");
 		if(c2=="<br>") c2="";
@@ -1642,13 +1646,15 @@ function weWysiwyg_setHiddenText(){
 
 	if(this.hot || this.fullScreenRef){
 
-		var code = this.sourceMode ? document.getElementById(this.fName+"_src").value : this.getHTML();
+		var code = this.sourceMode ? document.getElementById(this.fName+"_src").value : this.getHTML(regular);
 		code = this.fullScreenRef ? code : code.replace(/(<img [^>]*)src=['"]?[^'">\? ]+\?id=([0-9]+)(['"]?[^>]*>)/gi,"$1src=\"document:$2$3");
 		code = this.fullScreenRef ? code : code.replace(/(<img [^>]*)src=['"]?[^'">\? ]+\?thumb=([0-9,]+)(['"]?[^>]*>)/gi,"$1src=\"thumbnail:$2$3");
 		document.getElementById(this.hiddenName).value = code;
-		this.editHTML = code;
+		if(!regular){ //otherwise cursor is reset etc.
+			this.editHTML = code;
+		}
 	}
-	if(sb && (!this.sourceMode)){
+	if(sb && (!this.sourceMode)&&!regular){
 		this.toggleBorders();
 	}
 }
@@ -1662,12 +1668,12 @@ function weWysiwyg_setText(txt){
 		this.windowFocus();
 	}
 }
-function weWysiwyg_getEditHTML(){
+function weWysiwyg_getEditHTML(regular){
 	if(this.sourceMode){
 		var ta = document.getElementById(this.fName+"_src");
 		return ta.value;
 	}else{
-		return this.getHTML();
+		return this.getHTML(regular);
 	}
 }
 function weWysiwyg_click(cmd){
