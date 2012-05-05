@@ -285,15 +285,22 @@ function tinyMCEchanged(inst){
 						}
 						self.focus();
 						weWysiwygIsIntialized = true;
+						weWysiwygSetHiddenTextSync();
 					}
 
-					function weWysiwygSetHiddenText() {
+					function weWysiwygSetHiddenTextSync(){
+						weWysiwygSetHiddenText(1);
+						setTimeout(weWysiwygSetHiddenTextSync,500);
+					}
+
+					function weWysiwygSetHiddenText(arg) {
     					try {
     						if (weWysiwygIsIntialized) {
     							for (var i = 0; i < we_wysiwygs.length; i++) {
-    								we_wysiwygs[i].setHiddenText();
+    								we_wysiwygs[i].setHiddenText(arg);
     							}
-    						}
+    						}else{
+								}
     					} catch(e) {
 							// Nothing
     					}

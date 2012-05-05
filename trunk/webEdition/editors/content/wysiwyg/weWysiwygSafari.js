@@ -546,7 +546,8 @@ weWysiwyg.prototype.cleanAnchor = function(code){
 	return code;
 }
 
-weWysiwyg.prototype.setHiddenText = function(){
+weWysiwyg.prototype.setHiddenText = function(regular){
+	regular=(typeof regular == 'undefined')?0:regular;
 	if(!this.fullScreenRef){
 		var c1 = this.editHTML;
 		c1 = c1.replace(/\n/gi,"");
@@ -571,7 +572,9 @@ weWysiwyg.prototype.setHiddenText = function(){
 		code = this.fullScreenRef ? code : code.replace(/(<img [^>]*)src=['"]?[^'">\? ]+\?id=([0-9]+)(['"]?[^>]*>)/gi,"$1src=\"document:$2$3");
 		code = this.fullScreenRef ? code : code.replace(/(<img [^>]*)src=['"]?[^'">\? ]+\?thumb=([0-9,]+)(['"]?[^>]*>)/gi,"$1src=\"thumbnail:$2$3");
 		document.getElementById(this.hiddenName).value = code;
-		this.editHTML = code;
+		if(!regular){ //otherwise cursor is reset etc.
+			this.editHTML = code;
+		}
 	}
 }
 
