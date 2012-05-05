@@ -107,8 +107,8 @@ $lastModified .= '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
 $i = $j = $k = 0;
 while($j < $iMaxItems) {
-	$_query = "SELECT DISTINCT DID,UserName,DocumentTable FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
-					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >' . $timestamp : '') . ' ORDER BY ModDate DESC LIMIT ' . abs($k * $_count) . " , " . abs($_count) . ";";
+	$_query = "SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
+					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . abs($k * $_count) . " , " . abs($_count) . ";";
 	$k++;
 	$DB_WE->query($_query);
 	$_db = new DB_WE();
