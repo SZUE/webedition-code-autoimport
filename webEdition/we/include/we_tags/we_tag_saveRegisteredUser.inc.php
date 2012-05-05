@@ -41,7 +41,7 @@ function we_tag_saveRegisteredUser($attribs){
 			}
 		}
 		foreach($dates as $k => $vv){
-			$_REQUEST['s'][$k] = mktime($vv['hour'], $vv['minute'], 0, $vv['month'], $vv['day'], $vv['year']);
+			$_REQUEST['s'][$k] = $vv['year'].'-'.$vv['month'].'-'.$vv['day'].' '.$vv['hour'].':'.$vv['minute'].':00';
 		}
 
 		//register new User
@@ -131,7 +131,6 @@ function we_tag_saveRegisteredUser($attribs){
 
 					we_saveCustomerImages();
 					$set_a = we_tag_saveRegisteredUser_processRequest();
-
 
 					if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
