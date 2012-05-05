@@ -107,7 +107,7 @@ if(isset($GLOBALS['we_doc'])){
 
 				}}
 
-			var _oldparentid = <?php print $GLOBALS['we_doc']->ParentID; ?>;
+			var _oldparentid = <?php print intval($GLOBALS['we_doc']->ParentID); ?>;
 			function updateCustomerFilterIfNeeded() {
 				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
 					_parentid = _elem.value;
