@@ -263,7 +263,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		return ($cnt == 1) ? $rootId : $all[substr($path, 0, strrpos($path, '/'))];
+		return ($cnt == 1) ? $rootId : $all[$path];
 	}
 
 	function formCopyDocument(){
