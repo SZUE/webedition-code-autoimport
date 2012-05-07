@@ -25,10 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
-print STYLESHEET;
-
-
 $weShopVatRule = weShopVatRule::getShopVatRule();
 
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
@@ -992,7 +988,7 @@ $_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
 
 
 
-if(isset($_REQUEST["SendMail"])){
+if(isset($_REQUEST["SendMail"])){;
 	$weShopStatusMails->sendEMail($_REQUEST["SendMail"], $_REQUEST["bid"], $_customer);
 }
 
