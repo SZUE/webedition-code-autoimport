@@ -219,16 +219,24 @@ function we_tag_field($attribs){
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
-		case 'href' :
-			if(isset($GLOBALS['lv']) && ($GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag')){
-				$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
+		case 'href' :t_e("classN",$GLOBALS['lv']->ClassName);t_e("name",$GLOBALS['lv']->f($name)); //#6329: fixed for lv type=document. check later for other types!
+			if(isset($GLOBALS['lv'])){
+				if($GLOBALS['lv']->ClassName == 'we_listview'){
+					
+					$hrefArr['int'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_int');
+					$hrefArr['intID'] = $GLOBALS['lv']->f($name . '_we_jkhdsf_intID');
+					$hrefArr['extPath'] = $GLOBALS['lv']->f($name);
+					
+				} else if($GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
+					$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
+				}
 				if(!is_array($hrefArr)){
 					$hrefArr = array();
 				}
 				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
-		default :
+		default :t_e("default");
 			$normVal = '';
 			if($name == 'WE_PATH' && $triggerid && isset($GLOBALS['lv']->ClassName) && ($GLOBALS['lv']->ClassName == 'we_search_listview' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_objecttag' )){
 				$triggerpath = id_to_path($triggerid);
@@ -238,8 +246,8 @@ function we_tag_field($attribs){
 				} else{
 					$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL');
 				}
-			} else{
-				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
+			} else{t_e("bin hier");
+				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;t_e("type",$type,"name",$name);
 				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
