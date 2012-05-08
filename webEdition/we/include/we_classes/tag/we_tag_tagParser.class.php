@@ -269,8 +269,9 @@ class we_tag_tagParser{
 				}
 			}
 		}
-		$attribs=str_replace('"',"'",$attribs);
-		t_e('parseAttribs',$attr, $regs,$attribs);
+		if ( !(defined(PHPLOCALSCOPE) && PHPLOCALSCOPE) ) {
+			$attribs=str_replace('"',"'",$attribs);
+		}
 		return rtrim($attribs, ',');
 	}
 
