@@ -115,24 +115,13 @@ if(($we_include = $we_doc->editor($baseHref))){
 		}
 
 		// --> Glossary Replacement
-
-		if((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) &&
-			(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
-
+		if((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
 			weGlossaryReplace::start();
 			include ($we_include);
 			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
 		} else{
-			// --> Glossary Replacement
-
-			if((defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS['we_doc'])) &&
-				(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)){
-				weGlossaryReplace::start();
-				include ($we_include);
-				weGlossaryReplace::end($GLOBALS['we_doc']->Language);
-			} else{
-				include ($we_include);
-			}
+			// --> NO Glossary Replacement
+			include ($we_include);
 		}
 	} else{
 		we_html_tools::protect(); //	only inside webEdition !!!

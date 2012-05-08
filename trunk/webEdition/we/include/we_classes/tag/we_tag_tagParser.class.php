@@ -269,6 +269,8 @@ class we_tag_tagParser{
 				}
 			}
 		}
+		$attribs=str_replace('"',"'",$attribs);
+		t_e('parseAttribs',$attr, $regs,$attribs);
 		return rtrim($attribs, ',');
 	}
 
@@ -355,7 +357,7 @@ class we_tag_tagParser{
 		$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
 		//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
 
-		$parseFn = 'we_parse_tag_' . $tagname;
+		$parseFn = 'we_parse_tag_' . $tagname;t_e("attribs",$attribs);
 		if(function_exists($parseFn)){
 			/* call specific function for parsing this tag
 			 * $attribs is the attribs string, $content is content of this tag

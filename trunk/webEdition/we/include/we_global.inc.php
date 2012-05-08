@@ -1477,12 +1477,12 @@ function we_convertIniSizes($in){
 	return intval($in);
 }
 
-function we_getDocumentByID($id, $includepath = '', $db = '', &$charset = ''){
-	if(!$db){
-		$db = new DB_WE();
+function we_getDocumentByID($id, $includepath = '', $we_getDocumentByIDdb = '', &$charset = ''){
+	if(!$we_getDocumentByIDdb){
+		$we_getDocumentByIDdb = new DB_WE();
 	}
 	// look what document it is and get the className
-	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $db);
+	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $we_getDocumentByIDdb);
 
 	// init Document
 	if(isset($GLOBALS['we_doc'])){
