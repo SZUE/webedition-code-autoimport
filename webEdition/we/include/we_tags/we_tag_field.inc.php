@@ -219,7 +219,7 @@ function we_tag_field($attribs){
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
-		case 'href' :t_e("classN",$GLOBALS['lv']->ClassName);t_e("name",$GLOBALS['lv']->f($name)); //#6329: fixed for lv type=document. check later for other types!
+		case 'href' ://#6329: fixed for lv type=document. check later for other types!
 			if(isset($GLOBALS['lv'])){
 				if($GLOBALS['lv']->ClassName == 'we_listview'){
 					$hrefArr = array();
@@ -236,7 +236,7 @@ function we_tag_field($attribs){
 				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
-		default :t_e("default");
+		default :
 			$normVal = '';
 			if($name == 'WE_PATH' && $triggerid && isset($GLOBALS['lv']->ClassName) && ($GLOBALS['lv']->ClassName == 'we_search_listview' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_objecttag' )){
 				$triggerpath = id_to_path($triggerid);
@@ -246,8 +246,8 @@ function we_tag_field($attribs){
 				} else{
 					$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL');
 				}
-			} else{t_e("bin hier");
-				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;t_e("type",$type,"name",$name);
+			} else{;
+				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
 				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);

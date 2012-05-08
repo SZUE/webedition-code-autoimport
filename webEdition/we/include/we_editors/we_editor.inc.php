@@ -529,7 +529,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 								if($we_doc->i_publInScheduleTable()){
 									$foo = $we_doc->getNextPublishDate();
 									if($foo){
-										$we_responseText .= "\\n" . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
+										$we_responseText .= " - " . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 									}
 								} else{
@@ -539,7 +539,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 												we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "");
 											}
 										}
-										$we_responseText .= "\\n" . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+										$we_responseText .= " - " . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 										// SEEM, here a doc is published
 										$GLOBALS["publish_doc"] = true;
@@ -549,7 +549,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
 									} else{
-										$we_responseText .= "\\n" . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
+										$we_responseText .= " - " . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 									}
 								}

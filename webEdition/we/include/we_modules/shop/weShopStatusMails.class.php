@@ -236,6 +236,12 @@ class weShopStatusMails{
 				$_REQUEST['we_orderid'] = $order;
 				$_REQUEST['we_userlanguage'] = $UserLang;
 				$_REQUEST['we_shopstatus'] = $was;
+				//$incpath= id_to_path($docID);
+				//ob_start();
+				//include($_SERVER['DOCUMENT_ROOT'].$incpath);
+				//$codes = ob_get_contents();
+				//ob_end_clean();
+
 				$codes = we_getDocumentByID($docID);
 				$maildoc = new we_webEditionDocument();
 				$maildoc->initByID($docID);
