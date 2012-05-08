@@ -83,6 +83,10 @@ $global_config[] = array('define("HIDENAMEATTRIBINWEFORM_DEFAULT",', '// Default
 // hooks
 $global_config[] = array('define("EXECUTE_HOOKS",', '// Default setting for hook execution' . "\n" . 'define("EXECUTE_HOOKS", false);');
 
+// php local scope == global scope
+$global_config[] = array('define("PHPLOCALSCOPE",', '// Default setting for assuming php local scope == global scope ' . "\n" . 'define("PHPLOCALSCOPE", false);');
+
+
 // xhtml
 $global_config[] = array('define("XHTML_DEFAULT",', '// Default setting for xml attribute' . "\n" . 'define("XHTML_DEFAULT", false);');
 $global_config[] = array('define("XHTML_DEBUG",', '// Enable XHTML debug' . "\n" . 'define("XHTML_DEBUG", false);');
@@ -567,6 +571,12 @@ function get_value($settingvalue){
 		 * ******************************************************************* */
 		case "execute_hooks":
 			return defined("EXECUTE_HOOKS") ? EXECUTE_HOOKS : false;
+			
+		/*		 * *******************************************************************
+		 * PHPLOCALSCOPE
+		 * ******************************************************************* */
+		case "phpLocalScope":
+			return defined("PHPLOCALSCOPE") ? PHPLOCALSCOPE : false;
 
 		/*		 * *******************************************************************
 		 * Validation
@@ -1829,6 +1839,18 @@ $_we_active_integrated_modules = array(
 
 				$_update_prefs = false;
 				break;
+				
+			/*			 * ***************************************************************
+			 * phpLocalScope
+			 * *************************************************************** */
+
+			case '$_REQUEST["phpLocalScope"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "PHPLOCALSCOPE", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 			/*			 * ***************************************************************
 			 * Validation
@@ -2688,6 +2710,7 @@ function save_all_values(){
 		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, '$_REQUEST["thumbnail_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["phpLocalScope"]) ? $_REQUEST["phpLocalScope"] : null, '$_REQUEST["phpLocalScope"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["removefirstparagraph_default"]) ? $_REQUEST["removefirstparagraph_default"] : null, '$_REQUEST["removefirstparagraph_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweimg_default"]) ? $_REQUEST["hidenameattribinweimg_default"] : null, '$_REQUEST["hidenameattribinweimg_default"]') || $_update_prefs;
@@ -5301,6 +5324,23 @@ else {
 				$hooksHtml .= $_php_setting->getHtml();
 
 				array_push($_settings, array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200));
+				
+				//  select how php is parsed 
+				$_php_setting = new we_html_select(array("name" => "phpLocalScope", "class" => "weSelect"));
+				$_php_setting->addOption(0, g_l('prefs', '[no]'));
+				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
+
+				if(get_value("phpLocalScope")){
+					$_php_setting->selectOption(1);
+				} else{
+					$_php_setting->selectOption(0);
+				}
+
+				$phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), 2, 240, false) . "<br/>";
+
+				$phpLocalScopeHtml .= $_php_setting->getHtml();
+
+				array_push($_settings, array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200));
 
 				// Build dialog element if user has permission
 				$_dialog = create_dialog("", g_l('prefs', '[tab_system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
