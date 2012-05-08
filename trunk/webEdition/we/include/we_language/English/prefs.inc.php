@@ -145,11 +145,6 @@ $l_prefs=array(
 	'hooks'=>'Hooks',
 	'hooks_information'=>'The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
 	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?',
-	'phpLocalScope'=>'Tag-Parser: <br/>assume PHP LocalScope==GlobalScope',
-	'phpLocalScope_information'=>'If you just use we:tags in your templates, please select the option "no" (this is the standard value).<br/>
-	If you use your own PHP code in templates, make sure, that all PHP variables which are used as attributs to we:tags, are saved in the $GLOBALS array.<br/>
-	<br/>To ensure backwards compatibility with old PHP code, which store PHP variables in the local scope (i.e. $X=1;), you can select the option "yes". Be aware, that in this case, you might encounter problems while sending e-mails, i.e. in the Newsletter- and Shop-Module as welöl as with the we:sendMail-tag.<br/>
-	In order to switch to the standard "no", please replace in your templates the php code in the following manner: replace $x=1; to $GLOBALS["x"]=1;.<br/><br/>We strongly recommend to switch to the standard setting "no".',
 	'html'=>'HTML pages',
 	'html_extensions'=>'HTML extensions',
 	'inlineedit_default'=>'Default value for the<br/><em>inlineedit</em> attribute in<br/>&lt;we:textarea&gt;',
