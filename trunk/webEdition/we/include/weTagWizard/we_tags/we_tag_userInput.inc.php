@@ -48,6 +48,10 @@ $minyear = new weTagData_textAttribute('minyear', false, '');
 $maxyear = new weTagData_textAttribute('maxyear', false, '');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail',THUMBNAILS_TABLE, false, 'Name', '', '', '');
 
+$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$nameto = new weTagData_textAttribute('nameto', false, '');
+
+
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 new weTagDataOption('textinput', false, '', array($name, $property, $editable, $size, $maxlength, $value, $class, $style), array($name)),
  new weTagDataOption('textarea', false, '', array($name, $property, $editable, $value, $cols, $rows, $autobr, $width, $height, $bgcolor, $class, $style, $hideautobr, $wysiwyg, $commands, $fontnames, $classes), array($name)),
@@ -56,7 +60,7 @@ new weTagDataOption('textinput', false, '', array($name, $property, $editable, $
  new weTagDataOption('choice', false, '', array($name, $property, $editable, $size, $maxlength, $value, $values, $class, $style), array($name)),
  new weTagDataOption('select', false, '', array($name, $property, $editable, $size, $value, $values, $class, $style), array($name)),
  new weTagDataOption('hidden', false, '', array($name, $property), array($name)),
- new weTagDataOption('print', false, '', array($name, $property), array($name)),
+ new weTagDataOption('print', false, '', array($name, $property, $to,$nameto), array($name)),
 	new weTagDataOption('date', false, '', array($name, $property, $editable, $format, $value, $minyear, $maxyear, $hidden), array($name)),
  new weTagDataOption('password', false, '', array(array())),
  new weTagDataOption('img', false, 'customer', array($name, $editable, $size, $value, $width, $height, $thumbnail, $parentid, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $checkboxclass, $inputstyle, $inputclass, $checkboxtext), array($name, $parentid)),
