@@ -269,9 +269,6 @@ class we_tag_tagParser{
 				}
 			}
 		}
-		if ( !(defined(PHPLOCALSCOPE) && PHPLOCALSCOPE) ) {
-			$attribs=str_replace('"',"'",$attribs);
-		}
 		return rtrim($attribs, ',');
 	}
 
@@ -355,10 +352,14 @@ class we_tag_tagParser{
 					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
 			}
 		}
-		$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
-		//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
-
-		$parseFn = 'we_parse_tag_' . $tagname;t_e("attribs",$attribs);
+		
+		if ( (defined(PHPLOCALSCOPE) && PHPLOCALSCOPE) ) {
+			$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
+			//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
+		} else {
+			$attribs ='array(' . rtrim($attribs, ',') . ')';
+		}
+		$parseFn = 'we_parse_tag_' . $tagname;
 		if(function_exists($parseFn)){
 			/* call specific function for parsing this tag
 			 * $attribs is the attribs string, $content is content of this tag
