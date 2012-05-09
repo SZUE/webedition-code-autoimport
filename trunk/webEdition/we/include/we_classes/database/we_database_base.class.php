@@ -351,7 +351,8 @@ abstract class we_database_base{
 		}
 
 # Will return nada if it fails. That's fine.
-		return (bool) $this->Query_ID;
+//(bool) entfernt um Kompatibilität mit alten weDevEdge Beispiel herzustellen
+		return $this->Query_ID;
 	}
 
 	/* discard the query result */
