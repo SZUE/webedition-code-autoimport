@@ -114,7 +114,7 @@ class we_langlink_listview extends listviewBase{
 				$found = $this->DB_WE->num_rows();
 				if($found){
 					$this->DB_WE->next_record();
-					$this->foundlinks[] = $this->DB_WE->Record;
+					$this->foundlinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record;
 				} else{
 					$this->getParentData($this->id, $langkey);
 				}
@@ -134,11 +134,41 @@ class we_langlink_listview extends listviewBase{
 					$dt['Url'] = $row['Url'];
 					$dt['TriggerID'] = $row['TriggerID'];
 				}
-				$this->foundlinks[] = $dt;
+				$this->foundlinks[$this->ownlanguage] = $dt;
 			}
+
+			// sort array 
 			if($this->order == "random()"){
 				shuffle($this->foundlinks);
+			} else if($this->order == "Locale"){
+				if($this->desc){
+					krsort($this->foundlinks);
+				} else{
+					ksort($this->foundlinks);
+				}
+			} else if(strpos($this->order, '_') > 0){ //csv: ordered list of locales
+				$orderArr = explode(',', trim($this->order));
+				$orderedLinks = array();
+				foreach($orderArr as $orderLocale){
+					if(isset($this->foundlinks[$orderLocale])){
+						$orderedLinks[$orderLocale] = $this->foundlinks[$orderLocale];
+						unset($this->foundlinks[$orderLocale]);
+					}
+				}
+				$sortFn = 'ksort';
+				if($this->desc){
+					$sortFn = 'krsort';	
+				}
+				$sortFn($this->foundlinks);
+				$this->foundlinks = array_merge($orderedLinks, $this->foundlinks);
 			}
+			
+			// to go on with $this->foundlinks it must not be associative!
+			$tmpFoundlinks = array();
+			foreach($this->foundlinks as $foundlink){
+				$tmpFoundlinks[] = $foundlink;
+			}
+			$this->foundlinks  = $tmpFoundlinks;
 
 
 			$this->anz_all = count($this->foundlinks);
