@@ -210,6 +210,11 @@ $l_prefs=array(
 	'on'=>'on',
 	'pagelogger_dir'=>'Directorio pageLogger',
 	'performance'=>'Aqui Ud puede ajustar un nivel apropiado de ejecución. El nivel de ejecución debe ser adecuado al sistema de su servidor. Si su sistema tiene recursos limitados (memoria, pausas, etc) Ud debe escoger un nivel menor sino puede escoger un nivel mayor.',
+	'phpLocalScope'=>'Tag-Parser: <br/>assume PHP local scope==global scope',
+	'phpLocalScope_information'=>'`If you just use we:tags in your templates, please select the option "no" (this is the standard value).<br/>
+	If you use your own PHP code in templates, make sure, that all PHP variables which are used as attributs to we:tags, are saved in the $GLOBALS array.<br/>
+	<br/>To ensure backwards compatibility with old PHP code, which store PHP variables in the local scope (i.e. $X=1;), you can select the option "yes". Be aware, that in this case, you might encounter problems while sending e-mails, i.e. in the Newsletter- and Shop-Module as welöl as with the we:sendMail-tag.<br/>
+	In order to switch to the standard "no", please replace in your templates the php code in the following manner: replace $x=1; to $GLOBALS["x"]=1;.<br/><br/>We strongly recommend to switch to the standard setting "no".',
 	'predefined'=>'Dimensiones predefinidas',
 	'preload'=>'Cargando preferencias, un momento ...',
 	'preload_wait'=>'Cargando preferencias',
