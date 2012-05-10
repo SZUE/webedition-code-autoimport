@@ -779,23 +779,27 @@ class we_objectFile extends we_document{
 	}
 
 	static function getSortArray($tableID, $db){
-		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $tableID, 'strOrder', $db));
-		$ctable = OBJECT_X_TABLE . $tableID;
-		$tableInfo = $db->metadata($ctable);
-		$fields = array();
-		foreach($tableInfo as $info){
-			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-				if($regs[1] != "OF" && $regs[1] != "variant"){
-					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
+		if($tableID){
+			$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $tableID, 'strOrder', $db));
+			$ctable = OBJECT_X_TABLE . $tableID;
+			$tableInfo = $db->metadata($ctable);
+			$fields = array();
+			foreach($tableInfo as $info){
+				if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
+					if($regs[1] != "OF" && $regs[1] != "variant"){
+						$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
+					}
 				}
 			}
-		}
-
-		if(count($order) != count($fields)){
-			$order = array();
-			for($y = 0; $y < count($fields); $y++){
-				$order[$y] = $y;
+	
+			if(count($order) != count($fields)){
+				$order = array();
+				for($y = 0; $y < count($fields); $y++){
+					$order[$y] = $y;
+				}
 			}
+		} else {
+			$order = array();
 		}
 		return $order;
 	}
