@@ -201,11 +201,13 @@ class weModuleFrames{
 	function getHTMLBox($content, $headline = "", $width = "100", $height = "50", $w = "25", $vh = "0", $ident = "0", $space = "5", $headline_align = "left", $content_align = "left"){
 		$out = "";
 		$headline = str_replace(" ", "&nbsp;", $headline);
-		if($ident)
+		if($ident){
 			$pix1 = we_html_tools::getPixel($ident, $vh);
+		}
 		if($w){
-			if(!$vh)
+			if(!$vh){
 				$vh = 1;
+			}
 			$pix2 = we_html_tools::getPixel($w, $vh);
 		}
 
@@ -213,16 +215,18 @@ class weModuleFrames{
 
 		$table = new we_html_table(array("width" => "$width", "height" => "$height", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 4);
 
-		if($ident)
-			$table->setCol(0, 0, array("valign" => "top"), $pix1->getHTML());
-		if($w)
-			$table->setCol(0, 1, array("valign" => "top"), $pix2->getHTML());
+		if($ident){
+			$table->setCol(0, 0, array("valign" => "top"), $pix1);
+		}
+		if($w){
+			$table->setCol(0, 1, array("valign" => "top"), $pix2);
+		}
 		$table->setCol(1, 1, array("valign" => "middle", "class" => "defaultgray", "align" => $headline_align), $headline);
-		$table->setCol(1, 2, array(), $pix3->getHTML());
+		$table->setCol(1, 2, array(), $pix3);
 		$table->setCol(1, 3, array("valign" => "middle", "align" => $content_align), $content);
-		if($w && $headline != "")
-			$table->setCol(2, 1, array("valign" => "top"), $pix2->getHTML());
-
+		if($w && $headline != ""){
+			$table->setCol(2, 1, array("valign" => "top"), $pix2);
+		}
 		$out = $table->getHtml();
 
 
