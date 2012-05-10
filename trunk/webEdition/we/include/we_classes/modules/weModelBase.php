@@ -59,10 +59,14 @@ class weModelBase{
 	 * Load entry from database
 	 */
 	function load($id=0){
+		if($id){
+			$this->ID = $id;
+		}
 		if($this->isKeyDefined()){
-			if($id){
-				$this->ID = $id;
-			}
+			//if($id){
+			//	$this->ID = $id;
+			//}
+			//#6338: Kode vor den if-Block geschoben
 			$tableInfo = $this->db->metadata($this->table);
 			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
 
