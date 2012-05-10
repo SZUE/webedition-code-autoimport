@@ -27,7 +27,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$match_orig = weTag_getAttribute('match', $attribs);
-	$match = we_tag_getPostName($match);
+	$match = we_tag_getPostName($match_orig);//#6367
 
 	$name = weTag_getAttribute('name', $attribs);
 
