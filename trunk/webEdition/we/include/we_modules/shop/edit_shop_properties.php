@@ -24,6 +24,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+we_html_tools::htmlTop();
+print STYLESHEET;
 
 $weShopVatRule = weShopVatRule::getShopVatRule();
 
@@ -899,12 +901,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			break;
 	}
 }
-
-
-we_html_tools::htmlTop();
-
-print STYLESHEET;
-
 
 if(isset($_REQUEST["deletethisorder"])){
 
