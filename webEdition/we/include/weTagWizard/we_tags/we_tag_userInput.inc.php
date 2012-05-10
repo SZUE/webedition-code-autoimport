@@ -73,4 +73,4 @@ new weTagDataOption('textinput', false, '', array($name, $property, $editable, $
 
 $this->Attributes = array($name, $property, $checked, $editable, $xml, $removefirstparagraph, $size, $maxlength, $format, $value, $values, $hidden, $currentdate, $cols,
 	$rows, $pure, $autobr, $width, $bgcolor, $class, $style, $classes, $wysiwyg, $commands, $fontnames, $parentid, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle,
-	$checkboxclass, $inputstyle, $inputclass, $checkboxtext, $doc, $minyear, $maxyear);
+	$checkboxclass, $inputstyle, $inputclass, $checkboxtext, $doc, $minyear, $maxyear,$to,$nameto);
