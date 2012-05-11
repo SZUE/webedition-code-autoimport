@@ -26,14 +26,13 @@ function we_tag_ifCaptcha($attribs){
 	$name = weTag_getAttribute('name', $attribs);
 	$formname = weTag_getAttribute('formname', $attribs);
 
-	if(!empty($formname)){
-		if(isset($_REQUEST['we_ui_' . $formname][$name]))
+	if(isset($_REQUEST[$name])){
+		if(!empty($formname) && isset($_REQUEST['we_ui_' . $formname][$name])){
 			return Captcha::check($_REQUEST['we_ui_' . $formname][$name]);
-	} else{
-		if(isset($_REQUEST['we_ui_we_global_form'][$name])){
-			return Captcha::check($_REQUEST['we_ui_we_global_form'][$name]);
-		}
-		if(isset($_REQUEST[$name])){
+		} else{
+			if(isset($_REQUEST['we_ui_we_global_form'][$name])){
+				return Captcha::check($_REQUEST['we_ui_we_global_form'][$name]);
+			}
 			return Captcha::check($_REQUEST[$name]);
 		}
 	}

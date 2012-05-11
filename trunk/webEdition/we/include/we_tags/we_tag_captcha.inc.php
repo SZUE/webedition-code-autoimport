@@ -61,9 +61,11 @@ function we_parse_tag_captcha($attribs){
 	$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
 
 	$fh = fopen($_SERVER['DOCUMENT_ROOT'] . $file, "w+");
-	$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
+	// FIXME: what parts of we.in.php do we really need here? Include them and throw we.inc.php out.
+	$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
+			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
 			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");
-				require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");' . "\n" . "\n" . "\$image = new CaptchaImage(" . $width . ", " . $height . ", " . $maxlength . ");\n";
+			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");' . "\n" . "\n" . "\$image = new CaptchaImage(" . $width . ", " . $height . ", " . $maxlength . ");\n";
 	if($fontpath != ""){
 		$php .= "\$image->setFontPath('" . $fontpath . "');\n";
 	}

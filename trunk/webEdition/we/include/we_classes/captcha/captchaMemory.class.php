@@ -93,7 +93,7 @@ class CaptchaMemory {
 
 		CaptchaMemory::writeData($file, $items);
 
-        return $returnValue;
+		return $returnValue;
 	} /* end: isValid */
 
 
