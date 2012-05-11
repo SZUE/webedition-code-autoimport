@@ -662,7 +662,7 @@ abstract class we_database_base{
 			return false;
 		}
 		$col = trim($col, '`');
-		return f('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', 'Path', $this) != '';
+		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"',$this));
 	}
 
 	function isTabExist($tab){
