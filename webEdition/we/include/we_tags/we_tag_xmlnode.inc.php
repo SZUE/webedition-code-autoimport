@@ -30,8 +30,11 @@ function we_parse_tag_xmlnode($attribs, $content){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
 			}else{
 			  print ' . $unq . '->getFeedData();
+			  
 			}
-			array_pop($GLOBALS["xstack"]);
+			//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
+			// fix me
+			// wann kann man was aus dem Arrax löschen?
 		}
 		unset(' . $unq . ');?>';
 }
@@ -54,19 +57,18 @@ function we_tag_xmlnode($attribs){
 		$GLOBALS["xpaths"] = array();
 	if(!isset($GLOBALS["xstack"]))
 		$GLOBALS["xstack"] = array();
-	$pind_name = count($GLOBALS["xstack"]);
-	if($pind_name <= 0){
+	$pind_name = count($GLOBALS["xstack"])-1;
+	if($pind_name < 0){
 		$pind_name = 0;
 		$parent_name = '';
 	} else {
-		$parent_name = $GLOBALS["xstack"][$pind_name-1];
+		$parent_name = $GLOBALS["xstack"][$pind_name];
 	}
 
 	$ind_name = count($GLOBALS["xpaths"]) + 1;
 	$GLOBALS["xpaths"][$ind_name] = array();
 	$GLOBALS["xpaths"][$ind_name]["xpath"] = $attribs["xpath"];
 	$GLOBALS["xpaths"][$ind_name]["parent"] = $parent_name;
-
 	$got_name = false;
 
 
@@ -75,34 +77,34 @@ function we_tag_xmlnode($attribs){
 		$feed_name = new weXMLBrowser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
-	} else
-	if($feed){
-		$feed_name = $GLOBALS["xmlfeeds"][$feed];
-		$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
-		$got_name = true;
 	} else {
-		$got_name = false;
-		$c_name = 0;
-
-		if(!empty($parent_name)){
-			for($c_name = $pind_name; $c_name > -1; $c_name--){
-				$otac_name = $GLOBALS["xstack"][$c_name];
-				if(isset($GLOBALS["xpaths"][$otac_name])){
-					if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
-						$feed_name = new weXMLBrowser($GLOBALS["xpaths"][$otac_name]["url"]);
-						$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
-						$got_name = true;
-					}
-					if(isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])){
-						$feed_name = $GLOBALS["xmlfeeds"][$GLOBALS["xpaths"][$otac_name]["feed"]];
-						$GLOBALS["xpaths"][$ind_name]["feed"] = $GLOBALS["xpaths"][$otac_name]["feed"];
-						$got_name = true;
+		if($feed){
+			$feed_name = $GLOBALS["xmlfeeds"][$feed];
+			$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
+			$got_name = true;
+		} else {
+			$got_name = false;
+			$c_name = 0;
+	
+			if(!empty($parent_name)){
+				for($c_name = $pind_name; $c_name > -1; $c_name--){
+					$otac_name = $GLOBALS["xstack"][$c_name];
+					if(isset($GLOBALS["xpaths"][$otac_name])){
+						if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
+							$feed_name = new weXMLBrowser($GLOBALS["xpaths"][$otac_name]["url"]);
+							$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
+							$got_name = true;
+						}
+						if(isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])){
+							$feed_name = $GLOBALS["xmlfeeds"][$GLOBALS["xpaths"][$otac_name]["feed"]];
+							$GLOBALS["xpaths"][$ind_name]["feed"] = $GLOBALS["xpaths"][$otac_name]["feed"];
+							$got_name = true;
+						}
 					}
 				}
 			}
 		}
 	}
-
 	$nodes_name = array();
 	if($got_name){
 		if(isset($GLOBALS["xsuperparent"])){
