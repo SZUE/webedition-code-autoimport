@@ -94,7 +94,7 @@ $global_config[] = array('define("XHTML_REMOVE_WRONG",', '// Remove wrong xhtml 
 
 $global_config[] = array('define("WE_MAX_UPLOAD_SIZE",', '// Maximal possible uploadsize' . "\n" . 'define("WE_MAX_UPLOAD_SIZE", "");');
 $global_config[] = array('define("WE_DOCTYPE_WORKSPACE_BEHAVIOR",', '// Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour' . "\n" . 'define("WE_DOCTYPE_WORKSPACE_BEHAVIOR", 0);');
-$global_config[] = array('define(\'SCHEUDLER_TRIGGER\',', '// decide how the scheduler works' . "\n" . 'define(\'SCHEUDLER_TRIGGER\', 1);');
+$global_config[] = array('define("SCHEDULER_TRIGGER",', '// decide how the scheduler works' . "\n" . 'define("SCHEDULER_TRIGGER", true);');
 
 // accessibility
 $global_config[] = array('define("SHOWINPUTS_DEFAULT",', '// Default setting for showinputs attribute' . "\n" . 'define("SHOWINPUTS_DEFAULT", true);');
@@ -557,7 +557,7 @@ function get_value($settingvalue){
 			return defined("WE_DOCTYPE_WORKSPACE_BEHAVIOR") ? WE_DOCTYPE_WORKSPACE_BEHAVIOR : 0;
 
 		case 'we_scheduler_trigger':
-			return defined('SCHEUDLER_TRIGGER') ? SCHEUDLER_TRIGGER : SCHEDULER_TRIGGER_POSTDOC;
+			return defined("SCHEDULER_TRIGGER") ? SCHEDULER_TRIGGER : SCHEDULER_TRIGGER_POSTDOC;
 
 		/*		 * *******************************************************************
 		 * TREE
@@ -1757,7 +1757,7 @@ $_we_active_integrated_modules = array(
 
 			case '$_REQUEST["we_scheduler_trigger"]':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SCHEUDLER_TRIGGER", $settingvalue);
+				$_file = weConfParser::changeSourceCode("define", $_file, "SCHEDULER_TRIGGER", $settingvalue);
 
 				$_update_prefs = false;
 				break;
@@ -5128,6 +5128,7 @@ else {
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
+					$_Schedtrigger_setting->selectOption(get_value("we_scheduler_trigger"));
 					$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430, false) . '</div>';
 					$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 				}
