@@ -55,11 +55,11 @@ function we_tag_xmlnode($attribs){
 	if(!isset($GLOBALS["xstack"]))
 		$GLOBALS["xstack"] = array();
 	$pind_name = count($GLOBALS["xstack"]);
-	if($pind_name < 0){
+	if($pind_name <= 0){
 		$pind_name = 0;
 		$parent_name = '';
-	} else{
-		$parent_name = $GLOBALS["xstack"][$pind_name];
+	} else {
+		$parent_name = $GLOBALS["xstack"][$pind_name-1];
 	}
 
 	$ind_name = count($GLOBALS["xpaths"]) + 1;
@@ -80,7 +80,7 @@ function we_tag_xmlnode($attribs){
 		$feed_name = $GLOBALS["xmlfeeds"][$feed];
 		$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
 		$got_name = true;
-	} else{
+	} else {
 		$got_name = false;
 		$c_name = 0;
 
@@ -124,13 +124,14 @@ function we_tag_xmlnode($attribs){
 				}
 			}
 		}
-		if(count($nodes_name) != 0)
+		if(count($nodes_name) != 0){
 			$got_name = true;
-		else
+		} else {
 			$got_name = true;
+		}
 	}
 
-	array_push($GLOBALS["xstack"], ind_name);
+	array_push($GLOBALS["xstack"], $ind_name); //war einfach ind_name und fehler undefinend konstant
 
 	return new _we_tag_xmlnode_struct($nodes_name, $feed_name);
 }
