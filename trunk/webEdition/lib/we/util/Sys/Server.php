@@ -154,8 +154,8 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @author Alexander Lindenstruth
 	 */
 	public static function getDocroot(){
-		if(isset($_SERVER["DOCUMENT" . "_ROOT"]) && !empty($_SERVER['DOCUMENT_ROOT'])){
-			return $_SERVER['DOCUMENT_ROOT'];
+		if(isset($_SERVER['DOCUMENT' . '_ROOT']) && !empty($_SERVER['DOCUMENT' . '_ROOT'])){
+			return $_SERVER['DOCUMENT' . '_ROOT'];
 		} else{
 			// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
 			return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
