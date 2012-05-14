@@ -53,11 +53,13 @@ function up6300_updateConf(){
 	} else {
 		$settingvalue='ISO-8859-1';
 	}
-
-	$conf = weConfParser::changeSourceCode("define", $conf, "WE_BACKENDCHARSET", $settingvalue);
-	$conf=str_replace('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")','',$conf);
-
-	return file_put_contents($filename,$conf);
+	if(strpos($conf,'define("WE_BACKENDCHARSET"')===false){
+		$conf = weConfParser::changeSourceCode("define", $conf, "WE_BACKENDCHARSET", $settingvalue);
+		$conf=str_replace('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")','',$conf);
+		return file_put_contents($filename,$conf);
+	} else {
+		return true;
+	}
 }
 function up6300_removeFiles(){
 	$toRemove = array('Deutsch_UTF-8','Dutch_UTF-8','English_UTF-8','Finnish_UTF-8','French_UTF-8','Polish_UTF-8','Russian_UTF-8','Spanish_UTF-8');
