@@ -107,7 +107,7 @@ class weTagData{
 				}
 			}
 		} else{
-			$value->AllowedAttributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]'));
+			$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]'));// Bug #6341
 		}
 	}
 
