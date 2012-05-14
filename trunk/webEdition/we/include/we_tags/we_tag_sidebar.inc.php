@@ -33,7 +33,7 @@ function we_tag_sidebar($attribs, $content){
 		$anchor = weTag_getAttribute("anchor", $attribs);
 		$width = weTag_getAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
 		$params = weTag_getAttribute('params', $attribs);
-		if($urladd && strpos($urladd, '?')===0){
+		if(isset($urladd) && strpos($urladd, '?')===0){
 			$urladd=substr($urladd,1);
 		}
 

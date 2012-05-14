@@ -78,19 +78,15 @@ weSidebar.open = function() {
 
 
 weSidebar.close = function() {
-	var frameObj = top.frames["rframe"].document.body;
-	var split = new Array;
-	split = frameObj.cols.split(',');
-	frameObj.cols = split[0].concat(',*,0');
+	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = 0 + "px";
+	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = 0 + "px";
 
 }
 
 
 weSidebar.resize = function(width) {
-	var frameObj = top.frames["rframe"].document.body;
-	var split = new Array;
-	split = frameObj.cols.split(',');
-	frameObj.cols = split[0].concat(',*,' + width);
+	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = width + "px";
+	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = width + "px";
 
 }
 
