@@ -29,7 +29,7 @@ $l_sidebar=array(
 		'3'=>array(
 			'headline'=>'Tagi hakemisto',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'http://tags.webedition.org/wiki/en/',
+			'link'=>'http://webedition.org/de/webedition-cms/dokumentation/tag-referenz/',
 			'text'=>'Here you will find a list of all webEdition we:Tags with attributes and examples.',
 		),
 		'4'=>array(
