@@ -25,6 +25,7 @@
 function we_isFieldNotEmpty($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$match = weTag_getAttribute('match', $attribs);
+	$orig_match = $match;
 	$match = ($GLOBALS['lv']->f($match) ? $match : we_tag_getPostName($match));
 
 	switch($type){
@@ -89,7 +90,6 @@ function we_isFieldNotEmpty($attribs){
 		case 'quicktime' :
 			return $GLOBALS['lv']->f(we_tag_getPostName($match));
 		case 'href' :
-			$match = we_tag_getPostName($match);
 			if($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
 				$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
 				if(!is_array($hrefArr)){
@@ -101,6 +101,11 @@ function we_isFieldNotEmpty($attribs){
 				}
 				return (bool) $hreftmp;
 			}
+			
+			// we must check $match . '_we_jkhdsf_int' for block-Postfix instead of $match (which exists only for href type = ext): #6422
+			$isInBlock = $GLOBALS['lv']->f($orig_match . '_we_jkhdsf_int') ? false : true;
+			$match = $isInBlock ? we_tag_getPostName($orig_match) : $orig_match;
+			
 			$int = ($GLOBALS['lv']->f($match . '_we_jkhdsf_int') == '') ? 0 : $GLOBALS['lv']->f($match . '_we_jkhdsf_int');
 			if($int){ // for type = href int
 				$intID = $GLOBALS['lv']->f($match . '_we_jkhdsf_intID');
@@ -113,7 +118,6 @@ function we_isFieldNotEmpty($attribs){
 			}
 			break;//see return of function
 		default :
-			$match = we_tag_getPostName($match);
 			$_tmp = @unserialize($GLOBALS['lv']->f($match));
 			if(is_array($_tmp)){
 				return count($_tmp) > 0;
