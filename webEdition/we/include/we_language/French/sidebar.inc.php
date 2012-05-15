@@ -29,7 +29,7 @@ $l_sidebar=array(
 		'3'=>array(
 			'headline'=>'How to proceed',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'http://tags.webedition.org/wiki/de/',
+			'link'=>'http://webedition.org/de/webedition-cms/dokumentation/tag-referenz/',
 			'text'=>'You can create your individual web site entirely from the scratch or access available elements and base layouts.',
 		),
 		'4'=>array(

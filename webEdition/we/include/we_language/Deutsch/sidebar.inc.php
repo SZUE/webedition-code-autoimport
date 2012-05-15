@@ -29,7 +29,7 @@ $l_sidebar=array(
 		'3'=>array(
 			'headline'=>'Tagreferenz',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'http://tags.webedition.org/wiki/de/',
+			'link'=>'http://webedition.org/de/webedition-cms/dokumentation/tag-referenz/',
 			'text'=>'Hier finden Sie eine Auflistung aller in webEdition verwendeten we:Tags mit Attributen und Anwendungsbeispielen.',
 		),
 		'4'=>array(
