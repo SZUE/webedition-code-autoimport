@@ -654,10 +654,10 @@ class we_imageDocument extends we_binaryDocument{
 		$_content->setCol(5, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 
 		//	Row 7
-		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "Title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
-		$_titleField = "we_" . $this->Name . "_attrib[Title]";
+		$_titleField = "we_" . $this->Name . "_attrib[title]";
 		$_metaTitleField = "we_" . $this->Name . "_txt[Title]";
 		$useMetaTitle = "we_" . $this->Name . "_txt[useMetaTitle]";
 		//	disable field 'title' when checked or not.
