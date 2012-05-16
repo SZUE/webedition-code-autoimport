@@ -65,7 +65,7 @@ class we_base_ContentTypes{
 				'Extension' => '.tmpl',
 				'Permission' => 'NEW_TEMPLATE',
 				'DefaultCode' => '<!DOCTYPE HTML>
-<html dir="ltr" lang="<we:pageLanguage type="complete" doc="top" />">
+<html dir="ltr" lang="<we:pageLanguage type="language" doc="top" />">
 <head>
 	<we:title></we:title>
 	<we:description></we:description>
