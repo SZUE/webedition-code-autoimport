@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weClass=array(
+	''=>'',
 	'adoptToAllInferiorDocuments'=>'adopt for all inferior documents',
 	'align'=>'Центровка',
 	'alt'=>'Альтернативный текст',
