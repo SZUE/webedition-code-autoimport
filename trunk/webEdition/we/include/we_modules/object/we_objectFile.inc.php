@@ -3047,7 +3047,7 @@ class we_objectFile extends we_document{
 				if($regs[1] == "OF"){
 					$data[$tableInfo[$i]["name"]] = (isset($this->$name) ? $this->$name : '');
 				} else{
-					$name = ($regs[1] == "object") ? ("object_" . $name) : $name;
+					$name = ($regs[1] == "object") ? ("we_object_" . $name) : $name;
 					$data[$tableInfo[$i]["name"]] = $this->getElement($name);
 				}
 			}
