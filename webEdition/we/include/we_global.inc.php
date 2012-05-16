@@ -293,9 +293,19 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 		'status' => 0, // 0=ok otherwise error
 		'error' => '' // error string
 	);
-
+	$parsedurl=parse_url($server);
+	if(isset($parsedurl['scheme'])){
+		$protocol=$parsedurl['scheme'].'://';
+	} else {
+		$protocol='http://';
+	}
+	if(isset($parsedurl['port'])){
+		 $port=':'.$parsedurl['port'];
+	} else {
+		 $port='';
+	}
 	$_pathA = explode('?', $path);
-	$_url = $protocol . '://' . $server . ':' . $port . $_pathA[0];
+	$_url = $protocol . $parsedurl['host'] .  $port . $_pathA[0];
 	$_params = array();
 
 	$_session = curl_init();
