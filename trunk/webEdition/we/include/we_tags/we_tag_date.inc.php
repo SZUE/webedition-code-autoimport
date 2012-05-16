@@ -28,6 +28,10 @@ function we_tag_date($attribs){
 
 	switch(strtolower($type)){
 		case 'js':
+			$monthsLong = g_l('date', '[month][long]');
+			ksort($monthsLong);
+			$monthsShort = g_l('date', '[month][short]');
+			ksort($monthsShort);
 			$js = 'heute = new Date();
 		function getDateS(d){
 			switch(d){
@@ -47,9 +51,9 @@ function we_tag_date($attribs){
 		}
 		function getDateWord(f,dateObj){
 			var l_day_Short = new Array("' . implode('","', g_l('date', '[day][short]')) . '");
-			var l_monthLong = new Array("' . implode('","', g_l('date', '[month][long]')) . '");
+			var l_monthLong = new Array("' . implode('","', $monthsLong) . '");
 			var l_dayLong = new Array("' . implode('","', g_l('date', '[day][long]')) . '");
-			var l_monthShort = new Array("' . implode('","', g_l('date', '[month][short]')) . '");
+			var l_monthShort = new Array("' . implode('","', $monthsShort) . '");
 			switch(f){
 				case "D":
 					return l_day_Short[dateObj.getDay()];
