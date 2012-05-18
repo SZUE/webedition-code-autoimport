@@ -11,6 +11,12 @@ way to fit your requirements.
 var menuActive = false;
 
 
+
+function topMenuClickThis(elem){
+	var itemState = (menuActive) ? "top_div" : "top_div click";
+	elem.className = itemState;
+}
+
 function topMenuClick(){
 	var elemsDivTop = document.getElementById("nav").getElementsByTagName("DIV");
 	var itemsState = (menuActive) ? "top_div" : "top_div click";
@@ -18,7 +24,6 @@ function topMenuClick(){
 	for (var x=0; x < elemsDivTop.length; x++){
 		elemsDivTop[x].className = itemsState;
 	}
-
 }
 
 function topMenuHover(elem){
