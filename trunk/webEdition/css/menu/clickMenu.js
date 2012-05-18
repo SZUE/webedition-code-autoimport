@@ -10,16 +10,10 @@ way to fit your requirements.
 
 var menuActive = false;
 
-
-
-function topMenuClickThis(elem){
-	var itemState = (menuActive) ? "top_div" : "top_div click";
-	elem.className = itemState;
-}
-
-function topMenuClick(){
-	var elemsDivTop = document.getElementById("nav").getElementsByTagName("DIV");
+function topMenuClick(elem){
 	var itemsState = (menuActive) ? "top_div" : "top_div click";
+	elem.className = itemsState;
+	var elemsDivTop = document.getElementById("nav").getElementsByTagName("DIV");
 	menuActive = (menuActive) ? false : true;
 	for (var x=0; x < elemsDivTop.length; x++){
 		elemsDivTop[x].className = itemsState;
