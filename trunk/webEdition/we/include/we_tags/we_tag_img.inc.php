@@ -39,11 +39,15 @@ function we_tag_img($attribs){
 	//$attribs = removeAttribs($attribs, array('name', 'xmltype','to','nameto'));
 
 
-	$id = weTag_getAttribute("id", $attribs); ;
+	
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-	if(weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
-		$attribs['id']=weTag_getAttribute("id", $attribs); //siehe korrespondierende Änderung in we:document::getField
+	$id = $id ? $id :  weTag_getAttribute("id", $attribs);
+	
+	if(isset($attribs['showcontrol']) && !$showcontrol &&  weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		$id = weTag_getAttribute("id", $attribs);
+		$attribs['id']=$id; //siehe korrespondierende Änderung in we:document::getField
+		$attribs['showcontrol']=$showcontrol;//sicherstellen das es boolean iost
 	}
 
 	//look if image exists in tblfile, and is an image
