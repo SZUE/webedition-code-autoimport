@@ -613,6 +613,18 @@ class we_imageDocument extends we_binaryDocument{
 	function getimagesize($filename){
 		return we_thumbnail::getimagesize($filename);
 	}
+	
+	
+	/**
+	 * Overwrites formInput2() in we:class.inc: 
+	 * Method adds parameter $text, which is used only if field-name in db and field-name in language files are different
+	 *
+	 * @return string
+	 */
+	function formInput2($width, $name, $size = 25, $type = "txt", $attribs = "", $text = ''){
+		$text = $text == '' ? $name : $text;
+		return $this->formInputField($type, $name, (g_l('weClass', '[' . $text . ']',true) != false ? g_l('weClass', '[' . $text . ']') : $text), $size, $width, "", $attribs);
+	}
 
 	/**
 	 * Returns the HTML for the properties part in the properties view
@@ -654,7 +666,7 @@ class we_imageDocument extends we_binaryDocument{
 		$_content->setCol(5, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 
 		//	Row 7
-		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"','Title'));
 
 		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
 		$_titleField = "we_" . $this->Name . "_attrib[title]";
