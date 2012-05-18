@@ -40,7 +40,11 @@ class we_main_headermenu{
 		if(we_base_browserDetect::inst()->isMAC()){
 			print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_mac.css');
 		}
+		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
+			print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js');
+		} else{
 		print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
+		}
 	}
 
 	static function pJS(){
