@@ -25,18 +25,11 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-print we_html_tools::htmlTop();
-print
-	"<script type=\"text/javascript\">
-
-function init() {
+print we_html_tools::htmlTop() .
+	we_html_element::jsElement(
+		"function init() {
 	parent.executeAjaxRequest('" . implode("', '", $_REQUEST['we_cmd']) . "');
 
-}
-
-
-</script>";
-print we_html_element::htmlBody(array(
-		"onload" => "init()"
-	));
-print "</html>";
+}") .
+	we_html_element::htmlBody(array('onload' => 'init()')) .
+	'</html>';
