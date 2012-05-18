@@ -233,7 +233,7 @@ class weSelectorQuery{
 				$useCreatorID = true;
 		}
 		$userExtraSQL = "";
-		if($table != BANNER_TABLE){
+		if(!defined('BANNER_TABLE') || $table != BANNER_TABLE){
 			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : "";
 		}
 
