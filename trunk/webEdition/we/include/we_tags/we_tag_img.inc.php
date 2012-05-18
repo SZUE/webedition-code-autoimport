@@ -39,9 +39,12 @@ function we_tag_img($attribs){
 	//$attribs = removeAttribs($attribs, array('name', 'xmltype','to','nameto'));
 
 
-	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
+	$id = weTag_getAttribute("id", $attribs); ;
+	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-	$id = $id ? $id : weTag_getAttribute("id", $attribs);
+	if(weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		$attribs['id']=weTag_getAttribute("id", $attribs); //siehe korrespondierende Änderung in we:document::getField
+	}
 
 	//look if image exists in tblfile, and is an image
 	if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ContentType="image/*" AND ID=' . intval($id), 'a', new DB_WE()) !== '1'){
