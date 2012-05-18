@@ -25,20 +25,25 @@
 function we_tag_quicktime($attribs){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
 		return $foo;
-
+	
+	
 	$name = weTag_getAttribute("name", $attribs);
+	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
+	$showquicktime = weTag_getAttribute("showquicktime", $attribs, true, true);
+
 	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : weTag_getAttribute("id", $attribs);
+	if(isset($attribs['showcontrol']) && !$showcontrol &&  weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		$id = weTag_getAttribute("id", $attribs);
+		$attribs['id']=$id; //siehe korrespondierende Änderung in we:document::getField
+		$attribs['showcontrol']=$showcontrol;//sicherstellen das es boolean iost
+	}
 	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
 	$startid = weTag_getAttribute("startid", $attribs);
 	$parentid = weTag_getAttribute("parentid", $attribs, "0");
 
-	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
-	$showquicktime = weTag_getAttribute("showquicktime", $attribs, true, true);
-
-	$attribs = removeAttribs($attribs, array(
-		'showcontrol', 'showquicktime', 'startid', 'parentid'
-		));
+	
+	$attribs = removeAttribs($attribs, array('showquicktime', 'startid', 'parentid'));
 
 	if($GLOBALS['we_editmode'] && !$showquicktime){
 		$out = '';

@@ -1150,7 +1150,7 @@ class we_document extends we_root{
 			case 'img':
 			case 'flashmovie':
 			case 'quicktime':
-				if(isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
+				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					$val = $attribs['id'];
 				} else {
 					$val = $this->getElement($attribs['name'], 'bdid');
