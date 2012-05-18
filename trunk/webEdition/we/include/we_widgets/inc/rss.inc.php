@@ -25,13 +25,11 @@
 if($aProps[3]){
 	list($_rssUri, $_rssCont, $_rssNumItems, $_rssTb, $_rssTitle) = explode(',', $aProps[3]);
 } else{//use default if data is corrupt
-	list($_rssUri, $_rssCont, $_rssNumItems, $_rssTb, $_rssTitle) = array(
-		0 => base64_encode('http://www.webedition.org/de/rss/webedition.xml'),
-		1 => '111000',
-		2 => '0',
-		3 => '110000',
-		4 => '1',
-	);
+	$_rssUri = base64_encode('http://www.webedition.org/de/rss/webedition.xml');
+	$_rssCont = '111000';
+	$_rssNumItems = 0;
+	$_rssTb = '110000';
+	$_rssTitle = 1;
 }
 
 list($bTbLabel, $bTbTitel, $bTbDesc, $bTbLink, $bTbPubDate, $bTbCopyright) = $_rssTb;
@@ -52,15 +50,13 @@ $aLang = array(
 	$sTbPrefix, ''
 );
 
-$_iFrmRss = "
-<script type=\"text/javascript\">
-
+$_iFrmRss = we_html_element::jsElement("
 if ( window.addEventListener ) { // moz
 	window.addEventListener(
 		\"load\",
 		function() {
 			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
-		$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
+			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		},
 		true
 	);
@@ -68,17 +64,12 @@ if ( window.addEventListener ) { // moz
 } else if ( window.attachEvent ) { // IE
 	window.attachEvent( \"onload\", function(){
 			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
-		$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
+			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		}
 	);
-}
-
-</script>
-<div class=\"rssDiv\" id=\"m_" . $iCurrId . "_inline\" style=\"width: " . $iWidth . "px;height:287px ! important; overflow: auto;\"></div>
-";
+}") . "<div class=\"rssDiv\" id=\"m_" . $iCurrId . "_inline\" style=\"width: " . $iWidth . "px;height:287px ! important; overflow: auto;\"></div>";
 
 $oTblCont = new we_html_table(array(
 		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 		), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmRss);
-?>
