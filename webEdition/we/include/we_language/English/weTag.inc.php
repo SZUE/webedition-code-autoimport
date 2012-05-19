@@ -35,7 +35,7 @@ $l_weTag=array(
 		'description'=>'The we:block tag allows you to create expandable blocks/lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags), if you click the plus button in edit mode.',
 	),
 	'calculate'=>array(
-		'description'=>'The we:calculate tag allows all possible mathematical operations in PHP like *, /, +, -,(), sqrt..etc.',
+		'description'=>'The we:calculate tag allows all possible mathematical operations in PHP like *, /, +, -,(), sqrt..etc. The attributes zo and nameto work only with print=true',
 	),
 	'captcha'=>array(
 		'description'=>'This tag generates an image with a random code.',
@@ -572,7 +572,7 @@ $l_weTag=array(
 		'description'=>'',
 	),
 	'metadata'=>array(
-		'description'=>'',
+		'description'=>'The we:metadata-Tag is used to show meta data from images, flash- and quicktime movies. use the we:field tag inside the start and end tag to display the value',
 	),
 	'navigationEntries'=>array(
 		'description'=>'Within we:navigationEntry type="folder" this tag serves as a place holder for all entries of a folder of the navigation.',
@@ -706,7 +706,7 @@ $l_weTag=array(
 	),
 	'sidebar'=>array(
 		'defaultvalue'=>'Open sidebar',
-		'description'=>'',
+		'description'=>'This tag display a button in the edit mode which opens an website in the sidebar',
 	),
 	'subscribe'=>array(
 		'description'=>'This tag is used to add a single line input field to a webEdition document so that a user wanting to subscribe to a newsletter can enter his or her email address.',

@@ -572,7 +572,7 @@ $l_weTag=array(
 		'description'=>'',
 	),
 	'metadata'=>array(
-		'description'=>'',
+		'description'=>'The we:metadata-Tag is used to show meta data from images, flash- and quicktime movies. use the we:field tag inside the start and end tag to display the value',
 	),
 	'navigationEntries'=>array(
 		'description'=>'we:navigationEntry type=`folder` tulostaa luotuja kansio-tyyppisiä navigaatiopisteitä.',
@@ -706,7 +706,7 @@ $l_weTag=array(
 	),
 	'sidebar'=>array(
 		'defaultvalue'=>'Avaa sivupalkin',
-		'description'=>'',
+		'description'=>'This tag display a button in the edit mode which opens an website in the sidebar',
 	),
 	'subscribe'=>array(
 		'description'=>'Tätä tagia käytetetään yksittäisen syöttökentän luomiseksi webEdition tiedostoon, jotta käyttäjä voi antaa sähköpostiosoitteensa tilatakseen uutiskirjeen.',

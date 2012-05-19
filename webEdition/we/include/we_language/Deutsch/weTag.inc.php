@@ -35,7 +35,7 @@ $l_weTag=array(
 		'description'=>'Mit dem we:block-Tag kann man erweiterbare Blöcke/Listen erzeugen. Alles, was zwischen Start- und Endtag steht, wird im Bearbeitungsmodus durch einen Klick auf den Plus-Button angehängt, bzw. eingefügt. Dies können beliebiges HTML sowie fast alle we:tags sein.',
 	),
 	'calculate'=>array(
-		'description'=>'Das we:calculate-Tag erlaubt alle möglichen mathematischen Operationen. (*, /, +, -,(), sqrt.....)',
+		'description'=>'Das we:calculate-Tag erlaubt alle möglichen mathematischen Operationen. (*, /, +, -,(), sqrt.....). Die Attribute to und nameto wirken nur bei print=true',
 	),
 	'captcha'=>array(
 		'description'=>'Dieses Tag dient dazu, ein Bild mit einem Zufallscode zu generieren.',

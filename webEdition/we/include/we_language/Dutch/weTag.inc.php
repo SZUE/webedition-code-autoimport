@@ -572,7 +572,7 @@ $l_weTag=array(
 		'description'=>'',
 	),
 	'metadata'=>array(
-		'description'=>'',
+		'description'=>'The we:metadata-Tag is used to show meta data from images, flash- and quicktime movies. use the we:field tag inside the start and end tag to display the value',
 	),
 	'navigationEntries'=>array(
 		'description'=>'Binnen we:navigationEntry type="folder" maakt deze tag een place holder aan voor alle invoeren van een navigatie map.',
@@ -706,7 +706,7 @@ $l_weTag=array(
 	),
 	'sidebar'=>array(
 		'defaultvalue'=>'Open sidebar',
-		'description'=>'',
+		'description'=>'This tag display a button in the edit mode which opens an website in the sidebar',
 	),
 	'subscribe'=>array(
 		'description'=>'De we:subscribe tag wordt gebruikt om een single input veld toe te voegen aan een webEdition document zodat de gebruiker zich kan inschrijven voor een nieuwsbrief.',
