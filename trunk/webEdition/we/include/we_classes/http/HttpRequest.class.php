@@ -178,7 +178,7 @@ class HttpRequest{
     		$_session = curl_init();
 			curl_setopt($_session, CURLOPT_URL,$this->http_host.$this->http_path);
 			curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($_session, CURLOPT_CUSTOMREQUEST,'POST');
+			curl_setopt($_session, CURLOPT_CUSTOMREQUEST,$this->http_method);
 			curl_setopt($_session, CURLOPT_HEADER , 1);
 			curl_setopt($_session, CURLOPT_HTTPHEADER, $_header);
 

@@ -153,8 +153,8 @@ class XML_RSS extends XML_Parser
         } else {*/
             parent::__construct($srcenc, 'event', $tgtenc);
         //}
-
-        $this->setInput($handle);
+		//Bug 6119: war $this->setInput($handle), umgestellt auf weitergabe des strings
+        $this->setInputString($handle);
 
         if ($handle == '') {
             $this->raiseError('No input passed.');
