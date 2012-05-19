@@ -48,7 +48,11 @@ function we_tag_addPercent($attribs, $content){
 			$percent = weTag_getAttribute('percent', $attribs);
 			$num_format = weTag_getAttribute('num_format', $attribs);
 			$result = ($content / 100) * (100 + $percent);
-			return we_util_Strings::formatnumber($result, $num_format);
+			if($num_format){//bug 6437 gibt immer deutsch zurück (das ist der default von formatnaumber), was das verhalten ändert
+				return we_util_Strings::formatnumber($result, $num_format);
+			} else {
+				return  $result;
+			}
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

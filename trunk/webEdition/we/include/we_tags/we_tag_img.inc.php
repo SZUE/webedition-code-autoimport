@@ -40,7 +40,7 @@ function we_tag_img($attribs){
 
 
 	
-	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name, "bdid");
+	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
 	$id = $id ? $id :  weTag_getAttribute("id", $attribs);
 	
