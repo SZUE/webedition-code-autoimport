@@ -23,6 +23,7 @@ $l_snippet=array(
 			'no'=>'Number',
 			'phone'=>'Phone number',
 			'requiredFields'=>'All fields marked with * are mandatory.',
+			'required'=>'required field',
 			'salutation'=>'Title',
 			'send'=>'Send',
 			'street'=>'Street',
