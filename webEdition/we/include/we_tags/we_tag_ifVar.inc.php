@@ -34,7 +34,7 @@ function we_tag_ifVar($attribs){
 
 	$match = weTag_getAttribute("match", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
-	$operator = weTag_getAttribute("operator", $attribs);
+	$operator = weTag_getAttribute("operator", $attribs,'equal');
 
 	$matchArray = makeArrayFromCSV($match);
 	$_size = sizeof($matchArray);
