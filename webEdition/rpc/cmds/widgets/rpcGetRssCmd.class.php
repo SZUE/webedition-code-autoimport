@@ -55,7 +55,20 @@ class rpcGetRssCmd extends rpcCmd{
 		$bTbPubDate = (bool) $sTbBinary{4};
 		$bTbCopyright = (bool) $sTbBinary{5};
 
-		$oRssParser = new XML_RSS($sRssUri, $GLOBALS['WE_BACKENDCHARSET']);
+		//Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
+		//daher Umstellung den Inhalt des Feeds selbst zu holen
+		$parsedurl=parse_url($sRssUri);
+		$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');		
+		$http_request->executeHttpRequest();
+		$http_response = new HttpResponse($http_request->getHttpResponseStr());
+		if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
+			$parsedurl=parse_url($http_response->http_headers['Location']);	
+			$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');	
+			$http_request->executeHttpRequest();
+			$http_response = new HttpResponse($http_request->getHttpResponseStr());
+		}
+		$feeddata=$http_response->http_body;
+		$oRssParser = new XML_RSS($feeddata, $GLOBALS['WE_BACKENDCHARSET']);// Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 		$oRssParser->parse();
 		$sRssOut = "";
 

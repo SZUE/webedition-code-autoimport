@@ -68,7 +68,7 @@ class HttpResponse{
 
 			for($i = 0; $i < sizeof($headerList); $i++){
 
-				$_line = explode(":", $headerList[$i]);
+				$_line = explode(":", $headerList[$i],2);
 
 				if(isset($_line[1])){	 //  normal header
 					$headers[trim($_line[0])] = trim($_line[1]);

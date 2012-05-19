@@ -27,7 +27,21 @@ print STYLESHEET;
 print we_html_element::cssElement('div#rss,div#rss *{color:black;font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';font-family:' . g_l('css', '[font_family]') . ';}');
 print '</head><body bgcolor="#F1F5FF">';
 
-$rss = new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);
+//Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
+//daher Umstellung den Inhalt des Feeds selbst zu holen
+$parsedurl=parse_url($_SESSION["prefs"]["cockpit_rss_feed_url"]);
+$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');		
+$http_request->executeHttpRequest();
+$http_response = new HttpResponse($http_request->getHttpResponseStr());
+if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
+	$parsedurl=parse_url($http_response->http_headers['Location']);	
+	$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');	
+	$http_request->executeHttpRequest();
+	$http_response = new HttpResponse($http_request->getHttpResponseStr());
+}
+$feeddata=$http_response->http_body;
+
+$rss = new XML_RSS($feeddata, $GLOBALS['WE_BACKENDCHARSET']);// Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){
