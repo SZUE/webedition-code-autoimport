@@ -83,6 +83,7 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 					case "less|equal": return $position <= $_position;
 					case "greater": return $position > $_position;
 					case "greater|equal": return $position >= $_position;
+					case "every": return ($position % $_position == 0);
 				}
 			} else{
 				if($operator == 'every' && ($position % $_position == 0)){
@@ -103,8 +104,7 @@ function we_tag_ifPosition($attribs){
 	if(isset($GLOBALS['we']['ll'])){
 		$attribs['type'] = 'linklist';
 	}
-	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__)
-		|| attributFehltError($attribs, "position", __FUNCTION__))){
+	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__) || attributFehltError($attribs, "position", __FUNCTION__))){
 		print $missingAttrib;
 		return '';
 	}
