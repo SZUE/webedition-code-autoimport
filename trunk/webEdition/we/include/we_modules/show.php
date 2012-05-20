@@ -24,6 +24,6 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(in_array($_REQUEST["mod"], $_we_active_integrated_modules)){
+if(in_array($_REQUEST["mod"], $GLOBALS['_we_active_integrated_modules'])){
 	include_once(WE_INCLUDES_PATH . "we_modules/" . $_REQUEST["mod"] . "/edit_" . $_REQUEST["mod"] . "_frameset.php");
 }

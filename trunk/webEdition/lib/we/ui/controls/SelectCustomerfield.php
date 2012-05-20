@@ -55,7 +55,7 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 	public function __construct($properties = null){
 		parent::__construct($properties);
 		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
-		if(in_array('customer', $_we_active_integrated_modules)){
+		if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php")){
 				include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php");
 				$db = new DB_WE();

@@ -1185,7 +1185,9 @@ function remember_value($settingvalue, $settingname){
 
 				$_activeIntegratedModulesFile = '<?php
 $_we_active_integrated_modules = array(
-' . $_activeIntegratedModulesFile . ');';
+' . $_activeIntegratedModulesFile . ');
+$GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
+';
 				// save active integrated modules
 				$GLOBALS['config_files']['active_integrated_modules']['content'] = $_activeIntegratedModulesFile;
 

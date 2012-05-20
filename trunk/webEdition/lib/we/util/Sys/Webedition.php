@@ -112,7 +112,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			return -1;
 		}
 
-		if(in_array($property, $_we_active_integrated_modules)){
+		if(in_array($property, $GLOBALS['_we_active_integrated_modules'])){
 			return 1;
 		} else{
 			return 0;

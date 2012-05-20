@@ -56,7 +56,7 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 		parent::__construct($properties);
 		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
 
-		if(in_array('object', $_we_active_integrated_modules)){
+		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
 
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php")){
 				include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php");
