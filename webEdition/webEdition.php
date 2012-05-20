@@ -458,9 +458,9 @@ switch (arguments[0]) {
 		break;
 <?php
 //	In we.inc.php all names of the installed modules have already been searched
-//	so we only have to use the array $_we_active_integrated_modules
+//	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
 
-foreach($_we_active_integrated_modules as $mod){
+foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 
 	if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
 

@@ -34,9 +34,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
-//	so we only have to use the array $_we_active_integrated_modules
-if(isset($_we_active_integrated_modules)){
-	foreach($_we_active_integrated_modules as $m){
+//	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
+if(isset($GLOBALS['_we_active_integrated_modules'])){
+	foreach($GLOBALS['_we_active_integrated_modules'] as $m){
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $m . '/we_cmd_' . $m . '.inc.php')){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $m . '/we_cmd_' . $m . '.inc.php');
 		}
@@ -335,7 +335,7 @@ if(!$INCLUDE){
 
 			$foo = false;
 			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && (!in_array($m['name'], $_we_active_integrated_modules))){
+				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'edit_' . $m['name'] . '_ifthere' && (!in_array($m['name'], $GLOBALS['_we_active_integrated_modules']))){
 
 					$foo = true;
 					$_moduleName = $m['text_short'];

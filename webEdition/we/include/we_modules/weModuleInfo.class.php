@@ -73,7 +73,7 @@ abstract class weModuleInfo {
 	 */
 	static function getIntegratedModules($active=null) {
 
-		global $_we_available_modules, $_we_active_integrated_modules;
+		global $_we_available_modules;
 
 		$retArr = array();
 
@@ -83,7 +83,7 @@ abstract class weModuleInfo {
 				if ($active === null) {
 					$retArr[$key] = $modInfo;
 
-				} else if ( in_array($key, $_we_active_integrated_modules) == $active ) {
+				} else if ( in_array($key, $GLOBALS['_we_active_integrated_modules']) == $active ) {
 					$retArr[$key] = $modInfo;
 				}
 			}
@@ -119,7 +119,6 @@ abstract class weModuleInfo {
 	}
 
 	static function isActive($modul) {
-		global $_we_active_integrated_modules;
-		return in_array($modul,$_we_active_integrated_modules);
+		return in_array($modul,$GLOBALS['_we_active_integrated_modules']);
 	}
 }
