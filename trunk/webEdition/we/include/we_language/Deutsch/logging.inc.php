@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_logging=array(
+	''=>'Kein Eintrag gefunden',
 	'activated'=>'aktiviert',
 	'all'=>'alles anzeigen',
 	'anzahlVersions'=>'Anzahl an Versionen',
