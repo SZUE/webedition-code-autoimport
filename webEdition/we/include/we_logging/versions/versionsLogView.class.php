@@ -202,9 +202,10 @@ class versionsLogView{
 	}
 
 	function printContent(){
-		$content = getContent();
+		$content = $this->getContent();
 		$out = "";
-
+		$anz = count($content);
+		if($anz){
 		$out .= '<div align="center" width="100%"><table border="0" width="100%" cellpadding="0" cellspacing="0" class="middlefont">';
 //		$out .= '<thead>';
 //		$out .= '<tr>';
@@ -219,7 +220,7 @@ class versionsLogView{
 //		$out .= '</th>';
 //		$out .= '</tr>';
 //		$out .= '</thead>';
-		$anz = count($content);
+		
 
 		for($i = 0; $i < $anz; $i++){
 			$out .= '<tr>';
@@ -263,7 +264,9 @@ class versionsLogView{
 		}
 
 		$out .= '</table></div>';
-
+		} else {
+			$out='<div align="center" width="100%">'.g_l('logging', '[notfound]').'</div>';
+		}
 
 		return $out;
 	}
