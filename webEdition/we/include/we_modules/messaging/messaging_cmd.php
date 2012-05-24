@@ -32,7 +32,7 @@ function print_fc_html($blank = true){
 		<!--
 		top.content.update_msg_quick_view();
 		top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array(<?php echo $GLOBALS['messaging']->get_ids_selected() ?>);
-		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '?si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
+		top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $GLOBALS['messaging']->get_sortitem() . '&so=' . $GLOBALS['messaging']->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
 		if (top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview) {
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $GLOBALS['messaging']->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 		}
@@ -66,10 +66,10 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 		$GLOBALS['messaging']->reset_ids_selected();
 		print we_html_element::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
 	}
+	
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-
-	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);t_e("vor sort",$GLOBALS['messaging']);
 }
 
 function update_treeview(){
@@ -88,7 +88,6 @@ if(!isset($_REQUEST['we_transaction'])){
 } else{
 	$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 }
-
 $GLOBALS['messaging'] = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
 $GLOBALS['messaging']->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
@@ -232,7 +231,7 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass=" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); t_e("war hier: c")?>&viewclass=" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 
@@ -261,7 +260,7 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 			<!--
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); ?>&viewclass" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); t_e("war hier: b")?>&viewclass" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 		<?php $aid = $messaging->Folder_ID; ?>

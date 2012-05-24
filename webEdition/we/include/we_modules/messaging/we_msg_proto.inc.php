@@ -215,7 +215,7 @@ class we_msg_proto extends we_class{
 	}
 
 	function saveInSession(&$save){
-//	$save = array();
+		$save = array();
 		$save[0] = array();
 
 		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
