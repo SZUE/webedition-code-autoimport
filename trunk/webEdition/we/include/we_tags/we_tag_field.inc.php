@@ -236,7 +236,7 @@ function we_tag_field($attribs){
 				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
-		default :
+		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 			$normVal = '';
 			if($name == 'WE_PATH' && $triggerid && isset($GLOBALS['lv']->ClassName) && ($GLOBALS['lv']->ClassName == 'we_search_listview' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_objecttag' )){
 				$triggerpath = id_to_path($triggerid);
@@ -248,7 +248,11 @@ function we_tag_field($attribs){
 				}
 			} else {
 				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
-				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
+				if(($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag') && $type == 'select'){// bugfix #6399
+					$attribs['name'] = $attribs['_name_orig'];
+				}
+
+				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');// war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
 					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
@@ -257,13 +261,12 @@ function we_tag_field($attribs){
 				}
 			}
 			// bugfix 7557
-			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
-			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
+			// wenn die Abfrage im Aktuellen Objekt kein Ergebnis liefert
+			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 
 			if($type == 'select' && $normVal == ''){
-
-				foreach($GLOBALS['lv']->DB_WE->Record as $_glob_key => $_val){
-
+				$dbRecord = $GLOBALS['lv']->ClassName == 'we_objecttag' ? $GLOBALS['lv']->object->DB_WE->Record : $GLOBALS['lv']->DB_WE->Record;// bugfix #6399
+				foreach($dbRecord as $_glob_key => $_val){
 					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
 						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
