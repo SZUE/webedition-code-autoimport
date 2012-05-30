@@ -80,18 +80,17 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
-			if($GLOBALS['lv']->ClassName == 'we_listview'){ // listview/document
+			if($GLOBALS['lv']->ClassName == 'we_listview'){ // listview/document with objects included using we:object
 				return $GLOBALS['lv']->f($match);
 			}
 			$objectdb = new DB_WE();
 			$match = strpos($orig_match ,'/') === false ? $orig_match : substr(strrchr($orig_match,'/'),1);
 			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Text='" . $match . "'", 'ID', $objectdb);
 			return $GLOBALS['lv']->f('we_object_' . $objectid);
-			//FIXME: make this tag fit to work with listview/document and we:object in included documents
 		case 'checkbox' :
 		case 'binary' :
 		case 'img' :
-		case 'flashmovie' ://return $GLOBALS['lv']->f($match) != '';
+		case 'flashmovie' :
 		case 'quicktime' :
 			return $GLOBALS['lv']->f($match);
 		case 'href' :
