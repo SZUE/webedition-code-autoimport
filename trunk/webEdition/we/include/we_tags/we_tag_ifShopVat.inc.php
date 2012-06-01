@@ -32,7 +32,7 @@ function we_tag_ifShopVat($attribs){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)){
 		$vatId = $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME);
 	} else{
-		$vatId = $GLOBALS['we_doc']->getField(WE_SHOP_VAT_FIELD_NAME);
+		$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
 	}
 
 	if(!$vatId){
