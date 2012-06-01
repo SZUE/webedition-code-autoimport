@@ -52,6 +52,7 @@ $l_global=array(
 	'index_table'=>'Tabla del índice',
 	'introduction'=>'Introducción',
 	'in'=>'en',
+	'irregular_logout'=>'<h3>webEdition</h3>Preferences are saved',
 	'jswin'=>'Ventana Pop-up',
 	'left'=>'Izquierda',
 	'licensed_to'=>'Autorizado a',

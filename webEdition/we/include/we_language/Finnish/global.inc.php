@@ -52,6 +52,7 @@ $l_global=array(
 	'index_table'=>'Indeksitaulukko',
 	'introduction'=>'Johdanto',
 	'in'=>'mistä',
+	'irregular_logout'=>'<h3>webEdition</h3>Preferences are saved',
 	'jswin'=>'Ponnahdusikkuna',
 	'left'=>'Vasen',
 	'licensed_to'=>'Lisenssin haltija',
