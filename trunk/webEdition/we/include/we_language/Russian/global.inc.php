@@ -52,6 +52,7 @@ $l_global=array(
 	'index_table'=>'Таблица индексов',
 	'introduction'=>'Введение',
 	'in'=>'в',
+	'irregular_logout'=>'<h3>webEdition</h3>Preferences are saved',
 	'jswin'=>'Окно Popup',
 	'left'=>'по левой стороне',
 	'licensed_to'=>'Владелец лицензии',
