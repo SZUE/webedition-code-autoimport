@@ -38,67 +38,55 @@ function pWebEdition_Tree(){
 function pWebEdition_JSFunctions(){
 	?>
 	function toggleBusy(w) {
-	if(w == busy || firstLoad==false)
-	return;
-	if(self.header) {
-	if(self.header.toggleBusy) {
-	busy=w;
-	self.header.toggleBusy(w);
-	return;
-	}
-	}
-	setTimeout("toggleBusy("+w+");",300);
-	}
-
-	function doUnload(whichWindow) {
-
-	// unlock all open documents
-	var _usedEditors = top.weEditorFrameController.getEditorsInUse();
-
-	var docIds = "";
-	var docTables = "";
-
-	for (frameId in _usedEditors) {
-
-	if (_usedEditors[frameId].EditorType != "cockpit") {
-
-	docIds += _usedEditors[frameId].getEditorDocumentId() + ",";
-	docTables += _usedEditors[frameId].getEditorEditorTable() + ",";
-	}
+		if(w == busy || firstLoad==false){
+			return;
+		}
+		if(self.header){
+			if(self.header.toggleBusy){
+				busy=w;
+				self.header.toggleBusy(w);
+				return;
+			}
+		}
+		setTimeout("toggleBusy("+w+");",300);
 	}
 
-	if (docIds) {
+	var regular_logout = false;
+	function doUnload(whichWindow) { // triggered when webEdition-window is closed
+		if(!regular_logout){
+			try{
+				if(jsWindow_count){
+					for(i = 0;i < jsWindow_count;i++){
+						eval("jsWindow"+i+"Object.close()");
+					}
+				}
+				if(browserwind){
+					browserwind.close();
+				}
+			} catch(e){}
 
-	top.we_cmd('unlock',docIds,'<?php print $_SESSION["user"]["ID"]; ?>',docTables);
-	if(top.opener){
-	top.opener.focus();
-
-	}
-	}
-
-	try{
-	if(jsWindow_count) {
-	for(i = 0;i < jsWindow_count;i++){
-	eval("jsWindow"+i+"Object.close()");
-	}
-	}
-	if(browserwind){
-	browserwind.close();
-	}
-	} catch(e){
-
-	}
-	//  only when no SEEM-edit-include window is closed
-	if(whichWindow != "include"){
-	if(opener) {
-	opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php');
-	}
-	}
+			if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
+											// FIXME: closing-actions for SEEM
+				if(top.opener) {
+					<?php if( !(we_base_browserDetect::isCHROME() || we_base_browserDetect::isSAFARI()) ){ ?>
+						top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
+						top.opener.focus();
+					<?php } else{ ?>
+						top.opener.location.reload();
+ 						var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+ 						logoutpopup.focus();
+					<?php } ?>
+				}
+				else{
+ 					var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+ 					logoutpopup.focus();
+				}
+			}
+		}
 	}
 
 	var widthBeforeDeleteMode = 0;
 	var widthBeforeDeleteModeSidebar = 0;
-
 	<?php
 }
 

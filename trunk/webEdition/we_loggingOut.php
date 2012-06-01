@@ -21,19 +21,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+/*
+ * This file is opened by js-function dounload() which is only triggered 
+ * when webEdition.php is not closed regularily (by using menu -> quit): window.onbeforeunload()
+ */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(isset($_SESSION)){
-	while(list($name, $val) = each($_SESSION)) {
-		unset($_SESSION[$name]);
-	}
+$isIncluded = true;
+include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_logout.inc.php');
+
+if($_REQUEST['isopener']){
+	header("location: " . WEBEDITION_DIR . "index.php");
 }
-$_SESSION = array();
-header("location: " . WEBEDITION_DIR . "index.php");
-we_html_tools::htmlTop();
 ?>
+
+<html>
+<head>
+<script type="text/javascript"><!--
+function closeIt(){
+	self.close();
+}
+//-->
+</script>
 </head>
-<body>
-	<?php echo g_l('global', "[redirect_to_login_failed]") . '<a href="' . WEBEDITION_DIR . 'index.php">' . g_l('global', "[redirect_to_login_name]") . '</a>'; ?>
+<body onLoad="self.setTimeout(closeIt,1000);" style="background-color:#386AAB;color:white">
+	<?php echo g_l('global', "[irregular_logout]");?>
 </body>
 </html>
