@@ -24,10 +24,11 @@
  */
 function we_tag_link($attribs, $content){
 	if(isset($GLOBALS['we']['ll'])){
+		$only = weTag_getAttribute("only", $attribs);
 		$link = $GLOBALS['we']['ll']->getLink();
 		$linkcontent = $GLOBALS['we']['ll']->getLinkContent();
 		if($link){
-			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . $linkcontent . '</a>';
+			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . $linkcontent . ($only?'':'</a>');
 		}
 		return $linkcontent;
 	}
@@ -82,16 +83,12 @@ function we_tag_link($attribs, $content){
 		}
 
 		$img = new we_imageDocument();
-		$content = we_document::getLinkContent(
-				$link, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $img, $xml);
+		$content = we_document::getLinkContent($link, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $img, $xml);
 
-		$startTag = $GLOBALS['we_doc']->getLinkStartTag(
-			$link, $attribs, $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $GLOBALS['DB_WE'], $img);
+		$startTag = $GLOBALS['we_doc']->getLinkStartTag($link, $attribs, $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $GLOBALS['DB_WE'], $img);
 
-		$editbut = we_button::create_button(
-				"image:btn_edit_link", "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
-		$delbut = we_button::create_button(
-				"image:btn_function_trash", "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
+		$editbut = we_button::create_button("image:btn_edit_link", "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
+		$delbut = we_button::create_button("image:btn_function_trash", "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
 		if(!$content){
 			$content = $text;
