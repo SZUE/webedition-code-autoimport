@@ -17,13 +17,13 @@
 			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen löschen</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to edit items toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungs bearbeiten</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen bearbeiten</seg></tuv>
 		</tu>
 		<tu tuid="The user is allowed to publish items toolfactory">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendung aktivieren und deaktivieren</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungen aktivieren und deaktivieren</seg></tuv>
 		</tu>
 		<tu tuid="Restore toolfactory data">
-			<tuv xml:lang="de"><seg>Der Benutzer darf Anwendungsverwaltung bearbeiten</seg></tuv>
+			<tuv xml:lang="de"><seg>Der Benutzer darf die Anwendungsverwaltung bearbeiten</seg></tuv>
 		</tu>
 		<tu tuid="Save toolfactory data">
 			<tuv xml:lang="de"><seg>Die Daten des Tools Anwendungsverwaltung sichern</seg></tuv>

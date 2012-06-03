@@ -24,7 +24,7 @@
  */
 function we_parse_tag_listview($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
+	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':

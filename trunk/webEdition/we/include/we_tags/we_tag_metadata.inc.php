@@ -23,7 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_metadata($attribs, $content){
-	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
+	$arr = array();
+	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
 	if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
 		return $foo;
 	return '<?php if(' . we_tag_tagParser::printTag('metadata', $attribs) . '){?>' . $content . '<?php } we_post_tag_listview();?>';
