@@ -236,6 +236,17 @@ function we_tag_paypal($attribs){
 
 					$itemPrice = (isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
+					//seems to be gros product prices and customer do not need pay tax
+					 //so we have to calculate the correct net article price
+					 //bug Mantis-Ticket 0005701
+					 if(!$useVat && !$netprices) {
+						 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
+						 $vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
+						 $shopVat = weShopVats::getVatRateForSite($vatId, true, false);
+						 $shopVat = (1+($shopVat/100));
+						 $itemPrice = round(($itemPrice/$shopVat),2); 
+					}
+ 
 					// correct price, if it has more than one "."
 					// bug #8717
 					$itemPrice = we_util::std_numberformat($itemPrice);
@@ -295,11 +306,18 @@ function we_tag_paypal($attribs){
 
 				//Bug 4549
 				if($isNet && $useVat){ // net prices
-					$shippingCostVat = $shippingCosts / 100 * $vatRate;
-					$shippingFee = $shippingCosts + $shippingCostVat;
-				} else{
-					$shippingFee = $shippingCosts;
+					 $shippingCostVat = $shippingCosts / 100 * $vatRate;
+					 $shippingFee = $shippingCosts + $shippingCostVat;
+				 } elseif(!$useVat && !$isNet) {// Bug #5701
+					 //seems to be gros vat rate
+					 //bug Mantis-Ticket 0005701
+					 $vatRate = (1+($vatRate/100));
+					 $shippingFee = ($shippingCosts/$vatRate); 
+				} else {
+					 $shippingFee = $shippingCosts;
 				}
+ 
+
 				/*
 				  if($isNet != 0){
 				  $p->add_field('shipping_1', $shippingCosts);
