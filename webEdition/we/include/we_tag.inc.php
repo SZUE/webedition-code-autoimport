@@ -72,7 +72,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	$user = weTag_getAttribute('user', $attribs);
 
 	//make sure comment attribute is never shown
-	if($name == 'setVar'){//special handling inside this tag
+	if($name == 'setVar' || $name == 'xmlnode'){//special handling inside tag setVar and xmlnode
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
 		$nameTo = '';
 		$to = 'screen';
