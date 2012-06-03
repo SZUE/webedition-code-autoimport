@@ -28,7 +28,7 @@ function we_tag_link($attribs, $content){
 		$link = $GLOBALS['we']['ll']->getLink();
 		$linkcontent = $GLOBALS['we']['ll']->getLinkContent();
 		if($link){
-			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . $linkcontent . ($only?'':'</a>');
+			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . ($only?'':$linkcontent.'</a>');
 		}
 		return $linkcontent;
 	}
