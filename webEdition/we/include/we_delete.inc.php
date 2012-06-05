@@ -100,12 +100,12 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 		} else{
 			switch($table){
 				case FILE_TABLE:
-					if($idInfos['IsFolder'] && we_hasPerm("DELETE_DOC_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm("DELETE_DOCUMENT"))){
+					if(($idInfos['IsFolder'] && we_hasPerm("DELETE_DOC_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && we_hasPerm("DELETE_DOCUMENT"))){
 						$hasPerm = 1;
 					}
 					break;
 				case TEMPLATES_TABLE:
-					if($idInfos['IsFolder'] && we_hasPerm("DELETE_TEMP_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm("DELETE_TEMPLATE"))){
+					if(($idInfos['IsFolder'] && we_hasPerm("DELETE_TEMP_FOLDER") && !$idInfos['hasFiles']) || (!$idInfos['IsFolder'] && we_hasPerm("DELETE_TEMPLATE"))){
 						$hasPerm = 1;
 					}
 					break;
