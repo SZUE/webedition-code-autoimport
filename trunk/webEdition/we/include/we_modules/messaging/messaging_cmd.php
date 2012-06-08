@@ -66,10 +66,11 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 		$GLOBALS['messaging']->reset_ids_selected();
 		print we_html_element::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
 	}
-	
+
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);t_e("vor sort",$GLOBALS['messaging']);
+	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	//t_e("vor sort",$GLOBALS['messaging']);
 }
 
 function update_treeview(){
