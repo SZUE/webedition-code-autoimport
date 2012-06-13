@@ -18,4 +18,5 @@ $l_contentTypes=array(
 	'text/weTmpl'=>'webEdition -sivupohja',
 	'text/xml'=>'XML -tiedosto',
 	'video/quicktime'=>'Quicktime -tiedosto',
+	'weThumbnail'=>'Thumbnail',
 );

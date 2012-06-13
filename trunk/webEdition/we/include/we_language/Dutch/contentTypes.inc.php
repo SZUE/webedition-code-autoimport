@@ -18,4 +18,5 @@ $l_contentTypes=array(
 	'text/weTmpl'=>'webEdition template',
 	'text/xml'=>'XML file',
 	'video/quicktime'=>'Quicktime movie',
+	'weThumbnail'=>'Thumbnail',
 );
