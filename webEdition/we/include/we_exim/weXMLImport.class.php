@@ -114,7 +114,7 @@ class weXMLImport extends weXMLExIm{
 					}
 				}
 
-				if($object->ClassName == "we_thumbnail"){
+				if($object->ClassName == "we_thumbnailEx"){
 					$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($object->Name) . "'", "ID", new DB_WE());
 					if($nid){
 						if($this->options["handle_collision"] == "replace"){
@@ -287,7 +287,7 @@ class weXMLImport extends weXMLExIm{
 		do{
 			$c++;
 
-			if($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnail")
+			if($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx")
 				$newname = $object->$prop;
 			else
 				$newname = basename($object->$prop);
@@ -301,7 +301,7 @@ class weXMLImport extends weXMLExIm{
 				case 'weNavigationRule':
 					$newid = f("SELECT ID FROM " . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
 					break;
-				case 'we_thumbnail':
+				case 'we_thumbnailEx':
 					$newid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "ID", new DB_WE());
 					break;
 				default:
@@ -320,7 +320,7 @@ class weXMLImport extends weXMLExIm{
 			$object->NavigationName = $new_name;
 			return;
 		}
-		if($object->ClassName == "we_thumbnail"){
+		if($object->ClassName == "we_thumbnailEx"){
 			$object->Name = $new_name;
 			return;
 		}
@@ -389,7 +389,7 @@ class weXMLImport extends weXMLExIm{
 								break;
 							case "weNavigation":
 							case 'weNavigationRule':
-							case 'we_thumbnail':
+							case 'we_thumbnailEx':
 							case "weBinary":
 							default:
 								$object = new $noddata();
