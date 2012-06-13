@@ -145,7 +145,7 @@ class weContentProvider{
 				return "we:navigation";
 			case "weNavigationRule":
 				return "we:navigationrule";
-			case "we_thumbnail":
+			case "we_thumbnailEx":
 				return "we:thumbnail";
 			default:
 				return "we:document";
@@ -334,7 +334,7 @@ class weContentProvider{
 
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
-		if($classname == "we_category" || $classname == "weNavigation" || $classname == "weNavigationRule" || $classname == "we_thumbnail")
+		if($classname == "we_category" || $classname == "weNavigation" || $classname == "weNavigationRule" || $classname == "we_thumbnailEx")
 			$object->persistent_slots = array_merge(array("ClassName"), $object->persistent_slots);
 
 		//write tag name

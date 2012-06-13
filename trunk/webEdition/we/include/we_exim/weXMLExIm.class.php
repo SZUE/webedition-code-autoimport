@@ -123,7 +123,7 @@ class weXMLExIm{
 				return NAVIGATION_TABLE;
 			case 'weNavigationRule':
 				return NAVIGATION_RULE_TABLE;
-			case 'we_thumbnail':
+			case 'we_thumbnailEx':
 				return THUMBNAILS_TABLE;
 			case 'weBinary':
 				return '';

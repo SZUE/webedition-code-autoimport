@@ -32,8 +32,9 @@ class we_wizard{
 
 	function getWizFrameset(){
 		$args = "pnt=wizbody";
-		if(isset($_REQUEST['we_cmd'][1]))
+		if(isset($_REQUEST['we_cmd'][1])){
 			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
+		}
 
 		$fst = new we_html_frameset(array(
 				"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0",
@@ -208,8 +209,9 @@ HTS;
 		if($type == "GXMLImport" && $step == 1){
 			$a["onSubmit"] = "return false;";
 		}
-		if($step == 1)
+		if($step == 1){
 			$a["enctype"] = "multipart/form-data";
+		}
 		eval('list($js, $content)=$this->get' . $type . 'Step' . $step . '();');
 		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -293,13 +295,19 @@ HTS;
 		@set_time_limit(0);
 		$out = "";
 		$mode = $this->getPostGetVar("mode", 0);
-		if($mode == "")
+		if($mode == ""){
 			$mode = 0;
+		}
 		$numFiles = $this->getPostGetVar("numFiles", -1);
 		$uniquePath = $this->getPostGetVar("uniquePath", "");
 		$currFileId = $this->getPostGetVar("currFileId", -1);
-		if(isset($_REQUEST["v"]))
+
+		if(isset($_REQUEST["v"])){
 			$v = $_REQUEST["v"];
+			$v["import_ChangeEncoding"] = isset($v["import_ChangeEncoding"]) ? $v["import_ChangeEncoding"] : 0;
+			$v["import_XMLencoding"] = isset($v["import_XMLencoding"]) ? $v["import_XMLencoding"] : '';
+			$v["import_TARGETencoding"] = isset($v["import_TARGETencoding"]) ? $v["import_TARGETencoding"] : '';
+		}
 
 		if(isset($v["mode"]) && $v["mode"] == 1){
 			$records = isset($_REQUEST["records"]) ? $_REQUEST["records"] : array();
@@ -313,8 +321,9 @@ HTS;
 					if($v["type"] != "" && $v["type"] != "WXMLImport"){
 						$h.=$this->getHdns("records", $records) . "\n" . $this->getHdns("we_flds", $we_flds) . "\n";
 					}
-					if($v["type"] == "GXMLImport")
+					if($v["type"] == "GXMLImport"){
 						$h.=$this->getHdns("attributes", $attributes) . "\n" . $this->getHdns("attrs", $attrs) . "\n";
+					}
 
 					if($type == "first_steps_wizard"){
 						$JScript = "top.leWizardProgress.set(0)\n"
@@ -414,10 +423,12 @@ HTS;
 					}
 
 					$h = $this->getHdns("v", $v) . "\n";
-					if($v["type"] != "WXMLImport")
+					if($v["type"] != "WXMLImport"){
 						$h.=$this->getHdns("records", $records) . "\n" . $this->getHdns("we_flds", $we_flds) . "\n";
-					if($v["type"] == "GXMLImport")
+					}
+					if($v["type"] == "GXMLImport"){
 						$h.=$this->getHdns("attributes", $attributes) . "\n" . $this->getHdns("attrs", $attrs) . "\n";
+					}
 					$h .= we_html_element::htmlHidden(array("name" => "v[numFiles]", "value" => ($v["type"] != "GXMLImport") ? $num_files : $parse->fileId)) . "\n" .
 						we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != "GXMLImport") ? $path : $parse->path));
 
@@ -848,12 +859,13 @@ HTS;
 	}
 
 	function getPostGetVar($var, $def){
-		if(isset($_POST[$var]))
+		if(isset($_POST[$var])){
 			$ret = $_POST[$var];
-		else if(isset($_GET[$var]))
+		} else if(isset($_GET[$var])){
 			$ret = $_GET[$var];
-		else
+		} else{
 			$ret = $def;
+		}
 		return $ret;
 	}
 
