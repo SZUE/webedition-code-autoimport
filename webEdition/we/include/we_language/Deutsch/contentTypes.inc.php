@@ -18,4 +18,5 @@ $l_contentTypes=array(
 	'text/weTmpl'=>'webEdition-Vorlage',
 	'text/xml'=>'XML-Datei',
 	'video/quicktime'=>'Quicktime-Datei',
+	'weThumbnail'=>'Miniaturansicht',
 );
