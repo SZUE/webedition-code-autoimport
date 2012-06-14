@@ -198,6 +198,7 @@ $l_modules_customer=array(
 	'start_year'=>'Aloitus vuosi',
 	'Surname'=>'Sukunimi',
 	'tab'=>'\t {tabulaattori}',
+	'test_entry'=>'',
 	'Titel'=>'Title',
 	'topic'=>'Aihe',
 	'to'=>'Kohde',
