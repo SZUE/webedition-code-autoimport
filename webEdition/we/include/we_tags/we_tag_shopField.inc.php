@@ -78,14 +78,17 @@ function we_tag_shopField($attribs){
 		case "checkbox":
 			$atts = removeAttribs($atts, array('size'));
 
-			$atts['name'] = $fieldname;
+			//$atts['name'] = $fieldname; changed to rand() because of new hidden field #6544
+			$atts['name'] = rand();
 			$atts['type'] = 'checkbox';
 			$atts['value'] = $value;
+			$atts['onclick'] = 'this.form.elements[\''.$fieldname.'\'].value=(this.checked) ? \''.$value.'\' : \'\''; //#6544
 			if(($savedVal == $value) || (!$isFieldForCheckBox) && $checked){
 				$atts['checked'] = 'checked';
 			}
-
-			return getHtmlTag('input', $atts);
+            
+            // added we_html_tools::hidden #6544
+			return getHtmlTag('input', $atts).we_html_tools::hidden($fieldname, $savedVal);
 			break;
 
 		case 'choice':
