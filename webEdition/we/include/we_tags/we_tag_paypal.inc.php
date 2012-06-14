@@ -235,11 +235,14 @@ function we_tag_paypal($attribs){
 					$p->add_field('quantity_' . $i, $item['quantity']);
 
 					$itemPrice = (isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
+					
+					//paypal allows only two decimal places
+					$itemPrice = round($itemPrice,2); //#6546
 
 					//seems to be gros product prices and customer do not need pay tax
-					 //so we have to calculate the correct net article price
-					 //bug Mantis-Ticket 0005701
-					 if(!$useVat && !$netprices) {
+					//so we have to calculate the correct net article price
+					//bug #5701
+					if(!$useVat && !$netprices) {
 						 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 						 $vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						 $shopVat = weShopVats::getVatRateForSite($vatId, true, false);
@@ -310,7 +313,6 @@ function we_tag_paypal($attribs){
 					 $shippingFee = $shippingCosts + $shippingCostVat;
 				 } elseif(!$useVat && !$isNet) {// Bug #5701
 					 //seems to be gros vat rate
-					 //bug Mantis-Ticket 0005701
 					 $vatRate = (1+($vatRate/100));
 					 $shippingFee = ($shippingCosts/$vatRate); 
 				} else {
