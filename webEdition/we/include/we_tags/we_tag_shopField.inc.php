@@ -78,11 +78,13 @@ function we_tag_shopField($attribs){
 		case "checkbox":
 			$atts = removeAttribs($atts, array('size'));
 
-			//$atts['name'] = $fieldname; changed to rand() because of new hidden field #6544
-			$atts['name'] = rand();
+			//$atts['name'] = $fieldname; changed to $tnpname because of new hidden field #6544
+			//we_getInputCheckboxField() not possible because sessionField type="checkbox" has a mandatory value 
+			$tmpname = md5(uniqid(time()));
+			$atts['name'] = $tmpname;
 			$atts['type'] = 'checkbox';
 			$atts['value'] = $value;
-			$atts['onclick'] = 'this.form.elements[\''.$fieldname.'\'].value=(this.checked) ? \''.$value.'\' : \'\''; //#6544
+			$atts['onclick'] = 'this.form.elements[\''.$fieldname.'\'].value=(this.checked) ? \''.htmlspecialchars($value).'\' : \'\''; //#6544
 			if(($savedVal == $value) || (!$isFieldForCheckBox) && $checked){
 				$atts['checked'] = 'checked';
 			}
