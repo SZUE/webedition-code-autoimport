@@ -198,6 +198,7 @@ $l_modules_customer=array(
 	'start_year'=>'Anfang Jahr',
 	'Surname'=>'Nachname',
 	'tab'=>'\t {tab}',
+	'test_entry'=>'',
 	'Titel'=>'Titel',
 	'topic'=>'Oberbegriff',
 	'to'=>'bis',
