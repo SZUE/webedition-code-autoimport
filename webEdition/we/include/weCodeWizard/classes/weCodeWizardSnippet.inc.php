@@ -71,8 +71,8 @@ class weCodeWizardSnippet{
 		$Parser = new we_xml_parser($file);
 
 		// set the title
-		if($Parser->execMethod_count("/topic[1]", "title") > 0){
-			$Snippet->Name = $Parser->getData("/topic[1]/title[1]");
+		if($Parser->execMethod_count("/topic[1]/title[1]", "codeblock") > 0){
+			$Snippet->Name = $Parser->getData("/topic[1]/title[1]/codeblock[1]");
 			if(isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8"){
 				$Snippet->Name = $Snippet->Name;
 			}
@@ -80,12 +80,11 @@ class weCodeWizardSnippet{
 			eval('?>' . $Snippet->Name);
 			$Snippet->Name = ob_get_contents();
 			ob_end_clean();
-
-			}
+		}
 
 		// set the short description
-		if($Parser->execMethod_count("/topic[1]", "shortdesc") > 0){
-			$Snippet->Description = $Parser->getData("/topic[1]/shortdesc[1]");
+		if($Parser->execMethod_count("/topic[1]/shortdesc[1]", "codeblock") > 0){
+			$Snippet->Description = $Parser->getData("/topic[1]/shortdesc[1]/codeblock[1]");
 			if(isset($GLOBALS['we_doc']->elements["Charset"]['dat']) && $GLOBALS['we_doc']->elements["Charset"]['dat'] != "UTF-8"){
 				$Snippet->Description = $Snippet->Description;
 			}
