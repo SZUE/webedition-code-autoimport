@@ -30,5 +30,7 @@ function we_tag_ifShopFieldEmpty($attribs){
 	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
 		return $foo;
 
+    $attribs['type'] = 'print'; //#6541
+
 	return (we_tag('shopField', $attribs) == '');
 }
