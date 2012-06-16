@@ -70,6 +70,11 @@ function we_tag_field($attribs){
 	$seeMode = weTag_getAttribute('seeMode', $attribs, true, true);
 	if(isset($attribs['seeMode'])){$attribs['seeMode']=$value;}
 
+	//zusatz typen für verchiedene field-Typen
+	if(isset($attribs['thumbnail'])){$attribs['thumbnail']=weTag_getAttribute('thumbnail', $attribs);}// Image
+	if(isset($attribs['classes'])){$attribs['classes']=weTag_getAttribute('classes', $attribs);}//Wwysiwyg
+	if(isset($attribs['commands'])){$attribs['commands']=weTag_getAttribute('commands', $attribs);}//Wwysiwyg
+	if(isset($attribs['fontnames'])){$attribs['fontnames']=weTag_getAttribute('fontnames', $attribs);}//Wwysiwyg
 	$out = '';
 
 
