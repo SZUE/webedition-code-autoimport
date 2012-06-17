@@ -364,7 +364,7 @@ class weSiteImport{
 				$_SESSION["user"]["ID"]));
 		// update session
 		$_SESSION["prefs"]["siteImportPrefs"] = $serializedData;
-		$js = '<script type="text/javascript" >parent.close();</script>';
+		$js = we_html_element::jsElement('parent.close();');
 		return $this->_getHtmlPage("", $js);
 	}
 
@@ -504,7 +504,7 @@ class weSiteImport{
 				"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', "[importSettingsWePages]"));
 		$bodyhtml .= '</form></body>';
 
-		$js = '<script type="text/javascript" >
+		$js = we_html_element::jsElement('
 
 	function checkForm(){
 		var f = document.forms[0];
@@ -599,9 +599,7 @@ class weSiteImport{
 		// this is a real alert, dont use showMessage yet
 		' . we_message_reporting::getShowMessageCall(
 				g_l('import', '[format_timestamp]'), we_message_reporting::WE_MESSAGE_INFO) . '
-	}
-
-</script>';
+	}');
 
 		return $this->_getHtmlPage($bodyhtml, $this->_getJS() . $js);
 	}
@@ -956,15 +954,15 @@ class weSiteImport{
 			if(count($this->_files) == 0){
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 				if(count(scandir($importDirectory)) <= 2){
-					return '<script type="text/javascript>alert(\'' . addslashes(
-							g_l('importFiles', "[emptyDir]")) . '\');top.close()</script>';
+					return we_html_element::jsElement('alert(\'' . addslashes(
+							g_l('importFiles', "[emptyDir]")) . '\');top.close()');
 				} else{
-					return '<script type="text/javascript>alert(\'' . addslashes(
-							g_l('importFiles', "[noFiles]")) . '\');top.close()</script>';
+					return we_html_element::jsElement('alert(\'' . addslashes(
+							g_l('importFiles', "[noFiles]")) . '\');top.close();');
 				}
 			}
 			$fr = new siteimportFrag($this);
-			return "";
+			return '';
 		}
 
 		$bodyAttribs = array(

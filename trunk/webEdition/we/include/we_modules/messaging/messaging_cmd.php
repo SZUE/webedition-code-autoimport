@@ -74,14 +74,11 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 }
 
 function update_treeview(){
-	echo '<script type="text/javascript">
-	<!--' . "\n";
-
 	foreach($GLOBALS['messaging']->available_folders as $f){
-
-		echo 'top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);' . "\n";
+		$tmp.='top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);';
 	}
-	echo "top.content.drawEintraege();\n//--></script>";
+	$tmp.='top.content.drawEintraege();';
+	echo we_html_element::jsElement($tmp);
 }
 
 if(!isset($_REQUEST['we_transaction'])){
@@ -232,7 +229,8 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); t_e("war hier: c")?>&viewclass=" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
+		t_e("war hier: c") ?>&viewclass=" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 
@@ -261,7 +259,8 @@ switch($_REQUEST["mcmd"]){
 		<script type="text/javascript">
 			<!--
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
-			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder(); t_e("war hier: b")?>&viewclass" + top.content.viewclass;
+			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
+		t_e("war hier: b") ?>&viewclass" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 		<?php $aid = $messaging->Folder_ID; ?>

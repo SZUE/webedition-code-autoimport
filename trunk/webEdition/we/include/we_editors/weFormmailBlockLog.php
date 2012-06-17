@@ -124,8 +124,7 @@
 			);
 
 
-			$script = '<script type="text/javascript">
-
+			$script = we_html_element::jsElement('
 function clearLog() {
 	if (confirm("'.addslashes(g_l('prefs','[clear_log_question]')).'")) {
 		document.location="'.$_SERVER['SCRIPT_NAME'].'?clearlog=1";
@@ -138,9 +137,7 @@ function clearEntry(id,ip) {
 	if (confirm(txt.replace(/%s/,ip))) {
 		document.location="'.$_SERVER['SCRIPT_NAME'].'?clearEntry="+id;
 	}
-}
-
-</script>';
+}');
 
 			print getHTMLDocument($body,$script);
 		}

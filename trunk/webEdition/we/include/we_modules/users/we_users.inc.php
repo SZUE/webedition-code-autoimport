@@ -2206,7 +2206,7 @@ class we_user{
 		if(we_hasPerm("CHANGE_START_DOCUMENT")){
 			array_push($_settings, array(
 				"headline" => g_l('prefs', '[seem_startdocument]'),
-				"html" => $js . $_seem_html->getHtml() . '<script  type="text/javascript">show_seem_chooser("' . $_seem_start_type . '");</script>',
+				"html" => $js . $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'),
 				"space" => 200
 				)
 			);

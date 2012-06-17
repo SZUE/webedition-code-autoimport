@@ -404,7 +404,7 @@ function showEditFooterForNormalMode(){
 			break;
 		default:
 
-			$_edit_source = '<script  type="text/javascript">
+			$_edit_source = we_html_element::jsElement('
 					function editSource(){
 						if(top.plugin.editSource){
 							top.plugin.editSource("' . $we_doc->Path . '","' . $we_doc->ContentType . '");
@@ -420,9 +420,7 @@ function showEditFooterForNormalMode(){
 						else{
 							we_cmd("initPlugin","top.plugin.editFile();");
 						}
-					}
-				</script>
-			';
+					}');
 
 
 			$_normalTable->addCol(2);
@@ -653,21 +651,15 @@ function showEditFooterForSEEMMode(){
 				$showPubl_makeSamNew .= '<div style="display: hidden;">';
 			}
 
-			$showPubl_makeSamNew .= '<script  type="text/javascript">
-								<!--
+			$showPubl_makeSamNew .= we_html_element::jsElement('
 								if(!top.opener || !top.opener.win){
 									document.writeln("<!--");
-								}
-							//-->
-							</script>' .
+								}') .
 				we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false))
-				.
-				'<script  type="text/javascript">
-								<!--
+				.we_html_element::jsElement('
 								if(!top.opener || !top.opener.win){
 									document.writeln(\'-\' + \'-\' + \'>\');
-								}
-							//--></script>';
+								}');
 			if($_ctrlElem && $_ctrlElem['hide']){
 				$showPubl_makeSamNew .= '</div>';
 			}

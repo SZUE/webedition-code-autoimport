@@ -212,8 +212,7 @@ class we_search{
 	}
 
 	function getJSinWEforwardbackward($name){
-		return we_html_element::jsScript(JS_DIR . 'tooltip.js') . '
-				<script  type="text/javascript"><!--
+		return we_html_element::jsScript(JS_DIR . 'tooltip.js') . we_html_element::jsElement('
 				_EditorFrame.setEditorIsHot(false);
 
 			function next(){
@@ -223,13 +222,11 @@ class we_search{
 			function back(){
 				document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) - ' . $this->anzahl . ';
 				top.we_cmd("reload_editpage");
-			}
-		//-->
-		</script>';
+			}');
 	}
 
 	function getJSinWEorder($name){
-		return '<script  type="text/javascript"><!--
+		return we_html_element::jsElement('
 			function setOrder(order){
 
 				foo = document.we_form.elements[\'Order\'].value;
@@ -240,9 +237,7 @@ class we_search{
 					document.we_form.elements[\'Order\'].value=order+" DESC";
 				}
 				top.we_cmd("reload_editpage");
-			}
-		//-->
-		</script>';
+			}');
 	}
 
 	function getLocation($name="locationField", $select="", $size=1, $sprach=array()){

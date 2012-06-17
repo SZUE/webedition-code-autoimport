@@ -192,7 +192,7 @@ function _cutText($text, $l){
 				}
 				$dir_obj->close();
 			} else{
-				print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
 			switch($_REQUEST["ord"]){
@@ -219,15 +219,14 @@ function _cutText($text, $l){
 				array_push($final, $arFile[$key]);
 			}
 
-			print '<script type="text/javascript">
+			print '<script type="text/javascript"><!--
 top.allentries = new Array();
 var i = 0;
 ';
 			foreach($final as $key => $entry){
-				print 'top.allentries[i++] = "' . $entry . '"' . "\n";
+				print 'top.allentries[i++] = "' . $entry . '"';
 			}
-			print '</script>
-';
+			print '//--></script>';
 			$set_rename = false;
 
 			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){

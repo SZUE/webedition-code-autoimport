@@ -56,9 +56,7 @@ function we_tag_dateSelect($attribs){
 		$minyear = $from['year'];
 		$maxyear = $to['year'];
 
-		$js = '<script type="text/javascript">
-<!--
-
+		$js = we_html_element::jsElement('
 function WE_checkDate_' . $name . '() {
 
 	var name = \'' . $name . '\';
@@ -150,10 +148,8 @@ function WE_checkDate_' . $name . '() {
 	}
 
 }
-WE_checkDate_' . $name . '();
+WE_checkDate_' . $name . '();');
 
-//-->
-</script>';
 
 		$checkDate = "WE_checkDate_" . $name . "();";
 	}

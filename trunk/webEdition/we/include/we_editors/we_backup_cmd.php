@@ -135,9 +135,7 @@ if(isset($_REQUEST['cmd'])){
 
 				$percent = weBackupUtil::getExportPercent();
 
-				print '
-							<script type="text/javascript">
-
+				print we_html_element::jsElement('
 								function run() {
 
 											if(top.busy.setProgressText && top.busy.setProgress){
@@ -151,9 +149,7 @@ if(isset($_REQUEST['cmd'])){
 								}
 
 								run();
-
-							</script>
-							';
+							');
 			} else{
 
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
@@ -207,14 +203,12 @@ if(isset($_REQUEST['cmd'])){
 
 					if($_SESSION['weBackupVars']['backup_file'] === false){
 						weBackupUtil::addLog('Fatal error: compression failed!');
-						print '
-									<script type="text/javascript">
+						print we_html_element::jsElement('
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[error]") . '");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.checker.location = "' . HTML_DIR . 'white.html";
 										alert("' . g_l('backup', '[error_compressing_backup]') . '");
-									</script>
-									';
+									');
 						unset($_SESSION['weBackupVars']);
 						exit();
 					}
@@ -332,9 +326,7 @@ if(isset($_REQUEST['cmd'])){
 				$percent = weBackupUtil::getImportPercent();
 
 
-				print '
-							<script type="text/javascript">
-
+				print we_html_element::jsElement('
 								function run() {
 
 											if(top.busy.setProgressText && top.busy.setProgress){
@@ -346,9 +338,7 @@ if(isset($_REQUEST['cmd'])){
 								}
 
 								run();
-
-							</script>
-							';
+							');
 			} else{
 
 				// perform update

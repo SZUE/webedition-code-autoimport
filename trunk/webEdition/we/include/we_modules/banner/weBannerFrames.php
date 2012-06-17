@@ -128,9 +128,7 @@ class weBannerFrames extends weModuleBannerFrames{
 
 						$out =
 							$tab_head .
-							'
-   <script type="text/javascript">
-	<!--
+							we_html_element::jsElement('
 	function setTab(tab){
 		switch(tab){
 			case ' . weBanner::PAGE_PROPERTY . ':
@@ -140,9 +138,7 @@ class weBannerFrames extends weModuleBannerFrames{
 				break;
 		}
 	}
-   top.content.hloaded=1;
-//-->
-   </script>
+   top.content.hloaded=1;').'
 	<body bgcolor="white" background="' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()" onresize="setFrameSize()">
 		<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 							$we_tabs->getHTML() .

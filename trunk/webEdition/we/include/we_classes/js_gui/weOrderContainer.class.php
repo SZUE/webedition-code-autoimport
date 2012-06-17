@@ -46,11 +46,7 @@ class weOrderContainer{
 			$src = we_html_element::jsScript($jsPath . '/weOrderContainer.js?t=' . time());
 			define("weOrderContainer_JS_loaded", true);
 		}
-		$src .= '<script type="text/javascript">' . "\n"
-			. '<!--' . "\n"
-			. 'var ' . $this->containerId . ' = new weOrderContainer("' . $this->containerId . '");' . "\n"
-			. '-->' . "\n"
-			. '</script>' . "\n";
+		$src .= we_html_element::jsElement('var ' . $this->containerId . ' = new weOrderContainer("' . $this->containerId . '");');
 
 		return $src;
 	}
@@ -137,11 +133,7 @@ class weOrderContainer{
 				. '</' . $this->containerType . '>' . "\n";
 		}
 
-		$src .= '<script type="text/javascript">' . "\n"
-			. '<!--' . "\n"
-			. $cmd . "\n"
-			. '-->' . "\n"
-			. '</script>';
+		$src .= we_html_element::jsElement($cmd);
 
 		$src .= $this->getDisableButtonJS();
 		return $src;
@@ -151,24 +143,19 @@ class weOrderContainer{
 
 	function getDisableButtonJS(){
 
-		$src = '<script type="text/javascript">' . "\n"
-			. '<!--' . "\n"
-			. 'for(i = 0; i < ' . $this->targetFrame . '.' . $this->containerId . '.position.length; i++) {' . "\n"
-			. '	id = ' . $this->targetFrame . '.' . $this->containerId . '.position[i];' . "\n"
-			. '	id = id.replace(/entry_/, "");' . "\n"
-			. '	' . $this->targetFrame . '.weButton.enable("btn_direction_up_" + id);' . "\n"
-			. '	' . $this->targetFrame . '.weButton.enable("btn_direction_down_" + id);' . "\n"
-			. '	if(i == 0) {' . "\n"
-			. '		' . $this->targetFrame . '.weButton.disable("btn_direction_up_" + id);' . "\n"
-			. '	}' . "\n"
-			. '	if(i+1 == ' . $this->targetFrame . '.' . $this->containerId . '.position.length) {' . "\n"
-			. '		' . $this->targetFrame . '.weButton.disable("btn_direction_down_" + id);' . "\n"
-			. '	}' . "\n"
-			. '}' . "\n"
-			. '-->' . "\n"
-			. '</script>';
-
-		return $src;
+		return we_html_element::jsElement(
+				'for(i = 0; i < ' . $this->targetFrame . '.' . $this->containerId . '.position.length; i++) {' . "\n"
+				. '	id = ' . $this->targetFrame . '.' . $this->containerId . '.position[i];' . "\n"
+				. '	id = id.replace(/entry_/, "");' . "\n"
+				. '	' . $this->targetFrame . '.weButton.enable("btn_direction_up_" + id);' . "\n"
+				. '	' . $this->targetFrame . '.weButton.enable("btn_direction_down_" + id);' . "\n"
+				. '	if(i == 0) {' . "\n"
+				. '		' . $this->targetFrame . '.weButton.disable("btn_direction_up_" + id);' . "\n"
+				. '	}' . "\n"
+				. '	if(i+1 == ' . $this->targetFrame . '.' . $this->containerId . '.position.length) {' . "\n"
+				. '		' . $this->targetFrame . '.weButton.disable("btn_direction_down_" + id);' . "\n"
+				. '	}' . "\n"
+				. '}');
 	}
 
 }

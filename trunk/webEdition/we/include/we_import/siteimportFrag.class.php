@@ -43,15 +43,13 @@ class siteimportFrag extends taskFragment{
 		$progress = (int) ((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = shortenPath($path, 30);
 
-		$code = '<script type="text/javascript" >
+		$code = we_html_element::jsElement('
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 top.siteimportbuttons.weButton.disable("back");
 top.siteimportbuttons.weButton.disable("next");
 top.siteimportbuttons.setProgress(' . $progress . ');
 top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . htmlspecialchars(
-				$progressText, ENT_QUOTES) . '";
-</script>
-';
+					$progressText, ENT_QUOTES) . '";');
 
 		if($this->data["contentType"] == "post/process"){
 			weSiteImport::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
@@ -63,15 +61,15 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . html
 	}
 
 	function finish(){
-		print
-			"<script type=\"text/javascript\">top.siteimportbuttons.setProgress(100);</script>\n<script type=\"text/javascript\">setTimeout('" . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', "[importFinished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');</script>";
+		print we_html_element::jsElement(
+				"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
+					g_l('siteimport', "[importFinished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
 	function printHeader(){
 		print we_html_element::htmlDocType() . we_html_element::htmlhtml(we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead()
-					. STYLESHEET), false);
+					we_html_tools::getHtmlInnerHead() .
+					STYLESHEET), false);
 	}
 
 }

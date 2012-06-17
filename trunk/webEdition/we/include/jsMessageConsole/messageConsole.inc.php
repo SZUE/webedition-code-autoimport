@@ -31,8 +31,7 @@
  */
 function createMessageConsole($consoleName="NoName"){
 
-	return we_html_element::jsScript(JS_DIR . "messageConsoleImages.js") . we_html_element::jsScript(JS_DIR . "messageConsoleView.js") . "
-<script type=\"text/javascript\">
+	return we_html_element::jsScript(JS_DIR . "messageConsoleImages.js") . we_html_element::jsScript(JS_DIR . "messageConsoleView.js") . we_html_element::jsElement("
 
 var _msgNotice  = \"" . g_l('messageConsole', "[iconBar][notice]") . "\";
 var _msgWarning = \"" . g_l('messageConsole', "[iconBar][warning]") . "\";
@@ -45,8 +44,7 @@ _console_$consoleName.register();
 onunload=function() {
 	_console_$consoleName.unregister();
 }
-
-</script>
+")."
 <div style=\"position:relative;float:left;\">
 	<table>
 	<tr>

@@ -176,7 +176,7 @@ class weSpecialCharDialog extends weDialog{
 		$table .= '</table>
 ';
 
-		$script = '<script  type="text/javascript">
+		$script = we_html_element::jsElement('
 	function fillField(ch){
 		var table = document.getElementById("wechartb");
 		var tds = table.getElementsByTagName("TD");
@@ -188,9 +188,7 @@ class weSpecialCharDialog extends weDialog{
 			}
 		}
 		document.forms[0].elements["we_dialog_args[char]"].value = ch;
-	}
-
-</script>';
+	}');
 
 		return $script . $table . $field;
 	}

@@ -45,9 +45,7 @@ class weImportRtfDialog extends weDialog{
 	}
 
 	function getJs(){
-		return weDialog::getJs() . '
-<script  type="text/javascript">
-
+		return weDialog::getJs() . we_html_element::jsElement('
 function checkTheBox(box){
 	b = document.we_form.elements[box];
 	b.checked = (b.checked) ? false : true;
@@ -57,10 +55,7 @@ function importFile(){
 	f = document.we_form;
 	f.we_what.value = "dialog";
 	f.submit();
-}
-
-</script>
-';
+}');
 	}
 
 	function getNextBut(){

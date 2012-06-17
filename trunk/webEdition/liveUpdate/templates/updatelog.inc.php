@@ -136,9 +136,7 @@ if ( $this->Data['allEntries'] ) { // entries exist
 </form>';
 }
 
-$jsHead = '
-<script type="text/javascript">
-
+$jsHead = we_html_element::jsElement('
 	function confirmDelete() {
 		if (confirm("' . g_l('liveUpdate','[updatelog][confirmDelete]') . '")) {
 			deleteEntries();
@@ -158,8 +156,7 @@ $jsHead = '
 	function nextEntries() {
 		document.we_form.log_cmd.value = "nextEntries";
 		document.we_form.submit();
-	}
-	</script>';
+	}');
 
 
 print liveUpdateTemplates::getHtml(g_l('liveUpdate','[updatelog][headline]'), $content, $jsHead, $buttons);

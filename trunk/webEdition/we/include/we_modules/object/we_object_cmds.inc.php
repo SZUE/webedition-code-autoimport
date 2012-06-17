@@ -56,11 +56,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$of = new we_objectFile();
 		$of->initByID($ofID, OBJECT_FILES_TABLE);
 		$of->insertAtIndex();
-		print '
-			<script  type="text/javascript"><!--
-				top.we_cmd("reload_editpage");
-			//-->
-			</script>';
+		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 		break;
 	case "obj_search":
 		$we_doc->Search = $_REQUEST['we_cmd'][2];
@@ -68,11 +64,6 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print '
-			<script  type="text/javascript"><!--
-				top.we_cmd("switch_edit_page",' . WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");
-			//-->
-			</script>';
+		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
 		break;
 }
-?>

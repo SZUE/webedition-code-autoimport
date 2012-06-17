@@ -41,7 +41,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"] : W
 echo we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'we_tabs.js');
 ?>
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 
 
 
@@ -162,7 +162,7 @@ if(defined("OBJECT_TABLE")){
 					toggleTree();
 				}
 			}
-
+//-->
 </script>
 </head>
 <body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;">

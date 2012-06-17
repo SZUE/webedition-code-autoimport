@@ -135,14 +135,12 @@ class we_wysiwyg{
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
 				//FIXME: remove onchange - bad practise
-				return we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . '
-<script  type="text/javascript">
+				return we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
 		_EditorFrame.setEditorIsHot(true);
 	}
-}
-</script>';
+}');
 			case 'default':
 				return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">
@@ -912,7 +910,7 @@ function tinyMCEchanged(inst){
 			case 'tinyMCE':
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 				//deactivated: template,save,layer
-				return '<script  type="text/javascript">
+				return we_html_element::jsElement('
 tinyMCE.init({
 	language : "' . $lang . '",
 	mode : "exact",
@@ -941,8 +939,7 @@ tinyMCE.init({
 	// Skin options
 	skin : "o2k7",
 	skin_variant : "silver",
-});
-</script>
+});').'
 <textarea wrap="off" style="color:black;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $this->value) . '</textarea>';
 
 			case 'default':
@@ -953,7 +950,7 @@ tinyMCE.init({
 				$row_w = 0;
 				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
 				$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-				$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
+				$out = we_html_element::jsElement('var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();').'<table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 				for($r = 0; $r < sizeof($rows); $r++){
 					$out .= '<table border="0" cellpadding="0" cellspacing="0" class="tbButtonWysiwygDefaultStyle"><tr>';
 					for($s = 0; $s < sizeof($rows[$r]); $s++){
@@ -974,7 +971,7 @@ tinyMCE.init({
 				}
 				$out .='></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . htmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
-<script  type="text/javascript">
+'.we_html_element::jsElement('
 var ' . $this->ref . 'Obj = null;
 ' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE ? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit ? 1 : 0) . '");
 we_wysiwygs[we_wysiwygs.length] = ' . $this->ref . 'Obj;
@@ -996,9 +993,7 @@ function ' . $this->ref . 'editonfocus(){
 }
 function ' . $this->ref . 'editonblur(){
 	return we_on_blur(' . $this->ref . 'Obj);
-}
-</script>
-';
+}');
 				return $out;
 		}
 	}
@@ -1174,11 +1169,11 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="' . IMAGE_DIR . 'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="' . HTML_DIR . 'white.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
-			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
+			$out .= '<script  type="text/javascript"><!-- wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
 			foreach($this->vals as $val => $txt){
 				$out .= 'wePopupMenuArray[wefoo]["' . $this->cmd . '"]["' . $val . '"]="' . $txt . '";	' . "\n";
 			}
-			$out .= '</script>';
+			$out .= '//--></script>';
 		}
 		return $out;
 	}

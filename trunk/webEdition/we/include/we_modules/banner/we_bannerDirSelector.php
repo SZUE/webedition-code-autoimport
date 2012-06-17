@@ -111,7 +111,7 @@ class we_bannerDirSelector extends we_dirSelector{
 		print '                <td width="10">'.we_html_tools::getPixel(10,10).'</td><td width="40">
 ';
         $makefolderState = we_hasPerm("NEW_BANNER");
-       	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
+       	print we_html_element::jsElement('makefolderState='.$makefolderState.';');
 		print we_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
  		print '               </td>
 ';

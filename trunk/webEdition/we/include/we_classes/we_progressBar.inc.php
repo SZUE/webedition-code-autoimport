@@ -54,7 +54,7 @@ class we_progressBar{
 	}
 
 	function getJSCode(){
-		$out = '<script  type="text/javascript">
+		$out = '<script  type="text/javascript"><!--
 					function setProgressText' . $this->name . '(name,text){
 						if(document.getElementById){
 							var div = document.getElementById(name);
@@ -99,7 +99,7 @@ class we_progressBar{
 			$out .= 'var to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
 					';
 		}
-		$out .= '</script>
+		$out .= '//--></script>
 				';
 		return $out;
 	}

@@ -50,9 +50,7 @@ class weAcronymDialog extends weDialog{
 		$js = weDialog::getJs();
 
 		if(defined("GLOSSARY_TABLE")){
-			$js .= '
-			<script  type="text/javascript">
-			<!--
+			$js .= we_html_element::jsElement('
 					function weSaveToGlossaryFn() {
 						eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 						document.we_form.elements[\'weSaveToGlossary\'].value = 1;
@@ -62,9 +60,7 @@ class weAcronymDialog extends weDialog{
 							document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("ACRONYM",true,false).innerHTML;
 						}
 						document.we_form.submit();
-					}
-			-->
-			</script>';
+					}');
 		}
 
 		return $js;

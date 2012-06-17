@@ -289,9 +289,7 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 		}
 
-		$post_js = '
-		<script type="text/javascript">
-		<!--
+		$post_js = we_html_element::jsElement('
 		if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			if(top.opener.top.nlHTMLMail) {
 				self.document.we_form.htmlmail_check.checked = true;
@@ -301,10 +299,7 @@ class weNewsletterFrames extends weModuleFrames{
 				self.document.we_form.htmlmail_check.checked = false;
 				document.we_form.hm.value=0;
 			}
-		}
-		//-->
-		</script>
-		';
+		}');
 
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
 					$table1->getHtml() .

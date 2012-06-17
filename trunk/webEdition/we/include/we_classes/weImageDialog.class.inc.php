@@ -401,7 +401,7 @@ class weImageDialog extends weDialog{
 	</table>
 ';
 
-		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");</script>';
+		$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
 
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";

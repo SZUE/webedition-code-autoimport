@@ -855,10 +855,10 @@ class we_workflow_view extends we_workflow_base{
 				case "new_workflow":
 					$this->workflowDef = new we_workflow_workflow();
 					$this->page = 0;
-					print '<script  type="text/javascript">
+					print we_html_element::jsElement('
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
-					</script>';
+					');
 					break;
 				case "add_cat":
 					$arr = makeArrayFromCSV($this->workflowDef->Categories);
@@ -986,10 +986,10 @@ class we_workflow_view extends we_workflow_base{
 					$this->workflowDef->Objects = "";
 					break;
 				case "reload":
-					print '<script  type="text/javascript">
+					print we_html_element::jsElement('
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
-					</script>';
+					');
 					break;
 				case "edit_workflow":
 					$this->show = 0;
@@ -1014,20 +1014,14 @@ class we_workflow_view extends we_workflow_base{
 						$double = intval(f('SELECT COUNT(1) AS Count FROM ' . WORKFLOW_TABLE . " WHERE Text='" . $this->db->escape($this->workflowDef->Text) . "'" . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), 'Count', $this->db));
 
 						if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
-							print '<script  type="text/javascript">';
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-							print '</script>';
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else if($newone && !we_hasPerm("NEW_WORKFLOW")){
-							print '<script  type="text/javascript">';
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-							print '</script>';
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else{
 							if($double){
-								print '<script  type="text/javascript">';
-								print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
-								print '</script>';
+								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 								return;
 							}
 							$childs = "";
@@ -1039,15 +1033,16 @@ class we_workflow_view extends we_workflow_base{
 							}
 
 							$this->workflowDef->save();
-							print '<script  type="text/javascript">';
-							if($newone)
+							print '<script  type="text/javascript"><!--';
+							if($newone){
 								print 'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");';
-							else
+							}else{
 								print 'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");';
+							}
 							print $childs;
 							print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . htmlspecialchars($this->workflowDef->Text)) . '";';
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
-							print '</script>';
+							print '//--></script>';
 						}
 					}
 					break;
@@ -1056,32 +1051,27 @@ class we_workflow_view extends we_workflow_base{
 						$this->show = 1;
 						$this->page = 0;
 						$this->documentDef->load($_REQUEST["wid"]);
-						print '<script  type="text/javascript">
+						print we_html_element::jsElement('
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
 					top.content.resize.right.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
-					</script>';
+					');
 					}
 					break;
 				case "delete_workflow":
 					if(isset($_REQUEST["wid"])){
 						if(!we_hasPerm("DELETE_WORKFLOW")){
-							print '<script  type="text/javascript">';
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-							print '</script>';
+							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 							return;
 						} else{
 
 							$this->workflowDef = new we_workflow_workflow($_REQUEST["wid"]);
 							if($this->workflowDef->delete()){
 								$this->workflowDef = new we_workflow_workflow();
-								print '<script  type="text/javascript">
+								print we_html_element::jsElement('
 							top.content.deleteEntry(' . $_REQUEST["wid"] . ',"folder");
-							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-							</script>';
+							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 							} else{
-								print '<script  type="text/javascript">
-							' . we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							</script>';
+								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 							}
 						}
 					}
@@ -1096,9 +1086,7 @@ class we_workflow_view extends we_workflow_base{
 						$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 					}
 					$this->Log->clearLog($stamp);
-					print '<script  type="text/javascript">
-					' . we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-					</script>';
+					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 					break;
 				default:
 			}
@@ -1203,7 +1191,7 @@ class we_workflow_view extends we_workflow_base{
 		$_parts = array();
 
 		$out = we_html_element::jsScript(JS_DIR . 'tooltip.js');
-		$out .= '<script  type="text/javascript">function openToEdit(tab,id,contentType){
+		$out .= we_html_element::jsElement('function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
@@ -1211,7 +1199,7 @@ class we_workflow_view extends we_workflow_base{
 		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
 			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		}
-	} </script>';
+	}');
 
 		//	Part - file-information
 		array_push($_parts, array("headline" => g_l('weEditorInfo', "[content_type]"),
@@ -1619,8 +1607,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getLogQuestion(){
-		$js = '<script  type="text/javascript">
-
+		$js = we_html_element::jsElement('
 			function clear(){
 				opener.top.content.cmd.document.we_form.wcmd.value="empty_log";
 				if(document.we_form.clear_opt.value==1){
@@ -1640,7 +1627,7 @@ class we_workflow_view extends we_workflow_base{
 				close();
 			}
 			self.focus();
-		</script>';
+		');
 		$out = $this->htmlHidden("clear_opt", "1");
 		$out.='<form name="we_form">';
 		$out.='<table cellpading="0" cellspacing="0">';

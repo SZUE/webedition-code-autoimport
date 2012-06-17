@@ -44,5 +44,5 @@ function we_tag_js($attribs){
 		//	prepare $attribs for output:
 		return getHtmlTag("script", $attribs, "", true) . "\n";
 	}
-	return "";
+	return '';
 }
