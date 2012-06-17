@@ -66,7 +66,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 echo $we_doc->getSearchJS();
 
 if($javascript != ''){
-	echo '<script  type="text/javascript">' . $javascript . '</script>';
+	echo we_html_element::jsElement($javascript);
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');

@@ -389,7 +389,7 @@ class we_docTypes extends we_class{
 			$out.="}\n";
 		}
 		$out.="}\n";
-		$out = "\n" . '<script  type="text/javascript">' . $out . '</script>' . "\n";
+		$out = we_html_element::jsElement($out);
 
 		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}

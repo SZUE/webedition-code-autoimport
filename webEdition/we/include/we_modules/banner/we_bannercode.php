@@ -41,12 +41,11 @@ $clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getS
 if($ok){
 //FIXME: replace by call of jsScript
 	if($type == "js"){
-		$code = '<script type="text/javascript">
-<!--
+		$code = we_html_element::jsElement('
 r = Math.random();
 document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" src=\"' . $getscript . '?r="+r+"&amp;bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;type=js&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '&amp;page=' . rawurlencode($page) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
-//-->
-</script><noscript><a href="' . $clickscript . '?u=' . md5(uniqid(rand(0, 99999))) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
+
+') . '<noscript><a href="' . $clickscript . '?u=' . md5(uniqid(rand(0, 99999))) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
 	} else{
 		$code = '<iframe
 	src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;type=iframe&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;page=' . rawurlencode($page) . '"
@@ -117,16 +116,16 @@ document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" s
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();document.we_form.code.select();"<?php } ?>>
 	<form onSubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
-<?php
-$typeselect = '<select name="type" size="1">
+		<?php
+		$typeselect = '<select name="type" size="1">
 <option' . (($type == "js") ? " selected" : "") . '>js</option>
 <option' . (($type == "iframe") ? " selected" : "") . '>iframe</option>
 </select>';
 
-$content = '<table border="0" cellpadding="0" cellspacing="0">
+		$content = '<table border="0" cellpadding="0" cellspacing="0">
 ';
-if(!$ok){
-	$content.= '	<tr>
+		if(!$ok){
+			$content.= '	<tr>
 		<td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . $typeselect . '</td>
 	</tr>
 	<tr>
@@ -178,26 +177,26 @@ if(!$ok){
 		<td class="defaultfont">' . g_l('modules_banner', '[clickscript]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("clickscript", 40, $clickscript, "", "", "text", 300) . '</td>
 	</tr>
 ';
-}
-if($ok){
-	$content .= '	<tr>
+		}
+		if($ok){
+			$content .= '	<tr>
 		<td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>
 	</tr>
 	<tr>
 		<td colspan="3" class="defaultfont"><textarea name="code" rows="8" cols="40" style="width:430px;height:300px">' . htmlspecialchars($code) . '</textarea></td>
 	</tr>
 ';
-}
-$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
-$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-$ok_button = we_button::create_button("ok", "form:submit:we_form");
-$back_button = we_button::create_button("back", "javascript:history.back();");
-$close_button = we_button::create_button("close", "javascript:top.close();");
+		}
+		$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
+		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
+		$ok_button = we_button::create_button("ok", "form:submit:we_form");
+		$back_button = we_button::create_button("back", "javascript:history.back();");
+		$close_button = we_button::create_button("close", "javascript:top.close();");
 
-$buttons = $ok ? we_button::position_yes_no_cancel($close_button, null, $back_button) : we_button::position_yes_no_cancel($ok_button, null, $cancel_button);
+		$buttons = $ok ? we_button::position_yes_no_cancel($close_button, null, $back_button) : we_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
-print we_html_tools::htmlDialogLayout($content, $ok ? g_l('modules_banner', '[bannercode_copy]') : g_l('modules_banner', '[bannercode_ext]'), $buttons);
-?>
+		print we_html_tools::htmlDialogLayout($content, $ok ? g_l('modules_banner', '[bannercode_copy]') : g_l('modules_banner', '[bannercode_ext]'), $buttons);
+		?>
 	</form>
 </body>
 </html>

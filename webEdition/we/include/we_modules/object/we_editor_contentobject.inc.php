@@ -179,17 +179,13 @@ for($i=0; $i <= $count && !empty($sort); $i++){
 				.	'</table>'
 				.	'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.we_html_tools::getPixel(1,1).'</div>'.we_html_tools::getPixel(2,10)
 				.	'</div>'
-				.	'<script type="text/javascript">'
-				.	'classEntry.add(document, \''.$uniqid.'\', null);'
-				.	'</script>';
+				.	we_html_element::jsElement('classEntry.add(document, \''.$uniqid.'\', null);');
 
 	echo $content;
 
 	echo $jsGUI->getDisableButtonJS();
 
 }
-
-
 ?>
 </form>
 </body>

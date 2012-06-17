@@ -83,9 +83,7 @@ switch($exitDocCt){
 }
 
 
-print we_html_element::jsScript(JS_DIR . 'keyListener.js') . "
-<script type=\"text/javascript\">
-
+print we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsElement("
 	var _nextCmd = null;
 	var _EditorFrame = top.opener.top.weEditorFrameController.getEditorFrame('$editorFrameId');
 	self.focus();
@@ -127,9 +125,7 @@ print we_html_element::jsScript(JS_DIR . 'keyListener.js') . "
 		_EditorFrame.EditorExitDocQuestionDialog = false;
 
 	}
-
-</script>
-";
+");
 
 // $yesCmd: $_REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
 $yesCmd = "pressed_yes();";

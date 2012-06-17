@@ -314,7 +314,7 @@ $_notepad = $oPad->getHTML() . we_html_element::htmlDiv(array(
 		"id" => "view"
 		), $oTblBtnProps->getHTML());
 
-$_notepad .= '<script type="text/javascript"><!--
+$_notepad .= we_html_element::jsElement('
 function toggleTblValidity(){
 	var weNoteValidity = getCurrentQuery().Validity;
 	if (getCurrentQuery().Validity=="always") {
@@ -328,9 +328,7 @@ function toggleTblValidity(){
 		document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
 	}
 }
-toggleTblValidity();
-//-->
-</script>';
+toggleTblValidity();');
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(

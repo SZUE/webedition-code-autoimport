@@ -261,11 +261,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 		if(isset($_REQUEST["todel"])){
 			$_SESSION["todel"] = $_REQUEST["todel"];
-			print we_html_element::jsScript(JS_DIR . 'windows.js') . '
-<script  type="text/javascript">
+			print we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 	top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
-	top.close();
-</script>';
+	top.close();');
 		}
 		print '</head><body></body></html>';
 	}

@@ -94,27 +94,21 @@ class objectsearch extends we_search{
 	}
 
 	function getJSinWEworkspace($name){
-		return '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsElement('
 				function setWs(path,id) {
 					document.we_form.elements[\'we_' . $name . '_WorkspacePath\'].value=path;
 					document.we_form.elements[\'we_' . $name . '_WorkspaceID\'].value=id;
 					top.we_cmd("reload_editpage");
-				}
-			//-->
-			</script>';
+				}');
 	}
 
 	function getJSinWEshowVisible($name){
-		return '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsElement('
 				function toggleShowVisible(c) {
 					c.value=(c.checked ? 1 : 0);
 					document.we_form.elements[\'SearchStart\'].value = 0;
 					top.we_cmd(\'reload_editpage\');
-				}
-			//-->
-			</script>';
+				}');
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){

@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
@@ -31,62 +29,62 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-if (isset($_REQUEST['we_cmd'])) {
+if(isset($_REQUEST['we_cmd'])){
 
-	switch ($_REQUEST['we_cmd'][0]) {
+	switch($_REQUEST['we_cmd'][0]){
 
 		case 'saveVat':
 
 			$weShopVat = new weShopVat(
-				$_REQUEST['weShopVatId'],
-				$_REQUEST['weShopVatText'],
-				$_REQUEST['weShopVatVat'],
-				$_REQUEST['weShopVatStandard']
+					$_REQUEST['weShopVatId'],
+					$_REQUEST['weShopVatText'],
+					$_REQUEST['weShopVatVat'],
+					$_REQUEST['weShopVatStandard']
 			);
 
-			if ($newId = weShopVats::saveWeShopVAT($weShopVat)) {
+			if($newId = weShopVats::saveWeShopVAT($weShopVat)){
 				$weShopVat->id = $newId;
 				unset($newId);
-				$jsMessage = g_l('modules_shop','[vat][save_success]');
+				$jsMessage = g_l('modules_shop', '[vat][save_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else {
-				$jsMessage = g_l('modules_shop','[vat][save_error]');
+			} else{
+				$jsMessage = g_l('modules_shop', '[vat][save_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 
-		break;
+			break;
 
 		case 'deleteVat':
 
-			if (weShopVats::deleteVatById($_REQUEST['weShopVatId'])) {
-				$jsMessage = g_l('modules_shop','[vat][delete_success]');
+			if(weShopVats::deleteVatById($_REQUEST['weShopVatId'])){
+				$jsMessage = g_l('modules_shop', '[vat][delete_success]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			} else {
-				$jsMessage = g_l('modules_shop','[vat][delete_error]');
+			} else{
+				$jsMessage = g_l('modules_shop', '[vat][delete_error]');
 				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
-		break;
+			break;
 	}
 }
 
-if (!isset($weShopVat)) {
+if(!isset($weShopVat)){
 	$weShopVat = new weShopVat(
-		0,
-		g_l('modules_shop','[vat][new_vat_name]'),
-		19,
-		0
+			0,
+			g_l('modules_shop', '[vat][new_vat_name]'),
+			19,
+			0
 	);
 }
 $jsFunction = '
 
-		var isGecko = '.(we_base_browserDetect::isGecko()?'true':'false') .';
+		var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);':'document.onkeydown = doKeyDown;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 		function doKeyDown(e) {
 			var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
 			switch (key) {
 				case 27:
@@ -97,7 +95,7 @@ $jsFunction = '
 		function IsDigit(e) {
 			var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 			return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
 		}
 
@@ -164,7 +162,7 @@ $jsFunction = '
             	break;
 
             	case "delete":
-            		if (confirm("' . g_l('modules_shop','[vat][js_confirm_delete]') . '")) {
+            		if (confirm("' . g_l('modules_shop', '[vat][js_confirm_delete]') . '")) {
             			document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
             		}
             	break;
@@ -211,21 +209,21 @@ $vatTable = '';
 
 $vatJavaScript = '
 	var allVats = new Object();
-	allVats["vat_0"] = {"id":"0","text":"' . g_l('modules_shop','[vat][new_vat_name]') . '","vat":"19","standard":"0"};';
+	allVats["vat_0"] = {"id":"0","text":"' . g_l('modules_shop', '[vat][new_vat_name]') . '","vat":"19","standard":"0"};';
 
-if (sizeof($allVats) > 0) {
+if(sizeof($allVats) > 0){
 
 	$vatTable = '
 	<table class="defaultfont" width="400">
 	<tr>
 		<td><strong>Id</strong></td>
-		<td><strong>' . g_l('modules_shop','[vat][vat_form_name]') . '</strong></td>
-		<td><strong>' . g_l('modules_shop','[vat][vat_form_vat]') . '</strong></td>
-		<td><strong>' . g_l('modules_shop','[vat][vat_form_standard]') . '</strong></td>
+		<td><strong>' . g_l('modules_shop', '[vat][vat_form_name]') . '</strong></td>
+		<td><strong>' . g_l('modules_shop', '[vat][vat_form_vat]') . '</strong></td>
+		<td><strong>' . g_l('modules_shop', '[vat][vat_form_standard]') . '</strong></td>
 	</tr>
 	';
 
-	foreach ($allVats as $_weShopVat) {
+	foreach($allVats as $_weShopVat){
 
 		$vatJavaScript .='
 	allVats["vat_' . $_weShopVat->id . '"] = {"id":"' . $_weShopVat->id . '","text":"' . $_weShopVat->text . '","vat":"' . $_weShopVat->vat . '","standard":"' . ($_weShopVat->standard ? 1 : 0) . '"};';
@@ -235,41 +233,32 @@ if (sizeof($allVats) > 0) {
 		<td>' . $_weShopVat->id . '</td>
 		<td>' . htmlspecialchars($_weShopVat->text) . '</td>
 		<td>' . $_weShopVat->vat . '%</td>
-		<td>' . ($_weShopVat->standard ? g_l('global',"[yes]") : g_l('global',"[no]")) . '</td>
+		<td>' . ($_weShopVat->standard ? g_l('global', "[yes]") : g_l('global', "[no]")) . '</td>
 		<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
 		<td>' . we_button::create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 	</tr>';
 		unset($_weShopVat);
 	}
 
-	$vatTable .= '
-	</table>
-	';
+	$vatTable .= '</table>';
 }
 
 $plusBut = we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
-print "
-	<script type='text/javascript'>
-		$vatJavaScript
-		$jsFunction
-		" . (isset($jsMessage)
-			? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType)
-			: '') . "
-	</script>
+print we_html_element::jsElement(
+		$vatJavaScript .
+		$jsFunction .
+		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
 	</head>
-<body class=\"weDialogBody\" onload='window.focus();'>
-";
+<body class=\"weDialogBody\" onload='window.focus();'>";
 
-array_push($parts, array(
+$parts[] = array(
 	'space' => 0,
 	'html' => $vatTable
-	)
 );
-array_push($parts, array(
+$parts[] = array(
 	'space' => 0,
 	'html' => $plusBut
-	)
 );
 
 // formular to edit the vats
@@ -279,25 +268,25 @@ $formVat = '
 <input type="hidden" name="we_cmd[0]" value="saveVat" />
 <table class="defaultfont" id="editShopVatForm" style="display:none;">
 <tr>
-	<td colspan="2"><strong>' . g_l('modules_shop','[vat][vat_edit_form_headline]') . '</strong></td>
+	<td colspan="2"><strong>' . g_l('modules_shop', '[vat][vat_edit_form_headline]') . '</strong></td>
 </tr>
 <tr>
 	<td height="10"></td>
 </tr>
 <tr>
-	<td width="100">' . g_l('modules_shop','[vat][vat_form_name]') . ':</td>
+	<td width="100">' . g_l('modules_shop', '[vat][vat_form_name]') . ':</td>
 	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $weShopVat->text . '" /></td>
 	<td>' . we_button::create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
 </tr>
 <tr>
-	<td>' . g_l('modules_shop','[vat][vat_form_vat]') . ':</td>
+	<td>' . g_l('modules_shop', '[vat][vat_form_vat]') . ':</td>
 	<td><input class="wetextinput" type="text" id="weShopVatVat" name="weShopVatVat" value="' . $weShopVat->vat . '" onkeypress="return IsDigit(event);" />%</td>
 </tr>
 <tr>
-	<td>' . g_l('modules_shop','[vat][vat_form_standard]') . ':</td>
+	<td>' . g_l('modules_shop', '[vat][vat_form_standard]') . ':</td>
 	<td><select id="weShopVatStandard" name="weShopVatStandard">
-			<option value="1"' . ($weShopVat->standard ? ' selected="selected"' : '') . '>' . g_l('modules_shop','[vat][vat_edit_form_yes]') . '</option>
-			<option value="0"' . ($weShopVat->standard ? '' : ' selected="selected"') . '>' . g_l('modules_shop','[vat][vat_edit_form_no]') . '</option>
+			<option value="1"' . ($weShopVat->standard ? ' selected="selected"' : '') . '>' . g_l('modules_shop', '[vat][vat_edit_form_yes]') . '</option>
+			<option value="0"' . ($weShopVat->standard ? '' : ' selected="selected"') . '>' . g_l('modules_shop', '[vat][vat_edit_form_no]') . '</option>
 		</select>
 	</td>
 </tr>
@@ -312,23 +301,10 @@ array_push($parts, array(
 );
 
 print we_multiIconBox::getHTML(
-	'weShopVates',
-	"100%",
-	$parts,
-	30,
-	we_button::position_yes_no_cancel(
-		'',
-		'',
-		we_button::create_button('close', 'javascript:we_cmd(\'close\');')
-	),
-	-1,
-	'',
-	'',
-	false,
-	g_l('modules_shop','[vat][vat_edit_form_headline_box]'),
-	"",
-	409
-);
+		'weShopVates', "100%", $parts, 30, we_button::position_yes_no_cancel(
+			'', '', we_button::create_button('close', 'javascript:we_cmd(\'close\');')
+		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", 409
+	);
 
 print '
 </body></html>';

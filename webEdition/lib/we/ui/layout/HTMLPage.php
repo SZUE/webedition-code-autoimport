@@ -311,20 +311,14 @@ EOS;
 			$html .= we_html_element::jsScript($file);
 		}
 
-		$html .= "\t<script type=\"text/javascript\" language=\"JavaScript\">\n";
-		$html .= $js . "\n";
-		// add inline JavaScript
-		foreach($this->_inlineJS as $code){
-			$html .= $code . "\n";
-		}
-		$html .= "\t</script>\n";
+		$html .= we_html_element::jsElement(js.implode('',$this->_inlineJS));
 
 		// add head end tag
-		$html .= "</head>\n";
+		$html .= '</head>';
 		if($this->_framesetHTML !== ''){
 			$out = $html . $this->_framesetHTML . '</html>';
 		} else{
-			$body = we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . "\n" . $this->getBodyHTML() . "\n</body>\n";
+			$body = we_xml_Tags::createStartTag('body', $this->_bodyAttributes) .  $this->getBodyHTML() . '</body>';
 			$out = $html . $body . '</html>';
 		}
 		return $out;

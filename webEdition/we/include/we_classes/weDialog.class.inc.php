@@ -150,8 +150,7 @@ class weDialog{
 	}
 
 	function getFramesetHTML(){
-		return '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsElement('
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
 			((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
@@ -169,10 +168,7 @@ class weDialog{
 							self.we_' . $this->ClassName . '_edit_area.weDoOk();
 							break;
 					}
-				}
-
-			//-->
-			</script>
+				}').'
 
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
 				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">

@@ -146,7 +146,7 @@ function saveOnKeyBoard() {
  * RENDER FILE
  * *************************************************************************** */
 
-print we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
+print we_html_element::jsElement($_javascript) .
 	we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
 $frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0", "frameborder" => "no"), 0);

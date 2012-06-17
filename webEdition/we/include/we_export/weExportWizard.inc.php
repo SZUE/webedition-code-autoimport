@@ -269,11 +269,9 @@ class weExportWizard{
 		$extype = $this->exportVars["extype"];
 
 		if($extype == "wxml"){
-			return '<script type="text/javascript">
+			return we_html_element::jsElement('
 top.opener.top.we_cmd("edit_export_ifthere");
-top.close();
-
-</script>';
+top.close();');
 			exit();
 		}
 

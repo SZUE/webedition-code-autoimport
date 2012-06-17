@@ -424,41 +424,24 @@ class weBackupPreparer{
 		if($format == 'weimport'){
 
 			if(we_hasPerm('WXML_IMPORT')){
-				return '
-						<script  type="text/javascript">
+				return we_html_element::jsElement('
 							if(confirm("' . g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]') . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
 								top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
-							}
-
-						</script>
-					';
+							}');
 			} else{
-				return '
-						<script  type="text/javascript">
-							' . we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
-						</script>
-					';
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
 			}
 		} else if($format == 'customer'){
 
-			return '
-					<script  type="text/javascript">
-						' . we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
-					</script>
-				';
+			return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
 		} else{
-
-			return '
-					<script  type="text/javascript">
-						' . we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
-					</script>
-				';
+			return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 
 		return '';
@@ -500,12 +483,8 @@ class weBackupPreparer{
 			weBackupUtil::addLog('Error: ' . $_mess);
 		}
 
-		return '
-				<script  type="text/javascript">
-					' . we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) . '
-					top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
-				</script>
-			';
+		return we_html_element::jsElement(we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) . '
+					top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
 	}
 
 	function makeCleanGzip($gzfile, $offset){

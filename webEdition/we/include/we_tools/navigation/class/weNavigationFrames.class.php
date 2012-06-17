@@ -501,8 +501,8 @@ class weNavigationFrames extends weToolFrames{
 		array_push(
 			$parts, array(
 			'headline' => g_l('weClass', "[copyFolder]"),
-			'html' => "<script type='text/javascript'>\nvar selfNaviPath ='" . addslashes(
-				$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';\n</script>\n" . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
+			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
+				$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
 				g_l('weClass', "[copy_owners_expl]") . $_disabledNote, 2, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
 				array(
 					'name' => 'CopyFolderID', "value" => ''

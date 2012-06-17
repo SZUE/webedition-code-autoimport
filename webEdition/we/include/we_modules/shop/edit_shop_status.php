@@ -250,11 +250,7 @@ array_push($parts, array(
 		)
 	);
 
-print "
-	<script type=\"text/javascript\">
-		$jsFunction
-	</script>
-";
+print we_html_element::jsElement($jsFunction);
 
 
 print '</head>

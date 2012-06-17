@@ -32,12 +32,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
 	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => $DefaultBannerID)));
 
-	print '<script type="text/javascript">
-
-top.close();
-
-</script>
-</head><body></body></html>';
+	print we_html_element::jsElement('top.close();').'</head><body></body></html>';
 	exit();
 }
 $yuiSuggest = & weSuggest::getInstance();

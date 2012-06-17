@@ -349,7 +349,7 @@ class we_schedpro{
 				break;
 		}
 		$table .= '</table>' . "\n";
-		return '<script  type="text/javascript">var we_hasExtraRow_' . $this->nr . '=' . ($extracont ? 'true' : 'false') . '</script>' . $table;
+		return we_html_element::jsElement('var we_hasExtraRow_' . $this->nr . '=' . ($extracont ? 'true' : 'false')) . $table;
 	}
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){

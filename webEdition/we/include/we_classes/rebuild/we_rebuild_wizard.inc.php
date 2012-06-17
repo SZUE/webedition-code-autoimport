@@ -475,7 +475,7 @@ abstract class we_rebuild_wizard{
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
-		$_html = '<script type="text/javascript">document._errorMessage=' . (count($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"') . '</script>';
+		$_html = we_html_element::jsElement('document._errorMessage=' . (count($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
 		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520);
 		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 

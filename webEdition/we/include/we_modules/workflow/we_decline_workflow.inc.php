@@ -58,14 +58,8 @@ if($cmd == "ok"){
 			$script = '';
 		}
 	}
-	print '
-		<script  type="text/javascript"><!--
-			' . $script . '
-			' . we_message_reporting::getShowMessageCall($msg, $msgType) . '
-			self.close();
-		//-->
-		</script>';
-}
+	print we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
+			}
 print STYLESHEET;
 ?>
 </head>

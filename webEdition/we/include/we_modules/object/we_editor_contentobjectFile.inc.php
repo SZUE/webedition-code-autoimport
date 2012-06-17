@@ -25,7 +25,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 
 we_html_tools::protect();
 
-if(isset($GLOBALS['we_doc']->Charset)&&$GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
+if(isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
 	$charset = $GLOBALS['we_doc']->Charset;
 } else{
 	$charset = DEFAULT_CHARSET;
@@ -53,7 +53,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 	}
 }
 
-we_html_tools::htmlTop('',$charset);
+we_html_tools::htmlTop('', $charset);
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
@@ -120,9 +120,7 @@ if($_editMode){
 			. '</tr>'
 			. '</table>'
 			. '</div>'
-			. '<script type="text/javascript">'
-			. 'objectEntry.add(document, \'' . $part['name'] . '\', null);'
-			. '</script>';
+			. we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
 
 		echo $content;
 	}
@@ -134,6 +132,6 @@ if($_editMode){
 }
 ?>
 	</form>
-</body><script  type="text/javascript">setTimeout("doScrollTo();",100);</script>
+</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
 
 </html>

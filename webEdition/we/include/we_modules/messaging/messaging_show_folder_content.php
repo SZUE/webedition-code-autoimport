@@ -188,7 +188,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	}
 ?></table><?php
 ?>
-  <script type="text/javascript"">
+  <script type="text/javascript""><!--
 					var k;
 
 					if (NN4 == false) {
@@ -203,6 +203,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 <?php
 echo 'passed_dls = new Array(String(' . join('), String(', $passed_dls) . '));';
 ?>
+//-->
 </script>
 </body>
 </html>

@@ -462,7 +462,7 @@ class we_docSelector extends we_dirSelector{
 			if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
 				print '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">';
 				$newFileState = $this->userCanMakeNewFile ? 1 : 0;
-				print '<script  type="text/javascript">newFileState=' . $newFileState . ';</script>';
+				print we_html_element::jsElement('newFileState=' . $newFileState . ';');
 				if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
 					print we_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
 				} else{
@@ -546,19 +546,12 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		function printSetDirHTML(){
-			print '
-			<script  type="text/javascript"><!--
+			print '<script  type="text/javascript"><!--
 				top.clearEntries();';
 			$this->printCmdAddEntriesHTML();
 			$this->printCMDWriteAndFillSelectorHTML();
 
-			if(intval($this->dir) == 0){
-				print 'top.fsheader.disableRootDirButs();';
-			} else{
-				print 'top.fsheader.enableRootDirButs();';
-			}
-
-			print '
+			print 'top.fsheader.'.(intval($this->dir) == 0?'disable':'enable').'RootDirButs();
 				top.currentDir = "' . $this->dir . '";
 				top.parentID = "' . $this->values["ParentID"] . '";
 			//-->
