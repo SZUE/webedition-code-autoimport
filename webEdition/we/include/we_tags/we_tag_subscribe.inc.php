@@ -118,20 +118,8 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
-				$_optAtts['xml'] = $xml;
-				$attr = we_make_attribs($attribs, "name,type,values,_name_orig");
-				$options = getHtmlTag('option', $_optAtts, '', true);
-				$vals = makeArrayFromCSV($values);
 				$value = isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value;
-				foreach($vals as $v){
-					$_optAtts['value'] = htmlspecialchars($v);
-					if($v == $value){
-						$options .= getHtmlTag('option', array_merge($_optAtts, array('selected' => 'selected')), htmlspecialchars($v)) . "\n";
-					} else{
-						$options .= getHtmlTag('option', $_optAtts, htmlspecialchars($v)) . "\n";
-					}
-				}
-				return getHtmlTag('select', $newAttribs, $options, true);
+				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
 			} else{
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_salutation__';
@@ -149,20 +137,8 @@ function we_tag_subscribe($attribs){
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$newAttribs['name'] = 'we_subscribe_title__';
-				$_optAtts['xml'] = $xml;
-				$attr = we_make_attribs($attribs, "name,type,values,_name_orig");
-				$options = getHtmlTag('option', $_optAtts, '', true);
-				$vals = makeArrayFromCSV($values);
 				$value = isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value;
-				foreach($vals as $v){
-					$_optAtts['value'] = htmlspecialchars($v);
-					if($v == $value){
-						$options .= getHtmlTag('option', array_merge($_optAtts, array('selected' => 'selected')), htmlspecialchars($v)) . "\n";
-					} else{
-						$options .= getHtmlTag('option', $_optAtts, htmlspecialchars($v)) . "\n";
-					}
-				}
-				return getHtmlTag('select', $newAttribs, $options, true);
+				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
 			} else{
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
 				$newAttribs['name'] = 'we_subscribe_title__';
