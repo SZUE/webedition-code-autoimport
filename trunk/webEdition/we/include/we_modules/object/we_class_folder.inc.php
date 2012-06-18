@@ -116,10 +116,10 @@ class we_class_folder extends we_folder{
 			$anz = sizeof($spl);
 			$last_pid = 0;
 			for($i = 0; $i < $anz; $i++){
-				array_push($p, array_shift($spl));
+				$p[]= array_shift($spl);
 				$pa = $this->DB_WE->escape(implode('/', $p));
 				if($pa){
-					$pid = f("SELECT ID FROM " . $this->db->escape($tblName) . " WHERE Path='$pa'", "ID", new DB_WE());
+					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="$pa"', 'ID', new DB_WE());
 					if(!$pid){
 						$folder = new self();
 						$folder->init();
