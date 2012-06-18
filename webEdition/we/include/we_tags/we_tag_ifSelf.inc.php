@@ -64,8 +64,16 @@ function we_tag_ifSelf($attribs){
 				return in_array($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1], $ids);
 			}
 		case "self" :
-			return in_array($GLOBALS['we_doc']->ID, $ids);
+			if(isset($GLOBALS['we']['ll'])){
+				return $GLOBALS['we']['ll']->getID()==$GLOBALS['we_doc']->ID;
+			} else {
+				return in_array($GLOBALS['we_doc']->ID, $ids);
+			}
 		default :
-			return in_array($GLOBALS["WE_MAIN_DOC"]->ID, $ids);
+			if(isset($GLOBALS['we']['ll'])){
+				return $GLOBALS['we']['ll']->getID()==$GLOBALS["WE_MAIN_DOC"]->ID;
+			} else {
+				return in_array($GLOBALS["WE_MAIN_DOC"]->ID, $ids);
+			}
 	}
 }
