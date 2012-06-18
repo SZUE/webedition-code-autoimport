@@ -101,8 +101,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 					"space" => 0
 				);
 			}
-			print we_multiIconBox::getJS();
-			print we_multiIconBox::getHTML('', '100%', $parts, 20);
+			print we_multiIconBox::getJS() . we_multiIconBox::getHTML('', '100%', $parts, 20);
 			?>
 
 	</form>

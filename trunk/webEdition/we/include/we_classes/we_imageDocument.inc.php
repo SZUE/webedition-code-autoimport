@@ -88,22 +88,23 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param boolean $resave
 	 */
 	function we_save($resave = 0){
-
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0);
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
+			$thumbs = $this->getThumbs();
 			if($docChanged){
-				$thumbs = $this->getThumbs();
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 				deleteThumbsByImageID($this->ID);
-				if(count($thumbs)){
-					foreach($thumbs as $thumbID){
-						$thumbObj = new we_thumbnail();
-						$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement("origwidth"), $this->getElement("origheight"), $this->getDocument());
-						$thumbObj->createThumb();
+			}
+			if(count($thumbs)){
+				foreach($thumbs as $thumbID){
+					$thumbObj = new we_thumbnail();
+					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement("origwidth"), $this->getElement("origheight"), $this->getDocument());
+					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
+						t_e('Error creating thumbnails');
 					}
 				}
 			}
@@ -145,7 +146,7 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function getThumbs(){
 		$thumbs = array();
-		if($this->Thumbs == -1 || true){
+		if($this->Thumbs == -1){
 			$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
 
 			while($this->DB_WE->next_record()) {
@@ -191,7 +192,7 @@ class we_imageDocument extends we_binaryDocument{
 
 		foreach($thumbsToAdd as $t){
 			if(!in_array($t, $thumbsArray)){
-				array_push($thumbsArray, $t);
+				$thumbsArray[] = $t;
 			}
 		}
 

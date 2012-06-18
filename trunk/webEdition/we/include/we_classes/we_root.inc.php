@@ -926,17 +926,17 @@ abstract class we_root extends we_class{
 
 	function i_getContentData($loadBinary = 0){
 
-		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($this->ID) .
-			" AND " . LINK_TABLE . ".DocumentTable='" . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
-			"' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . ".CID " .
-			($loadBinary ? "" : " AND " . CONTENT_TABLE . ".IsBinary=0"));
-		$filter = array("Name", "DID", "Ord");
+		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->ID) .
+			' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
+			'" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID ' .
+			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
+		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()) {
 			$Name = $this->DB_WE->f("Name");
 			$type = $this->DB_WE->f("Type");
 
-			if($type == "formfield"){ // Artjom garbage fix!
-				$this->elements[$Name] = unserialize($this->DB_WE->f("Dat"));
+			if($type == 'formfield'){ // Artjom garbage fix!
+				$this->elements[$Name] = unserialize($this->DB_WE->f('Dat'));
 			} else{
 				if($this->i_isElement($Name)){
 					foreach($this->DB_WE->Record as $k => $v){
