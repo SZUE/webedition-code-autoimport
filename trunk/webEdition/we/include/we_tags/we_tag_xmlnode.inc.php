@@ -34,19 +34,19 @@ function we_parse_tag_xmlnode($attribs, $content){
 			$printstart='print ';
 			break;
 		case "request" :
-			$printstart='$_REQUEST["'.$nameTo.'"] .= ';
+			$printstart='$_REQUEST["'.$nameTo.'"] = ';
 			break;
 		case "post" :
-			$printstart='$_POST["'.$nameTo.'"] .= ';
+			$printstart='$_POST["'.$nameTo.'"] = ';
 			break;
 		case "get" :
-			$printstart='$_GET["'.$nameTo.'"] .= ';
+			$printstart='$_GET["'.$nameTo.'"] = ';
 			break;
 		case "global" :
-			$printstart='$GLOBALS["'.$nameTo.'"] .= ';
+			$printstart='$GLOBALS["'.$nameTo.'"] = ';
 			break;
 		case "session" :
-			$printstart='$_SESSION["'.$nameTo.'"] .= ';
+			$printstart='$_SESSION["'.$nameTo.'"] = ';
 			break;
 		case "top" :		
 			$printstart='$GLOBALS["WE_MAIN_DOC"]->setElement('.$nameTo.',';
@@ -58,13 +58,13 @@ function we_parse_tag_xmlnode($attribs, $content){
 			break;
 		
 		case "sessionfield" :
-			$printstart='if(isset($_SESSION["webuser"]["'.$nameTo.'"]))$_SESSION["webuser"]["'.$nameTo.'"] .= ';
+			$printstart='if(isset($_SESSION["webuser"]["'.$nameTo.'"]))$_SESSION["webuser"]["'.$nameTo.'"] = ';
 			break;
 	}
 	$unq = '$_xmlnode' .  uniqid(rand());
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 		while(' . $unq . '->next()){
-			if(' . $unq . '->hasChild()){
+			if(  ' . $unq . '->hasChild() ){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
 			}else{
 			   ' .$printstart. $unq . '->getFeedData()'.$printend.'	  
