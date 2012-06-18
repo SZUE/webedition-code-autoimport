@@ -80,9 +80,14 @@ class we_binaryDocument extends we_document{
 	function i_getContentData(){
 		parent::i_getContentData(true);
 		$_sitePath = $this->getSitePath();
+		$_realPath = $this->getRealPath();
+		if(!file_exists($_sitePath) && file_exists($_realPath)){
+				we_util_File::copyFile($_realPath, $this->getSitePath());
+
+		}
 		if(file_exists($_sitePath)){
 			if(filesize($_sitePath)){
-				$this->setElement("data", $_sitePath, "image");
+				$this->setElement('data', $_sitePath, 'image');
 			}
 		}
 	}

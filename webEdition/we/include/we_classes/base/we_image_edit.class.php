@@ -439,7 +439,7 @@ class we_image_edit{
 		if($output_format == "jpeg"){
 			$output_format = "jpg";
 		}
-
+		
 		if(strlen($imagedata) < 255 && @file_exists($imagedata)){
 			$_fromFile = true;
 		}
