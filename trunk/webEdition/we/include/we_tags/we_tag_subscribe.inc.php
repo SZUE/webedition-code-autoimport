@@ -117,7 +117,7 @@ function we_tag_subscribe($attribs){
 
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
-				$newAttribs['name'] = 'we_subscribe_salutation__';
+				$name = 'we_subscribe_salutation__';
 				$value = isset($_REQUEST["we_subscribe_salutation__"]) ? $_REQUEST["we_subscribe_salutation__"] : $value;
 				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
 			} else{
@@ -136,7 +136,7 @@ function we_tag_subscribe($attribs){
 		case "title":
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
-				$newAttribs['name'] = 'we_subscribe_title__';
+				$name = 'we_subscribe_title__';
 				$value = isset($_REQUEST["we_subscribe_title__"]) ? $_REQUEST["we_subscribe_title__"] : $value;
 				return we_getSelectField($name, $value, $values, $newAttribs, true);//same function like <we:sessionField type="select">
 			} else{
