@@ -438,7 +438,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				unset($model);
 
 				array_push($parts, array(
-					'headline' => g_l('modules_shop', '[Anzahl]'),
+					'headline' => g_l('modules_shop', '[anzahl]'),
 					'space' => 100,
 					'html' => we_class::htmlTextInput('anzahl', 24, '', '', '', 'text', 380),
 					'noline' => 1

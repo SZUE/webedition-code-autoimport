@@ -60,7 +60,7 @@ function we_parse_tag_block($attribs, $content){
 	//here postTagName is explicitly needed, because the control-element is not "inside" the block-tag (no block defined/first element) but controls its elements
 	return '<?php if(($block_' . $name . '=' . we_tag_tagParser::printTag('block', $attribs) . ')!==false){' . "\n\t" .
 		'while(we_condition_tag_block($block_' . $name . ')){?>' . $content . '<?php }}else{?>' .
-		$ctlPre . 'array(\'name\'=>\'' . $blockName . '\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,' .
+		$ctlPre . 'array(\'name\'=>we_tag_getPostName(\'' . $blockName . '\'),\'pos\'=>0,\'listSize\'=>0,' .
 		'\'ctlShowSelect\'=>' . (weTag_getParserAttribute('showselect', $arr, true, true) ? 'true' : 'false') . ',' .
 		'\'ctlShow\'=>' . (int) weTag_getParserAttribute('limit', $arr, 10) . ')' . $ctlPost .
 		'<?php }unset($block_' . $name . ');?>';

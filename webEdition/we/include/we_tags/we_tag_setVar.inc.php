@@ -117,7 +117,7 @@ function we_tag_setVar($attribs){
 					));
 				break;
 			case "block" :
-				$nameFrom.=$GLOBALS['postTagName'];
+				$nameFrom=we_tag_getPostName($nameFrom);
 				if($typeFrom == "href"){
 
 					if($GLOBALS['we_doc']->elements[$nameFrom . "_we_jkhdsf_int"]["dat"]){
@@ -161,7 +161,7 @@ function we_tag_setVar($attribs){
 			}
 			break;
 		case "block" :
-			$nameTo.=$GLOBALS['postTagName'];
+			$nameTo=$we_tag_getPostName($nameTo);
 		case "self" :
 			if($propertyTo){
 				$GLOBALS['we_doc']->$nameTo = $valueFrom;
