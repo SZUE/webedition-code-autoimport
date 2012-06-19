@@ -21,6 +21,9 @@
  * @category   webEdition
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @param       string  $type           Anmeldeverfahren, moegliche Werte sind: customer, csv, emailonly
+ * @param       string  $fieldGroup     Erwartet eine Feldgruppe (Bereich) aus der webEdition KV; Default: "Newsletter"; Nur bei $type == customer
+ * @param       string  $mailingList    Erwartet den Namen der Mailing-Liste OHNE Feldgruppe (Bereich) aus der webEdition KV; Default: "Ok"; Nur bei $type == customer
  */
 function we_tag_addDelNewsletterEmail($attribs){
 	$useListsArray = isset($_REQUEST["we_use_lists__"]);
@@ -47,9 +50,13 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 	if(!$useListsArray){
 		if($customer){
-			$abos = makeArrayFromCSV(weTag_getAttribute("mailingList", $attribs));
-			if(!sizeof($abos) || (strlen($abos[0]) == 0)){
-				$abos[0] = "Newsletter_Ok";
+			$tmpAbos = makeArrayFromCSV(weTag_getAttribute("mailingList", $attribs));
+			if(!sizeof($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
+				$abos[0] = $fieldGroup . "_Ok";
+			}else{// #6100
+			    foreach($tmpAbos as $abo){
+					array_push($abos, $fieldGroup . "_" . $abo);
+				} 
 			}
 		} else{
 			if(!$emailonly){
