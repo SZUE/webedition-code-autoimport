@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-$uniqid = md5(uniqid(time()));
+$uniqid = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
 
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 

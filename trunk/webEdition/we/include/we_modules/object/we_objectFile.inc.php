@@ -1017,7 +1017,7 @@ class we_objectFile extends we_document{
 			$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
 
-			$uniq = uniqid('');
+			$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
 			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
@@ -1066,7 +1066,7 @@ class we_objectFile extends we_document{
 		} else{
 
 			$content = '';
-			$uniq = uniqid('');
+			$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			$txt = $ob->Text ? $ob->Text : $name;
 			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 			$content .= we_button::create_button_table(
@@ -1129,14 +1129,14 @@ class we_objectFile extends we_document{
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
-					$uniq = uniqid('');
+					$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$editObjectButton = we_button::create_button("image:btn_edit_object", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 					$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 
 					$inputWidth = 346;
 
-					$uniq = uniqid("");
+					$uniq = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "right", g_l('global', "[openCloseBox]"));
 					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
@@ -1217,7 +1217,7 @@ class we_objectFile extends we_document{
 				for($f = 0; $f < $show; $f++){
 					$myid = $objects[$f];
 					if($myid){
-						$uniq = uniqid('');
+						$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 						$ob = new we_objectFile();
 						$ob->initByID($myid, OBJECT_FILES_TABLE);
 						$ob->DefArray = $ob->getDefaultValueArray();

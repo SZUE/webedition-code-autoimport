@@ -874,7 +874,7 @@ class PHPMailer {
     $result = '';
 
     /* Set the boundaries */
-    $uniq_id = md5(uniqid(time()));
+    $uniq_id = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
     $this->boundary[1] = 'b1_' . $uniq_id;
     $this->boundary[2] = 'b2_' . $uniq_id;
 

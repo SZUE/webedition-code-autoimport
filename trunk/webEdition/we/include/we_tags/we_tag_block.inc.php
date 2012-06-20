@@ -152,7 +152,7 @@ function we_tag_blockControls($attribs, $content = ''){
 		return '';
 	}
 	if(!isset($attribs['ctlName'])){
-		$attribs['ctlName'] = md5(uniqid(time()));
+		$attribs['ctlName'] = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
 	}
 
 	if($attribs['pos'] < $attribs['listSize']){

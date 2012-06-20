@@ -862,7 +862,7 @@ HTS;
 		$js = '';
 
 		if($clip > 0){
-			$unique = md5(uniqid(microtime()));
+			$unique = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
 			$smalltext = substr($text, 0, $clip) . ' ... ';
 			$js = we_html_element::jsElement(
 					'

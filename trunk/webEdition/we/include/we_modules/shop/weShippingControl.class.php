@@ -106,7 +106,7 @@ class weShippingControl {
 			array('10','20','100'),
 			array('15','5','0'),
 			0
-		);
+		); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 	}
 
 	function save() {

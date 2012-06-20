@@ -251,7 +251,7 @@ class XML_SplitFile extends we_xml_parser{
 	function getUniqueId(){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid prevents from simultanious access, within a microsecond.
-		return md5(uniqid(microtime()));
+		return md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
 	}
 
 	/**
