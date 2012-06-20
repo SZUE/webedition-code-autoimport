@@ -88,7 +88,7 @@ class we_search_listview extends listviewBase{
 			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == "we_filename"){
 
 				$ord = str_replace("we_id", INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
-				//$ord = str_replace("we_creationdate",INDEX_TABLE . ".CreationDate",$ord);
+				$ord = str_replace("we_creationdate",INDEX_TABLE . ".CreationDate",$ord);
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
 			} else{
 				$orderArr1 = makeArrayFromCSV($this->order);
