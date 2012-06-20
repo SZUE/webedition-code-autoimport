@@ -109,23 +109,6 @@ function updateFieldFromOrder($orderId, $fieldname, $value){
 	return ($GLOBALS['DB_WE']->query($upQuery) ? true : false);
 }
 
-// config
-$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
-
-$waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
-$dbTitlename = "shoptitle";
-$dbPreisname = "price";
-$numberformat = $feldnamen[2];
-$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$classIds = makeArrayFromCSV($classid);
-$mwst = (!empty($feldnamen[1])) ? (($feldnamen[1])) : '';
-$notInc = "tblTemplates";
-
-$da = "%d.%m.%Y";
-$dateform = "00.00.0000";
-$db = "%d.%m.%Y %H:%i";
-$datetimeform = "00.00.0000 00:00";
-
 // determine the number format
 function numfom($result){
 	$result = we_util::std_numberformat($result);
@@ -145,6 +128,24 @@ function numfom($result){
 function numfom2($result){
 	return rtrim(rtrim(numfom($result), '.00'), ',00');
 }
+
+// config
+$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
+
+$waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
+$dbTitlename = "shoptitle";
+$dbPreisname = "price";
+$numberformat = $feldnamen[2];
+$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
+$classIds = makeArrayFromCSV($classid);
+$mwst = (!empty($feldnamen[1])) ? (($feldnamen[1])) : '';
+$notInc = "tblTemplates";
+
+$da = "%d.%m.%Y";
+$dateform = "00.00.0000";
+$db = "%d.%m.%Y %H:%i";
+$datetimeform = "00.00.0000 00:00";
+
 
 if(isset($_REQUEST['we_cmd'][0])){
 
@@ -209,7 +210,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$preis = getFieldFromShoparticle($serialDoc, 'price');
 
 				// now insert article to order:
-				$row=getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]),$GLOBALS['DB_WE']);
+				$row = getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
@@ -260,8 +261,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				// now get all shop objects
 				foreach($classIds as $_classId){
 					$_classId = intval($_classId);
-					$query = '
-						SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
+					$query = 'SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 						FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 						WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
 							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID
@@ -984,7 +984,8 @@ $_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
 
 
 
-if(isset($_REQUEST["SendMail"])){;
+if(isset($_REQUEST["SendMail"])){
+;
 	$weShopStatusMails->sendEMail($_REQUEST["SendMail"], $_REQUEST["bid"], $_customer);
 }
 
