@@ -418,7 +418,7 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 function we_getInputCheckboxField($name, $value, $attr){
 	//  returns a checkbox with associated hidden-field
 
-	$tmpname = md5(uniqid(time()));
+	$tmpname = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
 	if($value){
 		$attr['checked'] = 'checked';
 	}

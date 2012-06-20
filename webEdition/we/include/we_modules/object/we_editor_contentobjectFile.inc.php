@@ -46,7 +46,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 					"space" => 0,
 					"name" => uniqid(""),
 					)
-				);
+				); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 				break;
 			}
 		}
@@ -94,14 +94,14 @@ $GLOBALS['we_doc']->pHiddenTrans();
 
 if($_editMode){
 
-	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(""), 30);
+	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(""), 30); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 	echo $jsGUI->getContainer();
 
 	echo we_multiIconBox::_getBoxEnd("100%");
 
 	foreach($parts as $idx => $part){
-		$uniqid = uniqid("");
+		$uniqid = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 		$content = '<div id="' . $part['name'] . '">'
 			. '<a name="f' . $part['name'] . '"></a>'

@@ -258,7 +258,7 @@ class HttpRequest{
             if($this->http_method == 'POST'){   //  method 'POST'
 
                 //  boundary to seperate between different content blocks
-                $boundary = 'accessibility_' . (uniqid('webEdition') . time());
+                $boundary = 'accessibility_' . (uniqid('webEdition') . time()); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
                 for($i=0;$i<$_sizeFiles;$i++){
 

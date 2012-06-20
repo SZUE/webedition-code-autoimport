@@ -83,11 +83,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 			if($id != false){
 				$after = array_pop(explode("_", $id));
 				$afterid = $id;
-				$identifier = uniqid("");
+				$identifier = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			} else{
 				$after = false;
 				$afterid = false;
-				$identifier = uniqid("");
+				$identifier = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			}
 			$uniqid = "entry_" . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);

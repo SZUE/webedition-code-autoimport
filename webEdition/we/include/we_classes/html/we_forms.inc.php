@@ -46,7 +46,7 @@ abstract class we_forms{
 	 */
 	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? uniqid($name . "_") : $name);
+		$_id = ($uniqid ? uniqid($name . "_") : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 		$labelonclick = "";
 

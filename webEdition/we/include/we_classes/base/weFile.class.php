@@ -189,7 +189,8 @@ abstract class weFile{
 	static function getUniqueId($md5=true){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		return ($md5 ? md5(uniqid(microtime())) : uniqid(microtime()));
+		return ($md5 ? md5(str_replace('.', '', uniqid('',true))) : uniqid(microtime())); 
+		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid("",true))"
 	}
 
 	/**

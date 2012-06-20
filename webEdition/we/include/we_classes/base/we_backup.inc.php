@@ -443,7 +443,7 @@ class we_backup{
 		$phase_start = false;
 		$ret = 0;
 		if(!$this->tempfilename){
-			$this->tempfilename = md5(uniqid(time())) . ".php";
+			$this->tempfilename = md5(str_replace('.', '', uniqid('',true))) . ".php"; // #6590, changed from: uniqid(time())
 			$this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
 			$this->backup_step = 0;
 			$this->backup_steps = $this->default_backup_steps;
@@ -1366,7 +1366,7 @@ class we_backup{
 		}
 
 		if($of == "")
-			$of = md5(uniqid(time()));
+			$of = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
 		$fp = fopen($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, "wb");
 		fputs($fp, $save);
 		fclose($fp);
