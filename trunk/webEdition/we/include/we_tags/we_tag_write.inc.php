@@ -23,176 +23,195 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_write($attribs){
-	$type = weTag_getAttribute("type", $attribs, "document");
+	$type = weTag_getAttribute('type', $attribs, 'document');
 
-	if($type == "object"){
-		if(($foo = attributFehltError($attribs, "classid", __FUNCTION__))){
-			return $foo;
-		}
-	} else{
-		$type = 'document'; //make sure type is known!
-		if(($foo = attributFehltError($attribs, "doctype", __FUNCTION__))){
-			return $foo;
-		}
+	switch($type){
+		case 'object':
+			if(($foo = attributFehltError($attribs, 'classid', __FUNCTION__))){
+				return $foo;
+			}
+			break;
+		default:
+		case document:
+			$type = 'document'; //make sure type is known!
+			if(($foo = attributFehltError($attribs, 'doctype', __FUNCTION__))){
+				return $foo;
+			}
+			break;
 	}
 
-	$name = weTag_getAttribute("formname", $attribs, ((isset($GLOBALS["WE_FORM"]) && $GLOBALS["WE_FORM"]) ? $GLOBALS["WE_FORM"] : "we_global_form"));
+	$name = weTag_getAttribute('formname', $attribs, ((isset($GLOBALS['WE_FORM']) && $GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : 'we_global_form'));
 
-	$publish = weTag_getAttribute("publish", $attribs, false, true);
-	$triggerid = weTag_getAttribute("triggerid", $attribs, 0);
-	$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-	$doctype = weTag_getAttribute("doctype", $attribs);
-	$tid = weTag_getAttribute("tid", $attribs);
-	$categories = weTag_getAttribute("categories", $attribs);
-	$classid = weTag_getAttribute("classid", $attribs);
-	$userid = weTag_getAttribute("userid", $attribs); // deprecated  use protected=true instead
-	$protected = weTag_getAttribute("protected", $attribs, false, true);
-	$admin = weTag_getAttribute("admin", $attribs);
-	$mail = weTag_getAttribute("mail", $attribs);
-	$mailfrom = weTag_getAttribute("mailfrom", $attribs);
-	$forceedit = weTag_getAttribute("forceedit", $attribs, false, true);
-	$workspaces = weTag_getAttribute("workspaces", $attribs);
-	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute("name", $attribs));
-	$onduplicate = weTag_getAttribute("onduplicate", $attribs, "increment");
-	if($objname == ''){
-		$onduplicate = "overwrite";
-	}
-	$onpredefinedname = weTag_getAttribute("onpredefinedname", $attribs, "appendto");
-	$workflowname = weTag_getAttribute("workflowname", $attribs);
-	$workflowuserid = weTag_getAttribute("workflowuserid", $attribs, 0);
+	$publish = weTag_getAttribute('publish', $attribs, false, true);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
+	$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
+	$doctype = weTag_getAttribute('doctype', $attribs);
+	$tid = weTag_getAttribute('tid', $attribs);
+	$categories = weTag_getAttribute('categories', $attribs);
+	$classid = weTag_getAttribute('classid', $attribs);
+	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute('protected', $attribs, false, true);
+	$admin = weTag_getAttribute('admin', $attribs);
+	$mail = weTag_getAttribute('mail', $attribs);
+	$mailfrom = weTag_getAttribute('mailfrom', $attribs);
+	$forceedit = weTag_getAttribute('forceedit', $attribs, false, true);
+	$workspaces = weTag_getAttribute('workspaces', $attribs);
+	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs));
+	$onduplicate = ($objname == '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment'));
+	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto');
+	$workflowname = weTag_getAttribute('workflowname', $attribs);
+	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 
-	if(isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]){
+	if(isset($_REQUEST['edit_' . $type]) && $_REQUEST['edit_' . $type]){
 
-		if($type == "document"){
-			$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
-		} else{
-			$parentid = weTag_getAttribute("parentid", $attribs);
-			$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid));
+		switch($type){
+			case 'document':
+				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories);
+				break;
+			case 'object':
+				$parentid = weTag_getAttribute('parentid', $attribs);
+				$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid));
+				break;
 		}
 
 		if($ok){
 			$isOwner = false;
-			if($protected && isset($_SESSION["webuser"]["ID"])){
-				$isOwner = ($_SESSION["webuser"]["ID"] == $GLOBALS["we_$type"][$name]->WebUserID);
+			if($protected && isset($_SESSION['webuser']['ID'])){
+				$isOwner = ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID);
 			} else{
-				$isOwner = ($userid) && ($_SESSION["webuser"]["ID"] == $GLOBALS["we_$type"][$name]->getElement($userid));
+				$isOwner = ($userid) && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid));
 			}
-			$isAdmin = ($admin) && isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin];
+			$isAdmin = ($admin) && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
-			if($isAdmin || ($GLOBALS["we_$type"][$name]->ID == 0) || $isOwner || $forceedit){
+			if($isAdmin || ($GLOBALS['we_' . $type][$name]->ID == 0) || $isOwner || $forceedit){
 				$doWrite = true;
-				$GLOBALS["we_" . $type . "_write_ok"] = true;
-				//$newObject = ($GLOBALS["we_$type"][$name]->ID) ? false : true;
+				$GLOBALS['we_' . $type . '_write_ok'] = true;
+				//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 				if($protected){
-					if(!isset($_SESSION["webuser"]["ID"])){
+					if(!isset($_SESSION['webuser']['ID'])){
 						return;
 					}
-					if(!$GLOBALS["we_$type"][$name]->WebUserID){
-						$GLOBALS["we_$type"][$name]->WebUserID = $_SESSION["webuser"]["ID"];
+					if(!$GLOBALS['we_' . $type][$name]->WebUserID){
+						$GLOBALS['we_' . $type][$name]->WebUserID = $_SESSION['webuser']['ID'];
 					}
 				} else{
 					if($userid){
-						if(!isset($_SESSION["webuser"]["ID"]))
+						if(!isset($_SESSION['webuser']['ID']))
 							return;
-						if(!$GLOBALS["we_$type"][$name]->getElement($userid)){
-							$GLOBALS["we_$type"][$name]->setElement($userid, $_SESSION["webuser"]["ID"]);
+						if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
+							$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
 						}
 					}
 				}
 
-				checkAndCreateImage($name, ($type == "document") ? "we_document" : "we_object");
-				checkAndCreateFlashmovie($name, ($type == "document") ? "we_document" : "we_object");
-				checkAndCreateQuicktime($name, ($type == "document") ? "we_document" : "we_object");
-				checkAndCreateBinary($name, ($type == "document") ? "we_document" : "we_object");
+				checkAndCreateImage($name, ($type == 'document') ? 'we_document' : 'we_object');
+				checkAndCreateFlashmovie($name, ($type == 'document') ? 'we_document' : 'we_object');
+				checkAndCreateQuicktime($name, ($type == 'document') ? 'we_document' : 'we_object');
+				checkAndCreateBinary($name, ($type == 'document') ? 'we_document' : 'we_object');
 
-				$GLOBALS["we_$type"][$name]->i_checkPathDiffAndCreate();
+				$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
 				if($objname == ''){
-					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
+					$GLOBALS['we_' . $type][$name]->i_correctDoublePath();
 				}
 				if(isset($GLOBALS['we_doc'])){
 					$_WE_DOC_SAVE = $GLOBALS['we_doc'];
 				}
 				$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
-				if(strlen($workspaces) > 0 && $type == "object"){
+				if(strlen($workspaces) > 0 && $type == 'object'){
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
 					foreach($wsArr as $wsId){
-						array_push($tmplArray, $GLOBALS["we_$type"][$name]->getTemplateFromWs($wsId));
+						array_push($tmplArray, $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId));
 					}
-					$GLOBALS["we_$type"][$name]->Workspaces = makeCSVFromArray($wsArr, true);
-					$GLOBALS["we_$type"][$name]->Templates = makeCSVFromArray($tmplArray, true);
+					$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($wsArr, true);
+					$GLOBALS['we_' . $type][$name]->Templates = makeCSVFromArray($tmplArray, true);
 				}
 
-				$GLOBALS["we_$type"][$name]->Path = $GLOBALS["we_$type"][$name]->getPath();
+				$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
 
-				if(defined("OBJECT_FILES_TABLE") && $type == "object"){
+				if(defined('OBJECT_FILES_TABLE') && $type == 'object'){
 					$db = new DB_WE();
-					if($GLOBALS["we_$type"][$name]->Text == ""){
+					if($GLOBALS['we_' . $type][$name]->Text == ''){
 						if($objname == ''){
-							$objname = 1 + intval(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
+							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE, 'ID', $db));
 						}
 					} else{
-						if($onpredefinedname == 'appendto'){
-							$objname = ($objname != '' ? $GLOBALS["we_$type"][$name]->Text . '_' . $objname : $GLOBALS["we_$type"][$name]->Text);
-						} elseif($onpredefinedname == 'infrontof'){
-							$objname .= ($objname != '' ? '_' . $GLOBALS["we_$type"][$name]->Text : $GLOBALS["we_$type"][$name]->Text);
-						} elseif($onpredefinedname == 'overwrite' && $objname == ''){
-							$objname = $GLOBALS["we_$type"][$name]->Text;
+						switch($onpredefinedname){
+							case 'appendto':
+								$objname = ($objname != '' ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
+								break;
+							case 'infrontof':
+								$objname .= ($objname != '' ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
+								break;
+							case 'overwrite':
+								if($objname == ''){
+									$objname = $GLOBALS['we_' . $type][$name]->Text;
+								}
+								break;
 						}
 					}
-					$objexists = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $db->escape(str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . "/" . $objname)) . "'", "ID", $db);
+					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"', 'ID', $db);
 					if($objexists == ''){
-						$GLOBALS["we_$type"][$name]->Text = $objname;
-						$GLOBALS["we_$type"][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $objname);
+						$GLOBALS['we_' . $type][$name]->Text = $objname;
+						$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
 					} else{
 						switch($onduplicate){
 							case 'abort':
-								$GLOBALS["we_object_write_ok"] = false;
+								$GLOBALS['we_object_write_ok'] = false;
 								$doWrite = false;
 								break;
 							case 'overwrite':
-								$GLOBALS["we_$type"][$name]->ID = $objexists;
-								$GLOBALS["we_$type"][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $objname);
-								$GLOBALS["we_$type"][$name]->Text = $objname;
+								$GLOBALS['we_' . $type][$name]->ID = $objexists;
+								$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
+								$GLOBALS['we_' . $type][$name]->Text = $objname;
 								break;
 							case 'increment':
-								$z = 0;
-								$footext = $objname . "_" . $z;
-								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $db->escape(str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . "/" . $footext)) . "'", "ID", $db)) {
-									$z++;
-									$footext = $objname . "_" . $z;
+								$footext = $objname . '_'; // . $z;
+								$tmp = f('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE Path LIKE "' . $db->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext . '%')) . '" ORDER DESC LIMIT 1', 'ID', $db);
+								if($tmp){
+									list(, $tmp) = explode($footext, $tmp);
+									$footext.=intval($tmp) + 1;
+								} else{
+									$footext .= '0';
 								}
-								$GLOBALS["we_$type"][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
-								$GLOBALS["we_$type"][$name]->Text = $footext;
+
+								$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext);
+								$GLOBALS['we_' . $type][$name]->Text = $footext;
 								break;
 						}
 					}
 				}
 				if($doWrite){
-					$GLOBALS["we_$type"][$name]->we_save();
-					if($publish){
-						if($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
+					$GLOBALS['we_' . $type][$name]->we_save();
+					if($publish && !$doworkflow){
+						if($type == 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
 							$GLOBALS['we_doc']->we_publish();
 						} else{
-							$GLOBALS["we_$type"][$name]->we_publish();
+							$GLOBALS['we_' . $type][$name]->we_publish();
 						}
 					}
-				}
-				if($doWrite && $doworkflow){
-					$workflowID = we_workflow_utility::getWorkflowID($workflowname);
-					$wf_text = "we:write " . $workflowname . "  ";
-					if($GLOBALS['we_doc']->Table == FILE_TABLE){
-						$wf_text .= "we_object ID: " . $GLOBALS['we_doc']->ID;
-					} else{
-						$wf_text .= "we_document ID: " . $GLOBALS['we_doc']->ID;
-					}
-					if(we_workflow_utility::insertDocInWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table, $workflowID, $workflowuserid, $wf_text)){
 
+					if($doworkflow){
+						$wf_text = 'we:write ' . $workflowname . '  ';
+						switch($type){
+							default:
+							case 'document':
+								$wf_text .= 'we_document ID: ' . $GLOBALS['we_doc']->ID;
+								$tab = FILE_TABLE;
+								break;
+							case 'object':
+								$wf_text .= 'we_object ID: ' . $GLOBALS['we_doc']->ID;
+								$tab = OBJECT_FILES_TABLE;
+								break;
+						}
+						$workflowID = we_workflow_utility::getWorkflowID($workflowname, $tab);
+
+						if(!we_workflow_utility::insertDocInWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table, $workflowID, $workflowuserid, $wf_text)){
+							t_e('error inserting document to workflow. Additional data:',$GLOBALS['we_doc']->Table, $workflowID, $workflowuserid);
+						}
 					}
-				}
-				if ($doWrite){
-					$GLOBALS["we_object_write_ID"]=$GLOBALS["we_doc"]->ID;
+					$GLOBALS['we_object_write_ID'] = $GLOBALS['we_doc']->ID;
 				}
 
 				unset($GLOBALS['we_doc']);
@@ -200,26 +219,24 @@ function we_tag_write($attribs){
 					$GLOBALS['we_doc'] = $_WE_DOC_SAVE;
 					unset($_WE_DOC_SAVE);
 				}
-				$_REQUEST["we_returnpage"] = $GLOBALS["we_$type"][$name]->getElement("we_returnpage");
+				$_REQUEST['we_returnpage'] = $GLOBALS['we_' . $type][$name]->getElement('we_returnpage');
 
 				if($doWrite && $mail){
 					if(!$mailfrom){
-						$mailfrom = "dontReply@" . $_SERVER['SERVER_NAME'];
+						$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
 					}
-					$path = $GLOBALS["we_$type"][$name]->Path;
-					if($type == "object"){
-						$classname = f(
-							"SELECT Text FROM " . OBJECT_TABLE . " WHERE ID=" . intval($classid), "Text", $GLOBALS['DB_WE']);
-						if($triggerid){
-							$mailtext = sprintf(g_l('global', "[std_mailtext_newObj]"), $path, $classname) . "\n" . getServerUrl() . id_to_path(
-									$triggerid) . "?we_objectID=" . $GLOBALS["we_object"][$name]->ID;
-						} else{
-							$mailtext = sprintf(g_l('global', "[std_mailtext_newObj]"), $path, $classname) . "\n" . "ObjectID: " . $GLOBALS["we_object"][$name]->ID;
-						}
-						$subject = g_l('global', "[std_subject_newObj]");
-					} else{
-						$mailtext = sprintf(g_l('global', "[std_mailtext_newDoc]"), $path) . "\n" . $GLOBALS["we_$type"][$name]->getHttpPath();
-						$subject = g_l('global', "[std_subject_newDoc]");
+					$path = $GLOBALS['we_' . $type][$name]->Path;
+					switch($type){
+						case 'object':
+							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid), 'Text', $GLOBALS['DB_WE']);
+							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" . ($triggerid ? getServerUrl() . id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') . $GLOBALS['we_object'][$name]->ID;
+							$subject = g_l('global', '[std_subject_newObj]');
+							break;
+						default:
+						case 'document':
+							$mailtext = sprintf(g_l('global', '[std_mailtext_newDoc]'), $path) . "\n" . $GLOBALS['we_' . $type][$name]->getHttpPath();
+							$subject = g_l('global', '[std_subject_newDoc]');
+							break;
 					}
 					$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
 					$phpmail->setCharSet($charset);
@@ -228,25 +245,24 @@ function we_tag_write($attribs){
 					$phpmail->Send();
 				}
 			} else{
-				$GLOBALS["we_object_write_ok"] = false;
+				$GLOBALS['we_object_write_ok'] = false;
 			}
 		}
 	}
-	if(isset($GLOBALS["WE_SESSION_START"]) && $GLOBALS["WE_SESSION_START"]){
-
+	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
 		unset($_SESSION['we_' . $type . '_session_' . $name]);
 		$GLOBALS['we_' . $type . '_session_' . $name] = array();
 	}
 }
 
-function checkAndCreateFlashmovie($formname, $type = "we_document"){
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+function checkAndCreateFlashmovie($formname, $type = 'we_document'){
+	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 	foreach($_REQUEST as $key => $_flashmovieDataId){
 		if(preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)){
 
 			$_flashName = $regs[1];
-			$flashId = isset($_SESSION[$_flashmovieDataId]["id"]) ? $_SESSION[$_flashmovieDataId]["id"] : 0;
+			$flashId = isset($_SESSION[$_flashmovieDataId]['id']) ? $_SESSION[$_flashmovieDataId]['id'] : 0;
 			if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] == 1){
 
 				if($flashId){
@@ -254,16 +270,16 @@ function checkAndCreateFlashmovie($formname, $type = "we_document"){
 					$flashDocument->initByID($flashId);
 					if($flashDocument->WebUserID == $webuserId){
 						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+						$GLOBALS['NOT_PROTECT'] = true;
+						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 						deleteEntry($flashId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
 					}
 				}
 			} else
 			if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == "application/x-shockwave-flash"){
+				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == 'application/x-shockwave-flash'){
 					$flashDocument = new we_flashDocument();
 
 					if($flashId){
@@ -280,18 +296,18 @@ function checkAndCreateFlashmovie($formname, $type = "we_document"){
 					if(!$flashId){
 						$flashDocument->setParentID($_SESSION[$_flashmovieDataId]['parentid']);
 					}
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Text;
+					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != '/') ? '/' : '') . $flashDocument->Text;
 
-					$flashDocument->setElement("width", $_SESSION[$_flashmovieDataId]["imgwidth"], "attrib");
-					$flashDocument->setElement("height", $_SESSION[$_flashmovieDataId]["imgheight"], "attrib");
-					$flashDocument->setElement("origwidth", $_SESSION[$_flashmovieDataId]["imgwidth"]);
-					$flashDocument->setElement("origheight", $_SESSION[$_flashmovieDataId]["imgheight"]);
+					$flashDocument->setElement('width', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
+					$flashDocument->setElement('height', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
+					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth']);
+					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight']);
 
-					$flashDocument->setElement("type", 'application/x-shockwave-flash', "attrib");
+					$flashDocument->setElement('type', 'application/x-shockwave-flash', 'attrib');
 
-					$flashDocument->setElement("data", $_SESSION[$_flashmovieDataId]["serverPath"], "image");
+					$flashDocument->setElement('data', $_SESSION[$_flashmovieDataId]['serverPath'], 'image');
 
-					$flashDocument->setElement("filesize", $_SESSION[$_flashmovieDataId]["size"], "attrib");
+					$flashDocument->setElement('filesize', $_SESSION[$_flashmovieDataId]['size'], 'attrib');
 
 					$flashDocument->Table = FILE_TABLE;
 					$flashDocument->Published = time();
@@ -303,7 +319,7 @@ function checkAndCreateFlashmovie($formname, $type = "we_document"){
 					$t[1] = $newId;
 					$fn = implode('_', $t);
 					$flashDocument->Filename = $fn;
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Filename . $flashDocument->Extension;
+					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != '/') ? '/' : '') . $flashDocument->Filename . $flashDocument->Extension;
 					$flashDocument->we_save();
 
 					$GLOBALS[$type][$formname]->setElement($_flashName, $newId);
@@ -316,13 +332,13 @@ function checkAndCreateFlashmovie($formname, $type = "we_document"){
 	}
 }
 
-function checkAndCreateQuicktime($formname, $type = "we_document"){
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+function checkAndCreateQuicktime($formname, $type = 'we_document'){
+	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 	foreach($_REQUEST as $key => $_quicktimeDataId){
 		if(preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)){
 			$_quicktimeName = $regs[1];
-			$quicktimeId = isset($_SESSION[$_quicktimeDataId]["id"]) ? $_SESSION[$_quicktimeDataId]["id"] : 0;
+			$quicktimeId = isset($_SESSION[$_quicktimeDataId]['id']) ? $_SESSION[$_quicktimeDataId]['id'] : 0;
 			if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete'] == 1){
 
 				if($quicktimeId){
@@ -330,16 +346,16 @@ function checkAndCreateQuicktime($formname, $type = "we_document"){
 					$quicktimeDocument->initByID($quicktimeId);
 					if($quicktimeDocument->WebUserID == $webuserId){
 						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+						$GLOBALS['NOT_PROTECT'] = true;
+						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 						deleteEntry($quicktimeId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
 					}
 				}
 			} else
 			if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == "video/quicktime"){
+				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == 'video/quicktime'){
 					$quicktimeDocument = new we_quicktimeDocument();
 
 					if($quicktimeId){
@@ -356,18 +372,18 @@ function checkAndCreateQuicktime($formname, $type = "we_document"){
 					if(!$quicktimeId){
 						$quicktimeDocument->setParentID($_SESSION[$_quicktimeDataId]['parentid']);
 					}
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Text;
+					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != '/') ? '/' : '') . $quicktimeDocument->Text;
 
-					//$quicktimeDocument->setElement("width", $_SESSION[$_quicktimeDataId]["imgwidth"], "attrib");
-					//$quicktimeDocument->setElement("height", $_SESSION[$_quicktimeDataId]["imgheight"], "attrib");
-					//$quicktimeDocument->setElement("origwidth", $_SESSION[$_quicktimeDataId]["imgwidth"]);
-					//$quicktimeDocument->setElement("origheight", $_SESSION[$_quicktimeDataId]["imgheight"]);
+					//$quicktimeDocument->setElement('width', $_SESSION[$_quicktimeDataId]['imgwidth'], 'attrib');
+					//$quicktimeDocument->setElement('height', $_SESSION[$_quicktimeDataId]['imgheight'], 'attrib');
+					//$quicktimeDocument->setElement('origwidth', $_SESSION[$_quicktimeDataId]['imgwidth']);
+					//$quicktimeDocument->setElement('origheight', $_SESSION[$_quicktimeDataId]['imgheight']);
 
-					$quicktimeDocument->setElement("type", 'video/quicktime', "attrib");
+					$quicktimeDocument->setElement('type', 'video/quicktime', 'attrib');
 
-					$quicktimeDocument->setElement("data", $_SESSION[$_quicktimeDataId]["serverPath"], "image");
+					$quicktimeDocument->setElement('data', $_SESSION[$_quicktimeDataId]['serverPath'], 'image');
 
-					$quicktimeDocument->setElement("filesize", $_SESSION[$_quicktimeDataId]["size"], "attrib");
+					$quicktimeDocument->setElement('filesize', $_SESSION[$_quicktimeDataId]['size'], 'attrib');
 
 					$quicktimeDocument->Table = FILE_TABLE;
 					$quicktimeDocument->Published = time();
@@ -379,7 +395,7 @@ function checkAndCreateQuicktime($formname, $type = "we_document"){
 					$t[1] = $newId;
 					$fn = implode('_', $t);
 					$quicktimeDocument->Filename = $fn;
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Filename . $quicktimeDocument->Extension;
+					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != '/') ? '/' : '') . $quicktimeDocument->Filename . $quicktimeDocument->Extension;
 					$quicktimeDocument->we_save();
 
 					$GLOBALS[$type][$formname]->setElement($_quicktimeName, $newId);
@@ -392,13 +408,13 @@ function checkAndCreateQuicktime($formname, $type = "we_document"){
 	}
 }
 
-function checkAndCreateImage($formname, $type = "we_document"){
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+function checkAndCreateImage($formname, $type = 'we_document'){
+	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 	foreach($_REQUEST as $key => $_imgDataId){
 		if(preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)){
 			$_imgName = $regs[1];
-			$imgId = isset($_SESSION[$_imgDataId]["id"]) ? $_SESSION[$_imgDataId]["id"] : 0;
+			$imgId = isset($_SESSION[$_imgDataId]['id']) ? $_SESSION[$_imgDataId]['id'] : 0;
 			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete'] == 1){
 
 				if($imgId){
@@ -406,16 +422,16 @@ function checkAndCreateImage($formname, $type = "we_document"){
 					$imgDocument->initByID($imgId);
 					if($imgDocument->WebUserID == $webuserId){
 						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+						$GLOBALS['NOT_PROTECT'] = true;
+						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 						deleteEntry($imgId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
 					}
 				}
 			} else
 			if(isset($_SESSION[$_imgDataId]['serverPath'])){
-				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) == "image/"){
+				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) == 'image/'){
 					$imgDocument = new we_imageDocument();
 
 					if($imgId){
@@ -432,18 +448,18 @@ function checkAndCreateImage($formname, $type = "we_document"){
 					if(!$imgId){
 						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
 					}
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Text;
+					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
 
-					$imgDocument->setElement("width", $_SESSION[$_imgDataId]["imgwidth"], "attrib");
-					$imgDocument->setElement("height", $_SESSION[$_imgDataId]["imgheight"], "attrib");
-					$imgDocument->setElement("origwidth", $_SESSION[$_imgDataId]["imgwidth"]);
-					$imgDocument->setElement("origheight", $_SESSION[$_imgDataId]["imgheight"]);
+					$imgDocument->setElement('width', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
+					$imgDocument->setElement('height', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
+					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth']);
+					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight']);
 
-					$imgDocument->setElement("type", 'image/*', "attrib");
+					$imgDocument->setElement('type', 'image/*', 'attrib');
 
-					$imgDocument->setElement("data", $_SESSION[$_imgDataId]["serverPath"], "image");
+					$imgDocument->setElement('data', $_SESSION[$_imgDataId]['serverPath'], 'image');
 
-					$imgDocument->setElement("filesize", $_SESSION[$_imgDataId]["size"], "attrib");
+					$imgDocument->setElement('filesize', $_SESSION[$_imgDataId]['size'], 'attrib');
 
 					$imgDocument->Table = FILE_TABLE;
 					$imgDocument->Published = time();
@@ -455,7 +471,7 @@ function checkAndCreateImage($formname, $type = "we_document"){
 					$t[1] = $newId;
 					$fn = implode('_', $t);
 					$imgDocument->Filename = $fn;
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Filename . $imgDocument->Extension;
+					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Filename . $imgDocument->Extension;
 					$imgDocument->we_save();
 
 					$GLOBALS[$type][$formname]->setElement($_imgName, $newId);
@@ -468,13 +484,13 @@ function checkAndCreateImage($formname, $type = "we_document"){
 	}
 }
 
-function checkAndCreateBinary($formname, $type = "we_document"){
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+function checkAndCreateBinary($formname, $type = 'we_document'){
+	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 	foreach($_REQUEST as $key => $_binaryDataId){
 		if(preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)){
 			$_binaryName = $regs[1];
-			$binaryId = isset($_SESSION[$_binaryDataId]["id"]) ? $_SESSION[$_binaryDataId]["id"] : 0;
+			$binaryId = isset($_SESSION[$_binaryDataId]['id']) ? $_SESSION[$_binaryDataId]['id'] : 0;
 			if(isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] == 1){
 
 				if($binaryId){
@@ -482,16 +498,16 @@ function checkAndCreateBinary($formname, $type = "we_document"){
 					$binaryDocument->initByID($binaryId);
 					if($binaryDocument->WebUserID == $webuserId){
 						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+						$GLOBALS['NOT_PROTECT'] = true;
+						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
 						deleteEntry($binaryId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
+						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
 					}
 				}
 			} else
 			if(isset($_SESSION[$_binaryDataId]['serverPath'])){
-				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) == "application/"){
+				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) == 'application/'){
 					$binaryDocument = new we_otherDocument();
 
 					if($binaryId){
@@ -508,14 +524,14 @@ function checkAndCreateBinary($formname, $type = "we_document"){
 					if(!$binaryId){
 						$binaryDocument->setParentID($_SESSION[$_binaryDataId]['parentid']);
 					}
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Text;
+					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != '/') ? '/' : '') . $binaryDocument->Text;
 
 
-					$binaryDocument->setElement("type", 'application/*', "attrib");
+					$binaryDocument->setElement('type', 'application/*', 'attrib');
 
-					$binaryDocument->setElement("data", $_SESSION[$_binaryDataId]["serverPath"], "application");
+					$binaryDocument->setElement('data', $_SESSION[$_binaryDataId]['serverPath'], 'application');
 
-					$binaryDocument->setElement("filesize", $_SESSION[$_binaryDataId]["size"], "attrib");
+					$binaryDocument->setElement('filesize', $_SESSION[$_binaryDataId]['size'], 'attrib');
 
 					$binaryDocument->Table = FILE_TABLE;
 					$binaryDocument->Published = time();
@@ -528,7 +544,7 @@ function checkAndCreateBinary($formname, $type = "we_document"){
 					$t[1] = $newId;
 					$fn = implode('_', $t);
 					$binaryDocument->Filename = $fn;
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Filename . $binaryDocument->Extension;
+					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != '/') ? '/' : '') . $binaryDocument->Filename . $binaryDocument->Extension;
 					$binaryDocument->we_save();
 
 					$GLOBALS[$type][$formname]->setElement($_binaryName, $newId);
