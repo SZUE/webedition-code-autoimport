@@ -1,6 +1,6 @@
 <?php
 
-class weShopVatRule {
+class weShopVatRule{
 
 	var $stateField;
 	var $stateFieldIsISO;
@@ -12,10 +12,9 @@ class weShopVatRule {
 	//		condition -> string
 	//		returnValue -> 0 | 1
 	var $conditionalRules;
-
 	var $defaultValue = true;
 
-	function weShopVatRule( $defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules,$stateFieldIsISO='0' ) {
+	function weShopVatRule($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
 
 		$this->defaultValue = $defaultValue;
 		$this->stateField = $stateField;
@@ -25,42 +24,42 @@ class weShopVatRule {
 		$this->conditionalRules = $conditionalRules;
 	}
 
-	function executeVatRule($customer=false) {
+	function executeVatRule($customer = false){
 
 		// now check all rules for the vat
 
-		if ($customer) {
+		if($customer){
 
-			if ( isset( $this->stateField ) && isset($customer[$this->stateField]) ) {
+			if(isset($this->stateField) && isset($customer[$this->stateField])){
 
 				$state = $customer[$this->stateField];
 
 				// is state liableToVat
-				if ( in_array($state, $this->liableToVat) ) {
+				if(in_array($state, $this->liableToVat)){
 					return true;
 				}
 
 				// is state not liable to vat
-				if ( in_array($state, $this->notLiableToVat) ) {
+				if(in_array($state, $this->notLiableToVat)){
 					return false;
 				}
 
 				// now check additional fields
-				foreach ($this->conditionalRules as $rule) {
+				foreach($this->conditionalRules as $rule){
 
 					$ret = $rule['returnValue'] == 'true' ? true : false;
 
 					$field = $customer[$rule['customerField']];
 
-					if (in_array($state, $rule['states'])) {
+					if(in_array($state, $rule['states'])){
 
-						switch ($rule['condition']) {
+						switch($rule['condition']){
 							case 'is_empty':
 								return (empty($field) ? $ret : !$ret);
-							break;
+								break;
 							case 'is_set':
 								return (!empty($field) ? $ret : !$ret);
-							break;
+								break;
 						}
 					}
 				}
@@ -70,55 +69,51 @@ class weShopVatRule {
 		return ($this->defaultValue == 'true' ? true : false);
 	}
 
-	function initByRequest(&$req) {
+	function initByRequest(&$req){
 
 		return new weShopVatRule(
-			$req['defaultValue'],
-			$req['stateField'],
-			weShopVatRule::makeArrayFromReq($req['liableToVat']),
-			weShopVatRule::makeArrayFromReq($req['notLiableToVat']),
-			weShopVatRule::makeArrayFromConditionField($req),
-			$req['stateFieldIsISO']
+				$req['defaultValue'],
+				$req['stateField'],
+				weShopVatRule::makeArrayFromReq($req['liableToVat']),
+				weShopVatRule::makeArrayFromReq($req['notLiableToVat']),
+				weShopVatRule::makeArrayFromConditionField($req),
+				$req['stateFieldIsISO']
 		);
 	}
 
-	function getShopVatRule() {
+	function getShopVatRule(){
 
 		global $DB_WE;
 
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"
-		';
+		$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"', 'strFelder', $DB_WE);
 
-		$DB_WE->query($query);
+		if($strFelder !== ''){
 
-		if ($DB_WE->next_record()) {
-
-			return unserialize($DB_WE->f('strFelder'));
-
-		} else {
+			return unserialize($strFelder);
+		} else{
 			return new weShopVatRule(
-				'true',
-				'',
-				array(),
-				array(),
-				array(
+					'true',
+					'',
+					array(),
+					array(),
 					array(
-						'states' => array(),
-						'customerField' => '',
-						'condition' => '',
-						'returnValue' => 1
-					)
-				),
-				0
+						array(
+							'states' => array(),
+							'customerField' => '',
+							'condition' => '',
+							'returnValue' => 1
+						)
+					),
+					0
 			);
 		}
 	}
 
-	function makeArrayFromConditionField($req) {
+	function makeArrayFromConditionField($req){
 
 		$retArr = array();
 
-		for ($i=0;$i<sizeof($req['conditionalStates']); $i++) {
+		for($i = 0; $i < sizeof($req['conditionalStates']); $i++){
 
 			$retArr[] = array(
 				'states' => weShopVatRule::makeArrayFromReq($req['conditionalStates'][$i]),
@@ -130,13 +125,13 @@ class weShopVatRule {
 		return $retArr;
 	}
 
-	function makeArrayFromReq($req) {
+	function makeArrayFromReq($req){
 
 		$entries = explode("\n", $req);
 		$retArr = array();
 
-		foreach ($entries as $entry) {
-			if (trim($entry)) {
+		foreach($entries as $entry){
+			if(trim($entry)){
 				$retArr[] = trim($entry);
 			}
 		}
@@ -144,23 +139,21 @@ class weShopVatRule {
 		return $retArr;
 	}
 
-	function save() {
+	function save(){
+		$DB_WE = $GLOBALS['DB_WE'];
 
-		global $DB_WE;
-		$query = 'REPLACE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"';
-
-		if ($DB_WE->query($query)) {
-				$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
-			if ( $strFelder!=='') {
+		if($DB_WE->query('REPLACE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"')){
+			$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+			if($strFelder !== ''){
 				$DB_WE->next_record();
 				$CLFields = unserialize($strFelder);
-				$CLFields['stateField'] =  $this->stateField;
-				$CLFields['stateFieldIsISO'] =  $this->stateFieldIsISO;
+				$CLFields['stateField'] = $this->stateField;
+				$CLFields['stateFieldIsISO'] = $this->stateFieldIsISO;
 				$DB_WE->query("UPDATE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
 			}
 
 			return true;
-		} else {
+		} else{
 			return false;
 		}
 	}
