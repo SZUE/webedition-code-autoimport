@@ -550,7 +550,6 @@ class we_object extends we_document{
 
 	//##################################################################### FUNCTIONS FOR GETTING DATA ######################################################################
 
-
 	function setSort(){
 		if(!$this->issetElement("we_sort")){
 			$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
@@ -559,9 +558,8 @@ class we_object extends we_document{
 				if($v < 0){
 					$v = 0;
 				}
-				$sort[uniqid("")] = $v;
+				$sort[str_replace('.', '', uniqid("",true))] = $v;
 			}
-
 			$this->setElement("we_sort", $sort);
 		}
 	}
@@ -622,7 +620,6 @@ class we_object extends we_document{
 
 	function downEntryAtClass($identifier){
 		$sort = $this->getElement("we_sort");
-
 		$pos = $sort[$identifier];
 
 		$t = array();
@@ -634,22 +631,21 @@ class we_object extends we_document{
 			}
 			if($i == $position + 1){
 				$t[$ident] = $identpos;
-				$t[$identifier] = $sort[$identifier];
+				$t[$identifier] = $pos;
+
 			} elseif($i != $position){
 				$t[$ident] = $sort[$ident];
 			}
 			$i++;
 		}
-		$sort = $t;
 
+		$sort = $t;
 		$this->setElement("we_sort", $sort);
 	}
 
 	function upEntryAtClass($identifier){
 		$sort = $this->getElement("we_sort");
-
 		$pos = $sort[$identifier];
-
 		$reversed = array_reverse($sort, true);
 
 		$t = array();
@@ -667,8 +663,8 @@ class we_object extends we_document{
 			}
 			$i++;
 		}
-		$sort = array_reverse($t, true);
 
+		$sort = array_reverse($t, true);
 		$this->setElement("we_sort", $sort);
 	}
 
