@@ -22,18 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MODULES_PATH . "workflow/we_conf_workflow.inc.php");
+include_once(WE_MODULES_PATH . 'workflow/we_conf_workflow.inc.php');
 
 class we_workflow_utility{
 
 	function getTypeForTable($table){
 		switch($table){
 			case FILE_TABLE:
-				return "0,1";
-			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1):
-				return "2";
+				return '0,1';
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
+				return '2';
 			default:
-				return "0,1";
+				return '0,1';
 		}
 	}
 
@@ -72,10 +72,10 @@ class we_workflow_utility{
 	 */
 
 	function decline($docID, $table, $userID, $desc, $force = false){
-		/* decline step */
+		//decline step
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(isset($doc->ID)){
+		if(!isset($doc->ID)){
 			if($doc->decline($userID, $desc, $force)){
 				$doc->save();
 				return true;
@@ -84,11 +84,10 @@ class we_workflow_utility{
 		return false;
 	}
 
-	/*
+	/**
 	  This function can be used to force removal
 	  of document from workflow.
 	 */
-
 	function removeDocFromWorkflow($docID, $table, $userID, $desc){
 		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
@@ -102,39 +101,32 @@ class we_workflow_utility{
 		return false;
 	}
 
-	/*
+	/**
 	  Function returns workflow document object for defined docID
 	  If workflow documnet is not defined for that document false
 	  will be returned
 	 */
-
 	function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$type = self::getTypeForTable($table);
 		return we_workflow_document::find($docID, $type, $status);
 	}
 
-	/*
+	/**
 	  Same like getWorkflowDocument but returns
 	  workflow document id (not object)
 	 */
-
 	function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$doc = self::getWorkflowDocument($docID, $table, $status);
-		if(isset($doc->ID)){
-			if($doc->ID)
-				return $doc->ID;
-			else
-				false;
-		}
-		else
+		if(!isset($doc->ID) || !$doc->ID){
 			return false;
+		}
+		return $doc->ID;
 	}
 
-	/*
+	/**
 	  Functions tries to find workflow for defined
 	  documents parameters and returns new document object
 	 */
-
 	function getWorkflowDocumentForDoc($doctype = 0, $categories = "", $folder = -1){
 		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder);
 		$newDoc = new we_workflow_document();
@@ -143,12 +135,11 @@ class we_workflow_utility{
 		return $newDoc;
 	}
 
-	/*
+	/**
 	  Functions tries to find workflow for defined
 	  objects parametars and returns new document object
 	 */
-
-	function getWorkflowDocumentForObject($object, $categories = "", $folderID = 0){
+	function getWorkflowDocumentForObject($object, $categories = '', $folderID = 0){
 		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
@@ -156,18 +147,14 @@ class we_workflow_utility{
 		return $newDoc;
 	}
 
-	function getWorkflowName($workflowID){
-		$foo = self::getAllWorkflows();
+	function getWorkflowName($workflowID, $table){
+		$foo = self::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $table);
 		return $foo[$workflowID];
 	}
 
-	function getWorkflowID($workflowName){
-		$foo = self::getAllWorkflows();
-		if(in_array($workflowName, $foo)){
-			return array_search($workflowName, $foo);
-		} else{
-			return false;
-		}
+	function getWorkflowID($workflowName, $table){
+		$foo = self::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $table);
+		return array_search($workflowName, $foo);
 	}
 
 	function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE){ // returns hash array with ID as key and Name as value
@@ -177,10 +164,7 @@ class we_workflow_utility{
 
 	function inWorkflow($docID, $table){
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(isset($doc->ID) && $doc->ID)
-			return true;
-		else
-			return false;
+		return (isset($doc->ID) && $doc->ID);
 	}
 
 	function isWorkflowFinished($docID, $table){
@@ -188,20 +172,16 @@ class we_workflow_utility{
 		if(!isset($doc->ID))
 			return false;
 		$i = $doc->findLastActiveStep();
-		if($i <= 0)
+		if(($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks))){
 			return false;
-		if($i < count($doc->steps) - 1)
-			return false;
-		if($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks))
-			return false;
+		}
 		return true;
 	}
 
-	/*
+	/**
 	  Function returns true if user is in workflow for
 	  defined documnet id, otherwise false
 	 */
-
 	function isUserInWorkflow($docID, $table, $userID){
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID)){
@@ -221,38 +201,34 @@ class we_workflow_utility{
 		return false;
 	}
 
-	/*
+	/**
 	  Function returns true if user can edit
 	  defined documnet, otherwise false
 	 */
-
 	function canUserEditDoc($docID, $table, $userID){
 		if($_SESSION["perms"]["ADMINISTRATOR"])
 			return true;
 		$doc = self::getWorkflowDocument($docID, $table);
 		if(isset($doc->ID)){
 			$i = $doc->findLastActiveStep();
-			if($i < 0)
+			if($i < 0){
 				return false;
+			}
 			$wStep = new we_workflow_step($doc->steps[$i]->workflowStepID);
 			foreach($wStep->tasks as $k => $v){
-				if($v->userID == $userID && $v->Edit)
+				if($v->userID == $userID && $v->Edit){
 					return true;
+				}
 			}
 		}
 		return false;
 	}
 
 	function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
-
 		if($isAdmin){
 			return self::getAllWorkflowDocs($table);
-		} else if($permPublish){
-			$ids = self::getWorkflowDocsFromWorkspace($table, $ws);
-		} else{
-			$ids = array();
 		}
-
+		$ids = ($permPublish ? self::getWorkflowDocsFromWorkspace($table, $ws) : array());
 		$wids = self::getAllWorkflowDocs($table);
 
 		foreach($wids as $id){
@@ -267,7 +243,6 @@ class we_workflow_utility{
 	}
 
 	function getAllWorkflowDocs($table){
-
 		$type = self::getTypeForTable($table);
 		$db = new DB_WE();
 		$ids = array();
@@ -281,7 +256,6 @@ class we_workflow_utility{
 	}
 
 	function getWorkflowDocsFromWorkspace($table, $ws){
-
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
 
@@ -326,18 +300,17 @@ class we_workflow_utility{
 	 */
 
 	function forceOverdueDocuments($userID = 0){
-
 		$db = new DB_WE();
-		$ret = "";
-		$db->query("SELECT " . WORKFLOW_DOC_TABLE . ".ID AS docID," . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
+		$ret = '';
+		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . ".ID AS docstepID," . WORKFLOW_STEP_TABLE . ".ID AS stepID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_DOC_STEP_TABLE . "," . WORKFLOW_STEP_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".ID=" . WORKFLOW_DOC_STEP_TABLE . ".workflowDocID AND " . WORKFLOW_DOC_STEP_TABLE . ".workflowStepID=" . WORKFLOW_STEP_TABLE . ".ID AND " . WORKFLOW_DOC_STEP_TABLE . ".startDate<>0 AND (" . WORKFLOW_DOC_STEP_TABLE . ".startDate+ ROUND(" . WORKFLOW_STEP_TABLE . ".Worktime*3600))<" . time() . " AND " . WORKFLOW_DOC_STEP_TABLE . ".finishDate=0 AND " . WORKFLOW_DOC_STEP_TABLE . ".Status=" . we_workflow_documentStep::STATUS_UNKNOWN . " AND " . WORKFLOW_DOC_TABLE . ".Status=" . we_workflow_document::STATUS_UNKNOWN);
 		while($db->next_record()) {
 			@set_time_limit(50);
-			$workflowDocument = new we_workflow_document($db->f("docID"));
+			$workflowDocument = new we_workflow_document($db->f('docID'));
 			$userID = $userID ? $userID : $workflowDocument->userID;
-			$_SESSION["user"]["ID"] = $userID;
+			$_SESSION['user']['ID'] = $userID;
 			if(!self::isWorkflowFinished($workflowDocument->document->ID, $workflowDocument->document->Table)){
 				$next = false;
-				$workflowStep = new we_workflow_step($db->f("stepID"));
+				$workflowStep = new we_workflow_step($db->f('stepID'));
 				$next = $workflowStep->timeAction == 1 ? true : false;
 				if($next){
 					if($workflowDocument->findLastActiveStep() >= count($workflowDocument->steps) - 1){
