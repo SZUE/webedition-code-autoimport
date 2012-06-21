@@ -79,12 +79,14 @@ class we_message extends we_msg_proto{
 	function init($sessDat = ''){
 		$init_folders = array();
 
-		if($sessDat)
+		if($sessDat){
 			$this->initSessionDat($sessDat);
+		}
 
 		foreach($this->default_folders as $id => $fid)
-			if($fid == -1)
+			if($fid == -1){
 				$init_folders[] = $id;
+			}
 
 		if(!empty($init_folders)){
 			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . addslashes(join(' OR obj_type=', $init_folders)) . ')');
@@ -99,8 +101,9 @@ class we_message extends we_msg_proto{
 	function userid_to_username($id){
 		$db2 = new DB_WE();
 		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-		if($db2->next_record())
+		if($db2->next_record()){
 			return $db2->f('username');
+		}
 
 		return g_l('modules_messaging', '[userid_not_found]');
 	}
@@ -108,8 +111,9 @@ class we_message extends we_msg_proto{
 	function username_to_userid($username){
 		$db2 = new DB_WE();
 		$db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"');
-		if($db2->next_record())
+		if($db2->next_record()){
 			return $db2->f('ID');
+		}
 
 		return -1;
 	}
@@ -141,9 +145,9 @@ class we_message extends we_msg_proto{
 	}
 
 	function delete_items(&$i_headers){
-		if(empty($i_headers))
+		if(empty($i_headers)){
 			return -1;
-
+		}
 
 		$cond = '';
 		foreach($i_headers as $ih){
@@ -173,8 +177,9 @@ class we_message extends we_msg_proto{
 	function clipboard_copy($items, $target_fid){
 		$tmp_msgs = array();
 
-		if(empty($items))
+		if(empty($items)){
 			return;
+		}
 
 		$target_fid = addslashes($target_fid);
 		foreach($items as $item){
@@ -322,8 +327,9 @@ class we_message extends we_msg_proto{
 		$seen_ids = array();
 
 		while($this->DB->next_record()) {
-			if(!($this->DB->f('seenStatus') & we_msg_proto::STATUS_SEEN))
+			if(!($this->DB->f('seenStatus') & we_msg_proto::STATUS_SEEN)){
 				$seen_ids[] = $this->DB->f('ID');
+			}
 
 			$this->selected_set[] =
 				array('ID' => $i++,
@@ -352,8 +358,9 @@ class we_message extends we_msg_proto{
 		$ret = array();
 		$i = 0;
 
-		if(empty($int_hdrs))
+		if(empty($int_hdrs)){
 			return $ret;
+		}
 
 		$id_str = '';
 		foreach($int_hdrs as $ih){
@@ -364,7 +371,7 @@ class we_message extends we_msg_proto{
 
 		$read_ids = array();
 
-		while($this->DB->next_record()) {
+		while($this->DB->next_record()){
 			if(!($this->DB->f('seenStatus') & we_msg_proto::STATUS_READ))
 				$read_ids[] = $this->DB->f('ID');
 

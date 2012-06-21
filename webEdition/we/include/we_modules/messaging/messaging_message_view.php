@@ -35,10 +35,9 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->get_mv_data($_REQUEST["id"]);
 $messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
-//t_e("aktuelle session",$_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 if(sizeof($messaging->selected_message) == 0){
-    exit;
+	exit;
 }
 
 $format = new we_format('view', $messaging->selected_message);

@@ -173,12 +173,13 @@ class we_messaging extends we_class{
 	}
 
 	function get_sortorder(){
-		return $this->sortorder;
+		return $this->sortorder == "desc" ? "asc" : "desc";
 	}
 
 	function get_ids_selected(){
-		if(empty($this->ids_selected))
+		if(empty($this->ids_selected)){
 			return '';
+		}
 
 		return implode(',', $this->ids_selected);
 	}
@@ -195,8 +196,9 @@ class we_messaging extends we_class{
 		$this->last_id = -1;
 
 		foreach($this->selected_set as $elem)
-			if($elem['ID'] > $this->last_id)
+			if($elem['ID'] > $this->last_id){
 				$this->last_id = $elem['ID'];
+			}
 	}
 
 	function poll_for_new(){
@@ -402,19 +404,22 @@ class we_messaging extends we_class{
 		$this->search_fields = array();
 		$this->search_folder_ids = array();
 
-		if(isset($search_fields))
+		if(isset($search_fields)){
 			foreach($search_fields as $elem){
-				if(!empty($this->si2sf[$elem]))
+				if(!empty($this->si2sf[$elem])){
 					$this->search_fields[] = $this->si2sf[$elem];
+				}
 			}
+		}
 
 		$tmp = array_get_kvals('ID', $this->available_folders);
-		if(isset($search_folder_ids))
+		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
-				if(in_array($elem, array_get_kvals('ID', $this->available_folders)))
+				if(in_array($elem, array_get_kvals('ID', $this->available_folders))){
 					$this->search_folder_ids[] = $elem;
+				}
 			}
-
+		}
 
 		return 1;
 	}
@@ -422,19 +427,22 @@ class we_messaging extends we_class{
 	/* Intialize the class */
 
 	function init(){
-		if($this->we_transact && isset($this->we_transact['we_messaging']))
+		if($this->we_transact && isset($this->we_transact['we_messaging'])){
 			$this->initSessionDat($this->we_transact['we_messaging']);
+		}
 
 		/* initialize the used message objects */
 		foreach($this->used_msgobjs_names as $elem){
 			$this->add_msgobj($elem, 1);
 		}
 
-		if(empty($this->available_folders))
+		if(empty($this->available_folders)){
 			$this->get_available_folders();
+		}
 
-		if(count($this->search_folder_ids) < 1)
+		if(count($this->search_folder_ids) < 1){
 			$this->search_folder_ids = array($this->Folder_ID);
+		}
 	}
 
 	function initSessionDat($sessDat){
@@ -470,8 +478,9 @@ class we_messaging extends we_class{
 	function save_addresses(&$addressbook){
 		$this->DB->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
 		foreach($addressbook as $elem){
-			if(!empty($elem))
+			if(!empty($elem)){
 				$this->DB->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' (ID, UserID, strMsgType, strID, strAlias, strFirstname, strSurname) VALUES (NULL, ' . intval($this->userid) . ',"' . $this->DB->escape($elem[0]) . '","' . $this->DB->escape($elem[1]) . '","' . $this->DB->escape($elem[2]) . '", "", "")');
+			}
 		}
 
 		return true;
@@ -494,8 +503,9 @@ class we_messaging extends we_class{
 	function &get_inbox_folder($classname){
 		$c = 0;
 
-		if(!isset($this->used_msgobjs[$classname]))
+		if(!isset($this->used_msgobjs[$classname])){
 			return NULL;
+		}
 
 		while(($c = array_ksearch('obj_type', we_msg_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
 			$c++;
@@ -554,8 +564,9 @@ class we_messaging extends we_class{
 			if($mo_ret['res'] == 1){
 				$ret['ids'] = array_merge($ret['ids'], $mo_ret["ids"]);
 				foreach($mo_ret['ids'] as $id)
-					if(($ind = array_ksearch('ID', $id, $this->available_folders)) != -1)
+					if(($ind = array_ksearch('ID', $id, $this->available_folders)) != -1){
 						array_splice($this->available_folders, $ind, 1);
+					}
 			}
 		}
 
@@ -566,15 +577,17 @@ class we_messaging extends we_class{
 	}
 
 	function cmp_asc($a, $b){
-		if($a[$this->sortfield[0]][$this->sortfield[1]] == $b[$this->sortfield[0]][$this->sortfield[1]])
+		if($a[$this->sortfield[0]][$this->sortfield[1]] == $b[$this->sortfield[0]][$this->sortfield[1]]){
 			return 0;
+		}
 
 		return ($a[$this->sortfield[0]][$this->sortfield[1]] > $b[$this->sortfield[0]][$this->sortfield[1]] ? -1 : 1);
 	}
 
 	function cmp_desc($a, $b){
-		if($a[$this->sortfield[0]][$this->sortfield[1]] == $b[$this->sortfield[0]][$this->sortfield[1]])
+		if($a[$this->sortfield[0]][$this->sortfield[1]] == $b[$this->sortfield[0]][$this->sortfield[1]]){
 			return 0;
+		}
 
 		return ($a[$this->sortfield[0]][$this->sortfield[1]] > $b[$this->sortfield[0]][$this->sortfield[1]] ? 1 : -1);
 	}
@@ -612,8 +625,9 @@ class we_messaging extends we_class{
 	function userid_to_username($id){
 		$db2 = new DB_WE();
 		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . addslashes($id));
-		if($db2->next_record())
+		if($db2->next_record()){
 			return $db2->f('username');
+		}
 
 		return g_l('modules_messaging', '[userid_not_found]');
 	}
@@ -625,28 +639,32 @@ class we_messaging extends we_class{
 	function get_userid($username){
 		$username = trim($username);
 		$this->DB->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $this->DB->escape($username) . '"');
-		if($this->DB->next_record())
+		if($this->DB->next_record()){
 			return $this->DB->f('ID');
+		}
 
 		return -1;
 	}
 
 	function get_recipient_info($r, &$rcpt_info, $msgobj_name = ''){
-		$add_is_email = 0;
+		$addr_is_email = 0;
 		$rcpt_info['address'] = trim($r);
 
-		if(strpos($rcpt_info['address'], '@', 1) != 0)
+		if(strpos($rcpt_info['address'], '@', 1) != 0){
 			$addr_is_email = 1;
+		}
 
 		if(!empty($msgobj_name)){
 			$rcpt_info['msg_obj'] = $msgobj_name;
-
-			if(isset($addr_is_email) && $addr_is_email && ($rcpt_info['msg_obj'] != 'we_msg_email'))
+			if(isset($addr_is_email) && $addr_is_email && ($rcpt_info['msg_obj'] != 'we_msg_email')){
 				return 0;
-		} else if(isset($addr_is_email) && $addr_is_email)
+			}
+		} else if(isset($addr_is_email) && $addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
-		else
+			
+		} else{
 			$rcpt_info['msg_obj'] = 'we_message';
+		}
 
 		return 1;
 	}
@@ -711,18 +729,20 @@ class we_messaging extends we_class{
 				if($id == ''){
 					foreach($this->available_folders as $afolder){
 						$cn = $afolder['ClassName'];
-						if(isset($s_hash[$cn]) && is_array($s_hash[$cn]))
+						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							array_push($s_hash[$cn], $afolder['ID']);
-						else
+						} else{
 							$s_hash[$cn] = array($afolder['ID']);
+						}
 					}
 				} else{
 					foreach($this->search_folder_ids as $sfolder){
 						$cn = $this->available_folders[array_ksearch('ID', $sfolder, $this->available_folders)]['ClassName'];
-						if(isset($s_hash[$cn]) && is_array($s_hash[$cn]))
+						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							array_push($s_hash[$cn], $sfolder);
-						else
+						} else{
 							$s_hash[$cn] = array("$sfolder");
+						}
 					}
 				}
 				foreach($s_hash as $m_key => $m_val){
@@ -875,8 +895,9 @@ class we_messaging extends we_class{
 			}
 		}
 
-		if(in_array($parent, $children))
+		if(in_array($parent, $children)){
 			return 0;
+		}
 
 		return 1;
 	}

@@ -28,7 +28,6 @@ we_html_tools::htmlTop();
 
 $_REQUEST['we_transaction'] = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : $we_transaction;
 $_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-
 print we_html_element::jsElement('
 	function doSort(sortitem) {
 		entrstr = "";
