@@ -109,15 +109,17 @@ class we_msg_proto extends we_class{
 	/* Getters And Setters */
 
 	function get_sortitem(){
-		if(empty($this->sortfield))
+		if(empty($this->sortfield)){
 			$this->init_sortstuff($this->Folder_ID);
+		}
 
 		return $this->sf2si[$this->sortfield];
 	}
 
 	function get_entries_selected(){
-		if(empty($this->ids_selected))
+		if(empty($this->ids_selected)){
 			return '';
+		}
 
 		return '"' . implode('","', $this->ids_selected) . '"';
 	}
@@ -168,8 +170,9 @@ class we_msg_proto extends we_class{
 	function get_subfolder_count($id){
 		$this->DB->query('SELECT count(ID) as c FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 
-		if($this->DB->next_record() && $this->DB->f('c') > 0)
+		if($this->DB->next_record() && $this->DB->f('c') > 0){
 			return $this->DB->f('c');
+		}
 
 		return -1;
 	}
@@ -178,24 +181,29 @@ class we_msg_proto extends we_class{
 		$this->search_fields = array();
 		$this->search_folder_ids = array();
 
-		if(isset($search_fields))
+		if(isset($search_fields)){
 			foreach($search_fields as $elem){
-				if(!empty($this->si2sf[$elem]))
+				if(!empty($this->si2sf[$elem])){
 					$this->search_fields[] = $this->si2sf[$elem];
+				}
 			}
+		}
 
-		if(isset($search_folder_ids))
+		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
-				if(in_array($elem, $this->array_get_kvals('ID', $this->available_folders)))
+				if(in_array($elem, $this->array_get_kvals('ID', $this->available_folders))){
 					$this->search_folder_ids[] = $elem;
+				}
 			}
+		}
 	}
 
 	/* Intialize the class. If $sessDat (array) is set, the class will be initialized from this array */
 
 	function init($sessDat){
-		if($sessDat)
+		if($sessDat){
 			$this->initSessionDat($sessDat);
+		}
 
 		/* 	if (empty($this->available_folders))
 		  $this->get_available_folders(); */
@@ -209,8 +217,9 @@ class we_msg_proto extends we_class{
 				}
 			}
 
-			if(isset($sessDat[1]))
+			if(isset($sessDat[1])){
 				$this->elements = $sessDat[1];
+			}
 		}
 	}
 
@@ -324,15 +333,17 @@ class we_msg_proto extends we_class{
 	}
 
 	function cmp_asc($a, $b){
-		if($a[$this->sortfield] == $b[$this->sortfield])
+		if($a[$this->sortfield] == $b[$this->sortfield]){
 			return 0;
+		}
 
 		return ($a[$this->sortfield] > $b[$this->sortfield] ? 1 : -1);
 	}
 
 	function cmp_desc($a, $b){
-		if($a[$this->sortfield] == $b[$this->sortfield])
+		if($a[$this->sortfield] == $b[$this->sortfield]){
 			return 0;
+		}
 
 		return ($a[$this->sortfield] > $b[$this->sortfield] ? -1 : 1);
 	}
@@ -352,10 +363,7 @@ class we_msg_proto extends we_class{
 	}
 
 	function save_sortstuff($id, $sortfield, $sortorder){
-		if($sortorder == 'asc')
-			$sortorder = 'desc';
-		else
-			$sortorder = 'asc';
+		$sortorder = $sortorder == 'asc' ? 'desc' : 'asc';
 
 		$this->DB->query('UPDATE ' . $this->DB->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB->escape($sortfield) . '", sortOrder="' . $this->DB->escape($sortorder) . '" WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
@@ -369,10 +377,7 @@ class we_msg_proto extends we_class{
 		}
 
 		if(($this->DB->f('sortOrder'))){
-			if($this->DB->f('sortOrder') == 'asc')
-				$this->sortorder = 'desc';
-			else if($this->DB->f('sortOrder') == 'desc')
-				$this->sortorder = 'asc';
+			$this->sortorder = ($this->DB->f('sortOrder') == 'asc') ? 'desc' : 'asc';
 		}
 
 		$this->cached[] = 'sortfield';

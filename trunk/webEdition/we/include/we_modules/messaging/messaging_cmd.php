@@ -49,8 +49,9 @@ function print_fc_html($blank = true){
 }
 
 function refresh_work($blank = false){
-	if(isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != '')
+	if(isset($_REQUEST["entrsel"]) && $_REQUEST["entrsel"] != ''){
 		$GLOBALS['messaging']->set_ids_selected($_REQUEST["entrsel"]);
+	}
 
 	$GLOBALS['messaging']->get_fc_data($GLOBALS['messaging']->Folder_ID, '', '', 0);
 	print_fc_html($blank);
@@ -59,8 +60,9 @@ function refresh_work($blank = false){
 
 function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $usecache = 1){
 
-	if($entrsel != '')
+	if($entrsel != ''){
 		$GLOBALS['messaging']->set_ids_selected($entrsel);
+	}
 
 	if($id != $GLOBALS['messaging']->Folder_ID){
 		$GLOBALS['messaging']->reset_ids_selected();
@@ -70,10 +72,10 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
-	//t_e("vor sort",$GLOBALS['messaging']);
 }
 
 function update_treeview(){
+	$tmp = '';
 	foreach($GLOBALS['messaging']->available_folders as $f){
 		$tmp.='top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $GLOBALS['messaging']->get_message_count($f['ID'], '') . ')", -1, 1);';
 	}
@@ -230,7 +232,7 @@ switch($_REQUEST["mcmd"]){
 
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
 			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
-		t_e("war hier: c") ?>&viewclass=" + top.content.viewclass;
+		?>&viewclass=" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 
@@ -260,7 +262,7 @@ switch($_REQUEST["mcmd"]){
 			<!--
 			top.content.messaging_main.messaging_right.msg_work.entries_selected = new Array();
 			top.content.messaging_main.messaging_right.msg_work.messaging_fv_headers.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_fv_headers.php') . '&si=' . $messaging->get_sortitem() . '&so=' . $messaging->get_sortorder();
-		t_e("war hier: b") ?>&viewclass" + top.content.viewclass;
+		?>&viewclass" + top.content.viewclass;
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_messages_overview.location="<?php echo $messaging->url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php'); ?>";
 			top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="<?php echo HTML_DIR ?>white.html";
 		<?php $aid = $messaging->Folder_ID; ?>
@@ -282,8 +284,9 @@ switch($_REQUEST["mcmd"]){
 		$id = $messaging->Folder_ID;
 		$blank = isset($blank) ? $blank : true;
 		if(($messaging->cont_from_folder != 1) && ($id != -1)){
-			if(isset($_REQUEST['entrsel']) && $_REQUEST['entrsel'] != '')
+			if(isset($_REQUEST['entrsel']) && $_REQUEST['entrsel'] != ''){
 				$messaging->set_ids_selected($_REQUEST['entrsel']);
+			}
 
 			$messaging->get_fc_data($id, empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], '', 0);
 
