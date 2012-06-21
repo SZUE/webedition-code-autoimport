@@ -225,7 +225,7 @@ class we_messaging extends we_class{
 	}
 
 	function check_folders(){
-		/* XXX: Use defines for folder constants, instead of class variables in we_msg_proto.inc.php */
+		/* FIXME: Use defines for folder constants, instead of class variables in we_msg_proto.inc.php */
 		return intval(f('SELECT count(ID) as c FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13)', 'c', $this->DB)) >= 5;
 	}
 
@@ -780,7 +780,7 @@ class we_messaging extends we_class{
 	/* Message-Data for the messaging_message_view Frame */
 	/* params: ID - id of the shown message */
 
-	function get_mv_data($id, $classname = ''){
+	function get_mv_data($id, $classname = ''){ // imi: find selected_message here
 		$this->selected_message = array();
 		if(isset($id)){
 			if(array_ksearch('ID', $id, $this->selected_set) != "-1"){
@@ -827,7 +827,7 @@ class we_messaging extends we_class{
 
 		$parent_id = $parent_id == -1 ? 0 : $parent_id;
 
-		//XXX: Parent-check must be done by $type object;
+		//FIXME: Parent-check must be done by $type object;
 		if($parent_id != 0 && !in_array($parent_id, array_get_kvals('ID', $this->available_folders))){
 			$ret[] = -1;
 			$ret[] = g_l('modules_messaging', '[no_parent_folder]');
