@@ -206,7 +206,6 @@ class we_format extends we_class{
 
 	function get_priority(){
 		$ret = '';
-
 		if($this->msg_obj == 'we_todo'){
 			$ret = $this->sel_msg['hdrs']['Priority'];
 		}

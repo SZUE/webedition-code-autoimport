@@ -438,7 +438,7 @@ class we_todo extends we_msg_proto{
 
 		foreach($rcpts as $rcpt){
 			$in_folder = '';
-			//XXX: Put this out of the loop (the select statement)
+			//FIXME: Put this out of the loop (the select statement)
 			if(($userid = $this->username_to_userid($rcpt)) == -1){
 				$results['err'][] = "Username '$rcpt' existiert nicht'";
 				$results['failed'][] = $rcpt;
@@ -568,19 +568,19 @@ class we_todo extends we_msg_proto{
 			$id_str .= 'm.ID=' . intval($ih['_ID']);
 		}
 
-		$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerCreator, m.headerAssigner, m.headerStatus, m.headerDeadline, m.MessageText, m.Content_Type, u.username, u.First, u.Second FROM ' . $this->table . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerCreator AND m.UserID=" . intval($this->userid));
+		$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerCreator, m.headerAssigner, m.headerStatus, m.headerDeadline, m.Priority, m.MessageText, m.Content_Type, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->table . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerCreator AND m.UserID=" . intval($this->userid));
 
 		$db2 = new DB_WE();
 
 		$read_ids = array();
 
 		while($this->DB->next_record()) {
-			if(!($this->DB->f('seenStatus') & we_msg_proto::STATUS_READ)){
+			if(!($this->DB->f('seenStatus') && we_msg_proto::STATUS_READ)){
 				$read_ids[] = $this->DB->f('ID');
 			}
 
 			$history = array();
-			/* XXX: get the ids; use one query outside of the loop; */
+			/* FIXME: get the ids; use one query outside of the loop; */
 			$db2->query('SELECT u.username, t.Comment, t.Created, t.action, t.fromUserID FROM ' . MSG_TODOHISTORY_TABLE . ' as t, ' . USER_TABLE . ' as u WHERE t.ParentID=' . $this->DB->f('ID') . ' AND t.UserID=u.ID ORDER BY Created');
 			while($db2->next_record()) {
 				$history[] = array('username' => $db2->f('username'),
