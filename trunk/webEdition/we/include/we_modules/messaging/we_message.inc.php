@@ -96,7 +96,7 @@ class we_message extends we_msg_proto{
 		}
 	}
 
-	// XXX: put following 2 methods out of the class (same goes for we_todo.inc.php)
+	//FIXME: put following 2 methods out of the class (same goes for we_todo.inc.php)
 	/* Methods dealing with USER_TABLE and other userstuff */
 	function userid_to_username($id){
 		$db2 = new DB_WE();
@@ -232,14 +232,14 @@ class we_message extends we_msg_proto{
 
 		foreach($rcpts as $rcpt){
 			$in_folder = '';
-			//XXX: Put this out of the loop
+			//FIXME: Put this out of the loop
 			if(($userid = $this->username_to_userid($rcpt)) == -1){
 				$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 				$results['failed'][] = $rcpt;
 				continue;
 			}
 
-			/* XXX: replace this by default_folders[inbox] or something */
+			/* FIXME: replace this by default_folders[inbox] or something */
 			$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid));
 			$this->DB->next_record();
 			$in_folder = $this->DB->f('ID');
