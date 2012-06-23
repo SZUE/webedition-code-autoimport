@@ -212,9 +212,10 @@ $l_prefs=array(
 	'performance'=>'Stellen Sie hier ein passendes Leistungslevel ein. Dieses richtet sich nach der Leistungsfähigkeit Ihres Servers. Wenn die Ressourcen Ihres Systemes eingeschränkt sind (Speicher, Timeout etc.) wählen Sie bitte eine niedrigere Einstellung.',
 	'phpLocalScope'=>'Tag-Parser: <br/>setze voraus PHP LocalScope==GlobalScope',
 	'phpLocalScope_information'=>'Setzen Sie nur we:tags ein, so ist hier die Einstellung "nein" (das ist auch der Standard-Wert) zu wählen.<br/>
-	Bei Einsatz von eigenem PHP-Code in Vorlagen ist bei dieser Einstellung darauf zu achten, das PHP-Variablen, die z.B. als Parameter an we:Tags übergeben werden sollen, in den $GLOBALS gespeichert werden.<br/>
-	<br/>Um Abwärtskompatibilität mit altem PHP Kode herzustellen, der PHP Variablen lokal speichert, können Sie hier die Einstellung "ja" wählen. In diesem Fall kann es aber zu Problemen beim Versand von E-Mails im Newsletter- und Shop-Modul sowie über den we:sendMail-Tag kommen.<br/>
-	Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in Ihrem PHP-Kode nach folgendem Muster: aus $x=1; wird $GLOBALS["x"]=1;.<br/><br/>Wir empfehlen dringend auf den Standard-Wert "nein" umzustellen.',
+Bei der Übergabe von Variablen gilt dann folgendes Schema &lt;we:tag attribute="\$variablenname"/&gt;
+Bei Einsatz von eigenem PHP-Code in Vorlagen ist bei dieser Einstellung darauf zu achten, das PHP-Variablen, die z.B. als Parameter an we:Tags übergeben werden sollen, in den $GLOBALS gespeichert werden.<br/>
+<br/>Um Abwärtskompatibilität mit altem PHP Kode herzustellen, der PHP Variablen lokal speichert, können Sie hier die Einstellung "ja" wählen und die PHP-Variablen an we:Tags übergeben mit &lt;we:tag attribute="$variablenname"/&gt;. In diesem Fall kann es aber zu Problemen beim Versand von E-Mails im Newsletter- und Shop-Modul, im we:sendMail-Tag und an weiteren Stellen (z.B. in WE:APPS kommen.<br/>
+Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in Ihrem PHP-Kode nach folgendem Muster: aus $x=1; wird $GLOBALS["x"]=1; aus &lt;we:tag attribute="$variablenname"/&gt; wird &lt;we:tag attribute="\$variablenname"/&gt;.<br/><br/>Wir empfehlen dringend auf den Standard-Wert "nein" und &lt;we:tag attribute="\$variablenname"/&gt; umzustellen.',
 	'predefined'=>'Voreingestellte Größen',
 	'preload'=>'Einstellungen werden geladen, einen Moment ...',
 	'preload_wait'=>'Lade Einstellungen',
