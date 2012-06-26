@@ -34,11 +34,11 @@ $l_snippet=array(
 		),
 		'OverviewDocuments'=>array(
 			'desc'=>'Mit diesem Quelltext können Sie eine Übersicht über Dokumente erstellen.',
-			'title'=>'Übersicht über Dokumente',
+			'title'=>'&Uuml;bersicht &uuml;ber Dokumente',
 		),
 		'OverviewObjects'=>array(
 			'desc'=>'Mit diesem Quelltext können Sie eine Übersicht über die Objekte einer bestimmten Klasse erstellen.',
-			'title'=>'Übersicht über Objekte',
+			'title'=>'&Uuml;bersicht &uuml;ber Objekte',
 	),),
 	'search'=>array(
 		'SearchForm'=>array(
