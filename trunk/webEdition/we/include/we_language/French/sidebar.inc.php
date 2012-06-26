@@ -4,7 +4,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Paramètres sidebar',
-			'link'=>'javascript:top.we_cmd(`openPreferences`);',
+			'link'=>'javascript:top.we_cmd(\`openPreferences\`);',
 			'text'=>'You find the settings for the Sidebar, like individual start documents, width or deactivation of the sidebar under extras> preferences > common ... on the "User interface" tab',
 	),),
 	'confirm_to_close_sidebar'=>'Vous voulez vraiment fermer le sidebar ?',

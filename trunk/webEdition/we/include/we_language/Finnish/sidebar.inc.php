@@ -4,7 +4,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Sivupalkin asetukset',
-			'link'=>'javascript:top.we_cmd(`openPreferences`);',
+			'link'=>'javascript:top.we_cmd(\`openPreferences\`);',
 			'text'=>'L�yd�t sivupalkin asetukset, kuten yksil�llisen aloitussivun ja mitta-asetukset valikosta extrat> asetukset > yleiset ... "K�ytt�liittym�" v�lilehdelt�',
 	),),
 	'confirm_to_close_sidebar'=>'Haluatko varmasti sulkea sivupalkin?',
