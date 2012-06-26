@@ -4,7 +4,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Preferences Sidebar',
-			'link'=>'javascript:top.we_cmd(`openPreferences`);',
+			'link'=>'javascript:top.we_cmd(\`openPreferences\`);',
 			'text'=>'U vind de instellingen voor de zijbalk, zoals individuele start documenten, breedte of deactivatie van de zijbalk onder extras> voorkeuren > algemeen ... onder de "Gebruikers interface" tab',
 	),),
 	'confirm_to_close_sidebar'=>'Wilt u de zijbalk echt sluiten?',
