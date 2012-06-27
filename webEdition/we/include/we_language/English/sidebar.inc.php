@@ -4,7 +4,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Preferences Sidebar',
-			'link'=>'javascript:top.we_cmd(\`openPreferences\`);',
+			'link'=>'javascript:top.we_cmd("openPreferences");',
 			'text'=>'You find the settings for the Sidebar, like individual start documents, width or deactivation of the sidebar under extras> preferences > common ... on the "User interface" tab',
 	),),
 	'confirm_to_close_sidebar'=>'Would you really like to close the sidebar?',
@@ -23,7 +23,7 @@ $l_sidebar=array(
 		'2'=>array(
 			'headline'=>'Other help resources',
 			'icon'=>'help.gif',
-			'link'=>'javascript:top.we_cmd(`help`);',
+			'link'=>'javascript:top.we_cmd("help");',
 			'text'=>'Overview of further instructions and references',
 		),
 		'3'=>array(
