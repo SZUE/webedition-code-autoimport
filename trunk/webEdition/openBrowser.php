@@ -22,9 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$loc=filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
-header('Location: '.$loc);
+we_html_tools::protect();
+
+if(is_numeric($_REQUEST["url"])){
+	srand((double) microtime() * 1000000);
+	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval($_REQUEST["url"]), 'Path', $DB_WE);
+	$loc = getServerUrl() . ($path ? $path . '?r=' . rand() : WEBEDITION_DIR . 'notPublished.php');
+} else{
+	$loc = filter_var($_REQUEST["url"], FILTER_VALIDATE_URL);
+}
+header('Location: ' . $loc);
 we_html_tools::htmlTop();
 ?>
-<meta HTTP-EQUIV="REFRESH" content="0; url=<?php echo $loc;?>">
+<meta HTTP-EQUIV="REFRESH" content="0; url=<?php echo $loc; ?>">
 </head><body></body></html>
