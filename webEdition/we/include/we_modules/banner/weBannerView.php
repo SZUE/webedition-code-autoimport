@@ -1031,6 +1031,7 @@ class weBannerView extends weBannerBase{
 		$button = we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*')");
 
 		$yuiSuggest->setAcId("Image");
+		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setContentType("folder,image/*,application/*,application/x-shockwave-flash,video/quicktime");
 		$yuiSuggest->setInput($Pathname, $Pathvalue, "onchange=\"top.content.setHot();\"", true);
 		$yuiSuggest->setMaxResults(10);
@@ -1054,6 +1055,7 @@ class weBannerView extends weBannerBase{
 		$button = we_button::create_button("select", "javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest->setAcId($acID);
+		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $path, "onchange=\"top.content.setHot();\"", true);
 		$yuiSuggest->setMaxResults(10);
