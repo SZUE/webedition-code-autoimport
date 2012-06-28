@@ -135,7 +135,7 @@ class weMainTree extends weTree{
 				var table=node.table;
 				setScrollY();
 				if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\'' . (defined("OBJECT_TABLE") ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
-					top.openBrowser(\'' . getServerUrl() . WEBEDITION_DIR . 'we_redirect.php?id=\'+id);
+					top.openBrowser(id);
 					setTimeout(\'wasdblclick=0;\',400);
 				} else {
 					top.weEditorFrameController.openDocument(table,id,ct);

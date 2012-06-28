@@ -34,5 +34,5 @@ if(is_numeric($_REQUEST["url"])){
 header('Location: ' . $loc);
 we_html_tools::htmlTop();
 ?>
-<meta HTTP-EQUIV="REFRESH" content="0; url=<?php echo $loc; ?>">
+<meta HTTP-EQUIV="REFRESH" content="1; url=<?php echo $loc; ?>">
 </head><body></body></html>
