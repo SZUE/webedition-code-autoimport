@@ -20,5 +20,5 @@
  */
 //used in we:linkedlist
 function we_tag_prelink($attribs, $content){
-	return (we_tag('ifPosition', array('type' => 'linklist', 'position' => 'first', 'reference' => '')) ? '' : $content);
+	return (we_tag('ifPosition', array('type' => 'linklist', 'position' => 'first','operator'=>'equal')) ? '' : $content);
 }
