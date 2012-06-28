@@ -35,7 +35,7 @@
 function we_parse_tag_block($attribs, $content){
 	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	if(($foo = attributFehltError($arr, 'name', __FUNCTION__)))
 		return $foo;
 
@@ -99,10 +99,10 @@ function we_tag_block($attribs){
 
 	if($list){
 		$list = unserialize($list);
-		if(count($list) && ((count($list)-1) != max(array_keys($list)))){
+		if(count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
-			$GLOBALS['we_doc']->setElement($name,serialize($list));
+			$GLOBALS['we_doc']->setElement($name, serialize($list));
 		}
 	} else if($start){
 		$list = array();
@@ -152,7 +152,7 @@ function we_tag_blockControls($attribs, $content = ''){
 		return '';
 	}
 	if(!isset($attribs['ctlName'])){
-		$attribs['ctlName'] = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
+		$attribs['ctlName'] = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
 	}
 
 	if($attribs['pos'] < $attribs['listSize']){

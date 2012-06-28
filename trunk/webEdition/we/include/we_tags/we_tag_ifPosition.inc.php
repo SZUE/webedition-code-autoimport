@@ -126,53 +126,30 @@ function we_tag_ifPosition($attribs){
 			}
 			break;
 
-		case "linklist" : //	look in fkt we_tag_linklist and callss we_linklist for details
+		case "linklist" :
 			//	first we must get right array !!!
 			$_reference = $GLOBALS['we']['ll']->getName();
-			/* $missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
-			  if ($missingAttrib) {
-			  print $missingAttrib;
-			  return "";
-			  }
-			  $_reference = weTag_getAttribute("reference", $attribs);
-			 */
-			foreach($GLOBALS['we_position']['linklist'] as $name => $arr){
 
-				if(strpos($name, $_reference) === 0){
-					if(is_array($arr)){
-						$_content = $arr;
-					}
-				}
-			}
+			$_reference = $GLOBALS['we_position']['linklist'][$_reference];
 
-			if(isset($_content) && $_content['position']){
+			if(is_array($_reference) && isset($_reference['position'])){
 				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position'], $_reference['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}
 				}
 			}
+
 			break;
 
 		case "block" : //	look in function we_tag_block for details
-			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
-			if($missingAttrib){
-				print $missingAttrib;
-				return "";
-			}
+			$_reference=substr($GLOBALS['postTagName'],4,strrpos($GLOBALS['postTagName'],'__')-4);//strip leading blk_ and trailing __NO
+			$_reference = $GLOBALS['we_position']['block'][$_reference];
 
-			$_reference = weTag_getAttribute("reference", $attribs);
-
-			foreach($GLOBALS['we_position']['block'] as $name => $arr){
-				if(strpos($name, $_reference) === 0){
-					$_content = $arr;
-				}
-			}
-
-			if(isset($_content) && $_content['position']){
+			if(is_array($_reference) && isset($_reference['position'])){
 				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position'], $_reference['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}
