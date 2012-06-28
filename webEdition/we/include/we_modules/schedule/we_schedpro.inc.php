@@ -107,27 +107,24 @@ class we_schedpro{
 			switch($i){
 				case 14:
 				case 28:
-					$days .= '</tr><tr>' . "\n";
+					$days .= '</tr><tr>';
 					break;
 			}
 		}
 
-		$days .= '</tr></table>
-';
+		$days .= '</tr></table>';
 		return $days;
 	}
 
 	function getWeekdaysHTML(){
-		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>
-';
+		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 7; $i++){
 			$wd .= '<td>' . we_forms::checkbox("1", $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)")
 				. '<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
-		$wd .= '</tr></table>
-';
+		$wd .= '</tr></table>';
 		return $wd;
 	}
 
@@ -143,25 +140,18 @@ class we_schedpro{
 	function getHTML($isobj = false){
 		$taskpopup = '<select class="weSelect" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
-<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>
-';
+<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>';
 		if((we_hasPerm("DELETE_DOCUMENT") && (!$isobj)) || (we_hasPerm("DELETE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>
-';
+			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>
-';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>';
 		}
-		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>
-';
+		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>';
 		if((we_hasPerm("MOVE_DOCUMENT") && (!$isobj)) || (we_hasPerm("MOVE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '
-<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>
-';
+			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>';
 		}
-		$taskpopup .= '</select>
-';
+		$taskpopup .= '</select>';
 		$extracont = "";
 		$extraheadl = "";
 
@@ -171,11 +161,9 @@ class we_schedpro{
 				$db = new DB_WE();
 				$q = getDoctypeQuery($db);
 				$db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">
-';
+				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
 				while($db->next_record()) {
-					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>
-';
+					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';
 				}
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(rand(), 1));
@@ -250,23 +238,20 @@ class we_schedpro{
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);")
 			. '<input type="hidden" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
-	</tr>
-' . $this->getSpacerRowHTML();
+	</tr>' . $this->getSpacerRowHTML();
 		if($extracont){
 			$table .= '	<tr valign="top">
 		<td class="defaultgray">' . $extraheadl . ':</td>
 		<td class="defaultfont">' . $extracont . '</td>
 		<td></td>
-	</tr>
-' . $this->getSpacerRowHTML();
+	</tr>' . $this->getSpacerRowHTML();
 		}
 
 		$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[type][headline]") . ':</td>
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
-	</tr>
-' .
+	</tr>' .
 			$this->getSpacerRowHTML();
 
 
@@ -276,76 +261,66 @@ class we_schedpro{
 		<td class="defaultgray">' . g_l('modules_schedule', "[datetime]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 			case self::TYPE_HOUR:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[minutes]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 			case self::TYPE_DAY:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 			case self::TYPE_WEEK:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-' .
+	</tr>' .
 					$this->getSpacerRowHTML() .
 					'	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[weekdays]") . ':</td>
 		<td class="defaultfont">' . $this->getWeekdaysHTML() . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 			case self::TYPE_MONTH:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-' .
+	</tr>' .
 					$this->getSpacerRowHTML() .
 					'	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[days]") . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 			case self::TYPE_YEAR:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-' .
+	</tr>' .
 					$this->getSpacerRowHTML() .
 					'	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[months]") . ':</td>
 		<td class="defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
-	</tr>
-' .
+	</tr>' .
 					$this->getSpacerRowHTML() .
 					'	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[days]") . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
-	</tr>
-';
+	</tr>';
 				break;
 		}
 		$table .= '</table>' . "\n";
@@ -425,7 +400,7 @@ class we_schedpro{
 					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE DID=' . intval($id) . " AND ClassName!='we_objectFile' AND Type='" . $s['type'] . "' AND Was='" . $s['task'] . "'");
 				}
 			} else{
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '"');
 			}
 		}
 
