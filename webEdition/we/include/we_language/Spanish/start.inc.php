@@ -15,6 +15,7 @@ $l_start=array(
 	'cookies_disabled'=>'Cookies are deactivated.',
 	'cookie_path'=>'El valor de la variable <b>session.cookie_path</b> es `%s`. Este valor normalmente debe ser ajustado a `/`!',
 	'ignore_browser'=>'Si UD desea iniciar webEdition de todas formas, clic aquí ...',
+	'login_session_terminated'=>'Login session has terminated before login was complete. Eventually the login page has been opened some time before you actually tried to login. Please go back to the login page and try again. If this problem persists, ask your provider or administrator for assistance.',
 	'no_db_connection'=>'The database connection can not be established.',
 	'phpini_problems'=>'Un problema ocurrió con los ajustes de la sección en su archivo php.ini%s!',
 	'solution_more'=>'Si Ud activa su propio servidor, por favor, cambie estos valores. Si Ud usa un servicio hosting Web, por favor, informe que estos valores están ajustados inapropiadamente.',
