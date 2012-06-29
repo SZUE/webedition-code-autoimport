@@ -46,11 +46,10 @@ class we_workflow_base{
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->ID));
 		if($this->db->next_record())
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				$fieldName = $tableInfo[$i]["name"];
+			foreach($tableInfo as $cur){
+				$fieldName = $cur["name"];
 				if(in_array($fieldName, $this->persistents)){
-					$foo = $this->db->f($fieldName);
-					$this->$fieldName = $foo;
+					$this->$fieldName = $this->db->f($fieldName);
 				}
 			}
 	}
@@ -81,15 +80,14 @@ class we_workflow_base{
 			$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	function sendMessage($userID, $subject, $description){
 		$errs = array();
 		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "username", $this->db);
 		$rcpts = array($foo); /* user names */
-		$res = msg_new_message($rcpts, $subject, $description, $errs);
+		msg_new_message($rcpts, $subject, $description, $errs);
 	}
 
 	function sendMail($userID, $subject, $description, $contecttype = 'text/plain'){
@@ -109,7 +107,7 @@ class we_workflow_base{
 	}
 
 	function doneTodo($id){
-		$errs = "";
+		$errs = '';
 		return msg_done_todo($id, $errs);
 	}
 
@@ -122,5 +120,3 @@ class we_workflow_base{
 	}
 
 }
-
-?>
