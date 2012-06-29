@@ -15,6 +15,7 @@ $l_start=array(
 	'cookies_disabled'=>'Cookies are deactivated.',
 	'cookie_path'=>'Muuttujan <b>session.cookie_path</b> arvo on `%s`. Tämä arvo on oletuksena `/`!',
 	'ignore_browser'=>'Jos haluat kirjautua webEdition -järjestelmään siitä huolimatta, paina tästä ...',
+	'login_session_terminated'=>'Login session has terminated before login was complete. Eventually the login page has been opened some time before you actually tried to login. Please go back to the login page and try again. If this problem persists, ask your provider or administrator for assistance.',
 	'no_db_connection'=>'The database connection can not be established.',
 	'phpini_problems'=>'Virhe session -asetuksissa php.ini-tiedostossa%s!',
 	'solution_more'=>'Jos webEdition -järjestelmä on käytössä omalla palvelimella, muuta arvoja. Jos webEdition -järjestelmä on käytössä ulkopuolisella palvelimella informoi ylläpitoa että arvo on asetettu väärin.',
