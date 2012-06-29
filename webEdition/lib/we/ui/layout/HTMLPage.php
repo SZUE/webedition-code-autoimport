@@ -311,7 +311,7 @@ EOS;
 			$html .= we_html_element::jsScript($file);
 		}
 
-		$html .= we_html_element::jsElement(js.implode('',$this->_inlineJS));
+		$html .= we_html_element::jsElement($js.implode('',$this->_inlineJS));
 
 		// add head end tag
 		$html .= '</head>';
