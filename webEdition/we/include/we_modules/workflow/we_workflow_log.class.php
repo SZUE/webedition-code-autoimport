@@ -43,7 +43,7 @@ class we_workflow_log{
 		$db->query("INSERT INTO " . WORKFLOW_LOG_TABLE . " (ID, RefID, docTable, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", '" . WORKFLOW_TABLE . "', " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
 	}
 
-	function getLogForDocument($docID, $order="DESC", $wfType=0){
+	static function getLogForDocument($docID, $order="DESC", $wfType=0){
 
 		$offset = isset($_REQUEST["offset"]) ? abs($_REQUEST["offset"]) : 0;
 		$db = new DB_WE();
