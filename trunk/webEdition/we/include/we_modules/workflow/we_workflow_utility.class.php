@@ -115,7 +115,7 @@ class we_workflow_utility{
 	  Same like getWorkflowDocument but returns
 	  workflow document id (not object)
 	 */
-	function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
+	static function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$doc = self::getWorkflowDocument($docID, $table, $status);
 		if(!isset($doc->ID) || !$doc->ID){
 			return false;
@@ -288,7 +288,7 @@ class we_workflow_utility{
 		return $doc->steps;
 	}
 
-	function getDocumentStatusInfo($docID, $table){
+	static function getDocumentStatusInfo($docID, $table){
 		$doc = self::getWorkflowDocumentID($docID, $table);
 		if($doc){
 			return we_workflow_view::getDocumentStatus($doc, 700);
