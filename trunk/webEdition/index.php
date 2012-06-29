@@ -287,10 +287,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
-	/*	 * *******************************************************************
+	/* ********************************************************************
 	 * CHECK BROWSER
 	 * ******************************************************************* */
-
+	
 	$supportedBrowserCnt = (we_base_browserDetect::isMAC() ? 3 : (we_base_browserDetect::isUNIX() ? 2 : 4));
 
 	$_browser_table = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'border' => 0, 'width' => '100%'), 12, $supportedBrowserCnt);
