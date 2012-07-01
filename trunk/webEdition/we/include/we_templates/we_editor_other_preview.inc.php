@@ -37,7 +37,7 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download"){
 		header("Cache-control: private, max-age=0, must-revalidate");
 	}
 
-	header('Content-Type: application/x-download');
+	header('Content-Type: application/octet-stream');
 	header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
 	header('Content-Description: ' . trim(htmlentities($_filename)));
 	header('Content-Length: '.$_SERVER['DOCUMENT_ROOT'] . $we_doc->Path);
