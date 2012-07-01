@@ -259,7 +259,7 @@ class weContentProvider{
 				if(isset($object->$v))
 					$content = $object->$v;
 				if(self::needCoding($object->ClassName, $v)){
-					$content = self::encode($content);
+					$content = self::getCDATA(self::encode($content));
 				} else if(self::needCdata($object->ClassName, $v, $content)){
 					$content = self::getCDATA($content);
 				}
@@ -296,7 +296,7 @@ class weContentProvider{
 				if(isset($object->$v))
 					$content = $object->$v;
 				if(self::needCoding($object->ClassName, $v)){
-					$content = self::encode($content);
+					$content = self::getCDATA(self::encode($content));
 				} else if(self::needCdata($object->ClassName, $v, $content)){
 					$content = self::getCDATA($content);
 				}
@@ -459,8 +459,7 @@ class weContentProvider{
 
 	static function isBinary($id){
 		$db = new DB_WE();
-		return f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType='image/*';", "ContentType", $db) ||
-			f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType LIKE 'application/%';", "ContentType", $db);
+		return f("SELECT 1 AS a FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%';", "a", $db);
 	}
 
 	static function getCDATA($data){

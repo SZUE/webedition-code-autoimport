@@ -43,7 +43,7 @@ class weExportWizard{
 	var $footerFrame = "top.footer";
 	var $exportVars = array();
 
-	function __construct($frameset=""){
+	function __construct($frameset = ""){
 		$this->setFrameset($frameset);
 		$this->db = new DB_WE();
 
@@ -190,7 +190,7 @@ class weExportWizard{
 		);
 	}
 
-	function getHTMLStep($step=0){
+	function getHTMLStep($step = 0){
 		$this->getExportVars();
 		$function = "getHTMLStep" . $step;
 		return $this->$function();
@@ -747,7 +747,7 @@ top.close();');
 			$table->setColContent(0, 0, we_forms::radiobutton("true", ($cdata == "true"), "cdata", g_l('export', "[export_xml_cdata]"), true, "defaultfont", $this->topFrame . ".cdata='true'"));
 			$table->setColContent(2, 0, we_forms::radiobutton("false", ($cdata == "false"), "cdata", g_l('export', "[export_xml_entities]"), true, "defaultfont", $this->topFrame . ".cdata='false'"));
 
-			array_push($parts, array("headline" => g_l('export', "[cdata]"), "html" => $table->getHtml(), "space" => $_space));
+			$parts[] = array("headline" => g_l('export', "[cdata]"), "html" => $table->getHtml(), "space" => $_space);
 		}
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
@@ -756,7 +756,7 @@ top.close();');
 		$table->setColContent(1, 0, we_html_tools::getPixel(20, 20));
 		$table->setColContent(2, 0, we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, "", "folder"), we_forms::radiobutton("server", ($export_to == "server" ? true : false), "export_to", g_l('export', "[export_to_server]"), true, "defaultfont", $this->topFrame . ".export_to='server'")));
 
-		array_push($parts, array("headline" => g_l('export', "[export_to]"), "html" => $table->getHtml(), "space" => $_space));
+		$parts[] = array("headline" => g_l('export', "[export_to]"), "html" => $table->getHtml(), "space" => $_space);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . "\n" . $js) .
@@ -797,7 +797,7 @@ top.close();');
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 				$_size = filesize(TEMP_PATH . $_filename);
 
-				if(we_isHttps()){	// Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -865,7 +865,7 @@ top.close();');
 		);
 	}
 
-	function getHTMLHeader($step=0){
+	function getHTMLHeader($step = 0){
 		$js = "";
 		$js2 = "";
 
@@ -1491,7 +1491,7 @@ top.close();');
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width="", $rootDirID=0, $table=FILE_TABLE, $Pathname="ParentPath", $Pathvalue="", $IDName="ParentID", $IDValue="", $cmd=""){
+	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 		$table = FILE_TABLE;
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -1515,7 +1515,7 @@ top.close();');
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
-	function getHTMLDocType($width=350){
+	function getHTMLDocType($width = 350){
 		$pop = "";
 		$vals = array();
 
@@ -1552,7 +1552,7 @@ top.close();');
 		);
 	}
 
-	function getHTMLObjectType($width=350, $showdocs=false){
+	function getHTMLObjectType($width = 350, $showdocs = false){
 		if(defined("OBJECT_FILES_TABLE")){
 			$vals = array();
 			$this->db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
@@ -1635,7 +1635,7 @@ top.close();');
 			'</td></tr></table>';
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname="Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue), "Path", $this->db);
