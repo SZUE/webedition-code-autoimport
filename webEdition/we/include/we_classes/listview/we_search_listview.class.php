@@ -87,8 +87,9 @@ class we_search_listview extends listviewBase{
 			$random = false;
 			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == "we_filename"){
 
-				$ord = str_replace("we_id", INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
-				$ord = str_replace("we_creationdate",INDEX_TABLE . ".CreationDate",$ord);
+				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
+				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
+				$ord = str_replace('we_creationdate','');
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
 			} else{
 				$orderArr1 = makeArrayFromCSV($this->order);
@@ -157,7 +158,7 @@ class we_search_listview extends listviewBase{
 		$spalten = array(INDEX_TABLE . "." . $searchfield);
 		reset($bedingungen);
 		while(list($k1, $v1) = each($bedingungen)) {
-			if(preg_match('^|[-\+]|', $v1)){
+			if(preg_match('|^[-\+]|', $v1)){
 				$not = (preg_match('|^-|', $v1)) ? 'NOT ' : '';
 				$bed = preg_replace('|^[-\+]|', '', $v1);
 				$klammer = array();

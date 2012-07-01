@@ -174,7 +174,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	}
 
 	if($header){
-		header('Content-Type: text/html; charset = ' . $GLOBALS['WE_BACKENDCHARSET']);
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 	}
 	unset($header);
 }
