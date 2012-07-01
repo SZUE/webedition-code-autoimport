@@ -37,7 +37,7 @@ class DB_WE extends we_database_base{
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'msconnect':
-					$this->Link_ID = @sqlsrv_connect($Host, array('Database'=>$Database,'UID'=>$User,'PWD'=>$Password,'CharacterSet' => 'UTF-8'));
+					$this->Link_ID = @sqlsrv_connect($Host, array('Database' => $Database, 'UID' => $User, 'PWD' => $Password, 'CharacterSet' => 'UTF-8'));
 					if(!$this->Link_ID){
 						$this->halt("sqlsrv($Host, $User, $Database) failed.");
 						return false;
@@ -66,7 +66,7 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function _query($Query_String, $unbuffered = false){//unbuffered wird wohl nicht unterstützt
-		return 	@sqlsrv_query($this->Link_ID,$Query_String );
+		return @sqlsrv_query($this->Link_ID, $Query_String);
 	}
 
 	public function close(){
@@ -101,13 +101,13 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_name($no){
-		$metadata=sqlsrv_field_metadata ($this->Query_ID);
+		$metadata = sqlsrv_field_metadata($this->Query_ID);
 		return $metadata[$no]['Name'];
 	}
 
 	public function field_type($no){
-		$metadata=sqlsrv_field_metadata ($this->Query_ID);
-		return $metadata[$no]['Type'];//liefert den Numerischen Wert	
+		$metadata = sqlsrv_field_metadata($this->Query_ID);
+		return $metadata[$no]['Type']; //liefert den Numerischen Wert
 	}
 
 	public function field_table($no){
@@ -115,7 +115,7 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_len($no){
-		$metadata=sqlsrv_field_metadata ($this->Query_ID);
+		$metadata = sqlsrv_field_metadata($this->Query_ID);
 		return $metadata[$no]['Size'];
 	}
 
@@ -125,6 +125,10 @@ class DB_WE extends we_database_base{
 
 	public function getInsertId(){
 		//return mysql_insert_id($this->Link_ID);
+	}
+
+	public function getCurrentCharset(){
+		return mysql_client_encoding();
 	}
 
 	public function getInfo(){

@@ -166,6 +166,9 @@ abstract class we_database_base{
 	 */
 	abstract public function getInfo();
 
+	/**returns the charset of the current connection*/
+	abstract public function getCurrentCharset();
+
 	/** Constructor, establishes the connection to the DB
 	 *
 	 */
