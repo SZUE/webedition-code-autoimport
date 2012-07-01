@@ -219,8 +219,9 @@ class we_workflow_document extends we_workflow_base{
 	 *
 	 */
 	function save(){
-		if(!$this->documentID)
+		if(!$this->documentID){
 			return false;
+		}
 		parent::save();
 		for($i = 0; $i < count($this->steps); $i++){
 			$this->steps[$i]->workflowDocID = $this->ID;
