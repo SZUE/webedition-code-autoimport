@@ -70,11 +70,10 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function _setCharset($charset){
-		@ mysql_set_charset($charset);
+		@mysql_set_charset($charset);
 	}
 
 	/* public: discard the query result */
-
 	protected function _free(){
 		@mysql_free_result($this->Query_ID);
 	}
@@ -140,7 +139,11 @@ class DB_WE extends we_database_base{
 		return mysql_insert_id($this->Link_ID);
 	}
 
-	public function getInfo(){
+public function getCurrentCharset(){
+	return mysql_client_encoding();
+}
+
+public function getInfo(){
 		return '<table class="defaultfont"><tr><td>type:</td><td>' . $this->conType .
 			'</td></tr><tr><td>protocol:</td><td>' . mysql_get_proto_info() .
 			'</td></tr><tr><td>client:</td><td>' . mysql_get_client_info() .

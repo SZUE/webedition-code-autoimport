@@ -571,7 +571,7 @@ function get_value($settingvalue){
 		 * ******************************************************************* */
 		case "execute_hooks":
 			return defined("EXECUTE_HOOKS") ? EXECUTE_HOOKS : false;
-			
+
 		/*		 * *******************************************************************
 		 * PHPLOCALSCOPE
 		 * ******************************************************************* */
@@ -1841,7 +1841,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 
 				$_update_prefs = false;
 				break;
-				
+
 			/*			 * ***************************************************************
 			 * phpLocalScope
 			 * *************************************************************** */
@@ -5212,12 +5212,19 @@ else {
 					$_db_set_charset->addOption($charset, $charset);
 				}
 
-				if(defined('DB_SET_CHARSET')){
+				if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 					$_db_set_charset->selectOption(DB_SET_CHARSET);
+				} else{
+					$tmp = $GLOBALS['DB_WE']->getCurrentCharset();
+					if($tmp){
+						$_db_set_charset->selectOption($tmp);
+						$_file = &$GLOBALS['config_files']['conf_global']['content'];
+						$_file = weConfParser::changeSourceCode("define", $_file, 'DB_SET_CHARSET', $settingvalue);
+					}
 				}
 
 
-				array_push($_settings, array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200);
 
 				// Generate needed JS
 				$_needed_JavaScript .= we_html_element::jsElement("
@@ -5327,8 +5334,8 @@ else {
 				$hooksHtml .= $_php_setting->getHtml();
 
 				array_push($_settings, array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200));
-				
-				//  select how php is parsed 
+
+				//  select how php is parsed
 				$_php_setting = new we_html_select(array("name" => "phpLocalScope", "class" => "weSelect"));
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));

@@ -33,7 +33,7 @@ class DB_WE extends we_database_base{
 		}
 	}
 
-	protected function _query($Query_String, $unbuffered=false){
+	protected function _query($Query_String, $unbuffered = false){
 		$this->_free();
 		$tmp = $this->Link_ID->query($Query_String, ($unbuffered ? MYSQLI_USE_RESULT : MYSQLI_STORE_RESULT));
 		if($tmp === false){
@@ -45,10 +45,10 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function _setCharset($charset){
-		@$this->Link_ID->set_charset($charset);
+		$this->Link_ID->set_charset($charset);
 	}
 
-	protected function _seek($pos=0){
+	protected function _seek($pos = 0){
 		return (is_object($this->Query_ID)) && $this->Query_ID->data_seek($pos);
 	}
 
@@ -75,10 +75,10 @@ class DB_WE extends we_database_base{
 			return false;
 		}
 		$ret = array();
-    while($row = $this->fetch_array($resultType)) {
-      $ret[] = $row;
-    }
-    return $ret;
+		while($row = $this->fetch_array($resultType)) {
+			$ret[] = $row;
+		}
+		return $ret;
 	}
 
 	public function affected_rows(){
@@ -97,7 +97,7 @@ class DB_WE extends we_database_base{
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'mysqli_pconnect':
-				$Host = 'p:' . $Host;
+					$Host = 'p:' . $Host;
 				case 'mysqli_connect':
 					$this->Query_ID = null;
 					$this->Link_ID = new mysqli($Host, $User, $Password, $Database);
@@ -148,14 +148,19 @@ class DB_WE extends we_database_base{
 		return is_object($this->Query_ID) ? $this->Query_ID->num_rows : 0;
 	}
 
+	public function getCurrentCharset(){
+		$charset = mysqli_get_charset($this->Link_ID);
+		return $charset->charset;
+	}
+
 	public function getInfo(){
-		$charset=$this->Link_ID->get_charset();
+		$charset = mysqli_get_charset($this->Link_ID);
 		return '<table class="defaultfont"><tr><td>type:</td><td>' . DB_CONNECT .
 			'</td></tr><tr><td>protocol:</td><td>' . $this->Link_ID->protocol_version .
 			'</td></tr><tr><td>client:</td><td>' . $this->Link_ID->client_info .
 			'</td></tr><tr><td>host:</td><td>' . $this->Link_ID->host_info .
-			'</td></tr><tr><td>server:</td><td>' . $this->Link_ID->server_info.
-			'</td></tr><tr><td>encoding:</td><td>'.$charset->charset.'</td></tr></table>';
+			'</td></tr><tr><td>server:</td><td>' . $this->Link_ID->server_info .
+			'</td></tr><tr><td>encoding:</td><td>' . $charset->charset . '</td></tr></table>';
 	}
 
 	protected function ping(){
