@@ -562,9 +562,17 @@ class we_document extends we_root{
 		$list = $this->getElement($name);
 		$listarray = $list ? unserialize($list) : array();
 		if($list){
-			$namesArray = $names ? explode(',', $names) : array($names);
-			foreach($namesArray as $element){
-				unset($this->elements[$element . $listarray[$nr]]);
+			if($isBlock){
+				foreach(array_keys($this->elements) as $key){
+					if(strpos($key, $names) !== FALSE){
+						unset($this->elements[$key]);
+					}
+				}
+			} else{
+				$namesArray = $names ? explode(',', $names) : array($names);
+				foreach($namesArray as $element){
+					unset($this->elements[$element . $listarray[$nr]]);
+				}
 			}
 			if(is_array($listarray)){// Bug #4079
 				unset($listarray[$nr]);
@@ -1036,7 +1044,7 @@ class we_document extends we_root{
 				} else{
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
 					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
-					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get()));//Bug #6335
+					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
 				}
 				return $zwdate;
@@ -1074,7 +1082,7 @@ class we_document extends we_root{
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = we_util::rmPhp($retval);
 				}
-				$xml = weTag_getAttribute('xml', $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT), true );
+				$xml = weTag_getAttribute('xml', $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT), true);
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
@@ -1153,7 +1161,7 @@ class we_document extends we_root{
 				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					unset($attribs['showcontrol']);
 					$val = $attribs['id'];
-				} else {
+				} else{
 					$val = $this->getElement($attribs['name'], 'bdid');
 				}
 				if($val){

@@ -181,7 +181,7 @@ function we_tag_blockControls($attribs, $content = ''){
 				we_button::create_button('image:btn_direction_down', '', true, -1, -1, '', '', true) :
 				//enabled downBtn
 				we_button::create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")"));
-		$tabArray[] = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $attribs['name'] . "',1)");
+		$tabArray[] = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $GLOBALS['postTagName'] . "',1)");
 
 		return we_button::create_button_table($tabArray, 5);
 	} else{
