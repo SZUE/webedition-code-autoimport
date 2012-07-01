@@ -39,24 +39,19 @@ class weBackupFileReader extends weXMLFileReader{
 
 				// if the table should't be imported
 				if(weBackupUtil::getRealTableName($attributes[1]) === false){
-
 					return true;
 				}
 			}
 		}
 
 		if(preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
-
 			if(!weBackupUtil::canImportBinary($match[1], $match[3])){
-
 				return true;
 			}
 		}
 
 		if(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
-
 			if(!weBackupUtil::canImportVersion($match[1], $match[3])){
-
 				return true;
 			}
 		}

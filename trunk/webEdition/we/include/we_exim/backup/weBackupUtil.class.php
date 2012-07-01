@@ -25,24 +25,17 @@
 class weBackupUtil{
 
 	function getRealTableName($table){
-
 		$table = strtolower($table);
-
+		$match = array();
 		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
-
-			if(isset($_SESSION['weBackupVars']['tables']['tblobject_'])){
-				return $_SESSION['weBackupVars']['tables']['tblobject_'] . $match[1];
-			} else{
-				return false;
-			}
+			return (isset($_SESSION['weBackupVars']['tables']['tblobject_']) ?
+					$_SESSION['weBackupVars']['tables']['tblobject_'] . $match[1] :
+					false);
 		}
 
-		if(isset($_SESSION['weBackupVars']['tables'][$table])){
-
-			return $_SESSION['weBackupVars']['tables'][$table];
-		}
-
-		return false;
+		return (isset($_SESSION['weBackupVars']['tables'][$table]) ?
+				$_SESSION['weBackupVars']['tables'][$table] :
+				false);
 	}
 
 	function getDefaultTableName($table){
@@ -60,14 +53,14 @@ class weBackupUtil{
 		}
 
 
-		//$_def_table = array_search($table,$_SESSION['weBackupVars']['tables']);
+//$_def_table = array_search($table,$_SESSION['weBackupVars']['tables']);
 		foreach($_SESSION['weBackupVars']['tables'] as $_key => $_value){
 			if(strtolower($table) == strtolower($_value)){
 				$_def_table = $_key;
 			}
 		}
 
-		// return false or default table name
+// return false or default table name
 		if(!empty($_def_table)){
 			return $_def_table;
 		}
@@ -80,60 +73,36 @@ class weBackupUtil{
 	}
 
 	function getDescription($table, $prefix){
-
-		if($table == CONTENT_TABLE){
-			return g_l('backup', "[" . $prefix . '_content]');
+		switch($table){
+			case CONTENT_TABLE:
+				return g_l('backup', "[" . $prefix . '_content]');
+			case FILE_TABLE:
+				return g_l('backup', "[" . $prefix . '_files]');
+			case LINK_TABLE:
+				return g_l('backup', "[" . $prefix . '_links]');
+			case TEMPLATES_TABLE:
+				return g_l('backup', "[" . $prefix . '_templates]');
+			case TEMPORARY_DOC_TABLE:
+				return g_l('backup', "[" . $prefix . '_temporary_data]');
+			case INDEX_TABLE:
+				return g_l('backup', "[" . $prefix . '_indexes]');
+			case DOC_TYPES_TABLE:
+				return g_l('backup', "[" . $prefix . '_doctypes]');
+			case (defined('USER_TABLE') ? USER_TABLE : 'USER_TABLE'):
+				return g_l('backup', "[" . $prefix . '_user_data]');
+			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
+				return g_l('backup', "[" . $prefix . '_customer_data]');
+			case (defined('SHOP_TABLE') ? SHOP_TABLE : 'SHOP_TABLE'):
+				return g_l('backup', "[" . $prefix . '_shop_data]');
+			case (defined('PREFS_TABLE') ? PREFS_TABLE : 'PREFS_TABLE'):
+				return g_l('backup', "[" . $prefix . '_prefs]');
+			case (defined('BACKUP_TABLE') ? BACKUP_TABLE : 'BACKUP_TABLE'):
+				return g_l('backup', "[" . $prefix . '_extern_data]');
+			case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
+				return g_l('backup', "[" . $prefix . '_banner_data]');
+			default:
+				return g_l('backup', '[working]');
 		}
-
-		if($table == FILE_TABLE){
-			return g_l('backup', "[" . $prefix . '_files]');
-		}
-
-		if($table == LINK_TABLE){
-			return g_l('backup', "[" . $prefix . '_links]');
-		}
-
-		if($table == TEMPLATES_TABLE){
-			return g_l('backup', "[" . $prefix . '_templates]');
-		}
-
-		if($table == TEMPORARY_DOC_TABLE){
-			return g_l('backup', "[" . $prefix . '_temporary_data]');
-		}
-
-		if($table == INDEX_TABLE){
-			return g_l('backup', "[" . $prefix . '_indexes]');
-		}
-
-		if($table == DOC_TYPES_TABLE){
-			return g_l('backup', "[" . $prefix . '_doctypes]');
-		}
-
-		if(defined('USER_TABLE') && $table == USER_TABLE){
-			return g_l('backup', "[" . $prefix . '_user_data]');
-		}
-
-		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
-			return g_l('backup', "[" . $prefix . '_customer_data]');
-		}
-
-		if(defined('SHOP_TABLE') && $table == SHOP_TABLE){
-			return g_l('backup', "[" . $prefix . '_shop_data]');
-		}
-
-		if(defined('PREFS_TABLE') && $table == PREFS_TABLE){
-			return g_l('backup', "[" . $prefix . '_prefs]');
-		}
-
-		if(defined('BACKUP_TABLE') && $table == BACKUP_TABLE){
-			return g_l('backup', "[" . $prefix . '_extern_data]');
-		}
-
-		if(defined('BANNER_CLICKS_TABLE') && $table == BANNER_CLICKS_TABLE){
-			return g_l('backup', "[" . $prefix . '_banner_data]');
-		}
-
-		return g_l('backup', '[working]');
 	}
 
 	function getImportPercent(){
@@ -150,9 +119,9 @@ class weBackupUtil{
 			((int) $_SESSION['weBackupVars']['offset_end'] + $rest2))) * 100);
 
 		if($percent > 100){
-			$percent = 100;
+			return 100;
 		} else if($percent < 0){
-			$percent = 0;
+			return 0;
 		}
 		return $percent;
 	}
@@ -200,12 +169,7 @@ class weBackupUtil{
 	}
 
 	function canImportVersion($id, $path){
-
-		if(!empty($id) && stristr($path, '/webEdition/we/version') && $_SESSION['weBackupVars']['handle_options']['versions_binarys']){
-			return true;
-		}
-
-		return false;
+		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weBackupVars']['handle_options']['versions_binarys']);
 	}
 
 	function exportFile($file, $fh){
@@ -231,19 +195,15 @@ class weBackupUtil{
 	}
 
 	function getNextTable(){
-
-
 		$_db = new DB_WE();
-		// get all table names from database
+// get all table names from database
 		$_tables = $_db->table_names();
 
 		$_do = true;
 
 		do{
-			$_SESSION['weBackupVars']['current_table_id']++;
-
-			if($_SESSION['weBackupVars']['current_table_id'] < count($_tables)){
-				// get real table name from database
+			if(++$_SESSION['weBackupVars']['current_table_id'] < count($_tables)){
+// get real table name from database
 				$_table = $_tables[$_SESSION['weBackupVars']['current_table_id']]['table_name'];
 
 				$_def_table = weBackupUtil::getDefaultTableName($_table);
@@ -260,9 +220,6 @@ class weBackupUtil{
 			}
 		} while($_do);
 
-
-
-
 		return $_SESSION['weBackupVars']['current_table'];
 	}
 
@@ -271,7 +228,7 @@ class weBackupUtil{
 		  return weBackupUtil::getNextTable();
 		  } else { */
 		return $_SESSION['weBackupVars']['current_table'];
-		//}
+//}
 	}
 
 	function addLog($log){
@@ -281,9 +238,6 @@ class weBackupUtil{
 	}
 
 	function writeLog(){
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-
 		weFile::save($_SESSION['weBackupVars']['backup_log_file'], $_SESSION['weBackupVars']['backup_log_data'], 'ab');
 		$_SESSION['weBackupVars']['backup_log_data'] = '';
 	}
