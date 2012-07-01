@@ -27,43 +27,43 @@ echo we_html_element::htmlDocType();
 
 	<head>
 		<?php
-		if (isset($we_editmode) && $we_editmode) {
+		if(isset($we_editmode) && $we_editmode){
 			print STYLESHEET;
 		}
-		if ($we_doc->getElement("Charset")) {
+		if($we_doc->getElement("Charset")){
 			print we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement("Charset"));
 		}
-		if ($we_doc->getElement("Keywords")) { ?>
+		if($we_doc->getElement("Keywords")){
+			?>
 			<meta name="keywords" content="<?php print $we_doc->getElement("Keywords") ?>">
 		<?php }
-		if ($we_doc->getElement("Description")) { ?>
+		if($we_doc->getElement("Description")){
+			?>
 			<meta name="description" content="<?php print $we_doc->getElement("Description") ?>">
 		<?php } ?>
 		<title><?php print $we_doc->getElement("Title") ?></title>
-		<?php if (isset($we_editmode) && $we_editmode) {
-			echo we_html_element::jsScript(JS_DIR.'windows.js');
+		<?php
+		if(isset($we_editmode) && $we_editmode){
+			echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
-		} else {
+		} else{
 			print we_tag("textarea", array("name" => "HEAD"));
 		}
 		?>
 	</head>
-	<?php if (isset($we_editmode) && $we_editmode){ ?>
+			<?php if(isset($we_editmode) && $we_editmode){ ?>
 		<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15">
-			<form name="we_form" method="post"><?php $we_doc->pHiddenTrans();
-				$foo = '<pre class="defaultfont">&lt;html&gt;
-	&lt;head&gt;
-';
-				if ($we_doc->getElement("Keywords")) {
-					$foo .= '		&lt;meta name="keywords" content="' . $we_doc->getElement("Keywords") . '"&gt;'."\n";
-				}
-				if ($we_doc->getElement("Charset")) {
-					$foo .= '		&lt;meta http-equiv="Content-Type" content="text/html; charset=' . $we_doc->getElement("Charset") . '"&gt;'."\n";
-				}
-				if ($we_doc->getElement("Description")) {
-					$foo .= '		&lt;meta name="description" content="' . $we_doc->getElement("Description") . '"&gt;'."\n";
-				}
-				$foo .= '		&lt;title&gt;' . $we_doc->getElement("Title") . '&lt;/title&gt;
+			<form name="we_form" method="post"><?php
+			$we_doc->pHiddenTrans();
+			$foo = '<html><head>' .
+				($we_doc->getElement("Keywords") ?
+					we_html_element::htmlMeta(array('name' => 'keywords', 'content' => $we_doc->getElement("Keywords"))) . "\n" : '') .
+				($we_doc->getElement("Charset") ?
+					we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement("Charset")) . "\n" : '') .
+				($we_doc->getElement("Description") ?
+					we_html_element::htmlMeta(array('name' => 'description', 'content' => $we_doc->getElement("Description"))) . "\n" : '');
+
+			$foo = '<pre class="defaultfont">' . htmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement("Title"))) . '
 </pre>
 	' . we_tag("textarea", array("name" => "HEAD", "rows" => "8", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '<br>
 <pre class="defaultfont">	&lt;/head&gt;
@@ -71,12 +71,13 @@ echo we_html_element::htmlDocType();
 ' . we_tag("textarea", array("name" => "BODY", "rows" => "15", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				 print we_html_tools::htmlMessageBox(667, 650, $foo); ?>
+			print we_html_tools::htmlMessageBox(667, 650, $foo);
+			?>
 			</form>
 		</body>
-	<?php }else{ ?>
+<?php } else{ ?>
 		<body<?php print " " . we_tag("input", array("name" => "BODYTAG")); ?>>
-			<?php printElement(we_tag("textarea", array("name" => "BODY"), "")); ?>
+	<?php printElement(we_tag("textarea", array("name" => "BODY"), "")); ?>
 		</body>
-	<?php } ?>
+<?php } ?>
 </html>

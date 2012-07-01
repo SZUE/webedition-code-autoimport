@@ -93,7 +93,7 @@ class we_htmlDocument extends we_textContentDocument{
 		$code = $this->getElement("data");
 
 		if(isset($this->elements["Charset"]["dat"]) && $this->elements["Charset"]["dat"]){
-			$code = preg_replace("'<meta http-equiv=\"Content-Type\" content=\".*>'i", '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->elements["Charset"]["dat"] . '">', $code);
+			$code = preg_replace('|<meta http-equiv="Content-Type" content=".*>|i', we_html_tools::htmlMetaCtCharset('text/html', $this->elements["Charset"]["dat"]), $code);
 		}
 		return $code;
 	}

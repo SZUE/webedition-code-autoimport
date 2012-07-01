@@ -121,7 +121,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 		if($controller->getResponse()){
 			$controller->getResponse()->setHeader('Content-Type', 'text/html; charset=' . $charset, true);
 		} else{
-			header('Content-Type: text/html; charset=' . $charset);
+			we_html_tools::headerCtCharset('text/html', $charset);
 		}
 		parent::__construct();
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSUrl(__CLASS__));
@@ -265,32 +265,18 @@ var weCmdController = we_core_CmdController.getInstance();
 var weEventController = new we_core_EventController();
 EOS;
 		}
-		$html = '';
+		$html =
+			// add doctype tag if not empty
+			($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
+			// add <html> tag
+			'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
+			// add <header> tag
+			'<head>' .
+			// add meta tag for charset if not empty
+			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset('text/html', $this->getCharset()) . "\n" : '') .
+			// add title tag if not empty
+			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
 
-		// add d octype tag if not empty
-		if($this->getDoctype() !== ''){
-			$html .= $this->getDoctype() . "\n";
-		}
-
-		// add <html> tag
-		if($this->getLang() !== ''){
-			$html .= '<html lang="' . $this->getLang() . '">';
-		} else{
-			$html .= '<html>';
-		}
-
-		// add <header> tag
-		$html .= '<head>';
-
-		// add meta tag for charset if not empty
-		if($this->getCharset() !== ''){
-			$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->getCharset() . '">' . "\n";
-		}
-
-		// add title tag if not empty
-		if($this->getTitle() !== ''){
-			$html .= '<title>' . $this->getTitle() . '</title>' . "\n";
-		}
 
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
@@ -311,15 +297,13 @@ EOS;
 			$html .= we_html_element::jsScript($file);
 		}
 
-		$html .= we_html_element::jsElement($js.implode('',$this->_inlineJS));
-
-		// add head end tag
-		$html .= '</head>';
+		$html .= we_html_element::jsElement($js . implode('', $this->_inlineJS)) .
+			// add head end tag
+			'</head>';
 		if($this->_framesetHTML !== ''){
 			$out = $html . $this->_framesetHTML . '</html>';
 		} else{
-			$body = we_xml_Tags::createStartTag('body', $this->_bodyAttributes) .  $this->getBodyHTML() . '</body>';
-			$out = $html . $body . '</html>';
+			$out = $html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>';
 		}
 		return $out;
 	}
