@@ -47,7 +47,7 @@ class we_baseElement{
 	 *
 	 * @return		we_baseElement
 	 */
-	function __construct($tagname="", $need_end_tag=true, $attribs='', $content='', $rfc='html4'){
+	function __construct($tagname = "", $need_end_tag = true, $attribs = '', $content = '', $rfc = 'html4'){
 		$this->setTagName($tagname);
 		$this->setNeedEndTag($need_end_tag);
 		$this->setAttributes($attribs);
@@ -60,7 +60,7 @@ class we_baseElement{
 	 *
 	 * @return	void
 	 */
-	function setUniquieID($secure=true){
+	function setUniquieID($secure = true){
 		if($secure)
 			$this->uid = md5(uniqid(rand()));
 		else
@@ -152,7 +152,7 @@ class we_baseElement{
 					$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 					break;
 				case 'bgcolor':
-					$this->setStyle('background-color',$attrib_value);
+					$this->setStyle('background-color', $attrib_value);
 				default:
 					$this->attribs[$attrib_name] = $attrib_value;
 			}
@@ -236,10 +236,10 @@ class we_baseElement{
 				}
 			}
 		}
-		$out.='>' . $this->content;
-		if($this->need_end_tag){
-			$out.="</" . $this->tag_name . ">";
-		}
+		$out.=($this->need_end_tag === 'selfclose' ? '/' : '') . '>' .
+			$this->content .
+			($this->need_end_tag === true ? "</" . $this->tag_name . ">" : '');
+
 		return $out;
 	}
 
