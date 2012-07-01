@@ -25,21 +25,27 @@ we_html_tools::protect();
 $filename = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['file'];
 $mimetype = '';
 if(file_exists($filename)){
-	if(function_exists('mime_content_type')){
-		$mimetype = mime_content_type($filename);
+	$isCompressed=weFile::isCompressed($filename);
+	if(function_exists('finfo_open')){
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mimetype = finfo_buffer($finfo,weFile::loadPart($filename, 0, 8192, $isCompressed));
 	} else{
-		if(function_exists('getimagesize')){
-			$mysize = getimagesize($filename);
+		if(function_exists('getimagesizefromstring')){
+			$mysize = getimagesizefromstring(weFile::load($filename, 0, 8192, $isCompressed));
 			if(isset($mysize['mime'])){
 				$mimetype = $mysize['mime'];
 			}
 		}
 	}
-	if($mimetype){
+	if($mimetype && $mimetype!='text/plain'){ //let the browser decide
 		header('Content-Type: ' . $mimetype);
 	}
 	ob_clean();
 	flush();
 
-	readfile($filename);
+	if($isCompressed){
+		readgzfile($filename);
+	}else{
+		readfile($filename);
+	}
 }

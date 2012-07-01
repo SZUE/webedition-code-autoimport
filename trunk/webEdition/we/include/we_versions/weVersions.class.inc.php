@@ -845,15 +845,14 @@ class weVersions{
 	 * @abstract get versions of one document / object
 	 * @return array of version-records of one document / object
 	 */
-	function loadVersionsOfId($id, $table, $where = ""){
+	function loadVersionsOfId($id, $table, $where = ''){
 
 		$versionArr = array();
 		$versionArray = array();
 		$db = new DB_WE();
 		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
 
-		$query = "SELECT * FROM " . VERSIONS_TABLE . " WHERE documentID=" . intval($id) . " AND documentTable='" . $db->escape($table) . "' " . $where . " ORDER BY version ASC";
-		$db->query($query);
+		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($id) . ' AND documentTable="' . $db->escape($table) . '" ' . $where . ' ORDER BY version ASC');
 		while($db->next_record()) {
 			foreach($tblFields as $k => $v){
 				$versionArray[$v] = $db->f("" . $v);
@@ -870,13 +869,11 @@ class weVersions{
 	 * @return array of version-records of one document / object
 	 */
 	function loadVersion($where = "1"){
-
 		$versionArray = array();
 		$db = new DB_WE();
 		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
 
-		$query = "SELECT * FROM " . VERSIONS_TABLE . " " . $where;
-		$db->query($query);
+		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' ' . $where);
 		while($db->next_record()) {
 			foreach($tblFields as $k => $v){
 				$versionArray[$v] = $db->f("" . $v);
@@ -946,81 +943,55 @@ class weVersions{
 
 		switch($ct){
 			case "text/webedition":
-				if(defined("VERSIONING_TEXT_WEBEDITION") && !VERSIONING_TEXT_WEBEDITION)
-					return false;
-				if(!defined("VERSIONING_TEXT_WEBEDITION"))
+				if((defined("VERSIONING_TEXT_WEBEDITION") && !VERSIONING_TEXT_WEBEDITION) || (!defined("VERSIONING_TEXT_WEBEDITION")))
 					return false;
 				break;
 			case "image/*":
-				if(defined("VERSIONING_IMAGE") && !VERSIONING_IMAGE)
-					return false;
-				if(!defined("VERSIONING_IMAGE"))
+				if((defined("VERSIONING_IMAGE") && !VERSIONING_IMAGE) || (!defined("VERSIONING_IMAGE")))
 					return false;
 				break;
 			case "text/html":
-				if(defined("VERSIONING_TEXT_HTML") && !VERSIONING_TEXT_HTML)
-					return false;
-				if(!defined("VERSIONING_TEXT_HTML"))
+				if((defined("VERSIONING_TEXT_HTML") && !VERSIONING_TEXT_HTML) || (!defined("VERSIONING_TEXT_HTML")))
 					return false;
 				break;
 			case "text/js":
-				if(defined("VERSIONING_TEXT_JS") && !VERSIONING_TEXT_JS)
-					return false;
-				if(!defined("VERSIONING_TEXT_JS"))
+				if((defined("VERSIONING_TEXT_JS") && !VERSIONING_TEXT_JS) || (!defined("VERSIONING_TEXT_JS")))
 					return false;
 				break;
 			case "text/css":
-				if(defined("VERSIONING_TEXT_CSS") && !VERSIONING_TEXT_CSS)
-					return false;
-				if(!defined("VERSIONING_TEXT_CSS"))
+				if((defined("VERSIONING_TEXT_CSS") && !VERSIONING_TEXT_CSS) || (!defined("VERSIONING_TEXT_CSS")))
 					return false;
 				break;
 			case "text/plain":
-				if(defined("VERSIONING_TEXT_PLAIN") && !VERSIONING_TEXT_PLAIN)
-					return false;
-				if(!defined("VERSIONING_TEXT_PLAIN"))
+				if((defined("VERSIONING_TEXT_PLAIN") && !VERSIONING_TEXT_PLAIN) || (!defined("VERSIONING_TEXT_PLAIN")))
 					return false;
 				break;
 			case "text/htaccess":
-				if(defined("VERSIONING_TEXT_HTACCESS") && !VERSIONING_TEXT_HTACCESS)
-					return false;
-				if(!defined("VERSIONING_TEXT_HTACCESS"))
+				if((defined("VERSIONING_TEXT_HTACCESS") && !VERSIONING_TEXT_HTACCESS) || (!defined("VERSIONING_TEXT_HTACCESS")))
 					return false;
 				break;
 			case "text/weTmpl":
-				if(defined("VERSIONING_TEXT_WETMPL") && !VERSIONING_TEXT_WETMPL)
-					return false;
-				if(!defined("VERSIONING_TEXT_WETMPL"))
+				if((defined("VERSIONING_TEXT_WETMPL") && !VERSIONING_TEXT_WETMPL) || (!defined("VERSIONING_TEXT_WETMPL")))
 					return false;
 				break;
 			case "application/x-shockwave-flash":
-				if(defined("VERSIONING_FLASH") && !VERSIONING_FLASH)
-					return false;
-				if(!defined("VERSIONING_FLASH"))
+				if((defined("VERSIONING_FLASH") && !VERSIONING_FLASH) || (!defined("VERSIONING_FLASH")))
 					return false;
 				break;
 			case "video/quicktime":
-				if(defined("VERSIONING_QUICKTIME") && !VERSIONING_QUICKTIME)
-					return false;
-				if(!defined("VERSIONING_QUICKTIME"))
+				if((defined("VERSIONING_QUICKTIME") && !VERSIONING_QUICKTIME) || (!defined("VERSIONING_QUICKTIME")))
 					return false;
 				break;
 			case "application/*":
-				if(defined("VERSIONING_SONSTIGE") && !VERSIONING_SONSTIGE)
-					return false;
-				if(!defined("VERSIONING_SONSTIGE"))
+				if((defined("VERSIONING_SONSTIGE") && !VERSIONING_SONSTIGE) || (!defined("VERSIONING_SONSTIGE")))
 					return false;
 				break;
 			case "text/xml":
-				if(defined("VERSIONING_TEXT_XML") && !VERSIONING_TEXT_XML)
-					return false;
-				if(!defined("VERSIONING_TEXT_XML"))
+				if((defined("VERSIONING_TEXT_XML") && !VERSIONING_TEXT_XML) || (!defined("VERSIONING_TEXT_XML")))
 					return false;
 				break;
 			case "objectFile":
-				if(defined("VERSIONING_OBJECT") && !VERSIONING_OBJECT)
-					return false;
-				if(!defined("VERSIONING_OBJECT"))
+				if((defined("VERSIONING_OBJECT") && !VERSIONING_OBJECT) || (!defined("VERSIONING_OBJECT")))
 					return false;
 				break;
 		}
@@ -1155,15 +1126,15 @@ class weVersions{
 
 					if($fieldName != 'ID'){
 						if(isset($document[$fieldName])){
-							$set[] = $fieldName . '="' . $db->escape($document[$fieldName]) . '"';
+							$set[$fieldName] = $document[$fieldName];
 						} else{
-							$set[] = $fieldName . '="' . $db->escape($this->makePersistentEntry($fieldName, $status, $document, $documentObj)) . '"';
+							$set[$fieldName] = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
 						}
 					}
 				}
 
 				if(!empty($set) && $mods){
-					$theSet = implode(',', $set);
+					$theSet = we_database_base::arraySetter($set);
 					$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . $theSet);
 					$vers = (isset($document["version"]) ? $document["version"] : $this->version);
 					$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active = 0 WHERE documentID = ' . intval($document['ID']) . ' AND documentTable = "' . $db->escape($document["Table"]) . '" AND version != ' . intval($vers));
@@ -1244,21 +1215,19 @@ class weVersions{
 					$vers = $this->getVersion();
 
 					$versionName = $document["ID"] . "_" . $document["Table"] . "_" . $vers . $document["Extension"];
-					$binaryPath = VERSION_DIR . $versionName;
+					$binaryPath = VERSION_DIR . $versionName.'.gz';
 
 					if($document["IsDynamic"]){
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 					} elseif(file_exists($siteFile) && $document["Extension"] == ".php" && ($document["ContentType"] == 'text/webedition' || $document["ContentType"] == 'text/html')){
 
-						$contents = file_get_contents($siteFile);
-
-						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, $contents);
+						we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 					} else{
 						if(isset($document['TemplatePath']) && $document['TemplatePath'] != "" && substr($document['TemplatePath'], -18) != "/we_noTmpl.inc.php" && $document['ContentType'] == "text/webedition"){
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} else{
-							copy($siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath);
+							we_util_File::saveFile($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
 						}
 					}
 				}
@@ -1533,9 +1502,7 @@ class weVersions{
 	 * @abstract create file to preview dynamic documents
 	 */
 	function writePreviewDynFile($id, $siteFile, $tmpFile, $document){
-
-		$out = $this->getDocContent($document, $siteFile);
-		weFile::save($tmpFile, $out);
+		weFile::save($tmpFile, gzencode($this->getDocContent($document, $siteFile),9));
 	}
 
 	function getDocContent($we_doc, $includepath = ""){

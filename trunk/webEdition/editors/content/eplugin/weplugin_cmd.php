@@ -97,7 +97,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$out = we_html_element::jsElement('
 						session = "' . session_id() . '";
 						transaction = "' . $_we_transaction . '";
-						siteurl="' . getServerUrl(true) . '/webEdition/editors/template/editor/getTmpFile.php?we_cmd[0]=' . basename($_filename) . '";
+						siteurl="' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . $_tmp_file . '";
 						top.plugin.document.WePlugin.editFile(session,transaction,"' . addslashes($_filename) . '",siteurl,"' . $we_ContentType . '");
 					');
 
