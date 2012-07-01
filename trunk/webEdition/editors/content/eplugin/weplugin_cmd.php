@@ -63,7 +63,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 					filename = "' . addslashes($_filename) . '";
 					ct = "' . $_ct . '";
 					source = "' . base64_encode($_source) . '";
-					if (top.plugin.isLoaded) {
+					if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
 						top.plugin.document.WePlugin.editSource(session,transaction,filename,source,ct,"true","' . $charset . '");
 					}
 				');
