@@ -1169,11 +1169,12 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="' . IMAGE_DIR . 'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
 </table><iframe src="' . HTML_DIR . 'white.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
-			$out .= '<script  type="text/javascript"><!-- wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
+
+				$js='wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
 			foreach($this->vals as $val => $txt){
-				$out .= 'wePopupMenuArray[wefoo]["' . $this->cmd . '"]["' . $val . '"]="' . $txt . '";	' . "\n";
+				$js .= 'wePopupMenuArray[wefoo]["' . $this->cmd . '"]["' . $val . '"]="' . $txt . '";	' . "\n";
 			}
-			$out .= '//--></script>';
+			$out .= we_html_element::jsElement($js);
 		}
 		return $out;
 	}

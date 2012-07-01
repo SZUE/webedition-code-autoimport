@@ -107,13 +107,15 @@ $js = we_html_element::jsElement('
 
 
 	function remove(transaction) {
-		if (self.isLoaded) {
+		if (self.isLoaded && (typeof document.WePlugin.removeDocument == "function")) {
 			document.WePlugin.removeDocument(transaction);
+		}else{
+			self.isLoaded =false;
 		}
 	}
 
 	function isInEditor(transaction) {
-		if (self.isLoaded && transaction!=null) {
+		if (self.isLoaded && transaction!=null && (typeof document.WePlugin.inEditor == "function")) {
 			return document.WePlugin.inEditor(transaction);
 		}
 		return false;
@@ -159,8 +161,10 @@ $applet = we_html_element::htmlApplet(array(
 		"codebase" => getServerUrl() . "/webEdition/editors/content/eplugin/",
 		"width" => "10",
 		"height" => "10",
-		"scriptable" => null,
-		"mayscript" => null
+		"scriptable" => "scriptable",
+		"mayscript" => "mayscript",
+		"width " => 100,
+		'height' >= 100,
 		), we_html_element::htmlParam(array("name" => "param_list", "value" => "lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button")) . "\n" .
 		we_html_element::htmlParam(array("name" => "host", "value" => getServerUrl())) . "\n" .
 		we_html_element::htmlParam(array("name" => "cmdentry", "value" => getServerUrl() . "/webEdition/editors/content/eplugin/weplugin_cmd.php")) . "\n" .
@@ -200,7 +204,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET'])) .
 			$js) .
-		we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
+		we_html_element::htmlBody(array("bgcolor" => "white", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
 			we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
 			$applet . "\n" .
 			we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => "/webEdition/editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) . "\n" .
@@ -210,6 +214,6 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHidden(array("name" => "we_cmd[4]", "value" => "")) . "\n"
 				//we_html_element::htmlInput(array("name"=>"wePluginUpload","type"=>"file","value"=>""))."\n"
 			)
-				//.we_html_element::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
+			//.we_html_element::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
 		)
 	);

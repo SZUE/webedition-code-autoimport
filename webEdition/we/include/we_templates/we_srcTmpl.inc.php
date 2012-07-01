@@ -414,7 +414,7 @@ function we_get_CM_css(){
 			border: outset 1px;
 			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			border-radius: 3px;' .
-		(we_base_browserDetect::isFF() ? '
+		(false && we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			-moz-border-radius: 3px;' :
 			(we_base_browserDetect::isSafari() ? '
@@ -781,7 +781,7 @@ function we_getCodeMirror2Code($code){
 			line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
 			border: outset 1px;
 			box-shadow: 0 2px 2px rgba(0,0,0,0.3);'.
-		(we_base_browserDetect::isFF() ? '
+		(false && we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			-moz-border-radius: 3px;':(we_base_browserDetect::isSafari() ? '
 			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
