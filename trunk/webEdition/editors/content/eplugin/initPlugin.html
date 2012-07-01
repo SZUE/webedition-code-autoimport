@@ -2,9 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>editor-plugin initialisation</title>
 <script type="text/javascript"><!--
-if((typeof top.plugin.setIsLoaded == "function")) {
+if(top.plugin!=undefined && (typeof top.plugin.setIsLoaded == "function")) {
 	top.plugin.setIsLoaded(true);
 }else{
 	alert("Plugin Error: essential JS function not available in browser session");
