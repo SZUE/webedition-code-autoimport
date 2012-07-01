@@ -28,11 +28,11 @@
  * This class describe document step in workflow process
  */
 class we_workflow_documentStep extends we_workflow_base{
-	const STATUS_UNKNOWN=0;
-	const STATUS_APPROVED=1;
-	const STATUS_CANCELED=2;
-	const STATUS_AUTOPUBLISHED=3;
 
+	const STATUS_UNKNOWN = 0;
+	const STATUS_APPROVED = 1;
+	const STATUS_CANCELED = 2;
+	const STATUS_AUTOPUBLISHED = 3;
 
 	var $ID;
 	var $workflowStepID;
@@ -50,7 +50,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	 *
 	 * Can load or create new Workflow Step Definition depends of parameter
 	 */
-	function __construct($wfDocumentStep=0){
+	function __construct($wfDocumentStep = 0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_STEP_TABLE;
 		$this->ClassName = __CLASS__;
@@ -80,7 +80,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	 * Load data from database
 	 *
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id)
 			$this->ID = $id;
 
@@ -98,7 +98,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	 * Start step, activate it
 	 *
 	 */
-	function start($desc=""){
+	function start($desc = ""){
 		$this->startDate = time();
 
 
@@ -166,7 +166,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		parent::delete();
 	}
 
-	function approve($uID, $desc, $force=false){
+	function approve($uID, $desc, $force = false){
 		if($force){
 			foreach($this->tasks as $tk => $tv){
 				$this->tasks[$tk]->approve();
@@ -210,7 +210,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		return false;
 	}
 
-	function autopublish($uID, $desc, $force=false){
+	function autopublish($uID, $desc, $force = false){
 		if($force){
 			foreach($this->tasks as $tk => $tv){
 				$this->tasks[$tk]->approve();
@@ -254,7 +254,7 @@ class we_workflow_documentStep extends we_workflow_base{
 		return false;
 	}
 
-	function decline($uID, $desc, $force=false){
+	function decline($uID, $desc, $force = false){
 		if($force){
 			foreach($this->tasks as $tk => $tv)
 				$this->tasks[$tk]->decline();;
@@ -321,7 +321,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	static function __createAllSteps($workflowID){
 
 		$db = new DB_WE();
-		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID =" . intval($workflowID) . " ORDER BY ID");
+		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID =' . intval($workflowID) . ' ORDER BY ID');
 		$docSteps = array();
 		while($db->next_record()) {
 			$docSteps[] = self::__createStep($db->f("ID"));
@@ -338,12 +338,11 @@ class we_workflow_documentStep extends we_workflow_base{
 		if(is_array($WorkflowStep))
 			return self::__createStepFromHash($WorkflowStep);
 
-		$db = new DB_WE();
-		$db->query("SELECT * FROM " . WORKFLOW_STEP_TABLE . " WHERE ID=" . intval($WorkflowStep) . " ORDER BY ID");
-		if(!$db->next_record()){
+		$tmp = getHash('SELECT * FROM ' . WORKFLOW_STEP_TABLE . ' WHERE ID=' . intval($WorkflowStep) . ' ORDER BY ID', new DB_WE());
+		if(count($tmp) == 0){
 			return false;
 		}
-		return self::__createStepFromHash($db->Record);
+		return self::__createStepFromHash($tmp);
 	}
 
 	/**

@@ -61,10 +61,10 @@ class we_workflow_base{
 			if($val == "ID"){
 				$wheres[] = $val . '="' . $this->{$val} . '"';
 			}
-			$sets[] = $val . '="' . $this->{$val} . '"';
+			$sets[$val] =$this->{$val};
 		}
 		$where = implode(',', $wheres);
-		$set = implode(',', $sets);
+		$set = we_database_base::arraySetter($sets);
 
 		if($this->ID == 0){
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
