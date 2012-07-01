@@ -63,16 +63,10 @@ if(!($isObj OR $isTempl)){
 		}
 	}
 
-	$prot = getServerProtocol();
-	$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
-
 	$filePathNew = $_SERVER['DOCUMENT_ROOT'] . $binaryPathNew;
+	$fileNew = $binaryPathNew;
 	if(!empty($oldDoc)){
-		$filePathOld = $_SERVER['DOCUMENT_ROOT'] . $binaryPathOld;
-	}
-	$fileNew = $preurl . $binaryPathNew;
-	if(!empty($oldDoc)){
-		$fileOld = $preurl . $binaryPathOld;
+		$fileOld = $binaryPathOld;
 	}
 
 	if(!file_exists($filePathNew) && isset($fileOld)){
@@ -152,7 +146,7 @@ $contentOld = "";
 $contentDiff = "";
 
 if(!($isObj || $isTempl)){
-	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . $fileNew . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . $fileNew . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if($isTempl){
 	if($newDoc['documentElements']){
@@ -166,7 +160,7 @@ if($isTempl){
 	$contentNew = '<textarea style="width:99%;height:99%">' . $nDocElements['data']['dat'] . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
-	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . $fileOld . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . $fileOld . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){
