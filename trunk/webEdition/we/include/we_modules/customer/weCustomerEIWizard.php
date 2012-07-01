@@ -336,21 +336,22 @@ class weCustomerEIWizard{
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 				$_size = filesize(TEMP_PATH . "/" . $_filename);
 
-				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
-					header("Pragma: ");
-					header("Cache-Control: ");
-					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
+				header("Pragma: public");
+				header("Expires: 0"/* . gmdate("D, d M Y H:i:s") . " GMT"*/);
+/*				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
+//					header("Cache-Control: ");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
-					header("Cache-control: private, max-age=0, must-revalidate");
-				}
+				}*/
 
-				header("Content-Type: application/octet-stream");
-				header("Content-Disposition: attachment; filename=\"" . trim(htmlentities($_filename)) . "\"");
-				header("Content-Description: " . trim(htmlentities($_filename)));
-				header("Content-Length: " . $_size);
+				header("Cache-control: private, max-age=0, must-revalidate");
+
+				header('Content-Type: application/octet-stream');
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
+				header('Content-Description: Customer-Export');
+				header('Content-Length: ' . $_size);
 
 				$_filehandler = readfile(TEMP_PATH . "/" . $_filename);
 
