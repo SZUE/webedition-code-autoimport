@@ -57,20 +57,17 @@ class we_todo extends we_msg_proto{
 	var $Short_Description = 'webEdition TODO';
 	var $table = MSG_TODO_TABLE;
 	var $view_class = 'todo';
-	var $sf2sqlfields = array('m.headerSubject' => array('hdrs', 'Subject'),
+	var $sf2sqlfields = array(
+		'm.headerSubject' => array('hdrs', 'Subject'),
 		'm.headerDate' => array('hdrs', 'Date'),
 		'm.headerDeadline' => array('hdrs', 'Deadline'),
 		'm.headerCreator' => array('hdrs', 'Creator'),
 		'm.seenStatus' => array('hdrs', 'seenStatus'),
-		'm.MessageText' => array('body', 'MessageText'));
-	var $so2sqlso = array('desc' => 'asc',
+		'm.MessageText' => array('body', 'MessageText')
+	);
+	var $so2sqlso = array(
+		'desc' => 'asc',
 		'asc' => 'desc');
-
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
-	/* Constructor */
 
 	function __construct(){
 		$this->Short_Description = g_l('modules_messaging', "[we_todo]");
@@ -125,24 +122,16 @@ class we_todo extends we_msg_proto{
 
 	/* Methods dealing with USER_TABLE and other userstuff */
 
-	function userid_to_username($id){
-		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-		if($db2->next_record()){
-			return $db2->f('username');
-		}
-
-		return g_l('modules_messaging', '[userid_not_found]');
+	function userid_to_username($id, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db);
+		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
 	}
 
-	function username_to_userid($username){
-		$db2 = new DB_WE();
-		$db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"');
-		if($db2->next_record()){
-			return $db2->f('ID');
-		}
-
-		return -1;
+	function username_to_userid($username, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"', 'ID', $db);
+		return $id ? $id : -1;
 	}
 
 	/* Getters And Setters */
@@ -156,16 +145,16 @@ class we_todo extends we_msg_proto{
 		return $cnt === '' ? -1 : $cnt;
 	}
 
-	function get_userids_by_nick($nick){
-		$ret_ids = array();
+	/* 	function get_userids_by_nick($nick){
+	  $ret_ids = array();
 
-		$db2 = new DB_WE();
-		$db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $db2->escape($nick) . '%" OR First LIKE "%' . $db2->escape($nick) . '%" OR Second LIKE "%' . $db2->escape($nick) . '%"');
-		while($db2->next_record())
-			$ret_ids[] = $db2->f('ID');
+	  $db2 = new DB_WE();
+	  $db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $db2->escape($nick) . '%" OR First LIKE "%' . $db2->escape($nick) . '%" OR Second LIKE "%' . $db2->escape($nick) . '%"');
+	  while($db2->next_record())
+	  $ret_ids[] = $db2->f('ID');
 
-		return $ret_ids;
-	}
+	  return $ret_ids;
+	  } */
 
 	function format_from_line($userid){
 		$tmp = getHash('SELECT First, Second, username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), new DB_WE());
@@ -182,11 +171,13 @@ class we_todo extends we_msg_proto{
 		$fids = array();
 
 		$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . $this->userid);
-		while($this->DB->next_record())
+		while($this->DB->next_record()) {
 			$fids[] = $this->DB->f('ID');
+		}
 
-		foreach($fids as $fid)
+		foreach($fids as $fid){
 			$fids = array_merge($fids, $this->get_f_children($fid));
+		}
 
 		return $fids;
 	}
@@ -295,15 +286,14 @@ class we_todo extends we_msg_proto{
 
 		$rcpt = $rcpts[0];
 
-		if(($userid = $this->username_to_userid($rcpt)) == -1){
+		if(($userid = $this->username_to_userid($rcpt, $this->DB)) == -1){
 			$results['err'][] = g_l('modules_messaging', '[username_not_found]');
 			$results['failed'][] = $rcpt;
 			return $results;
 		}
 
-		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']));
-		$this->DB->next_record();
-		if($this->DB->f('ID') == $msg['int_hdrs']['_ID']){
+		$id = f('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']), 'ID', $this->DB);
+		if($id == $msg['int_hdrs']['_ID']){
 			$results['err'][] = g_l('modules_messaging', '[todo_no_forward]');
 			$results['failed'][] = $this->userid;
 			return $results;
@@ -334,19 +324,17 @@ class we_todo extends we_msg_proto{
 		$results['failed'] = array();
 
 
-		$this->DB->query('SELECT ID FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type=' . we_msg_proto::FOLDER_REJECT . ' AND UserID=' . intval($msg['int_hdrs']['_from_userid']));
-		$this->DB->next_record();
-		$rej_folder = $this->DB->f('ID');
+		$rej_folder = f('SELECT ID FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type=' . we_msg_proto::FOLDER_REJECT . ' AND UserID=' . intval($msg['int_hdrs']['_from_userid']), 'ID', $this->DB);
 		if(empty($rej_folder)){
 			$results['err'][] = g_l('modules_messaging', '[no_reject_folder]');
-			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
+			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB);
 			return $results;
 		}
 
 		$tmpId = f('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']), 'ID', $this->DB);
 		if($tmpId == $msg['int_hdrs']['_ID']){
 			$results['err'][] = g_l('modules_messaging', '[todo_no_reject]');
-			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
+			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB);
 			return $results;
 		}
 
@@ -354,7 +342,7 @@ class we_todo extends we_msg_proto{
 		$this->history_update($msg['int_hdrs']['_ID'], $msg['int_hdrs']['_from_userid'], $this->userid, $data['body'], we_msg_proto::ACTION_REJECT);
 
 		$results['err'][] = '';
-		$results['ok'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
+		$results['ok'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid'], $this->DB);
 
 		return $results;
 	}
@@ -407,11 +395,12 @@ class we_todo extends we_msg_proto{
 		$results['err'] = array();
 		$results['ok'] = array();
 		$results['failed'] = array();
+		$db = new DB_WE();
 
 		foreach($rcpts as $rcpt){
 			$in_folder = '';
 			//FIXME: Put this out of the loop (the select statement)
-			if(($userid = $this->username_to_userid($rcpt)) == -1){
+			if(($userid = $this->username_to_userid($rcpt, $db)) == -1){
 				$results['err'][] = "Username '$rcpt' existiert nicht'";
 				$results['failed'][] = $rcpt;
 				continue;
@@ -435,7 +424,23 @@ class we_todo extends we_msg_proto{
 				}
 			}
 
-			$this->DB->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerStatus, headerDeadline' . (!empty($data['priority']) ? ', Priority' : '') . ', ' . (empty($data['Content_Type']) ? '' : 'Content_Type, ') . " Properties, MessageText,seenStatus) VALUES ($in_folder, " . $userid . ', ' . $this->sql_class_nr . ',' . we_msg_proto::TODO_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . intval(intval($this->userid) ? $this->userid : userid) . ', 0, ' . $this->DB->escape($data['deadline']) . (!empty($data['priority']) ? ', ' . $this->DB->escape($data['priority']) : '') . ', ' . (empty($data['Content_Type']) ? '' : '"' . $this->DB->escape($data['Content_Type']) . '", ') . we_msg_proto::TODO_PROP_NONE . ',"' . $this->DB->escape($data['body']) . '",0)');
+			$this->DB->query('INSERT INTO ' . $this->table . ' ' . we_database_base::arraySetter(array(
+					'ParentID' => $in_folder,
+					'UserID' => $userid,
+					'msg_type' => $this->sql_class_nr,
+					'obj_type' => we_msg_proto::TODO_NR,
+					'headerDate' => 'UNIX_TIMESTAMP(NOW())',
+					'headerSubject' => $data['subject'],
+					'headerCreator' => intval(intval($this->userid) ? $this->userid : userid),
+					'headerStatus' => 0,
+					'headerDeadline' => $data['deadline'],
+					'Properties' => we_msg_proto::TODO_PROP_NONE,
+					'MessageText' => $data['body'],
+					'seenStatus' => 0,
+					'Priority' => empty($data['priority']) ? 'NULL' : $data['priority'],
+					'Content_Type' => empty($data['Content_Type']) ? 'NULL' : $data['Content_Type']
+				)));
+
 			$results['id'] = $this->DB->getInsertId();
 			$results['ok'][] = $rcpt;
 		}
@@ -512,7 +517,7 @@ class we_todo extends we_msg_proto{
 
 		/* mark selected_set messages as seen */
 		if(!empty($seen_ids)){
-			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE (ID=' . implode(' OR ID=', $seen_ids) . ') AND UserID=' . intval($this->userid);
+			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE ID IN (' . implode(',', $seen_ids) . ') AND UserID=' . intval($this->userid);
 			$this->DB->query($query);
 		}
 
@@ -581,7 +586,7 @@ class we_todo extends we_msg_proto{
 		}
 
 		if(!empty($read_ids)){
-			$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE (ID=' . implode(' OR ID=', $read_ids) . ') AND UserID=' . $this->userid);
+			$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE ID IN (' . implode(',', $read_ids) . ') AND UserID=' . $this->userid);
 		}
 
 		return $ret;
