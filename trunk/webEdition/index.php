@@ -58,6 +58,11 @@ function printHeader($login){
 	/*	 * ***************************************************************************
 	 * CREATE HEADER
 	 * *************************************************************************** */
+	header('Expires: ' . gmdate('D, d.m.Y H:i:s') . ' GMT');
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	header('Pragma: public');
+	header('Pragma: no-cache');
+
 	we_html_tools::htmlTop('webEdition');
 	print STYLESHEET .
 		we_html_element::cssElement('html, body {height:100%;}');
@@ -269,7 +274,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		$_error .=++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
-	if($_error_count==0){
+	if($_error_count == 0){
 		$_error .=++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
 	}
 
@@ -287,10 +292,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
-	/* ********************************************************************
+	/*	 * *******************************************************************
 	 * CHECK BROWSER
 	 * ******************************************************************* */
-	
+
 	$supportedBrowserCnt = (we_base_browserDetect::isMAC() ? 3 : (we_base_browserDetect::isUNIX() ? 2 : 4));
 
 	$_browser_table = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'border' => 0, 'width' => '100%'), 12, $supportedBrowserCnt);
