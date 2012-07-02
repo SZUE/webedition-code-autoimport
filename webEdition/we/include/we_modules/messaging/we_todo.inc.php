@@ -130,7 +130,7 @@ class we_todo extends we_msg_proto{
 
 	function username_to_userid($username, $db = ''){
 		$db = $db ? $db : new DB_WE();
-		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"', 'ID', $db);
+		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape($username) . '"', 'ID', $db);
 		return $id ? $id : -1;
 	}
 
