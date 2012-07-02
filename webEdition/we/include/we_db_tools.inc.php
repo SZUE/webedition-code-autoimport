@@ -33,6 +33,10 @@ function getHash($query, $DB_WE){
 		return $cache;
 	}
 	if(!isset($cache[$query])){
+		if(!is_object($DB_WE)){
+			t_e('missing DB connection');
+			return array();
+		}
 		$DB_WE->query($query);
 		$cache[$query] = ($DB_WE->next_record() ? $DB_WE->Record : array());
 	}
