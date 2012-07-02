@@ -88,10 +88,7 @@ function msg_done_todo($id, &$errs){
 
 	$i_headers = array('_ID' => $id);
 
-	$db = new DB_WE();
-	$db->query('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id));
-	$db->next_record();
-	$userid = $db->f('UserID');
+	$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), 'UserID', new DB_WE());
 
 	$m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 	$m->init();

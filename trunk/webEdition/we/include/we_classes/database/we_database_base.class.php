@@ -518,6 +518,7 @@ abstract class we_database_base{
 					case 'CURRENT_TIME()':
 					case 'CURRENT_TIMESTAMP()':
 					case 'CURTIME()':
+					case 'NULL':
 						$escape = false;
 				}
 			}
