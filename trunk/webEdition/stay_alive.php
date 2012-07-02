@@ -21,19 +21,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //session_name(SESSION_NAME);
 session_start();
 ?>
 <html>
-<head>
-</head>
-<body>
-<!-- ping -->
-<script type="text/javascript">
-<!--
-	setTimeout("self.location='stay_alive.php?r=<?php print rand(); ?>'", (5 *60000) );
-//-->
-</script>
-</body>
+	<head>
+	</head>
+	<body>
+		<!-- ping -->
+		<script type="text/javascript">
+			<!--
+			setTimeout("self.location='stay_alive.php?r=<?php print rand(); ?>'", (5 *60000) );
+			//-->
+		</script>
+	</body>
 </html>
