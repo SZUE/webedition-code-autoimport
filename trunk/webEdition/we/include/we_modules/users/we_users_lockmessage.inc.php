@@ -27,7 +27,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID", "username", $DB_WE);
+$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID", "username", $GLOBALS['DB_WE']);
 
 
 $content = "<p class='defaultfont'>" . sprintf(g_l('alert', "[temporaere_no_access_text]"), $we_doc->Text, $foo) . "</p>";

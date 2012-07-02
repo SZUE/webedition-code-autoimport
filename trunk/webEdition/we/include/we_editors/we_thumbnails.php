@@ -59,7 +59,7 @@ if(isset($_GET["deletethumbnail"]) && $_GET["deletethumbnail"] != ""){
 // Check which thumbnail to work with
 if(!isset($_GET["id"]) || $_GET["id"] == ""){
 
-	$tmpid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " ORDER BY Name LIMIT 0,1", "ID", $DB_WE);
+	$tmpid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " ORDER BY Name LIMIT 1", "ID", $DB_WE);
 
 	$_GET["id"] = $tmpid ? $tmpid : -1;
 }
