@@ -327,8 +327,6 @@ class weCustomerEIWizard{
 
 	function getHTMLExportStep5(){
 		@set_time_limit(0);
-		$prot = getServerProtocol();
-		$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
@@ -337,14 +335,14 @@ class weCustomerEIWizard{
 				$_size = filesize(TEMP_PATH . "/" . $_filename);
 
 				header("Pragma: public");
-				header("Expires: 0"/* . gmdate("D, d M Y H:i:s") . " GMT"*/);
-/*				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
-//					header("Cache-Control: ");
-					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
-					header("Cache-Control: post-check=0, pre-check=0", false);
-				} else{
-				}*/
+				header("Expires: 0"/* . gmdate("D, d M Y H:i:s") . " GMT" */);
+				/* 				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
+				  //					header("Cache-Control: ");
+				  header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+				  header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
+				  header("Cache-Control: post-check=0, pre-check=0", false);
+				  } else{
+				  } */
 
 				header("Cache-control: private, max-age=0, must-revalidate");
 
@@ -353,17 +351,13 @@ class weCustomerEIWizard{
 				header('Content-Description: Customer-Export');
 				header('Content-Length: ' . $_size);
 
-				$_filehandler = readfile(TEMP_PATH . "/" . $_filename);
+				readfile(TEMP_PATH . "/" . $_filename);
 
 				exit;
-			} else{
-				header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
-				exit;
 			}
-		} else{
-			header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
-			exit;
 		}
+		header("Location: " . getServerUrl() . $this->frameset . "?pnt=body&step=99&error=download_failed");
+		exit;
 	}
 
 	function getHiddens($options = array()){

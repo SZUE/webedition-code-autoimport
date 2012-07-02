@@ -92,7 +92,7 @@ class we_todo extends we_msg_proto{
 			}
 
 		if(!empty($init_folders)){
-			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . addslashes(join(' OR obj_type=', $init_folders)) . ')');
+			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . addslashes(implode(' OR obj_type=', $init_folders)) . ')');
 			while($this->DB->next_record()) {
 				$this->default_folders[$this->DB->f('obj_type')] = $this->DB->f('ID');
 			}
@@ -209,17 +209,11 @@ class we_todo extends we_msg_proto{
 	}
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
-		$this->DB->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB->escape($fromuserid) . ', "' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
-
-		return 1;
+		return $this->DB->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB->escape($fromuserid) . ', "' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
 	}
 
 	function add_comment(){
-		if($this->history_update($id, $this->userid, $this->userid, $comment, we_msg_proto::ACTION_COMMENT) == 1){
-			return 1;
-		}
-
-		return 0;
+		return ($this->history_update($id, $this->userid, $this->userid, $comment, we_msg_proto::ACTION_COMMENT) == 1);
 	}
 
 	function &update_status(&$data, &$msg, $userid = ''){
@@ -259,30 +253,30 @@ class we_todo extends we_msg_proto{
 				return $ret;
 			}
 
-			$set_query[] = 'headerStatus=' . addslashes($data['todo_status']);
+			$set_query['headerStatus'] = $data['todo_status'];
 			if($data['todo_status'] >= 100){
 				if($this->default_folders[we_msg_proto::FOLDER_DONE] < 0){
 					$ret['msg'] = g_l('modules_messaging', '[todo_move_error]') . ': ' . g_l('modules_messaging', '[no_done_folder]');
 					return $ret;
 				} else{
-					$set_query[] = 'ParentID=' . $this->default_folders[we_msg_proto::FOLDER_DONE];
+					$set_query['ParentID'] = $this->default_folders[we_msg_proto::FOLDER_DONE];
 				}
 			} else{
 				if(f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . $msg['_ID'], 'ParentID', $this->DB) == $this->default_folders[we_msg_proto::FOLDER_DONE]){
-					$set_query[] = 'ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX];
+					$set_query['ParentID'] = $this->default_folders[we_msg_proto::FOLDER_INBOX];
 				}
 			}
 		}
 
 		if(isset($data['deadline'])){
-			$set_query[] = 'headerDeadline=' . addslashes($data['deadline']);
+			$set_query['headerDeadline'] = $data['deadline'];
 		}
 
 		if(isset($data['todo_priority'])){
-			$set_query[] = 'Priority=' . addslashes($data['todo_priority']);
+			$set_query['Priority'] = $data['todo_priority'];
 		}
 
-		$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET ' . join(', ', $set_query) . ' WHERE ID=' . intval($msg['_ID']));
+		$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET ' . we_database_base::arraySetter($set_query) . ' WHERE ID=' . intval($msg['_ID']));
 		$ret['msg'] = g_l('modules_messaging', '[update_successful]');
 		$ret['changed'] = 1;
 		$ret['err'] = 0;
@@ -315,10 +309,8 @@ class we_todo extends we_msg_proto{
 			return $results;
 		}
 
-		$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid));
-		$this->DB->next_record();
-		$in_folder = $this->DB->f('ID');
-		if(!isset($in_folder) || $in_folder == ''){
+		$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB);
+		if($in_folder == ''){
 			$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 			$results['failed'][] = $rcpt;
 			return $results;
@@ -351,9 +343,8 @@ class we_todo extends we_msg_proto{
 			return $results;
 		}
 
-		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']));
-		$this->DB->next_record();
-		if($this->DB->f('ID') == $msg['int_hdrs']['_ID']){
+		$tmpId = f('SELECT ID FROM ' . $this->DB->escape($this->table) . ' WHERE Properties=' . we_msg_proto::TODO_PROP_IMMOVABLE . ' AND ID=' . intval($msg['int_hdrs']['_ID']), 'ID', $this->DB);
+		if($tmpId == $msg['int_hdrs']['_ID']){
 			$results['err'][] = g_l('modules_messaging', '[todo_no_reject]');
 			$results['failed'][] = $this->userid_to_username($msg['int_hdrs']['_from_userid']);
 			return $results;
@@ -373,7 +364,7 @@ class we_todo extends we_msg_proto{
 			return;
 		}
 
-		$id_str = 'ID=' . join(', ID=', $items);
+		$id_str = 'ID=' . implode(', ID=', $items);
 		$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET ParentID=' . intval($target_fid) . ' WHERE (' . $this->DB->escape($id_str) . ') AND UserID=' . intval($this->userid));
 
 		return 1;
@@ -386,45 +377,26 @@ class we_todo extends we_msg_proto{
 			return;
 		}
 
-		$target_fid = $this->DB_WE->escape($target_fid);
 		foreach($items as $item){
 			$tmp = array();
-			$query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB->escape($this->table) . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid);
-			$this->DB->query($query);
-			while($this->DB->next_record()) {
-				$tmp['ParentID'] = isset($this->DB->Record['ParentID']) ? $this->DB->Record['ParentID'] : 'NULL';
-				$tmp['msg_type'] = $this->DB->f('msg_type');
-				$tmp['obj_type'] = $this->DB->f('obj_type');
-				$tmp['headerDate'] = isset($this->DB->Record['headerDate']) ? $this->DB->Record['headerDate'] : 'NULL';
-				$tmp['headerSubject'] = isset($this->DB->Record['headerSubject']) ? $this->DB->Record['headerSubject'] : 'NULL';
-				$tmp['headerCreator'] = isset($this->DB->Record['headerCreator']) ? $this->DB->Record['headerCreator'] : 'NULL';
-				$tmp['headerAssigner'] = isset($this->DB->Record['headerAssigner']) ? $this->DB->Record['headerAssigner'] : 'NULL';
-				$tmp['headerStatus'] = isset($this->DB->Record['headerStatus']) ? $this->DB->Record['headerStatus'] : 'NULL';
-				$tmp['headerDeadline'] = $this->DB->f('headerDeadline');
-				$tmp['Priority'] = $this->DB->f('Priority');
-				$tmp['MessageText'] = $this->DB->f('MessageText');
-				$tmp['Content_Type'] = $this->DB->f('Content_Type');
-				$tmp['seenStatus'] = $this->DB->f('seenStatus');
-				$tmp['tag'] = $this->DB->f('tag');
-			}
+			$row = getHash('SELECT msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB->escape($this->table) . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid), $this->DB);
+			$tmp['ParentID'] = $target_fid;
+			$tmp['UserID'] = $this->userid;
+			$tmp['msg_type'] = $row('msg_type');
+			$tmp['obj_type'] = $row('obj_type');
+			$tmp['headerDate'] = $row['headerDate'] != '' ? $row['headerDate'] : 'NULL';
+			$tmp['headerSubject'] = $row['headerSubject'] != '' ? $row['headerSubject'] : 'NULL';
+			$tmp['headerCreator'] = $row['headerCreator'] != '' ? $row['headerCreator'] : 'NULL';
+			$tmp['headerAssigner'] = $row['headerAssigner'] != '' ? $row['headerAssigner'] : 'NULL';
+			$tmp['headerStatus'] = $row['headerStatus'] != '' ? $row['headerStatus'] : 'NULL';
+			$tmp['headerDeadline'] = $row['headerDeadline'] != '' ? $row['headerDeadline'] : 'NULL';
+			$tmp['Priority'] = $row['Priority'] != '' ? $row['Priority'] : 'NULL';
+			$tmp['MessageText'] = $row['MessageText'];
+			$tmp['Content_Type'] = $row['Content_Type'];
+			$tmp['seenStatus'] = $row['seenStatus'] != '' ? $row['seenStatus'] : 'NULL';
+			$tmp['tag'] = $row['tag'] != '' ? $row['tag'] : '';
 
-			$query = 'INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, MessageText, Content_Type, seenStatus, tag) VALUES (' .
-				$target_fid . ',' .
-				$this->userid . ',' .
-				$tmp['msg_type'] . ',' .
-				$tmp['obj_type'] . ',' .
-				($tmp['headerDate'] == "" ? 'NULL' : $tmp['headerDate']) . ',' .
-				'"' . $this->DB_WE->escape($tmp['headerSubject']) . '",' .
-				($tmp['headerCreator'] == "" ? 'NULL' : $tmp['headerCreator']) . ',' .
-				($tmp['headerAssigner'] == "" ? 'NULL' : $tmp['headerAssigner']) . ',' .
-				($tmp['headerStatus'] == "" ? 'NULL' : $tmp['headerStatus']) . ',' .
-				($tmp['headerDeadline'] == "" ? 'NULL' : $tmp['headerDeadline']) . ',' .
-				($tmp['Priority'] == "" ? 'NULL' : $tmp['Priority']) . ',' .
-				'"' . $this->DB_WE->escape($tmp['MessageText']) . '",' .
-				'"' . $this->DB_WE->escape($tmp['Content_Type']) . '",' .
-				($tmp['seenStatus'] == "" ? 'NULL' : $tmp['seenStatus']) . ',' .
-				($tmp['tag'] == "" ? 'NULL' : $tmp['tag']) . ')';
-			$this->DB->query($query);
+			$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));
 		}
 
 		return 1;
@@ -445,17 +417,13 @@ class we_todo extends we_msg_proto{
 				continue;
 			}
 
-			$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid));
-			$this->DB->next_record();
-			$in_folder = $this->DB->f('ID');
-			if(!isset($in_folder) || $in_folder == ''){
+			$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB);
+			if($in_folder == ''){
 				/* Create default Folders for target user */
 				include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 				if(msg_create_folders($userid) == 1){
-					$this->DB->query('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid));
-					$this->DB->next_record();
-					$in_folder = $this->DB->f('ID');
-					if(!isset($in_folder) || $in_folder == ''){
+					$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB);
+					if($in_folder == ''){
 						$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 						$results['failed'][] = $rcpt;
 						continue;
@@ -467,10 +435,8 @@ class we_todo extends we_msg_proto{
 				}
 			}
 
-			$this->DB->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerStatus, headerDeadline' . (!empty($data['priority']) ? ', Priority' : '') . ', ' . (empty($data['Content_Type']) ? '' : 'Content_Type, ') . " Properties, MessageText,seenStatus) VALUES ($in_folder, " . $userid . ', ' . $this->sql_class_nr . ',' . we_msg_proto::TODO_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . intval($this->userid) . ', 0, ' . $this->DB->escape($data['deadline']) . (!empty($data['priority']) ? ', ' . $this->DB->escape($data['priority']) : '') . ', ' . (empty($data['Content_Type']) ? '' : '"' . $this->DB->escape($data['Content_Type']) . '", ') . we_msg_proto::TODO_PROP_NONE . ',"' . $this->DB->escape($data['body']) . '",0)');
-			$this->DB->query('SELECT LAST_INSERT_ID() as lid');
-			$this->DB->next_record();
-			$results['id'] = $this->DB->f('lid');
+			$this->DB->query('INSERT INTO ' . $this->table . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerStatus, headerDeadline' . (!empty($data['priority']) ? ', Priority' : '') . ', ' . (empty($data['Content_Type']) ? '' : 'Content_Type, ') . " Properties, MessageText,seenStatus) VALUES ($in_folder, " . $userid . ', ' . $this->sql_class_nr . ',' . we_msg_proto::TODO_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . intval(intval($this->userid) ? $this->userid : userid) . ', 0, ' . $this->DB->escape($data['deadline']) . (!empty($data['priority']) ? ', ' . $this->DB->escape($data['priority']) : '') . ', ' . (empty($data['Content_Type']) ? '' : '"' . $this->DB->escape($data['Content_Type']) . '", ') . we_msg_proto::TODO_PROP_NONE . ',"' . $this->DB->escape($data['body']) . '",0)');
+			$results['id'] = $this->DB->getInsertId();
 			$results['ok'][] = $rcpt;
 		}
 
@@ -499,7 +465,7 @@ class we_todo extends we_msg_proto{
 
 			$sfield_cond = substr($sfield_cond, 0, -4);
 
-			$folders_cond = join(' OR m.ParentID=', $criteria['search_folder_ids']);
+			$folders_cond = implode(' OR m.ParentID=', $criteria['search_folder_ids']);
 		} else if(isset($criteria['folder_id'])){
 			$folders_cond = $criteria['folder_id'];
 
@@ -511,7 +477,7 @@ class we_todo extends we_msg_proto{
 		}
 
 		if(isset($criteria['message_ids'])){
-			$message_ids_cond = join(' OR m.ID=', $criteria['message_ids']);
+			$message_ids_cond = implode(' OR m.ID=', $criteria['message_ids']);
 		}
 
 		$this->selected_set = array();
@@ -546,7 +512,7 @@ class we_todo extends we_msg_proto{
 
 		/* mark selected_set messages as seen */
 		if(!empty($seen_ids)){
-			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . intval($this->userid);
+			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE (ID=' . implode(' OR ID=', $seen_ids) . ') AND UserID=' . intval($this->userid);
 			$this->DB->query($query);
 		}
 
@@ -583,7 +549,8 @@ class we_todo extends we_msg_proto{
 			/* FIXME: get the ids; use one query outside of the loop; */
 			$db2->query('SELECT u.username, t.Comment, t.Created, t.action, t.fromUserID FROM ' . MSG_TODOHISTORY_TABLE . ' as t, ' . USER_TABLE . ' as u WHERE t.ParentID=' . $this->DB->f('ID') . ' AND t.UserID=u.ID ORDER BY Created');
 			while($db2->next_record()) {
-				$history[] = array('username' => $db2->f('username'),
+				$history[] = array(
+					'username' => $db2->f('username'),
 					'from_userid' => $db2->f('fromUserID'),
 					'date' => $db2->f('Created'),
 					'action' => $db2->f('action'),
@@ -591,8 +558,10 @@ class we_todo extends we_msg_proto{
 			}
 
 			$from = $this->DB->f('First') . ' ' . $this->DB->f('Second') . ' (' . $this->DB->f('username') . ')';
-			$ret[] = array('ID' => $i++,
-				'hdrs' => array('Date' => $this->DB->f('headerDate'),
+			$ret[] = array(
+				'ID' => $i++,
+				'hdrs' => array(
+					'Date' => $this->DB->f('headerDate'),
 					'Deadline' => $this->DB->f('headerDeadline'),
 					'Subject' => $this->DB->f('headerSubject'),
 					'From' => $from,
@@ -602,16 +571,17 @@ class we_todo extends we_msg_proto{
 					'seenStatus' => $this->DB->f('seenStatus'),
 					'Content_Type' => $this->DB->f('Content_Type'),
 					'ClassName' => $this->ClassName),
-				'int_hdrs' => array('_from_userid' => $this->DB->f('headerCreator'),
+				'int_hdrs' => array(
+					'_from_userid' => $this->DB->f('headerCreator'),
 					'_ID' => $this->DB->f('ID'),
 					'_reply_to' => $this->DB->f('username')),
-				'body' => array('MessageText' => $this->DB->f('MessageText'),
+				'body' => array(
+					'MessageText' => $this->DB->f('MessageText'),
 					'History' => $history));
 		}
 
 		if(!empty($read_ids)){
-			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE (ID=' . join(' OR ID=', $read_ids) . ') AND UserID=' . $this->userid;
-			$this->DB->query($query);
+			$this->DB->query('UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE (ID=' . implode(' OR ID=', $read_ids) . ') AND UserID=' . $this->userid);
 		}
 
 		return $ret;
