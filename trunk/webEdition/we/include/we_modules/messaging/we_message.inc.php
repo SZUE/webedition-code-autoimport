@@ -129,7 +129,7 @@ class we_message extends we_msg_proto{
 		return $cnt===''?-1:$cnt;
 	}
 
-	function get_userids_by_nick($nick){
+/*	function get_userids_by_nick($nick){
 		$ret_ids = array();
 
 		$DB2 = new DB_WE();
@@ -138,7 +138,7 @@ class we_message extends we_msg_proto{
 			$ret_ids[] = $DB2->f('ID');
 
 		return $ret_ids;
-	}
+	}*/
 
 	function create_folder($name, $parent){
 		return parent::create_folder($name, $parent);
