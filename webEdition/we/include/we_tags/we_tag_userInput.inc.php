@@ -556,8 +556,7 @@ function we_tag_userInput($attribs, $content){
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-					return we_forms::weTextarea(
-							$fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
+					return we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
 				}
 			case "checkbox" :
 				$atts = removeAttribs(
@@ -791,8 +790,8 @@ function we_tag_userInput($attribs, $content){
 					'xml' => $xml,
 				);
 				return getHtmlTag('input', $attsHidden);
-			case "print" :			
-				return  $orgVal;	
+			case "print" :
+				return  $orgVal;
 			case "choice" :
 				$atts = removeAttribs(
 					$attribs, array(

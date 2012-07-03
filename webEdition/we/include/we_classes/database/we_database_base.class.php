@@ -513,6 +513,7 @@ abstract class we_database_base{
 				switch(strtoupper($val)){
 					case 'NOW()':
 					case 'UNIX_TIMESTAMP()':
+					case 'UNIX_TIMESTAMP(NOW())':
 					case 'CURDATE()':
 					case 'CURRENT_DATE()':
 					case 'CURRENT_TIME()':

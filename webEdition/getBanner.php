@@ -51,13 +51,7 @@ if($type && $type != "pixel"){
 }
 switch($type){
 	case "js":
-
-		$code = str_replace("\r\n", "\n", $code);
-		$code = str_replace("\r", "\n", $code);
-		$code = str_replace("'", "\\'", $code);
-		$jsarr = explode("\n", $code);
-
-
+		$jsarr = explode("\n", str_replace(array("\r", "'"), array("\n", "\\'"), $code));
 		header("Content-type: application/x-javascript");
 
 		foreach($jsarr as $line){
@@ -87,8 +81,6 @@ switch($type){
 		}
 
 		if($bannerpath){
-			//header("Location: $bannerpath");exit();
-
 			if(!$c){
 				header("Location: $bannerpath");
 				exit();

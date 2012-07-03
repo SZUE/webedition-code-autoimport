@@ -200,7 +200,7 @@ class we_todo extends we_msg_proto{
 	}
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL'){
-		return $this->DB->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB->escape($fromuserid) . ', "' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
+		return $this->DB->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . intval($id) . ', ' . intval($userid) . ', ' . $this->DB->escape($fromuserid) . ', "' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
 	}
 
 	function add_comment(){
@@ -429,7 +429,7 @@ class we_todo extends we_msg_proto{
 					'UserID' => $userid,
 					'msg_type' => $this->sql_class_nr,
 					'obj_type' => we_msg_proto::TODO_NR,
-					'headerDate' => 'UNIX_TIMESTAMP(NOW())',
+					'headerDate' => 'UNIX_TIMESTAMP()',
 					'headerSubject' => $data['subject'],
 					'headerCreator' => intval(intval($this->userid) ? $this->userid : userid),
 					'headerStatus' => 0,
