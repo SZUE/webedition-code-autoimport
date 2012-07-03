@@ -395,7 +395,7 @@ function weWysiwyg_replaceText(txt){
 		this.buffer.innerHTML = txt;
 		var bufferRange = document.createRange();
 		bufferRange.selectNodeContents(this.buffer );
-		var elem =bufferRange.extractContents();
+		var elem = bufferRange.extractContents();
 		this.insertContent(elem,true);
 	}else{
 		document.frames(this.fName).focus();
@@ -410,7 +410,7 @@ function weWysiwyg_getParentElementFromRange(){
 	this.getSelection();
 
 	if(isGecko||isOpera){
-		if (this.range) {
+		if (this.range){
 			var frag = this.range.cloneContents();
 			var span = this.eDocument.createElement('SPAN');
 
@@ -419,17 +419,14 @@ function weWysiwyg_getParentElementFromRange(){
 			var firstChild = weGetFirstRealChildNode(span);
 			var lastChild = weGetLastRealChildNode(span);
 
-
-
 			obj = this.range.commonAncestorContainer;
-			if (obj.nodeName == "#text")
+			if (obj.nodeName == "#text"){
 				obj = obj.parentNode;
+			}
 		}
-
-
-	}else{
+	} else{ 
 		if(this.selection.type=="Control"){
-			obj = this.range[0];
+			obj = this.range.item(0);//#6615
 		}else{
 			obj = this.range.parentElement();
 		}
@@ -709,7 +706,7 @@ function weWysiwyg_doStyleIE(className){
 		return;
 	}
 	if(this.selection.type == "Control"){
-		elem = this.range(0);
+		elem = this.range.item(0);//#6615
 		if(elem.nodeName.toUpperCase() == "TABLE"){
 			if(className.length > 0){
 				elem.className = className;
@@ -843,7 +840,7 @@ function weWysiwyg_insertContent(content, doNoCollapse) {
 	if (StartContainer.nodeType==StartContainer.TEXT_NODE && content.nodeType==content.TEXT_NODE) {
 		StartContainer.insertData(StartPosition, content.nodeValue );
 		if (startOffBefore == range.startOffset) {
-			this.range.setEnd(BX_range.endContainer, this.range.endOffset +1);
+			this.range.setEnd(BX_range.endContainer, this.range.endOffset + 1);
 			this.range.collapse(false);
 		}
 	} else {
@@ -1224,8 +1221,7 @@ function weWysiwyg_setMenuState(cmd){
 		if(cmd == "applystyle"){
 			if (this.range) {
 				var _elem = this.getParentElementFromRange();
-				//enabled = this.getSelectedText().length > 0 || _elem.nodeName == 'CAPTION';
-				enabled = this.getSelectedText().length > 0;
+				enabled = this.getSelectedText().length > 0 || _elem.nodeName == 'CAPTION';
 			} else {
 				enabled = false;
 			}
@@ -2213,18 +2209,26 @@ function weWysiwyg_editcell(width,height,bgcolor,align,valign,colspan,className,
 			var newTH = this.eDocument.createElement("TH");
 			newTH.innerHTML = cell.innerHTML;
 			weCopyAttributes(cell,newTH);
-			if(cell.style.cssText) newTH.style.cssText = cell.style.cssText;
+			if(cell.style.cssText){
+				newTH.style.cssText = cell.style.cssText;
+			}
 			var parent = cell.parentNode;
 			parent.replaceChild(newTH,cell);
-			if(isGecko||isOpera) this.range.selectNode(newTH);
+			if(isGecko||isOpera){
+				this.range.selectNode(newTH);
+			}
 		}else if(isheader==0 && cell.nodeName == "TH"){
 			var newTD = this.eDocument.createElement("TD");
 			newTD.innerHTML = cell.innerHTML;
 			weCopyAttributes(cell,newTD);
-			if(cell.style.cssText) newTD.style.cssText = cell.style.cssText;
+			if(cell.style.cssText){
+				newTD.style.cssText = cell.style.cssText;
+			}
 			var parent = cell.parentNode;
 			parent.replaceChild(newTD,cell);
-			if(isGecko||isOpera) this.range.selectNode(newTD);
+			if(isGecko||isOpera){
+				this.range.selectNode(newTD);
+			}
 		}
 	}
 }
@@ -2727,7 +2731,7 @@ function weWysiwyg_execCommand(cmd){
 					}
 					if(isGecko||isOpera){
 						this.insertContent(anchor,true);
-					}else{
+					} else{
 						this.range.pasteHTML(anchor.outerHTML);
 					}
 				}
@@ -3999,7 +4003,6 @@ function wePopUpFrame(fr){
 }
 
 wePopUpFrame.prototype.show = function(x,y,w,h,obj){ // obj only for compatibility reasons with IE
-
 	if(x) this._iframe.style.left = x;
 	if(y) this._iframe.style.top = y;
 	if(w) this._iframe.style.width = w;
