@@ -431,7 +431,7 @@ class we_todo extends we_msg_proto{
 					'obj_type' => we_msg_proto::TODO_NR,
 					'headerDate' => 'UNIX_TIMESTAMP()',
 					'headerSubject' => $data['subject'],
-					'headerCreator' => intval(intval($this->userid) ? $this->userid : userid),
+					'headerCreator' => intval(intval($this->userid) ? $this->userid : $userid),
 					'headerStatus' => 0,
 					'headerDeadline' => $data['deadline'],
 					'Properties' => we_msg_proto::TODO_PROP_NONE,
