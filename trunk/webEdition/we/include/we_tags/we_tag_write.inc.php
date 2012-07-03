@@ -193,15 +193,15 @@ function we_tag_write($attribs){
 					}
 
 					if($doworkflow){
-						$wf_text = 'we:write ' . $workflowname . '  ';
+						$wf_text = $workflowname . '  ';
 						switch($type){
 							default:
 							case 'document':
-								$wf_text .= 'we_document ID: ' . $GLOBALS['we_doc']->ID;
+								$wf_text .= 'Document ID: ' . $GLOBALS['we_doc']->ID;
 								$tab = FILE_TABLE;
 								break;
 							case 'object':
-								$wf_text .= 'we_object ID: ' . $GLOBALS['we_doc']->ID;
+								$wf_text .= 'Object ID: ' . $GLOBALS['we_doc']->ID;
 								$tab = OBJECT_FILES_TABLE;
 								break;
 						}
