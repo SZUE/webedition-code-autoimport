@@ -99,13 +99,7 @@ if(!empty($res['ok'])){
 		$tbl .= '<tr>
                     <td class="defaultfont" valign="top">' . g_l('messaging', '[occured_errs]') . ':</td>
                     <td class="defaultfont">
-                        <ul>';
-
-		foreach($res['err'] as $error){
-			$tbl .= '<li>' . $error . '</li>';
-		}
-
-		$tbl .= '</ul>
+                        <ul><li>'.implode('</li><li>',$res['err']).'</li></ul>
                     </td>
                 </tr>';
 	}
