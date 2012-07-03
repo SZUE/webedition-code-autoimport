@@ -424,9 +424,9 @@ class we_todo extends we_msg_proto{
 				}
 			}
 
-			$this->DB->query('INSERT INTO ' . $this->table . ' ' . we_database_base::arraySetter(array(
-					'ParentID' => $in_folder,
-					'UserID' => $userid,
+			$this->DB->query('INSERT INTO ' . $this->table . ' SET ' . we_database_base::arraySetter(array(
+					'ParentID' => intval($in_folder),
+					'UserID' => intval($userid),
 					'msg_type' => $this->sql_class_nr,
 					'obj_type' => we_msg_proto::TODO_NR,
 					'headerDate' => 'UNIX_TIMESTAMP()',
