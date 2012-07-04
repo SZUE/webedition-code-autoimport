@@ -26,17 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(isset($_REQUEST["pnt"])){
-	$what = $_REQUEST["pnt"];
-} else{
-	$what = "frameset";
-}
+$what = (isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'frameset');
+$mode = (isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0);
 
-if(isset($_REQUEST["art"])){
-	$mode = $_REQUEST["art"];
-} else{
-	$mode = 0;
-}
 
 if($what != "send" && $what != "send_body" && $what != "send_cmd" && $what != "edbody" && $what != "preview" && $what != "black_list" && $what != "newsletter_settings" && $what != "eemail" && $what != "edit_file" && $what != "clear_log" && $what != "export_csv_mes" && $what != "qsend" && $what != "qsave1"){
 	we_html_tools::htmlTop();
@@ -48,13 +40,32 @@ $newsletterFrame = new weNewsletterFrames();
 if(isset($_REQUEST["inid"])){
 	$newsletterFrame->View->newsletter = new weNewsletter($_REQUEST["inid"]);
 } else{
-	if($what != "export_csv_mes" && $what != "newsletter_settings" && $what != "qsend" && $what != "eedit" && $what != "black_list" && $what != "upload_csv"){
-		$newsletterFrame->View->processVariables();
+	switch($what){
+		case "export_csv_mes":
+		case "newsletter_settings":
+		case "qsend":
+		case "eedit":
+		case "black_list":
+		case "upload_csv":
+			break;
+		default:
+			$newsletterFrame->View->processVariables();
 	}
 }
 
-if($what != "export_csv_mes" && $what != "preview" && $what != "domain_check" && $what != "newsletter_settings" && $what != "show_log" && $what != "print_lists" && $what != "qsend" && $what != "eedit" && $what != "black_list"){
-	$newsletterFrame->View->processCommands();
+switch($what){
+	case "export_csv_mes":
+	case "preview":
+	case "domain_check":
+	case "newsletter_settings":
+	case "show_log":
+	case "print_lists":
+	case "qsend":
+	case "eedit":
+	case "black_list":
+		break;
+	default:
+		$newsletterFrame->View->processCommands();
 }
 
 switch($what){
@@ -179,4 +190,3 @@ switch($what){
 
 	default:
 }
-?>
