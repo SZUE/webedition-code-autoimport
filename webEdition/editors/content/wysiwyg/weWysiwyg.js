@@ -124,13 +124,13 @@ if(we_styleString && we_styleString.length){
 		}
 	}else{
 		for(var i=0;i<we_styleSheets.length;i++){
-			var r = we_styleSheets[i].rules;
-			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
+			var r = we_styleSheets(i).rules;
+			if(! we_styleSheets(i).href || we_styleSheets(i).href.indexOf("/webEdition/") == -1 || we_styleSheets(i).href==self.location.href){
 				for(var n=0;n<r.length;n++){
-					var s = r[n].style;
-					if(r[n].selectorText.substring(1,9) != "tbButton"){
+					var s = r(n).style;
+					if(r(n).selectorText.substring(1,9) != "tbButton"){
 						var styleAttr = s.cssText;
-						var entry = r[n].selectorText;
+						var entry = r(n).selectorText;
 						var arr = entry.split(/ /);
 						var e = arr[0];
 						if(e.substring(0,1) == "."){
@@ -426,7 +426,7 @@ function weWysiwyg_getParentElementFromRange(){
 		}
 	} else{ 
 		if(this.selection.type=="Control"){
-			obj = this.range.item(0);//#6615
+				obj = isIE9 ? this.range.item(0) : this.range(0);//#6615
 		}else{
 			obj = this.range.parentElement();
 		}
@@ -706,7 +706,7 @@ function weWysiwyg_doStyleIE(className){
 		return;
 	}
 	if(this.selection.type == "Control"){
-		elem = this.range.item(0);//#6615
+		elem = isIE9 ? this.range.item(0) : this.range(0);//#6615
 		if(elem.nodeName.toUpperCase() == "TABLE"){
 			if(className.length > 0){
 				elem.className = className;
