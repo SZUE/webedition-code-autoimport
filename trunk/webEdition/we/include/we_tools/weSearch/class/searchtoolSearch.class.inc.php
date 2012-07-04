@@ -673,7 +673,7 @@ class searchtoolsearch extends we_search{
 			//published objects
 			for($i = 1; $i <= count($_classes); $i++){
 				$_obj_table = OBJECT_X_TABLE . $i;
-				$_obj_table = strtolower($_obj_table);
+				//$_obj_table = strtolower($_obj_table);
 				$tableInfo = $_db->metadata($_obj_table);
 				$fields = array();
 				for($c = 0; $c < count($tableInfo); $c++){
