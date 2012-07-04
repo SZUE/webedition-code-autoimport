@@ -24,8 +24,9 @@ function we_parse_tag_a($attribs, $content){
 
 function we_tag_a($attribs, $content){
 	// check for id attribute
-	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
+	}
 
 	// get attributes
 
