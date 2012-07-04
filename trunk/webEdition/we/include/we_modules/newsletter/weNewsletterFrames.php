@@ -601,7 +601,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$radio_table->setCol(0, 3, array("class" => "defaultfont"), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
 				$radios_code.=$radio_table->getHtml();
 			} else{
-				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio,htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
+				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
 			}
 		}
 
@@ -1922,10 +1922,7 @@ class weNewsletterFrames extends weModuleFrames{
 	 * @return String
 	 */
 	function getHTMLEditFile($open_file = ""){
-		$db = new DB_WE;
-
 		$out = "";
-		$headlines = array();
 		$content = array();
 
 		$order = isset($_REQUEST["order"]) ? $_REQUEST["order"] : "";
@@ -1942,18 +1939,17 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 		}
 
-		$headlines[0]["dat"] = 'ID' . $sorter_code[0] . $sorter_code[1];
-		$headlines[0]["width"] = "20";
-		$headlines[1]["dat"] = g_l('modules_newsletter', '[email]') . $sorter_code[2] . $sorter_code[3];
-		$headlines[1]["width"] = "50";
-		$headlines[2]["dat"] = g_l('modules_newsletter', '[edit_htmlmail]') . $sorter_code[4] . $sorter_code[5];
-		$headlines[2]["width"] = "50";
-		$headlines[3]["dat"] = g_l('modules_newsletter', '[salutation]') . $sorter_code[6] . $sorter_code[7];
-		$headlines[4]["dat"] = g_l('modules_newsletter', '[title]') . $sorter_code[8] . $sorter_code[9];
-		$headlines[5]["dat"] = g_l('modules_newsletter', '[firstname]') . $sorter_code[10] . $sorter_code[11];
-		$headlines[6]["dat"] = g_l('modules_newsletter', '[lastname]') . $sorter_code[12] . $sorter_code[13];
-		$headlines[7]["dat"] = g_l('modules_newsletter', '[edit]');
-		$headlines[8]["dat"] = g_l('modules_newsletter', '[status]');
+		$headlines = array(
+			array("dat" => 'ID' . $sorter_code[0] . $sorter_code[1], "width" => 20),
+			array("dat" => g_l('modules_newsletter', '[email]') . $sorter_code[2] . $sorter_code[3], "width" => 50),
+			array("dat" => g_l('modules_newsletter', '[edit_htmlmail]') . $sorter_code[4] . $sorter_code[5], "width" => "50"),
+			array("dat" => g_l('modules_newsletter', '[salutation]') . $sorter_code[6] . $sorter_code[7]),
+			array("dat" => g_l('modules_newsletter', '[title]') . $sorter_code[8] . $sorter_code[9]),
+			array("dat" => g_l('modules_newsletter', '[firstname]') . $sorter_code[10] . $sorter_code[11]),
+			array("dat" => g_l('modules_newsletter', '[lastname]') . $sorter_code[12] . $sorter_code[13]),
+			array("dat" => g_l('modules_newsletter', '[edit]')),
+			array("dat" => g_l('modules_newsletter', '[status]')),
+		);
 
 
 		$csv_file = isset($_REQUEST["csv_file"]) ? $_REQUEST["csv_file"] : "";
@@ -1975,13 +1971,9 @@ class weNewsletterFrames extends weModuleFrames{
 		$numRows = isset($_REQUEST["numRows"]) ? $_REQUEST["numRows"] : 15;
 
 		$anz = count($emails);
-
-
-		if($offset < 0)
-			$offset = 0;
+		$offset = ($offset < 0 ? 0 : $offset);
 		$endRow = $offset + $numRows;
-		if($endRow > $anz)
-			$endRow = $anz;
+		$endRow = ($endRow > $anz ? $anz : $endRow);
 
 		function cmp0($a, $b){
 			return strnatcasecmp($a[0], $b[0]);
@@ -2036,50 +2028,59 @@ class weNewsletterFrames extends weModuleFrames{
 				$edit = we_button::create_button("image:btn_edit_edit", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
 				$trash = we_button::create_button("image:btn_function_trash", "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
 
-				$content[$counter] = array();
-				$content[$counter][0]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), $k);
-				$content[$counter][0]["height"] = "";
-				$content[$counter][0]["align"] = "";
-
-				$content[$counter][1]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[0] ? $cols[0] : "&nbsp;"));
-				$content[$counter][1]["height"] = "";
-				$content[$counter][1]["align"] = "";
-
-				$content[$counter][2]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[1] ? g_l('modules_newsletter', '[yes]') : g_l('modules_newsletter', '[no]')));
-				$content[$counter][3]["height"] = "";
-				$content[$counter][3]["align"] = "";
-
-				$content[$counter][3]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[2] ? $cols[2] : "&nbsp;"));
-				$content[$counter][3]["height"] = "";
-				$content[$counter][3]["align"] = "right";
-
-				$content[$counter][4]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[3] ? $cols[3] : "&nbsp;"));
-				$content[$counter][4]["height"] = "";
-				$content[$counter][4]["align"] = "left";
-
-				$content[$counter][5]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[4] ? $cols[4] : "&nbsp;"));
-				$content[$counter][5]["height"] = "";
-				$content[$counter][5]["align"] = "left";
-
-				$content[$counter][6]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[5] ? $cols[5] : "&nbsp;"));
-				$content[$counter][6]["height"] = "";
-				$content[$counter][6]["align"] = "left";
-
-				$content[$counter][7]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), we_button::create_button_table(array($edit, $trash)));
-				$content[$counter][7]["height"] = "";
-				$content[$counter][7]["align"] = "left";
-
-				$iconFolder = IMAGE_DIR . "icons/";
-				$content[$counter][8]["dat"] = we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => $iconFolder . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif"))));
-				$content[$counter][8]["height"] = "";
-				$content[$counter][8]["align"] = "center";
-
+				$content[$counter] = array(
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), $k),
+						"height" => "",
+						"align" => "",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[0] ? $cols[0] : "&nbsp;")),
+						"height" => "",
+						"align" => "",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[1] ? g_l('modules_newsletter', '[yes]') : g_l('modules_newsletter', '[no]'))),
+						"height" => "",
+						"align" => "",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[2] ? $cols[2] : "&nbsp;")),
+						"height" => "",
+						"align" => "right",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[3] ? $cols[3] : "&nbsp;")),
+						"height" => "",
+						"align" => "left",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[4] ? $cols[4] : "&nbsp;")),
+						"height" => "",
+						"align" => "left",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[5] ? $cols[5] : "&nbsp;")),
+						"height" => "",
+						"align" => "left",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_button::create_button_table(array($edit, $trash))),
+						"height" => "",
+						"align" => "left",
+					),
+					array(
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
+						"height" => "",
+						"align" => "center",
+					)
+				);
 				$counter++;
 			}
 		}
 
-		$js = $this->View->getJSProperty();
-		$js.=we_html_element::jsElement('
+		$js = $this->View->getJSProperty() .
+			we_html_element::jsElement('
 			self.focus();
 			function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
 				new jsWindow("' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
@@ -2136,7 +2137,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 
 		$close = we_button::create_button("close", "javascript:self.close()");
-		$edit = we_button::create_button("edit", "javascript:listFile()");
+		$edit = we_button::create_button("save", "javascript:listFile()");
 
 
 		$chooser = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 2, 1);
