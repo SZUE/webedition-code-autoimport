@@ -368,14 +368,13 @@ function we_tag_field($attribs){
 						}
 					}
 
-					$out = cutText($altVal, $max);
+					$out = cutText(($striphtml?strip_tags($altVal):$altVal), $max);
 				} else{
-					$out = cutText($normVal, $max);
+					$out = cutText(($striphtml?strip_tags($normVal):$normVal), $max);
 				}
 			} elseif($value){
-				$out = $value;
-			}
-			if($striphtml){
+				$out = ($striphtml?strip_tags($value):$value);
+			}else if($striphtml){
 				$out = strip_tags($out);
 			}
 	}
