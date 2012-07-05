@@ -34,7 +34,7 @@ String.prototype.trim2=function () {
 /* 
 var isIE9=false;
 if (navigator.appVersion.indexOf("MSIE")!=-1){
-	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')){
+	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
 		var IE = null;
 		if (document.documentMode) {
 			// Internet Exploter 8 oder 9
@@ -50,13 +50,8 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 		isIE9 = IE >= 9;//dies detektiert wie sich der IE verhällt
 	//var temp=navigator.appVersion.split("MSIE"); alternative, das gibt er an, was aber definiitv nicht immer funktioniert
 	}
-	else {
-		IE = document.documentMode;
-		isIE9 = true;
-	}
 }
 */
-if(!isIE9)console.log("notIE9-sali"); else console.log("isIE9-sali");
 
 var we_styleSheets;
 var we_classNames;
@@ -99,7 +94,7 @@ if(we_styleString && we_styleString.length){
 
 	we_styleSheets = document.styleSheets;
 	we_classNames = new Array();
-	if(isGecko||isOpera ||isIE9){
+	if(isGecko||isOpera||isIE9){
 		for(var i=0;i<we_styleSheets.length;i++){
 			var r = we_styleSheets[i].cssRules;
 			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
@@ -692,7 +687,7 @@ function weWysiwyg_IEStart(){
 	eval('we_addEvent(this.eDocument, "keyup", '+this.fName+'onkeyup);');
 	eval('we_addEvent(this.eDocument, "keydown", '+this.fName+'onkeydown);');
 	eval('we_addEvent(this.eFrame, "focus", '+this.fName+'onfocus);');
-	eval('we_addEvent(this.eFrame, "blur", '+this.fName+'onblur);');
+	eval('we_addEvent(this.eFrame, "blur", '+this.fName+'onblur);'); 
 }
 
 
