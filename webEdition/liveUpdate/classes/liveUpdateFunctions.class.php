@@ -634,7 +634,7 @@ class liveUpdateFunctions {
 			if(stripos($query,"CREATE TABLE ")===0) {
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
-				if($Charset == 'UTF-8'){//#4661
+				if(strtoupper($Charset) == 'UTF-8'){//#4661
 					$Charset='utf8';
 				}
 				if($Collation == 'UTF-8'){//#4661
