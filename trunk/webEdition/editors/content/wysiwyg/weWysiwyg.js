@@ -1,6 +1,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev: 4129 $
+ * $Author: mokraemer $
+ * $Date: 2012-02-23 02:35:20 +0100 (Do, 23 Feb 2012) $
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +29,12 @@ String.prototype.trim2=function () {
 	return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
+// The following Browser-Detection for IE does not work: 
+// Vars isIE9, isIE and ieVersion are now initialiszed in we_wysiwyg.class.inc.php (using we_browserDetect.php
+/* 
 var isIE9=false;
 if (navigator.appVersion.indexOf("MSIE")!=-1){
-	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
+	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')){
 		var IE = null;
 		if (document.documentMode) {
 			// Internet Exploter 8 oder 9
@@ -43,7 +50,13 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 		isIE9 = IE >= 9;//dies detektiert wie sich der IE verhällt
 	//var temp=navigator.appVersion.split("MSIE"); alternative, das gibt er an, was aber definiitv nicht immer funktioniert
 	}
+	else {
+		IE = document.documentMode;
+		isIE9 = true;
+	}
 }
+*/
+if(!isIE9)console.log("notIE9-sali"); else console.log("isIE9-sali");
 
 var we_styleSheets;
 var we_classNames;
@@ -122,7 +135,7 @@ if(we_styleString && we_styleString.length){
 				}
 			}
 		}
-	}else{
+	} else{
 		for(var i=0;i<we_styleSheets.length;i++){
 			var r = we_styleSheets(i).rules;
 			if(! we_styleSheets(i).href || we_styleSheets(i).href.indexOf("/webEdition/") == -1 || we_styleSheets(i).href==self.location.href){
@@ -426,7 +439,7 @@ function weWysiwyg_getParentElementFromRange(){
 		}
 	} else{ 
 		if(this.selection.type=="Control"){
-				obj = isIE9 ? this.range.item(0) : this.range(0);//#6615
+			obj = isIE9 ? this.range.item(0) : this.range(0);//#6615
 		}else{
 			obj = this.range.parentElement();
 		}
@@ -635,6 +648,7 @@ function we_wysiwyg_finalize(){
 		var merk = this.showBorders;
 		this.showBorders = true;
 		this.toggleBorders();
+
 		this.showBorders = merk;
 	}
 	this.editHTML = this.getEditHTML();
@@ -1269,6 +1283,7 @@ function weWysiwyg_setMenuState(cmd){
 					switch(cmd){
 						case "fontname":
 							newval = newval.toLowerCase();
+
 							newval = newval.replace(/,([^ ])/gi,", $1");
 							break;
 						case "formatblock":
@@ -2081,6 +2096,8 @@ function weWysiwyg_edittable(edit,rows,cols,border,cellpadding,cellspacing,bgcol
 		}
 		we_setRemoveAttribute(table,"background",background);
 		we_setRemoveAttribute(table,"align",align);
+
+
 
 		var oldrows = we_getNumTableRows(table);
 		var oldcols = we_getNumTableCols(table);
@@ -2979,6 +2996,8 @@ function weWysiwyg_execCommand(cmd){
 				link_href = link_href.replace(re,"");
 
 				link_href = this.decodeDomainUmlautsOfUrl(link_href);
+
+
 
 				dialog.append("href", link_href);
 				dialog.append("target", null, link);
