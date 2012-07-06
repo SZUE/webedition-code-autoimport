@@ -237,6 +237,9 @@ function tinyMCEchanged(inst){
 					//FIXME: recognize in browser_check an set according
 					var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 					var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';
+					var isIE = ' . (we_base_browserDetect::isIE() ? 'true' : 'false') . ';
+					var ieVersion = ' . we_base_browserDetect::getIEVersion() . ';
+					var isIE9 = ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() == 9) ? 'true' : 'false') . ';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
 					var weWysiwygFolderPath = "/webEdition/editors/content/wysiwyg/";
