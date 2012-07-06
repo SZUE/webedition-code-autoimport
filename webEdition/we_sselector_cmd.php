@@ -59,110 +59,109 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 					}
 				}
 	<?php if(isset($_REQUEST["filter"]) && ($_REQUEST["filter"] == "folder" || $_REQUEST["filter"] == "filefolder")){ ?>
-								selectFile(dir);
+					selectFile(dir);
 	<?php } ?>
-							top.currentDir=dir;
-							selectDir();
-						}
-						else {
+				top.currentDir=dir;
+				selectDir();
+			}
+			else {
 	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-						}
-					}
+			}
+		}
 
-					function goUp() {
-						var a=top.fsheader.document.forms["we_form"].elements["lookin"].options;
-						if(a.length-2>-1)
-							setDir(a[a.length-2].value);
-						else
+		function goUp() {
+			var a=top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			if(a.length-2>-1)
+				setDir(a[a.length-2].value);
+			else
 	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		}
+
+		function selectFile(fid) {
+			if(fid != "/") {
+				top.currentID=top.sitepath+top.rootDir+top.currentDir+((top.currentDir != "/") ? "/" : "")+fid;
+				top.currentName=fid;
+				top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
+				if(top.fsbody.document.getElementById(fid)) {
+					for(var i=0; i<top.allentries.length;i++){
+						if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 					}
-
-					function selectFile(fid) {
-						if(fid != "/") {
-							top.currentID=top.sitepath+top.rootDir+top.currentDir+((top.currentDir != "/") ? "/" : "")+fid;
-							top.currentName=fid;
-							top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
-							if(top.fsbody.document.getElementById(fid)) {
-								for(var i=0; i<top.allentries.length;i++){
-									if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-								}
-								top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
-							}
-						} else {
-							top.currentID=top.sitepath;
-							top.currentName=fid;
-							top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
-							if(top.fsbody.document.getElementById(fid)) {
-								for(var i=0; i<top.allentries.length;i++){
-									if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-								}
-								top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
-							}
-						}
+					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+				}
+			} else {
+				top.currentID=top.sitepath;
+				top.currentName=fid;
+				top.fsfooter.document.forms["we_form"].elements["fname"].value=fid;
+				if(top.fsbody.document.getElementById(fid)) {
+					for(var i=0; i<top.allentries.length;i++){
+						if(top.fsbody.document.getElementById(top.allentries[i])) top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 					}
+					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+				}
+			}
+		}
 
-					function selectDir() {
-
-
-						if(arguments[0]) {
+		function selectDir() {
+			if(arguments[0]) {
 	<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"] == "folder"){ ?>
-								//selectFile(arguments[0],true);
+					//selectFile(arguments[0],true);
 	<?php } ?>
-							if(top.currentDir=="/")
-								top.currentDir=top.currentDir+arguments[0];
-							else
-								top.currentDir=top.currentDir+"/"+arguments[0];
-							top.fsheader.addOption(arguments[0],top.currentDir);
-						}
+				if(top.currentDir=="/")
+					top.currentDir=top.currentDir+arguments[0];
+				else
+					top.currentDir=top.currentDir+"/"+arguments[0];
+				top.fsheader.addOption(arguments[0],top.currentDir);
+			}
 
-						if (top.currentDir.substring(0,12) == "/webEdition/" || top.currentDir=="/webEdition") {
-							top.fsheader.weButton.disable("btn_new_dir_ss");
-							top.fsheader.weButton.disable("btn_add_file_ss");
-							top.fsheader.weButton.disable("btn_function_trash_ss");
-						} else {
-							top.fsheader.weButton.enable("btn_new_dir_ss");
-							top.fsheader.weButton.enable("btn_add_file_ss");
-							top.fsheader.weButton.enable("btn_function_trash_ss");
-						}
+			if (top.currentDir.substring(0,12) == "/webEdition/" || top.currentDir=="/webEdition") {
+				top.fsheader.weButton.disable("btn_new_dir_ss");
+				top.fsheader.weButton.disable("btn_add_file_ss");
+				top.fsheader.weButton.disable("btn_function_trash_ss");
+			} else {
+				top.fsheader.weButton.enable("btn_new_dir_ss");
+				top.fsheader.weButton.enable("btn_add_file_ss");
+				top.fsheader.weButton.enable("btn_function_trash_ss");
+			}
 
-						drawDir(top.currentDir);
+			drawDir(top.currentDir);
 
+		}
+
+		function reorderDir(dir,order) {
+			setTimeout('top.fsbody.location="we_sselector_body.php?dir='+dir+'&ord='+order+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+		}
+
+		function drawDir(dir) {
+			switch(arguments[1]){
+				case "new_folder":
+					top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=new_folder&fil="+top.currentFilter+"&curID="+escape(top.currentID);
+					break;
+				case "rename_folder":
+					if(arguments[2]) {
+						top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_folder&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
 					}
-
-					function reorderDir(dir,order) {
-						setTimeout('top.fsbody.location="we_sselector_body.php?dir='+dir+'&ord='+order+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+					break;
+				case "rename_file":
+					if(arguments[2]) {
+						top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_file&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
 					}
+					break;
+				default:
+					setTimeout('top.fsbody.location="we_sselector_body.php?dir='+escape(top.rootDir+dir)+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
+			}
+		}
 
-					function drawDir(dir) {
-						if((arguments[1]=="new_folder")||(arguments[1]=="rename_folder")||(arguments[1]=="rename_file")) {
-							if(arguments[1]=="new_folder") {
-								top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=new_folder&fil="+top.currentFilter+"&curID="+escape(top.currentID);
-							} else if(arguments[1]=="rename_folder") {
-								if(arguments[2]) {
-									top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_folder&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
-								}
-							} else if(arguments[1]=="rename_file") {
-								if(arguments[2]) {
-									top.fsbody.location="we_sselector_body.php?dir="+escape(top.rootDir+dir)+"&nf=rename_file&sid="+escape(arguments[2])+"&fil="+top.currentFilter+"&curID="+escape(top.currentID);
-								}
-							}
-						} else {
-
-							setTimeout('top.fsbody.location="we_sselector_body.php?dir='+escape(top.rootDir+dir)+'&fil='+top.currentFilter+'&curID='+escape(top.currentID)+'"',100);
-						}
-					}
-
-					function delFile() {
-						if((top.currentID!="")&&(top.fsfooter.document.forms["we_form"].elements["fname"].value!=""))
-							top.fscmd.location="we_sselector_cmd.php?cmd=delete_file&fid="+top.currentID+"&ask="+arguments[0];
-						else
+		function delFile() {
+			if((top.currentID!="")&&(top.fsfooter.document.forms["we_form"].elements["fname"].value!="")){
+				top.fscmd.location="we_sselector_cmd.php?cmd=delete_file&fid="+top.currentID+"&ask="+arguments[0];
+			}else{
 	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					}
+			}
+		}
 
 	<?php
 
 	function delDir($dir){
-
 		$d = dir($dir);
 		while(false !== ($entry = $d->read())) {
 			if($entry != "." && $entry != ".."){
@@ -280,7 +279,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	}
 	?>
-			//-->
+		//-->
 	</script>
 <?php } ?>
 </head>

@@ -33,7 +33,7 @@ $docroot = str_replace('\\', '/', (substr($docroot, -1) == '/') ? substr($docroo
 we_cmd_dec(4);
 we_cmd_dec(1);
 
-$filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != "") ? $_REQUEST['we_cmd'][2] : "all_Types";
+$filter = (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] != '') ? $_REQUEST['we_cmd'][2] : 'all_Types';
 $currentDir = ( isset($_REQUEST['we_cmd'][3]) ?
 		($_REQUEST['we_cmd'][3] == '/' ? '' :
 			( parse_url($_REQUEST['we_cmd'][3]) === FALSE && is_dir($docroot . $_REQUEST['we_cmd'][3]) ?
@@ -42,8 +42,8 @@ $currentDir = ( isset($_REQUEST['we_cmd'][3]) ?
 		'');
 $currentName = ($filter != "folder" ? basename(isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : "") : '');
 if(!file_exists($docroot . $currentDir . "/" . $currentName)){
-	$currentDir = "";
-	$currentName = "";
+	$currentDir = '';
+	$currentName = '';
 }
 
 $currentID = $docroot . $currentDir . ($filter == "folder" || $filter == "filefolder" ? '' : (($currentDir != "") ? "/" : "") . $currentName);
@@ -56,13 +56,13 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != "") ? $_
 <script  type="text/javascript">
 	var rootDir="<?php print $rootDir; ?>";
 	var currentID="<?php print $currentID; ?>";
-	var currentDir="<?php print str_replace($rootDir, "", $currentDir); ?>";
+	var currentDir="<?php print str_replace($rootDir, '', $currentDir); ?>";
 	var currentName="<?php print $currentName; ?>";
 	var currentFilter="<?php print str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']') !== false ? g_l('contentTypes', '[' . $filter . ']') : ""); ?>";
 	var filter = '<?php print $filter; ?>';
-	var browseServer = <?php print isset($_REQUEST['we_cmd'][1]) ? "false" : "true"; ?>
+	var browseServer = <?php print isset($_REQUEST['we_cmd'][1]) ? 'false' : 'true'; ?>
 
-	var currentType="<?php print ($filter == "folder") ? "folder" : ""; ?>";
+	var currentType="<?php print ($filter == 'folder') ? 'folder' : ''; ?>";
 	var sitepath="<?php print $docroot; ?>";
 	var dirsel=1;
 	var scrollToVal = 0;
