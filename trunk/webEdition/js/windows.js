@@ -32,7 +32,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 		if(y == -1) y = Math.round((screen_height - h) / 2);
 	}
 
-	this.name = "jsWindow" + (jsWindow_count++);alert("erzeugt: " + jsWindow_count);
+	this.name = "jsWindow" + (jsWindow_count++);
 	this.url = url;
 	this.ref = ref;
 	this.x = x;
