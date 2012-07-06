@@ -58,6 +58,7 @@ $l_modules_messaging=array(
 	'msg_type_not_found'=>'Message type not found!',
 	'multi_sel_off'=>'Multi-selection off',
 	'multi_sel_on'=>'Multi-selection on',
+	'newHeaderMsg'=>'You have a new task / message!',
 	'new_folder'=>'New folder',
 	'new_messages'=>'New messages',
 	'new_message'=>'Create message',

@@ -58,6 +58,7 @@ $l_modules_messaging=array(
 	'msg_type_not_found'=>'Bericht type niet gevonden!',
 	'multi_sel_off'=>'Multie-selectie uit',
 	'multi_sel_on'=>'Multie-selectie aan',
+	'newHeaderMsg'=>'You have a new task / message!',
 	'new_folder'=>'Nieuwe map',
 	'new_messages'=>'Nieuwe berichten',
 	'new_message'=>'Maak bericht aan',

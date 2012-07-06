@@ -58,6 +58,7 @@ $l_modules_messaging=array(
 	'msg_type_not_found'=>'Тип сообщения не найден',
 	'multi_sel_off'=>'Выбор/маркировка нескольких позиций невозможна',
 	'multi_sel_on'=>'Возможен выбор/маркировка нескольких позиций',
+	'newHeaderMsg'=>'You have a new task / message!',
 	'new_folder'=>'Новая папка',
 	'new_messages'=>'Новые сообщения',
 	'new_message'=>'Создать сообщение',
