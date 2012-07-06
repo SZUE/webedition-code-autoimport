@@ -598,6 +598,7 @@ function weWysiwyg_writeHTMLDocument(){
 	bodystyle = bodystyle.replace(/^(.+);$/,"$1");
 	this.eDocument.write('<html><head>');
 	this.eDocument.write('<base href="'+this.baseUrl+'">');
+	this.eDocument.write(((isIE9) ? '<meta http-equiv=\'X-UA-Compatible\' content=\'IE=8\' />' : ''));
 	this.eDocument.write('<title></title><meta http-equiv=Content-Type content=\'text/html;'+(this.charset ? ' charset=' + this.charset : ' charset=iso-8859-1')+'\'>');
 	this.eDocument.write('<style type="text/css">'+we_styleString+'</style>');
 	this.eDocument.write('</head>');
