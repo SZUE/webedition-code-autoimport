@@ -58,6 +58,7 @@ $l_modules_messaging=array(
 	'msg_type_not_found'=>'Viestin tyyppiä ei löydy!',
 	'multi_sel_off'=>'Monivalinta pois',
 	'multi_sel_on'=>'Monivalinta päällä',
+	'newHeaderMsg'=>'You have a new task / message!',
 	'new_folder'=>'Uusi kansio',
 	'new_messages'=>'Uusia viestejä',
 	'new_message'=>'Uusi viesti',
