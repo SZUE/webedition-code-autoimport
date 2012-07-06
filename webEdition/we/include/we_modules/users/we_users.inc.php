@@ -2090,9 +2090,9 @@ class we_user{
 						}");
 
 		// Cockpit
-		$_object_path = "";
+		$_object_path = '';
 		$_object_id = 0;
-		$_document_path = "";
+		$_document_path = '';
 		$_document_id = 0;
 
 		if($this->Preferences['seem_start_type'] == "cockpit"){
