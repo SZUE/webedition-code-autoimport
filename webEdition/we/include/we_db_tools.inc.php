@@ -51,8 +51,8 @@ function f($query, $field, $DB_WE){
 function doUpdateQuery($DB_WE, $table, $hash, $where){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
-	for($i = 0; $i < sizeof($tableInfo); $i++){
-		$fieldName = $tableInfo[$i]["name"];
+	foreach($tableInfo as $f){
+		$fieldName = $f["name"];
 		if($fieldName != "ID"){
 			$fn[$fieldName] = isset($hash[$fieldName]) ? $hash[$fieldName] : '';
 		}

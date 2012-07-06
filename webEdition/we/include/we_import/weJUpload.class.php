@@ -42,7 +42,7 @@ class weJUpload{
 			'serverProtocol' => 'HTTP/1.1',
 			'showLogWindow' => 'onError',
 			'debugLevel' => 99,
-			'browsingDirectory' => isset($_SESSION['weS']['importDir']) ? $_SESSION['weS']['importDir'] : null,
+			'browsingDirectory' => isset($_SESSION["prefs"]['juploadPath']) ? $_SESSION["prefs"]['juploadPath'] : null,
 		);
 
 		$auth = getServerAuth();
