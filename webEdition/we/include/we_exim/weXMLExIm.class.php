@@ -316,7 +316,7 @@ class weXMLExIm{
 				$path = id_to_path($cid, OBJECT_TABLE);
 				if($wsQuery != '')
 					$wsQuery .=' OR ';
-				$wsQuery .= " Path like '" . $db->escape($path) . "/%' OR Path='" . $db->es($path) . "'";
+				$wsQuery .= " Path like '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
 			}
 		}
 
