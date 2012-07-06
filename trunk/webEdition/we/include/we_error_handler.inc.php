@@ -45,7 +45,7 @@ $GLOBALS['we']['errorhandler'] = array(
 	'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
 	'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
 	'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
-	'error' => defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true,
+	'error' => true,
 	'display' => false,
 	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
 	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
@@ -73,12 +73,13 @@ function we_error_handler($in_webEdition = true){
 	  $GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
 	 */
 	// Get way of how to show errors
-	if(defined('NO_SESS')){
+	if(defined('NO_SESS') || $in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
 		ini_set('display_errors', false);
 		if(!defined('WE_ERROR_HANDLER_SET')){
 			define('WE_ERROR_HANDLER_SET', 1);
 		}
+		$GLOBALS['we']['errorhandler']['warning'] = true;
 	} else{
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}

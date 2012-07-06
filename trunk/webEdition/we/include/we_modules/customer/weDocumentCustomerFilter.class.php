@@ -28,10 +28,11 @@
  *
  */
 class weDocumentCustomerFilter extends weAbstractCustomerFilter{
-	const ACCESS='f_1';
-	const CONTROLONTEMPLATE='f_2';
-	const NO_ACCESS='f_3';
-	const NO_LOGIN='f_4';
+
+	const ACCESS = 'f_1';
+	const CONTROLONTEMPLATE = 'f_2';
+	const NO_ACCESS = 'f_3';
+	const NO_LOGIN = 'f_4';
 
 	/**
 	 * db-id of filter
@@ -99,7 +100,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param array $blackList
 	 * @return weDocumentCustomerFilter
 	 */
-	function __construct($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()){
+	function __construct($id = 0, $modelId = 0, $modelType = "", $modelTable = "", $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = weAbstractCustomerFilter::OFF, $specificCustomers = array(), $filter = array(), $whiteList = array(), $blackList = array()){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 		$this->setId($id);
 		$this->setModelId($modelId);
@@ -270,7 +271,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @static
 	 * @return boolean
 	 */
-	function filterAreQual($filter1="", $filter2="", $applyCheck=false){
+	function filterAreQual($filter1 = "", $filter2 = "", $applyCheck = false){
 
 		if($filter1 === ""){
 			$filter1 = self::getEmptyDocumentCustomerFilter();
@@ -345,11 +346,20 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 				$_whiteList = $_docCustomerFilter->getWhiteList();
 				$_whiteList = !empty($_whiteList) ? addslashes(makeCSVFromArray($_whiteList, true)) : "";
 
-				$_query = "
-		INSERT INTO " . CUSTOMER_FILTER_TABLE . "
-		(modelId, modelType, modelTable, accessControlOnTemplate, errorDocNoLogin, errorDocNoAccess, mode, specificCustomers, filter, whiteList, blackList)
-		VALUES($model->ID, '$model->ContentType', '$model->Table', '" . $_docCustomerFilter->getAccessControlOnTemplate() . "', " . $_docCustomerFilter->getErrorDocNoLogin() . ", " . $_docCustomerFilter->getErrorDocNoAccess() . ", '" . $_docCustomerFilter->getMode() . "', '" . $_specificCustomers . "', '" . $_filter . "', '" . $_whiteList . "', '" . $_blackList . "')
-				";
+				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' .we_database_base::arraySetter(array(
+						'modelId' => $model->ID,
+						'modelType' => $model->ContentType,
+						'modelTable' => stripTblPrefix($model->Table),
+						'accessControlOnTemplate' => $_docCustomerFilter->getAccessControlOnTemplate(),
+						'errorDocNoLogin' => $_docCustomerFilter->getErrorDocNoLogin(),
+						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
+						'mode' => $_docCustomerFilter->getMode(),
+						'specificCustomers' => $_specificCustomers,
+						'filter' => $_filter,
+						'whiteList' => $_whiteList,
+						'blackList' => $_blackList
+					));
+
 
 				$_db = new DB_WE();
 				$_db->query($_query);
@@ -366,13 +376,9 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param mixed $model
 	 */
 	function deleteForModel(&$model){
-
 		if($model->ID){
 			$_db = new DB_WE();
-			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE modelId=" . $model->ID . "
-				AND modelType=\"" . $model->ContentType . "\"
-				AND modelTable=\"" . $model->Table . "\"";
-			$_db->query($_query);
+			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . $model->ID . ' AND modelType="' . $model->ContentType . '" AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}
 
@@ -419,7 +425,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * Deletes all filters for given modelIds of table
 	 * call this, when several models are deleted
 	 */
-	function deleteModel($modelIds=array(), $table){
+	function deleteModel($modelIds = array(), $table){
 		if(sizeof($modelIds)){
 			$_db = new DB_WE();
 			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE
@@ -511,7 +517,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param boolean $_fromIfRegisteredUser
 	 * @return string
 	 */
-	function accessForVisitor(&$model, $modelHash=array(), $_fromIfRegisteredUser=false, $_fromListviewCheck=false){
+	function accessForVisitor(&$model, $modelHash = array(), $_fromIfRegisteredUser = false, $_fromListviewCheck = false){
 		if(!empty($model)){
 			$modelHash["id"] = $model->ID;
 			$modelHash["contentType"] = $model->ContentType;

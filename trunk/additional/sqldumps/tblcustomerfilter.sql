@@ -1,3 +1,6 @@
+###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblcustomerfilter WHERE modelTable="";
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `modelId` bigint(20) unsigned NOT NULL,
