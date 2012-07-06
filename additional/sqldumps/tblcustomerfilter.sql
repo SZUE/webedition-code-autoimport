@@ -13,6 +13,6 @@ CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `blackList` text NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `mode` (`mode`),
-  UNIQUE KEY `modelId` (`modelId`,`modelType`,`modelTable`),
+  UNIQUE KEY `modelIdN` (`modelId`,`modelType`,`modelTable`),
   KEY modelType (modelType,accessControlOnTemplate)
 ) ENGINE=MyISAM;
