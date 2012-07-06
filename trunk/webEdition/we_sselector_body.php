@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
+we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
 
 $supportDebuggingFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we_sselector_inc.php";
 $supportDebugging = false;
@@ -229,8 +229,7 @@ var i = 0;
 			print '//--></script>';
 			$set_rename = false;
 
-			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
-				?>
+			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
@@ -250,12 +249,12 @@ var i = 0;
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . "/" . $entry);
 
 				$indb = $DB_WE->next_record() ? true : false;
-				if($entry == "webEdition")
+				if($entry == "webEdition"|| (preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp")){
 					$indb = true;
-				if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp"))
-					$indb = true;
-				if($supportDebugging)
+				}
+				if($supportDebugging){
 					$indb = false;
+				}
 				$show = ($entry != ".") && ($entry != "..") && (($_REQUEST["fil"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["fil"] || $_REQUEST["fil"] == ""));
 				$bgcol = ($_REQUEST["curID"] == ($dir . "/" . $entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"))) ? "#DFE9F5" : "white";
 				$onclick = "";
