@@ -29,30 +29,6 @@ String.prototype.trim2=function () {
 	return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
-// The following Browser-Detection for IE does not work: 
-// Vars isIE9, isIE and ieVersion are now initialiszed in we_wysiwyg.class.inc.php (using we_browserDetect.php
-/* 
-var isIE9=false;
-if (navigator.appVersion.indexOf("MSIE")!=-1){
-	if (typeof weFrontpageEdit!='undefined' || (typeof top.opener!='undefined' && top.opener.weFrontpageEdit!='undefined')  ){
-		var IE = null;
-		if (document.documentMode) {
-			// Internet Exploter 8 oder 9
-			IE = document.documentMode; // documentMode = 8
-		} else {
-			// Internet Explorer 5-7
-			IE = 5; //setzt sozusagen den Quirks-Modus
-			if (document.compatMode) {
-				if (document.compatMode == "CSS1Compat")
-					IE = 7; // IE7 Modus
-			}
-		}
-		isIE9 = IE >= 9;//dies detektiert wie sich der IE verhällt
-	//var temp=navigator.appVersion.split("MSIE"); alternative, das gibt er an, was aber definiitv nicht immer funktioniert
-	}
-}
-*/
-
 var we_styleSheets;
 var we_classNames;
 var we_styleString = "";
@@ -432,7 +408,7 @@ function weWysiwyg_getParentElementFromRange(){
 				obj = obj.parentNode;
 			}
 		}
-	} else{ 
+	} else{
 		if(this.selection.type=="Control"){
 			obj = isIE9 ? this.range.item(0) : this.range(0);//#6615
 		}else{
@@ -688,7 +664,7 @@ function weWysiwyg_IEStart(){
 	eval('we_addEvent(this.eDocument, "keyup", '+this.fName+'onkeyup);');
 	eval('we_addEvent(this.eDocument, "keydown", '+this.fName+'onkeydown);');
 	eval('we_addEvent(this.eFrame, "focus", '+this.fName+'onfocus);');
-	eval('we_addEvent(this.eFrame, "blur", '+this.fName+'onblur);'); 
+	eval('we_addEvent(this.eFrame, "blur", '+this.fName+'onblur);');
 }
 
 
