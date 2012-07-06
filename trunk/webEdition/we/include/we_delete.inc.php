@@ -73,8 +73,7 @@ if(!$wfchk){
 				($found ? '}else{ top.toggleBusy(0)}' : '') .
 				'}');
 	} else{
-		$script = "top.toggleBusy(0);" . we_message_reporting::getShowMessageCall(
-				g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
+		$script = "top.toggleBusy(0);" . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">';
 	$wfchk_html .= we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>";

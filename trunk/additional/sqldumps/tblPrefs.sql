@@ -39,6 +39,7 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   cockpit_amount_last_documents tinyint(2) unsigned NOT NULL default '3',
   cockpit_rss_feed_url text,
   use_jupload tinyint(1) unsigned NOT NULL default '1',
+  juploadPath text,
   cockpit_dat text,
   cockpit_amount_columns tinyint(2) unsigned NOT NULL default '3',
   message_reporting tinyint(1) unsigned NOT NULL default '7',

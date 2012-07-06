@@ -36,7 +36,7 @@ if(isset($_SESSION['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
-$_SESSION['weS']['importDir'] = $_REQUEST['pathinfo0'];
+$_SESSION["prefs"]['juploadPath']= $_REQUEST['pathinfo0'];
 
 $_counter = 0;
 foreach($_FILES as $_index => $_file){
