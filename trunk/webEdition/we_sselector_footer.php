@@ -76,12 +76,14 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 if($_REQUEST["ret"] == 1){
 	$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
 	$yes_button = we_button::create_button("ok", "javascript:top.exit_close();");
+	$down_button =null;
 } else{
 	$cancel_button = we_button::create_button("close", "javascript:top.exit_close();");
 	$yes_button = we_button::create_button("edit", "javascript:editFile();");
+	//TODO: since .htaccess might be active, we have to call a php-script for download
+	$down_button= null;//we_button::create_button("download", "javascript:downloadFile();");
 }
-$buttons = we_button::position_yes_no_cancel(
-		$yes_button, null, $cancel_button);
+$buttons = we_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
 if($_REQUEST["filter"] == "all_Types"){
 	?>
 				<tr>
@@ -95,7 +97,7 @@ if($_REQUEST["filter"] == "all_Types"){
 	<?php
 	$ct = new we_base_ContentTypes();
 	foreach($ct->getFiles() as $key){
-		print '<option value="' . rawurlencode(g_l('contentTypes', '[' . $key . ']')) . '">' . g_l('contentTypes', '[' . $key . ']') . '</option>' . "\n";
+		print '<option value="' . rawurlencode(g_l('contentTypes', '[' . $key . ']')) . '">' . g_l('contentTypes', '[' . $key . ']') . '</option>';
 	}
 	?>
 						</select></td>
