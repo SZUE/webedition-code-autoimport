@@ -53,7 +53,7 @@ $currentDir = str_replace("\\", "/", $currentDir);
 
 $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != "") ? $_REQUEST['we_cmd'][5] : "");
 ?>
-<script  type="text/javascript">
+<script  type="text/javascript"><!--
 	var rootDir="<?php print $rootDir; ?>";
 	var currentID="<?php print $currentID; ?>";
 	var currentDir="<?php print str_replace($rootDir, '', $currentDir); ?>";
@@ -98,7 +98,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 		return true;
 
 	}
-
+//-->
 </script>
 <?php echo we_html_element::jsScript(JS_DIR . 'keyListener.js'); ?>
 </head>

@@ -816,19 +816,19 @@ HTS;
 		foreach($values as $value => $text){
 			if($text == '<!--we_optgroup-->'){
 				if($optgroup){
-					$ret .= '</optgroup>' . "\n";
+					$ret .= '</optgroup>';
 				}
 				$optgroup = true;
-				$ret .= '<optgroup label="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '">' . "\n";
+				$ret .= '<optgroup label="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '">';
 			} else{
 				$ret .= '<option value="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '"' . (in_array(
-						(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . "</option>\n";
+						(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . '</option>';
 			}
 		}
 		if($optgroup){
-			$ret .= '</optgroup>' . "\n";
+			$ret .= '</optgroup>';
 		}
-		$ret .= "</select>";
+		$ret .= '</select>';
 		return $ret;
 	}
 

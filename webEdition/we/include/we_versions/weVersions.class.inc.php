@@ -1529,9 +1529,8 @@ class weVersions{
 
 			$_opt = getHttpOption();
 			if($_opt != "none"){
-				$objTosave = serialize($we_doc);
 				$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
-				weFile::save($f, $objTosave);
+				weFile::save($f, serialize($we_doc));
 
 				$path = substr($we_doc->Path, 1);
 				$location = SITE_DIR . $path;
