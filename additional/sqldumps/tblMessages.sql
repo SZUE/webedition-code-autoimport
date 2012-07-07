@@ -10,7 +10,7 @@ CREATE TABLE ###TBLPREFIX###tblMessages (
   headerFrom varchar(255) default NULL,
   headerTo varchar(255) default NULL,
   Priority tinyint(4) unsigned default NULL,
-  seenStatus tinyint(4) unsigned default NULL,
+  seenStatus tinyint(4) unsigned NOT NULL default '0',
   MessageText text,
   tag tinyint(4) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),

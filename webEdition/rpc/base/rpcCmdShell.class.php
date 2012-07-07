@@ -24,187 +24,135 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once("base/rpcCmd.class.php");
 require_once("base/rpcResponse.class.php");
 require_once("base/rpcView.class.php");
 require_once("base/rpcJsonView.class.php");
 
+class rpcCmdShell{
 
-class rpcCmdShell {
-
-	var $Protocol = array();
-
+	var $Protocol;
 	var $Cmd;
-
 	var $View;
-
 	var $Response;
-
 	var $Status = rpcCmd::STATUS_OK;
 
-	function __construct(&$cmd,$protocol) {
+	function __construct(&$cmd, $protocol){
 
 		$this->Protocol = $protocol;
 		$this->Cmd = $this->createCmd($cmd);
 
-		if(isset($_REQUEST['view'])) {
-
-			if(!$this->isViewAllowed($_REQUEST['view'])) {
-
+		if(isset($_REQUEST['view'])){
+			if(!$this->isViewAllowed($_REQUEST['view'])){
 				$this->Status = rpcCmd::STATUS_NOT_ALLOWED_VIEW;
-
 			}
-
-		} else {
-
+		} else{
 			$cmd['view'] = $this->CmdName;
-
 		}
-
-		if($this->Status == rpcCmd::STATUS_OK) {
-
+		if($this->Status == rpcCmd::STATUS_OK){
 			$this->View = $this->getView($cmd);
-
 		}
-
 	}
 
-	function createCmd(&$cmd) {
-
+	function createCmd(&$cmd){
 		$this->CmdName = $cmd['cmd'];
-
 		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
-		if (isset($cmd['cns'])) {
-			$_namespace = "/{$cmd['cns']}/";
-		} else {
-			$_namespace = '/';
-		}
+		$_namespace = '/' . (isset($cmd['cns']) ? "{$cmd['cns']}/" : '');
 
-		if(isset($cmd['tool']) && weToolLookup::isTool($cmd['tool'])) {
-			$_cmdfile = weToolLookup::getCmdInclude($_namespace,$cmd['tool'],$this->CmdName);
-		} else {
-			$_cmdfile = 'cmds' . $_namespace . $_classname . '.class.php';
-		}
-		if (include_once($_cmdfile)) {
+		$_cmdfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
+				weToolLookup::getCmdInclude($_namespace, $cmd['tool'], $this->CmdName) :
+				'cmds' . $_namespace . $_classname . '.class.php');
 
+		if(include_once($_cmdfile)){
 			$_obj = new $_classname($this);
 			$_obj->rpcCmd($this);
 
 			$this->Status = $_obj->Status;
 
 			return $_obj;
-
-		} else {
-
-			$this->Status = rpcCmd::STATUS_NO_CMD;
-
 		}
+		$this->Status = rpcCmd::STATUS_NO_CMD;
+
 
 		return null;
-
 	}
 
-	function getView(&$cmd) {
+	function getView(&$cmd){
 
 		$_classname = "rpc{$cmd["view"]}View";
+		$namespace = '/' . (isset($cmd['vns']) ? "{$cmd['vns']}/" : (isset($cmd['cns']) ? "{$cmd['cns']}/" : ''));
 
+		$_viewfile = (isset($cmd['tool']) && weToolLookup::isTool($cmd['tool']) ?
+				weToolLookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
+				'views/' . $this->Protocol . $namespace . $_classname . '.class.php');
+		if(@include_once($_viewfile)){
 
-		if (isset($cmd['vns'])) {
-			$namespace = "/{$cmd['vns']}/";
-		} else if (isset($cmd['cns'])) {
-			$namespace = "/{$cmd['cns']}/";
-		} else {
-			$namespace = '/';
-		}
-
-		if(isset($cmd['tool']) && weToolLookup::isTool($cmd['tool'])) {
-			$_viewfile = weToolLookup::getViewInclude($this->Protocol,$namespace,$cmd['tool'],$cmd["view"]);
-		} else {
-			$_viewfile = 'views/' . $this->Protocol . $namespace . $_classname . '.class.php';
-		}
-		if ( @include_once($_viewfile) ) {
-
-			$_obj  = new $_classname();
+			$_obj = new $_classname();
 			$_obj->setCmdShell($this);
 
 			return $_obj;
-
-		}else {
-			include_once('views/json/rpcGenericJSONView.class.php');
-			$_obj  = new rpcGenericJSONView();
-			$_obj->setCmdShell($this);
-			return $_obj;
-
 		}
-
-		return null;
+		include_once('views/json/rpcGenericJSONView.class.php');
+		$_obj = new rpcGenericJSONView();
+		$_obj->setCmdShell($this);
+		return $_obj;
 	}
 
-
-	function setView(&$cmd) {
-
+	function setView(&$cmd){
 		$this->View = $this->getView($cmd);
 	}
 
-	function isViewAllowed($view) {
-
-		if ($view == $this->CmdName) {
+	function isViewAllowed($view){
+		if($view == $this->CmdName){
 			return true;
 		}
 
-		if (count($this->Cmd->ExtraViews)){
-			return in_array($view,$this->Cmd->ExtraViews);
+		if(count($this->Cmd->ExtraViews)){
+			return in_array($view, $this->Cmd->ExtraViews);
 		}
 
 		return false;
 	}
 
-
 	function executeCommand(){
-         $this->Response = $this->Cmd->execute();
+		$this->Response = $this->Cmd->execute();
 	}
-
 
 	function getResponse(){
 		return $this->View->getResponse($this->Response);
 	}
 
-	function executeInternalCmd(&$cmd) {
-
+	function executeInternalCmd(&$cmd){
 		$cmd = $this->createCmd($cmd);
 		return $cmd->execute();
 	}
 
-	function getInternalView($cmd) {
-
+	function getInternalView($cmd){
 		$_View = $this->getView($cmd);
 		return $_View->getResponse($this->executeInternalCmd($cmd));
 	}
 
-	function getErrorOut() {
-
-		switch ($this->Status) {
+	function getErrorOut(){
+		switch($this->Status){
 
 			case rpcCmd::STATUS_NO_CMD :
 				return 'ERROR: No command defined!';
-			break;
+				break;
 
 			case rpcCmd::STATUS_NO_VIEW :
 				return 'ERROR: No view defined!';
-			break;
+				break;
 
 			case rpcCmd::STATUS_NO_SESSION :
 				return 'ERROR: No session exists!';
-			break;
-
+				break;
 		}
 
 		return 'ERROR';
 	}
 
-	function getStatus() {
+	function getStatus(){
 		return $this->Status;
 	}
 

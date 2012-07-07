@@ -15,7 +15,7 @@ CREATE TABLE ###TBLPREFIX###tblTODO (
   Properties smallint(5) unsigned default NULL,
   MessageText text,
   Content_Type varchar(10) default NULL,
-  seenStatus tinyint(3) unsigned default NULL,
+  seenStatus tinyint(3) unsigned NOT NULL default '0',
   tag tinyint(3) unsigned default NULL,
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;

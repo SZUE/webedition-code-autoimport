@@ -67,7 +67,7 @@ if(!empty($res['ok'])){
 	$tbl = '<table align="center" cellpadding="7" cellspacing="3" width="100%">';
 	if($res['ok']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" valign="top">' . g_l('messaging', '[s_sent_to]') . ':</td>
+                    <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[s_sent_to]') . ':</td>
                     <td class="defaultfont">
                         <ul>';
 
@@ -82,7 +82,7 @@ if(!empty($res['ok'])){
 
 	if($res['failed']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" valign="top">' . g_l('messaging', '[n_sent_to]') . ':</td>
+                    <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[n_sent_to]') . ':</td>
                     <td class="defaultfont">
                         <ul>';
 
@@ -97,7 +97,7 @@ if(!empty($res['ok'])){
 
 	if($res['err']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" valign="top">' . g_l('messaging', '[occured_errs]') . ':</td>
+                    <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
                     <td class="defaultfont">
                         <ul><li>'.implode('</li><li>',$res['err']).'</li></ul>
                     </td>
@@ -105,7 +105,7 @@ if(!empty($res['ok'])){
 	}
 
 	$tbl .= '</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, g_l('messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
 	?>
 </body>
 
