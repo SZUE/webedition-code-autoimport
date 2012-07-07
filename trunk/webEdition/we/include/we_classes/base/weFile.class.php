@@ -30,10 +30,10 @@ abstract class weFile{
 		}
 		if(!weFile::hasURL($filename)){
 			$filename = realpath($filename);
-			if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+			/*if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
 				t_e('warning', 'Acess outside document_root forbidden!', $filename);
 				return;
-			}
+			}*/
 
 			if(!is_readable($filename)){
 				return false;
@@ -74,10 +74,10 @@ abstract class weFile{
 			return false;
 		}
 		$filename = realpath($filename);
-		if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+		/*if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
 			t_e('warning', 'Acess outside document_root forbidden!', $filenam);
 			return;
-		}
+		}*/
 
 		if($iscompressed == 0){
 			$open = 'fopen';
@@ -114,10 +114,10 @@ abstract class weFile{
 			return false;
 		}
 		$filename = realpath($filename);
-		if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+		/*if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
 			t_e('warning', 'Acess outside document_root forbidden!', $filename);
 			return;
-		}
+		}*/
 
 		if($iscompressed == 0){
 			$open = 'fopen';
@@ -153,11 +153,12 @@ abstract class weFile{
 		if($filename == "" || weFile::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			return false;
 		} else{
+			$oldFile=$filename;
 			$filename = realpath($filename);
-			if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-				t_e('warning', 'Acess outside document_root forbidden!', $filename);
+			/*if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+				t_e('warning', 'Acess outside document_root forbidden!', $filename, $oldFile,$_SERVER['DOCUMENT_ROOT']);
 				return;
-			}
+			}*/
 			if(($create_path && !weFile::mkpath(dirname($filename))) && (!is_writable(dirname($filename)))){
 				return false;
 			}
