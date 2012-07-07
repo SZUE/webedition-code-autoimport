@@ -203,9 +203,9 @@ class we_messaging extends we_class{
 
 	function poll_for_new(){
 		$c = 0;
-
-		foreach($this->used_msgobjs as $mo)
+		foreach($this->used_msgobjs as $mo){
 			$c += $mo->get_newmsg_count();
+		}
 
 		return $c;
 	}
@@ -661,7 +661,7 @@ class we_messaging extends we_class{
 			}
 		} else if(isset($addr_is_email) && $addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
-			
+
 		} else{
 			$rcpt_info['msg_obj'] = 'we_message';
 		}

@@ -22,35 +22,29 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class rpcJsonView {
+class rpcJsonView{
 
 	var $CmdShell;
 
-	function setCmdShell($cmdshell) {
+	function setCmdShell($cmdshell){
 		$this->CmdShell = $cmdshell;
 	}
-
 
 	/**
 	 * @param rpcResponse $response
 	 * @return string
 	 */
-	function getResponse( $response ) {
+	function getResponse($response){
+		$status = ($response->Success ? "response" : "error");
 
-		if ( $response->Success ) {
-			$status = "response";
-
-		} else {
-			$status = "error";
-		}
 
 		// DONT TOUCH THIS -  this is also  used forDreamweaver extension !!!!
 		return
-		'var weResponse = {
+			'var weResponse = {
 			"type":"' . $status . '",
 			"data":"' . addslashes($response->getData("data")) . '"
 		};'
 		;
 	}
+
 }

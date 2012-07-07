@@ -137,7 +137,7 @@ class we_todo extends we_msg_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB));
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type=' . we_msg_proto::TODO_NR . ' AND msg_type=' . $this->sql_class_nr . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB));
 	}
 
 	function get_count($folder_id){
@@ -381,7 +381,7 @@ class we_todo extends we_msg_proto{
 			$tmp['Priority'] = $row['Priority'] != '' ? $row['Priority'] : 'NULL';
 			$tmp['MessageText'] = $row['MessageText'];
 			$tmp['Content_Type'] = $row['Content_Type'];
-			$tmp['seenStatus'] = $row['seenStatus'] != '' ? $row['seenStatus'] : 'NULL';
+			$tmp['seenStatus'] = intval($row['seenStatus']);
 			$tmp['tag'] = $row['tag'] != '' ? $row['tag'] : '';
 
 			$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));

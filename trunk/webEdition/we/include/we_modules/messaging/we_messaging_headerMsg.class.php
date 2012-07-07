@@ -54,29 +54,31 @@ class we_messaging_headerMsg{
 
 	static function pJS(){
 		self::start();
-		$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-		$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 		?>
 		<script type="text/javascript"><!--
 
 			function header_msg_update(newmsg_count, newtodo_count) {
 				var msgTD = document.getElementById("msgCount");
 				var todoTD = document.getElementById("todoCount");
-				var changed=(msgTD.firstChild.innerHTML!="" && msgTD.firstChild.innerHTML!=newmsg_count)||(todoTD.firstChild.innerHTML!="" && todoTD.firstChild.innerHTML!=newtodo_count);
+				var changed=(newmsg_count > msgTD.firstChild.innerHTML)||(newtodo_count > todoTD.firstChild.innerHTML);
 				msgTD.className = "middlefont" + ( (newmsg_count > 0) ? "red" : "" );
 				todoTD.className = "middlefont" + ( (newtodo_count > 0) ? "red" : "" );
 				msgTD.firstChild.innerHTML = newmsg_count;
 				todoTD.firstChild.innerHTML = newtodo_count;
 				if(changed){
-					alert("<?php echo g_l('modules_messaging', '[newHeaderMsg]');?>");
+					alert("<?php echo g_l('modules_messaging', '[newHeaderMsg]'); ?>");
 				}
 			}
-		<?php if(defined("MESSAGING_SYSTEM")){ ?>
+		<?php
+		if(defined("MESSAGING_SYSTEM")){
+			$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+			$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+			?>
 
-						if( top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.weEditorFrameController.getActiveDocumentReference().setMsgCount)=='function'&&typeof(top.weEditorFrameController.getActiveDocumentReference().setTaskCount)=='function'){
-							top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
-							top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
-						}
+					if( top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.weEditorFrameController.getActiveDocumentReference().setMsgCount)=='function'&&typeof(top.weEditorFrameController.getActiveDocumentReference().setTaskCount)=='function'){
+						top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
+						top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
+					}
 		<?php } ?>
 			//-->
 		</script>

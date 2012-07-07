@@ -121,24 +121,24 @@ class we_message extends we_msg_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . we_msg_proto::STATUS_SEEN . ') AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid),'c',$this->DB));
+		t_e('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid));
+		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB));
 	}
 
 	function get_count($folder_id){
-		$cnt=f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_msg_proto::MESSAGE_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid),'c',$this->DB);
-		return $cnt===''?-1:$cnt;
+		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID = ' . intval($folder_id) . ' AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB);
 	}
 
-/*	function get_userids_by_nick($nick){
-		$ret_ids = array();
+	/* 	function get_userids_by_nick($nick){
+	  $ret_ids = array();
 
-		$DB2 = new DB_WE();
-		$DB2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $DB2->escape($nick) . '%" OR First LIKE "%' . $DB2->escape($nick) . '%" OR Second LIKE "%' . $DB2->escape($nick) . '%"');
-		while($DB2->next_record())
-			$ret_ids[] = $DB2->f('ID');
+	  $DB2 = new DB_WE();
+	  $DB2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username LIKE "%' . $DB2->escape($nick) . '%" OR First LIKE "%' . $DB2->escape($nick) . '%" OR Second LIKE "%' . $DB2->escape($nick) . '%"');
+	  while($DB2->next_record())
+	  $ret_ids[] = $DB2->f('ID');
 
-		return $ret_ids;
-	}*/
+	  return $ret_ids;
+	  } */
 
 	function create_folder($name, $parent){
 		return parent::create_folder($name, $parent);
@@ -151,7 +151,7 @@ class we_message extends we_msg_proto{
 
 		$cond = '';
 		foreach($i_headers as $ih){
-			$cond .= 'ID=' . intval($ih['_ID']) . ' OR ';
+			$cond .= 'ID = ' . intval($ih['_ID']) . ' OR ';
 		}
 
 		$cond = substr($cond, 0, -4);
@@ -168,8 +168,8 @@ class we_message extends we_msg_proto{
 		foreach($items as $key => $val){
 			$_items[$key] = intval($val);
 		}
-		$id_str = 'ID=' . join(', ID=', $_items);
-		$this->DB->query('UPDATE ' . $this->table . " SET ParentID=$target_fid WHERE ($id_str) AND UserID=" . intval($this->userid));
+		$id_str = 'ID IN ( ' . implode(',', $_items) . ')';
+		$this->DB->query('UPDATE ' . $this->table . ' SET ParentID=' . intval($target_fid) . ' WHERE (' . $id_str . ') AND UserID=' . intval($this->userid));
 
 		return 1;
 	}
@@ -181,11 +181,9 @@ class we_message extends we_msg_proto{
 			return;
 		}
 
-		$target_fid = addslashes($target_fid);
 		foreach($items as $item){
 			$tmp = array();
-			$query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid);
-			$this->DB->query($query);
+			$this->DB->query('SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . " WHERE ID=" . intval($item) . " AND UserID=" . intval($this->userid));
 			while($this->DB->next_record()) {
 				$tmp['ParentID'] = isset($this->DB->Record['ParentID']) ? $this->DB->Record['ParentID'] : 'NULL';
 				$tmp['msg_type'] = $this->DB->f('msg_type');
@@ -200,25 +198,22 @@ class we_message extends we_msg_proto{
 				$tmp['tag'] = $this->DB->f('tag');
 			}
 
-			$query = 'INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag) VALUES (' .
-				$target_fid . ',' .
-				$this->userid . ',' .
-				$tmp['msg_type'] . ',' .
-				$tmp['obj_type'] . ',' .
-				$tmp['headerDate'] . ',' .
-				'"' . addslashes($tmp['headerSubject']) . '",' .
-				$tmp['headerUserID'] . ',' .
-				'"' . addslashes($tmp['headerFrom']) . '",' .
-				$tmp['Priority'] . ',' .
-				'"' . addslashes($tmp['MessageText']) . '",' .
-				$tmp['seenStatus'] . ',' .
-				$tmp['tag'] . ')';
-			$this->DB->query($query);
+			$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
+					'ParentID' => intval($target_fid),
+					'UserID' => $this->userid,
+					'msg_type' => $tmp['msg_type'],
+					'obj_type' => $tmp['obj_type'],
+					'headerDate' => $tmp['headerDate'],
+					'headerSubject' => $tmp['headerSubject'],
+					'headerUserID' => $tmp['headerUserID'],
+					'headerFrom' => $tmp['headerFrom'],
+					'Priority' => $tmp['Priority'],
+					'MessageText' => $tmp['MessageText'],
+					'seenStatus' => $tmp['seenStatus'],
+					'tag' => $tmp['tag'],
+				)));
 
-			$this->DB->query('SELECT LAST_INSERT_ID() as l');
-			if($this->DB->next_record()){
-				$pending_ids[] = $this->DB->f('l');
-			}
+			$pending_ids[] = $this->DB->getInsertId();
 		}
 
 		return 1;
@@ -240,14 +235,14 @@ class we_message extends we_msg_proto{
 			}
 
 			/* FIXME: replace this by default_folders[inbox] or something */
-			$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid));
+			$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 			$this->DB->next_record();
 			$in_folder = $this->DB->f('ID');
 			if(!isset($in_folder) || $in_folder == ''){
 				/* Create default Folders for target user */
 				include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
 				if(msg_create_folders($userid) == 1){
-					$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid));
+					$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 					$this->DB->next_record();
 					$in_folder = $this->DB->f('ID');
 					if(!isset($in_folder) || $in_folder == ''){
@@ -262,17 +257,17 @@ class we_message extends we_msg_proto{
 				}
 			}
 
-			$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (" . intval($in_folder) . ", " . intval($userid) . ',' . $this->sql_class_nr . ',' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape(($data['subject'])) . '", ' . intval($this->userid) . ', 0, "' . $this->DB->escape($data['body']) . '",0)');
+			$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . " (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, Priority, MessageText,seenStatus) VALUES (" . intval($in_folder) . ", " . intval($userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape(($data['subject'])) . '", ' . intval($this->userid) . ', 0, "' . $this->DB->escape($data['body']) . '", 0)');
 			$results['ok'][] = $rcpt;
 		}
 		/* Copy sent message into 'Sent' Folder of the sender */
 		if(!isset($this->default_folders[we_msg_proto::FOLDER_SENT]) || $this->default_folders[we_msg_proto::FOLDER_SENT] < 0){
-			$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type=' . we_msg_proto::FOLDER_SENT . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($_SESSION["user"]["ID"]));
+			$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_msg_proto::FOLDER_SENT . ' AND msg_type = ' . $this->sql_class_nr . ' AND UserID = ' . intval($_SESSION["user"]["ID"]));
 			$this->DB->next_record();
 			$this->default_folders[we_msg_proto::FOLDER_SENT] = $this->DB->f('ID');
 		}
-		$to_str = join(',', $rcpts);
-		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText,seenStatus) VALUES (' . $this->default_folders[we_msg_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ',' . $this->sql_class_nr . ',' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB->escape($data['body']) . '",0)');
+		$to_str = join(', ', $rcpts);
+		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText, seenStatus) VALUES (' . $this->default_folders[we_msg_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ', ' . $this->sql_class_nr . ', ' . we_msg_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB->escape($data['body']) . '", 0)');
 
 		return $results;
 	}
@@ -286,8 +281,8 @@ class we_message extends we_msg_proto{
 
 			if($sf_uoff > -1){
 				$sfield_cond .= 'u.username LIKE "%' . addslashes($criteria['searchterm']) . '%" OR
-				 u.First LIKE "%' . addslashes($criteria['searchterm']) . '%" OR
-				 u.Second LIKE "%' . addslashes($criteria['searchterm']) . '%" OR ';
+		u.First LIKE "%' . addslashes($criteria['searchterm']) . '%" OR
+		u.Second LIKE "%' . addslashes($criteria['searchterm']) . '%" OR ';
 
 				array_splice($criteria['search_fields'], $sf_uoff, 1);
 			}
@@ -298,7 +293,7 @@ class we_message extends we_msg_proto{
 
 			$sfield_cond = substr($sfield_cond, 0, -3);
 
-			$folders_cond = join(' OR m.ParentID=', $criteria['search_folder_ids']);
+			$folders_cond = join(' OR m.ParentID = ', $criteria['search_folder_ids']);
 		} else if(isset($criteria['folder_id'])){
 
 			$folders_cond = $criteria['folder_id'];
@@ -311,13 +306,13 @@ class we_message extends we_msg_proto{
 		}
 
 		if(isset($criteria['message_ids'])){
-			$message_ids_cond = join(' OR m.ID=', $criteria['message_ids']);
+			$message_ids_cond = join(' OR m.ID = ', $criteria['message_ids']);
 		}
 
 		$this->selected_set = array();
 		$query = 'SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
 		FROM ' . $this->DB->escape($this->table) . ' as m, ' . USER_TABLE . ' as u
-		WHERE ((m.msg_type=' . $this->sql_class_nr . ' AND m.obj_type=' . we_msg_proto::MESSAGE_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
+		WHERE ((m.msg_type = ' . $this->sql_class_nr . ' AND m.obj_type = ' . we_msg_proto::MESSAGE_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 
 		$this->DB->query($query);
@@ -347,7 +342,7 @@ class we_message extends we_msg_proto{
 
 		/* mark selected_set messages as seen */
 		if(!empty($seen_ids)){
-			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE (ID=' . join(' OR ID=', $seen_ids) . ') AND UserID=' . $this->userid;
+			$query = 'UPDATE ' . $this->DB->escape($this->table) . ' SET seenStatus = (seenStatus | ' . we_msg_proto::STATUS_SEEN . ') WHERE (ID = ' . join(' OR ID = ', $seen_ids) . ') AND UserID = ' . $this->userid;
 			$this->DB->query($query);
 		}
 
@@ -364,14 +359,14 @@ class we_message extends we_msg_proto{
 
 		$id_str = '';
 		foreach($int_hdrs as $ih){
-			$id_str .= 'm.ID=' . addslashes($ih['_ID']);
+			$id_str .= 'm.ID = ' . addslashes($ih['_ID']);
 		}
 
 		$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB->escape($this->table) . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . intval($this->userid));
 
 		$read_ids = array();
 
-		while($this->DB->next_record()){
+		while($this->DB->next_record()) {
 			if(!($this->DB->f('seenStatus') & we_msg_proto::STATUS_READ))
 				$read_ids[] = $this->DB->f('ID');
 
@@ -390,7 +385,7 @@ class we_message extends we_msg_proto{
 		}
 
 		if(!empty($read_ids)){
-			$query = 'UPDATE ' . $this->table . ' SET seenStatus=(seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE ID IN (' . implode(',', $read_ids) . ') AND UserID=' . intval($this->userid);
+			$query = 'UPDATE ' . $this->table . ' SET seenStatus = (seenStatus | ' . we_msg_proto::STATUS_READ . ') WHERE ID IN (' . implode(', ', $read_ids) . ') AND UserID = ' . intval($this->userid);
 			$this->DB->query($query);
 		}
 
