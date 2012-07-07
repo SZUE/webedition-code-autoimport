@@ -298,6 +298,10 @@ $l_buttons_global=array(
 		'value'=>'Kumoa valinta',
 		'width'=>120,
 	),
+	'download'=>array(
+		'alt'=>'download',
+		'value'=>'Download',
+	),
 	'editor'=>array(
 		'alt'=>'Käynnistä editori',
 		'value'=>'Käynnistä editori',

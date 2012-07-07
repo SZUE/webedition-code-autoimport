@@ -272,7 +272,7 @@ $l_weTag=array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos webEdition dokumenttia tai objektia ei voitu poistaa we:delete -tagilla',
 	),
 	'ifNotDoctype'=>array(
-		'description'=>'',
+		'description'=>'Show enclosed content, if doctype of document is not listed within attribute "doctypes"',
 	),
 	'ifNotEditmode'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos ei olla sivun muokkaustilassa',
@@ -461,7 +461,7 @@ $l_weTag=array(
 		'description'=>'Content enclosed by this tag is only displayed if a table cell is not empty (has contents in a listview).',
 	),
 	'ifTemplate'=>array(
-		'description'=>'',
+		'description'=>'Show document, if current document is created by the given template.',
 	),
 	'ifTop'=>array(
 		'description'=>'Tämän tagin sisältö näytetään jos tagi ei ole liitetyssä (included) dokumentissa.',
