@@ -100,28 +100,19 @@ class we_message extends we_msg_proto{
 	/* Methods dealing with USER_TABLE and other userstuff */
 	function userid_to_username($id){
 		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
-		if($db2->next_record()){
-			return $db2->f('username');
-		}
-
-		return g_l('modules_messaging', '[userid_not_found]');
+		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), 'username', $db2);
+		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
 	}
 
 	function username_to_userid($username){
 		$db2 = new DB_WE();
-		$db2->query('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"');
-		if($db2->next_record()){
-			return $db2->f('ID');
-		}
-
-		return -1;
+		$id = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db2->escape($username) . '"', 'ID', $db2);
+		return ($id === '' ? -1 : $id);
 	}
 
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		t_e('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid));
 		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus & ' . we_msg_proto::STATUS_READ . '=0) AND obj_type = ' . we_msg_proto::MESSAGE_NR . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_msg_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB));
 	}
 
