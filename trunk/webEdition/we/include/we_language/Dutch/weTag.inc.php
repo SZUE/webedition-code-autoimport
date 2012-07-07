@@ -272,7 +272,7 @@ $l_weTag=array(
 		'description'=>'Content omsloten door deze tag wordt alleen getoond als een webEdition document of object niet verwijderd kon worden door middel van &lt;we:delete/&gt;',
 	),
 	'ifNotDoctype'=>array(
-		'description'=>'',
+		'description'=>'Show enclosed content, if doctype of document is not listed within attribute "doctypes"',
 	),
 	'ifNotEditmode'=>array(
 		'description'=>'Content omsloten door deze tag wordt niet getoond in de edit mode.',
@@ -461,7 +461,7 @@ $l_weTag=array(
 		'description'=>'Content enclosed by this tag is only displayed if a table cell is not empty (has contents in a listview).',
 	),
 	'ifTemplate'=>array(
-		'description'=>'',
+		'description'=>'Show document, if current document is created by the given template.',
 	),
 	'ifTop'=>array(
 		'description'=>'De omsloten content wordt alleen getoond als deze tag zicht niet bevind in een ingevoeegs document.',

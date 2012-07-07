@@ -298,6 +298,10 @@ $l_buttons_global=array(
 		'value'=>'Deselect all',
 		'width'=>110,
 	),
+	'download'=>array(
+		'alt'=>'download',
+		'value'=>'Download',
+	),
 	'editor'=>array(
 		'alt'=>'Demarrer editeur',
 		'value'=>'Demarrer editeur',
