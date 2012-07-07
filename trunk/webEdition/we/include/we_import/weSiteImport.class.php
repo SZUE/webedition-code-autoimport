@@ -1725,9 +1725,7 @@ class weSiteImport{
 		// get Data of File
 		//if (!is_dir($path) && filesize($path) > 0) {
 		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-flash' && $contentType != 'movie/quicktime'){// #5295
-			$fp = fopen($path, "rb");
-			$data = fread($fp, filesize($path));
-			fclose($fp);
+			$data = weFile::load($path);
 		}
 
 		$we_ContentType = $contentType;

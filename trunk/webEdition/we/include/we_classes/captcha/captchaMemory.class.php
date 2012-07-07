@@ -127,9 +127,9 @@ class CaptchaMemory {
 			}
 		} else {
 			$serialized = serialize($data);
-			$fh = fopen($file.".php", 'w+');
-	    	fputs($fh, "<?php\n\$data='".$serialized."';\n?>");
-	    	fclose($fh);
+			weFile::save($file.".php",
+				"<?php\n\$data='".$serialized."';",
+				'w+');
 		}
 	} /* end: writeData */
 

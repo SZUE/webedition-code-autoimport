@@ -55,7 +55,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-	function __construct($fileName, $applyFontNames=true, $applyFontSize=true, $applyFontColor=true){
+	function __construct($fileName, $applyFontNames = true, $applyFontSize = true, $applyFontColor = true){
 		$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
 		move_uploaded_file($fileName, $tempName);
 		$fileName = $tempName;
@@ -63,12 +63,7 @@ class we_rtf2html{
 		$this->applyNames = $applyFontNames;
 		$this->applySize = $applyFontSize;
 		$this->applyColor = $applyFontColor;
-
-		$fp = fopen($fileName, "rb");
-		if($fp){
-			$this->fileContent = @fread($fp, @filesize($fileName));
-		}
-		fclose($fp);
+		$this->fileContent = weFile::load($fileName);
 
 		$this->initControlTable();
 		$this->colectInfo();
@@ -554,7 +549,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-	function analyzeControl($control, $para=""){
+	function analyzeControl($control, $para = ""){
 
 		$last = 0;
 
@@ -589,7 +584,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-	function propParse($key, $para=""){
+	function propParse($key, $para = ""){
 
 		if(($key == 19) || ($key == 20) || ($key == 21)){
 			array_push($this->align, $key);
@@ -775,7 +770,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-	function popStack($key=-1){
+	function popStack($key = -1){
 		$ret = -1;
 		if(is_array($this->stack[$this->group])){
 			if($key == -1){

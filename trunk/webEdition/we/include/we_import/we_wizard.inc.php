@@ -388,7 +388,7 @@ HTS;
 						$cp->setEnclosure($encl);
 						$cp->parseCSV();
 						$num_files = 0;
-						$unique_id = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+						$unique_id = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 
 						$path = TEMP_PATH . $unique_id;
 						we_util_File::createLocalFolder($path);
@@ -414,9 +414,7 @@ HTS;
 									}
 								}
 								$data = implode("\n", $d);
-								$hFile = fopen($path . "/temp_" . $i . ".csv", "wb");
-								fwrite($hFile, $data);
-								fclose($hFile);
+								weFile::save($path . '/temp_' . $i . '.csv', $data, 'wb');
 								$num_files++;
 							}
 						}

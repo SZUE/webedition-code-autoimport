@@ -1080,18 +1080,14 @@ class we_imageDocument extends we_binaryDocument{
 								if((isset(
 										$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
 										$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
-									$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'rb');
-									$imageData = fread($fh, filesize($_SESSION[$_imgDataId]['serverPath']));
-									fclose($fh);
+									$imageData = weFile::load($_SESSION[$_imgDataId]['serverPath']);
 									$thumb = new we_thumbnail();
 									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], $_SESSION[$_imgDataId]['keepratio'], $_SESSION[$_imgDataId]['maximize'], false, false, '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
 
 									$imgData = '';
 									$thumb->getThumb($imgData);
 
-									$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'wb');
-									fwrite($fh, $imgData);
-									fclose($fh);
+									weFile::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
 
 									$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 								}

@@ -64,15 +64,7 @@ class weConfParser{
 	}
 
 	function saveToFile($file){
-		$fp = fopen($file, "wb");
-		if(!$fp){
-			return false;
-		}
-		if(!fwrite($fp, $this->getFileContent())){
-			return false;
-		}
-		fclose($fp);
-		return true;
+		return weFile::save($file, $this->getFileContent(),'wb');
 	}
 
 	function getValue($key){

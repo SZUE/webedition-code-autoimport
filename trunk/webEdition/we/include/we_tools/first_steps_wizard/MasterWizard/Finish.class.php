@@ -57,8 +57,7 @@ class Finish extends leWizardStepBase{
 		$content = $Parser->parseCode($content);
 
 		// write new content
-		$fh = fopen($NewSidebarFile, "w+");
-		if(!$fh || !fputs($fh, $content) || !fclose($fh)){
+		if(!weFile::save($NewSidebarFile, $content,'w+')){
 			return LE_WIZARDSTEP_ERROR;
 		}
 

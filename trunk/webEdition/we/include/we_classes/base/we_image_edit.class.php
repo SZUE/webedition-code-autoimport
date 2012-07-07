@@ -94,35 +94,19 @@ class we_image_edit{
 
 		// Check if we need to read the beginning of the image
 		if(file_exists($filename)){
-			$_fp_file = fopen($filename, "rb");
-
-			$imagedata = fread($_fp_file, 4);
-			fclose($_fp_file);
+			$imagedata = weFile::loadPart($filename, 0, 3);
 		}
 
-		switch(substr($imagedata, 0, 3)){
+		switch($imagedata){
 			case "GIF":
-				$_type = "gif";
-
-				break;
-
+				return "gif";
 			case "\xFF\xD8\xFF":
-				$_type = "jpg";
-
-				break;
-
+				return "jpg";
 			case "\x89" . "PN":
-				$_type = "png";
-
-				break;
-
+				return "png";
 			default:
-				$_type = "";
-
-				break;
+				return "";
 		}
-
-		return $_type;
 	}
 
 	function gd_info(){
@@ -174,9 +158,7 @@ class we_image_edit{
 					// Detect capabilities of GIF support
 					if(function_exists("ImageCreateFromGIF")){
 						if($_tempfilename = tempnam(TEMP_PATH, "")){
-							if($_fp_tempfile = @fopen($_tempfilename, 'wb')){
-								fwrite($_fp_tempfile, base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw=="));
-								fclose($_fp_tempfile);
+							if(weFile::save($_fp_tempfile, base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw=="))){
 
 								// GIF create support must be enabled if we're able to create a image
 								$_gif_test = @imagecreatefromgif($_tempfilename);
@@ -253,10 +235,8 @@ class we_image_edit{
 				break;
 		}
 
-		if($_tempfilename = tempnam(TEMP_PATH, "")){
-			if($_fp_tempfile = @fopen($_tempfilename, 'wb')){
-				fwrite($_fp_tempfile, $imagedata);
-				fclose($_fp_tempfile);
+		if(($_tempfilename = tempnam(TEMP_PATH, ''))){
+			if(weFile::save($_tempfilename, $imagedata)){
 				$imagedata = "";
 				unset($imagedata);
 				if(function_exists($_image_create_from_string_replacement_function)){
@@ -439,7 +419,7 @@ class we_image_edit{
 		if($output_format == "jpeg"){
 			$output_format = "jpg";
 		}
-		
+
 		if(strlen($imagedata) < 255 && @file_exists($imagedata)){
 			$_fromFile = true;
 		}
@@ -575,12 +555,7 @@ class we_image_edit{
 						} else{
 							if($_tempfilename = tempnam(TEMP_PATH, "")){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
-								$_fp_tempfile = fopen($_tempfilename, "rb");
-								$_gdimg = "";
-								while(!feof($_fp_tempfile)) {
-									$_gdimg .= fread($_fp_tempfile, 8192);
-								}
-								fclose($_fp_tempfile);
+								$_gdimg=weFile::load($_tempfilename);
 
 								// As we read the temporary file we no longer need it
 								//unlink($_tempfilename);
@@ -602,9 +577,7 @@ class we_image_edit{
 						} else{
 							if($_tempfilename = tempnam(TEMP_PATH, "")){
 								@$_image_out_function($_output_gdimg, $_tempfilename);
-								$_fp_tempfile = fopen($_tempfilename, "rb");
-								$_gdimg = fread($_fp_tempfile, filesize($_tempfilename));
-								fclose($_fp_tempfile);
+								$_gdimg = weFile::load($_tempfilename);
 
 								// As we read the temporary file we no longer need it
 								unlink($_tempfilename);

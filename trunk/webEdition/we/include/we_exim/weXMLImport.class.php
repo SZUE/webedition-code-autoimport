@@ -550,20 +550,9 @@ class weXMLImport extends weXMLExIm{
 		$marker = "<!-- webackup -->";
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
-		if(weFile::isCompressed($filename)){
-			$compress = "gzip";
-		}
-		else
-			$compress = "none";
-		if($compress != "none"){
-			$fh = @gzopen($filename, "rb");
-			$head = @gzgets($fh, 256);
-			@gzclose($fh);
-		} else{
-			$fh = @fopen($filename, "rb");
-			$head = @fgets($fh, 256);
-			@fclose($fh);
-		}
+
+		$compress = (weFile::isCompressed($filename) ? "gzip" : "none");
+		$head = weFile::loadPart($filename, 0, 256, $compress == 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weXMLimportCharset'] = $encoding;
@@ -572,10 +561,7 @@ class weXMLImport extends weXMLExIm{
 
 		$buff = "";
 		$filename_tmp = "";
-		if($compress != "none")
-			$fh = @gzopen($filename, "rb");
-		else
-			$fh = @fopen($filename, "rb");
+		$fh = ($compress != "none" ? @gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$open_new = true;
@@ -593,12 +579,7 @@ class weXMLImport extends weXMLExIm{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)) {
-
-					if($compress != "none")
-						$line .= @gzgets($fh, 4096);
-					else
-						$line .= @fgets($fh, 4096);
-
+					$line .= ($compress != "none" ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) == "\n"){
 						$findline = true;
 					}
@@ -620,13 +601,10 @@ class weXMLImport extends weXMLExIm{
 						$buff.=$line;
 						$write = false;
 						if($marker_size){
-							if((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ))
-								$write = true;
-							else
-								$write = false;
-						}
-						else
+							$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n") || (substr($buff, (0 - ($marker2_size + 1))) == $marker2 . "\n") || (substr($buff, (0 - ($marker2_size + 2))) == $marker2 . "\r\n" ));
+						}else{
 							$write = true;
+						}
 
 						if($write){
 							$fsize+=strlen($buff);

@@ -53,10 +53,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 			$tmpAbos = makeArrayFromCSV(weTag_getAttribute("mailingList", $attribs));
 			if(!sizeof($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
 				$abos[0] = $fieldGroup . "_Ok";
-			}else{// #6100
-			    foreach($tmpAbos as $abo){
+			} else{// #6100
+				foreach($tmpAbos as $abo){
 					array_push($abos, $fieldGroup . "_" . $abo);
-				} 
+				}
 			}
 		} else{
 			if(!$emailonly){
@@ -76,7 +76,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 			} else{
 				$tmpPaths = makeArrayFromCSV(weTag_getAttribute("path", $attribs));
 				foreach($_REQUEST["we_subscribe_list__"] as $nr){
-					array_push($paths, $tmpPaths[$nr]);
+					$paths[] = $tmpPaths[$nr];
 				}
 			}
 			if(sizeof($abos) == 0 && sizeof($paths) == 0){
@@ -154,16 +154,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 				if(!$emailonly){
 					foreach($paths as $p){
 						if(!$emailExistsInOneOfTheLists){
-							$realPath = (substr($p, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $p);
+							$realPath = realpath((substr($p, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
 							if(@file_exists($realPath)){
-								$fh = @fopen($realPath, "rb");
-								if($fh){
-									$file = "";
-									if(filesize($realPath)){
-										while(!feof($fh))
-											$file.=fread($fh, filesize($realPath));
-									}
-									fclose($fh);
+								$file = weFile::load($realPath);
+								if($file !== false){
 									if(preg_match("%[\r\n]" . $f["subscribe_mail"] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f["subscribe_mail"] . ",[^\r\n]+[\r\n]%i", $file)){
 										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
 									}
@@ -424,10 +418,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 			} else{
 				if(!$emailonly){ //in die Liste eintragen
 					foreach($paths as $path){
-
-						$path = (substr($path, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
-
-						if(!@file_exists(dirname($path))){
+						if(!@file_exists(dirname($path)) || strpos(realpath($path), $_SERVER['DOCUMENT_ROOT']) === FALSE){
 							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							return;
@@ -436,28 +427,15 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 						$ok = true;
 
-						$fh = @fopen($path, "rb");
-						if($fh){
-							$file = "";
-							if(filesize($path)){
-								while(!feof($fh))
-									$file.=fread($fh, filesize($path));
-							}
-							fclose($fh);
+						$file = weFile::load($path);
+						if($file !== false){
 							if((preg_match("%[\r\n]" . $f["subscribe_mail"] . ",[^\r\n]+[\r\n]%i", $file) || preg_match('%^' . $f["subscribe_mail"] . ",[^\r\n]+[\r\n]%i", $file))){
 								$ok = false; // E-Mail schon vorhanden => Nix tun
 							}
 						}
 						if($ok){
-							$fh = @fopen($path, "ab+");
-							if($fh){
-								$row = $f["subscribe_mail"] . "," . $f["subscribe_html"] . "," . $f["subscribe_salutation"] . "," . $f["subscribe_title"] . "," . $f["subscribe_firstname"] . "," . $f["subscribe_lastname"] . "\n";
-								if(!@fwrite($fh, $row)){
-									fclose($fh);
-									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
-									return;
-								}
-								fclose($fh);
+							$row = $f["subscribe_mail"] . "," . $f["subscribe_html"] . "," . $f["subscribe_salutation"] . "," . $f["subscribe_title"] . "," . $f["subscribe_firstname"] . "," . $f["subscribe_lastname"] . "\n";
+							if(weFile::save($path, $row, 'ab+')){
 								$emailwritten++;
 							} else{
 								$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
@@ -581,8 +559,9 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 
 			// #4158
 			$file = @file($path);
-			if(!$file)
+			if(!$file){
 				continue;
+			}
 
 			$fileChanged = false;
 			foreach($file as $i => $line){
