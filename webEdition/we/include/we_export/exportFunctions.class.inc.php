@@ -61,9 +61,7 @@ abstract class exportFunctions{
 
 					$_text .= "<webEdition>\n";
 
-					$_file_handler = fopen($_file_name, "wb");
-					fwrite($_file_handler, $_text);
-					fclose($_file_handler);
+					weFile::save($_file_name, $_text);
 				}
 
 				break;
@@ -81,9 +79,7 @@ abstract class exportFunctions{
 				if($_continue){
 					$_text = "";
 
-					$_file_handler = fopen($_file_name, "wb");
-					fwrite($_file_handler, $_text);
-					fclose($_file_handler);
+					weFile::save($_file_name, $_text);
 				}
 
 				break;
@@ -109,9 +105,7 @@ abstract class exportFunctions{
 			case "gxml":
 				$text = "</webEdition>";
 
-				$_file_handler = fopen($filename, "ab");
-				fwrite($_file_handler, $text);
-				fclose($_file_handler);
+				weFile::save($filename, $text, "ab");
 
 				break;
 		}
@@ -194,9 +188,7 @@ abstract class exportFunctions{
 				// Close document tag
 				$text .= "\t</" . $doctype . ">\n";
 
-				$_file_handler = fopen($filename, "ab");
-				fwrite($_file_handler, $text);
-				fclose($_file_handler);
+				weFile::save($filename, $text, "ab");
 
 				break;
 			case "csv":
@@ -216,9 +208,7 @@ abstract class exportFunctions{
 						break;
 				}
 
-				$_file_handler = fopen($filename, "ab");
-				fwrite($_file_handler, $text);
-				fclose($_file_handler);
+				weFile::save($filename, $text, "ab");
 
 				break;
 		}

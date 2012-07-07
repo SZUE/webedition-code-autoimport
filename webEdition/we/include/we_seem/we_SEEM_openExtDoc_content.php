@@ -30,19 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 we_html_tools::protect();
 
-$fh = @fopen($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"]), "rb");
-
-if($fh){
-
-	$content = "";
-
-	while(!feof($fh)) {
-		$content .= fgets($fh, 1024);
-	}
-	fclose($fh);
-}
-
-if(isset($content)){
+if(($content = weFile::load($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"])))!== false){
 	print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
 } else{
 

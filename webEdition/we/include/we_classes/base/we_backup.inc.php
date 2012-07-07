@@ -302,27 +302,22 @@ class we_backup{
 		$path = substr($file, strlen($rootdir), strlen($file) - strlen($rootdir));
 		$ok = true;
 		if(!$this->isPathExist($path)){
-			$fd = @fopen($file, "rb");
-			if($fd)
-				if(@filesize($file) > $this->mysql_max_packet){
-					$ok = false;
-					$this->setWarning(sprintf(g_l('backup', "[too_big_file]"), $file));
-				} else{
-					$contents = @fread($fd, filesize($file));
-				} else{
-				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $file));
+			if(@filesize($file) > $this->mysql_max_packet){
 				$ok = false;
-				return false;
+				$this->setWarning(sprintf(g_l('backup', "[too_big_file]"), $file));
+			} else{
+				if(($contents = weFile::load($file)) === false){
+					$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $file));
+					return false;
+				}
 			}
-			@fclose($fd);
+
 			if($ok){
 				$contents = addslashes($contents);
 				$contents = str_replace("\n", "\\n", $contents);
 				$contents = str_replace("\r", "\\r", $contents);
 				$q = "INSERT INTO " . BACKUP_TABLE . " (Path,Data,IsFolder) VALUES ('" . $this->backup_db->escape($path) . "','" . $this->backup_db->escape($contents) . "',0)";
-				$fh = fopen($this->dumpfilename, "ab");
-				fwrite($fh, $q . ";" . $nl);
-				fclose($fh);
+				weFile::save($this->dumpfilename, $q . ';' . $nl, 'ab');
 				$this->backup_db->query($q);
 			}
 		}
@@ -350,9 +345,7 @@ class we_backup{
 		$path = substr($dir, strlen($rootdir), strlen($dir) - strlen($rootdir));
 		if(!$this->isPathExist($path)){
 			$q = "INSERT INTO " . BACKUP_TABLE . " (Path,Data,IsFolder) VALUES ('" . $this->backup_db->escape($path) . "','',1)";
-			$fh = fopen($this->dumpfilename, "ab");
-			fwrite($fh, $q . ";" . $nl);
-			fclose($fh);
+			weFile::save($this->dumpfilename, $q . ";" . $nl, "ab");
 			$this->backup_db->query($q);
 		}
 		$dir = str_replace("\\", "/", $dir);
@@ -431,8 +424,6 @@ class we_backup{
 		return stripslashes($foo);
 	}
 
-
-
 	/**
 	 * Function: makeBackup
 	 *
@@ -443,21 +434,18 @@ class we_backup{
 		$phase_start = false;
 		$ret = 0;
 		if(!$this->tempfilename){
-			$this->tempfilename = md5(str_replace('.', '', uniqid('',true))) . ".php"; // #6590, changed from: uniqid(time())
+			$this->tempfilename = md5(str_replace('.', '', uniqid('', true))) . ".php"; // #6590, changed from: uniqid(time())
 			$this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
 			$this->backup_step = 0;
 			$this->backup_steps = $this->default_backup_steps;
-			$fh = @fopen($this->dumpfilename, "ab");
-			if($fh){
-				@fwrite($fh, "#<?php exit();?>\n");
-				@fwrite($fh, "# webEdition MySQL-Dump$nl");
-				@fwrite($fh, "# http://www.webedition.org$nl");
-				@fwrite($fh, "#$nl");
-				@fwrite($fh, "# Host: " . SERVER_NAME . "   Datenbank: " . $this->backup_db->Database . ";$nl");
-				@fwrite($fh, "# webEdition version: " . WE_VERSION . $nl);
-				@fwrite($fh, "# Date: " . date("d.M.Y H:i:s") . $nl);
-				@fclose($fh);
-			} else{
+			if(!weFile::save($this->dumpfilename, "#<?php exit();?>\n" .
+					"# webEdition MySQL-Dump$nl" .
+					"# http://www.webedition.org$nl" .
+					"#$nl" .
+					"# Host: " . SERVER_NAME . "   Datenbank: " . $this->backup_db->Database . ";$nl" .
+					"# webEdition version: " . WE_VERSION . $nl .
+					"# Date: " . date("d.M.Y H:i:s") . $nl
+					, 'ab')){
 				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
 				return -1;
 			}
@@ -466,19 +454,14 @@ class we_backup{
 			if($this->backup_phase == 0){
 				$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
 				$this->backup_db->query("CREATE TABLE " . BACKUP_TABLE . " (ID bigint(20) NOT NULL auto_increment,Path varchar(255) NOT NULL,Data longblob NOT NULL,IsFolder tinyint(1) DEFAULT '0' NOT NULL,PRIMARY KEY (ID),UNIQUE ID (ID),KEY ID_2 (ID)) ENGINE = MYISAM;");
-				$fh = @fopen($this->dumpfilename, "ab");
-				@fwrite($fh, $nl);
-				@fwrite($fh, "#############################################################$nl");
-				@fwrite($fh, "#$nl");
-				@fwrite($fh, "# Tablestructure '" . BACKUP_TABLE . "'$nl");
-				@fwrite($fh, "#$nl");
-				@fwrite($fh, $nl);
-				@fwrite($fh, $this->tableDefinition(BACKUP_TABLE, $nl, BACKUP_TABLE) . ";$nl$nl");
-				@fwrite($fh, "#$nl");
-				@fwrite($fh, "# dumping Data '" . BACKUP_TABLE . "'$nl");
-				@fwrite($fh, "#$nl");
-				@fwrite($fh, $nl);
-				@fclose($fh);
+				weFile::save($this->dumpfilename, $nl . "#############################################################$nl" .
+					"#$nl" . "# Tablestructure '" . BACKUP_TABLE . "'$nl" .
+					"#$nl" . $nl .
+					$this->tableDefinition(BACKUP_TABLE, $nl, BACKUP_TABLE) . ";$nl$nl" .
+					"#$nl" .
+					"# dumping Data '" . BACKUP_TABLE . "'$nl" .
+					"#$nl"
+					, 'ab');
 			}
 			$phase_start = true;
 			$this->backup_phase = 1;
@@ -494,8 +477,6 @@ class we_backup{
 		}
 		return $ret;
 	}
-
-
 
 	/**
 	 * Function: buildBackupTable
@@ -537,8 +518,6 @@ class we_backup{
 		$this->backup_step = $count;
 		return $finish;
 	}
-
-
 
 	/**
 	 * Function: exportTables
@@ -691,8 +670,6 @@ class we_backup{
 		return 0;
 	}
 
-
-
 	/**
 	 * Function: printDump
 	 *
@@ -713,8 +690,6 @@ class we_backup{
 		return true;
 	}
 
-
-
 	/**
 	 * Function: printDump2BackupDir
 	 *
@@ -727,8 +702,6 @@ class we_backup{
 		}
 		return true;
 	}
-
-
 
 	/**
 	 * Function: setTmpFilename
@@ -750,8 +723,6 @@ class we_backup{
 			return false;
 	}
 
-
-
 	/**
 	 * Function: isFileInTmpDir
 	 *
@@ -772,8 +743,6 @@ class we_backup{
 		return $ret;
 	}
 
-
-
 	/**
 	 * Function: getTmpFilename
 	 *
@@ -783,8 +752,6 @@ class we_backup{
 	function getTmpFilename(){
 		return $this->tempfilename;
 	}
-
-
 
 	/**
 	 * Function: removeDumpFile
@@ -798,8 +765,6 @@ class we_backup{
 		$this->dumpfilename = "";
 		$this->tempfilename = "";
 	}
-
-
 
 	/**
 	 * Function: restoreFiles
@@ -838,11 +803,7 @@ class we_backup{
 				} else{
 					$sdir = dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]);
 					$sdir = str_replace("\\", "/", $sdir);
-					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $line["Path"], "wb");
-					if($fh){
-						@fwrite($fh, $line["Data"]);
-						@fclose($fh);
-					} else{
+					if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
 						$this->setError(g_l('backup', "[can_not_open_file]"), $line["Path"]);
 						return false;
 					}
@@ -852,8 +813,6 @@ class we_backup{
 		}
 		return true;
 	}
-
-
 
 	/**
 	 * Function: splitFile
@@ -928,8 +887,6 @@ class we_backup{
 		}
 		return $num + 1;
 	}
-
-
 
 	/**
 	 * Function: restoreFromBackup
@@ -1027,8 +984,6 @@ class we_backup{
 		return true;
 	}
 
-
-
 	/**
 	 * Function: removeBackup
 	 *
@@ -1060,8 +1015,6 @@ class we_backup{
 		$updater->updateScheduler();
 		$updater->updateNewsletter();
 	}
-
-
 
 	/**
 	 * Function: getDiff
@@ -1109,8 +1062,6 @@ class we_backup{
 		return true;
 	}
 
-
-
 	/**
 	 * Function: isCreateQuery
 	 *
@@ -1125,8 +1076,6 @@ class we_backup{
 		else
 			return "";
 	}
-
-
 
 	/**
 	 * Function: fixTableNames
@@ -1224,8 +1173,6 @@ class we_backup{
 		}
 	}
 
-
-
 	/**
 	 * Function: isInsertQuery
 	 *
@@ -1240,8 +1187,6 @@ class we_backup{
 			return "";
 	}
 
-
-
 	/**
 	 * Function: setError
 	 *
@@ -1250,8 +1195,6 @@ class we_backup{
 	function setError($errtxt){
 		array_push($this->errors, $errtxt);
 	}
-
-
 
 	/**
 	 * Function: setWarning
@@ -1262,8 +1205,6 @@ class we_backup{
 		array_push($this->warnings, $wartxt);
 	}
 
-
-
 	/**
 	 * Function: getErrors
 	 *
@@ -1273,8 +1214,6 @@ class we_backup{
 		return $this->errors;
 	}
 
-
-
 	/**
 	 * Function: getWarnings
 	 *
@@ -1283,8 +1222,6 @@ class we_backup{
 	function getWarnings(){
 		return $this->warnings;
 	}
-
-
 
 	/**
 	 * Function: arrayintersect
@@ -1302,8 +1239,6 @@ class we_backup{
 		return $ret;
 	}
 
-
-
 	/**
 	 * Function: arraydiff
 	 *
@@ -1319,8 +1254,6 @@ class we_backup{
 		}
 		return $ret;
 	}
-
-
 
 	/**
 	 * Function: saveState
@@ -1365,15 +1298,12 @@ class we_backup{
 			$save.='$this->dummy[' . $k . ']=\'' . $tmp . '\'' . ";\n";
 		}
 
-		if($of == "")
-			$of = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
-		$fp = fopen($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, "wb");
-		fputs($fp, $save);
-		fclose($fp);
+		if($of == ""){
+			$of = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
+		}
+		weFile::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $save, 'wb');
 		return $of;
 	}
-
-
 
 	/**
 	 * Function: restoreState
@@ -1381,24 +1311,13 @@ class we_backup{
 	 * Description:
 	 */
 	function restoreState($temp_filename){
-		$_filename = fopen($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb");
-		if($_filename){
-			while(!feof($_filename)) {
-				if(!isset($save)){
-					$save = fread($_filename, 4096);
-				} else{
-					$save .= fread($_filename, 4096);
-				}
-			}
-			fclose($_filename);
+		if(($save = weFile::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
 			eval($save);
 			return $temp_filename;
 		} else{
 			return 0;
 		}
 	}
-
-
 
 	/**
 	 * Function: getDownloadFile
@@ -1411,9 +1330,9 @@ class we_backup{
 		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
 			$this->backup_db->query("INSERT INTO " . CLEAN_UP_TABLE . "(Path,Date) Values ('" . $this->backup_db->escape($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename) . "','" . time() . "')");
 			return $download_filename;
-		}
-		else
+		} else{
 			return "";
+		}
 	}
 
 	function clearOldTmp(){

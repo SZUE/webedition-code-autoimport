@@ -601,9 +601,7 @@ class we_thumbnail{
 	 */
 	function _getBinaryData(){
 		$_p = $_SERVER['DOCUMENT_ROOT'] . $this->imagePath;
-		$_fp = @fopen($_p, "rb");
-		$this->imageData = @fread($_fp, filesize($_p));
-		@fclose($_fp);
+		$this->imageData = weFile::load($_p);
 	}
 
 }

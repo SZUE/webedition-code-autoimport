@@ -293,19 +293,19 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 		'status' => 0, // 0=ok otherwise error
 		'error' => '' // error string
 	);
-	$parsedurl=parse_url($server);
+	$parsedurl = parse_url($server);
 	if(isset($parsedurl['scheme'])){
-		$protocol=$parsedurl['scheme'].'://';
-	} else {
-		$protocol='http://';
+		$protocol = $parsedurl['scheme'] . '://';
+	} else{
+		$protocol = 'http://';
 	}
 	if(isset($parsedurl['port'])){
-		 $port=':'.$parsedurl['port'];
-	} else {
-		 $port='';
+		$port = ':' . $parsedurl['port'];
+	} else{
+		$port = '';
 	}
 	$_pathA = explode('?', $path);
-	$_url = $protocol . $parsedurl['host'] .  $port . $_pathA[0];
+	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
 	$_params = array();
 
 	$_session = curl_init();
@@ -1913,19 +1913,14 @@ function we_writeLanguageConfig($default, $available = array()){
 		$locales .= "	'" . $Locale . "',\n";
 	}
 
-	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
-	$fh = fopen($file, 'w+');
-	if(!$fh){
-		return false;
-	}
-	fputs($fh, '<?php
+	return weFile::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
 $GLOBALS["weFrontendLanguages"] = array(
 ' . $locales . '
 );
 
 $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";'
+			, 'w+'
 	);
-	return fclose($fh);
 }
 
 function we_filenameNotValid($filename){

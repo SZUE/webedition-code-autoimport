@@ -65,8 +65,7 @@ class Finish extends leWizardStepBase{
 		$DB_WE->query($query);
 
 		// write new content
-		$fh = fopen($NewSidebarFile, "w+");
-		if(!$fh || !fputs($fh, $content) || !fclose($fh)){
+		if(!weFile::save($NewSidebarFile, $content,"w+")){
 			return LE_WIZARDSTEP_ERROR;
 		}
 

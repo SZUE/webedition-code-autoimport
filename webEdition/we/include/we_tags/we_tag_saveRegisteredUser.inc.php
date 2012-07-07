@@ -206,19 +206,14 @@ function we_saveCustomerImages(){
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
 							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
-							$fh = fopen($_serverPath, 'rb');
-							$imageData = fread($fh, filesize($_serverPath));
-							fclose($fh);
+							$imageData = weFile::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 							$imgData = '';
 							$thumb->getThumb($imgData);
 
-							$fh = fopen($_serverPath, 'wb');
-							fwrite($fh, $imgData);
-							fclose($fh);
-
+							weFile::save($_serverPath, $imgData);
 							$we_size = we_thumbnail::getimagesize($_serverPath);
 						}
 

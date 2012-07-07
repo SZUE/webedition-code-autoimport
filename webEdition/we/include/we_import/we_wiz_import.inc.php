@@ -154,13 +154,9 @@ class we_wizard_import extends we_wizard{
 	 * @desc replaces string1 by string2 in file
 	 */
 	function massReplace($string1, $string2, $file){
-		$fp = fopen($file, "r");
-		$contents = fread($fp, filesize($file));
-		fclose($fp);
+		$contents = weFile::load($file,'r');
 		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		$fp = fopen($file, "w");
-		fputs($fp, $replacement);
-		fclose($fp);
+		weFile::save($file,$replacement,'w');
 	}
 
 	function getStep0(){
@@ -1253,7 +1249,7 @@ HTS;
 		$v = $_REQUEST["v"];
 
 		if($v["rdofloc"] == "lLocal" && (isset($_FILES['uploaded_xml_file']) and $_FILES["uploaded_xml_file"]["size"])){
-			$uniqueId = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+			$uniqueId = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 			$v["import_from"] = TEMP_DIR . "we_xml_" . $uniqueId . ".xml";
 			move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 		}
@@ -1807,7 +1803,7 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 		if(((isset($_FILES['uploaded_csv_file']) and $_FILES["uploaded_csv_file"]["size"])) || $v["file_format"] == "mac"){
-			$uniqueId = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+			$uniqueId = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 
 			switch($v["rdofloc"]){
 				case "lLocal":
@@ -1819,14 +1815,16 @@ HTS;
 					}
 					break;
 				case "lServer":
-					$fp = fopen($_SERVER['DOCUMENT_ROOT'] . $v["import_from"], "r");
-					$contents = fread($fp, filesize($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]));
-					fclose($fp);
+					$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
+					if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+						t_e('warning', 'Acess outside document_root forbidden!', $realPath);
+						break;
+					}
+
+					$contents = weFile::load($fp,'r');
 					$v["import_from"] = TEMP_DIR . "we_csv_" . $uniqueId . ".csv";
-					$replacement = preg_replace("/\r/i", "\n", $contents);
-					$fp = fopen($_SERVER['DOCUMENT_ROOT'] . $v["import_from"], "w+");
-					fputs($fp, $replacement);
-					fclose($fp);
+					$replacement = str_replace("\r", "\n", $contents);
+					weFile::save($fp,$replacement,'w+');
 					break;
 			}
 		}

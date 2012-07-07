@@ -201,9 +201,7 @@ abstract class we_root extends we_class{
 	/* load  data in the object from $filename */
 
 	function loadFromFile($filename){
-		$fp = fopen($filename, "rb");
-		$str = fread($fp, filesize($filename));
-		fclose($fp);
+		$str = weFile::load($filename);
 		if($str){
 			$arr = unserialize($str);
 			for($i = 0; $i < sizeof($this->persistent_slots); $i++){

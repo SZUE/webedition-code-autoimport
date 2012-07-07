@@ -59,8 +59,12 @@ function we_parse_tag_captcha($attribs){
 
 	// writing the temporary document
 	$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
+	$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $file);
+	if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+		t_e('warning', 'Acess outside document_root forbidden!', $realPath);
+		contine;
+	}
 
-	$fh = fopen($_SERVER['DOCUMENT_ROOT'] . $file, "w+");
 	// FIXME: what parts of we.in.php do we really need here? Include them and throw we.inc.php out.
 	$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
 			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
@@ -77,8 +81,7 @@ function we_parse_tag_captcha($attribs){
 		$php .= "\$image->setBackground('" . $bgcolor . "');\n";
 	}
 	$php .= "\$image->setStyle('" . $style . "', '" . $stylecolor . "', '" . $stylenumber . "');\n" . "\$image->setAngleRange('" . $angle . "');\n" . "Captcha::display(\$image, '" . $type . "');\n" . "\n" . "?>";
-	fputs($fh, $php);
-	fclose($fh);
+	weFile::save($realPath, $php, 'w+');
 
 	// clean attribs
 	$attribs = removeAttribs($attribs, array(

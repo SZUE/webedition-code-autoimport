@@ -910,15 +910,11 @@ class weCustomerEIWizard{
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir != "" && is_file(TEMP_PATH . "/$tmpdir/$tmpdir.log") && is_readable(TEMP_PATH . "/$tmpdir/$tmpdir.log")){
-			$log = "";
-			$fh = fopen(TEMP_PATH . "/$tmpdir/$tmpdir.log", "rb");
-			if($fh){
-				while(!feof($fh))
-					$log.=fread($fh, 4096);
+			$log = weFile::load(TEMP_PATH . "/$tmpdir/$tmpdir.log", 'rb');
+			if($log){
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), 1, "550"));
 				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), htmlspecialchars($log)));
-				fclose($fh);
 				unlink(TEMP_PATH . "/$tmpdir/$tmpdir.log");
 			}
 		}

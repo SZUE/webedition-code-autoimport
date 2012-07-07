@@ -59,13 +59,7 @@ class weCustomerEI{
 	}
 
 	function save2File($filename, $code = "", $flags = "ab"){
-		$fp = fopen($filename, $flags);
-		if($fp){
-			fwrite($fp, $code);
-			fclose($fp);
-			return true;
-		}
-		return false;
+		return weFile::save($filename, $code,$flags);
 	}
 
 	function getCustomersFieldset(){
@@ -263,19 +257,15 @@ class weCustomerEI{
 	}
 
 	function massReplace($string1, $string2, $file){
-		$fp = fopen($file, "r");
-		$contents = fread($fp, filesize($file));
-		fclose($fp);
+		$contents = weFile::load($file, 'r');
 		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		$fp = fopen($file, "w");
-		fputs($fp, $replacement);
-		fclose($fp);
+		weFile::save($file, $content, 'w');
 	}
 
 	function getUniqueId(){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		return md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+		return md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 	}
 
 	function prepareImport($options){

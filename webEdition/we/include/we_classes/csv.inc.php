@@ -166,11 +166,11 @@ class CSV{
 	}
 
 	function generateIniValue($array, $filename){
-		$handle = fopen($filename, "w");
+		$val = '';
 		foreach($array as $key => $val){
-			fwrite($handle, "$key = $val;\n");
+			$val.="$key = $val;\n";
 		}
-		fclose($handle);
+		weFile::save($filename, $val, 'w');
 	}
 
 }
@@ -315,10 +315,7 @@ class CSVImport extends CSV{
 						$d[0] .= $this->FieldDelim;
 					}
 				}
-				$data = implode("\n", $d);
-				$hFile = fopen($path . "/temp_" . $i . ".csv", "wb");
-				fwrite($hFile, $data);
-				fclose($hFile);
+				weFile::save($path . '/temp_' . $i . '.csv', implode("\n", $d), 'wb');
 				$num_files++;
 			}
 			return $num_files;
