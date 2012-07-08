@@ -155,32 +155,32 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		$parts = array();
-		array_push($parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
-			"space" => 0)
+		$parts = array(
+			array(
+				"headline" => "",
+				"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
+				"space" => 0)
 		);
 
 		if(defined("OBJECT_FILES_TABLE")){
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => "",
 				"html" => we_forms::radiobutton("rebuild_objects", ($type == "rebuild_objects" && we_hasPerm("REBUILD_OBJECTS")), "type", g_l('rebuild', "[rebuild_objects]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_OBJECTS")), g_l('rebuild', "[txt_rebuild_objects]"), 0, 495),
-				"space" => 0)
+				"space" => 0
 			);
 		}
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => we_forms::radiobutton("rebuild_index", ($type == "rebuild_index" && we_hasPerm("REBUILD_INDEX")), "type", g_l('rebuild', "[rebuild_index]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_INDEX")), g_l('rebuild', "[txt_rebuild_index]"), 0, 495),
-			"space" => 0)
+			"space" => 0
 		);
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => we_forms::radiobutton("rebuild_thumbnails", ($type == "rebuild_thumbnails" && we_hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', "[thumbnails]"), true, "defaultfont", "setNavStatDocDisabled()", (we_image_edit::gd_version() == 0 || (!we_hasPerm("REBUILD_THUMBS"))), g_l('rebuild', "[txt_rebuild_thumbnails]"), 0, 495),
-			"space" => 0)
+			"space" => 0
 		);
 
 		$_navRebuildHTML = '<div>' .
@@ -189,10 +189,10 @@ abstract class we_rebuild_wizard{
 			we_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', "[rebuildStaticAfterNaviCheck]"), false, 'defaultfont', '', true, g_l('rebuild', "[rebuildStaticAfterNaviHint]"), 0, 475) .
 			'</div>';
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => $_navRebuildHTML,
-			"space" => 0)
+			"space" => 0
 		);
 
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
@@ -205,10 +205,10 @@ abstract class we_rebuild_wizard{
 			}
 		}
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => we_forms::radiobutton("rebuild_metadata", ($type == "rebuild_metadata" && we_hasPerm("REBUILD_META")), "type", g_l('rebuild', "[metadata]"), true, "defaultfont", "setNavStatDocDisabled()", (!we_hasPerm("REBUILD_META")) || $_rebuildMetaDisabled, g_l('rebuild', "[txt_rebuild_metadata]"), 0, 495),
-			"space" => 0)
+			"space" => 0
 		);
 
 		$allbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
@@ -275,14 +275,14 @@ abstract class we_rebuild_wizard{
 
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+		foreach($doctypesArray as $k => $v){
+			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$k]", "value" => $v));
 		}
 
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+		foreach($thumbsArray as $k => $v){
+			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$k]", "value" => $v));
 		}
 
 		$metaFieldsHidden = "";
@@ -823,7 +823,7 @@ abstract class we_rebuild_wizard{
 						break;
 					case "next":
 						if (typeof(document._errorMessage) != "undefined" && document._errorMessage !== ""){
-							' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR) .'
+							' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} else {
 							top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");
@@ -976,6 +976,7 @@ abstract class we_rebuild_wizard{
 			}
 			set_button_state();';
 	}
+
 	/**
 	 * returns Javascript for step 2 (1)
 	 *
@@ -991,7 +992,7 @@ abstract class we_rebuild_wizard{
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
 					($contents[0] ?
-					we_html_element::jsScript('/webEdition/js/windows.js').
+						we_html_element::jsScript('/webEdition/js/windows.js') .
 						we_html_element::jsElement($contents[0]) : '')) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody"

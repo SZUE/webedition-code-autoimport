@@ -89,8 +89,9 @@ class we_messaging_headerMsg{
 
 	static function pbody(){
 		self::start();
-		$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-		$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+		//start with 0 to get popup with new count
+		$newmsg_count = 0;//self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+		$newtodo_count = 0;//self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 		$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
 		$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
 		?>

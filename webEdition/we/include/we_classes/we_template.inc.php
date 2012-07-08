@@ -314,7 +314,7 @@ class we_template extends we_document{
 ' . $preContent . '<?php } ?>' . $code . '<?php if((!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){ ?>' . $postContent . '
 </body></html><?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; } ?>';
 		} else{
-			return parseError(g_l('parser', '[html_tags]'));
+			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
 		$code = str_replace(array('exit(', 'die(', 'exit;'), array('we_TemplateExit(', 'we_TemplateExit(', 'we_TemplateExit();'), $code);
 		return $pre_code . $code . '<?php we_templatePost();';
