@@ -1156,8 +1156,8 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 
 	function getHTML(){
 		if(we_base_browserDetect::isSafari()){
-			$out = '<select id="' . $this->editor->ref . '_sel_' . $this->cmd . '" style="width:' . $this->width . 'px;margin-right:3px;" size="1" onmousedown="' . $this->editor->ref . 'Obj.saveSelection();" onmouseup="' . $this->editor->ref . 'Obj.restoreSelection();" onchange="' . $this->editor->ref . 'Obj.restoreSelection();' . $this->editor->ref . 'Obj.selectChanged(\'' . $this->cmd . '\',this.value);this.selectedIndex=0">';
-			$out .= '<option value="">' . htmlspecialchars($this->title) . '</option>' . "\n";
+			$out = '<select id="' . $this->editor->ref . '_sel_' . $this->cmd . '" style="width:' . $this->width . 'px;margin-right:3px;" size="1" onmousedown="' . $this->editor->ref . 'Obj.saveSelection();" onmouseup="' . $this->editor->ref . 'Obj.restoreSelection();" onchange="' . $this->editor->ref . 'Obj.restoreSelection();' . $this->editor->ref . 'Obj.selectChanged(\'' . $this->cmd . '\',this.value);this.selectedIndex=0">'.
+			'<option value="">' . htmlspecialchars($this->title) . '</option>' . "\n";
 			foreach($this->vals as $val => $txt){
 				$out .= '<option value="' . htmlspecialchars($val) . '">' . htmlspecialchars($txt) . '</option>' . "\n";
 			}

@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 4404 $
+ * $Author: mokraemer $
+ * $Date: 2012-04-13 23:15:29 +0200 (Fr, 13. Apr 2012) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -25,39 +25,28 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(isset($_SESSION["delete_files_nok"]) && is_array($_SESSION["delete_files_nok"])){
-	$i = 0;
+$msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');self.close();";
+$todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');self.close();";
 
-	$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
-	$i = 0;
-	$table->setCol(0, 0, null, we_html_tools::getPixel(10, 10));
-	foreach($_SESSION["delete_files_nok"] as $data){
-		$table->addRow();
-		$table->setCol(++$i, 0, null, we_html_tools::getPixel(10, 2));
-		$table->setCol($i, 1, null, (isset($data["icon"]) ? we_html_element::htmlImg(array("src" => ICON_DIR . $data["icon"])) : ""));
-		$table->setCol($i, 2, null, we_html_tools::getPixel(10, 2));
-		$table->setCol($i, 3, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
-	}
-	$table->addRow();
-	$table->setCol(++$i, 0, null, we_html_tools::getPixel(10, 10));
-}
+$text='';
+//msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo
+$msg=intval($_REQUEST['msg'])-intval($_REQUEST['omsg']);
+$todo=intval($_REQUEST['todo'])-intval($_REQUEST['otodo']);
 
 
-
+$text =
+($msg>0?sprintf(g_l('modules_messaging', '[newHeaderMsg]'),'<a href="' . $msg_cmd . '">'.$msg,'</a>'):'').
+	($todo>0?sprintf(g_l('modules_messaging', '[newHeaderTodo]'),'<a href="' . $todo_cmd . '">'.$todo,'</a>'):'');
 $parts = array(
 	array(
-		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION["delete_files_info"], 1, 500),
-		"html" => "",
+		"headline" => we_html_tools::htmlAlertAttentionBox($text, 2, 500, false),
+		"html" => '',
 		"space" => 10,
 		"noline" => 1),
-	array(
-		"headline" => "",
-		"html" => we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
-		"space" => 10),
 );
 
 $buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align" => "right"), 1, 1);
-$buttons->setCol(0, 0, null, we_button::create_button("close", "javascript:self.close();"));
+$buttons->setCol(0, 0, null, we_button::create_button("ok", "javascript:self.close();"));
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			//FIXME: missing title

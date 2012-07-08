@@ -218,15 +218,11 @@ function we_cmd() {
 ";
 
 $_js_code = "
-<!--
-
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(" . $we_doc->EditPageNr . ");
 
 $_js_we_setPath
 $_js_we_cmd
-
-//-->
 ";
 print we_html_element::jsElement($_js_code);
 

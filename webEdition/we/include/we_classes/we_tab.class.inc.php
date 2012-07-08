@@ -24,34 +24,18 @@
  */
 class we_tab{
 
-	var $tab;
+	private $tab;
 
 	function __construct($href, $text, $status = 'TAB_NORMAL', $jscmd = '', $attribs = array()){
-		$class = $status == 'TAB_ACTIVE' ? "tabActive" : "tabNormal";
-		$att = "";
+		$class = ($status == 'TAB_ACTIVE' ? 'tabActive' : 'tabNormal');
+		$att = '';
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){
 				$att .= $key . '="' . $val . '" ';
 			}
 		}
 
-
-		switch(we_base_browserDetect::inst()->getBrowser()){
-			case we_base_browserDetect::SAFARI:
-				$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr><span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span></div>';
-				break;
-			case we_base_browserDetect::IE:
-				$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				break;
-			default:
-				if(we_base_browserDetect::isMAC()){
-					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} elseif(we_base_browserDetect::isUNIX()){
-					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				} else{
-					$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
-				}
-		}
+		$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr>' . (we_base_browserDetect::isSafari() ? '<span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span>' : '') . '</div>';
 	}
 
 	function getHTML(){
