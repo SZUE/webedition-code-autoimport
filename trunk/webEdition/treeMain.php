@@ -22,13 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_REQUEST["code"])){
-	exit("REQUEST['code'] is forbidden!");
+if(isset($_REQUEST['code'])){
+	exit('REQUEST[\'code\'] is forbidden!');
 }
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
+$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
 
-print $Tree->getHTMLContruct("if(top.treeResized){top.treeResized();}");
+print $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');

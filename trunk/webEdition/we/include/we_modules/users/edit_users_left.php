@@ -22,8 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-we_html_tools::htmlTop('',DEFAULT_CHARSET);
+we_html_tools::htmlTop('', DEFAULT_CHARSET);
 echo we_html_element::jsScript(JS_DIR . 'images.js');
 print STYLESHEET;
 ?>

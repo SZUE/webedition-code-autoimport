@@ -68,7 +68,7 @@ class we_messaging_headerMsg{
 				msgTD.firstChild.innerHTML = newmsg_count;
 				todoTD.firstChild.innerHTML = newtodo_count;
 				if(changed){
-					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
+					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"&otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
 				}
 			}
 		<?php

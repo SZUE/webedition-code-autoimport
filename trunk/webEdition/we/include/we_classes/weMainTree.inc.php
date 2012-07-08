@@ -24,78 +24,63 @@
  */
 class weMainTree extends weTree{
 
-	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-
 		$node_layouts = array(
-			"item" => "item",
-			"group" => "group",
-			"threedots" => "changed",
-			"item-disabled" => "disabled",
-			"group-disabled" => "disabled",
-			"group-disabled-open" => "disabled",
-			"item-checked" => "checked_item",
-			"group-checked" => "checked_group",
-			"group-open" => "group",
-			"group-checked-open" => "checked_group",
-			"item-notpublished" => "notpublished",
-			"item-checked-notpublished" => "checked_notpublished",
-			"item-changed" => "changed",
-			"item-checked-changed" => "checked_changed",
-			"item-selected" => "selected_item",
-			"item-selected-notpublished" => "selected_notpublished_item",
-			"item-selected-changed" => "selected_changed_item",
-			"group-selected" => "selected_group",
-			"group-selected-open" => "selected_open_group"
+			'item' => 'item',
+			'group' => 'group',
+			'threedots' => 'changed',
+			'item-disabled' => 'disabled',
+			'group-disabled' => 'disabled',
+			'group-disabled-open' => 'disabled',
+			'item-checked' => 'checked_item',
+			'group-checked' => 'checked_group',
+			'group-open' => 'group',
+			'group-checked-open' => 'checked_group',
+			'item-notpublished' => 'notpublished',
+			'item-checked-notpublished' => 'checked_notpublished',
+			'item-changed' => 'changed',
+			'item-checked-changed' => 'checked_changed',
+			'item-selected' => 'selected_item',
+			'item-selected-notpublished' => 'selected_notpublished_item',
+			'item-selected-changed' => 'selected_changed_item',
+			'group-selected' => 'selected_group',
+			'group-selected-open' => 'selected_open_group'
 		);
 
 		$this->setNodeLayouts($node_layouts);
 
-		$styles = array();
-
-		$styles[] = '.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.item a { text-decoration:none;}';
-
-		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.group a { text-decoration:none;}';
-
-		$styles[] = '.checked_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.checked_item a { text-decoration:none;}';
-
-		$styles[] = '.checked_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.checked_group a { text-decoration:none;}';
-
-		$styles[] = '.notpublished {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.notpublished a { text-decoration:none;}';
-
-		$styles[] = '.checked_notpublished {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.checked_notpublished a { text-decoration:none;}';
-
-		$styles[] = '.changed {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.changed a { text-decoration:none;}';
-
-		$styles[] = '.checked_changed {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.checked_changed a { text-decoration:none;}';
-
-		$styles[] = '.disabled {color: grey; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.disabled a { text-decoration:none;}';
-
-		$styles[] = '.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_notpublished_item {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_notpublished_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_changed_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_changed_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_group a { text-decoration:none;}';
-
-		$styles[] = '.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_open_group a { text-decoration:none;}';
-
+		$styles = array(
+			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.item a { text-decoration:none;}',
+			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.group a { text-decoration:none;}',
+			'.checked_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_item a { text-decoration:none;}',
+			'.checked_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_group a { text-decoration:none;}',
+			'.notpublished {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.notpublished a { text-decoration:none;}',
+			'.checked_notpublished {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_notpublished a { text-decoration:none;}',
+			'.changed {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.changed a { text-decoration:none;}',
+			'.checked_changed {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_changed a { text-decoration:none;}',
+			'.disabled {color: grey; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.disabled a { text-decoration:none;}',
+			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_item a { text-decoration:none;}',
+			'.selected_notpublished_item {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_notpublished_item a { text-decoration:none;}',
+			'.selected_changed_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_changed_item a { text-decoration:none;}',
+			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_group a { text-decoration:none;}',
+			'.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_open_group a { text-decoration:none;}',
+		);
 
 
 		$this->setStyles($styles);
@@ -127,8 +112,8 @@ class weMainTree extends weTree{
 
 	function getJSTreeFunctions(){
 
-		$out = weTree::getJSTreeFunctions();
-		$out.='
+		return weTree::getJSTreeFunctions() .
+			'
 			function doClick(id){
 				var node=' . $this->topFrame . '.get(id);
 				var ct=node.contenttype;
@@ -142,11 +127,9 @@ class weMainTree extends weTree{
 				}
 			}
 			';
-
-		return $out;
 	}
 
-	function getJSUpdateTreeScript($doc, $select=true){
+	function getJSUpdateTreeScript($doc, $select = true){
 		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == "text/html" || $doc->ContentType == "text/webedition" || $doc->ContentType == "objectFile")) ? -1 : $doc->Published);
 
 		//	This is needed in SeeMode
@@ -176,8 +159,7 @@ if(weWindow.treeData){
 	weWindow.treeData.selection="' . $doc->ID . '";';
 		} else{
 
-			$s .= '
-	weWindow.treeData.unselectnode();';
+			$s .= 'weWindow.treeData.unselectnode();';
 		}
 
 		$s .= '
@@ -206,7 +188,7 @@ if(weWindow.treeData){
 								' . $this->topFrame . '.treeData[ai].table=attribs["table"];
 								' . $this->topFrame . '.treeData[ai].published=attribs["published"];
 							}
-							ai++;
+							++ai;
 						}';
 
 		//$s .= '				'.$this->topFrame.'.updateEntry("'.$doc->ID.'","'.$doc->Text.'","'.$doc->ParentID.'","'.$doc->Table.'");'."\n";
@@ -226,7 +208,7 @@ if(weWindow.treeData){
 		}
 		weWindow.drawTree();
 	}else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
-		'. $this->topFrame . '.deleteEntry(' . $doc->ID . ');
+		' . $this->topFrame . '.deleteEntry(' . $doc->ID . ');
 	}
 }
 }';
@@ -236,7 +218,7 @@ if(weWindow.treeData){
 	}
 
 	function getJSGetLayout(){
-		$js = '
+		return '
 				function getLayout(){
 						if(this.typ=="threedots") return treeData.node_layouts["threedots"];
 						var layout_key=(this.typ=="group" ? "group" : "item")+
@@ -248,9 +230,7 @@ if(weWindow.treeData){
 							(this.typ=="item" && this.published==-1 ? "-changed" : "") ;
 
 						return treeData.node_layouts[layout_key];
-				}
-		';
-		return $js;
+				}';
 	}
 
 	function getJSInfo(){
@@ -327,10 +307,8 @@ if(weWindow.treeData){
 	}
 
 	function getJSIncludeFunctions(){
-		$out = weTree::getJSIncludeFunctions();
-
-		$out.='
-			we_scrollY["' . FILE_TABLE . '"] = 0;
+		return weTree::getJSIncludeFunctions() .
+			'we_scrollY["' . FILE_TABLE . '"] = 0;
 			we_scrollY["' . TEMPLATES_TABLE . '"] = 0;
 		' .
 			(defined("OBJECT_TABLE") ? '
@@ -344,20 +322,15 @@ if(weWindow.treeData){
 
 			' . $this->getJSMakeNewEntry() . '
 		';
-
-		return $out;
 	}
 
 	function getJSLoadTree($treeItems){
-		$js = "";
-		$out = "";
-		$js = "var attribs=new Array();\n";
+		$js = 'var attribs=new Array();';
 
 		$nextCode = "";
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$buff = "";
-				$buff.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+				$buff = "		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";
 				foreach($item as $k => $v)
 					$buff.='
 								attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
@@ -368,9 +341,8 @@ if(weWindow.treeData){
 					';
 			}
 		}
-		$js.=$nextCode;
-
-		$js.=$this->topFrame . '.drawTree();';
+		$js.=$nextCode .
+			$this->topFrame . '.drawTree();';
 
 		return $js;
 	}
