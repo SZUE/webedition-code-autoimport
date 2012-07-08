@@ -42,7 +42,6 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 		success: function(o) {
 			if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
 				eval("var result=" + o.responseText);
-				console.log(o);
 				if (result.Success) {
 					var num_users = result.DataArray.num_users;
 					weRpcFailedCnt = 0;

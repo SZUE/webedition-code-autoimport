@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 //We need to set this (and in corresponding frames, since the data in database is formated this way
 we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-we_html_tools::htmlTop('',DEFAULT_CHARSET);
+we_html_tools::htmlTop('', DEFAULT_CHARSET);
 
 print STYLESHEET;
 
@@ -251,8 +251,8 @@ if(isset($_SESSION["user_session_data"]))
 		function drawEintraege() {
 			fr = top.content.user_resize.user_left.user_tree.window.document;
 			fr.open();
-			fr.charset = "<?php echo DEFAULT_CHARSET;?>";
-			fr.writeln("<HTML><HEAD><?php echo addslashes(we_html_element::htmlMeta(array("http-equiv" => "content-type","content" => 'text/html; charset=' . DEFAULT_CHARSET)));?>");
+			fr.charset = "<?php echo DEFAULT_CHARSET; ?>";
+			fr.writeln("<HTML><HEAD><?php echo addslashes(we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => 'text/html; charset=' . DEFAULT_CHARSET))); ?>");
 			fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
 			fr.writeln("clickCount=0;");
 			fr.writeln("wasdblclick=0;");
@@ -296,8 +296,7 @@ if(isset($_SESSION["user_session_data"]))
 					if (nf[ai].offen == 0) {
 						fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[open_statustext]") ?>\"></A>");
 						var zusatz2 = "";
-					}
-					else {
+					}else {
 						fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[close_statustext]") ?>\"></A>");
 						var zusatz2 = "open";
 					}
