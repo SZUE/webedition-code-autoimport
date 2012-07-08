@@ -61,12 +61,14 @@ class we_messaging_headerMsg{
 				var msgTD = document.getElementById("msgCount");
 				var todoTD = document.getElementById("todoCount");
 				var changed=(newmsg_count > msgTD.firstChild.innerHTML)||(newtodo_count > todoTD.firstChild.innerHTML);
+				var oldMsg=msgTD.firstChild.innerHTML;
+				var oldTodo=todoTD.firstChild.innerHTML;
 				msgTD.className = "middlefont" + ( (newmsg_count > 0) ? "red" : "" );
 				todoTD.className = "middlefont" + ( (newtodo_count > 0) ? "red" : "" );
 				msgTD.firstChild.innerHTML = newmsg_count;
 				todoTD.firstChild.innerHTML = newtodo_count;
 				if(changed){
-					alert("<?php echo g_l('modules_messaging', '[newHeaderMsg]'); ?>");
+					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
 				}
 			}
 		<?php

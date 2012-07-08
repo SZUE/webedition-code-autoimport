@@ -345,13 +345,9 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 			if($_SESSION["we_mode"] == "normal"){ //	different messages in normal or seeMode
 				if(sizeof($GLOBALS["we_folder_not_del"])){
 					$_SESSION["delete_files_nok"] = array();
-					$_SESSION["delete_files_info"] = str_replace(
-						"\\n", "", sprintf(
-							g_l('alert', "[folder_not_empty]"), ""));
+					$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
 					foreach($GLOBALS["we_folder_not_del"] as $datafile){
-						$_SESSION["delete_files_nok"][] = array(
-							"icon" => "folder.gif", "path" => $datafile
-						);
+						$_SESSION["delete_files_nok"][] = array("icon" => "folder.gif", "path" => $datafile);
 					}
 					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else{
@@ -404,11 +400,11 @@ if($_SESSION["we_mode"] == "seem"){
 <?php
 if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){
-		/*case FILE_TABLE . "_cache":
-			if(we_hasPerm("ADMINISTRATOR")){
-				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
-			}
-			break;*/
+		/* case FILE_TABLE . "_cache":
+		  if(we_hasPerm("ADMINISTRATOR")){
+		  print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+		  }
+		  break; */
 		case FILE_TABLE:
 			if(we_hasPerm("DELETE_DOC_FOLDER") && we_hasPerm("DELETE_DOCUMENT")){
 				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
