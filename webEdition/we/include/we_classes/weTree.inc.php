@@ -605,17 +605,17 @@ function setUnCheckNode(imgName){
 					we_html_element::cssElement($style_code) . $js
 				) .
 				we_html_element::htmlBody(array(
-					"bgcolor" => "#F3F7FF",
-					"link" => "#000000",
-					"alink" => "#000000",
-					"vlink" => "#000000",
-					"marginwidth" => "0",
-					"marginheight" => "4",
-					"leftmargin" => "0",
-					"topmargin" => "4",
-					"id" => "treetable",
-					"onresize" => $onresize
-					), ""
+					'bgcolor' => '#F3F7FF',
+					'link' => '#000000',
+					'alink' => '#000000',
+					'vlink' => '#000000',
+					'marginwidth' => '0',
+					'marginheight' => '4',
+					'leftmargin' => '0',
+					'topmargin' => '4',
+					'id' => 'treetable',
+					'onresize' => $onresize
+					), ''
 				)
 		);
 	}

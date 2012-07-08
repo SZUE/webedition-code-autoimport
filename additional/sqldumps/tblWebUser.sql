@@ -22,5 +22,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
   `Newsletter_HTMLNewsletter` enum('','ja','0','1','2') NOT NULL,
   PRIMARY KEY  (ID),
-  UNIQUE KEY `Username` (`Username`)
+  UNIQUE KEY `Username` (`Username`),
+  KEY Surname (Surname(3))
 ) ENGINE=MyISAM;
