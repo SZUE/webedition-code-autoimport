@@ -588,9 +588,7 @@ class weCustomerView{
 					}
 
 					if($this->customer->filenameNotValid()){
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -599,7 +597,7 @@ class weCustomerView{
 						$newone = false;
 					}
 
-					$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username=\'' . $this->db->escape($this->customer->Username) . '\'' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), 'ID', $this->db);
+					$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), 'ID', $this->db);
 					if($exists){
 						$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
 						print we_html_element::jsElement($js);
@@ -1013,16 +1011,17 @@ class weCustomerView{
 			$this->customer = new weCustomer(addslashes($_REQUEST['sid']));
 			$_SESSION['customer_session'] = serialize($this->customer);
 		}
-
 		if(is_array($this->customer->persistent_slots)){
 			foreach($this->customer->persistent_slots as $key => $val){
 				$varname = $val;
 				if($varname == 'LoginDenied'){
 					if(isset($_REQUEST[$varname])){
-						$this->customer->{$val} = "1";
+						$this->customer->{$val} = '1';
 					} elseif(isset($_REQUEST['Username'])){
-						$this->customer->{$val} = "0";
+						$this->customer->{$val} = '0';
 					}
+				} elseif($varname == 'Password' && isset($_REQUEST[$varname]) && $_REQUEST[$varname] == weCustomer::NOPWD_CHANGE){
+					//keep old pwd
 				} elseif(isset($_REQUEST[$varname])){
 					$this->customer->{$val} = $_REQUEST[$varname];
 				}

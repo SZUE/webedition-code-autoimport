@@ -791,14 +791,14 @@ class we_objectFile extends we_document{
 					}
 				}
 			}
-	
+
 			if(count($order) != count($fields)){
 				$order = array();
 				for($y = 0; $y < count($fields); $y++){
 					$order[$y] = $y;
 				}
 			}
-		} else {
+		} else{
 			$order = array();
 		}
 		return $order;
@@ -996,8 +996,8 @@ class we_objectFile extends we_document{
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
 		$path = $this->getElement('we_object_' . $ObjectID . '_path');
-		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . (int) $myid, 'Path', $db);
-		$npubl = f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . (int) $myid, 'Published', $db);
+		list($path, $npubl) = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db);
+
 		if($path == ''){
 			$myid = 0;
 			$npubl = 1;
@@ -1121,7 +1121,7 @@ class we_objectFile extends we_document{
 
 				$path = $this->getElement("we_object_" . $name . "_path");
 				$path = $path ? $path : f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'", "Path", $db);
-				$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'", "ID", $db);
+				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='$classPath'", "ID", $db);
 
 
 				if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
@@ -1354,15 +1354,11 @@ class we_objectFile extends we_document{
 
 			$editbut = we_button::create_button("edit", "javascript:we_cmd('edit_link_at_object','" . $n . "')");
 			$delbut = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
-			$buttons = we_button::create_button_table(array($editbut,
-					$delbut));
-			if(!$content)
+			$buttons = we_button::create_button_table(array($editbut, $delbut));
+			if(!$content){
 				$content = g_l('global', "[new_link]");
-			if($startTag){
-				$out = $startTag . $content . '</a>' . ($we_editmode ? ($buttons) : "");
-			} else{
-				$out = $content . ($we_editmode ? ($buttons) : "");
 			}
+			$out = ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 		}
 		if($headline){
 			return '<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["link_" . $n]['editdescription'] . '</div>' : '<br />' ) . $out;
@@ -1544,11 +1540,8 @@ class we_objectFile extends we_document{
 	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 
-			if(isset($this->Charset)){ //	send charset which might be determined in template
-				$charset = $this->Charset;
-			} else{
-				$charset = $GLOBALS['WE_BACKENDCHARSET'];
-			}
+			//	send charset which might be determined in template
+			$charset = (isset($this->Charset) ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 
 			$value = $this->getElement($name);
 			$attribs["width"] = isset($attribs["width"]) ? $attribs["width"] : 620;

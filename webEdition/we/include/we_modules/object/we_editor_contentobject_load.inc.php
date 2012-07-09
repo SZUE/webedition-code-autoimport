@@ -40,7 +40,7 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"])&&$we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
+if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
 	$charset = $we_doc->elements["Charset"]["dat"];
 } else{
 	$charset = DEFAULT_CHARSET;
@@ -51,7 +51,7 @@ we_html_tools::headerCtCharset('text/html', $charset);
 //	---> Output the HTML Header
 //
 
-we_html_tools::htmlTop('',$charset);
+we_html_tools::htmlTop('', $charset, 5);
 
 
 //
