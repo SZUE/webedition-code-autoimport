@@ -474,7 +474,7 @@ class weCustomerFrames extends weModuleFrames{
 							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), we_forms::checkbox(1, $pv, "AutoLogin", g_l('modules_customer', '[autologin_request]'), false, "defaultfont", "top.content.setHot();")), $this->View->settings->getPropertyTitle($pk)));
 							break;
 						case 'Password':
-							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" ", (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
+							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? $pv : weCustomer::NOPWD_CHANGE), "", "onchange=\"top.content.setHot();\" ", (we_hasPerm('CUSTOMER_PASSWORD_VISIBLE') ? 'text' : 'password'), "240px"), $this->View->settings->getPropertyTitle($pk)));
 							break;
 						case 'Username':
 							$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';

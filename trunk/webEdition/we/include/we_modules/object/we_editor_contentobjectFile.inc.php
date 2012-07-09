@@ -53,7 +53,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 	}
 }
 
-we_html_tools::htmlTop('', $charset);
+we_html_tools::htmlTop('', $charset,5);
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){

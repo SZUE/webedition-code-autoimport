@@ -48,7 +48,7 @@ $we_doc->we_initSessDat($we_dt);
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"])&&$we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
+if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
 	$charset = $we_doc->elements["Charset"]["dat"];
 } else{
 	$charset = DEFAULT_CHARSET;
@@ -59,7 +59,7 @@ we_html_tools::headerCtCharset('text/html', $charset);
 //	---> Output the HTML Header
 //
 
-we_html_tools::htmlTop('', $charset);
+we_html_tools::htmlTop('', $charset, 5);
 
 
 //
@@ -81,72 +81,72 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 
 <body>
 
-<?php
-switch($cmd){
-	case "reload_entry_at_object":
-	case 'up_meta_at_object':
-	case 'down_meta_at_object':
-	case 'insert_meta_at_object':
-	case 'delete_meta_at_object':
-	case 'change_objectlink':
-	case 'remove_image_at_object':
-	case 'delete_link_at_object':
-	case 'change_link_at_object':
-		$temp = explode("_", $identifier);
-		$type = array_shift($temp);
-		$name = implode("_", $temp);
+	<?php
+	switch($cmd){
+		case "reload_entry_at_object":
+		case 'up_meta_at_object':
+		case 'down_meta_at_object':
+		case 'insert_meta_at_object':
+		case 'delete_meta_at_object':
+		case 'change_objectlink':
+		case 'remove_image_at_object':
+		case 'delete_link_at_object':
+		case 'change_link_at_object':
+			$temp = explode("_", $identifier);
+			$type = array_shift($temp);
+			$name = implode("_", $temp);
 
-		$db = new DB_WE();
-		$table = OBJECT_FILES_TABLE;
+			$db = new DB_WE();
+			$table = OBJECT_FILES_TABLE;
 
-		if($cmd == "insert_meta_at_object"){
-			$we_doc->addMetaToObject($name, $_REQUEST['we_cmd'][3]);
-		} elseif($cmd == "delete_meta_at_object"){
-			$we_doc->removeMetaFromObject($name, $_REQUEST['we_cmd'][3]);
-		} elseif($cmd == "down_meta_at_object"){
-			$we_doc->downMetaAtObject($name, $_REQUEST['we_cmd'][3]);
-		} elseif($cmd == "up_meta_at_object"){
-			$we_doc->upMetaAtObject($name, $_REQUEST['we_cmd'][3]);
-		} elseif($cmd == "change_objectlink"){
-			$we_doc->i_getLinkedObjects();
-		} elseif($cmd == "remove_image_at_object"){
-			$we_doc->remove_image($name);
-		} elseif($cmd == "delete_link_at_object"){
-			if(isset($we_doc->elements[$name]))
-				unset($we_doc->elements[$name]);
-		} elseif($cmd == "change_link_at_object"){
-			$we_doc->changeLink($name);
-		}
+			if($cmd == "insert_meta_at_object"){
+				$we_doc->addMetaToObject($name, $_REQUEST['we_cmd'][3]);
+			} elseif($cmd == "delete_meta_at_object"){
+				$we_doc->removeMetaFromObject($name, $_REQUEST['we_cmd'][3]);
+			} elseif($cmd == "down_meta_at_object"){
+				$we_doc->downMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+			} elseif($cmd == "up_meta_at_object"){
+				$we_doc->upMetaAtObject($name, $_REQUEST['we_cmd'][3]);
+			} elseif($cmd == "change_objectlink"){
+				$we_doc->i_getLinkedObjects();
+			} elseif($cmd == "remove_image_at_object"){
+				$we_doc->remove_image($name);
+			} elseif($cmd == "delete_link_at_object"){
+				if(isset($we_doc->elements[$name]))
+					unset($we_doc->elements[$name]);
+			} elseif($cmd == "change_link_at_object"){
+				$we_doc->changeLink($name);
+			}
 
-		$content = '<div id="' . $identifier . '">'
-			. '<a name="f' . $identifier . '"></a>'
-			. '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
-			. '<tr>'
-			. '<td class="defaultfont" width="100%">'
-			. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
-			. '<tr>'
-			. '<td class="defaultfont">'
-			. $we_doc->getFieldHTML($name, $type, array())
-			. '</td>'
-			. '</tr>'
-			. '</table>'
-			. '</td>'
-			. '</tr>'
-			. '<tr>'
-			. '<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div></td>'
-			. '</tr>'
-			. '</table>'
-			. '</div>';
+			$content = '<div id="' . $identifier . '">'
+				. '<a name="f' . $identifier . '"></a>'
+				. '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
+				. '<tr>'
+				. '<td class="defaultfont" width="100%">'
+				. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
+				. '<tr>'
+				. '<td class="defaultfont">'
+				. $we_doc->getFieldHTML($name, $type, array())
+				. '</td>'
+				. '</tr>'
+				. '</table>'
+				. '</td>'
+				. '</tr>'
+				. '<tr>'
+				. '<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div></td>'
+				. '</tr>'
+				. '</table>'
+				. '</div>';
 
-		echo $jsGUI->getResponse('reload', $identifier, $content);
+			echo $jsGUI->getResponse('reload', $identifier, $content);
 
-		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		break;
+			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+			break;
 
-	default:
-		break;
-}
-?>
+		default:
+			break;
+	}
+	?>
 
 </body>
 

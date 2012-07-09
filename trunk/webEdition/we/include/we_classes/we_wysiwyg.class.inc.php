@@ -911,7 +911,7 @@ function tinyMCEchanged(inst){
 
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
-				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
+				list($lang, $code) = $GLOBALS["weDefaultFrontendLanguage"];
 				//deactivated: template,save,layer
 				return we_html_element::jsElement('
 tinyMCE.init({
@@ -966,13 +966,10 @@ tinyMCE.init({
 				}
 
 				$realWidth = max($min_w, $this->width);
-				$out .= '<table border="0" cellpadding="0" cellspacing="0"  class="tbButtonWysiwygDefaultStyle"><tr><td class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:' . $realWidth . 'px; height:' . $this->height . 'px;" id="' . $this->ref . 'edit_src" name="' . $this->ref . 'edit_src"></textarea><iframe contenteditable  width="' . $realWidth . '" height="' . $this->height . '" name="' . $this->ref . 'edit" id="' . $this->ref . 'edit" allowTransparency="true" ';
-				if(we_base_browserDetect::isSafari()){
-					$out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
-				} else{
-					$out.='style="display: block;color: black;border: 1px solid #A5ACB2;"';
-				}
-				$out .='></iframe></td></tr>
+				$out .= '<table border="0" cellpadding="0" cellspacing="0"  class="tbButtonWysiwygDefaultStyle"><tr><td class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:' . $realWidth . 'px; height:' . $this->height . 'px;" id="' . $this->ref . 'edit_src" name="' . $this->ref . 'edit_src"></textarea><iframe contenteditable  width="' . $realWidth . 'px" height="' . $this->height . 'px" name="' . $this->ref . 'edit" id="' . $this->ref . 'edit" allowTransparency="true" ' .
+					'style="display: block;color: black;border: 1px solid #A5ACB2;' .
+					(we_base_browserDetect::isSafari() ? '-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"' : '"') .
+					'></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . htmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
 ' . we_html_element::jsElement('
 var ' . $this->ref . 'Obj = null;
@@ -1156,8 +1153,8 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 
 	function getHTML(){
 		if(we_base_browserDetect::isSafari()){
-			$out = '<select id="' . $this->editor->ref . '_sel_' . $this->cmd . '" style="width:' . $this->width . 'px;margin-right:3px;" size="1" onmousedown="' . $this->editor->ref . 'Obj.saveSelection();" onmouseup="' . $this->editor->ref . 'Obj.restoreSelection();" onchange="' . $this->editor->ref . 'Obj.restoreSelection();' . $this->editor->ref . 'Obj.selectChanged(\'' . $this->cmd . '\',this.value);this.selectedIndex=0">'.
-			'<option value="">' . htmlspecialchars($this->title) . '</option>' . "\n";
+			$out = '<select id="' . $this->editor->ref . '_sel_' . $this->cmd . '" style="width:' . $this->width . 'px;margin-right:3px;" size="1" onmousedown="' . $this->editor->ref . 'Obj.saveSelection();" onmouseup="' . $this->editor->ref . 'Obj.restoreSelection();" onchange="' . $this->editor->ref . 'Obj.restoreSelection();' . $this->editor->ref . 'Obj.selectChanged(\'' . $this->cmd . '\',this.value);this.selectedIndex=0">' .
+				'<option value="">' . htmlspecialchars($this->title) . '</option>' . "\n";
 			foreach($this->vals as $val => $txt){
 				$out .= '<option value="' . htmlspecialchars($val) . '">' . htmlspecialchars($txt) . '</option>' . "\n";
 			}
