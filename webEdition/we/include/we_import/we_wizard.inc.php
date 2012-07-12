@@ -291,11 +291,11 @@ HTS;
 			);
 	}
 
-	function getWizCmd($type = "normal"){
+	function getWizCmd($type = 'normal'){
 		@set_time_limit(0);
-		$out = "";
-		$mode = $this->getPostGetVar("mode", 0);
-		if($mode == ""){
+		$out = '';
+		$mode = $this->getPostGetVar('mode', 0);
+		if($mode == ''){
 			$mode = 0;
 		}
 		$numFiles = $this->getPostGetVar("numFiles", -1);
@@ -326,98 +326,99 @@ HTS;
 					}
 
 					if($type == "first_steps_wizard"){
-						$JScript = "top.leWizardProgress.set(0)\n"
-							. "top.leWizardProgress.show()\n"
-							. "top.weButton.disable('next')\n"
-							. "top.weButton.disable('back')\n"
-							. "top.weButton.enable('reload')\n"
-							. "function we_import_handler(e) { we_import(1,-2); }\n"
-							. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
+						$JScript = "top.leWizardProgress.set(0);
+							top.leWizardProgress.show()
+							top.weButton.disable('next')
+							top.weButton.disable('back')
+							top.weButton.enable('reload')
+							function we_import_handler(e) { we_import(1,-2); }
+							top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 					} else{
-						$JScript = "top.frames[\"wizbusy\"].setProgressText(\"pb1\",\"" . g_l('import', "[prepare_progress]") . "\");\n";
+						$JScript = 'top.frames["wizbusy"].setProgressText("pb1","' . g_l('import', "[prepare_progress]") . '");';
 					}
 
-					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
-							"<!--\n" .
-							$JScript .
-							"setTimeout(\"we_import(1,-1);\",15);\n" .
-							"//-->\n"
-					);
+					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) .
+						we_html_element::jsElement($JScript . 'setTimeout("we_import(1,-1);",15);');
 					break;
 
 				case -1:
-					if($v["type"] == "WXMLImport"){
+					switch($v["type"]){
+						case 'WXMLImport':
 
-						if($type != "first_steps_wizard"){
-							print we_html_element::jsElement(
-									'<!--
+							if($type != "first_steps_wizard"){
+								print we_html_element::jsElement('
 								if (top.frames["wizbody"] && top.frames["wizbody"].addLog){
 									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br>");
 									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br>");
 									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br>");
-								}
-								//-->');
-							flush();
-						}
-
-						$path = TEMP_PATH . "/" . weFile::getUniqueId() . "/";
-						we_util_File::createLocalFolder($path);
-
-						if(is_dir($path)){
-							$path .= '/';
-							$num_files = weXMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
-							$num_files++;
-						}
-					} else if($v["type"] == "GXMLImport"){
-						$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-						$parse->splitFile(($v["type"] == "GXMLImport") ? "*/" . $v["rcd"] : "*/child::*", (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
-					} else if($v["type"] == "CSVImport"){
-						switch($v["csv_enclosed"]){
-							case "double_quote": $encl = "\"";
-								break;
-							case "single_quote": $encl = "'";
-								break;
-							case "none": $encl = "";
-								break;
-						}
-						$cp = new CSVImport;
-						$cp->setFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
-						$del = ($v["csv_seperator"] != "\\t") ? (($v["csv_seperator"] != "") ? $v["csv_seperator"] : " ") : "	";
-						$cp->setDelim($del);
-						$cp->setEnclosure($encl);
-						$cp->parseCSV();
-						$num_files = 0;
-						$unique_id = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
-
-						$path = TEMP_PATH . $unique_id;
-						we_util_File::createLocalFolder($path);
-
-						if($cp->isOK()){
-							$fieldnames = ($v["csv_fieldnames"]) ? 0 : 1;
-							$num_rows = $cp->CSVNumRows();
-							$num_fields = $cp->CSVNumFields();
-
-							for($i = 0; $i < $num_rows + $fieldnames; $i++){
-								$data = "";
-								$d[0] = $d[1] = "";
-								for($j = 0; $j < $num_fields; $j++){
-									$d[1] .= (!$fieldnames) ? (($cp->CSVFieldName($j) != "") ?
-											$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") : $encl . "f_" . $j . $encl;
-									$d[0] .= ($fieldnames && $i == 0) ?
-										(($cp->CSVFieldName($j) != "") ? $encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") :
-										(($cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j] != "") ?
-											$encl . str_replace($encl, "\\" . $encl, $cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j]) . $encl : "");
-									if($j + 1 < $num_fields){
-										$d[1] .= "$del";
-										$d[0] .= "$del";
-									}
-								}
-								$data = implode("\n", $d);
-								weFile::save($path . '/temp_' . $i . '.csv', $data, 'wb');
-								$num_files++;
+								}');
+								flush();
 							}
-						}
+
+							$path = TEMP_PATH . '/' . weFile::getUniqueId() . '/';
+							we_util_File::createLocalFolder($path);
+
+							if(is_dir($path)){
+								$path .= '/';
+								$num_files = weXMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
+								++$num_files;
+							}
+							break;
+						case 'GXMLImport':
+							$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
+							$parse->splitFile(($v["type"] == "GXMLImport") ? "*/" . $v["rcd"] : "*/child::*", (isset($v["from_elem"])) ? $v["from_elem"] : FALSE, (isset($v["to_elem"])) ? $v["to_elem"] : FALSE, 1);
+							break;
+						case 'CSVImport':
+							switch($v['csv_enclosed']){
+								case 'double_quote':
+									$encl = '"';
+									break;
+								case 'single_quote':
+									$encl = "'";
+									break;
+								case 'none':
+									$encl = '';
+									break;
+							}
+							$cp = new CSVImport;
+							$cp->setFile($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
+							$del = ($v["csv_seperator"] != "\\t") ? (($v["csv_seperator"] != "") ? $v["csv_seperator"] : " ") : "	";
+							$cp->setDelim($del);
+							$cp->setEnclosure($encl);
+							$cp->parseCSV();
+							$num_files = 0;
+							$unique_id = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
+
+							$path = TEMP_PATH . $unique_id;
+							we_util_File::createLocalFolder($path);
+
+							if($cp->isOK()){
+								$fieldnames = ($v["csv_fieldnames"]) ? 0 : 1;
+								$num_rows = $cp->CSVNumRows();
+								$num_fields = $cp->CSVNumFields();
+
+								for($i = 0; $i < $num_rows + $fieldnames; $i++){
+									$data = "";
+									$d[0] = $d[1] = "";
+									for($j = 0; $j < $num_fields; $j++){
+										$d[1] .= (!$fieldnames) ? (($cp->CSVFieldName($j) != "") ?
+												$encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") : $encl . "f_" . $j . $encl;
+										$d[0] .= ($fieldnames && $i == 0) ?
+											(($cp->CSVFieldName($j) != "") ? $encl . str_replace($encl, "\\" . $encl, $cp->CSVFieldName($j)) . $encl : "") :
+											(($cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j] != "") ?
+												$encl . str_replace($encl, "\\" . $encl, $cp->Fields[(!$fieldnames) ? $i : ($i - 1)][$j]) . $encl : "");
+										if($j + 1 < $num_fields){
+											$d[1] .= "$del";
+											$d[0] .= "$del";
+										}
+									}
+									$data = implode("\n", $d);
+									weFile::save($path . '/temp_' . $i . '.csv', $data, 'wb');
+									$num_files++;
+								}
+							}
+							break;
 					}
 
 					$h = $this->getHdns("v", $v) . "\n";
@@ -434,47 +435,16 @@ HTS;
 							"setTimeout(\"we_import(1,0);\",15);");
 					break;
 
-				case $v["numFiles"]:
-					if($type == "first_steps_wizard"){
-						$JScript = "top.leWizardProgress.set(100);\n"
-							. "top.leWizardProgress.hide();\n"
-							. "top.weButton.enable('next');\n"
-							. "top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);\n"
-							//. "top.opener.top.header.location.reload();\n"
-							. "function we_import_handler(e) { we_import(1," . $v["numFiles"] . "); }\n"
-							. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
-					} else{
-						$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');\n"
-							. "top.frames['wizbusy'].setProgress(100);\n"
-							. "top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);\n"
-							//. "top.opener.top.header.location.reload();\n"
-							. "if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart) != 'undefined') top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();\n"
-							. "if(top.frames['wizbusy'] && top.frames['wizbusy'].document.getElementById('progress')) {\n"
-							. "	progress = top.frames['wizbusy'].document.getElementById('progress');\n"
-							. "	if(typeof(progress)!='undefined'){\n"
-							. "		progress.style.display = 'none';\n"
-							. "	}\n"
-							. "}\n";
-						if($v['type'] == 'WXMLImport'){
-							$JScript .= "if (top.frames['wizbody'] && top.frames['wizbody'].addLog) {\n"
-								. "	top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
-								. "}\n";
-						} else{
-							$JScript .= we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
-						}
-					}
-
-					$out .= we_html_element::jsElement($JScript);
-
+				case $v['numFiles']:
+					$out.=self::importFinished($v, $type);
 					break;
-
 				default:
 					$fields = array();
 					if($v["type"] == "WXMLImport"){
 
 						$hiddens = $this->getHdns("v", $v);
 
-						if((int) $v['cid'] == 0){
+						if(intval($v['cid']) == 0){
 							// clear session data
 							weXMLExIm::unsetPerserves();
 						}
@@ -514,8 +484,7 @@ HTS;
 									print we_html_element::jsElement('
 										if (top.frames["wizbody"].addLog){
 											top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
-										}
-									');
+										}');
 									flush();
 								}
 							}
@@ -535,43 +504,33 @@ HTS;
 							}
 
 							if(!empty($ref)){
-								$xmlExIm->savePerserves();
+								$xmlExIm->savePerserves(false);
 
 								if($type == "first_steps_wizard"){
-									$JScript = "top.leWizardProgress.set(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));\n"
-										. "function we_import_handler(e) { we_import(1," . ($v['cid'] - 1) . "); }\n"
-										. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
-									;
+									$JScript = "top.leWizardProgress.set(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));
+										function we_import_handler(e) { we_import(1," . ($v['cid'] - 1) . "); }
+										top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 								} else{
-									$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');\n"
-										. "top.frames['wizbusy'].setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));\n";
+									$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
+										top.frames['wizbusy'].setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
 								}
 
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement(
-											"<!--\n"
-											. $JScript
-											. "setTimeout('we_import(1," . $v['cid'] . ");',15);\n"
-											. "//-->\n"
-										));
+								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
 							} else{
-
 								if($type == "first_steps_wizard"){
 									$_SESSION['fsw_importRefTable'] = isset($_SESSION["ExImRefTable"]) ? $_SESSION["ExImRefTable"] : array();
 
-									$JScript = ""
-										. "function we_import_handler(e) { we_import(1," . ($v['numFiles'] - 1) . "); }\n"
-										. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n"
-										. "setTimeout('we_import(1," . $v['numFiles'] . ");',15);\n";
+									$JScript = "
+										function we_import_handler(e) { we_import(1," . ($v['numFiles'] - 1) . "); }
+										top.document.getElementById('function_reload').onmouseup = we_import_handler;
+										setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 								} else{
 
-									$JScript = "top.frames['wizbusy'].finish(" . $xmlExIm->options['rebuild'] . ");\n"
-										. "setTimeout('we_import(1," . $v['numFiles'] . ");',15);\n";
+									$JScript = "top.frames['wizbusy'].finish(" . $xmlExIm->options['rebuild'] . ");
+										setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 								}
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement(
-											"<!--\n"
-											. $JScript
-											. "//-->\n"
-										));
+								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
 
 								$xmlExIm->unsetPerserves();
 							}
@@ -605,7 +564,7 @@ HTS;
 									"rebuild" => $v["rebuild"]
 								));
 								$imported = $xmlExIm->import($chunk);
-								$xmlExIm->savePerserves();
+								$xmlExIm->savePerserves(false);
 								if($imported){
 									$ref = $xmlExIm->RefTable->getLast();
 
@@ -656,21 +615,17 @@ HTS;
 
 								$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2) . '';
 
-								if($type == "first_steps_wizard"){
-									$JScript = "top.leWizardProgress.set(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));\n"
-										. "function we_import_handler(e) { we_import(1," . $v["cid"] . "); }\n"
-										. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
+								if($type == 'first_steps_wizard'){
+									$JScript = "top.leWizardProgress.set(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));
+										function we_import_handler(e) { we_import(1," . $v["cid"] . "); }
+										top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 								} else{
-									$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . $_status . " - " . $_counter_text . "');\n"
-										. "top.frames['wizbusy'].setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));\n";
+									$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . $_status . " - " . $_counter_text . "');
+										top.frames['wizbusy'].setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 								}
 
-								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement(
-											"<!--\n"
-											. $JScript
-											. "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);\n"
-											. "//-->\n"
-										));
+								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
 							}
 						}
 						break;
@@ -773,12 +728,8 @@ HTS;
 							. "top.frames['wizbusy'].setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));\n";
 					}
 
-					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement(
-								"<!--\n"
-								. $JScript
-								. "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);\n"
-								. "//-->\n"
-							));
+					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+							we_html_element::jsElement($JScript . "setTimeout('we_import(1," . ($v["cid"] + 1) . ");',15);"));
 					break;
 			} // end switch
 		} else if($mode != 1){
@@ -792,68 +743,108 @@ HTS;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::jsElement(
-						"function addField(form, fieldType, fieldName, fieldValue) {\n" .
-						"	if (document.getElementById) {\n" .
-						"		var input = document.createElement('INPUT');\n" .
-						"		if (document.all) {\n" .
-						"			input.type = fieldType;\n" .
-						"			input.name = fieldName;\n" .
-						"			input.value = fieldValue;\n" .
-						"		}\n" .
-						"		else if (document.getElementById) {\n" .
-						"			input.setAttribute('type', fieldType);\n" .
-						"			input.setAttribute('name', fieldName);\n" .
-						"			input.setAttribute('value', fieldValue);\n" .
-						"		}\n" .
-						"		form.appendChild(input);\n" .
-						"	}\n" .
-						"}\n" .
-						"function getField(form, fieldName) {\n" .
-						"	if (!document.all)\n" .
-						"		return form[fieldName];\n" .
-						"	else\n" .
-						"		for (var e = 0; e < form.elements.length; e++)\n" .
-						"			if (form.elements[e].name == fieldName)\n" .
-						"				return form.elements[e];\n" .
-						"		return null;\n" .
-						"}\n" .
-						"function removeField(form, fieldName) {\n" .
-						"	var field = getField (form, fieldName);\n" .
-						"	if (field && !field.length)\n" .
-						"		field.parentNode.removeChild(field);\n" .
-						"}\n" .
-						"function toggleField (form, fieldName, value) {\n" .
-						"	var field = getField (form, fieldName);\n" .
-						"	if (field)\n" .
-						"		removeField (form, fieldName);\n" .
-						"	else\n" .
-						"		addField (form, 'hidden', fieldName, value);\n" .
-						"}\n" .
-						"function cycle() {\n" .
-						"	var test = '';\n" .
-						"	var cf = self.document.forms['we_form'];\n" .
-						"	var bf = top.frames['wizbody'].document.forms['we_form'];\n" .
-						"	for (var i = 0; i < bf.elements.length; i++) {\n" .
-						"		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||\n" .
-						"			(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {\n" .
-						"			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);\n" .
-						"		}\n" .
-						"	}\n" .
-						"}\n" .
-						"function we_import(mode, cid) {\n" .
-						"	if(arguments[2]==1){ " .
-						"		top.frames['wizbody'].location = '" . $this->path . "?pnt=wizbody&step=3&type=WXMLImport&noload=1';\n" .
-						"	};\n" .
-						"	var we_form = self.document.forms['we_form'];\n" .
-						"	we_form.elements['v[mode]'].value = mode;\n" .
-						"	we_form.elements['v[cid]'].value = cid;\n" .
-						"	we_form.target = '" . ($type == "first_steps_wizard" ? "_self" : "wizcmd" ) . "';\n" .
-						"	we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['SCRIPT_NAME'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path . "?pnt=wizcmd" ) . "';\n" .
-						"	we_form.method = 'post';\n" .
-						"	we_form.submit();\n" .
-						"}\n"
+						"function addField(form, fieldType, fieldName, fieldValue) {
+							if (document.getElementById) {
+								var input = document.createElement('INPUT');
+								if (document.all) {
+									input.type = fieldType;
+									input.name = fieldName;
+									input.value = fieldValue;
+								}
+								else if (document.getElementById) {
+									input.setAttribute('type', fieldType);
+									input.setAttribute('name', fieldName);
+									input.setAttribute('value', fieldValue);
+								}
+								form.appendChild(input);
+							}
+						}
+						function getField(form, fieldName) {
+							if (!document.all){
+								return form[fieldName];
+							}else{
+								for (var e = 0; e < form.elements.length; e++){
+									if (form.elements[e].name == fieldName){
+										return form.elements[e];
+									}
+								}
+							}
+							return null;
+						}
+						function removeField(form, fieldName) {
+							var field = getField (form, fieldName);
+							if (field && !field.length){
+								field.parentNode.removeChild(field);
+							}
+						}
+						function toggleField (form, fieldName, value) {
+							var field = getField (form, fieldName);
+							if (field){
+								removeField (form, fieldName);
+							}else{
+								addField (form, 'hidden', fieldName, value);
+							}
+						}
+						function cycle() {
+							var test = '';
+							var cf = self.document.forms['we_form'];
+							var bf = top.frames['wizbody'].document.forms['we_form'];
+							for (var i = 0; i < bf.elements.length; i++) {
+								if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
+									(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
+									addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
+								}
+							}
+						}
+						function we_import(mode, cid) {
+							if(arguments[2]==1){
+								top.frames['wizbody'].location = '" . $this->path . "?pnt=wizbody&step=3&type=WXMLImport&noload=1';
+							};
+							var we_form = self.document.forms['we_form'];
+							we_form.elements['v[mode]'].value = mode;
+							we_form.elements['v[cid]'].value = cid;
+							we_form.target = '" . ($type == "first_steps_wizard" ? "_self" : "wizcmd" ) . "';
+							we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['SCRIPT_NAME'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path . "?pnt=wizcmd" ) . "';
+							we_form.method = 'post';
+							we_form.submit();
+						}"
 					)) .
 				we_html_element::htmlBody(array(), $out));
+	}
+
+	private function importFinished($v, $type){
+		switch($type){
+			case 'first_steps_wizard':
+				$JScript = "top.leWizardProgress.set(100);
+							top.leWizardProgress.hide();
+							top.weButton.enable('next');
+							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);" .
+					//. "top.opener.top.header.location.reload();\n"
+					"function we_import_handler(e) { we_import(1," . $v["numFiles"] . "); }
+							top.document.getElementById('function_reload').onmouseup = we_import_handler;";
+				break;
+			default:
+				$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
+							top.frames['wizbusy'].setProgress(100);
+							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);" .
+					//. "top.opener.top.header.location.reload();\n"
+					"if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart) != 'undefined') top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();
+							if(top.frames['wizbusy'] && top.frames['wizbusy'].document.getElementById('progress')) {
+							progress = top.frames['wizbusy'].document.getElementById('progress');
+							if(typeof(progress)!='undefined'){
+									progress.style.display = 'none';
+								}
+							}";
+				if($v['type'] == 'WXMLImport'){
+					$JScript .= "if (top.frames['wizbody'] && top.frames['wizbody'].addLog) {
+								top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");
+								}";
+				} else{
+					$JScript .= we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
+				}
+		}
+
+		return we_html_element::jsElement($JScript);
 	}
 
 	function getPostGetVar($var, $def){
