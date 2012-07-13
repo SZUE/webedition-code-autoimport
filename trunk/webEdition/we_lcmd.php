@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+we_html_tools::htmlTop('command-bridge', '', 5);
 ?>
 <script  type="text/javascript">
 	// bugfix WE-356
@@ -156,3 +158,4 @@ switch($_REQUEST['we_cmd'][0]){
 }
 ?>
 </script>
+</head><body></body></html>
