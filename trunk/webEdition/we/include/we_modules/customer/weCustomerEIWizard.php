@@ -40,7 +40,7 @@ class weCustomerEIWizard{
 	var $exim_number = 5;
 
 	function __construct(){
-		$this->setFrameset(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php");
+		$this->setFrameset(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php");
 		$this->db = new DB_WE();
 	}
 

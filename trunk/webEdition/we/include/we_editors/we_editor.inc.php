@@ -267,7 +267,7 @@ if($_userID != 0 && $_userID != $_SESSION["user"]["ID"] && $we_doc->ID){ // docu
 		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_PREVIEW;
 	} else{
-		include_once(WE_USERS_MODULE_PATH . "we_users_lockmessage.inc.php");
+		include_once(WE_USERS_MODULE_DIR . "we_users_lockmessage.inc.php");
 		exit;
 	}
 } else{ // lock document, if in seeMode and EditMode !!, don't lock when already locked
