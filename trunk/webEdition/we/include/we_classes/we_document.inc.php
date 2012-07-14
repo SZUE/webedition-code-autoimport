@@ -898,7 +898,12 @@ class we_document extends we_root{
 					$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 				}
-
+				if(isset($attribs['alt'])){
+					$attribs['alt'] = htmlspecialchars($attribs['alt']);
+				}
+				if(isset($attribs['title'])){
+					$attribs['title'] = htmlspecialchars($attribs['title']);
+				}
 				if(!(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = htmlspecialchars($GLOBALS['we_doc']->getElement($altField));
