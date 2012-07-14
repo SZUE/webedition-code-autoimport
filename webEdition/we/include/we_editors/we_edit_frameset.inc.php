@@ -169,7 +169,7 @@ if($we_doc->ID){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			if($we_Table == TEMPLATES_TABLE){ //	different workspace. for template
 				$we_message = g_l('alert', '[' . ($we_ContentType == "folder") ? "folder" : $we_Table . '][not_im_ws]');
-				include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
+				include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 				exit();
 			} else if($we_Table == FILE_TABLE){ //	only preview mode allowed for docs
 				//	MUST change to Preview-Mode
@@ -182,7 +182,7 @@ if($we_doc->ID){
 		if($we_ContentType != "object"){
 			$_SESSION["EditPageNr"] = WE_EDITPAGE_PREVIEW;
 		} else{
-			include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
+			include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 			exit();
 		}
 	}
@@ -247,7 +247,7 @@ if(!isset($we_doc->IsClassFolder)){
 
 	if($we_doc->ContentType == "objectFile" && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
 		$we_message = g_l('alert', "[no_new][objectFile]");
-		include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
+		include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 		exit;
 	}
 }
