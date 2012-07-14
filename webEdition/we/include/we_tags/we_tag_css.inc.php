@@ -43,7 +43,7 @@ function we_tag_css($attribs){
 		$attribs["href"] = $url;
 
 
-		return getHtmlTag("link", $attribs);
+		return getHtmlTag("link", $attribs). "\n";
 	}
 	return "";
 }
