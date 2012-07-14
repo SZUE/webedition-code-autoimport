@@ -93,6 +93,9 @@ class we_binaryDocument extends we_document{
 	}
 
 	function we_save($resave = 0){
+		if(!isset($this->elements['data']['dat'])){
+			$this->i_getContentData();
+		}
 		if($this->getFilesize() == 0){
 			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR)
