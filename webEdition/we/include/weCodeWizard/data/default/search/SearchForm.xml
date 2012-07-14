@@ -13,7 +13,7 @@
 <we:form id="self" method="get" xml="true">
   <p>
     <label for="term"><?php echo g_l('snippet','[search][SearchForm][term]');?></label><br />
-    <we:search type="textinput" name="term" id="term" xml="true" />
+    <we:search type="textinput" name="search" id="term" xml="true" />
     <input type="submit" value="<?php echo g_l('snippet','[search][SearchForm][search]');?>" />
   </p>
 </we:form>
