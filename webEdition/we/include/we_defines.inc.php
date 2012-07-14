@@ -63,7 +63,9 @@ define('WEBEDITION_DIR', '/webEdition/');
 define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
 define('TEMPLATES_DIR', WEBEDITION_DIR . 'we/templates');
 define('TEMP_DIR', WEBEDITION_DIR . 'we/tmp/');
-define('WE_MODULES_DIR', WE_INCLUDES_DIR . 'we_modules/');
+
+define('WE_MODULES_PATH', WE_INCLUDES_DIR . 'we_modules/');//Abwärtskompatibilität
+
 define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
@@ -86,7 +88,7 @@ define('TEMP_PATH', $_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 define('WE_APPS_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR);
 define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
 define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
-define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
+define('WE_MODULES_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_PATH);//Abwärtskompatibilität
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
 we_html_tools::protect();
 
-include_once(WE_USERS_MODULE_PATH . "edit_users_bcmd.php");
+include_once(WE_USERS_MODULE_DIR . "edit_users_bcmd.php");
 if(isset($_REQUEST["ucmd"])){
 	switch($_REQUEST["ucmd"]){
 		case "new_user":
@@ -46,9 +46,9 @@ if(isset($_REQUEST["ucmd"])){
 
 			$_SESSION["user_session_data"] = $user_object->getState();
 			print we_html_element::jsElement('
-                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=";
-                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
+                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
+                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php?oldtab=";
+                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
                     ');
 			break;
 		case "display_user":
@@ -70,9 +70,9 @@ if(isset($_REQUEST["ucmd"])){
 				print we_html_element::jsElement('
                            top.content.usetHot();
                            ' . $setgroup . '
-                           top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                           top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=";
-                           top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
+                           top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
+                           top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php?oldtab=";
+                           top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
                         ');
 			}
 			break;
@@ -311,7 +311,7 @@ if(isset($_REQUEST["ucmd"])){
 				}
 				print we_html_element::jsElement('
                             if(confirm("' . $question . '")){
-                                top.content.user_cmd.location="' . WE_USERS_MODULE_DIR . 'edit_users_cmd.php?ucmd=do_delete";
+                                top.content.user_cmd.location="' . WE_USERS_MODULE_PATH . 'edit_users_cmd.php?ucmd=do_delete";
                             }
                         ');
 			}

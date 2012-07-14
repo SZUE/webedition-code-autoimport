@@ -30,7 +30,7 @@ $script = "";
 
 if(($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) || ($table == FILE_TABLE && !we_hasPerm("MOVE_DOCUMENT")) || (defined(
 		"OBJECT_TABLE") && $table == OBJECT_TABLE && !we_hasPerm("MOVE_OBJECTFILES"))){
-	include_once (WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
+	include_once (WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
 	exit();
 }
 
