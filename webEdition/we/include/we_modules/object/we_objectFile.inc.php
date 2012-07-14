@@ -559,17 +559,13 @@ class we_objectFile extends we_document{
 							$val = 0;
 						} else{
 							$_empty = true;
-							for($i = 0; $i < count($_array); $i++){
-								if($_array[$i]){
+							foreach($_array as $tmp){
+								if($tmp){
 									$_empty = false;
 									break;
 								}
 							}
-							if($_empty){
-								$val = 0;
-							} else{
-								$val = 1;
-							}
+							$val = ($_empty ? 0 : 1);
 						}
 						break;
 					case 'checkbox':

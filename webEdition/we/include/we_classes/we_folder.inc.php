@@ -38,10 +38,10 @@ class we_folder extends we_root{
 	var $ContentType = 'folder';
 	var $IsClassFolder = 0;
 	var $IsNotEditable = 0;
-	var $WorkspacePath = "";
-	var $WorkspaceID = "";
-	var $Language = "";
-	var $Icon = "folder.gif";
+	var $WorkspacePath = '';
+	var $WorkspaceID = '';
+	var $Language = '';
+	var $Icon = 'folder.gif';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	var $searchclassFolder_class;
@@ -49,14 +49,14 @@ class we_folder extends we_root{
 	/**
 	 * @var weDocumentCustomerFilter
 	 */
-	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
 
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "SearchStart", "SearchField", "Search", "Order", "GreenOnly", "IsClassFolder", "IsNotEditable", "WorkspacePath", "WorkspaceID", "Language", "TriggerID", "searchclassFolder", "searchclassFolder_class");
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class');
 	}
 
 	function we_new(){
@@ -69,7 +69,7 @@ class we_folder extends we_root{
 			return we_root::getPath();
 		} else{
 			$ParentPath = $this->getParentPath();
-			$ParentPath .= ($ParentPath != "/") ? "/" : "";
+			$ParentPath .= ($ParentPath != '/') ? '/' : '';
 			return $ParentPath . $this->Text;
 		}
 	}
@@ -78,10 +78,10 @@ class we_folder extends we_root{
 		we_root::we_initSessDat($sessDat);
 
 		if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
-			if($this->Language == ""){
+			if($this->Language == ''){
 				$this->initLanguageFromParent();
 			}
-			if(isset($_REQUEST["we_edit_weDocumentCustomerFilter"])){
+			if(isset($_REQUEST['we_edit_weDocumentCustomerFilter'])){
 				$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
 			} else if(isset($sessDat[3])){ // init webUser from session
 				$this->documentCustomerFilter = unserialize($sessDat[3]);
@@ -105,7 +105,7 @@ class we_folder extends we_root{
 	 * adjust EditPageNrs for CUSTOMERFILTER AND DOCLIST
 	 */
 	function adjustEditPageNr(){
-		if(defined("CUSTOMER_FILTER_TABLE")){
+		if(defined('CUSTOMER_FILTER_TABLE')){
 
 			if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
 				array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
@@ -120,20 +120,20 @@ class we_folder extends we_root{
 
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == "") {
+		while($this->Language == '') {
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
-				if($this->Language == ""){
-					$this->Language = "de_DE";
+				if($this->Language == ''){
+					$this->Language = 'de_DE';
 				}
 			} else{
-				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
+				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . intval($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
-					$ParentID = $this->DB_WE->f("ParentID");
-					$this->Language = $this->DB_WE->f("Language");
+					$ParentID = $this->DB_WE->f('ParentID');
+					$this->Language = $this->DB_WE->f('Language');
 				}
 			}
 			$i++;
@@ -144,27 +144,27 @@ class we_folder extends we_root{
 		if(substr($path, -1) == '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
-		$id = f("SELECT ID FROM " . $this->DB_WE->escape($tblName) . " WHERE Path='" . $this->DB_WE->escape($path) . "' AND IsFolder=1", "ID", $this->DB_WE);
-		if($id != ""){
+		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($path) . '" AND IsFolder=1', 'ID', $this->DB_WE);
+		if($id != ''){
 			$this->initByID($id, $tblName);
-			if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
-				$this->ClassName = "we_class_folder";
+			if(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
+				$this->ClassName = 'we_class_folder';
 			}
 		} else{
 			## Folder does not exist, so we have to create it (if user has permissons to create folders)
 
-			$spl = explode("/", $path);
+			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = array();
 			$anz = sizeof($spl);
 			$last_pid = 0;
 			for($i = 0; $i < $anz; $i++){
 				array_push($p, array_shift($spl));
-				$pa = implode("/", $p);
+				$pa = implode('/', $p);
 				if($pa){
-					$pid = f("SELECT ID FROM " . $this->DB_WE->escape($tblName) . " WHERE Path='" . $this->DB_WE->escape($pa) . "'", "ID", $this->DB_WE);
+					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($pa) . '"', 'ID', $this->DB_WE);
 					if(!$pid){
-						if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
+						if(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 							$folder = new we_class_folder();
 						} else{
 							$folder = new we_folder();
@@ -185,7 +185,7 @@ class we_folder extends we_root{
 				}
 			}
 			$this->we_new();
-			$this->Icon = $IsClassFolder ? "class_folder.gif" : "folder.gif";
+			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
 			$this->Table = $tblName;
 			$this->IsClassFolder = $IsClassFolder;
 			$this->ParentID = $last_pid;
@@ -199,7 +199,7 @@ class we_folder extends we_root{
 	}
 
 	function i_canSaveDirinDir(){
-		if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
+		if(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			if($this->Icon == '' && $this->ParentID == 0){
 				return false;
 			} else{
@@ -210,9 +210,9 @@ class we_folder extends we_root{
 			}
 
 			if($this->ParentID != 0){
-				$this->DB_WE->query("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsNotEditable=1");
+				$this->DB_WE->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsNotEditable=1');
 				while($this->DB_WE->next_record()) {
-					if($this->DB_WE->f("ID") == $this->ParentID){
+					if($this->DB_WE->f('ID') == $this->ParentID){
 						return false;
 					}
 				}
@@ -229,7 +229,7 @@ class we_folder extends we_root{
 				if($this->ID == $pid){
 					return true;
 				}
-				$pid = f("SELECT ParentID FROM " . $this->Table . "  WHERE ID=" . intval($pid), "ParentID", $db);
+				$pid = f('SELECT ParentID FROM ' . $this->Table . '  WHERE ID=' . intval($pid), 'ParentID', $db);
 			}
 		}
 		return false;
@@ -239,16 +239,38 @@ class we_folder extends we_root{
 
 	function we_save($resave = 0, $skipHook = 0){
 		$this->i_setText();
-		if(defined("OBJECT_FILES_TABLE") && $this->Table == OBJECT_FILES_TABLE){
-			$this->ClassName = "we_class_folder";
-		}
-		if(!parent::we_save($resave)){
-			return false;
+		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
+		if($objFolder){
+			$this->ClassName = 'we_class_folder';
 		}
 		$update = ($this->OldPath != $this->Path);
-		if(!$this->writeFolder())
-			return false;
-		if(defined("OBJECT_TABLE") && $this->Table == OBJECT_TABLE){
+		if($update && !$objFolder){
+			if(file_exists($this->OldPath) && file_exists($this->Path)){
+				t_e('Both paths exists!', $this->OldPath, $this->Path);
+				return false;
+			}
+			//leave old dir for parent save
+			$tmp = $this->Path;
+			$this->Path = $this->OldPath;
+			if(!parent::we_save($resave)){
+				return false;
+			}
+			//set back path, since we want to move the dir
+			$this->Path = $tmp;
+			if(!$this->writeFolder()){
+				return false;
+			}
+		}
+
+		if(!$update || $objFolder){
+			if(!parent::we_save($resave)){
+				return false;
+			}
+			if(!$this->writeFolder()){
+				return false;
+			}
+		}
+		if(defined('OBJECT_TABLE') && $this->Table == OBJECT_TABLE){
 			$f = new we_class_folder();
 			$f->initByPath($this->Path, OBJECT_FILES_TABLE, 0, 1);
 		}
@@ -257,8 +279,8 @@ class we_folder extends we_root{
 		if($resave == 0 && $update){
 			weNavigationCache::clean(true);
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', true, ($this->ClassName == 'we_class_folder'));
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
+			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', true, ($this->ClassName == 'we_class_folder'));
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
@@ -286,15 +308,15 @@ class we_folder extends we_root{
 
 		// Adapt tblLangLink-entries of documents and objects to the new language (all published and unpublished)
 		//$query = "SELECT ID, Language FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
-		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
 
 		if(!$DB_WE->query($query)){
 			return false;
 		}
 		while($DB_WE->next_record()) {
 			if($DB_WE->Record['Language'] != $language){
-				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? "tblFile" : "tblObjectFile";
-				$query = "SELECT LDID, Locale FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "';";
+				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
+				$query = 'SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '"';
 				$existLangLinks = false;
 				$deleteLangLinks = false;
 				if($DB_WE2->query($query)){
@@ -308,16 +330,16 @@ class we_folder extends we_root{
 					}
 					if($existLangLinks){
 						if($deleteLangLinks){
-							$didCondition = "DID = " . intval($DB_WE->Record['ID']);
+							$didCondition = 'DID = ' . intval($DB_WE->Record['ID']);
 							foreach($ldidArray as $ldid){
-								$didCondition .= " OR DID = " . intval($ldid);
+								$didCondition .= ' OR DID = ' . intval($ldid);
 							}
-							$query = "DELETE FROM " . LANGLINK_TABLE . " WHERE (" . $didCondition . ")  AND DocumentTable = '" . $documentTable . "';";
+							$query = 'DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $documentTable . '"';
 							$DB_WE3->query($query);
 						} else{
-							$query = "UPDATE " . LANGLINK_TABLE . " SET DLOCALE = '" . $language . "' WHERE DID = " . intval($DB_WE->Record['ID']);
+							$query = 'UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']);
 							$DB_WE3->query($query);
-							$query = "UPDATE " . LANGLINK_TABLE . " SET LOCALE = '" . $language . "' WHERE LDID = " . intval($DB_WE->Record['ID']);
+							$query = 'UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $language . '" WHERE LDID = ' . intval($DB_WE->Record['ID']);
 							$DB_WE3->query($query);
 						}
 					}
@@ -326,48 +348,33 @@ class we_folder extends we_root{
 		}
 
 		// Adapt tblLangLink-entries of folders to the new language
-		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ContentType = 'folder'";
+		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType = "folder"';
 		if(!$DB_WE->query($query)){
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			$documentTable = "tblFile";
-			$query = "DELETE FROM " . LANGLINK_TABLE . " WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0 AND Locale = '" . $language . "';";
+			$documentTable = 'tblFile';
+			$query = 'DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0 AND Locale = "' . $language . '"';
 			$DB_WE2->query($query);
-			$query = "UPDATE " . LANGLINK_TABLE . " SET DLOCALE = '" . $language . "' WHERE DID = " . intval($DB_WE->Record['ID']) . " AND DocumentTable = '" . $documentTable . "' AND IsFolder > 0;";
+			$query = 'UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $language . '" WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $documentTable . '" AND IsFolder > 0';
 			$DB_WE2->query($query);
 		}
 
 		// Change language of published documents, objects
-		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET Language = '" . $DB_WE->escape($this->Language) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		$query = 'UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language = "' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))';
 
 		if(!$DB_WE->query($query)){
 			return false;
 		}
 
 		// Change Language of unpublished documents
-		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
 
 		if(!$DB_WE->query($query)){
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			/* $query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
-			  $DocumentObject = f($query, 'DocumentObject', $DB_WE2);
-			  if ($DocumentObject!=''){
-			  $DocumentObject = unserialize($DocumentObject);
-
-			  $DocumentObject[0]['Language'] = $this->Language;
-			  $DocumentObject = serialize($DocumentObject);
-			  $DocumentObject = str_replace("'", "\'", $DocumentObject);
-
-			  $query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".intval($DB_WE->f("ID"))."' AND Active = 0";
-			  if(!$DB_WE2->query($query)) {
-			  return false;
-
-			  }
-			  } */
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '" . stripTblPrefix($this->Table) . "' AND Active = 1";
+			$query = 'SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if($DocumentObject != ''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -375,7 +382,7 @@ class we_folder extends we_root{
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='" . $DB_WE->escape($DocumentObject) . "' WHERE DocumentID=" . intval($DB_WE->f("ID")) . " AND DocTable = '" . stripTblPrefix($this->Table) . "' AND Active = 1";
+				$query = 'UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
 				if(!$DB_WE2->query($query)){
 					return false;
 				}
@@ -387,11 +394,11 @@ class we_folder extends we_root{
 			// Klasse feststellen
 			$ClassPathArray = explode('/', $this->Path);
 			$ClassPath = '/' . $ClassPathArray[1];
-			$q = "SELECT ID FROM " . OBJECT_TABLE . " WHERE Path = '$ClassPath' ";
-			$cid = $pid = f($q, "ID", $DB_WE);
+			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $ClassPath . '"';
+			$cid = $pid = f($q, 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 
-			$query = "UPDATE " . $DB_WE->escape($_obxTable) . " SET OF_Language = '" . $DB_WE->escape($this->Language) . "' WHERE OF_Path LIKE '" . $DB_WE->escape($this->Path) . "/%' ";
+			$query = 'UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_Language = "' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ';
 
 			if(!$DB_WE->query($query)){
 				return false;
@@ -409,13 +416,13 @@ class we_folder extends we_root{
 		$language = $this->TriggerID;
 
 		// Change TriggerID of published documents first
-		$query = "UPDATE " . $DB_WE->escape($this->Table) . " SET TriggerID = '" . $DB_WE->escape($this->TriggerID) . "' WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND ((Published = 0 AND ContentType = 'folder') OR (Published > 0 AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')))";
+		$query = 'UPDATE ' . $DB_WE->escape($this->Table) . ' SET TriggerID = ' . intval($this->TriggerID) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))';
 
 		if(!$DB_WE->query($query)){
 			return false;
 		}
 		// Change Language of unpublished documents
-		$query = "SELECT ID FROM " . $DB_WE->escape($this->Table) . " WHERE Path LIKE '" . $DB_WE->escape($this->Path) . "/%' AND (ContentType = 'text/webEdition' OR ContentType = 'text/html' OR ContentType = 'objectFile')";
+		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
 
 		if(!$DB_WE->query($query)){
 			return false;
@@ -436,7 +443,7 @@ class we_folder extends we_root{
 
 			  }
 			  } */
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '" . stripTblPrefix($this->Table) . "' AND Active = 1";
+			$query = 'SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if($DocumentObject != ''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -444,7 +451,7 @@ class we_folder extends we_root{
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='" . $DB_WE->escape($DocumentObject) . "' WHERE DocumentID=" . intval($DB_WE->f("ID")) . " AND DocTable = '" . stripTblPrefix($this->Table) . "' AND Active = 1";
+				$query = 'UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
 				if(!$DB_WE2->query($query)){
 					return false;
 				}
@@ -456,11 +463,11 @@ class we_folder extends we_root{
 			// Klasse feststellen
 			$ClassPathArray = explode('/', $this->Path);
 			$ClassPath = '/' . $ClassPathArray[1];
-			$q = "SELECT ID FROM " . OBJECT_TABLE . " WHERE Path = '$ClassPath' ";
-			$cid = $pid = f($q, "ID", $DB_WE);
+			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $ClassPath . '"';
+			$cid = $pid = f($q, 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 
-			$query = "UPDATE " . $DB_WE->escape($_obxTable) . " SET OF_TriggerID = '" . $DB_WE->escape($this->TriggerID) . "' WHERE OF_Path LIKE '" . $DB_WE->escape($this->Path) . "/%' ";
+			$query = 'UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ';
 
 			if(!$DB_WE->query($query)){
 				return false;
@@ -475,12 +482,12 @@ class we_folder extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . escape_sql_query($this->Table) . " WHERE Path='" . escape_sql_query($this->Path) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
+		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . ' WHERE Path="' . escape_sql_query($this->Path) . '" AND ID != ' . intval($this->ID), 'ID', $this->DB_WE);
 	}
 
 	function i_filenameEmpty(){
 		$fn = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
-		return ($fn == "") ? true : false;
+		return ($fn == '') ? true : false;
 	}
 
 	/* returns 0 because it is a directory */
@@ -494,21 +501,17 @@ class we_folder extends we_root{
 	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
-
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
-				return "we_templates/we_editor_info.inc.php";
-
+				return 'we_templates/we_editor_info.inc.php';
 			case WE_EDITPAGE_WEBUSER:
-				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
-
+				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
 			case WE_EDITPAGE_DOCLIST:
-				return "we_doclist/we_editor_doclist.inc.php";
-
+				return 'we_doclist/we_editor_doclist.inc.php';
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
-				return "we_templates/we_editor_properties.inc.php";
+				$_SESSION['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 
@@ -520,30 +523,18 @@ class we_folder extends we_root{
 			$this->ParentPath = id_to_path($this->ParentID, $this->Table, $this->DB_WE);
 		}
 
-		$userCanChange = we_hasPerm("CHANGE_DOC_FOLDER_PATH") || ($this->CreatorID == $_SESSION["user"]["ID"]) || (!$this->ID);
+		$userCanChange = we_hasPerm('CHANGE_DOC_FOLDER_PATH') || ($this->CreatorID == $_SESSION['user']['ID']) || (!$this->ID);
 		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath == '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			$userCanChange = false;
 		}
 		$content = (!$userCanChange) ? ('<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>') : '<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="defaultfont">' . $this->formInputField("", ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? "Filename" : "Text", g_l('weClass', "[filename]"), 50, 388, 255, "onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();") . '</td><td></td><td></td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td>
-	</tr>';
+	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
+	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>';
 		if($this->Table == OBJECT_FILES_TABLE){
-			$content .='	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-		</tr>
-		<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-		<tr>
-			<td colspan="3" class="defaultfont">' . $this->formTriggerDocument() . '</td>
-		</tr>';
+			$content .='	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+		<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+		<tr><td colspan="3" class="defaultfont">' . $this->formTriggerDocument() . '</td></tr>';
 
 			if($this->ID){
 				$_disabled = false;
@@ -559,29 +550,23 @@ class we_folder extends we_root{
 		';
 		}
 
-		$content .='
-</table>
-';
+		$content .='</table>';
 		return $content;
 	}
 
 	function formLanguage(){
 		we_loadLanguageConfig();
 
-		$value = ($this->Language != "" ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language != '' ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
-		$inputName = "we_" . $this->Name . "_Language";
+		$inputName = 'we_' . $this->Name . '_Language';
 
 		$_languages = getWeFrontendLanguagesForBackend();
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 			$htmlzw = '';
-			if($this->Table == OBJECT_FILES_TABLE){
-				$isobject = 1;
-			} else{
-				$isobject = 0;
-			}
+			$isobject = ($this->Table == OBJECT_FILES_TABLE ? 1 : 0);
 			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND IsObject=" . intval($isobject) . " AND DID=" . intval($this->ID) . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=' . intval($isobject) . ' AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE);
 				if(!$LDID){
 					$LDID = 0;
 				}
@@ -590,61 +575,43 @@ class we_folder extends we_root{
 				$langkeys[] = $langkey;
 			}
 
-			$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 4) . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
-				</tr>
-				<tr>
-					<td>
-						' . we_html_tools::getPixel(2, 20) . '</td>
-				</tr>
-				<tr>
-					<td class="defaultfont" align="left">
-						' . g_l('weClass', '[languageLinksDir]') . '</td>
-				</tr>
+			return
+				'<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td></tr>
+				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinksDir]') . '</td></tr>
 			</table>';
-			$content .= "<br/>" . $htmlzw;
+			$content .= we_html_element::htmlBr() . $htmlzw;
 		} else{
 
-			$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>
-						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 388) . '</td>
-				</tr>
+			return '<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 388) . '</td></tr>
 			</table>';
 		}
-		return $content;
 	}
 
 	function formChangeOwners(){
 		if($this->ID){
 			$_disabled = false;
-			$_disabledNote = "";
+			$_disabledNote = '';
 		} else{
 			$_disabled = true;
-			$_disabledNote = " " . g_l('weClass', "[availableAfterSave]");
+			$_disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', "[grant_owners_expl]") . $_disabledNote, 2, 388, false) . '</td><td>' .
-			we_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, "", "", $_disabled) . '</td></tr>
+		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', "[grant_owners_expl]") . $_disabledNote, 2, 388, false) . '</td><td>' .
+			we_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, "", "", $_disabled) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
-		return $content;
 	}
 
 	function formChangeLanguage(){
 		if($this->ID){
 			$_disabled = false;
-			$_disabledNote = "";
+			$_disabledNote = '';
 		} else{
 			$_disabled = true;
-			$_disabledNote = " " . g_l('weClass', "[availableAfterSave]");
+			$_disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[grant_language_expl]") . $_disabledNote, 2, 388, false) . '</td><td>' .
@@ -660,10 +627,10 @@ class we_folder extends we_root{
 		$ParentsCSV = makeCSVFromArray($parents, true);
 		if($this->ID){
 			$_disabled = false;
-			$_disabledNote = "";
+			$_disabledNote = '';
 		} else{
 			$_disabled = true;
-			$_disabledNote = " " . g_l('weClass', "[availableAfterSave]");
+			$_disabledNote = ' ' . g_l('weClass', '[availableAfterSave]');
 		}
 
 		//javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}');
@@ -690,39 +657,39 @@ class we_folder extends we_root{
 				return false;
 			}
 			$this->modifyIndexPath();
-			$this->modifyChildrenPath();
 			$this->modifyLinks();
+			$this->modifyChildrenPath();
 		}
 		$this->OldPath = $this->Path;
 		return true;
 	}
 
 	function modifyIndexPath(){
-		$DB_WE = new DB_WE;
-		$DB_WE->query("UPDATE " . INDEX_TABLE . " SET Workspace='" . $DB_WE->escape($this->Path . substr($DB_WE->f("Workspace"), strlen($this->OldPath))) . "' WHERE Workspace like '" . $DB_WE->escape($this->OldPath) . "%'");
-		/* $DB_WE2 = new DB_WE;
-		  $DB_WE->query("SELECT ID,Workspace FROM " . INDEX_TABLE . " WHERE Workspace like '".$this->OldPath."%'");
-		  while($DB_WE->next_record()){
-		  $DB_WE2->query("UPDATE " . INDEX_TABLE . " SET Workspace='".$this->Path.substr($DB_WE->f("Workspace"),strlen($this->OldPath))."' WHERE ID='".$DB_WE->f("ID")."'");
-		  } */
+		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Workspace="' . $this->DB_WE->escape($this->Path . substr($this->DB_WE->f('Workspace'), strlen($this->OldPath))) . '" WHERE Workspace LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
 	}
 
 	function modifyLinks(){
-		// has to be written!!!!
+		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
+			$this->DB_WE->query('UPDATE ' . $this->Table . ' SET Path=CONCAT("' . $this->Path . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->OldPath . '/%" OR Path="' . $this->OldPath . '"');
+		}
 	}
 
 	function modifyChildrenPath(){
 		@ignore_user_abort(true);
 		$DB_WE = new DB_WE;
 		// Update Paths also in Doctype Table
-		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='" . $DB_WE->escape($this->Path) . "' WHERE ParentID=" . intval($this->ID));
-		$DB_WE->query("SELECT * FROM " . $DB_WE->escape($this->Table) . " WHERE ParentID='" . intval($this->ID) . "'");
+		$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
+		$DB_WE->query('SELECT ID,ClassName FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));
 		while($DB_WE->next_record()) {
 			@set_time_limit(30);
-			$we_doc = $DB_WE->f("ClassName");
-			$we_doc = new $we_doc();
-			$we_doc->initByID($DB_WE->f("ID"), $this->Table, we_class::LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
-			$we_doc->ModifyPathInformation($this->ID);
+			$we_doc = $DB_WE->f('ClassName');
+			if($we_doc){
+				$we_doc = new $we_doc();
+				$we_doc->initByID($DB_WE->f('ID'), $this->Table, we_class::LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
+				$we_doc->ModifyPathInformation($this->ID);
+			} else{
+				t_e('No class set at entry ', $DB_WE->f('ID'), $this->Table);
+			}
 		}
 		@ignore_user_abort(false);
 	}
@@ -731,20 +698,43 @@ class we_folder extends we_root{
 
 	function moveAtServer(){
 		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
-			$isTemplFolder = ($this->Table == TEMPLATES_TABLE);
 
 			// renames the folder on the local machine in the root-dir
 			$path = $this->getRealPath();
 			$oldPath = $this->getRealPath(true);
-			if(!@rename($oldPath, $path))
-				return false;;
-
-			if(!$isTemplFolder){
+			if(!file_exists($path) && !file_exists($oldPath)){
+				t_e('old path doesn\'t exist', $oldPath);
+				return false;
+			}
+			if($this->Table != TEMPLATES_TABLE){
 				// renames the folder on the local machine in the root-dir+site-dir
-				$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->Path, 1);
-				$oldPath = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->OldPath, 1);
-				if(!rename($oldPath, $path))
+				$sitepath = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->Path, 1);
+				$siteoldPath = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->OldPath, 1);
+				if(file_exists($sitepath) && file_exists($siteoldPath)){
+					t_e('old and new dir exists!', $sitepath, $siteoldPath);
 					return false;
+				}
+				if(!file_exists($sitepath) && !file_exists($siteoldPath)){
+					t_e('old directory doesn\'t exist!', $oldPath);
+					return false;
+				}
+			}
+
+			if(!file_exists($path) && file_exists($oldPath)){
+				if(!rename($oldPath, $path)){
+					return false;
+				}
+			}
+
+			if($this->Table != TEMPLATES_TABLE){
+				//we are responsible for site dir!
+				if(!file_exists($sitepath) && file_exists($siteoldPath)){
+					if(!rename($siteoldPath, $sitepath)){
+						//move back other dir!
+						rename($path, $oldPath);
+						return false;
+					}
+				}
 			}
 		}
 		return true;
@@ -793,7 +783,9 @@ class we_folder extends we_root{
 
 	}
 
-	protected function updateRemoteLang($db, $id, $lang, $type){
+	protected
+
+	function updateRemoteLang($db, $id, $lang, $type){
 		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
 		if($oldLang == $lang){
 			return;
@@ -807,3 +799,4 @@ class we_folder extends we_root{
 	}
 
 }
+

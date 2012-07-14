@@ -39,19 +39,19 @@ abstract class we_root extends we_class{
 	var $ParentID = 0;
 
 	/* Parent Path of the object (Path of the Parent-Folder of the Object) */
-	var $ParentPath = "/";
+	var $ParentPath = '/';
 
 	/* The Text that will be shown in the tree-menue */
-	var $Text = "";
+	var $Text = '';
 
 	/* Filename of the file */
-	var $Filename = "";
+	var $Filename = '';
 
 	/* Path of the File  */
-	var $Path = "";
+	var $Path = '';
 
 	/* OldPath of the File => used internal  */
-	var $OldPath = "";
+	var $OldPath = '';
 
 	/* Creation Date as UnixTimestamp  */
 	var $CreationDate = 0;
@@ -63,10 +63,10 @@ abstract class we_root extends we_class{
 	var $IsFolder = 0;
 
 	/* ContentType of the Object  */
-	var $ContentType = "";
+	var $ContentType = '';
 
 	/* Icon which is shown at the tree-menue  */
-	var $Icon = "";
+	var $Icon = '';
 	var $IsBinary = false;
 
 
@@ -77,9 +77,9 @@ abstract class we_root extends we_class{
 	var $EditPageNr = 1;
 	var $CopyID;
 	var $EditPageNrs = array();
-	var $Owners = "";
-	var $OwnersReadOnly = "";
-	var $WebUserID = "";
+	var $Owners = '';
+	var $OwnersReadOnly = '';
+	var $WebUserID = '';
 
 	/* ID of the Autor who created the document */
 	var $CreatorID = 0;
@@ -88,7 +88,7 @@ abstract class we_root extends we_class{
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
 	var $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
-	var $DocStream = "";
+	var $DocStream = '';
 
 	/* Constructor */
 
@@ -96,7 +96,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, "OwnersReadOnly", "ParentID", "ParentPath", "Text", "Filename", "Path", "OldPath", "CreationDate", "ModDate", "IsFolder", "ContentType", "Icon", "elements", "EditPageNr", "CopyID", "Owners", "CreatorID", "ModifierID", "DefaultInit", "RestrictOwners", "WebUserID");
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'OldPath', 'CreationDate', 'ModDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'DefaultInit', 'RestrictOwners', 'WebUserID');
 	}
 
 	function makeSameNew(){
@@ -117,7 +117,7 @@ abstract class we_root extends we_class{
 
 	function equals($obj){
 		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			if($this->persistent_slots[$i] != "Name" && $this->persistent_slots[$i] != "elements" && $this->persistent_slots[$i] != "EditPageNr" && $this->persistent_slots[$i] != "wasUpdate"){
+			if($this->persistent_slots[$i] != 'Name' && $this->persistent_slots[$i] != 'elements' && $this->persistent_slots[$i] != 'EditPageNr' && $this->persistent_slots[$i] != 'wasUpdate'){
 				$foo1 = $this->{$this->persistent_slots[$i]};
 				$foo2 = $obj->{$this->persistent_slots[$i]};
 				if($foo1 != $foo2){
@@ -126,7 +126,7 @@ abstract class we_root extends we_class{
 			}
 		}
 		foreach($this->elements as $key => $val){
-			if($this->elements[$key]["dat"] != $obj->elements[$key]["dat"] || $this->elements[$key]["bdid"] != $obj->elements[$key]["bdid"]){
+			if($this->elements[$key]['dat'] != $obj->elements[$key]['dat'] || $this->elements[$key]['bdid'] != $obj->elements[$key]['bdid']){
 				return false;
 			}
 		}
@@ -156,8 +156,8 @@ abstract class we_root extends we_class{
 		if($Path != $this->Path){
 
 			### check if Path exists in db
-			if(f("SELECT Path FROM " . $this->DB_WE->escape($this->Table) . " WHERE Path='" . $this->DB_WE->escape($Path) . "'", "Path", $this->DB_WE)){
-				$GLOBALS["we_responseText"] = sprintf(g_l('weClass', "[response_path_exists]"), $Path);
+			if(f('SELECT Path FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($Path) . '"', 'Path', $this->DB_WE)){
+				$GLOBALS['we_responseText'] = sprintf(g_l('weClass', '[response_path_exists]'), $Path);
 				return false;
 			}
 			$this->Path = $Path;
@@ -178,14 +178,14 @@ abstract class we_root extends we_class{
 		}
 		$save[1] = $this->elements;
 		// save weDocumentCustomerFilter in Session
-		if(isset($this->documentCustomerFilter) && defined("CUSTOMER_TABLE")){
+		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$save[3] = serialize($this->documentCustomerFilter);
 		}
 	}
 
 	function applyWeDocumentCustomerFilterFromFolder(){
 
-		if(isset($this->documentCustomerFilter) && defined("CUSTOMER_TABLE")){
+		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$_tmpFolder = new we_folder();
 			$_tmpFolder->initByID($this->ParentID, $this->Table);
 			$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
@@ -230,17 +230,18 @@ abstract class we_root extends we_class{
 
 	/* creates the filename input-field */
 
-	function formFilename($text = ""){
-		return $this->formTextInput("", "Filename", $text ? $text : g_l('weClass', "[filename]"), 24, 255);
+	function formFilename($text = ''){
+		return $this->formTextInput('', 'Filename', $text ? $text : g_l('weClass', '[filename]'), 24, 255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = "", $rootDirID = 0, $table = "", $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $showTitle = true){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true){
 		$yuiSuggest = & weSuggest::getInstance();
 
-		if(!$table)
+		if(!$table){
 			$table = $this->Table;
+		}
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
@@ -248,29 +249,29 @@ abstract class we_root extends we_class{
 
 		$_parentPathChanged = '';
 		$_parentPathChangedBlur = '';
-		if($Pathname == "ParentPath"){
-			$_parentPathChanged = "if (opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }";
-			$_parentPathChangedBlur = "if (pathOfDocumentChanged) { pathOfDocumentChanged(); }";
+		if($Pathname == 'ParentPath'){
+			$_parentPathChanged = 'if (opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
+			$_parentPathChangedBlur = 'if (pathOfDocumentChanged) { pathOfDocumentChanged(); }';
 		}
 
 		if($width){
-			$_attribs['style'] = "width: " . $width . "px";
+			$_attribs['style'] = 'width: ' . $width . 'px';
 		} else{
 			$width = 0;
 		}
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged . str_replace('\\', '', $cmd));
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
+		$button = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$rootDirID')");
 
-		$yuiSuggest->setAcId("Path", id_to_path(array($rootDirID), $table));
-		$yuiSuggest->setContentType("folder,class_folder");
-		$yuiSuggest->setInput($textname, $path, array("onBlur" => $_parentPathChangedBlur));
-		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
+		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
+		$yuiSuggest->setContentType('folder,class_folder');
+		$yuiSuggest->setInput($textname, $path, array('onBlur' => $_parentPathChangedBlur));
+		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Dirselector");
+		$yuiSuggest->setSelector('Dirselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
@@ -282,9 +283,9 @@ abstract class we_root extends we_class{
 		$_attribs = array(
 			'onfocus' => "this.className='wetextinputselected';",
 			'onblur' => "this.className='wetextinput';",
-			'class' => "wetextinput",
+			'class' => 'wetextinput',
 			'size' => 30,
-			'value' => "",
+			'value' => '',
 		);
 
 		foreach($addAttribs as $key => $value){
@@ -308,7 +309,7 @@ abstract class we_root extends we_class{
 		if(!$this->CreatorID)
 			$this->CreatorID = 0;
 
-		$creator = $this->CreatorID ? id_to_path($this->CreatorID, USER_TABLE, $this->DB_WE) : g_l('weClass', "[nobody]");
+		$creator = $this->CreatorID ? id_to_path($this->CreatorID, USER_TABLE, $this->DB_WE) : g_l('weClass', '[nobody]');
 
 
 		if($canChange){
@@ -318,15 +319,15 @@ abstract class we_root extends we_class{
 
 			$attribs = ' readonly';
 
-			$inputFeld = $this->htmlTextInput($textname, 24, $creator, "", $attribs, "", $width);
+			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
 			$idfield = $this->htmlHidden($idname, $this->CreatorID);
 			//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 			$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_button::create_button("edit", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "')");
+			$button = we_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "')");
 
-			$out = $this->htmlFormElementTable($inputFeld, g_l('weClass', "[maincreator]"), "left", "defaultfont", $idfield, we_html_tools::getPixel(20, 4), $button);
+			$out = $this->htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
 		} else{
 			$out = $creator;
 		}
@@ -337,7 +338,7 @@ abstract class we_root extends we_class{
 		if($canChange){
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[limitedAccess]"), false, "defaultfont", "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
+			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		} else{
 			return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
 		}
@@ -349,14 +350,14 @@ abstract class we_root extends we_class{
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">';
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
-		if(sizeof($owners)){
-			for($i = 0; $i < sizeof($owners); $i++){
-				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID=" . intval($owners[$i]), $this->DB_WE);
-				$icon = isset($foo["Icon"]) ? ICON_DIR . $foo["Icon"] : ICON_DIR . "user.gif";
-				$_path = isset($foo["Path"]) ? $foo["Path"] : "";
+		if(count($owners)){
+			foreach($owners as $owner){
+				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
+				$icon = isset($foo['Icon']) ? ICON_DIR . $foo['Icon'] : ICON_DIR . 'user.gif';
+				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
-					we_forms::checkboxWithHidden(isset($ownersReadOnly[$owners[$i]]) ? $ownersReadOnly[$owners[$i]] : "", 'we_owners_read_only[' . $owners[$i] . ']', g_l('weClass', "[readOnly]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);", !$canChange) .
-					'</td><td>' . ($canChange ? we_button::create_button("image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owners[$i] . "');") : "") . '</td></tr>' . "\n";
+					we_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
+					'</td><td>' . ($canChange ? we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('del_owner','" . $owner . "');") : '') . '</td></tr>' . "\n";
 			}
 		} else{
 			$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td><td></td></tr>' . "\n";
@@ -365,24 +366,24 @@ abstract class we_root extends we_class{
 
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_owners','')", true, -1, -1, "", "", $this->Owners ? false : true);
+		$delallbut = we_button::create_button('delete_all', "javascript:we_cmd('del_all_owners','')", true, -1, -1, "", "", $this->Owners ? false : true);
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, "") . $this->htmlHidden($textname, "") . we_button::create_button("add", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_button::create_button('add', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['$idname'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
 ' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br>' . we_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table' . "\n";
 
-		return $this->htmlFormElementTable($content, g_l('weClass', "[otherowners]"), "left", "defaultfont");
+		return $this->htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
 
 	function formCreatorOwners(){
 		$width = 388;
-		$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION["user"]["ID"], $GLOBALS['we_doc']->CreatorID);
+		$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID);
 
 		$out = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td class="defaultfont">' . $this->formCreator($canChange, $width) . '</td></tr>
@@ -401,7 +402,7 @@ abstract class we_root extends we_class{
 	}
 
 	function del_all_owners(){
-		$this->Owners = "";
+		$this->Owners = '';
 	}
 
 	function add_owner($id){
@@ -420,7 +421,7 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		if(in_array($id, $owners)){
 			$pos = getArrayKey($id, $owners);
-			if($pos != "" || $pos == "0"){
+			if($pos != '' || $pos == '0'){
 				array_splice($owners, $pos, 1);
 			}
 		}
@@ -433,7 +434,7 @@ abstract class we_root extends we_class{
 	  the user is one of the restricted users
 	 */
 	function userHasPerms(){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if($_SESSION['perms']['ADMINISTRATOR'])
 			return true;
 		if(!$this->RestrictOwners)
 			return true;
@@ -443,19 +444,19 @@ abstract class we_root extends we_class{
 	}
 
 	function userIsCreator(){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if($_SESSION['perms']['ADMINISTRATOR'])
 			return true;
 		return we_isOwner($this->CreatorID);
 	}
 
 	function userCanSave(){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if($_SESSION['perms']['ADMINISTRATOR'])
 			return true;
-		if(defined("OBJECT_TABLE") && ($this->Table == OBJECT_FILES_TABLE)){
-			if(!(we_hasPerm("NEW_OBJECTFILE_FOLDER") || we_hasPerm("NEW_OBJECTFILE")))
+		if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
+			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE')))
 				return false;
 		}else{
-			if(!we_hasPerm("SAVE_DOCUMENT_TEMPLATE"))
+			if(!we_hasPerm('SAVE_DOCUMENT_TEMPLATE'))
 				return false;
 		}
 		if(!$this->RestrictOwners)
@@ -468,14 +469,13 @@ abstract class we_root extends we_class{
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1)
 				$readers[] = $key;
 		}
-		return !we_users_util::isUserInUsers($_SESSION["user"]["ID"], $readers);
+		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
 
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
 		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
 
@@ -487,25 +487,22 @@ abstract class we_root extends we_class{
 	# ATTENTION !!: You have to have we_cmd function in your file and browse_user section
 
 	#
-	function formUserChooser($old_userID = -1, $width = "", $in_textname = "", $in_idname = ""){
-		$textname = $in_textname == "" ? 'we_' . $this->Name . '_UserName' : $in_textname;
-		$idname = $in_idname == "" ? 'we_' . $this->Name . '_UserID' : $in_idname;
+	function formUserChooser($old_userID = -1, $width = '', $in_textname = '', $in_idname = ''){
+		$textname = $in_textname == '' ? 'we_' . $this->Name . '_UserName' : $in_textname;
+		$idname = $in_idname == '' ? 'we_' . $this->Name . '_UserID' : $in_idname;
 
-		$username = "";
+		$username = '';
 		$userid = $old_userID;
 
 		if((int) $userid > 0){
-			$username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userid), "username", $this->DB_WE);
+			$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'username', $this->DB_WE);
 		}
 
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc5 = '';
-		return we_root::htmlFormElementTable
-				(
-				we_root::htmlTextInput($textname, 30, $username, "", ' readonly', "text", $width, 0), "User", "left", "defaultfont", we_root::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_button::create_button("select", "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user')")
-		);
+		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_root::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_button::create_button('select', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user')"));
 	}
 
 	function formTriggerDocument($isclass = false){
@@ -514,28 +511,28 @@ abstract class we_root extends we_class{
 		if($isclass){
 			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : "";
+			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
 		} else{
 			$textname = 'we_' . $this->Name . '_TriggerName';
 			$idname = 'we_' . $this->Name . '_TriggerID';
-			$myid = $this->TriggerID ? $this->TriggerID : "";
+			$myid = $this->TriggerID ? $this->TriggerID : '';
 		}
-		$path = f("SELECT Path FROM " . $this->DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)");
+		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
-		$yuiSuggest->setAcId("TriggerID");
-		$yuiSuggest->setContentType("folder,text/webedition");
+		$yuiSuggest->setAcId('TriggerID');
+		$yuiSuggest->setContentType('folder,text/webedition');
 		$yuiSuggest->setInput($textname, $path);
 		$yuiSuggest->setLabel(g_l('modules_object', '[seourltrigger]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -552,19 +549,19 @@ abstract class we_root extends we_class{
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
 		//$textname = 'we_'.$this->Name.'_LanguageDocNam-'.$langkey;
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
-		//$myid = $this->TriggerID ? $this->TriggerID : "";
+		//$myid = $this->TriggerID ? $this->TriggerID : '';
 		$myid = $LDID ? $LDID : '';
-		$path = f("SELECT Path FROM " . $this->DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $this->DB_WE);
+		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), 'Path', $this->DB_WE);
 		if($rootDirID && $path == ''){
-			$path = f("SELECT Path FROM " . $this->DB_WE->escape($table) . " WHERE ID=" . intval($rootDirID), "Path", $this->DB_WE);
+			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), 'Path', $this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort, $path);
 		if($table == FILE_TABLE){
-			$yuiSuggest->setContentType("folder,text/webedition");
+			$yuiSuggest->setContentType('folder,text/webedition');
 			$ctype = 'text/webedition';
 			$etype = FILE_TABLE;
 		} else{
-			$yuiSuggest->setContentType("folder,objectFile");
+			$yuiSuggest->setContentType('folder,objectFile');
 			$ctype = 'objectFile';
 			$etype = OBJECT_FILES_TABLE;
 		}
@@ -573,23 +570,23 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
 
-		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $ctype . "',1)");
+		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $ctype . "',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){
-			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND DID=" . $this->DocType . " AND Locale='" . $langkey . "'", 'LDID', new DB_WE());
+			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $langkey . '"', 'LDID', new DB_WE());
 			if($LDcoType){
 				$createbutton = we_button::create_button("image:add_doc", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $LDcoType . "');");
 				$yuiSuggest->setCreateButton($createbutton);
 			}
 		}
-		$yuiSuggest->setInput($textname, $path, "", true);
+		$yuiSuggest->setInput($textname, $path, '', true);
 		//$yuiSuggest->setInput($textname);
 		$yuiSuggest->setLabel($headline);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($idname, $myid);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
 		$yuiSuggest->setSelectButton($button);
@@ -610,18 +607,18 @@ abstract class we_root extends we_class{
 
 	/* set the Data for an element */
 
-	function setElement($name, $data, $type = "txt", $id = 0, $autobr = 0){
-		$this->elements[$name]["dat"] = $data;
-		$this->elements[$name]["type"] = $type;
+	function setElement($name, $data, $type = 'txt', $id = 0, $autobr = 0){
+		$this->elements[$name]['dat'] = $data;
+		$this->elements[$name]['type'] = $type;
 		if($id)
-			$this->elements[$name]["id"] = $id;
+			$this->elements[$name]['id'] = $id;
 		if($autobr)
-			$this->elements[$name]["autobr"] = $autobr;
+			$this->elements[$name]['autobr'] = $autobr;
 	}
 
 	/* get the data from an element */
 
-	function getElement($name, $key = "dat"){
+	function getElement($name, $key = 'dat'){
 		return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : '');
 	}
 
@@ -634,10 +631,10 @@ abstract class we_root extends we_class{
 
 	/* returns the next element or false if the array-pointer is at the end of the array */
 
-	function nextElement($type = "txt"){
+	function nextElement($type = 'txt'){
 		if(is_array($this->elements)){
 			while($arr = each($this->elements)) {
-				if((isset($arr["value"]["type"]) && $arr["value"]["type"] == $type) || $type == ""){
+				if((isset($arr['value']['type']) && $arr['value']['type'] == $type) || $type == ''){
 					return $arr;
 				}
 			}
@@ -654,39 +651,35 @@ abstract class we_root extends we_class{
 	}
 
 	function getMoveTreeEntryScript($select = true){
-		$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
+		$Tree = new weMainTree('webEdition.php', 'top', 'self.Tree', 'top.load');
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}
 
 ##################### Path info functions
 
-	/* returns the Path dynamically (use it, when the class-variable Path is not set)  */
-
+	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */
 	function getPath(){
-		$ParentPath = rtrim($this->getParentPath(), '/') . '/';
-		$text = ( isset($this->Filename) ? $this->Filename : "" ) . ( isset($this->Extension) ? $this->Extension : "" );
-		return $ParentPath . $text;
+		return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . ( isset($this->Extension) ? $this->Extension : '' );
 	}
 
-	/* get the Path of the Parent-Object */
-
+	/** get the Path of the Parent-Object */
 	function getParentPath(){
-		return (!$this->ParentID) ? "/" : f("SELECT Path FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID=" . intval($this->ParentID), "Path", $this->DB_WE);
+		return (!$this->ParentID) ? '/' : f('SELECT Path FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
 	}
 
 	function constructPath(){
 		if($this->ID){
 			$pid = $this->ParentID;
-			$p = "/" . $this->Text;
+			$p = '/' . $this->Text;
 			$z = 0;
 			while($pid && $z < 50) {
-				$h = getHash("SELECT ParentID,Text FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID=" . intval($pid), $this->DB_WE);
-				$p = "/" . $h["Text"] . $p;
-				$pid = $h["ParentID"];
+				list($pid, $text) = getHash('SELECT ParentID,Text FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($pid), $this->DB_WE);
+				$p = '/' . $text . $p;
 				$z++;
 			}
-			if($z >= 50)
+			if($z >= 50){
 				return false;
+			}
 			return $p;
 		}
 		return false;
@@ -701,8 +694,7 @@ abstract class we_root extends we_class{
 	/* get the Site-Path of the Object */
 
 	function getSitePath($old = false){
-		$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR;
-		return $path . substr(($old ? $this->OldPath : $this->getPath()), 1);
+		return $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr(($old ? $this->OldPath : $this->getPath()), 1);
 	}
 
 	/* get the HTTP-Path of the Object */
@@ -717,8 +709,6 @@ abstract class we_root extends we_class{
 		return getServerUrl() . SITE_DIR . substr($this->getPath(), 1);
 	}
 
-######################
-
 	function editor(){
 
 	}
@@ -727,8 +717,8 @@ abstract class we_root extends we_class{
 		return 0;
 	}
 
-	function makeHrefByID($id, $db = ""){
-		return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $this->DB_WE);
+	function makeHrefByID($id, $db = ''){
+		return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->DB_WE);
 	}
 
 	function save($resave = 0, $skipHook = 0){
@@ -740,7 +730,7 @@ abstract class we_root extends we_class{
 
 	function we_new(){
 		parent::we_new();
-		$this->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+		$this->CreatorID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
 			$ct = new we_base_ContentTypes();
 			$this->Icon = $ct->getIcon($this->ContentType);
@@ -762,7 +752,7 @@ abstract class we_root extends we_class{
 		}
 		if($resave == 0){
 			$this->ModDate = time();
-			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
+			$this->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
 		if(!parent::we_save($resave)){
 			return false;
@@ -793,7 +783,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_getDefaultFilename(){
-		return f("SELECT MAX(ID) as ID FROM " . $this->DB_WE->escape($this->Table), "ID", $this->DB_WE) + 1;
+		return f('SELECT MAX(ID) as ID FROM ' . $this->DB_WE->escape($this->Table), 'ID', $this->DB_WE) + 1;
 	}
 
 	function we_initSessDat($sessDat){
@@ -846,10 +836,10 @@ abstract class we_root extends we_class{
 				break;
 			case 'text':
 			case 'input':
-				if($this->DefArray[$type . "_" . $k]["forbidphp"] == "on"){
+				if($this->DefArray[$type . '_' . $k]['forbidphp'] == 'on'){
 					$v = we_util::rmPhp($v);
 				}
-				if($this->DefArray[$type . "_" . $k]["forbidhtml"] == "on"){
+				if($this->DefArray[$type . '_' . $k]['forbidhtml'] == 'on'){
 					$v = removeHTML($v);
 				}
 				break;
@@ -871,8 +861,8 @@ abstract class we_root extends we_class{
 
 		// do not set REQUEST VARS into the document
 		if(isset($_REQUEST['we_cmd'][0])){
-			if(($_REQUEST['we_cmd'][0] == "switch_edit_page" && isset($_REQUEST['we_cmd'][3]))
-				|| ($_REQUEST['we_cmd'][0] == "save_document" && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == "save_document")){
+			if(($_REQUEST['we_cmd'][0] == 'switch_edit_page' && isset($_REQUEST['we_cmd'][3]))
+				|| ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
 				return true;
 			}
 		}
@@ -884,20 +874,20 @@ abstract class we_root extends we_class{
 						foreach($v as $n2 => $v2){
 							$v2 = we_util::cleanNewLine($v2);
 							$type = $regs[1];
-							if($type == "date"){
+							if($type == 'date'){
 								$name = preg_replace('/^(.+)_[^_]+$/', '\1', $n2);
 								$what = preg_replace('/^.+_([^_]+)$/', '\1', $n2);
 								$dates[$name][$what] = $v2;
 							} else{
 								$name = $n2;
 								if(preg_match('/(.+)#(.+)/', $name, $regs2)){
-									$this->elements[$regs2[1]]["type"] = $type;
+									$this->elements[$regs2[1]]['type'] = $type;
 									$this->elements[$regs2[1]][$regs2[2]] = $v2;
 								} else{
-									$this->elements[$name]["type"] = $type;
+									$this->elements[$name]['type'] = $type;
 									//FIXME: check if we can apply the correct type
 									$this->i_convertElemFromRequest('internal', $v2, $name);
-									$this->elements[$name]["dat"] = $v2;
+									$this->elements[$name]['dat'] = $v2;
 								}
 							}
 						}
@@ -911,8 +901,8 @@ abstract class we_root extends we_class{
 				}
 			}
 			foreach($dates as $k => $v){
-				$this->elements[$k]["type"] = "date";
-				$this->elements[$k]["dat"] = mktime($dates[$k]["hour"], $dates[$k]["minute"], 0, $dates[$k]["month"], $dates[$k]["day"], $dates[$k]["year"]);
+				$this->elements[$k]['type'] = 'date';
+				$this->elements[$k]['dat'] = mktime($dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']);
 			}
 		}
 		$this->Path = $this->getPath();
@@ -930,8 +920,8 @@ abstract class we_root extends we_class{
 			($loadBinary ? '' : ' AND ' . CONTENT_TABLE . '.IsBinary=0'));
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()) {
-			$Name = $this->DB_WE->f("Name");
-			$type = $this->DB_WE->f("Type");
+			$Name = $this->DB_WE->f('Name');
+			$type = $this->DB_WE->f('Type');
 
 			if($type == 'formfield'){ // Artjom garbage fix!
 				$this->elements[$Name] = unserialize($this->DB_WE->f('Dat'));
@@ -943,7 +933,7 @@ abstract class we_root extends we_class{
 							$this->elements[$Name][$k] = $v;
 						}
 					}
-					$this->elements[$Name]["table"] = CONTENT_TABLE;
+					$this->elements[$Name]['table'] = CONTENT_TABLE;
 				}
 			}
 		}
@@ -966,35 +956,35 @@ abstract class we_root extends we_class{
 		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
-				if((!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
+				if((!isset($v['type']) || $v['type'] != 'vars') && (( isset($v['dat']) && $v['dat'] != '' ) || (isset($v['bdid']) && $v['bdid']) || (isset($v['ffname']) && $v['ffname']))){
 
 					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$data = array();
 					foreach($tableInfo as $t){
-						$fieldName = $t["name"];
+						$fieldName = $t['name'];
 						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
-						if($k == "data" && $this->IsBinary){
+						if($k == 'data' && $this->IsBinary){
 							break;
 						}
-						if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
-							$v["type"] = "formfield";
+						if($fieldName == 'Dat' && (isset($v['ffname']) && $v['ffname'])){
+							$v['type'] = 'formfield';
 							$val = serialize($v);
 							// Artjom garbage fix
 						}
 
-						if(!isset($v["type"]) || $v["type"] == ""){
-							$v["type"] = "txt";
+						if(!isset($v['type']) || $v['type'] == ''){
+							$v['type'] = 'txt';
 						}
-						if($v["type"] == "date"){
-							$val = sprintf("%016d", $val);
+						if($v['type'] == 'date'){
+							$val = sprintf('%016d', $val);
 						}
-						if($fieldName != "ID"){
+						if($fieldName != 'ID'){
 							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
 						}
 					}
 					if(count($data)){
 						$data = we_database_base::arraySetter($data);
-						$key = $v["type"] . '_' . $k;
+						$key = $v['type'] . '_' . $k;
 						$cid = 0;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
@@ -1024,7 +1014,7 @@ abstract class we_root extends we_class{
 		return true;
 	}
 
-	function i_getPersistentSlotsFromDB($felder = "*"){
+	function i_getPersistentSlotsFromDB($felder = '*'){
 		we_class::i_getPersistentSlotsFromDB($felder);
 		$this->ParentPath = $this->getParentPath();
 	}
@@ -1042,7 +1032,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Filename == "") ? true : false;
+		return ($this->Filename == '') ? true : false;
 	}
 
 	function i_filenameNotValid(){
@@ -1051,11 +1041,11 @@ abstract class we_root extends we_class{
 
 	function i_filenameNotAllowed(){
 		if($this->Table == FILE_TABLE && $this->ParentID == 0){
-			if(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : "")) == "webedition"){
+			if(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')) == 'webedition'){
 				return true;
 			}
 		}
-		if(substr(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : "")), -1) == "."){
+		if(substr(strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')), -1) == '.'){
 			return true;
 		}
 		return false;
@@ -1063,12 +1053,12 @@ abstract class we_root extends we_class{
 
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
-			if(substr($this->Extension, 0, 1) == "."){
+			if(substr($this->Extension, 0, 1) == '.'){
 				$ext = substr($this->Extension, 1);
 			} else{
 				$ext = $this->Extension;
 			}
-			if(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == ""){
+			if(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == ''){
 				return false;
 			} else{
 				return true;
@@ -1079,7 +1069,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Filename='" . escape_sql_query($this->Filename) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
+		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND ID != ' . intval($this->ID), 'ID', $this->DB_WE);
 	}
 
 	function i_urlDouble(){
@@ -1090,7 +1080,7 @@ abstract class we_root extends we_class{
 	### If it donesn't exists we have to create the folders (for auto Date-Folder Names)
 
 	function i_checkPathDiffAndCreate(){
-		if($this->getParentPath() != $this->ParentPath && $this->ParentPath != "" && $this->ParentPath != "/"){
+		if($this->getParentPath() != $this->ParentPath && $this->ParentPath != '' && $this->ParentPath != '/'){
 			if(!$this->IsTextContentDoc || empty($this->DocType)){
 				return false;
 			} else if($this->IsTextContentDoc && $this->DocType){
@@ -1099,17 +1089,17 @@ abstract class we_root extends we_class{
 				if(empty($doctype->SubDir)){
 					return false;
 				}
-				$_pathFirstPart = substr($this->getParentPath(), -1) == "/" ? "" : "/";
+				$_pathFirstPart = substr($this->getParentPath(), -1) == '/' ? '' : '/';
 				$tail = '';
 				switch($doctype->SubDir){
 					case we_class::SUB_DIR_YEAR:
-						$tail = $_pathFirstPart . date("Y");
+						$tail = $_pathFirstPart . date('Y');
 						break;
 					case we_class::SUB_DIR_YEAR_MONTH:
-						$tail = $_pathFirstPart . date("Y") . "/" . date("m");
+						$tail = $_pathFirstPart . date('Y') . '/' . date('m');
 						break;
 					case we_class::SUB_DIR_YEAR_MONTH_DAY:
-						$tail = $_pathFirstPart . date("Y") . "/" . date("m") . "/" . date("d");
+						$tail = $_pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
 						break;
 				}
 				if($this->getParentPath() . $tail != $this->ParentPath){
@@ -1128,33 +1118,33 @@ abstract class we_root extends we_class{
 
 	function i_correctDoublePath(){
 		if($this->Filename){
-			if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!=" . intval($this->ID) . " AND Text='" . $this->DB_WE->escape($this->Filename . (isset($this->Extension) ? $this->Extension : "")) . "' AND ParentID=" . intval($this->ParentID), "ID", $this->DB_WE)){
+			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Filename . (isset($this->Extension) ? $this->Extension : '')) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 				$z = 0;
-				$footext = $this->Filename . "_" . $z . (isset($this->Extension) ? $this->Extension : "");
-				while(f("SELECT ID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID!=" . intval($this->ID) . " AND Text='" . $this->DB_WE->escape($footext) . "' AND ParentID='" . $this->DB_WE->escape($this->ParentID) . "'", "ID", $this->DB_WE)) {
+				$footext = $this->Filename . '_' . $z . (isset($this->Extension) ? $this->Extension : '');
+				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)) {
 					$z++;
-					$footext = $this->Filename . "_" . $z . (isset($this->Extension) ? $this->Extension : "");
+					$footext = $this->Filename . '_' . $z . (isset($this->Extension) ? $this->Extension : '');
 				}
 				$this->Text = $footext;
-				$this->Filename = $this->Filename . "_" . $z;
-				$this->Path = $this->getParentPath() . (($this->getParentPath() != "/") ? "/" : "") . $this->Text;
+				$this->Filename = $this->Filename . '_' . $z;
+				$this->Path = $this->getParentPath() . (($this->getParentPath() != '/') ? '/' : '') . $this->Text;
 			}
 		} else{
-			if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!=" . intval($this->ID) . " AND Text='" . $this->DB_WE->escape($this->Text) . "' AND ParentID=" . intval($this->ParentID), "ID", $this->DB_WE)){
+			if(f('SELECT ID  FROM  ' . $this->DB_WE->escape($this->Table) . '  WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)){
 				$z = 0;
-				$footext = $this->Text . "_" . $z;
-				while(f("SELECT ID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID!=" . intval($this->ID) . " AND Text='" . $this->DB_WE->escape($footext) . "' AND ParentID=" . intval($this->ParentID), "ID", $this->DB_WE)) {
+				$footext = $this->Text . '_' . $z;
+				while(f('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID!=' . intval($this->ID) . ' AND Text="' . $this->DB_WE->escape($footext) . '" AND ParentID=' . intval($this->ParentID), 'ID', $this->DB_WE)) {
 					$z++;
-					$footext = $this->Text . "_" . $z;
+					$footext = $this->Text . '_' . $z;
 				}
 				$this->Text = $footext;
-				$this->Path = $this->getParentPath() . (($this->getParentPath() != "/") ? "/" : "") . $this->Text;
+				$this->Path = $this->getParentPath() . (($this->getParentPath() != '/') ? '/' : '') . $this->Text;
 			}
 		}
 	}
 
 	function i_check_requiredFields(){
-		return ""; // overwrite
+		return ''; // overwrite
 	}
 
 	function i_scheduleToBeforeNow(){
@@ -1200,7 +1190,7 @@ abstract class we_root extends we_class{
 	 */
 	function userHasAccess(){
 		$uid = $this->isLockedByUser();
-		if($uid > 0 && $uid != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
+		if($uid > 0 && $uid != $_SESSION['user']['ID'] && $GLOBALS['we_doc']->ID){ // file is locked
 			return self::FILE_LOCKED;
 		}
 
@@ -1242,8 +1232,8 @@ abstract class we_root extends we_class{
 	function lockDocument(){
 		if($_SESSION['user']['ID']){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
-			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION["user"]["ID"]) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
-				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION["user"]["ID"]) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
+			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
+				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
 		}
 	}
 
