@@ -139,7 +139,7 @@ $l_prefs=array(
 	'glossary_publishing'=>'Prüfen bei Veröffentlichung',
 	'height'=>'Höhe',
 	'hidenameattribinweform_default'=>'Keine Ausgabe von name=xyz in we:form (XHTML strict)',
-	'hidenameattribinweimg_default'=>'Keine Ausgabe von name=xyz in we:img (HTML 5)',
+	'hidenameattribinweimg_default'=>'Keine Ausgabe von name=xyz in we:img, we:link (HTML 5)',
 	'hide_expert'=>'Experteneinstellungen ausblenden',
 	'hide_predefined'=>'Voreingestellte Größen ausblenden',
 	'hooks'=>'Hooks',
