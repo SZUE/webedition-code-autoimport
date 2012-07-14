@@ -12,12 +12,12 @@ $l_buttons_modules_workflow=array(
 		'width'=>100,
 	),
 	'in_workflow'=>array(
-		'alt'=>'In den Ablaufplan',
-		'value'=>'In den Ablaufplan',
+		'alt'=>'In den Workflow',
+		'value'=>'In den Workflow',
 		'width'=>150,
 	),
 	'new_workflow'=>array(
-		'alt'=>'Neuen Ablaufplan erstellen ...',
+		'alt'=>'Neuen Workflow erstellen ...',
 		'value'=>'Neuer Workflow',
 		'width'=>150,
 ));
