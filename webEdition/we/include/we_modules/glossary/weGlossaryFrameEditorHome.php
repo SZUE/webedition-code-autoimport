@@ -27,7 +27,7 @@ class weGlossaryFrameEditorHome{
 	function Header(&$weGlossaryFrames){
 
 		$_body = array(
-			'bgcolor' => '#FFFFFF',
+			'bgcolor' => '#F0EFF0',
 			'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif',
 		);
 
