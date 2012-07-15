@@ -4,8 +4,8 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   `Type` varchar(16) NOT NULL default '',
   Name varchar(255) NOT NULL default '',
   DocumentTable enum('tblFile','tblTemplates') NOT NULL,
-  PRIMARY KEY (CID,DocumentTable),
-  KEY DID (DID),
+  PRIMARY KEY (CID),
+  KEY DID (DID,DocumentTable),
   KEY Name (Name(4)),
   KEY `Type` (`Type`)
 ) ENGINE=MyISAM;
