@@ -113,7 +113,7 @@ if(isset($_SESSION["user_session_data"]))
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctype.value=arguments[2];
 					if(arguments[3])
 						top.content.user_resize.user_right.user_editor.user_properties.document.we_form.ctable.value=arguments[3];
-					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_PATH; ?>edit_users_cmd.php");
+					top.content.user_resize.user_right.user_editor.user_properties.we_submitForm("user_cmd","<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php");
 				} else {
 					top.content.user_cmd.location='<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php?ucmd=new_user&cgroup='+cgroup;
 				}

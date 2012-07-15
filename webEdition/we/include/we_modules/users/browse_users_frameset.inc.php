@@ -34,4 +34,4 @@ $rootDirID = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : 0;
 $filter = $_REQUEST['we_cmd'][3];
 $multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : 0;
 
-include_once(WE_USERS_MODULE_DIR . "we_usersSelect.php");
+include_once(WE_USERS_MODULE_PATH . "we_usersSelect.php");

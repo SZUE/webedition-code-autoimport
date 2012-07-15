@@ -169,7 +169,7 @@ if($we_doc->ID){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			if($we_Table == TEMPLATES_TABLE){ //	different workspace. for template
 				$we_message = g_l('alert', '[' . ($we_ContentType == "folder") ? "folder" : $we_Table . '][not_im_ws]');
-				include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
+				include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
 				exit();
 			} else if($we_Table == FILE_TABLE){ //	only preview mode allowed for docs
 				//	MUST change to Preview-Mode
@@ -182,7 +182,7 @@ if($we_doc->ID){
 		if($we_ContentType != "object"){
 			$_SESSION["EditPageNr"] = WE_EDITPAGE_PREVIEW;
 		} else{
-			include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
+			include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
 			exit();
 		}
 	}
@@ -247,7 +247,7 @@ if(!isset($we_doc->IsClassFolder)){
 
 	if($we_doc->ContentType == "objectFile" && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
 		$we_message = g_l('alert', "[no_new][objectFile]");
-		include(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
+		include(WE_USERS_MODULE_PATH . "we_users_permmessage.inc.php");
 		exit;
 	}
 }
@@ -449,7 +449,7 @@ function setOnload(){
 <?php
 if($_SESSION["we_mode"] == "seem"){
 	?>
-	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
+	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 		<frame <?php print setOnload(); ?> src="<?php
 	$we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor");
@@ -457,13 +457,13 @@ if($_SESSION["we_mode"] == "seem"){
 	?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 		<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php print ( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
-	</frameset>
+	</frameset><noframes></noframes>
 	<?php
 } else{
 
 	$showContentEditor = ($we_doc->EditPageNr == WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == "text/" && $we_doc->ContentType != "text/webedition");
 	?>
-	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="39,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
+	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="39,<?php print $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload();">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 	<?php if($showContentEditor){ ?>
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
