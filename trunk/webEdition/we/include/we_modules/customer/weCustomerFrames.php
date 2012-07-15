@@ -28,9 +28,9 @@ class weCustomerFrames extends weModuleFrames{
 	var $jsOut_fieldTypesByName;
 
 	function __construct(){
-		parent::__construct(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php");
+		parent::__construct(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php");
 		$this->Tree = new weCustomerTree();
-		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php", "top.content");
+		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
 		$this->module = "customer";
 	}
@@ -880,7 +880,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
 
-		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTreeLoader.php");
+		include_once(WE_CUSTOMER_MODULE_PATH . "weCustomerTreeLoader.php");
 
 		$rootjs = "";
 		if(!$pid){

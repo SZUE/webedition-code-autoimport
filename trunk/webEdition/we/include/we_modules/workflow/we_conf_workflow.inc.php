@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('WE_WORKFLOW_MODULE_DIR', WE_MODULES_DIR . 'workflow/');
-define('WE_WORKFLOW_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_WORKFLOW_MODULE_DIR);
+define('WE_WORKFLOW_MODULE_PATH', WE_MODULES_PATH . 'workflow/');
 
 define('WORKFLOW_TABLE', TBL_PREFIX . 'tblWorkflowDef');
 define('WORKFLOW_DOC_TABLE', TBL_PREFIX . 'tblWorkflowDoc');

@@ -75,7 +75,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 
 	function switchPage(page) {
 		document.we_form.tab.value = page;
-		return we_submitForm(self.name, "<?php print WE_USERS_MODULE_PATH; ?>edit_users_properties.php");
+		return we_submitForm(self.name, "<?php print WE_USERS_MODULE_DIR; ?>edit_users_properties.php");
 	}
 
 

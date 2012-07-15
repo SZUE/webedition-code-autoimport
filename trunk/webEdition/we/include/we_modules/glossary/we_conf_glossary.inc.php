@@ -24,6 +24,6 @@
  */
 define("GLOSSARY_TABLE", TBL_PREFIX . "tblglossary");
 define("WE_GLOSSARY_MODULE_DIR", WE_MODULES_DIR."glossary/");
-define("WE_GLOSSARY_MODULE_PATH", $_SERVER['DOCUMENT_ROOT'] . WE_GLOSSARY_MODULE_DIR);
+define("WE_GLOSSARY_MODULE_PATH",WE_MODULES_PATH."glossary/");
 
 we_loadLanguageConfig();
