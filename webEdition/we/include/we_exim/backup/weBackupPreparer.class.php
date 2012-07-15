@@ -45,13 +45,12 @@ class weBackupPreparer{
 		}
 
 
-		$_SESSION['weBackupVars'] = array();
-
-		$_SESSION['weBackupVars']['options'] = array();
-		$_SESSION['weBackupVars']['handle_options'] = array();
+		$_SESSION['weBackupVars'] = array(
+			'options' => array(),
+			'handle_options' => array(),
+		);
 
 		weBackupPreparer::getOptions($_SESSION['weBackupVars']['options'], $_SESSION['weBackupVars']['handle_options']);
-
 
 		$_SESSION['weBackupVars']['offset'] = 0;
 
@@ -293,8 +292,7 @@ class weBackupPreparer{
 	}
 
 	function getFileList(&$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
-		if($dir == '')
-			$dir = $_SERVER['DOCUMENT_ROOT'];
+		$dir = ($dir == '' ? $_SERVER['DOCUMENT_ROOT'] : $dir);
 		if(!is_readable($dir)){
 			return false;
 		}
@@ -373,21 +371,14 @@ class weBackupPreparer{
 	function isPathExist($path){
 		global $DB_WE;
 
-		$tmp_db = new DB_WE;
-		$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'");
-		$tmp_db->query("SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Path='" . $tmp_db->escape($path) . "'");
-		if(($DB_WE->next_record()) || ($tmp_db->next_record()))
-			return true;
-		else
-			return false;
+		return ((f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1')
+			|| (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
 	}
 
 	function getEncoding($file, $iscompressed){
 
 		if(!empty($file)){
 			$data = weFile::loadPart($file, 0, 256, $iscompressed);
-
-
 			$match = array();
 			$encoding = 'ISO-8859-1';
 			$trenner = "[\040|\n|\t|\r]*";
@@ -405,12 +396,13 @@ class weBackupPreparer{
 
 	function getAutoSteps(){
 		$i = 0;
-		$time = explode(" ", microtime());
+		$time = explode(' ', microtime());
 		$time = $time[1] + $time[0];
 		$start = $time;
-		while($i < 100000)
+		while($i < 100000) {
 			$i++;
-		$time = explode(" ", microtime());
+		}
+		$time = explode(' ', microtime());
 		$time = $time[1] + $time[0];
 		$end = $time;
 		$total = $end - $start;
@@ -421,45 +413,37 @@ class weBackupPreparer{
 
 	function isOtherXMLImport($format){
 
-		if($format == 'weimport'){
-
-			if(we_hasPerm('WXML_IMPORT')){
-				return we_html_element::jsElement('
+		switch($format){
+			case 'weimport':
+				if(we_hasPerm('WXML_IMPORT')){
+					return we_html_element::jsElement('
 							if(confirm("' . g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]') . '")){
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
 								top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 							}');
-			} else{
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+				} else{
+					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
-			}
-		} else if($format == 'customer'){
-
-			return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+				}
+			case 'customer':
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
-		} else{
-			return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
+			default:
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
-
-		return '';
 	}
 
 	function getErrorMessage(){
-
 		$_mess = '';
 
-
 		if(empty($_SESSION['weBackupVars']['backup_file'])){
-
 			if(isset($_SESSION['weBackupVars']['options']['upload'])){
-
 				$maxsize = getUploadMaxFilesize();
 				$_mess = sprintf(g_l('backup', '[upload_failed]'), round($maxsize / (1024 * 1024), 3) . "MB");
 			} else{
-
 				$_mess = g_l('backup', '[file_missing]');
 			}
 		} else if(!is_readable($_SESSION['weBackupVars']['backup_file'])){

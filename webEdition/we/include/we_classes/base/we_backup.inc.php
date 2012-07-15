@@ -27,7 +27,7 @@
  *
  * Provides functions for exporting and importing backups.
  */
-define("BACKUP_TABLE", TBL_PREFIX . "tblbackup");
+define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
 class we_backup{
 	/*	 * ***********************************************************************
@@ -39,8 +39,8 @@ class we_backup{
 	var $warnings = array();
 	var $extables = array();
 	var $mysql_max_packet = 1048576;
-	var $dumpfilename = "";
-	var $tempfilename = "";
+	var $dumpfilename = '';
+	var $tempfilename = '';
 	var $handle_options = array();
 	var $default_backup_steps = 30;
 	var $default_backup_len = 150000;
@@ -53,39 +53,39 @@ class we_backup{
 	var $export2server = 0;
 	var $export2send = 0;
 	var $partial;
-	var $current_insert = "";
+	var $current_insert = '';
 	var $table_end = 0;
 	var $description = array();
-	var $current_description = "";
+	var $current_description = '';
 	var $offset = 0;
 	var $dummy = array();
 	var $table_map = array(
-		"tblbackup" => BACKUP_TABLE,
-		"tblcategorys" => CATEGORY_TABLE,
-		"tblcleanup" => CLEAN_UP_TABLE,
-		"tblcontent" => CONTENT_TABLE,
-		"tbldoctypes" => DOC_TYPES_TABLE,
-		"tblerrorlog" => ERROR_LOG_TABLE,
-		"tblfile" => FILE_TABLE,
-		"tbllink" => LINK_TABLE,
-		"tbltemplates" => TEMPLATES_TABLE,
-		"tbltemporarydoc" => TEMPORARY_DOC_TABLE,
-		"tblindex" => INDEX_TABLE,
-		"tblprefs" => PREFS_TABLE,
-		"tblrecipients" => RECIPIENTS_TABLE,
-		"tblupdatelog" => UPDATE_LOG_TABLE,
-		"tblfailedlogins" => FAILED_LOGINS_TABLE,
-		"tblthumbnails" => THUMBNAILS_TABLE,
-		"tblvalidationservices" => VALIDATION_SERVICES_TABLE
+		'tblbackup' => BACKUP_TABLE,
+		'tblcategorys' => CATEGORY_TABLE,
+		'tblcleanup' => CLEAN_UP_TABLE,
+		'tblcontent' => CONTENT_TABLE,
+		'tbldoctypes' => DOC_TYPES_TABLE,
+		'tblerrorlog' => ERROR_LOG_TABLE,
+		'tblfile' => FILE_TABLE,
+		'tbllink' => LINK_TABLE,
+		'tbltemplates' => TEMPLATES_TABLE,
+		'tbltemporarydoc' => TEMPORARY_DOC_TABLE,
+		'tblindex' => INDEX_TABLE,
+		'tblprefs' => PREFS_TABLE,
+		'tblrecipients' => RECIPIENTS_TABLE,
+		'tblupdatelog' => UPDATE_LOG_TABLE,
+		'tblfailedlogins' => FAILED_LOGINS_TABLE,
+		'tblthumbnails' => THUMBNAILS_TABLE,
+		'tblvalidationservices' => VALIDATION_SERVICES_TABLE
 	);
 	var $fixedTable = array(
-		"tblbackup", "tblhelpindex", "tblhelptopic", "tblhelplink",
-		"tblerrorlog", "tblcleanup", "tbllock",
-		"tblfailedlogins", "tblupdatelog");
+		'tblbackup', 'tblhelpindex', 'tblhelptopic', 'tblhelplink',
+		'tblerrorlog', 'tblcleanup', 'tbllock',
+		'tblfailedlogins', 'tblupdatelog');
 	var $tables = array();
 	var $properties = array(
-		"default_backup_steps", "backup_step", "backup_steps", "backup_phase", "backup_extern",
-		"export2server", "export2send", "partial", "current_insert", "table_end", "current_description", "offset"
+		'default_backup_steps', 'backup_step', 'backup_steps', 'backup_phase', 'backup_extern',
+		'export2server', 'export2send', 'partial', 'current_insert', 'table_end', 'current_description', 'offset'
 	);
 
 	/*	 * ***********************************************************************
@@ -115,150 +115,150 @@ class we_backup{
 		$this->mysql_max_packet = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this->backup_db);
 
 		//$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE)); //Wahrscheinlich Ursache, dass tbllock ins Backup aufgenommen wird Bug 5096
-		$this->table_map = array_merge($this->table_map, array("tbluser" => USER_TABLE));
+		$this->table_map = array_merge($this->table_map, array('tbluser' => USER_TABLE));
 
-		if(defined("SCHEDULE_TABLE"))
-			$this->table_map = array_merge($this->table_map, array("tblschedule" => SCHEDULE_TABLE));
+		if(defined('SCHEDULE_TABLE'))
+			$this->table_map = array_merge($this->table_map, array('tblschedule' => SCHEDULE_TABLE));
 
-		if(defined("CUSTOMER_TABLE"))
-			$this->table_map = array_merge($this->table_map, array("tblwebuser" => CUSTOMER_TABLE, "tblwebadmin" => CUSTOMER_ADMIN_TABLE));
+		if(defined('CUSTOMER_TABLE'))
+			$this->table_map = array_merge($this->table_map, array('tblwebuser' => CUSTOMER_TABLE, 'tblwebadmin' => CUSTOMER_ADMIN_TABLE));
 
-		if(defined("OBJECT_TABLE"))
-			$this->table_map = array_merge($this->table_map, array("tblobject" => OBJECT_TABLE, "tblobjectfiles" => OBJECT_FILES_TABLE, "tblobject_" => OBJECT_X_TABLE));
+		if(defined('OBJECT_TABLE'))
+			$this->table_map = array_merge($this->table_map, array('tblobject' => OBJECT_TABLE, 'tblobjectfiles' => OBJECT_FILES_TABLE, 'tblobject_' => OBJECT_X_TABLE));
 
-		if(defined("SHOP_TABLE"))
-			$this->table_map = array_merge($this->table_map, array("tblanzeigeprefs" => ANZEIGE_PREFS_TABLE, "tblorders" => SHOP_TABLE));
+		if(defined('SHOP_TABLE'))
+			$this->table_map = array_merge($this->table_map, array('tblanzeigeprefs' => ANZEIGE_PREFS_TABLE, 'tblorders' => SHOP_TABLE));
 
-		if(defined("WORKFLOW_TABLE"))
+		if(defined('WORKFLOW_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tblworkflowdef" => WORKFLOW_TABLE,
-				"tblworkflowstep" => WORKFLOW_STEP_TABLE,
-				"tblworkflowtask" => WORKFLOW_TASK_TABLE,
-				"tblworkflowdoc" => WORKFLOW_DOC_TABLE,
-				"tblworkflowdocstep" => WORKFLOW_DOC_STEP_TABLE,
-				"tblworkflowdoctask" => WORKFLOW_DOC_TASK_TABLE,
-				"tblworkflowlog" => WORKFLOW_LOG_TABLE
+				'tblworkflowdef' => WORKFLOW_TABLE,
+				'tblworkflowstep' => WORKFLOW_STEP_TABLE,
+				'tblworkflowtask' => WORKFLOW_TASK_TABLE,
+				'tblworkflowdoc' => WORKFLOW_DOC_TABLE,
+				'tblworkflowdocstep' => WORKFLOW_DOC_STEP_TABLE,
+				'tblworkflowdoctask' => WORKFLOW_DOC_TASK_TABLE,
+				'tblworkflowlog' => WORKFLOW_LOG_TABLE
 				)
 			);
 
-		if(defined("MSG_TODO_TABLE"))
+		if(defined('MSG_TODO_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tbltodo" => MSG_TODO_TABLE,
-				"tbltodohistory" => MSG_TODOHISTORY_TABLE,
-				"tblmessages" => MESSAGES_TABLE,
-				"tblmsgaccounts" => MSG_ACCOUNTS_TABLE,
-				"tblmsgaddrbook" => MSG_ADDRBOOK_TABLE,
-				"tblmsgfolders" => MSG_FOLDERS_TABLE,
-				"tblmsgsettings" => MSG_SETTINGS_TABLE
+				'tbltodo' => MSG_TODO_TABLE,
+				'tbltodohistory' => MSG_TODOHISTORY_TABLE,
+				'tblmessages' => MESSAGES_TABLE,
+				'tblmsgaccounts' => MSG_ACCOUNTS_TABLE,
+				'tblmsgaddrbook' => MSG_ADDRBOOK_TABLE,
+				'tblmsgfolders' => MSG_FOLDERS_TABLE,
+				'tblmsgsettings' => MSG_SETTINGS_TABLE
 				)
 			);
 
-		if(defined("NEWSLETTER_TABLE"))
+		if(defined('NEWSLETTER_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tblnewsletter" => NEWSLETTER_TABLE,
-				"tblnewslettergroup" => NEWSLETTER_GROUP_TABLE,
-				"tblnewsletterblock" => NEWSLETTER_BLOCK_TABLE,
-				"tblnewsletterlog" => NEWSLETTER_LOG_TABLE,
-				"tblnewsletterprefs" => NEWSLETTER_PREFS_TABLE,
-				"tblnewsletterconfirm" => NEWSLETTER_CONFIRM_TABLE
+				'tblnewsletter' => NEWSLETTER_TABLE,
+				'tblnewslettergroup' => NEWSLETTER_GROUP_TABLE,
+				'tblnewsletterblock' => NEWSLETTER_BLOCK_TABLE,
+				'tblnewsletterlog' => NEWSLETTER_LOG_TABLE,
+				'tblnewsletterprefs' => NEWSLETTER_PREFS_TABLE,
+				'tblnewsletterconfirm' => NEWSLETTER_CONFIRM_TABLE
 				)
 			);
 
-		if(defined("BANNER_TABLE"))
+		if(defined('BANNER_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tblbanner" => BANNER_TABLE,
-				"tblbannerclicks" => BANNER_CLICKS_TABLE,
-				"tblbannerprefs" => BANNER_PREFS_TABLE,
-				"tblbannerviews" => BANNER_VIEWS_TABLE
+				'tblbanner' => BANNER_TABLE,
+				'tblbannerclicks' => BANNER_CLICKS_TABLE,
+				'tblbannerprefs' => BANNER_PREFS_TABLE,
+				'tblbannerviews' => BANNER_VIEWS_TABLE
 				)
 			);
 
-		if(defined("EXPORT_TABLE"))
+		if(defined('EXPORT_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tblexport" => EXPORT_TABLE
+				'tblexport' => EXPORT_TABLE
 				)
 			);
 
-		if(defined("VOTING_TABLE"))
+		if(defined('VOTING_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
-				"tblvoting" => VOTING_TABLE
+				'tblvoting' => VOTING_TABLE
 				)
 			);
 
-		$this->tables["settings"] = array("tblprefs", "tblrecipients", "tblvalidationservices");
-		$this->tables["configuration"] = array();
+		$this->tables['settings'] = array('tblprefs', 'tblrecipients', 'tblvalidationservices');
+		$this->tables['configuration'] = array();
 
-		$this->tables["users"] = array(
-			"tbluser"
+		$this->tables['users'] = array(
+			'tbluser'
 		);
-		$this->tables["customers"] = array("tblwebuser", "tblwebadmin");
-		$this->tables["shop"] = array("tblanzeigeprefs", "tblorders");
-		$this->tables["workflow"] = array(
-			"tblworkflowdef", "tblworkflowstep", "tblworkflowtask",
-			"tblworkflowdoc", "tblworkflowdocstep", "tblworkflowdoctask",
-			"tblworkflowlog"
+		$this->tables['customers'] = array('tblwebuser', 'tblwebadmin');
+		$this->tables['shop'] = array('tblanzeigeprefs', 'tblorders');
+		$this->tables['workflow'] = array(
+			'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
+			'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
+			'tblworkflowlog'
 		);
-		$this->tables["todo"] = array(
-			"tbltodo", "tbltodohistory", "tblmessages", "tblmsgaccounts",
-			"tblmsgaddrbook", "tblmsgfolders", "tblmsgsettings"
+		$this->tables['todo'] = array(
+			'tbltodo', 'tbltodohistory', 'tblmessages', 'tblmsgaccounts',
+			'tblmsgaddrbook', 'tblmsgfolders', 'tblmsgsettings'
 		);
-		$this->tables["newsletter"] = array(
-			"tblnewsletter", "tblnewslettergroup",
-			"tblnewsletterblock", "tblnewsletterlog",
-			"tblnewsletterprefs", "tblnewsletterconfirm"
+		$this->tables['newsletter'] = array(
+			'tblnewsletter', 'tblnewslettergroup',
+			'tblnewsletterblock', 'tblnewsletterlog',
+			'tblnewsletterprefs', 'tblnewsletterconfirm'
 		);
-		$this->tables["temporary"] = array("tbltemporarydoc");
+		$this->tables['temporary'] = array('tbltemporarydoc');
 
-		$this->tables["banner"] = array(
-			"tblbanner", "tblbannerclicks",
-			"tblbannerprefs", "tblbannerviews"
-		);
-
-		$this->tables["schedule"] = array(
-			"tblschedule"
+		$this->tables['banner'] = array(
+			'tblbanner', 'tblbannerclicks',
+			'tblbannerprefs', 'tblbannerviews'
 		);
 
-		$this->tables["export"] = array(
-			"tblexport"
+		$this->tables['schedule'] = array(
+			'tblschedule'
 		);
 
-		$this->tables["voting"] = array(
-			"tblvoting"
+		$this->tables['export'] = array(
+			'tblexport'
 		);
 
-		$this->description["import"][strtolower(CONTENT_TABLE)] = g_l('backup', "[import_content]");
-		$this->description["import"][strtolower(FILE_TABLE)] = g_l('backup', "[import_files]");
-		$this->description["import"][strtolower(DOC_TYPES_TABLE)] = g_l('backup', "[import_doctypes]");
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"])
-			$this->description["import"][strtolower(USER_TABLE)] = g_l('backup', "[import_user_data]");
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"])
-			$this->description["import"][strtolower(CUSTOMER_TABLE)] = g_l('backup', "[import_customers_data]");
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"])
-			$this->description["import"][strtolower(SHOP_TABLE)] = g_l('backup', "[import_shop_data]");
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"])
-			$this->description["import"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[import_prefs]");
-		$this->description["import"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[import_templates]");
-		$this->description["import"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[import_temporary_data]");
-		$this->description["import"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
-		$this->description["import"][strtolower(LINK_TABLE)] = g_l('backup', "[import_links]");
-		$this->description["import"][strtolower(INDEX_TABLE)] = g_l('backup', "[import_indexes]");
+		$this->tables['voting'] = array(
+			'tblvoting'
+		);
 
-		$this->description["export"][strtolower(CONTENT_TABLE)] = g_l('backup', "[export_content]");
-		$this->description["export"][strtolower(FILE_TABLE)] = g_l('backup', "[export_files]");
-		$this->description["export"][strtolower(DOC_TYPES_TABLE)] = g_l('backup', "[export_doctypes]");
-		if(isset($this->handle_options["users"]) && $this->handle_options["users"])
-			$this->description["export"][strtolower(USER_TABLE)] = g_l('backup', "[export_user_data]");
-		if(defined("CUSTOMER_TABLE") && isset($this->handle_options["customers"]) && $this->handle_options["customers"])
-			$this->description["export"][strtolower(CUSTOMER_TABLE)] = g_l('backup', "[export_customers_data]");
-		if(defined("SHOP_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"])
-			$this->description["export"][strtolower(SHOP_TABLE)] = g_l('backup', "[export_shop_data]");
-		if(defined("ANZEIGE_PREFS_TABLE") && isset($this->handle_options["shop"]) && $this->handle_options["shop"])
-			$this->description["export"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[export_prefs]");
-		$this->description["export"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[export_templates]");
-		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[export_temporary_data]");
-		$this->description["export"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
-		$this->description["export"][strtolower(LINK_TABLE)] = g_l('backup', "[export_links]");
-		$this->description["export"][strtolower(INDEX_TABLE)] = g_l('backup', "[export_indexes]");
+		$this->description['import'][strtolower(CONTENT_TABLE)] = g_l('backup', '[import_content]');
+		$this->description['import'][strtolower(FILE_TABLE)] = g_l('backup', '[import_files]');
+		$this->description['import'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[import_doctypes]');
+		if(isset($this->handle_options['users']) && $this->handle_options['users'])
+			$this->description['import'][strtolower(USER_TABLE)] = g_l('backup', '[import_user_data]');
+		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers'])
+			$this->description['import'][strtolower(CUSTOMER_TABLE)] = g_l('backup', '[import_customers_data]');
+		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+			$this->description['import'][strtolower(SHOP_TABLE)] = g_l('backup', '[import_shop_data]');
+		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+			$this->description['import'][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', '[import_prefs]');
+		$this->description['import'][strtolower(TEMPLATES_TABLE)] = g_l('backup', '[import_templates]');
+		$this->description['import'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[import_temporary_data]');
+		$this->description['import'][strtolower(BACKUP_TABLE)] = g_l('backup', '[external_backup]');
+		$this->description['import'][strtolower(LINK_TABLE)] = g_l('backup', '[import_links]');
+		$this->description['import'][strtolower(INDEX_TABLE)] = g_l('backup', '[import_indexes]');
+
+		$this->description['export'][strtolower(CONTENT_TABLE)] = g_l('backup', '[export_content]');
+		$this->description['export'][strtolower(FILE_TABLE)] = g_l('backup', '[export_files]');
+		$this->description['export'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[export_doctypes]');
+		if(isset($this->handle_options['users']) && $this->handle_options['users'])
+			$this->description['export'][strtolower(USER_TABLE)] = g_l('backup', '[export_user_data]');
+		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers'])
+			$this->description['export'][strtolower(CUSTOMER_TABLE)] = g_l('backup', '[export_customers_data]');
+		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+			$this->description['export'][strtolower(SHOP_TABLE)] = g_l('backup', '[export_shop_data]');
+		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+			$this->description['export'][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', '[export_prefs]');
+		$this->description['export'][strtolower(TEMPLATES_TABLE)] = g_l('backup', '[export_templates]');
+		$this->description['export'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[export_temporary_data]');
+		$this->description['export'][strtolower(BACKUP_TABLE)] = g_l('backup', '[external_backup]');
+		$this->description['export'][strtolower(LINK_TABLE)] = g_l('backup', '[export_links]');
+		$this->description['export'][strtolower(INDEX_TABLE)] = g_l('backup', '[export_indexes]');
 
 		$this->clearOldTmp();
 	}
@@ -304,10 +304,10 @@ class we_backup{
 		if(!$this->isPathExist($path)){
 			if(@filesize($file) > $this->mysql_max_packet){
 				$ok = false;
-				$this->setWarning(sprintf(g_l('backup', "[too_big_file]"), $file));
+				$this->setWarning(sprintf(g_l('backup', '[too_big_file]'), $file));
 			} else{
 				if(($contents = weFile::load($file)) === false){
-					$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $file));
+					$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $file));
 					return false;
 				}
 			}
@@ -316,7 +316,10 @@ class we_backup{
 				$contents = addslashes($contents);
 				$contents = str_replace("\n", "\\n", $contents);
 				$contents = str_replace("\r", "\\r", $contents);
-				$q = "INSERT INTO " . BACKUP_TABLE . " (Path,Data,IsFolder) VALUES ('" . $this->backup_db->escape($path) . "','" . $this->backup_db->escape($contents) . "',0)";
+				$q = 'INSERT INTO ' . BACKUP_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'Path' => $path,
+						'Data' => $contents,
+						'IsFolder' => 0,));
 				weFile::save($this->dumpfilename, $q . ';' . $nl, 'ab');
 				$this->backup_db->query($q);
 			}
@@ -344,8 +347,11 @@ class we_backup{
 		}
 		$path = substr($dir, strlen($rootdir), strlen($dir) - strlen($rootdir));
 		if(!$this->isPathExist($path)){
-			$q = "INSERT INTO " . BACKUP_TABLE . " (Path,Data,IsFolder) VALUES ('" . $this->backup_db->escape($path) . "','',1)";
-			weFile::save($this->dumpfilename, $q . ";" . $nl, "ab");
+			$q = 'INSERT INTO ' . BACKUP_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'Path' => $path,
+					'Data' => '',
+					'IsFolder' => 1));
+			weFile::save($this->dumpfilename, $q . ';' . $nl, 'ab');
 			$this->backup_db->query($q);
 		}
 		$dir = str_replace("\\", "/", $dir);
@@ -380,9 +386,9 @@ class we_backup{
 	 * @return     string
 	 */
 	function tableDefinition($table, $nl, $noprefix){
-		$foo = "DROP TABLE IF EXISTS " . $this->backup_db->escape($noprefix) . ";$nl";
-		$foo .= "CREATE TABLE " . $this->backup_db->escape($noprefix) . " ($nl";
-		$this->backup_db->query("SHOW FIELDS FROM " . $this->backup_db->escape($table));
+		$foo = 'DROP TABLE IF EXISTS ' . $this->backup_db->escape($noprefix) . ";$nl" .
+			'CREATE TABLE ' . $this->backup_db->escape($noprefix) . " ($nl";
+		$this->backup_db->query('SHOW FIELDS FROM ' . $this->backup_db->escape($table));
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;
 			$foo .= "   $row[Field] $row[Type]";
@@ -438,7 +444,7 @@ class we_backup{
 			$this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
 			$this->backup_step = 0;
 			$this->backup_steps = $this->default_backup_steps;
-			if(!weFile::save($this->dumpfilename, "#<?php exit();?>\n" .
+			if(!weFile::save($this->dumpfilename, "#<?php exit();?>$nl" .
 					"# webEdition MySQL-Dump$nl" .
 					"# http://www.webedition.org$nl" .
 					"#$nl" .
@@ -579,11 +585,11 @@ class we_backup{
 						}
 						$this->partial = false;
 						$limit = $this->backup_steps;
-						$this->backup_db->query("SELECT * FROM " . $this->backup_db->escape($table) . " LIMIT " . abs($this->backup_step) . "," . abs($limit));
+						$this->backup_db->query('SELECT * FROM ' . $this->backup_db->escape($table) . ' LIMIT ' . abs($this->backup_step) . ',' . abs($limit));
 						while($this->backup_db->next_record()) {
 							if(strtolower($table) == strtolower(CONTENT_TABLE)){
 								$db = new DB_WE;
-								$siz = f("SELECT LENGTH(Dat) as Dat FROM " . CONTENT_TABLE . " WHERE ID=" . intval($this->backup_db->f("ID")), "Dat", $db);
+								$siz = f('SELECT LENGTH(Dat) as Dat FROM ' . CONTENT_TABLE . ' WHERE ID=' . intval($this->backup_db->f('ID')), 'Dat', $db);
 							} else{
 								$siz = 0;
 							}
@@ -627,8 +633,8 @@ class we_backup{
 							@fwrite($fh, $insert);
 							$len = $len + strlen($insert);
 							if(!$this->offset)
-								$exp++;
-							$insert = "";
+								++$exp;
+							$insert = '';
 							if($len > $this->default_backup_len || $this->offset){
 								$this->partial = true;
 								break;
@@ -652,8 +658,7 @@ class we_backup{
 				@fclose($fh);
 			}
 			else{
-				$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
-				$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
+				$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
 				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
 				return -1;
 			}
@@ -664,8 +669,7 @@ class we_backup{
 		$res = array();
 		$res = $this->arraydiff($tab, $this->extables);
 		if(sizeof($res) == 0){
-			$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
-			$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
+			$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
 		}
 		return 0;
 	}
@@ -676,7 +680,7 @@ class we_backup{
 	 * Description: This function saves a given file into the dump.
 	 */
 	function printDump(){
-		$fh = @fopen($this->dumpfilename, "rb");
+		$fh = @fopen($this->dumpfilename, 'rb');
 		if($fh){
 			while(!@feof($fh)) {
 				print @fread($fh, 52428);
@@ -711,9 +715,9 @@ class we_backup{
 	 */
 	function setTmpFilename($filename){
 		if($this->isFileInTmpDir($filename)){
-			if(is_file(TEMP_PATH . "/" . $filename)){
+			if(is_file(TEMP_PATH . '/' . $filename)){
 				$this->tempfilename = $filename;
-				$this->dumpfilename = TEMP_PATH . "/" . $filename;
+				$this->dumpfilename = TEMP_PATH . '/' . $filename;
 				return true;
 			}
 			else
@@ -730,7 +734,7 @@ class we_backup{
 	 * directory used for backups.
 	 */
 	function isFileInTmpDir($file_name){
-		$dir = TEMP_PATH . "/";
+		$dir = TEMP_PATH . '/';
 		$d = @dir($dir);
 		$ret = false;
 		if($d){
@@ -762,8 +766,8 @@ class we_backup{
 		if(is_file($this->dumpfilename))
 			@unlink($this->dumpfilename);
 
-		$this->dumpfilename = "";
-		$this->tempfilename = "";
+		$this->dumpfilename = '';
+		$this->tempfilename = '';
 	}
 
 	/**
@@ -783,7 +787,7 @@ class we_backup{
 			/* $link = mysql_connect($this->backup_db->Host, $this->backup_db->User, $this->backup_db->Password);
 			  mysql_select_db($this->backup_db->Database); */
 			$mydb = new DB_WE();
-			$mydb->query("SELECT * FROM " . BACKUP_TABLE . " ORDER BY IsFolder DESC, Path ASC", false, true);
+			$mydb->query('SELECT * FROM ' . BACKUP_TABLE . ' ORDER BY IsFolder DESC, Path ASC', false, true);
 
 			while($mydb->next_record(MYSQL_ASSOC)) {
 				$line = $mydb->Record;
@@ -820,7 +824,7 @@ class we_backup{
 	 * Description: This function splits a file.
 	 */
 	function splitFile($backup_select){
-		$buff = "";
+		$buff = '';
 
 		$this->current_description = g_l('backup', "[preparing_file]");
 
@@ -849,7 +853,7 @@ class we_backup{
 
 				if($open_new){
 					$num++;
-					$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "/tmp/" . basename($filename) . "_" . $num;
+					$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . basename($filename) . '_' . $num;
 					$fh_temp = fopen($filename_tmp, "wb");
 					$open_new = false;
 				}
@@ -880,10 +884,10 @@ class we_backup{
 			@fclose($fh_temp);
 		@fclose($fh);
 		if(defined("WORKFLOW_TABLE")){
-			$this->backup_db->query("TRUNCATE TABLE" . WORKFLOW_DOC_TABLE);
-			$this->backup_db->query("TRUNCATE TABLE" . WORKFLOW_DOC_STEP_TABLE);
-			$this->backup_db->query("TRUNCATE TABLE" . WORKFLOW_DOC_TASK_TABLE);
-			$this->backup_db->query("TRUNCATE TABLE" . WORKFLOW_LOG_TABLE);
+			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_TABLE);
+			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_STEP_TABLE);
+			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_DOC_TASK_TABLE);
+			$this->backup_db->query('TRUNCATE TABLE' . WORKFLOW_LOG_TABLE);
 		}
 		return $num + 1;
 	}
@@ -1010,7 +1014,7 @@ class we_backup{
 			$updater->updateCustomers();
 		}
 		if(!$this->handle_options["temporary"]){
-			$this->backup_db->query("TRUNCATE TABLE " . TEMPORARY_DOC_TABLE);
+			$this->backup_db->query('TRUNCATE TABLE ' . TEMPORARY_DOC_TABLE);
 		}
 		$updater->updateScheduler();
 		$updater->updateNewsletter();
@@ -1347,8 +1351,8 @@ class we_backup{
 		$limit = $limit - 86400;
 		while(false !== ($entry = $d->read())) {
 			if($entry != "." && $entry != ".." && $entry != "CVS" && !@is_dir($entry)){
-				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "/tmp/" . $entry) < $limit){
-					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "/tmp/" . $entry);
+				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){
+					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry);
 				}
 			}
 		}
