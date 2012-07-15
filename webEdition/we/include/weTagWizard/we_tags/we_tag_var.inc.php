@@ -21,12 +21,12 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('href', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
 	new weTagDataOption('date', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
 	new weTagDataOption('link', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
-	new weTagDataOption('multiobject', false, '', array(), array()),
+	new weTagDataOption('multiobject', false, '', array($name,$doc), array($name)),
 	new weTagDataOption('request', false, '', array($name,$htmlspecialchars,), array($name)),
 	new weTagDataOption('post', false, '', array($name,$htmlspecialchars,), array($name)),
 	new weTagDataOption('get', false, '', array($name,$htmlspecialchars,), array($name)),
 	new weTagDataOption('select', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
 	new weTagDataOption('session', false, '', array($name,$htmlspecialchars), array($name)),
-	new weTagDataOption('shopVat', false, '', array(), array())), true, '');
+	new weTagDataOption('shopVat', false, '', array($doc), array())), true, '');
 
 $this->Attributes=array($name,$doc,$win2iso,$htmlspecialchars,$to,$nameto);

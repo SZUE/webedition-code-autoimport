@@ -73,7 +73,7 @@ function we_tag_var($attribs){
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
 
-				$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
+				$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 				return weShopVats::getVatRateForSite($vatId);
 			}
 			break;
