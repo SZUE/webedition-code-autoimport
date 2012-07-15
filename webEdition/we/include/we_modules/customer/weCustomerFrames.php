@@ -52,7 +52,7 @@ class weCustomerFrames extends weModuleFrames{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -692,7 +692,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -788,16 +788,8 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLFieldEditor($type, $mode){
-		if(isset($_REQUEST["field"]))
-			$field = $_REQUEST["field"];
-		else
-			$field = "";
-
-		if(isset($_REQUEST["branch"]))
-			$branch = $_REQUEST["branch"];
-		else
-			$branch = g_l('modules_customer', '[other]');
-
+		$field = (isset($_REQUEST["field"]) ? $_REQUEST["field"] : '');
+		$branch = (isset($_REQUEST["branch"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
@@ -954,8 +946,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(0, 0, array(), $search->getHtml());
 		$table->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[search_result]'));
 		$table->setCol(2, 0, array(), $select->getHtml());
-		$calenderJS =
-			$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => ($mode ? "" : "document.we_form.keyword.focus();")), we_html_element::linkElement(array("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua")) .
+		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => ($mode ? "" : "document.we_form.keyword.focus();")), we_html_element::linkElement(array("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua")) .
 				we_html_element::jsScript(JS_DIR . "utils/weDate.js") .
 				we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 				we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
@@ -1020,9 +1011,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 						$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"
 					)
 				) .
-				((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("
-	setTimeout('lookForDateFields()', 1);
-					") : "")
+				((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : "")
 		);
 		return $this->getHTMLDocument($out);
 	}
@@ -1103,7 +1092,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			$hour = isset($time["hours"]) ? $time["hours"] : date("H");
 			$minute = isset($time["minutes"]) ? $time["minutes"] : date("i");
 		} else{
-			return "";
+			return '';
 		}
 
 		$name = preg_replace('|^(.+)]$|', '\1%s]', $name);
@@ -1158,38 +1147,28 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		}
 
 
-		$retVal = '<table cellpadding=0 cellspacing=0 border=0>
-';
+		$retVal = '<table cellpadding=0 cellspacing=0 border=0>';
 		if($daySelect || $monthSelect || $yearSelect){
-			$retVal .= '<tr>
-	<td>
+			$retVal .= '<tr><td>
 		' . ($daySelect ? $daySelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_day"), $day)) .
 				($monthSelect ? $monthSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_month"), $month)) .
 				($yearSelect ? $yearSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_year"), $year)) . '
-	</td>
-</tr>
-';
+	</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_day"), $day) .
 				we_html_tools::hidden(sprintf($name, "_month"), $month) .
-				we_html_tools::hidden(sprintf($name, "_year"), $year) . '
-';
+				we_html_tools::hidden(sprintf($name, "_year"), $year);
 		}
 		if($hourSelect || $minSelect){
-			$retVal .= '<tr>
-	<td>
+			$retVal .= '<tr><td>
 		' . ($hourSelect ? $hourSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_hour"), $hour)) .
 				($minSelect ? $minSelect . "&nbsp;" : we_html_tools::hidden(sprintf($name, "_minute"), $minute)) . '
-	</td>
-</tr>
-';
+	</td></tr>';
 		} else{
 			$retVal .= we_html_tools::hidden(sprintf($name, "_hour"), (isset($hour) ? $hour : 0)) .
-				we_html_tools::hidden(sprintf($name, "_minute"), (isset($minute) ? $minute : 0)) . '
-';
+				we_html_tools::hidden(sprintf($name, "_minute"), (isset($minute) ? $minute : 0));
 		}
-		$retVal .= '</table>
-	';
+		$retVal .= '</table>';
 		return $retVal;
 	}
 
