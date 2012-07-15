@@ -27,19 +27,19 @@ function we_tag_categorySelect($attribs, $content){
 	$isuserinput = (strlen($name) == 0);
 	$name = $isuserinput ? 'we_ui_' . $GLOBALS['WE_FORM'] . '_categories' : $name;
 
-	$type = weTag_getAttribute("type", $attribs);
-	$rootdir = weTag_getAttribute("rootdir", $attribs, "/");
-	$firstentry = weTag_getAttribute("firstentry", $attribs);
-	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
-	$indent = weTag_getAttribute("indent", $attribs);
-	$multiple = weTag_getAttribute("multiple", $attribs, false, true);
+	$type = weTag_getAttribute('type', $attribs);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$firstentry = weTag_getAttribute('firstentry', $attribs);
+	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
+	$indent = weTag_getAttribute('indent', $attribs);
+	$multiple = weTag_getAttribute('multiple', $attribs, false, true);
 
 	$values = '';
-	if($isuserinput && $GLOBALS["WE_FORM"]){
-		$objekt = isset($GLOBALS["we_object"][$GLOBALS["WE_FORM"]]) ?
-			$GLOBALS["we_object"][$GLOBALS["WE_FORM"]] :
-			(isset($GLOBALS["we_document"][$GLOBALS["WE_FORM"]]) ?
-				$GLOBALS["we_document"][$GLOBALS["WE_FORM"]] :
+	if($isuserinput && $GLOBALS['WE_FORM']){
+		$objekt = isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
+			$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+			(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+				$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
 				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
 					false));
 		if($objekt){
@@ -47,34 +47,35 @@ function we_tag_categorySelect($attribs, $content){
 		}
 		$valuesArray = makeArrayFromCSV(id_to_path($values, CATEGORY_TABLE));
 	} else{
-		if($type == "request"){
+		if($type == 'request'){
 			// Bug Fix #750
 			$values = (isset($_REQUEST[$name]) ?
 					(is_array($_REQUEST[$name]) ?
-						implode(",", $_REQUEST[$name]) :
+						implode(',', $_REQUEST[$name]) :
 						$_REQUEST[$name]) :
 					'');
 		} else{
 			// Bug Fix #750
 			$values = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
-				implode(",", $GLOBALS[$name]) :
+				implode(',', $GLOBALS[$name]) :
 				$GLOBALS[$name];
 		}
 		$valuesArray = makeArrayFromCSV($values, CATEGORY_TABLE);
 	}
 
-	$attribs["name"] = $name;
+	$attribs['name'] = $name;
 
 	// Bug Fix #750
 	if($multiple){
-		$attribs["name"] .= "[]";
-		$attribs["multiple"] = "multiple";
+		$attribs['name'] .= '[]';
+		$attribs['multiple'] = 'multiple';
 	} else{
 		$attribs = removeAttribs($attribs, array('size', 'multiple'));
 	}
 
 	$attribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'type'));
 
+	$content = trim($content);
 	if(!$content){
 		if($firstentry){
 			$content .= getHtmlTag('option', array('value' => ''), $firstentry);
@@ -89,14 +90,14 @@ function we_tag_categorySelect($attribs, $content){
 				$field = preg_replace('|^' . preg_quote($rootdir) . '|', '', $field);
 			}
 			if($field){
-				if(in_array($db->f("Path"), $valuesArray)){
+				if(in_array($db->f('Path'), $valuesArray)){
 					$content .= getHtmlTag(
 						'option', array(
-						'value' => $db->f("Path"), 'selected' => 'selected'
+						'value' => $db->f('Path'), 'selected' => 'selected'
 						), str_repeat($indent, $deep) . $field);
 				} else{
 					$content .= getHtmlTag('option', array(
-						'value' => $db->f("Path")
+						'value' => $db->f('Path')
 						), str_repeat($indent, $deep) . $field);
 				}
 			}
