@@ -38,7 +38,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_header.php" name="header" scrolling=no noresize>
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>
-		</frameset>
+		</frameset><noframes></noframes>
 
 		<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 		</body>
@@ -81,7 +81,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return '<body bgcolor="#FFFFFF" background="' . IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif"></body></html>';
+			return '<body bgcolor="#F0EFF0" background="' . IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif"></body></html>';
 		}
 
 		$page = (isset($_GET["page"]) ? $_GET["page"] : 0);
@@ -161,7 +161,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 			}
 		</script>
 		</head>
-		<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onload="setStatusCheck()"<?php } ?>>
+		<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
 			<form name="we_form">
 				<table border="0" cellpadding="0" cellspacing="0" width="3000">
 					<tr>

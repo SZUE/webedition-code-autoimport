@@ -89,7 +89,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
 		}
 
 		$we_tabs = new we_tabs();
