@@ -166,7 +166,8 @@ abstract class we_database_base{
 	 */
 	abstract public function getInfo();
 
-	/**returns the charset of the current connection*/
+	/*	 * returns the charset of the current connection */
+
 	abstract public function getCurrentCharset();
 
 	/** Constructor, establishes the connection to the DB
@@ -213,7 +214,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->Link_ID||!$this->ping()){
+		if(!$this->Link_ID || !$this->ping()){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -263,13 +264,16 @@ abstract class we_database_base{
 	 * @return bool true, if the query was successfull
 	 */
 	function query($Query_String, $allowUnion = false, $unbuffered = false){
+		$this->Errno = 0;
+		$this->Error = '';
+		$this->Row = 0;
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if($Query_String == ''){
 			/* The empty query string is passed on from the constructor,
 			 * when calling the class without a query, e.g. in situations
 			 * like these: '$db = new DB_Sql_Subclass;'
 			 */
-			return false;
+			return true;
 		}
 		if(!$this->isConnected() && !$this->_connect())
 			return false;
@@ -667,7 +671,7 @@ abstract class we_database_base{
 			return false;
 		}
 		$col = trim($col, '`');
-		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"',$this));
+		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
 	}
 
 	function isTabExist($tab){
