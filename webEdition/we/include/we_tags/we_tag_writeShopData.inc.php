@@ -134,16 +134,16 @@ function we_tag_writeShopData($attribs){
 
 			if(isset($GLOBALS['weEconda'])){
 				$GLOBALS['weEconda']['emosBasket'] .= "
-if(typeof emosBasketPageArray == 'undefined') var emosBasketPageArray = new Array();
-emosBasketPageArray[$articleCount] = new Array();
-emosBasketPageArray[$articleCount][0]='" . $shoppingItem['id'] . "';
-emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial']['shoptitle']) . "';
-emosBasketPageArray[$articleCount][2]='$preis';
-emosBasketPageArray[$articleCount][3]='';
-emosBasketPageArray[$articleCount][4]='" . $shoppingItem['quantity'] . "';
-emosBasketPageArray[$articleCount][5]='NULL';
-emosBasketPageArray[$articleCount][6]='NULL';
-emosBasketPageArray[$articleCount][7]='NULL';";
+                    if(typeof emosBasketPageArray == 'undefined') var emosBasketPageArray = new Array();
+                    emosBasketPageArray[$articleCount] = new Array();
+                    emosBasketPageArray[$articleCount][0]='" . $shoppingItem['id'] . "';
+                    emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial']['shoptitle']) . "';
+                    emosBasketPageArray[$articleCount][2]='$preis';
+                    emosBasketPageArray[$articleCount][3]='';
+                    emosBasketPageArray[$articleCount][4]='" . $shoppingItem['quantity'] . "';
+                    emosBasketPageArray[$articleCount][5]='NULL';
+                    emosBasketPageArray[$articleCount][6]='NULL';
+                    emosBasketPageArray[$articleCount][7]='NULL';";
 			}
 			$articleCount++;
 		}
@@ -184,13 +184,26 @@ emosBasketPageArray[$articleCount][7]='NULL';";
 		}
 		//}
 		if(isset($GLOBALS['weEconda'])){
+		  /*
+		  * first get the prefs for country, city, address by shop default settings and shop payment settings
+		  */
+            $shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_CountryLanguage"', 'strFelder', $DB_WE));
+            if(is_array($shopDefaultPrefs)){ // check for array
+                $fieldCountry = $shopDefaultPrefs['stateField'];
+                $emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
+            }
+            $shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
+            if(isset($shopPaymentPrefs[2]) && isset($shopPaymentPrefs[3]) && isset($shopPaymentPrefs[4])){
+                $emosBillingCity = substr($_SESSION['webuser'][$shopPaymentPrefs[3]],0,1)."/".substr($_SESSION['webuser'][$shopPaymentPrefs[3]],0,2)."/".$_SESSION['webuser'][$shopPaymentPrefs[4]]."/".$_SESSION['webuser'][$shopPaymentPrefs[3]];
+                //$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];
+            }
 			$GLOBALS['weEconda']['emosBilling'] .= "
-if(typeof emosBillingPageArray == 'undefined') var emosBillingPageArray = new Array();
-emosBillingPageArray [0]='" . $orderID . "';
-emosBillingPageArray [1]='" . md5($_SESSION["webuser"]["ID"]) . "';
-emosBillingPageArray [2]='" . rawurlencode($_SESSION["webuser"]["Contact_Country"]) . "/" . rawurlencode($_SESSION["webuser"]["Contact_Address2"]) . "/" . rawurlencode($_SESSION["webuser"]["Contact_Address1"]) . "';
-emosBillingPageArray [3]='" . $totPrice . "';
-			";
+                if(typeof emosBillingPageArray == 'undefined') var emosBillingPageArray = new Array();
+                emosBillingPageArray [0]='" . $orderID . "';
+                emosBillingPageArray [1]='" . md5($_SESSION["webuser"]["ID"]) . "';
+                emosBillingPageArray [2]='" . rawurlencode($emosBillingCountry) . "/" . rawurlencode($emosBillingCity) . "';
+                emosBillingPageArray [3]='" . $totPrice . "';
+                			";
 		}
 		$doc = we_getDocForTag('top');
 		$lang = substr($doc->Language, 0, 2);
