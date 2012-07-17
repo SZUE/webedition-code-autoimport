@@ -350,7 +350,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						'LoginDenied' => 0,
 						'LastLogin' => 0,
 						'LastAccess' => 0,
-						$_customerFieldPrefs['customer_salutation_field'] => $$f["subscribe_salutation"],
+						$_customerFieldPrefs['customer_salutation_field'] => $f["subscribe_salutation"],
 						$_customerFieldPrefs['customer_title_field'] => $f["subscribe_title"],
 						$_customerFieldPrefs['customer_firstname_field'] => $f["subscribe_firstname"],
 						$_customerFieldPrefs['customer_lastname_field'] => $f["subscribe_lastname"],
