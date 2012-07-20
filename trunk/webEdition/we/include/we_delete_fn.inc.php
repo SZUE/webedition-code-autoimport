@@ -31,34 +31,7 @@ if(!$notprotect){
 }
 
 function deleteTreeEntries($dontDeleteClassFolders = false){
-	return '
-		var obj = top.treeData;
-		var cont = new top.container();
-		for(var i=1;i<=obj.len;i++){
-			if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
-				if(obj[i].parentid != 0){
-					if(!parentChecked(obj[i].parentid)){
-						cont.add(obj[i]);
-					}
-				}else{
-					cont.add(obj[i]);
-				}
-			}
-		}
-		top.treeData = cont;
-		top.drawTree();
-
-		function parentChecked(start){
-			var obj = top.treeData;
-			for(var i=1;i<=obj.len;i++){
-				if(obj[i].id == start){
-					if(obj[i].checked==1) return true;
-					else if(obj[i].parentid != 0) parentChecked(obj[i].parentid);
-				}
-			}
-
-			return false;
-		}';
+	return weTree::deleteTreeEntries($dontDeleteClassFolders);
 }
 
 function checkDeleteEntry($id, $table){
@@ -77,7 +50,7 @@ function checkDeleteFolder($id, $table){
 	}
 
 	$DB_WE = new DB_WE();
-	$DB_WE->query("SELECT ID FROM $table WHERE ParentID=" . intval($id));
+	$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 	while($DB_WE->next_record()) {
 		if(!checkDeleteEntry($DB_WE->f("ID"), $table)){
 			return false;
@@ -89,9 +62,9 @@ function checkDeleteFolder($id, $table){
 function checkDeleteFile($id, $table, $path = ""){
 	switch($table){
 		case FILE_TABLE:
-		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -1):
+		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			return true;
-		case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -2):
+		case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
 			$arr = getTemplAndDocIDsOfTemplate($id, false, false, true);
@@ -103,7 +76,7 @@ function checkDeleteFile($id, $table, $path = ""){
 function makeAlertDelFolderNotEmpty($folders){
 	$txt = "";
 	foreach($folders as $folder){
-		$txt .= $folder . "\\n";
+		$txt .= $folder . '\n';
 	}
 	return sprintf(g_l('alert', "[folder_not_empty]"), $txt);
 }
@@ -113,10 +86,10 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
 	$DB_WE = new DB_WE();
-	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=" . intval($id), "Path", $DB_WE);
+	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), "Path", $DB_WE);
 
 	if($delR){ // recursive delete
-		$DB_WE->query("SELECT ID FROM $table WHERE ParentID=" . intval($id));
+		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 		while($DB_WE->next_record()) {
 			deleteEntry($DB_WE->f("ID"), $table);
 		}
@@ -124,15 +97,15 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 
 	// do not delete class folder if class still exists!!!
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
-		if(f("SELECT IsClassFolder FROM $table WHERE ID=$id", "IsClassFolder", $DB_WE)){ // it is a class folder
-			if(f("SELECT Path FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "Path", $DB_WE)){ // class still exists
+		if(f('SELECT IsClassFolder FROM ' . $table . ' WHERE ID=' . intval($id), "IsClassFolder", $DB_WE)){ // it is a class folder
+			if(f('SELECT Path FROM ' . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "Path", $DB_WE)){ // class still exists
 				return;
 			}
 		}
 	}
 	// Fast Fix for deleting entries from tblLangLink: #5840
 	if($DB_WE->query("DELETE FROM $table WHERE ID=" . intval($id))){
-		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="'.$table.'" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
+		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $table . '" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
 	}
 
 	deleteContentFromDB($id, $table);
@@ -169,7 +142,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 
 	$isTemplateFile = ($table == TEMPLATES_TABLE);
 
-	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=" . intval($id), "Path", $DB_WE);
+	$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), "Path", $DB_WE);
 	deleteContentFromDB($id, $table);
 
 	$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
@@ -180,15 +153,16 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 
 	if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
 		we_util_File::deleteLocalFile($file);
-	}
-	if($table == FILE_TABLE){
-		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
-		we_util_File::deleteLocalFile($file);
+
+		if($table == FILE_TABLE){
+			$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
+			we_util_File::deleteLocalFile($file);
+		}
 	}
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
 	if($table == FILE_TABLE){
-		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=" . intval($id));
+		$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' SET BDID=0 WHERE BDID=' . intval($id));
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($id));
 
 		if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
@@ -244,7 +218,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 				'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 		}
 	}
-	$DB_WE->query("DELETE FROM $table WHERE ID=$id");
+	$DB_WE->query('DELETE FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id));
 	if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE){
 		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "ID", $DB_WE);
 		if($ofID){
@@ -253,50 +227,16 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		$DB_WE->query("DROP TABLE IF EXISTS " . OBJECT_X_TABLE . $id);
 	}
 	if($contentType == "image/*"){
-		deleteThumbsByImageID($id);
+		we_thumbnail::deleteByImageID($id);
 	}
 }
 
 function deleteThumbsByImageID($id){
-	$thumbsdir = we_thumbnail::getThumbDirectory(true);
-	$dir_obj = @dir($thumbsdir);
-	$filestodelete = array();
-	if($dir_obj){
-		while(false !== ($entry = $dir_obj->read())) {
-			if($entry != '.' && $entry != '..' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
-				array_push($filestodelete, $thumbsdir . "/" . $entry);
-			}
-		}
-	}
-	$previewDir = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/preview";
-	$dir_obj = @dir($previewDir);
-	if($dir_obj){
-		while(false !== ($entry = $dir_obj->read())) {
-			if($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr(
-					$entry, 0, strlen($id) + 1) == $id . ".")){
-				$filestodelete[] = $previewDir . "/" . $entry;
-			}
-		}
-	}
-	foreach($filestodelete as $p){
-		we_util_File::deleteLocalFile($p);
-	}
+	we_thumbnail::deleteByImageID($id);
 }
 
 function deleteThumbsByThumbID($id){
-	$thumbsdir = we_thumbnail::getThumbDirectory(true);
-	$dir_obj = @dir($thumbsdir);
-	$filestodelete = array();
-	if($dir_obj){
-		while(false !== ($entry = $dir_obj->read())) {
-			if($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . $id . '_(.+)|', $entry)){
-				$filestodelete[] = $thumbsdir . "/" . $entry;
-			}
-		}
-		foreach($filestodelete as $p){
-			we_util_File::deleteLocalFile($p);
-		}
-	}
+	we_thumbnail::deleteByThumbID($id);
 }
 
 function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE){

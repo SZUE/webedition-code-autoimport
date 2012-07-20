@@ -330,7 +330,7 @@ class we_thumbnail{
 			we_util_File::createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -602,6 +602,47 @@ class we_thumbnail{
 	function _getBinaryData(){
 		$_p = $_SERVER['DOCUMENT_ROOT'] . $this->imagePath;
 		$this->imageData = weFile::load($_p);
+	}
+
+	static function deleteByThumbID($id){
+		$thumbsdir = self::getThumbDirectory(true);
+		$dir_obj = @dir($thumbsdir);
+		$filestodelete = array();
+		if($dir_obj){
+			while(false !== ($entry = $dir_obj->read())) {
+				if($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . intval($id) . '_(.+)|', $entry)){
+					$filestodelete[] = $thumbsdir . "/" . $entry;
+				}
+			}
+			foreach($filestodelete as $p){
+				we_util_File::deleteLocalFile($p);
+			}
+		}
+	}
+
+	static function deleteByImageID($id){
+		$thumbsdir = self::getThumbDirectory(true);
+		$dir_obj = @dir($thumbsdir);
+		$filestodelete = array();
+		if($dir_obj){
+			while(false !== ($entry = $dir_obj->read())) {
+				if($entry != '.' && $entry != '..' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
+					$filestodelete[] = $thumbsdir . '/' . $entry;
+				}
+			}
+		}
+		$previewDir = WE_THUMB_PREVIEW_PATH;
+		$dir_obj = @dir($previewDir);
+		if($dir_obj){
+			while(false !== ($entry = $dir_obj->read())) {
+				if($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . ".")){
+					$filestodelete[] = $previewDir . '/' . $entry;
+				}
+			}
+		}
+		foreach($filestodelete as $p){
+			we_util_File::deleteLocalFile($p);
+		}
 	}
 
 }
