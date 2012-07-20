@@ -243,7 +243,7 @@ class we_folder extends we_root{
 		if($objFolder){
 			$this->ClassName = 'we_class_folder';
 		}
-		$update = ($this->OldPath != $this->Path);
+		$update = ($this->OldPath != '' && $this->OldPath != $this->Path);
 		if($update && !$objFolder){
 			if(file_exists($this->OldPath) && file_exists($this->Path)){
 				t_e('Both paths exists!', $this->OldPath, $this->Path);
