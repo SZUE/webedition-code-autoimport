@@ -93,7 +93,7 @@ function we_tag_href($attribs){
 				$href = $intPath;
 				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 				$path_parts = pathinfo($href);
-				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			} else{
@@ -180,7 +180,7 @@ function we_tag_href($attribs){
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : ""; // we need include_path without hidden dirindex
 			$path_parts = pathinfo($href);
-			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 			}
 

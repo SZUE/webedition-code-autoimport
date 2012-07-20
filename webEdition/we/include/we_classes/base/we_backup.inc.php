@@ -1029,7 +1029,7 @@ class we_backup{
 	 */
 	function getDiff(&$q, $tab, &$fupdate){
 		$fnames = array();
-		$fields = "";
+		$fields = '';
 		$parts = array();
 		$sub_parts = array();
 		$len = strlen($q);
@@ -1039,10 +1039,11 @@ class we_backup{
 			if($q[$i] == "("){
 				$run = 1;
 				$br++;
-			} else if($q[$i] == ")")
+			} else if($q[$i] == ")"){
 				$br--;
-			else if($br > 0)
+			} else if($br > 0){
 				$fields.=$q[$i];
+			}
 			if($br == 0 && $run)
 				break;
 		}
@@ -1170,11 +1171,7 @@ class we_backup{
 				$fixTable = array_merge($fixTable, $this->tables[$hok]);
 		}
 
-		if(in_array($table, $fixTable)){
-			return true;
-		} else{
-			return false;
-		}
+		return (in_array($table, $fixTable));
 	}
 
 	/**
@@ -1185,10 +1182,7 @@ class we_backup{
 	 */
 	function isInsertQuery($q){
 		$m = array();
-		if(preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m))
-			return $m[1];
-		else
-			return "";
+		return (preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m) ? $m[1] : '');
 	}
 
 	/**
@@ -1197,7 +1191,7 @@ class we_backup{
 	 * Description: This function sets a value for an error.
 	 */
 	function setError($errtxt){
-		array_push($this->errors, $errtxt);
+		$this->errors[] = $errtxt;
 	}
 
 	/**
@@ -1206,7 +1200,7 @@ class we_backup{
 	 * Description: This function sets a value for a warning.
 	 */
 	function setWarning($wartxt){
-		array_push($this->warnings, $wartxt);
+		$this->warnings[] = $wartxt;
 	}
 
 	/**
@@ -1237,7 +1231,7 @@ class we_backup{
 		foreach($array1 as $k => $v){
 			if(!is_array($v)){
 				if(in_array($v, $array2))
-					array_push($ret, $v);
+					$ret[] = $v;
 			}
 		}
 		return $ret;
@@ -1253,7 +1247,7 @@ class we_backup{
 		foreach($array1 as $k => $v){
 			if(!is_array($v) && !in_array($v, $ret)){
 				if(!in_array($v, $array2))
-					array_push($ret, $v);
+					$ret[] = $v;
 			}
 		}
 		return $ret;
@@ -1265,8 +1259,6 @@ class we_backup{
 	 * Description:
 	 */
 	function saveState($of = ""){
-
-
 		// Initialize variable
 		$save = '';
 
