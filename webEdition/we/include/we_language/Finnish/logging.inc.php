@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_logging=array(
-	''=>'No entry found',
 	'activated'=>'aktivoitu',
 	'all'=>'näytä kaikki',
 	'anzahlVersions'=>'Versiomäärä',
@@ -17,6 +16,7 @@ $l_logging=array(
 	'logEntry'=>'Logimerkintä',
 	'name'=>'Nimi',
 	'next'=>'seuraava',
+	'notfound'=>'No entry found',
 	'of'=>'',
 	'path'=>'Polku',
 	'prefsVersionChanged'=>'Version asetukset tallennettu',

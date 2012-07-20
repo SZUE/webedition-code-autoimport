@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_logging=array(
-	''=>'No entry found',
 	'activated'=>'activated',
 	'all'=>'show all',
 	'anzahlVersions'=>'Number of versions',
@@ -17,6 +16,7 @@ $l_logging=array(
 	'logEntry'=>'Log-Entry',
 	'name'=>'Name',
 	'next'=>'next',
+	'notfound'=>'No entry found',
 	'of'=>'of',
 	'path'=>'Path',
 	'prefsVersionChanged'=>'Version preferences changed',
