@@ -320,7 +320,7 @@ class we_listview_object extends listviewBase{
 			}
 		}
 		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' as we_wedoc_Published,';
-		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," .  OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
+		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){
@@ -413,13 +413,13 @@ class we_listview_object extends listviewBase{
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record['OF_Url'];
 					} else{
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record['OF_Url'];
 					}
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 					} else{
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];

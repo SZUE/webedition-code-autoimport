@@ -37,11 +37,11 @@ $suppresserrorcode = (defined('SUPPRESS404CODE') && SUPPRESS404CODE);
 $hiddendirindex = false;
 $dirindexarray = array();
 if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))){
-	$dirindexarray = explode(',', NAVIGATION_DIRECTORYINDEX_NAMES);
+	$dirindexarray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 	$keys = array_keys($dirindexarray);
-	foreach($keys as $key){
-		$dirindexarray[$key] = trim($dirindexarray[$key]);
-	}
+	/* foreach($keys as $key){
+	  $dirindexarray[$key] = trim($dirindexarray[$key]);
+	  } */
 	$hiddendirindex = true;
 }
 

@@ -607,14 +607,15 @@ function we_makeHiddenFields($filter = ''){
 function we_make_attribs($attribs, $doNotUse = ''){
 	$attr = '';
 	$fil = explode(',', $doNotUse);
-	//array_push($fil,'xml');
-	array_push($fil, 'user');
-	array_push($fil, 'removefirstparagraph');
+	$fil[] = 'user';
+	$fil[] = 'removefirstparagraph';
 	if(is_array($attribs)){
 		reset($attribs);
-		while(list($k, $v) = each($attribs))
-			if(!in_array($k, $fil))
-				$attr .= "$k=\"$v\" ";
+		while(list($k, $v) = each($attribs)) {
+			if(!in_array($k, $fil)){
+				$attr .= $k . '="' . $v . '" ';
+			}
+		}
 		$attr = trim($attr);
 	}
 	return $attr;
@@ -1238,7 +1239,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 
 		if(!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
-			if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 			}
 		}
@@ -1259,7 +1260,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 		if($objectseourls && $objecturl != ''){
 
-			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 			} else{
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr;
@@ -1314,7 +1315,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 
 			if($_path){
 				$path_parts = pathinfo($_path);
-				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);

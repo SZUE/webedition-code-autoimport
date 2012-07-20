@@ -137,7 +137,7 @@ class we_langlink_listview extends listviewBase{
 				$this->foundlinks[$this->ownlanguage] = $dt;
 			}
 
-			// sort array 
+			// sort array
 			if($this->order == "random()"){
 				shuffle($this->foundlinks);
 			} else if($this->order == "Locale"){
@@ -157,12 +157,12 @@ class we_langlink_listview extends listviewBase{
 				}
 				$sortFn = 'ksort';
 				if($this->desc){
-					$sortFn = 'krsort';	
+					$sortFn = 'krsort';
 				}
 				$sortFn($this->foundlinks);
 				$this->foundlinks = array_merge($orderedLinks, $this->foundlinks);
 			}
-			
+
 			// to go on with $this->foundlinks it must not be associative!
 			$tmpFoundlinks = array();
 			foreach($this->foundlinks as $foundlink){
@@ -230,13 +230,13 @@ class we_langlink_listview extends listviewBase{
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
 
 
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->foundlinks[$count]['Url'];
 					} else{
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->foundlinks[$count]['Url'];
 					}
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->Record["WE_ID"];
 					} else{
 						$this->Record["WE_PATH"] = $_SERVER['SCRIPT_NAME'] . "?$paramName=" . $this->Record["WE_ID"];

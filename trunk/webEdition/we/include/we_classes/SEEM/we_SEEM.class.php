@@ -684,7 +684,7 @@ class we_SEEM{
 		$db = new DB_WE();
 		$docPath = $db->escape($docPath);
 		if(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath) - 1] == '/'){
-			$indexFileNames = explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES));
+			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
 		$id = f('SELECT ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
