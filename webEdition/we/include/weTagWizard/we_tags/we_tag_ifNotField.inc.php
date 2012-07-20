@@ -3,7 +3,7 @@
 
 $this->NeedsEndTag = true;
 $this->Groups[] = 'if_tags';
-$this->Module = 'object';
+//$this->Module = 'object';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
