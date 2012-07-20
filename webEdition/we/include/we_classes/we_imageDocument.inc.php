@@ -96,15 +96,14 @@ class we_imageDocument extends we_binaryDocument{
 		if(parent::we_save($resave)){
 			$thumbs = $this->getThumbs();
 			if($docChanged){
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
-				deleteThumbsByImageID($this->ID);
+				we_thumbnail::deleteByImageID($this->ID);
 			}
 			if(count($thumbs)){
 				foreach($thumbs as $thumbID){
 					$thumbObj = new we_thumbnail();
 					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
 					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
-						t_e('Error creating thumbnails');
+						t_e('Error creating thumbnail for file', $this->Filename);
 					}
 				}
 			}
@@ -872,7 +871,7 @@ class we_imageDocument extends we_binaryDocument{
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
 		$RollOverID = $this->getElement('RollOverID') ? $this->getElement('RollOverID') : '';
 		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
-		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = '.intval($RollOverID), 'Path', $this->DB_WE);
+		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), 'Path', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 
@@ -1017,12 +1016,12 @@ class we_imageDocument extends we_binaryDocument{
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if(isset($_FILES['we_ui_'.$formname]) && is_array($_FILES['we_ui_'.$formname])){
+		if(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname])){
 
 			$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
-			if(isset($_FILES['we_ui_'.$formname]['name']) && is_array($_FILES['we_ui_'.$formname]['name'])){
-				foreach($_FILES['we_ui_'.$formname]['name'] as $imgName => $filename){
+			if(isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name'])){
+				foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
 
 					$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName] : false;
 
@@ -1043,7 +1042,7 @@ class we_imageDocument extends we_binaryDocument{
 								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . md5(
 										uniqid(rand(), 1));
 								move_uploaded_file(
-									$_FILES['we_ui_'.$formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
+									$_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
@@ -1053,7 +1052,7 @@ class we_imageDocument extends we_binaryDocument{
 								}
 
 								$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' .
-									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_'.$formname]['name'][$imgName]);
+									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){
 									$_SESSION[$_imgDataId]['id'] = $imgId;
@@ -1082,8 +1081,8 @@ class we_imageDocument extends we_binaryDocument{
 
 								$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
 								$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
-								$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_'.$formname]['type'][$imgName];
-								$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_'.$formname]['size'][$imgName];
+								$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
+								$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
 							}
 						}
 					}

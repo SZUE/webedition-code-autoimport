@@ -2438,20 +2438,14 @@ class searchtoolView extends weToolView{
 
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
-						if(file_exists(
-								$_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
-									$_result[$f]["Extension"]))){
-							$thumbpath = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
-									$_result[$f]["Extension"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]))){
+							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]);
 							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else{
 							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
-						if(file_exists(
-								$_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
-									$_result[$f]["Extension"]))){
-							$thumbpathPopup = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
-									$_result[$f]["Extension"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]))){
+							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]);
 							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else{
 							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
