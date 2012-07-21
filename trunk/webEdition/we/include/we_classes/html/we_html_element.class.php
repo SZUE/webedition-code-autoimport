@@ -400,4 +400,11 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
+	static function htmlIFrame($name, $src, $style){
+		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div')
+				, we_baseElement::getHtmlCode(
+					new we_baseElement('iframe', true, array('name' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => 'border:0px;width:100%;height:100%;overflow: hidden;'))
+				));
+	}
+
 }
