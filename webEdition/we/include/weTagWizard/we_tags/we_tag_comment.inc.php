@@ -6,4 +6,4 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('xml', false, ''), new weTagDataOption('html', false, ''), new weTagDataOption('js', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('xml', false, ''), new weTagDataOption('html', false, ''), new weTagDataOption('js', false, ''), new weTagDataOption('php', false, '')), false,false, '');
