@@ -257,6 +257,7 @@ class we_search_listview extends listviewBase{
 					}
 				}
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
+				$this->DB_WE->Record["we_WE_URL"] = $$objectdaten['Url'];
 			} else{
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
