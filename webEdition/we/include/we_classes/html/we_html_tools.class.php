@@ -356,22 +356,17 @@ HTS;
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$anz = sizeof($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
-		<tr>
-		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(
-				8, 21) . '</td>';
+		<tr><td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
 		// HEADLINE
-		for($f = 0; $f < $anz; $f++){
-			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $headline[$f]["dat"] . '</td>';
+		foreach($headline as $h){
+			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $h["dat"] . '</td>';
 		}
-		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>
-				</tr>';
+		$out .= '<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_or2.gif);">' . we_html_tools::getPixel(8, 21) . '</td></tr>';
 
 		//CONTENT
-		$zn1 = sizeof($content);
-		for($i = 0; $i < $zn1; $i++){
-			$out .= '<tr>' . self::htmlDialogBorder4Row($content[$i], $class, $bgColor) . '</tr>';
+		foreach($content as $c){
+			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
 
 		$out .= '</table>';
@@ -385,9 +380,7 @@ HTS;
 				"colspan" => "2"
 				), $out);
 			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
-			$_table->setCol(2, 0, array(
-				"align" => "right"
-				), $buttons);
+			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();
 		} else{
 			return $out;
@@ -400,7 +393,7 @@ HTS;
 		foreach($vals as $v => $t){
 			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
 		}
-		return "$out</select>\n";
+		return "$out</select>";
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
@@ -862,10 +855,9 @@ HTS;
 		$js = '';
 
 		if($clip > 0){
-			$unique = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+			$unique = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 			$smalltext = substr($text, 0, $clip) . ' ... ';
-			$js = we_html_element::jsElement(
-					'
+			$js = we_html_element::jsElement('
 		var state_' . $unique . '=0;
 			function clip_' . $unique . '(){
 					var text = document.getElementById("td_' . $unique . '");

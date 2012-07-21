@@ -90,22 +90,19 @@ class we_image_edit{
 		return $_output_formats;
 	}
 
-	function detect_image_type($filename = "", &$imagedata){
-
+	static function detect_image_type($filename, $imagedata = ''){
 		// Check if we need to read the beginning of the image
-		if(file_exists($filename)){
-			$imagedata = weFile::loadPart($filename, 0, 3);
-		}
+		$imagedata = (file_exists($filename) ? weFile::loadPart($filename, 0, 3) : substr($imagedata, 0, 3));
 
-		switch(substr($imagedata, 0, 3)){
-			case "GIF":
-				return "gif";
+		switch($imagedata){
+			case 'GIF':
+				return 'gif';
 			case "\xFF\xD8\xFF":
-				return "jpg";
-			case "\x89" . "PN":
-				return "png";
+				return 'jpg';
+			case "\x89" . 'PN':
+				return 'png';
 			default:
-				return "";
+				return '';
 		}
 	}
 
@@ -214,24 +211,17 @@ class we_image_edit{
 		// Serious bugs in the non-bundled versions of GD library cause PHP to segfault when calling ImageCreateFromString() - avoid if possible
 		$_gdimg = false;
 
-		switch(we_image_edit::detect_image_type("", $imagedata)){
-			case "gif":
+		switch(we_image_edit::detect_image_type('', $imagedata)){
+			case 'gif':
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
-
 				break;
-
-			case "jpg":
+			case 'jpg':
 				$_image_create_from_string_replacement_function = "ImageCreateFromJPEG";
-
 				break;
-
-			case "png":
+			case 'png':
 				$_image_create_from_string_replacement_function = "ImageCreateFromPNG";
-
 				break;
-
 			default:
-
 				break;
 		}
 
@@ -250,8 +240,7 @@ class we_image_edit{
 	}
 
 	function ImageCreateFromFileReplacement($filename){
-		$foo = "";
-		switch(we_image_edit::detect_image_type($filename, $foo)){
+		switch(we_image_edit::detect_image_type($filename)){
 			case "gif":
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
 
@@ -358,8 +347,7 @@ class we_image_edit{
 	}
 
 	function getimagesize($filename){
-		$foo = "";
-		$type = we_image_edit::detect_image_type($filename, $foo);
+		$type = we_image_edit::detect_image_type($filename);
 		if(we_image_edit::is_imagetype_supported($type)){
 			$_gdimg = we_image_edit::ImageCreateFromFileReplacement($filename);
 			$ct = 0;
