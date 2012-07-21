@@ -103,7 +103,7 @@ class we_imageDocument extends we_binaryDocument{
 					$thumbObj = new we_thumbnail();
 					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
 					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
-						t_e('Error creating thumbnail for file', $this->Filename);
+						t_e('Error creating thumbnail for file', $this->Filename.$this->Extension);
 					}
 				}
 			}
