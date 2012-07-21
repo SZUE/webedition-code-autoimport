@@ -97,7 +97,7 @@ class we_image_edit{
 			$imagedata = weFile::loadPart($filename, 0, 3);
 		}
 
-		switch($imagedata){
+		switch(substr($imagedata, 0, 3)){
 			case "GIF":
 				return "gif";
 			case "\xFF\xD8\xFF":
@@ -575,7 +575,6 @@ class we_image_edit{
 
 			return isset($_gdimg) ? array($_gdimg, $_outsize["width"], $_outsize["height"]) : array(false, -1, -1);
 		} else{
-			t_e('image format not supported', $output_format, we_image_edit::supported_image_types());
 			return array(false, -1, -1);
 		}
 	}
