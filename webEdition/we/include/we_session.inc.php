@@ -120,7 +120,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 					$a = makeArrayFromCSV($DB_WE->f("workSpaceNwl"));
 					foreach($a as $k => $v){
 						if(!in_array($v, $nl)){
-							array_push($nl, $v);
+							$nl[]= $v;
 						}
 					}
 
