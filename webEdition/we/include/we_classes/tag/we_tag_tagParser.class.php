@@ -111,7 +111,7 @@ class we_tag_tagParser{
 		//	now we need all between these tags - beware of selfclosing tags
 		for($i = 0; $i < sizeof($_tags);){
 
-			if(preg_match("|<we:(.*)/(.*)>|i", $_tags[$i])){ //  selfclosing xhtml-we:tag
+			if(preg_match("|<we:(.*)/>|i", $_tags[$i])){ //  selfclosing xhtml-we:tag
 				$_start = strpos($code, $_tags[$i]);
 				$_starttag = $_tags[$i];
 
@@ -126,11 +126,11 @@ class we_tag_tagParser{
 				$_endtag = isset($_tags[$i]) ? $_tags[$i] : '';
 				$i++;
 			}
-			array_push($_rettags, array(
+			$_rettags[] = array(
 				array(
 					$_starttag, $_endtag
 				), $_endtag ? substr($code, $_start, $_end) : ''
-			));
+			);
 			if($_endtag){
 				// on behalf of constructions like:
 				// <we:ifTemplate><we:title prefix="pref1>title</we:title><we:else/><we:title prefix="pref2>title</we:title><we:ifTemplate>
@@ -352,12 +352,12 @@ class we_tag_tagParser{
 					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
 			}
 		}
-		
-		if ( (defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ) {
+
+		if((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)){
 			$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
 			//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
-		} else {
-			$attribs ='array(' . rtrim($attribs, ',') . ')';
+		} else{
+			$attribs = 'array(' . rtrim($attribs, ',') . ')';
 		}
 		$parseFn = 'we_parse_tag_' . $tagname;
 		if(function_exists($parseFn)){
