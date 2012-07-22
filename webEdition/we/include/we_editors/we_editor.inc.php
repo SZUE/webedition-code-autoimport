@@ -378,7 +378,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 				exit(' ContentType Missing !!! ');
 			}
 			$saveTemplate = true;
-			if(strpos($we_doc->ParentPath, "..") !== false || $we_doc->ParentPath{0} != "/"){
+			if($we_doc->i_pathNotValid()){
 				$we_responseText = sprintf(g_l('weClass', "[notValidFolder]"), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else if($we_doc->i_filenameEmpty()){
@@ -461,8 +461,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 						if($we_doc->we_save()){
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');";
-							$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");" . $we_doc->getUpdateTreeScript() . ";"; // save/ rename a document
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
+								"_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");" . $we_doc->getUpdateTreeScript() . ";"; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if($_REQUEST['we_cmd'][4]){
@@ -474,7 +474,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 							}
 						} else{
 							// we got an error while saving the template
-							$we_JavaScript = "";
+							$we_JavaScript = '';
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 						}
@@ -517,7 +517,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 
 						if($we_doc->we_save()){
 							$wasSaved = true;
-							if($we_doc->ContentType == "object"){
+							if($we_doc->ContentType == 'object'){
 								//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
 								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}";
 							}
