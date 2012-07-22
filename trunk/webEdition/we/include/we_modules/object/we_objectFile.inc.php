@@ -2219,12 +2219,12 @@ class we_objectFile extends we_document{
 		}
 	}
 
+	function i_pathNotValid(){
+		return parent::i_pathNotValid()||($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0);
+	}
+
 	function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
-
-		if($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0){
-			return false;
-		}
 
 		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$dv = $foo['DefaultValues'] ? unserialize($foo["DefaultValues"]) : array();
@@ -2644,11 +2644,7 @@ class we_objectFile extends we_document{
 				if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 					if($regs[1] != "OF"){
 						$realname = $regs[2];
-						if($regs[1] == "object"){
-							$name = "we_object_" . $realname;
-						} else{
-							$name = $realname;
-						}
+						$name = ($regs[1] == "object" ? "we_object_" : '') . $realname;
 //						if($regs[1] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
@@ -2682,7 +2678,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Text == "") ? true : false;
+		return ($this->Text == '');
 	}
 
 	function i_filenameNotValid(){
@@ -2961,10 +2957,7 @@ class we_objectFile extends we_document{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE')){
-			return false;
-		}
-		if($this->TableID == 0){
+		if(!defined('SHOP_TABLE') || $this->TableID == 0){
 			return false;
 		}
 		$object = new we_object();
@@ -2985,7 +2978,7 @@ class we_objectFile extends we_document{
 		}
 
 // Fix for added field OF_IsSearchable
-		if($this->IsSearchable <> 1 && $this->IsSearchable <> 0){
+		if($this->IsSearchable != 1 && $this->IsSearchable != 0){
 			$this->IsSearchable = true;
 		}
 	}
