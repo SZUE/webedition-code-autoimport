@@ -53,14 +53,10 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 <?php
 if($_SESSION["user"]["ID"]){
-	$DB_WE->query("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . $_SESSION["user"]["ID"]);
-	if($DB_WE->next_record())
-		print "var cgroup=" . $DB_WE->f("ParentID") . ";\n";
-	else
-		print "var cgroup=0;\n";
+	print "var cgroup=" . intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $DB_WE)) . ';';
+} else{
+	print "var cgroup=0;";
 }
-else
-	print "var cgroup=0;\n";
 if(isset($_SESSION["user_session_data"]))
 	unset($_SESSION["user_session_data"]);
 ?>
