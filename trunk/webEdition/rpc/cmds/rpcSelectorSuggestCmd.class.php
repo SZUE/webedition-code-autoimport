@@ -27,8 +27,9 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 
-		if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2]))
+		if(!isset($_REQUEST['we_cmd'][1]) || !isset($_REQUEST['we_cmd'][2])){
 			exit();
+		}
 
 		$selectorSuggest = new weSelectorQuery();
 		$contentTypes = isset($_REQUEST['we_cmd'][3]) ? explode(",", $_REQUEST['we_cmd'][3]) : null;

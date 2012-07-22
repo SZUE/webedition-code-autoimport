@@ -49,7 +49,7 @@ function checkDeleteFolder($id, $table){
 		return true;
 	}
 
-	$DB_WE = new DB_WE();
+	$DB_WE = $GLOBALS['DB_WE'];
 	$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 	while($DB_WE->next_record()) {
 		if(!checkDeleteEntry($DB_WE->f("ID"), $table)){
@@ -81,7 +81,7 @@ function makeAlertDelFolderNotEmpty($folders){
 	return sprintf(g_l('alert', "[folder_not_empty]"), $txt);
 }
 
-function deleteFolder($id, $table, $path = "", $delR = true){
+function deleteFolder($id, $table, $path = '', $delR = true){
 
 	$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
@@ -302,12 +302,13 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0){
 	}
 	if($id){
 		$row = getHash("SELECT Path,IsFolder,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id), $DB_WE);
-		$version = new weVersions();
+		$ct = weVersions::getContentTypesVersioning();
 		//no need to init doc, if no version is needed or hook is executed
-		if(in_array($row['ContentType'], $version->contentTypes) || $skipHook == 0){
+		if(in_array($row['ContentType'], $ct) || $skipHook == 0){
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
 		}
-		if(in_array($row['ContentType'], $version->contentTypes)){
+		if(in_array($row['ContentType'], $ct)){
+			$version = new weVersions();
 			$version_exists = $version->getLastEntry($id, $table);
 			if(empty($version_exists)){
 				$version->saveVersion($object);
