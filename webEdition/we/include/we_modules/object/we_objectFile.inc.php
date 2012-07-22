@@ -2226,6 +2226,10 @@ class we_objectFile extends we_document{
 	function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 
+		if($this->i_pathNotValid()){
+			return false;
+		}
+
 		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$dv = $foo['DefaultValues'] ? unserialize($foo["DefaultValues"]) : array();
 
