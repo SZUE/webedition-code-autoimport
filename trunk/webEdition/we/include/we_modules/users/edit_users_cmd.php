@@ -26,9 +26,76 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
 we_html_tools::protect();
 
-include_once(WE_USERS_MODULE_PATH . "edit_users_bcmd.php");
 if(isset($_REQUEST["ucmd"])){
 	switch($_REQUEST["ucmd"]){
+		case "new_group":
+			if(!we_hasPerm("NEW_GROUP")){
+				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+				break;
+			}
+
+			$user_object = new we_user();
+
+			if(isset($_REQUEST["cgroup"]) && $_REQUEST["cgroup"]){
+				$user_group = new we_user();
+				if($user_group->initFromDB($_REQUEST["cgroup"])){
+					$user_object->ParentID = $_REQUEST["cgroup"];
+				}
+			}
+
+			$user_object->initType(1);
+
+			$_SESSION["user_session_data"] = $user_object->getState();
+
+			print we_html_element::jsElement('
+                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
+                ');
+			break;
+
+		case "new_alias":
+			if(!we_hasPerm("NEW_USER")){
+				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+				break;
+			}
+
+			$user_object = new we_user();
+
+			if(isset($_REQUEST["cgroup"]) && $_REQUEST["cgroup"]){
+				$user_group = new we_user();
+				if($user_group->initFromDB($_REQUEST["cgroup"])){
+					$user_object->ParentID = $_REQUEST["cgroup"];
+				}
+			}
+
+			$user_object->initType(2);
+
+			$_SESSION["user_session_data"] = $user_object->getState();
+			print we_html_element::jsElement('
+                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
+                ');
+			break;
+
+		case "search":
+			print we_html_element::jsElement('
+                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . $_REQUEST["kwd"] . '";
+                ');
+			break;
+
+		case "display_alias":
+			if($uid && $ctype && $ctable){
+				print we_html_element::jsElement('
+                        top.content.usetHot();
+                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+                    ');
+			}
+			break;
+
 		case "new_user":
 			if(!we_hasPerm("NEW_USER")){
 				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
