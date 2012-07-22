@@ -29,7 +29,7 @@ class rndConditionPass{
 	var $caps = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var $small = 'abcdefghjkmnpqrstuvwxyz';
 	var $nums = '0123456789';
-	var $specs = '+-*&$#@!'; // This Can be removed if not Needed
+	var $specs = '+-*$#@!'; // This Can be removed if not Needed
 	var $condition;
 	var $minLen;
 
