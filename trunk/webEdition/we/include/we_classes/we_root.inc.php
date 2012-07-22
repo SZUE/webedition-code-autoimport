@@ -1032,7 +1032,11 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Filename == '') ? true : false;
+		return ($this->Filename == '');
+	}
+
+	function i_pathNotValid(){
+		return strpos($this->ParentPath, '..') !== false || $this->ParentPath{0} != '/';
 	}
 
 	function i_filenameNotValid(){
