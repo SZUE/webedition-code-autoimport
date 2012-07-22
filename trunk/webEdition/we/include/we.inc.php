@@ -104,7 +104,7 @@ if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUE
 }
 if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
 //	session_name(SESSION_NAME);
-@session_start();
+	@session_start();
 }
 if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
 	if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])){
