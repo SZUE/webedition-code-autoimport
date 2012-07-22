@@ -656,7 +656,7 @@ function showEditFooterForSEEMMode(){
 									document.writeln("<!--");
 								}') .
 				we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false))
-				.we_html_element::jsElement('
+				. we_html_element::jsElement('
 								if(!top.opener || !top.opener.win){
 									document.writeln(\'-\' + \'-\' + \'>\');
 								}');
@@ -788,7 +788,9 @@ function showEditFooterForSEEMMode(){
 		}
 	}
 
-	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
+	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew.
+		"_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');"
+	);
 	?>
 </body>
 </html>

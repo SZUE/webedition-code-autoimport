@@ -25,11 +25,15 @@
 class we_main_headermenu{
 
 	static function pCSS(){
-		print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+		echo self::css();
+	}
+
+	static function css(){
+		$ret = we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
 		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::CHROME:
 			case we_base_browserDetect::SAFARI:
-				print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
+				$ret.=we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_safari.css');
 				break;
 			case we_base_browserDetect::FF:
 				//current FF (13) don't need this anymore -> complains about its own attributes
@@ -37,13 +41,14 @@ class we_main_headermenu{
 				break;
 		}
 		if(we_base_browserDetect::inst()->isMAC()){
-			print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_mac.css');
+			$ret.=we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_mac.css');
 		}
 		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
-			print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js');
+			$ret.=we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js');
 		} else{
-		print we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
+			$ret.=we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/clickMenu.js');
 		}
+		return $ret;
 	}
 
 	static function pJS(){

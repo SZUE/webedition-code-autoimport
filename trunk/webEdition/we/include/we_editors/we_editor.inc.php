@@ -461,8 +461,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 						if($we_doc->we_save()){
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
-							$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . ";\n"; // save/ rename a document
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');";
+							$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");" . $we_doc->getUpdateTreeScript() . ";"; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if($_REQUEST['we_cmd'][4]){
@@ -587,9 +587,9 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 								if($we_doc->ContentType == "folder"){
 									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 								}
-								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();\n";
+								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();";
 							}
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
 
 							if(!defined("SCHEDULE_TABLE")){
@@ -613,7 +613,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 						if(isset($we_doc->NavigationItems)){
 							$we_doc->NavigationItems = "";
 						}
-						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
+						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 						//	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION["we_mode"]){
 							case "seem":
