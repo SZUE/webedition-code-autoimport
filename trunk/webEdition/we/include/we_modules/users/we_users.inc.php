@@ -1968,9 +1968,9 @@ class we_user{
 			}
 		}
 		global $_languages;
-		
 
-		 
+
+
 		if(sizeof($_language) > 0){ // Build language select box
 				$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
 				if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
@@ -1978,7 +1978,7 @@ class we_user{
 				} else{
 					$myCompLang = $GLOBALS["WE_LANGUAGE"];
 				}
-				
+
 				foreach($_language as $key => $value){
 					$_languages->addOption($key, $value);
 
@@ -1989,7 +1989,7 @@ class we_user{
 						// do nothing
 					}
 				}
-		
+
 
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1));
@@ -2523,11 +2523,6 @@ class we_user{
 	}
 
 	function formHeader($tab = 0){
-		$big = false;
-		if(file_exists(WE_USERS_MODULE_PATH . "edit_users_bcmd.php")){
-			$big = true;
-		}
-
 		$we_tabs = new we_tabs();
 
 		if($this->Type == 2){
