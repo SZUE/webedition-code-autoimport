@@ -229,18 +229,16 @@ class we_objectFile extends we_document{
 	function we_rewrite(){
 		$this->setLanguage();
 		$this->setUrl();
-		if(!$this->DB_WE->query('UPDATE ' . $this->Table . ' SET Url="' . $this->Url . '" WHERE ID=' . (int) $this->ID))
+		if(!$this->DB_WE->query('UPDATE ' . $this->Table . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) ||
+			!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
 			return false;
-		if(!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Url="' . $this->Url . '" WHERE OF_ID=' . (int) $this->ID))
-			return false;
+		}
 
 		return parent::we_rewrite();
 	}
 
 	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
-		if(!$db){
-			$db = new DB_WE();
-		}
+		$db = ($db ? $db : new DB_WE());
 		$rootId = $classId;
 		$cnt = 1;
 		$all = array();
@@ -375,16 +373,17 @@ class we_objectFile extends we_document{
 		}
 		unset($processedWs);
 
-		if($this->Workspaces)
+		if($this->Workspaces){
 			$this->Workspaces = ',' . $this->Workspaces;
-		if($this->Templates)
+		}
+		if($this->Templates){
 			$this->Templates = ',' . $this->Templates;
+		}
 	}
 
 	function setRootDirID($doit = false){
 		if($this->InWebEdition || $doit){
-			$foo = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, 'Path', $this->DB_WE);
-			$folderID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $foo . '"', 'ID', $this->DB_WE);
+			$folderID = f('SELECT of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), 'ID', $this->DB_WE);
 			$this->RootDirPath = $foo;
 			$this->rootDirID = $folderID;
 		}
@@ -550,8 +549,7 @@ class we_objectFile extends we_document{
 
 	function getPath(){
 		$ParentPath = $this->getParentPath();
-		$ParentPath .= ($ParentPath != '/') ? '/' : '';
-		return $ParentPath . $this->Text;
+		return $ParentPath . ($ParentPath != '/' ? '/' : '') . $this->Text;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -873,10 +871,9 @@ class we_objectFile extends we_document{
 
 	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
 		$db = new DB_WE();
-		$foo = getHash('SELECT Text,Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($ObjectID), $db);
+		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o,' . OBJECT_FILES_TABLE . ' of WHERE of.Path=o.Path AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
-		$classPath = isset($foo['Path']) ? $foo['Path'] : '';
-		$pid = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', 'ID', $db);
+		$pid = $foo['ID'];
 		$textname = 'we_' . $this->Name . '_txt[we_object_' . $ObjectID . '_path]';
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
@@ -924,23 +921,18 @@ class we_objectFile extends we_document{
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','" . $GLOBALS['we_transaction'] . "','object_" . $pid . "');");
 
 			$_buttons = array(
-				we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")")
+				we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','$pid','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")")
 			);
 
-			$_but = $myid ? $editObjectButton : $editObjectButtonDis;
-
-			if($_but){
+			if(($_but = $myid ? $editObjectButton : $editObjectButtonDis)){
 				$_buttons[] = $_but;
 			}
 
-			$_but = $myid ? $openCloseButton : $openCloseButtonDis;
-
-			if($_but){
+			if(($_but = $myid ? $openCloseButton : $openCloseButtonDis)){
 				$_buttons[] = $_but;
 			}
 
 			$_buttons[] = we_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value=0;document.forms['we_form'].elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','object_" . $pid . "')");
-
 
 			$button = we_button::create_button_table($_buttons, 5);
 
@@ -968,27 +960,18 @@ class we_objectFile extends we_document{
 	function getMultiObjectFieldHTML($name, $attribs, $editable = true){
 		$db = new DB_WE();
 		$table = OBJECT_FILES_TABLE;
-		$temp = unserialize($this->getElement($name, "dat"));
+		$temp = unserialize($this->getElement($name, 'dat'));
 		$objects = isset($temp['objects']) ? $temp['objects'] : array();
 		$classid = $this->DefArray['multiobject_' . $name]['class'];
 		$max = intval($this->DefArray['multiobject_' . $name]['max']);
 
-		if($max == 0){
-			$show = count($objects);
-		} elseif($max >= count($objects)){
-			$show = count($objects);
-		} else{
-			$show = $max;
-		}
+		$show = (($max == 0) || ($max >= count($objects)) ? count($objects) : $max);
 
 		if($editable){
-
-			$content = '';
-
 			$f = 1;
 
 			$text = '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["multiobject_" . $name]["required"] ? "*" : "") . '</span>' . ( isset($this->DefArray["multiobject_$name"]['editdescription']) && $this->DefArray["multiobject_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["multiobject_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr() );
-			$content .= $this->htmlFormElementTable("", $text);
+			$content = $this->htmlFormElementTable('', $text);
 
 			for($f = 0; $f < $show; $f++){
 				$myid = $objects[$f];
@@ -998,7 +981,7 @@ class we_objectFile extends we_document{
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_multiobject[' . $name . '_default' . $f . ']';
 
-				$path = $this->getElement("we_object_" . $name . "_path");
+				$path = $this->getElement('we_object_' . $name . '_path');
 				$path = $path ? $path : f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID='$myid'", "Path", $db);
 				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='$classPath'", "ID", $db);
 
@@ -1068,7 +1051,7 @@ class we_objectFile extends we_document{
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
 
-					$content .= "<div id=\"text_" . $uniq . "\"></div><div id=\"table_" . $uniq . "\" style=\"display:none; padding: 10px 0px 20px 30px;\">" .
+					$content .= '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
 						$ob->getFieldsHTML(0, true) .
 						'</div>';
 				}
@@ -1149,7 +1132,7 @@ class we_objectFile extends we_document{
 			return
 				'<table class="defaultfont">
 				<tr><td><span class="weObjectPreviewHeadline">' . $name . '</span>' . ( isset($this->DefArray["shopVat_shopvat"]['editdescription']) && $this->DefArray["shopVat_shopvat"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["shopVat_shopvat"]['editdescription'] . '</div>' : '' ) . '</td></tr>
-				<tr><td>' . we_class::htmlSelect("we_" . $this->Name . "_shopVat[$name]", $values, 1, $val) . '</td></tr>
+				<tr><td>' . we_class::htmlSelect('we_' . $this->Name . '_shopVat[' . $name . ']', $values, 1, $val) . '</td></tr>
 			</table>';
 		} else{
 
@@ -1233,23 +1216,17 @@ class we_objectFile extends we_document{
 			}
 			$out = ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 		}
-		if($headline){
-			return '<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["link_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $out;
-		} else{
-			return $out;
-		}
+		return ($headline ?
+				'<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["link_" . $n]['editdescription'] . '</div>' : we_html_element::htmlBr() ) :
+				'') . $out;
 	}
 
 	function getPreviewView($name, $content){
-		if($content !== ''){
-			return '<div class="weObjectPreviewHeadline">' . $name . '</div><div class="defaultfont">' . $content . '</div>';
-		} else{
-			return '<div class="weObjectPreviewHeadline">' . $name . '</div>';
-		}
+		return '<div class="weObjectPreviewHeadline">' . $name . '</div>' . (($content !== '') ?
+				'<div class="defaultfont">' . $content . '</div>' : '');
 	}
 
 	function getInputFieldHTML($name, $attribs, $editable = true, $variant = false){
-
 		if($editable){
 
 			$content = $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
@@ -1302,7 +1279,6 @@ class we_objectFile extends we_document{
 				$countryselect->addOption('-', '----', array("disabled" => "disabled"));
 			}
 
-//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 			}
@@ -1395,8 +1371,7 @@ class we_objectFile extends we_document{
 			$content = we_html_tools::getDateInput2("we_" . $this->Name . "_date[" . $name . "]", ($d ? $d : time()), true);
 			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["date_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content;
 		} else{
-			$d = abs($this->getElement($name));
-			$content = date(g_l('date', '[format][default]'), $d);
+			$content = date(g_l('date', '[format][default]'), abs($this->getElement($name)));
 			return $this->getPreviewView($name, $content);
 		}
 	}
@@ -2159,8 +2134,8 @@ class we_objectFile extends we_document{
 		return true;
 	}
 
-	function setLanguage($language=''){
-		$this->Language = ($language!='') ? $language : $this->Language;
+	function setLanguage($language = ''){
+		$this->Language = $language ? $language : $this->Language;
 		$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Language="' . $this->Language . '" WHERE OF_ID=' . intval($this->ID));
 	}
 
