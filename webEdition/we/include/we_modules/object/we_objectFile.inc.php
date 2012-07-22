@@ -383,7 +383,7 @@ class we_objectFile extends we_document{
 
 	function setRootDirID($doit = false){
 		if($this->InWebEdition || $doit){
-			list($this->RootDirPath,$this->rootDirID)=getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE);
+			list($this->RootDirPath, $this->rootDirID) = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE);
 		}
 	}
 
@@ -2222,9 +2222,10 @@ class we_objectFile extends we_document{
 	function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 
-		//if($this->Path)
-		t_e($this);
-		return false;
+		if($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0){
+			return false;
+		}
+
 		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$dv = $foo['DefaultValues'] ? unserialize($foo["DefaultValues"]) : array();
 
