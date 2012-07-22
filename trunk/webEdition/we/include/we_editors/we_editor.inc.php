@@ -312,8 +312,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	 */
 	$we_ext = ($we_doc->Extension == ".js" || $we_doc->Extension == ".css" || $we_doc->Extension == ".wml" || $we_doc->Extension == ".xml") ? ".html" : $we_doc->Extension;
 	//FIXME: php temporary file?
-	$tempName = dirname($we_doc->getSitePath()) . "/" . session_id() . $we_ext;
-	$tempName = str_replace("\\", "/", $tempName);
+	$tempName = str_replace("\\", "/", dirname($we_doc->getSitePath()) . "/" . session_id() . $we_ext);
 	we_util_File::insertIntoCleanUp($tempName, time());
 	/*
 	  $str = session_encode(); //serialize($arr);
@@ -327,9 +326,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	$parent = str_replace("\\", "/", $parent);
 
 	while(!we_util_File::checkAndMakeFolder($parent)) {
-		array_push($cf, $parent);
-		$parent = dirname($parent);
-		$parent = str_replace("\\", "/", $parent);
+		$cf[] = $parent;
+		$parent = str_replace("\\", "/", dirname($parent));
 	}
 
 	// url of document !!
