@@ -2159,8 +2159,8 @@ class we_objectFile extends we_document{
 		return true;
 	}
 
-	function setLanguage($language){
-		$this->Language = isset($language) ? $language : $this->Language;
+	function setLanguage($language=''){
+		$this->Language = ($language!='') ? $language : $this->Language;
 		$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Language="' . $this->Language . '" WHERE OF_ID=' . intval($this->ID));
 	}
 
