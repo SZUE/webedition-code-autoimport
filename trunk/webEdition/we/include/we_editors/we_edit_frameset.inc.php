@@ -136,10 +136,9 @@ if($_SESSION['we_mode'] == 'seem'){
 
 //  This code was over the comment: init document !!!!!!! (line 82?)
 if(!isset($we_ID)){
-
 	$_SESSION['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
 }
-;
+
 if((isset($_REQUEST['we_cmd'][10])) && ($we_Table == FILE_TABLE) && ($we_ContentType == 'text/webedition')){
 	$we_doc->setTemplateID($_REQUEST['we_cmd'][10]);
 	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, 1);
@@ -168,13 +167,15 @@ if($we_doc->ID){
 
 	if($ws = get_ws($we_Table)){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
-			if($we_Table == TEMPLATES_TABLE){ //	different workspace. for template
+			switch($we_Table){
+			case TEMPLATES_TABLE: //	different workspace. for template
 				$we_message = g_l('alert', '[' . ($we_ContentType == 'folder') ? 'folder' : $we_Table . '][not_im_ws]');
 				include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 				exit();
-			} else if($we_Table == FILE_TABLE){ //	only preview mode allowed for docs
+			case FILE_TABLE: //	only preview mode allowed for docs
 				//	MUST change to Preview-Mode
 				$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+				break;
 			}
 		}
 	}
