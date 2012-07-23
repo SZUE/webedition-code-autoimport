@@ -239,6 +239,7 @@ class we_objectFile extends we_document{
 
 	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = ''){
 		$db = ($db ? $db : new DB_WE());
+		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
 		$cnt = 1;
 		$all = array();
@@ -248,7 +249,7 @@ class we_objectFile extends we_document{
 			if(intval($ws) == 0){
 				$ws = 0;
 			}
-			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
+			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
 			while($db->next_record()) {
 				$all[$db->f('Path')] = $db->f('ID');
 				if(!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)){
@@ -389,12 +390,12 @@ class we_objectFile extends we_document{
 
 	function resetParentID(){
 		$len = strlen($this->RootDirPath . '/');
-		if(substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len)){
+		if($this->ParentPath == '/' || (substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len))){
 			$this->setParentID($this->rootDirID);
 		}
 // adjust to bug #376 regarding workspace
-		$workspaceRootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
-		$this->ParentPath = id_to_path($workspaceRootDirId, OBJECT_FILES_TABLE);
+		$workspaceRootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
+		$this->ParentPath = id_to_path($workspaceRootDirId, OBJECT_FILES_TABLE, $this->DB_WE);
 		$this->ParentID = $workspaceRootDirId;
 	}
 
@@ -2220,7 +2221,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid()||($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0);
+		return parent::i_pathNotValid() || ($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0);
 	}
 
 	function we_save($resave = 0, $skipHook = 0){
