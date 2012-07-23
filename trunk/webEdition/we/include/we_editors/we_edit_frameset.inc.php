@@ -158,6 +158,7 @@ if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentT
 	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 } else if(isset($_REQUEST['we_cmd'][8]) && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
 	$we_doc->TableID = $_REQUEST['we_cmd'][8];
+	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
 	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, WE_EDITPAGE_CONTENT);
 }
