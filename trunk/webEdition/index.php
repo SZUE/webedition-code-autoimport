@@ -34,6 +34,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 
 if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 	we_loadLanguageConfig();
 }
