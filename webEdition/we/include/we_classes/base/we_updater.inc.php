@@ -27,7 +27,7 @@ class we_updater{
 		$hasOwnertable = false;
 		foreach($tables as $t){
 			// old Version of small User Module
-			if($t["table_name"] == "tblOwner"){
+			if($t["table_name"] == TBL_PREFIX.'tblOwner'){
 				$hasOwnertable = true;
 				break;
 			}
@@ -39,7 +39,7 @@ class we_updater{
 		if(!$GLOBALS['DB_WE']->isColExist(FILE_TABLE, "WebUserID"))
 			$GLOBALS['DB_WE']->addCol(FILE_TABLE, "WebUserID", "BIGINT DEFAULT '0' NOT NULL");
 		if($hasOwnertable){
-			$DB_WE->query("SELECT * FROM tblOwner");
+			$DB_WE->query('SELECT * FROM '.TBL_PREFIX.'tblOwner');
 			while($DB_WE->next_record()) {
 				$table = $DB_WE->f("DocumentTable");
 				if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
@@ -49,12 +49,12 @@ class we_updater{
 						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
 						$db2->query("UPDATE " . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
-						$db2->query("DELETE FROM tblOwner WHERE fileID=" . intval($id));
+						$db2->query('DELETE FROM '.TBL_PREFIX.' WHERE fileID=' . intval($id));
 						@set_time_limit(30);
 					}
 				}
 			}
-			$DB_WE->query("DROP TABLE tblOwner");
+			$DB_WE->query('DROP TABLE '.TBL_PREFIX.'tblOwner');
 		}
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
@@ -209,8 +209,9 @@ class we_updater{
 	static function updateUsers(){
 		global $DB_WE;
 		$db123 = new DB_WE();
-		if(!$GLOBALS['DB_WE']->isTabExist(USER_TABLE))
+		if(!$GLOBALS['DB_WE']->isTabExist(USER_TABLE)){
 			return;
+		}
 		self::convertPerms();
 		$GLOBALS['DB_WE']->addCol(USER_TABLE, "Path", "VARCHAR(255)  DEFAULT ''", "AFTER ID");
 		$GLOBALS['DB_WE']->addCol(USER_TABLE, "ParentID", "BIGINT(20) DEFAULT '0' NOT NULL", "AFTER ID");

@@ -1,3 +1,6 @@
+###UPDATEONLY### UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/"
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblWebUser (
   ID bigint(20) unsigned NOT NULL auto_increment,
   Username varchar(255) NOT NULL default '',
