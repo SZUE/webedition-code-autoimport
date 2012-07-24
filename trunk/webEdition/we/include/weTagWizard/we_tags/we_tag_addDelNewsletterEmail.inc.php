@@ -23,10 +23,10 @@ $recipientBCC = new weTagData_textAttribute('recipientBCC', false, '');
 $includeimages = new weTagData_selectAttribute('includeimages', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('csv', false, '', array($path,$doubleoptin,$expiredoubleoptin,$mailid,$subject,$from,$id,$mailingList,$recipientCC,$recipientBCC,$includeimages), array($path)),
-	new weTagDataOption('customer', false, 'customer', array($doubleoptin,$expiredoubleoptin,$mailid,$subject,$from,$id,$fieldGroup,$mailingList,$recipientCC,$recipientBCC,$includeimages), array()),
+	new weTagDataOption('csv', false, '', array($path,$doubleoptin,$expiredoubleoptin,$mailid,$subject,$from,$id,$mailingList,$recipientCC,$recipientBCC,$adminmailid,$adminsubject,$adminemail,$includeimages), array($path)),
+	new weTagDataOption('customer', false, 'customer', array($doubleoptin,$expiredoubleoptin,$mailid,$subject,$from,$id,$fieldGroup,$mailingList,$recipientCC,$recipientBCC,$adminmailid,$adminsubject,$adminemail,$includeimages), array()),
 	new weTagDataOption('emailonly', false, '', array($doubleoptin,$expiredoubleoptin,$mailid,$subject,$from,$id,$adminmailid,$adminsubject,$adminemail,$includeimages), array($adminmailid,$adminsubject,$adminemail)) ), false, 'newsletter');
 
 
-$this->Attributes=array($path,$mailingList,$doubleoptin,$expiredoubleoptin,$mailid,$adminmailid,$subject,$adminsubject,$adminemail,
+$this->Attributes=array($path,$mailingList,$doubleoptin,$expiredoubleoptin,$mailid,$subject,$adminmailid,$adminsubject,$adminemail,
 	$from,$id,$fieldGroup,$recipientCC,$recipientBCC,$includeimages);
