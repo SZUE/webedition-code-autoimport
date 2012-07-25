@@ -574,7 +574,7 @@ background-image: url(/webEdition/images/edit/editfooterback.gif);
 }
 
 .weTreeHeader {
-background-image: url(/webEdition/images/backgrounds/bgGrayLineTop.gif);
+background-color: #F0EFF0;
 margin:0px;
 padding: 10px 10px;
 border-bottom: 1px solid black;
@@ -583,7 +583,7 @@ height:129px;
 
 
 .weTreeHeaderMove {
-background-image: url(/webEdition/images/backgrounds/bgGrayLineTop.gif);
+background-color: #F0EFF0;
 margin:0px;
 padding: 10px 10px;
 border-bottom: 1px solid black;
