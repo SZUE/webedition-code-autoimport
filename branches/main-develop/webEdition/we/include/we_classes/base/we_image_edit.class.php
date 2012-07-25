@@ -76,36 +76,33 @@ class we_image_edit{
 
 			// Check output formats
 			if($_imagetypes & IMG_GIF){
-				$_output_formats[] = "gif";
+				$_output_formats[] = 'gif';
 			}
 
 			if($_imagetypes & IMG_PNG){
-				$_output_formats[] = "png";
+				$_output_formats[] = 'png';
 			}
 
 			if($_imagetypes & IMG_JPG){
-				$_output_formats[] = "jpg";
+				$_output_formats[] = 'jpg';
 			}
 		}
 		return $_output_formats;
 	}
 
-	function detect_image_type($filename = "", &$imagedata){
-
+	static function detect_image_type($filename, $imagedata = ''){
 		// Check if we need to read the beginning of the image
-		if(file_exists($filename)){
-			$imagedata = weFile::loadPart($filename, 0, 3);
-		}
+		$imagedata = (file_exists($filename) ? weFile::loadPart($filename, 0, 3) : substr($imagedata, 0, 3));
 
 		switch($imagedata){
-			case "GIF":
-				return "gif";
+			case 'GIF':
+				return 'gif';
 			case "\xFF\xD8\xFF":
-				return "jpg";
-			case "\x89" . "PN":
-				return "png";
+				return 'jpg';
+			case "\x89" . 'PN':
+				return 'png';
 			default:
-				return "";
+				return '';
 		}
 	}
 
@@ -214,24 +211,17 @@ class we_image_edit{
 		// Serious bugs in the non-bundled versions of GD library cause PHP to segfault when calling ImageCreateFromString() - avoid if possible
 		$_gdimg = false;
 
-		switch(we_image_edit::detect_image_type("", $imagedata)){
-			case "gif":
+		switch(we_image_edit::detect_image_type('', $imagedata)){
+			case 'gif':
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
-
 				break;
-
-			case "jpg":
+			case 'jpg':
 				$_image_create_from_string_replacement_function = "ImageCreateFromJPEG";
-
 				break;
-
-			case "png":
+			case 'png':
 				$_image_create_from_string_replacement_function = "ImageCreateFromPNG";
-
 				break;
-
 			default:
-
 				break;
 		}
 
@@ -250,8 +240,7 @@ class we_image_edit{
 	}
 
 	function ImageCreateFromFileReplacement($filename){
-		$foo = "";
-		switch(we_image_edit::detect_image_type($filename, $foo)){
+		switch(we_image_edit::detect_image_type($filename)){
 			case "gif":
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
 
@@ -358,8 +347,7 @@ class we_image_edit{
 	}
 
 	function getimagesize($filename){
-		$foo = "";
-		$type = we_image_edit::detect_image_type($filename, $foo);
+		$type = we_image_edit::detect_image_type($filename);
 		if(we_image_edit::is_imagetype_supported($type)){
 			$_gdimg = we_image_edit::ImageCreateFromFileReplacement($filename);
 			$ct = 0;
@@ -413,30 +401,22 @@ class we_image_edit{
 	}
 
 	function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0, $fitinside = false){
-		$_fromFile = false;
-
 		$output_format = strtolower($output_format);
 		if($output_format == "jpeg"){
 			$output_format = "jpg";
 		}
 
-		if(strlen($imagedata) < 255 && @file_exists($imagedata)){
-			$_fromFile = true;
-		}
+		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available
 		if(in_array($output_format, we_image_edit::supported_image_types())){
 			// Set quality for JPG images
-			if($output_format == "jpg"){
+			if($output_format == 'jpg'){
 				// Keep quality between 1 and 99
 				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
 			}
 
-			if($_fromFile){
-				$_gdimg = we_image_edit::ImageCreateFromFileReplacement($imagedata);
-			} else{
-				$_gdimg = we_image_edit::ImageCreateFromStringReplacement($imagedata);
-			}
+			$_gdimg = ($_fromFile ? we_image_edit::ImageCreateFromFileReplacement($imagedata) : we_image_edit::ImageCreateFromStringReplacement($imagedata));
 
 			// Now we need to ensure that we could read the file
 			if($_gdimg){
@@ -463,17 +443,8 @@ class we_image_edit{
 				$_outsize = we_image_edit::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
 
 				// Decide, which functions to use (depends on version of GD library)
-				if(we_image_edit::gd_version() >= 2.0){
-					$_image_create_function = "imagecreatetruecolor";
-				} else{
-					$_image_create_function = "imagecreate";
-				}
-
-				if(function_exists('imagecopyresampled')){
-					$_image_resize_function = "imagecopyresampled";
-				} else{
-					$_image_resize_function = "imagecopyresized";
-				}
+				$_image_create_function = (we_image_edit::gd_version() >= 2.0 ? "imagecreatetruecolor" : "imagecreate");
+				$_image_resize_function = (function_exists('imagecopyresampled') ? "imagecopyresampled" : "imagecopyresized");
 
 				if($_outsize["width"] == 0){
 					$_outsize["width"] = 1;
@@ -555,7 +526,7 @@ class we_image_edit{
 						} else{
 							if($_tempfilename = tempnam(TEMP_PATH, "")){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
-								$_gdimg=weFile::load($_tempfilename);
+								$_gdimg = weFile::load($_tempfilename);
 
 								// As we read the temporary file we no longer need it
 								//unlink($_tempfilename);
@@ -625,12 +596,12 @@ class we_image_edit{
 			$imagesize = array(0, 0);
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
-			$_previewDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/';
+			$_previewDir = WE_THUMB_PREVIEW_PATH;
 			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
 				we_util_File::createLocalFolder($_previewDir);
 			}
 			if($imgID){
-				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
+				$_thumbSrc = WE_THUMB_PREVIEW_DIR . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
 			} else{
 				$_thumbSrc = TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat);
 			}

@@ -53,15 +53,15 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function errno(){
-		return $this->Link_ID->errno;
+		return ($this->Link_ID ? $this->Link_ID->errno : 2006);
 	}
 
 	protected function error(){
-		return $this->Link_ID->error;
+		return ($this->Link_ID ? $this->Link_ID->error : '');
 	}
 
 	protected function info(){
-		return $this->Link_ID->info;
+		return ($this->Link_ID ? $this->Link_ID->info : '');
 	}
 
 	protected function fetch_array($resultType){

@@ -27,7 +27,7 @@ define('OBJECT_FILES_TABLE', TBL_PREFIX . 'tblObjectFiles');
 define('OBJECT_X_TABLE', TBL_PREFIX . 'tblObject_');
 
 define('WE_OBJECT_MODULE_DIR', WE_MODULES_DIR . 'object/');
-define('WE_OBJECT_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_OBJECT_MODULE_DIR);
+define('WE_OBJECT_MODULE_PATH', WE_MODULES_PATH . 'object/');
 
 // Number of displayed objects in the left navigation
 define('OBJECT_FILES_TREE_COUNT', 20);

@@ -27,8 +27,7 @@ class weGlossaryFrameEditorHome{
 	function Header(&$weGlossaryFrames){
 
 		$_body = array(
-			'bgcolor' => '#FFFFFF',
-			'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif',
+			'bgcolor' => '#F0EFF0',
 		);
 
 		$body = we_html_element::htmlBody($_body, "");

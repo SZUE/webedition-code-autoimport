@@ -168,35 +168,41 @@ class weXMLExIm{
 	}
 
 	function loadPerserves(){
-		if(isset($_SESSION["ExImRefTable"]))
+		if(isset($_SESSION["ExImRefTable"])){
 			$this->RefTable->Array2RefTable($_SESSION["ExImRefTable"]);
-		if(isset($_SESSION["ExImRefUsers"]))
+		}
+		if(isset($_SESSION["ExImRefUsers"])){
 			$this->RefTable->Users = $_SESSION["ExImRefUsers"];
-		if(isset($_SESSION["ExImCurrentRef"]))
+		}
+		if(isset($_SESSION["ExImCurrentRef"])){
 			$this->RefTable->current = $_SESSION["ExImCurrentRef"];
+		}
 	}
 
-	function savePerserves(){
-		$_SESSION["ExImRefTable"] = $this->RefTable->RefTable2Array();
+	function savePerserves($full=true){
+		$_SESSION["ExImRefTable"] = $this->RefTable->RefTable2Array($full);
 		$_SESSION["ExImRefUsers"] = $this->RefTable->Users;
 		$_SESSION["ExImCurrentRef"] = $this->RefTable->current;
 	}
 
 	function unsetPerserves(){
-		if(isset($_SESSION["ExImRefTable"]))
+		if(isset($_SESSION["ExImRefTable"])){
 			unset($_SESSION["ExImRefTable"]);
-		if(isset($_SESSION["ExImRefUsers"]))
+		}
+		if(isset($_SESSION["ExImRefUsers"])){
 			unset($_SESSION["ExImRefUsers"]);
-		if(isset($_SESSION["ExImCurrentRef"]))
+		}
+		if(isset($_SESSION["ExImCurrentRef"])){
 			unset($_SESSION["ExImCurrentRef"]);
+		}
 	}
 
 	function resetContenID(&$object){
 		if(isset($object->elements) && is_array($object->elements))
-			foreach($object->elements as $ek => $ev)
+			foreach($object->elements as $ek => $ev){
 				$object->elements[$ek]["id"] = 0;
+			}
 	}
-
 
 	function prepareExport($ids){
 
@@ -261,38 +267,35 @@ class weXMLExIm{
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f("SELECT IsFolder FROM " . $table . " WHERE ID='" . $v . "'", "IsFolder", $db);
+				$isfolder = f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), "IsFolder", $db);
 				if($isfolder){
 					we_readChilds($v, $tmp, $table, false, $allow);
 					if($with_dirs)
 						$tmp[] = $v;
-				}
-				else
+				}else{
 					$tmp[] = $v;
+				}
 			}
 		}
-		if($with_dirs)
+		if($with_dirs){
 			return $tmp;
+		}
 		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", new DB_WE());
-			if(!$isfolder)
+			$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $db);
+			if(!$isfolder){
 				$ret[] = $v;
+			}
 		}
 		return $ret;
 	}
 
 	function getQueryParents($path){
-
-		$out = "";
-		while($path != "/" && $path) {
+		$out = '';
+		while($path != '/' && $path) {
 			$out .= "Path='$path' OR ";
 			$path = dirname($path);
 		}
-		if($out){
-			return substr($out, 0, strlen($out) - 3);
-		} else{
-			return "";
-		}
+		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
 	function queryForAllowed($table){
@@ -304,7 +307,7 @@ class weXMLExIm{
 			foreach($wsPathArray as $path){
 				if($wsQuery != '')
 					$wsQuery .=' OR ';
-				$wsQuery .= " Path like '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
 				while($path != "/" && $path) {
 					array_push($parentpaths, $path);
 					$path = dirname($path);
@@ -316,7 +319,7 @@ class weXMLExIm{
 				$path = id_to_path($cid, OBJECT_TABLE);
 				if($wsQuery != '')
 					$wsQuery .=' OR ';
-				$wsQuery .= " Path like '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
 			}
 		}
 
@@ -354,10 +357,10 @@ class weXMLExIm{
 				$ws_where = "";
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = " AND (" . FILE_TABLE . ".Path like '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "') ";
+					$ws_where = " AND (" . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "') ";
 				}
 
-				$query = 'SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql;
+				$query = 'SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql;
 
 				$this->db->query($query);
 				while($this->db->next_record()) {
@@ -386,11 +389,9 @@ class weXMLExIm{
 	}
 
 	function importInfoMap($nodeset){
-
 	}
 
 	function isBinary(){
-
 	}
 
 	function saveObject(&$object){

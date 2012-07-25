@@ -139,7 +139,7 @@ $l_prefs=array(
 	'glossary_publishing'=>'Controleer voor publiceren',
 	'height'=>'Hoogte',
 	'hidenameattribinweform_default'=>'No output of name=xyz in we:form (XHTML strict)',
-	'hidenameattribinweimg_default'=>'No output of name=xyz in we:img (HTML 5)',
+	'hidenameattribinweimg_default'=>'No output of name=xyz in we:img,we:link (HTML 5)',
 	'hide_expert'=>'Verberg expert instellingen',
 	'hide_predefined'=>'Verberg vooraf bepaalde dimensies',
 	'hooks'=>'Hooks',

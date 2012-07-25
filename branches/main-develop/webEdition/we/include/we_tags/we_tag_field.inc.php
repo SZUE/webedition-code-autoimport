@@ -316,7 +316,7 @@ function we_tag_field($attribs){
 			if($name == 'WE_PATH' && $triggerid && isset($GLOBALS['lv']->ClassName) && ($GLOBALS['lv']->ClassName == 'we_search_listview' || $GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_listview_multiobject' || $GLOBALS['lv']->ClassName == 'we_objecttag' )){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
-				if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL');
 				} else{
 					$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL');
@@ -330,7 +330,7 @@ function we_tag_field($attribs){
 				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
-					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$normVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
 				}
@@ -363,18 +363,18 @@ function we_tag_field($attribs){
 
 					if($alt == 'WE_PATH'){
 						$path_parts = pathinfo($altVal);
-						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 							$altVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 						}
 					}
 
-					$out = cutText(($striphtml?strip_tags($altVal):$altVal), $max);
+					$out = cutText(($striphtml ? strip_tags($altVal) : $altVal), $max);
 				} else{
-					$out = cutText(($striphtml?strip_tags($normVal):$normVal), $max);
+					$out = cutText(($striphtml ? strip_tags($normVal) : $normVal), $max);
 				}
 			} elseif($value){
-				$out = ($striphtml?strip_tags($value):$value);
-			}else if($striphtml){
+				$out = ($striphtml ? strip_tags($value) : $value);
+			} else if($striphtml){
 				$out = strip_tags($out);
 			}
 	}
@@ -521,12 +521,12 @@ function we_tag_field($attribs){
 							$path_parts = pathinfo(id_to_path($objecttriggerid));
 						}
 					}
-					/*$pidstr = '';
-					if($GLOBALS['lv']->f('WorkspaceID')){
-						$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
-					}*/
+					/* $pidstr = '';
+					  if($GLOBALS['lv']->f('WorkspaceID')){
+					  $pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
+					  } */
 					$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($GLOBALS['lv']->objectseourls && $objecturl != '' ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
 					} else{
@@ -571,13 +571,13 @@ function we_tag_field($attribs){
 							if($triggerid){
 								$triggerpath = id_to_path($triggerid);
 								$triggerpath_parts = pathinfo($triggerpath);
-								if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+								if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($triggerpath_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 									$_linkAttribs['href'] = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $GLOBALS['lv']->f('WE_URL') . $tail;
 								} else{
 									$_linkAttribs['href'] = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' . $triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL') . $tail;
 								}
 							} else{
-								if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+								if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 									$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 								} else{
 									$_linkAttribs['href'] = $GLOBALS['lv']->f('WE_PATH') . $tail;

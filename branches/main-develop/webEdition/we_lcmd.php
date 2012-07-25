@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
+we_html_tools::htmlTop('command-bridge', '', 5);
 ?>
 <script  type="text/javascript">
 	// bugfix WE-356
@@ -138,21 +140,19 @@ switch($_REQUEST['we_cmd'][0]){
 		$regs = array();
 		if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$dt = $regs[1];
-			print 'top.we_cmd("new","' . FILE_TABLE . '","","text/webedition","' . $dt . '");' . "\n";
+			print 'top.we_cmd("new","' . FILE_TABLE . '","","text/webedition","' . $dt . '");';
 			break;
 		} else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$clID = $regs[1];
-			print 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");' . "\n";
+			print 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
 			break;
 		}
-		$str = '';
-		for($i = 0; $i < sizeof($_REQUEST['we_cmd']); $i++){
-
-			$val = str_replace(array('\'', '"'), array('\\\'', '\\"'), $_REQUEST['we_cmd'][$i]);
-
-			$str .= "'" . $val . "'" . (($i < (sizeof($_REQUEST['we_cmd']) - 1)) ? "," : "");
+		$arr = array();
+		foreach($_REQUEST['we_cmd'] as $cur){
+			$arr[] = '\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), $cur) . '\'';
 		}
-		print 'setTimeout("top.we_cmd(' . $str . ')",50);';
+		print 'setTimeout("top.we_cmd(' . implode(',', $arr) . ')",50);';
 }
 ?>
 </script>
+</head><body></body></html>

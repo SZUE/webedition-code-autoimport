@@ -92,7 +92,7 @@ class weBannerFrames extends weModuleBannerFrames{
 
 					function getHTMLEditorHeader($mode=0){
 						if(isset($_REQUEST["home"])){
-							return '<body bgcolor="#F0EFF0" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
+							return '<body bgcolor="#F0EFF0"></body></html>';
 						}
 						$isFolder = 0;
 						if(isset($_GET["isFolder"]))

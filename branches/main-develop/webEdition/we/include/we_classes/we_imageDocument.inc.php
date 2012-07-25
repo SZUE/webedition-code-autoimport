@@ -38,13 +38,13 @@ class we_imageDocument extends we_binaryDocument{
 	 * Content type for the icon which will be used for the class
 	 * @var string
 	 */
-	var $ContentType = "image/*";
+	var $ContentType = 'image/*';
 
 	/**
 	 * Icon Name for the icon which will be used for the class
 	 * @var string
 	 */
-	var $Icon = "image.gif";
+	var $Icon = 'image.gif';
 
 	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
@@ -96,15 +96,14 @@ class we_imageDocument extends we_binaryDocument{
 		if(parent::we_save($resave)){
 			$thumbs = $this->getThumbs();
 			if($docChanged){
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
-				deleteThumbsByImageID($this->ID);
+				we_thumbnail::deleteByImageID($this->ID);
 			}
 			if(count($thumbs)){
 				foreach($thumbs as $thumbID){
 					$thumbObj = new we_thumbnail();
-					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement("origwidth"), $this->getElement("origheight"), $this->getDocument());
+					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
 					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
-						t_e('Error creating thumbnails');
+						t_e('Error creating thumbnail for file', $this->Filename.$this->Extension);
 					}
 				}
 			}
@@ -291,8 +290,8 @@ class we_imageDocument extends we_binaryDocument{
 	function getRollOverAttribsArr(){
 		if($this->getElement('RollOverFlag')){
 
-			$attr['onmouseover'] = 'if (document.images) { document.images[\'' . $this->getElement("name") . '\'].src = we' . $this->getElement("name") . 'Over.src; }';
-			$attr['onmouseout'] = 'if (document.images) { document.images[\'' . $this->getElement("name") . '\'].src = we' . $this->getElement("name") . 'Out.src; }';
+			$attr['onmouseover'] = 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Over.src; }';
+			$attr['onmouseout'] = 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Out.src; }';
 			return $attr;
 		} else{
 			return array();
@@ -425,7 +424,7 @@ class we_imageDocument extends we_binaryDocument{
 			$create = true;
 
 			// we need to create a thumbnail - check if image exists
-			if(($thumbname = $this->getElement("thumbnail")) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path))){
+			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path))){
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0);
 				if($thumbObj->thumbID && $thumbObj->thumbName){
@@ -460,7 +459,7 @@ class we_imageDocument extends we_binaryDocument{
 			$src = $dyn ?
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
-				$GLOBALS['we_transaction'] . "&rand=" . $randval :
+				$GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$img_path;
 
 
@@ -481,7 +480,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 
 			if(isset($this->elements['sizingstyle'])){
-				if($this->elements['sizingstyle']['dat'] == "none"){
+				if($this->elements['sizingstyle']['dat'] == 'none'){
 					$sizingstyle = false;
 				} else{
 					$sizingstyle = $this->elements['sizingstyle']['dat'];
@@ -532,7 +531,7 @@ class we_imageDocument extends we_binaryDocument{
 
 
 			if($this->getElement('useMetaTitle') && $this->getElement('Title') != ''){ //  set title if set in image
-				$attribs['Title'] = $this->getElement("Title");
+				$attribs['Title'] = $this->getElement('Title');
 			}
 
 			if(($this->getElement('alt') == '')){ //  always use alt-Text -> can be empty
@@ -541,7 +540,7 @@ class we_imageDocument extends we_binaryDocument{
 
 			while(list($k, $v) = $this->nextElement('attrib')) {
 				if(!in_array($k, $filter)){
-					if($v["dat"] != ""){
+					if($v['dat'] != ''){
 						$attribs[$k] = $v['dat'];
 					}
 				}
@@ -578,7 +577,7 @@ class we_imageDocument extends we_binaryDocument{
 
 				$this->html = ( trim($ro_script) . getHtmlTag('a', $_aAtts, getHtmlTag('img', $attribs)) );
 			} else{
-				$this->html = (defined("WE_EDIT_IMAGE")) ?
+				$this->html = (defined('WE_EDIT_IMAGE')) ?
 					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
 					getHtmlTag('img', $attribs);
 			}
@@ -619,9 +618,9 @@ class we_imageDocument extends we_binaryDocument{
 	 *
 	 * @return string
 	 */
-	function formInput2($width, $name, $size = 25, $type = "txt", $attribs = "", $text = ''){
+	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = '', $text = ''){
 		$text = $text == '' ? $name : $text;
-		return $this->formInputField($type, $name, (g_l('weClass', '[' . $text . ']', true) != false ? g_l('weClass', '[' . $text . ']') : $text), $size, $width, "", $attribs);
+		return $this->formInputField($type, $name, (g_l('weClass', '[' . $text . ']', true) != false ? g_l('weClass', '[' . $text . ']') : $text), $size, $width, '', $attribs);
 	}
 
 	/**
@@ -631,51 +630,51 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function formProperties(){
 		// Create table
-		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 5);
+		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 12, 5);
 
 		// Row 1
-		$_content->setCol(0, 0, null, $this->formInputInfo2(155, "width", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol(0, 2, null, $this->formInputInfo2(155, "height", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol(0, 4, null, $this->formInput2(155, "border", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
+		$_content->setCol(0, 2, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$_content->setCol(0, 4, null, $this->formInput2(155, 'border', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(0, 1, null, we_html_tools::getPixel(18, 1));
 		$_content->setCol(0, 3, null, we_html_tools::getPixel(18, 1));
 
 		// Row 2
-		$_content->setCol(1, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
+		$_content->setCol(1, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 3
-		$_content->setCol(2, 0, null, $this->formInput2(155, "align", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 2, null, $this->formInput2(155, "hspace", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 4, null, $this->formInput2(155, "vspace", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 2, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(2, 4, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		$_content->setCol(2, 1, null, we_html_tools::getPixel(18, 1));
 		$_content->setCol(2, 3, null, we_html_tools::getPixel(18, 1));
 
 		// Row 4
-		$_content->setCol(3, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
+		$_content->setCol(3, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 5
-		$_content->setCol(4, 0, array("colspan" => 3), $this->formInput2(328, "alt", 23, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(4, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 		$_content->setCol(4, 3, null, we_html_tools::getPixel(18, 1));
-		$_content->setCol(4, 4, null, $this->formInput2(155, "name", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol(4, 4, null, $this->formInput2(155, 'name', 10, 'attrib', 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		// Row 6
-		$_content->setCol(5, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
+		$_content->setCol(5, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 
 		//	Row 7
-		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$_content->setCol(6, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
 		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
-		$_titleField = "we_" . $this->Name . "_attrib[title]";
-		$_metaTitleField = "we_" . $this->Name . "_txt[Title]";
-		$useMetaTitle = "we_" . $this->Name . "_txt[useMetaTitle]";
+		$_titleField = 'we_' . $this->Name . '_attrib[title]';
+		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
+		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
 		//	disable field 'title' when checked or not.
-		$_content->setCol(6, 4, array("valign" => "bottom"), we_forms::checkboxWithHidden($this->getElement("useMetaTitle"), $useMetaTitle, g_l('weClass', "[use_meta_title]"), false, "defaultfont", "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = ''; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false');}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = ''; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false');}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
-		$longdesc_id_name = "we_" . $this->Name . "_attrib[longdescid]";
+		$longdesc_id_name = 'we_' . $this->Name . '_attrib[longdescid]';
 		$longdesc_text_name = 'tmp_longdesc';
 		$longdesc_id = $this->getElement('longdescid');
 		if($longdesc_id){
@@ -686,24 +685,24 @@ class we_imageDocument extends we_binaryDocument{
 
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("LonDesc");
-		$yuiSuggest->setContentType("folder,text/webEdition,text/html");
+		$yuiSuggest->setAcId('LonDesc');
+		$yuiSuggest->setContentType('folder,text/webEdition,text/html');
 		$yuiSuggest->setInput($longdesc_text_name, $longdescPath);
-		$yuiSuggest->setLabel(g_l('weClass', "[longdesc_text]"));
+		$yuiSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
-		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setSelector('Docselector');
 		$yuiSuggest->setWidth(328);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$longdesc_id_name\\'].value','document.we_form.elements[\\'$longdesc_text_name\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/webedition,text/plain,text/html',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$longdesc_id_name'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$longdesc_text_name'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition,text/plain,text/html',1)"));
+		$yuiSuggest->setSelectButton(we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/webedition,text/plain,text/html',1)"));
 		$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
-		$_content->setCol(7, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
-		$_content->setCol(8, 0, array("valign" => "bottom", 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
+		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
+		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
 		// Return HTML
 		return $_content->getHtml();
@@ -740,11 +739,11 @@ class we_imageDocument extends we_binaryDocument{
 
 			$quality = $quality * 10;
 
-			$dataPath = TEMP_PATH . "/" . weFile::getUniqueId();
-			$_converted_image = we_image_edit::edit_image($this->getElement("data"), $type, $dataPath, $quality, $width, $height, false);
+			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
+			$_converted_image = we_image_edit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
 
-			$this->setElement("data", $dataPath);
-			$this->Extension = "." . $type;
+			$this->setElement('data', $dataPath);
+			$this->Extension = '.' . $type;
 			$this->Text = $this->Filename . $this->Extension;
 			$this->Path = $this->getParentPath() . $this->Text;
 
@@ -753,8 +752,8 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	function getThumbnail(){
-		if($this->getElement("data") && is_readable($this->getElement("data"))){
-			return '<img src="/webEdition/thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement("data")) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
+		if($this->getElement('data') && is_readable($this->getElement('data'))){
+			return '<img src="/webEdition/thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
 		} else{
 			return $this->getHtml();
 		}
@@ -765,7 +764,7 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function getMetaDataReader(){
 		if(!$this->metaDataReader){
-			$source = $this->getElement("data");
+			$source = $this->getElement('data');
 			if(file_exists($source)){
 				$this->metaDataReader = new weMetaData($source);
 			}
@@ -796,16 +795,16 @@ class we_imageDocument extends we_binaryDocument{
 
 			// first we fetch all defined metadata fields from tblMetadata:
 			$_defined_fields = array();
-			$GLOBALS['DB_WE']->query("SELECT * FROM " . METADATA_TABLE);
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE);
 			while($GLOBALS['DB_WE']->next_record()) {
-				$_fieldName = $GLOBALS['DB_WE']->f("tag");
-				$_fieldType = $GLOBALS['DB_WE']->f("type") ? $GLOBALS['DB_WE']->f("type") : "textfield";
-				$_importFrom = $GLOBALS['DB_WE']->f("importFrom");
+				$_fieldName = $GLOBALS['DB_WE']->f('tag');
+				$_fieldType = $GLOBALS['DB_WE']->f('type') ? $GLOBALS['DB_WE']->f('type') : 'textfield';
+				$_importFrom = $GLOBALS['DB_WE']->f('importFrom');
 
-				$_parts = explode(",", $_importFrom);
+				$_parts = explode(',', $_importFrom);
 				foreach($_parts as $_part){
 					$_part = trim($_part);
-					$_fieldParts = explode("/", $_part);
+					$_fieldParts = explode('/', $_part);
 					if(count($_fieldParts) > 1){
 						$_tagType = strtolower(trim($_fieldParts[0]));
 						$_tagName = trim($_fieldParts[1]);
@@ -823,14 +822,14 @@ class we_imageDocument extends we_binaryDocument{
 
 				$_fieldVal = $this->getElement($fieldName);
 
-				if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $_fieldVal === "")){
+				if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $_fieldVal === '')){
 					foreach($_arr as $_impFr){
 						if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
 							$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
-							if($_impFr[2] == "date"){
+							if($_impFr[2] == 'date'){
 								// here we need to parse the date
 								if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
-									$_val = sprintf("%016d", mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
+									$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
 								}
 							}
 							$this->setElement($fieldName, trim($_val), $_typeMap[$_impFr[2]]);
@@ -843,10 +842,10 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	function parseImportFrom($inString){
-		$_parts = explode(",", $inString);
+		$_parts = explode(',', $inString);
 		foreach($_parts as $_part){
 			$_part = trim($_part);
-			$_fieldParts = explode("/", $_part);
+			$_fieldParts = explode('/', $_part);
 			if(count($_fieldParts) > 1){
 				$_tagType = strtolower(trim($_fieldParts[0]));
 				$_tagName = trim($_fieldParts[1]);
@@ -864,125 +863,125 @@ class we_imageDocument extends we_binaryDocument{
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
-		$linkType = $this->getElement("LinkType") ? $this->getElement("LinkType") : "no";
-		$linkPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '" . $this->getElement("LinkID") . "'", "Path", $this->DB_WE);
+		$linkType = $this->getElement('LinkType') ? $this->getElement('LinkType') : 'no';
+		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
 
-		$RollOverFlagName = "we_" . $this->Name . "_txt[RollOverFlag]";
-		$RollOverFlag = $this->getElement("RollOverFlag") ? 1 : 0;
+		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
+		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
-		$RollOverID = $this->getElement("RollOverID") ? $this->getElement("RollOverID") : "";
+		$RollOverID = $this->getElement('RollOverID') ? $this->getElement('RollOverID') : '';
 		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
-		$RollOverPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '$RollOverID='", "Path", $this->DB_WE);
+		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), 'Path', $this->DB_WE);
 
-		$checkFlagName = "check_" . $this->Name . "_RollOverFlag";
+		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 
 		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][2].checked=true;','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;");
-		$but1 = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but1 = we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$RollOverIDName\'].value','document.forms[\'we_form\'].elements[\'$RollOverPathname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\'$RollOverFlagName\'].value=1;opener.document.we_form.elements[\'$checkFlagName\'].checked=true;','',0,'image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$RollOverIDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$RollOverPathname'].value");
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['$RollOverFlagName'].value=1;opener.document.we_form.elements['$checkFlagName'].checked=true;");
-		$but2 = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but2 = we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$extname'].value");
 		$wecmdenc4 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-			we_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['$extname'].value,'" . $wecmdenc4 . "')") : "";
+			we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.forms['we_form'].elements['$extname'].value,'" . $wecmdenc4 . "')") : "";
 
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
-			$objPath = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID = " . intval($this->getElement("ObjID")), "Path", $this->DB_WE);
+			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), 'Path', $this->DB_WE);
 			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','document.forms[\'we_form\'].elements[\'$objidname\'].value','document.forms[\'we_form\'].elements[\'$objtextname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][3].checked=true;','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");
 			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$objidname'].value");
 			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$objtextname'].value");
 			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;");
-			$butObj = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$butObj = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}
 
 		// Create table
-		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), (defined("OBJECT_TABLE") ? 11 : 9), 2);
+		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 
 		// No link
-		$_content->setCol(0, 0, array("valign" => "top"), we_forms::radiobutton("no", ($linkType == "no"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass', "[nolink]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
-		$_content->setCol(0, 1, null, "");
+		$_content->setCol(0, 0, array('valign' => 'top'), we_forms::radiobutton('no', ($linkType == 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(0, 1, null, '');
 
 		// Space
 		$_content->setCol(1, 0, null, we_html_tools::getPixel(100, 10));
 		$_content->setCol(1, 1, null, we_html_tools::getPixel(400, 10));
 
 		// External link
-		$_ext_link_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+		$_ext_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
 
-		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput("we_" . $this->Name . "_txt[LinkHref]", 25, $this->getElement("LinkHref"), "", 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
+		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
 		$_ext_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_ext_link_table->setCol(0, 2, null, $butExt);
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
 
-		$_content->setCol(2, 0, array("valign" => "top"), we_forms::radiobutton("ext", ($linkType == "ext"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass', "[extern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true)"));
-		$_content->setCol(2, 1, array("class" => "defaultfont", "valign" => "top"), $_ext_link);
+		$_content->setCol(2, 0, array('valign' => 'top'), we_forms::radiobutton('ext', ($linkType == 'ext'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$_content->setCol(2, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_ext_link);
 
 		// Space
 		$_content->setCol(3, 0, null, we_html_tools::getPixel(100, 10));
 		$_content->setCol(3, 1, null, we_html_tools::getPixel(400, 10));
 
 		// Internal link
-		$_int_link_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+		$_int_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
 
-		$_int_link_table->setCol(0, 0, null, $this->htmlTextInput($textname, 25, $linkPath, "", 'onkeydown="return false"', "text", 280));
+		$_int_link_table->setCol(0, 0, null, $this->htmlTextInput($textname, 25, $linkPath, '', 'onkeydown="return false"', 'text', 280));
 		$_int_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-		$_int_link_table->setCol(0, 2, null, $this->htmlHidden($idname, $this->getElement("LinkID")) . $but1);
+		$_int_link_table->setCol(0, 2, null, $this->htmlHidden($idname, $this->getElement('LinkID')) . $but1);
 
-		$_int_link = "href" . we_html_element::htmlBr() . $_int_link_table->getHtml();
+		$_int_link = 'href' . we_html_element::htmlBr() . $_int_link_table->getHtml();
 
-		$_content->setCol(4, 0, array("valign" => "top"), we_forms::radiobutton("int", ($linkType == "int"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass', "[intern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
-		$_content->setCol(4, 1, array("class" => "defaultfont", "valign" => "top"), $_int_link);
+		$_content->setCol(4, 0, array('valign' => 'top'), we_forms::radiobutton('int', ($linkType == 'int'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(4, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
 
 		// Object link
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$_content->setCol(5, 0, null, we_html_tools::getPixel(100, 10));
 			$_content->setCol(5, 1, null, we_html_tools::getPixel(400, 10));
 
-			$_obj_link_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+			$_obj_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
 
-			$_obj_link_table->setCol(0, 0, null, $this->htmlTextInput($objtextname, 25, $objPath, "", 'onkeydown="return false"', "text", 280));
+			$_obj_link_table->setCol(0, 0, null, $this->htmlTextInput($objtextname, 25, $objPath, '', 'onkeydown="return false"', 'text', 280));
 			$_obj_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-			$_obj_link_table->setCol(0, 2, null, $this->htmlHidden($objidname, $this->getElement("ObjID")) . $butObj);
+			$_obj_link_table->setCol(0, 2, null, $this->htmlHidden($objidname, $this->getElement('ObjID')) . $butObj);
 
-			$_obj_link = "href" . we_html_element::htmlBr() . $_obj_link_table->getHtml();
+			$_obj_link = 'href' . we_html_element::htmlBr() . $_obj_link_table->getHtml();
 
-			$_content->setCol(6, 0, array("valign" => "top"), we_forms::radiobutton("obj", ($linkType == "obj"), "we_" . $this->Name . "_txt[LinkType]", g_l('linklistEdit', "[objectFile]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
-			$_content->setCol(6, 1, array("class" => "defaultfont", "valign" => "top"), $_obj_link);
+			$_content->setCol(6, 0, array('valign' => 'top'), we_forms::radiobutton('obj', ($linkType == 'obj'), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$_content->setCol(6, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
 		}
 
 		// Space
-		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 0, null, we_html_tools::getPixel(100, 20));
-		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 1, null, we_html_tools::getPixel(400, 20));
+		$_content->setCol((defined('OBJECT_TABLE') ? 7 : 5), 0, null, we_html_tools::getPixel(100, 20));
+		$_content->setCol((defined('OBJECT_TABLE') ? 7 : 5), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Target
-		$_content->setCol((defined("OBJECT_TABLE") ? 8 : 6), 0, array("colspan" => 2, "class" => "defaultfont", "valign" => "top"), g_l('weClass', "[target]") . we_html_element::htmlBr() . we_html_tools::targetBox("we_" . $this->Name . "_txt[LinkTarget]", 33, 380, "", $this->getElement("LinkTarget"), "_EditorFrame.setEditorIsHot(true);", 20, 97));
+		$_content->setCol((defined('OBJECT_TABLE') ? 8 : 6), 0, array('colspan' => 2, 'class' => 'defaultfont', 'valign' => 'top'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 380, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
 
 		// Space
-		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 0, null, we_html_tools::getPixel(100, 20));
-		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 1, null, we_html_tools::getPixel(400, 20));
+		$_content->setCol((defined('OBJECT_TABLE') ? 9 : 7), 0, null, we_html_tools::getPixel(100, 20));
+		$_content->setCol((defined('OBJECT_TABLE') ? 9 : 7), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Rollover image
-		$_rollover_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+		$_rollover_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
 
-		$_rollover_table->setCol(0, 0, null, $this->htmlTextInput($RollOverPathname, 25, $RollOverPath, "", 'onkeydown="return false"', "text", 280));
+		$_rollover_table->setCol(0, 0, null, $this->htmlTextInput($RollOverPathname, 25, $RollOverPath, '', 'onkeydown="return false"', 'text', 280));
 		$_rollover_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_rollover_table->setCol(0, 2, null, $this->htmlHidden($RollOverIDName, $RollOverID) . $but2);
 
-		$_rollover = "href" . we_html_element::htmlBr() . $_rollover_table->getHtml();
+		$_rollover = 'href' . we_html_element::htmlBr() . $_rollover_table->getHtml();
 
-		$_content->setCol((defined("OBJECT_TABLE") ? 10 : 8), 0, array("valign" => "top"), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, "Roll Over", false, "defaultfont", "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
-		$_content->setCol((defined("OBJECT_TABLE") ? 10 : 8), 1, array("class" => "defaultfont", "valign" => "top"), $_rollover);
+		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
+		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);
 
 		return $_content->getHtml();
 	}
@@ -991,7 +990,7 @@ class we_imageDocument extends we_binaryDocument{
 		$_defined_fields = weMetaData::getDefinedMetaDataFields();
 		$_fieldcount = sizeof($_defined_fields);
 		for($i = 0; $i < $_fieldcount; $i++){
-			if($_defined_fields[$i]["tag"] === $name){
+			if($_defined_fields[$i]['tag'] === $name){
 				return true;
 			}
 		}
@@ -1000,27 +999,15 @@ class we_imageDocument extends we_binaryDocument{
 
 	function formMetaInfos(){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, '', "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>';
 
-		if($this->ContentType == "image/*"){
+		if($this->ContentType == 'image/*'){
 			$content .= $this->formCharset(true);
 		}
 
@@ -1029,12 +1016,12 @@ class we_imageDocument extends we_binaryDocument{
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
+		if(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname])){
 
 			$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
-			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
-				foreach($_FILES["we_ui_$formname"]["name"] as $imgName => $filename){
+			if(isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name'])){
+				foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
 
 					$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName] : false;
 
@@ -1055,7 +1042,7 @@ class we_imageDocument extends we_binaryDocument{
 								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . md5(
 										uniqid(rand(), 1));
 								move_uploaded_file(
-									$_FILES["we_ui_$formname"]["tmp_name"][$imgName], $_SESSION[$_imgDataId]["serverPath"]);
+									$_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
@@ -1064,16 +1051,16 @@ class we_imageDocument extends we_binaryDocument{
 									return;
 								}
 
-								$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' . preg_replace(
-										'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]["name"][$imgName]);
+								$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' .
+									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){
 									$_SESSION[$_imgDataId]['id'] = $imgId;
 								}
 
 								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
-								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace(
-										'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ?
+									preg_replace('#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
 								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
 
 								//image needs to be scaled
@@ -1094,8 +1081,8 @@ class we_imageDocument extends we_binaryDocument{
 
 								$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
 								$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
-								$_SESSION[$_imgDataId]['type'] = $_FILES["we_ui_$formname"]["type"][$imgName];
-								$_SESSION[$_imgDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$imgName];
+								$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
+								$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
 							}
 						}
 					}

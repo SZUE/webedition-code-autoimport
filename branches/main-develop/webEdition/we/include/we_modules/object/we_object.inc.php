@@ -73,35 +73,35 @@ class we_object extends we_document{
 
 		$this->saveToDB();
 
-		$we_responseText = g_l('weClass', "[response_save_ok]");
+		$we_responseText = g_l('weClass', '[response_save_ok]');
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		if($this->OldPath && ($this->OldPath != $this->Path)){
-			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $this->DB_WE->escape($this->OldPath) . "'", "ID", $this->DB_WE);
-			$pID = intval(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . str_replace("\\", "/", dirname($this->Path)) . "'", "ID", $this->DB_WE));
+			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $this->DB_WE->escape($this->OldPath) . "'", 'ID', $this->DB_WE);
+			$pID = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . str_replace("\\", "/", dirname($this->Path)) . "'", 'ID', $this->DB_WE));
 			$cf = new we_class_folder();
 			$cf->initByID($fID, OBJECT_FILES_TABLE);
 			$cf->Text = $this->Text;
 			$cf->Filename = $this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
-			$cf->we_save('1');
+			$cf->we_save(1);
 			$cf->modifyChildrenPath();
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
 		$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
-			$this->getUpdateTreeScript().
+			$this->getUpdateTreeScript() .
 			we_main_headermenu::getMenuReloadCode('top.');
 	}
 
 	function saveToDB(){
-		$arrt = array();
-		$arrt["WorkspaceFlag"] = $this->WorkspaceFlag;
-
-		//	Save charsets in defaultvalues
-		//	charset must be in other namespace -> for header !!!
-		$arrt["elements"]["Charset"]["dat"] = $this->elements["Charset"]["dat"];
+		$arrt = array(
+			"WorkspaceFlag" => $this->WorkspaceFlag,
+			//	Save charsets in defaultvalues
+			//	charset must be in other namespace -> for header !!!
+			"elements" => array("Charset" => array("dat" => $this->elements["Charset"]["dat"])),
+		);
 
 		$this->wasUpdate = $this->ID ? true : false;
 		if(isset($this->elements["Defaultanzahl"]["dat"])){
@@ -163,7 +163,12 @@ class we_object extends we_document{
 			$q .= " OF_Language VARCHAR(5) default 'NULL',";
 			// Letzter Eintrag darf nicht mit einem Leerzeichen enden, letztes Zeichen mu? ein , sein!!!
 
-			$indexe = ', KEY (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY (`OF_IsSearchable`)';
+			$indexe = array(
+				'PRIMARY KEY (ID)',
+				'KEY (OF_WebUserID)',
+				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
+				'KEY (`OF_IsSearchable`)',
+			);
 
 			if(isset($this->elements["neuefelder"]["dat"])){
 
@@ -172,34 +177,36 @@ class we_object extends we_document{
 					if(!empty($neu[$i])){
 						$name = $this->getElement($neu[$i] . "dtype", "dat") . "_" . $this->getElement($neu[$i], "dat");
 						$q .= " " . $name . " ";
-						$arrt[$name]["default"] = isset($this->elements[$neu[$i] . "default"]["dat"]) ? $this->elements[$neu[$i] . "default"]["dat"] : "";
-						$arrt[$name]["defaultThumb"] = isset($this->elements[$neu[$i] . "defaultThumb"]["dat"]) ? $this->elements[$neu[$i] . "defaultThumb"]["dat"] : "";
-						$arrt[$name]["defaultdir"] = isset($this->elements[$neu[$i] . "defaultdir"]["dat"]) ? $this->elements[$neu[$i] . "defaultdir"]["dat"] : "";
-						$arrt[$name]["rootdir"] = isset($this->elements[$neu[$i] . "rootdir"]["dat"]) ? $this->elements[$neu[$i] . "rootdir"]["dat"] : "";
-						$arrt[$name]["autobr"] = isset($this->elements[$neu[$i] . "autobr"]["dat"]) ? $this->elements[$neu[$i] . "autobr"]["dat"] : "";
-						$arrt[$name]["dhtmledit"] = isset($this->elements[$neu[$i] . "dhtmledit"]["dat"]) ? $this->elements[$neu[$i] . "dhtmledit"]["dat"] : "";
-						$arrt[$name]["commands"] = isset($this->elements[$neu[$i] . "commands"]["dat"]) ? $this->elements[$neu[$i] . "commands"]["dat"] : "";
-						$arrt[$name]["height"] = isset($this->elements[$neu[$i] . "height"]["dat"]) ? $this->elements[$neu[$i] . "height"]["dat"] : "";
-						$arrt[$name]["width"] = isset($this->elements[$neu[$i] . "width"]["dat"]) ? $this->elements[$neu[$i] . "width"]["dat"] : "";
-						$arrt[$name]["class"] = isset($this->elements[$neu[$i] . "class"]["dat"]) ? $this->elements[$neu[$i] . "class"]["dat"] : "";
-						$arrt[$name]["max"] = isset($this->elements[$neu[$i] . "max"]["dat"]) ? $this->elements[$neu[$i] . "max"]["dat"] : "";
-						$arrt[$name]["cssClasses"] = isset($this->elements[$neu[$i] . "cssClasses"]["dat"]) ? $this->elements[$neu[$i] . "cssClasses"]["dat"] : "";
-						$arrt[$name]["xml"] = isset($this->elements[$neu[$i] . "xml"]["dat"]) ? $this->elements[$neu[$i] . "xml"]["dat"] : "";
-						$arrt[$name]["removefirstparagraph"] = isset($this->elements[$neu[$i] . "removefirstparagraph"]["dat"]) ? $this->elements[$neu[$i] . "removefirstparagraph"]["dat"] : "";
-						$arrt[$name]["showmenus"] = isset($this->elements[$neu[$i] . "showmenus"]["dat"]) ? $this->elements[$neu[$i] . "showmenus"]["dat"] : "off";
-						$arrt[$name]["forbidhtml"] = isset($this->elements[$neu[$i] . "forbidhtml"]["dat"]) ? $this->elements[$neu[$i] . "forbidhtml"]["dat"] : "";
-						$arrt[$name]["forbidphp"] = isset($this->elements[$neu[$i] . "forbidphp"]["dat"]) ? $this->elements[$neu[$i] . "forbidphp"]["dat"] : "";
-						$arrt[$name]["inlineedit"] = isset($this->elements[$neu[$i] . "inlineedit"]["dat"]) ? $this->elements[$neu[$i] . "inlineedit"]["dat"] : "";
-						$arrt[$name]["users"] = isset($this->elements[$neu[$i] . "users"]["dat"]) ? $this->elements[$neu[$i] . "users"]["dat"] : "";
-						$arrt[$name]["required"] = isset($this->elements[$neu[$i] . "required"]["dat"]) ? $this->elements[$neu[$i] . "required"]["dat"] : "";
-						$arrt[$name]["editdescription"] = isset($this->elements[$neu[$i] . "editdescription"]["dat"]) ? $this->elements[$neu[$i] . "editdescription"]["dat"] : "";
-						$arrt[$name]["int"] = isset($this->elements[$neu[$i] . "int"]["dat"]) ? $this->elements[$neu[$i] . "int"]["dat"] : "";
-						$arrt[$name]["intID"] = isset($this->elements[$neu[$i] . "intID"]["dat"]) ? $this->elements[$neu[$i] . "intID"]["dat"] : "";
-						$arrt[$name]["intPath"] = isset($this->elements[$neu[$i] . "intPath"]["dat"]) ? $this->elements[$neu[$i] . "intPath"]["dat"] : "";
-						$arrt[$name]["hreftype"] = isset($this->elements[$neu[$i] . "hreftype"]["dat"]) ? $this->elements[$neu[$i] . "hreftype"]["dat"] : "";
-						$arrt[$name]["hrefdirectory"] = isset($this->elements[$neu[$i] . "hrefdirectory"]["dat"]) ? $this->elements[$neu[$i] . "hrefdirectory"]["dat"] : "false";
-						$arrt[$name]["hreffile"] = isset($this->elements[$neu[$i] . "hreffile"]["dat"]) ? $this->elements[$neu[$i] . "hreffile"]["dat"] : "true";
-						$arrt[$name]["uniqueID"] = md5(uniqid(rand(), 1));
+						$arrt[$name] = array(
+							"default" => isset($this->elements[$neu[$i] . "default"]["dat"]) ? $this->elements[$neu[$i] . "default"]["dat"] : "",
+							"defaultThumb" => isset($this->elements[$neu[$i] . "defaultThumb"]["dat"]) ? $this->elements[$neu[$i] . "defaultThumb"]["dat"] : "",
+							"defaultdir" => isset($this->elements[$neu[$i] . "defaultdir"]["dat"]) ? $this->elements[$neu[$i] . "defaultdir"]["dat"] : "",
+							"rootdir" => isset($this->elements[$neu[$i] . "rootdir"]["dat"]) ? $this->elements[$neu[$i] . "rootdir"]["dat"] : "",
+							"autobr" => isset($this->elements[$neu[$i] . "autobr"]["dat"]) ? $this->elements[$neu[$i] . "autobr"]["dat"] : "",
+							"dhtmledit" => isset($this->elements[$neu[$i] . "dhtmledit"]["dat"]) ? $this->elements[$neu[$i] . "dhtmledit"]["dat"] : "",
+							"commands" => isset($this->elements[$neu[$i] . "commands"]["dat"]) ? $this->elements[$neu[$i] . "commands"]["dat"] : "",
+							"height" => isset($this->elements[$neu[$i] . "height"]["dat"]) ? $this->elements[$neu[$i] . "height"]["dat"] : "",
+							"width" => isset($this->elements[$neu[$i] . "width"]["dat"]) ? $this->elements[$neu[$i] . "width"]["dat"] : "",
+							"class" => isset($this->elements[$neu[$i] . "class"]["dat"]) ? $this->elements[$neu[$i] . "class"]["dat"] : "",
+							"max" => isset($this->elements[$neu[$i] . "max"]["dat"]) ? $this->elements[$neu[$i] . "max"]["dat"] : "",
+							"cssClasses" => isset($this->elements[$neu[$i] . "cssClasses"]["dat"]) ? $this->elements[$neu[$i] . "cssClasses"]["dat"] : "",
+							"xml" => isset($this->elements[$neu[$i] . "xml"]["dat"]) ? $this->elements[$neu[$i] . "xml"]["dat"] : "",
+							"removefirstparagraph" => isset($this->elements[$neu[$i] . "removefirstparagraph"]["dat"]) ? $this->elements[$neu[$i] . "removefirstparagraph"]["dat"] : "",
+							"showmenus" => isset($this->elements[$neu[$i] . "showmenus"]["dat"]) ? $this->elements[$neu[$i] . "showmenus"]["dat"] : "off",
+							"forbidhtml" => isset($this->elements[$neu[$i] . "forbidhtml"]["dat"]) ? $this->elements[$neu[$i] . "forbidhtml"]["dat"] : "",
+							"forbidphp" => isset($this->elements[$neu[$i] . "forbidphp"]["dat"]) ? $this->elements[$neu[$i] . "forbidphp"]["dat"] : "",
+							"inlineedit" => isset($this->elements[$neu[$i] . "inlineedit"]["dat"]) ? $this->elements[$neu[$i] . "inlineedit"]["dat"] : "",
+							"users" => isset($this->elements[$neu[$i] . "users"]["dat"]) ? $this->elements[$neu[$i] . "users"]["dat"] : "",
+							"required" => isset($this->elements[$neu[$i] . "required"]["dat"]) ? $this->elements[$neu[$i] . "required"]["dat"] : "",
+							"editdescription" => isset($this->elements[$neu[$i] . "editdescription"]["dat"]) ? $this->elements[$neu[$i] . "editdescription"]["dat"] : "",
+							"int" => isset($this->elements[$neu[$i] . "int"]["dat"]) ? $this->elements[$neu[$i] . "int"]["dat"] : "",
+							"intID" => isset($this->elements[$neu[$i] . "intID"]["dat"]) ? $this->elements[$neu[$i] . "intID"]["dat"] : "",
+							"intPath" => isset($this->elements[$neu[$i] . "intPath"]["dat"]) ? $this->elements[$neu[$i] . "intPath"]["dat"] : "",
+							"hreftype" => isset($this->elements[$neu[$i] . "hreftype"]["dat"]) ? $this->elements[$neu[$i] . "hreftype"]["dat"] : "",
+							"hrefdirectory" => isset($this->elements[$neu[$i] . "hrefdirectory"]["dat"]) ? $this->elements[$neu[$i] . "hrefdirectory"]["dat"] : "false",
+							"hreffile" => isset($this->elements[$neu[$i] . "hreffile"]["dat"]) ? $this->elements[$neu[$i] . "hreffile"]["dat"] : "true",
+							"uniqueID" => md5(uniqid(rand(), 1)),
+						);
 
 						if($this->isVariantField($neu[$i]) && isset($this->elements[$neu[$i] . "variant"]["dat"]) && $this->elements[$neu[$i] . "variant"]["dat"] == 1){
 							$arrt[$name]["variant"] = $this->elements[$neu[$i] . "variant"]["dat"];
@@ -215,18 +222,17 @@ class we_object extends we_document{
 						for($f = 0; $f <= ( isset($this->elements[$neu[$i] . "count"]['dat']) ? $this->elements[$neu[$i] . "count"]["dat"] : 0 ); $f++){
 							$_val = (isset($this->elements[$neu[$i] . "defaultvalue" . $f]["dat"]) && $this->elements[$neu[$i] . "defaultvalue" . $f]["dat"] != $neu[$i] . "defaultvalue" . $f) ? $this->elements[$neu[$i] . "defaultvalue" . $f]["dat"] : "";
 							if(substr($name, 0, 12) == "multiobject_"){
-								array_push($arrt[$name]["meta"], $_val);
+								$arrt[$name]["meta"][] = $_val;
 							} else{
 								if(isset($this->elements[$neu[$i] . "defaultkey" . $f]["dat"])){
 									$arrt[$name]["meta"][$this->elements[$neu[$i] . "defaultkey" . $f]["dat"]] = $_val;
 								}
 							}
 						}
-						$q .= $this->switchtypes($neu[$i]);
-						$q .= ",";
+						$q .= $this->switchtypes($neu[$i]) . ',';
 						//add index for complex queries
 						if($this->getElement($neu[$i] . "dtype", "dat") == 'object'){
-							$indexe .= ', KEY (' . $name . ')';
+							$indexe[] = 'KEY (' . $name . ')';
 						}
 					}
 				}
@@ -258,17 +264,17 @@ class we_object extends we_document{
 
 			// Charset and Collation
 			$charset_collation = "";
-			if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
+			if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
-				$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+				$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
 			}
 
-			$this->DB_WE->query("DROP TABLE IF EXISTS $ctable");
-			$this->DB_WE->query("CREATE TABLE $ctable ($q, PRIMARY KEY (ID)$indexe) ENGINE = MYISAM $charset_collation");
+			$this->DB_WE->query('DROP TABLE IF EXISTS '.$ctable);
+			$this->DB_WE->query('CREATE TABLE '.$ctable.' ('.$q.', '.implode(',',$indexe).') ENGINE = MYISAM '.$charset_collation);
 
 			//dummy eintrag schreiben
-			$this->DB_WE->query("INSERT INTO $ctable (OF_ID) VALUES (0)");
+			$this->DB_WE->query('INSERT INTO '.$ctable.' (OF_ID) VALUES (0)');
 
 
 			// folder in object schreiben
@@ -280,10 +286,9 @@ class we_object extends we_document{
 
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
-			$q = "";
+			$q = '';
 
 			foreach($tableInfo as $info){
-
 				if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
 
 					if($regs[1] != "OF" && $regs[1] != "variant"){
@@ -299,44 +304,39 @@ class we_object extends we_document{
 							} else if((strpos($info["name"], 'object_') !== 0) && (strpos($nam, 'object_') === 0) && (strpos($info["flags"], 'multiple_key') === false)){
 								$q.=', ADD INDEX (' . $info["name"] . ') ';
 							}
-							if((strpos($info["name"], 'date_') === 0)){
 
-								if($this->elements[$info["name"] . "defaultThumb"]["dat"]){
-									$arrt[$nam]["default"] = '';
-								} else{
-									$arrt[$nam]["default"] = $this->elements[$info["name"] . "default"]["dat"];
-								}
-							} else{
-								$arrt[$nam]["default"] = $this->elements[$info["name"] . "default"]["dat"];
-							}
-							$arrt[$nam]["defaultThumb"] = $this->elements[$info["name"] . "defaultThumb"]["dat"];
-							$arrt[$nam]["autobr"] = $this->elements[$info["name"] . "autobr"]["dat"];
-							$arrt[$nam]["defaultdir"] = $this->elements[$info["name"] . "defaultdir"]["dat"];
-							$arrt[$nam]["rootdir"] = $this->elements[$info["name"] . "rootdir"]["dat"];
-							$arrt[$nam]["dhtmledit"] = $this->elements[$info["name"] . "dhtmledit"]["dat"];
-							$arrt[$nam]["showmenus"] = $this->elements[$info["name"] . "showmenus"]["dat"];
-							$arrt[$nam]["commands"] = $this->elements[$info["name"] . "commands"]["dat"];
-							$arrt[$nam]["height"] = $this->elements[$info["name"] . "height"]["dat"];
-							$arrt[$nam]["width"] = $this->elements[$info["name"] . "width"]["dat"];
-							$arrt[$nam]["class"] = $this->elements[$info["name"] . "class"]["dat"];
-							$arrt[$nam]["max"] = $this->elements[$info["name"] . "max"]["dat"];
-							$arrt[$nam]["cssClasses"] = $this->elements[$info["name"] . "cssClasses"]["dat"];
-							$arrt[$nam]["xml"] = $this->elements[$info["name"] . "xml"]["dat"];
-							$arrt[$nam]["removefirstparagraph"] = $this->elements[$info["name"] . "removefirstparagraph"]["dat"];
-							$arrt[$nam]["forbidhtml"] = $this->elements[$info["name"] . "forbidhtml"]["dat"];
-							$arrt[$nam]["forbidphp"] = $this->elements[$info["name"] . "forbidphp"]["dat"];
-							$arrt[$nam]["inlineedit"] = $this->elements[$info["name"] . "inlineedit"]["dat"];
-							$arrt[$nam]["users"] = $this->elements[$info["name"] . "users"]["dat"];
-							$arrt[$nam]["required"] = $this->elements[$info["name"] . "required"]["dat"];
-							$arrt[$nam]["editdescription"] = $this->elements[$info["name"] . "editdescription"]["dat"];
-							$arrt[$nam]["int"] = $this->elements[$info["name"] . "int"]["dat"];
-							$arrt[$nam]["intID"] = $this->elements[$info["name"] . "intID"]["dat"];
-							$arrt[$nam]["intPath"] = $this->elements[$info["name"] . "intPath"]["dat"];
-							$arrt[$nam]["hreftype"] = $this->elements[$info["name"] . "hreftype"]["dat"];
-							$arrt[$nam]["hrefdirectory"] = $this->elements[$info["name"] . "hrefdirectory"]["dat"];
-							$arrt[$nam]["hreffile"] = $this->elements[$info["name"] . "hreffile"]["dat"];
-							$arrt[$nam]["uniqueID"] = $this->SerializedArray[$info["name"]]["uniqueID"] ? $this->SerializedArray[$info["name"]]["uniqueID"] : md5(uniqid(rand(), 1));
-
+							$arrt[$nam] = array(
+								"default" => (strpos($info["name"], 'date_') === 0 ?
+									($this->elements[$info["name"] . "defaultThumb"]["dat"] ? '' : $this->elements[$info["name"] . "default"]["dat"]) :
+									$this->elements[$info["name"] . "default"]["dat"]),
+								"defaultThumb" => $this->elements[$info["name"] . "defaultThumb"]["dat"],
+								"autobr" => $this->elements[$info["name"] . "autobr"]["dat"],
+								"defaultdir" => $this->elements[$info["name"] . "defaultdir"]["dat"],
+								"rootdir" => $this->elements[$info["name"] . "rootdir"]["dat"],
+								"dhtmledit" => $this->elements[$info["name"] . "dhtmledit"]["dat"],
+								"showmenus" => $this->elements[$info["name"] . "showmenus"]["dat"],
+								"commands" => $this->elements[$info["name"] . "commands"]["dat"],
+								"height" => $this->elements[$info["name"] . "height"]["dat"],
+								"width" => $this->elements[$info["name"] . "width"]["dat"],
+								"class" => $this->elements[$info["name"] . "class"]["dat"],
+								"max" => $this->elements[$info["name"] . "max"]["dat"],
+								"cssClasses" => $this->elements[$info["name"] . "cssClasses"]["dat"],
+								"xml" => $this->elements[$info["name"] . "xml"]["dat"],
+								"removefirstparagraph" => $this->elements[$info["name"] . "removefirstparagraph"]["dat"],
+								"forbidhtml" => $this->elements[$info["name"] . "forbidhtml"]["dat"],
+								"forbidphp" => $this->elements[$info["name"] . "forbidphp"]["dat"],
+								"inlineedit" => $this->elements[$info["name"] . "inlineedit"]["dat"],
+								"users" => $this->elements[$info["name"] . "users"]["dat"],
+								"required" => $this->elements[$info["name"] . "required"]["dat"],
+								"editdescription" => $this->elements[$info["name"] . "editdescription"]["dat"],
+								"int" => $this->elements[$info["name"] . "int"]["dat"],
+								"intID" => $this->elements[$info["name"] . "intID"]["dat"],
+								"intPath" => $this->elements[$info["name"] . "intPath"]["dat"],
+								"hreftype" => $this->elements[$info["name"] . "hreftype"]["dat"],
+								"hrefdirectory" => $this->elements[$info["name"] . "hrefdirectory"]["dat"],
+								"hreffile" => $this->elements[$info["name"] . "hreffile"]["dat"],
+								"uniqueID" => $this->SerializedArray[$info["name"]]["uniqueID"] ? $this->SerializedArray[$info["name"]]["uniqueID"] : md5(uniqid(rand(), 1)),
+							);
 							if($this->isVariantField($info["name"]) && isset($this->elements[$info["name"] . "variant"]["dat"]) && $this->elements[$info["name"] . "variant"]["dat"] == 1){
 								$arrt[$nam]["variant"] = $this->elements[$info["name"] . "variant"]["dat"];
 							} else if(isset($this->elements[$info["name"] . "variant"])){
@@ -351,7 +351,7 @@ class we_object extends we_document{
 										}
 										$_val = (isset($this->elements[$info["name"] . "defaultvalue" . $f]) && $this->elements[$info["name"] . "defaultvalue" . $f] != $info["name"] . "defaultvalue" . $f ) ? $this->elements[$info["name"] . "defaultvalue" . $f]["dat"] : "";
 										if(substr($nam, 0, 12) == "multiobject_"){
-											array_push($arrt[$nam]["meta"], $_val);
+											$arrt[$nam]["meta"][] = $_val;
 										} else{
 											if($this->elements[$info["name"] . "defaultkey" . $f]["dat"] == ""){
 												$arrt[$nam]["meta"][$this->elements[$info["name"] . "defaultkey" . $f]["dat"]] = $_val;
@@ -376,35 +376,36 @@ class we_object extends we_document{
 				if(isset($neu[$i]) && $neu[$i] != ""){
 					$nam = $this->getElement($neu[$i] . "dtype", "dat") . "_" . $this->getElement($neu[$i], "dat");
 					$q .= " ADD " . $nam . " ";
-					$arrt[$nam]["default"] = isset($this->elements[$neu[$i] . "default"]["dat"]) ? $this->elements[$neu[$i] . "default"]["dat"] : "";
-					$arrt[$nam]["defaultThumb"] = isset($this->elements[$neu[$i] . "defaultThumb"]["dat"]) ? $this->elements[$neu[$i] . "defaultThumb"]["dat"] : "";
-					$arrt[$nam]["defaultdir"] = isset($this->elements[$neu[$i] . "defaultdir"]["dat"]) ? $this->elements[$neu[$i] . "defaultdir"]["dat"] : "";
-					$arrt[$nam]["rootdir"] = isset($this->elements[$neu[$i] . "rootdir"]["dat"]) ? $this->elements[$neu[$i] . "rootdir"]["dat"] : "";
-					$arrt[$nam]["autobr"] = isset($this->elements[$neu[$i] . "autobr"]["dat"]) ? $this->elements[$neu[$i] . "autobr"]["dat"] : "";
-					$arrt[$nam]["dhtmledit"] = isset($this->elements[$neu[$i] . "dhtmledit"]["dat"]) ? $this->elements[$neu[$i] . "dhtmledit"]["dat"] : "";
-					$arrt[$nam]["showmenues"] = isset($this->elements[$neu[$i] . "showmenues"]["dat"]) ? $this->elements[$neu[$i] . "showmenues"]["dat"] : "";
-					$arrt[$nam]["commands"] = isset($this->elements[$neu[$i] . "commands"]["dat"]) ? $this->elements[$neu[$i] . "commands"]["dat"] : "";
-					$arrt[$nam]["height"] = isset($this->elements[$neu[$i] . "height"]["dat"]) ? $this->elements[$neu[$i] . "height"]["dat"] : 200;
-					$arrt[$nam]["width"] = isset($this->elements[$neu[$i] . "width"]["dat"]) ? $this->elements[$neu[$i] . "width"]["dat"] : 618;
-					$arrt[$nam]["class"] = isset($this->elements[$neu[$i] . "class"]["dat"]) ? $this->elements[$neu[$i] . "class"]["dat"] : "";
-					$arrt[$nam]["max"] = isset($this->elements[$neu[$i] . "max"]["dat"]) ? $this->elements[$neu[$i] . "max"]["dat"] : "";
-					$arrt[$nam]["cssClasses"] = isset($this->elements[$neu[$i] . "cssClasses"]["dat"]) ? $this->elements[$neu[$i] . "cssClasses"]["dat"] : "";
-					$arrt[$nam]["xml"] = isset($this->elements[$neu[$i] . "xml"]["dat"]) ? $this->elements[$neu[$i] . "xml"]["dat"] : "";
-					$arrt[$nam]["removefirstparagraph"] = isset($this->elements[$neu[$i] . "removefirstparagraph"]["dat"]) ? $this->elements[$neu[$i] . "removefirstparagraph"]["dat"] : "";
-					$arrt[$nam]["forbidhtml"] = isset($this->elements[$neu[$i] . "forbidhtml"]["dat"]) ? $this->elements[$neu[$i] . "forbidhtml"]["dat"] : "";
-					$arrt[$nam]["forbidphp"] = isset($this->elements[$neu[$i] . "forbidphp"]["dat"]) ? $this->elements[$neu[$i] . "forbidphp"]["dat"] : "";
-					$arrt[$nam]["inlineedit"] = isset($this->elements[$neu[$i] . "inlineedit"]["dat"]) ? $this->elements[$neu[$i] . "inlineedit"]["dat"] : "";
-					$arrt[$nam]["users"] = isset($this->elements[$neu[$i] . "users"]["dat"]) ? $this->elements[$neu[$i] . "users"]["dat"] : "";
-					$arrt[$nam]["required"] = isset($this->elements[$neu[$i] . "required"]["dat"]) ? $this->elements[$neu[$i] . "required"]["dat"] : "";
-					$arrt[$nam]["editdescription"] = isset($this->elements[$neu[$i] . "editdescription"]["dat"]) ? $this->elements[$neu[$i] . "editdescription"]["dat"] : "";
-					$arrt[$nam]["int"] = isset($this->elements[$neu[$i] . "int"]["dat"]) ? $this->elements[$neu[$i] . "int"]["dat"] : "";
-					$arrt[$nam]["intID"] = isset($this->elements[$neu[$i] . "intID"]["dat"]) ? $this->elements[$neu[$i] . "intID"]["dat"] : "";
-					$arrt[$nam]["intPath"] = isset($this->elements[$neu[$i] . "intPath"]["dat"]) ? $this->elements[$neu[$i] . "intPath"]["dat"] : "";
-					$arrt[$nam]["hreftype"] = isset($this->elements[$neu[$i] . "hreftype"]["dat"]) ? $this->elements[$neu[$i] . "hreftype"]["dat"] : "";
-					$arrt[$nam]["hrefdirectory"] = isset($this->elements[$neu[$i] . "hrefdirectory"]["dat"]) ? $this->elements[$neu[$i] . "hrefdirectory"]["dat"] : "false";
-					$arrt[$nam]["hreffile"] = isset($this->elements[$neu[$i] . "hreffile"]["dat"]) ? $this->elements[$neu[$i] . "hreffile"]["dat"] : "true";
-					$arrt[$nam]["uniqueID"] = md5(uniqid(rand(), 1));
-
+					$arrt[$nam] = array(
+						"default" => isset($this->elements[$neu[$i] . "default"]["dat"]) ? $this->elements[$neu[$i] . "default"]["dat"] : "",
+						"defaultThumb" => isset($this->elements[$neu[$i] . "defaultThumb"]["dat"]) ? $this->elements[$neu[$i] . "defaultThumb"]["dat"] : "",
+						"defaultdir" => isset($this->elements[$neu[$i] . "defaultdir"]["dat"]) ? $this->elements[$neu[$i] . "defaultdir"]["dat"] : "",
+						"rootdir" => isset($this->elements[$neu[$i] . "rootdir"]["dat"]) ? $this->elements[$neu[$i] . "rootdir"]["dat"] : "",
+						"autobr" => isset($this->elements[$neu[$i] . "autobr"]["dat"]) ? $this->elements[$neu[$i] . "autobr"]["dat"] : "",
+						"dhtmledit" => isset($this->elements[$neu[$i] . "dhtmledit"]["dat"]) ? $this->elements[$neu[$i] . "dhtmledit"]["dat"] : "",
+						"showmenues" => isset($this->elements[$neu[$i] . "showmenues"]["dat"]) ? $this->elements[$neu[$i] . "showmenues"]["dat"] : "",
+						"commands" => isset($this->elements[$neu[$i] . "commands"]["dat"]) ? $this->elements[$neu[$i] . "commands"]["dat"] : "",
+						"height" => isset($this->elements[$neu[$i] . "height"]["dat"]) ? $this->elements[$neu[$i] . "height"]["dat"] : 200,
+						"width" => isset($this->elements[$neu[$i] . "width"]["dat"]) ? $this->elements[$neu[$i] . "width"]["dat"] : 618,
+						"class" => isset($this->elements[$neu[$i] . "class"]["dat"]) ? $this->elements[$neu[$i] . "class"]["dat"] : "",
+						"max" => isset($this->elements[$neu[$i] . "max"]["dat"]) ? $this->elements[$neu[$i] . "max"]["dat"] : "",
+						"cssClasses" => isset($this->elements[$neu[$i] . "cssClasses"]["dat"]) ? $this->elements[$neu[$i] . "cssClasses"]["dat"] : "",
+						"xml" => isset($this->elements[$neu[$i] . "xml"]["dat"]) ? $this->elements[$neu[$i] . "xml"]["dat"] : "",
+						"removefirstparagraph" => isset($this->elements[$neu[$i] . "removefirstparagraph"]["dat"]) ? $this->elements[$neu[$i] . "removefirstparagraph"]["dat"] : "",
+						"forbidhtml" => isset($this->elements[$neu[$i] . "forbidhtml"]["dat"]) ? $this->elements[$neu[$i] . "forbidhtml"]["dat"] : "",
+						"forbidphp" => isset($this->elements[$neu[$i] . "forbidphp"]["dat"]) ? $this->elements[$neu[$i] . "forbidphp"]["dat"] : "",
+						"inlineedit" => isset($this->elements[$neu[$i] . "inlineedit"]["dat"]) ? $this->elements[$neu[$i] . "inlineedit"]["dat"] : "",
+						"users" => isset($this->elements[$neu[$i] . "users"]["dat"]) ? $this->elements[$neu[$i] . "users"]["dat"] : "",
+						"required" => isset($this->elements[$neu[$i] . "required"]["dat"]) ? $this->elements[$neu[$i] . "required"]["dat"] : "",
+						"editdescription" => isset($this->elements[$neu[$i] . "editdescription"]["dat"]) ? $this->elements[$neu[$i] . "editdescription"]["dat"] : "",
+						"int" => isset($this->elements[$neu[$i] . "int"]["dat"]) ? $this->elements[$neu[$i] . "int"]["dat"] : "",
+						"intID" => isset($this->elements[$neu[$i] . "intID"]["dat"]) ? $this->elements[$neu[$i] . "intID"]["dat"] : "",
+						"intPath" => isset($this->elements[$neu[$i] . "intPath"]["dat"]) ? $this->elements[$neu[$i] . "intPath"]["dat"] : "",
+						"hreftype" => isset($this->elements[$neu[$i] . "hreftype"]["dat"]) ? $this->elements[$neu[$i] . "hreftype"]["dat"] : "",
+						"hrefdirectory" => isset($this->elements[$neu[$i] . "hrefdirectory"]["dat"]) ? $this->elements[$neu[$i] . "hrefdirectory"]["dat"] : "false",
+						"hreffile" => isset($this->elements[$neu[$i] . "hreffile"]["dat"]) ? $this->elements[$neu[$i] . "hreffile"]["dat"] : "true",
+						"uniqueID" => md5(uniqid(rand(), 1)),
+					);
 //					$arrt[$nam]["variant"] = (isset($this->elements[$neu[$i]."variant"]["dat"]) && $this->elements[$neu[$i]."variant"]["dat"]==1) ? $this->elements[$neu[$i]."variant"]["dat"] : "";
 					if($this->isVariantField($neu[$i]) && isset($this->elements[$neu[$i] . "variant"]["dat"]) && $this->elements[$neu[$i] . "variant"]["dat"] == 1){
 						$arrt[$nam]["variant"] = $this->elements[$neu[$i] . "variant"]["dat"];
@@ -418,7 +419,7 @@ class we_object extends we_document{
 							$arrt[$nam]["meta"] = array();
 						}
 						if(substr($nam, 0, 12) == "multiobject_"){
-							array_push($arrt[$nam]["meta"], $_val);
+							$arrt[$nam]["meta"][] = $_val;
 						} else{
 							if(isset($this->elements[$neu[$i] . "defaultkey" . $f]["dat"])){
 								$arrt[$nam]["meta"][$this->elements[$neu[$i] . "defaultkey" . $f]["dat"]] = $_val;
@@ -433,7 +434,7 @@ class we_object extends we_document{
 					if($this->getElement($neu[$i] . "dtype", "dat") == 'object'){
 						$q .= ', ADD INDEX (' . $nam . ')';
 					}
-					$q .= ",";
+					$q .= ',';
 				}
 			}
 			$q = rtrim($q, ',');
@@ -545,7 +546,7 @@ class we_object extends we_document{
 		$this->setParentID($parentID);
 		$this->Path = $this->getPath();
 		$this->wasUpdate = 1;
-		$this->i_savePersistentSlotsToDB("Text,Path,ParentID");
+		$this->i_savePersistentSlotsToDB('Text,Path,ParentID');
 	}
 
 	//##################################################################### FUNCTIONS FOR GETTING DATA ######################################################################
@@ -558,7 +559,7 @@ class we_object extends we_document{
 				if($v < 0){
 					$v = 0;
 				}
-				$sort[str_replace('.', '', uniqid("",true))] = $v;
+				$sort[str_replace('.', '', uniqid("", true))] = $v;
 			}
 			$this->setElement("we_sort", $sort);
 		}
@@ -632,7 +633,6 @@ class we_object extends we_document{
 			if($i == $position + 1){
 				$t[$ident] = $identpos;
 				$t[$identifier] = $pos;
-
 			} elseif($i != $position){
 				$t[$ident] = $sort[$ident];
 			}
@@ -650,9 +650,9 @@ class we_object extends we_document{
 
 		$t = array();
 		$i = 0;
-		$position = sizeof($reversed);
+		$position = count($reversed);
 		foreach($reversed as $ident => $identpos){
-			if($ident == $identifier && $i < sizeof($reversed) - 1){
+			if($ident == $identifier && $i < count($reversed) - 1){
 				$position = $i;
 			}
 			if($i == $position + 1){
@@ -676,7 +676,7 @@ class we_object extends we_document{
 		if(empty($sort)){
 			$gesamt = 0;
 		} else{
-			$gesamt++;
+			++$gesamt;
 		}
 
 		$this->elements["Sortgesamt"]["dat"] = $gesamt;
@@ -754,11 +754,10 @@ class we_object extends we_document{
 		$this->elements["Sortgesamt"]["dat"] = sizeof($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", (sizeof($sort) > 0 ? $sort : array()));
+		$this->setElement("we_sort", (count($sort) > 0 ? $sort : array()));
 	}
 
 	function downMetaAtClass($name, $i){
-		unset($temp);
 		$temp = $this->elements[$name . "defaultkey" . ($i + 1)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i + 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
@@ -769,7 +768,6 @@ class we_object extends we_document{
 	}
 
 	function upMetaAtClass($name, $i){
-		unset($temp);
 		$temp = $this->elements[$name . "defaultkey" . ($i - 1)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i - 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
@@ -823,9 +821,9 @@ class we_object extends we_document{
 		//$name = str_replace("float", "f", str_replace("int", "i",$name));
 
 		$type = ( $this->getElement($name . "dtype", "dat") != "" ) ? $this->getElement($name . "dtype", "dat") : "input";
-		$content = '<tr>';
-		$content .= '<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>';
-		$content .= '<td  width="170" class="defaultfont" valign="top">';
+		$content = '<tr>
+			<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>
+			<td  width="170" class="defaultfont" valign="top">';
 
 		if($type == 'object'){
 
@@ -840,10 +838,9 @@ class we_object extends we_document{
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]){
-							$this->DB_WE->query("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID = " . $regs[2]);
-							$this->DB_WE->next_record();
-							if($this->DB_WE->f("Path") !== ''){
-								$vals[$regs[2]] = $this->DB_WE->f("Path");
+							$path = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID = " . $regs[2], "Path", $this->DB_WE);
+							if($path !== ''){
+								$vals[$regs[2]] = $path;
 							}
 						}
 					}
@@ -857,8 +854,8 @@ class we_object extends we_document{
 			$foo = $this->getElement($name, "dat");
 			if($type == 'shopVat'){
 				$foo = WE_SHOP_VAT_FIELD_NAME;
-				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo);
-				$content .= $this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
+				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
+					$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
 			} else{
 				$foo = $foo ? $foo : g_l('modules_object', '[new_field]');
 				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $foo, 52, ' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onChange="_EditorFrame.setEditorIsHot(true);"', "text", 388);
@@ -872,9 +869,8 @@ class we_object extends we_document{
 		$content .= '<tr><td class="weMultiIconBoxHeadlineThin" valign="top">' . g_l('global', "[description]") . '</td><td>' . $this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), 'onChange="_EditorFrame.setEditorIsHot(true)"; style="width: 388px;"') . '</td></tr>';
 
 		//type
-		$content .= '<tr>';
-		$content .= '<td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>';
-		$content .= '<td width="170" class="defaultfont"  valign="top">';
+		$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[type]') . '</td>
+		<td width="170" class="defaultfont"  valign="top">';
 		$val["input"] = g_l('modules_object', '[input_field]');
 		$val["text"] = g_l('modules_object', '[textarea_field]');
 		$val["date"] = g_l('modules_object', '[date_field]');
@@ -992,11 +988,11 @@ class we_object extends we_document{
 			  }
 			 */
 			case 'checkbox':
-				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>';
-				$content .= '<td width="170" class="defaultfont">';
-				$content .= we_forms::checkbox("1", $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}");
-				$content .= '<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />';
-				$content .= '</td></tr>';
+				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
+					'<td width="170" class="defaultfont">' .
+					we_forms::checkbox("1", $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
+					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
+					'</td></tr>';
 				break;
 			case 'img':
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>';
@@ -1304,23 +1300,14 @@ class we_object extends we_document{
 			$content = g_l('global', "[new_link]");
 		if($startTag){
 			$out = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-					<tr>
-						<td class=\"defaultfont\">" . $startTag . $content . "</a></td>
-						<td width=\"5\"></td>
-						<td>" . we_button::create_button_table(array($editbut,
-					$delbut), 5)
-				. "</td>
+					<tr><td class=\"defaultfont\">" . $startTag . $content . "</a></td>
+						<td width=\"5\"></td><td>" . we_button::create_button_table(array($editbut, $delbut), 5) . "</td>
 					</tr>
 					</table>";
 		} else{
 			$out = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-					<tr>
-						<td class=\"defaultfont\">" . $content . "</td>
-						<td width=\"5\"></td>
-						<td>" . we_button::create_button_table(array($editbut,
-					$delbut), 5)
-				. "</td>
-					</tr>
+					<tr><td class=\"defaultfont\">" . $content . "</td>
+						<td width=\"5\"></td><td>" . we_button::create_button_table(array($editbut, $delbut), 5) . "</td></tr>
 					</table>";
 		}
 
@@ -1331,7 +1318,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($ObjectID, "dat");
 		if($editable){
 			$db = new DB_WE();
-			$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=" . $pid, 'Path', $db);
+			$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $pid, 'Path', $db);
 			$textname = 'we_' . $this->Name . '_txt[' . $pid . '_path]';
 			$idname = 'we_' . $this->Name . "_input[" . $ObjectID . "default]";
 			$myid = $this->getElement($ObjectID . "default", "dat");
@@ -1399,12 +1386,9 @@ class we_object extends we_document{
 		$plusbutDis = we_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
 		$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22);
 		$trashbutDis = we_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true);
-		$content = "<tr>"
-			. "<td>"
-			. "<td>"
-			. $this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . "</td>"
-			. "<td>"
-			. we_button::create_button_table(
+		return '<tr>'
+			. '<td>' . $this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . "</td>"
+			. '<td>' . we_button::create_button_table(
 				array(
 				$selectObject,
 				$this->htmlHidden($idname, $myid),
@@ -1414,38 +1398,33 @@ class we_object extends we_document{
 				($this->elements[$name . "count"]["dat"] >= 1 ? $trashbut : $trashbutDis)
 				), 5
 			)
-			. "</td></tr>";
-
-		return $content;
+			. '</td></tr>';
 	}
 
 	function dhtmledit($name, $i = 0){
-
-
-		$_but = we_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');");
-		return $_but . $this->getWysiwygArea($name);
+		return we_button::create_button("attributes", "javascript:we_cmd('editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
+			$this->getWysiwygArea($name);
 	}
 
 	function getWysiwygArea($name){
 
-		$attribs = array();
-		$attribs["removefirstparagraph"] = isset($this->elements[$name . "removefirstparagraph"]["dat"]) ? $this->elements[$name . "removefirstparagraph"]["dat"] : defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true;
-		$attribs["xml"] = isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "";
-		$attribs["dhtmledit"] = isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "";
-		$attribs["wysiwyg"] = isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "";
-		$attribs["showmenus"] = isset($this->elements[$name . "showmenus"]["dat"]) ? $this->elements[$name . "showmenus"]["dat"] : "off";
-		$attribs["commands"] = isset($this->elements[$name . "commands"]["dat"]) ? $this->elements[$name . "commands"]["dat"] : "";
-		$attribs["classes"] = isset($this->elements[$name . "cssClasses"]["dat"]) ? $this->elements[$name . "cssClasses"]["dat"] : "";
-		$attribs["width"] = 386; //isset($this->elements[$name."width"]["dat"]) ? $this->elements[$name."width"]["dat"] : 618;
-		$attribs["height"] = 52; //isset($this->elements[$name."height"]["dat"]) ? $this->elements[$name."height"]["dat"] : 200;
-		$attribs["rows"] = 3;
-		$attribs["bgcolor"] = "white";
-		$attribs["cols"] = 30;
-		$attribs["inlineedit"] = isset($this->elements[$name . "inlineedit"]["dat"]) ? $this->elements[$name . "inlineedit"]["dat"] : "";
-		$attribs["stylesheets"] = $this->CSS;
-
-		$attribs["spellchecker"] = true;
-
+		$attribs = array(
+			"removefirstparagraph" => isset($this->elements[$name . "removefirstparagraph"]["dat"]) ? $this->elements[$name . "removefirstparagraph"]["dat"] : defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true,
+			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",
+			"dhtmledit" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
+			"wysiwyg" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
+			"showmenus" => isset($this->elements[$name . "showmenus"]["dat"]) ? $this->elements[$name . "showmenus"]["dat"] : "off",
+			"commands" => isset($this->elements[$name . "commands"]["dat"]) ? $this->elements[$name . "commands"]["dat"] : "",
+			"classes" => isset($this->elements[$name . "cssClasses"]["dat"]) ? $this->elements[$name . "cssClasses"]["dat"] : "",
+			"width" => 386, //isset($this->elements[$name."width"]["dat"]) ? $this->elements[$name."width"]["dat"] : 618,
+			"height" => 52, //isset($this->elements[$name."height"]["dat"]) ? $this->elements[$name."height"]["dat"] : 200,
+			"rows" => 3,
+			"bgcolor" => "white",
+			"cols" => 30,
+			"inlineedit" => isset($this->elements[$name . "inlineedit"]["dat"]) ? $this->elements[$name . "inlineedit"]["dat"] : "",
+			"stylesheets" => $this->CSS,
+			"spellchecker" => true,
+		);
 
 		$autobr = isset($this->elements[$name . "autobr"]["dat"]) ? $this->elements[$name . "autobr"]["dat"] : "";
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
@@ -1459,7 +1438,7 @@ class we_object extends we_document{
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $users))){
-				array_push($users, $id);
+				$users[] = $id;
 			}
 		}
 		$this->elements[$name . "users"]["dat"] = makeCSVFromArray($users, true);
@@ -1468,8 +1447,9 @@ class we_object extends we_document{
 	function del_user_from_field($id, $name){
 		$csv = $this->getElement($name . "users", "dat");
 		$csv = str_replace($id . ',', '', $csv);
-		if($csv == ",")
+		if($csv == ","){
 			$csv = "";
+		}
 		$this->elements[$name . "users"]["dat"] = $csv;
 	}
 
@@ -1546,7 +1526,7 @@ class we_object extends we_document{
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $users))){
-				array_push($users, $id);
+				$users[] = $id;
 			}
 		}
 		$this->Users = makeCSVFromArray($users, true);
@@ -1602,7 +1582,6 @@ class we_object extends we_document{
 
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= we_button::create_button_table(array(
@@ -1614,7 +1593,7 @@ class we_object extends we_document{
 		$content .= '<br>' . $img->getHtml();
 		// gets thumbnails and shows a select field, if there are any:
 		$thumbdb = new DB_WE();
-		$thumbdb->query("SELECT Name FROM " . THUMBNAILS_TABLE);
+		$thumbdb->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
 		$thumbs = $thumbdb->getAll();
 		if(count($thumbs)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
@@ -1622,11 +1601,10 @@ class we_object extends we_document{
 			foreach($thumbs as $id => $thumb){
 				$thumbList[] = $thumb["Name"];
 			}
-			if(isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]])){
-				$currentSelection = $this->elements["" . $name . "Thumb"]["dat"];
-			} else{
-				$currentSelection = "";
-			}
+			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
+					$this->elements["" . $name . "Thumb"]["dat"] :
+					'');
+
 
 			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", 'onchange="_EditorFrame.setEditorIsHot(true);" name="we_' . $this->Name . '_input[' . $name . 'Thumb]"', "value", 388);
 		}
@@ -1649,7 +1627,6 @@ class we_object extends we_document{
 		$content .= '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />';
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= we_button::create_button_table(array(
@@ -1678,7 +1655,6 @@ class we_object extends we_document{
 		$content .= '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />';
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= we_button::create_button_table(array(
@@ -1702,7 +1678,6 @@ class we_object extends we_document{
 		$content .= '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />';
 		//javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= we_button::create_button_table(array(
@@ -1743,11 +1718,7 @@ class we_object extends we_document{
 				$all = substr($all, strlen($regs[1]) + 2);
 				$key = $regs[1];
 				if(preg_match('/unique([^%]*)/', $key, $regs)){
-					if(!$regs[1]){
-						$anz = 16;
-					} else{
-						$anz = abs($regs[1]);
-					}
+					$anz = (!$regs[1] ? 16 : abs($regs[1]));
 					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
@@ -1804,40 +1775,24 @@ class we_object extends we_document{
 				$all = substr($all, strlen($regs[1]) + 2);
 				$key = $regs[1];
 				if(preg_match('/urlunique([^%]*)/', $key, $regs)){
-					if(!$regs[1]){
-						$anz = 16;
-					} else{
-						$anz = abs($regs[1]);
-					}
+					$anz = (!$regs[1] ? 16 : abs($regs[1]));
 					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
 					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlunique%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 					$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[urlunique_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else{
 					if(preg_match('/urlfield1([^%]*)/', $key, $regs)){
-						if(!$regs[1]){
-							$anz = 64;
-						} else{
-							$anz = abs($regs[1]);
-						}
+						$anz = (!$regs[1] ? 64 : abs($regs[1]));
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield1%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 						$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
-						if(!$regs[1]){
-							$anz = 64;
-						} else{
-							$anz = abs($regs[1]);
-						}
+						$anz = (!$regs[1] ? 64 : abs($regs[1]));
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield2%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 						$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
-						if(!$regs[1]){
-							$anz = 64;
-						} else{
-							$anz = abs($regs[1]);
-						}
-						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield3%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
-						$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+						$anz = (!$regs[1] ? 64 : abs($regs[1]));
+						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield3%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;" .
+							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 					} else{
 						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 					}
@@ -1845,8 +1800,8 @@ class we_object extends we_document{
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
-				$select2 .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[url]'), 1, "Text", "", 'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
-				$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $key, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+				$select2 .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[url]'), 1, "Text", "", 'onChange="_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;" .
+					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $key, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select2 .= "<br>";
@@ -1858,63 +1813,24 @@ class we_object extends we_document{
 
 
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-
-	<tr>
-		<td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" >' . $select . '</td>
-	</tr>
-
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-
-	<tr>
-		<td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[seourl]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" >' . $select2 . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" >' . $this->formTriggerDocument(true) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td class="defaultfont" valign=top>' . g_l('global', "[categorys]") . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" >' . $this->formCategory() . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-';
-		$content .= '	<tr>
-		<td colspan="3" >' . $this->formRestrictUsers() . '</td>
-	</tr>
-';
-		if($this->RestrictUsers){
-			$content .= '
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" >' . $this->formUsers() . '</td>
-	</tr>
-';
-		}
-
-		$content .= '</table>
-';
-
-		return $content;
+		return '<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
+	<tr><td colspan="3" >' . $select . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[seourl]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
+	<tr><td colspan="3" >' . $select2 . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="3" >' . $this->formTriggerDocument(true) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td class="defaultfont" valign=top>' . g_l('global', "[categorys]") . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="3" >' . $this->formCategory() . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="3" >' . $this->formRestrictUsers() . '</td></tr>' .
+			($this->RestrictUsers ?
+				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+	<tr><td colspan="3" >' . $this->formUsers() . '</td></tr>' :
+				'') .
+			'</table>';
 	}
 
 	function formRestrictUsers($canChange = true){
@@ -1930,13 +1846,9 @@ class we_object extends we_document{
 	}
 
 	function formPath(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>' . $this->formInputField("", "Text", g_l('modules_object', '[classname]'), 30, 508, 255, 'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td>
-	</tr>
-</table>
-';
-		return $content;
+		return '<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . $this->formInputField("", "Text", g_l('modules_object', '[classname]'), 30, 508, 255, 'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
+</table>';
 	}
 
 	function formWorkspaces(){
@@ -1969,9 +1881,6 @@ class we_object extends we_document{
 		$this->Templates = makeCSVFromArray($_newTmplArr, true);
 		$this->DefaultWorkspaces = makeCSVFromArray($_newDefaultArr, true);
 
-		//javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd(\\'add_workspace\\',top.allIDs);','','','',1
-		$wecmdenc1 = '';
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('add_workspace',top.allIDs);");
 		$button = we_button::create_button("add", "javascript:we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
@@ -1990,18 +1899,12 @@ class we_object extends we_document{
 	}
 
 	function formWorkspacesFlag(){
-		$content =
-			'<div style="margin-bottom:8px;">' . we_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
+		return '<div style="margin-bottom:8px;">' . we_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
 			we_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
-
-		return $content;
 	}
 
 	function formCSS(){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		//javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_css\\', top.allIDs);', '', '', 'text/css', 1,1)
-		$wecmdenc1 = '';
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");
@@ -2014,7 +1917,6 @@ class we_object extends we_document{
 		$rootDIrID = 0;
 		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
 		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDIrID . "','" . $this->ContentType . "');");
@@ -2075,8 +1977,7 @@ class we_object extends we_document{
 	}
 
 	function del_workspace($id){
-
-		$this->DB_WE->query("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE TableID=" . $this->ID . " AND (Workspaces like '," . intval($id) . ",' OR ExtraWorkspaces like '," . intval($id) . ",') LIMIT 0,1");
+		$this->DB_WE->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE TableID=" . $this->ID . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces like '," . intval($id) . ",') LIMIT 0,1");
 
 		if($this->DB_WE->next_record()){
 			$GLOBALS['WE_DEL_WORKSPACE_ERROR'] = true;
@@ -2107,7 +2008,7 @@ class we_object extends we_document{
 		$tempArr = array();
 
 		foreach($defaultWorkspaces as $t){
-			array_push($tempArr, $t);
+			$tempArr[] = $t;
 		}
 
 		$this->DefaultWorkspaces = makeCSVFromArray($tempArr, true);
@@ -2115,7 +2016,7 @@ class we_object extends we_document{
 		$tempArr = array();
 
 		foreach($Templates as $t){
-			array_push($tempArr, $t);
+			$tempArr[] = $t;
 		}
 
 		$this->Templates = makeCSVFromArray($tempArr, true);
@@ -2132,7 +2033,7 @@ class we_object extends we_document{
 		$f = 0;
 
 		if($this->ID){
-			$rec = getHash("SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM " . OBJECT_TABLE . " WHERE ID = " . $this->ID, $this->DB_WE);
+			$rec = getHash('SELECT strOrder,DefaultCategory,DefaultValues,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID = ' . $this->ID, $this->DB_WE);
 
 			$this->strOrder = $rec["strOrder"];
 			$this->setSort();
@@ -2264,7 +2165,7 @@ class we_object extends we_document{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Text == "") ? true : false;
+		return ($this->Text == "");
 	}
 
 	function i_filenameNotValid(){
@@ -2290,7 +2191,7 @@ class we_object extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM " . $this->Table . " WHERE ParentID='" . $this->ParentID . "' AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "ID", $this->DB_WE);
+		return f('SELECT ID FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . escape_sql_query($this->Text) . '" AND ID != ' . intval($this->ID), 'ID', $this->DB_WE);
 	}
 
 	function i_checkPathDiffAndCreate(){
@@ -2484,7 +2385,7 @@ class we_object extends we_document{
 	}
 
 	function userHasAccess(){
-		$uid=$this->isLockedByUser();
+		$uid = $this->isLockedByUser();
 		if($uid > 0 && $uid != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
 			return self::FILE_LOCKED;
 		}

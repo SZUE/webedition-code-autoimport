@@ -16,4 +16,4 @@ $_we_active_integrated_modules = array(
 	'spellchecker',
 	'glossary',
 );
-$GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
+$GLOBALS['_we_active_integrated_modules']=$_we_active_integrated_modules;

@@ -1962,35 +1962,34 @@ class we_user{
 
 		while(false !== ($entry = $_language_directory->read())) {
 			if($entry != "." && $entry != ".."){
-				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)
-					&& is_file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry . "/translation.inc.php")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry . "/translation.inc.php");
-					$_languages["translation"][] = $entry;
-				} else{
-					// do nothing
+				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
+					$_language[$entry] = $entry;
 				}
-			} else{
-				// do nothing
 			}
 		}
+		global $_languages;
 
-		if(sizeof($_languages["translation"]) > 0){ // Build language select box
-			$_languages = new we_html_select(array("name" => $this->Name . '_Preference_Language', "class" => "weSelect", "onChange" => "top.content.setHot();"));
-			if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
-				$myCompLang = $this->Preferences['Language'];
-			} else{
-				$myCompLang = $GLOBALS["WE_LANGUAGE"];
-			}
-			foreach($_language["translation"] as $key => $value){
-				$_languages->addOption($key, $value);
 
-				// Set selected extension
-				if($key == $myCompLang){
-					$_languages->selectOption($key);
+
+		if(sizeof($_language) > 0){ // Build language select box
+				$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
+				if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
+					$myCompLang = $this->Preferences['Language'];
 				} else{
-					// do nothing
+					$myCompLang = $GLOBALS["WE_LANGUAGE"];
 				}
-			}
+
+				foreach($_language as $key => $value){
+					$_languages->addOption($key, $value);
+
+					// Set selected extension
+					if($key == $myCompLang){
+						$_languages->selectOption($key);
+					} else{
+						// do nothing
+					}
+				}
+
 
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1));
@@ -2524,11 +2523,6 @@ class we_user{
 	}
 
 	function formHeader($tab = 0){
-		$big = false;
-		if(file_exists(WE_USERS_MODULE_PATH . "edit_users_bcmd.php")){
-			$big = true;
-		}
-
 		$we_tabs = new we_tabs();
 
 		if($this->Type == 2){

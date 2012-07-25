@@ -756,7 +756,7 @@ class weVersions{
 	 */
 	public function __construct(){
 
-		$this->contentTypes = $this->getContentTypesVersioning();
+		$this->contentTypes = self::getContentTypesVersioning();
 
 		/**
 		 * fields from tblFile and tblObjectFiles which can be modified
@@ -795,7 +795,7 @@ class weVersions{
 	 * ContentTypes which apply for versioning
 	 * all except classes, templates and folders
 	 */
-	public function getContentTypesVersioning(){
+	public static function getContentTypesVersioning(){
 
 		$contentTypes = array();
 		$contentTypes[] = 'all';
@@ -817,7 +817,7 @@ class weVersions{
 		if(is_object($obj)){
 			$index = $obj->ID . '_' . $obj->Table;
 			$_SESSION['versions']['versionToCompare'][$index] = serialize($obj);
-			if(in_array($obj->ContentType, $this->getContentTypesVersioning()) && $obj->ID != 0 && !$this->versionsExist($obj->ID, $obj->ContentType)){
+			if(in_array($obj->ContentType, self::getContentTypesVersioning()) && $obj->ID != 0 && !$this->versionsExist($obj->ID, $obj->ContentType)){
 				$_SESSION['versions']['initialVersions'] = true;
 				$this->save($obj);
 			}

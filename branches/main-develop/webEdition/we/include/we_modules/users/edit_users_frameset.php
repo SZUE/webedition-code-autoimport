@@ -53,14 +53,10 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 <?php
 if($_SESSION["user"]["ID"]){
-	$DB_WE->query("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . $_SESSION["user"]["ID"]);
-	if($DB_WE->next_record())
-		print "var cgroup=" . $DB_WE->f("ParentID") . ";\n";
-	else
-		print "var cgroup=0;\n";
+	print "var cgroup=" . intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $DB_WE)) . ';';
+} else{
+	print "var cgroup=0;";
 }
-else
-	print "var cgroup=0;\n";
 if(isset($_SESSION["user_session_data"]))
 	unset($_SESSION["user_session_data"]);
 ?>
@@ -253,7 +249,7 @@ if(isset($_SESSION["user_session_data"]))
 			fr.open();
 			fr.charset = "<?php echo DEFAULT_CHARSET; ?>";
 			fr.writeln("<HTML><HEAD><?php echo addslashes(we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => 'text/html; charset=' . DEFAULT_CHARSET))); ?>");
-			fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
+			fr.writeln("<SCRIPT type = \"text/javascript\"><!--");
 			fr.writeln("clickCount=0;");
 			fr.writeln("wasdblclick=0;");
 			fr.writeln("tout=null");
@@ -261,9 +257,10 @@ if(isset($_SESSION["user_session_data"]))
 			fr.writeln("top.content.we_cmd('display_user',id,ct,table);");
 			fr.writeln("}");
 			fr.writeln("top.content.loaded=1;");
+			fr.writeln("//-->");
 			fr.writeln("</"+"SCRIPT>");
 			fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-			fr.write("</HEAD>\n");
+			fr.write("</HEAD>");
 			fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
 			fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
 			zeichne(top.content.startloc,"");
@@ -533,7 +530,7 @@ if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSIO
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_header.php" name="user_header" scrolling=no noresize/>
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_resize.php" name="user_resize" scrolling=no/>
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_cmd.php" name="user_cmd" scrolling=no noresize/>
-</frameset>
+</frameset><noframes></noframes>
 
 <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 </body>

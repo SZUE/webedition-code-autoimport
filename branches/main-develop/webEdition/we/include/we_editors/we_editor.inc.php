@@ -312,8 +312,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	 */
 	$we_ext = ($we_doc->Extension == ".js" || $we_doc->Extension == ".css" || $we_doc->Extension == ".wml" || $we_doc->Extension == ".xml") ? ".html" : $we_doc->Extension;
 	//FIXME: php temporary file?
-	$tempName = dirname($we_doc->getSitePath()) . "/" . session_id() . $we_ext;
-	$tempName = str_replace("\\", "/", $tempName);
+	$tempName = str_replace("\\", "/", dirname($we_doc->getSitePath()) . "/" . session_id() . $we_ext);
 	we_util_File::insertIntoCleanUp($tempName, time());
 	/*
 	  $str = session_encode(); //serialize($arr);
@@ -327,9 +326,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	$parent = str_replace("\\", "/", $parent);
 
 	while(!we_util_File::checkAndMakeFolder($parent)) {
-		array_push($cf, $parent);
-		$parent = dirname($parent);
-		$parent = str_replace("\\", "/", $parent);
+		$cf[] = $parent;
+		$parent = str_replace("\\", "/", dirname($parent));
 	}
 
 	// url of document !!
@@ -378,7 +376,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 				exit(' ContentType Missing !!! ');
 			}
 			$saveTemplate = true;
-			if(strpos($we_doc->ParentPath, "..") !== false || $we_doc->ParentPath{0} != "/"){
+			if($we_doc->i_pathNotValid()){
 				$we_responseText = sprintf(g_l('weClass', "[notValidFolder]"), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else if($we_doc->i_filenameEmpty()){
@@ -461,8 +459,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 						if($we_doc->we_save()){
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
-							$we_JavaScript .= "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n" . $we_doc->getUpdateTreeScript() . ";\n"; // save/ rename a document
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
+								"_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");" . $we_doc->getUpdateTreeScript() . ";"; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if($_REQUEST['we_cmd'][4]){
@@ -474,7 +472,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 							}
 						} else{
 							// we got an error while saving the template
-							$we_JavaScript = "";
+							$we_JavaScript = '';
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_notok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 						}
@@ -517,7 +515,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 
 						if($we_doc->we_save()){
 							$wasSaved = true;
-							if($we_doc->ContentType == "object"){
+							if($we_doc->ContentType == 'object'){
 								//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
 								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}";
 							}
@@ -587,9 +585,9 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 								if($we_doc->ContentType == "folder"){
 									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
 								}
-								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();\n";
+								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();";
 							}
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
 
 							if(!defined("SCHEDULE_TABLE")){
@@ -613,7 +611,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 						if(isset($we_doc->NavigationItems)){
 							$we_doc->NavigationItems = "";
 						}
-						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
+						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 						//	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION["we_mode"]){
 							case "seem":

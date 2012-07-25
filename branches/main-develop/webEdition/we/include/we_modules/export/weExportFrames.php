@@ -89,7 +89,7 @@ class weExportFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader(){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
 		$we_tabs = new we_tabs();
@@ -759,8 +759,7 @@ class weExportFrames extends weModuleFrames{
 					break;
 				case 'upload':
 					@set_time_limit(0);
-					$prot = getServerProtocol();
-					$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
+					$preurl = getServerUrl();
 					if(isset($_GET["exportfile"])){
 						$_filename = basename(urldecode($_GET["exportfile"]));
 

@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
-	print '<body bgcolor="#FFFFFF" background="' . IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif"></body></html>';
+	print '<body bgcolor="#F0EFF0"></body></html>';
 	exit;
 }
 

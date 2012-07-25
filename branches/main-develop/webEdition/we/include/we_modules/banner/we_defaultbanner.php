@@ -45,7 +45,7 @@ function formBannerChooser($width="", $table=BANNER_TABLE, $idvalue, $idname, $t
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 	$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
-	$button = we_button::create_button("select", "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "'," . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+	$button = we_button::create_button('select', "javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
 
 	$yuiSuggest->setAcId("Path");
 	$yuiSuggest->setContentType("folder");

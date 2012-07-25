@@ -714,7 +714,7 @@ class weNavigation extends weModelBase{
 				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
 				if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 					$path_parts = pathinfo($_path);
-					if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl;
 					} else{
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl;
@@ -763,7 +763,7 @@ class weNavigation extends weModelBase{
 				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
 				if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 					$path_parts = pathinfo($_path);
-					if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl;
 					} else{
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl;
@@ -784,7 +784,7 @@ class weNavigation extends weModelBase{
 		$_path = str_replace('&', '&amp;', $_path);
 
 		if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
-			$dirindexnames = explode(',','/'.str_replace(',',',/', NAVIGATION_DIRECTORYINDEX_NAMES));
+			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$_path = str_replace($dirindexnames, '/', $_path);
 		}
 

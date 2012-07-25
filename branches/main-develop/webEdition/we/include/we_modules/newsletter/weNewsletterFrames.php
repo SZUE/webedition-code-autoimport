@@ -68,7 +68,7 @@ class weNewsletterFrames extends weModuleFrames{
 	 */
 	function getHTMLEditorHeader($mode = 0){
 		if(isset($_REQUEST["home"])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/bgGrayLineTop.gif"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
 		$group = 0;

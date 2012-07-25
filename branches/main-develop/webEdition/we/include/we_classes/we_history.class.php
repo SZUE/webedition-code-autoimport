@@ -30,7 +30,8 @@
  * the 'personalized desktop'.
  */
 abstract class we_history{
-	const MAX=5;
+
+	const MAX = 5;
 
 	static function userHasPerms($creatorid, $owners, $restricted){
 		if($_SESSION['perms']['ADMINISTRATOR']){
@@ -45,7 +46,7 @@ abstract class we_history{
 		return false;
 	}
 
-	static function insertIntoHistory(&$object, $action='save'){
+	static function insertIntoHistory(&$object, $action = 'save'){
 		$_db = $object->DB_WE;
 		$table = $_db->escape(stripTblPrefix($object->Table));
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
@@ -53,14 +54,13 @@ abstract class we_history{
 		if($cnt > self::MAX){
 			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
-		$insert = array(
-			'DID' => intval($object->ID),
-			'DocumentTable' => $table,
-			'ContentType' => $object->ContentType,
-			'Act' => $action,
-			'UserName' => $_username,
-		);
-		$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter($insert));
+		$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'DID' => intval($object->ID),
+				'DocumentTable' => $table,
+				'ContentType' => $object->ContentType,
+				'Act' => $action,
+				'UserName' => $_username,
+			)));
 	}
 
 	/**
@@ -71,8 +71,7 @@ abstract class we_history{
 	 */
 	static function deleteFromHistory($modelIds, $table){
 		$_db = new DB_WE();
-		$query = "DELETE FROM " . HISTORY_TABLE . " WHERE DID in (" . implode(", ", $modelIds) . ") AND DocumentTable = \"" . stripTblPrefix($table) . "\"";
-		$_db->query($query);
+		$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable = "' . stripTblPrefix($table) . '"');
 	}
 
 }

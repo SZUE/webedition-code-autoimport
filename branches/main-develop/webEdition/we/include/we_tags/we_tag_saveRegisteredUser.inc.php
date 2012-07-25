@@ -41,7 +41,7 @@ function we_tag_saveRegisteredUser($attribs){
 			}
 		}
 		foreach($dates as $k => $vv){
-			$_REQUEST['s'][$k] = $vv['year'].'-'.$vv['month'].'-'.$vv['day'].' '.$vv['hour'].':'.$vv['minute'].':00';
+			$_REQUEST['s'][$k] = $vv['year'] . '-' . $vv['month'] . '-' . $vv['day'] . ' ' . $vv['hour'] . ':' . $vv['minute'] . ':00';
 		}
 
 		//register new User
@@ -288,7 +288,7 @@ function we_tag_saveRegisteredUser_processRequest(){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
 				$set['Username'] = $val;
-				$set['Path'] = $val;
+				$set['Path'] = '/' . $val;
 				$set['Text'] = $val;
 				$set['Icon'] = 'customer.gif';
 				break;

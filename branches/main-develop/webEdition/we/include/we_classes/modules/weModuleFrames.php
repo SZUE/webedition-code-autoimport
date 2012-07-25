@@ -50,22 +50,14 @@ class weModuleFrames{
 	}
 
 	function getJSStart(){
-
-		if($this->Tree->initialized)
-			return 'function start(){startTree();}';
-		else
-			return 'function start(){}';
+		return ($this->Tree->initialized ? 'function start(){startTree();}' : 'function start(){}');
 	}
 
-	//----------HTML functions -----------------
-
-
-	function getHTMLDocument($body, $extraHead = ""){
-		$head = //FIXME: missing title
-			we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n" . $extraHead;
+	function getHTMLDocument($body, $extraHead = ''){
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				$body
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead($this->module) . STYLESHEET . $extraHead
+				) . $body
 		);
 	}
 
@@ -75,10 +67,10 @@ class weModuleFrames{
 
 	function getHTMLFrameset(){
 
-		$js = $this->getJSCmdCode();
-		$js.=$this->Tree->getJSTreeCode();
-		$js.=we_html_element::jsElement($this->getJSStart());
-		$js.=we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+		$js = $this->getJSCmdCode() .
+			$this->Tree->getJSTreeCode() .
+			we_html_element::jsElement($this->getJSStart()) .
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
@@ -89,10 +81,9 @@ class weModuleFrames{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
 
 		// set and return html code
-		$head = $js;
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
-		return $this->getHTMLDocument($body, $head);
+		return $this->getHTMLDocument($body, $js);
 	}
 
 	function getHTMLHeader(){
@@ -109,8 +100,7 @@ class weModuleFrames{
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml()
-		);
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
 
 		return $this->getHTMLDocument($body);
 	}
@@ -132,7 +122,7 @@ class weModuleFrames{
 		$noframeset = new we_baseElement("noframes");
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -147,7 +137,7 @@ class weModuleFrames{
 		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -169,7 +159,7 @@ class weModuleFrames{
 		}
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -185,7 +175,7 @@ class weModuleFrames{
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -199,7 +189,6 @@ class weModuleFrames{
 	}
 
 	function getHTMLBox($content, $headline = "", $width = "100", $height = "50", $w = "25", $vh = "0", $ident = "0", $space = "5", $headline_align = "left", $content_align = "left"){
-		$out = "";
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($ident){
 			$pix1 = we_html_tools::getPixel($ident, $vh);
@@ -213,7 +202,7 @@ class weModuleFrames{
 
 		$pix3 = we_html_tools::getPixel($space, 1);
 
-		$table = new we_html_table(array("width" => "$width", "height" => "$height", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 4);
+		$table = new we_html_table(array("width" => $width, "height" => $height, "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 4);
 
 		if($ident){
 			$table->setCol(0, 0, array("valign" => "top"), $pix1);
@@ -227,10 +216,7 @@ class weModuleFrames{
 		if($w && $headline != ""){
 			$table->setCol(2, 1, array("valign" => "top"), $pix2);
 		}
-		$out = $table->getHtml();
-
-
-		return $out;
+		return $table->getHtml();
 	}
 
 }

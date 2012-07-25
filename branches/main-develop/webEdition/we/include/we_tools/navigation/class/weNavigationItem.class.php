@@ -108,7 +108,7 @@ class weNavigationItem{
 			if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 				$mypath = id_to_path($this->docid, FILE_TABLE);
 				$mypath_parts = pathinfo($mypath);
-				if(in_array($mypath_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if(in_array($mypath_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
 					$this->visible = !empty($_v) ? 'true' : 'false';
 				}

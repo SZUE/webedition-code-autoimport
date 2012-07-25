@@ -28,15 +28,14 @@ we_html_tools::protect();
 $msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');self.close();";
 $todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');self.close();";
 
-$text='';
+$text = '';
 //msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo
-$msg=intval($_REQUEST['msg'])-intval($_REQUEST['omsg']);
-$todo=intval($_REQUEST['todo'])-intval($_REQUEST['otodo']);
-
+$msg = intval($_REQUEST['msg']) - intval($_REQUEST['omsg']);
+$todo = intval($_REQUEST['todo']) - intval($_REQUEST['otodo']);
 
 $text =
-($msg>0?sprintf(g_l('modules_messaging', '[newHeaderMsg]'),'<a href="' . $msg_cmd . '">'.$msg,'</a>'):'').
-	($todo>0?sprintf(g_l('modules_messaging', '[newHeaderTodo]'),'<a href="' . $todo_cmd . '">'.$todo,'</a>'):'');
+	($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . $msg_cmd . '">' . $msg, '</a>').'<br/>' : '') .
+	($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . $todo_cmd . '">' . $todo, '</a>').'<br/>' : '');
 $parts = array(
 	array(
 		"headline" => we_html_tools::htmlAlertAttentionBox($text, 2, 500, false),

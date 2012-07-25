@@ -158,7 +158,7 @@ class weTree{
 		$out = '';
 
 		if($withTag){
-			$out.=we_html_element::jsScript(JS_DIR . "images.js");
+			$out = we_html_element::jsScript(JS_DIR . "images.js");
 		}
 		$js = '
 			var treeData = new container();
@@ -464,8 +464,6 @@ class weTree{
 	}
 
 	function getJSContainer(){
-
-
 		$ts = 'this.tree_states=new Array();' . "\n";
 		foreach($this->tree_states as $k => $v)
 			$ts.='this.tree_states["' . $k . '"]="' . $v . '";' . "\n";
@@ -605,17 +603,17 @@ function setUnCheckNode(imgName){
 					we_html_element::cssElement($style_code) . $js
 				) .
 				we_html_element::htmlBody(array(
-					"bgcolor" => "#F3F7FF",
-					"link" => "#000000",
-					"alink" => "#000000",
-					"vlink" => "#000000",
-					"marginwidth" => "0",
-					"marginheight" => "4",
-					"leftmargin" => "0",
-					"topmargin" => "4",
-					"id" => "treetable",
-					"onresize" => $onresize
-					), ""
+					'bgcolor' => '#F3F7FF',
+					'link' => '#000000',
+					'alink' => '#000000',
+					'vlink' => '#000000',
+					'marginwidth' => '0',
+					'marginheight' => '4',
+					'leftmargin' => '0',
+					'topmargin' => '4',
+					'id' => 'treetable',
+					'onresize' => $onresize
+					), ''
 				)
 		);
 	}
@@ -807,7 +805,7 @@ function setUnCheckNode(imgName){
 
 			$js.='}';
 		}
-		$js.="\n" . $this->topFrame . '.drawTree();';
+		$js.=$this->topFrame . '.drawTree();';
 
 		return $js;
 	}
@@ -818,6 +816,37 @@ function setUnCheckNode(imgName){
 
 	function setItemsCount($count){
 		$this->default_segment = $count;
+	}
+
+	static function deleteTreeEntries($dontDeleteClassFolders = false){
+		return '
+		var obj = top.treeData;
+		var cont = new top.container();
+		for(var i=1;i<=obj.len;i++){
+			if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
+				if(obj[i].parentid != 0){
+					if(!parentChecked(obj[i].parentid)){
+						cont.add(obj[i]);
+					}
+				}else{
+					cont.add(obj[i]);
+				}
+			}
+		}
+		top.treeData = cont;
+		top.drawTree();
+
+		function parentChecked(start){
+			var obj = top.treeData;
+			for(var i=1;i<=obj.len;i++){
+				if(obj[i].id == start){
+					if(obj[i].checked==1) return true;
+					else if(obj[i].parentid != 0) parentChecked(obj[i].parentid);
+				}
+			}
+
+			return false;
+		}';
 	}
 
 }

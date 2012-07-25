@@ -109,7 +109,7 @@ function we_tag_banner($attribs, $content){
 			} else{
 				return we_html_element::jsElement('
 	r = Math.random();
-   document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
+   document.write ("<" + "script type=\"text/javascript\"src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
 ').'<noscript>' . $noscript . '</noscript>';
 			}
 		}

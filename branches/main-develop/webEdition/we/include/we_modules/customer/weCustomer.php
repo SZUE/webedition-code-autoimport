@@ -29,6 +29,8 @@
  */
 class weCustomer extends weModelBase{
 
+	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
+
 	//properties
 	var $ID;
 	var $Text;
@@ -105,11 +107,11 @@ class weCustomer extends weModelBase{
 		$this->ModifyDate = time();
 		$this->ModifiedBy = 'backend';
 		if(isset($this->setModifiedBy)){
-			$this->ModifiedBy=$this->setModifiedBy;
+			$this->ModifiedBy = $this->setModifiedBy;
 		}
-		
-		$hook = new weHook('customer_preSave', '', array('customer'=>$this,'from'=>'management','type'=>($this->ID ? 'existing':'new')));
-		$ret=$hook->executeHook();
+
+		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
+		$ret = $hook->executeHook();
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
 		$ret = $hook->executeHook();
@@ -121,7 +123,7 @@ class weCustomer extends weModelBase{
 	 * delete entry from database
 	 * @param recursive bool if true, customerfilter are deleted as well
 	 */
-	function delete($recursive=true){
+	function delete($recursive = true){
 		if(weModelBase::delete() && $recursive){
 			weDocumentCustomerFilter::deleteWebUser($this);
 			return true;
@@ -142,7 +144,7 @@ class weCustomer extends weModelBase{
 		return $real_name;
 	}
 
-	function getBranches(&$banches, &$fixed, &$other, $mysort=''){
+	function getBranches(&$banches, &$fixed, &$other, $mysort = ''){
 
 		$fixed["ID"] = $this->ID; // Bug Fix #8413 + #8520
 		if(isset($this->persistent_slots)){
@@ -186,7 +188,7 @@ class weCustomer extends weModelBase{
 		return array_keys($branches);
 	}
 
-	function getFieldsNames($branch, $mysort=''){
+	function getFieldsNames($branch, $mysort = ''){
 		$branches = array();
 		$common = array();
 		$other = array();
@@ -221,7 +223,7 @@ class weCustomer extends weModelBase{
 		return $ret;
 	}
 
-	function getFieldDbProperties($field_name, $buff=array()){
+	function getFieldDbProperties($field_name, $buff = array()){
 
 		if(empty($buff)){
 			$buff = $this->getFieldsDbProperties();

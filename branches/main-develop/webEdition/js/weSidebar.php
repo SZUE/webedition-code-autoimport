@@ -93,14 +93,12 @@ weSidebar.resize = function(width) {
 
 weSidebar.reloadHeader = function() {
 	top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location.reload();
-	//top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location.replace(top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location);
 
 }
 
 
 weSidebar.reload = function() {
 	top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.reload();
-	//top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.replace(top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location);
 
 }
 

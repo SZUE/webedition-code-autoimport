@@ -77,7 +77,6 @@ class weNavigationFrames extends weToolFrames{
 					we_html_element::htmlBody(
 						array(
 						'bgcolor' => '#F0EFF0',
-						'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif'
 						), ''));
 		}
 

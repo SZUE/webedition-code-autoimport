@@ -784,12 +784,6 @@ var weShowDebug = true;
 var debugsizeW=145;
 var debugsizeH='100%';
 function debug(text){
-" . ($_SERVER['HTTP_HOST'] == 'we.damjan.intra' ? "
-	if(weShowDebug){
-		document.getElementById('damd').style.display='';
-		document.getElementById('debug').innerHTML += text+'<br>';
-	}
-	" : "") . "
 }
 function doDebugResizeW(){
 	if(debugsizeW<600) {

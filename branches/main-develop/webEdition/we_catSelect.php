@@ -26,6 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = "/webEdition/we_catSelect.php";
+//$_SERVER['SCRIPT_NAME'] = str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__);
 
 
 $fs = new we_catSelector(
@@ -42,4 +43,3 @@ $fs = new we_catSelector(
 		isset($noChoose) ? $noChoose : ( isset($_REQUEST["noChoose"]) ? $_REQUEST["noChoose"] : "" ));
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
-

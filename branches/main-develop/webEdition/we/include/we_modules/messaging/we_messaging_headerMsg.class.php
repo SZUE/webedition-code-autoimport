@@ -68,7 +68,7 @@ class we_messaging_headerMsg{
 				msgTD.firstChild.innerHTML = newmsg_count;
 				todoTD.firstChild.innerHTML = newtodo_count;
 				if(changed){
-					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
+					new jsWindow("<?php echo WEBEDITION_DIR;?>newMsg.php?msg="+newmsg_count+"&todo="+newtodo_count+"&omsg="+oldMsg+"&otodo="+oldTodo,"we_delinfo",-1,-1,550,200,true,true,true);
 				}
 			}
 		<?php
@@ -89,8 +89,9 @@ class we_messaging_headerMsg{
 
 	static function pbody(){
 		self::start();
-		$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-		$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+		//start with 0 to get popup with new count
+		$newmsg_count = 0;//self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+		$newtodo_count = 0;//self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 		$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
 		$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
 		?>

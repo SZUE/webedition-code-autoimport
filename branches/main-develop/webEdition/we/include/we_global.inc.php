@@ -607,14 +607,15 @@ function we_makeHiddenFields($filter = ''){
 function we_make_attribs($attribs, $doNotUse = ''){
 	$attr = '';
 	$fil = explode(',', $doNotUse);
-	//array_push($fil,'xml');
-	array_push($fil, 'user');
-	array_push($fil, 'removefirstparagraph');
+	$fil[] = 'user';
+	$fil[] = 'removefirstparagraph';
 	if(is_array($attribs)){
 		reset($attribs);
-		while(list($k, $v) = each($attribs))
-			if(!in_array($k, $fil))
-				$attr .= "$k=\"$v\" ";
+		while(list($k, $v) = each($attribs)) {
+			if(!in_array($k, $fil)){
+				$attr .= $k . '="' . $v . '" ';
+			}
+		}
 		$attr = trim($attr);
 	}
 	return $attr;
@@ -747,15 +748,17 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 }
 
 function shortenPath($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10)
+	if(strlen($path) <= $len || strlen($path) < 10){
 		return $path;
+	}
 	$l = ($len / 2) - 2;
 	return substr($path, 0, $l) . '....' . substr($path, $l * -1);
 }
 
 function shortenPathSpace($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10)
+	if(strlen($path) <= $len || strlen($path) < 10){
 		return $path;
+	}
 	$l = $len;
 	return substr($path, 0, $l) . ' ' . shortenPathSpace(substr($path, $l), $len);
 }
@@ -876,7 +879,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 		if($id == 0){
 			$foo[] = '/';
 		} else{
-			$foo2 = getHash('SELECT Path,IsFolder FROM `' . $table . '` WHERE ID=' . intval($id), $db);
+			$foo2 = getHash('SELECT Path,IsFolder FROM `' . $db->escape($table) . '` WHERE ID=' . intval($id), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
@@ -1238,7 +1241,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 
 		if(!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
-			if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 			}
 		}
@@ -1259,7 +1262,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 		if($objectseourls && $objecturl != ''){
 
-			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 			} else{
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr;
@@ -1314,7 +1317,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 
 			if($_path){
 				$path_parts = pathinfo($_path);
-				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);
@@ -1731,6 +1734,9 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
 
 	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
+		$attribs = removeAttribs($attribs, array('name'));
+	}
+	if($element == 'a' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
 	if($element == 'form' && defined('HIDENAMEATTRIBINWEFORM_DEFAULT') && HIDENAMEATTRIBINWEFORM_DEFAULT && (!isset($GLOBALS['WE_MAIN_DOC']) || !$GLOBALS['WE_MAIN_DOC']->InWebEdition)){

@@ -26,6 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = "/webEdition/we_dirSelect.php";
+//$_SERVER['SCRIPT_NAME'] = str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__);
 
 $fs = new we_dirSelector(
 		isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ),

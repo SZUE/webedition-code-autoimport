@@ -166,7 +166,8 @@ abstract class we_database_base{
 	 */
 	abstract public function getInfo();
 
-	/**returns the charset of the current connection*/
+	/*	 * returns the charset of the current connection */
+
 	abstract public function getCurrentCharset();
 
 	/** Constructor, establishes the connection to the DB
@@ -213,7 +214,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->Link_ID||!$this->ping()){
+		if(!$this->Link_ID || !$this->ping()){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -263,13 +264,18 @@ abstract class we_database_base{
 	 * @return bool true, if the query was successfull
 	 */
 	function query($Query_String, $allowUnion = false, $unbuffered = false){
+		if(!$this->retry){
+			$this->Errno = 0;
+			$this->Error = '';
+			$this->Row = 0;
+		}
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if($Query_String == ''){
 			/* The empty query string is passed on from the constructor,
 			 * when calling the class without a query, e.g. in situations
 			 * like these: '$db = new DB_Sql_Subclass;'
 			 */
-			return false;
+			return true;
 		}
 		if(!$this->isConnected() && !$this->_connect())
 			return false;
@@ -333,7 +339,6 @@ abstract class we_database_base{
 		$this->Error = $this->error();
 		$this->Row = 0;
 		if(!$this->Query_ID){
-
 			switch($this->Errno){
 				case 2006://SERVER_GONE_ERROR
 				case 2013://SERVER_LOST
@@ -345,11 +350,16 @@ abstract class we_database_base{
 						return $tmp;
 					}
 				default:
+					/* 					if($this->Errno == 0){
+					  $this->_query('SHOW ERRORS;');
+
+					  list(, $this->Errno, $this->Error) = $this->fetch_array(MYSQL_ASSOC);
+					  } */
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
 						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
 					}
-					$this->halt('Invalid SQL: ' . $Query_String);
+				//$this->halt('Invalid SQL: ' . $Query_String);
 			}
 		}
 
@@ -363,6 +373,7 @@ abstract class we_database_base{
 	public function free(){
 		$this->_free();
 		$this->Query_ID = 0;
+		$this->Record = array();
 	}
 
 	/** shorthand notation for num_rows */
@@ -667,7 +678,7 @@ abstract class we_database_base{
 			return false;
 		}
 		$col = trim($col, '`');
-		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"',$this));
+		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
 	}
 
 	function isTabExist($tab){

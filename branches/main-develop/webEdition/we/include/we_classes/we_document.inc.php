@@ -898,7 +898,12 @@ class we_document extends we_root{
 					$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 				}
-
+				if(isset($attribs['alt'])){
+					$attribs['alt'] = htmlspecialchars($attribs['alt']);
+				}
+				if(isset($attribs['title'])){
+					$attribs['title'] = htmlspecialchars($attribs['title']);
+				}
 				if(!(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = htmlspecialchars($GLOBALS['we_doc']->getElement($altField));
@@ -1233,7 +1238,7 @@ class we_document extends we_root{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''
-					&& in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+					&& in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){

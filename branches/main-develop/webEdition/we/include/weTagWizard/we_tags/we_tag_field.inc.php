@@ -29,14 +29,15 @@ $border = new weTagData_textAttribute('border', false, '');
 $hspace = new weTagData_textAttribute('hspace', false, '');
 $vspace = new weTagData_textAttribute('vspace', false, '');
 $align = new weTagData_selectAttribute('align', array(new weTagDataOption('left', false, ''), new weTagDataOption('right', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('bottom', false, ''), new weTagDataOption('absmiddle', false, ''), new weTagDataOption('middle', false, ''), new weTagDataOption('texttop', false, ''), new weTagDataOption('baseline', false, ''), new weTagDataOption('absbottom', false, '')), false, '');
-$only = new weTagData_textAttribute('only', false, '');
+//$only = new weTagData_textAttribute('only', false, '');
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $xml = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $listviewname = new weTagData_textAttribute('listviewname', false, '');
 $striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
-$only = new weTagData_selectAttribute('only', array(new weTagDataOption('name', false, ''), new weTagDataOption('path', false, ''), new weTagDataOption('parentpath', false, ''), new weTagDataOption('filename', false, ''), new weTagDataOption('extension', false, ''), new weTagDataOption('filesize', false, '')), false, '');
+$only = new weTagData_selectAttribute('only', array(new weTagDataOption('name', false, ''), new weTagDataOption('src', false, ''), new weTagDataOption('parentpath', false, ''), new weTagDataOption('filename', false, ''), new weTagDataOption('extension', false, ''), new weTagDataOption('filesize', false, '')), false, '');
+$onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name', false, ''), new weTagDataOption('src', false, ''), new weTagDataOption('parentpath', false, ''), new weTagDataOption('filename', false, ''), new weTagDataOption('extension', false, ''), new weTagDataOption('filesize', false, ''),new weTagDataOption('width', false, ''),new weTagDataOption('height', false, ''),new weTagDataOption('src', false, ''),new weTagDataOption('alt', false, '')), false, '');
 $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $triggerid = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('triggerid',FILE_TABLE, 'text/webedition', false, ''): null);
@@ -50,7 +51,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 new weTagDataOption('-', false, '', array(), array()),
 new weTagDataOption('text', false, '', array($name,$hyperlink,$href,$target,$num_format,$alt,$max,$striphtml,$htmlspecialchars,$triggerid,$to,$nameto), array($name)),
 new weTagDataOption('date', false, '', array($name,$hyperlink,$href,$target,$format,$alt,$max,$htmlspecialchars,$triggerid,$to,$nameto), array($name)),
-new weTagDataOption('img', false, '', array($name,$hyperlink,$href,$target,$thumbnail,$src,$width,$height,$border,$hspace,$vspace,$align,$only,$triggerid,$to,$nameto), array($name)),
+new weTagDataOption('img', false, '', array($name,$hyperlink,$href,$target,$thumbnail,$src,$width,$height,$border,$hspace,$vspace,$align,$onlyImg,$triggerid,$to,$nameto), array($name)),
 new weTagDataOption('flashmovie', false, '', array($name,$width,$height,$triggerid,$to,$nameto), array($name)),
 new weTagDataOption('href', false, '', array($name,$to,$nameto), array($name)),
 new weTagDataOption('link', false, '', array($name,$to,$nameto), array($name)),
@@ -71,5 +72,5 @@ new weTagDataOption('language', false, '', array($outputlanguage,$doc,$to,$namet
 ), false, '');
 
 $this->Attributes=array($name,$classid,$hyperlink,$tid,$href,$target,$class,$style,$format,$num_format,$thumbnail,$id,$parentidname,$winprops,$alt,$max,$src,
-$width,$height,$border,$hspace,$vspace,$align,$only,$htmlspecialchars,$seeMode,$xml,$win2iso,$listviewname,$striphtml,$outputlanguage,$doc,$triggerid,$usekey,
+$width,$height,$border,$hspace,$vspace,$align,$only,$onlyImg,$htmlspecialchars,$seeMode,$xml,$win2iso,$listviewname,$striphtml,$outputlanguage,$doc,$triggerid,$usekey,
 $to,$nameto);

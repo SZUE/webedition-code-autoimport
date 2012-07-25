@@ -71,7 +71,7 @@ $showself = new weTagData_selectAttribute('showself', array(new weTagDataOption(
 $this->TypeAttribute =new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
 	new weTagDataOption('document', false, '', array($name,$doctype,$categories,$catOr,$rows,$order_document,$desc,$offset,$languages,$searchable,$workspaceID_document,$cfilter,$recursive,$customers,$contenttypes,$id,$calendar, $numorder,$categoryids,$condition,$hidedirindex), array()),
-	new weTagDataOption('search', false, '', array($name,$doctype,$categories,$catOr,$languages,$rows,$order_search,$desc,$casesensitive,$classid,$workspaceID_document,$cfilter,$numorder,$objectseourls,$hidedirindex), array()),
+	new weTagDataOption('search', false, '', array($name,$doctype,$categories,$catOr,$languages,$rows,$order_search,$desc,$casesensitive,$classid,$workspaceID_document,$cfilter,$numorder,$triggerid,$objectseourls,$hidedirindex), array()),
 	new weTagDataOption('category', false, '', array($name,$categories,$rows,$order_category,$desc,$offset,$parentid,$parentidname,$categoryids), array()),
 	new weTagDataOption('object', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$workspaceID_object,$cfilter,$docid,$customers,$id,$calendar,$predefinedSQL,$categoryids,$objectseourls,$hidedirindex), array()),
 	new weTagDataOption('multiobject', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$cfilter,$calendar,$objectseourls,$hidedirindex), array()),

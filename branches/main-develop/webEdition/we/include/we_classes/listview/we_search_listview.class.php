@@ -35,6 +35,7 @@ class we_search_listview extends listviewBase{
 
 	var $docType = ""; /* doctype string */
 	var $class = 0;	/* ID of a class. Search only in Objects of this class */
+	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $ClassName = __CLASS__;
 	var $languages = ""; //string of Languages, separated by ,
@@ -59,11 +60,13 @@ class we_search_listview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $cols="", $customerFilterType='off', $languages='', $hidedirindex=false, $objectseourls=false){
+	function __construct($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $triggerID = "",$cols="", $customerFilterType='off', $languages='', $hidedirindex=false, $objectseourls=false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
-
+		
+		$this->triggerID = $triggerID;
+		
 		$this->languages = $languages;
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		if($this->languages != ''){
@@ -236,6 +239,9 @@ class we_search_listview extends listviewBase{
 				$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->DB_WE->Record["OID"]) . " LIMIT 1", $db);
 				$objecturl = $objectdaten['Url'];
 				$objecttriggerid = $objectdaten['TriggerID'];
+				if($this->triggerID){
+					$objecttriggerid=$this->triggerID;
+				}
 				if($objecttriggerid){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));
 				}
@@ -243,7 +249,7 @@ class we_search_listview extends listviewBase{
 				if($this->DB_WE->Record["WorkspaceID"]){
 					$pidstr = '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]);
 				}
-				if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					if($objecturl != ''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 					} else{
@@ -257,6 +263,12 @@ class we_search_listview extends listviewBase{
 					}
 				}
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
+				$this->DB_WE->Record["we_WE_URL"] = $$objectdaten['Url'];
+				if($this->triggerID){
+					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
+				} else{
+					$this->DB_WE->Record["we_WE_TRIGGERID"] = $objectdaten['TriggerID'];
+				}
 			} else{
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
