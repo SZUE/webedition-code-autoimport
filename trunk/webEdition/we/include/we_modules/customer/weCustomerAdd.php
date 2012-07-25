@@ -415,7 +415,7 @@ class weCustomerAdd{
 		if($where == "")
 			$where = 0;
 
-		$this->db->query("SELECT $select FROM " . CUSTOMER_TABLE . " WHERE $where ORDER BY Text LIMIT 0,$res_num");
+		$this->db->query('SELECT '.$select.' FROM ' . CUSTOMER_TABLE . ' WHERE '.$where.' ORDER BY Text LIMIT 0,'.$res_num);
 
 		$result = array();
 		while($this->db->next_record()) {
@@ -445,7 +445,7 @@ class weCustomerAdd{
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
+		$body = we_html_element::htmlBody(array('style'=>'overflow:hidden',"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
 				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					$table1->getHtml() .
 					$table->getHtml()

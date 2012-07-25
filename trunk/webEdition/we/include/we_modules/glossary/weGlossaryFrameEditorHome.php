@@ -28,7 +28,6 @@ class weGlossaryFrameEditorHome{
 
 		$_body = array(
 			'bgcolor' => '#F0EFF0',
-			'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif',
 		);
 
 		$body = we_html_element::htmlBody($_body, "");
