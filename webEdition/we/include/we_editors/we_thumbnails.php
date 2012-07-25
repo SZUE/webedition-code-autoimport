@@ -43,9 +43,7 @@ if(isset($_GET["deletethumbnail"]) && $_GET["deletethumbnail"] != ""){
 		// Delete entry in database
 		$DB_WE->query("DELETE FROM " . THUMBNAILS_TABLE . " WHERE ID = " . intval($_GET["deletethumbnail"]));
 
-		$prot = getServerProtocol();
-		$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
-		header("Location: $preurl/webEdition/we/include/we_editors/we_thumbnails.php");
+		header("Location: ".getServerUrl()."/webEdition/we/include/we_editors/we_thumbnails.php");
 		exit();
 	}
 }

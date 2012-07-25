@@ -50,7 +50,7 @@ function we_tag_tracker($attribs){
 		$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
 	}
 
-	$trackerurl = ($ssl ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WE_TRACKER_DIR;
+	$trackerurl = getServerUrl() . WE_TRACKER_DIR;
 
 	if($type == 'standard'){
 		return '<!-- pageLogger Code BEGIN -->' . we_html_element::jsScript($trackerurl . '/scripts/picmodejs.js') . '

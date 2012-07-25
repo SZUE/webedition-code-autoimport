@@ -748,15 +748,17 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 }
 
 function shortenPath($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10)
+	if(strlen($path) <= $len || strlen($path) < 10){
 		return $path;
+	}
 	$l = ($len / 2) - 2;
 	return substr($path, 0, $l) . '....' . substr($path, $l * -1);
 }
 
 function shortenPathSpace($path, $len){
-	if(strlen($path) <= $len || strlen($path) < 10)
+	if(strlen($path) <= $len || strlen($path) < 10){
 		return $path;
+	}
 	$l = $len;
 	return substr($path, 0, $l) . ' ' . shortenPathSpace(substr($path, $l), $len);
 }
