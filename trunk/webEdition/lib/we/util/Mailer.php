@@ -297,11 +297,9 @@ class we_util_Mailer extends Zend_Mail{
 				}
 			}
 
-			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'], "/"), "", $_SERVER['SERVER_PROTOCOL']));
-
 			if($this->isUseBaseHref){//Bug #3735
 				if($this->ContentType == 'text/html' && !strpos($this->Body, "<base")){
-					$this->Body = str_replace("</head>", "<base href='" . ($protocol == "" ? "" : $protocol . "://") . $_SERVER['HTTP_HOST'] . "' />\n</head>", $this->Body);
+					$this->Body = str_replace("</head>", "<base href='" . getServerUrl() . "' />\n</head>", $this->Body);
 				}
 			}
 
@@ -361,8 +359,7 @@ class we_util_Mailer extends Zend_Mail{
 			$fileParts = pathinfo($filename);
 			$ext = $fileParts['extension'];
 			$at->type = $this->get_mime_type($ext, $filename);
-			$protocol = strtolower(str_replace(strstr($_SERVER['SERVER_PROTOCOL'], "/"), "", $_SERVER['SERVER_PROTOCOL']));
-			$loc = $protocol . "://" . $_SERVER['HTTP_HOST'] . $rep;
+			$loc = getServerUrl(). $rep;
 			$at->location = $loc;
 			$this->inlineAtt[] = $at;
 			return $at->id;

@@ -32,6 +32,14 @@ if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
 	$_SERVER['DOCUMENT' . '_ROOT'] = rtrim($_SERVER['DOCUMENT' . '_ROOT'], '/');
 }
 
+//due to hoster bugs (1&1) we have to ensure servername is the called url. since http-host is not safe, we do some security additions.
+if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOST']){
+	//some security checks
+	if(strlen($_SERVER['HTTP_HOST']) < 256 && strpos($_SERVER['SERVER_NAME'], $_SERVER['HTTP_HOST'])){
+		$_SERVER['SERVER_NAME'] = rawurlencode($_SERVER['HTTP_HOST']);
+	}
+}
+
 // Set PHP flags
 @$_memlimit = intval(ini_get('memory_limit'));
 if($_memlimit < 32){

@@ -170,7 +170,7 @@ function we_tag_paypal($attribs){
 		$p->paypal_url = $paypalURL; // testing paypal url
 //$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';	  // paypal url
 // setup a variable for this script (ie: 'http://www.webedition.org/shop/paypal.php')
-		$this_script = getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+		$this_script = getServerUrl() . $_SERVER['SCRIPT_NAME'];
 
 // if there is not action variable, set the default action of 'process'
 		if(empty($_GET['action']))
@@ -235,7 +235,7 @@ function we_tag_paypal($attribs){
 					$p->add_field('quantity_' . $i, $item['quantity']);
 
 					$itemPrice = (isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
-					
+
 					//paypal allows only two decimal places
 					$itemPrice = round($itemPrice,2); //#6546
 
@@ -247,9 +247,9 @@ function we_tag_paypal($attribs){
 						 $vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						 $shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 						 $shopVat = (1+($shopVat/100));
-						 $itemPrice = round(($itemPrice/$shopVat),2); 
+						 $itemPrice = round(($itemPrice/$shopVat),2);
 					}
- 
+
 					// correct price, if it has more than one "."
 					// bug #8717
 					$itemPrice = we_util::std_numberformat($itemPrice);
@@ -314,11 +314,11 @@ function we_tag_paypal($attribs){
 				 } elseif(!$useVat && !$isNet) {// Bug #5701
 					 //seems to be gros vat rate
 					 $vatRate = (1+($vatRate/100));
-					 $shippingFee = ($shippingCosts/$vatRate); 
+					 $shippingFee = ($shippingCosts/$vatRate);
 				} else {
 					 $shippingFee = $shippingCosts;
 				}
- 
+
 
 				/*
 				  if($isNet != 0){

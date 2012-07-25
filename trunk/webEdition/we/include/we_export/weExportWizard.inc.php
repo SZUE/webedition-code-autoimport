@@ -788,8 +788,7 @@ top.close();');
 
 	function getHTMLStep50(){
 		@set_time_limit(0);
-		$prot = getServerProtocol();
-		$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://" . $_SERVER["HTTP_HOST"] : "";
+		$preurl = getServerUrl();
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 

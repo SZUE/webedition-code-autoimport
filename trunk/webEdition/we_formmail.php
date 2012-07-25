@@ -195,11 +195,10 @@ function ok_page($_subject=''){
 }
 
 function redirect($url, $_emosScontact=''){
-	$prot = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? 'https://' : 'http://';
 	if($_emosScontact != ''){
 		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
 	}
-	header('Location: ' . $prot . $_SERVER['HTTP_HOST'] . $url);
+	header('Location: ' . getServerUrl() . $url);
 	exit;
 }
 
