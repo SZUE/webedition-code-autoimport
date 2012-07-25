@@ -60,7 +60,7 @@ class weModuleBannerFrames{
 				fr = top.content.resize.left.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
-				fr.writeln("<script language=\"JavaScript\" type=\"text/javascript\">");
+				fr.writeln("<script type=\"text/javascript\">");
 				fr.writeln("clickCount=0;");
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");

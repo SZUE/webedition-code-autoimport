@@ -26,9 +26,8 @@ class weSideBarFrames{
 
 	var $_frameset = "";
 
-	function weSideBar(){
-
-		$_frameset = WEBEDITION_DIR . "we/includes/sidebar.php";
+	function __construct(){
+		$_frameset = WEBEDITION_DIR . "sideBarFrame.php";
 	}
 
 	function getHTML($what){

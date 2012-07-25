@@ -177,8 +177,8 @@ while($yearshop <= date("Y")) {
 			function drawEintraege(){
 				fr = top.content.shop_tree.window.document;
 				fr.open();
-				fr.writeln("<HTML><HEAD>");
-				fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
+				fr.writeln("<html><head>");
+				fr.writeln("<script type=\"text/javascript\">");
 				fr.writeln("clickCount=0;");
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
@@ -195,14 +195,14 @@ while($yearshop <= date("Y")) {
 
 				fr.writeln("</"+"SCRIPT>");
 				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-				fr.write("</HEAD>\n");
-				fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">\n");
+				fr.write("</head>");
+				fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
-				fr.write("<tr><td class=\"tree\">\n<NOBR>\n<a href=javascript:// onClick=\"doYearClick("+ top.yearshop +");return true;\" title=\"Ums�tze des Gesch�ftsjahres\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>\n");
+				fr.write("<tr><td class=\"tree\"><NOBR><a href=javascript:// onClick=\"doYearClick("+ top.yearshop +");return true;\" title=\"Ums�tze des Gesch�ftsjahres\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
 
 				zeichne("0","");
-				fr.write("</NOBR>\n</td></tr></table>\n");
-				fr.write("</BODY>\n</HTML>");
+				fr.write("</NOBR></td></tr></table>");
+				fr.write("</BODY></html>");
 				fr.close();
 			}
 

@@ -58,8 +58,9 @@ class we_fileselector{
 			$_SESSION["we_fs_lastDir"] = array();
 			$_SESSION["we_fs_lastDir"][$table] = 0;
 		}
-		if($order)
+		if($order){
 			$this->order = $order;
+		}
 		$this->db = new DB_WE();
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION["we_fs_lastDir"][$table]) ? intval($_SESSION["we_fs_lastDir"][$table]) : 0;
@@ -83,19 +84,13 @@ class we_fileselector{
 		}
 		if($id != ""){
 			// get default Directory
-			$this->db->query("SELECT " . $this->fields . "
-								FROM " . $this->db->escape($this->table) . "
-								WHERE ID=" . intval($id));
+			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . " WHERE ID=" . intval($id));
 
 			// getValues of selected Dir
 			if($this->db->next_record()){
 				$this->values = $this->db->Record;
 
-				if($this->values["IsFolder"]){
-					$this->dir = $id;
-				} else{
-					$this->dir = $this->values["ParentID"];
-				}
+				$this->dir = ($this->values["IsFolder"] ? $id : $this->values["ParentID"]);
 				$this->path = $this->values["Path"];
 				return;
 			} else{
@@ -137,10 +132,7 @@ class we_fileselector{
 	}
 
 	function query(){
-		$this->db->query(
-			"SELECT " . $this->fields . "
-			FROM " . $this->db->escape($this->table) . "
-			WHERE ParentID=" . intval($this->dir) . ' ' .
+		$this->db->query("SELECT " . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->dir) . ' ' .
 			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '" . $this->db->escape($this->filter) . "' " : "AND ContentType = '" . $this->db->escape($this->filter) . "' ") : '' ) ) .
 			($this->order ? (' ORDER BY ' . $this->order) : ''));
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
@@ -185,8 +177,7 @@ class we_fileselector{
 	function printFramesetRootDirFn(){
 		print 'function setRootDir(){
 	setDir(0);
-}
-';
+}';
 	}
 
 	function getExitClose(){
@@ -197,8 +188,7 @@ class we_fileselector{
 			top.opener.top.toggleBusy();
 		}
 		self.close();
-	}
-';
+	}';
 	}
 
 	function getJS_keyListenerFunctions(){
@@ -223,8 +213,7 @@ class we_fileselector{
 		function closeOnEscape() {
 			top.exit_close();
 
-		}
-		";
+		}";
 	}
 
 	function printFramesetHTML(){
@@ -292,9 +281,7 @@ class we_fileselector{
 			print '    self.focus();
 
 </script>
-</head>
-
-';
+</head>';
 			print $this->getFrameset();
 		}
 
@@ -375,16 +362,13 @@ class we_fileselector{
 </frameset>
 <body>
 </body>
-</html>
-';
+</html>';
 		}
 
 		function getExitOpen(){
-			$out = '	function exit_open(){
-';
+			$out = '	function exit_open(){';
 			if($this->JSIDName){
-				$out .= '		opener.' . $this->JSIDName . '=currentID;
-';
+				$out .= '		opener.' . $this->JSIDName . '=currentID;';
 			}
 			if($this->JSTextName){
 				$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
@@ -414,7 +398,7 @@ class we_fileselector{
 			$out .= '	self.close();
 
 ';
-			$out .= "	}\n";
+			$out .= "	}";
 			return $out;
 		}
 
@@ -456,7 +440,7 @@ class we_fileselector{
 		############################################
 
 		function getFsQueryString($what){
-			return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
+			return $_SERVER["SCRIPT_NAME"] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&filter=' . $this->filter;
 		}
 
 		function printFramesetJSFunctionQueryString(){
@@ -561,7 +545,7 @@ class we_fileselector{
 			##############################################
 
 			function printBodyHTML(){
-				print we_html_element::htmlDocType().'<html><head></head>
+				print we_html_element::htmlDocType() . '<html><head></head>
 				<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>';
 			}
 

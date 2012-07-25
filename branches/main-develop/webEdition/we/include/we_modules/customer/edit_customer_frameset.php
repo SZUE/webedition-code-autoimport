@@ -28,7 +28,6 @@ $mode = isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0;
 
 //We need to set this (and in corresponding frames, since the data in database is formated this way
 if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
-	we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
 	we_html_tools::htmlTop('', DEFAULT_CHARSET);
 }
 

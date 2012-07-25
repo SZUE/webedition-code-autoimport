@@ -88,20 +88,15 @@ class we_dirSelector extends we_multiSelector{
 	}
 
 	function printCmdHTML(){
-		print '<script><!--
-top.clearEntries();';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
-
-		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();';
-		} else{
-			print 'top.fsheader.enableRootDirButs();';
-		}
-		print 'top.currentPath = "' . $this->path . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-//--></script>
-';
+		echo we_html_element::jsElement(
+			'top.clearEntries();' .
+			$this->cmdAddEntriesHTML() .
+			$this->cmdWriteAndFillSelectorHTML() .
+			(intval($this->dir) == intval($this->rootDirID) ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
+top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 
 	function query(){
@@ -184,7 +179,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('<scr'+'ipt>');
 
-				<?php print $this->getJS_attachKeyListener(); ?>
+		<?php print $this->getJS_attachKeyListener(); ?>
 
 				//from we_showMessage.js
 				d.writeln('var WE_MESSAGE_INFO = -1;');
@@ -237,7 +232,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 				d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 				d.writeln('}');
-				<?php if($this->multiple){ ?>
+		<?php if($this->multiple){ ?>
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
 				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
@@ -348,16 +343,18 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		}
 	}
 
-	function printCmdAddEntriesHTML(){
+	function cmdAddEntriesHTML(){
 		$this->query();
+		$ret = '';
 		while($this->next_record()) {
-			print 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");' . "\n";
+			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		if($this->userCanMakeNewDir()){
-			print 'top.fsheader.enableNewFolderBut();' . "\n";
+			$ret.='top.fsheader.enableNewFolderBut();';
 		} else{
-			print 'top.fsheader.disableNewFolderBut();' . "\n";
+			$ret.='top.fsheader.disableNewFolderBut();';
 		}
+		return $ret;
 	}
 
 	function printHeaderHeadlines(){
@@ -484,13 +481,12 @@ function enableNewFolderBut(){
 ';
 	}
 
-	function printCMDWriteAndFillSelectorHTML(){
-		print '
+	function cmdWriteAndFillSelectorHTML(){
+		$out = '
 			top.writeBody(top.fsbody.document);
 			top.fsheader.clearOptions();';
 
 		$pid = $this->dir;
-		$out = "";
 		$c = 0;
 		while($pid != 0) {
 			$c++;
@@ -511,7 +507,7 @@ function enableNewFolderBut(){
 		if(!$this->rootDirID){
 			$out = 'top.fsheader.addOption("/",0);' . $out;
 		}
-		print $out . 'top.fsheader.selectIt();';
+		return $out . 'top.fsheader.selectIt();';
 	}
 
 	function printHeaderTable(){
@@ -676,32 +672,24 @@ function enableNewFolderBut(){
 	}
 
 	function printSetDirHTML(){
-		print '<script>
-top.clearEntries();
-';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+		$out = 'top.clearEntries();' .
+			$this->cmdAddEntriesHTML() .
+			$this->cmdWriteAndFillSelectorHTML() .
+			(intval($this->dir) == intval($this->rootDirID) ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();');
 
-		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();
-';
-		} else{
-			print 'top.fsheader.enableRootDirButs();
-';
-		}
 		if(in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
 			if($this->id == 0)
 				$this->path = "/";
-			print 'top.unselectAllFiles();top.currentPath = "' . $this->path . '";
+			$out.= 'top.unselectAllFiles();top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
-top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? "/" : $this->values["Text"]) . '";
-';
+top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? "/" : $this->values["Text"]) . '";';
 		}
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
-		print 'top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-</script>
-';
+		$out.='top.currentDir = "' . $this->dir . '";
+top.parentID = "' . $this->values["ParentID"] . '";';
+		echo we_html_element::jsElement($out);
 	}
 
 	function printFramesetSelectFileHTML(){
@@ -736,16 +724,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	function printNewFolderHTML(){
-		print '<script>
-top.clearEntries();
-top.makeNewFolder=1;
-';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
-
-		print 'top.makeNewFolder = 0;
-</script>
-';
+		echo we_html_element::jsElement(
+			'top.clearEntries();top.makeNewFolder=1;' .
+			$this->cmdAddEntriesHTML() .
+			$this->cmdWriteAndFillSelectorHTML() .
+			'top.makeNewFolder = 0;');
 	}
 
 	function printCreateFolderHTML(){
@@ -813,10 +796,9 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
-
-		print 'top.makeNewFolder = 0;
+		echo $this->cmdAddEntriesHTML() .
+		$this->cmdWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
@@ -824,7 +806,7 @@ top.selectFile(top.currentID);
 	}
 
 	function getFrameset(){
-		$out = '<frameset rows="67,*,65,20,0" border="0">
+		return '<frameset rows="67,*,65,20,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
 		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
@@ -838,30 +820,23 @@ top.selectFile(top.currentID);
 </body>
 </html>
 ';
-		return $out;
 	}
 
 	function getFramesetJavaScriptDef(){
-		$def = we_fileselector::getFramesetJavaScriptDef();
-		$def .= 'var makeNewFolder=0;
+		return we_fileselector::getFramesetJavaScriptDef() .
+			'var makeNewFolder=0;
 var we_editDirID="";
-var old=0;
-';
-		return $def;
+var old=0;';
 	}
 
 	function printRenameFolderHTML(){
 		if(userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-			print '<script>
-top.clearEntries();
-top.we_editDirID=' . $this->we_editDirID . ';
-';
-			$this->printCmdAddEntriesHTML();
-			$this->printCMDWriteAndFillSelectorHTML();
-
-			print 'top.we_editDirID = "";
-</script>
-';
+			echo we_html_element::jsElement(
+				'top.clearEntries();
+top.we_editDirID=' . $this->we_editDirID . ';' .
+				$this->cmdAddEntriesHTML() .
+				$this->cmdWriteAndFillSelectorHTML() .
+				'top.we_editDirID = "";');
 		}
 	}
 
@@ -921,8 +896,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+		echo $this->cmdAddEntriesHTML() .
+		$this->cmdWriteAndFillSelectorHTML();
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
@@ -949,9 +924,8 @@ top.selectFile(top.currentID);
 				$result['Templates'] = $this->db->f('Templates');
 			}
 			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id), "Path", $this->db);
-			$out = we_html_tools::getHtmlTop().'
-' . STYLESHEET . '
-<style type="text/css">
+			$out = we_html_tools::getHtmlTop() . '
+' . STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -984,8 +958,7 @@ top.selectFile(top.currentID);
 		padding:3px 6px;
 		background-color:#F2F2F1;
 	}
-</style>
-<script tyle="text/javascript">
+') . we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -1007,11 +980,9 @@ top.selectFile(top.currentID);
 		if(top.fspath && top.fspath.document && top.fspath.document.body) top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
-	}
-</script>
-</head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
-					';
+	}') .
+				'</head>
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
@@ -1036,8 +1007,6 @@ top.selectFile(top.currentID);
 
 				$previewDefauts .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[tab_properties]") . "</td></tr>";
 				$previewDefauts .= "<tr class='odd'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>";
-				//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
-				//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
 				$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
 				$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
 				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . IMAGE_DIR . "tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
@@ -1054,7 +1023,7 @@ top.selectFile(top.currentID);
 				} else{
 					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 				}
-				$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']',true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+				$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
 				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
 				switch($result['ContentType']){
@@ -1073,7 +1042,7 @@ top.selectFile(top.currentID);
 								$thumbpath = $result['Path'];
 							}
 
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='http://" . $_SERVER['HTTP_HOST'] . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
+							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='".getServerUrl(true). $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
 
 							$out .= $previewDefauts;
 
@@ -1172,9 +1141,9 @@ top.selectFile(top.currentID);
 					default:
 						$out .= $previewDefauts;
 				}
-				$out .= "</table></div></td></tr>\t</table>\n";
+				$out .= '</table></div></td></tr></table>';
 			}
-			$out .= "</body>\n</html>";
+			$out .= '</body></html>';
 			echo $out;
 		}
 	}

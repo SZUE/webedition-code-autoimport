@@ -39,21 +39,26 @@ class weCustomerFrames extends weModuleFrames{
 		$this->View->customer->clearSessionVars();
 		//$this->View->settings->clearSessionVars();
 		$this->View->settings->load(false);
-		return weModuleFrames::getHTMLFrameset();
+		return parent::getHTMLFrameset();
 	}
 
 	function getHTMLResize(){
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('left', $this->frameset . '?pnt=left', 'position:absolute;top:0px;bottom:0px;left:0px;width:220px;overflow: hidden;') .
+					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right', 'position:absolute;top:0px;bottom:0px;left:220px;right:0px;overflow: hidden;')
+				));
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		/* 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		  $noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("cols" => '220,*', "border" => "1", "frameborder" => "yes"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
+		  $frameset->setAttributes(array("cols" => '220,*', "border" => "1", "frameborder" => "yes"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
-		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
-
+		  // set and return html code
+		  $body = $frameset->getHtml() . $noframeset->getHTML();
+		 */
 		return $this->getHTMLDocument($body);
 	}
 
@@ -307,7 +312,7 @@ class weCustomerFrames extends weModuleFrames{
 
 
 		if(isset($_REQUEST['home'])){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0', 'background' => IMAGE_DIR . 'backgrounds/bgGrayLineTop.gif'), ''));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
 		$tabs = new we_tabs();
@@ -570,16 +575,8 @@ class weCustomerFrames extends weModuleFrames{
 					$documentStr.='<td>' . $DB_WE->f('ID') . '</td>';
 
 					$documentStr.='<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>';
-					if($DB_WE->f('Published')){
-						if($DB_WE->f('ModDate') > $DB_WE->f('Published')){
-							$class = 'changeddefaultfont';
-						} else{
-							$class = 'defaultfont';
-						}
-					} else{
+					$class = ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont');
 
-						$class = 'npdefaultfont';
-					}
 					$documentStr.='<td class="' . $class . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>';
 					$titel = '';
 					$beschreibung = '';
@@ -602,8 +599,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 						$beschreibung = $db_we2->f('Inhalt');
 					}
 
-					$documentStr.='<td title="' . $beschreibung . '">' . $titel . '</td>';
-					$documentStr.='</tr>';
+					$documentStr.='<td title="' . $beschreibung . '">' . $titel . '</td></tr>';
 				}
 				$documentStr.='</table>';
 			} else{
@@ -611,10 +607,9 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			}
 			//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
 
-			array_push($parts, array(
+			$parts[] = array(
 				"html" => $documentStr,
 				"space" => 0
-				)
 			);
 		}
 		if($preselect == g_l('modules_customer', '[other]') || $preselect == g_l('modules_customer', '[all]')){
@@ -629,7 +624,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
 					$c++;
 					if($c > 1){
-						$r++;
+						++$r;
 						$table->addRow();
 						$table->setRow($r, array("valign" => "top"));
 					}
@@ -637,10 +632,10 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 						$c = 0;
 				}
 			}
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[other]') : g_l('modules_customer', '[data]')),
 				"html" => $table->getHtml(),
-				"space" => 120)
+				"space" => 120
 			);
 		}
 
@@ -659,7 +654,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
 
-					$c++;
+					++$c;
 					if($c > 1){
 						$r++;
 						$table->addRow();
@@ -669,10 +664,10 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 						$c = 0;
 				}
 			}
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => ($preselect == g_l('modules_customer', '[all]') ? $bk : g_l('modules_customer', '[data]')),
 				"html" => $table->getHtml(),
-				"space" => 120)
+				"space" => 120
 			);
 		}
 		$out = we_multiIconBox::getHTML("", 680, $parts, 30);
@@ -681,19 +676,26 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLLeft(){
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('treeheader', $this->frameset . '?pnt=treeheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('tree', WEBEDITION_DIR . "treeMain.php", 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+					we_html_element::htmlIFrame('treefooter', $this->frameset . '?pnt=treefooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+				));
+		/*
+		  $frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		  $noframeset = new we_baseElement("noframes");
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		  $frameset->setAttributes(array("rows" => "40,*,40"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=treeheader", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
 
-		$frameset->setAttributes(array("rows" => "40,*,40"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treeheader", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
+		  $frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
-		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
-
-		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
-
+		  // set and return html code
+		  $body = $frameset->getHtml() . $noframeset->getHTML();
+		 */
+		we_html_element::htmlBody(array('style' => 'margin:0px;'), '');
 		return $this->getHTMLDocument($body);
 	}
 
@@ -702,8 +704,6 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLTreeFooter(){
-
-
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "treefooter")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
@@ -719,7 +719,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			)
 		);
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), we_html_element::htmlForm(array("name" => "we_form"), $table->getHtml())
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "5", "marginheight" => "0", "leftmargin" => "5", "topmargin" => "0"), we_html_element::htmlForm(array("name" => "we_form"), $table->getHtml())
 		);
 
 		return $this->getHTMLDocument($body);
@@ -876,10 +876,9 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 		$rootjs = "";
 		if(!$pid){
-			$rootjs.='
-		' . $this->Tree->topFrame . '.treeData.clear();
-		' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));
-		';
+			$rootjs.=
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
@@ -1003,9 +1002,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 				document.getElementsByName('value_'+i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_'+i).value);
 			}
 		}
-	}
-	"
-				) .
+	}") .
 				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml(), g_l('modules_customer', '[search]'), we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")), "100%", "30", "558"

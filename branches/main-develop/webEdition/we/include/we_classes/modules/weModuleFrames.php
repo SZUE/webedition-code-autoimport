@@ -72,16 +72,22 @@ class weModuleFrames{
 			we_html_element::jsElement($this->getJSStart()) .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
+		/* $frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
+		  $noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "32,*,100" : "32,*,0" ), "onLoad" => "start();"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=resize" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "resize", "scrolling" => "no"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
-
+		  $frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "32,*,100" : "32,*,0" ), "onload" => "start();"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=resize" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "resize", "scrolling" => "no"));
+		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
+		 */
+		/* $frameset->getHtml() . $noframeset->getHTML(); */
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('header', $this->frameset . '?pnt=header', 'position:absolute;top:0px;height:32px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:' . ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 1) . 'px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:' . ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 1) . 'px;left:0px;right:0px;overflow: hidden;')
+				));
 
 		return $this->getHTMLDocument($body, $js);
 	}
@@ -94,15 +100,15 @@ class weModuleFrames{
 		$lang_arr = "we_menu_" . $this->module;
 		$jmenu = new weJavaMenu($$lang_arr, "top.opener.top.load", 350, 30);
 
-		$menu = $jmenu->getCode();
+		$menu = $jmenu->getCode(true);// . $jmenu->getJS();
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden;background-color:#efefef;background-image: url(' . IMAGE_DIR . 'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
 
-		return $this->getHTMLDocument($body);
+		return $this->getHTMLDocument($body, we_main_headermenu::css());
 	}
 
 	function getHTMLResize(){

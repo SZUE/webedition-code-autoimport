@@ -871,10 +871,11 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		if(!$db)
-			$db = new DB_WE();
-		if((!$attribs) || (!is_array($attribs)))
+
+		$db = ($db ? $db : new DB_WE());
+		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
+		}
 		switch($type){
 			case 'img':
 				$img = new we_imageDocument();
@@ -1238,7 +1239,7 @@ class we_document extends we_root{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''
-					&& in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					&& in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
