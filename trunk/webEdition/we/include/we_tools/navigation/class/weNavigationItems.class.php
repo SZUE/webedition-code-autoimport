@@ -537,7 +537,6 @@ class weNavigationItems{
 	function writeNavigation($depth = false){
 		$GLOBALS['weNavigationObject'] = & $this;
 
-		$content = '';
 		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
 
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
@@ -545,10 +544,10 @@ class weNavigationItems{
 				// this is to make it equal init by id, parentid
 				$depth--;
 			}
-			$content = $this->items['id' . $this->rootItem]->writeItem($this, $depth);
+			return $this->items['id' . $this->rootItem]->writeItem($this, $depth);
 		}
 
-		return $content;
+		return '';
 	}
 
 	function setTemplate($content, $type, $level, $current, $position){
