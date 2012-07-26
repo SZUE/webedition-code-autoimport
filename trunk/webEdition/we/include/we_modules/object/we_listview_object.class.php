@@ -386,7 +386,6 @@ class we_listview_object extends listviewBase{
 	}
 
 	function next_record(){
-
 		$count = $this->count;
 		$fetch = false;
 		if($this->calendar_struct["calendar"] != ""){
