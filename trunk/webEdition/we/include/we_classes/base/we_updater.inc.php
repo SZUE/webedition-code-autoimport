@@ -27,7 +27,7 @@ class we_updater{
 		$hasOwnertable = false;
 		foreach($tables as $t){
 			// old Version of small User Module
-			if($t["table_name"] == TBL_PREFIX.'tblOwner'){
+			if($t["table_name"] == TBL_PREFIX . 'tblOwner'){
 				$hasOwnertable = true;
 				break;
 			}
@@ -39,7 +39,7 @@ class we_updater{
 		if(!$GLOBALS['DB_WE']->isColExist(FILE_TABLE, "WebUserID"))
 			$GLOBALS['DB_WE']->addCol(FILE_TABLE, "WebUserID", "BIGINT DEFAULT '0' NOT NULL");
 		if($hasOwnertable){
-			$DB_WE->query('SELECT * FROM '.TBL_PREFIX.'tblOwner');
+			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
 			while($DB_WE->next_record()) {
 				$table = $DB_WE->f("DocumentTable");
 				if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
@@ -49,12 +49,12 @@ class we_updater{
 						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
 						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
 						$db2->query("UPDATE " . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
-						$db2->query('DELETE FROM '.TBL_PREFIX.' WHERE fileID=' . intval($id));
+						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
 						@set_time_limit(30);
 					}
 				}
 			}
-			$DB_WE->query('DROP TABLE '.TBL_PREFIX.'tblOwner');
+			$DB_WE->query('DROP TABLE ' . TBL_PREFIX . 'tblOwner');
 		}
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
@@ -77,8 +77,8 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "Path", "VARCHAR(255)  DEFAULT ''");
 		$GLOBALS['DB_WE']->addCol(CATEGORY_TABLE, "Icon", "VARCHAR(64) DEFAULT 'cat.gif'");
 
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE.' SET Text=Category WHERE Text=""');
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE.' SET Path=CONCAT("/",Category) WHERE Path=""');
+		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
+		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_file", "INT");
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "seem_start_type", "VARCHAR(10) DEFAULT ''");
@@ -272,6 +272,9 @@ class we_updater{
 				$db123->query("UPDATE " . USER_TABLE . " SET IsFolder=1 WHERE ID=" . intval($DB_WE->f("ID")));
 		}
 		self::fix_icon();
+
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="ISO-8859-1" WHERE Language NOT LIKE "%_UTF-8%" AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE Language LIKE "%_UTF-8%" AND BackendCharset=""');
 
 		return true;
 	}
