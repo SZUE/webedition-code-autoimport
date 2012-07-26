@@ -121,8 +121,7 @@ if(isset($_REQUEST["ucmd"])){
 		case "display_user":
 			if($_REQUEST["uid"]){
 				$user_object = new we_user();
-				$user_object->initFromDB($_REQUEST["uid"]);
-
+				$user_object->initFromDB($_REQUEST['uid']);
 				if(!we_hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
 					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 					$user_object = new we_user();
@@ -141,6 +140,7 @@ if(isset($_REQUEST["ucmd"])){
                            top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=";
                            top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
                         ');
+
 			}
 			break;
 		case "save_user":
