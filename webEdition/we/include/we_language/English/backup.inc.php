@@ -166,7 +166,7 @@ All files managed by webEdition are deleted! Documents and templates will be kep
 	'nothing_to_delete'=>'There is nothing to delete!',
 	'no_resource'=>'Fatal Error: There are not enough resources to finish the backup!',
 	'object_info'=>'Objects and classes from the DB/Object module.',
-	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
+	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from a <strong>webEdition installation older than 6.3.0</strong>!',
 	'option'=>'Backup options',
 	'other_files'=>'Other files',
 	'preparing_file'=>'Preparing file for import...',
