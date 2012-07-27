@@ -58,6 +58,7 @@ class we_updater{
 		}
 
 		$GLOBALS['DB_WE']->addCol(INDEX_TABLE, 'Language', "varchar(5) default NULL");
+		$GLOBALS['DB_WE']->changeColType(INDEX_TABLE, "Workspace", " varchar(1000) NOT NULL default '' ");
 
 
 		$GLOBALS['DB_WE']->addCol(FILE_TABLE, "Owners", "VARCHAR(255)  DEFAULT ''");
@@ -104,7 +105,9 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltipFontname", "  varchar(255) NOT NULL default 'none'", ' AFTER editorTooltipFont ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorTooltipFontsize", " int(2) NOT NULL default '-1'", ' AFTER editorTooltipFontname ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorDocuintegration", " tinyint(1) NOT NULL default '1'", ' AFTER editorTooltipFontsize ');
-
+		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "BackendCharset", " varchar(22) NOT NULL default ''", ' AFTER Language ');
+		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "juploadPath", " text ", ' AFTER use_jupload ');
+		
 		if($GLOBALS['DB_WE']->isColExist(DOC_TYPES_TABLE, "DocType"))
 			$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
 
@@ -131,6 +134,8 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(GLOSSARY_TABLE, "`Icon`", " enum('folder.gif','prog.gif') NOT NULL ");
 		}
 		$GLOBALS['DB_WE']->addCol(THUMBNAILS_TABLE, "Fitinside", " smallint(5) unsigned NOT NULL default '0' ", ' AFTER Interlace ');
+		$GLOBALS['DB_WE']->changeColType(HISTORY_TABLE, "ContentType", "enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile') NOT NULL");
+		
 	}
 
 	static function convertPerms(){
@@ -273,8 +278,9 @@ class we_updater{
 		}
 		self::fix_icon();
 
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="ISO-8859-1" WHERE Language NOT LIKE "%_UTF-8%" AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE Language LIKE "%_UTF-8%" AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%" OR Language="") AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET Language="Deutsch" WHERE Language=""');
 
 		return true;
 	}
@@ -426,13 +432,19 @@ class we_updater{
 			$GLOBALS['DB_WE']->addCol(OBJECT_TABLE, 'DefaultUrlfield2', "varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield1 ');
 			$GLOBALS['DB_WE']->addCol(OBJECT_TABLE, 'DefaultUrlfield3', "varchar(255) NOT NULL default ''", ' AFTER  DefaultUrlfield2 ');
 			$GLOBALS['DB_WE']->addCol(OBJECT_TABLE, 'DefaultTriggerID', "bigint(20) NOT NULL default 0", ' AFTER  DefaultUrlfield3 ');
+			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "Workspaces", " varchar(1000) NOT NULL default '' ");
+			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "DefaultWorkspaces", " varchar(1000) NOT NULL default '' ");
 		}
+		
 	}
 
 	static function updateObjectFiles(){
 		if(defined("OBJECT_FILES_TABLE")){
 			$GLOBALS['DB_WE']->addCol(OBJECT_FILES_TABLE, 'Url', "varchar(255) NOT NULL default ''", ' AFTER Path ');
 			$GLOBALS['DB_WE']->addCol(OBJECT_FILES_TABLE, 'TriggerID', "bigint NOT NULL default '0'", ' AFTER Url ');
+			$GLOBALS['DB_WE']->changeColType(OBJECT_FILES_TABLE, "Workspaces", " varchar(1000) NOT NULL default '' ");
+			$GLOBALS['DB_WE']->changeColType(OBJECT_FILES_TABLE, "ExtraWorkspaces", " varchar(1000) NOT NULL default '' ");
+			$GLOBALS['DB_WE']->changeColType(OBJECT_FILES_TABLE, "ExtraWorkspacesSelected", " varchar(1000) NOT NULL default '' ");
 		}
 	}
 
@@ -542,6 +554,9 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'Display', 'varchar(255) NOT NULL ', ' AFTER Text ');
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'CurrentOnUrlPar', 'tinyint(1) NOT NULL DEFAULT 0', ' AFTER Text ');
 		$GLOBALS['DB_WE']->addCol(NAVIGATION_TABLE, 'CurrentOnAnker', 'tinyint(1) NOT NULL DEFAULT 0', ' AFTER CurrentOnUrlPar ');
+		$GLOBALS['DB_WE']->changeColType(NAVIGATION_TABLE, "Icon", " enum('folder.gif','link.gif') NOT NULL ");
+		$GLOBALS['DB_WE']->changeColType(NAVIGATION_TABLE, "Selection", " enum('dynamic','nodynamic','static') NOT NULL ");
+		$GLOBALS['DB_WE']->changeColType(NAVIGATION_TABLE, "FolderSelection", " enum('docLink','objLink','urlLink') NOT NULL ");
 	}
 
 	static function updateVoting(){
@@ -571,6 +586,10 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "documentElements", "blob");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "documentScheduler", "blob");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "documentCustomFilter", "blob");
+			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "Workspaces", " varchar(1000) NOT NULL ");
+			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspaces", " varchar(1000) NOT NULL ");
+			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspacesSelected", " varchar(1000) NOT NULL ");
+			 
 		}
 	}
 
@@ -580,11 +599,20 @@ class we_updater{
 				$GLOBALS['DB_WE']->changeColType(WORKFLOW_STEP_TABLE, 'Worktime', 'float NOT NULL default 0');
 		}
 		if(defined('WORKFLOW_TABLE')){
-			if(!$GLOBALS['DB_WE']->isColExist(WORKFLOW_TABLE, 'DocType'))
-				$GLOBALS['DB_WE']->changeColType(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default '0'");
+			if($GLOBALS['DB_WE']->isColExist(WORKFLOW_TABLE, 'DocType')){
+				$GLOBALS['DB_WE']->changeColType(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''");
+			} else {
+				$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''", ' AFTER Folders ');
+			}
 			$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'ObjectFileFolders', "varchar(255) NOT NULL default ''", ' AFTER Objects ');
 			$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'EmailPath', 'tinyint(1) NOT NULL DEFAULT 0', ' AFTER Status ');
 			$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'LastStepAutoPublish', 'tinyint(1) NOT NULL DEFAULT 0', ' AFTER EmailPath ');
+		}
+		if(defined('MESSAGES_TABLE')){
+			$GLOBALS['DB_WE']->changeColType(MESSAGES_TABLE, 'seenStatus', " tinyint(4) unsigned NOT NULL default '0'");
+		}
+		if(defined('MSG_TODO_TABLE')){
+			$GLOBALS['DB_WE']->changeColType(MSG_TODO_TABLE, 'seenStatus', " tinyint(3) unsigned NOT NULL default '0'");
 		}
 	}
 
