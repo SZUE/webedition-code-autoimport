@@ -1,8 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
-	'active'=>'Hier kunt u een dienst tijdelijk verbergen.',
-	'additionalVars'=>'optioneel: var1=wert1&var2=wert2&...',
 	'adjust_service'=>'Stel validatie dienst in',
 	'art_custom'=>'Vrije diensten',
 	'art_default'=>'Vooraf gedefinieerde diensten',
@@ -16,9 +14,15 @@ $l_validation=array(
 	'checkvia_upload'=>'Bestandsupload',
 	'checkvia_url'=>'URL overdracht',
 	'connection_problems'=>'<strong>Er is een fout opgetreden tijdens het verbinden met deze dienst</strong><br/><br/>Let op: De optie "url overdracht" is alleen beschikbaar als uw webEdition installatie ook bereikbaar is via het internet (buiten uw lokale netwerk). Dit is niet mogelijk wanneer webEdition lokaal is geïnstalleerd (localhost).<br/><br/>Ook kunnen er problemen optreden wanneer u Firewalls en proxy-servers gebruikt. Controleer uw configuratie als dit het geval is.<br/><br/>HTTP-Reactie: %s',
-	'ctype'=>'Kenmerk voor de doel server bij het bepalen van het soort aangeboden bestand (tekst/html of tekst/css)',
 	'description'=>'U kunt een internet-dienst kiezen om dit document te testen op geldigheid/toegankelijkheid.',
 	
+	'desc'=>array(
+		'active'=>'Hier kunt u een dienst tijdelijk verbergen.',
+		'additionalVars'=>'optioneel: var1=wert1&var2=wert2&...',
+		'ctype'=>'Kenmerk voor de doel server bij het bepalen van het soort aangeboden bestand (tekst/html of tekst/css)',
+		'fileEndings'=>'Voeg alle extensies toe die beschikbaar zijn voor deze dienst. (.html,.css)',
+		'varname'=>'Voer de veldnaam in van het bestand/url',
+	),
 	'edit_service'=>array(
 		'delete_failure'=>'De dienst kon niet verwijderd worden.',
 		'delete_success'=>'De dienst is verwijderd.',
@@ -27,7 +31,6 @@ $l_validation=array(
 		'saved_success'=>'De dienst is bewaard.',
 		'servicename_already_exists'=>'Er bestaat al een dienst met deze naam.',
 	),
-	'fileEndings'=>'Voeg alle extensies toe die beschikbaar zijn voor deze dienst. (.html,.css)',
 	'headline'=>'Online valideren van dit document',
 	'host'=>'Host',
 	'method'=>'Methode',
@@ -40,5 +43,4 @@ $l_validation=array(
 	'service_name'=>'Naam van de dienst',
 	'service_xhtml_upload'=>'(X)HTML W3C valideren via bestandsupload',
 	'service_xhtml_url'=>'(X)HTML W3C valideren via url overdracht',
-	'varname'=>'Voer de veldnaam in van het bestand/url',
 );
