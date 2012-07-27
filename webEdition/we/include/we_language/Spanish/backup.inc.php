@@ -165,6 +165,7 @@ $l_backup=array(
 	'nothing_to_delete'=>'No hay nada para borrar!',
 	'no_resource'=>'Fatal Error: There are not enough resources to finish the backup!',
 	'object_info'=>'Objetos y Clases del Módulo de Base Datos/Objetos.',
+	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'option'=>'Opciones de reserva',
 	'other_files'=>'Otros ficheros',
 	'preparing_file'=>'Preparando archivo para importar...',
