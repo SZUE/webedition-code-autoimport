@@ -279,8 +279,9 @@ class we_updater{
 		self::fix_icon();
 
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%" OR Language="") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET Language="Deutsch" WHERE Language=""');
+		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
+	
 
 		return true;
 	}
