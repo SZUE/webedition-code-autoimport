@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Het backup bestand %s is verwijderd',
 	'backup_form'=>'Backup vanaf',
 	'backup_log_exp'=>'De log wordt bewaard in /webEdition/we_backup/data/lastlog.php',
