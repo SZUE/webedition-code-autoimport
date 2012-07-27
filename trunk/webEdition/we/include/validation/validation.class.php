@@ -93,17 +93,11 @@
             $_ret = array();
 
             switch($mode){
-
                 case 'edit':
-                    $query = '
-                        SELECT *
-                        FROM ' . VALIDATION_SERVICES_TABLE;
+                    $query = 'SELECT * FROM ' . VALIDATION_SERVICES_TABLE;
                     break;
                 case 'use':
-                    $query = '
-                        SELECT *
-                        FROM ' . VALIDATION_SERVICES_TABLE . '
-                        WHERE fileEndings LIKE "%' . $GLOBALS['DB_WE']->escape($GLOBALS['$we_doc->Extension']) . '%" AND active=1';
+                    $query = 'SELECT * FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE fileEndings LIKE "%' . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Extension) . '%" AND active=1';
                     break;
             }
 
