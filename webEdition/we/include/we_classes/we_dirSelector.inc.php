@@ -1036,8 +1036,6 @@ top.selectFile(top.currentID);
 
 				$previewDefauts .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[tab_properties]") . "</td></tr>";
 				$previewDefauts .= "<tr class='odd'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>";
-				//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
-				//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
 				$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
 				$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
 				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . IMAGE_DIR . "tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
@@ -1073,7 +1071,7 @@ top.selectFile(top.currentID);
 								$thumbpath = $result['Path'];
 							}
 
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='http://" . $_SERVER['HTTP_HOST'] . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
+							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
 
 							$out .= $previewDefauts;
 
