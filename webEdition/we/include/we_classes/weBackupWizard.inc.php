@@ -523,6 +523,7 @@ class weBackupWizard{
 			if(!(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '')){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 			}
+			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[select_server_file]"), 2, 600, false), "space" => 0, "noline" => 1);
 			$parts[] = array("headline" => "", "html" => $select->getHtml(), "space" => 0, "noline" => 1);
 			//array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1));
@@ -757,6 +758,7 @@ class weBackupWizard{
 		}
 
 		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[finished_success]"), 2, 600), "space" => 0, "noline" => 1));
+		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), 1, 600, false), "space" => 0, "noline" => 1));
 
 		$js = we_html_element::jsElement('
 			function setLocation(loc){
