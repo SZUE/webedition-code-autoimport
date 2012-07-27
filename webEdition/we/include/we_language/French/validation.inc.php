@@ -1,8 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
-	'active'=>'Vous pouvez cacher/désactiver ces services.',
-	'additionalVars'=>'optionnel: var1=valeur1&var2=valeur2&...',
 	'adjust_service'=>'Éditer les service de validation',
 	'art_custom'=>'Benutzerdefinierte Dienste',
 	'art_default'=>'Services allégué',
@@ -16,9 +14,15 @@ $l_validation=array(
 	'checkvia_upload'=>'Datei-Upload',
 	'checkvia_url'=>'Transmission d`URL',
 	'connection_problems'=>'<strong>Erreur en connectant au service choisi.</strong><br/><br/>Considerez: L`option "Transmission d`URL" ne peut être utilisé, que si votre Installation de webEdition est accessible par l`internet (alors en dehors de votre reseau local). Ce n`est pas le cas avec installation local (localhost).<br/><br/>Ainsi peuvent se produire des problèmes avec des serveur-proxy ou des pare-feux. Dans ce cas vérifiez votre configuration s`il vous plaît.<br/><br/>Réponse-HTTP: %s',
-	'ctype'=>'Caractéristique de reconnaissance pou le serveur cible, pour qu`il puisse reconnaître de quel fichier il s`agit. (text/html ou text/css)',
 	'description'=>'Vous pouvez vous servir des services de web, pour vérfifier la validité et accessibilité de votre site.',
 	
+	'desc'=>array(
+		'active'=>'Vous pouvez cacher/désactiver ces services.',
+		'additionalVars'=>'optionnel: var1=valeur1&var2=valeur2&...',
+		'ctype'=>'Caractéristique de reconnaissance pou le serveur cible, pour qu`il puisse reconnaître de quel fichier il s`agit. (text/html ou text/css)',
+		'fileEndings'=>'Les extension pour lequelles ce service sera utilisé, peuvent être saisi ici. (.html,.css)',
+		'varname'=>'(saisir le nom de la saisie-d`HTML du fichier / URL)',
+	),
 	'edit_service'=>array(
 		'delete_failure'=>'Le service n`a pas pu être supprimé.',
 		'delete_success'=>'Le service a été enregistré avec succès.',
@@ -27,7 +31,6 @@ $l_validation=array(
 		'saved_success'=>'Le service a été enregistré avec succès.',
 		'servicename_already_exists'=>'Un service avec ce nom existe déjà.',
 	),
-	'fileEndings'=>'Les extension pour lequelles ce service sera utilisé, peuvent être saisi ici. (.html,.css)',
 	'headline'=>'Validation online d`un document.',
 	'host'=>'Hôte',
 	'method'=>'Methode',
@@ -40,5 +43,4 @@ $l_validation=array(
 	'service_name'=>'Nom du Service',
 	'service_xhtml_upload'=>'Validation d`(X)HTML du W3C par téléchargement de fichier',
 	'service_xhtml_url'=>'Validation d`(X)HTML du W3C par transmission d`URL',
-	'varname'=>'(saisir le nom de la saisie-d`HTML du fichier / URL)',
 );
