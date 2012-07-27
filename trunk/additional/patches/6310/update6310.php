@@ -13,7 +13,7 @@ include_once(WE_INCLUDES_PATH."we_classes/base/weFile.class.php");
 
 function up6310_updatePrefs(){
 	$db = new DB_WE();
-	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE Language NOT LIKE "%_UTF-8%" AND BackendCharset=""');
+	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" OR Language="") AND BackendCharset=""');
 	$db->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE Language LIKE "%_UTF-8%" AND BackendCharset=""');
 	$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_SESSION["prefs"]["userID"]), $db);
 	return true;
