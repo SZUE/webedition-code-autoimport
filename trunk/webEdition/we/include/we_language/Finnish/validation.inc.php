@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
-	'active'=>'',
-	'additionalVars'=>'',
+	'active'=>'Aktiivinen',
+	'additionalVars'=>'Lisäparametrit',
 	'adjust_service'=>'Muuta validointipalvelua',
 	'art_custom'=>'Räätälöidyt palvelut',
 	'art_default'=>'Esimääritetyt palvelut',
@@ -16,7 +16,7 @@ $l_validation=array(
 	'checkvia_upload'=>'Tiedoston latausta',
 	'checkvia_url'=>'URL -siirtoa',
 	'connection_problems'=>'<strong>Virhe yhteydenmuodostuksessa palveluun<(/trong><br/><br/><br/>Huomioi: valinta "url siirto" on käytettävissä vain, jos webEdition järjestelmän pääsy on sallittu internetiin.Siirto ei ole mahdollinen paikallisasennuksessa.<br/><br/>Ongelmia voi myös esiintyä käytettäessä palomuureja tai proxy-palvelimia. Tarkista asetukset tässä tapauksessa.<br/><br/>HTTP-Response: %s',
-	'ctype'=>'',
+	'ctype'=>'Sisällön tyyppi',
 	'description'=>'Voit valita palvelun verkosta tarkistaaksesi dokumentin validiteetin/käytettävyyden.',
 	
 	'desc'=>array(
@@ -34,7 +34,7 @@ $l_validation=array(
 		'saved_success'=>'Palvelu on tallennettu.',
 		'servicename_already_exists'=>'Tämän niminen palvelu on jo olemassa.',
 	),
-	'fileEndings'=>'',
+	'fileEndings'=>'Tiedoston päätteet',
 	'headline'=>'Dokumentin validointi internetin välityksellä',
 	'host'=>'Palvelin',
 	'method'=>'Siirtotapa',
@@ -47,5 +47,5 @@ $l_validation=array(
 	'service_name'=>'Palvelun nimi',
 	'service_xhtml_upload'=>'(X)HTML W3C -validointi tiedostolatauksen kautta',
 	'service_xhtml_url'=>'(X)HTML W3C -validointi URL -siirron kautta',
-	'varname'=>'',
+	'varname'=>'Muuttujan nimi',
 );
