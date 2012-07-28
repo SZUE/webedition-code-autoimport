@@ -68,21 +68,24 @@ class we_users_util{
 		} else{
 			$db = new DB_WE();
 
-			$aliases = array();
-			we_getAliases($uid, $aliases, $db);
-			foreach($aliases as $aid)
-				if(in_array($aid, $users))
+			$aliases = we_getAliases($uid, $db);
+			foreach($aliases as $aid){
+				if(in_array($aid, $users)){
 					return true;
+				}
+			}
 
-			for($i = 0; $i < sizeof($users); $i++){
-				$isGroup = f("SELECT IsFolder FROM " . USER_TABLE . " WHERE ID=" . intval($users[$i]), "IsFolder", $db);
+			foreach($users as $user){
+				$isGroup = f("SELECT IsFolder FROM " . USER_TABLE . " WHERE ID=" . intval($user), "IsFolder", $db);
 				if($isGroup){
-					if(self::isUserInGroup($uid, $users[$i])){
+					if(self::isUserInGroup($uid, $user)){
 						return true;
 					}
-					foreach($aliases as $aid)
-						if(self::isUserInGroup($aid, $users[$i]))
+					foreach($aliases as $aid){
+						if(self::isUserInGroup($aid, $user)){
 							return true;
+						}
+					}
 				}
 			}
 		}
@@ -90,7 +93,7 @@ class we_users_util{
 		return false;
 	}
 
-	static function isUserInGroup($uid, $groupID, $db=""){
+	static function isUserInGroup($uid, $groupID, $db = ""){
 		if(!$db)
 			$db = new DB_WE();
 		$pid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($uid), "ParentID", $db);
@@ -127,7 +130,7 @@ class we_users_util{
 		return $array;
 	}
 
-	static function getUsersForDocWorkspace($id, $wsField="workSpace"){
+	static function getUsersForDocWorkspace($id, $wsField = "workSpace"){
 
 		$db = new DB_WE();
 		if(is_array($id)){

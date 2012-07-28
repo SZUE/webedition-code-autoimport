@@ -192,31 +192,28 @@ print STYLESHEET;
 print '</head>';
 
 //  generate Body of page
-$parts = array();
-array_push($parts, array('html' => g_l('validation', '[description]'), 'space' => 0));
-array_push($parts, array('headline' => g_l('validation', '[service]'),
-	'html' =>
-	'<table border="0" cellpadding="0" cellspacing="0">
-                                 <tr>
-                                    <td class="defaultfont">' .
-	$_select .
-	$_hiddens .
-	'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-	we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
-	. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-	we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
-	. '</td></tr></table>'
-	, 'space' => 95));
+$parts = array(
+	array('html' => g_l('validation', '[description]'), 'space' => 0),
+	array('headline' => g_l('validation', '[service]'),
+		'html' =>
+		'<table border="0" cellpadding="0" cellspacing="0">
+                                 <tr><td class="defaultfont">' .
+		$_select .
+		$_hiddens .
+		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
+		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
+		. '</td></tr></table>'
+		, 'space' => 95),
+	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),
+	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5),
+);
 
-array_push($parts, array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0));
-array_push($parts, array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5));
-
-$body = '
-        <form name="we_form">'
-	. we_html_tools::hidden('we_transaction', (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
+$body = '<form name="we_form">'
+	. we_html_tools::hidden('we_transaction', (isset($_REQUEST['we_transaction']) && preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
 	. we_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
-	'</form>'
-;
+	'</form>';
 
-print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body);
-print '</html>';
+print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .
+	'</html>';

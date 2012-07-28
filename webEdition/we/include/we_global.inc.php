@@ -318,9 +318,8 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 
 	if(isset($_pathA[1]) && $_pathA[1] != ''){
 		$_url_param = explode('&', $_pathA[1]);
-		$_len = count($_url_param);
-		for($i = 0; $i < $_len; $i++){
-			$_param_split = explode('=', $_url_param[$i]);
+		foreach($_url_param as $cur){
+			$_param_split = explode('=', $cur);
 			$_params[$_param_split[0]] = isset($_param_split[1]) ? $_param_split[1] : '';
 		}
 	}
@@ -544,9 +543,10 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 		return 0;
 	}
 
-	$returnIDs = array();
-	$returnIDs['templateIDs'] = array();
-	$returnIDs['documentIDs'] = array();
+	$returnIDs = array(
+		'templateIDs' => array(),
+		'documentIDs' => array(),
+	);
 
 	getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
 
@@ -573,7 +573,7 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . $where);
 
 	while($GLOBALS['DB_WE']->next_record()) {
-		array_push($returnIDs['documentIDs'], $GLOBALS['DB_WE']->f('ID'));
+		$returnIDs['documentIDs'][] = $GLOBALS['DB_WE']->f('ID');
 	}
 	return $returnIDs;
 }
@@ -611,7 +611,7 @@ function we_make_attribs($attribs, $doNotUse = ''){
 	$fil[] = 'removefirstparagraph';
 	if(is_array($attribs)){
 		reset($attribs);
-		while(list($k, $v) = each($attribs)) {
+		foreach($attribs as $k => $v){
 			if(!in_array($k, $fil)){
 				$attr .= $k . '="' . $v . '" ';
 			}
@@ -664,8 +664,8 @@ function makeOwnersSql($useCreatorID = true){
 	if($_SESSION['perms']['ADMINISTRATOR']){
 		return '';
 	}
-	$aliases = array($_SESSION['user']['ID']);
-	we_getAliases($_SESSION['user']['ID'], $aliases, $GLOBALS['DB_WE']);
+	$aliases = we_getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+	$aliases[] = $_SESSION['user']['ID'];
 	$q = array();
 	if($useCreatorID){
 		$q[] = 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\')';
@@ -675,8 +675,9 @@ function makeOwnersSql($useCreatorID = true){
 	}
 	$groups = array($_SESSION['user']['ID']);
 	we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
-	foreach($aliases as $id)
+	foreach($aliases as $id){
 		we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
+	}
 
 	foreach($groups as $id){
 		$q[] = "Owners like '%," . intval($id) . ",%'";
@@ -685,23 +686,16 @@ function makeOwnersSql($useCreatorID = true){
 }
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){
-	if(!$db){
-		$db = new DB_WE();
-	}
+	$db = $db ? $db : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
 		$id = $pid; // #5836
 		$ids[] = $id;
 	}
 }
 
-function we_getAliases($id, &$ids, $db = ''){
-	if(!$db){
-		$db = new DB_WE();
-	}
-	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', $db);
-	if($foo){
-		$ids = array_merge($ids, explode(',', $foo));
-	}
+function we_getAliases($id, $db = ''){
+	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', ($db ? $db : new DB_WE()));
+	return $foo ? explode(',', $foo) : array();
 }
 
 function we_isOwner($csvOwners){
@@ -764,12 +758,14 @@ function shortenPathSpace($path, $len){
 }
 
 function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
-	if(intval($pid) != 0 && intval($id) == 0)
+	if(intval($pid) != 0 && intval($id) == 0){
 		return false;
-	if(intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0'))
+	}
+	if(intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0')){
 		return true;
-	if(!$db)
-		$db = new DB_WE();
+	}
+	$db = $db ? $db : new DB_WE();
+
 	$found = array();
 	$p = intval($id);
 	do{
@@ -812,39 +808,41 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 }
 
 function userIsOwnerCreatorOfParentDir($folderID, $tab){
-	if($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE)
-		return true;
-	if($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0)){
+	if(($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE) ||
+		($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0))){
 		return true;
 	}
 	$db = new DB_WE();
-	$db->query('SELECT RestrictOwners,Owners,CreatorID FROM ' . $tab . ' WHERE ID=' . intval($folderID));
-	if($db->next_record())
-		if($db->f('RestrictOwners')){
-			$ownersArr = makeArrayFromCSV($db->f('Owners'));
-			foreach($ownersArr as $uid)
-				we_users_util::addAllUsersAndGroups($uid, $ownersArr);
-			array_push($ownersArr, $db->f('CreatorID'));
-			$ownersArr = array_unique($ownersArr);
-			return (in_array($_SESSION['user']['ID'], $ownersArr));
-		} else{
-			$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
-			return userIsOwnerCreatorOfParentDir($pid, $tab);
+	$tmp = getHash('SELECT RestrictOwners,Owners,CreatorID FROM ' . $tab . ' WHERE ID=' . intval($folderID), $db);
+	if(!count($tmp)){
+		return true;
+	}
+	if($tmp['RestrictOwners']){
+		$ownersArr = makeArrayFromCSV($tmp['Owners']);
+		foreach($ownersArr as $uid){
+			we_users_util::addAllUsersAndGroups($uid, $ownersArr);
 		}
-	return true;
+		$ownersArr[] = $tmp['CreatorID'];
+		$ownersArr = array_unique($ownersArr);
+		return (in_array($_SESSION['user']['ID'], $ownersArr));
+	} else{
+		$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
+		return userIsOwnerCreatorOfParentDir($pid, $tab);
+	}
 }
 
 function path_to_id($path, $table = FILE_TABLE){
-	$db = new DB_WE();
 	if($path == '/'){
 		return 0;
 	}
-	return intval(f("SELECT DISTINCT ID FROM $table WHERE Path='" . $db->escape($path) . "' LIMIT 1", "ID", $db));
+	$db = new DB_WE();
+	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', 'ID', $db));
 }
 
 function weConvertToIds($paths, $table){
-	if(!is_array($paths))
+	if(!is_array($paths)){
 		return array();
+	}
 	$paths = array_unique($paths);
 	$ids = array();
 	foreach($paths as $p){
@@ -868,9 +866,9 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	if(!is_array($IDs) && !$IDs){
 		return '/';
 	}
-	if(!$db){
-		$db = new DB_WE();
-	}
+
+	$db = $db ? $db : new DB_WE();
+
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
 	}
@@ -879,7 +877,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 		if($id == 0){
 			$foo[] = '/';
 		} else{
-			$foo2 = getHash('SELECT Path,IsFolder FROM `' . $db->escape($table) . '` WHERE ID=' . intval($id), $db);
+			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), $db);
 			if(isset($foo2['Path'])){
 				if($endslash && $foo2['IsFolder']){
 					$foo2['Path'] .= '/';
@@ -909,44 +907,37 @@ function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
 }
 
 function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	if(!$db)
-		$db = new DB_WE();
+	$db = ($db ? $db : new DB_WE());
 	$limitCSV = trim($limitCSV, ',');
-	$q = '';
+	$query = array();
 	if($wsIDs){
 		$idArr = makeArrayFromCSV($wsIDs);
 		$wsPaths = makeArrayFromCSV(id_to_path($wsIDs, $table, $db));
-		$qfoo = ' ( ';
-		for($i = 0; $i < sizeof($wsPaths); $i++)
-			if((!$limitCSV) || in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db))
-				$qfoo .= " Path like '" . $db->escape($wsPaths[$i]) . "%' OR ";
-		if($qfoo == ' ( ')
-			$qfoo = '';
-		$qfoo = preg_replace('#^(.*)OR $#', '\1', $qfoo);
-		if($qfoo)
-			$qfoo .= ' ) ';
-		else
+		$qfoo = array();
+		for($i = 0; $i < count($wsPaths); $i++){
+			if((!$limitCSV) || in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
+				$qfoo[] = ' Path LIKE "' . $db->escape($wsPaths[$i]) . '%" ';
+			}
+		}
+		if(!count($qfoo)){
 			return array();
-		$q .= $qfoo;
+		}
+		$query[] = ' (' . implode(' OR ', $qfoo) . ' )';
 	}
-	$q2 = '';
 	switch($type){
 		case FILE_ONLY :
-			$q2 = ' IsFolder=0 ';
+			$query[] = ' IsFolder=0 ';
 			break;
 		case FOLDER_ONLY :
-			$q2 = ' IsFolder=1 ';
+			$query[] = ' IsFolder=1 ';
 			break;
 	}
-	$q3 = '';
-	$out = $first ? array(
-		'0' => $first
-		) : array();
-	$db->query('SELECT ID,Path FROM ' . $table . (($q || $q2 || $q3) ? '
-		WHERE ' : '') . $q . (($q && $q2) ? ' AND ' : '') . $q2 . ((($q || $q2) && $q3) ? ' AND ' : '') . $q3 . '
-		ORDER BY ' . $order);
-	while($db->next_record())
+	$out = $first ? array('0' => $first) : array();
+
+	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ',$query) : '') . ' ORDER BY ' . $order);
+	while($db->next_record()) {
 		$out[$db->f('ID')] = $db->f('Path');
+	}
 	return $out;
 }
 
@@ -992,32 +983,34 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 	return '';
 }
 
-function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder'){
-	$db_temp = new DB_WE();
-	$db_temp1 = new DB_WE();
-	$db_temp->query('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($id));
-	while($db_temp->next_record())
-		if($db_temp->f('ParentID') == 0){
-			array_push($parentlist, $db_temp->f('ParentID'));
-			break;
+function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', $db = ''){
+	$db = $db ? $db : new DB_WE();
+	$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($id), 'ParentID', $db);
+	if($pid !== ''){
+		if($pid == 0){
+			$parentlist[] = $pid;
 		} else{
-			$db_temp1->query('SELECT ' . $match . ' FROM ' . $tab . ' WHERE ID=' . intval($db_temp->f('ParentID')));
-			if($db_temp1->next_record())
-				if($db_temp1->f($match) == $matchvalue){
-					array_push($parentlist, $db_temp->f('ParentID'));
-					we_readParents($db_temp->f('ParentID'), $parentlist, $tab, $match, $matchvalue);
-				}
+			$tmp = f('SELECT 1 AS a FROM ' . $tab . ' WHERE ID=' . $pid . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', 'a', $db);
+			if($tmp == '1'){
+				$parentlist[] = $pid;
+				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
+			}
 		}
+	}
 }
 
-function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder'){
-	$db_temp = new DB_WE();
-	$db_temp->query('SELECT ID,' . $match . ' FROM ' . $tab . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
-	while($db_temp->next_record()) {
-		if($db_temp->f($match) == $matchvalue){
-			we_readChilds($db_temp->f('ID'), $childlist, $tab, $folderOnly);
+function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
+	$db = $db ? $db : new DB_WE();
+	$db->query('SELECT ID,' . $match . ' FROM ' . $tab . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
+	$todo = array();
+	while($db->next_record()) {
+		if($db->f($match) == $matchvalue){
+			$todo[] = $db->f('ID');
 		}
-		array_push($childlist, $db_temp->f('ID'));
+		$childlist[] = $db->f('ID');
+	}
+	foreach($todo as $id){
+		we_readChilds($id, $childlist, $tab, $folderOnly, $where, $match, $matchvalue, $db);
 	}
 }
 
@@ -1072,7 +1065,7 @@ function getWsFileList($table, $childsOnly = false){
 		foreach($workspaces as $value){
 			array_push($childList, $value);
 			$myPath = id_to_path($value, $table);
-			$_query = "SELECT ID FROM $table WHERE 0 ";
+			$_query = 'SELECT ID FROM ' . $table . ' WHERE 0 ';
 			if(!$childsOnly){
 				$parts = explode('/', $myPath);
 				array_shift($parts);
@@ -1080,11 +1073,11 @@ function getWsFileList($table, $childsOnly = false){
 				$path = '/';
 				foreach($parts as $part){
 					$path .= $part;
-					$_query .= "OR PATH = '" . $db->escape($path) . "' ";
+					$_query .= 'OR PATH = "' . $db->escape($path) . '" ';
 					$path .= '/';
 				}
 			}
-			$_query .= "OR PATH LIKE '$myPath/%' OR PATH = '" . $db->escape($myPath) . "' ";
+			$_query .= 'OR PATH LIKE "' . $db->escape($myPath) . '/%" OR PATH = "' . $db->escape($myPath) . '" ';
 			$db->query($_query);
 			while($db->next_record()) {
 				array_push($childList, $db->f('ID'));
@@ -1209,33 +1202,33 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 	}
 
-	$foo = getHash("SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id), $DB_WE);
+	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id), $DB_WE);
 	if(count($foo) == 0){
 		return '';
 	}
 	$showLink = false;
 
-	if($foo["Workspaces"]){
-		if($foo["TriggerID"]){
-			if(in_workspace($foo["TriggerID"], $foo["Workspaces"], FILE_TABLE, $DB_WE)){
+	if($foo['Workspaces']){
+		if($foo['TriggerID']){
+			if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
-			if(in_workspace($foo["TriggerID"], $foo["ExtraWorkspacesSelected"], FILE_TABLE, $DB_WE)){
+			if(in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
 		} else{
-			if(in_workspace($pid, $foo["Workspaces"], FILE_TABLE, $DB_WE)){
+			if(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			} else{
-				if($foo["ExtraWorkspacesSelected"]){
-					if(in_workspace($pid, $foo["ExtraWorkspacesSelected"], FILE_TABLE, $DB_WE))
+				if($foo['ExtraWorkspacesSelected']){
+					if(in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))
 						$showLink = true;
 				}
 			}
 		}
 	}
 	if($showLink){
-		$path = ($foo["TriggerID"] ? id_to_path($foo["TriggerID"]) : getNextDynDoc($path, $pid, $foo["Workspaces"], $foo["ExtraWorkspacesSelected"], $DB_WE));
+		$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE));
 		if(!$path)
 			return '';
 
@@ -1247,7 +1240,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 		if(show_SeoLinks() && $objectseourls){
 
-			$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id) . " LIMIT 1", $DB_WE);
+			$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
 			$objecturl = $objectdaten['Url'];
 			$objecttriggerid = $objectdaten['TriggerID'];
 			if($objecttriggerid){
@@ -1274,7 +1267,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		if($foo['Workspaces']){
 			$fooArr = makeArrayFromCSV($foo['Workspaces']);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f('SELECT Path FROM ' . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($path) . "%'", "Path", $DB_WE);
+			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($path) . '%"', 'Path', $DB_WE);
 			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 		}
 	}
@@ -1284,7 +1277,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	if(!$DB_WE)
 		$DB_WE = new DB_WE();
-	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "' LIMIT 1", 'IsDynamic', $DB_WE)){
+	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
 		return $path;
 	}
 	$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
@@ -1293,8 +1286,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	$arr4 = makeArrayFromCSV($ws2);
 	foreach($arr1 as $i => $ws){
 		if(in_workspace($pid, $arr3[$i])){
-			$path = f('SELECT Path FROM ' . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($ws) . "%' LIMIT 1", 'Path', $DB_WE);
+			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
 			if($path){
 				return $path;
 			}
@@ -1317,7 +1309,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 
 			if($_path){
 				$path_parts = pathinfo($_path);
-				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);
@@ -1330,7 +1322,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 	}
 	if(preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)){
 		foreach($regs as $reg){
-			list($imgID, $thumbID) = explode(",", $reg[1]);
+			list($imgID, $thumbID) = explode(',', $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 				$text = str_replace('src="thumbnail:' . $reg[1] . '"', 'src="' . $thumbObj->getOutputPath() . '"', $text);
@@ -1345,12 +1337,12 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 			$objectseourls = defined('WYSIWYGLINKS_OBJECTSEOURLS') && WYSIWYGLINKS_OBJECTSEOURLS;
 			foreach($regs as $reg){
 				$href = getHrefForObject($reg[1], $pid, $path, "", $hidedirindex, $objectseourls);
-				if(isset($GLOBALS["we_link_not_published"])){
-					unset($GLOBALS["we_link_not_published"]);
+				if(isset($GLOBALS['we_link_not_published'])){
+					unset($GLOBALS['we_link_not_published']);
 				}
 				if($href){
-					if($reg[2] == "?"){
-						$text = str_replace('href="object:' . $reg[1] . "?", 'href="' . $href . "&amp;", $text);
+					if($reg[2] == '?'){
+						$text = str_replace('href="object:' . $reg[1] . '?', 'href="' . $href . '&amp;', $text);
 					} else{
 						$text = str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text);
 					}
@@ -1863,8 +1855,7 @@ function getDoctypeQuery($db = ''){
 			foreach($b as $k => $v){
 				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
 				while($db->next_record()) {
-					array_push(
-						$paths, "(ParentPath = '" . $db->escape($db->f("Path")) . "' || ParentPath like '" . $db->escape($db->f("Path")) . "/%')");
+					$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
 				}
 			}
 			if(is_array($paths) && count($paths) > 0){
@@ -1883,7 +1874,7 @@ function getDoctypeQuery($db = ''){
 			}
 		}
 	}
-	return (is_array($paths) && count($paths) > 0 ? "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='')" : '') . ' ORDER BY DocType';
+	return (is_array($paths) && count($paths) > 0 ? 'WHERE ((' . implode(' OR ', $paths) . ') OR ParentPath="")' : '') . ' ORDER BY DocType';
 }
 
 function we_loadLanguageConfig(){
@@ -1900,7 +1891,7 @@ function getWeFrontendLanguagesForBackend(){
 	if(!Zend_Locale::hasCache()){
 		Zend_Locale::setCache(getWEZendCache());
 	}
-	foreach($GLOBALS["weFrontendLanguages"] as $Locale){
+	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		if(sizeof($temp) == 1){
 			$la[$Locale] = CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale);
@@ -1920,11 +1911,11 @@ function we_writeLanguageConfig($default, $available = array()){
 	}
 
 	return weFile::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
-$GLOBALS["weFrontendLanguages"] = array(
+$GLOBALS[\'weFrontendLanguages\'] = array(
 ' . $locales . '
 );
 
-$GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";'
+$GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 			, 'w+'
 	);
 }

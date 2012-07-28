@@ -698,9 +698,9 @@ class weNavigation extends weModelBase{
 				if($this->FolderSelection == 'objLink'){
 					if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
 						$_db = new DB_WE();
-						$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($this->LinkID) . " LIMIT 1", $_db);
-						$objecturl = $objectdaten['Url'];
-						$objecttriggerid = $objectdaten['TriggerID'];
+						$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
+						$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
+						$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
 						if($objecturl == ''){
 							$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 						}
@@ -732,8 +732,8 @@ class weNavigation extends weModelBase{
 				$_path = $this->Url;
 			} else
 			if($this->SelectionType == 'category' || $this->SelectionType == 'catLink'){
-				$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path(
-						$this->UrlID, FILE_TABLE));
+				$_path = $this->LinkSelection == 'extern' ? $this->Url :
+					($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($this->UrlID, FILE_TABLE));
 				if(!empty($this->CatParameter)){
 					$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 				}
@@ -780,8 +780,7 @@ class weNavigation extends weModelBase{
 		$_path = $_path . (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '');
 		$_path = $_path . ((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
-		$_path = str_replace('&amp;', '&', $_path);
-		$_path = str_replace('&', '&amp;', $_path);
+		$_path = str_replace(array('&amp;','&'), array('&','&amp;'), $_path);
 
 		if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
@@ -794,12 +793,9 @@ class weNavigation extends weModelBase{
 	function setOrdn($num){
 		$_db = new DB_WE();
 		if($this->ID){
-			$_db->query(
-				'SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn>=' . abs($num) . ' ORDER BY Ordn;');
+			$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn>=' . abs($num) . ' ORDER BY Ordn');
 			while($_db->next_record()) {
-				$this->db->query(
-					'UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_db->f('Ordn') + 1) . ' WHERE ID=' . intval($_db->f(
-							'ID')) . ';');
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_db->f('Ordn') + 1) . ' WHERE ID=' . intval($_db->f('ID')));
 			}
 			$this->Ordn = $num;
 			$this->saveField('Ordn');
