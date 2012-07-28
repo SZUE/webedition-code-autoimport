@@ -41,7 +41,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 
 	$allowedHosts = array('validator.w3.org');
 
-	$GLOBALS['DB_WE']->query("SELECT host FROM " . VALIDATION_SERVICES_TABLE);
+	$GLOBALS['DB_WE']->query('SELECT host FROM ' . VALIDATION_SERVICES_TABLE);
 	while($GLOBALS['DB_WE']->next_record()) {
 		$allowedHosts[] = $GLOBALS['DB_WE']->f('host');
 	}

@@ -75,7 +75,7 @@ foreach($tbls as $table){
 	$wsQuery = "";
 
 	if($table == FILE_TABLE)
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsArr = makeArrayFromCSV($ws);
 			foreach($wsArr as $i){
 				array_push($parents, $i);
