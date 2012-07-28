@@ -54,7 +54,7 @@ if(sizeof($customServices) > 0){
 	}
 }
 
-//  Generate Select-Men� with optgroups
+//  Generate Select-Menu with optgroups
 krsort($services);
 
 $_select = '';
@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(sizeof($services) > 0){
+if(count($services)){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
@@ -84,9 +84,8 @@ if(sizeof($services) > 0){
 
 					$_select .= "<optgroup class='lvl2' label='-- " . g_l('validation', '[category_' . $cat . ']') . "'>\n";
 				}
-				$_select .= "<option value='" . $service->getName() . "'>" . htmlentities($service->name) . "</option>\n";
-				$js .= '
-                        host["' . $service->getName() . '"] = "' . htmlentities($service->host) . '";
+				$_select .= "<option value='" . $service->getName() . "'>" . $service->name . "</option>\n";
+				$js .= '				host["' . $service->getName() . '"] = "' . htmlentities($service->host) . '";
                         path["' . $service->getName() . '"] = "' . htmlentities($service->path) . '";
                         s_method["' . $service->getName() . '"] = "' . $service->method . '";
                         varname["' . $service->getName() . '"] = "' . htmlentities($service->varname) . '";
