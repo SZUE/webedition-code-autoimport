@@ -1,6 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
+	'active'=>'',
+	'additionalVars'=>'',
 	'adjust_service'=>'Установка службы проверки данных',
 	'art_custom'=>'Услуги, настраиваемые пользователем',
 	'art_default'=>'Услуги по умолчпнию',
@@ -14,6 +16,7 @@ $l_validation=array(
 	'checkvia_upload'=>'загрузки файла',
 	'checkvia_url'=>'передачи URL',
 	'connection_problems'=>'<strong> Ошибка при попытке соединения с данной службой</strong><br/><br/>Примите во внимание: опция "передача url" работает только в случае, если система webEdition доступна в сети интернет (то есть за пределами локальной сети). На системы, установленные локально (localhost), данная опция  не распространяется.<br/><br/>Кроме того, в случае применения защитных мер (firewalls) и прокси-серверов для систем, доступных в сети интернет, также иногда возникают трудности.<br/><br/>HTTP-ответ: %',
+	'ctype'=>'',
 	'description'=>'С целью проверки документа на доступность можно выбрать соответствующую службу в сети.',
 	
 	'desc'=>array(
@@ -31,6 +34,7 @@ $l_validation=array(
 		'saved_success'=>'Служба успешно сохранена.',
 		'servicename_already_exists'=>'A service with this name already exists.',
 	),
+	'fileEndings'=>'',
 	'headline'=>'Онлайн проверка (диагностика) документа',
 	'host'=>'Хост',
 	'method'=>'Метод',
@@ -43,4 +47,5 @@ $l_validation=array(
 	'service_name'=>'Название службы',
 	'service_xhtml_upload'=>'(X)HTML проверка W3C посредством загрузки файла',
 	'service_xhtml_url'=>'(X)HTML проверка W3C посредством передачи url',
+	'varname'=>'',
 );

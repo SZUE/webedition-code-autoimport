@@ -1,6 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
+	'active'=>'',
+	'additionalVars'=>'',
 	'adjust_service'=>'Edycja walidacji strony',
 	'art_custom'=>'Usługi zdefiniowane przez użytkownika',
 	'art_default'=>'Domyślnie ustawione usługi',
@@ -14,6 +16,7 @@ $l_validation=array(
 	'checkvia_upload'=>'Upload pliku',
 	'checkvia_url'=>'podanie linku URL',
 	'connection_problems'=>'<strong>Wystšpił błšd podczas łšczenia się z wybranš usługš.</strong><br/><br/>Pamiętaj: opcję "podanie linku URL" możesz użyć tylko wtedy, jeżeli Twoja instalacja webEdition jest osišgalna z Internetu (czyli spoza Twojej sieci lokalnej). W przypadku instalacji lokalnej (Localhost) nie ma dostępu do programu z zewnštrz.<br/><br/>Przyczynš problemu mogš też być serwery zapór ogniowych (Firewall) i proxy. Sprawd pod tym kštem swojš konfigurację.<br/><br/>Odpowied HTTP: %s',
+	'ctype'=>'',
 	'description'=>'Tutaj można skorzystać z kilku usług, dzięki którym można sprawdzić swoją stronę pod względem poprawności czy też dostępności.',
 	
 	'desc'=>array(
@@ -31,6 +34,7 @@ $l_validation=array(
 		'saved_success'=>'Usługa została zapisana.',
 		'servicename_already_exists'=>'A service with this name already exists.',
 	),
+	'fileEndings'=>'',
 	'headline'=>'Sprawdzanie online poprawności tego dokumentu.',
 	'host'=>'Host',
 	'method'=>'Metoda',
@@ -43,4 +47,5 @@ $l_validation=array(
 	'service_name'=>'Nazwa usługi',
 	'service_xhtml_upload'=>'Walidacja (X)HTML strony poprzez Upload pliku',
 	'service_xhtml_url'=>'Walidacja (X)HTML strony poprzez podanie linku URL',
+	'varname'=>'',
 );
