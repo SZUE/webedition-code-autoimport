@@ -569,7 +569,7 @@ $l_weTag=array(
 		'description'=>'we:list -tagilla voit tehdä laajennettavia listoja. Tagien sisällä oleva tieto liitetään listaan.',
 	),
 	'master'=>array(
-		'description'=>'',
+		'description'=>'Used inside a template which has a master template. The content between start and endtag is inserted in the master template where we:content is defined. The link between master and content is made via the name attribute.<br/><br/>Content which is not encapsulated in a master tag is inserted in the master-template where we:conent is defined without a name.',
 	),
 	'metadata'=>array(
 		'description'=>'The we:metadata-Tag is used to show meta data from images, flash- and quicktime movies. use the we:field tag inside the start and end tag to display the value',

@@ -1,8 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
-	'active'=>'',
-	'additionalVars'=>'',
+	'active'=>'Activo',
+	'additionalVars'=>'Parámetros adicionales',
 	'adjust_service'=>'Ajustar el servicio de validación',
 	'art_custom'=>'Servicios personalizados',
 	'art_default'=>'Servicios predefinidos',
@@ -16,7 +16,7 @@ $l_validation=array(
 	'checkvia_upload'=>'Subir archivo',
 	'checkvia_url'=>'Transferir URL',
 	'connection_problems'=>'<strong>Ha ocurrido un error mientras se conectaba a este servicio</strong><br/><br/>Por favor notar: La opción "transferencia URL" está solamente disponible si su instalación de WebEdition está también accesible desde internet (fuera de su red local). Esto no es posible si WebEdition esta instalado localmente (servidor local).<br/><br/>También, algunos problemas pueden ocurrir cuando se usan firewalls y servidores proxy. Por favor chequee su configuración en estos casos.<br/><br/>HTTP responso: %s',
-	'ctype'=>'',
+	'ctype'=>'Tipo del Contenido',
 	'description'=>'Puedes seleccionar un servicio de la web para chequear la validez/accesibilidad de este documento',
 	
 	'desc'=>array(
@@ -34,7 +34,7 @@ $l_validation=array(
 		'saved_success'=>'El servicio fue guardado.',
 		'servicename_already_exists'=>'A service with this name already exists.',
 	),
-	'fileEndings'=>'',
+	'fileEndings'=>'Extensiones',
 	'headline'=>'Validación en línea de este documento',
 	'host'=>'Host',
 	'method'=>'Método',
@@ -47,5 +47,5 @@ $l_validation=array(
 	'service_name'=>'Nombre del servicio',
 	'service_xhtml_upload'=>'Validación (X)HTML de W3C por la vía de subida de archivos',
 	'service_xhtml_url'=>'Validación (X)HTML de W3C por la vía de transferencia URL',
-	'varname'=>'',
+	'varname'=>'Nombre de la variable',
 );

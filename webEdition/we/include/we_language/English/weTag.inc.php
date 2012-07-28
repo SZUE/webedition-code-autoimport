@@ -569,7 +569,7 @@ $l_weTag=array(
 		'description'=>'The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags) if you click the plus button in edit mode.',
 	),
 	'master'=>array(
-		'description'=>'',
+		'description'=>'Used inside a template which has a master template. The content between start and endtag is inserted in the master template where we:content is defined. The link between master and content is made via the name attribute.<br/><br/>Content which is not encapsulated in a master tag is inserted in the master-template where we:conent is defined without a name.',
 	),
 	'metadata'=>array(
 		'description'=>'The we:metadata-Tag is used to show meta data from images, flash- and quicktime movies. use the we:field tag inside the start and end tag to display the value',

@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weClass=array(
-	''=>'',
 	'adoptToAllInferiorDocuments'=>'für alle Dokumente übernehmen',
 	'align'=>'Ausrichtung',
 	'alt'=>'Alternativ Text',
