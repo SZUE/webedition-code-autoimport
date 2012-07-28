@@ -1,6 +1,8 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_validation=array(
+	'active'=>'',
+	'additionalVars'=>'',
 	'adjust_service'=>'Adjust validation service',
 	'art_custom'=>'Custom services',
 	'art_default'=>'Predefined services',
@@ -14,6 +16,7 @@ $l_validation=array(
 	'checkvia_upload'=>'File upload',
 	'checkvia_url'=>'URL transfer',
 	'connection_problems'=>'<strong>An error occured while connecting to this service</strong><br/><br/>Please note: The option "url transfer" is only available if your webEdition installation is also accessible from the internet (outside your local network). This is not possible if webEdition is locally installed (localhost).<br/><br/>Also, some problems can occure when using firewalls and proxy-servers. Please check your configuration in such cases.<br/><br/>HTTP-Response: %s',
+	'ctype'=>'',
 	'description'=>'You can select a service from the web to check this document for validity/accessibility.',
 	
 	'desc'=>array(
@@ -31,6 +34,7 @@ $l_validation=array(
 		'saved_success'=>'The service was saved.',
 		'servicename_already_exists'=>'A service with this name already exists.',
 	),
+	'fileEndings'=>'',
 	'headline'=>'Online Validation of this document',
 	'host'=>'Host',
 	'method'=>'Method',
@@ -43,4 +47,5 @@ $l_validation=array(
 	'service_name'=>'Name of the service',
 	'service_xhtml_upload'=>'(X)HTML validation of W3C via file upload',
 	'service_xhtml_url'=>'(X)HTML valdiation of W3C via url transfer',
+	'varname'=>'',
 );
