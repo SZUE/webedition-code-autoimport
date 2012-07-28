@@ -70,29 +70,28 @@ if(count($services)){
 
 				if($_lastArt != $art){
 					if($_lastArt != ''){
-						$_select .= "</optgroup>\n";
+						$_select .= '</optgroup>';
 						$_lastCat = '1';
 					}
 					$_lastArt = $art;
-					$_select .= "<optgroup class='lvl1' label='" . g_l('validation', '[art_' . $art . ']') . "'>\n";
+					$_select .= '<optgroup class="lvl1" label="' . g_l('validation', '[art_' . $art . ']') . '">';
 				}
 				if($_lastCat != $cat){
 					if($_lastCat != ''){
-						$_select .= "</optgroup>\n";
+						$_select .= '</optgroup>';
 					}
 					$_lastCat = $cat;
 
-					$_select .= "<optgroup class='lvl2' label='-- " . g_l('validation', '[category_' . $cat . ']') . "'>\n";
+					$_select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
 				}
-				$_select .= "<option value='" . $service->getName() . "'>" . $service->name . "</option>\n";
-				$js .= '				host["' . $service->getName() . '"] = "' . htmlentities($service->host) . '";
-                        path["' . $service->getName() . '"] = "' . htmlentities($service->path) . '";
+				$_select .= '<option value="' . $service->getName() . '">' . htmlspecialchars($service->name) . '</option>';
+				$js .= '				host["' . $service->getName() . '"] = "' . htmlspecialchars($service->host) . '";
+                        path["' . $service->getName() . '"] = "' . htmlspecialchars($service->path) . '";
                         s_method["' . $service->getName() . '"] = "' . $service->method . '";
-                        varname["' . $service->getName() . '"] = "' . htmlentities($service->varname) . '";
+                        varname["' . $service->getName() . '"] = "' . htmlspecialchars($service->varname) . '";
                         checkvia["' . $service->getName() . '"] = "' . $service->checkvia . '";
-                        ctype["' . $service->getName() . '"] = "' . htmlentities($service->ctype) . '";
-                        additionalVars["' . $service->getName() . '"] = "' . htmlentities($service->additionalVars) . '";
-                        ';
+                        ctype["' . $service->getName() . '"] = "' . htmlspecialchars($service->ctype) . '";
+                        additionalVars["' . $service->getName() . '"] = "' . htmlspecialchars($service->additionalVars) . '";';
 			}
 		}
 	}
