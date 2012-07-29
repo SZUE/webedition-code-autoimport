@@ -293,7 +293,7 @@ class we_docSelector extends we_dirSelector{
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? ' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
+			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? ' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
 											 d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
 					if(we_editDirID){
@@ -795,7 +795,8 @@ class we_docSelector extends we_dirSelector{
 					$_previewFields["properies"]["data"][] = array(
 						"caption" => g_l('fileselector', "[name]"),
 						"content" => (
-						$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . getServerUrl(true) .
+
+						$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . getServerUrl(true) . $result['Path'] .
 							"' target='_blank' style='color:black'><img src='" . IMAGE_DIR . "tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
 						) . "<div style='margin-right:14px'>" . (
 						$showPriview ? "<a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']

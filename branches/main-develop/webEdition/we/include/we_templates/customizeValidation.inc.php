@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 we_html_tools::htmlTop();
 
 //  css for webSite
-print STYLESHEET;?>
+print STYLESHEET;
+?>
 <script type="text/javascript"><!--
 
 	function we_cmd(){
@@ -77,7 +77,7 @@ print STYLESHEET;?>
 	//-->
 </script>
 </head>
-<body class="weDialogBody">
+<body class="weDialogBody" style="overflow:hidden;">
 	<?php
 
 	//  deal with action
@@ -151,9 +151,6 @@ print STYLESHEET;?>
 
 
 
-	//  generate Body of page
-	$parts = array();
-
 	//  table with new and delete
 	$_table = '<table>
     <tr><td>' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, 'onchange=we_cmd(\'customValidationService\',\'selectService\');', "value", 320) . '</td>
@@ -167,25 +164,29 @@ print STYLESHEET;?>
 
 	$_table .= $hiddenFields;
 
-	array_push($parts, array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150));
+	$parts = array(
+		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
+	);
 
 	if(sizeof($services) > 0){
-		array_push($parts, array('headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[host]'), 'html' => we_html_tools::htmlTextInput('host', 50, $selectedService->host), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[path]'), 'html' => we_html_tools::htmlTextInput('path', 50, $selectedService->path), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[ctype]'), 'html' => we_html_tools::htmlTextInput('ctype', 50, $selectedService->ctype) . '<br /><span class="small">' . g_l('validation', '[desc][ctype]') . '</span>', 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[fileEndings]'), 'html' => we_html_tools::htmlTextInput('fileEndings', 50, $selectedService->fileEndings) . '<br /><span class="small">' . g_l('validation', '[desc][fileEndings]') . '</span>', 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[method]'), 'html' => we_html_tools::htmlSelect('s_method', array('post' => 'post', 'get' => 'get'), 1, $selectedService->method, false), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[checkvia]'), 'html' => we_html_tools::htmlSelect('checkvia', array('url' => g_l('validation', '[checkvia_url]'), 'fileupload' => g_l('validation', '[checkvia_upload]')), 1, $selectedService->checkvia, false), 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[varname]'), 'html' => we_html_tools::htmlTextInput('varname', 50, $selectedService->varname) . '<br /><span class="small">' . g_l('validation', '[desc][varname]') . '</span>', 'space' => 150, 'noline' => 1));
-		array_push($parts, array('headline' => g_l('validation', '[additionalVars]'), 'html' => we_html_tools::htmlTextInput('additionalVars', 50, $selectedService->additionalVars) . '<br /><span class="small">' . g_l('validation', '[desc][additionalVars]') . '</span>', 'space' => 150));
-		array_push($parts, array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => 150));
+		$parts[] = array('headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[host]'), 'html' => we_html_tools::htmlTextInput('host', 50, $selectedService->host), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[path]'), 'html' => we_html_tools::htmlTextInput('path', 50, $selectedService->path), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[ctype]'), 'html' => we_html_tools::htmlTextInput('ctype', 50, $selectedService->ctype) . '<br /><span class="small">' . g_l('validation', '[desc][ctype]') . '</span>', 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[fileEndings]'), 'html' => we_html_tools::htmlTextInput('fileEndings', 50, $selectedService->fileEndings) . '<br /><span class="small">' . g_l('validation', '[desc][fileEndings]') . '</span>', 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[method]'), 'html' => we_html_tools::htmlSelect('s_method', array('post' => 'post', 'get' => 'get'), 1, $selectedService->method, false), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[checkvia]'), 'html' => we_html_tools::htmlSelect('checkvia', array('url' => g_l('validation', '[checkvia_url]'), 'fileupload' => g_l('validation', '[checkvia_upload]')), 1, $selectedService->checkvia, false), 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[varname]'), 'html' => we_html_tools::htmlTextInput('varname', 50, $selectedService->varname) . '<br /><span class="small">' . g_l('validation', '[desc][varname]') . '</span>', 'space' => 150, 'noline' => 1);
+		$parts[] = array('headline' => g_l('validation', '[additionalVars]'), 'html' => we_html_tools::htmlTextInput('additionalVars', 50, $selectedService->additionalVars) . '<br /><span class="small">' . g_l('validation', '[desc][additionalVars]') . '</span>', 'space' => 150);
+		$parts[] = array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => 150);
 	}
 
-	$body = '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', !(sizeof($services) > 0)), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'), "", 660)
+	$body = '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', !(sizeof($services) > 0)), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
 		. '</form>';
 
 	print $body;
 	print '</body></html>';
+
+
 

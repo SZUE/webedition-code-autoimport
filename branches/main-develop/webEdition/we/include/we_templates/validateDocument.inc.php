@@ -54,7 +54,7 @@ if(sizeof($customServices) > 0){
 	}
 }
 
-//  Generate Select-Men� with optgroups
+//  Generate Select-Menu with optgroups
 krsort($services);
 
 $_select = '';
@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(sizeof($services) > 0){
+if(count($services)){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
@@ -70,30 +70,28 @@ if(sizeof($services) > 0){
 
 				if($_lastArt != $art){
 					if($_lastArt != ''){
-						$_select .= "</optgroup>\n";
+						$_select .= '</optgroup>';
 						$_lastCat = '1';
 					}
 					$_lastArt = $art;
-					$_select .= "<optgroup class='lvl1' label='" . g_l('validation', '[art_' . $art . ']') . "'>\n";
+					$_select .= '<optgroup class="lvl1" label="' . g_l('validation', '[art_' . $art . ']') . '">';
 				}
 				if($_lastCat != $cat){
 					if($_lastCat != ''){
-						$_select .= "</optgroup>\n";
+						$_select .= '</optgroup>';
 					}
 					$_lastCat = $cat;
 
-					$_select .= "<optgroup class='lvl2' label='-- " . g_l('validation', '[category_' . $cat . ']') . "'>\n";
+					$_select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
 				}
-				$_select .= "<option value='" . $service->getName() . "'>" . htmlentities($service->name) . "</option>\n";
-				$js .= '
-                        host["' . $service->getName() . '"] = "' . htmlentities($service->host) . '";
-                        path["' . $service->getName() . '"] = "' . htmlentities($service->path) . '";
+				$_select .= '<option value="' . $service->getName() . '">' . htmlspecialchars($service->name) . '</option>';
+				$js .= '				host["' . $service->getName() . '"] = "' . htmlspecialchars($service->host) . '";
+                        path["' . $service->getName() . '"] = "' . htmlspecialchars($service->path) . '";
                         s_method["' . $service->getName() . '"] = "' . $service->method . '";
-                        varname["' . $service->getName() . '"] = "' . htmlentities($service->varname) . '";
+                        varname["' . $service->getName() . '"] = "' . htmlspecialchars($service->varname) . '";
                         checkvia["' . $service->getName() . '"] = "' . $service->checkvia . '";
-                        ctype["' . $service->getName() . '"] = "' . htmlentities($service->ctype) . '";
-                        additionalVars["' . $service->getName() . '"] = "' . htmlentities($service->additionalVars) . '";
-                        ';
+                        ctype["' . $service->getName() . '"] = "' . htmlspecialchars($service->ctype) . '";
+                        additionalVars["' . $service->getName() . '"] = "' . htmlspecialchars($service->additionalVars) . '";';
 			}
 		}
 	}
@@ -194,31 +192,28 @@ print STYLESHEET;
 print '</head>';
 
 //  generate Body of page
-$parts = array();
-array_push($parts, array('html' => g_l('validation', '[description]'), 'space' => 0));
-array_push($parts, array('headline' => g_l('validation', '[service]'),
-	'html' =>
-	'<table border="0" cellpadding="0" cellspacing="0">
-                                 <tr>
-                                    <td class="defaultfont">' .
-	$_select .
-	$_hiddens .
-	'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-	we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
-	. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-	we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
-	. '</td></tr></table>'
-	, 'space' => 95));
+$parts = array(
+	array('html' => g_l('validation', '[description]'), 'space' => 0),
+	array('headline' => g_l('validation', '[service]'),
+		'html' =>
+		'<table border="0" cellpadding="0" cellspacing="0">
+                                 <tr><td class="defaultfont">' .
+		$_select .
+		$_hiddens .
+		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
+		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
+		. '</td></tr></table>'
+		, 'space' => 95),
+	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),
+	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5),
+);
 
-array_push($parts, array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0));
-array_push($parts, array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5));
-
-$body = '
-        <form name="we_form">'
-	. we_html_tools::hidden('we_transaction', (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
+$body = '<form name="we_form">'
+	. we_html_tools::hidden('we_transaction', (isset($_REQUEST['we_transaction']) && preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0))
 	. we_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
-	'</form>'
-;
+	'</form>';
 
-print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body);
-print '</html>';
+print we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .
+	'</html>';

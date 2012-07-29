@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Plik kopii zapasowej %s został usunięty',
 	'backup_form'=>'Kopia zapasowa z dn.',
 	'backup_log_exp'=>'Utworzono log w /webEdition/we_backup/data/lastlog.php',
@@ -164,6 +165,7 @@ $l_backup=array(
 	'nothing_to_delete'=>'Nie ma nic do usunięcia!',
 	'no_resource'=>'Fatal Error: There are not enough resources to finish the backup!',
 	'object_info'=>'Obiekty i klasy z modułu DB/Obiekt.',
+	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from a <strong>webEdition installation older than 6.3.0</strong>!',
 	'option'=>'Opcje kopii bezpieczeństwa',
 	'other_files'=>'Pozostałe pliki',
 	'preparing_file'=>'Przygotować dane do przywrócenia...',

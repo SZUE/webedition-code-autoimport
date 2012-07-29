@@ -198,7 +198,6 @@ $l_modules_customer=array(
 	'start_year'=>'Iniciar Año',
 	'Surname'=>'Apellido',
 	'tab'=>'\t {Tabulador}',
-	'test_entry'=>'',
 	'Titel'=>'Title',
 	'topic'=>'Tópico',
 	'to'=>'a',

@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Achtung! Nach dem Wiederherstellen eines Backups <strong>aus älteren webEdition-Installationen</strong> (vor 6.3.0) sollte dringend eine <strong>Update-Wiederholung</strong> durchgeführt werden!',
 	'backup_deleted'=>'Die Backup-Datei %s wurde gelöscht',
 	'backup_form'=>'Backup vom',
 	'backup_log_exp'=>'Das Logbuch wird in /webEdition/we_backup/data/lastlog.php erstellt',
@@ -165,6 +166,7 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'nothing_to_delete'=>'Es gibt nichts zu löschen!',
 	'no_resource'=>'Kritischer Fehler: Nicht genügend freie Ressourcen, um das Backup abzuschließen!',
 	'object_info'=>'Objekte und Klassen des DB/Objekt Moduls.',
+	'old_backups_warning'=>'Achtung! Nach dem Wiederherstellen eines Backups <strong>aus älteren webEdition-Installationen</strong> (vor 6.3.0) sollte dringend eine <strong>Update-Wiederholung</strong> durchgeführt werden!',
 	'option'=>'Backup-Optionen',
 	'other_files'=>'Sonstige Datei',
 	'preparing_file'=>'Daten fürs Wiederherstellen vorbereiten...',

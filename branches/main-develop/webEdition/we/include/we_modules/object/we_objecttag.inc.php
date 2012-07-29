@@ -35,7 +35,7 @@ class we_objecttag{
 	var $hidedirindex = false;
 	var $objectseourls=false;
 
-	function we_objecttag($class="", $id=0, $triggerID=0, $searchable=true, $condition="",$hidedirindex=false,$objectseourls=false){
+	function __construct($class="", $id=0, $triggerID=0, $searchable=true, $condition="",$hidedirindex=false,$objectseourls=false){
 		$this->DB_WE = new DB_WE;
 		$this->id = $id;
 		if(!$this->id && isset($_REQUEST['we_objectID']) && $_REQUEST['we_objectID']){
@@ -60,11 +60,8 @@ class we_objecttag{
  	}
 
 	function f($key){
-		if($this->id){
-			return $this->object->f($key);
-		}else{
-			return "";
-		}
+		return ($this->id?
+			$this->object->f($key):'');
 	}
 
 }

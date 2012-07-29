@@ -20,7 +20,7 @@
                        "die echo empty exit eval include include_once isset list require require_once return " +
                        "print unset __halt_compiler self static parent" +
 	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "),
->>>>>>> 3359e345ee0bbbc53b670c62fa1911c9cd37b795
+
     blockKeywords: keywords("catch do else elseif for foreach if switch try while"),
     atoms: keywords("true false null TRUE FALSE NULL"),
     multiLineStrings: true,

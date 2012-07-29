@@ -24,7 +24,7 @@
  */
 function we_parse_tag_object($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	$name = weTag_getParserAttribute('name', $arr);
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
@@ -66,7 +66,8 @@ function we_tag_object($attribs){
 		}
 
 		$we_doc = $GLOBALS['we_doc'];
-		$we_oid = $we_doc->getElement($name) ? $we_doc->getElement($name) : $we_oid;
+		//handle listview of documents
+		$we_oid = isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ? $GLOBALS['lv']->f($name) : ($we_doc->getElement($name) ? $we_doc->getElement($name) : $we_oid);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid, 'Path', $GLOBALS['DB_WE']);
 		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';

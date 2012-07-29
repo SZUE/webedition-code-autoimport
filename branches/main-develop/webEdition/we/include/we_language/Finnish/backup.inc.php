@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Varmuuskopiotiedosto %s on poistettu',
 	'backup_form'=>'Varmuuskopioi',
 	'backup_log_exp'=>'Lokitiedosto tallennetaan kohteeseen /webEdition/we_backup/data/lastlog.php',
@@ -165,6 +166,7 @@ Oletko varma?',
 	'nothing_to_delete'=>'Ei poistettavaa!',
 	'no_resource'=>'Fatal Error: Varmistuksen loppuunviemiseksi ei ole tarpeeksi resursseja!',
 	'object_info'=>'Objektit ja luokat tietokanta/objektimoduulista.',
+	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from a <strong>webEdition installation older than 6.3.0</strong>!',
 	'option'=>'Varmuuskopioinnin asetukset',
 	'other_files'=>'Muut tiedostot',
 	'preparing_file'=>'Valmistellaan tuontia...',

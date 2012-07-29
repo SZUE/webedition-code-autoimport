@@ -1042,7 +1042,8 @@ top.selectFile(top.currentID);
 								$thumbpath = $result['Path'];
 							}
 
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='".getServerUrl(true). $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
+
+							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>";
 
 							$out .= $previewDefauts;
 

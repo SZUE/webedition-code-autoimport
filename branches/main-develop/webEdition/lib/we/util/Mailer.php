@@ -263,13 +263,13 @@ class we_util_Mailer extends Zend_Mail{
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 				foreach($images[2] as $i => $url){
 					// only images that from the own server will be embeded
-					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['HTTP_HOST'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
+					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$directory = dirname($url);
 						($directory == '.') ? $directory = '' : '';
 						$directory = str_replace("..", "", "$directory");
-						if(($pos = stripos($directory, $_SERVER['HTTP_HOST']))){
-							$directory = substr($directory, (strlen($_SERVER['HTTP_HOST']) + $pos), strlen($directory));
+						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
+							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 						}
 
 

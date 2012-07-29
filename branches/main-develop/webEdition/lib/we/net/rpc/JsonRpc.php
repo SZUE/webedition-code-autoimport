@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -29,7 +29,7 @@ class we_net_rpc_JsonRpc {
 	const kAccessibilityFail 			= "fail";
 
 	const kDefaultAccessibility 		= "domain";
-	
+
 
 	public static function getReply($namespace='we') {
 		$error = new we_net_rpc_JsonRpcError();
@@ -64,7 +64,7 @@ class we_net_rpc_JsonRpc {
 			*/
 			exit("JSON-RPC request expected; id, service, method or params missing<br>");
 		}
-		
+
 		/*
 		* Ok, it looks like JSON-RPC, so we'll return an Error object if we encounter
 		* errors from here on out.
@@ -107,7 +107,7 @@ class we_net_rpc_JsonRpc {
 				/* never gets here */
 			}
 		}
-		
+
 		/* Ensure that first component is $namespace */
 		if ($serviceComponents[0] !== $namespace) {
 			$error->SetError(we_net_rpc_JsonRpcError::kErrorIllegalService,
@@ -150,7 +150,7 @@ class we_net_rpc_JsonRpc {
 
 		/* Assign the default accessibility */
 		$accessibility = self::kDefaultAccessibility;
-		
+
 		/*
 		* See if there is a "GetAccessibility" method in the class.  If there is, it
 		* should take two parameters: the method name and the default accessibility,
@@ -169,10 +169,7 @@ class we_net_rpc_JsonRpc {
 
 			case self::kAccessibilityDomain:
 				/* Determine the protocol used for the request */
-				$requestUriDomain = isset($_SERVER["SSL_PROTOCOL"]) ? "https://" : "http://";
-
-				// Add the server name
-				$requestUriDomain .= $_SERVER["HTTP_HOST"];
+				$requestUriDomain = getServerUrl(true);
 
 
 				/* Get the Referer, up through the domain part */
@@ -253,11 +250,11 @@ class we_net_rpc_JsonRpc {
 
 		/* Errors from here on out will be Application-generated */
 		$error->SetOrigin(we_net_rpc_JsonRpcError::kErrorOriginApplication);
-		
+
 		/* Call the requested method passing it the provided params */
 		try {
 			$output = $service->$method($phpObj['params']);
-		} catch (we_service_Exception $e) {			
+		} catch (we_service_Exception $e) {
 			$error->SetError($e->getCode(), $e->getMessage(), $e->getType());
 			return $error->getError();
 		}

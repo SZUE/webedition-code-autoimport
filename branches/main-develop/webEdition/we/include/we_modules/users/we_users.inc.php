@@ -298,12 +298,11 @@ class we_user{
 
 	function getPersistentSlotsFromDB(){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$this->DB_WE->query("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($this->ID));
-		for($i = 0; $i < sizeof($tableInfo); $i++){
-			$fieldName = $tableInfo[$i]["name"];
+		$tmp = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($this->ID), $this->DB_WE);
+		foreach($tableInfo as $t){
+			$fieldName = $t["name"];
 			if(in_array($fieldName, $this->persistent_slots)){
-				$foo = $this->DB_WE->f($fieldName);
-				$this->$fieldName = $foo;
+				$this->$fieldName = $tmp[$fieldName];
 			}
 		}
 	}
@@ -1972,23 +1971,23 @@ class we_user{
 
 
 		if(sizeof($_language) > 0){ // Build language select box
-				$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
-				if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
-					$myCompLang = $this->Preferences['Language'];
+			$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
+			if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
+				$myCompLang = $this->Preferences['Language'];
+			} else{
+				$myCompLang = $GLOBALS["WE_LANGUAGE"];
+			}
+
+			foreach($_language as $key => $value){
+				$_languages->addOption($key, $value);
+
+				// Set selected extension
+				if($key == $myCompLang){
+					$_languages->selectOption($key);
 				} else{
-					$myCompLang = $GLOBALS["WE_LANGUAGE"];
+					// do nothing
 				}
-
-				foreach($_language as $key => $value){
-					$_languages->addOption($key, $value);
-
-					// Set selected extension
-					if($key == $myCompLang){
-						$_languages->selectOption($key);
-					} else{
-						// do nothing
-					}
-				}
+			}
 
 
 			// Build dialog

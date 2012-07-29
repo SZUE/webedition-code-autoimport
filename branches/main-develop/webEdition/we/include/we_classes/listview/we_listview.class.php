@@ -120,9 +120,9 @@ class we_listview extends listviewBase{
 		$this->numorder = $numorder;
 		$this->hidedirindex = $hidedirindex;
 		$this->order = explode(',', trim($this->order));
-		$random = false; 
-		
-		if (in_array('random()', $this->order)) {
+		$random = false;
+
+		if(in_array('random()', $this->order)){
 			$random = true;
 		} else{
 			$order = array();
@@ -158,9 +158,9 @@ class we_listview extends listviewBase{
 						break;
 				}
 			}
-			$orderstring = count($order) ? ' ORDER BY ' . implode(',', $order) : ''; 
+			$orderstring = count($order) ? ' ORDER BY ' . implode(',', $order) : '';
 		}
-		
+
 
 		$sql_tail = getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', true, $this->categoryids);
 
@@ -280,7 +280,6 @@ class we_listview extends listviewBase{
 				$q = 'SELECT distinct ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . ".WebUserID as WebUserID $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . " " . $orderstring . (($rows > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 			}
 		}
-
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
 
@@ -346,11 +345,9 @@ class we_listview extends listviewBase{
 					$tmp = ($this->DB_WE->f('BDID'));
 					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
 				}
-				$this->DB_WE->query('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
-				if($this->DB_WE->next_record()){
-					foreach($this->DB_WE->Record as $key => $val){
-						$this->Record['wedoc_' . $key] = $val;
-					}
+				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE);
+				foreach($tmp as $key => $val){
+					$this->Record['wedoc_' . $key] = $val;
 				}
 
 				$this->Record['WE_SHOPVARIANTS'] = 0;
@@ -363,7 +360,7 @@ class we_listview extends listviewBase{
 
 				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
 				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $this->DB_WE);
-				$this->Record['WE_ID'] = $id;
+				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){
 					if(isset($this->customerArray['cid_' . $this->Record['wedoc_WebUserID']])){

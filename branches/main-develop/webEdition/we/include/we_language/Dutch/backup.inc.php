@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Het backup bestand %s is verwijderd',
 	'backup_form'=>'Backup vanaf',
 	'backup_log_exp'=>'De log wordt bewaard in /webEdition/we_backup/data/lastlog.php',
@@ -164,6 +165,7 @@ $l_backup=array(
 	'nothing_to_delete'=>'Er is niks om te verwijderen!',
 	'no_resource'=>'Kritieke fout: Er zijn niet genoeg onderdelen om de backup af te ronden!',
 	'object_info'=>'Objecten en classen vanuit de Database-/Object module.',
+	'old_backups_warning'=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from a <strong>webEdition installation older than 6.3.0</strong>!',
 	'option'=>'Backup opties',
 	'other_files'=>'Andere bestanden',
 	'preparing_file'=>'Bereid bestand voor op import...',
