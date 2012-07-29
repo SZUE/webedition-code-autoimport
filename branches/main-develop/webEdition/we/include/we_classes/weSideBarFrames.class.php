@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -163,4 +162,3 @@ class weSideBarFrames{
 	}
 
 }
-

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -1085,4 +1084,3 @@ class we_docSelector extends we_dirSelector{
 		}
 
 	}
-

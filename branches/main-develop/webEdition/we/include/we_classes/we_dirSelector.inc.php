@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -1150,4 +1149,3 @@ top.selectFile(top.currentID);
 	}
 
 }
-
