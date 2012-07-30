@@ -36,127 +36,104 @@ we_html_tools::protect();
 $yuiSuggest = & weSuggest::getInstance();
 
 // Check which group of settings to work with
-if(!isset($_REQUEST["setting"]) || $_REQUEST["setting"] == ""){
-	$_REQUEST["setting"] = "ui";
+if(!isset($_REQUEST['setting']) || $_REQUEST['setting'] == ''){
+	$_REQUEST['setting'] = 'ui';
 }
 
-$save_javascript = "";
+$save_javascript = '';
 $editor_reloaded = false;
 $email_saved = true;
-$tabname = isset($_REQUEST["tabname"]) && $_REQUEST["tabname"] != "" ? $_REQUEST["tabname"] : "setting_ui";
+$tabname = isset($_REQUEST['tabname']) && $_REQUEST['tabname'] != '' ? $_REQUEST['tabname'] : 'setting_ui';
 /* * ***************************************************************************
  * VARIABLES
  * *************************************************************************** */
 
 // Create array for needed configuration variables
-$global_config = array();
-
+$global_config = array(
 // Variables for SEEM
-$global_config[] = array('define("WE_SEEM",', '// Enable seeMode' . "\n" . 'define("WE_SEEM", 1);');
-
+	'WE_SEEM' => array('// Enable seeMode', 1),
 // Variables for thumbnails
-$global_config[] = array('define("WE_THUMBNAIL_DIRECTORY",', '// Directory in which to save thumbnails' . "\n" . 'define("WE_THUMBNAIL_DIRECTORY", "/__we_thumbs__");');
-
+	'WE_THUMBNAIL_DIRECTORY' => array('// Directory in which to save thumbnails', "/__we_thumbs__"),
 // Variables for error handling
-$global_config[] = array('define("WE_ERROR_HANDLER",', '// Show errors that occur in webEdition' . "\n" . 'define("WE_ERROR_HANDLER", 0);');
-$global_config[] = array('define("WE_ERROR_NOTICES",', '// Handle notices' . "\n" . 'define("WE_ERROR_NOTICES", 0);');
-$global_config[] = array('define("WE_ERROR_DEPRECATED",', '// Handle deprecated warnings' . "\n" . 'define("WE_ERROR_DEPRECATED", 0);');
-$global_config[] = array('define("WE_ERROR_WARNINGS",', '// Handle warnings' . "\n" . 'define("WE_ERROR_WARNINGS", 0);');
-$global_config[] = array('define("WE_ERROR_ERRORS",', '// Handle errors' . "\n" . 'define("WE_ERROR_ERRORS", 0);');
-$global_config[] = array('define("WE_ERROR_SHOW",', '// Show errors' . "\n" . 'define("WE_ERROR_SHOW", 0);');
-$global_config[] = array('define("WE_ERROR_LOG",', '// Log errors' . "\n" . 'define("WE_ERROR_LOG", 0);');
-$global_config[] = array('define("WE_ERROR_MAIL",', '// Mail errors' . "\n" . 'define("WE_ERROR_MAIL", 0);');
-$global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@www.example");');
-$global_config[] = array('define("ERROR_DOCUMENT_NO_OBJECTFILE",', '// Document to open when trying to open non-existing object' . "\n" . 'define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);');
-
+	'WE_ERROR_HANDLER' => array('// Show errors that occur in webEdition', 0),
+	'WE_ERROR_NOTICES' => array('// Handle notices', 0),
+	'WE_ERROR_DEPRECATED' => array('// Handle deprecated warnings', 0),
+	'WE_ERROR_WARNINGS' => array('// Handle warnings', 0),
+	'WE_ERROR_ERRORS' => array('// Handle errors', 0),
+	'WE_ERROR_SHOW' => array('// Show errors', 0),
+	'WE_ERROR_LOG' => array('// Log errors', 0),
+	'WE_ERROR_MAIL' => array('// Mail errors', 0),
+	'WE_ERROR_MAIL_ADDRESS' => array('// E-Mail address to which to mail errors', "mail@www.example"),
+	'ERROR_DOCUMENT_NO_OBJECTFILE' => array('// Document to open when trying to open non-existing object', 0),
 // Backup variable
-$global_config[] = array('define("BACKUP_STEPS",', '// Number of entries per batch' . "\n" . 'define("BACKUP_STEPS", 10);');
+	'BACKUP_STEPS' => array('// Number of entries per batch', 10),
 // inlineedit default value
-$global_config[] = array('define("INLINEEDIT_DEFAULT",', '// Default setting for inlineedit attribute' . "\n" . 'define("INLINEEDIT_DEFAULT", true);');
-$global_config[] = array('define("WE_PHP_DEFAULT",', '// Default setting for php attribute' . "\n" . 'define("WE_PHP_DEFAULT", false);');
-$global_config[] = array('define("REMOVEFIRSTPARAGRAPH_DEFAULT",', '// Default setting for removeparagraph attribute' . "\n" . 'define("REMOVEFIRSTPARAGRAPH_DEFAULT", false);');
-$global_config[] = array('define("HIDENAMEATTRIBINWEIMG_DEFAULT",', '// Default setting for hide name attribute in weimg output' . "\n" . 'define("HIDENAMEATTRIBINWEIMG_DEFAULT", false);');
-$global_config[] = array('define("HIDENAMEATTRIBINWEFORM_DEFAULT",', '// Default setting for hide name attribute in weform output' . "\n" . 'define("HIDENAMEATTRIBINWEFORM_DEFAULT", false);');
-
-
-
+	'INLINEEDIT_DEFAULT' => array('// Default setting for inlineedit attribute', true),
+	'WE_PHP_DEFAULT' => array('// Default setting for php attribute', false),
+	'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('// Default setting for removeparagraph attribute', false),
+	'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('// Default setting for hide name attribute in weimg output', false),
+	'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('// Default setting for hide name attribute in weform output', false),
 // hooks
-$global_config[] = array('define("EXECUTE_HOOKS",', '// Default setting for hook execution' . "\n" . 'define("EXECUTE_HOOKS", false);');
-
+	'EXECUTE_HOOKS' => array('// Default setting for hook execution', false),
 // php local scope == global scope
-$global_config[] = array('define("PHPLOCALSCOPE",', '// Default setting for assuming php local scope == global scope ' . "\n" . 'define("PHPLOCALSCOPE", false);');
-
-
+	'PHPLOCALSCOPE' => array('// Default setting for assuming php local scope == global scope ', false),
 // xhtml
-$global_config[] = array('define("XHTML_DEFAULT",', '// Default setting for xml attribute' . "\n" . 'define("XHTML_DEFAULT", false);');
-$global_config[] = array('define("XHTML_DEBUG",', '// Enable XHTML debug' . "\n" . 'define("XHTML_DEBUG", false);');
-$global_config[] = array('define("XHTML_REMOVE_WRONG",', '// Remove wrong xhtml attributes from we:tags' . "\n" . 'define("XHTML_REMOVE_WRONG", false);');
-
-$global_config[] = array('define("WE_MAX_UPLOAD_SIZE",', '// Maximal possible uploadsize' . "\n" . 'define("WE_MAX_UPLOAD_SIZE", "");');
-$global_config[] = array('define("WE_DOCTYPE_WORKSPACE_BEHAVIOR",', '// Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour' . "\n" . 'define("WE_DOCTYPE_WORKSPACE_BEHAVIOR", 0);');
-$global_config[] = array('define("SCHEDULER_TRIGGER",', '// decide how the scheduler works' . "\n" . 'define("SCHEDULER_TRIGGER", true);');
-
+	'XHTML_DEFAULT' => array('// Default setting for xml attribute', false),
+	'XHTML_DEBUG' => array('// Enable XHTML debug', false),
+	'XHTML_REMOVE_WRONG' => array('// Remove wrong xhtml attributes from we:tags', false),
+	'WE_MAX_UPLOAD_SIZE' => array('// Maximal possible uploadsize', ""),
+	'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('// Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
+	'SCHEDULER_TRIGGER' => array('// decide how the scheduler works', true),
 // accessibility
-$global_config[] = array('define("SHOWINPUTS_DEFAULT",', '// Default setting for showinputs attribute' . "\n" . 'define("SHOWINPUTS_DEFAULT", true);');
-$global_config[] = array('define("WE_NEW_FOLDER_MOD",', '// File permissions when creating a new directory' . "\n" . 'define("WE_NEW_FOLDER_MOD", "755");');
-
+	'SHOWINPUTS_DEFAULT' => array('// Default setting for showinputs attribute', true),
+	'WE_NEW_FOLDER_MOD' => array('// File permissions when creating a new directory', "755"),
 // pageLogger Dir
-$global_config[] = array('define("WE_TRACKER_DIR",', '// Directory in which pageLogger is installed' . "\n" . 'define("WE_TRACKER_DIR", "");');
-
-$global_config[] = array('define("DB_SET_CHARSET",', '// connection charset to db' . "\n" . 'define("DB_SET_CHARSET", "");');
-
-
-$global_config[] = array('define("WYSIWYG_TYPE",', '// define used wysiwyg editor' . "\n" . 'define("WYSIWYG_TYPE", "default");');
-$global_config[] = array('define("SAFARI_WYSIWYG",', '// Flag if beta wysiwyg for safari should be used' . "\n" . 'define("SAFARI_WYSIWYG", false);');
-
+	'WE_TRACKER_DIR' => array('// Directory in which pageLogger is installed', ""),
+	'DB_SET_CHARSET' => array('// connection charset to db', ""),
+	'WYSIWYG_TYPE' => array('// define used wysiwyg editor', "default"),
+	'SAFARI_WYSIWYG' => array('// Flag if beta wysiwyg for safari should be used', false),
 //formmail stuff
-$global_config[] = array('define("FORMMAIL_CONFIRM",', '// Flag if formmail confirm function should be work' . "\n" . 'define("FORMMAIL_CONFIRM", true);');
-$global_config[] = array('define("FORMMAIL_VIAWEDOC",', '// Flag if formmail should be send only via a webEdition document' . "\n" . 'define("FORMMAIL_VIAWEDOC", false);');
-$global_config[] = array('define("FORMMAIL_LOG",', '// Flag if formmail calls should be logged' . "\n" . 'define("FORMMAIL_LOG", false);');
-$global_config[] = array('define("FORMMAIL_EMPTYLOG",', '// Time how long formmail calls should be logged' . "\n" . 'define("FORMMAIL_EMPTYLOG", 604800);');
-$global_config[] = array('define("FORMMAIL_BLOCK",', '// Flag if formmail calls should be blocked after a time' . "\n" . 'define("FORMMAIL_BLOCK", false);');
-$global_config[] = array('define("FORMMAIL_SPAN",', '// Time span in seconds' . "\n" . 'define("FORMMAIL_SPAN", 300);');
-$global_config[] = array('define("FORMMAIL_TRIALS",', '// Num of trials sending formmail with same ip address in span' . "\n" . 'define("FORMMAIL_TRIALS", 3);');
-$global_config[] = array('define("FORMMAIL_BLOCKTIME",', '// Time to block ip' . "\n" . 'define("FORMMAIL_BLOCKTIME", 86400);');
-
+	'FORMMAIL_CONFIRM' => array('// Flag if formmail confirm function should be work', true),
+	'FORMMAIL_VIAWEDOC' => array('// Flag if formmail should be send only via a webEdition document', false),
+	'FORMMAIL_LOG' => array('// Flag if formmail calls should be logged', false),
+	'FORMMAIL_EMPTYLOG' => array('// Time how long formmail calls should be logged', 604800),
+	'FORMMAIL_BLOCK' => array('// Flag if formmail calls should be blocked after a time', false),
+	'FORMMAIL_SPAN' => array('// Time span in seconds', 300),
+	'FORMMAIL_TRIALS' => array('// Num of trials sending formmail with same ip address in span', 3),
+	'FORMMAIL_BLOCKTIME' => array('// Time to block ip', 86400),
 // sidebar stuff
-$global_config[] = array('define("SIDEBAR_DISABLED",', '// Sidebar is disabled' . "\n" . 'define("SIDEBAR_DISABLED", 0);');
-$global_config[] = array('define("SIDEBAR_SHOW_ON_STARTUP",', '// Show Sidebar on startup' . "\n" . 'define("SIDEBAR_SHOW_ON_STARTUP", 1);');
-$global_config[] = array('define("SIDEBAR_DEFAULT_DOCUMENT",', '// Default document id of the sidebar' . "\n" . 'define("SIDEBAR_DEFAULT_DOCUMENT", 0);');
-$global_config[] = array('define("SIDEBAR_DEFAULT_WIDTH",', '// Default width of the sidebar' . "\n" . 'define("SIDEBAR_DEFAULT_WIDTH", 300);');
-
+	'SIDEBAR_DISABLED' => array('// Sidebar is disabled', 0),
+	'SIDEBAR_SHOW_ON_STARTUP' => array('// Show Sidebar on startup', 1),
+	'SIDEBAR_DEFAULT_DOCUMENT' => array('// Default document id of the sidebar', 0),
+	'SIDEBAR_DEFAULT_WIDTH' => array('// Default width of the sidebar', 300),
 // extension stuff
-$global_config[] = array('define("DEFAULT_STATIC_EXT",', '// Default static extension' . "\n" . 'define("DEFAULT_STATIC_EXT", ".html");');
-$global_config[] = array('define("DEFAULT_DYNAMIC_EXT",', '// Default dynamic extension' . "\n" . 'define("DEFAULT_DYNAMIC_EXT", ".php");');
-$global_config[] = array('define("DEFAULT_HTML_EXT",', '// Default html extension' . "\n" . 'define("DEFAULT_HTML_EXT", ".html");');
-
+	'DEFAULT_STATIC_EXT' => array('// Default static extension', ".html"),
+	'DEFAULT_DYNAMIC_EXT' => array('// Default dynamic extension', ".php"),
+	'DEFAULT_HTML_EXT' => array('// Default html extension', ".html"),
 //naviagtion stuff
-$global_config[] = array('define("NAVIGATION_ENTRIES_FROM_DOCUMENT",', '// Flag if new NAV- entries added from Dokument should be items or folders' . "\n" . 'define("NAVIGATION_ENTRIES_FROM_DOCUMENT", "item");');
-$global_config[] = array('define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH",', '// Flag if NAV- rules should be evaluated even after a first match' . "\n" . 'define("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH", false);');
-$global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Nav-output' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_HIDE", false);');
-$global_config[] = array('define("NAVIGATION_DIRECTORYINDEX_NAMES",', '// Comma seperated list such as index.php,index.html' . "\n" . 'define("NAVIGATION_DIRECTORYINDEX_NAMES", "");');
-$global_config[] = array('define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in Wysiwyg-editor output' . "\n" . 'define("WYSIWYGLINKS_DIRECTORYINDEX_HIDE", false);');
-$global_config[] = array('define("TAGLINKS_DIRECTORYINDEX_HIDE",', '// Flag if directoy-index files should be hidden in tag output' . "\n" . 'define("TAGLINKS_DIRECTORYINDEX_HIDE", false);');
-$global_config[] = array('define("NAVIGATION_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of navigation' . "\n" . 'define("NAVIGATION_OBJECTSEOURLS", false);');
-$global_config[] = array('define("WYSIWYGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of wysiwyg editior' . "\n" . 'define("WYSIWYGLINKS_OBJECTSEOURLS", false);');
-$global_config[] = array('define("TAGLINKS_OBJECTSEOURLS",', '// Flag if we_objectID should be hidden from output of tags' . "\n" . 'define("TAGLINKS_OBJECTSEOURLS", false);');
-$global_config[] = array('define("URLENCODE_OBJECTSEOURLS",', '// Flag if seo-urls should be urlencoded' . "\n" . 'define("URLENCODE_OBJECTSEOURLS", false);');
-$global_config[] = array('define("SUPPRESS404CODE",', '// Flag if 404 not found should be suppressd' . "\n" . 'define("SUPPRESS404CODE", false);');
-$global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if should be displayed in webEdition ' . "\n" . 'define("SEOINSIDE_HIDEINWEBEDITION", false);');
-$global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
-$global_config[] = array('define("LANGLINK_SUPPORT",', '// Flag if automatic LanguageLinks should be supported ' . "\n" . 'define("LANGLINK_SUPPORT", true);');
-$global_config[] = array('define("LANGLINK_SUPPORT_BACKLINKS",', '// Flag if automatic backlinks should be generated ' . "\n" . 'define("LANGLINK_SUPPORT_BACKLINKS", true);');
-$global_config[] = array('define("LANGLINK_SUPPORT_RECURSIVE",', '// Flag if backlinks should be generated recursive ' . "\n" . 'define("LANGLINK_SUPPORT_RECURSIVE", true);');
-
-
+	'NAVIGATION_ENTRIES_FROM_DOCUMENT' => array('// Flag if new NAV- entries added from Dokument should be items or folders', "item"),
+	'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH' => array('// Flag if NAV- rules should be evaluated even after a first match', false),
+	'NAVIGATION_DIRECTORYINDEX_HIDE' => array('// Flag if directoy-index files should be hidden in Nav-output', false),
+	'NAVIGATION_DIRECTORYINDEX_NAMES' => array('// Comma seperated list such as index.php,index.html', ""),
+	'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('// Flag if directoy-index files should be hidden in Wysiwyg-editor output', false),
+	'TAGLINKS_DIRECTORYINDEX_HIDE' => array('// Flag if directoy-index files should be hidden in tag output', false),
+	'NAVIGATION_OBJECTSEOURLS' => array('// Flag if we_objectID should be hidden from output of navigation', false),
+	'WYSIWYGLINKS_OBJECTSEOURLS' => array('// Flag if we_objectID should be hidden from output of wysiwyg editior', false),
+	'TAGLINKS_OBJECTSEOURLS' => array('// Flag if we_objectID should be hidden from output of tags', false),
+	'URLENCODE_OBJECTSEOURLS' => array('// Flag if seo-urls should be urlencoded', false),
+	'SUPPRESS404CODE' => array('// Flag if 404 not found should be suppressd', false),
+	'SEOINSIDE_HIDEINWEBEDITION' => array('// Flag if should be displayed in webEdition ', false),
+	'SEOINSIDE_HIDEINEDITMODE' => array('// Flag if should be displayed in Editmode ', false),
+	'LANGLINK_SUPPORT' => array('// Flag if automatic LanguageLinks should be supported ', true),
+	'LANGLINK_SUPPORT_BACKLINKS' => array('// Flag if automatic backlinks should be generated ', true),
+	'LANGLINK_SUPPORT_RECURSIVE' => array('// Flag if backlinks should be generated recursive ', true),
 //default charset
-$global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n" . 'define("DEFAULT_CHARSET", "UTF-8");');
-
+	'DEFAULT_CHARSET' => array('// Default Charset', "UTF-8"),
 //countries
-$global_config[] = array('define("WE_COUNTRIES_TOP",', '// top countries' . "\n" . 'define("WE_COUNTRIES_TOP", "DE,AT,CH");');
-$global_config[] = array('define("WE_COUNTRIES_SHOWN",', '// other shown countries' . "\n" . 'define("WE_COUNTRIES_SHOWN", "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");');
-$global_config[] = array('define("WE_COUNTRIES_DEFAULT",', '// shown if no coutry was choosen' . "\n" . 'define("WE_COUNTRIES_DEFAULT", "");');
-
+	'WE_COUNTRIES_TOP' => array('// top countries', "DE,AT,CH"),
+	'WE_COUNTRIES_SHOWN' => array('// other shown countries', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY"),
+	'WE_COUNTRIES_DEFAULT' => array('// shown if no coutry was choosen', ""),
+);
 /* * ***************************************************************************
  * FUNCTIONS
  * *************************************************************************** */
@@ -188,7 +165,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
 	}
 
 	// Return HTML code of dialog
-	return $_output . we_multiIconBox::getHTML($name, "100%", $content, 30, "", $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie);
+	return $_output . we_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie);
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
@@ -210,519 +187,77 @@ function get_value($settingvalue){
 		 * WINDOW DIMENSIONS
 		 * ******************************************************************* */
 
-		case "ui_language":
-			return $_SESSION["prefs"]["Language"];
+		case 'Language':
+		case 'BackendCharset':
+		case 'seem_start_file':
+		case 'seem_start_weapp':
+		case 'sizeOpt':
+		case 'weWidth':
+		case 'weHeight':
+		case 'editorMode':
+		case 'editorFontname':
+		case 'editorFontsize':
+		case 'editorFontcolor':
+		case 'editorWeTagFontcolor':
+		case 'editorWeAttributeFontcolor':
+		case 'editorHTMLTagFontcolor':
+		case 'editorHTMLAttributeFontcolor':
+		case 'editorPiTagFontcolor':
+		case 'editorCommentFontcolor':
+		case 'editorLinenumbers':
+		case 'editorCodecompletion':
+		case 'editorTooltips':
+		case 'editorDocuintegration':
+		case 'editorTooltipFontname':
+		case 'editorTooltipFontsize':
+		case 'error_debug_normal':
+		case 'error_debug_seem':
+		case 'default_tree_count':
+		case 'xhtml_show_wrong':
+		case 'xhtml_show_wrong_text':
+		case 'xhtml_show_wrong_js':
+		case 'xhtml_show_wrong_error_log':
+			return $_SESSION['prefs'][$settingvalue];
 
-		case "ui_charset":
-			return $_SESSION["prefs"]["BackendCharset"];
-
-		case "ui_seem_start_file":
-			return $_SESSION["prefs"]["seem_start_file"];
-
-		case "ui_seem_start_weapp":
-			return $_SESSION["prefs"]["seem_start_weapp"];
-
-		case "ui_seem_start_type":
-			if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
-				return "cockpit";
+		case 'use_jupload':
+			if(isset($_SESSION['prefs']['use_jupload'])){
+				return $_SESSION['prefs']['use_jupload'];
 			}
-			return $_SESSION["prefs"]["seem_start_type"];
+			return 1;
 
-		case "ui_disable_seem":
-			return defined("WE_SEEM") ? (WE_SEEM == 0 ? true : false) : false;
+		case 'specify_jeditor_colors':
+			if(isset($_SESSION['prefs']['specify_jeditor_colors'])){
+				return $_SESSION['prefs']['specify_jeditor_colors'];
+			}
+			return 1;
 
-		case "ui_size_opt":
-			return $_SESSION["prefs"]["sizeOpt"];
+		case 'seem_start_type':
+			if(($_SESSION['prefs']['seem_start_type'] == 'document' || $_SESSION['prefs']['seem_start_type'] == 'object') && $_SESSION['prefs']['seem_start_file'] == 0){
+				return 'cockpit';
+			}
+			return $_SESSION['prefs']['seem_start_type'];
 
-		case "ui_we_width":
-			return $_SESSION["prefs"]["weWidth"];
-
-		case "ui_we_height":
-			return $_SESSION["prefs"]["weHeight"];
-
-		case "ui_sidebar_disable":
-			return defined("SIDEBAR_DISABLED") ? SIDEBAR_DISABLED : 0;
-
-		case "ui_sidebar_show_on_startup":
-			return defined("SIDEBAR_SHOW_ON_STARTUP") ? SIDEBAR_SHOW_ON_STARTUP : 1;
-
-		case "ui_sidebar_file":
-			return defined("SIDEBAR_DEFAULT_DOCUMENT") ? SIDEBAR_DEFAULT_DOCUMENT : 0;
-
-		case "ui_sidebar_width":
-			return defined("SIDEBAR_DEFAULT_WIDTH") ? SIDEBAR_DEFAULT_WIDTH : 300;
-
-		/*		 * *******************************************************************
-		 * FILE EXTENSIONS
-		 * ******************************************************************* */
-
-		case "extension_static":
-			return (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : '.html');
-
-		case "extension_dynamic":
-			return (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : '.php');
-
-		case "extension_html":
-			return (defined("DEFAULT_HTML_EXT") ? DEFAULT_HTML_EXT : '.html');
-
-		case "locale_locales":
+		case 'locale_locales':
 			we_loadLanguageConfig();
 			return getWeFrontendLanguagesForBackend();
 
-		case "locale_default":
+		case 'locale_default':
 			we_loadLanguageConfig();
 			return $GLOBALS['weDefaultFrontendLanguage'];
 
-		/*		 * *******************************************************************
-		 * COUNTRIES
-		 * ******************************************************************* */
-
-		case "countries_default":
-			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
-
-		case "countries_top":
-			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
-
-		case "countries_shown":
-			return defined("WE_COUNTRIES_SHOWN") ? WE_COUNTRIES_SHOWN : "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY";
-
-		/*		 * *******************************************************************
-		 * COCKPIT
-		 * ******************************************************************* */
-
-		case "cockpit_amount_columns":
-			return $_SESSION["prefs"]["cockpit_amount_columns"];
-
-		/*		 * *******************************************************************
-		 * TEMPLATE EDITOR
-		 * ******************************************************************* */
-
-		case "editor_mode":
-			return $_SESSION["prefs"]["editorMode"];
-
-		case "editor_font_name":
-			return $_SESSION["prefs"]["editorFontname"];
-
-		case "editor_font_size":
-			return $_SESSION["prefs"]["editorFontsize"];
-
-		case "editor_font_color":
-			return $_SESSION["prefs"]["editorFontcolor"];
-
-		case "editor_we_tag_font_color":
-			return $_SESSION["prefs"]["editorWeTagFontcolor"];
-
-		case "editor_we_attribute_font_color":
-			return $_SESSION["prefs"]["editorWeAttributeFontcolor"];
-
-		case "editor_html_tag_font_color":
-			return $_SESSION["prefs"]["editorHTMLTagFontcolor"];
-
-		case "editor_html_attribute_font_color":
-			return $_SESSION["prefs"]["editorHTMLAttributeFontcolor"];
-
-		case "editor_pi_tag_font_color":
-			return $_SESSION["prefs"]["editorPiTagFontcolor"];
-
-		case "editor_comment_font_color":
-			return $_SESSION["prefs"]["editorCommentFontcolor"];
-
-		case 'editor_line_numbers':
-			return $_SESSION['prefs']['editorLinenumbers'];
-
-		case 'editor_code_completion':
-			return $_SESSION['prefs']['editorCodecompletion'];
-
-		case 'editor_tooltips':
-			return $_SESSION['prefs']['editorTooltips'];
-
-		case 'editor_docu_integration':
-			return $_SESSION['prefs']['editorDocuintegration'];
-
-		case 'editor_tooltip_font_name':
-			return $_SESSION['prefs']['editorTooltipFontname'];
-
-		case 'editor_tooltip_font_size':
-			return $_SESSION['prefs']['editorTooltipFontsize'];
-
-		/*		 * *******************************************************************
-		 * PROXY SERVER
-		 * ******************************************************************* */
-
-		case "proxy_proxy":
+		case 'proxy_proxy':
 			// Check for settings file
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php")){
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php");
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php')){
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php');
 			}
 
-			return defined("WE_PROXYHOST");
-
-		case "proxy_host":
-			return defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
-
-		case "proxy_port":
-			return defined("WE_PROXYPORT") ? WE_PROXYPORT : "";
-
-		case "proxy_user":
-			return defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
-
-		case "proxy_password":
-			return defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
-
-		/*		 * *******************************************************************
-		 * ADVANCED
-		 * ******************************************************************* */
-
-
-		case "auth_auth":
-			return (defined("HTTP_USERNAME") && defined("HTTP_PASSWORD"));
-
-		case "auth_user":
-			return defined("HTTP_USERNAME") ? HTTP_USERNAME : "";
-
-		case "auth_password":
-			return defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
-
-		/*		 * *******************************************************************
-		 * ERROR HANDLING
-		 * ******************************************************************* */
-
-		case "we_error_handler":
-			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : true;
-
-		case "error_handling_notices":
-			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : true;
-
-		case "error_handling_deprecated":
-			return defined("WE_ERROR_DEPRECATED") ? WE_ERROR_DEPRECATED : false;
-
-		case "error_handling_warnings":
-			return defined("WE_ERROR_WARNINGS") ? WE_ERROR_WARNINGS : true;
-
-		case "error_handling_errors":
-			return defined("WE_ERROR_ERRORS") ? WE_ERROR_ERRORS : true;
-
-		case "error_display_errors":
-			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : false;
-
-		case "error_log_errors":
-			return defined("WE_ERROR_LOG") ? WE_ERROR_LOG : true;
-
-		case "error_mail_errors":
-			return defined("WE_ERROR_MAIL") ? WE_ERROR_MAIL : false;
-
-		case "error_mail_address":
-			return defined("WE_ERROR_MAIL_ADDRESS") ? WE_ERROR_MAIL_ADDRESS : "";
-
-		case "error_document_no_objectfile":
-			return defined("ERROR_DOCUMENT_NO_OBJECTFILE") ? ERROR_DOCUMENT_NO_OBJECTFILE : 0;
-
-		case "disable_template_code_check":
-			return defined("DISABLE_TEMPLATE_CODE_CHECK") ? DISABLE_TEMPLATE_CODE_CHECK : 0;
-
-		case "error_debug_normal":
-			return $_SESSION["prefs"]["debug_normal"];
-
-		case "error_debug_seem":
-			return $_SESSION["prefs"]["debug_seem"];
-
-		/*		 * *******************************************************************
-		 * MESSAGE SETTINGS
-		 * ******************************************************************* */
+			return defined('WE_PROXYHOST');
 		case 'message_reporting':
-			return (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"]) ? $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
+			return (isset($_SESSION['prefs']['message_reporting']) && $_SESSION['prefs']['message_reporting']) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
 
-		/*		 * *******************************************************************
-		 * BACKUP
-		 * ******************************************************************* */
-
-		case "backup_steps":
-			return defined("BACKUP_STEPS") ? BACKUP_STEPS : 10;
-
-		/*		 * *******************************************************************
-		 * THUMBNAILS
-		 * ******************************************************************* */
-
-		case "thumbnail_dir":
-			return (defined("WE_THUMBNAIL_DIRECTORY") && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
-		/*		 * *******************************************************************
-		 * INLINEEDIT
-		 * ******************************************************************* */
-
-		case "inlineedit_default":
-			return defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true;
-		case "removefirstparagraph_default":
-			return defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : false;
-		case "hidenameattribinweimg_default":
-			return defined("HIDENAMEATTRIBINWEIMG_DEFAULT") ? HIDENAMEATTRIBINWEIMG_DEFAULT : false;
-		case "hidenameattribinweform_default":
-			return defined("HIDENAMEATTRIBINWEFORM_DEFAULT") ? HIDENAMEATTRIBINWEFORM_DEFAULT : false;
-
-		/*		 * *******************************************************************
-		 * NAVIGATION
-		 * ******************************************************************* */
-
-		case "navigation_entries_from_document":
-			return defined("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? NAVIGATION_ENTRIES_FROM_DOCUMENT : 'item';
-		case "navigation_rules_continue_after_first_match":
-			return defined("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH : false;
-		case "navigation_directoryindex_hide":
-			return defined("NAVIGATION_DIRECTORYINDEX_HIDE") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
-		case "navigation_directoryindex_names":
-			return defined("NAVIGATION_DIRECTORYINDEX_NAMES") ? NAVIGATION_DIRECTORYINDEX_NAMES : '';
-		case "wysiwyglinks_directoryindex_hide":
-			return defined("WYSIWYGLINKS_DIRECTORYINDEX_HIDE") ? WYSIWYGLINKS_DIRECTORYINDEX_HIDE : false;
-		case "taglinks_directoryindex_hide":
-			return defined("TAGLINKS_DIRECTORYINDEX_HIDE") ? TAGLINKS_DIRECTORYINDEX_HIDE : false;
-		case "navigation_objectseourls":
-			return defined("NAVIGATION_OBJECTSEOURLS") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
-		case "wysiwyglinks_objectseourls":
-			return defined("WYSIWYGLINKS_OBJECTSEOURLS") ? WYSIWYGLINKS_OBJECTSEOURLS : false;
-		case "taglinks_objectseourls":
-			return defined("TAGLINKS_OBJECTSEOURLS") ? TAGLINKS_OBJECTSEOURLS : false;
-		case "urlencode_objectseourls":
-			return defined("URLENCODE_OBJECTSEOURLS") ? URLENCODE_OBJECTSEOURLS : false;
-		case "suppress404code":
-			return defined("SUPPRESS404CODE") ? SUPPRESS404CODE : false;
-		case "seoinside_hideinwebedition":
-			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
-		case "seoinside_hideineditmode":
-			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
-
-		case "langlink_support":
-			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
-		case "langlink_support_backlinks":
-			return defined("LANGLINK_SUPPORT_BACKLINKS") ? LANGLINK_SUPPORT_BACKLINKS : true;
-		case "langlink_support_recursive":
-			return defined("LANGLINK_SUPPORT_RECURSIVE") ? LANGLINK_SUPPORT_RECURSIVE : true;
-
-		/*		 * *******************************************************************
-		 * DEFAULT CHARSET
-		 * ******************************************************************* */
-
-		case "default_charset":
-			return defined("DEFAULT_CHARSET") ? DEFAULT_CHARSET : 'UTF-8';
-
-
-		/*		 * *******************************************************************
-		 * PHP ON OFF
-		 * ******************************************************************* */
-
-		case "we_php_default":
-			return defined("WE_PHP_DEFAULT") ? WE_PHP_DEFAULT : false;
-
-		/*		 * *******************************************************************
-		 * SAFARI WYSIWYG
-		 * ******************************************************************* */
-
-		case "safari_wysiwyg":
-			return defined("SAFARI_WYSIWYG") ? SAFARI_WYSIWYG : true;
-
-		case 'wysiwyg_type':
-			return defined("WYSIWYG_TYPE") ? WYSIWYG_TYPE : 'default';
-
-		/*		 * *******************************************************************
-		 * SHOWINPUTS
-		 * ******************************************************************* */
-
-		case "showinputs_default":
-			return defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true;
-
-		/*		 * *******************************************************************
-		 * SHOWINPUTS
-		 * ******************************************************************* */
-
-		case "showinputs_default":
-			return defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true;
-
-		/*		 * *******************************************************************
-		 * WE_MAX_UPLOAD_SIZE
-		 * ******************************************************************* */
-
-		case "we_max_upload_size":
-			return defined("WE_MAX_UPLOAD_SIZE") ? WE_MAX_UPLOAD_SIZE : "";
-
-		/*		 * *******************************************************************
-		 * WE_NEW_FOLDER_MOD
-		 * ******************************************************************* */
-
-		case "we_new_folder_mod":
-			return defined("WE_NEW_FOLDER_MOD") ? WE_NEW_FOLDER_MOD : "755";
-
-		/*		 * *******************************************************************
-		 * WE_DOCTYPE_WORKSPACE_BEHAVIOUR
-		 * ******************************************************************* */
-
-		case "we_doctype_workspace_behavior":
-			return defined("WE_DOCTYPE_WORKSPACE_BEHAVIOR") ? WE_DOCTYPE_WORKSPACE_BEHAVIOR : 0;
-
-		case 'we_scheduler_trigger':
-			return defined("SCHEDULER_TRIGGER") ? SCHEDULER_TRIGGER : SCHEDULER_TRIGGER_POSTDOC;
-
-		/*		 * *******************************************************************
-		 * TREE
-		 * ******************************************************************* */
-
-		case "default_tree_count":
-			return $_SESSION["prefs"]["default_tree_count"];
-
-		/*		 * *******************************************************************
-		 * HOOKS
-		 * ******************************************************************* */
-		case "execute_hooks":
-			return defined("EXECUTE_HOOKS") ? EXECUTE_HOOKS : false;
-
-		/*		 * *******************************************************************
-		 * PHPLOCALSCOPE
-		 * ******************************************************************* */
-		case "phpLocalScope":
-			return defined("PHPLOCALSCOPE") ? PHPLOCALSCOPE : false;
-
-		/*		 * *******************************************************************
-		 * Validation
-		 * ******************************************************************* */
-		case "xhtml_default":
-			return defined("XHTML_DEFAULT") ? XHTML_DEFAULT : false;
-
-		case "xhtml_debug":
-			return defined("XHTML_DEBUG") ? XHTML_DEBUG : false;
-
-		case "xhtml_remove_wrong":
-			return defined("XHTML_REMOVE_WRONG") ? XHTML_REMOVE_WRONG : false;
-
-		case "xhtml_show_wrong":
-			return $_SESSION["prefs"]["xhtml_show_wrong"];
-
-		case "xhtml_show_wrong_text":
-			return $_SESSION["prefs"]["xhtml_show_wrong_text"];
-
-		case "xhtml_show_wrong_js":
-			return $_SESSION["prefs"]["xhtml_show_wrong_js"];
-
-		case "xhtml_show_wrong_error_log":
-			return $_SESSION["prefs"]["xhtml_show_wrong_error_log"];
-
-		/*		 * *******************************************************************
-		 * WESTAT
-		 * ******************************************************************* */
-
-		case "we_tracker_dir":
-			return (defined("WE_TRACKER_DIR") && WE_TRACKER_DIR) ? WE_TRACKER_DIR : '';
-
-		case "use_jupload":
-			if(isset($_SESSION['prefs']['use_jupload'])){
-				return $_SESSION["prefs"]['use_jupload'];
-			}
-			return 1;
-
-
-		case "specify_jeditor_colors":
-			if(isset($_SESSION['prefs']['specify_jeditor_colors'])){
-				return $_SESSION["prefs"]['specify_jeditor_colors'];
-			}
-			return 1;
-
-		/**
-		 * formmail stuff
-		 */
-		case "formmail_log":
-			return defined("FORMMAIL_LOG") ? FORMMAIL_LOG : false;
-
-		case "formmail_confirm":
-			return defined("FORMMAIL_CONFIRM") ? FORMMAIL_CONFIRM : true;
-
-		case "formmail_ViaWeDoc":
-			return defined("FORMMAIL_VIAWEDOC") ? FORMMAIL_VIAWEDOC : false;
-
-		case "formmail_block":
-			return defined("FORMMAIL_BLOCK") ? FORMMAIL_BLOCK : false;
-
-		case "formmail_span":
-			return defined("FORMMAIL_SPAN") ? FORMMAIL_SPAN : 300;
-
-		case "formmail_emptylog":
-			return defined("FORMMAIL_EMPTYLOG") ? FORMMAIL_EMPTYLOG : 604800;
-
-		case "formmail_trials":
-			return defined("FORMMAIL_TRIALS") ? FORMMAIL_TRIALS : 3;
-
-		case "formmail_blocktime":
-			return defined("FORMMAIL_BLOCKTIME") ? FORMMAIL_BLOCKTIME : 86400;
-
-		/*		 * *******************************************************************
-		 * EMAIL
-		 * ******************************************************************* */
-		case "mailer_type":
-			return defined('WE_MAILER') ? WE_MAILER : 'php';
-		case "smtp_server":
-			return defined('SMTP_SERVER') ? SMTP_SERVER : 'localhost';
-		case "smtp_port":
-			return defined('SMTP_PORT') ? SMTP_PORT : 25;
-		case "smtp_auth":
-			return defined('SMTP_AUTH') ? SMTP_AUTH : 0;
-		case "smtp_username":
-			return defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
-		case "smtp_password":
-			return defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
-		case "smtp_halo":
-			return defined('SMTP_HALO') ? SMTP_HALO : '';
-		case "smtp_timeout":
-			return defined('SMTP_TIMEOUT') ? SMTP_TIMEOUT : '';
-		case "smtp_encryption":
-			return defined('SMTP_ENCRYPTION') ? SMTP_ENCRYPTION : 0;
 		default:
-			return "";
-
-		/*		 * *******************************************************************
-		 * VERSIONING
-		 * ******************************************************************* */
-
-		case "version_image/*":
-			return (defined("VERSIONING_IMAGE")) ? VERSIONING_IMAGE : 0;
-		case "version_text/html":
-			return (defined("VERSIONING_TEXT_HTML")) ? VERSIONING_TEXT_HTML : 0;
-		case "version_text/webedition":
-			return (defined("VERSIONING_TEXT_WEBEDITION")) ? VERSIONING_TEXT_WEBEDITION : 0;
-		case "version_text/js":
-			return (defined("VERSIONING_TEXT_JS")) ? VERSIONING_TEXT_JS : 0;
-		case "version_text/css":
-			return (defined("VERSIONING_TEXT_CSS")) ? VERSIONING_TEXT_CSS : 0;
-		case "version_text/plain":
-			return (defined("VERSIONING_TEXT_PLAIN")) ? VERSIONING_TEXT_PLAIN : 0;
-		case "version_text/htaccess":
-			return (defined("VERSIONING_TEXT_HTACCESS")) ? VERSIONING_TEXT_HTACCESS : 0;
-		case "version_text/weTmpl": //#4120
-			return (defined("VERSIONING_TEXT_WETMPL")) ? VERSIONING_TEXT_WETMPL : 0;
-		case "version_application/x-shockwave-flash":
-			return (defined("VERSIONING_FLASH")) ? VERSIONING_FLASH : 0;
-		case "version_video/quicktime":
-			return (defined("VERSIONING_QUICKTIME")) ? VERSIONING_QUICKTIME : 0;
-		case "version_application/*":
-			return (defined("VERSIONING_SONSTIGE")) ? VERSIONING_SONSTIGE : 0;
-		case "version_text/xml":
-			return (defined("VERSIONING_TEXT_XML")) ? VERSIONING_TEXT_XML : 0;
-		case "version_objectFile":
-			return (defined("VERSIONING_OBJECT")) ? VERSIONING_OBJECT : 0;
-		case "versions_time_days":
-			return (defined("VERSIONS_TIME_DAYS")) ? VERSIONS_TIME_DAYS : -1;
-		case "versions_time_weeks":
-			return (defined("VERSIONS_TIME_WEEKS")) ? VERSIONS_TIME_WEEKS : -1;
-		case "versions_time_years":
-			return (defined("VERSIONS_TIME_YEARS")) ? VERSIONS_TIME_YEARS : -1;
-		case "versions_anzahl":
-			return (defined("VERSIONS_ANZAHL")) ? VERSIONS_ANZAHL : "";
-		case "versions_create":
-			return (defined("VERSIONS_CREATE")) ? VERSIONS_CREATE : 0;
-		case "versions_time_days_tmpl":
-			return (defined("VERSIONS_TIME_DAYS_TMPL")) ? VERSIONS_TIME_DAYS_TMPL : -1;
-		case "versions_time_weeks_tmpl":
-			return (defined("VERSIONS_TIME_WEEKS_TMPL")) ? VERSIONS_TIME_WEEKS_TMPL : -1;
-		case "versions_time_years_tmpl":
-			return (defined("VERSIONS_TIME_YEARS_TMPL")) ? VERSIONS_TIME_YEARS_TMPL : -1;
-		case "versions_anzahl_tmpl":
-			return (defined("VERSIONS_ANZAHL_TMPL")) ? VERSIONS_ANZAHL_TMPL : "";
-		case "versions_create_tmpl":
-			return (defined("VERSIONS_CREATE_TMPL")) ? VERSIONS_CREATE_TMPL : 1;
+			//if not found in global_config - which is e.g. true for proxy, simply return '' which is a good default answer for anything not found
+			return defined($settingvalue) ? constant($settingvalue) : (isset($GLOBALS['global_config'][$settingvalue]) ? $GLOBALS['global_config'][$settingvalue] : '');
 	}
 }
 
@@ -741,49 +276,23 @@ function remember_value($settingvalue, $settingname){
 
 	global $save_javascript, $editor_reloaded, $email_saved, $DB_WE;
 	$_update_prefs = false;
-	if(isset($settingvalue) && ($settingvalue !== null || $settingname == '$_REQUEST["we_tracker_dir"]' || $settingname == '$_REQUEST["ui_sidebar_disable"]' || $settingname == '$_REQUEST["smtp_halo"]' || $settingname == '$_REQUEST["smtp_timeout"]')){
+	if(isset($settingvalue) && ($settingvalue !== null || $settingname == 'WE_TRACKER_DIR' || $settingname == 'SIDEBAR_DISABLED')){
 		switch($settingname){
-
-
-			/*			 * ***************************************************************
-			 * Countries
-			 * *************************************************************** */
-
-			case '$_REQUEST["countries_default"]':
+			default:
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_DEFAULT", $settingvalue);
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue);
 
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["countries_top"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_TOP", $settingvalue);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["countries_shown"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_SHOWN", $settingvalue);
-
-				$_update_prefs = true;
+				//$_update_prefs = false;
 				break;
 
 
-			/*			 * ***************************************************************
-			 * WINDOW DIMENSIONS
-			 * *************************************************************** */
-
-			case '$_REQUEST["Language"]': //Handle both
-				$_SESSION["prefs"]["Language"] = $settingvalue;
-				$_SESSION["prefs"]["BackendCharset"] = $_REQUEST["BackendCharset"];
+			case 'Language': //Handle both
+				$_SESSION['prefs'][$settingname] = $settingvalue;
+				$_SESSION['prefs']['BackendCharset'] = $_REQUEST['BackendCharset'];
 
 
-				if($settingvalue != $GLOBALS["WE_LANGUAGE"] || $_REQUEST["BackendCharset"] != $GLOBALS['WE_BACKENDCHARSET']){
+				if($settingvalue != $GLOBALS['WE_LANGUAGE'] || $_REQUEST['BackendCharset'] != $GLOBALS['WE_BACKENDCHARSET']){
 
 					// complete webEdition reload: anpassen nach Wegfall der Frames
 					$save_javascript .= "
@@ -835,57 +344,68 @@ function remember_value($settingvalue, $settingname){
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["seem_start_file"]':
-				$_SESSION["prefs"]["seem_start_file"] = $settingvalue;
-
+			case 'seem_start_file':
+			case 'seem_start_weapp':
+			case 'seem_start_type':
+			case 'editorMode':
+			case 'editorFontcolor':
+			case 'editorWeTagFontcolor':
+			case 'editorWeAttributeFontcolor':
+			case 'editorHTMLTagFontcolor':
+			case 'editorHTMLAttributeFontcolor':
+			case 'editorPiTagFontcolor':
+			case 'editorCommentFontcolor':
+			case 'editorLinenumbers':
+			case 'editorCodecompletion':
+			case 'editorTooltips':
+			case 'editorDocuintegration':
+			case 'editorTooltipFontname':
+			case 'editorTooltipFontsize':
+			case 'debug_normal':
+			case 'debug_seem':
+			case 'xhtml_show_wrong':
+			case 'xhtml_show_wrong_text':
+			case 'xhtml_show_wrong_js':
+			case 'xhtml_show_wrong_error_log':
+			case 'message_reporting':
+			case 'specify_jeditor_colors':
+				$_SESSION['prefs'][$settingname] = $settingvalue;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["seem_start_weapp"]':
-				$_SESSION["prefs"]["seem_start_weapp"] = $settingvalue;
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["seem_start_type"]':
-				$_SESSION["prefs"]["seem_start_type"] = $settingvalue;
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["disable_seem"]':
+			case 'WE_SEEM':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				if($settingvalue == 0 && WE_SEEM == 0){
-					$_file = weConfParser::changeSourceCode("define", $_file, "WE_SEEM", 1);
+					$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', 1);
 				} else if($settingvalue == 1 && WE_SEEM == 1){
-					$_file = weConfParser::changeSourceCode("define", $_file, "WE_SEEM", 0);
+					$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', 0);
 				}
 
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["sizeOpt"]':
+			case 'sizeOpt':
 				if($settingvalue == 0){
-					$_SESSION["prefs"]["weWidth"] = 0;
-					$_SESSION["prefs"]["weHeight"] = 0;
-					$_SESSION["prefs"]["sizeOpt"] = 0;
-				} else if(($settingvalue == 1) && (isset($_REQUEST["weWidth"]) && is_numeric($_REQUEST["weWidth"])) && (isset($_REQUEST["weHeight"]) && is_numeric($_REQUEST["weHeight"]))){
-					$_SESSION["prefs"]["sizeOpt"] = 1;
+					$_SESSION['prefs']['weWidth'] = 0;
+					$_SESSION['prefs']['weHeight'] = 0;
+					$_SESSION['prefs']['sizeOpt'] = 0;
+				} else if(($settingvalue == 1) && (isset($_REQUEST['weWidth']) && is_numeric($_REQUEST['weWidth'])) && (isset($_REQUEST['weHeight']) && is_numeric($_REQUEST['weHeight']))){
+					$_SESSION['prefs']['sizeOpt'] = 1;
 				}
 
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["weWidth"]':
-				if($_SESSION["prefs"]["sizeOpt"] == 1){
+			case 'weWidth':
+				if($_SESSION['prefs']['sizeOpt'] == 1){
 					$_generate_java_script = false;
 
-					if($_SESSION["prefs"]["weWidth"] != $settingvalue){
+					if($_SESSION['prefs']['weWidth'] != $settingvalue){
 						$_generate_java_script = true;
 					}
 
-					$_SESSION["prefs"]["weWidth"] = $settingvalue;
+					$_SESSION['prefs']['weWidth'] = $settingvalue;
 
 					if($_generate_java_script){
 						$save_javascript .= "
@@ -898,40 +418,40 @@ function remember_value($settingvalue, $settingname){
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["weHeight"]':
-				if($_SESSION["prefs"]["sizeOpt"] == 1){
-					$_SESSION["prefs"]["weHeight"] = $settingvalue;
+			case 'weHeight':
+				if($_SESSION['prefs']['sizeOpt'] == 1){
+					$_SESSION['prefs'][$settingname] = $settingvalue;
 				}
 
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["ui_sidebar_disable"]':
+			case 'SIDEBAR_DISABLED':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if($settingvalue == 0){
 					if(SIDEBAR_DISABLED == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "SIDEBAR_DISABLED", 0);
+						$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', 0);
 					}
 				} else if($settingvalue == 1){
 					if(SIDEBAR_DISABLED == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "SIDEBAR_DISABLED", 1);
+						$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', 1);
 					}
 				}
 
-				$_sidebar_show_on_startup = ((isset($_REQUEST["ui_sidebar_show_on_startup"]) && $_REQUEST["ui_sidebar_show_on_startup"] != null) ? $_REQUEST["ui_sidebar_show_on_startup"] : 0);
+				$_sidebar_show_on_startup = ((isset($_REQUEST['ui_sidebar_show_on_startup']) && $_REQUEST['ui_sidebar_show_on_startup'] != null) ? $_REQUEST['ui_sidebar_show_on_startup'] : 0);
 				if(SIDEBAR_SHOW_ON_STARTUP != $_sidebar_show_on_startup){
-					$_file = weConfParser::changeSourceCode("define", $_file, "SIDEBAR_SHOW_ON_STARTUP", $_sidebar_show_on_startup);
+					$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_SHOW_ON_STARTUP', $_sidebar_show_on_startup);
 				}
 
-				$_sidebar_document = ((isset($_REQUEST["ui_sidebar_file"]) && $_REQUEST["ui_sidebar_file"] != null) ? $_REQUEST["ui_sidebar_file"] : 0);
+				$_sidebar_document = ((isset($_REQUEST['ui_sidebar_file']) && $_REQUEST['ui_sidebar_file'] != null) ? $_REQUEST['ui_sidebar_file'] : 0);
 				if(SIDEBAR_DEFAULT_DOCUMENT != $_sidebar_document){
-					$_file = weConfParser::changeSourceCode("define", $_file, "SIDEBAR_DEFAULT_DOCUMENT", $_sidebar_document);
+					$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DEFAULT_DOCUMENT', $_sidebar_document);
 				}
 
-				$_sidebar_width = ((isset($_REQUEST["ui_sidebar_width"]) && $_REQUEST["ui_sidebar_width"] != null) ? $_REQUEST["ui_sidebar_width"] : 0);
+				$_sidebar_width = ((isset($_REQUEST['ui_sidebar_width']) && $_REQUEST['ui_sidebar_width'] != null) ? $_REQUEST['ui_sidebar_width'] : 0);
 				if(SIDEBAR_DEFAULT_WIDTH != $_sidebar_width){
-					$_file = weConfParser::changeSourceCode("define", $_file, "SIDEBAR_DEFAULT_WIDTH", $_sidebar_width);
+					$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DEFAULT_WIDTH', $_sidebar_width);
 				}
 
 				$_update_prefs = true;
@@ -941,49 +461,23 @@ function remember_value($settingvalue, $settingname){
 			 * FILE EXTENSIONS
 			 * *************************************************************** */
 
-			case '$_REQUEST["DefaultStaticExt"]':
-				if(DEFAULT_STATIC_EXT != $settingvalue){
+			case 'DEFAULT_STATIC_EXT':
+			case 'DEFAULT_DYNAMIC_EXT':
+			case 'DEFAULT_HTML_EXT':
+				if(constant($settingname) != $settingvalue){
 					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = weConfParser::changeSourceCode("define", $_file, "DEFAULT_STATIC_EXT", $settingvalue);
+					$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue);
 				}
-
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["DefaultDynamicExt"]':
-				if(DEFAULT_DYNAMIC_EXT != $settingvalue){
-					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = weConfParser::changeSourceCode("define", $_file, "DEFAULT_DYNAMIC_EXT", $settingvalue);
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["DefaultHTMLExt"]':
-				if(DEFAULT_HTML_EXT != $settingvalue){
-					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = weConfParser::changeSourceCode("define", $_file, "DEFAULT_HTML_EXT", $settingvalue);
-				}
-
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * TEMPLATE EDITOR
-			 * *************************************************************** */
-
-			case '$_REQUEST["editorMode"]':
-				$_SESSION["prefs"]["editorMode"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorFont"]':
+			case 'editorFont':
 				if($settingvalue == 0){
-					$_SESSION["prefs"]["editorFontname"] = "none";
-					$_SESSION["prefs"]["editorFontsize"] = -1;
-					$_SESSION["prefs"]["editorFont"] = 0;
-				} else if(($settingvalue == 1) && isset($_REQUEST["editorFontname"]) && isset($_REQUEST["editorFontsize"])){
-					$_SESSION["prefs"]["editorFont"] = 1;
+					$_SESSION['prefs']['editorFontname'] = 'none';
+					$_SESSION['prefs']['editorFontsize'] = -1;
+					$_SESSION['prefs']['editorFont'] = 0;
+				} else if(($settingvalue == 1) && isset($_REQUEST['editorFontname']) && isset($_REQUEST['editorFontsize'])){
+					$_SESSION['prefs']['editorFont'] = 1;
 				}
 
 				if(!$editor_reloaded){
@@ -1015,88 +509,19 @@ function remember_value($settingvalue, $settingname){
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["editorFontname"]':
-				if($_SESSION["prefs"]["editorFont"] == 1){
-					$_SESSION["prefs"]["editorFontname"] = $settingvalue;
+			case 'editorFontname':
+			case 'editorFontsize':
+				if($_SESSION['prefs']['editorFont'] == 1){
+					$_SESSION['prefs'][$settingname] = $settingvalue;
 				}
 
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["editorFontsize"]':
-				if($_SESSION["prefs"]["editorFont"] == 1){
-					$_SESSION["prefs"]["editorFontsize"] = $settingvalue;
-				}
 
-				$_update_prefs = true;
-				break;
 
-			case '$_REQUEST["editorFontcolor"]':
-				$_SESSION["prefs"]["editorFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
 
-			case '$_REQUEST["editorWeTagFontcolor"]':
-				$_SESSION["prefs"]["editorWeTagFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorWeAttributeFontcolor"]':
-				$_SESSION["prefs"]["editorWeAttributeFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorHTMLTagFontcolor"]':
-				$_SESSION["prefs"]["editorHTMLTagFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorHTMLAttributeFontcolor"]':
-				$_SESSION["prefs"]["editorHTMLAttributeFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorPiTagFontcolor"]':
-				$_SESSION["prefs"]["editorPiTagFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorCommentFontcolor"]':
-				$_SESSION["prefs"]["editorCommentFontcolor"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorLinenumbers"]':
-				$_SESSION['prefs']['editorLinenumbers'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorCodecompletion"]':
-				$_SESSION['prefs']['editorCodecompletion'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltips"]':
-				$_SESSION['prefs']['editorTooltips'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorDocuintegration"]':
-				$_SESSION['prefs']['editorDocuintegration'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltipFontname"]':
-				$_SESSION['prefs']['editorTooltipFontname'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltipFontsize"]':
-				$_SESSION['prefs']['editorTooltipFontsize'] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltipFont"]':
+			case 'editorTooltipFont':
 				if($settingvalue == 0){
 					$_SESSION['prefs']['editorTooltipFontname'] = 'none';
 					$_SESSION['prefs']['editorTooltipFontsize'] = -1;
@@ -1138,21 +563,21 @@ function remember_value($settingvalue, $settingname){
 			 * FORMMAIL RECIPIENTS
 			 * *************************************************************** */
 
-			case '$_REQUEST["formmail_values"]':
-				if((isset($_REQUEST["formmail_values"]) && $_REQUEST["formmail_values"] != "") || (isset($_REQUEST["formmail_deleted"]) && $_REQUEST["formmail_deleted"] != "")){
-					$_recipients = explode("<##>", $_REQUEST["formmail_values"]);
+			case 'formmail_values':
+				if((isset($_REQUEST['formmail_values']) && $_REQUEST['formmail_values'] != '') || (isset($_REQUEST['formmail_deleted']) && $_REQUEST['formmail_deleted'] != '')){
+					$_recipients = explode('<##>', $_REQUEST['formmail_values']);
 
 					if(sizeof($_recipients)){
 						foreach($_recipients as $i => $_recipient){
-							$_single_recipient = explode("<#>", $_recipient);
+							$_single_recipient = explode('<#>', $_recipient);
 
-							if(isset($_single_recipient[0]) && ($_single_recipient[0] == "#")){
+							if(isset($_single_recipient[0]) && ($_single_recipient[0] == '#')){
 								if(isset($_single_recipient[1]) && $_single_recipient[1]){
-									$DB_WE->query("INSERT INTO " . RECIPIENTS_TABLE . " (Email) VALUES('" . $DB_WE->escape($_single_recipient[1]) . "')");
+									$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
 								}
 							} else{
 								if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
-									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . intval($_single_recipient[0]));
+									$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
 								}
 							}
 						}
@@ -1162,12 +587,9 @@ function remember_value($settingvalue, $settingname){
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["formmail_deleted"]':
-
-				if(isset($_REQUEST["formmail_deleted"]) && $_REQUEST["formmail_deleted"] != ""){
-
-					$_formmail_deleted = explode(",", $_REQUEST["formmail_deleted"]);
-
+			case 'formmail_deleted':
+				if(isset($_REQUEST[$settingname]) && $_REQUEST[$settingname] != ''){
+					$_formmail_deleted = explode(',', $_REQUEST[$settingname]);
 					foreach($_formmail_deleted as $del){
 						$DB_WE->query('DELETE FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($del));
 					}
@@ -1176,10 +598,9 @@ function remember_value($settingvalue, $settingname){
 				break;
 
 
-			case '$_REQUEST["active_integrated_modules"]':
-
+			case 'active_integrated_modules':
 				$_activeIntegratedModulesFile = '';
-				foreach($_REQUEST["active_integrated_modules"] as $_module){
+				foreach($_REQUEST['active_integrated_modules'] as $_module){
 					$_activeIntegratedModulesFile .= "\t'" . $_module . "',\n";
 				}
 
@@ -1196,7 +617,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			 * PROXY SERVER
 			 * *************************************************************** */
 
-			case '$_REQUEST["useproxy"]':
+			case 'useproxy':
 				if($settingvalue == 1){
 					// Create content of settings file
 					$_proxy_file =
@@ -1205,7 +626,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 	define("WE_PROXYPORT", "' . ((isset($_REQUEST["proxyport"]) && $_REQUEST["proxyport"] != null) ? $_REQUEST["proxyport"] : '') . '");
 	define("WE_PROXYUSER", "' . ((isset($_REQUEST["proxyuser"]) && $_REQUEST["proxyuser"] != null) ? $_REQUEST["proxyuser"] : '') . '");
 	define("WE_PROXYPASSWORD", "' . ((isset($_REQUEST["proxypass"]) && $_REQUEST["proxypass"] != null) ? $_REQUEST["proxypass"] : '') . '");
-?>';
+';
 
 					// Create/overwrite proxy settings file
 					$GLOBALS['config_files']['proxysettings']['content'] = $_proxy_file;
@@ -1214,10 +635,10 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["proxyhost"]':
-			case '$_REQUEST["proxyport"]':
-			case '$_REQUEST["proxyuser"]':
-			case '$_REQUEST["proxypass"]':
+			case 'proxyhost':
+			case 'proxyport':
+			case 'proxyuser':
+			case 'proxypass':
 				$_update_prefs = true;
 				break;
 
@@ -1225,23 +646,13 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			 * ADVANCED
 			 * *************************************************************** */
 
-			case '$_REQUEST["we_php_default"]':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_PHP_DEFAULT", $settingvalue);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["db_connect"]':
-
+			case 'DB_CONNECT':
 				$_file = &$GLOBALS['config_files']['conf']['content'];
-
 				$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', $settingvalue);
-
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["db_set_charset"]':
+			case 'DB_SET_CHARSET':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if(!defined('DB_SET_CHARSET') || $settingvalue != DB_SET_CHARSET){
@@ -1250,7 +661,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["useauth"]':
+			case 'useauth':
 
 				$_file = &$GLOBALS['config_files']['conf']['content'];
 
@@ -1280,8 +691,8 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["authuser"]':
-			case '$_REQUEST["authpass"]':
+			case 'HTTP_USERNAME':
+			case 'HTTP_PASSWORD':
 				$_update_prefs = true;
 				break;
 
@@ -1289,127 +700,31 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			 * ERROR HANDLING
 			 * *************************************************************** */
 
-			case '$_REQUEST["we_error_handler"]':
-
+			case 'WE_ERROR_HANDLER':
+			case 'WE_ERROR_NOTICES':
+			case 'WE_ERROR_DEPRECATED':
+			case 'WE_ERROR_WARNINGS':
+			case 'WE_ERROR_ERRORS':
+			case 'WE_ERROR_SHOW':
+			case 'WE_ERROR_LOG':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if($settingvalue == 0){
-					if(WE_ERROR_HANDLER == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_HANDLER", 0);
+					if(constant($settingname) == 1){
+						$_file = weConfParser::changeSourceCode("define", $_file, $settingname, 0);
 					}
 				} else if($settingvalue == 1){
-					if(WE_ERROR_HANDLER == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_HANDLER", 1);
+					if(constant($settingname) == 0){
+						$_file = weConfParser::changeSourceCode("define", $_file, $settingname, 1);
 					}
 				}
 
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["error_handling_notices"]':
 
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
-				if($settingvalue == 0){
-					if(WE_ERROR_NOTICES == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_NOTICES", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_NOTICES == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_NOTICES", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_deprecated"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_DEPRECATED == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_DEPRECATED == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_warnings"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_WARNINGS == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_WARNINGS", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_WARNINGS == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_WARNINGS", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_ERRORS == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_ERRORS", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_ERRORS == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_ERRORS", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_display_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_SHOW == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_SHOW", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_SHOW == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_SHOW", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_log_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_LOG == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_LOG", 0);
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_LOG == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_LOG", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_mail_errors"]':
-
+			case 'WE_ERROR_MAIL':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if($settingvalue == 0){
@@ -1426,8 +741,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["error_mail_address"]':
-
+			case 'WE_ERROR_MAIL_ADDRESS':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if($_REQUEST["error_mail_errors"] == 1){
@@ -1457,8 +771,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["error_document_no_objectfile"]':
-
+			case 'ERROR_DOCUMENT_NO_OBJECTFILE':
 				if(!defined('ERROR_DOCUMENT_NO_OBJECTFILE') || ERROR_DOCUMENT_NO_OBJECTFILE != $settingvalue){
 					$_file = &$GLOBALS['config_files']['conf_global']['content'];
 					$_file = weConfParser::changeSourceCode("define", $_file, "ERROR_DOCUMENT_NO_OBJECTFILE", $settingvalue);
@@ -1466,8 +779,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				}
 				break;
 
-			case '$_REQUEST["disable_template_code_check"]':
-
+			case 'DISABLE_TEMPLATE_CODE_CHECK':
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 				if($settingvalue == 0){
@@ -1483,793 +795,38 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["debug_normal"]':
-				$_SESSION["prefs"]["debug_normal"] = $settingvalue;
-				$_update_prefs = true;
-				break;
 
-			case '$_REQUEST["debug_seem"]':
-				$_SESSION["prefs"]["debug_seem"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * BACKUP
-			 * *************************************************************** */
-
-			case '$_REQUEST["backup_steps"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "BACKUP_STEPS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			/*			 * ***************************************************************
-			 * INLINEEDIT
-			 * *************************************************************** */
-
-			case '$_REQUEST["inlineedit_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "INLINEEDIT_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["removefirstparagraph_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "REMOVEFIRSTPARAGRAPH_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["hidenameattribinweimg_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "HIDENAMEATTRIBINWEIMG_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["hidenameattribinweform_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "HIDENAMEATTRIBINWEFORM_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * NAVIGATION
-			 * *************************************************************** */
-
-			case '$_REQUEST["navigation_entries_from_document"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_ENTRIES_FROM_DOCUMENT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["navigation_rules_continue_after_first_match"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["navigation_directoryindex_hide"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_DIRECTORYINDEX_HIDE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			case '$_REQUEST["navigation_directoryindex_names"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_DIRECTORYINDEX_NAMES", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["wysiwyglinks_directoryindex_hide"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYGLINKS_DIRECTORYINDEX_HIDE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["taglinks_directoryindex_hide"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "TAGLINKS_DIRECTORYINDEX_HIDE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["navigation_objectseourls"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "NAVIGATION_OBJECTSEOURLS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["wysiwyglinks_objectseourls"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYGLINKS_OBJECTSEOURLS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["taglinks_objectseourls"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "TAGLINKS_OBJECTSEOURLS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["urlencode_objectseourls"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "URLENCODE_OBJECTSEOURLS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			case '$_REQUEST["suppress404code"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SUPPRESS404CODE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["seoinside_hideinwebedition"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SEOINSIDE_HIDEINWEBEDITION", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["seoinside_hideineditmode"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SEOINSIDE_HIDEINEDITMODE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["langlink_support"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["langlink_support_backlinks"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT_BACKLINKS", $settingvalue);
-
-				$_update_prefs = false;
-
-				$_update_prefs = false;
-
-
-				break;
-			case '$_REQUEST["langlink_support_recursive"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT_RECURSIVE", $settingvalue);
-
-				$_update_prefs = false;
-
-				$_update_prefs = false;
-
-
-				break;
-
-			/*			 * ***************************************************************
-			 * DEFAULT CHARSET
-			 * *************************************************************** */
-
-			case '$_REQUEST["default_charset"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "DEFAULT_CHARSET", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-
-			/*			 * ***************************************************************
-			 * SAFARI WYSIWYG
-			 * *************************************************************** */
-
-			case '$_REQUEST["safari_wysiwyg"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SAFARI_WYSIWYG", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["wysiwyg_type"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WYSIWYG_TYPE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * SHOWINPUTS
-			 * *************************************************************** */
-
-			case '$_REQUEST["showinputs_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SHOWINPUTS_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * WE_MAX_UPLOAD_SIZE
-			 * *************************************************************** */
-
-			case '$_REQUEST["we_max_upload_size"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_MAX_UPLOAD_SIZE", abs($settingvalue));
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * WE_NEW_FOLDER_MOD
-			 * *************************************************************** */
-
-			case '$_REQUEST["we_new_folder_mod"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_NEW_FOLDER_MOD", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			/*			 * ***************************************************************
-			 * WE_DOCTYPE_WORKSPACE_BEHAVIOR
-			 * *************************************************************** */
-
-			case '$_REQUEST["we_doctype_workspace_behavior"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_DOCTYPE_WORKSPACE_BEHAVIOR", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["we_scheduler_trigger"]':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "SCHEDULER_TRIGGER", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-
-			/**
-			 * formmail stuff
-			 */
-			case '$_REQUEST["formmail_confirm"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_CONFIRM", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["formmail_ViaWeDoc"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_VIAWEDOC", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["formmail_log"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_LOG", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["formmail_block"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_BLOCK", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["formmail_span"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_SPAN", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			case '$_REQUEST["formmail_emptylog"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_EMPTYLOG", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			case '$_REQUEST["formmail_blocktime"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_BLOCKTIME", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			case '$_REQUEST["formmail_trials"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "FORMMAIL_TRIALS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-
-			/*			 * ***************************************************************
-			 * Hooks
-			 * *************************************************************** */
-
-			case '$_REQUEST["execute_hooks"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "EXECUTE_HOOKS", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * phpLocalScope
-			 * *************************************************************** */
-
-			case '$_REQUEST["phpLocalScope"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "PHPLOCALSCOPE", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * Validation
-			 * *************************************************************** */
-
-			case '$_REQUEST["xhtml_default"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "XHTML_DEFAULT", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["xhtml_debug"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "XHTML_DEBUG", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["xhtml_remove_wrong"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "XHTML_REMOVE_WRONG", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			case '$_REQUEST["xhtml_show_wrong"]':
-				$_SESSION["prefs"]["xhtml_show_wrong"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["xhtml_show_wrong_text"]':
-				$_SESSION["prefs"]["xhtml_show_wrong_text"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["xhtml_show_wrong_js"]':
-				$_SESSION["prefs"]["xhtml_show_wrong_js"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["xhtml_show_wrong_error_log"]':
-				$_SESSION["prefs"]["xhtml_show_wrong_error_log"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * message reporting
-			 * *************************************************************** */
-			case '$_REQUEST["message_reporting"]':
-				$_SESSION["prefs"]["message_reporting"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * THUMBNAILS
-			 * *************************************************************** */
-
-			case '$_REQUEST["thumbnail_dir"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_THUMBNAIL_DIRECTORY", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-			/*			 * ***************************************************************
-			 * WESTAT
-			 * *************************************************************** */
-
-			case '$_REQUEST["we_tracker_dir"]':
-
-				/* $save_javascript .= "
-
-				  if (parent.opener.top.header) {
-				  parent.opener.top.header.location.reload();
-				  }
-				  "; */
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_TRACKER_DIR", $settingvalue);
-
-				$_update_prefs = false;
-				break;
-
-			/*			 * ***************************************************************
-			 * TREE
-			 * *************************************************************** */
-
-			case '$_REQUEST["default_tree_count"]':
-				$_SESSION["prefs"]["default_tree_count"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * COCKPIT
-			 * *************************************************************** */
-
-			case '$_REQUEST["cockpit_amount_columns"]':
-				$_SESSION["prefs"]["cockpit_amount_columns"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * CACHING
-			 * *************************************************************** */
-
-			/* case '$_REQUEST["cache_type"]':
-			  $_update_prefs = false;
-			  if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_TYPE", $settingvalue, 'Cache Type')) {
-			  $_update_prefs = true;
-			  }
-
-			  // Save cache settings for navi tool
-			  include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php');
-			  weNavigationSettingControl::saveSettings(false);
-
-			  break;
-
-			  case '$_REQUEST["cache_lifetime"]':
-			  $_update_prefs = false;
-			  if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_LIFETIME", $settingvalue, 'Cache Life Time')) {
-			  $_update_prefs = true;
-			  }
-			  break;
-			 */
+			case 'cockpit_amount_columns':
 
 			/*			 * ***************************************************************
 			 * JUPLOAD
 			 * *************************************************************** */
-			case '$_REQUEST["use_jupload"]':
+			case 'use_jupload':
 				$_SESSION['prefs']['use_jupload'] = $settingvalue;
 				$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET use_jupload=' . intval($settingvalue));
 				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * JAVA EDITOR COLORS
-			 * *************************************************************** */
-			case '$_REQUEST["specify_jeditor_colors"]':
-				$_SESSION["prefs"]["specify_jeditor_colors"] = $settingvalue;
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * EMAIL
-			 * *************************************************************** */
-			case '$_REQUEST["mailer_type"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_MAILER", $settingvalue, 'mailer type; possible values are php and smtp')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_server"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_SERVER", $settingvalue, 'SMTP server address')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_port"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_PORT", $settingvalue, 'SMTP server port')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_auth"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_AUTH", $settingvalue, 'SMTP authentication')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_username"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_USERNAME", $settingvalue, 'SMTP username')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_password"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_PASSWORD", $settingvalue, 'SMTP password')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_halo"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_HALO", $settingvalue, 'SMTP halo string')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["smtp_timeout"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_TIMEOUT", $settingvalue, 'SMTP timeout')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["smtp_encryption"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "SMTP_ENCRYPTION", $settingvalue, 'SMTP encryption')){
-					$_update_prefs = true;
-				}
-				break;
-			/*			 * ***************************************************************
-			 * VERSIONING
-			 * *************************************************************** */
-			case '$_REQUEST["version_image/*"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_IMAGE", $settingvalue, 'Versioning status for ContentType image/* ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/html"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_HTML", $settingvalue, 'Versioning status for ContentType text/html ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/webedition"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_WEBEDITION", $settingvalue, 'Versioning status for ContentType text/webedition ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/js"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_JS", $settingvalue, 'Versioning status for ContentType text/js ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/css"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_CSS", $settingvalue, 'Versioning status for ContentType text/css ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/plain"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_PLAIN", $settingvalue, 'Versioning status for ContentType text/plain ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/htaccess"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_HTACCESS", $settingvalue, 'Versioning status for ContentType text/htaccess ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/weTmpl"]': //#4120
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_WETMPL", $settingvalue, 'Versioning status for ContentType text/weTmpl ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_application/x-shockwave-flash"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_FLASH", $settingvalue, 'Versioning status for ContentType application/x-shockwave-flash ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_video/quicktime"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_QUICKTIME", $settingvalue, 'Versioning status for ContentType video/quicktime ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_application/*"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_SONSTIGE", $settingvalue, 'Versioning status for ContentType application/* ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_text/xml"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_TEXT_XML", $settingvalue, 'Versioning status for ContentType text/xml ')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["version_objectFile"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONING_OBJECT", $settingvalue, 'Versioning status for ContentType objectFile ')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_time_days"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_DAYS", $settingvalue, 'Versioning Number of Days')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_time_weeks"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_WEEKS", $settingvalue, 'Versioning Number of Weeks')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_time_years"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_YEARS", $settingvalue, 'Versioning Number of Years')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_anzahl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_ANZAHL", $settingvalue, 'Versioning Number of Versions')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["versions_create"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_CREATE", $settingvalue, 'Versioning Save version only if publishing')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["versions_create_tmpl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_CREATE_TMPL", $settingvalue, 'Versioning Save template version only on special request')){
-					$_update_prefs = true;
-				}
-				break;
-			case '$_REQUEST["versions_time_days_tmpl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_DAYS_TMPL", $settingvalue, 'Versioning Number of Days')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_time_weeks_tmpl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_WEEKS_TMPL", $settingvalue, 'Versioning Number of Weeks')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_time_years_tmpl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_TIME_YEARS_TMPL", $settingvalue, 'Versioning Number of Years')){
-					$_update_prefs = true;
-				}
-				break;
-
-			case '$_REQUEST["versions_anzahl_tmpl"]':
-				$_update_prefs = false;
-				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "VERSIONS_ANZAHL_TMPL", $settingvalue, 'Versioning Number of Versions')){
-					$_update_prefs = true;
-				}
-				break;
-
-
-			/*			 * ***************************************************************
-			 * CANCEL OTHER REQUESTS
-			 * *************************************************************** */
-
-			default:
-				$_update_prefs = false;
 				break;
 		}
 	} else{
 		switch($settingname){
 
-
-			/*			 * ***************************************************************
-			 * CACHING
-			 * *************************************************************** */
-
-			/* case '$_REQUEST["cache_type"]':
-			  $_update_prefs = false;
-			  if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_TYPE", 'none', 'Cache Type')) {
-			  $_update_prefs = true;
-			  }
-			  break;
-
-			  case '$_REQUEST["cache_lifetime"]':
-			  $_update_prefs = false;
-			  if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_LIFETIME", 0, 'Cache Life Time')) {
-			  $_update_prefs = true;
-			  }
-			  break;
-			 */
-			/*			 * ***************************************************************
-			 * COCKPIT
-			 * *************************************************************** */
-
-			case '$_REQUEST["cockpit_amount_columns"]':
-				$_SESSION["prefs"]["cockpit_amount_columns"] = '';
+			case 'cockpit_amount_columns':
+			case 'weWidth':
+			case 'weHeight':
+			case 'editorLinenumbers':
+				$_SESSION["prefs"][$settingname] = '';
 				$_update_prefs = true;
 				break;
 
-			/*			 * ***************************************************************
-			 * WINDOW DIMENSIONS
-			 * *************************************************************** */
-
-			case '$_REQUEST["weWidth"]':
-			case '$_REQUEST["weHeight"]':
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["disable_seem"]':
+			default:
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_SEEM", 1);
+				$_file = weConfParser::changeSourceCode("define", $_file, $settingname, 1);
 
-				$_update_prefs = true;
+				//$_update_prefs = false;
 				break;
 
-			case '$_REQUEST["editorFont"]':
+			case 'editorFont':
 				$_SESSION["prefs"]["editorFontname"] = "none";
 				$_SESSION["prefs"]["editorFontsize"] = -1;
 				$_SESSION["prefs"]["editorFont"] = 0;
@@ -2302,32 +859,21 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["editorWidth"]':
-			case '$_REQUEST["editorHeight"]':
+			case 'editorWidth':
+			case 'editorHeight':
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["editorLinenumbers"]':
-				$_SESSION['prefs']['editorLinenumbers'] = 0;
+			case 'editorCodecompletion':
+			case 'editorTooltips':
+			case 'editorDocuintegration':
+			case 'debug_normal':
+			case 'debug_seem':
+				$_SESSION['prefs'][$settingname] = 0;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["editorCodecompletion"]':
-				$_SESSION['prefs']['editorCodecompletion'] = 0;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltips"]':
-				$_SESSION['prefs']['editorTooltips'] = 0;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorDocuintegration"]':
-				$_SESSION['prefs']['editorDocuintegration'] = 0;
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["editorTooltipFont"]':
+			case 'editorTooltipFont':
 				$_SESSION['prefs']['editorTooltipFontname'] = 'none';
 				$_SESSION['prefs']['editorTooltipFontsize'] = -1;
 				$_SESSION['prefs']['editorTooltipFont'] = 0;
@@ -2364,7 +910,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			 * PROXY SERVER
 			 * *************************************************************** */
 
-			case '$_REQUEST["useproxy"]':
+			case 'useproxy':
 
 				// Delete proxy settings file
 				if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php")){
@@ -2376,140 +922,27 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["proxyhost"]':
-			case '$_REQUEST["proxyport"]':
-			case '$_REQUEST["proxyuser"]':
-			case '$_REQUEST["proxypass"]':
-				$_update_prefs = true;
+			case 'proxyhost':
+			case 'proxyport':
+			case 'proxyuser':
+			case 'proxypass':
 				break;
 
-			/*			 * ***************************************************************
-			 * ADVANCED
-			 * *************************************************************** */
-
-			case '$_REQUEST["useauth"]':
-
+			case 'useauth':
 				$_file = &$GLOBALS['config_files']['conf']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', 'myUsername', false);
 				$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', 'myPassword', false);
 
-				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["authuser"]':
-			case '$_REQUEST["authpass"]':
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * ERROR HANDLING
-			 * *************************************************************** */
-
-			case '$_REQUEST["error_handling_notices"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_NOTICES", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_deprecated"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_DEPRECATED", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["we_error_handler"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_HANDLER", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_warnings"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_WARNINGS", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_handling_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_ERRORS", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_display_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_SHOW", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_log_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_LOG", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_mail_errors"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["error_mail_address"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["debug_normal"]':
-				$_SESSION["prefs"]["debug_normal"] = 0;
-
-				$_update_prefs = true;
-				break;
-
-			case '$_REQUEST["debug_seem"]':
-				$_SESSION["prefs"]["debug_seem"] = 0;
-
-				$_update_prefs = true;
+			case 'authuser':
+			case 'authpass':
 				break;
 
 
-			case '$_REQUEST["message_reporting"]':
-				$_SESSION["prefs"]["message_reporting"] = 7;
+			case 'message_reporting':
+				$_SESSION["prefs"][$settingname] = 7;
 				$_update_prefs = true;
-				break;
-
-
-			case '$_REQUEST["disable_template_code_check"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", 0);
-
-				$_update_prefs = true;
-				break;
-
-			/*			 * ***************************************************************
-			 * CANCEL OTHER REQUESTS
-			 * *************************************************************** */
-
-			default:
-				$_update_prefs = false;
 				break;
 		}
 	}
@@ -2529,28 +962,32 @@ function save_all_values(){
 	global $DB_WE;
 
 	// First, read all needed files
-	$GLOBALS['config_files'] = array();
-
-	// we_conf.inc.php
-	$GLOBALS['config_files']['conf'] = array();
-	$GLOBALS['config_files']['conf']['filename'] = WE_INCLUDES_PATH . "conf/we_conf.inc.php";
-	$GLOBALS['config_files']['conf']['content'] = weFile::load($GLOBALS['config_files']['conf']['filename']);
-
-	// we_conf_global.inc.php
-	$GLOBALS['config_files']['conf_global'] = array();
-	$GLOBALS['config_files']['conf_global']['filename'] = WE_INCLUDES_PATH . "conf/we_conf_global.inc.php";
-	$GLOBALS['config_files']['conf_global']['content'] = weFile::load($GLOBALS['config_files']['conf_global']['filename']);
-
-	// proxysettings.inc.php
-	$GLOBALS['config_files']['proxysettings'] = array();
-	$GLOBALS['config_files']['proxysettings']['filename'] = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php";
-	$GLOBALS['config_files']['proxysettings']['content'] = weFile::load($GLOBALS['config_files']['proxysettings']['filename']);
-
-	// we_active_integrated_modules.inc.php
-	$GLOBALS['config_files']['active_integrated_modules'] = array();
-	$GLOBALS['config_files']['active_integrated_modules']['filename'] = WE_INCLUDES_PATH . "conf/we_active_integrated_modules.inc.php";
-	$GLOBALS['config_files']['active_integrated_modules']['content'] = weFile::load($GLOBALS['config_files']['active_integrated_modules']['filename']);
-
+	$GLOBALS['config_files'] = array(
+		// we_conf.inc.php
+		'conf' => array(
+			'filename' => WE_INCLUDES_PATH . 'conf/we_conf.inc.php',
+			'content' => '',
+		),
+		// we_conf_global.inc.php
+		'conf_global' => array(
+			'filename' => WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php',
+			'content' => '',
+		),
+		// proxysettings.inc.php
+		'proxysettings' => array(
+			'filename' => $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php',
+			'content' => '',
+		),
+		// we_active_integrated_modules.inc.php
+		'active_integrated_modules' => array(
+			'filename' => WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php',
+			'content' => '',
+		),
+	);
+	foreach($GLOBALS['config_files'] as &$config){
+		$config['content'] = weFile::load($config['filename']);
+		weFile::save($config['filename'] . '.bak', $config['content']);
+	}
 
 	// Second, change sourcecodes of the configfiles
 	$_update_prefs = false;
@@ -2559,61 +996,50 @@ function save_all_values(){
 	 * User Interface
 	 * *********************************************************************** */
 
-	$_update_prefs = remember_value(isset($_REQUEST["Language"]) ? $_REQUEST["Language"] : null, '$_REQUEST["Language"]');
+	$_update_prefs = remember_value(isset($_REQUEST['Language']) ? $_REQUEST['Language'] : null, 'Language');
 
-	$_update_prefs = remember_value(isset($_REQUEST["default_tree_count"]) ? $_REQUEST["default_tree_count"] : null, '$_REQUEST["default_tree_count"]') || $_update_prefs;
-	switch($_REQUEST["seem_start_type"]){
-		case "cockpit":
-			$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-			$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['default_tree_count']) ? $_REQUEST['default_tree_count'] : null, 'default_tree_count') || $_update_prefs;
+	switch($_REQUEST['seem_start_type']){
+		case 'cockpit':
+			$_update_prefs = remember_value('cockpit', 'seem_start_type') || $_update_prefs;
+			$_update_prefs = remember_value(0, 'seem_start_file') || $_update_prefs;
+			$_update_prefs = remember_value('', 'seem_start_weapp') || $_update_prefs;
 			break;
-		case "object":
-			$_update_prefs = remember_value("object", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["seem_start_object"]) ? $_REQUEST["seem_start_object"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-			$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
+		case 'object':
+			$_update_prefs = remember_value('object', 'seem_start_type') || $_update_prefs;
+			$_update_prefs = remember_value(isset($_REQUEST['seem_start_object']) ? $_REQUEST['seem_start_object'] : 0, 'seem_start_file') || $_update_prefs;
+			$_update_prefs = remember_value('', 'seem_start_weapp') || $_update_prefs;
 			break;
-		case "weapp":
-			$_update_prefs = remember_value("weapp", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["seem_start_weapp"]) ? $_REQUEST["seem_start_weapp"] : '', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
+		case 'weapp':
+			$_update_prefs = remember_value('weapp', 'seem_start_type') || $_update_prefs;
+			$_update_prefs = remember_value(isset($_REQUEST["seem_start_weapp"]) ? $_REQUEST["seem_start_weapp"] : '', 'seem_start_weapp') || $_update_prefs;
 			break;
-		case "document":
-			$_update_prefs = remember_value("document", '$_REQUEST["seem_start_type"]') || $_update_prefs;
-			$_update_prefs = remember_value(isset($_REQUEST["seem_start_document"]) ? $_REQUEST["seem_start_document"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
-			$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
+		case 'document':
+			$_update_prefs = remember_value('document', 'seem_start_type') || $_update_prefs;
+			$_update_prefs = remember_value(isset($_REQUEST["seem_start_document"]) ? $_REQUEST["seem_start_document"] : 0, 'seem_start_file') || $_update_prefs;
+			$_update_prefs = remember_value('', 'seem_start_weapp') || $_update_prefs;
 			break;
 		default:
-			$_update_prefs = remember_value("", '$_REQUEST["seem_start_type"]') || $_update_prefs;
+			$_update_prefs = remember_value('', 'seem_start_type') || $_update_prefs;
 	}
-	if(we_hasPerm("ADMINISTRATOR")){
-		$_disableSeem = isset($_REQUEST["disable_seem"]) && $_REQUEST["disable_seem"] ? 1 : 0;
-		$_update_prefs = remember_value($_disableSeem, '$_REQUEST["disable_seem"]') || $_update_prefs;
+	if(we_hasPerm('ADMINISTRATOR')){
+		$_disableSeem = isset($_REQUEST['disable_seem']) && $_REQUEST['disable_seem'] ? 1 : 0;
+		$_update_prefs = remember_value($_disableSeem, 'WE_SEEM') || $_update_prefs;
 	}
 
-	$_update_prefs = remember_value(isset($_REQUEST["sizeOpt"]) ? $_REQUEST["sizeOpt"] : null, '$_REQUEST["sizeOpt"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["weWidth"]) ? $_REQUEST["weWidth"] : null, '$_REQUEST["weWidth"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["weHeight"]) ? $_REQUEST["weHeight"] : null, '$_REQUEST["weHeight"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['sizeOpt']) ? $_REQUEST['sizeOpt'] : null, 'sizeOpt') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['weWidth']) ? $_REQUEST['weWidth'] : null, 'weWidth') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['weHeight']) ? $_REQUEST['weHeight'] : null, 'weHeight') || $_update_prefs;
 
-	$_update_prefs = remember_value(isset($_REQUEST["ui_sidebar_disable"]) ? 1 : 0, '$_REQUEST["ui_sidebar_disable"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['ui_sidebar_disable']) ? 1 : 0, 'SIDEBAR_DISABLED') || $_update_prefs;
 
 
 	/*	 * ***********************************************************************
 	 * COCKPIT
 	 * *********************************************************************** */
 
-	$_update_prefs = remember_value(isset($_REQUEST["cockpit_amount_columns"]) ? $_REQUEST["cockpit_amount_columns"] : 5, '$_REQUEST["cockpit_amount_columns"]');
+	$_update_prefs = remember_value(isset($_REQUEST['cockpit_amount_columns']) ? $_REQUEST['cockpit_amount_columns'] : 5, 'cockpit_amount_columns');
 
-
-	/*	 * ***********************************************************************
-	 * CACHING
-	 * *********************************************************************** */
-
-	/* 	$_update_prefs = remember_value(isset($_REQUEST["cache_type"]) ? $_REQUEST["cache_type"] : 'none', '$_REQUEST["cache_type"]');
-	  $_update_prefs = remember_value(isset($_REQUEST["cache_lifetime"]) ? $_REQUEST["cache_lifetime"] : 0, '$_REQUEST["cache_lifetime"]');
-	 */
-	/*	 * ***********************************************************************
-	 * Frontend Languages
-	 * *********************************************************************** */
 
 	if(isset($_REQUEST['locale_locales']) && isset($_REQUEST['locale_default'])){
 		we_writeLanguageConfig($_REQUEST['locale_default'], explode(",", $_REQUEST['locale_locales']));
@@ -2626,16 +1052,16 @@ function save_all_values(){
 	if(isset($_REQUEST['countries'])){
 		$countries_top = array_keys($_REQUEST['countries'], 2);
 		$countries_shown = array_keys($_REQUEST['countries'], 1);
-		remember_value(implode(',', $countries_top), '$_REQUEST["countries_top"]');
-		remember_value(implode(',', $countries_shown), '$_REQUEST["countries_shown"]');
+		remember_value(implode(',', $countries_top), 'WE_COUNTRIES_TOP');
+		remember_value(implode(',', $countries_shown), 'WE_COUNTRIES_SHOWN');
 	}
-	$_update_prefs = remember_value(isset($_REQUEST["countries_default"]) ? $_REQUEST["countries_default"] : null, '$_REQUEST["countries_default"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["countries_default"]) ? $_REQUEST["countries_default"] : null, 'WE_COUNTRIES_DEFAULT') || $_update_prefs;
 
 	/*	 * ***********************************************************************
 	 * DEFAULT_CHARSET
 	 * *********************************************************************** */
 
-	$_update_prefs = remember_value(isset($_REQUEST["default_charset"]) ? $_REQUEST["default_charset"] : null, '$_REQUEST["default_charset"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["default_charset"]) ? $_REQUEST["default_charset"] : null, 'DEFAULT_CHARSET') || $_update_prefs;
 
 
 	/*	 * ***********************************************************************
@@ -2644,42 +1070,42 @@ function save_all_values(){
 	// Save settings if users has permission
 
 	if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-		$_update_prefs = remember_value(isset($_REQUEST["DefaultStaticExt"]) ? $_REQUEST["DefaultStaticExt"] : null, '$_REQUEST["DefaultStaticExt"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["DefaultDynamicExt"]) ? $_REQUEST["DefaultDynamicExt"] : null, '$_REQUEST["DefaultDynamicExt"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["DefaultHTMLExt"]) ? $_REQUEST["DefaultHTMLExt"] : null, '$_REQUEST["DefaultHTMLExt"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultStaticExt"]) ? $_REQUEST["DefaultStaticExt"] : null, 'DEFAULT_STATIC_EXT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultDynamicExt"]) ? $_REQUEST["DefaultDynamicExt"] : null, 'DEFAULT_DYNAMIC_EXT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["DefaultHTMLExt"]) ? $_REQUEST["DefaultHTMLExt"] : null, 'DEFAULT_HTML_EXT') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
 	 * TEMPLATE EDITOR
 	 * *********************************************************************** */
-	$_update_prefs = remember_value(isset($_REQUEST["editorMode"]) ? $_REQUEST["editorMode"] : null, '$_REQUEST["editorMode"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorFont"]) ? $_REQUEST["editorFont"] : null, '$_REQUEST["editorFont"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorFontname"]) ? $_REQUEST["editorFontname"] : null, '$_REQUEST["editorFontname"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorFontsize"]) ? $_REQUEST["editorFontsize"] : null, '$_REQUEST["editorFontsize"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorMode"]) ? $_REQUEST["editorMode"] : null, 'editorMode') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorFont"]) ? $_REQUEST["editorFont"] : null, 'editorFont') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorFontname"]) ? $_REQUEST["editorFontname"] : null, 'editorFontname') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorFontsize"]) ? $_REQUEST["editorFontsize"] : null, 'editorFontsize') || $_update_prefs;
 
-	$_update_prefs = remember_value(isset($_REQUEST["editorFontcolor"]) ? $_REQUEST["editorFontcolor"] : null, '$_REQUEST["editorFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorWeTagFontcolor"]) ? $_REQUEST["editorWeTagFontcolor"] : null, '$_REQUEST["editorWeTagFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorWeAttributeFontcolor"]) ? $_REQUEST["editorWeAttributeFontcolor"] : null, '$_REQUEST["editorWeAttributeFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorHTMLTagFontcolor"]) ? $_REQUEST["editorHTMLTagFontcolor"] : null, '$_REQUEST["editorHTMLTagFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorHTMLAttributeFontcolor"]) ? $_REQUEST["editorHTMLAttributeFontcolor"] : null, '$_REQUEST["editorHTMLAttributeFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorPiTagFontcolor"]) ? $_REQUEST["editorPiTagFontcolor"] : null, '$_REQUEST["editorPiTagFontcolor"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST["editorCommentFontcolor"]) ? $_REQUEST["editorCommentFontcolor"] : null, '$_REQUEST["editorCommentFontcolor"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorFontcolor"]) ? $_REQUEST["editorFontcolor"] : null, 'editorFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorWeTagFontcolor"]) ? $_REQUEST["editorWeTagFontcolor"] : null, 'editorWeTagFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorWeAttributeFontcolor"]) ? $_REQUEST["editorWeAttributeFontcolor"] : null, 'editorWeAttributeFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorHTMLTagFontcolor"]) ? $_REQUEST["editorHTMLTagFontcolor"] : null, 'editorHTMLTagFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorHTMLAttributeFontcolor"]) ? $_REQUEST["editorHTMLAttributeFontcolor"] : null, 'editorHTMLAttributeFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorPiTagFontcolor"]) ? $_REQUEST["editorPiTagFontcolor"] : null, 'editorPiTagFontcolor') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["editorCommentFontcolor"]) ? $_REQUEST["editorCommentFontcolor"] : null, 'editorCommentFontcolor') || $_update_prefs;
 
-	$_update_prefs = remember_value(isset($_REQUEST['editorLinenumbers']) ? $_REQUEST['editorLinenumbers'] : null, '$_REQUEST["editorLinenumbers"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorCodecompletion']) ? $_REQUEST['editorCodecompletion'] : null, '$_REQUEST["editorCodecompletion"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorTooltips']) ? $_REQUEST['editorTooltips'] : null, '$_REQUEST["editorTooltips"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorDocuintegration']) ? $_REQUEST['editorDocuintegration'] : null, '$_REQUEST["editorDocuintegration"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFont']) ? $_REQUEST['editorTooltipFont'] : null, '$_REQUEST["editorTooltipFont"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontname']) ? $_REQUEST['editorTooltipFontname'] : null, '$_REQUEST["editorTooltipFontname"]') || $_update_prefs;
-	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontsize']) ? $_REQUEST['editorTooltipFontsize'] : null, '$_REQUEST["editorTooltipFontsize"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorLinenumbers']) ? $_REQUEST['editorLinenumbers'] : null, 'editorLinenumbers') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorCodecompletion']) ? $_REQUEST['editorCodecompletion'] : null, 'editorCodecompletion') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltips']) ? $_REQUEST['editorTooltips'] : null, 'editorTooltips') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorDocuintegration']) ? $_REQUEST['editorDocuintegration'] : null, 'editorDocuintegration') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFont']) ? $_REQUEST['editorTooltipFont'] : null, 'editorTooltipFont') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontname']) ? $_REQUEST['editorTooltipFontname'] : null, 'editorTooltipFontname') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['editorTooltipFontsize']) ? $_REQUEST['editorTooltipFontsize'] : null, 'editorTooltipFontsize') || $_update_prefs;
 
 	/*	 * ***********************************************************************
 	 * FORMMAIL RECIPIENTS
 	 * *********************************************************************** */
 	// Save settings if users has permission
 	if(we_hasPerm("FORMMAIL")){
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_values"]) ? $_REQUEST["formmail_values"] : null, '$_REQUEST["formmail_values"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_deleted"]) ? $_REQUEST["formmail_deleted"] : null, '$_REQUEST["formmail_deleted"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_values"]) ? $_REQUEST["formmail_values"] : null, 'formmail_values') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_deleted"]) ? $_REQUEST["formmail_deleted"] : null, 'formmail_deleted') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
@@ -2688,17 +1114,17 @@ function save_all_values(){
 
 	// Save settings if users has permission
 	if(we_hasPerm("ADMINISTRATOR")){
-		$_update_prefs = remember_value(isset($_REQUEST["useproxy"]) ? $_REQUEST["useproxy"] : null, '$_REQUEST["useproxy"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["proxyhost"]) ? $_REQUEST["proxyhost"] : null, '$_REQUEST["proxyhost"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["proxyport"]) ? $_REQUEST["proxyport"] : null, '$_REQUEST["proxyport"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["proxyuser"]) ? $_REQUEST["proxyuser"] : null, '$_REQUEST["proxyuser"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["proxypass"]) ? $_REQUEST["proxypass"] : null, '$_REQUEST["proxypass"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["useproxy"]) ? $_REQUEST["useproxy"] : null, 'useproxy') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["proxyhost"]) ? $_REQUEST["proxyhost"] : null, 'proxyhost') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["proxyport"]) ? $_REQUEST["proxyport"] : null, 'proxyport') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["proxyuser"]) ? $_REQUEST["proxyuser"] : null, 'proxyuser') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["proxypass"]) ? $_REQUEST["proxypass"] : null, 'proxypass') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
 	 * active_integrated_modules
 	 * *********************************************************************** */
-	$_update_prefs = remember_value(isset($_REQUEST["active_integrated_modules"]) ? $_REQUEST["active_integrated_modules"] : null, '$_REQUEST["active_integrated_modules"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["active_integrated_modules"]) ? $_REQUEST["active_integrated_modules"] : null, 'active_integrated_modules') || $_update_prefs;
 
 	/*	 * ***********************************************************************
 	 * ADVANCED
@@ -2706,48 +1132,48 @@ function save_all_values(){
 
 	// Save settings if users has permission
 	if(we_hasPerm("ADMINISTRATOR")){
-		$_update_prefs = remember_value(isset($_REQUEST["we_php_default"]) ? $_REQUEST["we_php_default"] : null, '$_REQUEST["we_php_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["db_connect"]) ? $_REQUEST["db_connect"] : null, '$_REQUEST["db_connect"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["db_set_charset"]) ? $_REQUEST["db_set_charset"] : null, '$_REQUEST["db_set_charset"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, '$_REQUEST["thumbnail_dir"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["phpLocalScope"]) ? $_REQUEST["phpLocalScope"] : null, '$_REQUEST["phpLocalScope"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["removefirstparagraph_default"]) ? $_REQUEST["removefirstparagraph_default"] : null, '$_REQUEST["removefirstparagraph_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweimg_default"]) ? $_REQUEST["hidenameattribinweimg_default"] : null, '$_REQUEST["hidenameattribinweimg_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweform_default"]) ? $_REQUEST["hidenameattribinweform_default"] : null, '$_REQUEST["hidenameattribinweform_default"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_php_default"]) ? $_REQUEST["we_php_default"] : null, 'WE_PHP_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["db_connect"]) ? $_REQUEST["db_connect"] : null, 'DB_CONNECT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["db_set_charset"]) ? $_REQUEST["db_set_charset"] : null, 'DB_SET_CHARSET') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, 'WE_THUMBNAIL_DIRECTORY') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, 'WE_TRACKER_DIR') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, 'EXECUTE_HOOKS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["phpLocalScope"]) ? $_REQUEST["phpLocalScope"] : null, 'PHPLOCALSCOPE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, 'INLINEEDIT_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["removefirstparagraph_default"]) ? $_REQUEST["removefirstparagraph_default"] : null, 'REMOVEFIRSTPARAGRAPH_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweimg_default"]) ? $_REQUEST["hidenameattribinweimg_default"] : null, 'HIDENAMEATTRIBINWEIMG_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweform_default"]) ? $_REQUEST["hidenameattribinweform_default"] : null, 'HIDENAMEATTRIBINWEFORM_DEFAULT') || $_update_prefs;
 
-		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, '$_REQUEST["navigation_entries_from_document"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, '$_REQUEST["navigation_rules_continue_after_first_match"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, '$_REQUEST["navigation_directoryindex_hide"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_names"]) ? $_REQUEST["navigation_directoryindex_names"] : null, '$_REQUEST["navigation_directoryindex_names"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_directoryindex_hide"]) ? $_REQUEST["wysiwyglinks_directoryindex_hide"] : null, '$_REQUEST["wysiwyglinks_directoryindex_hide"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["taglinks_directoryindex_hide"]) ? $_REQUEST["taglinks_directoryindex_hide"] : null, '$_REQUEST["taglinks_directoryindex_hide"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, '$_REQUEST["navigation_objectseourls"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, '$_REQUEST["wysiwyglinks_objectseourls"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, '$_REQUEST["taglinks_objectseourls"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["urlencode_objectseourls"]) ? $_REQUEST["urlencode_objectseourls"] : null, '$_REQUEST["urlencode_objectseourls"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["suppress404code"]) ? $_REQUEST["suppress404code"] : null, '$_REQUEST["suppress404code"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_entries_from_document"]) ? $_REQUEST["navigation_entries_from_document"] : null, 'NAVIGATION_ENTRIES_FROM_DOCUMENT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_rules_continue_after_first_match"]) ? $_REQUEST["navigation_rules_continue_after_first_match"] : null, 'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_hide"]) ? $_REQUEST["navigation_directoryindex_hide"] : null, 'NAVIGATION_DIRECTORYINDEX_HIDE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_directoryindex_names"]) ? $_REQUEST["navigation_directoryindex_names"] : null, 'NAVIGATION_DIRECTORYINDEX_NAMES') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_directoryindex_hide"]) ? $_REQUEST["wysiwyglinks_directoryindex_hide"] : null, 'WYSIWYGLINKS_DIRECTORYINDEX_HIDE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["taglinks_directoryindex_hide"]) ? $_REQUEST["taglinks_directoryindex_hide"] : null, 'TAGLINKS_DIRECTORYINDEX_HIDE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["navigation_objectseourls"]) ? $_REQUEST["navigation_objectseourls"] : null, 'NAVIGATION_OBJECTSEOURLS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyglinks_objectseourls"]) ? $_REQUEST["wysiwyglinks_objectseourls"] : null, 'WYSIWYGLINKS_OBJECTSEOURLS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["taglinks_objectseourls"]) ? $_REQUEST["taglinks_objectseourls"] : null, 'TAGLINKS_OBJECTSEOURLS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["urlencode_objectseourls"]) ? $_REQUEST["urlencode_objectseourls"] : null, 'URLENCODE_OBJECTSEOURLS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["suppress404code"]) ? $_REQUEST["suppress404code"] : null, 'SUPPRESS404CODE') || $_update_prefs;
 
-		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, 'SEOINSIDE_HIDEINWEBEDITION') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, 'SEOINSIDE_HIDEINEDITMODE') || $_update_prefs;
 
-		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, '$_REQUEST["langlink_support_recursive"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, 'LANGLINK_SUPPORT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, 'LANGLINK_SUPPORT_BACKLINKS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, 'LANGLINK_SUPPORT_RECURSIVE') || $_update_prefs;
 
-		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, '$_REQUEST["wysiwyg_type"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, '$_REQUEST["showinputs_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_new_folder_mod"]) ? $_REQUEST["we_new_folder_mod"] : null, '$_REQUEST["we_new_folder_mod"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_doctype_workspace_behavior"]) ? $_REQUEST["we_doctype_workspace_behavior"] : null, '$_REQUEST["we_doctype_workspace_behavior"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_scheduler_trigger"]) ? $_REQUEST["we_scheduler_trigger"] : null, '$_REQUEST["we_scheduler_trigger"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, 'WYSIWYG_TYPE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, 'SAFARI_WYSIWYG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["showinputs_default"]) ? $_REQUEST["showinputs_default"] : null, 'SHOWINPUTS_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, 'WE_MAX_UPLOAD_SIZE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_new_folder_mod"]) ? $_REQUEST["we_new_folder_mod"] : null, 'WE_NEW_FOLDER_MOD') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_doctype_workspace_behavior"]) ? $_REQUEST["we_doctype_workspace_behavior"] : null, 'WE_DOCTYPE_WORKSPACE_BEHAVIOR') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_scheduler_trigger"]) ? $_REQUEST["we_scheduler_trigger"] : null, 'SCHEDULER_TRIGGER') || $_update_prefs;
 
-		$_update_prefs = remember_value(isset($_REQUEST["useauth"]) ? $_REQUEST["useauth"] : null, '$_REQUEST["useauth"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["authuser"]) ? $_REQUEST["authuser"] : null, '$_REQUEST["authuser"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["authpass"]) ? $_REQUEST["authpass"] : null, '$_REQUEST["authpass"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["useauth"]) ? $_REQUEST["useauth"] : null, 'useauth') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["authuser"]) ? $_REQUEST["authuser"] : null, 'HTTP_USERNAME') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["authpass"]) ? $_REQUEST["authpass"] : null, 'HTTP_PASSWORD') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
@@ -2758,25 +1184,25 @@ function save_all_values(){
 	// Save settings if users has permission
 
 	if(we_hasPerm("ADMINISTRATOR")){
-		$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, '$_REQUEST["error_document_no_objectfile"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["disable_template_code_check"]) ? $_REQUEST["disable_template_code_check"] : null, '$_REQUEST["disable_template_code_check"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, '$_REQUEST["we_error_handler"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, '$_REQUEST["error_handling_notices"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, '$_REQUEST["error_handling_deprecated"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, '$_REQUEST["error_display_errors"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, '$_REQUEST["error_log_errors"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, '$_REQUEST["error_mail_errors"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["error_mail_address"]) ? $_REQUEST["error_mail_address"] : null, '$_REQUEST["error_mail_address"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, '$_REQUEST["debug_normal"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, '$_REQUEST["debug_seem"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, 'ERROR_DOCUMENT_NO_OBJECTFILE') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["disable_template_code_check"]) ? $_REQUEST["disable_template_code_check"] : null, 'DISABLE_TEMPLATE_CODE_CHECK') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, 'WE_ERROR_HANDLER') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, 'WE_ERROR_ERRORS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, 'WE_ERROR_WARNINGS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_notices"]) ? $_REQUEST["error_handling_notices"] : null, 'WE_ERROR_NOTICES') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_handling_deprecated"]) ? $_REQUEST["error_handling_deprecated"] : null, 'WE_ERROR_DEPRECATED') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_display_errors"]) ? $_REQUEST["error_display_errors"] : null, 'WE_ERROR_SHOW') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, 'WE_ERROR_LOG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, 'WE_ERROR_MAIL') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["error_mail_address"]) ? $_REQUEST["error_mail_address"] : null, 'WE_ERROR_MAIL_ADDRESS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, 'debug_normal') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, 'debug_seem') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
 	 * message-reporting
 	 * *********************************************************************** */
-	$_update_prefs = remember_value(isset($_REQUEST["message_reporting"]) ? $_REQUEST["message_reporting"] : null, '$_REQUEST["message_reporting"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST["message_reporting"]) ? $_REQUEST["message_reporting"] : null, 'message_reporting') || $_update_prefs;
 
 
 
@@ -2786,21 +1212,21 @@ function save_all_values(){
 	// Save settings if users has permission
 	if(we_hasPerm("ADMINISTRATOR")){
 		// formmail stuff
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_confirm"]) ? $_REQUEST["formmail_confirm"] : null, '$_REQUEST["formmail_confirm"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_ViaWeDoc"]) ? $_REQUEST["formmail_ViaWeDoc"] : null, '$_REQUEST["formmail_ViaWeDoc"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_log"]) ? $_REQUEST["formmail_log"] : null, '$_REQUEST["formmail_log"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_block"]) ? $_REQUEST["formmail_block"] : null, '$_REQUEST["formmail_block"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_emptylog"]) ? $_REQUEST["formmail_emptylog"] : null, '$_REQUEST["formmail_emptylog"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_span"]) ? $_REQUEST["formmail_span"] : null, '$_REQUEST["formmail_span"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_blocktime"]) ? $_REQUEST["formmail_blocktime"] : null, '$_REQUEST["formmail_blocktime"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["formmail_trials"]) ? $_REQUEST["formmail_trials"] : null, '$_REQUEST["formmail_trials"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_default"]) ? $_REQUEST["xhtml_default"] : null, '$_REQUEST["xhtml_default"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_debug"]) ? $_REQUEST["xhtml_debug"] : null, '$_REQUEST["xhtml_debug"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_remove_wrong"]) ? $_REQUEST["xhtml_remove_wrong"] : null, '$_REQUEST["xhtml_remove_wrong"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong"]) ? $_REQUEST["xhtml_show_wrong"] : null, '$_REQUEST["xhtml_show_wrong"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_text"]) ? $_REQUEST["xhtml_show_wrong_text"] : null, '$_REQUEST["xhtml_show_wrong_text"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_js"]) ? $_REQUEST["xhtml_show_wrong_js"] : null, '$_REQUEST["xhtml_show_wrong_js"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_error_log"]) ? $_REQUEST["xhtml_show_wrong_error_log"] : null, '$_REQUEST["xhtml_show_wrong_error_log"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_confirm"]) ? $_REQUEST["formmail_confirm"] : null, 'FORMMAIL_CONFIRM') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_ViaWeDoc"]) ? $_REQUEST["formmail_ViaWeDoc"] : null, 'FORMMAIL_VIAWEDOC') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_log"]) ? $_REQUEST["formmail_log"] : null, 'FORMMAIL_LOG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_block"]) ? $_REQUEST["formmail_block"] : null, 'FORMMAIL_BLOCK') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_emptylog"]) ? $_REQUEST["formmail_emptylog"] : null, 'FORMMAIL_EMPTYLOG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_span"]) ? $_REQUEST["formmail_span"] : null, 'FORMMAIL_SPAN') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_blocktime"]) ? $_REQUEST["formmail_blocktime"] : null, 'FORMMAIL_BLOCKTIME') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["formmail_trials"]) ? $_REQUEST["formmail_trials"] : null, 'FORMMAIL_TRIALS') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_default"]) ? $_REQUEST["xhtml_default"] : null, 'XHTML_DEFAULT') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_debug"]) ? $_REQUEST["xhtml_debug"] : null, 'XHTML_DEBUG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_remove_wrong"]) ? $_REQUEST["xhtml_remove_wrong"] : null, 'XHTML_REMOVE_WRONG') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong"]) ? $_REQUEST["xhtml_show_wrong"] : null, 'xhtml_show_wrong') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_text"]) ? $_REQUEST["xhtml_show_wrong_text"] : null, 'xhtml_show_wrong_text') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_js"]) ? $_REQUEST["xhtml_show_wrong_js"] : null, 'xhtml_show_wrong_js') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["xhtml_show_wrong_error_log"]) ? $_REQUEST["xhtml_show_wrong_error_log"] : null, 'xhtml_show_wrong_error_log') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
@@ -2808,33 +1234,31 @@ function save_all_values(){
 	 * *********************************************************************** */
 
 	if(we_hasPerm("ADMINISTRATOR")){
-		$_update_prefs = remember_value(isset($_REQUEST["backup_steps"]) ? $_REQUEST["backup_steps"] : null, '$_REQUEST["backup_steps"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["backup_steps"]) ? $_REQUEST["backup_steps"] : null, 'BACKUP_STEPS') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
 	 * JUPLOAD
 	 * *********************************************************************** */
-	$_update_prefs = remember_value(isset($_REQUEST['use_jupload']) ? $_REQUEST['use_jupload'] : null, '$_REQUEST["use_jupload"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['use_jupload']) ? $_REQUEST['use_jupload'] : null, 'use_jupload') || $_update_prefs;
 
 	/*	 * ***********************************************************************
 	 * JAVA EDITOR COLORS
 	 * *********************************************************************** */
-	$_update_prefs = remember_value(isset($_REQUEST['specify_jeditor_colors']) ? $_REQUEST['specify_jeditor_colors'] : null, '$_REQUEST["specify_jeditor_colors"]') || $_update_prefs;
+	$_update_prefs = remember_value(isset($_REQUEST['specify_jeditor_colors']) ? $_REQUEST['specify_jeditor_colors'] : null, 'specify_jeditor_colors') || $_update_prefs;
 
 	/*	 * ***********************************************************************
 	 * EMAIL
 	 * *********************************************************************** */
 	if(we_hasPerm("ADMINISTRATOR")){
 
-		$_update_prefs = remember_value(isset($_REQUEST["mailer_type"]) ? $_REQUEST["mailer_type"] : 'php', '$_REQUEST["mailer_type"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_server"]) ? $_REQUEST["smtp_server"] : 'localhost', '$_REQUEST["smtp_server"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_port"]) ? $_REQUEST["smtp_port"] : '25', '$_REQUEST["smtp_port"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_auth"]) ? $_REQUEST["smtp_auth"] : '0', '$_REQUEST["smtp_auth"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_username"]) ? $_REQUEST["smtp_username"] : '', '$_REQUEST["smtp_username"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_password"]) ? $_REQUEST["smtp_password"] : '', '$_REQUEST["smtp_password"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_halo"]) ? $_REQUEST["smtp_halo"] : '', '$_REQUEST["smtp_halo"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_timeout"]) ? $_REQUEST["smtp_timeout"] : '', '$_REQUEST["smtp_timeout"]');
-		$_update_prefs = remember_value(isset($_REQUEST["smtp_encryption"]) ? $_REQUEST["smtp_encryption"] : '', '$_REQUEST["smtp_encryption"]');
+		$_update_prefs = remember_value(isset($_REQUEST["mailer_type"]) ? $_REQUEST["mailer_type"] : 'php', 'WE_MAILER');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_server"]) ? $_REQUEST["smtp_server"] : 'localhost', 'SMTP_SERVER');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_port"]) ? $_REQUEST["smtp_port"] : '25', 'SMTP_PORT');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_auth"]) ? $_REQUEST["smtp_auth"] : '0', 'SMTP_AUTH');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_username"]) ? $_REQUEST["smtp_username"] : '', 'SMTP_USERNAME');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_password"]) ? $_REQUEST["smtp_password"] : '', 'SMTP_PASSWORD');
+		$_update_prefs = remember_value(isset($_REQUEST["smtp_encryption"]) ? $_REQUEST["smtp_encryption"] : '', 'SMTP_ENCRYPTION');
 	}
 
 	/*	 * ***********************************************************************
@@ -2842,29 +1266,29 @@ function save_all_values(){
 	 * *********************************************************************** */
 	if(we_hasPerm("ADMINISTRATOR")){
 
-		$_update_prefs = remember_value(isset($_REQUEST["version_image/*"]) ? $_REQUEST["version_image/*"] : '0', '$_REQUEST["version_image/*"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/html"]) ? $_REQUEST["version_text/html"] : '0', '$_REQUEST["version_text/html"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/webedition"]) ? $_REQUEST["version_text/webedition"] : '0', '$_REQUEST["version_text/webedition"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/js"]) ? $_REQUEST["version_text/js"] : '0', '$_REQUEST["version_text/js"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/css"]) ? $_REQUEST["version_text/css"] : '0', '$_REQUEST["version_text/css"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/plain"]) ? $_REQUEST["version_text/plain"] : '0', '$_REQUEST["version_text/plain"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/htaccess"]) ? $_REQUEST["version_text/htaccess"] : '0', '$_REQUEST["version_text/htaccess"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/weTmpl"]) ? $_REQUEST["version_text/weTmpl"] : '0', '$_REQUEST["version_text/weTmpl"]'); //#4120
-		$_update_prefs = remember_value(isset($_REQUEST["version_application/x-shockwave-flash"]) ? $_REQUEST["version_application/x-shockwave-flash"] : '0', '$_REQUEST["version_application/x-shockwave-flash"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_video/quicktime"]) ? $_REQUEST["version_video/quicktime"] : '0', '$_REQUEST["version_video/quicktime"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_application/*"]) ? $_REQUEST["version_application/*"] : '0', '$_REQUEST["version_application/*"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_text/xml"]) ? $_REQUEST["version_text/xml"] : '0', '$_REQUEST["version_text/xml"]');
-		$_update_prefs = remember_value(isset($_REQUEST["version_objectFile"]) ? $_REQUEST["version_objectFile"] : '0', '$_REQUEST["version_objectFile"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_days"]) ? $_REQUEST["versions_time_days"] : '-1', '$_REQUEST["versions_time_days"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_weeks"]) ? $_REQUEST["versions_time_weeks"] : '-1', '$_REQUEST["versions_time_weeks"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years"]) ? $_REQUEST["versions_time_years"] : '-1', '$_REQUEST["versions_time_years"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl"]) ? $_REQUEST["versions_anzahl"] : '-1', '$_REQUEST["versions_anzahl"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_create"]) ? $_REQUEST["versions_create"] : '1', '$_REQUEST["versions_create"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_create_tmpl"]) ? $_REQUEST["versions_create_tmpl"] : '1', '$_REQUEST["versions_create_tmpl"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_days_tmpl"]) ? $_REQUEST["versions_time_days_tmpl"] : '-1', '$_REQUEST["versions_time_days_tmpl"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_weeks_tmpl"]) ? $_REQUEST["versions_time_weeks_tmpl"] : '-1', '$_REQUEST["versions_time_weeks_tmpl"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years_tmpl"]) ? $_REQUEST["versions_time_years_tmpl"] : '-1', '$_REQUEST["versions_time_years_tmpl"]');
-		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl_tmpl"]) ? $_REQUEST["versions_anzahl_tmpl"] : '-1', '$_REQUEST["versions_anzahl_tmpl"]');
+		$_update_prefs = remember_value(isset($_REQUEST["version_image/*"]) ? $_REQUEST["version_image/*"] : '0', 'VERSIONING_IMAGE');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/html"]) ? $_REQUEST["version_text/html"] : '0', 'VERSIONING_TEXT_HTML');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/webedition"]) ? $_REQUEST["version_text/webedition"] : '0', 'VERSIONING_TEXT_WEBEDITION');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/js"]) ? $_REQUEST["version_text/js"] : '0', 'VERSIONING_TEXT_JS');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/css"]) ? $_REQUEST["version_text/css"] : '0', 'VERSIONING_TEXT_CSS');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/plain"]) ? $_REQUEST["version_text/plain"] : '0', 'VERSIONING_TEXT_PLAIN');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/htaccess"]) ? $_REQUEST["version_text/htaccess"] : '0', 'VERSIONING_TEXT_HTACCESS');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/weTmpl"]) ? $_REQUEST["version_text/weTmpl"] : '0', 'VERSIONING_TEXT_WETMPL'); //#4120
+		$_update_prefs = remember_value(isset($_REQUEST["version_application/x-shockwave-flash"]) ? $_REQUEST["version_application/x-shockwave-flash"] : '0', 'VERSIONING_FLASH');
+		$_update_prefs = remember_value(isset($_REQUEST["version_video/quicktime"]) ? $_REQUEST["version_video/quicktime"] : '0', 'VERSIONING_QUICKTIME');
+		$_update_prefs = remember_value(isset($_REQUEST["version_application/*"]) ? $_REQUEST["version_application/*"] : '0', 'VERSIONING_SONSTIGE');
+		$_update_prefs = remember_value(isset($_REQUEST["version_text/xml"]) ? $_REQUEST["version_text/xml"] : '0', 'VERSIONING_TEXT_XML');
+		$_update_prefs = remember_value(isset($_REQUEST["version_objectFile"]) ? $_REQUEST["version_objectFile"] : '0', 'VERSIONING_OBJECT');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_days"]) ? $_REQUEST["versions_time_days"] : '-1', 'VERSIONS_TIME_DAYS');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_weeks"]) ? $_REQUEST["versions_time_weeks"] : '-1', 'VERSIONS_TIME_WEEKS');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years"]) ? $_REQUEST["versions_time_years"] : '-1', 'VERSIONS_TIME_YEARS');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl"]) ? $_REQUEST["versions_anzahl"] : '-1', 'VERSIONS_ANZAHL');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_create"]) ? $_REQUEST["versions_create"] : '1', 'VERSIONS_CREATE');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_create_tmpl"]) ? $_REQUEST["versions_create_tmpl"] : '1', 'VERSIONS_CREATE_TMPL');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_days_tmpl"]) ? $_REQUEST["versions_time_days_tmpl"] : '-1', 'VERSIONS_TIME_DAYS_TMPL');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_weeks_tmpl"]) ? $_REQUEST["versions_time_weeks_tmpl"] : '-1', 'VERSIONS_TIME_WEEKS_TMPL');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_time_years_tmpl"]) ? $_REQUEST["versions_time_years_tmpl"] : '-1', 'VERSIONS_TIME_YEARS_TMPL');
+		$_update_prefs = remember_value(isset($_REQUEST["versions_anzahl_tmpl"]) ? $_REQUEST["versions_anzahl_tmpl"] : '-1', 'VERSIONS_ANZAHL_TMPL');
 
 
 		$_SESSION['versions']['logPrefsChanged'] = array();
@@ -2891,7 +1315,7 @@ function save_all_values(){
 	 * *********************************************************************** */
 
 	// Third save all changes of the config files
-	foreach($GLOBALS['config_files'] as $identifier => $file){
+	foreach($GLOBALS['config_files'] as $file){
 		weFile::save($file['filename'], $file['content']);
 	}
 
@@ -2908,31 +1332,29 @@ function save_all_values(){
  *
  * @return         void
  */
-function check_global_config($values){
+function check_global_config(){
+	$values = $GLOBALS['global_config'];
 	// Initialize variables
 	$_rewrite_config = false;
 
 	// Read the global configuration file
 	$_file_name = WE_INCLUDES_PATH . "conf/we_conf_global.inc.php";
 	$_temp_file_name = WE_INCLUDES_PATH . "conf/tmp_we_conf_global.inc.php";
-	$_file = weFile::load($_file_name);
-
-	// Cut closing PHP tag from configuration file
-	$_file = substr($_file, 0, strpos($_file, "?>"));
+	// load & Cut closing PHP tag from configuration file
+	$_file = str_replace('?>', '', weFile::load($_file_name));
 
 	// Go through all needed values
-	for($i = 0; $i < count($values); $i++){
-		if(strpos($_file, $values[$i][0]) === false){
-
+	foreach($values as $define => $value){
+		if(!preg_match('/define\(["\']' . $define . '["\'],/', $_file)){
+			//if(strpos($_file, $value[0]) === false){
 			// Add needed variable
-			$_file .= $values[$i][1] . "\n\n";
+			$_file .= $value[0] . "\n" . 'define(\'' . $define . '\',' . $value[1] . ');' . "\n\n";
 
 			// Set flag for config going to be rewritten
 			$_rewrite_config = true;
 		}
 	}
 
-	$_file .= "\n\n?>";
 	// Check if we need to rewrite the config file
 	if($_rewrite_config){
 		weFile::save($_temp_file_name, $_file);
@@ -2942,7 +1364,7 @@ function check_global_config($values){
 				$counter = 1000;
 				@unlink($_temp_file_name);
 			}
-			$counter++;
+			++$counter;
 		}
 	}
 }
@@ -2956,42 +1378,42 @@ function check_global_config($values){
  *
  * @return         string
  */
-function build_dialog($selected_setting = "ui"){
+function build_dialog($selected_setting = 'ui'){
 	global $DB_WE;
 	$yuiSuggest = & weSuggest::getInstance();
 
 	switch($selected_setting){
-		case "save":
+		case 'save':
 			/*			 * ***************************************************************
 			 * SAVE DIALOG
 			 * *************************************************************** */
 
-			$_settings = array(array("headline" => "", "html" => g_l('prefs', '[save]'), "space" => 0));
+			$_settings = array(array('headline' => '', 'html' => g_l('prefs', '[save]'), 'space' => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", g_l('prefs', '[save_wait]'), $_settings);
+			$_dialog = create_dialog('', g_l('prefs', '[save_wait]'), $_settings);
 
 			break;
 
-		case "saved":
+		case 'saved':
 			/*			 * ***************************************************************
 			 * SAVED SUCCESSFULLY DIALOG
 			 * *************************************************************** */
 
-			$_settings = array(array("headline" => "", "html" => g_l('prefs', '[saved]'), "space" => 0));
+			$_settings = array(array('headline' => '', 'html' => g_l('prefs', '[saved]'), 'space' => 0));
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", g_l('prefs', '[saved_successfully]'), $_settings);
+			$_dialog = create_dialog('', g_l('prefs', '[saved_successfully]'), $_settings);
 
 			break;
 
-		case "ui":
+		case 'ui':
 			/*			 * ***************************************************************
 			 * LANGUAGE
 			 * *************************************************************** */
@@ -3002,11 +1424,11 @@ function build_dialog($selected_setting = "ui"){
 			 * Language
 			 */
 			//	Look which languages are installed ...
-			$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
+			$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
 			while(false !== ($entry = $_language_directory->read())) {
-				if($entry != "." && $entry != ".."){
-					if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
+				if($entry != '.' && $entry != '..'){
+					if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
 						$_language[$entry] = $entry;
 					}
 				}
@@ -3014,12 +1436,12 @@ function build_dialog($selected_setting = "ui"){
 			global $_languages;
 
 			if(sizeof($_language) > 0){ // Build language select box
-				$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
+				$_languages = new we_html_select(array('name' => 'Language', 'class' => 'weSelect', 'onChange' => "document.getElementById('langnote').style.display='block'"));
 				foreach($_language as $key => $value){
 					$_languages->addOption($key, $value);
 
 					// Set selected extension
-					if($key == get_value("ui_language")){
+					if($key == get_value('Language')){
 						$_languages->selectOption($key);
 					} else{
 						// do nothing
@@ -3040,22 +1462,22 @@ function build_dialog($selected_setting = "ui"){
 </table>
 </div>';
 				// Build dialog
-				array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml() . "<br><br>" . $langNote, "space" => 200, 'noline' => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br><br>' . $langNote, 'space' => 200, 'noline' => 1);
 			} else{ // Just one Language Installed, no select box needed
 				foreach($_language as $key => $value){
 					$_languages = $value;
 				}
 				// Build dialog
-				array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages, 'space' => 200, 'noline' => 1);
 			}
 
-			$_charset = new we_html_select(array("name" => "BackendCharset", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
+			$_charset = new we_html_select(array('name' => 'BackendCharset', 'class' => 'weSelect', 'onChange' => "document.getElementById('langnote').style.display='block'"));
 			$c = charsetHandler::getAvailCharsets();
 			foreach($c as $char){
 				$_charset->addOption($char, $char);
 			}
-			$_charset->selectOption(get_value("ui_charset"));
-			array_push($_settings, array("headline" => g_l('prefs', '[choose_backendcharset]'), "html" => $_charset->getHtml() . "<br><br>" . $langNote, "space" => 200));
+			$_charset->selectOption(get_value('BackendCharset'));
+			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $_charset->getHtml() . '<br><br>' . $langNote, 'space' => 200);
 
 
 			/*			 * ***************************************************************
@@ -3064,15 +1486,15 @@ function build_dialog($selected_setting = "ui"){
 			$_charsetHandler = new charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
-			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-			$_defaultCharset = we_html_tools::htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
-			$_defaultCharsetChooser = we_html_tools::htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false, "onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont", false);
+			$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
+			$_defaultCharset = we_html_tools::htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
+			$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, "onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont", false);
 			$default_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
-			array_push($_settings, array(
+			$_settings[] = array(
 				'headline' => g_l('prefs', '[default_charset]'),
 				'space' => 200,
-				'html' => $default_Charset)
+				'html' => $default_Charset
 			);
 
 
@@ -3081,15 +1503,15 @@ function build_dialog($selected_setting = "ui"){
 			 * AMOUNT COLUMNS IN COCKPIT
 			 * *************************************************************** */
 
-			$_amount = new we_html_select(array("name" => 'cockpit_amount_columns', "class" => "weSelect"));
+			$_amount = new we_html_select(array('name' => 'cockpit_amount_columns', 'class' => 'weSelect'));
 			for($i = 1; $i <= 10; $i++){
 				$_amount->addOption($i, $i);
-				if($i == get_value("cockpit_amount_columns")){
+				if($i == get_value('cockpit_amount_columns')){
 					$_amount->selectOption($i);
 				}
 			}
 
-			$_settings[] = array("headline" => g_l('prefs', '[cockpit_amount_columns]'), "html" => $_amount->getHtml(), "space" => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $_amount->getHtml(), 'space' => 200);
 
 
 			/*			 * ***************************************************************
@@ -3100,18 +1522,18 @@ function build_dialog($selected_setting = "ui"){
 			$_needed_JavaScript = we_button::create_state_changer();
 
 			// Build maximize window
-			$_seem_disabler = we_forms::checkbox(1, get_value("ui_disable_seem"), "disable_seem", g_l('prefs', '[seem_deactivate]'));
+			$_seem_disabler = we_forms::checkbox(1, get_value('WE_SEEM'), 'disable_seem', g_l('prefs', '[seem_deactivate]'));
 
 			// Build dialog if user has permission
-			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[seem]'), "html" => $_seem_disabler, "space" => 200));
+			if(we_hasPerm('ADMINISTRATOR')){
+				$_settings[] = array('headline' => g_l('prefs', '[seem]'), 'html' => $_seem_disabler, 'space' => 200);
 			}
 
 			/*			 * *************************************************
 			 * SEEM start document
 			 * ************************************************* */
 
-			if(we_hasPerm("CHANGE_START_DOCUMENT")){
+			if(we_hasPerm('CHANGE_START_DOCUMENT')){
 
 				// Generate needed JS
 				$_needed_JavaScript .= we_html_element::jsElement("
@@ -3218,102 +1640,106 @@ function build_dialog($selected_setting = "ui"){
 							}");
 
 				// Cockpit
-				$_object_path = "";
+				$_object_path = '';
 				$_object_id = 0;
-				$_document_path = "";
+				$_document_path = '';
 				$_document_id = 0;
-				$_seem_start_type = "";
-				if(get_value("ui_seem_start_type") == "cockpit"){
-					$_SESSION["prefs"]["seem_start_file"] = 0;
-					$_SESSION["prefs"]["seem_start_weapp"] = '';
-					$_seem_start_type = "cockpit";
+				$_seem_start_type = '';
 
+				switch(get_value('seem_start_type')){
+					case 'cockpit':
+						$_SESSION['prefs']['seem_start_file'] = 0;
+						$_SESSION['prefs']['seem_start_weapp'] = '';
+						$_seem_start_type = 'cockpit';
+						break;
 
 					// Object
-				} else if(get_value("ui_seem_start_type") == "object"){
-					$_seem_start_type = "object";
-					if(get_value("ui_seem_start_file") != 0){
-						$_object_id = get_value("ui_seem_start_file");
-						$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, "", FILE_ONLY, $_object_id);
+					case 'object':
+						$_seem_start_type = 'object';
+						if(get_value('seem_start_file') != 0){
+							$_object_id = get_value('seem_start_file');
+							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, '', FILE_ONLY, $_object_id);
 
-						if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
-							$_object_path = $_get_object_paths[$_object_id];
+							if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
+								$_object_path = $_get_object_paths[$_object_id];
+							}
 						}
-					}
-				} else if(get_value("ui_seem_start_type") == "weapp"){
-					$_seem_start_type = "weapp";
-					if(get_value("ui_seem_start_weapp") != ''){
-						$_seem_start_weapp = get_value("ui_seem_start_weapp");
-					}
+						break;
+					case 'weapp':
+						$_seem_start_type = 'weapp';
+						if(get_value('seem_start_weapp') != ''){
+							$_seem_start_weapp = get_value('seem_start_weapp');
+						}
 
-
+						break;
 					// Document
-				} else if(get_value("ui_seem_start_type") == "document"){
-					$_seem_start_type = "document";
-					if(get_value("ui_seem_start_file") != 0){
-						$_document_id = get_value("ui_seem_start_file");
-						$_get_document_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_document_id);
+					case 'document':
+						$_seem_start_type = 'document';
+						if(get_value('seem_start_file') != 0){
+							$_document_id = get_value('seem_start_file');
+							$_get_document_paths = getPathsFromTable(FILE_TABLE, '', FILE_ONLY, $_document_id);
 
-						if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
-							$_document_path = $_get_document_paths[$_document_id];
+							if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
+								$_document_path = $_get_document_paths[$_document_id];
+							}
 						}
-					}
+						break;
 				}
 
-				$_start_type = new we_html_select(array("name" => "seem_start_type", "class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value);"));
+				$_start_type = new we_html_select(array('name' => 'seem_start_type', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value);"));
 
 				$showStartType = false;
-				$permitedStartTypes = array("");
-				$_start_type->addOption("", "-");
+				$permitedStartTypes = array('');
+				$_start_type->addOption('', '-');
 				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? "33px" : "24px") . ";'>&nbsp;</div>";
-				if(we_hasPerm("CAN_SEE_QUICKSTART")){
-					$_start_type->addOption("cockpit", g_l('prefs', '[seem_start_type_cockpit]'));
+				if(we_hasPerm('CAN_SEE_QUICKSTART')){
+					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;
-					$permitedStartTypes[] = "cockpit";
+					$permitedStartTypes[] = 'cockpit';
 				}
 
-				$_seem_document_chooser = "";
-				if(we_hasPerm("CAN_SEE_DOCUMENTS")){
-					$_start_type->addOption("document", g_l('prefs', '[seem_start_type_document]'));
+				$_seem_document_chooser = '';
+				if(we_hasPerm('CAN_SEE_DOCUMENTS')){
+					$_start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 					$showStartType = true;
 					// Build SEEM select start document chooser
 
-					$yuiSuggest->setAcId("Doc");
-					$yuiSuggest->setContentType("folder,text/webEdition,text/html,image/*");
-					$yuiSuggest->setInput("seem_start_document_name", $_document_path, "", get_value("ui_disable_seem"));
+					$yuiSuggest->setAcId('Doc');
+					$yuiSuggest->setContentType('folder,text/webEdition,text/html,image/*');
+					$yuiSuggest->setInput('seem_start_document_name', $_document_path, '', get_value('WE_SEEM'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult("seem_start_document", $_document_id);
-					$yuiSuggest->setSelector("Docselector");
+					$yuiSuggest->setResult('seem_start_document', $_document_id);
+					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false), 10);
+					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', get_value('WE_SEEM'), false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_document_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array("id" => "seem_start_document", "style" => "display:none"));
-					$permitedStartTypes[] = "document";
+					$_seem_document_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
+					$permitedStartTypes[] = 'document';
 				}
-				$_seem_object_chooser = "";
-				if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
-					$_start_type->addOption("object", g_l('prefs', '[seem_start_type_object]'));
+				$_seem_object_chooser = '';
+				if(defined('OBJECT_FILES_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
+					$_start_type->addOption('object', g_l('prefs', '[seem_start_type_object]'));
 					$showStartType = true;
 					// Build SEEM select start object chooser
 
-					$yuiSuggest->setAcId("Obj");
-					$yuiSuggest->setContentType("folder,objectFile");
-					$yuiSuggest->setInput("seem_start_object_name", $_object_path, "", get_value("ui_disable_seem"));
+					$yuiSuggest->setAcId('Obj');
+					$yuiSuggest->setContentType('folder,objectFile');
+					$yuiSuggest->setInput('seem_start_object_name', $_object_path, '', get_value('WE_SEEM'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult("seem_start_object", $_object_id);
-					$yuiSuggest->setSelector("Docselector");
+					$yuiSuggest->setResult('seem_start_object', $_object_id);
+					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false), 10);
+					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', get_value('WE_SEEM'), false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_object_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array("id" => "seem_start_object", "style" => "display:none"));
-					$permitedStartTypes[] = "object";
+					$_seem_object_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_object', 'style' => 'display:none'));
+					$permitedStartTypes[] = 'object';
 				}
-				$_start_weapp = new we_html_select(array("name" => "seem_start_weapp", "class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
+				$_start_weapp = new we_html_select(array('name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
 				$_tools = weToolLookup::getAllTools(true, false);
 				foreach($_tools as $_k => $_tool){
 					if(!$_tool['appdisabled'] && we_hasPerm($_tool['startpermission'])){
@@ -3322,13 +1748,13 @@ function build_dialog($selected_setting = "ui"){
 				}
 				$_seem_weapp_chooser = '';
 				if($_start_weapp->getOptionNum()){
-					$_start_type->addOption("weapp", g_l('prefs', '[seem_start_type_weapp]'));
+					$_start_type->addOption('weapp', g_l('prefs', '[seem_start_type_weapp]'));
 					if(isset($_seem_start_weapp) && $_seem_start_weapp != ''){
 						$_start_weapp->selectOption($_seem_start_weapp);
 					}
 					$weAPPSelector = $_start_weapp->getHtml();
-					$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array("id" => "seem_start_weapp", "style" => "display:none"));
-					$permitedStartTypes[] = "weapp";
+					$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array('id' => 'seem_start_weapp', 'style' => 'display:none'));
+					$permitedStartTypes[] = 'weapp';
 				}
 
 
@@ -3340,10 +1766,10 @@ function build_dialog($selected_setting = "ui"){
 					} else{
 						$_seem_start_type = $permitedStartTypes[0];
 					}
-					$_seem_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 2, 1);
-					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtml());
-					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
-					$_settings[] = array("headline" => g_l('prefs', '[seem_startdocument]'), "html" => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), "space" => 200);
+					$_seem_html = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 2, 1);
+					$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml());
+					$_seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
+					$_settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), "space" => 200);
 				}
 
 				// Build dialog if user has permission
@@ -3352,76 +1778,76 @@ function build_dialog($selected_setting = "ui"){
 			/*			 * *******************************************************
 			 * Sidebar
 			 * ******************************************************* */
-			if(we_hasPerm("ADMINISTRATOR")){
+			if(we_hasPerm('ADMINISTRATOR')){
 				// Settings
-				$_sidebar_disable = get_value("ui_sidebar_disable");
-				$_sidebar_show = ($_sidebar_disable) ? "none" : "block";
+				$_sidebar_disable = get_value('SIDEBAR_DISABLED');
+				$_sidebar_show = ($_sidebar_disable) ? 'none' : 'block';
 
-				$_sidebar_show_on_startup = get_value("ui_sidebar_show_on_startup");
-				$_sidebar_width = get_value("ui_sidebar_width");
-				$_sidebar_id = get_value("ui_sidebar_file");
-				$_sidebar_paths = getPathsFromTable(FILE_TABLE, "", FILE_ONLY, $_sidebar_id);
-				$_sidebar_path = "";
+				$_sidebar_show_on_startup = get_value('SIDEBAR_SHOW_ON_STARTUP');
+				$_sidebar_width = get_value('SIDEBAR_DEFAULT_WIDTH');
+				$_sidebar_id = get_value('SIDEBAR_DEFAULT_DOCUMENT');
+				$_sidebar_paths = getPathsFromTable(FILE_TABLE, '', FILE_ONLY, $_sidebar_id);
+				$_sidebar_path = '';
 				if(isset($_sidebar_paths[$_sidebar_id])){
 					$_sidebar_path = $_sidebar_paths[$_sidebar_id];
 				}
 
 				// Enable / disable sidebar
-				$_sidebar_disabler = we_forms::checkbox(0, $_sidebar_disable, "ui_sidebar_disable", g_l('prefs', '[sidebar_deactivate]'), false, "defaultfont", "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
+				$_sidebar_disabler = we_forms::checkbox(0, $_sidebar_disable, 'ui_sidebar_disable', g_l('prefs', '[sidebar_deactivate]'), false, 'defaultfont', "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
 
 				// Show on Startup
-				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, "ui_sidebar_show_on_startup", g_l('prefs', '[sidebar_show_on_startup]'), false, "defaultfont", "");
+				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, 'ui_sidebar_show_on_startup', g_l('prefs', '[sidebar_show_on_startup]'), false, 'defaultfont', '');
 
 				// Sidebar width
 				$_sidebar_width = we_html_tools::htmlTextInput('ui_sidebar_width', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
-				$_sidebar_width_chooser = we_html_tools::htmlSelect("tmp_sidebar_width", array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, "", false, "onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
+				$_sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, "onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
 
 				// Sidebar document
 				//$_sidebar_hidden = we_html_element::htmlHidden(array("name" => "ui_sidebar_file", "value" => $_sidebar_id, "id"=>"yuiAcResultSidebarDoc"));
-				$_sidebar_document_button = we_button::create_button("select", "javascript:selectSidebarDoc()");
+				$_sidebar_document_button = we_button::create_button('select', 'javascript:selectSidebarDoc()');
 
-				$yuiSuggest->setAcId("SidebarDoc");
-				$yuiSuggest->setContentType("folder,text/webEdition");
-				$yuiSuggest->setInput("ui_sidebar_file_name", $_sidebar_path);
+				$yuiSuggest->setAcId('SidebarDoc');
+				$yuiSuggest->setContentType('folder,text/webEdition');
+				$yuiSuggest->setInput('ui_sidebar_file_name', $_sidebar_path);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult("ui_sidebar_file", $_sidebar_id);
-				$yuiSuggest->setSelector("Docselector");
+				$yuiSuggest->setResult('ui_sidebar_file', $_sidebar_id);
+				$yuiSuggest->setSelector('Docselector');
 				$yuiSuggest->setWidth(150);
 				$yuiSuggest->setSelectButton($_sidebar_document_button, 10);
 				$yuiSuggest->setContainerWidth(259);
 
 				// build html
-				$_sidebar_html1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 1);
+				$_sidebar_html1 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 1);
 
 				$_sidebar_html1->setCol(0, 0, null, $_sidebar_disabler);
 
 				// build html
-				$_sidebar_html2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "id" => "sidebar_options", "style" => "display:" . $_sidebar_show), 8, 3);
+				$_sidebar_html2 = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'sidebar_options', 'style' => 'display:' . $_sidebar_show), 8, 3);
 
-				$_sidebar_html2->setCol(0, 0, array("colspan" => 3, "height" => 10), "");
+				$_sidebar_html2->setCol(0, 0, array('colspan' => 3, 'height' => 10), '');
 
-				$_sidebar_html2->setCol(1, 0, array("colspan" => 3, "height" => 10), $_sidebar_show_on_startup);
+				$_sidebar_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_sidebar_show_on_startup);
 
-				$_sidebar_html2->setCol(2, 0, array("colspan" => 3, "height" => 10), "");
+				$_sidebar_html2->setCol(2, 0, array('colspan' => 3, 'height' => 10), '');
 
-				$_sidebar_html2->setCol(3, 0, array("colspan" => 3, "class" => "defaultfont"), g_l('prefs', '[sidebar_width]'));
+				$_sidebar_html2->setCol(3, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_width]'));
 
 				$_sidebar_html2->setCol(4, 0, null, $_sidebar_width);
 				$_sidebar_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
 				$_sidebar_html2->setCol(4, 2, null, $_sidebar_width_chooser);
 
-				$_sidebar_html2->setCol(5, 0, array("colspan" => 3, "height" => 10), "");
+				$_sidebar_html2->setCol(5, 0, array('colspan' => 3, 'height' => 10), '');
 
-				$_sidebar_html2->setCol(6, 0, array("colspan" => 3, "class" => "defaultfont"), g_l('prefs', '[sidebar_document]'));
+				$_sidebar_html2->setCol(6, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_document]'));
 
-				$_sidebar_html2->setCol(7, 0, array("colspan" => 3), $yuiSuggest->getHTML());
+				$_sidebar_html2->setCol(7, 0, array('colspan' => 3), $yuiSuggest->getHTML());
 
 				// Build dialog if user has permission
-				$_settings[] = array("headline" => g_l('prefs', '[sidebar]'), "html" => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), "space" => 200);
+				$_settings[] = array('headline' => g_l('prefs', '[sidebar]'), 'html' => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), 'space' => 200);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, ''), "space" => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, ''), 'space' => 200);
 
 
 			/*			 * ***************************************************************
@@ -3429,9 +1855,9 @@ function build_dialog($selected_setting = "ui"){
 			 * *************************************************************** */
 
 			$_value_selected = false;
-			$_tree_count = get_value("default_tree_count");
+			$_tree_count = get_value('default_tree_count');
 
-			$_file_tree_count = new we_html_select(array("name" => "default_tree_count", "class" => "weSelect"));
+			$_file_tree_count = new we_html_select(array('name' => 'default_tree_count', 'class' => 'weSelect'));
 
 			$_file_tree_count->addOption(0, g_l('prefs', '[all]'));
 			if(0 == $_tree_count){
@@ -3465,7 +1891,7 @@ function build_dialog($selected_setting = "ui"){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$_settings[] = array("headline" => g_l('prefs', '[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . "<br>" . $_file_tree_count->getHtml(), "space" => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . '<br>' . $_file_tree_count->getHtml(), 'space' => 200);
 
 
 			//WINDOW DIMENSIONS
@@ -3476,45 +1902,45 @@ function build_dialog($selected_setting = "ui"){
 			$_window_max = false;
 			$_window_specify = false;
 
-			if(get_value("ui_size_opt") == 0){
+			if(get_value('sizeOpt') == 0){
 				$_window_max = true;
 			}
 
-			if(get_value("ui_size_opt") == 1){
+			if(get_value('sizeOpt') == 1){
 				$_window_specify = true;
 			}
 
 			// Build maximize window
-			$_window_max_code = we_forms::radiobutton(0, get_value("ui_size_opt") == 0, "sizeOpt", g_l('prefs', '[maximize]'), true, "defaultfont", "document.getElementsByName('weWidth')[0].disabled = true;document.getElementsByName('weHeight')[0].disabled = true;");
+			$_window_max_code = we_forms::radiobutton(0, get_value('sizeOpt') == 0, 'sizeOpt', g_l('prefs', '[maximize]'), true, 'defaultfont', "document.getElementsByName('weWidth')[0].disabled = true;document.getElementsByName('weHeight')[0].disabled = true;");
 
 			// Build specify window dimension
-			$_window_specify_code = we_forms::radiobutton(1, !(get_value("ui_size_opt") == 0), "sizeOpt", g_l('prefs', '[specify]'), true, "defaultfont", "document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;");
+			$_window_specify_code = we_forms::radiobutton(1, !(get_value('sizeOpt') == 0), 'sizeOpt', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;");
 
 			// Create specify window dimension input
-			$_window_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 4);
+			$_window_specify_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 4, 4);
 
 			$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
 			$_window_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_window_specify_table->setCol(3, 0, null, we_html_tools::getPixel(50, 1));
 
-			$_window_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs', '[width]') . ":");
-			$_window_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs', '[height]') . ":");
+			$_window_specify_table->setCol(1, 1, array('class' => 'defaultfont'), g_l('prefs', '[width]') . ':');
+			$_window_specify_table->setCol(3, 1, array('class' => 'defaultfont'), g_l('prefs', '[height]') . ':');
 
 			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput("weWidth", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_width") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput("weHeight", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_height") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('weWidth', 6, (get_value('sizeOpt') != 0 ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('weHeight', 6, (get_value('sizeOpt') != 0 ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
 
 			// Build apply current window dimension
-			$_window_current_dimension_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 2);
+			$_window_current_dimension_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
-			$_window_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 1);
+			$_window_html = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 5, 1);
 			$_window_html->setCol(0, 0, null, $_window_max_code);
 			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
@@ -3522,16 +1948,16 @@ function build_dialog($selected_setting = "ui"){
 			$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
 
 			// Build dialog
-			$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
-			$_dialog = create_dialog("", g_l('prefs', '[tab_ui]'), $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ""));
+			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
+			$_dialog = create_dialog('', g_l('prefs', '[tab_ui]'), $_settings, -1, '', '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
 
 			break;
 
-		case "cache":
+		case 'cache':
 
 			$_settings = array();
 
-			if(false && we_hasPerm("ADMINISTRATOR")){
+			if(false && we_hasPerm('ADMINISTRATOR')){
 
 				/*				 * ***************************************************************
 				 * Information
@@ -3539,7 +1965,7 @@ function build_dialog($selected_setting = "ui"){
 
 				//$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs','[cache_information]'), 2, 450, false);
 				// Build dialog if user has permission
-				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+				$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0);
 
 
 				/*				 * ***************************************************************
@@ -3566,7 +1992,7 @@ function build_dialog($selected_setting = "ui"){
 				  .	$cache_lifetime;
 
 				  // Build dialog element if users has permission
-				  array_push($_settings, array("headline" => g_l('prefs','[cache_presettings]'), "html" => $_add_html, "space" => 200));
+				  $_settings[] = array("headline" => g_l('prefs','[cache_presettings]'), "html" => $_add_html, "space" => 200);
 				 */
 
 
@@ -3577,29 +2003,29 @@ function build_dialog($selected_setting = "ui"){
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[cache_navigation_information]'), 2, 450, false);
 
 				// Build dialog if user has permission
-				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+				$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0);
 
 				/*				 * ***************************************************************
 				 * Default Settings Cache for we:navigation
 				 * *************************************************************** */
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . basename($GLOBALS['WE_LANGUAGE']) . "/cache.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . basename($GLOBALS['WE_LANGUAGE']) . '/cache.inc.php');
 
-				$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+				$configFile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php';
 				if(!file_exists($configFile) || !is_file($configFile)){
 					weNavigationSettingControl::saveSettings(true);
 				}
 				include($configFile);
 
 				// Cache Life Time
-				$_lifeTime = we_html_tools::htmlTextInput('CacheLifeTime', 8, $GLOBALS['weDefaultNavigationCacheLifetime'], 255, "", "text", 100);
-				$_lifeTimeChooser = we_html_tools::htmlSelect("CacheLifeTimeSelect]", g_l('prefs', '[cache_lifetimes]'), 1, $GLOBALS['weDefaultNavigationCacheLifetime'], false, "onChange=\"document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
+				$_lifeTime = we_html_tools::htmlTextInput('CacheLifeTime', 8, $GLOBALS['weDefaultNavigationCacheLifetime'], 255, '', 'text', 100);
+				$_lifeTimeChooser = we_html_tools::htmlSelect('CacheLifeTimeSelect]', g_l('prefs', '[cache_lifetimes]'), 1, $GLOBALS['weDefaultNavigationCacheLifetime'], false, "onChange=\"document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
 				$cache_lifetime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lifeTime . '</td><td>' . $_lifeTimeChooser . '</td></tr></table>';
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[cache_navigation]'),
 					'space' => 200,
-					'html' => g_l('prefs', '[cache_lifetime]') . "<br />" . $cache_lifetime)
+					'html' => g_l('prefs', '[cache_lifetime]') . "<br />" . $cache_lifetime
 				);
 
 				// Cache Lifetime
@@ -3607,11 +2033,11 @@ function build_dialog($selected_setting = "ui"){
 					. we_forms::checkboxWithHidden($GLOBALS['weNavigationCacheDeleteAfterEdit'], 'NavigationCacheEdit', g_l('prefs', '[delete_cache_edit]')) . '<br />'
 					. we_forms::checkboxWithHidden($GLOBALS['weNavigationCacheDeleteAfterDelete'], 'NavigationCacheDelete', g_l('prefs', '[delete_cache_delete]')) . '<br />';
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[delete_cache_after]'),
 					'space' => 200,
 					'html' => $content,
-					'noline' => 1)
+					'noline' => 1
 				);
 			}
 
@@ -3619,7 +2045,7 @@ function build_dialog($selected_setting = "ui"){
 			//$_dialog = create_dialog("", g_l('prefs','[tab_cache]'), $_settings);
 
 			break;
-		case "countries":
+		case 'countries':
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
 			}
@@ -3627,11 +2053,11 @@ function build_dialog($selected_setting = "ui"){
 			$_settings = array();
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0, 'noline' => 1));
-			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
-			array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200, "noline" => 1));
+			$_settings[] = array('headline' => g_l('prefs', '[countries_headline]'), 'html' => $_information, 'space' => 0, 'noline' => 1);
+			$_countries_default = we_html_tools::htmlTextInput('countries_default', 22, get_value('WE_COUNTRIES_DEFAULT'), '', '', 'text', 225);
+			$_settings[] = array('headline' => g_l('prefs', '[countries_default]'), 'html' => $_countries_default, 'space' => 200, 'noline' => 1);
 
-			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
@@ -3639,24 +2065,24 @@ function build_dialog($selected_setting = "ui"){
 			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 			asort($zendsupported, SORT_LOCALE_STRING);
 			setlocale(LC_ALL, $oldLocale);
-			$countries_top = explode(',', get_value('countries_top'));
+			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('countries_shown'));
-			$tabC = new we_html_table(array("border" => "1", "cellpadding" => "2", "cellspacing" => "0"), $rows_num = 1, $cols_num = 4);
+			$tabC = new we_html_table(array('border' => '1', 'cellpadding' => '2', 'cellspacing' => '0'), $rows_num = 1, $cols_num = 4);
 			$i = 0;
-			$tabC->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_country]'));
-			$tabC->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_top]'));
-			$tabC->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_show]'));
-			$tabC->setCol($i, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_noshow]'));
+			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_noshow]'));
 			foreach($zendsupported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
-				$tabC->setCol($i, 0, array("class" => "defaultfont"), CheckAndConvertISObackend($country));
-				$tabC->setCol($i, 1, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 2, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 3, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));
+				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 3, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
 			}
 
-			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
@@ -3664,38 +2090,38 @@ function build_dialog($selected_setting = "ui"){
 			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 			asort($zendsupported, SORT_LOCALE_STRING);
 			setlocale(LC_ALL, $oldLocale);
-			$countries_top = explode(',', get_value('countries_top'));
-			$countries_shown = explode(',', get_value('countries_shown'));
-			$tabC = new we_html_table(array("border" => "1", "cellpadding" => "2", "cellspacing" => "0"), $rows_num = 1, $cols_num = 4);
+			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
+			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
+			$tabC = new we_html_table(array('border' => '1', 'cellpadding' => '2', 'cellspacing' => '0'), $rows_num = 1, $cols_num = 4);
 			$i = 0;
-			$tabC->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_country]'));
-			$tabC->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_top]'));
-			$tabC->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_show]'));
-			$tabC->setCol($i, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_noshow]'));
+			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_noshow]'));
 			foreach($zendsupported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
-				$tabC->setCol($i, 0, array("class" => "defaultfont"), CheckAndConvertISObackend($country));
-				$tabC->setCol($i, 1, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 2, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 3, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));
+				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 3, array('class' => 'defaultfont'), '<input type="radio" name="countries[' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
 			}
 
 
-			array_push($_settings, array("headline" => "", "html" => $tabC->getHtml(), "space" => 0, 'noline' => 1));
+			$_settings[] = array('headline' => '', 'html' => $tabC->getHtml(), 'space' => 0, 'noline' => 1);
 
 			// Build dialog element if user has permission
-			if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-				$_dialog = create_dialog("", g_l('prefs', '[tab_countries]'), $_settings);
+			if(we_hasPerm('EDIT_SETTINGS_DEF_EXT')){
+				$_dialog = create_dialog('', g_l('prefs', '[tab_countries]'), $_settings);
 			}
 			break;
 
 
-		case "language":
+		case 'language':
 
-			if(we_hasPerm("ADMINISTRATOR")){
-				$default = get_value("locale_default");
-				$locales = get_value("locale_locales");
+			if(we_hasPerm('ADMINISTRATOR')){
+				$default = get_value('locale_default');
+				$locales = get_value('locale_locales');
 
 				$preJs = "
 <script type=\"text/javascript\">
@@ -3746,19 +2172,14 @@ function build_dialog($selected_setting = "ui"){
 				if(document.getElementById('locale_temp_locales').options.length == 1) {
 					setDefaultLocale(LocaleValue);
 				}
-";
-
-				if(defined("SPELLCHECKER")){
-					$preJs .= "
+" . (defined('SPELLCHECKER') ?
+						"
 
 				// Wörterbuch hinzufügen
 				if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
 					top.opener.top.we_cmd('edit_spellchecker_ifthere');
 				}
-";
-				}
-
-				$preJs .= "
+" : '') . "
 
 			}
 		}
@@ -3856,20 +2277,20 @@ EOF;
 				 * Information
 				 * *************************************************************** */
 
-				$_hidden_fields = we_html_element::htmlHidden(array("name" => "locale_default", "value" => $default, "id" => "locale_default"));
-				$_hidden_fields .= we_html_element::htmlHidden(array("name" => "locale_locales", "value" => implode(",", array_keys($locales)), "id" => "locale_locales"));
+				$_hidden_fields = we_html_element::htmlHidden(array('name' => 'locale_default', 'value' => $default, 'id' => 'locale_default'));
+				$_hidden_fields .= we_html_element::htmlHidden(array('name' => 'locale_locales', 'value' => implode(',', array_keys($locales)), 'id' => 'locale_locales'));
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), 2, 450, false);
 
 				// Build dialog if user has permission
-				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+				$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0);
 
 
 				/*				 * ***************************************************************
 				 * Locales
 				 * *************************************************************** */
 
-				$_select_box = new we_html_select(array("class" => "weSelect", "name" => 'locale_temp_locales', "size" => "10", "id" => 'locale_temp_locales', "style" => "width: 340px"));
+				$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => '10', 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
 				$_select_box->addOptions(sizeof($locales), array_keys($locales), array_values($locales));
 
 				$_enabled_buttons = false;
@@ -3879,24 +2300,24 @@ EOF;
 
 
 				// Create edit list
-				$_editlist_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 2, 3);
+				$_editlist_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 2, 3);
 
 				// Buttons
-				$default = we_button::create_button("default", "javascript:defaultLocale()", true, 100, 22, "", "", !$_enabled_buttons);
-				$delete = we_button::create_button("delete", "javascript:deleteLocale()", true, 100);
+				$default = we_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$_enabled_buttons);
+				$delete = we_button::create_button('delete', 'javascript:deleteLocale()', true, 100);
 
-				$_html = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 3);
-				$_html->setCol(0, 0, array("class" => "defaultfont"), $default);
+				$_html = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
+				$_html->setCol(0, 0, array('class' => 'defaultfont'), $default);
 				$_html->setCol(0, 1, null, we_html_tools::getPixel(25, 2));
-				$_html->setCol(0, 2, array("class" => "defaultfont"), $delete);
+				$_html->setCol(0, 2, array('class' => 'defaultfont'), $delete);
 
 				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
 				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-				$_editlist_table->setCol(0, 2, array("valign" => "top"), $default . we_html_tools::getPixel(1, 10) . $delete);
+				$_editlist_table->setCol(0, 2, array('valign' => 'top'), $default . we_html_tools::getPixel(1, 10) . $delete);
 
 				// Build dialog if user has permission
-				if(we_hasPerm("FORMMAIL")){
-					array_push($_settings, array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0));
+				if(we_hasPerm('FORMMAIL')){
+					$_settings[] = array('headline' => '', 'html' => $_editlist_table->getHtml(), 'space' => 0);
 				}
 
 
@@ -3917,10 +2338,10 @@ EOF;
 				$TopLanguages['~es'] = $Languages['es'];
 				asort($Languages);
 				asort($TopLanguages);
-				$TopLanguages[''] = "---";
+				$TopLanguages[''] = '---';
 				$Languages = array_merge($TopLanguages, $Languages);
 
-				$_languages = new we_html_select(array("name" => 'locale_language', "id" => 'locale_language', "style" => "width: 139px", "class" => "weSelect"));
+				$_languages = new we_html_select(array('name' => 'locale_language', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
 				$_languages->addOptions(sizeof($Languages), array_keys($Languages), array_values($Languages));
 
 				// Countries
@@ -3939,63 +2360,63 @@ EOF;
 				$TopCountries['~ES'] = $Countries['ES'];
 				asort($Countries);
 				asort($TopCountries);
-				$TopCountries['~'] = "---";
-				$Countries = array_merge(array("" => ""), $TopCountries, $Countries);
+				$TopCountries['~'] = '---';
+				$Countries = array_merge(array('' => ''), $TopCountries, $Countries);
 
-				$_countries = new we_html_select(array("name" => 'locale_country', "id" => 'locale_country', "style" => "width: 139px", "class" => "weSelect"));
+				$_countries = new we_html_select(array('name' => 'locale_country', 'id' => 'locale_country', 'style' => 'width: 139px', 'class' => 'weSelect'));
 				$_countries->addOptions(sizeof($Countries), array_keys($Countries), array_values($Countries));
 
 				// Button
-				$_add_button = we_button::create_button("add", "javascript:addLocale()", true, 139);
+				$_add_button = we_button::create_button('add', 'javascript:addLocale()', true, 139);
 
 				// Build final HTML code
-				$_add_html = g_l('prefs', '[locale_languages]') . "<br />"
-					. $_languages->getHtml() . "<br /><br />"
-					. g_l('prefs', '[locale_countries]') . "<br />"
-					. $_countries->getHtml() . "<br /><br />"
+				$_add_html = g_l('prefs', '[locale_languages]') . '<br />'
+					. $_languages->getHtml() . '<br /><br />'
+					. g_l('prefs', '[locale_countries]') . '<br />'
+					. $_countries->getHtml() . '<br /><br />'
 					. $_add_button;
 
 				// Build dialog element if users has permission
-				array_push($_settings, array("headline" => g_l('prefs', '[locale_add]'), "html" => $_add_html, "space" => 200));
+				$_settings[] = array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => 200);
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false);
-				array_push($_settings, array("headline" => g_l('prefs', '[langlink_headline]'), "html" => $_information, "space" => 0, "noline" => 1));
-				$_php_setting = new we_html_select(array("name" => "langlink_support", "class" => "weSelect"));
-				$_php_setting->addOption(0, "false");
-				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("langlink_support"));
-				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => $_information, 'space' => 0, 'noline' => 1);
+				$_php_setting = new we_html_select(array('name' => 'langlink_support', 'class' => 'weSelect'));
+				$_php_setting->addOption(0, 'false');
+				$_php_setting->addOption(1, 'true');
+				$_php_setting->selectOption(get_value('LANGLINK_SUPPORT'));
+				$_settings[] = array('headline' => g_l('prefs', '[langlink_support]'), 'html' => $_php_setting->getHtml(), 'space' => 200, 'noline' => 1);
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), 2, 450, false);
-				array_push($_settings, array("headline" => '', "html" => $_information, "space" => 0, "noline" => 1));
+				$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0, 'noline' => 1);
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_backlinks_information]'), 2, 250, false, 40);
-				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
-				$_php_setting = new we_html_select(array("name" => "langlink_support_backlinks", "class" => "weSelect"));
-				//$_php_setting->addOption(0, "false");
-				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
-				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support_backlinks]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array('html' => $_information, 'space' => 200, 'noline' => 1);
+				$_php_setting = new we_html_select(array('name' => 'langlink_support_backlinks', 'class' => 'weSelect'));
+				//$_php_setting->addOption(0, 'false');
+				$_php_setting->addOption(1, 'true');
+				$_php_setting->selectOption(get_value('LANGLINK_SUPPORT_BACKLINKS'));
+				$_settings[] = array('headline' => g_l('prefs', '[langlink_support_backlinks]'), 'html' => $_php_setting->getHtml(), 'space' => 200, 'noline' => 1);
 
 				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_recursive_information]'), 2, 250, false, 40);
-				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
-				$_php_setting = new we_html_select(array("name" => "langlink_support_recursive", "class" => "weSelect"));
-				//$_php_setting->addOption(0, "false");
-				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("langlink_support_recursive"));
-				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support_recursive]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array('html' => $_information, 'space' => 200, 'noline' => 1);
+				$_php_setting = new we_html_select(array('name' => 'langlink_support_recursive', 'class' => 'weSelect'));
+				//$_php_setting->addOption(0, 'false');
+				$_php_setting->addOption(1, 'true');
+				$_php_setting->selectOption(get_value('LANGLINK_SUPPORT_RECURSIVE'));
+				$_settings[] = array('headline' => g_l('prefs', '[langlink_support_recursive]'), 'html' => $_php_setting->getHtml(), 'space' => 200, 'noline' => 1);
 
 				/*				 * ***************************************************************
 				 * Dialog
 				 * *************************************************************** */
 
 				// Build dialog element if user has permission
-				$_dialog = $preJs . create_dialog("", g_l('prefs', '[tab_language]'), $_settings) . $postJs;
+				$_dialog = $preJs . create_dialog('', g_l('prefs', '[tab_language]'), $_settings) . $postJs;
 			}
 
 			break;
 
-		case "extensions":
+		case 'extensions':
 
 			/*			 * ***************************************************************
 			 * FILE EXTENSIONS
@@ -4008,7 +2429,7 @@ EOF;
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0);
 
 
 			/**
@@ -4019,24 +2440,24 @@ EOF;
 			$_we_extensions = $ct->getExtension('text/webedition');
 
 			// Build static webEdition extensions select box
-			$_static_we_extensions = new we_html_select(array("name" => "DefaultStaticExt", "class" => "weSelect"));
+			$_static_we_extensions = new we_html_select(array('name' => 'DefaultStaticExt', 'class' => 'weSelect'));
 			foreach($_we_extensions as $key => $value){
 				$_static_we_extensions->addOption($value, $value);
 
 				// Set selected extension
-				if($value == get_value("extension_static")){
+				if($value == get_value('DEFAULT_STATIC_EXT')){
 					$_static_we_extensions->selectOption($value);
 				}
 			}
 
 			// Build dynamic webEdition extensions select box
-			$_dynamic_we_extensions = new we_html_select(array("name" => "DefaultDynamicExt", "class" => "weSelect"));
+			$_dynamic_we_extensions = new we_html_select(array('name' => 'DefaultDynamicExt', 'class' => 'weSelect'));
 
 			foreach($_we_extensions as $key => $value){
 				$_dynamic_we_extensions->addOption($value, $value);
 
 				// Set selected extension
-				if($value == get_value("extension_dynamic")){
+				if($value == get_value('DEFAULT_DYNAMIC_EXT')){
 					$_dynamic_we_extensions->selectOption($value);
 				}
 			}
@@ -4045,8 +2466,8 @@ EOF;
 			$_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
 
 			// Build dialog element if users has permission
-			if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-				array_push($_settings, array("headline" => g_l('prefs', '[we_extensions]'), "html" => $_we_extensions_html, "space" => 200));
+			if(we_hasPerm('EDIT_SETTINGS_DEF_EXT')){
+				$_settings[] = array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200);
 			}
 
 			/**
@@ -4057,35 +2478,35 @@ EOF;
 			$_html_extensions = $ct->getExtension('text/html');
 
 			// Build static webEdition extensions select box
-			$_static_html_extensions = new we_html_select(array("name" => "DefaultHTMLExt", "class" => "weSelect"));
+			$_static_html_extensions = new we_html_select(array('name' => 'DefaultHTMLExt', 'class' => 'weSelect'));
 			foreach($_html_extensions as $key => $value){
 				$_static_html_extensions->addOption($value, $value);
 
 				// Set selected extension
-				if($value == get_value("extension_html")){
+				if($value == get_value('DEFAULT_HTML_EXT')){
 					$_static_html_extensions->selectOption($value);
 				}
 			}
 
 			// Build final HTML code
-			$_html_extensions_html = g_l('prefs', '[html]') . "<br>" . $_static_html_extensions->getHtml();
+			$_html_extensions_html = g_l('prefs', '[html]') . '<br>' . $_static_html_extensions->getHtml();
 
 			// Build dialog element if user has permission
-			if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-				array_push($_settings, array("headline" => g_l('prefs', '[html_extensions]'), "html" => $_html_extensions_html, "space" => 200, "noline" => 1));
+			if(we_hasPerm('EDIT_SETTINGS_DEF_EXT')){
+				$_settings[] = array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1);
 			}
 
 			/**
 			 * BUILD FINAL DIALOG
 			 */
 			// Build dialog element if user has permission
-			if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-				$_dialog = create_dialog("", g_l('prefs', '[tab_extensions]'), $_settings);
+			if(we_hasPerm('EDIT_SETTINGS_DEF_EXT')){
+				$_dialog = create_dialog('', g_l('prefs', '[tab_extensions]'), $_settings);
 			}
 
 			break;
 
-		case "editor":
+		case 'editor':
 			/*			 * *******************************************************************
 			 * EDITOR PLUGIN
 			 * ******************************************************************* */
@@ -4155,29 +2576,6 @@ function displayEditorOptions(editor) {
 
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
-			break;
-			//FIXME: remove old CM
-		case "codemirror":
-			document.getElementById("div_settings_editor_predefined_2").style.display="block"; //JavaScript-Editor-Notice
-			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
-			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
-			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
-
-			document.getElementById("div_settings_editor_predefined_5").style.display="block"; //Line numbers
-			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_6").style.display="block"; //Code Completion
-			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_7").style.display="block"; //Tooltips
-			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="block";
-
-			document.getElementById("div_settings_editor_predefined_8").style.display="block"; //Docu on dblclick
-			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="block";
 			break;
 
 case "codemirror2":
@@ -4256,18 +2654,17 @@ else {
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false);
 
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array('headline' => '', 'html' => $_information, 'space' => 0);
 
 			/**
 			 * Editor Mode
 			 */
-			$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => "editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'editorMode', 'size' => '1', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
 			$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
-			$_template_editor_mode->addOption('codemirror', g_l('prefs', '[editor_javascript]'));
 			$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 			$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
-			$_template_editor_mode->selectOption(get_value("editor_mode"));
-			array_push($_settings, array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150));
+			$_template_editor_mode->selectOption(get_value('editorMode'));
+			$_settings[] = array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150);
 
 			/**
 			 * Editor font settings
@@ -4278,47 +2675,47 @@ else {
 			$_template_editor_font_specify = false;
 			$_template_editor_font_size_specify = false;
 
-			if(get_value("editor_font_name") != "" && get_value("editor_font_name") != "none"){
+			if(get_value('editorFontname') != '' && get_value('editorFontname') != 'none'){
 				$_template_editor_font_specify = true;
 			}
 
-			if(get_value("editor_font_size") != "" && get_value("editor_font_size") != -1){
+			if(get_value('editorFontsize') != '' && get_value('editorFontsize') != -1){
 				$_template_editor_font_size_specify = true;
 			}
 
 			// Build specify font
-			$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, "editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "if (document.getElementsByName('editorFont')[0].checked) { document.getElementsByName('editorFontname')[0].disabled = false;document.getElementsByName('editorFontsize')[0].disabled = false; } else { document.getElementsByName('editorFontname')[0].disabled = true;document.getElementsByName('editorFontsize')[0].disabled = true; }");
+			$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, 'editorFont', g_l('prefs', '[specify]'), true, 'defaultfont', "if (document.getElementsByName('editorFont')[0].checked) { document.getElementsByName('editorFontname')[0].disabled = false;document.getElementsByName('editorFontsize')[0].disabled = false; } else { document.getElementsByName('editorFontname')[0].disabled = true;document.getElementsByName('editorFontsize')[0].disabled = true; }");
 
 
 
 
-			$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => "editorFontname", "size" => "1", "style" => "width: 135px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled")));
+			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'editorFontname', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
-			$_colorsDisabled = get_value('specify_jeditor_colors') == 0 || (get_value('editor_mode') != 'java');
+			$_colorsDisabled = get_value('specify_jeditor_colors') == 0 || (get_value('editorMode') != 'java');
 
-			$_template_editor_fontcolor_selector = getColorInput("editorFontcolor", get_value("editor_font_color"), $_colorsDisabled);
-			$_template_editor_we_tag_fontcolor_selector = getColorInput("editorWeTagFontcolor", get_value("editor_we_tag_font_color"), $_colorsDisabled);
-			$_template_editor_we_attribute_fontcolor_selector = getColorInput("editorWeAttributeFontcolor", get_value("editor_we_attribute_font_color"), $_colorsDisabled);
-			$_template_editor_html_tag_fontcolor_selector = getColorInput("editorHTMLTagFontcolor", get_value("editor_html_tag_font_color"), $_colorsDisabled);
-			$_template_editor_html_attribute_fontcolor_selector = getColorInput("editorHTMLAttributeFontcolor", get_value("editor_html_attribute_font_color"), $_colorsDisabled);
-			$_template_editor_pi_tag_fontcolor_selector = getColorInput("editorPiTagFontcolor", get_value("editor_pi_tag_font_color"), $_colorsDisabled);
-			$_template_editor_comment_fontcolor_selector = getColorInput("editorCommentFontcolor", get_value("editor_comment_font_color"), $_colorsDisabled);
+			$_template_editor_fontcolor_selector = getColorInput('editorFontcolor', get_value('editorFontcolor'), $_colorsDisabled);
+			$_template_editor_we_tag_fontcolor_selector = getColorInput('editorWeTagFontcolor', get_value('editorWeTagFontcolor'), $_colorsDisabled);
+			$_template_editor_we_attribute_fontcolor_selector = getColorInput('editorWeAttributeFontcolor', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
+			$_template_editor_html_tag_fontcolor_selector = getColorInput('editorHTMLTagFontcolor', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
+			$_template_editor_html_attribute_fontcolor_selector = getColorInput('editorHTMLAttributeFontcolor', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
+			$_template_editor_pi_tag_fontcolor_selector = getColorInput('editorPiTagFontcolor', get_value('editorPiTagFontcolor'), $_colorsDisabled);
+			$_template_editor_comment_fontcolor_selector = getColorInput('editorCommentFontcolor', get_value('editorCommentFontcolor'), $_colorsDisabled);
 
 			for($i = 0; $i < (count($_template_fonts) - 1); $i++){
 				$_template_editor_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
 
 				if(!$_template_editor_font_specify){
-					if($_template_fonts[$i] == "Courier New"){
+					if($_template_fonts[$i] == 'Courier New'){
 						$_template_editor_font_select_box->selectOption($_template_fonts[$i]);
 					}
 				} else{
-					if($_template_fonts[$i] == get_value("editor_font_name")){
+					if($_template_fonts[$i] == get_value('editorFontname')){
 						$_template_editor_font_select_box->selectOption($_template_fonts[$i]);
 					}
 				}
 			}
 
-			$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => "editorFontsize", "size" => "1", "style" => "width: 135px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled")));
+			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'editorFontsize', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
 
 			for($i = 0; $i < (count($_template_font_sizes) - 1); $i++){
 				$_template_editor_font_sizes_select_box->addOption($_template_font_sizes[$i], $_template_font_sizes[$i]);
@@ -4328,7 +2725,7 @@ else {
 						$_template_editor_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
 					}
 				} else{
-					if($_template_font_sizes[$i] == get_value("editor_font_size")){
+					if($_template_font_sizes[$i] == get_value('editorFontsize')){
 						$_template_editor_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
 					}
 				}
@@ -4346,7 +2743,7 @@ else {
 	</tr>
 </table>';
 
-			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "specify_jeditor_colors", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);", !(get_value('editor_mode') == 'java'));
+			$_template_editor_font_color_checkbox = we_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "specify_jeditor_colors", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);", !(get_value('editorMode') == 'java'));
 
 			$_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0 0 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -4378,18 +2775,18 @@ else {
 			//Build CodeMirror info box
 			$_cm_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_javascript_information]'), 2, 480, false);
 
-			array_push($_settings, array('headline' => '', 'html' => $_cm_information, 'space' => 0));
+			$_settings[] = array('headline' => '', 'html' => $_cm_information, 'space' => 0);
 
 
 
 			//Build activation of line numbers
-			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editor_line_numbers'), 'editorLinenumbers', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'editorLinenumbers', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			//Build activation of code completion
-			$_template_editor_codecompletion_code = we_forms::checkbox(1, get_value('editor_code_completion'), 'editorCodecompletion', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_codecompletion_code = we_forms::checkbox(1, get_value('editorCodecompletion'), 'editorCodecompletion', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			//Build activation of tooltips
-			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editor_tooltips'), 'editorTooltips', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_tooltips_code = we_forms::checkbox(1, get_value('editorTooltips'), 'editorTooltips', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 
 
@@ -4397,11 +2794,11 @@ else {
 			$_template_editor_tooltip_font_specify = false;
 			$_template_editor_tooltip_font_size_specify = false;
 
-			if(get_value('editor_tooltip_font_name') != '' && get_value('editor_tooltip_font_name') != 'none'){
+			if(get_value('editorTooltipFontname') != '' && get_value('editorTooltipFontname') != 'none'){
 				$_template_editor_tooltip_font_specify = true;
 			}
 
-			if(get_value('editor_tooltip_font_size') != '' && get_value('editor_tooltip_font_size') != -1){
+			if(get_value('editorTooltipFontsize') != '' && get_value('editorTooltipFontsize') != -1){
 				$_template_editor_tooltip_font_size_specify = true;
 			}
 
@@ -4412,7 +2809,7 @@ else {
 
 			foreach($_template_fonts AS $font){
 				$_template_editor_tooltip_font_select_box->addOption($font, $font);
-				if(($_template_editor_tooltip_font_specify && $font == get_value('editor_tooltip_font_name')) ||
+				if(($_template_editor_tooltip_font_specify && $font == get_value('editorTooltipFontname')) ||
 					(!$_template_editor_tooltip_font_specify && $font == 'Tahoma')){
 					$_template_editor_tooltip_font_select_box->selectOption($font);
 				}
@@ -4446,15 +2843,15 @@ else {
 			</table>';
 
 			//Build activation of integration of documentation
-			$_template_editor_docuintegration_code = we_forms::checkbox(1, get_value('editor_docu_integration'), 'editorDocuintegration', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
+			$_template_editor_docuintegration_code = we_forms::checkbox(1, get_value('editorDocuintegration'), 'editorDocuintegration', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			// Build dialog
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150));
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150));
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150));
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150));
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150));
-			array_push($_settings, array('headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150));
+			$_settings[] = array('headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150);
+			$_settings[] = array('headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150);
+			$_settings[] = array('headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150);
+			$_settings[] = array('headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150);
+			$_settings[] = array('headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150);
+			$_settings[] = array('headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150);
 
 			/**
 			 * BUILD FINAL DIALOG
@@ -4647,7 +3044,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("FORMMAIL")){
-				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+				$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
 			}
 
 			/**
@@ -4677,7 +3074,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("FORMMAIL")){
-				array_push($_settings, array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0));
+				$_settings[] = array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0);
 			}
 
 			// formmail stuff
@@ -4687,18 +3084,18 @@ else {
 				$_formmail_confirm = new we_html_select(array("name" => "formmail_confirm", "style" => "width:88px;", "class" => "weSelect"));
 				$_formmail_confirm->addOption(1, g_l('prefs', '[on]'));
 				$_formmail_confirm->addOption(0, g_l('prefs', '[off]'));
-				if(get_value("formmail_confirm")){
+				if(get_value("FORMMAIL_CONFIRM")){
 					$_formmail_confirm->selectOption(1);
 				} else{
 					$_formmail_confirm->selectOption(0);
 				}
 
-				array_push($_settings, array('html' => $_formmail_confirm->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailConfirm]')));
+				$_settings[] = array('html' => $_formmail_confirm->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailConfirm]'));
 
 				$_formmail_log = new we_html_select(array("name" => "formmail_log", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"));
 				$_formmail_log->addOption(1, g_l('prefs', '[yes]'));
 				$_formmail_log->addOption(0, g_l('prefs', '[no]'));
-				if(get_value("formmail_log")){
+				if(get_value("FORMMAIL_LOG")){
 					$_formmail_log->selectOption(1);
 				} else{
 					$_formmail_log->selectOption(0);
@@ -4710,9 +3107,9 @@ else {
 								<td style="padding-left:10px;">' . we_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
 							</tr>
 						</table>';
-				array_push($_settings, array('html' => $_html, "space" => 250, "headline" => g_l('prefs', '[logFormmailRequests]'), "noline" => 1));
+				$_settings[] = array('html' => $_html, "space" => 250, "headline" => g_l('prefs', '[logFormmailRequests]'), "noline" => 1);
 
-				$_isDisabled = (get_value("formmail_log") == 0);
+				$_isDisabled = (get_value("FORMMAIL_LOG") == 0);
 
 
 				$_formmail_emptylog = new we_html_select(array("name" => "formmail_emptylog", "style" => "width:88px;", "class" => "weSelect"));
@@ -4730,10 +3127,10 @@ else {
 				$_formmail_emptylog->addOption(9676800, sprintf(g_l('prefs', '[more_weeks]'), 16));
 				$_formmail_emptylog->addOption(19353600, sprintf(g_l('prefs', '[more_weeks]'), 32));
 
-				$_formmail_emptylog->selectOption(get_value("formmail_emptylog"));
+				$_formmail_emptylog->selectOption(get_value("FORMMAIL_EMPTYLOG"));
 
 
-				array_push($_settings, array('html' => $_formmail_emptylog->getHtml(), "space" => 250, "headline" => g_l('prefs', '[deleteEntriesOlder]')));
+				$_settings[] = array('html' => $_formmail_emptylog->getHtml(), "space" => 250, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
 
 				////////////////////////////////
 				// formmail only via we doc //
@@ -4741,13 +3138,9 @@ else {
 				$_formmail_ViaWeDoc = new we_html_select(array("name" => "formmail_ViaWeDoc", "style" => "width:88px;", "class" => "weSelect"));
 				$_formmail_ViaWeDoc->addOption(1, g_l('prefs', '[yes]'));
 				$_formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
-				if(get_value("formmail_ViaWeDoc")){
-					$_formmail_ViaWeDoc->selectOption(1);
-				} else{
-					$_formmail_ViaWeDoc->selectOption(0);
-				}
+				$_formmail_ViaWeDoc->selectOption((get_value("FORMMAIL_VIAWEDOC") ? 1 : 0));
 
-				array_push($_settings, array('html' => $_formmail_ViaWeDoc->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailViaWeDoc]')));
+				$_settings[] = array('html' => $_formmail_ViaWeDoc->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
 
 				/////////////////////////////
 				// limit formmail requests //
@@ -4758,7 +3151,7 @@ else {
 				}
 				$_formmail_block->addOption(1, g_l('prefs', '[yes]'));
 				$_formmail_block->addOption(0, g_l('prefs', '[no]'));
-				if(get_value("formmail_block")){
+				if(get_value("FORMMAIL_BLOCK")){
 					$_formmail_block->selectOption(1);
 				} else{
 					$_formmail_block->selectOption(0);
@@ -4771,19 +3164,19 @@ else {
 							</tr>
 						</table>';
 
-				array_push($_settings, array('html' => $_html, "space" => 250, "headline" => g_l('prefs', '[blockFormmail]'), "noline" => 1));
+				$_settings[] = array('html' => $_html, "space" => 250, "headline" => g_l('prefs', '[blockFormmail]'), "noline" => 1);
 
-				$_isDisabled = $_isDisabled || (get_value("formmail_block") == 0);
+				$_isDisabled = $_isDisabled || (get_value("FORMMAIL_BLOCK") == 0);
 
 				// table is IE fix. Without table IE has a gap on the left of the input
 				$_formmail_trials = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-					we_html_tools::htmlTextInput("formmail_trials", 24, get_value("formmail_trials"), "", "", "text", 88, 0, "", $_isDisabled) .
+					we_html_tools::htmlTextInput("formmail_trials", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
 					'</td></tr></table>';
 
-				array_push($_settings, array('html' => $_formmail_trials, "space" => 250, "headline" => g_l('prefs', '[formmailTrials]'), "noline" => 1));
+				$_settings[] = array('html' => $_formmail_trials, "space" => 250, "headline" => g_l('prefs', '[formmailTrials]'), "noline" => 1);
 
 				if(!$_isDisabled){
-					$_isDisabled = (get_value("formmail_block") == 0);
+					$_isDisabled = (get_value("FORMMAIL_BLOCK") == 0);
 				}
 
 				$_formmail_span = new we_html_select(array("name" => "formmail_span", "style" => "width:88px;", "class" => "weSelect"));
@@ -4804,10 +3197,10 @@ else {
 				$_formmail_span->addOption(28800, sprintf(g_l('prefs', '[more_hours]'), 8));
 				$_formmail_span->addOption(86400, sprintf(g_l('prefs', '[more_hours]'), 24));
 
-				$_formmail_span->selectOption(get_value("formmail_span"));
+				$_formmail_span->selectOption(get_value("FORMMAIL_SPAN"));
 
 
-				array_push($_settings, array('html' => $_formmail_span->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailSpan]'), "noline" => 1));
+				$_settings[] = array('html' => $_formmail_span->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailSpan]'), "noline" => 1);
 				$_formmail_blocktime = new we_html_select(array("name" => "formmail_blocktime", "style" => "width:88px;", "class" => "weSelect"));
 				if($_isDisabled){
 					$_formmail_blocktime->setAttribute("disabled", "disabled");
@@ -4827,10 +3220,10 @@ else {
 				$_formmail_blocktime->addOption(86400, sprintf(g_l('prefs', '[more_hours]'), 24));
 				$_formmail_blocktime->addOption(-1, g_l('prefs', '[ever]'));
 
-				$_formmail_blocktime->selectOption(get_value("formmail_blocktime"));
+				$_formmail_blocktime->selectOption(get_value("FORMMAIL_BLOCKTIME"));
 
 
-				array_push($_settings, array('html' => $_formmail_blocktime->getHtml(), "space" => 250, "headline" => g_l('prefs', '[blockFor]'), "noline" => 1));
+				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), "space" => 250, "headline" => g_l('prefs', '[blockFor]'), "noline" => 1);
 			}
 
 			/**
@@ -4854,7 +3247,7 @@ else {
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), 2, 450, false);
 
 			// Build dialog if user has permission
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
 
 
 			/*			 * ***************************************************************
@@ -4879,7 +3272,7 @@ else {
 			}
 
 			// Build dialog element if users has permission
-			array_push($_settings, array("headline" => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200));
+			$_settings[] = array("headline" => g_l('prefs', '[module_activation][headline]'), "html" => $_html, "space" => 200);
 
 
 			$_dialog = create_dialog("", g_l('prefs', '[module_activation][headline]'), $_settings, -1);
@@ -4917,21 +3310,21 @@ else {
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
 
 
 			// Check Proxy settings  ...
 			$_proxy = get_value("proxy_proxy");
-			$_proxy_host = get_value("proxy_host");
-			$_proxy_port = get_value("proxy_port");
-			$_proxy_user = get_value("proxy_user");
-			$_proxy_pass = get_value("proxy_password");
+			$_proxy_host = get_value("WE_PROXYHOST");
+			$_proxy_port = get_value("WE_PROXYPORT");
+			$_proxy_user = get_value("WE_PROXYUSER");
+			$_proxy_pass = get_value("WE_PROXYPASSWORD");
 
 			$_use_proxy = we_forms::checkbox(1, $_proxy, "useproxy", g_l('prefs', '[useproxy]'), false, "defaultfont", "set_state();");
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[tab_proxy]'), "html" => $_use_proxy, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[tab_proxy]'), "html" => $_use_proxy, "space" => 200);
 			}
 
 			/**
@@ -4941,7 +3334,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $_proxyaddr, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $_proxyaddr, "space" => 200, "noline" => 1);
 			}
 
 			/**
@@ -4951,7 +3344,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[proxyport]'), "html" => $_proxyport, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[proxyport]'), "html" => $_proxyport, "space" => 200, "noline" => 1);
 			}
 
 			/**
@@ -4961,7 +3354,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[proxyuser]'), "html" => $_proxyuser, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[proxyuser]'), "html" => $_proxyuser, "space" => 200, "noline" => 1);
 			}
 
 			/**
@@ -4971,7 +3364,7 @@ else {
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, "space" => 200, "noline" => 1);
 			}
 
 			/**
@@ -5002,13 +3395,13 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("we_php_default")){
+					if($i == 0 && !get_value("WE_PHP_DEFAULT")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("we_php_default")){
+					} else if($i == 1 && get_value("WE_PHP_DEFAULT")){
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[default_php_setting]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[default_php_setting]'), "html" => $_php_setting->getHtml(), "space" => 200);
 			}
 
 
@@ -5023,28 +3416,28 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("inlineedit_default")){
+					if($i == 0 && !get_value("INLINEEDIT_DEFAULT")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("inlineedit_default")){
+					} else if($i == 1 && get_value("INLINEEDIT_DEFAULT")){
 						$_php_setting->selectOption($i);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[inlineedit_default]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[inlineedit_default]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				$_php_setting = new we_html_select(array("name" => "removefirstparagraph_default", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("removefirstparagraph_default")){
+					if($i == 0 && !get_value("REMOVEFIRSTPARAGRAPH_DEFAULT")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("removefirstparagraph_default")){
+					} else if($i == 1 && get_value("REMOVEFIRSTPARAGRAPH_DEFAULT")){
 						$_php_setting->selectOption($i);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[removefirstparagraph_default]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[removefirstparagraph_default]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 
 				// Build select box
@@ -5054,12 +3447,12 @@ else {
 					$_php_setting->addOption($key, $val);
 
 					// Set selected setting
-					if($key == get_value("wysiwyg_type")){
+					if($key == get_value("WYSIWYG_TYPE")){
 						$_php_setting->selectOption($key);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				// Build select box
 				$_php_setting = new we_html_select(array("name" => "safari_wysiwyg", "class" => "weSelect"));
@@ -5067,14 +3460,14 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("safari_wysiwyg")){
+					if($i == 0 && !get_value("SAFARI_WYSIWYG")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("safari_wysiwyg")){
+					} else if($i == 1 && get_value("SAFARI_WYSIWYG")){
 						$_php_setting->selectOption($i);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[safari_wysiwyg]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[safari_wysiwyg]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 
 				// Build select box
@@ -5083,40 +3476,40 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("showinputs_default")){
+					if($i == 0 && !get_value("SHOWINPUTS_DEFAULT")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("showinputs_default")){
+					} else if($i == 1 && get_value("SHOWINPUTS_DEFAULT")){
 						$_php_setting->selectOption($i);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[showinputs_default]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[showinputs_default]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				$_php_setting = new we_html_select(array("name" => "hidenameattribinweimg_default", "class" => "weSelect"));
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
 
 				// Set selected setting
-				if(get_value("hidenameattribinweimg_default")){
+				if(get_value("HIDENAMEATTRIBINWEIMG_DEFAULT")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[hidenameattribinweimg_default]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[hidenameattribinweimg_default]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				$_php_setting = new we_html_select(array("name" => "hidenameattribinweform_default", "class" => "weSelect"));
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
 
 				// Set selected setting
-				if(get_value("hidenameattribinweform_default")){
+				if(get_value("HIDENAMEATTRIBINWEFORM_DEFAULT")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[hidenameattribinweform_default]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[hidenameattribinweform_default]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
-				$_we_doctype_workspace_behavior = abs(get_value("we_doctype_workspace_behavior"));
+				$_we_doctype_workspace_behavior = abs(get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR"));
 				$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 					we_forms::radiobutton("0", ($_we_doctype_workspace_behavior == "0"), "we_doctype_workspace_behavior", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
 					'</td></tr><tr><td style="padding-top:10px;">' .
@@ -5130,7 +3523,7 @@ else {
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
-					$_Schedtrigger_setting->selectOption(get_value("we_scheduler_trigger"));
+					$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
 					$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430, false) . '</div>';
 					$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 				}
@@ -5155,12 +3548,12 @@ else {
 			if(we_hasPerm("ADMINISTRATOR")){
 				$_settings = array();
 
-				$_we_max_upload_size = abs(get_value("we_max_upload_size"));
+				$_we_max_upload_size = abs(get_value("WE_MAX_UPLOAD_SIZE"));
 				$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 					we_html_tools::htmlTextInput("we_max_upload_size", 22, $_we_max_upload_size, "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 					g_l('prefs', '[we_max_upload_size_hint]') .
 					'</td></tr></table>';
-				array_push($_settings, array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200);
 				$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
 					var key;
 
@@ -5173,12 +3566,12 @@ else {
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 				}');
 
-				$_we_new_folder_mod = get_value("we_new_folder_mod");
+				$_we_new_folder_mod = get_value("WE_NEW_FOLDER_MOD");
 				$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 					we_html_tools::htmlTextInput("we_new_folder_mod", 22, $_we_new_folder_mod, 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 					g_l('prefs', '[we_new_folder_mod_hint]') .
 					'</td></tr></table>';
-				array_push($_settings, array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200);
 
 				// Build db select box
 				$_db_connect = new we_html_select(array("name" => "db_connect", "class" => "weSelect"));
@@ -5193,7 +3586,7 @@ else {
 				/* $_db_connect->addOption(4, "pdo_connect");
 				  $_db_connect->addOption(5, "pdo_pconnect"); */
 				$_db_connect->selectOption(DB_CONNECT);
-				array_push($_settings, array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1);
 
 				// Build db charset select box
 				$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
@@ -5242,41 +3635,41 @@ else {
 							}");
 
 				// Check authentication settings  ...
-				$_auth = get_value("auth_auth");
-				$_auth_user = get_value("auth_user");
-				$_auth_pass = get_value("auth_password");
+				$_auth = get_value("HTTP_USERNAME");
+				$_auth_user = get_value("HTTP_USERNAME");
+				$_auth_pass = get_value("HTTP_PASSWORD");
 
 				// Build dialog if user has permission
 				$_use_auth = we_html_tools::hidden('useauth', $_auth);
 				$_use_auth .= we_forms::checkbox(1, $_auth, "useauthEnabler", g_l('prefs', '[useauth]'), false, "defaultfont", "set_state_auth();");
-				array_push($_settings, array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1);
 
 				/**
 				 * User name
 				 */
 				$_authuser = we_html_tools::htmlTextInput("authuser", 22, $_auth_user, "", "", "text", 225, 0, "", !$_auth);
-				array_push($_settings, array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1);
 
 				/**
 				 * Password
 				 */
 				$_authpass = we_html_tools::htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
-				array_push($_settings, array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200);
 
 				if(we_image_edit::gd_version() > 0){ //  gd lib ist installiert
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
 					$wecmdenc1 = we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
 					$wecmdenc4 = '';
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
-					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
+					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
 				} else{ //  gd lib ist nicht installiert
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
-					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
+					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, '0', '', true);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200);
 
 				/**
 				 * set pageLogger dir
@@ -5285,9 +3678,9 @@ else {
 				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['we_tracker_dir'].value");
 				$wecmdenc4 = '';
 				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
-				$_inp = we_html_tools::htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
+				$_inp = we_html_tools::htmlTextInput("we_tracker_dir", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
 				$_we_tracker_dir = we_button::create_button_table(array($_inp, $_but));
-				array_push($_settings, array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200);
 
 				// Build select box
 				$_php_setting = new we_html_select(array("name" => "navigation_entries_from_document", "class" => "weSelect"));
@@ -5295,26 +3688,26 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? g_l('prefs', '[navigation_entries_from_document_folder]') : g_l('prefs', '[navigation_entries_from_document_item]'));
 
 					// Set selected setting
-					if($i == 0 && !get_value("navigation_entries_from_document")){
+					if($i == 0 && !get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("navigation_entries_from_document")){
+					} else if($i == 1 && get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT")){
 						$_php_setting->selectOption($i);
 					}
 				}
 
-				array_push($_settings, array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				$_php_setting = new we_html_select(array("name" => "navigation_rules_continue_after_first_match", "class" => "weSelect"));
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
 
 				// Set selected setting
-				if(get_value("navigation_rules_continue_after_first_match")){
+				if(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 
 
@@ -5323,7 +3716,7 @@ else {
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
 
-				if(get_value("execute_hooks")){
+				if(get_value("EXECUTE_HOOKS")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
@@ -5333,14 +3726,14 @@ else {
 
 				$hooksHtml .= $_php_setting->getHtml();
 
-				array_push($_settings, array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200);
 
 				//  select how php is parsed
 				$_php_setting = new we_html_select(array("name" => "phpLocalScope", "class" => "weSelect"));
 				$_php_setting->addOption(0, g_l('prefs', '[no]'));
 				$_php_setting->addOption(1, g_l('prefs', '[yes]'));
 
-				if(get_value("phpLocalScope")){
+				if(get_value("PHPLOCALSCOPE")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
@@ -5350,7 +3743,7 @@ else {
 
 				$phpLocalScopeHtml .= $_php_setting->getHtml();
 
-				array_push($_settings, array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200);
 
 				// Build dialog element if user has permission
 				$_dialog = create_dialog("", g_l('prefs', '[tab_system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
@@ -5367,97 +3760,97 @@ else {
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
 
-				array_push($_settings, array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", "space" => 480, "noline" => 1));
-				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), 2, 480), "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", "space" => 480, "noline" => 1);
+				$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), 2, 480), "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "navigation_directoryindex_hide", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("navigation_directoryindex_hide")){
+					if($i == 0 && !get_value("NAVIGATION_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("navigation_directoryindex_hide")){
+					} else if($i == 1 && get_value("NAVIGATION_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[navigation_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[navigation_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "wysiwyglinks_directoryindex_hide", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("wysiwyglinks_directoryindex_hide")){
+					if($i == 0 && !get_value("WYSIWYGLINKS_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("wysiwyglinks_directoryindex_hide")){
+					} else if($i == 1 && get_value("WYSIWYGLINKS_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[wysiwyglinks_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[wysiwyglinks_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
 
-				$_navigation_directoryindex_names = we_html_tools::htmlTextInput("navigation_directoryindex_names", 22, get_value("navigation_directoryindex_names"), "", "", "text", 225);
-				array_push($_settings, array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
+				$_navigation_directoryindex_names = we_html_tools::htmlTextInput("navigation_directoryindex_names", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
+				$_settings[] = array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1);
 
-				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), 2, 480), "noline" => 1));
+				$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), 2, 480), "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "taglinks_directoryindex_hide", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if($i == 0 && !get_value("taglinks_directoryindex_hide")){
+					if($i == 0 && !get_value("TAGLINKS_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
-					} else if($i == 1 && get_value("taglinks_directoryindex_hide")){
+					} else if($i == 1 && get_value("TAGLINKS_DIRECTORYINDEX_HIDE")){
 						$_php_setting->selectOption($i);
 					}
 				}
-				array_push($_settings, array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 
-				array_push($_settings, array("headline" => g_l('prefs', '[general_objectseourls]'), "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[general_objectseourls]'), "noline" => 1);
 				$_php_setting = new we_html_select(array("name" => "navigation_objectseourls", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("navigation_objectseourls"));
+				$_php_setting->selectOption(get_value("NAVIGATION_OBJECTSEOURLS"));
 
-				array_push($_settings, array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "wysiwyglinks_objectseourls", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("wysiwyglinks_objectseourls"));
+				$_php_setting->selectOption(get_value("WYSIWYGLINKS_OBJECTSEOURLS"));
 
-				array_push($_settings, array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
-				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), 2, 480), "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
+				$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), 2, 480), "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "taglinks_objectseourls", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("taglinks_objectseourls"));
+				$_php_setting->selectOption(get_value("TAGLINKS_OBJECTSEOURLS"));
 
-				array_push($_settings, array("headline" => g_l('prefs', '[taglinks_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[taglinks_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "urlencode_objectseourls", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("urlencode_objectseourls"));
+				$_php_setting->selectOption(get_value("URLENCODE_OBJECTSEOURLS"));
 
-				array_push($_settings, array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200));
-				array_push($_settings, array("headline" => g_l('prefs', '[general_seoinside]'), "noline" => 1));
-				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), 2, 480), "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => $_php_setting->getHtml(), "space" => 200);
+				$_settings[] = array("headline" => g_l('prefs', '[general_seoinside]'), "noline" => 1);
+				$_settings[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), 2, 480), "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "seoinside_hideineditmode", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("seoinside_hideineditmode"));
-				array_push($_settings, array("headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1));
+				$_php_setting->selectOption(get_value("SEOINSIDE_HIDEINEDITMODE"));
+				$_settings[] = array("headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "seoinside_hideinwebedition", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
-				array_push($_settings, array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtml(), "space" => 200));
+				$_php_setting->selectOption(get_value("SEOINSIDE_HIDEINWEBEDITION"));
+				$_settings[] = array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtml(), "space" => 200);
 
 				//javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)
 				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['error_document_no_objectfile'].value");
@@ -5477,13 +3870,13 @@ else {
 				$yuiSuggest->setSelectButton($_acButton1, 10);
 				$yuiSuggest->setTrashButton($_acButton2, 4);
 
-				array_push($_settings, array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, "noline" => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, "noline" => 1);
 
 				$_php_setting = new we_html_select(array("name" => "suppress404code", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
-				$_php_setting->selectOption(get_value("suppress404code"));
-				array_push($_settings, array("headline" => g_l('prefs', '[suppress404code]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 0));
+				$_php_setting->selectOption(get_value("SUPPRESS404CODE"));
+				$_settings[] = array("headline" => g_l('prefs', '[suppress404code]'), "html" => $_php_setting->getHtml(), "space" => 200, "noline" => 0);
 
 				$_dialog = create_dialog("", g_l('prefs', '[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 			}
@@ -5569,16 +3962,16 @@ else {
 			if(we_hasPerm("ADMINISTRATOR")){
 				// Create checkboxes
 				$_template_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-				$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("disable_template_code_check"), "disable_template_code_check", g_l('prefs', '[disable_template_code_check]')));
-				array_push($_settings, array("headline" => g_l('prefs', '[templates]'), "html" => $_template_error_handling_table->getHtml(), "space" => 200));
+				$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("DISABLE_TEMPLATE_CODE_CHECK"), "disable_template_code_check", g_l('prefs', '[disable_template_code_check]')));
+				$_settings[] = array("headline" => g_l('prefs', '[templates]'), "html" => $_template_error_handling_table->getHtml(), "space" => 200);
 			}
 
 			// Create checkboxes
-			$_we_error_handler = we_forms::checkbox(1, get_value("we_error_handler"), "we_error_handler", g_l('prefs', '[error_use_handler]'), false, "defaultfont", "set_state_error_handler();");
+			$_we_error_handler = we_forms::checkbox(1, get_value("WE_ERROR_HANDLER"), "we_error_handler", g_l('prefs', '[error_use_handler]'), false, "defaultfont", "set_state_error_handler();");
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[tab_error_handling]'), "html" => $_we_error_handler, "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[tab_error_handling]'), "html" => $_we_error_handler, "space" => 200);
 			}
 
 			/**
@@ -5587,21 +3980,21 @@ else {
 			// Create checkboxes
 			$_error_handling_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 
-			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", g_l('prefs', '[error_errors]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_ERRORS"), "error_handling_errors", g_l('prefs', '[error_errors]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_handling_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_handling_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_handling_warnings"), "error_handling_warnings", g_l('prefs', '[error_warnings]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_handling_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_WARNINGS"), "error_handling_warnings", g_l('prefs', '[error_warnings]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_handling_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_handling_notices"), "error_handling_notices", g_l('prefs', '[error_notices]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_NOTICES"), "error_handling_notices", g_l('prefs', '[error_notices]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_handling_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
 			if(version_compare(PHP_VERSION, '5.3.0') >= 0){
-				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("we_error_handler")));
+				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_DEPRECATED"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 				$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 			}
 
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[error_types]'), "html" => $_error_handling_table->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[error_types]'), "html" => $_error_handling_table->getHtml(), "space" => 200);
 			}
 
 			/*			 * *******************************************************************
@@ -5612,11 +4005,11 @@ else {
 			$_error_display_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), 1, 260));
 
-			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_SHOW"), "error_display_errors", g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_LOG"), "error_log_errors", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
-			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs', '[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_MAIL"), "error_mail_errors", g_l('prefs', '[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("WE_ERROR_HANDLER")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
@@ -5627,14 +4020,14 @@ else {
 
 			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("error_mail_address", 6, (get_value("error_mail_errors") != 0 ? get_value("error_mail_address") : ""), 100, ((!get_value("error_mail_errors") || !get_value("we_error_handler")) ? "disabled=\"disabled\"" : ""), "text", 105));
+			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("error_mail_address", 6, (get_value("WE_ERROR_MAIL") != 0 ? get_value("WE_ERROR_MAIL_ADDRESS") : ""), 100, ((!get_value("WE_ERROR_MAIL") || !get_value("WE_ERROR_HANDLER")) ? "disabled=\"disabled\"" : ""), "text", 105));
 
 			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200));
+				$_settings[] = array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200);
 			}
 
 			/*			 * *******************************************************************
@@ -5647,13 +4040,13 @@ else {
 			// Create checkboxes
 			$_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
 
-			$_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
+			$_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
 			$_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			$_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
+			$_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1));
+				$_settings[] = array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1);
 			}
 
 			// Create notice
@@ -5661,7 +4054,7 @@ else {
 
 			// Build notice dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => "", "html" => $_debug_notice, "space" => 200));
+				$_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
 			}
 
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
@@ -5707,7 +4100,7 @@ else {
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), 2, 450, false);
 
 			// Build dialog if user has permission
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
 
 
 			/*			 * ***************************************************************
@@ -5724,7 +4117,7 @@ else {
 				. $_notice;
 
 			// Build dialog element if users has permission
-			array_push($_settings, array("headline" => g_l('prefs', '[message_reporting][headline]'), "html" => $_html, "space" => 200));
+			$_settings[] = array("headline" => g_l('prefs', '[message_reporting][headline]'), "html" => $_html, "space" => 200);
 
 			$_dialog = create_dialog("settings_message_reporting", g_l('prefs', '[message_reporting][headline]'), $_settings, -1, "", "", false, $_js);
 
@@ -5770,47 +4163,47 @@ else {
 				$_php_setting->addOption(0, 'false');
 				$_php_setting->addOption(1, 'true');
 
-				if(get_value("xhtml_default")){
+				if(get_value("XHTML_DEFAULT")){
 					$_php_setting->selectOption(1);
 				} else{
 					$_php_setting->selectOption(0);
 				}
-				array_push($_settings, array('html' => g_l('prefs', '[xhtml_default]'), 'space' => 0, 'noline' => 1));
-				array_push($_settings, array('html' => $_php_setting->getHtml(), "space" => 200));
+				$_settings[] = array('html' => g_l('prefs', '[xhtml_default]'), 'space' => 0, 'noline' => 1);
+				$_settings[] = array('html' => $_php_setting->getHtml(), "space" => 200);
 
 
-				array_push($_settings, array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), 2, 450), 'space' => 0, 'noline' => 1));
+				$_settings[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), 2, 450), 'space' => 0, 'noline' => 1);
 
 				//  activate xhtml_debug
 				$_xhtml_debug = we_forms::checkbox(1, get_value("xhtml_debug"), "setXhtml_debug", g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_debug\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);');
 				$_xhtml_debug .= we_html_tools::hidden('xhtml_debug', get_value("xhtml_debug"));
-				array_push($_settings, array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug, 'space' => 200, 'noline' => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug, 'space' => 200, 'noline' => 1);
 
 				//  activate xhtml_remove_wrong
-				$_xhtml_remove_wrong = we_forms::checkbox(1, get_value("xhtml_remove_wrong"), "setXhtml_remove_wrong", g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('xhtml_debug'));
-				$_xhtml_remove_wrong .= we_html_tools::hidden('xhtml_remove_wrong', get_value("xhtml_remove_wrong"));
-				array_push($_settings, array('html' => $_xhtml_remove_wrong, 'space' => 200));
+				$_xhtml_remove_wrong = we_forms::checkbox(1, get_value("xhtml_remove_wrong"), "setXhtml_remove_wrong", g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('XHTML_DEBUG'));
+				$_xhtml_remove_wrong .= we_html_tools::hidden('xhtml_remove_wrong', get_value("XHTML_REMOVE_WRONG"));
+				$_settings[] = array('html' => $_xhtml_remove_wrong, 'space' => 200);
 
 				//  activate xhtml_show_wrong
-				$_xhtml_show_wrong = we_forms::checkbox(1, get_value("xhtml_show_wrong"), "setXhtml_show_wrong", g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('xhtml_debug'));
+				$_xhtml_show_wrong = we_forms::checkbox(1, get_value("xhtml_show_wrong"), "setXhtml_show_wrong", g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('XHTML_DEBUG'));
 				$_xhtml_show_wrong .= we_html_tools::hidden('xhtml_show_wrong', get_value("xhtml_show_wrong"));
-				array_push($_settings, array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => '', 'space' => 400, 'noline' => 1));
-				array_push($_settings, array('html' => $_xhtml_show_wrong, 'space' => 200, 'noline' => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => '', 'space' => 400, 'noline' => 1);
+				$_settings[] = array('html' => $_xhtml_show_wrong, 'space' => 200, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_text = we_forms::checkbox(1, get_value("xhtml_show_wrong_text"), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_text\');', !get_value('xhtml_show_wrong'));
 				$_xhtml_show_wrong_text .= we_html_tools::hidden('xhtml_show_wrong_text', get_value("xhtml_show_wrong_text"));
-				array_push($_settings, array('html' => $_xhtml_show_wrong_text, 'space' => 220, 'noline' => 1));
+				$_settings[] = array('html' => $_xhtml_show_wrong_text, 'space' => 220, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_js = we_forms::checkbox(1, get_value("xhtml_show_wrong_js"), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_js\');', !get_value('xhtml_show_wrong'));
 				$_xhtml_show_wrong_js .= we_html_tools::hidden('xhtml_show_wrong_js', get_value("xhtml_show_wrong_js"));
-				array_push($_settings, array('html' => $_xhtml_show_wrong_js, 'space' => 220, 'noline' => 1));
+				$_settings[] = array('html' => $_xhtml_show_wrong_js, 'space' => 220, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_error_log = we_forms::checkbox(1, get_value("xhtml_show_wrong_error_log"), "setXhtml_show_wrong_error_log", g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_error_log\');', !get_value('xhtml_show_wrong'));
 				$_xhtml_show_wrong_error_log .= we_html_tools::hidden('xhtml_show_wrong_error_log', get_value("xhtml_show_wrong_error_log"));
-				array_push($_settings, array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1));
+				$_settings[] = array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1);
 			}
 
 			// Build dialog element if user has permission
@@ -5833,7 +4226,7 @@ else {
 
 
 			$steps = array(1, 5, 7, 10, 15, 20, 30, 40, 50, 80, 100, 500, 1000);
-			$backup_steps = get_value("backup_steps");
+			$backup_steps = get_value("BACKUP_STEPS");
 			$steps_code = '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:10px;"><tr>';
 			foreach($steps as $step){
 				if($step == $backup_steps)
@@ -5853,8 +4246,8 @@ else {
 
 
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200));
-				array_push($_settings, array("headline" => "", "html" => $perf->getHtml(), "space" => 15));
+				$_settings[] = array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200);
+				$_settings[] = array("headline" => "", "html" => $perf->getHtml(), "space" => 15);
 			}
 
 			// Build dialog
@@ -5882,64 +4275,52 @@ else {
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
+			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
 
 			if(we_hasPerm('ADMINISTRATOR')){
-				$_emailSelect = we_html_tools::htmlSelect('mailer_type', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('mailer_type'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
+				$_emailSelect = we_html_tools::htmlSelect('mailer_type', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
 
-				array_push($_settings, array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1));
+				$_settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1);
 
-				$_smtp_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('mailer_type') == 'php') ? 'none' : 'block') . ';'), 9, 3);
+				$_smtp_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') == 'php') ? 'none' : 'block') . ';'), 9, 3);
 
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
 				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
-				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_server', 24, get_value('smtp_server'), 180, '', 'text', 180));
+				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_server', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
 
 				$_smtp_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
 				$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_port]'));
-				$_smtp_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_port', 24, get_value('smtp_port'), 180, '', 'text', 180));
+				$_smtp_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_port', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
 
 
-				/* halo und timeout lassen sich nicht mehr mit Zend_mail setzen
-				  $_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10,10));
-				  $_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs','[smtp_halo]'));
-				  $_smtp_table->setCol(4, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_halo', 24, get_value('smtp_halo'), 180, '', 'text', 180));
-
-				  $_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10,10));
-				  $_smtp_table->setCol(6, 0, array('class' => 'defaultfont'), g_l('prefs','[smtp_timeout]'));
-				  $_smtp_table->setCol(6, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_timeout', 24, get_value('smtp_timeout'), 180, '', 'text', 180));
-
-				  Tabellenzellen neu durchnummeriert
-				 */
-
-				$_encryptSelect = we_html_tools::htmlSelect('smtp_encryption', array('0' => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('smtp_encryption'), false, "", 'value', 180, 'defaultfont');
+				$_encryptSelect = we_html_tools::htmlSelect('smtp_encryption', array('0' => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, "", 'value', 180, 'defaultfont');
 
 				$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
 				$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
 
 
-				$_auth_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('smtp_auth') == 1) ? 'block' : 'none') . ';'), 4, 3);
+				$_auth_table = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
 
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
 				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
-				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_username', 14, get_value('smtp_username'), 105, '', 'text', 105));
+				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_username', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));
 
 				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
 				$_auth_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
-				$_auth_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_password', 14, get_value('smtp_password'), 105, '', 'password', 105));
+				$_auth_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_password', 14, get_value('SMTP_PASSWORD'), 105, '', 'password', 105));
 
 				$_auth_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
 				$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 20));
-				$_smtp_table->setCol(6, 0, array('class' => 'defaultfont', 'colspan' => 3), we_forms::checkbox(1, get_value('smtp_auth'), 'smtp_auth', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';")
+				$_smtp_table->setCol(6, 0, array('class' => 'defaultfont', 'colspan' => 3), we_forms::checkbox(1, get_value('SMTP_AUTH'), 'smtp_auth', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';")
 				);
 				$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_smtp_table->setCol(8, 0, array('align' => 'right', 'colspan' => 3), we_html_tools::getPixel(5, 5) . $_auth_table->getHtml());
 
-				array_push($_settings, array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1));
+				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
 			}
 
 			$_dialog = create_dialog('settings_email', g_l('prefs', '[email]'), $_settings);
@@ -5978,42 +4359,42 @@ else {
 
 
 			$_SESSION['versions']['Prefs'] = array(
-				"version_image/*",
-				"version_text/html",
-				"version_text/webedition",
-				"version_text/js",
-				"version_text/css",
-				"version_text/plain",
-				"version_text/htaccess",
-				"version_text/weTmpl",
-				"version_application/x-shockwave-flash",
-				"version_video/quicktime",
-				"version_application/*",
-				"version_text/xml",
-				"version_objectFile",
-				"versions_time_days",
-				"versions_time_weeks",
-				"versions_time_years",
-				"versions_anzahl",
-				"versions_create",
-				"versions_create_tmpl",
-				"versions_time_days_tmpl",
-				"versions_time_weeks_tmpl",
-				"versions_time_years_tmpl",
-				"versions_anzahl_tmpl"
+				"version_image/*" => 'VERSIONING_IMAGE',
+				"version_text/html" => 'VERSIONING_TEXT_HTML',
+				"version_text/webedition" => 'VERSIONING_TEXT_WEBEDITION',
+				"version_text/js" => 'VERSIONING_TEXT_JS',
+				"version_text/css" => 'VERSIONING_TEXT_CSS',
+				"version_text/plain" => 'VERSIONING_TEXT_PLAIN',
+				"version_text/htaccess" => 'VERSIONING_TEXT_HTACCESS',
+				"version_text/weTmpl" => 'VERSIONING_TEXT_WETMPL',
+				"version_application/x-shockwave-flash" => 'VERSIONING_FLASH',
+				"version_video/quicktime" => 'VERSIONING_QUICKTIME',
+				"version_application/*" => 'VERSIONING_SONSTIGE',
+				"version_text/xml" => 'VERSIONING_TEXT_XML',
+				"version_objectFile" => 'VERSIONING_OBJECT',
+				"versions_time_days" => 'VERSIONS_TIME_DAYS',
+				"versions_time_weeks" => 'VERSIONS_TIME_WEEKS',
+				"versions_time_years" => 'VERSIONS_TIME_YEARS',
+				"versions_anzahl" => 'VERSIONS_ANZAHL',
+				"versions_create" => 'VERSIONS_CREATE',
+				"versions_create_tmpl" => 'VERSIONS_CREATE_TMPL',
+				"versions_time_days_tmpl" => 'VERSIONS_TIME_DAYS_TMPL',
+				"versions_time_weeks_tmpl" => 'VERSIONS_TIME_WEEKS_TMPL',
+				"versions_time_years_tmpl" => 'VERSIONS_TIME_YEARS_TMPL',
+				"versions_anzahl_tmpl" => 'VERSIONS_ANZAHL_TMPL'
 			);
 			$_SESSION['versions']['logPrefs'] = array();
-			foreach($_SESSION['versions']['Prefs'] as $k){
-				$_SESSION['versions']['logPrefs'][$k] = get_value($k);
+			foreach($_SESSION['versions']['Prefs'] as $k => $v){
+				$_SESSION['versions']['logPrefs'][$k] = get_value($v);
 			}
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), 2, 470),
 					'noline' => 1,
-					'space' => 0)
+					'space' => 0
 				);
 
 				$checkboxes = "";
@@ -6032,18 +4413,16 @@ else {
 					}
 				}
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[ContentType]'),
 					'space' => 170,
 					'html' => $checkboxes
-					)
 				);
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
-					)
 				);
 
 				$_versions_time_days = new we_html_select(array(
@@ -6090,54 +4469,48 @@ else {
 				}
 				$_versions_time_years->selectOption(get_value("versions_time_years"));
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => $_versions_time_days->getHtml() . " " . $_versions_time_weeks->getHtml() . " " . $_versions_time_years->getHtml(),
 					"space" => 170,
 					"headline" => g_l('prefs', '[versioning_time]')
-					)
 				);
 
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_anzahl_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
-					)
 				);
 
 
 				$_versions_anzahl = we_html_tools::htmlTextInput("versions_anzahl", 24, get_value("versions_anzahl"), 5, "", "text", 50, 0, "");
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $_versions_anzahl,
 					'space' => 170
-					)
 				);
 
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), 2, 470, false),
 					'noline' => 1,
 					'space' => 0
-					)
 				);
 
 				$_versions_create_publishing = we_forms::radiobutton("1", (get_value("versions_create") == "1"), "versions_create", g_l('prefs', '[versions_create_publishing]'), true, "defaultfont", "", false, "");
 				$_versions_create_always = we_forms::radiobutton("0", (get_value("versions_create") == "0"), "versions_create", g_l('prefs', '[versions_create_always]'), true, "defaultfont", "", false, "");
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_create]'),
 					'html' => $_versions_create_publishing . "<br/>" . $_versions_create_always,
 					'space' => 170
-					)
 				);
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), 2, 470, false),
 					'noline' => 0,
 					'space' => 0
-					)
 				);
 
 				$_versions_time_days_tmpl = new we_html_select(array(
@@ -6184,48 +4557,44 @@ else {
 				}
 				$_versions_time_years_tmpl->selectOption(get_value("versions_time_years_tmpl"));
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => $_versions_time_days_tmpl->getHtml() . " " . $_versions_time_weeks_tmpl->getHtml() . " " . $_versions_time_years_tmpl->getHtml(),
 					"space" => 170,
 					'noline' => 1,
 					"headline" => g_l('prefs', '[versioning_time]')
-					)
 				);
 
 				$_versions_anzahl_tmpl = we_html_tools::htmlTextInput("versions_anzahl_tmpl", 24, get_value("versions_anzahl_tmpl"), 5, "", "text", 50, 0, "");
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $_versions_anzahl_tmpl,
 					'noline' => 1,
 					'space' => 170
-					)
 				);
 				$_versions_create_tmpl_publishing = we_forms::radiobutton("1", (get_value("versions_create_tmpl") == "1"), "versions_create_tmpl", g_l('prefs', '[versions_create_tmpl_publishing]'), true, "defaultfont", "", false, "");
 				$_versions_create_tmpl_always = we_forms::radiobutton("0", (get_value("versions_create_tmpl") == "0"), "versions_create_tmpl", g_l('prefs', '[versions_create_tmpl_always]'), true, "defaultfont", "", false, "");
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_create]'),
 					'html' => $_versions_create_tmpl_publishing . "<br/>" . $_versions_create_tmpl_always,
 					'space' => 170
-					)
 				);
 
 
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
-					)
 				);
 
 				$_versions_wizard = "<div style='float:left;'>" . we_button::create_button("openVersionWizard", "javascript:openVersionWizard()", true, 100, 22, "", "") . "</div>";
 
-				array_push($_settings, array(
+				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_wizard]'),
 					'html' => $_versions_wizard,
-					'space' => 170)
+					'space' => 170
 				);
 			}
 
@@ -6246,10 +4615,10 @@ else {
  * @return         string
  */
 function render_dialog(){
-	global $global_config, $tabname;
+	global $tabname;
 
 	// Check configuration file for all needed variables
-	check_global_config($global_config);
+	check_global_config();
 
 	// Render setting groups
 	return
@@ -6363,8 +4732,8 @@ if($doSave && !$acError){
 
 
 
-	print STYLESHEET . $save_javascript . "</head>";
-	print we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doClose()"), build_dialog("saved")) . "</html>";
+	print STYLESHEET . $save_javascript . "</head>" .
+		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doClose()"), build_dialog("saved")) . "</html>";
 } else{
 	$_form = we_html_element::htmlForm(array("onSubmit" => "return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
 
@@ -6409,10 +4778,9 @@ function setColorField(name) {
 
 
 
-	print STYLESHEET . $_we_cmd_js . $_we_win_js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . "</head>";
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody"), $_form) .
+	print STYLESHEET . $_we_cmd_js . $_we_win_js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
+		we_html_element::htmlBody(array("class" => "weDialogBody"), $_form) .
 		$yuiSuggest->getYuiCss() .
 		$yuiSuggest->getYuiJs() .
-		"</html>";
+		'</html>';
 }

@@ -38,15 +38,10 @@ class weConfParser{
 	}
 
 	function setGlobalPref($name, $value, $comment = ""){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weFile.class.php");
 		$file_name = WE_INCLUDES_PATH . "conf/we_conf_global.inc.php";
 		$parser = weConfParser::getConfParserByFile($file_name);
 		$settings = $parser->getData();
-		if(in_array($name, array_keys($settings))){
-			$file = weConfParser::changeSourceCode("define", $parser->getContent(), $name, $value, true, $comment);
-		} else{
-			$file = weConfParser::changeSourceCode("add", $parser->getContent(), $name, $value, true, $comment);
-		}
+		$file = weConfParser::changeSourceCode((in_array($name, array_keys($settings)) ? "define" : 'add'), $parser->getContent(), $name, $value, true, $comment);
 
 		return weFile::save($file_name, $file);
 	}
@@ -54,17 +49,13 @@ class weConfParser{
 	function setGlobalPrefInContent(&$content, $name, $value, $comment = ""){
 		$parser = new weConfParser($content);
 		$settings = $parser->getData();
-		if(in_array($name, array_keys($settings))){
-			$content = weConfParser::changeSourceCode("define", $content, $name, $value, true, $comment);
-		} else{
-			$content = weConfParser::changeSourceCode("add", $content, $name, $value, true, $comment);
-		}
+		$content = weConfParser::changeSourceCode((in_array($name, array_keys($settings)) ? "define" : 'add'), $content, $name, $value, true, $comment);
 
 		return true;
 	}
 
 	function saveToFile($file){
-		return weFile::save($file, $this->getFileContent(),'wb');
+		return weFile::save($file, $this->getFileContent(), 'wb');
 	}
 
 	function getValue($key){
@@ -90,10 +81,10 @@ class weConfParser{
 
 			case "add":
 				return substr(trim($text), 0, -2) .
-					weConfParser::makeDefine($key, $value, $active, $comment) . "\n\n" .
-					"?>";
+					weConfParser::makeDefine($key, $value, $active, $comment) . "\n\n";
 			case "define":
-				if(preg_match('|/?/?define\(\s*("' . preg_quote($key) . '")\s*,\s*([^\r\n]+)\);[\r\n]|Ui', $text, $match)){
+				$match = array();
+				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]|Ui', $text, $match)){
 					return str_replace($match[0], weConfParser::makeDefine($key, $value, $active) . "\n", $text);
 				}
 		}
@@ -158,16 +149,13 @@ class weConfParser{
 			$out .= weConfParser::makeDefine($key, $val) . "\n\n";
 		}
 
-		return $out . "?>";
+		return $out;
 	}
 
 	function makeDefine($key, $val, $active = true, $comment = ""){
 		$comment = ($comment ? "//$comment\n" : "");
-		if(!is_numeric($val)){
-			return $comment . ($active ? "" : "//") . 'define("' . $key . '", "' . weConfParser::_addSlashes($val) . '");';
-		} else{
-			return $comment . ($active ? "" : "//") . 'define("' . $key . '", ' . $val . ');';
-		}
+		return $comment . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
+			(!is_numeric($val) ? '"' . weConfParser::_addSlashes($val) . '"' : $val) . ');';
 	}
 
 	function _correctMatchValue($value){
