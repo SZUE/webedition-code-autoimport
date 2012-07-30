@@ -749,7 +749,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(!$this->ID){
 			return false;
 		}
-		$this->we_clearCache($this->ID);
 		return we_document::we_delete();
 	}
 
