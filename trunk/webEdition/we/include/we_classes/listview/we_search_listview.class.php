@@ -86,8 +86,8 @@ class we_search_listview extends listviewBase{
 
 		// correct order
 		$orderArr = array();
+		$random = false;
 		if($this->order){
-			$random = false;
 			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == "we_filename"){
 
 				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
