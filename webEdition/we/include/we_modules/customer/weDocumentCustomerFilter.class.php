@@ -100,7 +100,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @param array $blackList
 	 * @return weDocumentCustomerFilter
 	 */
-	function __construct($id = 0, $modelId = 0, $modelType = "", $modelTable = "", $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = weAbstractCustomerFilter::OFF, $specificCustomers = array(), $filter = array(), $whiteList = array(), $blackList = array()){
+	function __construct($id = 0, $modelId = 0, $modelType = '', $modelTable = '', $accessControlOnTemplate = true, $errorDocNoLogin = 0, $errorDocNoAccess = 0, $mode = weAbstractCustomerFilter::OFF, $specificCustomers = array(), $filter = array(), $whiteList = array(), $blackList = array()){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 		$this->setId($id);
 		$this->setModelId($modelId);
@@ -189,12 +189,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 */
 	static function getFilterByIdAndTable($id, $table){
 		$db = new DB_WE();
-		$query = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape($table) . '" AND modelId = ' . intval($id);
-		$hash = getHash($query, $db);
+		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
 		if(count($hash)){
 			return self::getFilterByDbHash($hash);
 		}
-		unset($db);
 		return ''; // important do NOT return null
 	}
 
@@ -205,7 +203,6 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * @return string
 	 */
 	function getConditionForListviewQuery(&$listview){
-
 		if($listview->customerFilterType === 'off' || $listview->customerFilterType === 'false'){
 			return '';
 		}
@@ -346,7 +343,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 				$_whiteList = $_docCustomerFilter->getWhiteList();
 				$_whiteList = !empty($_whiteList) ? addslashes(makeCSVFromArray($_whiteList, true)) : "";
 
-				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' .we_database_base::arraySetter(array(
+				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'modelId' => $model->ID,
 						'modelType' => $model->ContentType,
 						'modelTable' => stripTblPrefix($model->Table),

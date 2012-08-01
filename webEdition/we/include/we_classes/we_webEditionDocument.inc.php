@@ -49,7 +49,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	/**
 	 * @var weDocumentCustomerFilter
 	 */
-	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
 	function __construct(){
 		if(defined("SHOP_TABLE")){

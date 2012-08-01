@@ -41,11 +41,7 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 		$_document->we_initSessDat($we_dt);
 		$_filterOfDocument = $_document->documentCustomerFilter;
 
-		if(weDocumentCustomerFilter::filterAreQual($_filterOfFolder, $_filterOfDocument, true)){
-			$_ret = "false";
-		} else{
-			$_ret = "true";
-		}
+		$_ret = (weDocumentCustomerFilter::filterAreQual($_filterOfFolder, $_filterOfDocument, true) ? 'false' : 'true');
 
 		$resp->setData('data', $_ret);
 
