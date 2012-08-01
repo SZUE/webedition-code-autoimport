@@ -156,7 +156,7 @@ class we_user{
 
 		array_push($this->preference_slots, "sizeOpt", "weWidth", "weHeight", "usePlugin", "autostartPlugin", "promptPlugin", "Language", "BackendCharset", "seem_start_file", "seem_start_type", "seem_start_weapp", "editorSizeOpt", "editorWidth", "editorHeight", "editorFontname", "editorFontsize", "editorFont", "default_tree_count", "force_glossary_action", "force_glossary_check", "cockpit_amount_columns", "cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
 
-		$this->DB_WE = new DB_WE;
+		$this->DB_WE = new DB_WE();
 
 		$this->workspaces[FILE_TABLE] = array();
 		$this->workspaces[TEMPLATES_TABLE] = array();
@@ -199,8 +199,9 @@ class we_user{
 		$this->mapPermissions();
 		if($ext){
 			$this->initExt = $ext;
-			foreach($this->extensions_slots as $k => $v)
+			foreach($this->extensions_slots as $k => $v){
 				$this->extensions_slots[$k]->init($this);
+			}
 		}
 	}
 
@@ -209,11 +210,10 @@ class we_user{
 	function initFromDB($id){
 		$ret = false;
 		if($id){
-			$this->DB_WE->query("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($id));
+			$this->DB_WE->query('SELECT * FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
 			if($this->DB_WE->next_record()){
 				$this->ID = $id;
 				$this->getPersistentSlotsFromDB();
-				$this->getPreferenceSlotsFromDB();
 				$ret = true;
 			}
 			$this->loadWorkspaces();
@@ -251,9 +251,8 @@ class we_user{
 				}
 			}
 			//remove last ,
-			$updt = substr($updt, 0, -1);
-			$q = "UPDATE " . $this->DB_WE->escape($this->Table) . " SET $updt WHERE ID=" . intval($this->ID);
-			$this->DB_WE->query($q);
+			$updt = rtrim($updt, ',');
+			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . " SET $updt WHERE ID=" . intval($this->ID));
 		} else{
 			$keys = "";
 			$vals = "";
@@ -311,28 +310,25 @@ class we_user{
 		$db_tmp = new DB_WE();
 		$isnew = $this->ID ? false : true;
 		if($this->Type == 1 && $this->ID != 0){
-			if($this->ParentID == 0)
-				$ppath = "/";
-			else
-				$ppath = $this->getPath($this->ParentID);
+			$ppath = ($this->ParentID == 0 ? '/' : $this->getPath($this->ParentID));
 			$dpath = $this->getPath($this->ID);
-			if(preg_match('|' . $dpath . '|', $ppath))
+			if(preg_match('|' . $dpath . '|', $ppath)){
 				return -5;
+			}
 		}
 		if($this->Type == 2){
 			$foo = getHash("SELECT ID,username FROM " . USER_TABLE . " WHERE ID=" . intval($this->Alias), $this->DB_WE);
 			$uorginal = $foo["ID"];
 			$search = true;
 			$ount = 0;
-			$try_name = "@" . $foo["username"];
+			$try_name = '@' . $foo["username"];
 			$try_text = $foo["username"];
 			while($search) {
 				$this->DB_WE->query("SELECT username FROM " . USER_TABLE . " WHERE ID!=" . intval($this->ID) . "' AND ID!=" . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "'");
 				if(!$this->DB_WE->next_record()){
 					$search = false;
 				} else{
-					$ount++;
-					$try_name = $try_name . "_" . $ount;
+					$try_name = $try_name . "_" . ++$ount;
 				}
 			}
 			$this->username = $try_name;
@@ -372,51 +368,48 @@ class we_user{
 	function saveToSession(){
 
 		if($this->ID != $_SESSION['user']['ID']){
-			return "";
+			return '';
 		}
 
-		$save_javascript = "var _multiEditorreload = false;";
-
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
+		$save_javascript = "var _multiEditorreload = false;" .
+			$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
+			$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
+			$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case "cockpit":
-					$save_javascript .= $this->rememberPreference(0, 'seem_start_file');
-					$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
-					$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
+					$save_javascript .= $this->rememberPreference(0, 'seem_start_file') .
+						$this->rememberPreference("cockpit", 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case "object":
-					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file');
-					$save_javascript .= $this->rememberPreference("object", 'seem_start_type');
-					$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
+					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
+						$this->rememberPreference("object", 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case "weapp":
-					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : '', 'seem_start_weapp');
-					$save_javascript .= $this->rememberPreference("weapp", 'seem_start_type');
-					$save_javascript .= $this->rememberPreference(0, 'seem_start_file');
+					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : '', 'seem_start_weapp') .
+						$this->rememberPreference("weapp", 'seem_start_type') .
+						$this->rememberPreference(0, 'seem_start_file');
 					break;
 				default:
-					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file');
-					$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
-					$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
+					$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
+						$this->rememberPreference("cockpit", 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 			}
 		}
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight');
-
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, '$_POST["editorSizeOpt');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight');
-
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check');
+		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
+			$this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth') .
+			$this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight') .
+			$this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode') .
+			$this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont') .
+			$this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname') .
+			$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
+			$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, '$_POST["editorSizeOpt') .
+			$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
+			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') .
+			$this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
+			$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check');
 
 		return $save_javascript;
 	}
@@ -427,7 +420,6 @@ class we_user{
 		$this->permissions_titles = array();
 		$permissions = unserialize($this->Permissions);
 
-		$entries = array();
 		$entries = weToolLookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_PATH . "perms");
@@ -531,9 +523,11 @@ class we_user{
 	function saveWorkspaces(){
 		foreach($this->workspaces as $k => $v){
 			$new_array = array();
-			foreach($v as $key => $val)
-				if($val != 0)
-					array_push($new_array, $this->workspaces[$k][$key]);
+			foreach($v as $key => $val){
+				if($val != 0){
+					$new_array[] = $this->workspaces[$k][$key];
+				}
+			}
 			$this->workspaces[$k] = $new_array;
 		}
 
@@ -553,11 +547,9 @@ class we_user{
 					array_push($new_array, $this->workspaces_defaults[$k][$key]);
 			$this->workspaces_defaults[$k] = $new_array;
 		}
-		if(count($this->workspaces[FILE_TABLE]) != 0){
-			$this->workSpaceDef = makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ",");
-		} else{
-			$this->workSpaceDef = "";
-		}
+		$this->workSpaceDef = (count($this->workspaces[FILE_TABLE]) != 0 ?
+				makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ",") :
+				'');
 
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
@@ -1547,8 +1539,6 @@ class we_user{
 
 
 		$javascript = '
-			<script  type="text/javascript"><!--
-
 				function rebuildCheckboxClicked() {
 					toggleRebuildPerm(false);
 				}
@@ -1589,22 +1579,17 @@ class we_user{
 				}
 			}
 		}
-		$javascript .= '
-				}
-						';
+		$javascript .= '}';
 		if(isset($handler)){
 			$javascript .= $handler;
 		}
-		$javascript .= '
-			//--></script>';
 
-		$parts = array();
-
-		array_push($parts, array(
-			"headline" => "",
-			"html" => $content,
-			"space" => 0,
-			"noline" => 1
+		$parts = array(
+			array(
+				"headline" => '',
+				"html" => $content,
+				"space" => 0,
+				"noline" => 1
 			)
 		);
 
@@ -1622,50 +1607,35 @@ class we_user{
 
 		$button_uncheckall = we_button::create_button('uncheckall', 'javascript:' . $uncheckjs);
 		$button_checkall = we_button::create_button('checkall', 'javascript:' . $checkjs);
-		array_push($parts, array(
+		$parts[] = array(
 			'headline' => '',
 			'html' => we_button::create_button_table(array($button_uncheckall, $button_checkall)),
 			'space' => 0
-			)
 		);
-
-
 
 		// Check if user has right to decide to give administrative rights
 		if(is_array($this->permissions_slots["administrator"]) && we_hasPerm("ADMINISTRATOR") && $this->Type == 0){
 			foreach($this->permissions_slots["administrator"] as $k => $v){
 				$content = '
 					<table cellpadding="0" cellspacing="0" border="0" width="500">
-						<tr>
-							<td>
-								' . we_html_tools::getPixel(1, 5) . '</td>
-						</tr>
-						<tr>
-							<td>
-								' . we_forms::checkbox(($v ? $v : "0"), ($v ? true : false), $this->Name . "_Permission_" . $k, $this->permissions_titles["administrator"][$k], false, "defaultfont", ($k == "REBUILD" ? "setRebuidPerms();top.content.setHot();" : "top.content.setHot();")) . '</td>
-						</tr>
+						<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
+						<tr><td>' . we_forms::checkbox(($v ? $v : '0'), ($v ? true : false), $this->Name . '_Permission_' . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 					</table>';
 			}
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => "",
 				"html" => $content,
 				"space" => 0
-				)
 			);
 		}
 
-
-
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "",
 			"html" => $this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', "[inherit]")),
 			"space" => 0
-			)
 		);
 
-
-
-		return we_multiIconBox::getHTML("", "100%", $parts, 30) . $javascript;
+		return we_multiIconBox::getHTML('rights', '100%', $parts, 30) . we_html_element::jsElement($javascript);
 	}
 
 	function formWorkspace(){
@@ -1770,21 +1740,23 @@ class we_user{
 			$obj_def_values = $this->Name . '_defWorkspace_' . $k . '_Values';
 			$obj_def_names = $this->Name . '_defWorkspace_' . $k;
 
-			if($k == TEMPLATES_TABLE){
-				$content1 .= $this->formInherits("_ParentWst", $this->ParentWst, g_l('modules_users', "[inherit_wst]"));
-			} else if($k == NAVIGATION_TABLE){
-				$content1 .= $this->formInherits("_ParentWsn", $this->ParentWsn, g_l('modules_users', "[inherit_wsn]"));
-			} elseif(defined("OBJECT_TABLE") && $k == OBJECT_FILES_TABLE){
-				$content1 .= $this->formInherits("_ParentWso", $this->ParentWso, g_l('modules_users', "[inherit_wso]"));
-			} elseif(defined('NEWSLETTER_TABLE') && $k == NEWSLETTER_TABLE){
-				$content1 .= $this->formInherits("_ParentWsnl", $this->ParentWsnl, g_l('modules_users', "[inherit_wsnl]"));
-			} else{
-				$content1 .= $this->formInherits("_ParentWs", $this->ParentWs, g_l('modules_users', "[inherit_ws]"));
+			switch($k){
+				case TEMPLATES_TABLE:
+					$content1 .= $this->formInherits("_ParentWst", $this->ParentWst, g_l('modules_users', "[inherit_wst]"));
+					break;
+				case NAVIGATION_TABLE:
+					$content1 .= $this->formInherits("_ParentWsn", $this->ParentWsn, g_l('modules_users', "[inherit_wsn]"));
+					break;
+				case (defined("OBJECT_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+					$content1 .= $this->formInherits("_ParentWso", $this->ParentWso, g_l('modules_users', "[inherit_wso]"));
+					break;
+				case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
+					$content1 .= $this->formInherits("_ParentWsnl", $this->ParentWsnl, g_l('modules_users', "[inherit_wsnl]"));
+					break;
+				default:
+					$content1 .= $this->formInherits("_ParentWs", $this->ParentWs, g_l('modules_users', "[inherit_ws]"));
 			}
-			$content .= "<p>";
-
-			$content1.='
-				<input type="hidden" name="' . $obj_values . '" value="' . implode(",", $v) . '" />
+			$content .= '<p><input type="hidden" name="' . $obj_values . '" value="' . implode(",", $v) . '" />
 				<input type="hidden" name="' . $obj_def_values . '" value="' . implode(",", $this->workspaces_defaults[$k]) . '" />
 				<table border="0" cellpadding="0" cellspacing="2" width="520">';
 			foreach($v as $key => $val){
@@ -1850,21 +1822,14 @@ class we_user{
 
 				$weAcSelector = $yuiSuggest->getHTML();
 
-				$content1.='
-					<tr>
-						<td colspan="2">
-							' . $weAcSelector . '
-						</td>
-						<td><div style="position:relative; top:-1px">
-							' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>';
+				$content1.=
+					'<tr><td colspan="2">' . $weAcSelector . '</td>
+						<td><div style="position:relative; top:-1px">' . we_button::create_button("image:btn_function_trash", "javascript:fillValues(document.we_form." . $obj_values . ",'" . $obj_names . "');fillDef(document.we_form." . $obj_def_values . ",document.we_form." . $obj_values . ",'" . $obj_def_names . "','" . $obj_names . "');delElement(document.we_form." . $obj_values . "," . $key . ");delElement(document.we_form." . $obj_def_values . "," . $key . ");switchPage(2);", true) . '</td></div>';
 
 				if($k == FILE_TABLE){
-					$content1.='
-						<td class="defaultfont">' . we_forms::checkbox("1", $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>';
+					$content1.='<td class="defaultfont">' . we_forms::checkbox("1", $default, $obj_def_names . "_$key", g_l('modules_users', "[make_def_ws]"), true, "defaultfont", 'top.content.setHot();fillDef(document.we_form.' . $obj_def_values . ',document.we_form.' . $obj_values . ',\'' . $obj_def_names . '\',\'' . $obj_names . '\');') . '</td>';
 				} else{
-					$content1.='
-						<td>
-							' . we_html_tools::getPixel(5, 5) . '</td>';
+					$content1.='<td>' . we_html_tools::getPixel(5, 5) . '</td>';
 				}
 				$content1.='</tr>';
 			}
@@ -1881,14 +1846,13 @@ class we_user{
 				. '</td>
 					</tr>
 				</table>';
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => $title,
 				"html" => $content1,
 				"space" => 200
-				)
 			);
 
-			$content1 = "";
+			$content1 = '';
 		}
 
 		return $content . we_multiIconBox::getHTML("", "100%", $parts, 30);
@@ -2541,7 +2505,19 @@ class we_user{
 		$tab_header = $we_tabs->getHeader();
 		$tab_body = $we_tabs->getJS();
 
-		$out = we_html_element::jsElement('
+		switch($this->Type){
+			case 1:
+				$headline1 = g_l('modules_users', "[group]") . ': ';
+				break;
+			case 2:
+				$headline1 = g_l('javaMenu_users', '[menu_alias]') . ': ';
+				break;
+			default:
+				$headline1 = g_l('javaMenu_users', '[menu_user]') . ': ';
+		}
+		$headline2 = empty($this->Path) ? $this->getPath($this->ParentID) : $this->Path;
+
+		return we_html_element::jsElement('
 				var activeTab = 0;
 				function setTab(tab) {
 					switch(tab) {
@@ -2577,23 +2553,9 @@ class we_user{
 
 				top.content.hloaded=1;
 			') .
-			$tab_header;
-
-		switch($this->Type){
-			case 1:
-				$headline1 = g_l('modules_users', "[group]") . ': ';
-				break;
-			case 2:
-				$headline1 = g_l('javaMenu_users', '[menu_alias]') . ': ';
-				break;
-			default:
-				$headline1 = g_l('javaMenu_users', '[menu_user]') . ': ';
-		}
-		$headline2 = empty($this->Path) ? $this->getPath($this->ParentID) : $this->Path;
-		$out .= '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $headline2) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
-
-		$out .= $tab_body;
-		return $out;
+			$tab_header .
+			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $headline2) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
+			$tab_body;
 	}
 
 }

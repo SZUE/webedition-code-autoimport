@@ -22,12 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$perm_group_name = 'spellchecker';
+$perm_group_title[$perm_group_name] = g_l('perms_spellchecker', '[perm_group_title]');
 
-
-$perm_group_name='spellchecker';
-$perm_group_title[$perm_group_name]=g_l('perms_spellchecker','[perm_group_title]');
-
-$perm_values[$perm_group_name]=array(
+$perm_values[$perm_group_name] = array(
 	'SPELLCHECKER_ADMIN'
 );
 
@@ -36,10 +34,10 @@ $perm_titles[$perm_group_name] = array();
 
 for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
 
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
+	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_' . $perm_group_name, '[' . $perm_values[$perm_group_name][$i] . ']');
 }
 
-$perm_defaults[$perm_group_name]=array(
+$perm_defaults[$perm_group_name] = array(
 	'SPELLCHECKER_ADMIN' => 0
 );
 

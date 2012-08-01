@@ -22,10 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$perm_group_name="shop";
-$perm_group_title[$perm_group_name] = g_l('perms_shop',"[perm_group_title]");
+$perm_group_name = "shop";
+$perm_group_title[$perm_group_name] = g_l('perms_shop', "[perm_group_title]");
 
 
 $perm_values[$perm_group_name] = array(
@@ -35,22 +33,22 @@ $perm_values[$perm_group_name] = array(
 	"DELETE_SHOP_ORDER",
 	"EDIT_SHOP_PREFS",
 	"CAN_EDIT_VARIANTS"
-	);
+);
 
 //	Here the array of the permission-titles is set.
 $perm_titles[$perm_group_name] = array();
 
 for($i = 0; $i < sizeof($perm_values[$perm_group_name]); $i++){
 
-	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_'.$perm_group_name,'['.$perm_values[$perm_group_name][$i].']');
+	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = g_l('perms_' . $perm_group_name, '[' . $perm_values[$perm_group_name][$i] . ']');
 }
 
 
 $perm_defaults[$perm_group_name] = array(
- 	"NEW_SHOP_ARTICLE" => 0,
- 	"DELETE_SHOP_ARTICLE" => 0,
- 	"EDIT_SHOP_ORDER" => 0,
- 	"DELETE_SHOP_ORDER" => 0,
- 	"EDIT_SHOP_PREFS" => 0,
- 	"CAN_EDIT_VARIANTS" => 1
- 	);
+	"NEW_SHOP_ARTICLE" => 0,
+	"DELETE_SHOP_ARTICLE" => 0,
+	"EDIT_SHOP_ORDER" => 0,
+	"DELETE_SHOP_ORDER" => 0,
+	"EDIT_SHOP_PREFS" => 0,
+	"CAN_EDIT_VARIANTS" => 1
+);

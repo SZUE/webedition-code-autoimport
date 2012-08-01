@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Class we_forms
  *
@@ -44,14 +43,11 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = ''){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? uniqid($name . "_") : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
-
-		$labelonclick = "";
-
+		$_id = ($uniqid ? uniqid($name . '_') : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 		// Create HTML tags
-		$foo = '
+		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
@@ -61,9 +57,6 @@ abstract class we_forms{
 					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
-
-		// Return generated tags
-		return $foo;
 	}
 
 	/**
@@ -96,13 +89,9 @@ abstract class we_forms{
 	 */
 	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $onMouseUp = "", $extra_content = ""){
 		// Check if we have to create a uniqe id
-		if($uniqid){
-			$_id = $name . "_" . uniqid(rand());
-		} else{
-			$_id = $name;
-		}
+		$_id = $name . ($uniqid ? '_' . uniqid(rand()) : '');
 		// Create HTML tags
-		$foo = '
+		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '>
@@ -113,8 +102,6 @@ abstract class we_forms{
 			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
-		// Return generated tags
-		return $foo;
 	}
 
 	/**

@@ -22,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$perm_group_name = "controlpermissions";
 
-
-$perm_group_name="controlpermissions";
-
-$perm_group_title[$perm_group_name] = g_l('perms_controlpermissions',"[perm_group_title]");
+$perm_group_title[$perm_group_name] = g_l('perms_controlpermissions', "[perm_group_title]");
 
 
 $perm_values[$perm_group_name] = array(
@@ -46,19 +44,19 @@ $perm_titles[$perm_group_name] = array();
 
 foreach($perm_values[$perm_group_name] as $entry){
 
-	$perm_titles[$perm_group_name][$entry] = g_l('perms_'.$perm_group_name,'['.$entry.']');
+	$perm_titles[$perm_group_name][$entry] = g_l('perms_' . $perm_group_name, '[' . $entry . ']');
 }
 
 $perm_defaults[$perm_group_name] = array(
-	"NEW_GROUP"=>0,
-	"NEW_USER"=>0,
-	"SAVE_GROUP"=>0,
-	"SAVE_USER"=>0,
-	"DELETE_GROUP"=>0,
-	"DELETE_USER"=>0,
-	"PUBLISH"=>0,
-	"EDIT_SETTINGS_DEF_EXT"=>0,
-	"EDIT_SETTINGS"=>1,
-	"EDIT_PASSWD"=>1
-	);
+	"NEW_GROUP" => 0,
+	"NEW_USER" => 0,
+	"SAVE_GROUP" => 0,
+	"SAVE_USER" => 0,
+	"DELETE_GROUP" => 0,
+	"DELETE_USER" => 0,
+	"PUBLISH" => 0,
+	"EDIT_SETTINGS_DEF_EXT" => 0,
+	"EDIT_SETTINGS" => 1,
+	"EDIT_PASSWD" => 1
+);
 

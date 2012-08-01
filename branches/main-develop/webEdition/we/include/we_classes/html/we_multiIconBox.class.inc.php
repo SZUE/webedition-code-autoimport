@@ -40,16 +40,12 @@ abstract class we_multiIconBox{
 	static function getHTML($name, $width, $content, $marginLeft = "0", $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(rand(), true));
 
-		if(isset($headline) && $headline != ""){
-			$out = we_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow);
-		} else{
-			$out = we_multiIconBox::_getBoxStart($width, $uniqname);
-		}
-
+		$out = (isset($headline) && $headline != '') ?
+			we_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :
+			we_multiIconBox::_getBoxStart($width, $uniqname);
 
 		foreach($content as $i => $c){
-
-			if($i == $foldAtNr && $foldAtNr < sizeof($content)){ // only if the folded items contain stuff.
+			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$but = we_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('$uniqname','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]"));
 				$out .= we_button::create_button_table(
 						array(
@@ -57,17 +53,17 @@ abstract class we_multiIconBox{
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 				);
-				$out .= '<br><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
+				$out .= '<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
 
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
 			$icon = (isset($c["icon"]) && $c["icon"]) ?
 				('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" alt="" style="margin-left:20px;" />') :
-				"";
+				'';
 			$headline = (isset($c["headline"]) && $c["headline"]) ?
 				('<div  id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') :
-				"";
+				'';
 
 
 			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
@@ -87,20 +83,15 @@ abstract class we_multiIconBox{
 				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
 			}
 
-			$out .= $rightContent;
-			$out .= '<br style="clear:both;">';
-
-
-			$out .= '</div>' . (we_base_browserDetect::isIE() ? '<br>' : '');
-
-			if($i < (count($content) - 1) && (!isset($c["noline"]))){
-				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
-			} else{
-				$out .= '<div style="margin:10px 0;clear:both;"></div>';
-			}
+			$out .= $rightContent .
+				'<br style="clear:both;"/>' .
+				'</div>' . (we_base_browserDetect::isIE() ? '<br/>' : '') .
+				($i < (count($content) - 1) && (!isset($c["noline"])) ?
+					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
+					'<div style="margin:10px 0;clear:both;"></div>');
 		}
 
-		if($foldAtNr >= 0 && $foldAtNr < sizeof($content)){
+		if($foldAtNr >= 0 && $foldAtNr < count($content)){
 			$out .= '</td></tr></table>';
 		}
 
