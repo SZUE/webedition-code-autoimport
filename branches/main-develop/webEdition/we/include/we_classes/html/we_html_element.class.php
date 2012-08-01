@@ -407,4 +407,13 @@ abstract class we_html_element{
 				));
 	}
 
+	static function htmlExIFrame($__name, $__src, $__style){
+		ob_start();
+		include $__src;
+		$tmp = ob_get_contents();
+		ob_end_clean();
+		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div')
+				, $tmp);
+	}
+
 }

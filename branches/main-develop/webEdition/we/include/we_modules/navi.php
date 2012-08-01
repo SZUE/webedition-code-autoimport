@@ -21,9 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove, if file is renamed to ...inc.php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop();
 
 
 $we_tabs = new we_tabs();
@@ -35,10 +35,10 @@ function order_available_modules($a, $b){
 	return (strcmp($a["text"], $b["text"]));
 }
 
-uasort($_we_available_modules, "order_available_modules");
+uasort($GLOBALS['_we_available_modules'], "order_available_modules");
 
 
-foreach($_we_available_modules as $_menuItem){
+foreach($GLOBALS['_we_available_modules'] as $_menuItem){
 	if((isset($_menuItem["inModuleMenu"]) && $_menuItem["inModuleMenu"]) || (isset($_menuItem["inModuleWindow"]) && $_menuItem["inModuleWindow"])){
 		if(in_array($_menuItem["name"], $GLOBALS['_we_active_integrated_modules'])){ //	MODULE INSTALLED
 			if(we_userCanEditModule($_menuItem["name"])){
@@ -60,21 +60,17 @@ print $tab_header .
 			if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 				if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 				current = module;
-				top.content.location.replace("show.php?mod=" + module);
+				top.content.location.replace("' . WE_MODULES_DIR . 'show.php?mod=" + module);
 			} else {
 				setActiveTab(current);
 			}
 		} else {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 			current = module;
-			top.content.location.replace("show.php?mod=" + module);
+			top.content.location.replace("' . WE_MODULES_DIR . 'show.php?mod=" + module);
 
 		}
 
 	}' . $tab_js);
 ?>
-</head>
-<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;" link="black" alink="#1559b0" vlink="black" onLoad="setFrameSize()" onResize="setFrameSize()">
-	<div id="main" ><?php echo $we_tabs->getHTML(); ?> </div>
-</body>
-</html>
+<div id="main" ><?php echo $we_tabs->getHTML(); ?> </div>
