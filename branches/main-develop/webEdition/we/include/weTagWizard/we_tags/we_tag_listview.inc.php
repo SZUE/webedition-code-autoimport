@@ -31,6 +31,7 @@ $classid = (defined("OBJECT_TABLE")?new weTagData_selectorAttribute('classid',OB
 $condition = new weTagData_textAttribute('condition', false, '');
 $triggerid = new weTagData_selectorAttribute('triggerid',FILE_TABLE, 'text/webedition', false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$custBanner = new weTagData_selectAttribute('customer', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $workspaceID_document = new weTagData_multiSelectorAttribute('workspaceID',FILE_TABLE, 'folder', 'ID', false, '');
 $workspaceID_object = defined('OBJECT_FILES_TABLE')?new weTagData_multiSelectorAttribute('workspaceID',OBJECT_FILES_TABLE, 'folder', 'ID', false, ''):null;
 $categoryids = new weTagData_multiSelectorAttribute('categoryids',CATEGORY_TABLE, '', 'ID', false, '');
@@ -75,7 +76,7 @@ $this->TypeAttribute =new weTagData_typeAttribute('type', array(
 	new weTagDataOption('category', false, '', array($name,$categories,$rows,$order_category,$desc,$offset,$parentid,$parentidname,$categoryids), array()),
 	new weTagDataOption('object', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$workspaceID_object,$cfilter,$docid,$customers,$id,$calendar,$predefinedSQL,$categoryids,$objectseourls,$hidedirindex), array()),
 	new weTagDataOption('multiobject', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$cfilter,$calendar,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('banner', false, 'banner', array($name,$rows,$order_banner,$customer), array()),
+	new weTagDataOption('banner', false, 'banner', array($name,$rows,$order_banner,$custBanner), array()),
 	new weTagDataOption('shopVariant', false, '', array($name,$defaultname,$documentid,$objectid,$objectseourls,$hidedirindex), array()),
 	new weTagDataOption('customer', false, 'customer', array($name,$rows,$cols,$order_customer,$desc,$offset,$condition,$docid), array()),
 	new weTagDataOption('onlinemonitor', false, 'customer', array($name,$rows,$cols,$order_onlinemonitor,$desc,$offset,$condition,$docid,$lastaccesslimit,$lastloginlimit), array()),
@@ -86,5 +87,5 @@ $this->TypeAttribute =new weTagData_typeAttribute('type', array(
 $this->Attributes=array($MultiSelector,$name,$doctype,$categories,$catOr,$rows,$cols,$order_document,$order_object,$order_search,$order_category,
 	$order_banner,$order_customer,$order_onlinemonitor,$order_languagelink,$desc,$offset,$casesensitive,$classid,$condition,$triggerid,$seeMode,
 	$workspaceID_document,$workspaceID_object,$categoryids,$parentid,$parentidname,$contenttypes,$searchable,$defaultname,$documentid,$objectid,
-	$datefield,$date,$weekstart,$cfilter,$recursive,$docid,$customer,$customers,$id,$calendar,$predefinedSQL,$numorder,$languages,$lastaccesslimit,
+	$datefield,$date,$weekstart,$cfilter,$recursive,$docid,$customer,$customers,custBanner,$id,$calendar,$predefinedSQL,$numorder,$languages,$lastaccesslimit,
 	$lastloginlimit,$objectseourls,$hidedirindex,$pagelanguage,$doc,$showself);

@@ -49,7 +49,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	/**
 	 * @var weDocumentCustomerFilter
 	 */
-	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
 	function __construct(){
 		if(defined("SHOP_TABLE")){
@@ -749,7 +749,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(!$this->ID){
 			return false;
 		}
-		$this->we_clearCache($this->ID);
 		return we_document::we_delete();
 	}
 

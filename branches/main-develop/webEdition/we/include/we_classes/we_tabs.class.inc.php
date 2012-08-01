@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class we_tabs {
+class we_tabs{
 
 	var $heightPlus;
 	var $textvalign;
@@ -38,25 +38,27 @@ class we_tabs {
 	var $bodyAttribs;
 	var $JSonResize;
 
-	function __construct() {
+	function __construct(){
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
-		$this->containerEnd   = "</div>\n";
+		$this->containerEnd = "</div>\n";
 
-		switch (we_base_browserDetect::inst()->getBrowser()) {
+		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::SAFARI:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
-				$this->tabBG ="";
+				$this->tabBG = "";
 				break;
 			case we_base_browserDetect::IE:
-				$this->heightPlus = "";
-				$this->textvalign = "middle";
-				$this->frameDefaultHeight = 21;
-				$this->tabBorder = "border:0px;";
-				$this->tabBG ="background-position:bottom; ";
-				break;
+				if(we_base_browserDetect::inst()->getBrowserVersion() < 9){
+					$this->heightPlus = "";
+					$this->textvalign = "middle";
+					$this->frameDefaultHeight = 21;
+					$this->tabBorder = "border:0px;";
+					$this->tabBG = "background-position:bottom; ";
+					break;
+				}
 			default:
 				$this->heightPlus = "";
 				$this->textvalign = "top";
@@ -65,11 +67,11 @@ class we_tabs {
 		}
 	}
 
-	function addTab($tab) {
+	function addTab($tab){
 		$this->container .= $tab->getHTML();
 	}
 
-	function getHeader() {
+	function getHeader(){
 		$tabBorder = $this->tabBorder;
 		$tabBG = $this->tabBG;
 		$styles = <<<HTS
@@ -224,57 +226,51 @@ function getPathInfos(){
 
 HTS;
 
-		$out = we_html_element::cssElement($styles);
-		$out.= we_html_element::jsElement($script);
-		$out.= we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
-
-		return $out;
+		return we_html_element::cssElement($styles) .
+			we_html_element::jsElement($script) .
+			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 	}
 
-	function getHTML() {
+	function getHTML(){
 		return $this->containerStart . $this->container . $this->containerEnd;
 	}
 
-	/***********************************************************************************************/
+	/*	 * ******************************************************************************************** */
 
-
-	function getJS() {
-
-	}
-
-	function getJSRebuildTabs() {
+	function getJS(){
 
 	}
 
-	/***********************************************************************************************/
+	function getJSRebuildTabs(){
 
+	}
 
-	function onResize() {
+	/*	 * ******************************************************************************************** */
+
+	function onResize(){
 		$heightPlus = $this->heightPlus;
 		$this->JSonResize = <<<HTS
 
 function setFrameSize(){
 	if(document.getElementById('tabContainer').offsetWidth > 0) {
-		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
-		//document.getElementById('main').style.overflow = "hidden";
 		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
-		var fsRows = fs.rows.split(',');
-		fsRows[0] = tabsHeight;
-		fs.rows =  fsRows.join(",");
+
+		document.getElementById('naviDiv').style.height = tabsHeight+"px";
+		document.getElementById('contentDiv').style.top = tabsHeight+"px";
+
 	} else {
 		setTimeout("setFrameSize()",100);
 	}
 }
 
 HTS;
+	}
+
+	function addJS(){
 
 	}
 
-	function addJS() {
-
-	}
-
-	function addCSS() {
+	function addCSS(){
 
 	}
 

@@ -715,7 +715,7 @@ function we_getCodeMirror2Tags(){
 function we_getCodeMirror2Code($code){
 	$maineditor = '';
 	$parser_js = array();
-	$parser_css = array('theme/default.css');
+	$parser_css = array('theme/elegant.css');
 	$toolTip = false;
 	switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 		case 'text/css':
@@ -738,7 +738,7 @@ function we_getCodeMirror2Code($code){
 			$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 			$parser_js[] = 'mode/clike/clike.js';
 			$parser_js[] = 'mode/php/php.js';
-			$parser_css[] = 'mode/clike/clike.css';
+			//$parser_css[] = 'mode/clike/clike.css';
 			$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 			break;
 		case 'text/xml':

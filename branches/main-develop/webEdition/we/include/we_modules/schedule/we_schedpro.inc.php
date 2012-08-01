@@ -201,7 +201,7 @@ class we_schedpro{
 				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\'' . $idname . '\'].value');
 				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_cmd_enc('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
+				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId("WsDir");
@@ -226,8 +226,7 @@ class we_schedpro{
 <option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_WEEK . ']') . '</option>
 <option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_MONTH . ']') . '</option>
 <option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_YEAR . ']') . '</option>
-</select>
-';
+</select>';
 
 
 		$checknname = md5(uniqid(rand(), 1));

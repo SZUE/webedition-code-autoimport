@@ -37,9 +37,20 @@ if(isset($_REQUEST['mod']) && !isset($mod)){
 }
 ?>
 </head>
+<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;">
+<?php
+echo we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'),
+
+we_html_element::htmlIFrame('navi', WE_MODULES_DIR.'navi.php?mod='.$mod, 'position:absolute;top:0px;height:26px;left:0px;right:0px;overflow: hidden;').
+we_html_element::htmlIFrame('content', WE_MODULES_DIR.'show.php?mod='.$mod.(empty($_REQUEST['we_cmd'][1]) ? '' : "&msg_param=" . $_REQUEST['we_cmd'][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''), 'position:absolute;top:26px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+
+	);
+
+?></body></html>
+<?php /*
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">
 	<frame src="<?php print WE_MODULES_DIR; ?>navi.php?mod=<?php echo $mod ?>" name="navi" noresize scrolling="no"/>
 	<frame src="<?php print WE_MODULES_DIR; ?>show.php?mod=<?php echo $mod . (empty($_REQUEST['we_cmd'][1]) ? '' : "&msg_param=" . $_REQUEST['we_cmd'][1]) . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '') . (isset($_REQUEST['bid']) ? '&bid=' . $_REQUEST['bid'] : ''); ?>" name="content" noresize scrolling="no"/>
 </frameset><noframes></noframes>
 <body bgcolor="#ffffff"></body>
-</html>
+</html>*/
