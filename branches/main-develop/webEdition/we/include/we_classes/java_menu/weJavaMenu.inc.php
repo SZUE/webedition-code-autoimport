@@ -26,24 +26,22 @@ class weJavaMenu{
 
 	var $entries;
 	var $lcmdFrame = "";
-	var $width = 200;
+	var $width = 350;
 	var $height = 30;
-	var $prename = "";
+	var $menuaction = "";
 
-	function __construct($entries, $lcmdFrame = "top.load", $width = 200, $height = 30, $prename = ""){
-		$this->prename = $prename;
+	function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){
+		$this->menuaction = $menuaction;
 		if($entries){
 			$this->entries = $entries;
 			if(we_base_browserDetect::isGecko()){
-				$_SESSION[$prename . "menuentries"] = $this->entries;
+				$_SESSION["menuentries"] = $this->entries;
 			}
-		} else if(isset($_SESSION[$prename . "menuentries"])){
-			$this->entries = $_SESSION[$prename . "menuentries"];
-			unset($_SESSION[$prename . "menuentries"]);
+		} else if(isset($_SESSION["menuentries"])){
+			$this->entries = $_SESSION["menuentries"];
+			unset($_SESSION["menuentries"]);
 		}
 		$this->lcmdFrame = $lcmdFrame;
-		$this->width = $width;
-		$this->height = $height;
 	}
 
 	function printMenu(){
@@ -290,7 +288,7 @@ class weJavaMenu{
 					$opt .= '</ul></li>' . "\n";
 				} else if($mtext){
 					if(!(isset($e["enabled"]) && $e["enabled"] == 0)){
-						$opt .= '<li><a href="#void" onclick="parent.menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+						$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
 					}
 				} else{
 					$opt .= '<li class="disabled"></li>';

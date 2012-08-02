@@ -33,7 +33,7 @@ print STYLESHEET;
 //	Include javaMenu information for this module
 include_once(WE_INCLUDES_PATH . "java_menu/modules/module_menu_shop.inc.php");
 
-$jmenu = new weJavaMenu($we_menu_shop, "top.opener.top.load", 350, 30);
+$jmenu = new weJavaMenu($we_menu_shop, "top.opener.top.load");
 
 echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>

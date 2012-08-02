@@ -199,7 +199,7 @@ class weToolFrames extends weModuleFrames{
 		include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 		$lang_arr = 'we_menu_' . $this->toolName;
-		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd', 350, 30);
+		$jmenu = new weJavaMenu($$lang_arr, $this->topFrame . '.cmd');
 
 		$menu = '';
 		ob_start();
@@ -354,12 +354,7 @@ class weToolFrames extends weModuleFrames{
 	}
 
 	function getPercent($total, $value, $precision = 0){
-
-		if($total){
-			$result = round(($value * 100) / $total, $precision);
-		} else{
-			$result = 0;
-		}
+		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 
 		return weNavigation::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
@@ -372,32 +367,23 @@ class weToolFrames extends weModuleFrames{
 	}
 
 	function getHTMLPropertiesGroup(){
-		$parts = array();
-
-
-		return $parts;
+		return array();
 	}
 
 	function getHTMLGeneral(){
-		$parts = array();
-
-		array_push($parts, array(
-			'headline' => g_l('tools', '[general]'),
-			'html' => we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0))) .
-			we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" onChange="' . $this->topFrame . '.mark();"'), g_l('tools', '[name]')) .
-			$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', ''),
-			'space' => $this->_space_size,
-			'noline' => 1
+		return array(array(
+				'headline' => g_l('tools', '[general]'),
+				'html' => we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0))) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" onChange="' . $this->topFrame . '.mark();"'), g_l('tools', '[name]')) .
+				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', ''),
+				'space' => $this->_space_size,
+				'noline' => 1
 			)
 		);
-
-		return $parts;
 	}
 
 	function getHTMLProperties($preselect = ''){
 		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr']) : 1;
-
-		$out = '';
 
 		$hiddens = array('cmd' => '',
 			'pnt' => 'edbody',
@@ -406,10 +392,8 @@ class weToolFrames extends weModuleFrames{
 			'delayParam' => (isset($_REQUEST['delayParam']) ? $_REQUEST['delayParam'] : '')
 		);
 
-		$out = $this->View->getCommonHiddens($hiddens) .
+		return $this->View->getCommonHiddens($hiddens) .
 			we_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30);
-
-		return $out;
 	}
 
 	function getHTMLLeft(){
@@ -446,15 +430,11 @@ class weToolFrames extends weModuleFrames{
 
 		if(isset($_REQUEST["pid"])){
 			$pid = $_REQUEST["pid"];
-		}
-		else
+		} else{
 			exit;
-
-		if(isset($_REQUEST["offset"])){
-			$offset = $_REQUEST["offset"];
 		}
-		else
-			$offset = 0;
+
+		$offset = (isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0);
 
 		$_class = $this->toolClassName . 'TreeDataSource';
 		include_once( $this->toolDir . 'class/' . $_class . '.class.php');

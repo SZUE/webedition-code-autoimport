@@ -337,7 +337,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 	}
 	div.tab{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display:inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
 		background-repeat: repeat-x;
@@ -347,22 +347,22 @@ print we_html_element::jsElement($content = $_contentTypes);
 	}
 	div.tabOver{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display:inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_over.gif);
 		background-repeat: repeat-x;
-<?php echo $tabBG; ?>
+		<?php echo $tabBG; ?>
 		line-height:21px;
 		font-size:17px;
 		cursor:pointer;
 	}
 	div.tabActive{
 		margin: 0px; padding: 0px;
-<?php echo $tabBorder; ?>
+		<?php echo $tabBorder; ?>
 		display: inline-block;
 		background-image:url(/webEdition/images/multiTabs/tabsBG_active.gif);
 		background-repeat: repeat-x;
-<?php echo $tabBG; ?>
+		<?php echo $tabBG; ?>
 		line-height:21px;
 		font-size:17px;
 		cursor:pointer;
@@ -401,6 +401,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 <body style="background-color: Silver;" onresize="setFrameSize()" onload="init()">
 	<div id="tabContainer" name="tabContainer">
 	</div>
-<?php echo $tabDummy; ?>
+	<?php echo $tabDummy; ?>
 </body>
 </html>

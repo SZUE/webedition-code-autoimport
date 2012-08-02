@@ -35,7 +35,7 @@ class weCustomerAdd{
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 
-		$order = new we_html_select(array('name' => 'order', 'style' => 'width:90'));
+		$order = new we_html_select(array('name' => 'order', 'style' => 'width:90px;'));
 		foreach($pob->View->settings->OrderTable as $ord)
 			$order->addOption($ord, $ord);
 
@@ -51,7 +51,7 @@ class weCustomerAdd{
 			$row_num = 0;
 			$sort_field_code = '';
 
-			$sort_table = new we_html_table(array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '1', 'width' => '400', 'height' => '50'), 1, 5);
+			$sort_table = new we_html_table(array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '1', 'width' => 400, 'height' => 50), 1, 5);
 			$sort_table->setCol(0, 0, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
 			$sort_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
 			$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
@@ -68,11 +68,11 @@ class weCustomerAdd{
 						$sort["branch"] = g_l('modules_customer', '[common]');
 				}
 
-				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onChange" => "we_cmd('selectBranch')", "style" => "width:180"));
+				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onChange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
 				$branch->selectOption($sort["branch"]);
 
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
-				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180", "class" => "weSelect", "onChange" => "we_cmd('selectBranch')"));
+				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onChange" => "we_cmd('selectBranch')"));
 
 				$fields_names = array();
 				$fields_names = array_keys($this->View->customer->getFieldsNames($sort["branch"]));

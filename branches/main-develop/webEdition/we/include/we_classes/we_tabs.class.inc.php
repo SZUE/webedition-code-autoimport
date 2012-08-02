@@ -254,7 +254,8 @@ HTS;
 function setFrameSize(){
 	if(document.getElementById('tabContainer').offsetWidth > 0) {
 		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
-
+			var tmp=document.getElementById('naviDiv').style.height;
+//FIXME: this is currently not correct
 		document.getElementById('naviDiv').style.height = tabsHeight+"px";
 		document.getElementById('contentDiv').style.top = tabsHeight+"px";
 

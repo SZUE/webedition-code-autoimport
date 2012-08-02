@@ -272,7 +272,7 @@ class weCustomerSettings{
 	}
 
 	function getFieldType($name){
-		return $this->FieldAdds[$name]['type'];
+		return isset($this->FieldAdds[$name]) ? $this->FieldAdds[$name]['type'] : $this->FieldAdds['input']['type'];
 	}
 
 //returns predefined  field type

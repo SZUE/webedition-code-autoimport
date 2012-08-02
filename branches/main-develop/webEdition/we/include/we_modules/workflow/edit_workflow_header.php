@@ -31,7 +31,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$jmenu = new weJavaMenu($we_menu_workflow, "top.opener.top.load", 350, 30);
+$jmenu = new weJavaMenu($we_menu_workflow, "top.opener.top.load");
 echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>
 <script type="text/javascript"><!--
