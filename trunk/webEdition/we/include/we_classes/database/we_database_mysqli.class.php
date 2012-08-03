@@ -121,7 +121,17 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_len($no){
-		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->length : 0);
+		if(is_object($this->Query_ID)){
+			$len = $this->Query_ID->fetch_field_direct($no)->length;
+			//fix faulty lenght on text-types with connection in utf-8
+			$type = $this->field_type($no);
+			if(DB_SET_CHARSET=='utf-8' && $type >= 252 && $type <= 254){
+				$len/=3;
+			}
+			return $len;
+		} else{
+			return 0;
+		}
 	}
 
 	public function field_name($no){
