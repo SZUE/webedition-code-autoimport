@@ -62,7 +62,7 @@ function we_tag_write($attribs){
 	$workflowname = weTag_getAttribute('workflowname', $attribs);
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
-
+	$searchable = weTag_getAttribute('searchable', $attribs, true, true);
 	if(isset($_REQUEST['edit_' . $type]) && $_REQUEST['edit_' . $type]){
 
 		switch($type){
@@ -76,6 +76,7 @@ function we_tag_write($attribs){
 		}
 
 		if($ok){
+			
 			$isOwner = false;
 			if($protected && isset($_SESSION['webuser']['ID'])){
 				$isOwner = ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID);
@@ -118,6 +119,7 @@ function we_tag_write($attribs){
 					$_WE_DOC_SAVE = $GLOBALS['we_doc'];
 				}
 				$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
+				$GLOBALS['we_doc']->IsSearchable=$searchable;
 				if(strlen($workspaces) > 0 && $type == 'object'){
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
@@ -167,17 +169,14 @@ function we_tag_write($attribs){
 								$GLOBALS['we_' . $type][$name]->Text = $objname;
 								break;
 							case 'increment':
-								$footext = $objname . '_'; // . $z;
-								$tmp = f('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE Path LIKE "' . $db->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext . '%')) . '" ORDER DESC LIMIT 1', 'ID', $db);
-								if($tmp){
-									list(, $tmp) = explode($footext, $tmp);
-									$footext.=intval($tmp) + 1;
-								} else{
-									$footext .= '0';
+								$z=1;
+								$footext = $objname."_".$z;
+								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
+									$z++;
+									$footext = $objname."_".$z;
 								}
-
-								$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext);
-								$GLOBALS['we_' . $type][$name]->Text = $footext;
+								$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+								$GLOBALS["we_$type"][$name]->Text = $footext;
 								break;
 						}
 					}
