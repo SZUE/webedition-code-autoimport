@@ -28,7 +28,7 @@ Zend_Loader::loadClass('we_ui_controls_Button');
 Zend_Loader::loadClass('we_ui_controls_Label');
 Zend_Loader::loadClass('we_ui_layout_Table');
 
-!defined('NO_SESS') && define('NO_SESS', 1);
+
 
 /**
  * Class to display an webEdition Wysiwyg-Editor
