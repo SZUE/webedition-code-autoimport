@@ -74,6 +74,7 @@ class DB_WE extends we_database_base{
 	}
 
 	/* public: discard the query result */
+
 	protected function _free(){
 		@mysql_free_result($this->Query_ID);
 	}
@@ -128,7 +129,13 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_len($no){
-		return @mysql_field_len($this->Query_ID, $no);
+		//fix faulty lenght on text-types with connection in utf-8
+		$len = intval(@mysql_field_len($this->Query_ID, $no));
+		$type = $this->field_type($no);
+		if(DB_SET_CHARSET == 'utf-8' && $type >= 252 && $type <= 254){
+			$len/=3;
+		}
+		return $len;
 	}
 
 	public function field_flags($no){
@@ -139,11 +146,11 @@ class DB_WE extends we_database_base{
 		return mysql_insert_id($this->Link_ID);
 	}
 
-public function getCurrentCharset(){
-	return mysql_client_encoding();
-}
+	public function getCurrentCharset(){
+		return mysql_client_encoding();
+	}
 
-public function getInfo(){
+	public function getInfo(){
 		return '<table class="defaultfont"><tr><td>type:</td><td>' . $this->conType .
 			'</td></tr><tr><td>protocol:</td><td>' . mysql_get_proto_info() .
 			'</td></tr><tr><td>client:</td><td>' . mysql_get_client_info() .
