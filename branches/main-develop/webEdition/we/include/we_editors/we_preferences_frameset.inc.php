@@ -26,19 +26,13 @@
  * INCLUDES
  * *************************************************************************** */
 
-
-/* * ***************************************************************************
- * INITIALIZATION
- * *************************************************************************** */
+include(WE_INCLUDES_PATH. 'we_editors/we_preferences_header.inc.php');
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
+print STYLESHEET.getPreferencesCSS();
 
 $tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "setting_ui");
-/* * ***************************************************************************
- * CREATE JAVASCRIPT
- * *************************************************************************** */
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
@@ -117,10 +111,13 @@ $_javascript .= <<< END_OF_SCRIPT
 
 			break;
 END_OF_SCRIPT;
+/*				$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
+		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
+*/
 
 $_javascript .= "
 		case \"show_tabs\":
-			we_preferences_header.document.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_preferences_header.php" . ($tabname != "" ? "?tabname=" . $tabname : "") . "';
+		//naviDiv.document.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_preferences_header.php" . ($tabname != "" ? "?tabname=" . $tabname : "") . "';
 
 			break;
 	}
@@ -136,20 +133,25 @@ function saveOnKeyBoard() {
 	window.frames[2].we_save();
 	return true;
 
-}
-";
+}";
 
-/* * ***************************************************************************
- * RENDER FILE
- * *************************************************************************** */
 
 print we_html_element::jsElement($_javascript) .
 	we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
-$frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0", "frameborder" => "no"), 0);
+/*$frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0", "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" => "we_preferences_header", "scrolling" => "no", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences_footer.php", "name" => "we_preferences_footer", "scrolling" => "no", "noresize" => "noresize"));
+*/
+include(WE_INCLUDES_PATH. 'we_editors/we_preferences_footer.inc.php');
 
-print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;','onload'=>'setFrameSize()', 'onresize' => 'setFrameSize()')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'position:absolute;top:0px;height:'.getPreferencesTabsDefaultHeight().'px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('content', WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), 'position:absolute;top:'.getPreferencesTabsDefaultHeight().'px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlExIFrame('we_preferences_footer',getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
+				));
+
+print /*$frameset->getHtml() . */we_html_element::htmlBody(array(),$body).getPreferencesJS().  getPreferencesFooterJS() . '</html>';
 

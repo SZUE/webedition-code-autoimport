@@ -44,7 +44,7 @@ class we_tabs{
 
 		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::SAFARI:
-				$this->heightPlus = "";
+				$this->heightPlus = '';
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
@@ -52,7 +52,7 @@ class we_tabs{
 				break;
 			case we_base_browserDetect::IE:
 				if(we_base_browserDetect::inst()->getBrowserVersion() < 9){
-					$this->heightPlus = "";
+					$this->heightPlus = '';
 					$this->textvalign = "middle";
 					$this->frameDefaultHeight = 21;
 					$this->tabBorder = "border:0px;";
@@ -60,7 +60,7 @@ class we_tabs{
 					break;
 				}
 			default:
-				$this->heightPlus = "";
+				$this->heightPlus = '';
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border: 0px;";

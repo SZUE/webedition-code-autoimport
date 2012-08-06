@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-we_html_tools::protect();
-
-we_html_tools::htmlTop();
-
-print STYLESHEET;
 
 $tabname = isset($_REQUEST["tabname"]) && $_REQUEST["tabname"] != "" ? $_REQUEST["tabname"] : "setting_ui";
-/* * ***************************************************************************
- * GENERATE JAVASCRIPT
- * *************************************************************************** */
 
 
 // generate the tabs
@@ -77,15 +68,21 @@ if(we_hasPerm("FORMMAIL")){
 if(we_hasPerm("ADMINISTRATOR")){
 	$we_tabs->addTab(new we_tab("#", g_l('prefs', '[tab_versions]'), ($tabname == "setting_versions" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('versions');"));
 }
-$we_tabs->onResize('we_preferences_header');
+$we_tabs->onResize('naviDiv');
 $tab_head = $we_tabs->getHeader('', 1);
-$tab_js = $we_tabs->getJS();
 
-/* * ***************************************************************************
- * RENDER FILE
- * *************************************************************************** */
-$bodyContent = '<div id="main" >' . $we_tabs->getHTML() . '</div>';
+function getPreferencesTabsDefaultHeight(){
+	return $GLOBALS['we_tabs']->frameDefaultHeight;
+}
 
-print $tab_head . '</head>';
-print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), $bodyContent);
-?></html>
+function getPreferencesJS(){
+	return $GLOBALS['we_tabs']->getJS();
+}
+
+function getPreferencesCSS(){
+	return $GLOBALS['we_tabs']->getHeader('', 1);
+}
+
+function getPreferencesHeader(){
+	return '<div id="main" >' . $GLOBALS['we_tabs']->getHTML() . '</div>';
+}

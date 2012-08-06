@@ -1552,7 +1552,7 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'ui_sidebar_file_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -1573,9 +1573,9 @@ function build_dialog($selected_setting = 'ui'){
 								if(document.getElementById('seem_start_type').value == 'object') {
 								" .
 						(defined("OBJECT_FILES_TABLE") ?
-							"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
+							"parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -4640,9 +4640,9 @@ function render_dialog(){
 		we_html_element::htmlDiv(array("id" => "setting_email", 'style' => ($tabname == "setting_email" ? '' : 'display: none;')), build_dialog("email")) .
 		we_html_element::htmlDiv(array("id" => "setting_versions", 'style' => ($tabname == "setting_versions" ? '' : 'display: none;')), build_dialog("versions")) .
 		// Render save screen
-		we_html_element::htmlDiv(array("id" => "setting_save", 'style' => ($tabname == "setting_save" ? '' : 'display: none;')), build_dialog("save")) .
+		we_html_element::htmlDiv(array("id" => "setting_save", 'style' => ($tabname == "setting_save" ? '' : 'display: none;')), build_dialog("save"));
 		// Hide preload screen
-		we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
+		//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
 /* * ***************************************************************************
@@ -4716,18 +4716,16 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 if($doSave && !$acError){
 	save_all_values();
 
-	$save_javascript = we_html_element::jsElement("
+	$save_javascript = we_html_element::jsElement('
 							function doClose() {
 
 								var _multiEditorreload = false;
-							   " . $save_javascript . "
-
-							   " . (!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . "
+							   ' . $save_javascript .
+			(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
 							   //top.opener.top.frames[0].location.reload();
 							   top.close();
 							}
-
-					   ");
+					   ');
 
 
 
