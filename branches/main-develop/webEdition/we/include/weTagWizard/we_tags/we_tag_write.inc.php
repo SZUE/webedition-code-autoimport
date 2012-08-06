@@ -8,6 +8,8 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $formname = new weTagData_textAttribute('formname', false, '');
 $publish = new weTagData_selectAttribute('publish', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$searchable = new weTagData_selectAttribute('searchable', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+
 $doctype = new weTagData_sqlRowAttribute('doctype',DOC_TYPES_TABLE, true, 'DocType', '', '', '');
 $categories = new weTagData_multiSelectorAttribute('categories',CATEGORY_TABLE, '', 'Path', false, '');
 $classid = (defined("OBJECT_TABLE") ? new weTagData_selectorAttribute('classid',OBJECT_TABLE, 'object', false, ''):null);
@@ -28,8 +30,8 @@ $workflowname = new weTagData_textAttribute('workflowname', false, '');
 $workflowuserid = new weTagData_textAttribute('workflowuserid', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($formname,$publish,$doctype,$categories,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$protected,$workflowname,$workflowuserid), array($doctype)),
-	new weTagDataOption('object', false, '', array($formname,$publish,$categories,$classid,$name,$onduplicate,$onpredefinedname,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,$parentid,$protected,$workflowname,$workflowuserid), array($classid))), false, '');
+	new weTagDataOption('document', false, '', array($formname,$publish,$searchable,$doctype,$categories,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$protected,$workflowname,$workflowuserid), array($doctype)),
+	new weTagDataOption('object', false, '', array($formname,$publish,$searchable,$categories,$classid,$name,$onduplicate,$onpredefinedname,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,$parentid,$protected,$workflowname,$workflowuserid), array($classid))), false, '');
 
 $this->Attributes=array($formname,$publish,$doctype,$categories,$classid,$protected,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,
 	$workspaces,$parentid,$userid,$name,$onduplicate,$onpredefinedname,$workflowname,$workflowuserid);
