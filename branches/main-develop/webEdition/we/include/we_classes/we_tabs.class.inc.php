@@ -253,12 +253,19 @@ HTS;
 
 function setFrameSize(){
 	if(document.getElementById('tabContainer').offsetWidth > 0) {
-		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
-			var tmp=document.getElementById('naviDiv').style.height;
-//FIXME: this is currently not correct
-		document.getElementById('naviDiv').style.height = tabsHeight+"px";
-		document.getElementById('contentDiv').style.top = tabsHeight+"px";
-
+		if(document.getElementById('naviDiv')){
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			document.getElementById('naviDiv').style.height = tabsHeight+"px";
+			document.getElementById('contentDiv').style.top = tabsHeight+"px";
+		}else{
+		//FIXME: remove this if frames are obsolete
+			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
+			//document.getElementById('main').style.overflow = "hidden";
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var fsRows = fs.rows.split(',');
+			fsRows[0] = tabsHeight;
+			fs.rows =  fsRows.join(",");
+		}
 	} else {
 		setTimeout("setFrameSize()",100);
 	}

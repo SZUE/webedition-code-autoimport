@@ -379,7 +379,7 @@ top.close();');
 			if(defined("OBJECT_FILES_TABLE")){
 				$_tmp["noline"] = 1;
 			}
-			array_push($parts, $_tmp);
+			$parts[] = $_tmp;
 		}
 
 		if(!$showdocs)
@@ -390,11 +390,11 @@ top.close();');
 		if(defined("OBJECT_FILES_TABLE")){
 			$classname = $this->getHTMLObjectType(350, $showdocs);
 
-			array_push($parts, array("headline" => "", "html" => $classname, "space" => $_space));
+			$parts[] = array("headline" => "", "html" => $classname, "space" => $_space);
 		}
 
 		$category = $this->getHTMLCategory();
-		array_push($parts, array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1));
+		$parts[] = array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1);
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

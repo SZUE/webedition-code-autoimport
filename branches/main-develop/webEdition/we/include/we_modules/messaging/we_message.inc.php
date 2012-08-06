@@ -47,7 +47,7 @@ class we_message extends we_msg_proto{
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+	var $InWebEdition = false;
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');

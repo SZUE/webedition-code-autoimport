@@ -184,8 +184,9 @@ class we_listview_object extends listviewBase{
 						}
 					}
 				}
-				$q = "SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE " . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
+				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE " . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
 			}
+			//t_e($q);
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
 
@@ -197,11 +198,11 @@ class we_listview_object extends listviewBase{
 					}
 				}
 				if(count($_idListArray) > 0){
-					$_idlist = implode(",", array_unique($_idListArray));
+					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
-					$db->query("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID IN($_idlist)");
+					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
 					while($db->next_record()) {
-						$this->customerArray["cid_" . $db->f("ID")] = $db->Record;
+						$this->customerArray['cid_' . $db->f('ID')] = $db->Record;
 					}
 				}
 				unset($_idListArray);
@@ -283,21 +284,20 @@ class we_listview_object extends listviewBase{
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = str_replace('&gt;', '>', $cond);
-		$cond = str_replace('&lt;', '<', $cond);
+		$cond = str_replace(array('&gt;','&lt;'), array('>','<'), $cond);
 
-		$cond = " " . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . " ";
+		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . " ";
 
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
 			foreach($foo as $f){
-				$g = explode(" ", trim($f));
-				array_push($orderArr, $g[0]);
+				$g = explode(' ', trim($f));
+				$orderArr[] = $g[0];
 				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) == 'desc');
 			}
 		}
-
+		//t_e($orderArr);
 		//get Metadata for class (default title, etc.)
 		//BugFix #4629
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
@@ -327,8 +327,8 @@ class we_listview_object extends listviewBase{
 				$n = substr($n, 10);
 			}
 			$f .= $p['table'] . '.' . $p['type'] . '_' . $n . ' as we_' . $n2 . ',';
-			array_push($from, $p["table"]);
-			array_push($from, $p["table2"]);
+			$from[] = $p["table"];
+			$from[] = $p["table2"];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
 				$ordertmp[$pos] = $p["table"] . "." . $p["type"] . "_" . $n . ($descArr[$pos] ? ' DESC' : '');

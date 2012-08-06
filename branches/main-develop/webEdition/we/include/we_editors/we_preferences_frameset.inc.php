@@ -42,7 +42,6 @@ $tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
-<!--
 
 function we_cmd() {
 	var url = "/webEdition/we/include/we_editors/we_preferences.php?";
@@ -138,8 +137,6 @@ function saveOnKeyBoard() {
 	return true;
 
 }
-
-//-->
 ";
 
 /* * ***************************************************************************

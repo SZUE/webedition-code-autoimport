@@ -68,7 +68,7 @@ class we_msg_proto extends we_class{
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+	var $InWebEdition = false;
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';

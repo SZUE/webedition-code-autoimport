@@ -35,8 +35,6 @@ class we_quicktimeDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
 
-
-
 	/* Constructor */
 
 	function __construct(){
@@ -120,7 +118,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn=false){
+	function getHtml($dyn = false){
 		global $we_transaction;
 
 		//    At the moment it is not possible to make this tag xhtml valid, so the output is only posible
@@ -141,7 +139,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				$this->Path;
 
 			$filter = array("filesize", "type", "xml");
-			$noAtts = array("scale", "volume");	//  no atts for xml
+			$noAtts = array("scale", "volume"); //  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
 			if(isset($this->elements["bgcolor"])){
 				$this->elements["bgcolor"]["type"] = "attrib";
@@ -182,7 +180,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						}
 					}
 				}
-			} else{				 //  object tag and embed
+			} else{		 //  object tag and embed
 				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
 				$_objectAtts['codebase'] = $codebase;
 				//   we need embed as well
@@ -208,25 +206,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			$_objectAtts = removeEmptyAttribs($_objectAtts);
 			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
 		} else{
-			if($GLOBALS['we_doc']->InWebEdition == 1){
-				/* Anzeige des No_quicktime-Bildes in der Vorschau
-				  $_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
-				  $_imgAttr['width']  = 64;
-				  $_imgAttr['height'] = 64;
-				  $_imgAttr['border'] = 0;
-				  $_imgAtts["style"] = "margin:8px 18px;";
-				  $_imgAttr['alt'] = "";
-				  $_imgAttr['xml'] = $this->getElement("xml");
-
-				  if(isset($this->name)){
-				  $_imgAttr['name'] = $this->name;
-				  }
-				  $this->html = getHtmlTag('img', $_imgAttr);
-				 */
-				$this->html = '';
-			} else{
-				$this->html = '';
-			}
+			$this->html = '';
 		}
 		return $this->html;
 	}

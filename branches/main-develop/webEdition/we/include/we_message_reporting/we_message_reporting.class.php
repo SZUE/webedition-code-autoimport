@@ -53,14 +53,13 @@ class we_message_reporting{
 			if($isJsMsg){ // message is build from scripts, just print it!
 				return "alert( $message );";
 			} else{
-				return 'alert("' . str_replace(array('\\', '"'), array('\\\\', '\\"'), $message) . '");';
+				return 'alert("' . str_replace(array('\n','\\', '"','##NL##','`'), array('##NL##','\\\\', '\\"','\n','\"'), $message) . '");';
 			}
 		} else{
-
 			if($isJsMsg){ // message is build from scripts, just print it!
 				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage('.$message.', '.$priority.', window);';
 			} else{
-				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array('\\', '"'), array('\\\\', '\\"'), $message) . '", '.$priority.', window);';
+				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array('\n','\\', '"','##NL##','`'), array('##NL##','\\\\', '\\"','\n','\"'), $message) . '", '.$priority.', window);';
 			}
 		}
 	}

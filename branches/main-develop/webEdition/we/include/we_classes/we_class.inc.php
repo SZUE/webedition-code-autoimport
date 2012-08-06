@@ -61,7 +61,7 @@ abstract class we_class{
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+	var $InWebEdition = false;
 	var $PublWhenSave = 1;
 	var $IsTextContentDoc = false;
 	var $LoadBinaryContent = false;

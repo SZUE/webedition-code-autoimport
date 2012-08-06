@@ -93,7 +93,7 @@ class we_document extends we_root{
 				$this->elements[$n]['cid'] = 0;
 			}
 			$this->EditPageNr = 0;
-			$this->InWebEdition = 1;
+			$this->InWebEdition = true;
 			if(isset($this->documentCustomerFilter)){
 				$this->documentCustomerFilter = $doc->documentCustomerFilter;
 			}

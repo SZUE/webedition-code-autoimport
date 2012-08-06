@@ -889,7 +889,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				weShopVariants::correctModelFields($this);
 			}
 
-			$data[0]["InWebEdition"] = 0;
+			$data[0]["InWebEdition"] = false;
 
 			return '<?php
 $GLOBALS[\'noSess\'] = true;

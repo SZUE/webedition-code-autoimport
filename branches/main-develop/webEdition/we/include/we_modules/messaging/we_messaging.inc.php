@@ -48,7 +48,7 @@ class we_messaging extends we_class{
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+	var $InWebEdition = false;
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;

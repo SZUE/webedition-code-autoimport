@@ -117,7 +117,7 @@ class we_flashDocument extends we_binaryDocument{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn=false){
+	function getHtml($dyn = false){
 		$_data = $this->getElement("data");
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 
@@ -153,15 +153,15 @@ class we_flashDocument extends we_binaryDocument{
 				}
 			}
 
-			if($xml){	//  XHTML-Version
+			if($xml){ //  XHTML-Version
 				$allowedAtts = $this->ObjectParamNames;
 				$filter = array("alt", 'parentid', 'startid');
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){	 //  use as name="value"
+					if(in_array($k, $allowedAtts)){	//  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){	//  use as <param>
+					} else if(!in_array($k, $filter)){ //  use as <param>
 						$params[$k] = $v["dat"];
 					}
 				}
@@ -169,16 +169,16 @@ class we_flashDocument extends we_binaryDocument{
 				//   needed attribs
 				$attribs["type"] = "application/x-shockwave-flash";
 				$attribs["data"] = $src;
-			} else{					//  Normal-Version - with embed-tag
+			} else{		 //  Normal-Version - with embed-tag
 				$filter = array("type", "alt", 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){	 //  use as name="value"
+					if(in_array($k, $allowedAtts)){	//  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){	//  use as <param>
+					} else if(!in_array($k, $filter)){ //  use as <param>
 						$params[$k] = $v["dat"];
 					}
 					if(!in_array($k, $filter)){
@@ -216,24 +216,7 @@ class we_flashDocument extends we_binaryDocument{
 				$this->html = $src;
 			}
 		} else{
-			if($GLOBALS['we_doc']->InWebEdition == 1){
-				/* Anzeige des No_Falsh-Bildes in der Vorschau
-				  $imgAtts["src"]    = IMAGE_DIR . 'icons/no_flashmovie.gif';
-				  $imgAtts["width"]  = 64;
-				  $imgAtts["height"] = 64;
-				  $imgAtts["border"] = 0;
-				  $imgAtts["style"] = "margin:8px 18px;";
-				  $imgAtts["alt"]    = "";
-				  $imgAtts["xml"]    = $this->getElement("xml");
-				  if(isset($this->name)){
-				  $imgAtts["name"] = $this->name;
-				  }
-				  $this->html = getHtmlTag("img", $imgAtts);
-				 */
-				$this->html = '';
-			} else{
-				$this->html = '';
-			}
+			$this->html = '';
 		}
 		return $this->html;
 	}
