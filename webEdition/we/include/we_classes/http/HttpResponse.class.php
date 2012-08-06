@@ -29,7 +29,7 @@ class HttpResponse{
 		'prot' => '',
 		'code' => 0,
 		'msg' => ''); // possibility to check the answercode
-	var $http_headers = array();	// http headers in associative array
+	var $http_headers = array(); // http headers in associative array
 	var $http_body = ""; // http body
 	var $error = false;
 
@@ -53,27 +53,27 @@ class HttpResponse{
 			$lbr = "\r\n";
 		} else if($pos = strpos($response, "\n\n")){
 			$lbr = "\n";
-		} else{		//  line ends not supported
+		} else{	//  line ends not supported
 			$this->error = true;
 		}
 
-		if(!$this->error){	//  $lbr is recognized seems to be a correct HttpResponse
+		if(!$this->error){ //  $lbr is recognized seems to be a correct HttpResponse
 			/*
 			  First seperate the header and fill it in array $this->headers of object.
 			 */
-			$headerstr = substr($response, 0, $pos);		//  string containing the whole header
-			$headerList = explode($lbr, $headerstr);		//  each headerline is entry in array
+			$headerstr = substr($response, 0, $pos);	//  string containing the whole header
+			$headerList = explode($lbr, $headerstr);	//  each headerline is entry in array
 
 			$headers = array();
+			$matches = array();
+			foreach($headerList as $cur){
 
-			for($i = 0; $i < sizeof($headerList); $i++){
+				$_line = explode(":", $cur, 2);
 
-				$_line = explode(":", $headerList[$i],2);
-
-				if(isset($_line[1])){	 //  normal header
+				if(isset($_line[1])){	//  normal header
 					$headers[trim($_line[0])] = trim($_line[1]);
-				} else{								//  this is first line with http answer
-					if(preg_match('/(.+) (.+) (.+)/sie', $headerList[$i], $matches)){
+				} else{				//  this is first line with http answer
+					if(preg_match('/(.+) (.+) (.+)/sie', $cur, $matches)){
 
 						$this->http_answer['prot'] = $matches[1];
 						$this->http_answer['code'] = $matches[2];
@@ -101,8 +101,8 @@ class HttpResponse{
 				//  chunkseperator is $lbr<LENGTH>$lbr
 				do{
 
-					$chunkhex = substr($bodyStr, 0, strpos($bodyStr, $lbr));	 //  hex value of chunksize
-					$chunkdec = hexdec($chunkhex);	//  dec size fo chunk
+					$chunkhex = substr($bodyStr, 0, strpos($bodyStr, $lbr));	//  hex value of chunksize
+					$chunkdec = hexdec($chunkhex); //  dec size fo chunk
 
 					$body .= substr($bodyStr, (strlen($chunkhex) + strlen($lbr)), ($chunkdec));
 					$bodyStr = substr($bodyStr, ($chunkdec + strlen($chunkhex) + 2 * strlen($lbr)));
@@ -120,7 +120,7 @@ class HttpResponse{
 	 * @param string $what
 	 * @desc Returns the answercode of the http-response
 	 */
-	function getHttp_answer($what=''){
+	function getHttp_answer($what = ''){
 
 		switch($what){
 			case 'code':

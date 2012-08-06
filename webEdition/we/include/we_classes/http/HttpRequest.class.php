@@ -159,15 +159,16 @@ class HttpRequest{
 		foreach($this->http_headers as $k => $v){
 			$_header[] = "$k: $v";
 		}
-		$_header[] = "Connection: close \r\n";
 		$_header[] = $this->http_body;
 
 		$_session = curl_init();
-		curl_setopt($_session, CURLOPT_URL, $this->http_host . $this->http_path);
+		curl_setopt($_session, CURLOPT_URL, 'http://' . $this->http_host . ($this->http_method == 'GET' ? $path : $this->http_path));
 		curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($_session, CURLOPT_CUSTOMREQUEST, $this->http_method);
 		curl_setopt($_session, CURLOPT_HEADER, 1);
 		curl_setopt($_session, CURLOPT_HTTPHEADER, $_header);
+		curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
 
 		$_data = curl_exec($_session);
 
@@ -261,7 +262,7 @@ class HttpRequest{
 				$body .= '--' . $boundary . "--\r\n";
 
 				//  add 2 more headers for this request
-				$this->http_headers['Content-Type'] = 'multipart/form-data; boundary='.$boundary;
+				$this->http_headers['Content-Type'] = 'multipart/form-data; boundary=' . $boundary;
 				$this->http_headers['Content-Length'] = strlen($body);
 			} else{ //  method 'GET'
 				//  all variables are joined to the path
