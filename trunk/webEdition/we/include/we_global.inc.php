@@ -278,6 +278,7 @@ function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Cate
 }
 
 function getHttpOption(){
+	return 'curl';
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		if(ini_get('allow_url_fopen') != 1){
@@ -311,6 +312,8 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	$_session = curl_init();
 	curl_setopt($_session, CURLOPT_URL, $_url);
 	curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
 
 	/* 	if($username != ''){
 	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
@@ -934,7 +937,7 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 	}
 	$out = $first ? array('0' => $first) : array();
 
-	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ',$query) : '') . ' ORDER BY ' . $order);
+	$db->query('SELECT ID,Path FROM ' . $table . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()) {
 		$out[$db->f('ID')] = $db->f('Path');
 	}
