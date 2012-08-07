@@ -260,6 +260,7 @@ function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Cate
 }
 
 function getHttpOption(){
+	return 'curl';
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		if(ini_get('allow_url_fopen') != 1){
@@ -288,6 +289,8 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	$_session = curl_init();
 	curl_setopt($_session, CURLOPT_URL, $_url);
 	curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
 
 	/* 	if($username != ''){
 	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);

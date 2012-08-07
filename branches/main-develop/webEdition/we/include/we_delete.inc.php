@@ -111,12 +111,12 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					}
 					break;
 				case OBJECT_FILES_TABLE:
-					if($idInfos['IsFolder'] && we_hasPerm("DELETE_OBJECTFILE")){
+					if(we_hasPerm("DELETE_OBJECTFILE")){
 						$hasPerm = 1;
 					}
 					break;
 				case OBJECT_TABLE:
-					if(we_hasPerm("DELETE_OBJECT")){
+					if($idInfos['IsFolder'] && we_hasPerm("DELETE_OBJECT")){
 						$hasPerm = 1;
 					}
 					break;

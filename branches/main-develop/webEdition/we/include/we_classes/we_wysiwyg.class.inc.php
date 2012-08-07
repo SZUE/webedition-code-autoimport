@@ -142,7 +142,8 @@ function tinyMCEchanged(inst){
 	}
 }');
 			case 'default':
-				return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
+			include_once(WEBEDITION_PATH.'editors/content/wysiwyg/weWysiwygLang.inc.php');
+				return getWysiwygLang().'
 				<style type="text/css">
 					.tbButton {
 						border: 1px solid #F4F4F4;
