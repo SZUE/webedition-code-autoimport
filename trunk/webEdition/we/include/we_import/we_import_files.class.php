@@ -492,18 +492,18 @@ class we_import_files{
 
 			$filelist = "";
 			foreach($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err){
-				$filelist .= "- " . $err["filename"] . " => " . g_l('importFiles', '[' . $err["error"] . ']') . '<br>';
+				$filelist .= '- ' . $err["filename"] . ' => ' . $err['error'] . we_html_element::htmlBr();
 			}
 			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
 
 			$parts[] = array(
 				'html' => we_html_tools::htmlAlertAttentionBox(
-					sprintf(str_replace('\n', '<br>', g_l('importFiles', "[error]")), $filelist), 1, "520", false)
+					sprintf(str_replace('\n', '<br>', g_l('importFiles', '[error]')), $filelist), 1, "520", false)
 			);
 		} else{
 
 			$parts[] = array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[finished]"), 2, "520", false)
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[finished]'), 2, "520", false)
 			);
 		}
 
@@ -529,11 +529,11 @@ class we_import_files{
 		if($this->step == 1){
 			$bodyAttribs["onload"] = "next();";
 			$error = $this->importFile();
-			if(sizeof($error)){
+			if(count($error)){
 				if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 					$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
 				}
-				array_push($_SESSION["WE_IMPORT_FILES_ERRORs"], $error);
+				$_SESSION["WE_IMPORT_FILES_ERRORs"][] = $error;
 			}
 		}
 
@@ -737,7 +737,7 @@ class we_import_files{
 					$we_doc->Filename = $we_doc->Filename . "_" . $z;
 					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
 				} else{
-					return array("filename" => $_FILES['we_File']["name"], "error" => "same_name");
+					return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[same_name]'));
 				}
 			}
 			// now change the category
@@ -771,7 +771,7 @@ class we_import_files{
 				}
 				fclose($fh);
 			} else{
-				return array("filename" => $_FILES['we_File']["name"], "error" => "read_file_error");
+				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
 
 			$foo = explode("/", $_FILES["we_File"]["type"]);
@@ -821,7 +821,7 @@ class we_import_files{
 				$we_doc->DocChanged = true;
 			}
 			if(!$we_doc->we_save()){
-				return array("filename" => $_FILES['we_File']["name"], "error" => "save_error");
+				return array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[save_error]'));
 			}
 			if($we_ContentType == "image/*" && $this->importMetadata){
 				$we_doc->importMetaData();
@@ -837,7 +837,7 @@ class we_import_files{
 			}
 			return array();
 		} else{
-			return array("filename" => $_FILES['we_File']["name"], "error" => "php_error");
+			return array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[php_error]'));
 		}
 	}
 
