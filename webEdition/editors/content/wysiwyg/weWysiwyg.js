@@ -70,67 +70,71 @@ if(we_styleString && we_styleString.length){
 
 	we_styleSheets = document.styleSheets;
 	we_classNames = new Array();
-	if(isGecko||isOpera||isIE9){
-		for(var i=0;i<we_styleSheets.length;i++){
-			var r = we_styleSheets[i].cssRules;
-			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
-				for(var n=0;n<r.length;n++){
-					var s = r[n].style;
+	try{
+		if(isGecko||isOpera||isIE9){
+			for(var i=0;i<we_styleSheets.length;i++){
+				var r = we_styleSheets[i].cssRules;
+				if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
+					for(var n=0;n<r.length;n++){
+						var s = r[n].style;
 
-					if(r[n].selectorText && r[n].selectorText.substring(1,9) != "tbButton"){
-						var styleAttr = s.cssText;
-						var entry = r[n].selectorText;
-						var arr = entry.split(/,/);
-						for(var m=0;m<arr.length;m++){
-							var e = arr[m];
-							var arr2 = e.split(/ /);
+						if(r[n].selectorText && r[n].selectorText.substring(1,9) != "tbButton"){
+							var styleAttr = s.cssText;
+							var entry = r[n].selectorText;
+							var arr = entry.split(/,/);
+							for(var m=0;m<arr.length;m++){
+								var e = arr[m];
+								var arr2 = e.split(/ /);
 
-							// Bug Fix 7419
-							for(var x = 0; x < arr2.length; x++) {
-								if(arr2[x].trim() != "") {
-									e = arr2[x];
+								// Bug Fix 7419
+								for(var x = 0; x < arr2.length; x++) {
+									if(arr2[x].trim() != "") {
+										e = arr2[x];
+									}
+								}
+
+								if(e.substring(0,1) == "."){
+									if(!weWysiwygInArray(e,we_classNames)){
+										we_classNames.push(e);
+									}
 								}
 							}
-
+							if((! weWysiwygInArray(entry,weCssEntries)) &&  entry.substring(0,4).toLowerCase() != "body"){
+								we_styleString += entry + " { "+styleAttr+" }\n";
+								weCssEntries.push(entry);
+							}
+						}
+					}
+				}
+			}
+		} else{
+			for(var i=0;i<we_styleSheets.length;i++){
+				var r = we_styleSheets(i).rules;
+				if(! we_styleSheets(i).href || we_styleSheets(i).href.indexOf("/webEdition/") == -1 || we_styleSheets(i).href==self.location.href){
+					for(var n=0;n<r.length;n++){
+						var s = r(n).style;
+						if(r(n).selectorText.substring(1,9) != "tbButton"){
+							var styleAttr = s.cssText;
+							var entry = r(n).selectorText;
+							var arr = entry.split(/ /);
+							var e = arr[0];
 							if(e.substring(0,1) == "."){
 								if(!weWysiwygInArray(e,we_classNames)){
 									we_classNames.push(e);
 								}
 							}
-						}
-						if((! weWysiwygInArray(entry,weCssEntries)) &&  entry.substring(0,4).toLowerCase() != "body"){
-							we_styleString += entry + " { "+styleAttr+" }\n";
-							weCssEntries.push(entry);
-						}
-					}
-				}
-			}
-		}
-	} else{
-		for(var i=0;i<we_styleSheets.length;i++){
-			var r = we_styleSheets(i).rules;
-			if(! we_styleSheets(i).href || we_styleSheets(i).href.indexOf("/webEdition/") == -1 || we_styleSheets(i).href==self.location.href){
-				for(var n=0;n<r.length;n++){
-					var s = r(n).style;
-					if(r(n).selectorText.substring(1,9) != "tbButton"){
-						var styleAttr = s.cssText;
-						var entry = r(n).selectorText;
-						var arr = entry.split(/ /);
-						var e = arr[0];
-						if(e.substring(0,1) == "."){
-							if(!weWysiwygInArray(e,we_classNames)){
-								we_classNames.push(e);
+							if((! weWysiwygInArray(entry,weCssEntries)) &&  entry.substring(0,4).toLowerCase() != "body"){
+								we_styleString += entry + " { "+styleAttr+" }\n";
+								weCssEntries.push(entry);
 							}
 						}
-						if((! weWysiwygInArray(entry,weCssEntries)) &&  entry.substring(0,4).toLowerCase() != "body"){
-							we_styleString += entry + " { "+styleAttr+" }\n";
-							weCssEntries.push(entry);
-						}
 					}
 				}
-			}
 
+			}
 		}
+	}catch(err){
+		
 	}
 }
 
@@ -3887,27 +3891,29 @@ function weGetElementStyle(elementName,styleSheets){
 	var styleArray = new Array();
 	// loop through all styles
 	for(var i=0;i<styleSheets.length;i++){
-		// get the rules
-		var r = (isGecko||isOpera||isIE9) ? styleSheets[i].cssRules : styleSheets(i).rules;
-		// loop through all rules
-		for(var n=0;n<r.length;n++){
-			// get selector Text (.class or elemName)
-			var selectorText = (isGecko||isOpera||isIE9) ? r[n].selectorText : r(n).selectorText;
-			if(String(selectorText).length > 1 && String(selectorText).toLowerCase().indexOf(elementName.toLowerCase()) > -1){
-				// loop through all selector text entries
-				var v = String(selectorText).split(',');
-				for(var m=0; m < v.length; m++){
-					var el = elementName.toLowerCase().trim(); // element
-					var selText = v[m].toLowerCase().trim(); // selector Text
-					if(el == selText){
-						style = (isGecko||isOpera||isIE9) ? r[n].style : r(n).style;
-						if(style.cssText.length > 1){
-							var properties = style.cssText.split(';');
-							for (var o = 0; o < properties.length; o++) {
-								if(properties[o].length > 1){
-									var p = properties[o].split(':');
-									if(p[1] != " null"){
-										styleArray[String(p[0]).trim()] = String(p[1]).replace(/\&/g, "&amp;").replace(/</g, "&lt;").replace(/\"/g, "&quot;").trim();
+		try{
+			// get the rules
+			var r = (isGecko||isOpera||isIE9) ? styleSheets[i].cssRules : styleSheets(i).rules;
+			// loop through all rules
+			for(var n=0;n<r.length;n++){
+				// get selector Text (.class or elemName)
+				var selectorText = (isGecko||isOpera||isIE9) ? r[n].selectorText : r(n).selectorText;
+				if(String(selectorText).length > 1 && String(selectorText).toLowerCase().indexOf(elementName.toLowerCase()) > -1){
+					// loop through all selector text entries
+					var v = String(selectorText).split(',');
+					for(var m=0; m < v.length; m++){
+						var el = elementName.toLowerCase().trim(); // element
+						var selText = v[m].toLowerCase().trim(); // selector Text
+						if(el == selText){
+							style = (isGecko||isOpera||isIE9) ? r[n].style : r(n).style;
+							if(style.cssText.length > 1){
+								var properties = style.cssText.split(';');
+								for (var o = 0; o < properties.length; o++) {
+									if(properties[o].length > 1){
+										var p = properties[o].split(':');
+										if(p[1] != " null"){
+											styleArray[String(p[0]).trim()] = String(p[1]).replace(/\&/g, "&amp;").replace(/</g, "&lt;").replace(/\"/g, "&quot;").trim();
+										}
 									}
 								}
 							}
@@ -3915,6 +3921,8 @@ function weGetElementStyle(elementName,styleSheets){
 					}
 				}
 			}
+		}catch(err){
+			continue; //don't handle
 		}
 	}
 	return styleArray;
