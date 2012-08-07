@@ -894,7 +894,7 @@ class we_object extends we_document{
 
 		if($type != 'shopVat' && $type != "float" && $type != "text" && $type != "country" && $type != "language" && $type != "img" && $type != "binary" && $type != "flashmovie" && $type != "quicktime" && $type != "date" && $type != "meta" && $type != "object" && $type != "link" && $type != "href" && $type != "checkbox" && $type != "multiobject"){
 			// Length
-			$maxLengthVal = $type == 'int' ? 10 : 255;
+			$maxLengthVal = $type == 'int' ? 10 : 4095;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "length]", 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 3), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388);
@@ -1156,7 +1156,7 @@ class we_object extends we_document{
 
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>';
 				$content .= '<td width="170" class="defaultfont">';
-				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == 'int' ? 10 : ($type == 'float' ? 19 : 255)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388);
+				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), ($type == 'int' ? 10 : ($type == 'float' ? 19 : 4095)), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388);
 				$content .= '</td></tr>';
 				break;
 		}
