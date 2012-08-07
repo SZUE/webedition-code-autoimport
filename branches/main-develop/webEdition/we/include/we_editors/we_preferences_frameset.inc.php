@@ -88,26 +88,26 @@ if(we_hasPerm("FORMMAIL")){
 //}
 
 $_javascript .= <<< END_OF_SCRIPT
-			we_preferences.document.getElementById('setting_ui').style.display = 'none';
-			we_preferences.document.getElementById('setting_extensions').style.display = 'none';
-			we_preferences.document.getElementById('setting_editor').style.display = 'none';
-			we_preferences.document.getElementById('setting_recipients').style.display = 'none';
-			we_preferences.document.getElementById('setting_proxy').style.display = 'none';
-			we_preferences.document.getElementById('setting_advanced').style.display = 'none';
-			we_preferences.document.getElementById('setting_system').style.display = 'none';
-			we_preferences.document.getElementById('setting_seolinks').style.display = 'none';
-			we_preferences.document.getElementById('setting_error_handling').style.display = 'none';
-			//we_preferences.document.getElementById('setting_modules').style.display = 'none';
-			we_preferences.document.getElementById('setting_backup').style.display = 'none';
-			we_preferences.document.getElementById('setting_validation').style.display = 'none';
-			we_preferences.document.getElementById('setting_language').style.display = 'none';
-			we_preferences.document.getElementById('setting_countries').style.display = 'none';
-			we_preferences.document.getElementById('setting_message_reporting').style.display = 'none';
-			we_preferences.document.getElementById('setting_active_integrated_modules').style.display = 'none';
-			we_preferences.document.getElementById('setting_email').style.display = 'none';
-			we_preferences.document.getElementById('setting_versions').style.display = 'none';
+			content.document.getElementById('setting_ui').style.display = 'none';
+			content.document.getElementById('setting_extensions').style.display = 'none';
+			content.document.getElementById('setting_editor').style.display = 'none';
+			content.document.getElementById('setting_recipients').style.display = 'none';
+			content.document.getElementById('setting_proxy').style.display = 'none';
+			content.document.getElementById('setting_advanced').style.display = 'none';
+			content.document.getElementById('setting_system').style.display = 'none';
+			content.document.getElementById('setting_seolinks').style.display = 'none';
+			content.document.getElementById('setting_error_handling').style.display = 'none';
+			//content.document.getElementById('setting_modules').style.display = 'none';
+			content.document.getElementById('setting_backup').style.display = 'none';
+			content.document.getElementById('setting_validation').style.display = 'none';
+			content.document.getElementById('setting_language').style.display = 'none';
+			content.document.getElementById('setting_countries').style.display = 'none';
+			content.document.getElementById('setting_message_reporting').style.display = 'none';
+			content.document.getElementById('setting_active_integrated_modules').style.display = 'none';
+			content.document.getElementById('setting_email').style.display = 'none';
+			content.document.getElementById('setting_versions').style.display = 'none';
 
-			we_preferences.document.getElementById('setting_' + arguments[0]).style.display = '';
+			content.document.getElementById('setting_' + arguments[0]).style.display = '';
 
 			break;
 END_OF_SCRIPT;
@@ -116,10 +116,6 @@ END_OF_SCRIPT;
 */
 
 $_javascript .= "
-		case \"show_tabs\":
-		//naviDiv.document.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_preferences_header.php" . ($tabname != "" ? "?tabname=" . $tabname : "") . "';
-
-			break;
 	}
 }
 self.focus();
@@ -139,11 +135,6 @@ function saveOnKeyBoard() {
 print we_html_element::jsElement($_javascript) .
 	we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
-/*$frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0", "frameborder" => "no"), 0);
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" => "we_preferences_header", "scrolling" => "no", "noresize" => "noresize"));
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences_footer.php", "name" => "we_preferences_footer", "scrolling" => "no", "noresize" => "noresize"));
-*/
 include(WE_INCLUDES_PATH. 'we_editors/we_preferences_footer.inc.php');
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;','onload'=>'setFrameSize()', 'onresize' => 'setFrameSize()')

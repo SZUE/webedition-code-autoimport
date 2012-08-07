@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -36,7 +37,7 @@ class we_docSelector extends we_dirSelector{
 
 	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $filter = "", $rootDirID = 0, $open_doc = 0, $multiple = 0, $canSelectDir = 0){
 
-		if($table == ""){
+		if($table == ''){
 			$table = FILE_TABLE;
 		}
 		if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
@@ -53,16 +54,12 @@ class we_docSelector extends we_dirSelector{
 
 		$filterQuery = '';
 		if($this->filter){
-			if(strpos($this->filter, ',')){
-				$contentTypes = explode(',', $this->filter);
-				$filterQuery .= ' AND (  ';
-				foreach($contentTypes AS $ct){
-					$filterQuery .= 'ContentType=\'' . $this->db->escape($ct) . '\' OR ';
-				}
-				$filterQuery .= ' isFolder=1)';
-			} else{
-				$filterQuery = " AND (ContentType='" . $this->db->escape($this->filter) . "' OR IsFolder=1 ) ";
+			$contentTypes = explode(',', $this->filter);
+			$filterQuery .= ' AND (  ';
+			foreach($contentTypes AS $ct){
+				$filterQuery .= 'ContentType="' . $this->db->escape($ct) . '" OR ';
 			}
+			$filterQuery .= ' isFolder=1)';
 		}
 
 		// deal with workspaces
@@ -86,19 +83,15 @@ class we_docSelector extends we_dirSelector{
 		}
 
 
-		$q = "
-			SELECT " . $this->fields . " FROM " .
-			$this->db->escape($this->table) .
-			' WHERE ParentID=' . intval($this->dir) . ' ' .
-			makeOwnersSql() .
-			$wsQuery .
+		$q = 'SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
+			makeOwnersSql() . $wsQuery .
 			$filterQuery . //$publ_q.
 			($this->order ? (' ORDER BY ' . $this->order) : '');
 
 		$this->db->query($q);
 		if($this->table == FILE_TABLE){
 			$titleQuery = new DB_WE();
-			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");
+			$titleQuery->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ParentID=' . intval($this->dir) . ' AND b.Name="Title"');
 			while($titleQuery->next_record()) {
 				$this->titles[$titleQuery->f('ID')] = $titleQuery->f('Dat');
 			}
@@ -108,10 +101,10 @@ class we_docSelector extends we_dirSelector{
 				$_path = dirname($_path);
 			}
 			$_db = new DB_WE();
-			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='" . $_db->escape($_path) . "'", "ID", $_db);
-			$this->titleName = f("SELECT DefaultTitle FROM " . OBJECT_TABLE . " WHERE ID=" . intval($_cid), "DefaultTitle", $_db);
+			$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE PATH="' . $_db->escape($_path) . '"', 'ID', $_db);
+			$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
 			if($this->titleName && strpos($this->titleName, '_')){
-				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=" . intval($this->dir));
+				$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $_cid . ' WHERE OF_ParentID=' . intval($this->dir));
 				while($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
 				}
@@ -154,15 +147,10 @@ class we_docSelector extends we_dirSelector{
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		if($setLastDir){
-			$this->dir = isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0;
-		} else{
-			$this->dir = 0;
-		}
-		if($this->rootDirID){
-			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
-				$this->dir = $this->rootDirID;
-			}
+		$this->dir = ($setLastDir && isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0);
+
+		if($this->rootDirID && (!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db))){
+			$this->dir = $this->rootDirID;
 		}
 		$this->path = "";
 		$this->values = array(
@@ -395,12 +383,9 @@ class we_docSelector extends we_dirSelector{
 		function printFramesetJSFunctionAddEntries(){
 			if($this->userCanSeeDir(true)){
 				while($this->next_record()) {
-					$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : "&nbsp;";
-					$title = str_replace('\\', '\\\\', $title);
-					$title = str_replace('"', '\"', $title);
-					$title = str_replace("\n", " ", $title);
-					$title = strip_tags($title);
-					$title = $title == "&nbsp;" ? "-" : htmlspecialchars($title);
+					$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
+					$title = strip_tags(str_replace(array('\\', '"', "\n"), array('\\\\', '\"', ' '), $title));
+					$title = ($title == '&nbsp;' ? '-' : htmlspecialchars($title));
 					$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 					print 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");' . "\n";
 				}
@@ -412,26 +397,18 @@ class we_docSelector extends we_dirSelector{
 			while($this->next_record()) {
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : "&nbsp;";
 				$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
-				$title = $title == "&nbsp;" ? "-" : htmlspecialchars($title);
-				$title = str_replace('"', '\"', $title);
-				$title = str_replace("\n\r", ' ', $title);
-				$title = str_replace("\n", ' ', $title);
-				$title = str_replace("\\", "\\\\", $title);
-				$title = str_replace("�", "&deg;", $title);
-				$title = strip_tags($title);
+				$title = ($title == '&nbsp;' ? '-' : htmlspecialchars($title));
+				$title = strip_tags(str_replace(array('"', '\\', '°', "\n\r", "\n"), array('\"', '\\\\', '&deg;', ' '), $title));
 				print 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");' . "\n";
 			}
 
 			if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
-
 				if(in_workspace($this->dir, get_ws($this->table))){
-					if($this->userCanMakeNewFile){
-						print 'if(top.fsheader.enableNewFileBut) top.fsheader.enableNewFileBut();' . "\n";
-					} else{
-						print 'if(top.fsheader.disableNewFileBut){top.fsheader.disableNewFileBut();}' . "\n";
-					}
+					print ($this->userCanMakeNewFile ?
+							'if(top.fsheader.enableNewFileBut) top.fsheader.enableNewFileBut();' :
+							'if(top.fsheader.disableNewFileBut){top.fsheader.disableNewFileBut();}');
 				} else{
-					print 'if(top.fsheader.disableNewFileBut){top.fsheader.disableNewFileBut();}' . "\n";
+					print 'if(top.fsheader.disableNewFileBut){top.fsheader.disableNewFileBut();}';
 				}
 			}
 
@@ -447,8 +424,6 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		function printHeaderHeadlines(){
-
-
 			print '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>' . $this->tableHeadlines . '</tr>
@@ -462,7 +437,7 @@ class we_docSelector extends we_dirSelector{
 				print '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">';
 				$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 				print we_html_element::jsElement('newFileState=' . $newFileState . ';');
-				if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
+				if($this->filter == 'image/*' || $this->filter == 'video/quicktime' || $this->filter == 'application/x-shockwave-flash'){
 					print we_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
 				} else{
 					print we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
@@ -477,7 +452,6 @@ class we_docSelector extends we_dirSelector{
 				print 'var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
 					print '
-
 				function disableNewFileBut() {
 					' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "disabled", "image");
 					newFileState = 0;
@@ -488,9 +462,7 @@ class we_docSelector extends we_dirSelector{
 					newFileState = 1;
 				}';
 				} else{
-
 					print '
-
 				function disableNewFileBut() {
 					btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
 					newFileState = 0;
@@ -537,11 +509,7 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		function printHeaderTableSpaceRow(){
-			print '
-			<tr>
-				<td colspan="13">
-					' . we_html_tools::getPixel(5, 10) . '</td>
-			</tr>';
+			print '<tr><td colspan="13">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 		}
 
 		function printSetDirHTML(){
@@ -561,18 +529,13 @@ class we_docSelector extends we_dirSelector{
 		function printFooterTable(){
 			print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
+				<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
+				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 			if($this->filter == ""){
 				print '
 				<tr>
 					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('fileselector', "[type]") . '</b></td>
+					<td class="defaultfont"><b>' . g_l('fileselector', "[type]") . '</b></td>
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
@@ -585,9 +548,7 @@ class we_docSelector extends we_dirSelector{
 						</select></td>
 					<td></td>
 				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
+				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 			}
 			$buttons = we_button::position_yes_no_cancel(
 					we_button::create_button("ok", "javascript:press_ok_button();"), null, we_button::create_button("cancel", "javascript:top.exit_close();"));
@@ -596,9 +557,7 @@ class we_docSelector extends we_dirSelector{
 			print '
 				<tr>
 					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('fileselector', "[name]") . '</b>
-					</td>
+					<td class="defaultfont"><b>' . g_l('fileselector', "[name]") . '</b></td>
 					<td></td>
 					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", "style=\"width:100%\" readonly=\"readonly\"") . '
 					</td>
@@ -651,8 +610,7 @@ class we_docSelector extends we_dirSelector{
 				}
 				$path = isset($result['Path']) ? $result['Path'] : "";
 				$out = we_html_tools::getHtmlTop() . '
-' . STYLESHEET . '
-<style type="text/css">
+' . STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -684,9 +642,7 @@ class we_docSelector extends we_dirSelector{
 	.even {
 		padding:3px 6px;
 		background-color:#F2F2F1;
-	}
-</style>
-<script tyle="text/javascript">
+	}') . we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -708,11 +664,9 @@ class we_docSelector extends we_dirSelector{
 		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
-	}
-</script>
+	}') . '
 </head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
-					';
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 				if(isset($result['ContentType']) && !empty($result['ContentType'])){
 					if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 						$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
@@ -958,9 +912,9 @@ class we_docSelector extends we_dirSelector{
 					}
 
 
-					$out .= "</table></div></td></tr>\t</table>\n";
+					$out .= '</table></div></td></tr></table>';
 				}
-				$out .= "</body>\n</html>";
+				$out .= '</body></html>';
 				echo $out;
 			}
 		}

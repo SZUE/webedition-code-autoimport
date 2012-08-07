@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -730,10 +731,6 @@ function enableRootDirButs(){
 ';
 			}
 
-			##############################################
-			############## CMD FUNCTIONS #################
-			##############################################
-
 			function printCmdHTML(){
 				print '<script>
 top.clearEntries();
@@ -788,32 +785,24 @@ top.fsheader.selectIt();
 ';
 			}
 
-			##############################################
-			############ FOOTER FUNCTIONS ################
-			##############################################
-
 			function printFooterHTML(){
 				we_html_tools::htmlTop();
 
 				print STYLESHEET;
 
 				$this->printFooterJSIncluddes();
-				print '<script  type="text/javascript">
-';
+				print '<script  type="text/javascript"><!--
+					';
 				$this->printFooterJSDef();
 				$this->printFooterJS();
 
-				print '</script>
-</head>
+				print '//-->
+					</script></head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-	<form name="we_form" target="fscmd">
-';
+	<form name="we_form" target="fscmd">';
 				$this->printFooterTable();
 
-				print '		</form>
-	</body>
-</html>
-';
+				print '</form></body></html>';
 			}
 
 			function printFooterJSIncluddes(){
@@ -838,12 +827,8 @@ top.fsheader.selectIt();
 
 			function printFooterTable(){
 				print '<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
+				<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
+				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 				$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 				$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
 				$buttons = we_button::position_yes_no_cancel(
@@ -851,9 +836,7 @@ top.fsheader.selectIt();
 				print '
 				<tr>
 					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('fileselector', "[name]") . '</b>
-					</td>
+					<td class="defaultfont"><b>' . g_l('fileselector', "[name]") . '</b></td>
 					<td></td>
 					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
 					</td>
@@ -903,3 +886,4 @@ top.fsheader.selectIt();
 			}
 
 		}
+

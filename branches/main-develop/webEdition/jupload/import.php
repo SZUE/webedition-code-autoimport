@@ -36,7 +36,7 @@ if(isset($_SESSION['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
-$_SESSION["prefs"]['juploadPath']= $_REQUEST['pathinfo0'];
+$_SESSION["prefs"]['juploadPath'] = $_REQUEST['pathinfo0'];
 
 $_counter = 0;
 foreach($_FILES as $_index => $_file){
@@ -49,7 +49,7 @@ foreach($_FILES as $_index => $_file){
 			if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
 				$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
 			}
-			array_push($_SESSION["WE_IMPORT_FILES_ERRORs"], $error);
+			$_SESSION["WE_IMPORT_FILES_ERRORs"][] = $error;
 		}
 
 		flush();

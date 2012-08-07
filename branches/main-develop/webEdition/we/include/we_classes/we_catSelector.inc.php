@@ -252,7 +252,7 @@ function enableDelBut(){
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('</head>');
+			d.writeln('</head>');
 
 		d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || makeNewCat || we_editCatID) ? ' onload="document.we_form.we_EntryText_tmp.focus();document.we_form.we_EntryText_tmp.select();"' : '')+'>');
 		<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
@@ -302,9 +302,9 @@ function enableDelBut(){
 								d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 								d.writeln('</td>');
 							d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="'+entries[i].text+'">');
-														 d.writeln(cutText(entries[i].text,80));
-														 }
-														 d.writeln('</td>');
+								d.writeln(cutText(entries[i].text,80));
+								}
+								d.writeln('</td>');
 							d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
 						}
 						d.writeln('<tr>');
@@ -470,41 +470,32 @@ top.selectFile(top.currentID);
 	function printDoRenameEntryHTML(){
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
-		$foo = getHash("SELECT IsFolder,Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editCatID), $this->db);
+		$foo = getHash('SELECT IsFolder,Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), $this->db);
 		$IsDir = $foo["IsFolder"];
 		$oldname = $foo["Text"];
-		$what = f("SELECT IsFolder FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($this->we_editCatID), 'IsFolder', $this->db);
+		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), 'IsFolder', $this->db);
 		print '<script>
 top.clearEntries();
 ';
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = $this->EntryText;
-		if($txt == ""){
-			if($what == 1){
-				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
-				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[category][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-			}
+		if($txt == ''){
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(strpos($txt, ',') !== false){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			$parentPath = (!intval($this->dir)) ? "" : f("SELECT Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->dir), 'Path', $this->db);
-			$Path = $parentPath . "/" . $txt;
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID != " . intval($this->we_editCatID));
-			if($this->db->next_record()){
-				if($what == 1){
-					$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $Path);
-				} else{
-					$we_responseText = sprintf(g_l('weEditor', "[category][response_path_exists]"), $Path);
-				}
+			$parentPath = (!intval($this->dir)) ? "" : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
+			$Path = $parentPath . '/' . $txt;
+			if(f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID != " . intval($this->we_editCatID), 'a', $this->db) === '1'){
+				$we_responseText = sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else{
 				if(preg_match('|[\'"<>/]|', $txt)){
 					$we_responseText = sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else{
-					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editCatID), "Text", $this->db) != $txt){
-						$this->db->query("UPDATE " . $this->db->escape($this->table) . "
+					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editCatID), "Text", $this->db) != $txt){
+						$this->db->query('UPDATE ' . $this->db->escape($this->table) . "
 								SET Category='" . $this->db->escape($txt) . "',
 								ParentID=" . intval($this->dir) . ",
 								Text='" . $this->db->escape($txt) . "',
@@ -519,8 +510,7 @@ top.currentID = "' . $this->we_editCatID . '";
 if(top.currentID){
 	top.fsheader.enableDelBut();
 	top.showPref(top.currentID);
-}
-';
+}';
 					}
 				}
 			}
@@ -534,7 +524,6 @@ if(top.currentID){
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;
 </script>
 ';
-//	}
 		print '</head><body></body></html>';
 	}
 
@@ -607,25 +596,19 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;
 	}
 
 	function printCmdHTML(){
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(intval($this->dir) == 0){
-			print 'top.fsheader.disableRootDirButs();
-top.fsheader.disableDelBut();
-';
-		} else{
-			print 'top.fsheader.enableRootDirButs();
-top.fsheader.enableDelBut();
-';
-		}
-		print 'top.currentPath = "' . $this->path . '";
+		print (intval($this->dir) == 0 ?
+				'top.fsheader.disableRootDirButs();top.fsheader.disableDelBut();' :
+				'top.fsheader.enableRootDirButs();top.fsheader.enableDelBut();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-</script>
-';
+	//-->
+</script>';
 	}
 
 	function printFramesetSelectFileHTML(){
@@ -735,15 +718,17 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		<?php
 	}
 
-	function renameChildrenPath($id){
-		$db = new DB_WE();
-		$db2 = new DB_WE();
-		$db->query("SELECT ID,IsFolder,Text FROM " . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
+	function renameChildrenPath($id, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$updates = array();
+		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		while($db->next_record()) {
-			$newPath = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($id), 'Path', $db2) . "/" . $db->f("Text");
-			$db2->query("UPDATE " . CATEGORY_TABLE . " SET Path='" . $db2->escape($newPath) . "' WHERE ID=" . intval($db->f("ID")));
-			if($db->f("IsFolder")){
-				$this->renameChildrenPath($db->f("ID"));
+			$updates[$db->f("ID")] = $db->f("IsFolder");
+		}
+		foreach($updates as $curId => $IsFolder){
+			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT((SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . '),"/",Text) WHERE ID=' . $curId);
+			if($IsFolder){
+				$this->renameChildrenPath($curId, $db);
 			}
 		}
 	}
@@ -753,13 +738,13 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		if($IsDir){
 			return $this->DirInUse($id);
 		} else{
-			$ret = f("SELECT ID FROM " . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", "ID", $db);
-			if($ret)
+			if(f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", 'a', $db) === '1'){
 				return true;
+			}
 			if(defined("OBJECT_TABLE")){
-				$ret = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%'", "ID", $db);
-				if($ret)
+				if(f("SELECT 1 AS a FROM " . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%'", 'a', $db) === '1'){
 					return true;
+				}
 			}
 		}
 		return false;
@@ -782,11 +767,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-
-
 		if(isset($_REQUEST["todel"])){
-
-
 			$finalDelete = array();
 			$catsToDel = makeArrayFromCSV($_REQUEST["todel"]);
 			$catlistNotDeleted = "";
@@ -812,7 +793,6 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				}
 			}
 			if($catlistNotDeleted){
-
 				print we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('fileselector', "[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 					);
@@ -822,15 +802,13 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 			$this->id = $this->dir;
 			if($this->id){
-				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($this->id), $this->db);
-				$Path = $foo["Path"];
-				$Text = $foo["Text"];
+				list($Path, $Text) = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($this->id), $this->db);
 			} else{
 				$Path = "";
 				$Text = "";
 			}
 
-			print '<script>
+			print '<script><!--
 top.clearEntries();
 ';
 			$this->printCmdAddEntriesHTML();
@@ -842,6 +820,7 @@ top.currentID = "' . $this->id . '";
 top.selectFile(' . $this->id . ');
 if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	top.fsheader.enableDelBut();
+	//-->
 </script>
 ';
 		}
@@ -870,12 +849,10 @@ top.clearEntries();
 			$this->id = $this->dir;
 
 			if($this->id){
-				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($this->id), $this->db);
-				$Path = $foo["Path"];
-				$Text = $foo["Text"];
+				list($Path, $Text) = getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db);
 			} else{
-				$Path = "";
-				$Text = "";
+				$Path = '';
+				$Text = '';
 			}
 			$this->printCmdAddEntriesHTML();
 			$this->printCMDWriteAndFillSelectorHTML();
@@ -914,40 +891,30 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	}
 
 	function printFooterTable(){
-		if($this->values["Text"] == "/")
-			$this->values["Text"] = "";
+		if($this->values["Text"] == '/'){
+			$this->values["Text"] = '';
+		}
 		$csp = $this->noChoose ? 4 : 5;
 
-		if(!$this->noChoose){
+		$okBut = ($this->noChoose ? '' : we_button::create_button("ok", "javascript:press_ok_button();"));
 
-			$okBut = we_button::create_button("ok", "javascript:press_ok_button();");
-		} else{
-			$okBut = "";
-		}
-		print '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		$cancelbut = we_button::create_button("close", "javascript:top.exit_close();");
+		$buttons = ($okBut ?
+				we_button::position_yes_no_cancel($okBut, null, $cancelbut) :
+				$cancelbut);
+
+		print '<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
-		$cancelbut = we_button::create_button("close", "javascript:top.exit_close();");
-		if($okBut){
-			$buttons = we_button::position_yes_no_cancel($okBut, null, $cancelbut);
-		} else{
-			$buttons = $cancelbut;
-		}
-
-		print '
+				</tr>
 				<tr>
 					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('fileselector', "[catname]") . '</b>
-					</td>
+					<td class="defaultfont"><b>' . g_l('fileselector', "[catname]") . '</b></td>
 					<td></td>
-					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
-					</td>
+					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 					<td></td>
 				</tr>
 				<tr>
@@ -1012,31 +979,27 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				$parentid = $result['ParentID'];
 
 				if($parentid == 0){
-					$parentPath = "/";
-					$path = "/" . $category;
+					$parentPath = '/';
+					$path = '/' . $category;
 				} else{
-					$tmp = explode("/", $path);
+					$tmp = explode('/', $path);
 					array_pop($tmp);
-					$parentPath = implode("/", $tmp);
-					$path = $parentPath . "/" . $category;
+					$parentPath = implode('/', $tmp);
+					$path = $parentPath . '/' . $category;
 				}
 				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '$parentid';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '$parentPath';";
 			} else{
-				if($parentid == 0){
-					$path = "/" . $category;
-				} else{
-					$path = $targetPath . "/" . $category;
-				}
+				$path = ($parentid == 0 ? '' : $targetPath) . '/' . $category;
 			}
-			$updateok = $db->query("UPDATE " . CATEGORY_TABLE . " SET Category='" . $db->escape($category) . "', Text='" . $db->escape($category) . "', Path='" . $db->escape($path) . "', ParentID=" . intval($parentid) . ", Catfields='" . $db->escape(serialize($fields)) . "' WHERE ID=" . intval($_POST["catid"]));
+			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET Category="' . $db->escape($category) . '", Text="' . $db->escape($category) . '", Path="' . $db->escape($path) . '", ParentID=' . intval($parentid) . ', Catfields="' . $db->escape(serialize($fields)) . '" WHERE ID=' . intval($_POST["catid"]));
 			if($updateok){
 				$this->renameChildrenPath(intval($_POST["catid"]));
 			}
 			we_html_tools::htmlTop();
 			we_html_tools::protect();
-			print '<script>' . $js . 'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
-				. '</script>';
+			print we_html_element::jsElement($js . 'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
+					($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+				);
 
 			print '</head><body></body></html>';
 		}
@@ -1046,26 +1009,22 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 		$showPrefs = (isset($_REQUEST["catid"]) && $_REQUEST["catid"] );
 
-		$path = "";
+		$path = '';
 
-		$title = "";
+		$title = '';
 		$variant = isset($_SESSION["we_catVariant"]) ? $_SESSION["we_catVariant"] : "default";
 		$_SESSION["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
 			$result = getHash("SELECT ID,Category,Catfields,Path,ParentID FROM " . CATEGORY_TABLE . " WHERE id=" . intval($_REQUEST["catid"]), new DB_WE());
-			if(isset($result["Catfields"]) && $result["Catfields"]){
-				$fields = unserialize($result["Catfields"]);
-			} else{
-				$fields = array(
-					"default" => array("Title" => "", "Description" => "")
-				);
-			}
+			$fields = (isset($result["Catfields"]) && $result["Catfields"] ?
+					unserialize($result["Catfields"]) :
+					array('default' => array('Title' => '', 'Description' => '')));
 			if($result["ParentID"] != 0){
-				$result2 = getHash("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($result["ParentID"]), new DB_WE());
+				$result2 = getHash('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), new DB_WE());
 				$path = isset($result2["Path"]) ? $result2["Path"] : '/';
 			} else{
-				$path = "/";
+				$path = '/';
 			}
 			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : '0';
 			$category = isset($result["Category"]) ? $result["Category"] : '';
@@ -1098,12 +1057,13 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			$saveBut = we_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 		}
 
-
-
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
-		print we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . '
-<script type="text/javascript"><!--
+		$we_responseText = sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path);
+
+		print STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "/webEdition/we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -1122,22 +1082,17 @@ function we_cmd(){
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {
-';
-		$we_responseText = sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path);
-		print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '
+' .
+				we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}
-}
-//-->
-</script>
-';
-		print STYLESHEET . '</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackgroundLineLeft.gif);">
+}') . '</head><body class="defaultfont" style="margin:0px;padding: 15px 0 0 10px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.self::CHANGE_CAT.'" /><input type="hidden" name="catid" value="' . $_REQUEST["catid"] . '" />
+	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . $_REQUEST["catid"] . '" />
 		' . $table->getHtml() . "<br />" . $ta . "<br />" . $saveBut . '
-	</div>		' : '' ) . '
-</body></html>';
+	</div>' : '' ) .
+			'</body></html>';
 	}
 
 }
