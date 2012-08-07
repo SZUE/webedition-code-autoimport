@@ -27,19 +27,19 @@ class weDialog{
 	 * VARIABLES
 	 * *********************************************************************** */
 
-	var $db = "";
-	var $what = "";
+	var $db = '';
+	var $what = '';
 	var $args = array();
-	var $cmdFN = "";
-	var $okJsFN = "";
-	var $dialogTitle = "";
+	var $cmdFN = '';
+	var $okJsFN = '';
+	var $dialogTitle = '';
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array();
 	var $pageNr = 1;
 	var $numPages = 1;
 	var $JsOnly = false;
 	var $dialogWidth = 350;
-	var $charset = "";
+	var $charset = '';
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -71,40 +71,32 @@ class weDialog{
 	}
 
 	function initByHttp(){
-		$this->what = isset($_REQUEST["we_what"]) ? $_REQUEST["we_what"] : "";
+		$this->what = isset($_REQUEST['we_what']) ? $_REQUEST['we_what'] : '';
 
-		if(isset($_REQUEST["we_dialog_args"]) && is_array($_REQUEST["we_dialog_args"])){
-			$this->args = $_REQUEST["we_dialog_args"];
+		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
+			$this->args = $_REQUEST['we_dialog_args'];
 			foreach($this->args as $key => $value){
 				$this->args[$key] = urldecode($value);
 			}
 		}
 
-		if(isset($_REQUEST["we_pageNr"])){
-			$this->pageNr = $_REQUEST["we_pageNr"];
+		if(isset($_REQUEST['we_pageNr'])){
+			$this->pageNr = $_REQUEST['we_pageNr'];
 		}
 	}
 
 	function getHTML(){
 		if($this->JsOnly){
-			$this->what = "dialog";
+			$this->what = 'dialog';
 		}
 
 		switch($this->what){
-			case "dialog":
-				return $this->getHeaderHTML(true) .
-					$this->getBodyTagHTML() .
-					$this->getDialogHTML() .
-					$this->getFooterHTML();
-			case "cmd":
+			case 'cmd':
 				return $this->getCmdHTML();
 
 			default:
-
 				return $this->getHeaderHTML() .
-					$this->getFramesetHTML() .
-					$this->getBodyTagHTML() .
-					$this->getFooterHTML();
+					$this->getFramesetHTML() . '</html>';
 		}
 	}
 
@@ -134,27 +126,27 @@ class weDialog{
 		}
 	}
 
-	function getQueryString($what = ""){
-		$query = "";
+	/*function getQueryString($what = ''){
+		$query = '';
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$query .= "we_cmd[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
+				$query .= 'we_cmd[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
 			}
 		}
 		if(isset($this->args) && is_array($this->args)){
 			foreach($this->args as $k => $v){
-				$query .= "we_dialog_args[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
+				$query .= 'we_dialog_args[' . rawurlencode($k) . ']=' . rawurlencode($v) . '&';
 			}
 		}
-		return rtrim($query, '&') . ($what ? "&we_what=" . rawurlencode($what) : '');
-	}
+		return rtrim($query, '&') . ($what ? '&we_what=' . rawurlencode($what) : '');
+	}*/
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement('
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
-			((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
-				'document.onkeydown = doKeyDown;' : '') . '
+				((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
+					'document.onkeydown = doKeyDown;' : '') . '
 
 				function doKeyDown() {
 					var key = event.keyCode;
@@ -168,31 +160,31 @@ class weDialog{
 							self.we_' . $this->ClassName . '_edit_area.weDoOk();
 							break;
 					}
-				}').'
-
-			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
-				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
-				<frame src="' . HTML_DIR . 'white.html" name="we_' . $this->ClassName . '_cmd_frame" scrolling="no" noresize="noresize">
-			</frameset>';
+				}') .
+			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', HTML_DIR . 'white.html', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+				));
 	}
 
 	function getNextBut(){
-		return we_button::create_button("next", "javascript:document.forms['0'].submit();");
+		return we_button::create_button('next', "javascript:document.forms['0'].submit();");
 	}
 
 	function getOkBut(){
-		return we_button::create_button("ok", "javascript:weDoOk();");
+		return we_button::create_button('ok', 'javascript:weDoOk();');
 	}
 
 	function getbackBut(){
-		return ($this->pageNr > 1) ? we_button::create_button("back", "javascript:history.back();") . we_html_tools::getPixel(10, 2) : "";
+		return ($this->pageNr > 1) ? we_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
 	}
 
 	function getDialogHTML(){
 		$dc = $this->getDialogContentHTML();
 
 		if(is_array($dc)){
-			$dialogContent = we_multiIconBox::getHTML("", "100%", $dc, 30, $this->getDialogButtons(), -1, "", "", false, $this->dialogTitle, "", $this->getDialogHeight());
+			$dialogContent = we_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight());
 		} else{
 			$dialogContent = we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons());
 		}
@@ -201,26 +193,26 @@ class weDialog{
 	}
 
 	function getDialogHeight(){
-		return "";
+		return '';
 	}
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != "") ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button("ok", "form:we_form"))) : we_button::create_button("ok", "form:we_form");
+			$okBut = ($this->getBackBut() != '') ? we_button::create_button_table(array($this->getBackBut(), we_button::create_button('ok', 'form:we_form'))) : we_button::create_button('ok', 'form:we_form');
 		} else if($this->pageNr < $this->numPages){
-			$okBut = (($this->getBackBut() != "") && ($this->getNextBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == "") ? $this->getNextBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getNextBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getNextBut())) : (($this->getBackBut() == '') ? $this->getNextBut() : $this->getBackBut());
 		} else{
-			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
+			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
 		}
 
-		return we_button::position_yes_no_cancel($okBut, "", we_button::create_button("cancel", "javascript:top.close();"));
+		return we_button::position_yes_no_cancel($okBut, '', we_button::create_button('cancel', 'javascript:top.close();'));
 	}
 
 	function getFormHTML(){
-		$hiddens = "";
+		$hiddens = '';
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
+				$hiddens .= '<input type="hidden" name="we_cmd['.$k.']" value="' . rawurlencode($v) . '" />';
 			}
 		}
 		$target = '';
@@ -231,7 +223,7 @@ class weDialog{
 	}
 
 	function getHiddenArgs(){
-		$hiddenArgs = "";
+		$hiddenArgs = '';
 
 		foreach($this->args as $k => $v){
 			if(!in_array($k, $this->changeableArgs)){
@@ -242,19 +234,12 @@ class weDialog{
 	}
 
 	function getDialogContentHTML(){
-		return ""; // overwrite !!
+		return ''; // overwrite !!
 	}
 
-	function getHeaderHTML($printJS_Style = false){
-		$out = we_html_tools::htmlTop($this->dialogTitle, $this->charset);
-
-		if($printJS_Style){
-			$out .= STYLESHEET;
-			$out .= $this->getJs();
-		}
-
-		$out .= '</head>';
-		return $out;
+	function getHeaderHTML(){
+		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
+			STYLESHEET . $this->getJs() . '</head>';
 	}
 
 	function getJs(){
@@ -330,14 +315,6 @@ class weDialog{
 
 	function formColor($size, $name, $value, $width = ""){
 		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onClick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
-	}
-
-	function getBodyTagHTML(){
-		return '<body class="weDialogBody" onUnload="doUnload()">';
-	}
-
-	function getFooterHTML(){
-		return '</body></html>';
 	}
 
 	function getHttpVar($name, $alt = ""){

@@ -35,53 +35,39 @@ class weFullscreenEditDialog extends weDialog{
 	}
 
 	function getDialogContentHTML(){
-		$js = we_html_element::jsElement('isFullScreen = true;');
 		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], "", $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language']);
-		return we_wysiwyg::getHeaderHTML() . $js . $e->getHTML();
-	}
-
-	function getBodyTagHTML(){
-		return '<body class="weDialogBody" onUnload="doUnload()"">
-';
+		return we_wysiwyg::getHeaderHTML() . we_html_element::jsElement('isFullScreen = true;') . $e->getHTML();
 	}
 
 	function getJs(){
-		$js = we_html_element::jsScript(JS_DIR . 'windows.js') . '
-			<script  type="text/javascript"><!--
+		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 				var textareaFocus = false;
 
-				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);':'document.onkeydown = doKeyDown;').'
+				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 				function doKeyDown(e) {
 					var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;':'key = event.keyCode;').'
-
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 					switch (key) {
 						case 27:
 							top.close();
-							break;';
-
-		$js .= '	}
+							break;
+					}
 				}
 
-				function weDoOk() {';
-		if($this->pageNr == $this->numPages && $this->JsOnly){
-			$js .= '
+				function weDoOk() {' .
+				($this->pageNr == $this->numPages && $this->JsOnly ?
+					'
 							if (!textareaFocus) {
 								' . $this->getOkJs() . '
-							}';
-		}
-		$js .= '
+							}' : '') . '
 				}
-				';
-
-		$js .= '
 				function IsDigit(e) {
 					var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 				}
@@ -93,7 +79,7 @@ class weFullscreenEditDialog extends weDialog{
 				function IsDigitPercent(e) {
 					var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 
 
 					return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
@@ -107,11 +93,7 @@ class weFullscreenEditDialog extends weDialog{
 					}
 				}
 
-				self.focus();
-			//-->
-			</script>';
-
-		return $js;
+				self.focus();');
 	}
 
 }

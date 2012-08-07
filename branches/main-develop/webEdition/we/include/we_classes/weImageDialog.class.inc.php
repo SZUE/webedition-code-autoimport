@@ -49,7 +49,7 @@ class weImageDialog extends weDialog{
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[edit_image]");
+		$this->dialogTitle = g_l('wysiwyg', '[edit_image]');
 	}
 
 	function initBySrc($src, $width = "", $height = "", $hspace = "", $vspace = "", $border = "", $alt = "", $align = "", $name = "", $class = "", $title = "", $longdesc = ""){
