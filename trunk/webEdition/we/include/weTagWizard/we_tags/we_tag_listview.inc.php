@@ -87,5 +87,5 @@ $this->TypeAttribute =new weTagData_typeAttribute('type', array(
 $this->Attributes=array($MultiSelector,$name,$doctype,$categories,$catOr,$rows,$cols,$order_document,$order_object,$order_search,$order_category,
 	$order_banner,$order_customer,$order_onlinemonitor,$order_languagelink,$desc,$offset,$casesensitive,$classid,$condition,$triggerid,$seeMode,
 	$workspaceID_document,$workspaceID_object,$categoryids,$parentid,$parentidname,$contenttypes,$searchable,$defaultname,$documentid,$objectid,
-	$datefield,$date,$weekstart,$cfilter,$recursive,$docid,$customer,$customers,custBanner,$id,$calendar,$predefinedSQL,$numorder,$languages,$lastaccesslimit,
+	$datefield,$date,$weekstart,$cfilter,$recursive,$docid,$customer,$customers,$custBanner,$id,$calendar,$predefinedSQL,$numorder,$languages,$lastaccesslimit,
 	$lastloginlimit,$objectseourls,$hidedirindex,$pagelanguage,$doc,$showself);
