@@ -288,23 +288,18 @@ function getHttpOption(){
 	return 'fopen';
 }
 
-function getCurlHttp($server, $path, $files = array(), $header = false){
+function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
 	$_response = array(
 		'data' => '', // data if successful
 		'status' => 0, // 0=ok otherwise error
 		'error' => '' // error string
 	);
 	$parsedurl = parse_url($server);
-	if(isset($parsedurl['scheme'])){
-		$protocol = $parsedurl['scheme'] . '://';
-	} else{
-		$protocol = 'http://';
-	}
-	if(isset($parsedurl['port'])){
-		$port = ':' . $parsedurl['port'];
-	} else{
-		$port = '';
-	}
+	$protocol = (isset($parsedurl['scheme']) ?
+			$parsedurl['scheme'] . '://' :
+			'http://');
+
+	$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
 	$_pathA = explode('?', $path);
 	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
 	$_params = array();
@@ -315,6 +310,9 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
 
+	if($timeout){
+		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+	}
 	/* 	if($username != ''){
 	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
 	  } */
