@@ -37,8 +37,8 @@ function we_tag_xmlfeed($attribs){
 
 	$name = weTag_getAttribute('name', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
-
-	$refresh = (isset($attribs['refresh']) && is_numeric($attribs['refresh'])) ? $attribs['refresh'] * 60 : 0;
+	$refresh = intval(weTag_getAttribute('refresh', $attribs, 0)) * 60;
+	$timeout = intval(weTag_getAttribute('timeout', $attribs, 0));
 
 	if(!isset($GLOBALS['xmlfeeds'])){
 		$GLOBALS['xmlfeeds'] = array();
@@ -47,16 +47,17 @@ function we_tag_xmlfeed($attribs){
 	$GLOBALS['xmlfeeds'][$name] = new weXMLBrowser();
 	$cache = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'xmlfeeds/' . $name;
 
-	if(is_file($cache) && $refresh > 0){
-		$do_refresh = ((filemtime($cache) + $refresh) < time());
-	} else{
-		$do_refresh = true;
-	}
+	$do_refresh = (is_file($cache) && $refresh > 0 ? ((filemtime($cache) + $refresh) < time()) : true);
 
 	if(!is_file($cache) || $do_refresh){
-		$GLOBALS['xmlfeeds'][$name]->getFile($url);
-		if($refresh > 0){
-			$GLOBALS['xmlfeeds'][$name]->saveCache($cache, $refresh);
+		$ret = $GLOBALS['xmlfeeds'][$name]->getFile($url, $timeout);
+		if($ret){
+			if($refresh > 0){
+				$GLOBALS['xmlfeeds'][$name]->saveCache($cache, time() + (2 * $refresh)); //keep file longer, in case of timeouts
+			}
+		} else if($timeout && is_file($cache)){
+			//timeout + last file exists
+			$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
 		}
 	} else{
 		$GLOBALS['xmlfeeds'][$name]->loadCache($cache);

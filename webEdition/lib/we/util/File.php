@@ -170,7 +170,7 @@ abstract class we_util_File{
 	public static function getUniqueId($md5 = true){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		return ($md5 ? md5(str_replace('.', '', uniqid('',true))) : uniqid(microtime())); 
+		return ($md5 ? md5(str_replace('.', '', uniqid('', true))) : uniqid(microtime()));
 		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid("",true))"
 	}
 
@@ -458,11 +458,10 @@ abstract class we_util_File{
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
-		if(f("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "Date", $DB_WE)){
-			$DB_WE->query("UPDATE " . CLEAN_UP_TABLE . " SET DATE='" . $DB_WE->escape($date) . "' WHERE  Path='" . $DB_WE->escape($path) . "'");
-		} else{
-			$DB_WE->query("INSERT INTO " . CLEAN_UP_TABLE . " (Path,Date) VALUES ('" . $DB_WE->escape($path) . "','" . $DB_WE->escape($date) . "')");
-		}
+		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'Path' => $DB_WE->escape($path),
+				'Date' => intval($date)
+			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
 	}
 
 	public static function checkAndMakeFolder($path, $recursive = false){
