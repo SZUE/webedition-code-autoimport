@@ -2281,8 +2281,9 @@ class we_object extends we_document{
 
 	function we_save($resave = 0, $skipHook = 0){
 		$this->save();
-		we_history::insertIntoHistory($this);
-
+		if(resave == 0){
+			we_history::insertIntoHistory($this);
+		}
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
