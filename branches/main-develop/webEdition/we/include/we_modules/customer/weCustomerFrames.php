@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,7 +28,7 @@ class weCustomerFrames extends weModuleFrames{
 	var $jsOut_fieldTypesByName;
 
 	function __construct(){
-		parent::__construct(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php");
+		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new weCustomerTree();
 		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");
@@ -48,16 +49,6 @@ class weCustomerFrames extends weModuleFrames{
 					we_html_element::htmlIFrame('right', $this->frameset . '?pnt=right', 'position:absolute;top:0px;bottom:0px;left:220px;right:0px;overflow: hidden;')
 				));
 
-		/* 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		  $noframeset = new we_baseElement("noframes");
-
-		  $frameset->setAttributes(array("cols" => '220,*', "border" => "1", "frameborder" => "yes"));
-		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left"));
-		  $frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
-
-		  // set and return html code
-		  $body = $frameset->getHtml() . $noframeset->getHTML();
-		 */
 		return $this->getHTMLDocument($body);
 	}
 
@@ -66,20 +57,21 @@ class weCustomerFrames extends weModuleFrames{
 	}
 
 	function getHTMLBranchSelect($with_common = true, $with_other = true){
-		$branches_names = array();
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$select = new we_html_select(array("name" => "branch"));
 
-		if($with_common)
+		if($with_common){
 			$select->addOption(g_l('modules_customer', '[common]'), g_l('modules_customer', '[common]'));
-		if($with_other)
+		}
+
+		if($with_other){
 			$select->addOption(g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
+		}
 
 		foreach($branches_names as $branch){
 			$select->addOption($branch, $branch);
 		}
-
 
 		return $select;
 	}
@@ -87,19 +79,18 @@ class weCustomerFrames extends weModuleFrames{
 	function getHTMLFieldsSelect($branch){
 		$select = new we_html_select(array("name" => "branch"));
 
-		$fields_names = array();
 		$fields_names = $this->View->customer->getFieldsNames($branch, $this->View->settings->getEditSort());
-		$this->jsOut_fieldTypesByName = "\tvar fieldTypesByName = new Array();\n";
+		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = new Array();';
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties($val);
-			$this->jsOut_fieldTypesByName .= "\tfieldTypesByName['$val'] = '" . (isset($tmp['type']) ? $tmp['type'] : "") . "';\n";
+			$this->jsOut_fieldTypesByName .= "fieldTypesByName['$val'] = '" . (isset($tmp['type']) ? $tmp['type'] : "") . "';";
 		}
 		if(is_array($fields_names)){
 			foreach($fields_names as $k => $field){
-				if($this->View->customer->isProperty($field))
-					$select->addOption($k, $this->View->settings->getPropertyTitle($field));
-				else
-					$select->addOption($k, $field);
+				$select->addOption($k, ($this->View->customer->isProperty($field) ?
+						$this->View->settings->getPropertyTitle($field) :
+						$field)
+				);
 			}
 		}
 
@@ -177,7 +168,6 @@ class weCustomerFrames extends weModuleFrames{
 				asort($shownCountries, SORT_LOCALE_STRING);
 				setlocale(LC_ALL, $oldLocale);
 
-				$content = '';
 				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
 					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 				}
@@ -356,7 +346,6 @@ class weCustomerFrames extends weModuleFrames{
 		$tabsHead = $tabs->getHeader();
 		$tabsBody = $tabs->getJS();
 		$tabsHead .= $js;
-//		$js.= $tabsHead;
 
 
 		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
@@ -386,14 +375,13 @@ class weCustomerFrames extends weModuleFrames{
 	}
 
 	function getHTMLEditorBody(){
-		$hiddens = array("cmd" => "edit_customer", "pnt" => "edbody", "activ_sort" => "0");
+		$hiddens = array("cmd" => "edit_customer", "pnt" => "edbody", "activ_sort" => 0);
 
 		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 			$hiddens["cmd"] = "home";
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
-			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => "0"))
-			);
+			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => "0")));
 			$GLOBALS["mod"] = "customer";
 			ob_start();
 			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/home.inc.php');
@@ -404,8 +392,7 @@ class weCustomerFrames extends weModuleFrames{
 
 		$branch = (isset($_REQUEST['branch']) && $_REQUEST['branch'] != '' ? $_REQUEST['branch'] : g_l('modules_customer', '[common]'));
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch))
-		);
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties($branch)));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -422,8 +409,7 @@ class weCustomerFrames extends weModuleFrames{
 		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array("nowrap" => null), we_button::create_button("save", "javascript:we_save();")
-		);
+		$table2->setCol(0, 1, array("nowrap" => null), we_button::create_button("save", "javascript:we_save();"));
 
 
 		return $this->getHTMLDocument(
@@ -431,16 +417,13 @@ class weCustomerFrames extends weModuleFrames{
 					"function we_save() {
 						top.content.we_cmd('save_customer');
 					}") .
-				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
-				)
+				we_html_element::htmlBody(array('bgcolor' => 'white', 'background' => IMAGE_DIR . 'edit/editfooterback.gif', 'marginwidth' => '0', 'marginheight' => '0', 'leftmargin' => '0', 'topmargin' => '0'), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml()))
 		);
 	}
 
 	function getHTMLProperties($preselect = ''){
 		$parts = array();
 
-		$out = '';
-		$entry = '';
 		$branches = array();
 		$common = array();
 		$other = array();
@@ -465,7 +448,7 @@ class weCustomerFrames extends weModuleFrames{
 					switch($pk){
 						case 'ID':
 							$table->setCol($r, $c, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable(($pv != "0" ? we_html_element::htmlDiv(array("class" => "defaultgray"), $pv) : "-" . we_html_tools::getPixel(100, 5)), $this->View->settings->getPropertyTitle($pk)));
-							$c++;
+							++$c;
 							$table->setCol($r, $c, array("class" => "defaultfont"), "");
 							break;
 						case 'LoginDenied':
@@ -489,10 +472,9 @@ class weCustomerFrames extends weModuleFrames{
 							$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, "", "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->View->settings->getPropertyTitle($pk)));
 					}
 				}
-
-				$c++;
+				++$c;
 				if($c > 1){
-					$r++;
+					++$r;
 					$table->addRow();
 					$table->setRow($r, array("valign" => "top"));
 				}
@@ -500,10 +482,10 @@ class weCustomerFrames extends weModuleFrames{
 					$c = 0;
 			}
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => ($preselect == g_l('modules_customer', '[all]') ? g_l('modules_customer', '[common]') : g_l('modules_customer', '[data]')),
 				"html" => $table->getHtml(),
-				"space" => 120)
+				"space" => 120
 			);
 		}
 		if($preselect == g_l('modules_customer', '[orderTab]')){
@@ -519,7 +501,7 @@ class weCustomerFrames extends weModuleFrames{
 			);
 		}
 		if($preselect == g_l('modules_customer', '[objectTab]')){
-			$query = 'SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path';
+			$query = 'SELECT ID,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path';
 			$DB_WE = new DB_WE();
 			$DB_WE->query($query);
 			$objectStr = '';
@@ -531,16 +513,8 @@ class weCustomerFrames extends weModuleFrames{
 					$objectStr.='<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>';
 					$objectStr.='<td>' . $DB_WE->f('ID') . '</td>';
 					$objectStr.='<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>';
-					if($DB_WE->f('Published')){
-						if($DB_WE->f('ModDate') > $DB_WE->f('Published')){
-							$class = 'changeddefaultfont';
-						} else{
-							$class = 'defaultfont';
-						}
-					} else{
+					$class = ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont');
 
-						$class = 'npdefaultfont';
-					}
 					$objectStr.='<td class="' . $class . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>';
 					$objectStr.='</tr>';
 				}
@@ -550,15 +524,14 @@ class weCustomerFrames extends weModuleFrames{
 			}
 			//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
 
-			array_push($parts, array(
+			$parts[] = array(
 				"html" => $objectStr,
 				"space" => 0
-				)
 			);
 		}
 		if($preselect == g_l('modules_customer', '[documentTab]')){
 
-			$query = 'SELECT * FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path';
+			$query = 'SELECT ID,Path,Text,Published,ModDate FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path';
 			$DB_WE = new DB_WE();
 			$DB_WE->query($query);
 			$documentStr = '';
@@ -669,9 +642,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 				"space" => 120
 			);
 		}
-		$out = we_multiIconBox::getHTML("", 680, $parts, 30);
-
-		return $out;
+		return we_multiIconBox::getHTML("", 680, $parts, 30);
 	}
 
 	function getHTMLLeft(){
@@ -725,15 +696,8 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 	}
 
 	function getHTMLCustomerAdmin(){
-		if(isset($_REQUEST["branch"]))
-			$branch = $_REQUEST["branch"];
-		else
-			$branch = g_l('modules_customer', '[other]');
-		if(isset($_REQUEST["branch_select"]))
-			$branch_select = $_REQUEST["branch"];
-		else
-			$branch_select = g_l('modules_customer', '[other]');
-
+		$branch = (isset($_REQUEST["branch"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
+		$branch_select = (isset($_REQUEST["branch_select"]) ? $_REQUEST["branch"] : g_l('modules_customer', '[other]'));
 
 		$select = $this->getHTMLBranchSelect(false);
 		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150px;"));
@@ -870,8 +834,6 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		}
 
 		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
-
-		include_once(WE_CUSTOMER_MODULE_PATH . "weCustomerTreeLoader.php");
 
 		$rootjs = "";
 		if(!$pid){

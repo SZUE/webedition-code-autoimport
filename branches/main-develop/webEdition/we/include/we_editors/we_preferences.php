@@ -210,8 +210,8 @@ function get_value($settingvalue){
 		case 'editorDocuintegration':
 		case 'editorTooltipFontname':
 		case 'editorTooltipFontsize':
-		case 'error_debug_normal':
-		case 'error_debug_seem':
+		case 'debug_normal':
+		case 'debug_seem':
 		case 'default_tree_count':
 		case 'xhtml_show_wrong':
 		case 'xhtml_show_wrong_text':
