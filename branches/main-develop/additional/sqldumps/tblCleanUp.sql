@@ -3,6 +3,6 @@ CREATE TABLE ###TBLPREFIX###tblCleanUp (
   Path varchar(255) NOT NULL default '',
   `Date` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
-  KEY Path (Path),
+  UNIQUE KEY Path (Path),
   KEY `Date` (`Date`)
 ) ENGINE=MyISAM;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,103 +22,95 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weXMLBrowser extends we_xml_parser{
 
 	var $cache;
 
-	function __construct($filename="",$mode="backup"){
+	function __construct($filename = '', $mode = 'backup'){
 		parent::__construct();
-		$this->mode=$mode;
+		$this->mode = $mode;
 		$this->xmlExt = FALSE;
-		if(!empty($filename)) $this->getFile($filename);
+		if(!empty($filename)){
+			$this->getFile($filename);
+		}
 	}
 
-
-	function getNodeset($xpath="*"){
+	function getNodeset($xpath = "*"){
 		$xpath.="/child::*";
 		return $this->evaluate($xpath);
 	}
 
-	/*function setCache($location){
-		$this->cache=$location;
-	}*/
+	/* function setCache($location){
+	  $this->cache=$location;
+	  } */
 
-	function saveCache($cache='',$expire=0){
+	function saveCache($cache = '', $expire = 0){
 		if(empty($cache)){
-			$cache=$this->cache;
-		}else{
-			$this->cache=$cache;
+			$cache = $this->cache;
+		} else{
+			$this->cache = $cache;
 		}
-		if($expire==0){
-			$expire=time()+1800;
-		}
-
-		if (defined("WE_NEW_FOLDER_MOD")){
-			$mod = octdec(WE_NEW_FOLDER_MOD);
-		} else {
-			$mod = 0755;
+		if($expire == 0){
+			$expire = time() + 1800;
 		}
 
-		if(!is_dir(dirname($cache))) {
+//		$mod = (defined("WE_NEW_FOLDER_MOD") ? octdec(WE_NEW_FOLDER_MOD) : 0755);
+
+		if(!is_dir(dirname($cache))){
 			we_util_File::createLocalFolder(dirname($cache));
 		}
-		if(weFile::save($cache,serialize($this->nodes))){
-			we_util_File::insertIntoCleanUp($cache,$expire);
+		if(weFile::save($cache, serialize($this->nodes))){
+			we_util_File::insertIntoCleanUp($cache, $expire);
 		}
 	}
 
-	function loadCache($cache=''){
+	function loadCache($cache = ''){
 		if(empty($cache)){
-			$cache=$this->cache;
-		}else{
-			$this->cache=$cache;
+			$cache = $this->cache;
+		} else{
+			$this->cache = $cache;
 		}
-		$this->nodes=unserialize(weFile::load($cache));
+		$this->nodes = unserialize(weFile::load($cache));
 	}
 
-
-
-	function getNodeDataset($xpath="*"){
-		$nodeSet=$this->getNodeset($xpath);
-		foreach ($nodeSet as $node) {
-			$nodeattribs=array();
-			if ($this->hasAttributes($node)) {
-				$attrs = $attrs + array("@n:"=>g_l('modules_customer','[none]'));
+	function getNodeDataset($xpath = "*"){
+		$nodeSet = $this->getNodeset($xpath);
+		foreach($nodeSet as $node){
+			$nodeattribs = array();
+			if($this->hasAttributes($node)){
+				$attrs = $attrs + array("@n:" => g_l('modules_customer', '[none]'));
 				$attributes = $this->getAttributes($node);
-				foreach ($attributes as $name=>$value) {
+				foreach($attributes as $name => $value){
 					$nodeattribs[$name] = $value;
 				}
 			}
-			$nodes[$node]=array(
-				"attributes"=>$nodeattribs,
-				"content"=>$this->getData($node)
+			$nodes[$node] = array(
+				"attributes" => $nodeattribs,
+				"content" => $this->getData($node)
 			);
 		}
 		return $nodes;
-
 	}
 
-
 	function getSet($search){
-		$ret=array();
-		foreach($this->nodes as $key=>$val){
-				if($key!="" && $key!=$search && strpos($key,$search)!==false) $ret[]=$key;
+		$ret = array();
+		foreach($this->nodes as $key => $val){
+			if($key != "" && $key != $search && strpos($key, $search) !== false)
+				$ret[] = $key;
 		}
 		return $ret;
 	}
 
-
-	function getFile($file) {
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php")) {
+	function getFile($file, $timeout = 0){
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php")){
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php");
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
-		$this->fileName=$file;
+		$this->fileName = $file;
 
-		switch ($url) {
+		switch($url){
 			case 'fopen':
-				if (defined("WE_PROXYHOST")) {
+				if(defined("WE_PROXYHOST")){
 					$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 					$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 					$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
@@ -126,20 +119,27 @@ class weXMLBrowser extends we_xml_parser{
 					$content = $this->getFileThroughProxy($file, $proxyhost, $proxyport, $proxy_user, $proxy_pass);
 					break;
 				}
-			//intentionally no break!
+				if($timeout){
+					$ctx = stream_context_create(array(
+						'http' => array(
+							'timeout' => 1
+						)));
+				}
+				$content = ($timeout ? file_get_contents($file, false, $ctx) : file_get_contents($file));
+				break;
 			case 'local':
 				$content = file_get_contents($file);
 				break;
 			case 'curl':
 				$_m = array();
 				$_pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
-				if (!preg_match($_pattern, $file, $_m)) {
+				if(!preg_match($_pattern, $file, $_m)){
 					return false;
 				}
-				$_content = getCurlHttp(str_replace($_m[9], '', $file), $_m[9]);
-				if ($_content['status'] === 0) {
+				$_content = getCurlHttp(str_replace($_m[9], '', $file), $_m[9], array(), false, $timeout);
+				if($_content['status'] === 0){
 					$content = $_content['data'];
-				} else {
+				} else{
 					return false;
 				}
 				break;
@@ -149,46 +149,47 @@ class weXMLBrowser extends we_xml_parser{
 				return false;
 		}
 
-		if ($content) {
+		if($content){
 			$encoding = $this->setEncoding('', $content);
 			return $this->parseXML($content, $encoding);
 		}
 		return false;
 	}
 
-	function getFileThroughProxy($url,$proxyhost="0.0.0.0",$proxyport=0,$proxy_user="",$proxy_pass=""){
+	function getFileThroughProxy($url, $proxyhost = "0.0.0.0", $proxyport = 0, $proxy_user = "", $proxy_pass = ""){
 		global $error;
 
-		$file = fsockopen($proxyhost, $proxyport, $errno, $errstr,30);
+		$file = fsockopen($proxyhost, $proxyport, $errno, $errstr, 30);
 
-		if( !$file ){
+		if(!$file){
 			return '';
 		}
-		$ret='';
-		$realm = base64_encode($proxy_user.':'.$proxy_pass);
+		$ret = '';
+		$realm = base64_encode($proxy_user . ':' . $proxy_pass);
 
 		// send headers
 		fputs($file, "GET $url HTTP/1.0\r\n");
 		fputs($file, "Proxy-Connection: Keep-Alive\r\n");
-		fputs($file, "User-Agent: PHP ".phpversion()."\r\n");
+		fputs($file, "User-Agent: PHP " . phpversion() . "\r\n");
 		fputs($file, "Pragma: no-cache\r\n");
-		if($proxy_user!=''){
+		if($proxy_user != ''){
 			fputs($file, "Proxy-authorization: Basic $realm\r\n");
 		}
 		fputs($file, "\r\n");
 		// start to write after http header
 		$write = false;
-		while(!feof($file)){
-			$data = fread($file,8192);
-			if(($pos=stripos($data,'<?xml'))!==false){
-				$data = substr($data,$pos);
+		while(!feof($file)) {
+			$data = fread($file, 8192);
+			if(($pos = stripos($data, '<?xml')) !== false){
+				$data = substr($data, $pos);
 				$write = true;
 			}
-			if($write) $ret.=$data;
+			if($write)
+				$ret.=$data;
 		}
 		fclose($file);
 
 		return $ret;
-
 	}
+
 }

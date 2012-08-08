@@ -1324,7 +1324,7 @@ class we_backup{
 	function getDownloadFile(){
 		$download_filename = "weBackup_" . $_SESSION["user"]["Username"] . ".sql";
 		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
-			$this->backup_db->query("INSERT INTO " . CLEAN_UP_TABLE . "(Path,Date) Values ('" . $this->backup_db->escape($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename) . "','" . time() . "')");
+			we_util_File::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
 			return $download_filename;
 		} else{
 			return "";

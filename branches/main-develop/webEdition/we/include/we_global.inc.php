@@ -294,6 +294,9 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	if($timeout){
 		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
 	}
+	if($timeout){
+		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+	}
 	/* 	if($username != ''){
 	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
 	  } */
