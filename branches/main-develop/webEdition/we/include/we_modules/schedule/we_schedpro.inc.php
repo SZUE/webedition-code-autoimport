@@ -81,16 +81,14 @@ class we_schedpro{
 	}
 
 	function getMonthsHTML(){
-		$months = '<table cellpadding="0" cellspacing="0" border="0"><tr>
-';
+		$months = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 12; $i++){
 			$months .= '<td>' . we_forms::checkbox("1", $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
 				'<input type="hidden" name="we_schedule_month' . $i . '_' . $this->nr . '" value="' . $this->months[$i - 1] . '" /></td>';
 		}
 
-		$months .= '</tr></table>
-';
+		$months .= '</tr></table>';
 		return $months;
 	}
 
@@ -160,7 +158,7 @@ class we_schedpro{
 			case self::DOCTYPE:
 				$db = new DB_WE();
 				$q = getDoctypeQuery($db);
-				$db->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
 				while($db->next_record()) {
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';

@@ -191,10 +191,6 @@ if(isset($f)){
 						}
 					}
 
-					function update_msg_quick_view() {
-						top.opener.update_msg_quick_view();
-					}
-
 					function update_messaging() {
 						if (!deleteMode && (mode == "show_folder_content") && (load_state >= loaded_thr)) {
 							if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {

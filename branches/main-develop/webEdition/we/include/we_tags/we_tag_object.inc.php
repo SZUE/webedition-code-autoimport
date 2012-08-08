@@ -94,7 +94,6 @@ function we_tag_object($attribs){
 
 		$we_oid = $we_oid ? $we_oid : (isset($_REQUEST['we_oid']) ? $_REQUEST['we_oid'] : 0);
 	}
-	$searchable = empty($searchable) ? 'false' : $searchable;
 	$GLOBALS['lv'] = new we_objecttag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);

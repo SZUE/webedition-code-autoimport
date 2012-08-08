@@ -36,11 +36,10 @@ if(!isset($_SESSION["we_mode"])||$_SESSION["we_mode"] == "normal"){ //	working i
 }
 
 
-if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
+if(!isset($GLOBALS["SEEM_edit_include"]) || !$GLOBALS["SEEM_edit_include"]){
 
 	if(defined("SCHEDULE_TABLE")){
 		// convert old schedule data to new format
-		we_schedpro::check_and_convert_to_sched_pro();
 		we_schedpro::trigger_schedule();
 	}
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
@@ -108,7 +107,7 @@ print STYLESHEET .
 
 	// seeMode
 	var seeMode = <?php print ($_SESSION["we_mode"] == "seem") ? "true" : "false"; ?>; // in seeMode
-	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
+	var seeMode_edit_include = <?php print 	(isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"])? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {
 		"ADMINISTRATOR"      : <?php echo $_SESSION["perms"]["ADMINISTRATOR"]; ?>,
@@ -250,13 +249,7 @@ top.weEditorFrameController.openDocument('','','','','',url,'','',parameters);
 <?php
 if(defined('MESSAGING_SYSTEM')){
 	?>
-	function update_msg_quick_view() {
-		//top.header_msg.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>header_msg.php?r=<?php srand((double) microtime() * 1000000);
-	echo rand();
-	?>";
-		//done by users_ping
-	}
-
+	
 	function msg_update() {
 		try{
 			var fo=false;

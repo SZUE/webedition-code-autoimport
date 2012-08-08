@@ -49,14 +49,7 @@ if(!empty($res['ok'])){
 		echo we_html_element::jsElement('
                             if (opener && opener.top && opener.top.content) {
                                 opener.top.content.update_messaging();
-                                opener.top.content.update_msg_quick_view();
                             }');
-	} else{
-		echo we_html_element::jsElement('
-                            if (opener && opener.top && opener.top.content) {
-                                  opener.top.content.update_msg_quick_view();
-                            }
-                    ');
 	}
 }
 ?>

@@ -270,7 +270,7 @@ function getHttpOption(){
 	return 'fopen';
 }
 
-function getCurlHttp($server, $path, $files = array(), $header = false){
+function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
 	$_response = array(
 		'data' => '', // data if successful
 		'status' => 0, // 0=ok otherwise error
@@ -291,7 +291,9 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
-
+	if($timeout){
+		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+	}
 	/* 	if($username != ''){
 	  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
 	  } */
@@ -340,6 +342,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 	if(curl_errno($_session)){
 		$_response['status'] = 1;
 		$_response['error'] = curl_error($_session);
+		return false;
 	} else{
 		$_response['status'] = 0;
 		$_response['data'] = $_data;
@@ -350,6 +353,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false){
 }
 
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
+	//FIXME: add code for proxy, see weXMLBrowser
 	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){
 		if(!$port){

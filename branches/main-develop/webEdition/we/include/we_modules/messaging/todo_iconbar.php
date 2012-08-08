@@ -92,7 +92,6 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 	function refresh() {
 		top.content.update_messaging();
-		top.content.update_msg_quick_view();
 	}
 
 	function launch_msg() {

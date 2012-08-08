@@ -58,7 +58,6 @@ we_html_tools::htmlTop($heading);
 print STYLESHEET . we_html_element::jsElement('
 			if (opener && opener.top && opener.top.content) {
 				top.opener.top.content.update_messaging();
-				top.opener.top.content.update_msg_quick_view();
 			}');
 ?>
 </head>
