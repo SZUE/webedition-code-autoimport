@@ -24,26 +24,22 @@
  */
 class weCustomerTree extends weTree{
 
-	function weCustomerTree($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
-
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-		$styles = array();
-		$styles[] = '.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.item a { text-decoration:none;}';
-
-		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.group a { text-decoration:none;}';
-
-		$this->setStyles($styles);
+		$this->setStyles(array(
+			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item a { text-decoration:none;}',
+			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group a { text-decoration:none;}'
+		));
 	}
 
 	function getJSCustomDraw(){
 		$out = weTree::getJSCustomDraw();
-		$out["group"] = "";
+		$out["group"] = '';
 
 		$out["sort"] = '
-
 					var newAst = zweigEintrag;
 
 					var zusatz = (ai == nf.laenge) ? "end" : "";
@@ -117,9 +113,6 @@ class weCustomerTree extends weTree{
 
 			';
 
-
-
-
 		return $out;
 	}
 
@@ -146,10 +139,11 @@ class weCustomerTree extends weTree{
 					sort = escape(sort);
 					id = id.replace(/\+/g,"%2B");
 					sort = sort.replace(/\+/g,"%2B");
-					if(sort!="")
+					if(sort!=""){
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-					else
+					}else{
 						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+					}
 				}else{
 					drawTree();
 				}
@@ -176,18 +170,14 @@ class weCustomerTree extends weTree{
 	}
 
 	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
+		return weTree::getJSTreeFunctions() . '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
-    				if(node.typ==\'item\')
+    				if(node.typ=="item")
 						' . $this->topFrame . '.we_cmd(\'edit_customer\',node.id,node.typ,node.table);
 				}
 				' . $this->topFrame . '.loaded=1;
 			';
-		return $out;
 	}
 
 	function getJSStartTree(){
@@ -205,50 +195,46 @@ class weCustomerTree extends weTree{
 
 	function getJSLoadTree($treeItems){
 		$days = array(
-			"Sunday" => 0,
-			"Monday" => 1,
-			"Tuesday" => 2,
-			"Wednesday" => 3,
-			"Thursday" => 4,
-			"Friday" => 5,
-			"Saturday" => 6
+			'Sunday' => 0,
+			'Monday' => 1,
+			'Tuesday' => 2,
+			'Wednesday' => 3,
+			'Thursday' => 4,
+			'Friday' => 5,
+			'Saturday' => 6
 		);
 
 		$months = array(
-			"January" => 0,
-			"February" => 1,
-			"March" => 2,
-			"April" => 3,
-			"May" => 4,
-			"June" => 5,
-			"July" => 6,
-			"August" => 7,
-			"September" => 8,
-			"October" => 9,
-			"November" => 10,
-			"December" => 11
+			'January' => 0,
+			'February' => 1,
+			'March' => 2,
+			'April' => 3,
+			'May' => 4,
+			'June' => 5,
+			'July' => 6,
+			'August' => 7,
+			'September' => 8,
+			'October' => 9,
+			'November' => 10,
+			'December' => 11
 		);
 
-		$js = "";
-		$out = "";
-		$js = "var attribs=new Array();\n";
+		$js = 'var attribs=new Array();';
 		foreach($treeItems as $item){
-			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			$js.='if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";
 			foreach($item as $k => $v){
-				if($k == "text")
-					if(in_array($v, array_keys($days)))
+				if($k == "text"){
+					if(in_array($v, array_keys($days))){
 						$v = g_l('date', '[day][long][' . $days[$v] . ']');
-				if($k == "text")
-					if(in_array($v, array_keys($months)))
+					}
+					if(in_array($v, array_keys($months))){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
-				$js.='
-							attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes($v)) . '\';
-					';
-			}
-			$js.='
-						' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
+					}
 				}
-				';
+				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes($v)) . '\';';
+			}
+			$js.=$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
+				}';
 		}
 		$js.=$this->topFrame . '.drawTree();';
 

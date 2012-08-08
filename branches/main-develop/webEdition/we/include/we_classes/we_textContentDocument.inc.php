@@ -312,8 +312,7 @@ class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		if(!$this->ID){ // when no ID, then allways save before in main table
-			if(!we_root::we_save(0))
+		if(!$this->ID && !we_root::we_save(0)){ // when no ID, then allways save before in main table
 				return false;
 		}
 		if($resave == 0){

@@ -28,20 +28,9 @@ we_html_tools::htmlTop();
 ?>
 </head>
 
-<?php if(we_base_browserDetect::isGecko()){ ?>
-	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
+<frameset cols="*" framespacing="0" border="0" frameborder="NO">
 	<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_editor.php" scrolling="no" noresize name="user_editor"/>
-<?php } else if(we_base_browserDetect::isSafari()){ ?>
-	<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
-		<frame src="<?php print HTML_DIR; ?>safariResize.html" name="user_separator" noresize scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_editor.php" noresize name="user_editor" scrolling="no"/>
-	</frameset>
-<?php } else{ ?>
-	<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
-		<frame src="<?php print HTML_DIR; ?>ieResize.html" name="user_separator" noresize scrolling="no"/>
-		<frame src="<?php print WE_USERS_MODULE_DIR; ?>edit_users_editor.php" noresize name="user_editor" scrolling="no"/>
-	</frameset>
-<?php } ?>
+</frameset>
 <noframes>
 	<body bgcolor="#ffffff">
 		<p></p>

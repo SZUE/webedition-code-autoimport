@@ -175,9 +175,9 @@ top.selectFile(top.currentID);
 			print 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
 		}
 		if($this->userCanMakeNewDir()){
-			print 'top.fsheader.enableNewFolderBut();' . "\n";
+			print 'top.fsheader.enableNewFolderBut();';
 		} else{
-			print 'top.fsheader.disableNewFolderBut();' . "\n";
+			print 'top.fsheader.disableNewFolderBut();';
 		}
 	}
 

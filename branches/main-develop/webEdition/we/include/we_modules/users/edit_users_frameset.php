@@ -27,9 +27,6 @@ we_html_tools::protect();
 
 //We need to set this (and in corresponding frames, since the data in database is formated this way
 we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-we_html_tools::htmlTop('', DEFAULT_CHARSET);
-
-print STYLESHEET;
 
 $mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 $title = '';
@@ -40,9 +37,11 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 	}
 }
 
-echo we_html_element::jsScript(JS_DIR . 'images.js') .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'md5.js');
+we_html_tools::htmlTop($title, DEFAULT_CHARSET);
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'images.js') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'md5.js');
 ?>
 <script type="text/javascript"><!--
 	var loaded=0;
@@ -53,7 +52,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 <?php
 if($_SESSION["user"]["ID"]){
-	print "var cgroup=" . intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $DB_WE)) . ';';
+	print "var cgroup=" . intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $GLOBALS['DB_WE'])) . ';';
 } else{
 	print "var cgroup=0;";
 }
@@ -475,13 +474,13 @@ if(isset($_SESSION["user_session_data"]))
 
 function readChilds($pid){
 	$db_temp = new DB_WE();
-	$db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM " . USER_TABLE . " WHERE Type=1 AND ParentID=" . intval($pid) . " ORDER BY username ASC");
+	$db_temp->query('SELECT ID,username,ParentID,Type,Permissions FROM ' . USER_TABLE . ' WHERE Type=1 AND ParentID=' . intval($pid) . " ORDER BY username ASC");
 	while($db_temp->next_record()) {
 		$GLOBALS['entries'][$db_temp->f("ID")]["username"] = $db_temp->f("username");
 		$GLOBALS['entries'][$db_temp->f("ID")]["ParentID"] = $db_temp->f("ParentID");
 		$GLOBALS['entries'][$db_temp->f("ID")]["Type"] = $db_temp->f("Type");
 		$GLOBALS['entries'][$db_temp->f("ID")]["Permissions"] = substr($db_temp->f("Permissions"), 0, 1);
-		if($db_temp->f("Type") == "1"){
+		if($db_temp->f("Type") == 1){
 			readChilds($db_temp->f("ID"));
 		}
 	}
@@ -489,25 +488,25 @@ function readChilds($pid){
 
 $entries = array();
 if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSION["perms"]["SAVE_USER"] || $_SESSION["perms"]["SAVE_GROUP"] || $_SESSION["perms"]["DELETE_USER"] || $_SESSION["perms"]["DELETE_GROUP"] || $_SESSION["perms"]["ADMINISTRATOR"]){
-	$foo = getHash("SELECT Path,ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", $DB_WE);
+	$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $DB_WE);
 	$parent_path = dirname($foo["Path"]);
 	$parent_path = str_replace("\\", "/", $parent_path);
 	$startloc = $foo["ParentID"];
 	if($_SESSION["perms"]["ADMINISTRATOR"]){
-		$parent_path = "/";
+		$parent_path = '/';
 		$startloc = 0;
 	}
 
-	print "startloc=" . $startloc . ";\n";
+	print 'startloc=' . $startloc . ';';
 
-	$DB_WE->query("SELECT * FROM " . USER_TABLE . " WHERE Path LIKE '" . $DB_WE->escape($parent_path) . "%' ORDER BY Text ASC");
+	$DB_WE->query('SELECT ID,ParentID,Text,Type,Permissions FROM ' . USER_TABLE . " WHERE Path LIKE '" . $DB_WE->escape($parent_path) . "%' ORDER BY Text ASC");
 
 	while($DB_WE->next_record()) {
 		if($DB_WE->f("Type") == 1){
-			print "  menuDaten.add(new dirEntry('folder','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "',false,'group','" . USER_TABLE . "',1));\n";
+			print "menuDaten.add(new dirEntry('folder','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 		} else{
 			$p = unserialize($DB_WE->f("Permissions"));
-			print "  menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . $p["ADMINISTRATOR"] . "'));\n";
+			print "menuDaten.add(new urlEntry('" . ($DB_WE->f("Type") == 2 ? 'user_alias.gif' : 'user.gif') . "','" . $DB_WE->f("ID") . "','" . $DB_WE->f("ParentID") . "','" . addslashes($DB_WE->f("Text")) . "','" . ($DB_WE->f("Type") == 2 ? 'alias' : 'user') . "','" . USER_TABLE . "','" . $p["ADMINISTRATOR"] . "'));";
 		}
 	}
 }

@@ -147,18 +147,8 @@ class weToolFrames extends weModuleFrames{
 	function getHTMLRight(){
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		if((we_base_browserDetect::isGecko()) || we_base_browserDetect::isOpera()){
-			$frameset->setAttributes(array("cols" => "*"));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		} else if(we_base_browserDetect::isSafari()){
-			$frameset->setAttributes(array("cols" => "1,*"));
-			$frameset->addFrame(array("src" => HTML_DIR . "safariResize.html", "name" => "separator", "noresize" => null, "scrolling" => "no"));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		} else{
-			$frameset->setAttributes(array("cols" => "2,*"));
-			$frameset->addFrame(array("src" => HTML_DIR . "ieResize.html", "name" => "separator", "noresize" => null, "scrolling" => "no"));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		}
+		$frameset->setAttributes(array("cols" => "*"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
 		$body = $frameset->getHtml() . $noframeset->getHTML();

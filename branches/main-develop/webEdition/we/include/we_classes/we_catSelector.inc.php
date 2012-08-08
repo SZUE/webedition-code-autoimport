@@ -914,7 +914,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 					<td></td>
 					<td class="defaultfont"><b>' . g_l('fileselector', "[catname]") . '</b></td>
 					<td></td>
-					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", 'style="width:100%" readonly="readonly"') . '</td>
 					<td></td>
 				</tr>
 				<tr>
@@ -936,14 +936,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		$isMainChooser = isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == "openCatselector" && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
-' . ($isMainChooser ? '
-	<frameset cols="35%,65%" border="0">
-' : '') . '
+' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
     	<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" scrolling="auto">
-' . ($isMainChooser ? '
-    	<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto">
-    </frameset>
-' : '') . '
+' . ($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') . '
     <frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
     <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
@@ -956,7 +951,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	function printChangeCatHTML(){
 		if(isset($_POST["catid"])){
 			$db = new DB_WE();
-			$result = getHash("SELECT Category,Catfields,ParentID,Path FROM " . CATEGORY_TABLE . ' WHERE ID=' . intval($_POST["catid"]), $db);
+			$result = getHash('SELECT Category,Catfields,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($_POST["catid"]), $db);
 			$fields = isset($result["Catfields"]) ? $result["Catfields"] : "";
 			if($fields){
 				$fields = unserialize($fields);
@@ -1006,17 +1001,15 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	}
 
 	function printPropertiesHTML(){
-
 		$showPrefs = (isset($_REQUEST["catid"]) && $_REQUEST["catid"] );
 
 		$path = '';
-
 		$title = '';
 		$variant = isset($_SESSION["we_catVariant"]) ? $_SESSION["we_catVariant"] : "default";
 		$_SESSION["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
-			$result = getHash("SELECT ID,Category,Catfields,Path,ParentID FROM " . CATEGORY_TABLE . " WHERE id=" . intval($_REQUEST["catid"]), new DB_WE());
+			$result = getHash('SELECT ID,Category,Catfields,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($_REQUEST["catid"]), new DB_WE());
 			$fields = (isset($result["Catfields"]) && $result["Catfields"] ?
 					unserialize($result["Catfields"]) :
 					array('default' => array('Title' => '', 'Description' => '')));

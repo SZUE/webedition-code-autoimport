@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,20 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'frameset';
-$mode = isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0;
+$what = isset($_REQUEST['pnt']) ? $_REQUEST['pnt'] : 'frameset';
+$mode = isset($_REQUEST['art']) ? $_REQUEST['art'] : 0;
 
 //We need to set this (and in corresponding frames, since the data in database is formated this way
-if(!($mode == 'export' && isset($_REQUEST["step"]) && $_REQUEST["step"] == 5)){
+if(!($mode == 'export' && isset($_REQUEST['step']) && $_REQUEST['step'] == 5)){
 	we_html_tools::htmlTop('', DEFAULT_CHARSET);
 }
 
 $ExImport = $weFrame = null;
 
-if($what == "export" || $what == "eibody" || $what == "eifooter" || $what == "eiload" || $what == "import" || $what == "eiupload"){
+if($what == 'export' || $what == 'eibody' || $what == 'eifooter' || $what == 'eiload' || $what == 'import' || $what == 'eiupload'){
 	$ExImport = new weCustomerEIWizard();
 
-	$step = (isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0);
+	$step = (isset($_REQUEST['step']) ? $_REQUEST['step'] : 0);
 } else{
 	$weFrame = new weCustomerFrames();
 	$weFrame->View->processVariables();
@@ -43,75 +44,75 @@ if($what == "export" || $what == "eibody" || $what == "eifooter" || $what == "ei
 }
 
 switch($what){
-	case "frameset":
+	case 'frameset':
 		print $weFrame->getHTMLFrameset();
 		break;
-	case "header":
+	case 'header':
 		print $weFrame->getHTMLHeader();
 		break;
-	case "resize":
+	case 'resize':
 		print $weFrame->getHTMLResize();
 		break;
-	case "left":
+	case 'left':
 		print $weFrame->getHTMLLeft();
 		break;
-	case "right":
+	case 'right':
 		print $weFrame->getHTMLRight();
 		break;
-	case "editor":
+	case 'editor':
 		print $weFrame->getHTMLEditor();
 		break;
-	case "edheader":
+	case 'edheader':
 		print $weFrame->getHTMLEditorHeader();
 		break;
-	case "edbody":
+	case 'edbody':
 		print $weFrame->getHTMLEditorBody();
 		break;
-	case "edfooter":
+	case 'edfooter':
 		print $weFrame->getHTMLEditorFooter();
 		break;
-	case "cmd":
+	case 'cmd':
 		print $weFrame->getHTMLCmd();
 		break;
-	case "treeheader":
+	case 'treeheader':
 		print $weFrame->getHTMLTreeHeader();
 		break;
-	case "treefooter":
+	case 'treefooter':
 		print $weFrame->getHTMLTreeFooter();
 		break;
-	case "customer_admin":
+	case 'customer_admin':
 		print $weFrame->getHTMLCustomerAdmin();
 		break;
-	case "branch_editor":
-		print $weFrame->getHTMLFieldEditor("branch", $mode);
+	case 'branch_editor':
+		print $weFrame->getHTMLFieldEditor('branch', $mode);
 		break;
-	case "field_editor":
-		print $weFrame->getHTMLFieldEditor("field", $mode);
+	case 'field_editor':
+		print $weFrame->getHTMLFieldEditor('field', $mode);
 		break;
-	case "sort_admin":
+	case 'sort_admin':
 		print $weFrame->getHTMLSortEditor();
 		break;
-	case "search":
+	case 'search':
 		print $weFrame->getHTMLSearch();
 		break;
-	case "settings":
+	case 'settings':
 		print $weFrame->getHTMLSettings();
 		break;
 
-	case "export":
-	case "import":
+	case 'export':
+	case 'import':
 		print $ExImport->getHTMLFrameset($what);
 		break;
-	case "eibody":
+	case 'eibody':
 		print $ExImport->getHTMLStep($mode, $step);
 		break;
-	case "eifooter":
+	case 'eifooter':
 		print $ExImport->getHTMLFooter($mode, $step);
 		break;
-	case "eiload":
+	case 'eiload':
 		print $ExImport->getHTMLLoad();
 		break;
 
 	default:
-		error_log(__FILE__ . " unknown reference: $what");
+		error_log(__FILE__ . ' unknown reference: ' . $what);
 }

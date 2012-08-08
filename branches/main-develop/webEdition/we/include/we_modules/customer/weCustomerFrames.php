@@ -678,7 +678,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('treeheader', $this->frameset . '?pnt=treeheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('tree', WEBEDITION_DIR . "treeMain.php", 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+					we_html_element::htmlIFrame('tree', WEBEDITION_DIR . 'treeMain.php', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;overflow: auto;') .
 					we_html_element::htmlIFrame('treefooter', $this->frameset . '?pnt=treefooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 				));
 		/*
