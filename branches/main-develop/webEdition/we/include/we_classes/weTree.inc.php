@@ -33,16 +33,16 @@ class weTree{
 	var $frameset = "";
 	var $styles = array();
 	var $tree_states = array(
-		"edit" => "0",
-		"select" => "1",
-		"selectitem" => "2",
-		"selectgroup" => "3",
+		"edit" => 0,
+		"select" => 1,
+		"selectitem" => 2,
+		"selectgroup" => 3,
 	);
 	var $tree_layouts = array(
-		"0" => "tree",
-		"1" => "tree",
-		"2" => "tree",
-		"3" => "tree"
+		0 => "tree",
+		1 => "tree",
+		2 => "tree",
+		3 => "tree"
 	);
 	var $node_layouts = array(
 		"item" => "tree",
@@ -196,9 +196,7 @@ class weTree{
 	}
 
 	function getJSTreeFunctions(){
-
-		$out = '
-
+		return '
 		//var clickCount=0;
 		var wasdblclick=0;
 		var tout=null;
@@ -216,8 +214,6 @@ class weTree{
 			node.showsegment();
 		}
 	';
-
-		return $out;
 	}
 
 	function getJSOpenClose(){
@@ -284,22 +280,20 @@ class weTree{
 	}
 
 	function getJSGetTreeLayout(){
-		$js = '
+		return '
 				function getTreeLayout(){
 						return this.tree_layouts[this.state];
 				}
 		';
-		return $js;
 	}
 
 	function getJSGetLayout(){
-		$js = '
+		return '
 				function getLayout(){
 						var layout_key=(this.typ=="group" ? "group" : "item");
 						return treeData.node_layouts[layout_key];
 				}
 		';
-		return $js;
 	}
 
 	function getJSSetTreeState(){
@@ -451,17 +445,20 @@ class weTree{
 	}
 
 	function getJSContainer(){
-		$ts = 'this.tree_states=new Array();' . "\n";
-		foreach($this->tree_states as $k => $v)
-			$ts.='this.tree_states["' . $k . '"]="' . $v . '";' . "\n";
+		$ts = 'this.tree_states=new Array();';
+		foreach($this->tree_states as $k => $v){
+			$ts.='this.tree_states["' . $k . '"]="' . $v . '";';
+		}
 
-		$tl = 'this.tree_layouts=new Array();' . "\n";
-		foreach($this->tree_layouts as $k => $v)
-			$tl.='this.tree_layouts["' . $k . '"]="' . $v . '";' . "\n";
+		$tl = 'this.tree_layouts=new Array();';
+		foreach($this->tree_layouts as $k => $v){
+			$tl.='this.tree_layouts["' . $k . '"]="' . $v . '";';
+		}
 
-		$nl = 'this.node_layouts=new Array();' . "\n";
-		foreach($this->node_layouts as $k => $v)
-			$nl.='this.node_layouts["' . $k . '"]="' . $v . '";' . "\n";
+		$nl = 'this.node_layouts=new Array();';
+		foreach($this->node_layouts as $k => $v){
+			$nl.='this.node_layouts["' . $k . '"]="' . $v . '";';
+		}
 
 		return '
 			function container(){
@@ -583,6 +580,7 @@ function setCheckNode(imgName){
 function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check1.gif";}
 }');
+
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
@@ -606,7 +604,6 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSDrawTree(){
-
 		return '
  		function drawTree(){
 
