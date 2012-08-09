@@ -63,12 +63,10 @@ function we_tag_linkToSeeMode($attribs){
 			//	check if the customer is a user, too.
 			$tmpDB = new DB_WE();
 
-			$tmpDB->query(
-				"SELECT ID FROM " . USER_TABLE . " WHERE username=\"" . $_SESSION["webuser"]["Username"] . "\" AND (UseSalt=0 AND passwd=\"" . md5(
-					$_SESSION["webuser"]["Password"]) . "\") OR UseSalt=1 AND passwd=\"" . md5(
-					$_SESSION["webuser"]["Password"] . md5($_SESSION["webuser"]["Username"])) . "\"");
+			$q = getHash('SELECT UseSalt, Password FROM ' . USER_TABLE . ' WHERE LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
 
-			if($tmpDB->num_rows() == 1){ // customer is also a user
+			if(!empty($q) && we_user::comparePasswords($q['UseSalt'], $_SESSION["webuser"]["Username"], $q['passwd'], $_SESSION["webuser"]["Password"])){// customer is also a user
+				unset($q);
 				$retStr = getHtmlTag(
 						'form', array(
 						'method' => 'post',
@@ -99,14 +97,14 @@ function we_tag_linkToSeeMode($attribs){
 						'xml' => $xml
 						), $value);
 			} else{ //	customer is no user
-				$retStr = "<!-- ERROR: CUSTOMER IS NO USER! -->";
+				return "<!-- ERROR: CUSTOMER IS NO USER! -->";
 			}
 			unset($tmpDB);
 		} else{ // User has not the right permissions.
-			$retStr = "<!-- ERROR: USER DOES NOT HAVE REQUIRED PERMISSION! -->";
+			return "<!-- ERROR: USER DOES NOT HAVE REQUIRED PERMISSION! -->";
 		}
 	} else{ //	webUser is not registered, show nothing
-		$retStr = "<!-- ERROR: USER HAS NOT BEEN LOGGED IN! -->";
+		return "<!-- ERROR: USER HAS NOT BEEN LOGGED IN! -->";
 	}
 	return $retStr;
 }
