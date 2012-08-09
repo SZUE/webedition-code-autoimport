@@ -152,13 +152,15 @@ weNavigationCache::clean();
 we_updater::fixInconsistentTables();
 
 //clean Error-Log-Table
-$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
+$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');
+$cnt = f('SELECT COUNT(1) AS a FROM ' . ERROR_LOG_TABLE, 'a', $GLOBALS['DB_WE']);
+
+if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
+	$GLOBALS['DB_WE']->query('DELETE LOW_PRIORITY FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - ERROR_LOG_MAX_ITEM_THRESH));
+}
 
 
-/* * ***************************************************************************
- * CHECK FOR FAILED LOGIN ATTEMPTS
- * *************************************************************************** */
-
+//CHECK FOR FAILED LOGIN ATTEMPTS
 $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
 
 $count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . addslashes($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $DB_WE);
