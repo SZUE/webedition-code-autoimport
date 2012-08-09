@@ -414,10 +414,10 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
 		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
-			die('Cannot log error! Could not send e-mail.');
+			echo 'Cannot log error! Could not send e-mail.';
 		}
 	} else{
-		die('Cannot log error! Could not send e-mail due to no known recipient.');
+		echo 'Cannot log error! Could not send e-mail due to no known recipient.';
 	}
 }
 
