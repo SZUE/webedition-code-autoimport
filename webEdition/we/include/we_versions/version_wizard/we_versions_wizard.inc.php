@@ -1404,7 +1404,7 @@ abstract class we_versions_wizard{
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
 	static function getPage($contents){
-		if(!sizeof($contents)){
+		if(!count($contents)){
 			return "";
 		}
 		$headCal = we_html_element::linkElement(
@@ -1415,7 +1415,7 @@ abstract class we_versions_wizard{
 					"title" => "Aqua"
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-			we_html_element::jsScript("jscalendar/calendar-setup.js");
+			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 		$headCal .= we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js') .
