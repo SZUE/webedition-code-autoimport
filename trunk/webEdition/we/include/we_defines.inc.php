@@ -166,8 +166,8 @@ define('SESSION_NAME', 'WESESSION');
 (!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
-define('ERROR_LOG_MAX_ITEM_COUNT', 1000);
-define('ERROR_LOG_MAX_ITEM_THRESH', 900);
+define('ERROR_LOG_MAX_ITEM_COUNT', 10000);
+define('ERROR_LOG_MAX_ITEM_THRESH', 9800);
 
 
 
