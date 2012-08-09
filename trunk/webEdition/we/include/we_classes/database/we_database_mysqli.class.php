@@ -125,7 +125,7 @@ class DB_WE extends we_database_base{
 			$len = $this->Query_ID->fetch_field_direct($no)->length;
 			//fix faulty lenght on text-types with connection in utf-8
 			$type = $this->field_type($no);
-			if(DB_SET_CHARSET=='utf-8' && $type >= 252 && $type <= 254){
+			if(DB_SET_CHARSET == 'utf8' && strtolower($type)=='string'){
 				$len/=3;
 			}
 			return $len;
