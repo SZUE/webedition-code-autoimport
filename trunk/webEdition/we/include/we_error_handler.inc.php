@@ -351,32 +351,29 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
 			if(!$db->query($_query)){
-				// die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
+				die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
 			} else{
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
 					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
 				}
 			}
-		} else {
-			if($_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)) {
-				if(mysql_select_db(DB_DATABASE, $_link)){
-					if(mysql_query($_query) === FALSE){
-						//die('Cannot log error! Query failed: ' . mysql_error());
-					} else{
-						$id = mysql_insert_id();
-						foreach($logVars as $var){
-							mysql_query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
-						}
-					}
-					mysql_close();
-				} else {
-				//die('Cannot log error! Could not connect: ' . mysql_error());
+		} else{
+			$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
+				or die('Cannot log error! Could not connect: ' . mysql_error());
+			mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
+			if(mysql_query($_query) === FALSE){
+				die('Cannot log error! Query failed: ' . mysql_error());
+			} else{
+				$id = mysql_insert_id();
+				foreach($logVars as $var){
+					mysql_query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
+			mysql_close();
 		}
 	} else{
-		//die('Cannot log error! Database connection not known.');
+		die('Cannot log error! Database connection not known.');
 	}
 }
 
@@ -417,10 +414,10 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
 		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
-			//die('Cannot log error! Could not send e-mail.');
+			die('Cannot log error! Could not send e-mail.');
 		}
 	} else{
-		//die('Cannot log error! Could not send e-mail due to no known recipient.');
+		die('Cannot log error! Could not send e-mail due to no known recipient.');
 	}
 }
 
