@@ -144,21 +144,19 @@ class weCustomerFrames extends weModuleFrames{
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 				$countryselect = new we_html_select(array('name' => $field, 'size' => '1', 'style' => 'width:240px;', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
-				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
+				$topCountries = array_flip((defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH")));
 
-				$topCountries = array_flip($topCountries);
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
-				if(defined('WE_COUNTRIES_SHOWN')){
-					$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-				} else{
-					$shownCountries = explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY');
-				}
-				$shownCountries = array_flip($shownCountries);
+				$shownCountries = array_flip(explode(',', (defined('WE_COUNTRIES_SHOWN') ?
+							WE_COUNTRIES_SHOWN :
+							'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY')
+					));
+
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
@@ -989,18 +987,18 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 3);
+		$cur=0;
+		$table->setCol($cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
+		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
+		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
-		$table->setCol(0, 1, array(), we_html_tools::getPixel(5, 30));
-		$table->setCol(0, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
+		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ""));
 
-		$table->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
-		$table->setCol(1, 1, array(), we_html_tools::getPixel(5, 30));
-		$table->setCol(1, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ""));
-
-		$table->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
-		$table->setCol(2, 1, array(), we_html_tools::getPixel(5, 30));
-		$table->setCol(2, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ""));
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
+		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ""));
 
 
 		$default_order = new we_html_select(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
@@ -1011,18 +1009,18 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(3, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
-		$table->setCol(3, 1, array(), we_html_tools::getPixel(5, 30));
-		$table->setCol(3, 2, array('class' => 'defaultfont'), $default_order->getHtml());
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
+		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
 		$default_saveRegisteredUser_register = new we_html_select(array('name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_saveRegisteredUser_register->addOption('false', 'false');
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(4, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
-		$table->setCol(4, 1, array(), we_html_tools::getPixel(5, 30));
-		$table->setCol(4, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
+		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
 		$close = we_button::create_button("close", "javascript:self.close();");
 		$save = we_button::create_button("save", "javascript:we_cmd('save_settings')");

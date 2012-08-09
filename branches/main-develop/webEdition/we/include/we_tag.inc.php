@@ -232,20 +232,6 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, $useGlobal);
 }
 
-function makeEmptyTable($in){
-	preg_match_all('/<[^>]+>/i', $in, $result, PREG_SET_ORDER);
-
-	$out = '';
-	foreach($result as $res){
-		$tag = $res[0];
-
-		if(preg_match('-< ?/? ?(td|tr|table|tbody)-i', $tag)){
-			$out .= $tag;
-		}
-	}
-	return $out;
-}
-
 function we_tag_path_hasIndex($path, $indexArray){
 	foreach($indexArray as $index){
 		if(file_exists($path . $index)){

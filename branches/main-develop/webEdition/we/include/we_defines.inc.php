@@ -157,7 +157,7 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('SESSION_NAME','WESESSION');
+define('SESSION_NAME', 'WESESSION');
 
 (!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
@@ -166,6 +166,8 @@ define('SESSION_NAME','WESESSION');
 (!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
+define('ERROR_LOG_MAX_ITEM_COUNT', 10000);
+define('ERROR_LOG_MAX_ITEM_THRESH', 9800);
 
 
 

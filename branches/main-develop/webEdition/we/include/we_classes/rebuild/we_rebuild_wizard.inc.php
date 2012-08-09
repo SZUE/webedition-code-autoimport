@@ -55,22 +55,22 @@ abstract class we_rebuild_wizard{
 		$pb = $WE_PB->getHTML();
 
 		$js .= we_html_element::jsElement(
-				'function showRefreshButton() {'
-				. '  prevBut = document.getElementById(\'prev\');'
-				. '  nextBut = document.getElementById(\'next\');'
-				. '  refrBut = document.getElementById(\'refresh\');'
-				. '  prevBut.style.display = \'none\';'
-				. '  nextBut.style.display = \'none\';'
-				. '  refrBut.style.display = \'\';'
-				. '}'
-				. 'function showPrevNextButton() {'
-				. '  prevBut = document.getElementById(\'prev\');'
-				. '  nextBut = document.getElementById(\'next\');'
-				. '  refrBut = document.getElementById(\'refresh\');'
-				. '  refrBut.style.display = \'none\';'
-				. '  prevBut.style.display = \'\';'
-				. '  nextBut.style.display = \'\';'
-				. '}');
+				'function showRefreshButton() {
+				  prevBut = document.getElementById("prev");
+				  nextBut = document.getElementById("next");
+				  refrBut = document.getElementById("refresh");
+				  prevBut.style.display = "none";
+				  nextBut.style.display = "none";
+				  refrBut.style.display = ";
+				}
+				function showPrevNextButton() {
+				  prevBut = document.getElementById("prev");
+				  nextBut = document.getElementById("next");
+				  refrBut = document.getElementById("refresh");
+				  refrBut.style.display = "none";
+				  prevBut.style.display = "";
+				  nextBut.style.display = "";
+				}');
 
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
 		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
@@ -100,7 +100,7 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
-					($dc ? "" : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) .
+					($dc ? '' : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) .
 				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
@@ -112,7 +112,7 @@ abstract class we_rebuild_wizard{
 	 * @return string for now it is an empty page
 	 */
 	static function getCmd(){
-		return self::getPage(array("", ""));
+		return self::getPage(array('', ''));
 	}
 
 	/**
@@ -159,7 +159,8 @@ abstract class we_rebuild_wizard{
 			array(
 				"headline" => "",
 				"html" => we_forms::radiobutton("rebuild_documents", ($type == "rebuild_documents" && (we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', "[documents]"), true, "defaultfont", "setNavStatDocDisabled()", (!(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD"))), g_l('rebuild', "[txt_rebuild_documents]"), 0, 495),
-				"space" => 0)
+				"space" => 0
+			)
 		);
 
 		if(defined("OBJECT_FILES_TABLE")){
@@ -1002,4 +1003,3 @@ abstract class we_rebuild_wizard{
 	}
 
 }
-

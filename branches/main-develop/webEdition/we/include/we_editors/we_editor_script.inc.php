@@ -448,7 +448,7 @@ print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_rep
 													}
 													break;
 												case "weObject_input_length":
-													if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>255) {
+													if ( !theVal.match(/^-{0,1}\d+$/) || theVal<1 || theVal>4095) {
 <?php
 //  don't change the formatting of the fields here
 $_msg = sprintf(g_l('alert', '[field_input_contains_incorrect_length]'));

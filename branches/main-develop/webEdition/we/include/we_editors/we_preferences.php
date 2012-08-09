@@ -1572,7 +1572,7 @@ function build_dialog($selected_setting = 'ui'){
 								}
 								if(document.getElementById('seem_start_type').value == 'object') {
 								" .
-					//FIXME frames['content'] will probably not work here
+						//FIXME frames['content'] will probably not work here
 						(defined("OBJECT_FILES_TABLE") ?
 							"parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
@@ -3943,12 +3943,13 @@ else {
 
 								document.getElementById('label_error_display_errors').style.cursor = _new_cursor;
 								document.getElementById('label_error_log_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;" .
-					(version_compare(PHP_VERSION, '5.3.0') >= 0 ? "
+								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;
+
 								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
 								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
-								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;" : '') .
-					"set_state_mail();
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
+
+								set_state_mail();
 							}");
 
 			/**
@@ -3987,10 +3988,8 @@ else {
 			$_error_handling_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_NOTICES"), "error_handling_notices", g_l('prefs', '[error_notices]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
 			$_error_handling_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
-			if(version_compare(PHP_VERSION, '5.3.0') >= 0){
-				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_DEPRECATED"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
-				$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
-			}
+			$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("WE_ERROR_DEPRECATED"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("WE_ERROR_HANDLER")));
+			$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 
 
 			// Build dialog if user has permission
@@ -4642,8 +4641,8 @@ function render_dialog(){
 		we_html_element::htmlDiv(array("id" => "setting_versions", 'style' => ($tabname == "setting_versions" ? '' : 'display: none;')), build_dialog("versions")) .
 		// Render save screen
 		we_html_element::htmlDiv(array("id" => "setting_save", 'style' => ($tabname == "setting_save" ? '' : 'display: none;')), build_dialog("save"));
-		// Hide preload screen
-		//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
+	// Hide preload screen
+	//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
 /* * ***************************************************************************
