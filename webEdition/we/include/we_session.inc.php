@@ -49,23 +49,19 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 
 	// only if username exists !!
 	if($DB_WE->next_record()){
-		$useSalt = $DB_WE->f("UseSalt");
-		$salted = md5($_POST["password"] . md5($_POST["username"]));
+		$useSalt = $DB_WE->f('UseSalt');
 
-		$passwd = $useSalt ? $salted : md5($_POST["password"]);
-
-		if($DB_WE->f('passwd') == $passwd){
-
+		if(we_user::comparePasswords($useSalt, $_POST["username"], $DB_WE->f('passwd'), $_POST["password"])){
 			$_userdata = $DB_WE->Record;
 
 
 			if($_userdata["LoginDenied"]){ // userlogin is denied
 				$GLOBALS["userLoginDenied"] = true;
 			} else{
-				if(!$useSalt){
+				if(($useSalt < 2)){ //will cause update on old php-versions every time. leave it.
+					$salted = we_user::makeSaltedPassword($useSalt, $_POST["username"], $_POST["password"]);
 					// UPDATE Password with SALT
-					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . $salted . "',UseSalt=1 WHERE username='" . $DB_WE->escape(
-							$_POST["username"]) . "' AND passwd='" . $DB_WE->escape($passwd) . "'");
+					$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($useSalt) . ' WHERE username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $DB_WE->f('ID'));
 				}
 
 				if(!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))){
@@ -120,7 +116,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 					$a = makeArrayFromCSV($DB_WE->f("workSpaceNwl"));
 					foreach($a as $k => $v){
 						if(!in_array($v, $nl)){
-							$nl[]= $v;
+							$nl[] = $v;
 						}
 					}
 
