@@ -95,7 +95,7 @@ function we_error_handler($in_webEdition = true){
 
 	if(defined('WE_ERROR_HANDLER') && (WE_ERROR_HANDLER == 1)){
 		$_error_level = 0 +
-			($GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+			((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
 			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
 			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
 			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
@@ -206,50 +206,31 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	$_detailedError = '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>';
-	$_detailedError .= '	<tr bgcolor="#f7f7f7" valign="top">';
-	$_detailedError .= '		<td colspan="2" style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">An error occurred while executing this script.</font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Error type
-	$_detailedError .= '	<tr valign="top">';
-	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . translate_error_type($type) . '</i></font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Error message
-	$_detailedError .= '	<tr valign="top">';
-	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Script name
-	$_detailedError .= '	<tr valign="top">';
-	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Line
-	$_detailedError .= '	<tr valign="top">';
-	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $line . '</i></font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Backtrace
-	$_detailedError .= '	<tr valign="top">';
-	$_detailedError .= '		<td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>';
-	$_detailedError .= '		<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">';
-
-	$detailedError = str_replace(array("\r", "\n"), '', nl2br($detailedError));
-	$_detailedError .= $detailedError;
-	$_detailedError .= ' 	</font></td>';
-	$_detailedError .= '	</tr>';
-
-	// Finalize table
-	$_detailedError .= '</table><br />';
-
-	// Display the error
-	print $_detailedError;
+	print '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
+		<tr bgcolor="#f7f7f7" valign="top">
+			<td colspan="2" style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">An error occurred while executing this script.</font></td>
+		</tr>
+	<tr valign="top">
+		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>
+		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . translate_error_type($type) . '</i></font></td>
+	</tr>
+	<tr valign="top">
+			<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
+			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></font></td>
+	</tr>
+	<tr valign="top">
+			<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
+			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></font></td>
+	</tr>
+	<tr valign="top">
+			<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>
+			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $line . '</i></font></td>
+	</tr>
+	<tr valign="top">
+			<td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
+			<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . ' 	</font></td>
+	</tr>
+	</table><br />';
 }
 
 function getVariableMax($var, $db = ''){

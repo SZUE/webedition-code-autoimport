@@ -5549,12 +5549,11 @@ else {
 
 								document.getElementById('label_error_display_errors').style.cursor = _new_cursor;
 								document.getElementById('label_error_log_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;" .
-					(version_compare(PHP_VERSION, '5.3.0') >= 0 ? "
+								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;
 								document.getElementsByName('error_handling_deprecated')[0].disabled = _new_state;
 								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
-								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;" : '') .
-					"set_state_mail();
+								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
+					set_state_mail();
 							}");
 
 			/**
@@ -5593,10 +5592,8 @@ else {
 			$_error_handling_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_handling_notices"), "error_handling_notices", g_l('prefs', '[error_notices]'), false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
-			if(version_compare(PHP_VERSION, '5.3.0') >= 0){
 				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("we_error_handler")));
 				$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
-			}
 
 
 			// Build dialog if user has permission
