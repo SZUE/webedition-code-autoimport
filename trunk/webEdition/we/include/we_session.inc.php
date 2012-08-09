@@ -45,7 +45,7 @@ if(!isset($_SESSION["user"])){
 }
 
 if(isset($_POST["username"]) && isset($_POST["password"])){
-	$DB_WE->query("SELECT UseSalt, passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_POST["username"]) . "'");
+	$DB_WE->query("SELECT UseSalt, passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE IsFolder=0 AND username='" . $DB_WE->escape($_POST["username"]) . "'");
 
 	// only if username exists !!
 	if($DB_WE->next_record()){
@@ -58,10 +58,10 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 			if($_userdata["LoginDenied"]){ // userlogin is denied
 				$GLOBALS["userLoginDenied"] = true;
 			} else{
-				if(($useSalt < 2)){ //will cause update on old php-versions every time. leave it.
+				if(($useSalt < 2)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
 					$salted = we_user::makeSaltedPassword($useSalt, $_POST["username"], $_POST["password"]);
 					// UPDATE Password with SALT
-					$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($useSalt) . ' WHERE username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $DB_WE->f('ID'));
+					$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($useSalt) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $DB_WE->f('ID'));
 				}
 
 				if(!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))){

@@ -63,7 +63,7 @@ function we_tag_linkToSeeMode($attribs){
 			//	check if the customer is a user, too.
 			$tmpDB = new DB_WE();
 
-			$q = getHash('SELECT UseSalt, Password FROM ' . USER_TABLE . ' WHERE LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
+			$q = getHash('SELECT UseSalt, Password FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
 
 			if(!empty($q) && we_user::comparePasswords($q['UseSalt'], $_SESSION["webuser"]["Username"], $q['passwd'], $_SESSION["webuser"]["Password"])){// customer is also a user
 				unset($q);
