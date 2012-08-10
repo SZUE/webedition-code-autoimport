@@ -103,7 +103,7 @@ class we_imageDocument extends we_binaryDocument{
 					$thumbObj = new we_thumbnail();
 					$thumbObj->initByThumbID($thumbID, $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->getDocument());
 					if(($docChanged || !$thumbObj->exists()) && ($thumbObj->createThumb() == we_thumbnail::BUILDERROR)){
-						t_e('Error creating thumbnail for file', $this->Filename.$this->Extension);
+						t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param string $src
 	 * @param string $src_over
 	 */
-	function getRollOverScript($src = '', $src_over = ''){
+	function getRollOverScript($src = '', $src_over = '', $useScript = true){
 		if($this->getElement('RollOverFlag')){
 			if(!$src){
 				$src = $this->Path;
@@ -255,11 +255,11 @@ class we_imageDocument extends we_binaryDocument{
 				$this->setElement('name', 'ro_' . $this->Name, 'attrib');
 			}
 
-			return we_html_element::jsElement('
-    we' . $this->getElement('name') . 'Over = new Image();
+			$js = 'we' . $this->getElement('name') . 'Over = new Image();
     we' . $this->getElement('name') . 'Out = new Image();
     we' . $this->getElement('name') . "Over.src = '" . $src_over . "';
-    we" . $this->getElement('name') . "Out.src = '" . $src . "';");
+    we" . $this->getElement('name') . "Out.src = '" . $src . "';";
+			return ($useScript ? we_html_element::jsElement($js) : $js);
 		} else{
 			return '';
 		}
