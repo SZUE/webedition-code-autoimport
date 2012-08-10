@@ -225,54 +225,33 @@ class we_user{
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-
+		$useSalt = 0;
 		if($this->clearpasswd !== ''){
-			$this->passwd = md5($this->clearpasswd . md5($this->username));
+			$this->passwd = self::makeSaltedPassword($useSalt, $this->username, $this->clearpasswd);
 		}
 
-		if($this->ID){
-			$updt = "";
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				$fieldName = $tableInfo[$i]["name"];
-				if($fieldName == "UseSalt"){
-					$val = 1;
-				} else{
-					$val = isset($this->$fieldName) ? $this->$fieldName : '0';
+		$updt = array();
+		foreach($tableInfo as $t){
+			$fieldName = $t["name"];
+			if($fieldName == "UseSalt" && $useSalt > 0){
+				$val = 1;
+			} else{
+				$val = isset($this->$fieldName) ? $this->$fieldName : '0';
+			}
+			if($fieldName != 'ID'){
+				if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
+					$val = 'none';
+				} elseif($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] == '0'){
+					$val = '-1';
 				}
-				if($fieldName != 'ID'){
-					if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
-						$val = 'none';
-					} elseif($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] == '0'){
-						$val = '-1';
-					}
-					if($fieldName !== 'passwd' || $val !== ""){
-						$updt .= $fieldName . "='" . $this->DB_WE->escape($val) . "',";
-					}
+				if($fieldName !== 'passwd' || $val !== ""){
+					$updt [$fieldName] = $val;
 				}
 			}
-			//remove last ,
-			$updt = rtrim($updt, ',');
-			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . " SET $updt WHERE ID=" . intval($this->ID));
-		} else{
-			$keys = "";
-			$vals = "";
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				$fieldName = $tableInfo[$i]["name"];
-				$val = isset($this->$fieldName) ? $this->$fieldName : '';
-				if($fieldName != "ID"){
-					if($fieldName !== 'passwd' || $val !== ""){
-						$keys .= $fieldName . ",";
-						$vals .= "'" . $this->DB_WE->escape($val) . "',";
-					}
-				}
-			}
-			if($keys){
-				$keys = "(" . substr($keys, 0, strlen($keys) - 1) . ")";
-				$vals = "VALUES(" . substr($vals, 0, strlen($vals) - 1) . ")";
-				$q = "INSERT INTO " . $this->DB_WE->escape($this->Table) . " $keys $vals";
-				$this->DB_WE->query($q);
-				$this->ID = $this->DB_WE->getInsertId();
-			}
+		}
+		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+		if(!$this->ID){
+			$this->ID = $this->DB_WE->getInsertId();
 		}
 	}
 
@@ -2556,6 +2535,47 @@ class we_user{
 			$tab_header .
 			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $headline2) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' .
 			$tab_body;
+	}
+
+	/**
+	 *
+	 * @param type $useSalt DB-field
+	 * @param type $username DB-field
+	 * @param type $password DB-field!!! //needs to be cause of salt!
+	 * @param type $clearPassword //posted password
+	 */
+	static function comparePasswords($useSalt, $username, $password, $clearPassword){
+		switch($useSalt){
+			default:
+			case 0:
+				$passwd = md5($clearPassword);
+				break;
+			case 1:
+				$passwd = md5($clearPassword . md5($username));
+				break;
+			case 2:
+				$passwd = crypt($clearPassword, $password);
+				break;
+		}
+		return ($passwd == $password);
+	}
+
+	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
+		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+			$salt = '$2y$' . sprintf('%02d', $strength) . '$'; //15 rounds
+			for($i = 0; $i <= 21; $i++){
+				$tmp_str = str_shuffle($WE_SALTCHARS);
+				$salt .= $tmp_str[0];
+			}
+			$salted = crypt($passwd, $salt);
+			$useSalt = 2;
+		} else{
+			$salted = md5($passwd . md5($username));
+			$useSalt = 1;
+		}
+		return $salted;
 	}
 
 }

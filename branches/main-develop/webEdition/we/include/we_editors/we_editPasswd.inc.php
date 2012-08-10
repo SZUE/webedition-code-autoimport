@@ -26,8 +26,8 @@ we_html_tools::protect();
 we_html_tools::htmlTop(g_l('global', '[changePass]'));
 
 if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
-	print STYLESHEET.
-	we_html_element::jsElement('
+	print STYLESHEET .
+		we_html_element::jsElement('
 		function add() {
 			var p=document.forms[0].elements["we_category"];
 		}
@@ -38,16 +38,16 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 
 	<body class="weDialogBody" style="overflow:hidden;text-align:center;">
 
-			<form target="passwdload" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
-				<?php
-				$oldpass = we_html_tools::htmlTextInput("oldpasswd", 20, "", "32", "", "password", 200);
-				$newpass = we_html_tools::htmlTextInput("newpasswd", 20, "", "32", "", "password", 200);
-				$newpass2 = we_html_tools::htmlTextInput("newpasswd2", 20, "", "32", "", "password", 200);
+		<form target="passwdload" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+			<?php
+			$oldpass = we_html_tools::htmlTextInput("oldpasswd", 20, "", "32", "", "password", 200);
+			$newpass = we_html_tools::htmlTextInput("newpasswd", 20, "", "32", "", "password", 200);
+			$newpass2 = we_html_tools::htmlTextInput("newpasswd2", 20, "", "32", "", "password", 200);
 
-				$okbut = we_button::create_button("save", "javascript:document.forms[0].submit();");
-				$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+			$okbut = we_button::create_button("save", "javascript:document.forms[0].submit();");
+			$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
-				$content = '
+			$content = '
 						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td class="defaultfont">
@@ -84,15 +84,15 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 						</table>';
 
 
-				$_buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
+			$_buttons = we_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-				$frame = we_html_tools::htmlDialogLayout($content, g_l('global', '[changePass]'), $_buttons);
-				print $frame;
-				print '	<input type="hidden" name="cmd" value="ok" />
+			$frame = we_html_tools::htmlDialogLayout($content, g_l('global', '[changePass]'), $_buttons);
+			print $frame;
+			print '	<input type="hidden" name="cmd" value="ok" />
 							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
 							<input type="hidden" name="we_cmd[1]" value="load" />';
-				?>
-			</form>
+			?>
+		</form>
 		<?php
 	} else if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "load")){
 		$oldpasswd = isset($_REQUEST["oldpasswd"]) ? $_REQUEST["oldpasswd"] : "";
@@ -102,33 +102,33 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 		<script  type="text/javascript"><!--
 	<?php
 	if(isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ok")){
-		$passwd = f("SELECT passwd FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_SESSION["user"]["Username"]) . "'", "passwd", $DB_WE);
+		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"', $DB_WE);
 
-		if(md5($oldpasswd . md5($_SESSION["user"]["Username"])) != $passwd){
+		if(!we_user::comparePasswords($userData['UseSalt'], $_SESSION["user"]["Username"], $userData['passwd'], $oldpasswd)){
 			print
 				we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
-				top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
+		top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
+		top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
 		} else if(strlen($newpasswd) < 4){
 			print
 				we_message_reporting::getShowMessageCall(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
-				top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
+		top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
+		top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
 		} else if($newpasswd != $newpasswd2){
 			print
 				we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
-				top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
+		top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
+		top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
 		} else{
-
-			$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . md5($newpasswd . md5($_SESSION["user"]["Username"])) . "', UseSalt=1 WHERE username='" . $DB_WE->escape($_SESSION["user"]["Username"]) . "'");
+			$useSalt = 0;
+			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION["user"]["Username"], $newpasswd)) . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
 			print
 				we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 				'top.close();';
 		}
 	}
 	?>
-			//-->
+		//-->
 		</script>
 	</head>
 

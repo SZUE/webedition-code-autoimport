@@ -510,8 +510,8 @@ class we_document extends we_root{
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 			// clear value
 			$names = $this->getNamesFromContent($content);
-			for($i = 0; $i < sizeof($names); $i++){
-				$this->setElement($names[$i] . '_' . $new_nr, '');
+			foreach($names as $cur){
+				$this->setElement($cur . '_' . $new_nr, '');
 			}
 
 			for($i = sizeof($listarray); $i > $nr; $i--){

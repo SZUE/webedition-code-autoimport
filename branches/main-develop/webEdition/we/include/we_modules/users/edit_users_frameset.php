@@ -25,9 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-//We need to set this (and in corresponding frames, since the data in database is formated this way
-we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET);
-
 $mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
 $title = '';
 foreach($GLOBALS["_we_available_modules"] as $modData){
@@ -51,11 +48,8 @@ print STYLESHEET .
 	parent.document.title = "<?php print $title; ?>";
 
 <?php
-if($_SESSION["user"]["ID"]){
-	print "var cgroup=" . intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $GLOBALS['DB_WE'])) . ';';
-} else{
-	print "var cgroup=0;";
-}
+print "var cgroup=" . ($_SESSION["user"]["ID"] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"], 'ParentID', $GLOBALS['DB_WE'])) : 0) . ';';
+
 if(isset($_SESSION["user_session_data"]))
 	unset($_SESSION["user_session_data"]);
 ?>
@@ -488,13 +482,13 @@ function readChilds($pid){
 
 $entries = array();
 if($_SESSION["perms"]["NEW_USER"] || $_SESSION["perms"]["NEW_GROUP"] || $_SESSION["perms"]["SAVE_USER"] || $_SESSION["perms"]["SAVE_GROUP"] || $_SESSION["perms"]["DELETE_USER"] || $_SESSION["perms"]["DELETE_GROUP"] || $_SESSION["perms"]["ADMINISTRATOR"]){
-	$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $DB_WE);
-	$parent_path = dirname($foo["Path"]);
-	$parent_path = str_replace("\\", "/", $parent_path);
-	$startloc = $foo["ParentID"];
 	if($_SESSION["perms"]["ADMINISTRATOR"]){
 		$parent_path = '/';
 		$startloc = 0;
+	} else{
+		$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $DB_WE);
+		$parent_path = str_replace("\\", "/", dirname($foo["Path"]));
+		$startloc = $foo["ParentID"];
 	}
 
 	print 'startloc=' . $startloc . ';';

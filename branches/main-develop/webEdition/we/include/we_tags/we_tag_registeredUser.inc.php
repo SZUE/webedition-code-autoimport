@@ -35,14 +35,13 @@ function we_tag_registeredUser($attribs){
 			$id = $doc->getElement($field);
 	}
 	if($id){
-		$db = new DB_WE();
-		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE id=' . intval($id), $db);
+		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
 		unset($h['Password']);
 		if($show){
 			$foo = array();
 			preg_match_all("|%([^ ]+) ?|i", $show, $foo, PREG_SET_ORDER);
-			for($i = 0; $i < sizeof($foo); $i++){
-				$show = str_replace("%" . $foo[$i][1], $h[$foo[$i][1]], $show);
+			foreach($foo as $f){
+				$show = str_replace("%" . $f[1], $h[$f[1]], $show);
 			}
 			return $show;
 		} else{
