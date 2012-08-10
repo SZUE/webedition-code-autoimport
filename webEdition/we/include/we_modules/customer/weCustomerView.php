@@ -607,6 +607,7 @@ class weCustomerView{
 					if($c->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){//bei Password�nderungen die persistentlogins l�schen
 						$this->db->query("DELETE FROM " . CUSTOMER_AUTOLOGIN_TABLE . " WHERE WebUserID=" . intval($this->customer->ID));
 					}
+					//FIXME: what if save failes (e.g. Hooks?)
 					$this->customer->save();
 
 					$tt = '';
