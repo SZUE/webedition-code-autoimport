@@ -453,7 +453,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 			$content .= getHtmlTag('option', array('value' => $option), $option, true);
 		}
 	}
-	if((!$isin) && $addMissing && value != ''){
+	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => htmlspecialchars($value), 'selected' => 'selected'
 			), htmlspecialchars($value), true);
