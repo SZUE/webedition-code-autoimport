@@ -1486,8 +1486,9 @@ function we_check_email($email){ // Zend validates only the pure address
 		$namePart = substr($email, 0, strpos($email, '<'));
 		$namePart = preg_replace('/"(.)*"/', "x", $namePart);
 		$namePart = preg_replace('/\\\\(.)/', "y", $namePart);
-		if(strpos($namePart, '"'))
+		if(strpos($namePart, '"')){
 			return false;
+		}
 		$email = substr($_email[0], 1, strlen($_email[0]) - 2);
 	}
 

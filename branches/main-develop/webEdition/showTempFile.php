@@ -40,8 +40,6 @@ if(file_exists($filename)){
 	if($mimetype && $mimetype!='text/plain'){ //let the browser decide
 		header('Content-Type: ' . $mimetype);
 	}
-	ob_clean();
-	flush();
 
 	if($isCompressed){
 		readgzfile($filename);

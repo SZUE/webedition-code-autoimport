@@ -75,8 +75,8 @@ class weCustomer extends weModelBase{
 	function loadPresistents(){
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
-		for($i = 0; $i < sizeof($tableInfo); $i++){
-			$fname = $tableInfo[$i]["name"];
+		foreach($tableInfo as $t){
+			$fname = $t["name"];
 			$this->persistent_slots[] = $fname;
 			if(!isset($this->$fname))
 				$this->$fname = '';
@@ -96,10 +96,10 @@ class weCustomer extends weModelBase{
 	}
 
 	function save(){
-		$this->Icon = "customer.gif";
+		$this->Icon = 'customer.gif';
 		$this->IsFolder = 0;
 		$this->Text = $this->Username;
-		$this->Path = "/" . $this->Username;
+		$this->Path = '/' . $this->Username;
 
 		if($this->MemberSince == 0){
 			$this->MemberSince = time();
@@ -112,11 +112,10 @@ class weCustomer extends weModelBase{
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
 		$ret = $hook->executeHook();
-
-		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
-		$ret = $hook->executeHook();
-
-		weModelBase::save();
+		if($ret === true){
+			return weModelBase::save();
+		}
+		return false;
 	}
 
 	/**

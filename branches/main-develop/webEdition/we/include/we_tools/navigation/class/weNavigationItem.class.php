@@ -355,7 +355,7 @@ class weNavigationItem{
 							$_imgObj = new we_imageDocument();
 							$_imgObj->initByID($_iconid);
 
-							$_js = $_imgObj->getRollOverScript();
+							$_js = $_imgObj->getRollOverScript('','',false);
 							$_js = preg_replace("|<[^>]+><!--|", "", $_js);
 							$_js = preg_replace("|//--><[^>]+>|", "", $_js);
 							$_js = str_replace(array("\r\n", "\n"), '', $_js);
