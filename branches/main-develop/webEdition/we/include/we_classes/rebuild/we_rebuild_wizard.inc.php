@@ -61,7 +61,7 @@ abstract class we_rebuild_wizard{
 				  refrBut = document.getElementById("refresh");
 				  prevBut.style.display = "none";
 				  nextBut.style.display = "none";
-				  refrBut.style.display = ";
+				  refrBut.style.display = "";
 				}
 				function showPrevNextButton() {
 				  prevBut = document.getElementById("prev");
