@@ -80,7 +80,7 @@ top.document.forms[0].elements["newpasswd2"].select();';
 	return (isset($js) ? we_html_element::jsElement($js) : '') . '</head>	<body>';
 }
 
-function getFrameset(){
+function printFrameset(){
 	print STYLESHEET .
 		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 		we_html_element::jsElement('
@@ -102,10 +102,8 @@ function getFrameset(){
 			)) . '</html>';
 }
 
-if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
-	print getContent();
-} else if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "load")){
-	print getLoad() . 'LOAD</body></html>';
+if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "load")){
+	print getLoad() . '</body></html>';
 } else{
-	print getFrameset();
+	printFrameset();
 }
