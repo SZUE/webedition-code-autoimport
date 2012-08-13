@@ -37,8 +37,8 @@ function we_tag_xmlfeed($attribs){
 
 	$name = weTag_getAttribute('name', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
-	$refresh = intval(weTag_getAttribute('refresh', $attribs, 0)) * 60;
-	$timeout = intval(weTag_getAttribute('timeout', $attribs, 0));
+	$refresh = abs(weTag_getAttribute('refresh', $attribs, 30)) * 60;
+	$timeout = abs(weTag_getAttribute('timeout', $attribs, 0));
 
 	if(!isset($GLOBALS['xmlfeeds'])){
 		$GLOBALS['xmlfeeds'] = array();
@@ -52,9 +52,7 @@ function we_tag_xmlfeed($attribs){
 	if(!is_file($cache) || $do_refresh){
 		$ret = $GLOBALS['xmlfeeds'][$name]->getFile($url, $timeout);
 		if($ret){
-			if($refresh > 0){
-				$GLOBALS['xmlfeeds'][$name]->saveCache($cache, time() + (2 * $refresh)); //keep file longer, in case of timeouts
-			}
+			$GLOBALS['xmlfeeds'][$name]->saveCache($cache, time() + (2 * $refresh)); //keep file longer, in case of timeouts
 		} else if($timeout && is_file($cache)){
 			//timeout + last file exists
 			$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
