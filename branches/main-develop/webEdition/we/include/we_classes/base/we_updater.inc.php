@@ -88,8 +88,6 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorSizeOpt", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorWidth", "INT( 11 ) DEFAULT '0' NOT NULL");
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorHeight", "INT( 11 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "debug_normal", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
-		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "debug_seem", "TINYINT( 1 ) DEFAULT '0' NOT NULL");
 
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong", "TINYINT(1) DEFAULT '0' NOT NULL");
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "xhtml_show_wrong_text", "TINYINT(2) DEFAULT '0' NOT NULL");
@@ -107,7 +105,7 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorDocuintegration", " tinyint(1) NOT NULL default '1'", ' AFTER editorTooltipFontsize ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "BackendCharset", " varchar(22) NOT NULL default ''", ' AFTER Language ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "juploadPath", " text ", ' AFTER use_jupload ');
-		
+
 		if($GLOBALS['DB_WE']->isColExist(DOC_TYPES_TABLE, "DocType"))
 			$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
 
@@ -135,7 +133,7 @@ class we_updater{
 		}
 		$GLOBALS['DB_WE']->addCol(THUMBNAILS_TABLE, "Fitinside", " smallint(5) unsigned NOT NULL default '0' ", ' AFTER Interlace ');
 		$GLOBALS['DB_WE']->changeColType(HISTORY_TABLE, "ContentType", "enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile') NOT NULL");
-		
+
 	}
 
 	static function convertPerms(){
@@ -281,7 +279,7 @@ class we_updater{
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
-	
+
 
 		return true;
 	}
@@ -436,7 +434,7 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "Workspaces", " varchar(1000) NOT NULL default '' ");
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "DefaultWorkspaces", " varchar(1000) NOT NULL default '' ");
 		}
-		
+
 	}
 
 	static function updateObjectFiles(){
@@ -590,7 +588,7 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "Workspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspacesSelected", " varchar(1000) NOT NULL ");
-			 
+
 		}
 	}
 

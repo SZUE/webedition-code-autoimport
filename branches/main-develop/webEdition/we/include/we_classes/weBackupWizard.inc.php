@@ -309,7 +309,7 @@ class weBackupWizard{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,100,100" : "*,40,0,0" )));
+		$frameset->setAttributes(array("rows" => '*,40,0,0'));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=body", "name" => "body", "scrolling" => "auto", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset, "name" => "busy", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));

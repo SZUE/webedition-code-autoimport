@@ -2374,7 +2374,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => (($_SESSION["prefs"]["debug_normal"] != 0) ? "*,80,80" : "*,0,0"), "onLoad" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")));
+		$frameset->setAttributes(array("rows" => "*,0,0", "onLoad" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_body&test=$test", "name" => "send_body", "scrolling" => "no", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_cmd", "name" => "send_cmd", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], "name" => "send_control", "scrolling" => "no"));

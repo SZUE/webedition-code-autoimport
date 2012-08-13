@@ -175,7 +175,7 @@ class weExportWizard{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "1,*,45,60" : "1,*,45,0" ), "onLoad" => $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body" . $args . "&step=' + step;"));
+		$frameset->setAttributes(array("rows" => "1,*,45,0", "onLoad" => $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body" . $args . "&step=' + step;"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=body" . $args, "name" => "body", "scrolling" => "auto", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=footer", "name" => "footer", "scrolling" => "no"));

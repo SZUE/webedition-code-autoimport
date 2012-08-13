@@ -213,7 +213,7 @@ class we_workflow_moduleFrames{
 		$this->getJSTreeCode();
 		?>
 		</head>
-		<frameset rows="32,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" framespacing="0" border="0" frameborder="NO" onLoad="start();">
+		<frameset rows="32,*,0" framespacing="0" border="0" frameborder="NO" onLoad="start();">
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=header" name="header" scrolling=no noresize>
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=resize" name="resize" scrolling=no>
 			<frame src="<?php print WE_WORKFLOW_MODULE_DIR; ?>edit_workflow_frameset.php?pnt=cmd" name="cmd" scrolling=no noresize>

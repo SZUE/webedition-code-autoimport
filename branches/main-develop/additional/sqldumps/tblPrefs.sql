@@ -24,8 +24,6 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   editorSizeOpt tinyint(1) unsigned NOT NULL default '0',
   editorWidth smallint unsigned NOT NULL default '0',
   editorHeight smallint unsigned NOT NULL default '0',
-  debug_normal tinyint(1) unsigned NOT NULL default '0',
-  debug_seem tinyint(1) unsigned NOT NULL default '0',
   editorFontname varchar(255) NOT NULL default '',
   editorFontsize tinyint(2) NOT NULL default '0',
   editorFont tinyint(1) unsigned NOT NULL default '0',

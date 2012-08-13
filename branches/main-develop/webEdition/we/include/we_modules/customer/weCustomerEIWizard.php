@@ -61,7 +61,7 @@ class weCustomerEIWizard{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => (($_SESSION["prefs"]["debug_normal"] != 0) ? "*,45,160" : "*,45,0" )));
+		$frameset->setAttributes(array("rows" => "*,45,0"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eibody&art=" . $mode . "&step=1", "name" => "body", "scrolling" => "auto", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", "name" => "footer", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eiload&step=1", "name" => "load", "scrolling" => "no", "noresize" => null));

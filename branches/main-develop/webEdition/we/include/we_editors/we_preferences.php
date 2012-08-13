@@ -210,8 +210,8 @@ function get_value($settingvalue){
 		case 'editorDocuintegration':
 		case 'editorTooltipFontname':
 		case 'editorTooltipFontsize':
-		case 'debug_normal':
-		case 'debug_seem':
+		//case 'debug_normal':
+		//case 'debug_seem':
 		case 'default_tree_count':
 		case 'xhtml_show_wrong':
 		case 'xhtml_show_wrong_text':
@@ -361,8 +361,8 @@ function remember_value($settingvalue, $settingname){
 			case 'editorDocuintegration':
 			case 'editorTooltipFontname':
 			case 'editorTooltipFontsize':
-			case 'debug_normal':
-			case 'debug_seem':
+			//case 'debug_normal':
+			//case 'debug_seem':
 			case 'xhtml_show_wrong':
 			case 'xhtml_show_wrong_text':
 			case 'xhtml_show_wrong_js':
@@ -867,8 +867,8 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			case 'editorCodecompletion':
 			case 'editorTooltips':
 			case 'editorDocuintegration':
-			case 'debug_normal':
-			case 'debug_seem':
+			//case 'debug_normal':
+			//case 'debug_seem':
 				$_SESSION['prefs'][$settingname] = 0;
 				$_update_prefs = true;
 				break;
@@ -1195,8 +1195,8 @@ function save_all_values(){
 		$_update_prefs = remember_value(isset($_REQUEST["error_log_errors"]) ? $_REQUEST["error_log_errors"] : null, 'WE_ERROR_LOG') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["error_mail_errors"]) ? $_REQUEST["error_mail_errors"] : null, 'WE_ERROR_MAIL') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["error_mail_address"]) ? $_REQUEST["error_mail_address"] : null, 'WE_ERROR_MAIL_ADDRESS') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, 'debug_normal') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, 'debug_seem') || $_update_prefs;
+		//$_update_prefs = remember_value(isset($_REQUEST["debug_normal"]) ? $_REQUEST["debug_normal"] : null, 'debug_normal') || $_update_prefs;
+		//$_update_prefs = remember_value(isset($_REQUEST["debug_seem"]) ? $_REQUEST["debug_seem"] : null, 'debug_seem') || $_update_prefs;
 	}
 
 	/*	 * ***********************************************************************
@@ -4030,13 +4030,7 @@ else {
 				$_settings[] = array("headline" => g_l('prefs', '[error_displaying]'), "html" => $_error_display_table->getHtml(), "space" => 200);
 			}
 
-			/*			 * *******************************************************************
-			 * DEBUG FRAME
-			 * ******************************************************************* */
-
-			/**
-			 * Show debug frame
-			 */
+			/*
 			// Create checkboxes
 			$_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
 
@@ -4058,7 +4052,7 @@ else {
 			}
 
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
-
+*/
 			/**
 			 * BUILD FINAL DIALOG
 			 */

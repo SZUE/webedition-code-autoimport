@@ -33,7 +33,7 @@ if(we_image_edit::gd_version() > 0){
 		we_html_element::jsElement('self.focus();') .
 		we_html_element::jsScript(JS_DIR . "keyListener.js") .
 		we_html_element::jsElement(
-			"
+			'
     			function closeOnEscape() {
 					return true;
 
@@ -43,9 +43,9 @@ if(we_image_edit::gd_version() > 0){
 					window.frames[1].we_save();
 					return true;
 
-				}"
+				}'
 		) .
-		"</head>";
+		'</head>';
 
 	$frameset = new we_html_frameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1", "frameborder" => "no"), 0);
 	$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php", "name" => "we_thumbnails", "scrolling" => "auto", "noresize" => "noresize"));

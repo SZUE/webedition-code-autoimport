@@ -1182,12 +1182,10 @@ abstract class we_versions_wizard{
 			@unlink($taskFilename);
 		}
 
-		$cmdFrameHeight = (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 30 : 0;
-
 		if($tail){
 			$fst = new we_html_frameset(
 					array(
-						"rows" => "*,$cmdFrameHeight",
+						"rows" => "*,0",
 						"framespacing" => 0,
 						"border" => 0,
 						"frameborder" => "no"
@@ -1213,7 +1211,7 @@ abstract class we_versions_wizard{
 		} else{
 			$fst = new we_html_frameset(
 					array(
-						"rows" => "*,40,$cmdFrameHeight",
+						"rows" => "*,40,0",
 						"framespacing" => 0,
 						"border" => 0,
 						"frameborder" => "no"

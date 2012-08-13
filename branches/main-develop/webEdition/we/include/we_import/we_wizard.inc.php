@@ -37,7 +37,7 @@ class we_wizard{
 		}
 
 		$fst = new we_html_frameset(array(
-				"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0",
+				"rows" => "*,40,0",
 				"framespacing" => 0,
 				"border" => 0,
 				"frameborder" => "no",

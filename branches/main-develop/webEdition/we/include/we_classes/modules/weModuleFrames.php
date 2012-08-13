@@ -76,8 +76,8 @@ class weModuleFrames{
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('header', $this->getHTMLHeader(), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:' . ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 1) . 'px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:' . ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 1) . 'px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize', 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd', 'position:absolute;bottom:0px;height:1px;left:0px;right:0px;overflow: hidden;')
 				));
 
 		return $this->getHTMLDocument($body, $js);

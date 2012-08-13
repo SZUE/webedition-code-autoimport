@@ -767,7 +767,7 @@ abstract class we_rebuild_wizard{
 			@unlink($taskFilename);
 		}
 
-		$cmdFrameHeight = (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 30 : 0;
+		$cmdFrameHeight = 0;
 
 		if($tail){
 			$fst = new we_html_frameset(array(

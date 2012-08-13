@@ -49,7 +49,7 @@ class weNavigationRuleFrames{
 
 	function getHTMLFrameset(){
 		return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . '
-   <frameset rows="*,' . (($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0) . '" framespacing="0" border="1" frameborder="Yes">
+   <frameset rows="*,0" framespacing="0" border="1" frameborder="Yes">
    <frame src="' . $this->Frameset . '?pnt=content" name="content" scrolling=no>
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
   </frameset>

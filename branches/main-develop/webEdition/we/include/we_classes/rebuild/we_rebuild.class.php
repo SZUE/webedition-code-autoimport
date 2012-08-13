@@ -36,9 +36,9 @@ class we_rebuild{
 					flush();
 				}
 
-				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+//				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
 					print 'Rebuilding Navigation Item with Id: ' . $data['id'];
-				}
+//				}
 				weNavigationCache::delCacheNavigationEntry($data['id']);
 				if($data['id']){ //don't save id=0
 					$nav = new weNavigation($data['id']);
@@ -57,9 +57,9 @@ class we_rebuild{
 					flush();
 				}
 
-				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+				//if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
 					print "Debug: Rebuilding thumb for image: " . $imgdoc->Path;
-				}
+				//}
 				$imgdoc->Thumbs = $data["thumbs"] ? $data["thumbs"] : -1;
 				$imgdoc->DocChanged = true;
 				$imgdoc->we_save(true);
@@ -77,9 +77,9 @@ class we_rebuild{
 					flush();
 				}
 
-				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+				//if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
 					print "Rebulding meta data for image: " . $imgdoc->Path;
-				}
+				//}
 
 				$imgdoc->importMetaData($data["metaFields"], $data["onlyEmpty"]);
 
@@ -92,7 +92,7 @@ class we_rebuild{
 				break;
 			default:
 				switch($data["type"]){
-					case "document":
+					case 'document':
 						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
 
 						} else{ // it has to be an object
@@ -100,7 +100,7 @@ class we_rebuild{
 						}
 						$table = FILE_TABLE;
 						break;
-					case "template":
+					case 'template':
 						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
 
 						} else{ // it has to be an object
@@ -127,9 +127,9 @@ class we_rebuild{
 					flush();
 				}
 
-				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+				//if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
 					print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
-				}
+				//}
 
 				/* removed 30.12.2011
 				 * if($data["mt"] || $data["tt"]){

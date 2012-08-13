@@ -110,7 +110,7 @@ class weToolFrames extends weModuleFrames{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		$frameset->setAttributes(array("rows" => ((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "32,*,100" : "32,*,0" ), "onLoad" => "start();"));
+		$frameset->setAttributes(array("rows" => "32,*,0", "onLoad" => "start();"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=header", "name" => "header", "scrolling" => "no", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=resize" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "resize", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "cmd", "scrolling" => "no", "noresize" => null));
