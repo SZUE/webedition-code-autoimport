@@ -31,10 +31,7 @@ class we_multiSelector extends we_fileselector{
 	var $multiple = true;
 
 	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $multiple=true, $filter=""){
-
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $filter);
-
-
 		$this->rootDirID = $rootDirID;
 		$this->multiple = $multiple;
 	}

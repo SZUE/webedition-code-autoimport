@@ -100,8 +100,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 	}
 //-->
 </script>
-<?php echo we_html_element::jsScript(JS_DIR . 'keyListener.js'); ?>
-</head>
+<?php echo we_html_element::jsScript(JS_DIR . 'keyListener.js').'</head>' ?>
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php print ( (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1]) ? 1 : 0); ?>&filter=<?php print $filter; ?>&currentDir=<?php print $currentDir; ?>" name="fsheader" noresize scrolling="no">
