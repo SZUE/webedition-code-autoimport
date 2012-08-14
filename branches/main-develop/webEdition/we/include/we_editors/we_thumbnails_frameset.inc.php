@@ -56,14 +56,13 @@ if(we_image_edit::gd_version() > 0){
 	print STYLESHEET . '</head><body class="weDialogBody">';
 
 
-	$parts = array();
-	array_push($parts, array("headline" => "",
-		"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[add_description_nogdlib]"), 2, 440),
-		"space" => 0
+	$parts = array(
+		array(
+			"headline" => '',
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[add_description_nogdlib]"), 2, 440),
+			"space" => 0
 		)
 	);
-	$content = we_multiIconBox::getHTML("weimportfiles", "100%", $parts, 30, "", -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
-
-	print $content;
+	print we_multiIconBox::getHTML("weimportfiles", "100%", $parts, 30, "", -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
 }
 
