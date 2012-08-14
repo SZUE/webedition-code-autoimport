@@ -71,13 +71,13 @@ $save_javascript = '';
  *
  * @return         string
  */
-function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $hide_text = "", $cookie = false, $JS = ""){
+function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
 	return
 		// Check, if we need to write some JavaScripts
 		($JS != '' ? $JS : '') .
 		($expand != -1 ? we_multiIconBox::getJS() : '') .
 		// Return HTML code of dialog
-		we_multiIconBox::getHTML($name, "100%", $content, 30, "", $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie, $title);
+		we_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == "down") : $cookie, $title);
 }
 
 /**
@@ -99,7 +99,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 				$setArray[$settingname] = $settingvalue;
 				break;
 			case 'Format':
-				$setArray[$settingname] = (($settingvalue == "none") ? "" : $settingvalue);
+				$setArray[$settingname] = (($settingvalue == 'none') ? '' : $settingvalue);
 				break;
 			default:
 				$setArray[$settingname] = abs($settingvalue);
@@ -151,7 +151,7 @@ function build_dialog($selected_setting = "ui"){
 			//SAVE DIALOG
 
 			$_settings = array(
-				array("headline" => "", "html" => g_l('thumbnails', "[save]"), "space" => 0)
+				array("headline" => "", "html" => g_l('thumbnails', "[save]"), 'space' => 0)
 			);
 			return create_dialog("", g_l('thumbnails', "[save_wait]"), $_settings);
 

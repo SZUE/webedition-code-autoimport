@@ -215,7 +215,7 @@ class we_fileselector{
 		print $this->getFramesetJavaScriptDef() .
 			$this->getJS_keyListenerFunctions() .
 			$this->getExitClose() .
-			print '	function in_array(needle,haystack){
+			'	function in_array(needle,haystack){
 		for(var i=0;i<haystack.length;i++){
 			if(haystack[i] == needle) return true;
 		}
