@@ -90,7 +90,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
  *
  * @return         bool
  */
-function remember_value(array $setArray, $settingvalue, $settingname){
+function remember_value(array &$setArray, $settingvalue, $settingname){
 	if(isset($settingvalue) && ($settingvalue != null)){
 		switch($settingname){
 			case null:
@@ -127,7 +127,7 @@ function save_all_values(){
 	global $DB_WE;
 
 	if(we_hasPerm('ADMINISTRATOR')){
-		$setArray = array();
+		$setArray = array('Date' => 'UNIX_TIMESTAMP()');
 		// Update settings
 		remember_value($setArray, isset($_REQUEST["thumbnail_name"]) ? $_REQUEST["thumbnail_name"] : null, 'Name');
 		remember_value($setArray, isset($_REQUEST["thumbnail_width"]) ? $_REQUEST["thumbnail_width"] : null, 'Width');
@@ -139,8 +139,6 @@ function save_all_values(){
 		remember_value($setArray, isset($_REQUEST["Fitinside"]) ? $_REQUEST["Fitinside"] : null, 'Fitinside');
 		remember_value($setArray, isset($_REQUEST["Format"]) ? $_REQUEST["Format"] : null, 'Format');
 
-		$setArray['Date'] = 'UNIX_TIMESTAMP()';
-		// Update saving timestamp
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID = ' . intval($_REQUEST["edited_id"]));
 	}
 }
