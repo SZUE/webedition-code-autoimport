@@ -27,20 +27,9 @@
  * *************************************************************************** */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 
-
-/* * ***************************************************************************
- * INITIALIZATION
- * *************************************************************************** */
-
-
 we_html_tools::protect();
-
-/* * ***************************************************************************
- * FUNCTIONS
- * *************************************************************************** */
 
 /**
  * This function returns the HTML code of a dialog.
@@ -112,34 +101,26 @@ function build_dialog($selected_setting = "ui"){
 	switch($selected_setting){
 		// save dialog:
 		case "save":
-			$_settings = array();
-			array_push($_settings, array("headline" => "", "html" => g_l('metadata', "[save]"), "space" => 0));
-			$_dialog = create_dialog("", g_l('metadata', "[save_wait]"), $_settings);
-			break;
+			$_settings = array(
+				array("headline" => "", "html" => g_l('metadata', "[save]"), "space" => 0)
+			);
+			return create_dialog("", g_l('metadata', "[save_wait]"), $_settings);
 
 		// SAVED SUCCESSFULLY DIALOG:
 		case "saved":
-			$_content = array();
-			array_push($_content, array("headline" => "", "html" => g_l('metadata', "[saved]"), "space" => 0));
+			$_content = array(
+				array("headline" => "", "html" => g_l('metadata', "[saved]"), "space" => 0)
+			);
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", g_l('metadata', "[saved_successfully]"), $_content);
-			break;
+			return create_dialog("", g_l('metadata', "[saved_successfully]"), $_content);
 
 		// THUMBNAILS
 		case "dialog":
 			$_headline = we_html_element::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"), g_l('metadata', "[headline]"));
 
 			// read already defined metadata fields from db:
-			$_defined_fields = array();
-			$GLOBALS['DB_WE']->query("SELECT * FROM " . METADATA_TABLE);
-			while($GLOBALS['DB_WE']->next_record()) {
-				$_defined_fields[] = array(
-					"id" => $GLOBALS['DB_WE']->f("id"),
-					"tag" => $GLOBALS['DB_WE']->f("tag"),
-					"type" => $GLOBALS['DB_WE']->f("type"),
-					"importFrom" => $GLOBALS['DB_WE']->f("importFrom")
-				);
-			}
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE);
+			$_defined_fields = $GLOBALS['DB_WE']->getAll();
 
 			$_metadata_types = array(
 				"textfield" => "textfield",
@@ -159,14 +140,12 @@ function build_dialog($selected_setting = "ui"){
 				$_metadata_fields[$key] = $key;
 			}
 
-			$_onChange = "";
-
+			$_onChange = '';
 
 			$_i = 0;
 			$_adv_row = '';
 			$_first = 0;
 
-			$fieldcount = sizeof($_defined_fields);
 			foreach($_defined_fields as $key => $value){
 				$_adv_row .= '
 				<tr id="metadataRow_' . $key . '">
@@ -207,8 +186,7 @@ function build_dialog($selected_setting = "ui"){
 					</tr>
 					' . $_adv_row . '
 				</tbody>
-			</table>
-			';
+			</table>';
 
 			$js = we_html_element::jsElement('
 
@@ -293,24 +271,15 @@ function build_dialog($selected_setting = "ui"){
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), 1, 440, false);
 
-
-			$_metadata = new we_html_table(array('border' => '1', 'cellpadding' => '0', 'cellspacing' => '2', 'width' => '440', 'height' => '50'), 4, 3);
-
 			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_button::create_button("image:btn_function_plus", "javascript:addRow()");
-			//echo $_content;
-			//$_dialog = create_dialog("settings_predefined", g_l('metadata',"[thumbnails]"), $_content, -1, "", "", false, $js);
-			$_contentFinal = array();
-			array_push($_contentFinal, array("headline" => "", "html" => $_content, "space" => 0));
+
+			$_contentFinal = array(
+				array("headline" => "", "html" => $_content, "space" => 0)
+			);
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("settings_predefined", g_l('metadata', "[headline]"), $_contentFinal, -1, "", "", false, $js);
-			//$_dialog = create_dialog("", g_l('metadata',"[saved_successfully]"), $_content);
-			break;
+			return create_dialog("settings_predefined", g_l('metadata', "[headline]"), $_contentFinal, -1, "", "", false, $js);
 	}
-	if(isset($_dialog)){
-		return $_dialog;
-	} else{
-		return "";
-	}
+	return '';
 }
 
 /**
@@ -320,12 +289,9 @@ function build_dialog($selected_setting = "ui"){
  */
 function render_dialog(){
 	// Render setting groups
-	$_output = we_html_element::htmlDiv(array("id" => "metadatafields_dialog"), build_dialog("dialog"));
-
-	// Render save screen
-	$_output .= we_html_element::htmlDiv(array("id" => "metadatafields_save", "style" => "display: none;"), build_dialog("save"));
-
-	return $_output;
+	return we_html_element::htmlDiv(array("id" => "metadatafields_dialog"), build_dialog("dialog")) .
+		// Render save screen
+		we_html_element::htmlDiv(array("id" => "metadatafields_save", "style" => "display: none;"), build_dialog("save"));
 }
 
 /* * ***************************************************************************
@@ -333,9 +299,9 @@ function render_dialog(){
  * *************************************************************************** */
 
 we_html_tools::htmlTop();
-$save_javascript = "";
 // Check if we need to save settings
 if(isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] == "true"){
+	$save_javascript = '';
 
 	if(isset($_REQUEST["metadatafields_name"]) && (strpos($_REQUEST["metadatafields_name"], "'") !== false || strpos($_REQUEST["metadatafields_name"], ",") !== false)){
 		$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[metadatafields_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR) .
@@ -343,24 +309,16 @@ if(isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] =
 	} else{
 		save_all_values();
 
-
-		$save_javascript = we_html_element::jsElement("
-
-							   " . $save_javascript . "
-								" . we_message_reporting::getShowMessageCall(g_l('metadata', "[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
-
-							   top.close();
-
-					   ");
+		$save_javascript = we_html_element::jsElement($save_javascript .
+				we_message_reporting::getShowMessageCall(g_l('metadata', "[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) .
+				'top.close();');
 	}
 
-	print STYLESHEET . $save_javascript . "</head>";
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . "</html>";
+	print STYLESHEET . $save_javascript . '</head>' .
+		we_html_element::htmlBody(array("class" => "weDialogBody"), build_dialog("saved")) . '</html>';
 } else{
 	$_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
 
-	print STYLESHEET . "</head>";
-
-	print we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), $_form) . "</html>";
+	print STYLESHEET . '</head>' .
+		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "init()"), $_form) . "</html>";
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,7 +27,7 @@
  * @abstract class for reading and writing metadata from/to media files (i.e. audio, video or image files)
  * 			The implementations are to be found in its subclasses (i.e. "weMetaData_IPTC")
  */
-class weMetaData {
+class weMetaData{
 
 	/**
 	 * @var array specifies possible access methods to metadata handled by this implementation class (i.e. exif: readonly)
@@ -80,18 +81,18 @@ class weMetaData {
 	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. "mp3")
 	 * @return bool returns false if no spezialisation for the given filetype is available
 	 */
-	function weMetaData($source = "") {
-		if(empty($source)) {
+	function __construct($source = ""){
+		if(empty($source)){
 			$this->_valid = false;
 			return false;
 		}
-		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
+		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
 		$this->dataTypeMapping = $dataTypeMapping; // from mapping.inc.php
 		$this->imageTypeMap = $imageTypeMap; // from mapping.inc.php
 
-		if($this->_setDatasource($source)) {
-			if($this->_setDatatype()) {
-				foreach($this->datatype as $_type) {
+		if($this->_setDatasource($source)){
+			if($this->_setDatatype()){
+				foreach($this->datatype as $_type){
 					$this->_getInstance($_type);
 				}
 			}
@@ -109,32 +110,35 @@ class weMetaData {
 	 * @abstract method for identifying all valid implementations for a given file.
 	 * @return array of all valid metadata types or false if there are none
 	 */
-	function getImplementations() {
-		if(!$this->_valid) return false;
-		if(empty($this->datatype)) {
+	function getImplementations(){
+		if(!$this->_valid)
+			return false;
+		if(empty($this->datatype)){
 			return false;
 		}
 		return $this->datatype;
 	}
 
-	function getMetaData($selection = "") {
-		if(!$this->_valid) return false;
-		foreach($this->datatype as $_type) {
-			if(!in_array("read",$this->_instance[$_type]->accesstypes)) {
+	function getMetaData($selection = ""){
+		if(!$this->_valid)
+			return false;
+		foreach($this->datatype as $_type){
+			if(!in_array("read", $this->_instance[$_type]->accesstypes)){
 				return false;
-			} else {
+			} else{
 				$this->metadata[strToLower($_type)] = $this->_instance[$_type]->_getMetaData();
 			}
 		}
 		return $this->metadata;
 	}
 
-	function setMetaData($data = "", $datatype = "") {
-		foreach($this->datatype as $_type) {
-			if(!$this->_instance[$_type]->_valid) return false;
-			if(!in_array("write",$this->_instance[$_type]->accesstypes)) {
+	function setMetaData($data = "", $datatype = ""){
+		foreach($this->datatype as $_type){
+			if(!$this->_instance[$_type]->_valid)
 				return false;
-			} else {
+			if(!in_array("write", $this->_instance[$_type]->accesstypes)){
+				return false;
+			} else{
 				$this->_instance[$_type]->_setMetaData($data = "");
 			}
 		}
@@ -145,8 +149,9 @@ class weMetaData {
 	 * @abstract saves fetched metadata to database, currently in table tblContent
 	 * @return bool false if fails, else true
 	 */
-	function saveToDatabase($id = "") {
-		if(!$this->_valid) return false;
+	function saveToDatabase($id = ""){
+		if(!$this->_valid)
+			return false;
 		// table name: CONTENT_TABLE
 		// currently all metadata is saved via we_root::setElement()
 		return true;
@@ -165,29 +170,29 @@ class weMetaData {
 	 * @param string datasource id of webEdition document
 	 * @return bool returns false if datasource is not valid
 	 */
-	function _setDatasource($datasource = "") {
+	function _setDatasource($datasource = ""){
 		// determines if given datasource is valid. will be assignet to instances later:
-		if(!$this->_valid) {
+		if(!$this->_valid){
 			return false;
-		} else if(empty($datasource)) {
+		} else if(empty($datasource)){
 			$this->_valid = false;
 			return false;
-		} else if(is_numeric($datasource)) {
+		} else if(is_numeric($datasource)){
 			// TODO: get path to file from database (tblFile)
 			$datasource = $this->_getDatasourceFromDatabase($datasource);
-		} else if(is_file($datasource)) {
+		} else if(is_file($datasource)){
 			$this->_valid = true;
-			if(is_readable($datasource)) {
+			if(is_readable($datasource)){
 				$this->datasourcePerms[] = "read";
-			} else {
+			} else{
 				$this->_valid = false;
 			}
-			if(is_writable($datasource)) {
+			if(is_writable($datasource)){
 				$this->datasourcePerms[] = "write";
 			}
-		} else {
+		} else{
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
-			if(!is_readable(TEMP_PATH,$datasource)) {
+			if(!is_readable(TEMP_PATH, $datasource)){
 				$this->_valid = false;
 				return false;
 			}
@@ -199,52 +204,53 @@ class weMetaData {
 	/**
 	 * @abstract internal (private) function for obtaining path/name of the media file from database (tblFile)
 	 */
-	function _getDatasourceFromDatabase() {
-			$this->_valid = false;
-			return false;
+	function _getDatasourceFromDatabase(){
+		$this->_valid = false;
+		return false;
 	}
 
 	/**
 	 * @abstract method for detecting type of current file needed, for identifying correct metadata implementation class
 	 */
-	function _setDatatype() {
+	function _setDatatype(){
 		/*
 		 * detecting filetype in this order:
 		 * 1. exif_imagetype()
 		 * 2. file extension
 		 */
-		if(!$this->_valid) return false;
-		if(is_callable("exif_imagetype")) {
+		if(!$this->_valid)
+			return false;
+		if(is_callable("exif_imagetype")){
 			$_filetype = @exif_imagetype($this->datasource);
-		} else {
+		} else{
 			$_filetype = "";
 		}
 		// if $_filetype is a numeric value, filetype should first be identified by
 		// Get fype for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype
-		if(!empty($_filetype) && is_numeric($_filetype)) {
-			if(isset($this->imageTypeMap[$_filetype]) && !empty($this->imageTypeMap[$_filetype])) {
+		if(!empty($_filetype) && is_numeric($_filetype)){
+			if(isset($this->imageTypeMap[$_filetype]) && !empty($this->imageTypeMap[$_filetype])){
 				$this->filetype = $this->imageTypeMap[$_filetype];
-			} else {
+			} else{
 				$this->_valid = false;
 				$_filetype = "";
 			}
 		}
 		// if first check fails try to identify file extension:
-		if(empty($_filetype)) {
+		if(empty($_filetype)){
 			// try to identify type of file by its extension by checking substring after last point in $this->datasource
-			$_extension = strrchr($this->datasource,".");
-			if(!empty($_extension) && $_extension!=".") {
-				$this->filetype = substr($_extension,1);
-			} else {
+			$_extension = strrchr($this->datasource, ".");
+			if(!empty($_extension) && $_extension != "."){
+				$this->filetype = substr($_extension, 1);
+			} else{
 				$this->_valid = false;
 				return false;
 			}
 		}
 
-		if(array_key_exists(strtolower($this->filetype),$this->dataTypeMapping)) {
+		if(array_key_exists(strtolower($this->filetype), $this->dataTypeMapping)){
 			$this->datatype = $this->dataTypeMapping[strtolower($this->filetype)];
 			$this->_valid = true;
-		} else {
+		} else{
 			$this->_valid = false;
 			return false;
 		}
@@ -255,19 +261,20 @@ class weMetaData {
 	 * @return object instance of the metadata implementation class
 	 * @return bool returns false if no or invalid datatype specified
 	 */
-	function _getInstance($value="") {
-		if(!$this->_valid) return false;
-		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
-			$className = "weMetaData_".$value;
+	function _getInstance($value = ""){
+		if(!$this->_valid)
+			return false;
+		if(is_readable($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/classes/" . $value . ".class.php")){
+			$className = "weMetaData_" . $value;
 			$this->_instance[$value] = new $className($this->filetype);
-			if(!$this->_instance[$value]->_checkDependencies()) {
+			if(!$this->_instance[$value]->_checkDependencies()){
 				$this->_instance[$value]->_valid = false;
-			} else {
+			} else{
 				$this->_instance[$value]->_valid = true;
 				$this->_instance[$value]->datasource = $this->datasource;
 			}
 			return true;
-		} else {
+		} else{
 			$this->_instance[$value]->_valid = false;
 			return false;
 		}
@@ -279,7 +286,7 @@ class weMetaData {
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	function _getMetaData($selection = "") {
+	function _getMetaData($selection = ""){
 		// override!
 		return $this->metadata;
 	}
@@ -290,7 +297,7 @@ class weMetaData {
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	function _setMetaData($data = "", $datatype = "") {
+	function _setMetaData($data = "", $datatype = ""){
 		return true;
 		// override!
 	}
@@ -300,26 +307,19 @@ class weMetaData {
 	 * 			(i.e. if needed libraries, php extensions or classes are available)
 	 * @return bool returns true if all dependencies are met and false if not
 	 */
-	function _checkDependencies() {
+	function _checkDependencies(){
 		// override!
 		return true;
 	}
 
-
-	function getDefinedMetaDataFields() {
+	function getDefinedMetaDataFields(){
 		// if metadataFields are not cached, we have to get them from db
-		if (!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])) {
-			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = array();
-			$GLOBALS['DB_WE']->query("SELECT * FROM " . METADATA_TABLE . " order by id,type");
-			while ($GLOBALS['DB_WE']->next_record()) {
-				$GLOBALS['WE_METADATA_DEFINED_FIELDS'][] = array(
-					"id" => $GLOBALS['DB_WE']->f("id"),
-					"tag" => $GLOBALS['DB_WE']->f("tag"),
-					"type" => $GLOBALS['DB_WE']->f("type"),
-					"importFrom" => $GLOBALS['DB_WE']->f("importFrom")
-				);
-			}
+		if(!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])){
+
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY id');
+			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = $GLOBALS['DB_WE']->getAll();
 		}
 		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];
 	}
+
 }

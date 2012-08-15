@@ -22,27 +22,75 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/* * ***************************************************************************
- * INCLUDES
- * *************************************************************************** */
-
-
 we_html_tools::protect();
-
 we_html_tools::htmlTop(g_l('metadata', '[headline]'));
 
+function getFooter(){
+	// Define needed JS
+	$_meta_field_empty_messsage = addslashes(g_l('metadata', '[error_meta_field_empty_msg]'));
+	$_meta_field_wrong_chars_messsage = addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]'));
+	$_meta_field_wrong_name_messsage = addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]'));
 
-// Define needed JS
-$_javascript = 'self.focus();';
+	$_javascript = <<< END_OF_SCRIPT
+function we_save() {
+	var _doc = top.we_metadatafields.document;
 
-/* * ***************************************************************************
- * RENDER FILE
- * *************************************************************************** */
+
+	var _z = 0;
+	var _field = typeof(_doc.forms[0].elements['metadataTag[' + _z + ']']) != "undefined" ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
+
+	while (_field != null) {
+		if (!checkMetaFieldName(_field, _z)) {
+			return;
+		}
+		_z++;
+		_field = typeof(_doc.forms[0].elements['metadataTag[' + _z + ']']) != "undefined" ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
+	}
+
+	_doc.getElementById('metadatafields_dialog').style.display = 'none';
+
+	_doc.getElementById('metadatafields_save').style.display = '';
+
+	_doc.we_form.save_metadatafields.value = 'true';
+	_doc.we_form.submit();
+}
+
+function checkMetaFieldName(inpElem, nr) {
+	var _val = inpElem.value;
+	var _forbiddenNames = ",data,width,height,border,align,hspace,vspace,alt,name,title,longdescid,useMetaTitle,scale,play,autoplay,quality,attrib,salign,loop,controller,volume,hidden,";
+	var _errtxt = "";
+	if (_val === "") {
+		_errtxt = "$_meta_field_empty_messsage";
+		_errtxt = _errtxt.replace(/%s1/,nr+1);
+	} else if (_val.search(/[^a-zA-z0-9_]/) != -1) {
+		_errtxt = "$_meta_field_wrong_chars_messsage";
+		_errtxt = _errtxt.replace(/%s1/,_val);
+	} else if (_forbiddenNames.indexOf(","+_val+",") >= 0) {
+		_errtxt = "$_meta_field_wrong_name_messsage";
+		_errtxt = _errtxt.replace(/%s1/,_val);
+		_errtxt = _errtxt.replace(/%s2/,"\\n" + _forbiddenNames.substring(1,_forbiddenNames.length-1).replace(/,/g,", "));
+	}
+
+
+	if (_errtxt !== "") {
+		inpElem.focus();
+		inpElem.select();
+		top.opener.top.showMessage(_errtxt, 4, top);
+		return false;
+	}
+	return true;
+}
+
+END_OF_SCRIPT;
+
+	return we_html_element::jsElement($_javascript) .
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:we_save();"), "", we_button::create_button("cancel", "javascript:" . "top.close()"), 10, '', '', 0));
+}
 
 print
-	we_html_element::jsElement($_javascript) .
+	we_html_element::jsElement('self.focus();') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsElement("
+	we_html_element::jsElement('
 			function closeOnEscape() {
 				return true;
 
@@ -52,12 +100,11 @@ print
 				window.frames[1].we_save();
 				return true;
 
-			}"
-	) .
-	"</head>";
-
-$frameset = new we_html_frameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1", "frameborder" => "no"), 0);
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/editor.php", "name" => "we_metadatafields", "scrolling" => "auto", "noresize" => "noresize"));
-$frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=" . (isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
-
-print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";
+			}'
+	) . STYLESHEET .
+	'</head>' .
+	we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+			, we_html_element::htmlIFrame('we_metadatafields', WE_INCLUDES_DIR . 'we_editors/we_metadata_fields/editor.php', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+			we_html_element::htmlExIFrame('we_metadatafields_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		)) . '</html>';

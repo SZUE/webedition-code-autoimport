@@ -172,8 +172,8 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
 
 		// Fast Fix for deleting entries from tblLangLink: #5840
-		$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND IsObject = 0 AND IsFolder = 0 AND DID = '" . intval($id) . "'");
-		$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND LDID = '" . intval($id) . "'");
+		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND IsObject = 0 AND IsFolder = 0 AND DID = '" . intval($id) . "'");
+		$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable = 'tblFile' AND LDID = '" . intval($id) . "'");
 	}
 
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
@@ -182,14 +182,14 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		if($tableID != "" || $tableID == "0"){
 			$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . $tableID . " WHERE OF_ID=" . intval($id));
 			//Bug 2892
-			$q = "SELECT ID FROM " . OBJECT_TABLE . " ";
+			$q = 'SELECT ID FROM ' . OBJECT_TABLE;
 			$DB_WE->query($q);
 			$foo = $DB_WE->getAll();
 			foreach($foo as $testclass){
 				if(isColExistForDelete(OBJECT_X_TABLE . $testclass['ID'], "object_" . $tableID)){
 
 					//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-					$qtest = "SELECT OF_ID FROM " . OBJECT_X_TABLE . $testclass['ID'] . " WHERE object_" . $tableID . "= " . intval($id);
+					$qtest = 'SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclass['ID'] . ' WHERE object_' . $tableID . '= ' . intval($id);
 					$DB_WE->query($qtest);
 					$foos = $DB_WE->getAll();
 					foreach($foos as $affectedobjects){
