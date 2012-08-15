@@ -520,16 +520,17 @@ abstract class we_database_base{
 			//current hack: don't escape some used mysql functions
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			$escape = !(is_int($val) || is_float($val));
+
 			if($escape){
-				switch(strtoupper($val)){
-					case 'NOW()':
-					case 'UNIX_TIMESTAMP()':
-					case 'UNIX_TIMESTAMP(NOW())':
-					case 'CURDATE()':
-					case 'CURRENT_DATE()':
-					case 'CURRENT_TIME()':
-					case 'CURRENT_TIMESTAMP()':
-					case 'CURTIME()':
+				$tmp = explode('(', $val);
+				switch($tmp){
+					case 'NOW':
+					case 'UNIX_TIMESTAMP':
+					case 'CURDATE':
+					case 'CURRENT_DATE':
+					case 'CURRENT_TIME':
+					case 'CURRENT_TIMESTAMP':
+					case 'CURTIME':
 					case 'NULL':
 						$escape = false;
 				}

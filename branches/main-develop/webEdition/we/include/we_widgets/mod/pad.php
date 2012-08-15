@@ -50,27 +50,22 @@ $_sObjId = $_REQUEST['we_cmd'][5];
 
 switch($_REQUEST['we_cmd'][2]){
 	case 'delete' :
-		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . intval($q_Csv);
+		$_sql = 'DELETE FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ID = ' . intval($q_Csv);
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
-		$entTitle = base64_decode($q_Title);
-		$entTitle = str_replace("'", '&#039;', $entTitle);
-		$entTitle = str_replace('"', '&quot;', $entTitle);
+		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
 		if($q_Valid == "always" || $q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$entText = base64_decode($q_Text);
-		$entText = str_replace("'", '&#039;', $entText);
-		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "UPDATE " . $GLOBALS['DB_WE']->escape($_table) . " SET
-			Title = '" . $GLOBALS['DB_WE']->escape($entTitle) . "',
-			Text = '" . $GLOBALS['DB_WE']->escape($entText) . "',
-			Priority = '" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
-			Valid = '" . $GLOBALS['DB_WE']->escape($q_Valid) . "',
-			ValidFrom = '" . $GLOBALS['DB_WE']->escape($q_ValidFrom) . "',
-			ValidUntil = '" . $GLOBALS['DB_WE']->escape($q_ValidUntil) . "'
-			WHERE ID = " . intval($q_ID);
+		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
+		$_sql = 'UPDATE ' . $GLOBALS['DB_WE']->escape($_table) . ' SET ' . we_database_base::arraySetter(array(
+				'Title' => $entTitle,
+				'Text' => $entText,
+				'Priority' => $q_Priority,
+				'Valid' => $q_Valid,
+				'ValidFrom' => $q_ValidFrom,
+				'ValidUntil' => $q_ValidUntil)) . ' WHERE ID = ' . intval($q_ID);
 		break;
 	case 'insert' :
 		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -81,33 +76,20 @@ switch($_REQUEST['we_cmd'][2]){
 		if($q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$entTitle = base64_decode($q_Title);
-		$entTitle = str_replace("'", '&#039;', $entTitle);
-		$entTitle = str_replace('"', '&quot;', $entTitle);
-		$entText = base64_decode($q_Text);
-		$entText = str_replace("'", '&#039;', $entText);
-		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "INSERT INTO " . $GLOBALS['DB_WE']->escape($_table) . " (
-			WidgetName,
-			UserID,
-			CreationDate,
-			Title,
-			Text,
-			Priority,
-			Valid,
-			ValidFrom,
-			ValidUntil
-		) VALUES (
-			'" . ($_title) . "',
-			" . intval($_SESSION['user']['ID']) . ",
-			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-			'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
-			'" . $GLOBALS['DB_WE']->escape($entText) . "',
-			'" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
-			'" . $GLOBALS['DB_WE']->escape($q_Valid) . "',
-			'" . $GLOBALS['DB_WE']->escape($q_ValidFrom) . "',
-			'" . $GLOBALS['DB_WE']->escape($q_ValidUntil) . "'
-		)";
+
+		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
+		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
+		$_sql = "INSERT INTO " . $GLOBALS['DB_WE']->escape($_table) . ' SET ' . we_database_base::arraySetter(array(
+				'WidgetName' => $_title,
+				'UserID' => intval($_SESSION['user']['ID']),
+				'CreationDate' => 'CURRENT_DATE()',
+				'Title' => $entTitle,
+				'Text' => $entText,
+				'Priority' => $q_Priority,
+				'Valid' => $q_Valid,
+				'ValidFrom' => $q_ValidFrom,
+				'ValidUntil' => $q_ValidUntil
+			));
 		break;
 }
 
@@ -339,7 +321,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js").
+			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_element::jsElement(we_button::create_state_changer(false)) . we_html_element::jsElement(
@@ -636,13 +618,8 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			"leftmargin" => "0",
 			"topmargin" => "0",
 			"onload" => (($_REQUEST['we_cmd'][6] == "pad/pad") ? "if(parent!=self)init();" : "")
-			), we_html_element::htmlForm(
-				array(
-				"style" => "display:inline;"
-				), we_html_element::htmlDiv(
-					array(
-					"id" => "pad"
-					), $_notepad . we_html_element::htmlHidden(
-						array(
-							"name" => "mark", "value" => ""
-					)) . we_html_element::jsElement("calendarSetup();")))));
+			), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
+					array("id" => "pad"), $_notepad .
+					we_html_element::htmlHidden(array("name" => "mark", "value" => "")) .
+					we_html_element::jsElement("calendarSetup();")
+				))));

@@ -43,10 +43,12 @@ $we_menu['1010100']['enabled'] = '1';
 
 // File > New > webEdition Document > empty page
 if(we_hasPerm('NO_DOCTYPE')){
-	$we_menu['1010101']['text'] = g_l('javaMenu_global', '[empty_page]');
-	$we_menu['1010101']['parent'] = '1010100';
-	$we_menu['1010101']['cmd'] = 'new_webEditionPage';
-	$we_menu['1010101']['perm'] = 'NEW_WEBEDITIONSITE || ADMINISTRATOR';
+	$we_menu['1010101'] = array(
+		'text' => g_l('javaMenu_global', '[empty_page]'),
+		'parent' => '1010100',
+		'cmd' => 'new_webEditionPage',
+		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
+	);
 }
 
 $q = getDoctypeQuery($GLOBALS['DB_WE']);
@@ -58,12 +60,13 @@ if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
 $nr = 103;
 while($GLOBALS['DB_WE']->next_record()) {
 
-	$we_menu['1010' . $nr]['text'] = str_replace(array('"', '\'', ','), array('', '', ' '), $GLOBALS['DB_WE']->f('DocType'));
-
-	$we_menu['1010' . $nr]['parent'] = '1010100';
-	$we_menu['1010' . $nr]['cmd'] = 'new_dtPage' . $GLOBALS['DB_WE']->f('ID');
-	$we_menu['1010' . $nr]['perm'] = 'NEW_WEBEDITIONSITE || ADMINISTRATOR';
-	$we_menu['1010' . $nr]['enabled'] = '1';
+	$we_menu['1010' . $nr] = array(
+		'text' => str_replace(array('"', '\'', ','), array('', '', ' '), $GLOBALS['DB_WE']->f('DocType')),
+		'parent' => '1010100',
+		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
+		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
+		'enabled' => '1',
+	);
 	$nr++;
 	if($nr == 197)
 		break;
@@ -187,21 +190,21 @@ if(!$seeMode){
 
 // File > New > Directory > Object
 
-/*	$we_menu['1011100']['parent'] = '1010000'; // separator
-// File > New > Wizards
-	$we_menu['1011200']['text'] = g_l('javaMenu_global', '[wizards]') . '...';
-	$we_menu['1011200']['parent'] = '1010000';
-	$we_menu['1011200']['enabled'] = '1';
+	/* 	$we_menu['1011100']['parent'] = '1010000'; // separator
+	  // File > New > Wizards
+	  $we_menu['1011200']['text'] = g_l('javaMenu_global', '[wizards]') . '...';
+	  $we_menu['1011200']['parent'] = '1010000';
+	  $we_menu['1011200']['enabled'] = '1';
 
-// File > New > Wizard > First Steps Wizard
-	$we_menu['1011201']['text'] = g_l('javaMenu_global', '[first_steps_wizard]');
-	$we_menu['1011201']['parent'] = '1011200';
-	$we_menu['1011201']['cmd'] = 'openFirstStepsWizardMasterTemplate';
-	$we_menu['1011201']['perm'] = 'ADMINISTRATOR';
-	$we_menu['1011201']['enabled'] = '1';
+	  // File > New > Wizard > First Steps Wizard
+	  $we_menu['1011201']['text'] = g_l('javaMenu_global', '[first_steps_wizard]');
+	  $we_menu['1011201']['parent'] = '1011200';
+	  $we_menu['1011201']['cmd'] = 'openFirstStepsWizardMasterTemplate';
+	  $we_menu['1011201']['perm'] = 'ADMINISTRATOR';
+	  $we_menu['1011201']['enabled'] = '1';
 
-	$we_menu['1020000']['parent'] = '1000000'; // separator
- */
+	  $we_menu['1020000']['parent'] = '1000000'; // separator
+	 */
 }
 // File > Open
 $we_menu['1030000']['text'] = g_l('javaMenu_global', '[open]');
@@ -824,10 +827,8 @@ $we_menu['5100000']['perm'] = '';
 $we_menu['5100000']['enabled'] = '1';
 
 reset($GLOBALS['_we_available_modules']);
-while(list($key, $val) = each($GLOBALS['_we_available_modules'])) {
-
+foreach($GLOBALS['_we_available_modules'] as $key => $value){
 	if(!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )){
-
 		if(file_exists(WE_INCLUDES_PATH . 'java_menu/modules/we_menu_' . $val['name'] . '.inc.php')){
 			include_once(WE_INCLUDES_PATH . 'java_menu/modules/we_menu_' . $val['name'] . '.inc.php');
 		}
