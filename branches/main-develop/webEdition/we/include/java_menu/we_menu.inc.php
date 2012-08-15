@@ -23,24 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $seeMode = !(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == 'normal');
-$we_menu = array();
-
+$we_menu = array(
 // File
-$we_menu['1000000']['text'] = g_l('javaMenu_global', '[file]');
-$we_menu['1000000']['parent'] = '0000000';
-$we_menu['1000000']['enabled'] = '1';
-
+	'1000000' => array(
+		'text' => g_l('javaMenu_global', '[file]'),
+		'parent' => '0000000',
+		'enabled' => '1',
+	),
 // File > New
-$we_menu['1010000']['text'] = g_l('javaMenu_global', '[new]');
-$we_menu['1010000']['parent'] = '1000000';
-$we_menu['1010000']['enabled'] = '1';
-
+	'1010000' => array(
+		'text' => g_l('javaMenu_global', '[new]'),
+		'parent' => '1000000',
+		'enabled' => '1',
+	),
 // File > New > webEdition Document
-$we_menu['1010100']['text'] = g_l('javaMenu_global', '[webEdition_page]');
-$we_menu['1010100']['parent'] = '1010000';
-$we_menu['1010100']['perm'] = 'NEW_WEBEDITIONSITE || ADMINISTRATOR';
-$we_menu['1010100']['enabled'] = '1';
-
+	'1010100' => array(
+		'text' => g_l('javaMenu_global', '[webEdition_page]'),
+		'parent' => '1010000',
+		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
+		'enabled' => '1',
+	));
 // File > New > webEdition Document > empty page
 if(we_hasPerm('NO_DOCTYPE')){
 	$we_menu['1010101'] = array(
@@ -74,22 +76,26 @@ while($GLOBALS['DB_WE']->next_record()) {
 
 if($seeMode){
 	if(we_hasPerm('NO_DOCTYPE')){
-		$we_menu['1010198']['parent'] = '1010100'; // separator
-		// File > New > Others (Import)
-		$we_menu['1010199']['text'] = g_l('javaMenu_global', '[other]');
-		$we_menu['1010199']['parent'] = '1010100';
-		$we_menu['1010199']['cmd'] = 'openFirstStepsWizardDetailTemplates';
-		$we_menu['1010199']['perm'] = 'ADMINISTRATOR';
-		$we_menu['1010199']['enabled'] = '1';
+		$we_menu['1010198'] = array(
+			'parent' => '1010100', // separator
+			// File > New > Others (Import)
+			'text' => g_l('javaMenu_global', '[other]'),
+			'parent' => '1010100',
+			'cmd' => 'openFirstStepsWizardDetailTemplates',
+			'perm' => 'ADMINISTRATOR',
+			'enabled' => '1',
+		);
 	}
 }
 
 // File > Image
-$we_menu['1010200']['text'] = g_l('javaMenu_global', '[image]');
-$we_menu['1010200']['parent'] = '1010000';
-$we_menu['1010200']['cmd'] = 'new_image';
-$we_menu['1010200']['perm'] = 'NEW_GRAFIK || ADMINISTRATOR';
-$we_menu['1010200']['enabled'] = '1';
+$we_menu['1010200'] = array(
+	'text' => g_l('javaMenu_global', '[image]'),
+	'parent' => '1010000',
+	'cmd' => 'new_image',
+	'perm' => 'NEW_GRAFIK || ADMINISTRATOR',
+	'enabled' => '1',
+);
 
 // File > New > Other
 $we_menu['1010300']['text'] = g_l('javaMenu_global', '[other]');
