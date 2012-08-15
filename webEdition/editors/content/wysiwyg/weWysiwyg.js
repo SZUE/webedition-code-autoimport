@@ -134,7 +134,7 @@ if(we_styleString && we_styleString.length){
 			}
 		}
 	}catch(err){
-		
+
 	}
 }
 
@@ -3439,11 +3439,11 @@ function we_hasAttribute(elem,name){
 function we_dec2Hex(i) {
 	var runningTotal = ''
 	var quotient = we_hexQuotient(i);
-	var remainder = eval(i + '-(' + quotient + '* 16)')
+	var remainder = i -( quotient * 16);
 	runningTotal = we_charToHex(remainder) + runningTotal;
 	while( quotient >= 16) {
 		var savedQuotient = we_hexQuotient(quotient);
-		remainder = eval(quotient + '-(' + savedQuotient + '* 16)');
+		remainder = quotient -( savedQuotient * 16);
 		runningTotal = we_charToHex(remainder) + runningTotal;
 		quotient = savedQuotient;
 	}
@@ -3451,7 +3451,7 @@ function we_dec2Hex(i) {
 }
 
 function we_hexQuotient(i) {
-	return Math.floor(eval(i + "/16"));
+	return Math.floor(i/16);
 }
 
 function we_charToHex(i){
