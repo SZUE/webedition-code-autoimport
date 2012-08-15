@@ -154,9 +154,9 @@ class we_wizard_import extends we_wizard{
 	 * @desc replaces string1 by string2 in file
 	 */
 	function massReplace($string1, $string2, $file){
-		$contents = weFile::load($file,'r');
+		$contents = weFile::load($file, 'r');
 		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		weFile::save($file,$replacement,'w');
+		weFile::save($file, $replacement, 'w');
 	}
 
 	function getStep0(){
@@ -197,17 +197,18 @@ class we_wizard_import extends we_wizard{
 		$tblTemplates->setCol(0, 0, array(), we_forms::radiobutton("template_import", ($cmd[1] == "import_templates"), "type", g_l('import', "[template_import]"), true, "defaultfont", "", !we_hasPerm("ADMINISTRATOR"), g_l('import', "[txt_template_import]"), 0, 384));
 
 
-		$parts = array();
-		array_push($parts, array(
-			"headline" => g_l('import', "[import_file]"),
-			"html" => $tblFiles->getHTML(),
-			"space" => 120,
-			"noline" => 1));
-		array_push($parts, array(
-			"headline" => g_l('import', "[import_data]"),
-			"html" => $tblData->getHTML(),
-			"space" => 120,
-			"noline" => 1));
+		$parts = array(
+			array(
+				"headline" => g_l('import', "[import_file]"),
+				"html" => $tblFiles->getHTML(),
+				"space" => 120,
+				"noline" => 1),
+			array(
+				"headline" => g_l('import', "[import_data]"),
+				"html" => $tblData->getHTML(),
+				"space" => 120,
+				"noline" => 1),
+		);
 		/* First Step Wizard #4606
 		  array_push($parts, array(
 		  "headline" => g_l('import',"[import_templates]"),
@@ -215,64 +216,64 @@ class we_wizard_import extends we_wizard{
 		  "space" => 120,
 		  "noline" => 1));
 		 */
-		return array("\n" .
-			"function we_cmd() {\n" .
-			"	var args = '';\n" .
-			"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-			"	for(var i = 0; i < arguments.length; i++) {\n" .
-			"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-			"		if(i < (arguments.length - 1)) {\n" .
-			"			url += '&';\n" .
-			"		}\n" .
-			"	}\n" .
-			"	switch (arguments[0]) {\n" .
-			"		default:\n" .
-			"			for (var i=0; i < arguments.length; i++) {\n" .
-			"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-			"			}\n" .
-			"			eval('parent.we_cmd('+args+')');\n" .
-			"	}\n" .
-			"}\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'disabled');\n" .
-			"	top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			for (var i = 0; i < f.type.length; i++) {\n" .
-			"				if (f.type[i].checked == true) {\n" .
-			"					switch(f.type[i].value) {\n" .
-			"						case 'file_import':\n" .
-			"							top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files';\n" .
-			"							break;\n" .
-			"						case 'site_import':\n" .
-			"							top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport';\n" .
-			"							break;\n" .
-			"						case 'template_import':\n" .
-			"							top.opener.top.we_cmd('openFirstStepsWizardDetailTemplates');top.close();" .
-			"							break;\n" .
-			"						default:\n" .
-			"							f.type.value=f.type[i].value;\n" .
-			"							f.step.value=1;\n" .
-			"							f.mode.value=0;\n" .
-			"							f.target='wizbody';\n" .
-			"							f.action='" . $this->path . "';\n" .
-			"							f.method='post';\n" .
-			"							f.submit();\n" .
-			"							break;\n" .
-			"					}\n" .
-			"				}\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n",
+		return array(
+			"function we_cmd() {
+				var args = '';
+				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+				for(var i = 0; i < arguments.length; i++) {
+					url += 'we_cmd['+i+']='+escape(arguments[i]);
+					if(i < (arguments.length - 1)) {
+						url += '&';
+					}
+				}
+				switch (arguments[0]) {
+					default:
+						for (var i=0; i < arguments.length; i++) {
+							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+						}
+						eval('parent.we_cmd('+args+')');
+				}
+			}
+			function set_button_state() {
+				top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'disabled');
+				top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				switch(evt) {
+					case 'previous':
+						break;
+					case 'next':
+						for (var i = 0; i < f.type.length; i++) {
+							if (f.type[i].checked == true) {
+								switch(f.type[i].value) {
+									case 'file_import':
+										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files';
+										break;
+									case 'site_import':
+										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport';
+										break;
+									case 'template_import':
+										top.opener.top.we_cmd('openFirstStepsWizardDetailTemplates');top.close();
+										break;
+									default:
+										f.type.value=f.type[i].value;
+										f.step.value=1;
+										f.mode.value=0;
+										f.target='wizbody';
+										f.action='" . $this->path . "';
+										f.method='post';
+										f.submit();
+										break;
+								}
+							}
+						}
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}",
 			we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[title]"))
 		);
 	}
@@ -283,7 +284,8 @@ class we_wizard_import extends we_wizard{
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
 		$nav_root = get_def_ws(NAVIGATION_TABLE);
 
-		$hdns = we_html_element::htmlHidden(array("name" => "v[doc_dir_id]", "value" => (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $doc_root))) . "\n" .
+		$hdns =
+			we_html_element::htmlHidden(array("name" => "v[doc_dir_id]", "value" => (isset($v["doc_dir_id"]) ? $v["doc_dir_id"] : $doc_root))) . "\n" .
 			we_html_element::htmlHidden(array("name" => "v[tpl_dir_id]", "value" => (isset($v["tpl_dir_id"]) ? $v["tpl_dir_id"] : $tmpl_root))) . "\n" .
 			we_html_element::htmlHidden(array("name" => "v[doc_dir]", "value" => (isset($v["doc_dir"]) ? $v["doc_dir"] : id_to_path($doc_root)))) . "\n" .
 			we_html_element::htmlHidden(array("name" => "v[tpl_dir]", "value" => (isset($v["tpl_dir"]) ? $v["tpl_dir"] : id_to_path($tmpl_root, TEMPLATES_TABLE)))) . "\n" .
@@ -392,14 +394,6 @@ class we_wizard_import extends we_wizard{
 		$importLocs->setCol(5, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol(6, 0, array(), $importFromLocal);
 
-		$parts = array();
-		array_push($parts, array(
-			"headline" => g_l('import', "[import]"),
-			"html" => $importLocs->getHTML(),
-			"space" => 120)
-		);
-
-
 		$fn_colsn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', "[collision_txt]"), 1, "410"));
 		$fn_colsn->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
@@ -409,11 +403,15 @@ class we_wizard_import extends we_wizard{
 		$fn_colsn->setCol(5, 0, array(), we_html_tools::getPixel(0, 4));
 		$fn_colsn->setCol(6, 0, array(), we_forms::radiobutton("skip", (isset($v["collision"])) ? ($v["collision"] == "skip") : false, "v[collision]", g_l('import', "[skip]"), true, "defaultfont", "", false, g_l('import', "[skip_txt]"), 0, 384));
 
-
-		array_push($parts, array(
-			"headline" => g_l('import', '[file_collision]'),
-			"html" => $fn_colsn->getHTML(),
-			"space" => 120)
+		$parts = array(
+			array(
+				"headline" => g_l('import', "[import]"),
+				"html" => $importLocs->getHTML(),
+				"space" => 120),
+			array(
+				"headline" => g_l('import', '[file_collision]'),
+				"html" => $fn_colsn->getHTML(),
+				"space" => 120)
 		);
 
 		$wepos = weGetCookieVariable("but_wxml");
@@ -463,8 +461,7 @@ class we_wizard_import extends we_wizard{
 						we_form.action = url;
 						we_form.method = "post";
 						we_form.submit();
-					}
-				';
+					}';
 
 		$hdns = we_html_element::htmlHidden(array("name" => "v[type]", "value" => $v["type"])) .
 			we_html_element::htmlHidden(array("name" => "v[mode]", "value" => (isset($v["mode"])) ? $v["mode"] : 0)) .
@@ -648,10 +645,10 @@ class we_wizard_import extends we_wizard{
 			// --------------
 
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', '[handle_document_options]') . '<br>' . g_l('import', '[handle_template_options]'),
 				"html" => $tbl_extra->getHTML(),
-				"space" => 120)
+				"space" => 120
 			);
 
 
@@ -660,10 +657,10 @@ class we_wizard_import extends we_wizard{
 				$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v["import_objs"]) && $v["import_objs"]) ? true : false, "v[import_objs]", g_l('import', "[import_objs]")));
 				$tbl_extra->setCol(1, 0, null, we_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', "[import_classes]")));
 
-				array_push($parts, array(
+				$parts[] = array(
 					"headline" => g_l('import', '[handle_object_options]') . '<br>' . g_l('import', '[handle_class_options]'),
 					"html" => $tbl_extra->getHTML(),
-					"space" => 120)
+					"space" => 120
 				);
 			}
 
@@ -702,42 +699,42 @@ class we_wizard_import extends we_wizard{
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', "[handle_doctype_options]") . '<br>' . g_l('import', "[handle_category_options]"),
 				"html" => $tbl_extra->getHTML(),
-				"space" => 120)
+				"space" => 120
 			);
 
 
 			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 			if(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '' && (DEFAULT_CHARSET == 'ISO-8859-1' || DEFAULT_CHARSET == 'UTF-8' ) && ($xml_encoding == 'ISO-8859-1' || $xml_encoding == 'UTF-8' )){
 				if(($xml_encoding != DEFAULT_CHARSET)){
-					array_push($parts, array(
+					$parts[] = array(
 						'headline' => g_l('import', '[encoding_headline]'),
 						'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : '-' ) . g_l('import', '[encoding_default]')) . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" /><input type="hidden" name="v[import_TARGETencoding]" value="' . DEFAULT_CHARSET . '" />',
-						'space' => 120)
+						'space' => 120
 					);
 				}
 			} else{
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
 					'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]'), false, "defaultfont", '', true),
-					'space' => 120)
+					'space' => 120
 				);
 			}
 
 
 
-			array_push($parts, array(
+			$parts[] = array(
 				'headline' => g_l('import', '[handle_file_options]'),
 				'html' => we_forms::checkboxWithHidden((isset($v['import_binarys']) && $v['import_binarys']) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
-				'space' => 120)
+				'space' => 120
 			);
 
-			array_push($parts, array(
+			$parts[] = array(
 				'headline' => g_l('import', '[rebuild]'),
 				'html' => we_forms::checkboxWithHidden((isset($v['rebuild']) && $v['rebuild']) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
-				'space' => 120)
+				'space' => 120
 			);
 
 			$header = weFile::loadPart($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], 0, 512);
@@ -749,11 +746,11 @@ class we_wizard_import extends we_wizard{
 						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
 					}
 				' . $event_handler;
-				$parts = array();
-				array_push($parts, array(
-					"headline" => '',
-					"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), 1, "530"),
-					"space" => 0)
+				$parts = array(
+					array(
+						"headline" => '',
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), 1, "530"),
+						"space" => 0)
 				);
 				$content = $hdns . we_multiIconBox::getHTML("wxml", "100%", $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return array($functions, $content);
@@ -782,10 +779,10 @@ class we_wizard_import extends we_wizard{
 					we_html_element::htmlHidden(array("name" => "v[owners_overwrite_id]", "value" => "0"));
 			}
 		} else{
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', "[xml_file]"),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[invalid_wxml]"), 1, "530"),
-				"space" => 120)
+				"space" => 120
 			);
 		}
 		$wepos = weGetCookieVariable("but_wxml");
@@ -795,8 +792,6 @@ class we_wizard_import extends we_wizard{
 	}
 
 	function getWXMLImportStep3(){
-		$this->getTMPaccess();
-
 		$functions = we_button::create_state_changer(false) . '
 
 			function addLog(text){
@@ -818,15 +813,14 @@ class we_wizard_import extends we_wizard{
 						top.close();
 						break;
 				}
-			}
-		';
+			}';
 
 		$hdns = "";
-		$parts = array();
-		array_push($parts, array(
-			"headline" => '',
-			"html" => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
-			"space" => 0)
+		$parts = array(
+			array(
+				"headline" => '',
+				"html" => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
+				"space" => 0)
 		);
 		$content = $hdns . we_multiIconBox::getHTML("wxml", "100%", $parts, 30, "", -1, '', '', false, g_l('import', '[log]'));
 
@@ -870,88 +864,86 @@ class we_wizard_import extends we_wizard{
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 
-		$functions = we_button::create_state_changer(false) . "\n" .
-			"function we_cmd() {\n" .
-			"	var args = '';\n" .
-			"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-			"	for(var i = 0; i < arguments.length; i++) {\n" .
-			"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-			"		if(i < (arguments.length - 1)) {\n" .
-			"			url += '&';\n" .
-			"		}\n" .
-			"	}\n" .
-			"	switch (arguments[0]) {\n" .
-			"		default:\n" .
-			"			for (var i=0; i < arguments.length; i++) {\n" .
-			"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-			"			}\n" .
-			"			eval('parent.we_cmd('+args+')');\n" .
-			"	}\n" .
-			"}\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function switchExt() {\n" .
-			"	var a = self.document.forms['we_form'].elements;\n" .
-			"	if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';\n" .
-			"	a['v[we_Extension]'].value=changeto;\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	if(f.elements['v[docType]'].value == -1) {\n" .
-			"		f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;\n" .
-			"	} else {\n" .
-			"		f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;\n" .
-			"	}\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 0;\n" .
-			"			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=GXMLImport';\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"		var fs = f.elements['v[fserver]'].value;\n" .
-			"			" .
-			"			var fl = f.elements['uploaded_xml_file'].value;\n" .
-			"			var ext = '';\n" .
-			"			if ( (f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
-			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }\n" .
-			"				ext = fs.substr(fs.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fs;\n" .
-			"			}\n" .
-			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
-			"				ext = fl.substr(fl.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fl;\n" .
-			"			}\n" .
-			"			 else if (fs=='/' || fl=='') {\n" .
-			"				" . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "break;\n" .
-			"			}\n" .
-			"			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;\n";
-		$functions .= (defined("OBJECT_TABLE")) ?
-			"			if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
-			"			if(f.elements['v[we_TemplateID]'].value!=0) {\n";
-
-		$functions .=
-			"				f.step.value = 2;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			} else {\n";
-
-		$functions .= (defined("OBJECT_TABLE")) ?
-			"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n" :
-			"				" . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
-		$functions .= "			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = we_button::create_state_changer(false) . "
+			function we_cmd() {
+				var args = '';
+				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+				for(var i = 0; i < arguments.length; i++) {
+					url += 'we_cmd['+i+']='+escape(arguments[i]);
+					if(i < (arguments.length - 1)) {
+						url += '&';
+					}
+				}
+				switch (arguments[0]) {
+					default:
+						for (var i=0; i < arguments.length; i++) {
+							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+						}
+						eval('parent.we_cmd('+args+')');
+				}
+			}
+			function set_button_state() {
+				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function switchExt() {
+				var a = self.document.forms['we_form'].elements;
+				if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
+				a['v[we_Extension]'].value=changeto;
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				if(f.elements['v[docType]'].value == -1) {
+					f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
+				} else {
+					f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
+				}
+				switch(evt) {
+					case 'previous':
+						f.step.value = 0;
+						top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=GXMLImport';
+						break;
+					case 'next':
+					var fs = f.elements['v[fserver]'].value;
+						var fl = f.elements['uploaded_xml_file'].value;
+						var ext = '';
+						if ( (f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
+							if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
+							ext = fs.substr(fs.length-4,4);
+							f.elements['v[import_from]'].value = fs;
+						}
+						else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+							ext = fl.substr(fl.length-4,4);
+							f.elements['v[import_from]'].value = fl;
+						}
+						 else if (fs=='/' || fl=='') {
+							" . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "break;
+						}
+						if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;" .
+			(defined("OBJECT_TABLE") ?
+				"			if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {" :
+				"			if(f.elements['v[we_TemplateID]'].value!=0) {"
+			) .
+			"				f.step.value = 2;
+							we_submit_form(f, 'wizbody', '" . $this->path . "');
+						} else {" .
+			(defined("OBJECT_TABLE") ?
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
+			) .
+			"			}
+			break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 		$weSessionId = session_id();
 		$functions .= <<<HTS
 
@@ -1163,16 +1155,16 @@ HTS;
 		$optid = 0;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
-			$DB_WE->query("SELECT ID,Text FROM " . OBJECT_TABLE . " " . ($ac ? " WHERE ID IN($ac) " : "") . "ORDER BY Text");
+			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . " " . ($ac ? " WHERE ID IN($ac) " : "") . "ORDER BY Text");
 			while($DB_WE->next_record()) {
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
 				if($DB_WE->f("ID") == $v["classID"])
 					$CLselect->selectOption($DB_WE->f("ID"));
 			}
-		}
-		else
+		}else{
 			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
+		}
 
 		$objClass = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
 		$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[class]"));
@@ -1200,41 +1192,39 @@ HTS;
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
 		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), $ct->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
 
-		$parts = array();
-		array_push($parts, array(
-			"headline" => g_l('import', "[import]"),
-			"html" => $importLocs->getHTML(),
-			"space" => 120)
-		);
-
-		array_push($parts, array(
-			"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
-			"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
-			we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
-			"space" => 120,
-			"noline" => 1)
+		$parts = array(
+			array(
+				"headline" => g_l('import', "[import]"),
+				"html" => $importLocs->getHTML(),
+				"space" => 120),
+			array(
+				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
+				"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
+				"space" => 120,
+				"noline" => 1)
 		);
 
 		if(defined("OBJECT_TABLE")){
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => $radioObjs,
 				"html" => (defined("OBJECT_TABLE")) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") .
 					we_html_tools::getPixel(1, 4) .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', "[categories]"), "left", "defaultfont") : "",
 				"space" => 120,
-				"noline" => 1)
+				"noline" => 1
 			);
 		}
 
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
 
-		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
-		$content.= we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
-		$content.= we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
-		$content.= $hdns;
-		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[gxml_import]"));
+		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+			$hdns .
+			we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[gxml_import]"));
 
 		return array($functions, $content);
 	}
@@ -1257,8 +1247,8 @@ HTS;
 		$vars = array("rdofloc", "fserver", "flocal", "importDataType", "docCategories", "objCategories", "store_to_id", "is_dynamic", "import_from", "docType",
 			"we_TemplateName", "we_TemplateID", "store_to_path", "we_Extension", "import_type", "classID", "sct_node", "rcd", "from_elem", "to_elem", "collision");
 		foreach($vars as $var)
-			$hdns.= we_html_element::htmlHidden(array("name" => "v[$var]", "value" => (isset($v[$var])) ? $v[$var] : "")) . "\n";
-		$hdns.= we_html_element::htmlHidden(array("name" => "v[mode]", "value" => 0)) . "\n" . we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) . "\n";
+			$hdns.= we_html_element::htmlHidden(array("name" => "v[$var]", "value" => (isset($v[$var])) ? $v[$var] : "")) .
+				we_html_element::htmlHidden(array("name" => "v[mode]", "value" => 0)) . "\n" . we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) . "\n";
 
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
@@ -1272,11 +1262,14 @@ HTS;
 				$recs = array();
 				foreach($children as $key => $value){
 					$flag = true;
-					for($k = 1; $k < ($value + 1); $k++)
-						if(!$xp->hasChildNodes($xp->root . "/" . $key . "[" . $k . "]"))
+					for($k = 1; $k < ($value + 1); $k++){
+						if(!$xp->hasChildNodes($xp->root . "/" . $key . "[" . $k . "]")){
 							$flag = false;
-					if($flag)
+						}
+					}
+					if($flag){
 						$recs[$key] = $value;
+					}
 				}
 				$isSingleNode = (count($recs) == 1) ? true : false;
 				$hasChildNode = (count($recs) > 0) ? true : false;
@@ -1292,12 +1285,15 @@ HTS;
 				);
 				$optid = 0;
 				while(list($value, $text) = each($recs)) {
-					if($optid == 0)
+					if($optid == 0){
 						$firstOptVal = $text;
+					}
 					$rcdSelect->addOption($text, $value);
-					if(isset($v["rcd"]))
-						if($text == $v["rcd"])
+					if(isset($v["rcd"])){
+						if($text == $v["rcd"]){
 							$rcdSelect->selectOption($value);
+						}
+					}
 					$optid++;
 				}
 
@@ -1323,110 +1319,111 @@ HTS;
 		else{
 			$xmlWellFormed = $hasChildNode = false;
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1);
 			else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1));
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1);
 		}
 
-		$functions = "\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 1;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;\n" .
-			"			f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;\n" .
-			"			iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;\n" .
-			"			iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;\n" .
-			"			iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);\n" .
-			"			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) { \n" .
-			"				msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;" .
-			"				" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "\n" .
-			"			} else {\n" .
-			"				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;\n" .
-			"				f.step.value = 3;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions =
+			"function set_button_state() {
+				top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');
+				top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				switch(evt) {
+					case 'previous':
+						f.step.value = 1;
+						we_submit_form(f, 'wizbody', '" . $this->path . "');
+						break;
+					case 'next':
+						f.elements['v[from_elem]'].value = f.elements['v[from_iElem]'].value;
+						f.elements['v[to_elem]'].value = f.elements['v[to_iElem]'].value;
+						iStart = isNaN(parseInt(f.elements['v[from_iElem]'].value))? 0 : f.elements['v[from_iElem]'].value;
+						iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
+						iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);
+						if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
+							msg = \"" . g_l('import', "[num_elements]") . "\" +iElements;
+							" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
+						} else {
+							f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
+							f.step.value = 3;
+							we_submit_form(f, 'wizbody', '" . $this->path . "');
+						}
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
 
-		$content = $hdns;
-		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[select_data_set]"));
+		$content = $hdns .
+			we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[select_data_set]"));
 
 		return array($functions, $content);
 	}
 
 	function getGXMLImportStep3(){
-		$this->getTMPaccess();
 		$v = $_REQUEST["v"];
-		if(isset($v["att_pfx"]))
+		if(isset($v["att_pfx"])){
 			$v["att_pfx"] = base64_encode($v["att_pfx"]);
+		}
 		$records = (isset($_REQUEST["records"])) ? $_REQUEST["records"] : array();
 		$we_flds = (isset($_REQUEST["we_flds"])) ? $_REQUEST["we_flds"] : array();
 		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
-		foreach($attrs as $name => $value)
+		foreach($attrs as $name => $value){
 			$attrs[$name] = base64_encode($value);
+		}
 
-		$hdns = $this->getHdns("v", $v);
-		$hdns .= (isset($_REQUEST["records"])) ? $this->getHdns("records", $records) : "";
-		$hdns .= (isset($_REQUEST["we_flds"])) ? $this->getHdns("we_flds", $we_flds) : "";
-		$hdns .= (isset($_REQUEST["attrs"])) ? $this->getHdns("attributes", $attrs) : "";
-		//$hdns .= we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2));
-		$hdns .= we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"])));
-		if(isset($v["rdo_timestamp"]))
-			$hdns .= we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"]));
+		$hdns = $this->getHdns("v", $v) .
+			(isset($_REQUEST["records"]) ? $this->getHdns("records", $records) : "") .
+			(isset($_REQUEST["we_flds"]) ? $this->getHdns("we_flds", $we_flds) : "") .
+			(isset($_REQUEST["attrs"]) ? $this->getHdns("attributes", $attrs) : "") .
+			//$hdns .= we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2));
+			we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
+			(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
 
-		$functions = "\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 2;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			f.step.value=3;\n" .
-			"			f.mode.value=1;\n" .
-			"			f.elements['v[mode]'].value=1;\n" .
-			"			top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+
+		$functions =
+			"function set_button_state() {
+				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				switch(evt) {
+					case 'previous':
+						f.step.value = 2;
+						we_submit_form(f, 'wizbody', '" . $this->path . "');
+						break;
+					case 'next':
+						f.step.value=3;
+						f.mode.value=1;
+						f.elements['v[mode]'].value=1;
+						top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');
+						we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 
 		$db = new DB_WE();
 
@@ -1434,7 +1431,7 @@ HTS;
 		$dateFields = array();
 
 		if($v["import_type"] == "documents"){
-			$sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " .
+			$sql_select = 'SELECT ' . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " .
 				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($v["we_TemplateID"]) . " AND " . LINK_TABLE . ".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
@@ -1454,15 +1451,15 @@ HTS;
 							case "textarea":
 							case "href":
 							case "link":
-								array_push($records, $name);
+								$records[] = $name;
 								break;
 						}
 					}
 				}
 			}
-			array_push($records, "Title");
-			array_push($records, "Description");
-			array_push($records, "Keywords");
+			$records[] = "Title";
+			$records[] = "Description";
+			$records[] = "Keywords";
 		}
 		else{
 			$classFields = $this->getClassFields($v["classID"]);
@@ -1533,10 +1530,9 @@ HTS;
 				$new_record = g_l('import', "[we_description]");
 			if($record == "Keywords")
 				$new_record = g_l('import', "[we_keywords]");
-			array_push($rows, array(
+			$rows[] = array(
 				array("dat" => ($new_record != "") ? $new_record : $record), array("dat" => $sct_we_fields->getHTML()),
 				array("dat" => we_html_tools::htmlTextInput("attrs[$record]", 30, (isset($attrs[$record]) ? base64_decode($attrs[$record]) : ""), 255, "", "text", 100))
-				)
 			);
 			$i++;
 		}
@@ -1555,11 +1551,13 @@ HTS;
 				"style" => "width: 150px")
 		);
 		reset($val_nodes);
-		while(list($value, $text) = each($val_nodes)) {
+		foreach($val_nodes as $value => $text){
 			$rcdPfxSelect->addOption(htmlspecialchars($value), $text);
-			if(isset($v["rcd_pfx"]))
-				if($text == $v["rcd_pfx"])
+			if(isset($v["rcd_pfx"])){
+				if($text == $v["rcd_pfx"]){
 					$rcdPfxSelect->selectOption($value);
+				}
+			}
 		}
 
 		$attPfxSelect = we_html_tools::htmlTextInput("v[att_pfx]", 30, (isset($v["att_pfx"]) ? base64_decode($v["att_pfx"]) : ""), 255, "onClick=\"self.document.forms['we_form'].elements['v[rdo_filename]'][1].checked=true;\"", "text", 100);
@@ -1579,10 +1577,10 @@ HTS;
 		$fn->setCol(4, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(4, 1, array(), $asgndFld->getHTML());
 
-		$parts = array();
-		array_push($parts, array(
-			"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
-			"space" => 0)
+		$parts = array(
+			array(
+				"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
+				"space" => 0)
 		);
 		if(count($dateFields) > 0){
 			// Timestamp
@@ -1596,21 +1594,21 @@ HTS;
 			$tStamp->setCol(6, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', "[format_date]"),
 				"html" => $tStamp->getHTML(),
-				"space" => 120)
+				"space" => 120
 			);
 			if(!isset($v["dateFields"])){
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[dateFields]", "value" => makeCSVFromArray($dateFields)));
 			}
 		}
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('import', "[name]"),
 			"html" => $fn->getHTML(),
 			"space" => 120,
-			"noline" => 1)
+			"noline" => 1
 		);
 
 		$conflict = isset($v["collision"]) ? $v["collision"] : 'rename';
@@ -1622,18 +1620,18 @@ HTS;
 		$fn_colsn->setCol(4, 0, array(), we_html_tools::getPixel(0, 4));
 		$fn_colsn->setCol(5, 0, array(), we_forms::radiobutton("skip", $conflict == "skip", "nameconflict", g_l('import', "[skip]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('import', '[name_collision]'),
 			"html" => $fn_colsn->getHTML(),
-			"space" => 140)
+			"space" => 140
 		);
 
 		$wepos = weGetCookieVariable("but_xml");
 		$znr = -1;
 
-		$content = $hdns;
-		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[asgn_rcd_flds]"));
+		$content = $hdns .
+			we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[asgn_rcd_flds]"));
 
 		return array($functions, $content);
 	}
@@ -1642,69 +1640,69 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 
-		$functions = we_button::create_state_changer(false) . "\n" .
-			"function we_cmd() {\n" .
-			"	var args = '';\n" .
-			"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-			"	for(var i = 0; i < arguments.length; i++) {\n" .
-			"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-			"		if(i < (arguments.length - 1)) {\n" .
-			"			url += '&';\n" .
-			"		}\n" .
-			"	}\n" .
-			"	switch (arguments[0]) {\n" .
-			"		default:\n" .
-			"			for (var i=0; i < arguments.length; i++) {\n" .
-			"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-			"			}\n" .
-			"			eval('parent.we_cmd('+args+')');\n" .
-			"	}\n" .
-			"}\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 0;\n" .
-			"			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			var fvalid = true;\n" .
-			"			var fs = f.elements['v[fserver]'].value;\n" .
-			"			var fl = f.elements['uploaded_csv_file'].value;\n" .
-			"			var ext = '';\n" .
-			"			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
-			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }\n" .
-			"				ext = fs.substr(fs.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fs;\n" .
-			"			}\n" .
-			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
-			"				ext = fl.substr(fl.length-4,4);\n" .
-			"				f.elements['v[import_from]'].value = fl;\n" .
-			"			}\n" .
-			"			else if (fs=='/' || fl=='') {\n" .
-			"				" . (we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;\n" .
-			"			}\n" .
-			"			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}\n" .
-			"			if (fvalid) {\n" .
-			"				f.step.value = 2;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = we_button::create_state_changer(false) . "
+			function we_cmd() {
+				var args = '';
+				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+				for(var i = 0; i < arguments.length; i++) {
+					url += 'we_cmd['+i+']='+escape(arguments[i]);
+					if(i < (arguments.length - 1)) {
+						url += '&';
+					}
+				}
+				switch (arguments[0]) {
+					default:
+						for (var i=0; i < arguments.length; i++) {
+							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+						}
+						eval('parent.we_cmd('+args+')');
+				}
+			}
+			function set_button_state() {
+				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				switch(evt) {
+					case 'previous':
+						f.step.value = 0;
+						top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=CSVImport';
+						break;
+					case 'next':
+						var fvalid = true;
+						var fs = f.elements['v[fserver]'].value;
+						var fl = f.elements['uploaded_csv_file'].value;
+						var ext = '';
+						if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
+							if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
+							ext = fs.substr(fs.length-4,4);
+							f.elements['v[import_from]'].value = fs;
+						}
+						else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+							ext = fl.substr(fl.length-4,4);
+							f.elements['v[import_from]'].value = fl;
+						}
+						else if (fs=='/' || fl=='') {
+							" . (we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;
+						}
+						if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', "[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}
+						if (fvalid) {
+							f.step.value = 2;
+							we_submit_form(f, 'wizbody', '" . $this->path . "');
+						}
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		/*		 * *************************************************************************************************************** */
@@ -1774,18 +1772,16 @@ HTS;
 		$csvSettings->setCol(5, 0, array(), we_html_tools::getPixel(1, 6));
 		$csvSettings->setCol(6, 0, array(), $rowDef);
 
-		$parts = array();
-
-		array_push($parts, array(
-			"headline" => g_l('import', "[import]"),
-			"html" => $importLocs->getHTML(),
-			"space" => 120)
-		);
-		array_push($parts, array(
-			"headline" => g_l('import', "[field_options]"),
-			"html" => $csvSettings->getHTML(),
-			"space" => 120,
-			"noline" => 1)
+		$parts = array(
+			array(
+				"headline" => g_l('import', "[import]"),
+				"html" => $importLocs->getHTML(),
+				"space" => 120),
+			array(
+				"headline" => g_l('import', "[field_options]"),
+				"html" => $csvSettings->getHTML(),
+				"space" => 120,
+				"noline" => 1)
 		);
 
 
@@ -1821,18 +1817,18 @@ HTS;
 						break;
 					}
 
-					$contents = weFile::load($fp,'r');
+					$contents = weFile::load($fp, 'r');
 					$v["import_from"] = TEMP_DIR . "we_csv_" . $uniqueId . ".csv";
 					$replacement = str_replace("\r", "\n", $contents);
-					weFile::save($fp,$replacement,'w+');
+					weFile::save($fp, $replacement, 'w+');
 					break;
 			}
 		}
 
 		if(isset($v["docType"]) && $v["docType"] != -1 && isset($_REQUEST["doctypeChanged"]) && $_REQUEST["doctypeChanged"]){
-			$values = getHash("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID=" . intval($v["docType"]), $GLOBALS['DB_WE']);
+			$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . " WHERE ID=" . intval($v["docType"]), $GLOBALS['DB_WE']);
 			$v["store_to_id"] = $values["ParentID"];
-			;
+
 			$v["store_to_path"] = id_to_path($v["store_to_id"]);
 			$v["we_Extension"] = $values["Extension"];
 			$v["is_dynamic"] = $values["IsDynamic"];
@@ -1861,74 +1857,75 @@ HTS;
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 
-		$functions = we_button::create_state_changer(false) . "\n" .
-			"function we_cmd() {\n" .
-			"	var args = '';\n" .
-			"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-			"	for(var i = 0; i < arguments.length; i++) {\n" .
-			"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-			"		if(i < (arguments.length - 1)) {\n" .
-			"			url += '&';\n" .
-			"		}\n" .
-			"	}\n" .
-			"	switch (arguments[0]) {\n" .
-			"		default:\n" .
-			"			for (var i=0; i < arguments.length; i++) {\n" .
-			"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-			"			}\n" .
-			"			eval('parent.we_cmd('+args+')');\n" .
-			"	}\n" .
-			"}\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function switchExt() {\n" .
-			"	var a = self.document.forms['we_form'].elements;\n" .
-			"	if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';\n" .
-			"	a['v[we_Extension]'].value=changeto;\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	if(f.elements['v[import_type]']== 'documents'){
-				if(f.elements['v[docType]'].value == -1) {\n" .
-			"		f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;\n" .
-			"	} else {\n" .
-			"		f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;\n" .
-			"	}}\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 1;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			if(f.elements['v[import_type]']== 'documents'){
-							if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
-							}\n";
-		$functions .= (defined("OBJECT_TABLE")) ?
-			"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {\n" :
-			"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {\n";
-		$functions .= "				f.step.value = 3;\n" .
-			"				we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			}\n" .
-			"			else {\n" .
-			"				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
-		$functions .= (defined("OBJECT_TABLE")) ?
-			"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n" :
-			"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
-		$functions .= "			}\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = we_button::create_state_changer(false) . "
+			function we_cmd() {
+				var args = '';
+				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+				for(var i = 0; i < arguments.length; i++) {
+					url += 'we_cmd['+i+']='+escape(arguments[i]);
+					if(i < (arguments.length - 1)) {
+						url += '&';
+					}
+				}
+				switch (arguments[0]) {
+					default:
+						for (var i=0; i < arguments.length; i++) {
+							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+						}
+						eval('parent.we_cmd('+args+')');
+				}
+			}
+			function set_button_state() {
+				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function switchExt() {
+				var a = self.document.forms['we_form'].elements;
+				if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
+				a['v[we_Extension]'].value=changeto;
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				if(f.elements['v[import_type]']== 'documents'){
+			if(f.elements['v[docType]'].value == -1) {
+					f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
+				} else {
+					f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
+				}}
+				switch(evt) {
+					case 'previous':
+						f.step.value = 1;
+						we_submit_form(f, 'wizbody', '" . $this->path . "');
+						break;
+					case 'next':
+						if(f.elements['v[import_type]']== 'documents'){
+						if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
+						}" .
+			(defined("OBJECT_TABLE") ?
+				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {" :
+				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {"
+			) .
+			"				f.step.value = 3;
+							we_submit_form(f, 'wizbody', '" . $this->path . "');
+						}else {
+							if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
+			(defined("OBJECT_TABLE") ?
+				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
+				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
+			) .
+			"			}
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 
 		$weSessionId = session_id();
 		$functions .= <<<HTS
@@ -2021,13 +2018,12 @@ HTS;
 		$table = TEMPLATES_TABLE;
 		$textname = "v[we_TemplateName]";
 		$idname = "v[we_TemplateID]";
-		if(we_hasPerm("CAN_SEE_TEMPLATES")){
-			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>';
-		} else{
-			$ueberschrift = g_l('import', "[template]");
-		}
+		$ueberschrift = (we_hasPerm("CAN_SEE_TEMPLATES") ?
+				'<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('import', "[template]") . '</a>' :
+				g_l('import', "[template]"));
+
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
-		$path = f("SELECT Path FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
+		$path = f('SELECT Path FROM ' . $DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
 		$wecmdenc1 = we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
@@ -2041,25 +2037,23 @@ HTS;
 				"size" => "1",
 				"class" => "weSelect",
 				"onClick" => "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;",
-				//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 				"style" => "width: 300px")
 		);
 
 		if($v["docType"] != -1){
-			$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($v["docType"]), $DB_WE);
-			$ids_arr = makeArrayFromCSV($foo["Templates"]);
-			$paths_arr = id_to_path($foo["Templates"], TEMPLATES_TABLE, "", false, true);
+			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . " WHERE ID =" . intval($v["docType"]), 'Templates', $DB_WE);
+			$ids_arr = makeArrayFromCSV($foo);
+			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, "", false, true);
 
 
 			$optid = 0;
-			while(list(, $templateID) = each($ids_arr)) {
+			foreach($ids_arr as $templateID){
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 				$optid++;
 				if(isset($v["we_TemplateID"]) && $v["we_TemplateID"] == $templateID)
 					$TPLselect->selectOption($templateID);
 			}
-		}
-		else{
+		} else{
 			$displayDocType = "display:none";
 			$displayNoDocType = "display:block";
 			/*
@@ -2131,9 +2125,9 @@ HTS;
 				if($DB_WE->f("ID") == $v["classID"])
 					$CLselect->selectOption($DB_WE->f("ID"));
 			}
-		}
-		else
+		} else{
 			$CLselect->insertOption($optid, -1, g_l('import', "[none]"));
+		}
 
 		$objClass = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 2);
 		$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', "[class]"));
@@ -2163,43 +2157,42 @@ HTS;
 
 		$parts = array();
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => (defined("OBJECT_TABLE")) ? $radioDocs : g_l('import', "[documents]"),
 				"html" => $yuiSuggest->getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', "[categories]"), "left", "defaultfont"),
 				"space" => 120,
-				"noline" => 1)
+				"noline" => 1
 			);
 			if(defined("OBJECT_TABLE")){
-				array_push($parts, array(
+				$parts[] = array(
 					"headline" => $radioObjs,
 					"html" => (defined("OBJECT_TABLE")) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', "[class]"), "left", "defaultfont") .
 						we_html_tools::getPixel(1, 4) .
 						we_html_tools::htmlFormElementTable($objCategories, g_l('import', "[categories]"), "left", "defaultfont") : "",
 					"space" => 120,
-					"noline" => 1)
+					"noline" => 1
 				);
 			}
 		} else{
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1));
-			else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))
-				array_push($parts, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1));
+			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_exists]") . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], 1, "530"), "space" => 0, "noline" => 1);
+			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
+				$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('import', "[file_readable]"), 1, "530"), "space" => 0, "noline" => 1);
+			}
 		}
 
 
-		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
-		$content.= we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
-		$content.= we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
-		$content.= $hdns;
-		$content.= we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
+		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+			$hdns .
+			we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", -1, "", "", false, g_l('import', "[csv_import]"));
 
 		return array($functions, $content);
 	}
 
 	function getCSVImportStep3(){
-
-		$this->getTMPaccess();
 
 		if(isset($_REQUEST["v"]['we_TemplateName']) && ($_REQUEST["v"]['we_TemplateID'] == 0 || $_REQUEST["v"]['we_TemplateID'] == "")){
 			$_REQUEST["v"]['we_TemplateID'] = path_to_id($_REQUEST["v"]['we_TemplateName'], TEMPLATES_TABLE);
@@ -2211,47 +2204,47 @@ HTS;
 		$we_flds = (isset($_REQUEST["we_flds"])) ? $_REQUEST["we_flds"] : array();
 		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
 
-		$hdns = $this->getHdns("v", $v);
-		$hdns .= (isset($_REQUEST["records"])) ? $this->getHdns("records", $_REQUEST["records"]) : "";
-		$hdns .= (isset($_REQUEST["we_flds"])) ? $this->getHdns("we_flds", $_REQUEST["we_flds"]) : "";
-		$hdns .= (isset($_REQUEST["attrs"])) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "";
-		$hdns .= we_html_element::htmlHidden(array("name" => "v[startCSVImport]", "value" => (isset($v["startCSVImport"]) && $v["startCSVImport"] == 1) ? 1 : 0));
-		$hdns .= we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2));
-		$hdns .= we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"])));
-		if(isset($v["rdo_timestamp"]))
-			$hdns .= we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"]));
+		$hdns =
+			$this->getHdns("v", $v) .
+			(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
+			(isset($_REQUEST["we_flds"]) ? $this->getHdns("we_flds", $_REQUEST["we_flds"]) : "") .
+			(isset($_REQUEST["attrs"]) ? $this->getHdns("attrs", $_REQUEST["attrs"]) : "") .
+			we_html_element::htmlHidden(array("name" => "v[startCSVImport]", "value" => (isset($v["startCSVImport"]) && $v["startCSVImport"] == 1) ? 1 : 0)) .
+			we_html_element::htmlHidden(array("name" => "v[cid]", "value" => -2)) .
+			we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
+			(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
 
-		$functions = "\n" .
-			"function set_button_state() {\n" .
-			"	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');\n" .
-			"	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");\n" .
-			"}\n" .
-			"function we_submit_form(f, target, url) {\n" .
-			"	f.target = target;\n" .
-			"	f.action = url;\n" .
-			"	f.method = 'post';\n" .
-			"	f.submit();\n" .
-			"}\n" .
-			"function handle_event(evt) {\n" .
-			"	var f = self.document.forms['we_form'];\n" .
-			"	switch(evt) {\n" .
-			"		case 'previous':\n" .
-			"			f.step.value = 2;\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "');\n" .
-			"			break;\n" .
-			"		case 'next':\n" .
-			"			f.step.value=3;\n" .
-			"			f.mode.value=1;\n" .
-			"			f.elements['v[mode]'].value=1;\n" .
-			"			f.elements['v[startCSVImport]'].value=1;\n" .
-			"			top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');\n" .
-			"			we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');\n" .
-			"			break;\n" .
-			"		case 'cancel':\n" .
-			"			top.close();\n" .
-			"			break;\n" .
-			"	}\n" .
-			"}\n";
+		$functions = "
+			function set_button_state() {
+				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
+				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
+			}
+			function we_submit_form(f, target, url) {
+				f.target = target;
+				f.action = url;
+				f.method = 'post';
+				f.submit();
+			}
+			function handle_event(evt) {
+				var f = self.document.forms['we_form'];
+				switch(evt) {
+					case 'previous':
+						f.step.value = 2;
+						we_submit_form(f, 'wizbody', '" . $this->path . "');
+						break;
+					case 'next':
+						f.step.value=3;
+						f.mode.value=1;
+						f.elements['v[mode]'].value=1;
+						f.elements['v[startCSVImport]'].value=1;
+						top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');
+						we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
+						break;
+					case 'cancel':
+						top.close();
+						break;
+				}
+			}";
 
 		$db = new DB_WE();
 
@@ -2281,26 +2274,25 @@ HTS;
 								case "textarea":
 								case "href":
 								case "link":
-									array_push($records, $name);
+									$records[] = $name;
 									break;
 							}
 						}
 					}
 				}
 			} else{
-				array_push($records, "Title");
-				array_push($records, "Description");
-				array_push($records, "Keywords");
+				$records[] = "Title";
+				$records[] = "Description";
+				$records[] = "Keywords";
 			}
 		} else{
 			$classFields = $this->getClassFields($v["classID"]);
-			$classFields = $this->getClassFields($v["classID"]);
 			foreach($classFields as $classField){
 				if($this->isTextField($classField["type"]) || $this->isNumericField($classField["type"]) || $this->isDateField($classField["type"])){
-					array_push($records, $classField["name"]);
+					$records[] = $classField["name"];
 				}
 				if($this->isDateField($classField["type"])){
-					array_push($dateFields, $classField["name"]);
+					$dateFields[] = $classField["name"];
 				}
 			}
 		}
@@ -2308,21 +2300,22 @@ HTS;
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $v["import_from"];
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			switch($v["csv_enclosed"]){
-				case "double_quote": $encl = "\"";
+				case "double_quote":
+					$encl = "\"";
 					break;
-				case "single_quote": $encl = "'";
+				case "single_quote":
+					$encl = "'";
 					break;
-				case "none": $encl = "";
+				case "none":
+					$encl = "";
 					break;
 			}
 
 			$cp = new CSVImport;
 
-			$_data = '';
 			$_data = weFile::loadPart($csvFile);
 
 			$cp->setData($_data);
-
 			$cp->setDelim($v["csv_seperator"]);
 			$cp->setEnclosure($encl);
 			$cp->parseCSV();
@@ -2345,7 +2338,7 @@ HTS;
 
 		reset($records);
 		$i = 0;
-		while(list(, $record) = each($records)) {
+		foreach($records as $record){
 			$hdns .= we_html_element::htmlHidden(array("name" => "records[$i]", "value" => $record));
 			$sct_we_fields = new we_html_select(array(
 					"name" => "we_flds[$record]",
@@ -2356,7 +2349,7 @@ HTS;
 			);
 			reset($val_nodes);
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
-			while(list($value, $text) = each($val_nodes)) {
+			foreach($val_nodes as $value => $text){
 				$b64_value = (!isset($v["startCSVImport"])) ? base64_encode($value) : $value;
 				$sct_we_fields->addOption($b64_value, htmlspecialchars($text));
 				if(isset($we_flds[$record])){
@@ -2370,18 +2363,23 @@ HTS;
 				}
 			}
 
-			$new_record = "";
-			if($record == "Title")
-				$new_record = g_l('import', "[we_title]");
-			if($record == "Description")
-				$new_record = g_l('import', "[we_description]");
-			if($record == "Keywords")
-				$new_record = g_l('import', "[we_keywords]");
-			array_push($rows, array(
+			switch($record){
+				case "Title":
+					$new_record = g_l('import', "[we_title]");
+					break;
+				case "Description":
+					$new_record = g_l('import', "[we_description]");
+					break;
+				case "Keywords":
+					$new_record = g_l('import', "[we_keywords]");
+					break;
+				default:
+					$new_record = "";
+			}
+			$rows[] = array(
 				array("dat" => ($new_record != "") ? $new_record : $record), array("dat" => $sct_we_fields->getHTML()),
-				)
 			);
-			$i++;
+			++$i;
 		}
 
 		// Associated prefix selector.
@@ -2399,7 +2397,7 @@ HTS;
 		);
 
 		reset($val_nodes);
-		while(list($value, $text) = each($val_nodes)) {
+		foreach($val_nodes as $value => $text){
 			$rcdPfxSelect->addOption(htmlspecialchars($value), $text);
 			if(isset($v["rcd_pfx"]))
 				if($value == $v["rcd_pfx"])
@@ -2438,10 +2436,10 @@ HTS;
 			$tStamp->setCol(6, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 			$tStamp->setCol(6, 1, array(), we_html_tools::htmlTextInput("v[timestamp]", 30, (isset($v["timestamp"]) ? $v["timestamp"] : ""), "", "onClick=\"self.document.forms['we_form'].elements['v[rdo_timestamp]'][2].checked=true;\"", "text", 150));
 
-			array_push($parts, array(
+			$parts[] = array(
 				"headline" => g_l('import', "[format_date]"),
 				"html" => $tStamp->getHTML(),
-				"space" => 140)
+				"space" => 140
 			);
 			if(!isset($v["dateFields"])){
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[dateFields]", "value" => makeCSVFromArray($dateFields)));
@@ -2457,52 +2455,36 @@ HTS;
 		$fn_colsn->setCol(4, 0, array(), we_html_tools::getPixel(0, 4));
 		$fn_colsn->setCol(5, 0, array(), we_forms::radiobutton("skip", $conflict == "skip", "nameconflict", g_l('import', "[skip]"), true, 'defaultfont', "self.document.forms['we_form'].elements['v[collision]'].value='skip';"));
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('import', '[name_collision]'),
 			"html" => $fn_colsn->getHTML(),
-			"space" => 140)
+			"space" => 140
 		);
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => g_l('import', "[name]"),
 			"html" => $fn->getHTML(),
 			"space" => 140
-			)
 		);
 
 		$wepos = weGetCookieVariable("but_csv");
 		$znr = -1;
 
-		$content = $hdns;
-		$content.= we_multiIconBox::getJS();
-		$content.= we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[asgn_rcd_flds]"));
+		$content = $hdns .
+			we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML("csv", "100%", $parts, 30, "", $znr, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"), ($wepos == "down"), g_l('import', "[asgn_rcd_flds]"));
 
 		return array($functions, $content);
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . escape_sql_query($table) . " WHERE ID=" . intval($IDValue), "Path", new DB_WE());
+			$Pathvalue = f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), "Path", new DB_WE());
 		}
 
 		$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','" . $cmd . "','" . session_id() . "','$rootDirID')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
-	}
-
-	function getTMPaccess(){
-		if(file_exists(TEMP_PATH . '.htaccess')){
-			unlink(TEMP_PATH . '.htaccess');
-		}
-	}
-
-	function denyTMPaccess(){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
-			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists(TEMP_PATH . '.htaccess')){
-				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
-			}
-		}
 	}
 
 }

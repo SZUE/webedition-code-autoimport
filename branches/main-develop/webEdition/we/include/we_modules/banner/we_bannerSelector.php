@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,123 +22,100 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 class we_bannerSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function __construct($id,
-								$JSIDName="",
-								$JSTextName="",
-								$JSCommand="",
-								$order=""){
+	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
 
-		parent::__construct($id,
-								BANNER_TABLE,
-								$JSIDName,
-								$JSTextName,
-								$JSCommand,
-								$order);
+		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
 
 		$this->title = g_l('fileselector', '[bannerSelector][title]');
-
 	}
 
 	function printFramesetJSDoClickFn(){
-?>
-function doClick(id,ct){
-	if(ct==1){
+		?>
+		function doClick(id,ct){
+		if(ct==1){
 		if(wasdblclick){
-			setDir(id);
-			setTimeout('wasdblclick=0;',400);
+		setDir(id);
+		setTimeout('wasdblclick=0;',400);
 		}
-	}else{
+		}else{
 		e=top.getEntry(id);
 		if(e.isFolder){
-			if(top.currentID == id){
-				top.RenameFolder(id);
-			}
-		}else{
-			selectFile(id);
+		if(top.currentID == id){
+		top.RenameFolder(id);
 		}
-	}
-}
-<?php
+		}else{
+		selectFile(id);
+		}
+		}
+		}
+		<?php
 	}
 
-
-  	function printHeaderHeadlines(){
+	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.we_html_tools::getPixel(25,14).'</td>
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
+					<td>' . we_html_tools::getPixel(25, 14) . '</td>
+					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('modules_banner', '[name]') . '</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
-					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
-					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
+					<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
+					<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
+					<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
 				</tr>
 			</table>
 ';
-
-  	}
-
-
-
-
-	function printFramesetJSsetDir(){
-?>
-function setDir(id){
-	top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
-}
-
-
-<?php
 	}
 
+	function printFramesetJSsetDir(){
+		?>
+		function setDir(id){
+		top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
+		}
+
+
+		<?php
+	}
 
 	function printSetDirHTML(){
-		print '<script>
-top.clearEntries();
-';
+		print '<script><!--
+top.clearEntries();';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-if(intval($this->dir)==0){
-	print 'top.fsheader.disableRootDirButs();
-';
-}else{
-	print 'top.fsheader.enableRootDirButs();
-';
-}
-print 'top.currentDir = "'.$this->dir.'";
-top.parentID = "'.$this->values["ParentID"].'";
+		print 'top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+	top.currentDir = "' . $this->dir . '";
+top.parentID = "' . $this->values["ParentID"] . '";
+	//-->
 </script>
 ';
 		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case we_fileselector::HEADER:
-			$this->printHeaderHTML();
-			break;
+				$this->printHeaderHTML();
+				break;
 			case we_fileselector::FOOTER:
-			$this->printFooterHTML();
-			break;
+				$this->printFooterHTML();
+				break;
 			case we_fileselector::BODY:
-			$this->printBodyHTML();
-			break;
+				$this->printBodyHTML();
+				break;
 			case we_fileselector::CMD:
-			$this->printCmdHTML();
-			break;
+				$this->printCmdHTML();
+				break;
 			case we_multiSelector::SETDIR:
-			$this->printSetDirHTML();
-			break;
+				$this->printSetDirHTML();
+				break;
 			case we_fileselector::FRAMESET:
 			default:
-			$this->printFramesetHTML();
+				$this->printFramesetHTML();
 		}
 	}
+
 }

@@ -603,8 +603,10 @@ top.clearEntries();
 		$this->printCMDWriteAndFillSelectorHTML();
 
 		print (intval($this->dir) == 0 ?
-				'top.fsheader.disableRootDirButs();top.fsheader.disableDelBut();' :
-				'top.fsheader.enableRootDirButs();top.fsheader.enableDelBut();') .
+				'top.fsheader.disableRootDirButs();
+					top.fsheader.disableDelBut();' :
+				'top.fsheader.enableRootDirButs();
+					top.fsheader.enableDelBut();') .
 			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 	//-->
@@ -992,7 +994,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			}
 			we_html_tools::htmlTop();
 			we_html_tools::protect();
-			print we_html_element::jsElement($js . 'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
+			print we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
 					($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 				);
 

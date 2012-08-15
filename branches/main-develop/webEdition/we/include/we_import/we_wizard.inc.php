@@ -24,10 +24,10 @@
  */
 class we_wizard{
 
-	var $path = "";
+	var $path = '';
 
 	function __construct(){
-		$this->path = WEBEDITION_DIR . "we/include/we_import/we_wiz_frameset.php";
+		$this->path = WE_INCLUDES_DIR . 'we_import/we_wiz_frameset.php';
 	}
 
 	function getWizFrameset(){
@@ -212,7 +212,8 @@ HTS;
 		if($step == 1){
 			$a["enctype"] = "multipart/form-data";
 		}
-		eval('list($js, $content)=$this->get' . $type . 'Step' . $step . '();');
+		$_step = 'get' . $type . 'Step' . $step;
+		list($js, $content) = $this->$_step();
 		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
@@ -221,7 +222,7 @@ HTS;
 					we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody",
-					"onLoad" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (isset($_REQUEST['type']) ? $_REQUEST['type'] : '') . "'); self.focus();" : "if(set_button_state) set_button_state();"
+					"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (isset($_REQUEST['type']) ? $_REQUEST['type'] : '') . "'); self.focus();" : "if(set_button_state) set_button_state();"
 					), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
 						we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
 						we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
@@ -451,7 +452,6 @@ HTS;
 
 						$ref = false;
 						if($v["cid"] >= $v["numFiles"] - 1){ // finish import
-							//$this->denyTMPaccess();
 							$xmlExIm = new weImportUpdater();
 							$xmlExIm->loadPerserves();
 							$xmlExIm->setOptions(array(
@@ -521,8 +521,7 @@ HTS;
 								if($type == "first_steps_wizard"){
 									$_SESSION['fsw_importRefTable'] = isset($_SESSION["ExImRefTable"]) ? $_SESSION["ExImRefTable"] : array();
 
-									$JScript = "
-										function we_import_handler(e) { we_import(1," . ($v['numFiles'] - 1) . "); }
+									$JScript = "function we_import_handler(e) { we_import(1," . ($v['numFiles'] - 1) . "); }
 										top.document.getElementById('function_reload').onmouseup = we_import_handler;
 										setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 								} else{
@@ -602,11 +601,10 @@ HTS;
 									}
 
 									if($type != "first_steps_wizard"){
-										print we_html_element::jsElement('
-											if (top.frames["wizbody"].addLog){
+										print we_html_element::jsElement(
+												'if (top.frames["wizbody"].addLog){
 												top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(50, 5)) . $_progress_text . '<br>");
-											}
-										');
+											}');
 										flush();
 									}
 								} else{
@@ -653,12 +651,13 @@ HTS;
 									break;
 								}
 							}
-							if($xPath == "")
+							if($xPath == ''){
 								$xPath = $firstNode;
+							}
 							$fields = $fields + array($records[$c] => $xp->getData($xPath));
 						}
 						if($v["pfx_fn"] == 1){
-							$v["rcd_pfx"] = $xp->getData($xp->root . "/" . $v["rcd_pfx"] . "[1]");
+							$v["rcd_pfx"] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
 							if($v["rcd_pfx"] == ""){
 								$v["rcd_pfx"] = ($v["import_type"] == "documents") ? g_l('import', "[pfx_doc]") : g_l('import', "[pfx_obj]");
 							}
@@ -666,11 +665,14 @@ HTS;
 					} else if($v["type"] == "CSVImport"){
 						$hiddens = $this->getHdns("v", $v) . $this->getHdns("records", $records) . $this->getHdns("we_flds", $we_flds);
 						switch($v["csv_enclosed"]){
-							case "double_quote": $encl = "\"";
+							case 'double_quote':
+								$encl = '"';
 								break;
-							case "single_quote": $encl = "'";
+							case 'single_quote':
+								$encl = "'";
 								break;
-							case "none": $encl = "";
+							case 'none':
+								$encl = '';
 								break;
 						}
 						$cp = new CSVImport;
@@ -685,10 +687,7 @@ HTS;
 							$recs[$names[$i]] = $cp->Fields[0][$i];
 						}
 						foreach($we_flds as $name => $value){
-							if(isset($recs[$value]))
-								$fields[$name] = $recs[$value];
-							else
-								$fields[$name] = "";
+							$fields[$name] = (isset($recs[$value]) ? $recs[$value] : '');
 						}
 						if($v["pfx_fn"] == 1){
 							$v["rcd_pfx"] = $recs[$v["rcd_pfx"]];
@@ -720,12 +719,12 @@ HTS;
 
 
 					if($type == "first_steps_wizard"){
-						$JScript = "top.leWizardProgress.set(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));\n"
-							. "function we_import_handler(e) { we_import(1," . $v["cid"] . "); }\n"
-							. "top.document.getElementById('function_reload').onmouseup = we_import_handler;\n";
+						$JScript = "top.leWizardProgress.set(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));
+							function we_import_handler(e) { we_import(1," . $v["cid"] . "); }
+							top.document.getElementById('function_reload').onmouseup = we_import_handler;";
 					} else{
-						$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', "[import]") . "');\n"
-							. "top.frames['wizbusy'].setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));\n";
+						$JScript = "top.frames['wizbusy'].setProgressText('pb1','" . g_l('import', "[import]") . "');
+							top.frames['wizbusy'].setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
 					}
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
@@ -848,23 +847,10 @@ HTS;
 	}
 
 	function getPostGetVar($var, $def){
-		if(isset($_POST[$var])){
-			$ret = $_POST[$var];
-		} else if(isset($_GET[$var])){
-			$ret = $_GET[$var];
-		} else{
-			$ret = $def;
-		}
-		return $ret;
-	}
-
-	function denyTMPaccess(){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
-			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists(TEMP_PATH . '.htaccess')){
-				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
-			}
-		}
+		retur(isset($_POST[$var]) ?
+				$_POST[$var] :
+				(isset($_GET[$var]) ?
+					$_GET[$var] : $def));
 	}
 
 }

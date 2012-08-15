@@ -369,7 +369,7 @@ abstract class we_rebuild_wizard{
 					break;
 				case "rebuild_thumbnails":
 					if(!$thumbs){
-						return array($js . ";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild', "[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING), "");
+						return array($js . ';top.frames["wizbusy"].showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', "[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING), "");
 					}
 					$data = we_rebuild::getThumbnails($thumbs, $thumbsFolders);
 					break;

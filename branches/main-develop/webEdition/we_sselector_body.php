@@ -38,7 +38,7 @@ if(file_exists($supportDebuggingFile)){
 }
 
 we_html_tools::htmlTop();
-print STYLESHEET . "\n";
+print STYLESHEET;
 
 function _cutText($text, $l){
 	if(strlen($text) > $l){
@@ -129,7 +129,7 @@ function _cutText($text, $l){
 				if(g_l('contentTypes', '[' . $ct . ']') !== false){
 					return g_l('contentTypes', '[' . $ct . ']');
 				}
-				return "";
+				return '';
 			}
 
 			$arDir = array();
@@ -138,17 +138,16 @@ function _cutText($text, $l){
 			$ordFile = array();
 			$final = array();
 
-			if($_REQUEST["dir"] == ""){
-				$org = "/";
-			} else{
-				$org = $_REQUEST["dir"];
-			}
+			$org = ($_REQUEST["dir"] == "" ? "/" : $_REQUEST["dir"]);
+
 
 			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
-			if($dir != "/")
+			if($dir != "/"){
 				$dir = rtrim($dir, '/');
-			if(!isset($_REQUEST["ord"]))
+			}
+			if(!isset($_REQUEST["ord"])){
 				$_REQUEST["ord"] = 10;
+			}
 			@chdir($dir);
 			$dir_obj = @dir($dir);
 
@@ -159,32 +158,40 @@ function _cutText($text, $l){
 							array_push($arDir, $entry);
 							switch($_REQUEST["ord"]){
 								case 10:
-								case 11:array_push($ordDir, $entry);
+								case 11:
+									array_push($ordDir, $entry);
 									break;
 								case 20:
-								case 21:array_push($ordDir, getDataType($dir . "/" . $entry));
+								case 21:
+									array_push($ordDir, getDataType($dir . "/" . $entry));
 									break;
 								case 30:
-								case 31:array_push($ordDir, filectime($dir . "/" . $entry));
+								case 31:
+									array_push($ordDir, filectime($dir . "/" . $entry));
 									break;
 								case 40:
-								case 41:array_push($ordDir, filesize($dir . "/" . $entry));
+								case 41:
+									array_push($ordDir, filesize($dir . "/" . $entry));
 									break;
 							}
 						} else{
 							array_push($arFile, $entry);
 							switch($_REQUEST["ord"]){
 								case 10:
-								case 11:array_push($ordFile, $entry);
+								case 11:
+									array_push($ordFile, $entry);
 									break;
 								case 20:
-								case 21:array_push($ordFile, getDataType($dir . "/" . $entry));
+								case 21:
+									array_push($ordFile, getDataType($dir . "/" . $entry));
 									break;
 								case 30:
-								case 31:array_push($ordFile, filectime($dir . "/" . $entry));
+								case 31:
+									array_push($ordFile, filectime($dir . "/" . $entry));
 									break;
 								case 40:
-								case 41:array_push($ordFile, filesize($dir . "/" . $entry));
+								case 41:
+									array_push($ordFile, filesize($dir . "/" . $entry));
 									break;
 							}
 						}
@@ -199,13 +206,15 @@ function _cutText($text, $l){
 				case 10:
 				case 20:
 				case 30:
-				case 40:asort($ordDir);
+				case 40:
+					asort($ordDir);
 					asort($ordFile);
 					break;
 				case 11:
 				case 21:
 				case 31:
-				case 41:arsort($ordDir);
+				case 41:
+					arsort($ordDir);
 					arsort($ordFile);
 					break;
 			}
@@ -229,7 +238,8 @@ var i = 0;
 			print '//--></script>';
 			$set_rename = false;
 
-			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){?>
+			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
+				?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
@@ -249,7 +259,7 @@ var i = 0;
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . "/" . $entry);
 
 				$indb = $DB_WE->next_record() ? true : false;
-				if($entry == "webEdition"|| (preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp")){
+				if($entry == "webEdition" || (preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp")){
 					$indb = true;
 				}
 				if($supportDebugging){

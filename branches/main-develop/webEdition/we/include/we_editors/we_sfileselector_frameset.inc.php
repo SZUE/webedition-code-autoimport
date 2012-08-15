@@ -86,7 +86,7 @@ $rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != "") ? $_
 	<?php
 }
 if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
-	print $_REQUEST['we_cmd'][4] . ";\n";
+	print $_REQUEST['we_cmd'][4] . ";";
 }
 ?>
 		close();

@@ -80,23 +80,21 @@ class we_shop_dirSelector extends we_multiSelector{
 	}
 
 	function printSetDirHTML(){
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
 		if(intval($this->dir) == 0){
-			print 'top.fsheader.disableRootDirButs();
-';
+			print 'top.fsheader.disableRootDirButs();';
 		} else{
-			print 'top.fsheader.enableRootDirButs();
-';
+			print 'top.fsheader.enableRootDirButs();';
 		}
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-</script>
-';
+	//-->
+</script>';
 		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
 	}
 

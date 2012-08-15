@@ -142,23 +142,20 @@ class we_usersSelector extends we_multiSelector{
 	}
 
 	function printSetDirHTML(){
-		print '<script>
-top.clearEntries();
-';
+		print '<script><!--
+top.clearEntries();';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
 		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();
-';
+			print 'top.fsheader.disableRootDirButs();';
 		} else{
-			print 'top.fsheader.enableRootDirButs();
-';
+			print 'top.fsheader.enableRootDirButs();';
 		}
 
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			$go = true;
-		else{
+		}else{
 			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);
 			$rootPath = f("SELECT Path FROM " . USER_TABLE . " WHERE ID='" . $rootID . "'", "Path", $this->db);
 			$this->db->query("SELECT ID FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'");
@@ -177,6 +174,7 @@ top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
+//-->
 ';
 		print '</script>';
 	}
