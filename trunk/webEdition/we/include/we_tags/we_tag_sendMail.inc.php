@@ -77,10 +77,10 @@ function we_tag_sendMail($attribs, $content){
 			$we_recipientCC = array();
 			for($l = 0; $l < sizeof($toCC); $l++){
 
-				if(strpos("@", $toCC[$l]) === false){
-					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos("@", $_SESSION["webuser"][$toCC[$l]]) !== false){ //wenn man registrierten Usern was senden moechte
+				if(strpos($toCC[$l],'@') === false){
+					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@') !== false){ //wenn man registrierten Usern was senden moechte
 						$we_recipientCC[] = $_SESSION["webuser"][$toCC[$l]];
-					} else if(isset($_REQUEST[$toCC[$l]]) && strpos("@", $_REQUEST[$toCC[$l]]) !== false){ //email to friend test
+					} else if(isset($_REQUEST[$toCC[$l]]) && strpos($_REQUEST[$toCC[$l]],'@') !== false){ //email to friend test
 						$we_recipientCC[] = $_REQUEST[$toCC[$l]];
 					}
 				} else{
