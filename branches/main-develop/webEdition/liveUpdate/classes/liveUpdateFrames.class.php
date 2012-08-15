@@ -363,17 +363,14 @@ class liveUpdateFrames{
 	}
 
 	function htmlBeta(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
 	}
 
 	function htmlUpdate(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
 	}
 
 	function htmlNextVersion(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
 	}
 
@@ -382,32 +379,26 @@ class liveUpdateFrames{
 	}
 
 	function htmlLanguages(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
 	}
 
 	function htmlConnect(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
 	}
 
 	function htmlConnectionSuccess($errorMessage = ''){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectSuccess.inc.php');
 	}
 
 	function htmlConnectionError(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectError.inc.php');
 	}
 
 	function htmlStateMessage(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'stateMessage.inc.php');
 	}
 
 	function htmlUpdatelog(){
-
 		include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
 	}
 
@@ -419,7 +410,6 @@ class liveUpdateFrames{
 	}
 
 	function getAllTabs(){
-
 		return $GLOBALS['updatecmds'];
 	}
 

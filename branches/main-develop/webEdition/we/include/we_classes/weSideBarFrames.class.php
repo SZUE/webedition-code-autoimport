@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,11 +27,10 @@ class weSideBarFrames{
 	var $_frameset = "";
 
 	function __construct(){
-		$_frameset = WEBEDITION_DIR . "sideBarFrame.php";
+		$_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
 	}
 
 	function getHTML($what){
-
 		switch($what){
 
 			case 'header':
@@ -53,20 +53,14 @@ class weSideBarFrames{
 	}
 
 	function getHTMLFrameset(){
-		?>
-		</head>
-
-		<frameset rows="22,*,40" framespacing="0" border="1" frameborder="NO">
-			<frame src="<?php print $this->_frameset; ?>?pnt=header" name="weSidebarHeader" scrolling="no" noresize/>
-			<frame src="<?php print $this->_frameset; ?>?pnt=content" name="weSidebarContent" scrolling="auto" noresize/>
-			<frame src="<?php print $this->_frameset; ?>?pnt=footer" name="weSidebarFooter" scrolling="no" noresize/>
-		</frameset>
-
-		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-		</body>
-
-		</html>
-		<?php
+		return '</head>' .
+			we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('weSidebarHeader', $this->_frameset . '?pnt=header', 'position:absolute;top:0px;height:22px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('weSidebarContent', $this->_frameset . '?pnt=content', 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+					we_html_element::htmlIFrame('weSidebarFooter', $this->_frameset . '?pnt=footer', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+				))
+			. '</html>';
 	}
 
 	function getHTMLHeader(){
@@ -122,7 +116,6 @@ class weSideBarFrames{
 	}
 
 	function getHTMLContent(){
-
 		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 		$params = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 		define("WE_SIDEBAR", true);

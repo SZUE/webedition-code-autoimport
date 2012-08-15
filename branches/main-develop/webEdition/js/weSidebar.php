@@ -78,34 +78,33 @@ weSidebar.open = function() {
 
 
 weSidebar.close = function() {
-	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = 0 + "px";
-	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = 0 + "px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right = 0 + "px";
+	top.rframe.document.getElementById("sidebarDiv").style.width = 0 + "px";
 
 }
 
 
 weSidebar.resize = function(width) {
-	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = width + "px";
-	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = width + "px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
+	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
 
 }
 
 
 weSidebar.reloadHeader = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarHeader"].location.reload();
+	top.rframe.sidebar.weSidebarHeader.location.reload();
 
 }
 
 
 weSidebar.reload = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.reload();
+	top.rframe.sidebar.weSidebarContent.location.reload();
 
 }
 
 
 weSidebar.reloadFooter = function() {
-	top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.reload();
-	//top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location.replace(top.frames["rframe"].frames["sidebar"].frames["weSidebarFooter"].location);
+	top.rframe.sidebar.weSidebarFooter.location.reload();
 
 }
 

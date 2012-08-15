@@ -249,7 +249,7 @@ top.weEditorFrameController.openDocument('','','','','',url,'','',parameters);
 <?php
 if(defined('MESSAGING_SYSTEM')){
 	?>
-	
+
 	function msg_update() {
 		try{
 			var fo=false;
@@ -500,7 +500,7 @@ if(!empty($_jsincludes)){
 			break;
 
 		case "loadSidebarDocument":
-			top.frames["rframe"].frames["sidebar"].frames["weSidebarContent"].location.href = url;
+			top.rframe.sidebar.weSidebarContent.location.href = url;
 			break;
 
 		case "versions_preview":

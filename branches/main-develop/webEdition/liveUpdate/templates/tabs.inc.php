@@ -31,7 +31,7 @@
 // initialise tabs
 $tabs = new we_tabs();
 foreach($this->Data['allTabs'] as $tabname){
-	$tabs->addTab(new we_tab("#", g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname ? "TAB_ACTIVE" : "TAB_NORMAL"), "top.frames.updatecontent.location='?section=$tabname';"));
+	$tabs->addTab(new we_tab("#", g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname ? "TAB_ACTIVE" : "TAB_NORMAL"), "top.updatecontent.location='?section=$tabname';"));
 }
 
 

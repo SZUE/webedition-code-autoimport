@@ -235,8 +235,8 @@ class we_wizard_import extends we_wizard{
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'disabled');
-				top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+				top.wizbusy.switch_button_state('back', 'back_enabled', 'disabled');
+				top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 			}
 			function handle_event(evt) {
 				var f = self.document.forms['we_form'];
@@ -329,8 +329,8 @@ class we_wizard_import extends we_wizard{
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -371,7 +371,6 @@ class we_wizard_import extends we_wizard{
 				}
 			}";
 
-		//javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)"
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
 		$wecmdenc4 = '';
 		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES")) ? we_button::create_button("select", "javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
@@ -500,8 +499,8 @@ class we_wizard_import extends we_wizard{
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " .
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " .
 			(($we_valid) ? ((isset($v["mode"]) && $v["mode"] == 1) ? "'disabled'" : "'enabled'") : "'disabled'") . ");
 			}" . $event_handler .
 			'function toggle(name){
@@ -569,7 +568,6 @@ class we_wizard_import extends we_wizard{
 			$tbl_extra->setCol(0, 0, null, we_forms::checkboxWithHidden((isset($v["import_docs"]) && $v["import_docs"]) ? true : false, "v[import_docs]", g_l('import', "[import_docs]"), false, "defaultfont", "toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
-			//javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'".FILE_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[doc_dir]\'].value','','','$rootDirID')
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[doc_dir_id]'].value");
 			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[doc_dir]'].value");
 			$wecmdenc3 = '';
@@ -608,7 +606,6 @@ class we_wizard_import extends we_wizard{
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
 			$tbl_extra->setCol(2, 0, array("colspan" => "2"), we_forms::checkboxWithHidden((isset($v["import_templ"]) && $v["import_templ"]) ? true : false, "v[import_templ]", g_l('import', "[import_templ]"), false, "defaultfont", "toggle('tpl_table')"));
-			//javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'".TEMPLATES_TABLE."','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[tpl_dir]\'].value','','','$rootDirID')
 			$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
@@ -742,8 +739,8 @@ class we_wizard_import extends we_wizard{
 			if(empty($header)){
 				$functions = '
 					function set_button_state() {
-						top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
-						top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
+						top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
+						top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "disabled");
 					}
 				' . $event_handler;
 				$parts = array(
@@ -801,8 +798,8 @@ class we_wizard_import extends we_wizard{
 
 			function set_button_state() {
 
-				top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_disabled", "disabled");
-				top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_disabled", "disabled");
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_disabled", "disabled");
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_disabled", "disabled");
 
 
 			}
@@ -883,8 +880,8 @@ class we_wizard_import extends we_wizard{
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -1120,7 +1117,6 @@ HTS;
 		$docCats->setCol(0, 1, array(), $docCategories);
 		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
-		//javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_id]\'].value','self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[store_to_path]\'].value','','','0')
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[store_to_id]'].value");
 		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[store_to_path]'].value");
 		$wecmdenc3 = '';
@@ -1326,8 +1322,8 @@ HTS;
 
 		$functions =
 			"function set_button_state() {
-				top.frames['wizbusy'].back_enabled=top.frames['wizbusy'].switch_button_state('back','back_enabled','enabled');
-				top.frames['wizbusy'].next_enabled=top.frames['wizbusy'].switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+				top.wizbusy.back_enabled=top.wizbusy.switch_button_state('back','back_enabled','enabled');
+				top.wizbusy.next_enabled=top.wizbusy.switch_button_state('next','next_enabled','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -1396,8 +1392,8 @@ HTS;
 
 		$functions =
 			"function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -1416,7 +1412,7 @@ HTS;
 						f.step.value=3;
 						f.mode.value=1;
 						f.elements['v[mode]'].value=1;
-						top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');
+						top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'disabled');
 						we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
 						break;
 					case 'cancel':
@@ -1659,8 +1655,8 @@ HTS;
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -1706,7 +1702,6 @@ HTS;
 
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		/*		 * *************************************************************************************************************** */
-		//javascript:we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['v[fserver]'].value");
 		$wecmdenc4 = '';
 		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES")) ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.forms['we_form'].elements['v[fserver]'].value)") : "";
@@ -1876,8 +1871,8 @@ HTS;
 				}
 			}
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -2024,7 +2019,6 @@ HTS;
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
 		$path = f('SELECT Path FROM ' . $DB_WE->escape($table) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
 		$wecmdenc1 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("self.wizbody.document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_editpage');");
@@ -2216,8 +2210,8 @@ HTS;
 
 		$functions = "
 			function set_button_state() {
-				top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-				top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
+				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
 			}
 			function we_submit_form(f, target, url) {
 				f.target = target;
@@ -2237,7 +2231,7 @@ HTS;
 						f.mode.value=1;
 						f.elements['v[mode]'].value=1;
 						f.elements['v[startCSVImport]'].value=1;
-						top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'disabled');
+						top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'disabled');
 						we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
 						break;
 					case 'cancel':
