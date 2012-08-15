@@ -117,7 +117,7 @@ abstract class we_versions_wizard{
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET . ($dc ? "" : we_button::create_state_changer()) . $js) . we_html_element::htmlBody(
-					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style'=>'overflow:hidden'
+					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
 					), ($dc ? $pb : $content->getHtml())));
 	}
 
@@ -1132,50 +1132,28 @@ abstract class we_versions_wizard{
 		}
 
 		if($tail){
-			$fst = new we_html_frameset(array(
-					"rows" => "*,0",
-					"framespacing" => 0,
-					"border" => 0,
-					"frameborder" => "no"
-				));
-
-
-			$fst->addFrame(array(
-				"src" => WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy&amp;dc=1",
-				"name" => "wizbusy"
-			));
-			$fst->setFrameAttributes(
-				0, array(
-				"scrolling" => "no",
-				"onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body" . $tail . "';"
-			));
-
-			$fst->addFrame(array(
-				"src" => HTML_DIR . "white.html", "name" => "wizcmd"
-			));
-			$fst->setFrameAttributes(1, array(
-				"scrolling" => "no"
-			));
-			return 'test';
+			//maybe restore of a given version?
+			$body = we_html_element::htmlBody(array(
+					'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;',
+					'onload' => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body" . $tail . "';")
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+					));
 		} else{
-
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead(
-						we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-						we_html_tools::getHtmlInnerHead(g_l('versions', '[versions_wizard]')) . STYLESHEET) .
-					we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
-						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-							, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
-							we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy", 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
-							we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-						))
-			);
+			$body = we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy", 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+					));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_tools::getHtmlInnerHead(g_l('versions', '[versions_wizard]'))) . $fst->getHtml());
+					we_html_tools::getHtmlInnerHead(g_l('versions', '[versions_wizard]')) . STYLESHEET) .
+				$body);
 	}
 
 	/**
