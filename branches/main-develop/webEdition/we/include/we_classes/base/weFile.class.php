@@ -185,7 +185,7 @@ abstract class weFile{
 	}
 
 	static function delete($filename){
-		if($filename == ""){
+		if($filename == ''){
 			return false;
 		}
 		if(!weFile::hasURL($filename)){
