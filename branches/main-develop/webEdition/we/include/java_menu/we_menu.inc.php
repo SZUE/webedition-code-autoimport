@@ -28,20 +28,20 @@ $we_menu = array(
 	'1000000' => array(
 		'text' => g_l('javaMenu_global', '[file]'),
 		'parent' => '0000000',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 // File > New
 	'1010000' => array(
 		'text' => g_l('javaMenu_global', '[new]'),
 		'parent' => '1000000',
-		'enabled' => '1',
+		'enabled' => 1,
 	),
 // File > New > webEdition Document
 	'1010100' => array(
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
 		'parent' => '1010000',
 		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	));
 // File > New > webEdition Document > empty page
 if(we_hasPerm('NO_DOCTYPE')){
@@ -67,7 +67,7 @@ while($GLOBALS['DB_WE']->next_record()) {
 		'parent' => '1010100',
 		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
 		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
-		'enabled' => '1',
+		'enabled' => 1,
 	);
 	$nr++;
 	if($nr == 197)
@@ -83,7 +83,7 @@ if($seeMode){
 			'parent' => '1010100',
 			'cmd' => 'openFirstStepsWizardDetailTemplates',
 			'perm' => 'ADMINISTRATOR',
-			'enabled' => '1',
+			'enabled' => 1,
 		);
 	}
 }
@@ -94,76 +94,76 @@ $we_menu['1010200'] = array(
 	'parent' => '1010000',
 	'cmd' => 'new_image',
 	'perm' => 'NEW_GRAFIK || ADMINISTRATOR',
-	'enabled' => '1',
+	'enabled' => 1,
 );
 
 // File > New > Other
 $we_menu['1010300']['text'] = g_l('javaMenu_global', '[other]');
 $we_menu['1010300']['parent'] = '1010000';
-$we_menu['1010300']['enabled'] = '1';
+$we_menu['1010300']['enabled'] = 1;
 
 // File > New > Other > html
 $we_menu['1010301']['text'] = g_l('javaMenu_global', '[html_page]');
 $we_menu['1010301']['parent'] = '1010300';
 $we_menu['1010301']['cmd'] = 'new_html_page';
 $we_menu['1010301']['perm'] = 'NEW_HTML || ADMINISTRATOR';
-$we_menu['1010301']['enabled'] = '1';
+$we_menu['1010301']['enabled'] = 1;
 
 // File > New > Other > Flash
 $we_menu['1010302']['text'] = g_l('javaMenu_global', '[flash_movie]');
 $we_menu['1010302']['parent'] = '1010300';
 $we_menu['1010302']['cmd'] = 'new_flash_movie';
 $we_menu['1010302']['perm'] = 'NEW_FLASH || ADMINISTRATOR';
-$we_menu['1010302']['enabled'] = '1';
+$we_menu['1010302']['enabled'] = 1;
 
 // File > New Other > quicktime
 $we_menu['1010303']['text'] = g_l('javaMenu_global', '[quicktime_movie]');
 $we_menu['1010303']['parent'] = '1010300';
 $we_menu['1010303']['cmd'] = 'new_quicktime_movie';
 $we_menu['1010303']['perm'] = 'NEW_QUICKTIME || ADMINISTRATOR';
-$we_menu['1010303']['enabled'] = '1';
+$we_menu['1010303']['enabled'] = 1;
 
 // File > New > Other > Javascript
 $we_menu['1010304']['text'] = g_l('javaMenu_global', '[javascript]');
 $we_menu['1010304']['parent'] = '1010300';
 $we_menu['1010304']['cmd'] = 'new_javascript';
 $we_menu['1010304']['perm'] = 'NEW_JS || ADMINISTRATOR';
-$we_menu['1010304']['enabled'] = '1';
+$we_menu['1010304']['enabled'] = 1;
 
 // File > New > Other > CSS
 $we_menu['1010305']['text'] = g_l('javaMenu_global', '[css_stylesheet]');
 $we_menu['1010305']['parent'] = '1010300';
 $we_menu['1010305']['cmd'] = 'new_css_stylesheet';
 $we_menu['1010305']['perm'] = 'NEW_CSS || ADMINISTRATOR';
-$we_menu['1010305']['enabled'] = '1';
+$we_menu['1010305']['enabled'] = 1;
 
 // File > New > Other > Text
 $we_menu['1010306']['text'] = g_l('javaMenu_global', '[text_plain]');
 $we_menu['1010306']['parent'] = '1010300';
 $we_menu['1010306']['cmd'] = 'new_text_plain';
 $we_menu['1010306']['perm'] = 'NEW_TEXT || ADMINISTRATOR';
-$we_menu['1010306']['enabled'] = '1';
+$we_menu['1010306']['enabled'] = 1;
 
 // File > New > Other > XML
 $we_menu['1010307']['text'] = g_l('javaMenu_global', '[text_xml]');
 $we_menu['1010307']['parent'] = '1010300';
 $we_menu['1010307']['cmd'] = 'new_text_xml';
 $we_menu['1010307']['perm'] = 'NEW_TEXT || ADMINISTRATOR';
-$we_menu['1010307']['enabled'] = '1';
+$we_menu['1010307']['enabled'] = 1;
 
 // File > New > Other > htaccess
 $we_menu['1010308']['text'] = g_l('javaMenu_global', '[htaccess]');
 $we_menu['1010308']['parent'] = '1010300';
 $we_menu['1010308']['cmd'] = 'new_text_htaccess';
 $we_menu['1010308']['perm'] = 'NEW_HTACCESS || ADMINISTRATOR';
-$we_menu['1010308']['enabled'] = '1';
+$we_menu['1010308']['enabled'] = 1;
 
 // File > New > Other > Other (Binary)
 $we_menu['1010309']['text'] = g_l('javaMenu_global', '[other_files]');
 $we_menu['1010309']['parent'] = '1010300';
 $we_menu['1010309']['cmd'] = 'new_binary_document';
 $we_menu['1010309']['perm'] = 'NEW_SONSTIGE || ADMINISTRATOR';
-$we_menu['1010309']['enabled'] = '1';
+$we_menu['1010309']['enabled'] = 1;
 
 if(!$seeMode){
 	$we_menu['1010400']['parent'] = '1010000'; // separator
@@ -172,27 +172,27 @@ if(!$seeMode){
 	$we_menu['1010500']['parent'] = '1010000';
 	$we_menu['1010500']['cmd'] = 'new_template';
 	$we_menu['1010500']['perm'] = 'NEW_TEMPLATE || ADMINISTRATOR';
-	$we_menu['1010500']['enabled'] = '1';
+	$we_menu['1010500']['enabled'] = 1;
 
 	$we_menu['1010600']['parent'] = '1010000'; // separator
 // File > New > Directory
 	$we_menu['1011000']['text'] = g_l('javaMenu_global', '[directory]');
 	$we_menu['1011000']['parent'] = '1010000';
-	$we_menu['1011000']['enabled'] = '1';
+	$we_menu['1011000']['enabled'] = 1;
 
 // File > New > Directory > Document
 	$we_menu['1011001']['text'] = g_l('javaMenu_global', '[document_directory]');
 	$we_menu['1011001']['parent'] = '1011000';
 	$we_menu['1011001']['cmd'] = 'new_document_folder';
 	$we_menu['1011001']['perm'] = 'NEW_DOC_FOLDER || ADMINISTRATOR';
-	$we_menu['1011001']['enabled'] = '1';
+	$we_menu['1011001']['enabled'] = 1;
 
 // File > New > Directory > Template
 	$we_menu['1011002']['text'] = g_l('javaMenu_global', '[template_directory]');
 	$we_menu['1011002']['parent'] = '1011000';
 	$we_menu['1011002']['cmd'] = 'new_template_folder';
 	$we_menu['1011002']['perm'] = 'NEW_TEMP_FOLDER || ADMINISTRATOR';
-	$we_menu['1011002']['enabled'] = '1';
+	$we_menu['1011002']['enabled'] = 1;
 
 // File > New > Directory > Object
 
@@ -200,14 +200,14 @@ if(!$seeMode){
 	  // File > New > Wizards
 	  $we_menu['1011200']['text'] = g_l('javaMenu_global', '[wizards]') . '...';
 	  $we_menu['1011200']['parent'] = '1010000';
-	  $we_menu['1011200']['enabled'] = '1';
+	  $we_menu['1011200']['enabled'] = 1;
 
 	  // File > New > Wizard > First Steps Wizard
 	  $we_menu['1011201']['text'] = g_l('javaMenu_global', '[first_steps_wizard]');
 	  $we_menu['1011201']['parent'] = '1011200';
 	  $we_menu['1011201']['cmd'] = 'openFirstStepsWizardMasterTemplate';
 	  $we_menu['1011201']['perm'] = 'ADMINISTRATOR';
-	  $we_menu['1011201']['enabled'] = '1';
+	  $we_menu['1011201']['enabled'] = 1;
 
 	  $we_menu['1020000']['parent'] = '1000000'; // separator
 	 */
@@ -215,14 +215,14 @@ if(!$seeMode){
 // File > Open
 $we_menu['1030000']['text'] = g_l('javaMenu_global', '[open]');
 $we_menu['1030000']['parent'] = '1000000';
-$we_menu['1030000']['enabled'] = '1';
+$we_menu['1030000']['enabled'] = 1;
 
 // File > Open > Document
 $we_menu['1030100']['text'] = g_l('javaMenu_global', '[open_document]') . '...';
 $we_menu['1030100']['parent'] = '1030000';
 $we_menu['1030100']['cmd'] = 'open_document';
 $we_menu['1030100']['perm'] = 'CAN_SEE_DOCUMENTS || ADMINISTRATOR';
-$we_menu['1030100']['enabled'] = '1';
+$we_menu['1030100']['enabled'] = 1;
 
 // File > Open > Template
 if(!$seeMode){
@@ -230,7 +230,7 @@ if(!$seeMode){
 	$we_menu['1030200']['parent'] = '1030000';
 	$we_menu['1030200']['cmd'] = 'open_template';
 	$we_menu['1030200']['perm'] = 'CAN_SEE_TEMPLATES || ADMINISTRATOR';
-	$we_menu['1030200']['enabled'] = '1';
+	$we_menu['1030200']['enabled'] = 1;
 }
 
 // File > Open > Object
@@ -240,7 +240,7 @@ $we_menu['1040000']['text'] = g_l('javaMenu_global', '[close_single_document]');
 $we_menu['1040000']['parent'] = '1000000';
 $we_menu['1040000']['cmd'] = 'close_document';
 $we_menu['1040000']['perm'] = '';
-$we_menu['1040000']['enabled'] = '1';
+$we_menu['1040000']['enabled'] = 1;
 
 if(!$seeMode){
 
@@ -249,21 +249,21 @@ if(!$seeMode){
 	$we_menu['1050000']['parent'] = '1000000';
 	$we_menu['1050000']['cmd'] = 'close_all_documents';
 	$we_menu['1050000']['perm'] = '';
-	$we_menu['1050000']['enabled'] = '1';
+	$we_menu['1050000']['enabled'] = 1;
 
 // File > Close All But this
 	$we_menu['1050100']['text'] = g_l('javaMenu_global', '[close_all_but_active_document]');
 	$we_menu['1050100']['parent'] = '1000000';
 	$we_menu['1050100']['cmd'] = 'close_all_but_active_document';
 	$we_menu['1050100']['perm'] = '';
-	$we_menu['1050100']['enabled'] = '1';
+	$we_menu['1050100']['enabled'] = 1;
 
 // File > Delete Active Document
 	$we_menu['1050200']['text'] = g_l('javaMenu_global', '[delete_active_document]');
 	$we_menu['1050200']['parent'] = '1000000';
 	$we_menu['1050200']['cmd'] = 'delete_single_document_question';
 	$we_menu['1050200']['perm'] = '';
-	$we_menu['1050200']['enabled'] = '1';
+	$we_menu['1050200']['enabled'] = 1;
 }
 
 $we_menu['1060000']['parent'] = '1000000'; // separator
@@ -272,19 +272,19 @@ $we_menu['1070000']['text'] = g_l('javaMenu_global', '[save]');
 $we_menu['1070000']['parent'] = '1000000';
 $we_menu['1070000']['cmd'] = 'trigger_save_document';
 $we_menu['1070000']['perm'] = 'SAVE_DOCUMENT_TEMPLATE || ADMINISTRATOR';
-$we_menu['1070000']['enabled'] = '1';
+$we_menu['1070000']['enabled'] = 1;
 
 // File > Publish
 $we_menu['1070001']['text'] = g_l('javaMenu_global', '[publish]');
 $we_menu['1070001']['parent'] = '1000000';
 $we_menu['1070001']['cmd'] = 'trigger_publish_document';
 $we_menu['1070001']['perm'] = 'PUBLISH || ADMINISTRATOR';
-$we_menu['1070001']['enabled'] = '1';
+$we_menu['1070001']['enabled'] = 1;
 
 // File > Delete
 $we_menu['1080000']['text'] = g_l('javaMenu_global', '[delete]');
 $we_menu['1080000']['parent'] = '1000000';
-$we_menu['1080000']['enabled'] = '1';
+$we_menu['1080000']['enabled'] = 1;
 
 if($seeMode){
 // File > Delete
@@ -292,21 +292,21 @@ if($seeMode){
 	$we_menu['1080000']['parent'] = '1000000';
 	$we_menu['1080000']['cmd'] = 'openDelSelector';
 	$we_menu['1080000']['perm'] = 'DELETE_DOCUMENT || ADMINISTRATOR';
-	$we_menu['1080000']['enabled'] = '1';
+	$we_menu['1080000']['enabled'] = 1;
 } else{
 // File > Delete > Documents
 	$we_menu['1080100']['text'] = g_l('javaMenu_global', '[documents]');
 	$we_menu['1080100']['parent'] = '1080000';
 	$we_menu['1080100']['cmd'] = 'delete_documents';
 	$we_menu['1080100']['perm'] = 'DELETE_DOCUMENT || ADMINISTRATOR';
-	$we_menu['1080100']['enabled'] = '1';
+	$we_menu['1080100']['enabled'] = 1;
 
 // File > Delete > Templates
 	$we_menu['1080200']['text'] = g_l('javaMenu_global', '[templates]');
 	$we_menu['1080200']['parent'] = '1080000';
 	$we_menu['1080200']['cmd'] = 'delete_templates';
 	$we_menu['1080200']['perm'] = 'DELETE_TEMPLATE || ADMINISTRATOR';
-	$we_menu['1080200']['enabled'] = '1';
+	$we_menu['1080200']['enabled'] = 1;
 
 // File > Delete > Classes
 // File > Delete > Objects
@@ -315,26 +315,26 @@ if($seeMode){
 	  $we_menu['1080500']['parent'] = '1080000';
 	  $we_menu['1080500']['cmd'] = 'delete_documents_cache';
 	  $we_menu['1080500']['perm'] = 'ADMINISTRATOR';
-	  $we_menu['1080500']['enabled'] = '1';
+	  $we_menu['1080500']['enabled'] = 1;
 	  } */
 // File > Move
 	$we_menu['1090000']['text'] = g_l('javaMenu_global', '[move]');
 	$we_menu['1090000']['parent'] = '1000000';
-	$we_menu['1090000']['enabled'] = '1';
+	$we_menu['1090000']['enabled'] = 1;
 
 // File > Move > Documents
 	$we_menu['1090100']['text'] = g_l('javaMenu_global', '[documents]');
 	$we_menu['1090100']['parent'] = '1090000';
 	$we_menu['1090100']['cmd'] = 'move_documents';
 	$we_menu['1090100']['perm'] = 'MOVE_DOCUMENT || ADMINISTRATOR';
-	$we_menu['1090100']['enabled'] = '1';
+	$we_menu['1090100']['enabled'] = 1;
 
 // File > Move > Templates
 	$we_menu['1090200']['text'] = g_l('javaMenu_global', '[templates]');
 	$we_menu['1090200']['parent'] = '1090000';
 	$we_menu['1090200']['cmd'] = 'move_templates';
 	$we_menu['1090200']['perm'] = 'MOVE_TEMPLATE || ADMINISTRATOR';
-	$we_menu['1090200']['enabled'] = '1';
+	$we_menu['1090200']['enabled'] = 1;
 
 // File > Move > Objects
 }
@@ -344,7 +344,7 @@ $we_menu['1110000']['text'] = g_l('javaMenu_global', '[unpublished_pages]') . '.
 $we_menu['1110000']['parent'] = '1000000';
 $we_menu['1110000']['cmd'] = 'openUnpublishedPages';
 $we_menu['1110000']['perm'] = 'CAN_SEE_DOCUMENTS || ADMINISTRATOR';
-$we_menu['1110000']['enabled'] = '1';
+$we_menu['1110000']['enabled'] = 1;
 
 // File > unpublished objects, comes here !
 
@@ -354,13 +354,13 @@ $we_menu['1130000']['text'] = g_l('javaMenu_global', '[search]') . '...';
 $we_menu['1130000']['parent'] = '1000000';
 $we_menu['1130000']['cmd'] = 'tool_weSearch_edit';
 $we_menu['1130000']['perm'] = '';
-$we_menu['1130000']['enabled'] = '1';
+$we_menu['1130000']['enabled'] = 1;
 
 $we_menu['1140000']['parent'] = '1000000'; // separator
 // File > Import/Export
 $we_menu['1150000']['text'] = g_l('javaMenu_global', '[import_export]');
 $we_menu['1150000']['parent'] = '1000000';
-$we_menu['1150000']['enabled'] = '1';
+$we_menu['1150000']['enabled'] = 1;
 
 // File > Import/Export > Import
 $we_menu['1150100']['text'] = g_l('javaMenu_global', '[import]') . '...';
@@ -371,20 +371,20 @@ if(we_hasPerm('FILE_IMPORT') || we_hasPerm('SITE_IMPORT') || we_hasPerm('GENERIC
 } else{
 	$we_menu['1150100']['perm'] = 'ADMINISTRATOR';
 }
-$we_menu['1150100']['enabled'] = '1';
+$we_menu['1150100']['enabled'] = 1;
 
 // File > Import/Export > Export
 $we_menu['1150200']['text'] = g_l('javaMenu_global', '[export]') . '...';
 $we_menu['1150200']['cmd'] = 'export';
 $we_menu['1150200']['parent'] = '1150000';
 $we_menu['1150200']['perm'] = 'GENERICXML_EXPORT || CSV_EXPORT || ADMINISTRATOR';
-$we_menu['1150200']['enabled'] = '1';
+$we_menu['1150200']['enabled'] = 1;
 
 if(!$seeMode){
 // File > Backup
 	$we_menu['1160000']['text'] = g_l('javaMenu_global', '[backup]');
 	$we_menu['1160000']['parent'] = '1000000';
-	$we_menu['1160000']['enabled'] = '1';
+	$we_menu['1160000']['enabled'] = 1;
 }
 
 // File > Backup > make
@@ -392,7 +392,7 @@ $we_menu['1160100']['text'] = g_l('javaMenu_global', '[make_backup]') . '...';
 $we_menu['1160100']['parent'] = $seeMode ? '1000000' : '1160000';
 $we_menu['1160100']['cmd'] = 'make_backup';
 $we_menu['1160100']['perm'] = 'EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR';
-$we_menu['1160100']['enabled'] = '1';
+$we_menu['1160100']['enabled'] = 1;
 
 if(!$seeMode){
 // File > Backup > recover
@@ -400,21 +400,21 @@ if(!$seeMode){
 	$we_menu['1160200']['parent'] = '1160000';
 	$we_menu['1160200']['cmd'] = 'recover_backup';
 	$we_menu['1160200']['perm'] = 'IMPORT || ADMINISTRATOR';
-	$we_menu['1160200']['enabled'] = '1';
+	$we_menu['1160200']['enabled'] = 1;
 }
 // File > Backup > view Log
 $we_menu['1160300']['text'] = g_l('javaMenu_global', '[view_backuplog]') . '...';
 $we_menu['1160300']['parent'] = $seeMode ? '1000000' : '1160000';
 $we_menu['1160300']['cmd'] = 'view_backuplog';
 $we_menu['1160300']['perm'] = 'BACKUPLOG || ADMINISTRATOR';
-$we_menu['1160300']['enabled'] = '1';
+$we_menu['1160300']['enabled'] = 1;
 
 // File > Backup > rebuild
 $we_menu['1180000']['text'] = g_l('javaMenu_global', '[rebuild]') . '...';
 $we_menu['1180000']['parent'] = '1000000';
 $we_menu['1180000']['cmd'] = 'rebuild';
 $we_menu['1180000']['perm'] = 'REBUILD || ADMINISTRATOR';
-$we_menu['1180000']['enabled'] = '1';
+$we_menu['1180000']['enabled'] = 1;
 
 $we_menu['1200000']['parent'] = '1000000'; // separator
 
@@ -424,7 +424,7 @@ if(!$seeMode){
 	$we_menu['1210000']['parent'] = '1000000';
 	$we_menu['1210000']['cmd'] = 'browse_server';
 	$we_menu['1210000']['perm'] = 'BROWSE_SERVER || ADMINISTRATOR';
-	$we_menu['1210000']['enabled'] = '1';
+	$we_menu['1210000']['enabled'] = 1;
 
 	$we_menu['1220000']['parent'] = '1000000'; // separator
 }
@@ -432,7 +432,7 @@ if(!$seeMode){
 $we_menu['1230000']['text'] = g_l('javaMenu_global', '[quit]');
 $we_menu['1230000']['parent'] = '1000000';
 $we_menu['1230000']['cmd'] = 'dologout';
-$we_menu['1230000']['enabled'] = '1';
+$we_menu['1230000']['enabled'] = 1;
 
 
 // Cockpit
@@ -556,7 +556,7 @@ if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 			$we_menu[$menNr]['parent'] = '3000000';
 			$we_menu[$menNr]['cmd'] = 'edit_' . $m['name'] . '_ifthere';
 			$we_menu[$menNr]['perm'] = isset($m['perm']) ? $m['perm'] : '';
-			$we_menu[$menNr]['enabled'] = '1';
+			$we_menu[$menNr]['enabled'] = 1;
 			$z++;
 		} else if(in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])){
 			$moduleList .= $m['name'] . '|';
@@ -582,34 +582,34 @@ if(defined('WE_TRACKER_DIR') && WE_TRACKER_DIR){
 	$we_menu['3020000']['parent'] = '3000000';
 	$we_menu['3020000']['cmd'] = 'we_tracker';
 	$we_menu['3020000']['perm'] = '';
-	$we_menu['3020000']['enabled'] = '1';
+	$we_menu['3020000']['enabled'] = 1;
 }
 
 // Extras
 $we_menu['4000000']['text'] = g_l('javaMenu_global', '[extras]');
 $we_menu['4000000']['parent'] = '0000000';
-$we_menu['4000000']['enabled'] = '1';
+$we_menu['4000000']['enabled'] = 1;
 
 // Extras > Navigation
 $we_menu['4031000']['text'] = g_l('javaMenu_global', '[navigation]') . '...';
 $we_menu['4031000']['parent'] = '4000000';
 $we_menu['4031000']['cmd'] = 'tool_navigation_edit';
 $we_menu['4031000']['perm'] = 'EDIT_NAVIGATION || ADMINISTRATOR';
-$we_menu['4031000']['enabled'] = '1';
+$we_menu['4031000']['enabled'] = 1;
 
 // Extras > Dokument-Typen
 $we_menu['4032000']['text'] = g_l('javaMenu_global', '[document_types]') . '...';
 $we_menu['4032000']['parent'] = '4000000';
 $we_menu['4032000']['cmd'] = 'doctypes';
 $we_menu['4032000']['perm'] = 'EDIT_DOCTYPE || ADMINISTRATOR';
-$we_menu['4032000']['enabled'] = '1';
+$we_menu['4032000']['enabled'] = 1;
 
 // Extras > Kategorien
 $we_menu['4033000']['text'] = g_l('javaMenu_global', '[categories]') . '...';
 $we_menu['4033000']['parent'] = '4000000';
 $we_menu['4033000']['cmd'] = 'editCat';
 $we_menu['4033000']['perm'] = 'EDIT_KATEGORIE || ADMINISTRATOR';
-$we_menu['4033000']['enabled'] = '1';
+$we_menu['4033000']['enabled'] = 1;
 
 $we_menu['4033300']['parent'] = '4000000'; // separator
 // Extras > Tools > Custom tools
@@ -621,13 +621,13 @@ foreach($_tools as $_k => $_tool){
 		$we_menu['404' . sprintf('%04d', $_k)]['parent'] = '4000000';
 		$we_menu['404' . sprintf('%04d', $_k)]['cmd'] = 'tool_' . $_tool['name'] . '_edit';
 		$we_menu['404' . sprintf('%04d', $_k)]['perm'] = $_tool['startpermission'] . ' || ADMINISTRATOR';
-		$we_menu['404' . sprintf('%04d', $_k)]['enabled'] = '1';
+		$we_menu['404' . sprintf('%04d', $_k)]['enabled'] = 1;
 	} else{
 		$we_menu['405' . sprintf('%04d', $_k)]['text'] = $_tool['text'] . '...';
 		$we_menu['405' . sprintf('%04d', $_k)]['parent'] = '4000000';
 		$we_menu['405' . sprintf('%04d', $_k)]['cmd'] = 'tool_' . $_tool['name'] . '_edit';
 		$we_menu['405' . sprintf('%04d', $_k)]['perm'] = $_tool['startpermission'] . ' || ADMINISTRATOR';
-		$we_menu['405' . sprintf('%04d', $_k)]['enabled'] = '1';
+		$we_menu['405' . sprintf('%04d', $_k)]['enabled'] = 1;
 	}
 }
 
@@ -638,7 +638,7 @@ $we_menu['4130000']['text'] = g_l('javaMenu_global', '[thumbnails]') . '...';
 $we_menu['4130000']['parent'] = '4000000';
 $we_menu['4130000']['cmd'] = 'editThumbs';
 $we_menu['4130000']['perm'] = 'EDIT_THUMBS || ADMINISTRATOR';
-$we_menu['4130000']['enabled'] = '1';
+$we_menu['4130000']['enabled'] = 1;
 
 if(!$seeMode){
 
@@ -647,7 +647,7 @@ if(!$seeMode){
 	$we_menu['4140000']['parent'] = '4000000';
 	$we_menu['4140000']['cmd'] = 'editMetadataFields';
 	$we_menu['4140000']['perm'] = 'ADMINISTRATOR';
-	$we_menu['4140000']['enabled'] = '1';
+	$we_menu['4140000']['enabled'] = 1;
 }
 
 // Extras > change password
@@ -655,7 +655,7 @@ $we_menu['4160000']['text'] = g_l('javaMenu_global', '[change_password]') . '...
 $we_menu['4160000']['parent'] = '4000000';
 $we_menu['4160000']['cmd'] = 'change_passwd';
 $we_menu['4160000']['perm'] = 'EDIT_PASSWD || ADMINISTRATOR';
-$we_menu['4160000']['enabled'] = '1';
+$we_menu['4160000']['enabled'] = 1;
 
 if(we_hasPerm('ADMINISTRATOR')){
 	// Extras > versioning
@@ -663,14 +663,14 @@ if(we_hasPerm('ADMINISTRATOR')){
 	$we_menu['4161000']['parent'] = '4000000';
 	$we_menu['4161000']['cmd'] = 'versions_wizard';
 	$we_menu['4161000']['perm'] = 'ADMINISTRATOR';
-	$we_menu['4161000']['enabled'] = '1';
+	$we_menu['4161000']['enabled'] = 1;
 
 	// Extras > versioning-log
 	$we_menu['4162000']['text'] = g_l('javaMenu_global', '[versioning_log]') . '...';
 	$we_menu['4162000']['parent'] = '4000000';
 	$we_menu['4162000']['cmd'] = 'versioning_log';
 	$we_menu['4162000']['perm'] = 'ADMINISTRATOR';
-	$we_menu['4162000']['enabled'] = '1';
+	$we_menu['4162000']['enabled'] = 1;
 }
 
 $we_menu['4170000']['parent'] = '4000000'; // separator
@@ -678,14 +678,14 @@ $we_menu['4170000']['parent'] = '4000000'; // separator
 
 $we_menu['4180000']['text'] = g_l('javaMenu_global', '[preferences]');
 $we_menu['4180000']['parent'] = '4000000';
-$we_menu['4180000']['enabled'] = '1';
+$we_menu['4180000']['enabled'] = 1;
 
 
 $we_menu['4181000']['text'] = g_l('javaMenu_global', '[common]') . '...';
 $we_menu['4181000']['parent'] = '4180000';
 $we_menu['4181000']['cmd'] = 'openPreferences';
 $we_menu['4181000']['perm'] = 'EDIT_SETTINGS || ADMINISTRATOR';
-$we_menu['4181000']['enabled'] = '1';
+$we_menu['4181000']['enabled'] = 1;
 
 $we_menu['4183000']['parent'] = '4180000'; // separator
 
@@ -702,7 +702,7 @@ if(sizeof($_activeIntModules)){
 			$we_menu['4184' . $z]['parent'] = '4180000';
 			$we_menu['4184' . $z]['cmd'] = 'edit_settings_' . $modInfo['name'];
 			$we_menu['4184' . $z]['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
-			$we_menu['4184' . $z]['enabled'] = '1';
+			$we_menu['4184' . $z]['enabled'] = 1;
 			$z++;
 		}
 	}
@@ -730,7 +730,7 @@ if(sizeof($_activeIntModules)){
   $we_menu[$menNr]['parent'] = '4180000';
   $we_menu[$menNr]['cmd'] = 'edit_settings_' . $m['name'];
   $we_menu[$menNr]['perm'] = isset($m['perm']) ? $m['perm'] : '';
-  $we_menu[$menNr]['enabled'] = '1';
+  $we_menu[$menNr]['enabled'] = 1;
   $z++;
   }
   }
@@ -741,19 +741,19 @@ if(sizeof($_activeIntModules)){
 // Help
 $we_menu['5000000']['text'] = g_l('javaMenu_global', '[help]');
 $we_menu['5000000']['parent'] = '0000000';
-$we_menu['5000000']['enabled'] = '1';
+$we_menu['5000000']['enabled'] = 1;
 
 if(!$seeMode){
 	$we_menu['5010000']['text'] = g_l('javaMenu_global', '[onlinehelp]');
 	$we_menu['5010000']['parent'] = '5000000';
-	$we_menu['5010000']['enabled'] = '1';
+	$we_menu['5010000']['enabled'] = 1;
 }
 
 $we_menu['5010001']['text'] = g_l('javaMenu_global', '[onlinehelp]') . '...';
 $we_menu['5010001']['parent'] = $seeMode ? '5000000' : '5010000';
 $we_menu['5010001']['cmd'] = 'help';
 $we_menu['5010001']['perm'] = '';
-$we_menu['5010001']['enabled'] = '1';
+$we_menu['5010001']['enabled'] = 1;
 if(!$seeMode){
 	$we_menu['5010002']['parent'] = '5010000'; // separator
 
@@ -761,25 +761,25 @@ if(!$seeMode){
 	$we_menu['5010003']['parent'] = '5010000';
 	$we_menu['5010003']['cmd'] = 'help_documentation';
 	$we_menu['5010003']['perm'] = '';
-	$we_menu['5010003']['enabled'] = '1';
+	$we_menu['5010003']['enabled'] = 1;
 
 	$we_menu['5010004']['text'] = g_l('javaMenu_global', '[onlinehelp_tagreference]') . '...';
 	$we_menu['5010004']['parent'] = '5010000';
 	$we_menu['5010004']['cmd'] = 'help_tagreference';
 	$we_menu['5010004']['perm'] = '';
-	$we_menu['5010004']['enabled'] = '1';
+	$we_menu['5010004']['enabled'] = 1;
 
 	$we_menu['5010005']['text'] = g_l('javaMenu_global', '[onlinehelp_forum]') . '...';
 	$we_menu['5010005']['parent'] = '5010000';
 	$we_menu['5010005']['cmd'] = 'help_forum';
 	$we_menu['5010005']['perm'] = '';
-	$we_menu['5010005']['enabled'] = '1';
+	$we_menu['5010005']['enabled'] = 1;
 
 	$we_menu['5010006']['text'] = g_l('javaMenu_global', '[onlinehelp_bugtracker]') . '...';
 	$we_menu['5010006']['parent'] = '5010000';
 	$we_menu['5010006']['cmd'] = 'help_bugtracker';
 	$we_menu['5010006']['perm'] = '';
-	$we_menu['5010006']['enabled'] = '1';
+	$we_menu['5010006']['enabled'] = 1;
 
 
 	$we_menu['5010008']['parent'] = '5010000'; // separator
@@ -788,21 +788,21 @@ if(!$seeMode){
 	$we_menu['5010009']['parent'] = '5010000';
 	$we_menu['5010009']['cmd'] = 'help_changelog';
 	$we_menu['5010009']['perm'] = '';
-	$we_menu['5010009']['enabled'] = '1';
+	$we_menu['5010009']['enabled'] = 1;
 }
 if(!defined('SIDEBAR_DISABLED') || SIDEBAR_DISABLED == 0){
 	$we_menu['5015000']['text'] = g_l('javaMenu_global', '[sidebar]') . '...';
 	$we_menu['5015000']['parent'] = '5000000';
 	$we_menu['5015000']['cmd'] = 'openSidebar';
 	$we_menu['5015000']['perm'] = '';
-	$we_menu['5015000']['enabled'] = '1';
+	$we_menu['5015000']['enabled'] = 1;
 }
 
 $we_menu['5020000']['text'] = g_l('javaMenu_global', '[webEdition_online]') . '...';
 $we_menu['5020000']['parent'] = '5000000';
 $we_menu['5020000']['cmd'] = 'webEdition_online';
 $we_menu['5020000']['perm'] = '';
-$we_menu['5020000']['enabled'] = '1';
+$we_menu['5020000']['enabled'] = 1;
 
 $we_menu['5040000']['parent'] = '5000000'; // separator
 
@@ -810,7 +810,7 @@ $we_menu['5050000']['text'] = g_l('javaMenu_global', '[update]') . '...';
 $we_menu['5050000']['parent'] = '5000000';
 $we_menu['5050000']['cmd'] = 'update';
 $we_menu['5050000']['perm'] = 'ADMINISTRATOR';
-$we_menu['5050000']['enabled'] = '1';
+$we_menu['5050000']['enabled'] = 1;
 
 $we_menu['5060000']['parent'] = '5000000'; // separator
 
@@ -818,19 +818,19 @@ $we_menu['5090000']['text'] = g_l('javaMenu_global', '[sysinfo]') . '...';
 $we_menu['5090000']['parent'] = '5000000';
 $we_menu['5090000']['cmd'] = 'sysinfo';
 $we_menu['5090000']['perm'] = 'ADMINISTRATOR';
-$we_menu['5090000']['enabled'] = '1';
+$we_menu['5090000']['enabled'] = 1;
 
 $we_menu['5095000']['text'] = g_l('javaMenu_global', '[showerrorlog]') . '...';
 $we_menu['5095000']['parent'] = '5000000';
 $we_menu['5095000']['cmd'] = 'showerrorlog';
 $we_menu['5095000']['perm'] = 'ADMINISTRATOR';
-$we_menu['5095000']['enabled'] = '1';
+$we_menu['5095000']['enabled'] = 1;
 
 $we_menu['5100000']['text'] = g_l('javaMenu_global', '[info]') . '...';
 $we_menu['5100000']['parent'] = '5000000';
 $we_menu['5100000']['cmd'] = 'info';
 $we_menu['5100000']['perm'] = '';
-$we_menu['5100000']['enabled'] = '1';
+$we_menu['5100000']['enabled'] = 1;
 
 reset($GLOBALS['_we_available_modules']);
 foreach($GLOBALS['_we_available_modules'] as $key => $value){

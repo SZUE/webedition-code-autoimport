@@ -50,24 +50,19 @@ class weCustomerEIWizard{
 
 	function getHTMLFrameset($mode){
 
-		$js = we_html_element::jsElement('
-
+		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) .
+			we_html_element::jsElement('
 			var table="' . FILE_TABLE . '";
-
 			self.focus();
+		') . STYLESHEET;
 
-		');
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=eibody&art=" . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;overflow: auto') .
+					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('load', $this->frameset . "?pnt=eiload&step=1", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				));
 
-		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
-		$noframeset = new we_baseElement("noframes");
-
-		$frameset->setAttributes(array("rows" => "*,45,0"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eibody&art=" . $mode . "&step=1", "name" => "body", "scrolling" => "auto", "noresize" => null));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", "name" => "footer", "scrolling" => "no"));
-		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eiload&step=1", "name" => "load", "scrolling" => "no", "noresize" => null));
-
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js . STYLESHEET;
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
