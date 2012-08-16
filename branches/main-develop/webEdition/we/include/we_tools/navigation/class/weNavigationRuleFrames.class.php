@@ -24,15 +24,15 @@
  */
 class weNavigationRuleFrames{
 
-	private $Frameset;
-	private $Controller;
-	private $db;
+	public $Frameset;
+	public $Controller;
+	public $db;
 
 	function __construct(){
 		$this->Frameset = WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_rules_frameset.php';
 		$this->Controller = new weNavigationRuleControl();
 		$this->db = new DB_WE();
-		$yuiSuggest = & weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 	}
 
 	function getHTML($what){
@@ -49,15 +49,15 @@ class weNavigationRuleFrames{
 	}
 
 	function getHTMLFrameset(){
-		return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . '
-   <frameset rows="*,0" framespacing="0" border="1" frameborder="Yes">
-   <frame src="' . $this->Frameset . '?pnt=content" name="content" scrolling=no>
-   <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
-  </frameset>
-</head>
- <body background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
- </body>
-</html>';
+
+return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
+			we_html_element::htmlBody(array('style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				)) .
+			'</html>';
+
 	}
 
 	function getHTMLContent(){
@@ -120,8 +120,9 @@ class weNavigationRuleFrames{
 			'noline' => 1
 		);
 
-		$selectionTypes = array();
-		$selectionTypes['doctype'] = g_l('global', '[documents]');
+		$selectionTypes = array(
+			'doctype' => g_l('global', '[documents]')
+			);
 		if(defined('OBJECT_TABLE')){
 			$selectionTypes['classname'] = g_l('global', '[objects]');
 		}
