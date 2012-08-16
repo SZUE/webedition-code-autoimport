@@ -444,10 +444,11 @@ class we_import_files{
 			"headline" => '', "html" => $formhtml, "space" => 0
 		);
 
-		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_html_element::htmlForm(array(
+		$content = we_html_element::htmlDiv(array("id" => "forms", "style" => "display:block"), (
+				getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
-						), "") : "") . we_html_element::htmlForm(
+						), "") : "") .
+				we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",

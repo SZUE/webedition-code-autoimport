@@ -179,7 +179,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($id));
 		$tableID = f("SELECT TableID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), "TableID", $DB_WE);
-		if($tableID != "" || $tableID == "0"){
+		if(!empty($tableID)){
 			$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . $tableID . " WHERE OF_ID=" . intval($id));
 			//Bug 2892
 			$q = 'SELECT ID FROM ' . OBJECT_TABLE;

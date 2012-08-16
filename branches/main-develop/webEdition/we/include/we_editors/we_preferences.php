@@ -1552,7 +1552,7 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'ui_sidebar_file\'].value', myWindStr + '.frames[\'content'].document.forms[0].elements[\'ui_sidebar_file_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['ui_sidebar_file'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements['ui_sidebar_file'].value', myWindStr + '.frames['content'].document.forms[0].elements['ui_sidebar_file_name'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -4051,8 +4051,9 @@ else {
 				$_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
 			}
 
-			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
+
 */
+			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
 			/**
 			 * BUILD FINAL DIALOG
 			 */

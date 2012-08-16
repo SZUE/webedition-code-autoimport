@@ -2284,10 +2284,9 @@ class we_user{
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => "1", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', 'Textarea');
 		$_template_editor_mode->addOption('java', 'webEdition Java Editor');
-		$_template_editor_mode->addOption('codemirror', 'CodeMirror');
 		$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
 		$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
-		array_push($_settings, array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150));
+		$_settings[] = array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150);
 
 		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
@@ -2367,18 +2366,12 @@ class we_user{
 		$alias_text = "";
 		$parent_text = "/";
 		if($this->ID){
-			$foo = getHash("SELECT Path FROM " . USER_TABLE . " WHERE ID=" . intval($this->Alias), $this->DB_WE);
-			$alias_text = $foo["Path"];
-			if($this->ParentID == 0){
-				$parent_text = "/";
-			} else{
-				$foo = getHash("SELECT Path FROM " . USER_TABLE . " WHERE ID=" . intval($this->ParentID), $this->DB_WE);
-				$parent_text = $foo["Path"];
-			}
+			$alias_text = f("SELECT Path FROM " . USER_TABLE . " WHERE ID=" . intval($this->Alias), 'Path', $this->DB_WE);
+			$parent_text = ($this->ParentID == 0 ? '/' :
+					f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE) );
 		}
 		if($this->ParentID != 0){
-			$foo = getHash("SELECT Path FROM " . USER_TABLE . " WHERE ID=" . intval($this->ParentID), $this->DB_WE);
-			$parent_text = $foo["Path"];
+			$parent_text = f("SELECT Path FROM " . USER_TABLE . " WHERE ID=" . intval($this->ParentID), 'Path', $this->DB_WE);
 		}
 
 		$yuiSuggest = & weSuggest::getInstance();
