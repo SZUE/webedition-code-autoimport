@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weTagData_selectAttribute extends weTagDataAttribute{
 
 	/**
@@ -35,8 +34,8 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = false, $module = '',$description='',$deprecated=false){
-		parent::__construct($name, $required, $module,$description,$deprecated);
+	function __construct($name, $options = array(), $required = false, $module = '', $description = '', $deprecated = false){
+		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = parent::getUseOptions($options);
 	}
 
@@ -63,7 +62,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 				array(
 					'name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
 			));
-		$select->addOptions(sizeof($values), $keys, $values);
+		$select->addOptions(count($values), $keys, $values);
 
 		$select->selectOption($this->Value);
 

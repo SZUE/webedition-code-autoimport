@@ -94,8 +94,9 @@ class weTagDataOption{
 				t_e($attribute);
 				continue;
 			}
-			$attr = $attribute->getIdName();
-			$arr[] = $attr;
+			if($attribute->useAttribute()){
+				$arr[] = $attribute->getIdName();
+			}
 		}
 		return $arr;
 	}
@@ -104,11 +105,11 @@ class weTagDataOption{
 	 * @return array
 	 */
 	function getRequiredAttributes(){
-
 		$arr = array();
 		foreach($this->RequiredAttributes as $attribute){
-			$attr = $attribute->getIdName();
-			$arr[] = $attr;
+			if($attribute->useAttribute()){
+				$arr[] = $attribute->getIdName();
+			}
 		}
 		return $arr;
 	}
