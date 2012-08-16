@@ -75,14 +75,14 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 
 			$_allowedAttribs = $option->getAllowedAttributes();
 
-			if(sizeof($_allowedAttribs)){
+			if(count($_allowedAttribs)){
 
-				$typeAttributeJs .= "typeAttributeAllows[\"" . $option->getName() . "\"] = new Array(\"";
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("';
 
 				$typeAttributeJs .= implode('","', $_allowedAttribs);
-				$typeAttributeJs .= "\");";
+				$typeAttributeJs .= '");';
 			} else{
-				$typeAttributeJs .= "typeAttributeAllows[\"" . $option->getName() . "\"] = new Array();";
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
 			}
 		}
 
