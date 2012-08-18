@@ -675,7 +675,7 @@ class we_objectFile extends we_document{
 				}
 			}
 
-			if(count($order) != count($fields)){
+			if( (count($order) != count($fields)) || !in_array(0,$order)){
 				$order = array();
 				for($y = 0; $y < count($fields); $y++){
 					$order[$y] = $y;

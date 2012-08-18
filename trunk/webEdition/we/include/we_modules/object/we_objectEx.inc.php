@@ -401,5 +401,10 @@ class we_objectEx extends we_object{
 		$this->DefaultValues = serialize($this->SerializedArray);
 		return $this->saveToDB(true);
 	}
+	function resetOrder(){
+		unset($this->elements['we_sort']);
+		$this->setSort();
+		$this->we_save();
+	}
 
 }
