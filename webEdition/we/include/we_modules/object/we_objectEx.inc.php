@@ -404,6 +404,8 @@ class we_objectEx extends we_object{
 	function resetOrder(){
 		unset($this->elements['we_sort']);
 		$this->setSort();
+		$we_sort = $this->getElement('we_sort');
+		$this->strOrder = implode(',', $we_sort);
 		$this->we_save();
 	}
 
