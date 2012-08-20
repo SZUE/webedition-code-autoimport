@@ -109,7 +109,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	array_push($parentIDs, $pid);
 	while($pid != 0) {
 		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
-		array_push($parentIDs, $pid);
+		$parentIDs[] = $pid;
 	}
 	$cid = intval($cid);
 	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, 'DefaultValues', $db);
@@ -210,54 +210,45 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
 }
 
 function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = "", $fieldName = "Category", $getParentCats = true, $categoryids = ''){
-	$cat_tail = "";
-	if(!$db)
-		$db = new DB_WE();
+	$cat_tail = array();
+	$db = $db ? $db : new DB_WE();
 
 	if($categoryids){
 
 		$idarray = makeArrayFromCSV($categoryids);
 
 		foreach($idarray as $catId){
-			$catId = trim($catId);
+			$catId = intval(trim($catId));
 			if($catId){
-				$sql = getSQLForOneCatId($catId, $table, $db, $fieldName, $getParentCats);
-				$cat_tail .= ( $sql . ($catOr ? " OR " : " AND "));
+				$cat_tail[] = getSQLForOneCatId($catId, $table, $db, $fieldName, $getParentCats);
 			}
 		}
 
-		$cat_tail = trim(preg_replace('#^(.*)' . ($catOr ? 'OR' : 'AND') . ' $#', '\1', $cat_tail));
-
-		if($cat_tail == ""){
-			$cat_tail = " AND " . $table . "." . $fieldName . " = '-1' ";
-		} else{
-			$cat_tail = " AND (" . $cat_tail . ") ";
-		}
-	} else
-	if($catCSV){
+		return (count($cat_tail) == 0 ?
+				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
+				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
+	} else if($catCSV){
 		$foo = makeArrayFromCSV($catCSV);
 		foreach($foo as $cat){
 			$cat = trim($cat);
-			if(strlen($cat) > 0 && substr($cat, -1) == "/"){
+			if(strlen($cat) > 0 && substr($cat, -1) == '/'){
 				$cat = substr($cat, 0, strlen($cat) - 1);
 			}
-			if(substr($cat, 0, 1) != "/"){
-				$cat = "/" . $cat;
+			if(substr($cat, 0, 1) != '/'){
+				$cat = '/' . $cat;
 			}
-			$sql = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
-			$cat_tail .= ( $sql . ($catOr ? " OR " : " AND "));
-		}
-
-		$cat_tail = trim(preg_replace('#^(.*)' . ($catOr ? 'OR' : 'AND') . ' $#', '\1', $cat_tail));
-
-		if($cat_tail == ""){
-			$cat_tail = " AND " . $table . "." . $fieldName . " = '-1' ";
-		} else{
-			$cat_tail = " AND (" . $cat_tail . ") ";
+			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
+			if($tmp){
+				$cat_tail[] = $tmp;
 		}
 	}
 
-	return $cat_tail;
+		return (count($cat_tail) == 0 ?
+				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
+				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
+	}
+
+	return '';
 }
 
 function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true){
@@ -310,6 +301,9 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
 
+	if($timeout){
+		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+	}
 	if($timeout){
 		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
 	}
@@ -372,6 +366,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 }
 
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
+	//FIXME: add code for proxy, see weXMLBrowser
 	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){
 		if(!$port){
@@ -857,7 +852,7 @@ function path_to_id_ct($path, $table, &$contentType){
 	if($path == '/'){
 		return 0;
 	}
-	$res = getHash("SELECT ID,ContentType FROM $table WHERE Path='" . $db->escape($path) . "'", $db);
+	$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
 	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
 
 	return intval(isset($res['ID']) ? $res['ID'] : 0);
@@ -891,10 +886,10 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 }
 
 function getHashArrayFromCSV($csv, $firstEntry, $db = ''){
-	if(!$csv)
+	if(!$csv){
 		return array();
-	if(!$db)
-		$db = new DB_WE();
+	}
+	$db = $db ? $db : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
 		'0' => $firstEntry
@@ -986,12 +981,12 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', $db = ''){
 	$db = $db ? $db : new DB_WE();
-	$pid = f('SELECT ParentID FROM ' . $tab . ' WHERE ID=' . intval($id), 'ParentID', $db);
+	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), 'ParentID', $db);
 	if($pid !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
 		} else{
-			$tmp = f('SELECT 1 AS a FROM ' . $tab . ' WHERE ID=' . $pid . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', 'a', $db);
+			$tmp = f('SELECT 1 AS a FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $match . ' = "' . $db->escape($matchvalue) . '"', 'a', $db);
 			if($tmp == '1'){
 				$parentlist[] = $pid;
 				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
@@ -1002,7 +997,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', $db = ''){
 	$db = $db ? $db : new DB_WE();
-	$db->query('SELECT ID,' . $match . ' FROM ' . $tab . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
+	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
 	$todo = array();
 	while($db->next_record()) {
 		if($db->f($match) == $matchvalue){

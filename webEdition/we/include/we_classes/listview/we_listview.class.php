@@ -202,7 +202,7 @@ class we_listview extends listviewBase{
 				$cond = array();
 				foreach($workspaces as $id){
 					$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
-					$cond[] = '(' . INDEX_TABLE . ".Workspace like '$workspace/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')";
+					$cond[] = '(' . INDEX_TABLE . '.Workspace LIKE "' . $workspace . '/%" OR ' . INDEX_TABLE . '.Workspace="' . $this->DB_WE->escape($workspace) . '")';
 				}
 				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
@@ -228,11 +228,10 @@ class we_listview extends listviewBase{
 					}
 				} else{
 					$klammer = array();
-					reset($spalten);
 					foreach($spalten as $k => $v){
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
 					}
-					$bed2 = '(' . join($klammer, ' OR ') . ')';
+					$bed2 = '(' . implode($klammer, ' OR ') . ')';
 					$ranking .= '-' . $bed2;
 					$bedingungen2_sql[] = $bed2;
 				}
@@ -257,7 +256,7 @@ class we_listview extends listviewBase{
 			if($random){
 				$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql" . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . " GROUP BY ID ORDER BY RANDOM" . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 			} else{
-				$q = 'SELECT distinct ' . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql" . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt) ) : '') . ' ' . $sql_tail . $calendar_where . " " . $orderstring . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
+				$q = 'SELECT DISTINCT ' . FILE_TABLE . ".ID as ID, " . FILE_TABLE . ".WebUserID as WebUserID, $ranking as ranking $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . "," . INDEX_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . INDEX_TABLE . ".DID=" . FILE_TABLE . ".ID AND $bedingung_sql" . (($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt) ) : '') . ' ' . $sql_tail . $calendar_where . " " . $orderstring . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 			}
 		} else{
 
@@ -277,7 +276,7 @@ class we_listview extends listviewBase{
 			if($random){
 				$q = 'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . ".WebUserID as WebUserID, RAND() as RANDOM $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . " GROUP BY ID ORDER BY RANDOM" . (($rows > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 			} else{
-				$q = 'SELECT distinct ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . ".WebUserID as WebUserID $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . " " . $orderstring . (($rows > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
+				$q = 'SELECT DISTINCT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . ".WebUserID as WebUserID $calendar_select FROM " . FILE_TABLE . "," . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . ($this->searchable ? " " . FILE_TABLE . ".IsSearchable=1" : "1") . " $where_lang $cond_where $ws_where AND " . FILE_TABLE . ".IsFolder=0 AND " . LINK_TABLE . ".DID=" . FILE_TABLE . ".ID AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . FILE_TABLE . ".Published > 0 AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'" . (($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' . $sql_tail . $calendar_where . " " . $orderstring . (($rows > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 			}
 		}
 		$this->DB_WE->query($q);
