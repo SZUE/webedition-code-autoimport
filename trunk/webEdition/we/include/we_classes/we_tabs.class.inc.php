@@ -44,21 +44,23 @@ class we_tabs {
 
 		switch (we_base_browserDetect::inst()->getBrowser()) {
 			case we_base_browserDetect::SAFARI:
-				$this->heightPlus = "";
+				$this->heightPlus = '';
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
 				$this->tabBG ="";
 				break;
 			case we_base_browserDetect::IE:
-				$this->heightPlus = "";
+				if(we_base_browserDetect::inst()->getBrowserVersion() < 9){
+					$this->heightPlus = '';
 				$this->textvalign = "middle";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
 				$this->tabBG ="background-position:bottom; ";
 				break;
+				}
 			default:
-				$this->heightPlus = "";
+				$this->heightPlus = '';
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border: 0px;";
@@ -224,11 +226,9 @@ function getPathInfos(){
 
 HTS;
 
-		$out = we_html_element::cssElement($styles);
-		$out.= we_html_element::jsElement($script);
-		$out.= we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
-
-		return $out;
+		return we_html_element::cssElement($styles) .
+			we_html_element::jsElement($script) .
+			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 	}
 
 	function getHTML() {
@@ -255,12 +255,19 @@ HTS;
 
 function setFrameSize(){
 	if(document.getElementById('tabContainer').offsetWidth > 0) {
+		if(document.getElementById('naviDiv')){
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			document.getElementById('naviDiv').style.height = tabsHeight+"px";
+			document.getElementById('contentDiv').style.top = tabsHeight+"px";
+		}else{
+		//FIXME: remove this if frames are obsolete
 		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
 		//document.getElementById('main').style.overflow = "hidden";
 		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
 		var fsRows = fs.rows.split(',');
 		fsRows[0] = tabsHeight;
 		fs.rows =  fsRows.join(",");
+		}
 	} else {
 		setTimeout("setFrameSize()",100);
 	}
