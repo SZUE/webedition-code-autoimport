@@ -145,4 +145,3 @@ include(WE_INCLUDES_PATH. 'we_editors/we_preferences_footer.inc.php');
 				));
 
 print we_html_element::htmlBody(array(),$body).getPreferencesJS().  getPreferencesFooterJS() . '</html>';
-

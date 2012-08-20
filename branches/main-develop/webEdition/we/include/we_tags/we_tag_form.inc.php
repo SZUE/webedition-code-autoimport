@@ -206,7 +206,7 @@ function we_tag_form($attribs){
 				$_recipientString = implode(',', $_recipientArray);
 
 				$_ids = array();
-				$GLOBALS['DB_WE']->query('SELECT * FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . $_recipientString . ')');
+				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . $_recipientString . ')');
 				while($GLOBALS['DB_WE']->next_record()) {
 					$_ids[] = $GLOBALS['DB_WE']->f('ID');
 				}

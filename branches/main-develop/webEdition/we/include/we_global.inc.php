@@ -1482,7 +1482,7 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
-	$email = html_entity_decode($email);
+/*	$email = html_entity_decode($email);
 	$namePart[0] = '';
 	$_email = array();
 	if(preg_match('/<(.)*>/', $email, $_email)){
@@ -1496,7 +1496,8 @@ function we_check_email($email){ // Zend validates only the pure address
 	}
 
 	$validator = new Zend_Validate_EmailAddress();
-	return $validator->isValid($email);
+	return $validator->isValid($email);*/
+	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
 function getRequestVar($name, $default, $yescode = '', $nocode = ''){
