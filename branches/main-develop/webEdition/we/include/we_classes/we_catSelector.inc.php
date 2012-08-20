@@ -147,11 +147,7 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function userCanChangeCat(){
-		if(!$this->userCanEditCat())
-			return false;
-		if($this->id == 0)
-			return false;
-		return true;
+		return (!$this->userCanEditCat() || $this->id == 0) ? false : true;
 	}
 
 	function printHeaderJSDef(){
@@ -375,19 +371,18 @@ function enableDelBut(){
 	}
 
 	function getFramesetJavaScriptDef(){
-		$def = we_fileselector::getFramesetJavaScriptDef();
-		$def .= 'var makeNewFolder=0;
+		return we_fileselector::getFramesetJavaScriptDef() .
+			'var makeNewFolder=0;
 var hot=0; // this is hot for category edit!!
 var makeNewCat=0;
 var we_editCatID="";
 var old=0;
 ';
-		return $def;
 	}
 
 	function printCreateEntryHTML($what = 0){
 		we_html_tools::htmlTop();
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->EntryText = rawurldecode($this->EntryText);
@@ -448,8 +443,8 @@ if(top.currentID){
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
-</script>
-';
+//-->
+</script>';
 		print '</head><body></body></html>';
 	}
 
@@ -474,7 +469,7 @@ top.selectFile(top.currentID);
 		$IsDir = $foo["IsFolder"];
 		$oldname = $foo["Text"];
 		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), 'IsFolder', $this->db);
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->EntryText = rawurldecode($this->EntryText);
@@ -522,9 +517,8 @@ if(top.currentID){
 
 		print 'top.fsfooter.document.we_form.fname.value = "";
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;
-</script>
-';
-		print '</head><body></body></html>';
+//-->
+</script></head><body></body></html>';
 	}
 
 	function printFramesetJSDoClickFn(){
@@ -609,7 +603,7 @@ top.clearEntries();
 					top.fsheader.enableDelBut();') .
 			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-	//-->
+//-->
 </script>';
 	}
 
@@ -754,13 +748,15 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function DirInUse($id){
 		$db = new DB_WE();
-		if($this->CatInUse($id, 0))
+		if($this->CatInUse($id, 0)){
 			return true;
+		}
 
 		$db->query("SELECT ID,IsFolder FROM " . $db->escape($this->table) . " WHERE ParentID=" . intval($id));
 		while($db->next_record()) {
-			if($this->CatInUse($db->f("ID"), $db->f("IsFolder")))
+			if($this->CatInUse($db->f("ID"), $db->f("IsFolder"))){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -779,7 +775,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				if($this->CatInUse($id, $IsDir)){
 					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . "\\n";
 				} else{
-					array_push($finalDelete, array("id" => $id, "IsDir" => $IsDir));
+					$finalDelete[] = array("id" => $id, "IsDir" => $IsDir);
 				}
 			}
 			if(sizeof($finalDelete)){
@@ -865,8 +861,7 @@ top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . $Text . '";
 if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	top.fsheader.enableDelBut();
-</script>
-';
+</script>';
 		}
 
 		print '</head><body></body></html>';

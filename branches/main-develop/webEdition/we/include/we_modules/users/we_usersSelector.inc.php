@@ -27,7 +27,7 @@ class we_usersSelector extends we_multiSelector{
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 	var $filter = "";
 
-	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $filter="", $multiple=true){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $filter = "", $multiple = true){
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple);
 		$this->title = g_l('fileselector', '[userSelector][title]');
@@ -58,7 +58,7 @@ class we_usersSelector extends we_multiSelector{
 		}
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
@@ -155,17 +155,15 @@ top.clearEntries();';
 
 		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			$go = true;
-		}else{
+		} else{
 			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);
 			$rootPath = f("SELECT Path FROM " . USER_TABLE . " WHERE ID='" . $rootID . "'", "Path", $this->db);
-			$this->db->query("SELECT ID FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'");
-			if($this->db->next_record())
-				$go = true; else
-				$go = false;
+			$go = (f("SELECT 1 AS a FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'", 'a', $this->db) == '1');
 		}
 		if($go){
-			if($this->id == 0)
+			if($this->id == 0){
 				$this->path = "/";
+			}
 			print 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";
@@ -175,8 +173,7 @@ top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 //-->
-';
-		print '</script>';
+</script>';
 	}
 
 	function printFramesetSelectFileHTML(){
@@ -225,12 +222,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	function printFooterTable(){
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
+				<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
+				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
 		$buttons = we_button::position_yes_no_cancel(
@@ -274,4 +267,3 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 }
-?>

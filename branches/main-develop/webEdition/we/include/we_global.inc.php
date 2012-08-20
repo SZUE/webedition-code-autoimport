@@ -212,7 +212,7 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 		$idarray = makeArrayFromCSV($categoryids);
 
 		foreach($idarray as $catId){
-			$catId = trim($catId);
+			$catId = intval(trim($catId));
 			if($catId){
 				$cat_tail[] = getSQLForOneCatId($catId, $table, $db, $fieldName, $getParentCats);
 			}
@@ -225,13 +225,16 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 		$foo = makeArrayFromCSV($catCSV);
 		foreach($foo as $cat){
 			$cat = trim($cat);
-			if(strlen($cat) > 0 && substr($cat, -1) == "/"){
+			if(strlen($cat) > 0 && substr($cat, -1) == '/'){
 				$cat = substr($cat, 0, strlen($cat) - 1);
 			}
-			if(substr($cat, 0, 1) != "/"){
-				$cat = "/" . $cat;
+			if(substr($cat, 0, 1) != '/'){
+				$cat = '/' . $cat;
 			}
-			$cat_tail[] = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
+			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
+			if($tmp){
+				$cat_tail[] = $tmp;
+			}
 		}
 
 		return (count($cat_tail) == 0 ?
@@ -654,7 +657,7 @@ function makeOwnersSql($useCreatorID = true){
 	$aliases[] = $_SESSION['user']['ID'];
 	$q = array();
 	if($useCreatorID){
-		$q[] = 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\')';
+		$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 	}
 	foreach($aliases as $id){
 		$q [] = 'Owners like "%,' . intval($id) . ',%"';
@@ -666,7 +669,7 @@ function makeOwnersSql($useCreatorID = true){
 	}
 
 	foreach($groups as $id){
-		$q[] = "Owners like '%," . intval($id) . ",%'";
+		$q[] = "Owners LIKE '%," . intval($id) . ",%'";
 	}
 	return ' AND ( RestrictOwners=0 OR (' . implode(' OR ', $q) . ')) ';
 }

@@ -25,9 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-// include autoload function
-include_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
-
 Zend_Loader::loadClass('we_core_Local');
 
 
@@ -79,20 +76,7 @@ if($_REQUEST['tool'] == "weSearch"){
 	//look which search is activ
 	if(isset($_REQUEST['we_cmd'][2])){
 
-		if(defined("OBJECT_FILES_TABLE")){
-			$objectFilesTable = OBJECT_FILES_TABLE;
-		} else{
-			$objectFilesTable = "";
-		}
-		if(defined("OBJECT_TABLE")){
-			$objectTable = OBJECT_TABLE;
-		} else{
-			$objectTable = "";
-		}
-
-		$table = $_REQUEST['we_cmd'][2];
-		switch($table){
-
+		switch($_REQUEST['we_cmd'][2]){
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION["weSearch"]["checkWhich"] = 1;
@@ -101,11 +85,11 @@ if($_REQUEST['tool'] == "weSearch"){
 				$tab = 2;
 				$_SESSION["weSearch"]["checkWhich"] = 2;
 				break;
-			case $objectFilesTable:
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 3;
 				break;
-			case $objectTable:
+			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 4;
 				break;
@@ -120,10 +104,10 @@ if($_REQUEST['tool'] == "weSearch"){
 	}
 }
 
-print we_html_element::jsScript(JS_DIR . "keyListener.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
+print we_html_element::jsScript(JS_DIR . "keyListener.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');

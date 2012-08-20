@@ -71,7 +71,6 @@ class we_fileselector{
 		$this->rootDirID = intval($rootDirID);
 		$this->sessionID = $sessionID;
 		$this->filter = $filter;
-		//if($this->sessionID) session_id($this->sessionID);
 		$this->setDirAndID();
 		$this->setTableLayoutInfos();
 	}
@@ -102,7 +101,6 @@ class we_fileselector{
 	}
 
 	function setDefaultDirAndID($setLastDir){
-
 		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
 
@@ -221,7 +219,7 @@ class we_fileselector{
 		}
 		return false;
 	}' .
-				$this->getExitOpen();
+			$this->getExitOpen();
 		$this->printFramesetJSDoClickFn();
 		$this->printFramesetJSsetDir();
 		?>
@@ -312,9 +310,8 @@ class we_fileselector{
 		}
 
 		function getFramesetJavaScriptDef(){
-			$startPathQuery = new DB_WE();
-			$startPathQuery->query("SELECT Path FROM " . $startPathQuery->escape($this->table) . " WHERE ID=" . intval($this->dir));
-			$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
+			$startPath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
+			$startPath = $startPath ? $startPath : '/';
 
 			return '<script  type="text/javascript">
 	var currentID="' . $this->id . '";
@@ -327,7 +324,7 @@ class we_fileselector{
 
 	var parentID="' .
 				($this->dir ?
-					f("SELECT ParentID FROM $this->table WHERE ID='" . $this->dir . "'", "ParentID", $this->db) :
+					f('SELECT ParentID FROM' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), "ParentID", $this->db) :
 					0) . '";
     var table="' . $this->table . '";
 	var order="' . $this->order . '";
@@ -575,7 +572,7 @@ class we_fileselector{
 				$this->printHeaderHeadlines();
 				$this->printHeaderLine();
 
-				print '		</form>
+				print '</form>
 	</body>
 </html>';
 			}
@@ -609,9 +606,9 @@ class we_fileselector{
 			}
 
 			function printHeaderTable(){
-				print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">';
+				print '<table border="0" cellpadding="0" cellspacing="0" width="100%">';
 				$this->printHeaderTableSpaceRow();
-				print '				<tr valign="middle">
+				print '<tr valign="middle">
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 					<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
@@ -631,14 +628,14 @@ class we_fileselector{
 					</td>';
 				$this->printHeaderTableExtraCols();
 
-				print '				<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>';
+				print '<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>';
 				$this->printHeaderTableSpaceRow();
 
-				print '			</table>';
+				print '</table>';
 			}
 
 			function printHeaderHeadlines(){
-				print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				print '<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td>' . we_html_tools::getPixel(25, 14) . '</td>
 					<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
@@ -689,12 +686,9 @@ top.clearEntries();';
 				$this->printCmdAddEntriesHTML();
 				$this->printCMDWriteAndFillSelectorHTML();
 
-				if(intval($this->dir) == 0){
-					print 'top.fsheader.disableRootDirButs();';
-				} else{
-					print 'top.fsheader.enableRootDirButs();';
-				}
-				print 'top.currentPath = "' . $this->path . '";
+				print '
+top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 //-->
 </script>';
@@ -714,16 +708,13 @@ top.fsheader.clearOptions();';
 				$out = "";
 				$c = 0;
 				while($pid != 0) {
-					$c++;
-					$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
+					++$c;
+					$foo = getHash('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
 
-					if($this->db->next_record()){
-						$out = 'top.fsheader.addOption("' . $this->db->f("Text") . '",' . $this->db->f("ID") . ');' . $out;
+					if(!empty($foo)){
+						$out = 'top.fsheader.addOption("' . $foo["Text"] . '",' . $foo["ID"] . ');' . $out;
 					}
-					$pid = $this->db->f("ParentID");
-					if($c > 500){
-						$pid = 0;
-					}
+					$pid = ($c > 500 ? 0 : $foo["ParentID"]);
 				}
 				print 'top.fsheader.addOption("/",0);' . $out . 'top.fsheader.selectIt();';
 			}

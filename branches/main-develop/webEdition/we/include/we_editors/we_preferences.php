@@ -867,8 +867,8 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			case 'editorCodecompletion':
 			case 'editorTooltips':
 			case 'editorDocuintegration':
-			//case 'debug_normal':
-			//case 'debug_seem':
+				//case 'debug_normal':
+				//case 'debug_seem':
 				$_SESSION['prefs'][$settingname] = 0;
 				$_update_prefs = true;
 				break;
@@ -1259,13 +1259,8 @@ function save_all_values(){
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_username"]) ? $_REQUEST["smtp_username"] : '', 'SMTP_USERNAME');
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_password"]) ? $_REQUEST["smtp_password"] : '', 'SMTP_PASSWORD');
 		$_update_prefs = remember_value(isset($_REQUEST["smtp_encryption"]) ? $_REQUEST["smtp_encryption"] : '', 'SMTP_ENCRYPTION');
-	}
 
-	/*	 * ***********************************************************************
-	 * VERSIONING
-	 * *********************************************************************** */
-	if(we_hasPerm("ADMINISTRATOR")){
-
+		//VERSIONING
 		$_update_prefs = remember_value(isset($_REQUEST["version_image/*"]) ? $_REQUEST["version_image/*"] : '0', 'VERSIONING_IMAGE');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/html"]) ? $_REQUEST["version_text/html"] : '0', 'VERSIONING_TEXT_HTML');
 		$_update_prefs = remember_value(isset($_REQUEST["version_text/webedition"]) ? $_REQUEST["version_text/webedition"] : '0', 'VERSIONING_TEXT_WEBEDITION');
@@ -1414,15 +1409,10 @@ function build_dialog($selected_setting = 'ui'){
 			break;
 
 		case 'ui':
-			/*			 * ***************************************************************
-			 * LANGUAGE
-			 * *************************************************************** */
+			//LANGUAGE
 
 			$_settings = array();
 
-			/**
-			 * Language
-			 */
 			//	Look which languages are installed ...
 			$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
@@ -1480,9 +1470,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $_charset->getHtml() . '<br><br>' . $langNote, 'space' => 200);
 
 
-			/*			 * ***************************************************************
-			 * DEFAULT CHARSET
-			 * *************************************************************** */
+			// DEFAULT CHARSET
 			$_charsetHandler = new charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
@@ -2497,9 +2485,6 @@ EOF;
 				$_settings[] = array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1);
 			}
 
-			/**
-			 * BUILD FINAL DIALOG
-			 */
 			// Build dialog element if user has permission
 			if(we_hasPerm('EDIT_SETTINGS_DEF_EXT')){
 				$_dialog = create_dialog('', g_l('prefs', '[tab_extensions]'), $_settings);
@@ -2508,18 +2493,8 @@ EOF;
 			break;
 
 		case 'editor':
-			/*			 * *******************************************************************
-			 * EDITOR PLUGIN
-			 * ******************************************************************* */
-
+			//EDITOR PLUGIN
 			$_settings = array();
-
-
-			// Create checkboxes
-			/*			 * *******************************************************************
-			 * TEMPLATE EDITOR
-			 * ******************************************************************* */
-
 
 			$_needed_JavaScript = we_html_element::jsElement('
 
@@ -2687,9 +2662,6 @@ else {
 			// Build specify font
 			$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, 'editorFont', g_l('prefs', '[specify]'), true, 'defaultfont', "if (document.getElementsByName('editorFont')[0].checked) { document.getElementsByName('editorFontname')[0].disabled = false;document.getElementsByName('editorFontsize')[0].disabled = false; } else { document.getElementsByName('editorFontname')[0].disabled = true;document.getElementsByName('editorFontsize')[0].disabled = true; }");
 
-
-
-
 			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'editorFontname', 'size' => '1', 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
 			$_colorsDisabled = get_value('specify_jeditor_colors') == 0 || (get_value('editorMode') != 'java');
@@ -2778,8 +2750,6 @@ else {
 
 			$_settings[] = array('headline' => '', 'html' => $_cm_information, 'space' => 0);
 
-
-
 			//Build activation of line numbers
 			$_template_editor_linenumbers_code = we_forms::checkbox(1, get_value('editorLinenumbers'), 'editorLinenumbers', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
@@ -2854,9 +2824,6 @@ else {
 			$_settings[] = array('headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150);
 			$_settings[] = array('headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150);
 
-			/**
-			 * BUILD FINAL DIALOG
-			 */
 			$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
 
 			$_dialog = create_dialog("settings_editor_predefined", g_l('prefs', '[tab_editor]'), $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_settings_cookie, $_needed_JavaScript);
@@ -2864,9 +2831,7 @@ else {
 			break;
 
 		case "recipients":
-			/*			 * *******************************************************************
-			 * FORMMAIL RECIPIENTS
-			 * ******************************************************************* */
+			//FORMMAIL RECIPIENTS
 
 			$_settings = array();
 
@@ -3133,9 +3098,7 @@ else {
 
 				$_settings[] = array('html' => $_formmail_emptylog->getHtml(), "space" => 250, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
 
-				////////////////////////////////
 				// formmail only via we doc //
-				////////////////////////////////
 				$_formmail_ViaWeDoc = new we_html_select(array("name" => "formmail_ViaWeDoc", "style" => "width:88px;", "class" => "weSelect"));
 				$_formmail_ViaWeDoc->addOption(1, g_l('prefs', '[yes]'));
 				$_formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
@@ -3143,9 +3106,7 @@ else {
 
 				$_settings[] = array('html' => $_formmail_ViaWeDoc->getHtml(), "space" => 250, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
 
-				/////////////////////////////
 				// limit formmail requests //
-				/////////////////////////////
 				$_formmail_block = new we_html_select(array("name" => "formmail_block", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"));
 				if($_isDisabled){
 					$_formmail_block->setAttribute("disabled", "disabled");
@@ -4031,28 +3992,28 @@ else {
 			}
 
 			/*
-			// Create checkboxes
-			$_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
+			  // Create checkboxes
+			  $_debug_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
 
-			$_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
-			$_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-			$_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
+			  $_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
+			  $_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
+			  $_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
 
-			// Build dialog if user has permission
-			if(we_hasPerm("ADMINISTRATOR")){
-				$_settings[] = array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1);
-			}
+			  // Build dialog if user has permission
+			  if(we_hasPerm("ADMINISTRATOR")){
+			  $_settings[] = array("headline" => g_l('prefs', '[show_debug_frame]'), "html" => $_debug_table->getHtml(), "space" => 200, "noline" => 1);
+			  }
 
-			// Create notice
-			$_debug_notice = we_html_tools::getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
+			  // Create notice
+			  $_debug_notice = we_html_tools::getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
 
-			// Build notice dialog if user has permission
-			if(we_hasPerm("ADMINISTRATOR")){
-				$_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
-			}
+			  // Build notice dialog if user has permission
+			  if(we_hasPerm("ADMINISTRATOR")){
+			  $_settings[] = array("headline" => "", "html" => $_debug_notice, "space" => 200);
+			  }
 
 
-*/
+			 */
 			$_settings_cookie = weGetCookieVariable("but_settings_error_expert");
 			/**
 			 * BUILD FINAL DIALOG
