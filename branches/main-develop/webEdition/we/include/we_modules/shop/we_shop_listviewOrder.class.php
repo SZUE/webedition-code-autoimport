@@ -174,5 +174,3 @@ class we_shop_listviewOrder extends listviewBase{
 	}
 
 }
-
-?>

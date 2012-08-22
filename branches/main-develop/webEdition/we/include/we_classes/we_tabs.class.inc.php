@@ -275,11 +275,9 @@ HTS;
 	}
 
 	function addJS(){
-
 	}
 
 	function addCSS(){
-
 	}
 
 }
