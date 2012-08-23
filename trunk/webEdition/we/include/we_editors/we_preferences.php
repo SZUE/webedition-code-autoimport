@@ -124,7 +124,6 @@ $global_config = array(
 	'WE_COUNTRIES_DEFAULT' => array('// shown if no coutry was choosen', ""),
 );
 
-
 /**
  * This function returns the HTML code of a dialog.
  *
@@ -195,16 +194,8 @@ function get_value($settingvalue){
 			return $_SESSION['prefs'][$settingvalue];
 
 		case 'use_jupload':
-			if(isset($_SESSION['prefs']['use_jupload'])){
-				return $_SESSION['prefs']['use_jupload'];
-			}
-			return 1;
-
 		case 'specify_jeditor_colors':
-			if(isset($_SESSION['prefs']['specify_jeditor_colors'])){
-				return $_SESSION['prefs']['specify_jeditor_colors'];
-			}
-			return 1;
+			return (isset($_SESSION['prefs'][$settingvalue]) ? $_SESSION['prefs'][$settingvalue] : 1);
 
 		case 'seem_start_type':
 			if(($_SESSION['prefs']['seem_start_type'] == 'document' || $_SESSION['prefs']['seem_start_type'] == 'object') && $_SESSION['prefs']['seem_start_file'] == 0){
@@ -225,8 +216,8 @@ function get_value($settingvalue){
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php')){
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php');
 			}
-
 			return defined('WE_PROXYHOST');
+
 		case 'message_reporting':
 			return (isset($_SESSION['prefs']['message_reporting']) && $_SESSION['prefs']['message_reporting']) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
 
@@ -4538,7 +4529,6 @@ function render_dialog(){
 	// Hide preload screen
 	//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
-
 
 we_html_tools::htmlTop();
 
