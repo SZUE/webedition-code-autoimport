@@ -53,9 +53,9 @@ function we_save() {
 		var _fo=document.getElementById('content').contentDocument.forms[0];
 		var oSctCols=_fo.elements['cockpit_amount_columns'];
 		var iCols=oSctCols.options[oSctCols.selectedIndex].value;
-		if(iCols!=oCockpit._iLayoutCols){
-			oCockpit.modifyLayoutCols(iCols);
-		}
+//		if(iCols!=oCockpit._iLayoutCols){
+//			oCockpit.modifyLayoutCols(iCols);
+//		}
 	}
 
 	document.getElementById('content').contentDocument.getElementById('setting_email').style.display = 'none';
@@ -66,7 +66,7 @@ END_OF_SCRIPT;
 
 	if(we_hasPerm('FORMMAIL')){
 		$_javascript .= '
-		//document.content.send_recipients(); FIX ME
+		//document.content.send_recipients(); //FIX ME
 		';
 	}
 
