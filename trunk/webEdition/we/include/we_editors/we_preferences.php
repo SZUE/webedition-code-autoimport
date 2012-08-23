@@ -821,7 +821,7 @@ $GLOBALS["_we_active_integrated_modules"]=$_we_active_integrated_modules;
 			default:
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, $settingname, 1);
+				$_file = weConfParser::changeSourceCode("define", $_file, $settingname, 0);
 
 				//$_update_prefs = false;
 				break;
@@ -4682,8 +4682,6 @@ if($doSave && !$acError){
 							   top.close();
 							}
 					   ');
-
-
 
 
 	print STYLESHEET . $save_javascript . "</head>" .
