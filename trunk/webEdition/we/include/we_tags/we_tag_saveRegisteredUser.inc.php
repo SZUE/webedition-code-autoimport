@@ -27,7 +27,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
 	$GLOBALS['we_customer_writen'] = false;
-
+	$GLOBALS['we_customer_written'] = false;
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
 		if(isset($_REQUEST['s']['Password2'])){
 			unset($_REQUEST['s']['Password2']);
@@ -64,12 +64,15 @@ function we_tag_saveRegisteredUser($attribs){
 
 					if(count($set)){
 						// User in DB speichern
+						$set['ModifyDate'] = 'UNIX_TIMESTAMP()';
+						$set['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
 
 						// User in session speichern
 						$uID = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', 'ID', $GLOBALS['DB_WE']);
 						$GLOBALS["we_customer_write_ID"] = $uID;
 						$GLOBALS["we_customer_writen"] = true;
+						$GLOBALS['we_customer_written'] = false;
 						if($uID && $changesessiondata){
 							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID, $GLOBALS['DB_WE']);
 							$_SESSION['webuser']['registered'] = true;

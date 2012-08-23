@@ -65,7 +65,9 @@ function we_save() {
 END_OF_SCRIPT;
 
 	if(we_hasPerm('FORMMAIL')){
-		$_javascript .= 'document.content.send_recipients();';
+		$_javascript .= '
+		//document.content.send_recipients(); FIX ME
+		';
 	}
 
 // Define needed JS
