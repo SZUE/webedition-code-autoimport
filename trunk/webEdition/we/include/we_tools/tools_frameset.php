@@ -52,7 +52,6 @@ if(isset($_REQUEST['tool'])){
 we_html_tools::htmlTop($title);
 
 print we_html_element::jsElement('
-
 	top.weToolWindow = true;
 
 	function toggleBusy(){
@@ -68,8 +67,6 @@ print we_html_element::jsElement('
 		}
 		eval("top.content.we_cmd("+args+")");
 	}
-
-
 ');
 
 if($_REQUEST['tool'] == "weSearch"){
@@ -78,21 +75,8 @@ if($_REQUEST['tool'] == "weSearch"){
 	}
 	//look which search is activ
 	if(isset($_REQUEST['we_cmd'][2])){
-
-		if(defined("OBJECT_FILES_TABLE")){
-			$objectFilesTable = OBJECT_FILES_TABLE;
-		} else{
-			$objectFilesTable = "";
-		}
-		if(defined("OBJECT_TABLE")){
-			$objectTable = OBJECT_TABLE;
-		} else{
-			$objectTable = "";
-		}
-
 		$table = $_REQUEST['we_cmd'][2];
 		switch($table){
-
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION["weSearch"]["checkWhich"] = 1;
@@ -101,11 +85,11 @@ if($_REQUEST['tool'] == "weSearch"){
 				$tab = 2;
 				$_SESSION["weSearch"]["checkWhich"] = 2;
 				break;
-			case $objectFilesTable:
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 3;
 				break;
-			case $objectTable:
+			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 4;
 				break;
@@ -120,18 +104,16 @@ if($_REQUEST['tool'] == "weSearch"){
 	}
 }
 
-print we_html_element::jsScript(JS_DIR . "keyListener.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
+print we_html_element::jsScript(JS_DIR . "keyListener.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
 	<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no"/>
 	<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php
-echo $_REQUEST['tool'];
-echo (isset($modelid)) ? ('&modelid=' . $modelid) : '';
-echo (isset($tab)) ? ('&tab=' . $tab) : '';
+echo $_REQUEST['tool'] . (isset($modelid) ? ('&modelid=' . $modelid) : '') . (isset($tab) ? ('&tab=' . $tab) : '');
 ?>" name="content" noresize scrolling="no"/>
 </frameset>
 <body bgcolor="#ffffff"></body>
