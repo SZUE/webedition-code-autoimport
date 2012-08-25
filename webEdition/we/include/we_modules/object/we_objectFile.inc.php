@@ -675,7 +675,7 @@ class we_objectFile extends we_document{
 				}
 			}
 
-			if( (count($order) != count($fields)) || !in_array(0,$order)){
+			if((count($order) != count($fields)) || !in_array(0, $order)){
 				$order = array();
 				for($y = 0; $y < count($fields); $y++){
 					$order[$y] = $y;
@@ -2054,11 +2054,9 @@ class we_objectFile extends we_document{
 				, $text);
 
 			$text = str_replace(" ", "-", $text);
-			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
-				$text = str_replace('%2F', '/', urlencode($text));
-			} else{
-				$text = preg_replace("~[^0-9a-zA-Z/._-]~", "", correctUml($text));
-			}
+			$text = (defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS) ?
+				str_replace('%2F', '/', urlencode($text)) :
+				preg_replace("~[^0-9a-zA-Z/._-]~", "", correctUml($text));
 			$this->Url = substr($text, 0, 256);
 		} else{
 			$this->Url = '';
@@ -2443,6 +2441,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
+		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB);
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
 		}
@@ -2455,7 +2454,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		/* hook */
+		//hook
 		if($skipHook == 0){
 			$hook = new weHook('publish', '', array($this));
 			$ret = $hook->executeHook();
@@ -2466,6 +2465,9 @@ class we_objectFile extends we_document{
 			}
 		}
 		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		if($oldUrl != $this->Url){
+			$this->rewriteNavigation();
+		}
 		return $this->insertAtIndex();
 	}
 

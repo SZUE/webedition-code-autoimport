@@ -249,56 +249,42 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function formDocTypeTempl(){
-		if(we_hasPerm('EDIT_DOCEXTENSION')){
-			$disable = (($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published);
-		} else
-			$disable = true;
+		$disable = (we_hasPerm('EDIT_DOCEXTENSION') ?
+				(($this->ContentType == "text/html" || $this->ContentType == "text/webedition") && $this->Published) :
+				true);
 
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
+		return
+			'<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="3" class="defaultfont" align="left">
 						' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
 				</tr>
 				<tr>
-					<td>
-						' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>
-						' . we_html_tools::getPixel(100, 2) . '</td>
+					<td>' . we_html_tools::getPixel(20, 4) . '</td>
+					<td>' . we_html_tools::getPixel(20, 2) . '</td>
+					<td>' . we_html_tools::getPixel(100, 2) . '</td>
 				</tr>
 				<tr>
-					<td colspan="3" class="defaultfont" align="left">
-						' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
+					<td colspan="3" class="defaultfont" align="left">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
 				</tr>
 				<tr>
-					<td>
-						' . we_html_tools::getPixel(20, 4) . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>
-						' . we_html_tools::getPixel(100, 2) . '</td>
+					<td>' . we_html_tools::getPixel(20, 4) . '</td>
+					<td>' . we_html_tools::getPixel(20, 2) . '</td>
+					<td>' . we_html_tools::getPixel(100, 2) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
 						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td>
-									' . $this->formIsDynamic(100, $disable) . '</td>
-								<td class="defaultfont">
-									&nbsp;</td>
-								<td>
-									' . $this->formIsSearchable() . '</td>
+								<td>' . $this->formIsDynamic(100, $disable) . '</td>
+								<td class="defaultfont">&nbsp;</td>
+								<td>' . $this->formIsSearchable() . '</td>
 							</tr>
 							<tr>
-								<td>
-									' . $this->formInGlossar(100) . '</td>
+								<td>' . $this->formInGlossar(100) . '</td>
 							</tr>
 						</table></td>
-				</tr>';
-		$content .= '</table>';
-		return $content;
+				</tr></table>';
 	}
 
 	function formTemplateWindow(){
@@ -716,10 +702,10 @@ class we_webEditionDocument extends we_textContentDocument{
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false); // response deactivated
+			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', false, false); // response deactivated
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
-			$this->checkRemoteLanguage($this->Table,false);
+			$this->checkRemoteLanguage($this->Table, false);
 		}
 
 		if($resave == 0){
@@ -740,8 +726,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function we_unpublish($skipHook = 0){
-		if(!$this->ID)
+		if(!$this->ID){
 			return false;
+		}
 		return parent::we_unpublish($skipHook);
 	}
 
@@ -762,6 +749,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					break;
 				} else{
 					$from = we_class::LOAD_TEMP_DB;
+					//no break;
 				}
 			default:
 				parent::we_load($from);
@@ -1135,7 +1123,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if($this->InWebEdition){
-			$this->hasVariants = (f('SELECT 1 as CCID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', 'CCID', $this->DB_WE)=='1');
+			$this->hasVariants = (f('SELECT 1 as CCID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', 'CCID', $this->DB_WE) == '1');
 		} else{
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
