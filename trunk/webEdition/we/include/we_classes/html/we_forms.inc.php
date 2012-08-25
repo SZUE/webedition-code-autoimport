@@ -46,7 +46,7 @@ abstract class we_forms{
 	 */
 	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? uniqid($name . "_") : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+		$_id = ($uniqid ? uniqid($name . '_') : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 		$labelonclick = "";
 
@@ -56,8 +56,7 @@ abstract class we_forms{
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
-					<td>
-						' . we_html_tools::getPixel(4, 2) . '</td>
+					<td>' . we_html_tools::getPixel(4, 2) . '</td>
 					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
@@ -79,7 +78,7 @@ abstract class we_forms{
 	 */
 	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
-		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, "_" . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
+		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, '_' . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
 
 	/**

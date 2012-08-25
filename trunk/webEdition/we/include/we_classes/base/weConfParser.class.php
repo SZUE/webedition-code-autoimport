@@ -78,7 +78,6 @@ class weConfParser{
 		$_abort = false;
 
 		switch($type){
-
 			case "add":
 				return substr(trim($text), 0, -2) .
 					weConfParser::makeDefine($key, $value, $active, $comment) . "\n\n";
