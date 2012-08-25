@@ -781,7 +781,7 @@ function loadConfigs(){
 	);
 	foreach($GLOBALS['config_files'] as &$config){
 		$config['content'] = weFile::load($config['filename']);
-		weFile::save($config['filename'] . '.bak', $config['content']);
+		$config['contentBak'] = $config['content'];
 	}
 }
 
@@ -838,7 +838,10 @@ function save_all_values(){
 	//SAVE CHANGES
 	// Third save all changes of the config files
 	foreach($GLOBALS['config_files'] as $key => $file){
-		weFile::save($file['filename'], $file['content']);
+		if($file['content'] != $config['contentBak']){ //only save if anything changed
+			weFile::save($config['filename'] . '.bak', $config['contentBak']);
+			weFile::save($file['filename'], $file['content']);
+		}
 	}
 
 	if(count(array_diff_assoc($_SESSION["prefs"], $oldPrefs))){
