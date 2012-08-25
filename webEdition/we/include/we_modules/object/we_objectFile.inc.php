@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/* a class for handling templates */
 class we_objectFile extends we_document{
 	/* Name of the class => important for reconstructing the class from outside the class */
 
