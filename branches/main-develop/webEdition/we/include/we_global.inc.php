@@ -234,8 +234,8 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
 			if($tmp){
 				$cat_tail[] = $tmp;
-			}
 		}
+	}
 
 		return (count($cat_tail) == 0 ?
 				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
@@ -1482,7 +1482,7 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
-/*	$email = html_entity_decode($email);
+	/*$email = html_entity_decode($email);
 	$namePart[0] = '';
 	$_email = array();
 	if(preg_match('/<(.)*>/', $email, $_email)){

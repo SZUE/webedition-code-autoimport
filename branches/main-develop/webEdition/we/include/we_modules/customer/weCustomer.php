@@ -266,6 +266,11 @@ class weCustomer extends weModelBase{
 		$db = new DB_WE();
 		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db) == '1');
 	}
+	
+	function customerFieldValueExist($fieldname,$value,$condition=''){
+		$db = new DB_WE();
+		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE '.$db->escape($fieldname).'="' . $db->escape($value) . '"'.($condition!=''? ' AND '. $condition:''), 'a', $db) == '1');
+	}
 
 	function fieldExist($field){
 		return in_array($field, $this->persistent_slots);

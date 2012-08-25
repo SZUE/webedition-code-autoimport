@@ -121,7 +121,7 @@ class we_objectEx extends we_object{
 
 				$fieldtype = $this->getFieldType($arr[0]);
 				if(isset($value['length'])){
-					$len = ($fieldtype == 'string') ? ($value['length'] > 255 ? 255 : $value['length']) : $value['length'];
+					$len = ($fieldtype == 'string') ? ($value['length'] > 4095 ? 4095 : $value['length']) : $value['length'];
 				} else{
 					$len = 0;
 				}
@@ -205,7 +205,7 @@ class we_objectEx extends we_object{
 			case "date":
 				return " INT(11) NOT NULL ";
 			case "input":
-				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "4095") . ") NOT NULL ";
 			case "country":
 			case "language":
 				return " VARCHAR(2) NOT NULL ";
@@ -400,6 +400,13 @@ class we_objectEx extends we_object{
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
 		return $this->saveToDB(true);
+	}
+	function resetOrder(){
+		unset($this->elements['we_sort']);
+		$this->setSort();
+		$we_sort = $this->getElement('we_sort');
+		$this->strOrder = implode(',', $we_sort);
+		$this->we_save();
 	}
 
 }

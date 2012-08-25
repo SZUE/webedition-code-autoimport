@@ -259,12 +259,12 @@ function setFrameSize(){
 			document.getElementById('contentDiv').style.top = tabsHeight+"px";
 		}else{
 		//FIXME: remove this if frames are obsolete
-			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
-			//document.getElementById('main').style.overflow = "hidden";
-			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
-			var fsRows = fs.rows.split(',');
-			fsRows[0] = tabsHeight;
-			fs.rows =  fsRows.join(",");
+		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
+		//document.getElementById('main').style.overflow = "hidden";
+		var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+		var fsRows = fs.rows.split(',');
+		fsRows[0] = tabsHeight;
+		fs.rows =  fsRows.join(",");
 		}
 	} else {
 		setTimeout("setFrameSize()",100);
