@@ -711,7 +711,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 		case 'WE_ERROR_MAIL_ADDRESS':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
-			if($_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
+			if(isset($_REQUEST['newconf']["WE_ERROR_MAIL"]) && $_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
 				if($settingvalue != ""){
 					if(we_check_email($settingvalue)){
 						if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
@@ -838,8 +838,8 @@ function save_all_values(){
 	//SAVE CHANGES
 	// Third save all changes of the config files
 	foreach($GLOBALS['config_files'] as $key => $file){
-		if($file['content'] != $config['contentBak']){ //only save if anything changed
-			weFile::save($config['filename'] . '.bak', $config['contentBak']);
+		if($file['content'] != $file['contentBak']){ //only save if anything changed
+			weFile::save($file['filename'] . '.bak', $file['contentBak']);
 			weFile::save($file['filename'], $file['content']);
 		}
 	}
