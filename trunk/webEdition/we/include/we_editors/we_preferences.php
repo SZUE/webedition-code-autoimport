@@ -488,289 +488,267 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				break;
 		}
 	}
-	if(($settingvalue !== null || $settingname == 'WE_TRACKER_DIR' || $settingname == 'SIDEBAR_DISABLED')){
-		switch($settingname){
-			default:
+
+	if($settingvalue == null){ //checkboxes -> unchecked - all other values are set by the form
+		$settingvalue = 0;
+	}
+
+	switch($settingname){
+		default:
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
+			break;
+
+		case 'locale_default':
+			if(isset($_REQUEST['newconf']['locale_locales']) && isset($_REQUEST['newconf']['locale_default'])){
+				we_writeLanguageConfig($_REQUEST['newconf']['locale_default'], explode(",", $_REQUEST['newconf']['locale_locales']));
+			}
+			break;
+
+		case 'WE_COUNTRIES_TOP':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 2), true, $comment);
+			break;
+
+		case 'WE_COUNTRIES_SHOWN':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 1), true, $comment);
+			break;
+
+		case 'WE_SEEM':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			if(intval($settingvalue) == constant($settingname)){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', ($settingvalue == 1 ? 0 : 1), true, $comment);
+			}
+			break;
+
+
+		case 'SIDEBAR_DISABLED':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if($settingvalue != SIDEBAR_DISABLED){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', $settingvalue, true, $comment);
+			}
+
+			$_sidebar_show_on_startup = ((isset($_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP']) && $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] != null) ? $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] : 0);
+			if(SIDEBAR_SHOW_ON_STARTUP != $_sidebar_show_on_startup){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_SHOW_ON_STARTUP]', $_sidebar_show_on_startup);
+			}
+
+			$_sidebar_document = ((isset($_REQUEST['newconf']['newconf[SIDEBAR_DEFAULT_DOCUMENT]']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] : 0);
+			if(SIDEBAR_DEFAULT_DOCUMENT != $_sidebar_document){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_DOCUMENT]', $_sidebar_document);
+			}
+
+			$_sidebar_width = ((isset($_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] : 0);
+			if(SIDEBAR_DEFAULT_WIDTH != $_sidebar_width){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_WIDTH]', $_sidebar_width);
+			}
+
+			break;
+
+		case 'DEFAULT_STATIC_EXT':
+		case 'DEFAULT_DYNAMIC_EXT':
+		case 'DEFAULT_HTML_EXT':
+			if(constant($settingname) != $settingvalue){
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
-				break;
+			}
+			break;
 
-			case 'locale_default':
-				if(isset($_REQUEST['newconf']['locale_locales']) && isset($_REQUEST['newconf']['locale_default'])){
-					we_writeLanguageConfig($_REQUEST['newconf']['locale_default'], explode(",", $_REQUEST['newconf']['locale_locales']));
-				}
-				break;
+		//FORMMAIL RECIPIENTS
+		case 'formmail_values':
+			if((isset($_REQUEST['newconf']['formmail_values']) && $_REQUEST['newconf']['formmail_values'] != '') || (isset($_REQUEST['newconf']['formmail_deleted']) && $_REQUEST['newconf']['formmail_deleted'] != '')){
+				$_recipients = explode('<##>', $_REQUEST['newconf']['formmail_values']);
 
+				if(count($_recipients)){
+					foreach($_recipients as $i => $_recipient){
+						$_single_recipient = explode('<#>', $_recipient);
 
-			case 'WE_SEEM':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				if(intval($settingvalue) == constant($settingname)){
-					$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', ($settingvalue == 1 ? 0 : 1), true, $comment);
-				}
-				break;
-
-
-			case 'SIDEBAR_DISABLED':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue != SIDEBAR_DISABLED){
-					$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', $settingvalue, true, $comment);
-				}
-
-				$_sidebar_show_on_startup = ((isset($_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP']) && $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] != null) ? $_REQUEST['newconf']['SIDEBAR_SHOW_ON_STARTUP'] : 0);
-				if(SIDEBAR_SHOW_ON_STARTUP != $_sidebar_show_on_startup){
-					$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_SHOW_ON_STARTUP]', $_sidebar_show_on_startup);
-				}
-
-				$_sidebar_document = ((isset($_REQUEST['newconf']['newconf[SIDEBAR_DEFAULT_DOCUMENT]']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_DOCUMENT'] : 0);
-				if(SIDEBAR_DEFAULT_DOCUMENT != $_sidebar_document){
-					$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_DOCUMENT]', $_sidebar_document);
-				}
-
-				$_sidebar_width = ((isset($_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH']) && $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] != null) ? $_REQUEST['newconf']['SIDEBAR_DEFAULT_WIDTH'] : 0);
-				if(SIDEBAR_DEFAULT_WIDTH != $_sidebar_width){
-					$_file = weConfParser::changeSourceCode('define', $_file, 'newconf[SIDEBAR_DEFAULT_WIDTH]', $_sidebar_width);
-				}
-
-				break;
-
-			case 'DEFAULT_STATIC_EXT':
-			case 'DEFAULT_DYNAMIC_EXT':
-			case 'DEFAULT_HTML_EXT':
-				if(constant($settingname) != $settingvalue){
-					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
-				}
-				break;
-
-			//FORMMAIL RECIPIENTS
-			case 'formmail_values':
-				if((isset($_REQUEST['newconf']['formmail_values']) && $_REQUEST['newconf']['formmail_values'] != '') || (isset($_REQUEST['newconf']['formmail_deleted']) && $_REQUEST['newconf']['formmail_deleted'] != '')){
-					$_recipients = explode('<##>', $_REQUEST['newconf']['formmail_values']);
-
-					if(count($_recipients)){
-						foreach($_recipients as $i => $_recipient){
-							$_single_recipient = explode('<#>', $_recipient);
-
-							if(isset($_single_recipient[0]) && ($_single_recipient[0] == '#')){
-								if(isset($_single_recipient[1]) && $_single_recipient[1]){
-									$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
-								}
-							} else{
-								if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
-									$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
-								}
+						if(isset($_single_recipient[0]) && ($_single_recipient[0] == '#')){
+							if(isset($_single_recipient[1]) && $_single_recipient[1]){
+								$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
+							}
+						} else{
+							if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
+								$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
 							}
 						}
 					}
 				}
+			}
 
-				break;
+			break;
 
-			case 'formmail_deleted':
-				if(isset($_REQUEST['newconf'][$settingname]) && $_REQUEST['newconf'][$settingname] != ''){
-					$_formmail_deleted = explode(',', $_REQUEST['newconf'][$settingname]);
-					foreach($_formmail_deleted as $del){
-						$DB_WE->query('DELETE FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($del));
-					}
+		case 'formmail_deleted':
+			if(isset($_REQUEST['newconf'][$settingname]) && $_REQUEST['newconf'][$settingname] != ''){
+				$_formmail_deleted = explode(',', $_REQUEST['newconf'][$settingname]);
+				foreach($_formmail_deleted as $del){
+					$DB_WE->query('DELETE FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($del));
 				}
-				break;
+			}
+			break;
 
 
-			case 'active_integrated_modules':
-				$GLOBALS['config_files']['active_integrated_modules']['content'] = '<?php
+		case 'active_integrated_modules':
+			$GLOBALS['config_files']['active_integrated_modules']['content'] = '<?php
 $GLOBALS[\'_we_active_integrated_modules\'] = array(
 \'' . implode("',\n'", $_REQUEST['newconf']['active_integrated_modules']) . '\'
 );';
-				break;
+			break;
 
-			case 'useproxy':
-				if($settingvalue == 1){
-					// Create content of settings file
-					$_proxy_file = '<?php
+		case 'useproxy':
+			if($settingvalue == 1){
+				// Create content of settings file
+				$_proxy_file = '<?php
 	define(\'WE_PROXYHOST\', "' . ((isset($_REQUEST['newconf']["proxyhost"]) && $_REQUEST['newconf']["proxyhost"] != null) ? $_REQUEST['newconf']["proxyhost"] : '') . '");
 	define(\'WE_PROXYPORT\', "' . ((isset($_REQUEST['newconf']["proxyport"]) && $_REQUEST['newconf']["proxyport"] != null) ? $_REQUEST['newconf']["proxyport"] : '') . '");
 	define(\'WE_PROXYUSER\', "' . ((isset($_REQUEST['newconf']["proxyuser"]) && $_REQUEST['newconf']["proxyuser"] != null) ? $_REQUEST['newconf']["proxyuser"] : '') . '");
 	define(\'WE_PROXYPASSWORD\', "' . ((isset($_REQUEST['newconf']["proxypass"]) && $_REQUEST['newconf']["proxypass"] != null) ? $_REQUEST['newconf']["proxypass"] : '') . '");
 ';
 
-					// Create/overwrite proxy settings file
-					$GLOBALS['config_files']['proxysettings']['content'] = $_proxy_file;
-				}
-
-				break;
-
-			case 'proxyhost':
-			case 'proxyport':
-			case 'proxyuser':
-			case 'proxypass':
-				break;
-
-			// ADVANCED
-			case 'DB_CONNECT':
-				$_file = &$GLOBALS['config_files']['conf']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', $settingvalue);
-				break;
-
-			case 'DB_SET_CHARSET':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if(!defined('DB_SET_CHARSET') || $settingvalue != DB_SET_CHARSET){
-					$_file = weConfParser::changeSourceCode("define", $_file, 'DB_SET_CHARSET', $settingvalue, true, $comment);
-				}
-				break;
-
-			case 'useauth':
-
-				$_file = &$GLOBALS['config_files']['conf']['content'];
-
-				if($settingvalue == 1){
-					// enable
-					if(!(defined("HTTP_USERNAME")) || !(defined("HTTP_PASSWORD"))){
-						$_file = str_replace("//define(\"HTTP_USERNAME\",", "define(\"HTTP_USERNAME\",", $_file);
-						$_file = str_replace("//define(\"HTTP_PASSWORD\",", "define(\"HTTP_PASSWORD\",", $_file);
-					}
-
-					$un = defined("HTTP_USERNAME") ? HTTP_USERNAME : "";
-					$pw = defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
-					if($un != $_REQUEST['newconf']["HTTP_USERNAME"] || $pw != $_REQUEST['newconf']["HTTP_PASSWORD"]){
-
-						$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', ((isset($_REQUEST['newconf']["HTTP_USERNAME"]) && $_REQUEST['newconf']["HTTP_USERNAME"] != null) ? $_REQUEST['newconf']["HTTP_USERNAME"] : ''));
-						$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', ((isset($_REQUEST['newconf']["HTTP_PASSWORD"]) && $_REQUEST['newconf']["HTTP_PASSWORD"] != null) ? $_REQUEST['newconf']["HTTP_PASSWORD"] : ''));
-					}
-				} else{
-					// disable
-					if(defined("HTTP_USERNAME") || defined("HTTP_PASSWORD")){
-
-						$_file = str_replace("define(\"HTTP_USERNAME\",", "//define(\"HTTP_USERNAME\",", $_file);
-						$_file = str_replace("define(\"HTTP_PASSWORD\",", "//define(\"HTTP_PASSWORD\",", $_file);
-					}
-				}
-
-				break;
-
-			case 'HTTP_USERNAME':
-			case 'HTTP_PASSWORD':
-				break;
-
-			//ERROR HANDLING
-			case 'WE_ERROR_HANDLER':
-			case 'WE_ERROR_NOTICES':
-			case 'WE_ERROR_DEPRECATED':
-			case 'WE_ERROR_WARNINGS':
-			case 'WE_ERROR_ERRORS':
-			case 'WE_ERROR_SHOW':
-			case 'WE_ERROR_LOG':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue != constant($settingname)){
-					$_file = weConfParser::changeSourceCode("define", $_file, $settingname, $settingvalue, true, $comment);
-				}
-				break;
-
-
-
-			case 'WE_ERROR_MAIL':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue == 0){
-					if(WE_ERROR_MAIL == 1){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0, true, $comment);
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-					}
-				} else if($settingvalue == 1){
-					if(WE_ERROR_MAIL == 0){
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 1, true, $comment);
-					}
-				}
-
-				break;
-
-			case 'WE_ERROR_MAIL_ADDRESS':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
-					if($settingvalue != ""){
-						if(we_check_email($settingvalue)){
-							if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
-								$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
-							}
-						} else{
-							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example", true, $comment);
-							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
-
-							$email_saved = false;
-						}
-					} else{
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
-
-						$email_saved = false;
-					}
-				} else{
-					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
-				}
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				break;
-
-			case 'ERROR_DOCUMENT_NO_OBJECTFILE':
-				if(!defined('ERROR_DOCUMENT_NO_OBJECTFILE') || ERROR_DOCUMENT_NO_OBJECTFILE != $settingvalue){
-					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = weConfParser::changeSourceCode("define", $_file, "ERROR_DOCUMENT_NO_OBJECTFILE", $settingvalue, true, $comment);
-				}
-				break;
-
-			case 'DISABLE_TEMPLATE_CODE_CHECK':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if($settingvalue != constant($settingname)){
-					$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", $settingvalue, true, $comment);
-				}
-
-				break;
-		}
-	} else{
-		switch($settingname){
-			default:
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, 0, true, $comment);
-				break;
-			case 'WE_COUNTRIES_TOP':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 2), true, $comment);
-				break;
-
-			case 'WE_COUNTRIES_SHOWN':
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 1), true, $comment);
-				break;
-
-			case 'useproxy':
+				// Create/overwrite proxy settings file
+				$GLOBALS['config_files']['proxysettings']['content'] = $_proxy_file;
+			} else{
 				// Delete proxy settings file
 				if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php")){
 					unlink($_SERVER['DOCUMENT_ROOT'] . "/webEdition/liveUpdate/includes/proxysettings.inc.php");
 				}
 				$GLOBALS['config_files']['proxysettings'] = array();
 				unset($GLOBALS['config_files']['proxysettings']);
+			}
 
-				break;
+			break;
 
-			case 'proxyhost':
-			case 'proxyport':
-			case 'proxyuser':
-			case 'proxypass':
-			case 'HTTP_USERNAME':
-			case 'HTTP_PASSWORD':
-				break;
+		case 'proxyhost':
+		case 'proxyport':
+		case 'proxyuser':
+		case 'proxypass':
+			break;
 
-			case 'useauth':
-				$_file = &$GLOBALS['config_files']['conf']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', 'myUsername', false);
-				$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', 'myPassword', false);
-				break;
-		}
+		// ADVANCED
+		case 'DB_CONNECT':
+			$_file = &$GLOBALS['config_files']['conf']['content'];
+			$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', $settingvalue);
+			break;
+
+		case 'DB_SET_CHARSET':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if(!defined('DB_SET_CHARSET') || $settingvalue != DB_SET_CHARSET){
+				$_file = weConfParser::changeSourceCode("define", $_file, 'DB_SET_CHARSET', $settingvalue, true, $comment);
+			}
+			break;
+
+		case 'useauth':
+
+			$_file = &$GLOBALS['config_files']['conf']['content'];
+
+			if($settingvalue == 1){
+				// enable
+				if(!(defined("HTTP_USERNAME")) || !(defined("HTTP_PASSWORD"))){
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', 'myUsername', false);
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', 'myPassword', false);
+				}
+
+				$un = defined("HTTP_USERNAME") ? HTTP_USERNAME : "";
+				$pw = defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
+				if($un != $_REQUEST['newconf']["HTTP_USERNAME"] || $pw != $_REQUEST['newconf']["HTTP_PASSWORD"]){
+
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', ((isset($_REQUEST['newconf']["HTTP_USERNAME"]) && $_REQUEST['newconf']["HTTP_USERNAME"] != null) ? $_REQUEST['newconf']["HTTP_USERNAME"] : ''));
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', ((isset($_REQUEST['newconf']["HTTP_PASSWORD"]) && $_REQUEST['newconf']["HTTP_PASSWORD"] != null) ? $_REQUEST['newconf']["HTTP_PASSWORD"] : ''));
+				}
+			} else{
+				// disable
+				if(defined("HTTP_USERNAME") || defined("HTTP_PASSWORD")){
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_USERNAME', 'myUsername', false);
+					$_file = weConfParser::changeSourceCode("define", $_file, 'HTTP_PASSWORD', 'myPassword', false);
+				}
+			}
+
+			break;
+
+		case 'HTTP_USERNAME':
+		case 'HTTP_PASSWORD':
+			break;
+
+		//ERROR HANDLING
+		case 'WE_ERROR_HANDLER':
+		case 'WE_ERROR_NOTICES':
+		case 'WE_ERROR_DEPRECATED':
+		case 'WE_ERROR_WARNINGS':
+		case 'WE_ERROR_ERRORS':
+		case 'WE_ERROR_SHOW':
+		case 'WE_ERROR_LOG':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if($settingvalue != constant($settingname)){
+				$_file = weConfParser::changeSourceCode("define", $_file, $settingname, $settingvalue, true, $comment);
+			}
+			break;
+
+
+
+		case 'WE_ERROR_MAIL':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if($settingvalue == 0){
+				if(WE_ERROR_MAIL == 1){
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0, true, $comment);
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
+				}
+			} else if($settingvalue == 1){
+				if(WE_ERROR_MAIL == 0){
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 1, true, $comment);
+				}
+			}
+
+			break;
+
+		case 'WE_ERROR_MAIL_ADDRESS':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if($_REQUEST['newconf']["WE_ERROR_MAIL"] == 1){
+				if($settingvalue != ""){
+					if(we_check_email($settingvalue)){
+						if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
+							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue, true, $comment);
+						}
+					} else{
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example", true, $comment);
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
+
+						$email_saved = false;
+					}
+				} else{
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
+
+					$email_saved = false;
+				}
+			} else{
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
+			}
+
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			break;
+
+		case 'ERROR_DOCUMENT_NO_OBJECTFILE':
+			if(!defined('ERROR_DOCUMENT_NO_OBJECTFILE') || ERROR_DOCUMENT_NO_OBJECTFILE != $settingvalue){
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "ERROR_DOCUMENT_NO_OBJECTFILE", $settingvalue, true, $comment);
+			}
+			break;
+
+		case 'DISABLE_TEMPLATE_CODE_CHECK':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+			if($settingvalue != constant($settingname)){
+				$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", $settingvalue, true, $comment);
+			}
+
+			break;
 	}
 }
 
