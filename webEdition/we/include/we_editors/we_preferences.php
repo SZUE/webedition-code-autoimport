@@ -310,6 +310,8 @@ function get_value($settingname){
  */
 function remember_value($settingvalue, $settingname, $comment = ''){
 	global $save_javascript, $editor_reloaded, $email_saved, $DB_WE;
+
+	//check for user-setting
 	if(isset($GLOBALS['configs']['user'][$settingname])){
 		switch($settingname){
 			default:
@@ -488,6 +490,8 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				break;
 		}
 	}
+
+//check all other settings!
 
 	if($settingvalue == null){ //checkboxes -> unchecked - all other values are set by the form
 		$settingvalue = 0;
