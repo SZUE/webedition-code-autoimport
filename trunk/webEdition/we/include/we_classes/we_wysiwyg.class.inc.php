@@ -912,7 +912,7 @@ function tinyMCEchanged(inst){
 
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
-				list($lang, $code) = $GLOBALS["weDefaultFrontendLanguage"];
+				list($lang, $code) = explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
 				//deactivated: template,save,layer
 				return we_html_element::jsElement('
 tinyMCE.init({
