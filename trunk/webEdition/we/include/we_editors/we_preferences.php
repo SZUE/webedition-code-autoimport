@@ -529,7 +529,6 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 		case 'SIDEBAR_DISABLED':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
 			if($settingvalue != SIDEBAR_DISABLED){
 				$_file = weConfParser::changeSourceCode('define', $_file, 'SIDEBAR_DISABLED', $settingvalue, true, $comment);
 			}
@@ -1307,7 +1306,7 @@ function build_dialog($selected_setting = 'ui'){
 				}
 
 				// Enable / disable sidebar
-				$_sidebar_disabler = we_forms::checkbox(0, $_sidebar_disable, 'newconf[SIDEBAR_DISABLED]', g_l('prefs', '[sidebar_deactivate]'), false, 'defaultfont', "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
+				$_sidebar_disabler = we_forms::checkbox(1, $_sidebar_disable, 'newconf[SIDEBAR_DISABLED]', g_l('prefs', '[sidebar_deactivate]'), false, 'defaultfont', "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
 
 				// Show on Startup
 				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, 'newconf[SIDEBAR_SHOW_ON_STARTUP]', g_l('prefs', '[sidebar_show_on_startup]'), false, 'defaultfont', '');
