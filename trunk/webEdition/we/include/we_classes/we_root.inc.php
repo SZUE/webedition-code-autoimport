@@ -1258,28 +1258,36 @@ abstract class we_root extends we_class{
 	 * @return Array
 	 */
 	function getNavigationFoldersForDoc(){
-		if($this->Table == FILE_TABLE){
-			if(isset($this->DocType)){
-				$where = '((Selection="dynamic") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR ';
-				$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID) . ')';
-				$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where;
-				$this->DB_WE->query($query);
+		switch($this->Table){
+			case FILE_TABLE:
+				if(isset($this->DocType)){
+					$where = '((Selection="dynamic") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . ')) OR ';
+					$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID) . ')';
+					$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where;
+					$this->DB_WE->query($query);
+					$return = array();
+					while($this->DB_WE->next_record()) {
+						$return[] = $this->DB_WE->f('ParentID');
+					}
+					return $return;
+				} else{
+					$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID));
+					$return = array();
+					while($this->DB_WE->next_record()) {
+						$return[] = $this->DB_WE->f('ParentID');
+					}
+					return $return;
+				}
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$this->DB_WE->query('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="objLink") OR (IsFolder=1 AND FolderSelection="objLink")) AND LinkID=' . intval($this->ID));
 				$return = array();
 				while($this->DB_WE->next_record()) {
 					$return[] = $this->DB_WE->f('ParentID');
 				}
 				return $return;
-			} else{
-				$query = 'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID=' . intval($this->ID);
-				$this->DB_WE->query($query);
-				$return = array();
-				while($this->DB_WE->next_record()) {
-					$return[] = $this->DB_WE->f('ParentID');
-				}
-				return $return;
-			}
+			default:
+				return array();
 		}
-		return array();
 	}
 
 	function insertAtIndex(){
