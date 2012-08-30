@@ -40,9 +40,9 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 
 		<form target="passwdload" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 			<?php
-			$oldpass = we_html_tools::htmlTextInput("oldpasswd", 20, "", "32", "", "password", 200);
-			$newpass = we_html_tools::htmlTextInput("newpasswd", 20, "", "32", "", "password", 200);
-			$newpass2 = we_html_tools::htmlTextInput("newpasswd2", 20, "", "32", "", "password", 200);
+			$oldpass = we_html_tools::htmlTextInput("oldpasswd", 20, "", 32, "", "password", 200);
+			$newpass = we_html_tools::htmlTextInput("newpasswd", 20, "", 32, "", "password", 200);
+			$newpass2 = we_html_tools::htmlTextInput("newpasswd2", 20, "", 32, "", "password", 200);
 
 			$okbut = we_button::create_button("save", "javascript:document.forms[0].submit();");
 			$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
