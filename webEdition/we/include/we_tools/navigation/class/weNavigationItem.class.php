@@ -245,7 +245,7 @@ class weNavigationItem{
 	}
 
 	function getNavigationField($attribs){
-		$fieldname = weTag_getAttribute('name', $attribs);
+		$fieldname = weTag_getAttribute('_name_orig', $attribs);
 		$_compl = weTag_getAttribute('complete', $attribs);
 		// name
 		if($fieldname){
