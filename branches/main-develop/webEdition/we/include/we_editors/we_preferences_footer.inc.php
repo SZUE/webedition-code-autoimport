@@ -51,7 +51,7 @@ function we_save() {
 	if(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart){
 		var oCockpit=top.opener.top.weEditorFrameController.getActiveDocumentReference();
 		var _fo=document.getElementById('content').contentDocument.forms[0];
-		var oSctCols=_fo.elements['cockpit_amount_columns'];
+		var oSctCols=_fo.elements['newconf[cockpit_amount_columns]'];
 		var iCols=oSctCols.options[oSctCols.selectedIndex].value;
 		if(iCols!=oCockpit._iLayoutCols){
 			oCockpit.modifyLayoutCols(iCols);

@@ -24,11 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(function_exists('protect')){
-	we_html_tools::protect();
-} else{
-	exit();
-}
+we_html_tools::protect();
 
 $tools = weToolLookup::getAllTools(true, true);
 
@@ -47,8 +43,8 @@ if(!isset($_REQUEST['tool']) || $_REQUEST['tool'] == '' || !in_array($_REQUEST['
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_REQUEST['tool'] . '/index.php')){
 
 	header('Location: /webEdition/apps/' . $_REQUEST['tool'] . '/index.php/frameset/index' .
-		(isset($REQUEST['modelid']) ? '/modelId/' . abs($REQUEST['modelid']) : '') .
-		(isset($REQUEST['tab']) ? '/tab/' . abs($REQUEST['tab']) : ''));
+		(isset($REQUEST['modelid']) ? '/modelId/' . intval($REQUEST['modelid']) : '') .
+		(isset($REQUEST['tab']) ? '/tab/' . intval($REQUEST['tab']) : ''));
 	exit();
 }
 if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){

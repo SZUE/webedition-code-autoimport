@@ -1481,37 +1481,49 @@ class we_document extends we_root{
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
 					$rest = $regs[1];
 					$nr = preg_replace('/^.+_([0-9])+$/', '\1', $rest);
-					if(substr($rest, 0, 5) == 'task_'){
-						$this->schedArr[$nr]['task'] = $v;
-					} else if(substr($rest, 0, 5) == 'type_'){
-						$this->schedArr[$nr]['type'] = $v;
-					} else if(substr($rest, 0, 7) == 'active_'){
-						$this->schedArr[$nr]['active'] = $v;
-					} else if(substr($rest, 0, 8) == 'doctype_'){
-						$this->schedArr[$nr]['DoctypeID'] = $v;
-					} else if(substr($rest, 0, 11) == 'doctypeAll_'){
-						$this->schedArr[$nr]['doctypeAll'] = $v;
-					} else if(substr($rest, 0, 9) == 'parentid_'){
-						$this->schedArr[$nr]['ParentID'] = $v;
-					} else if(substr($rest, 0, 5) == 'month'){
-						$rest = substr($rest, 5);
-						$m = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-						$this->schedArr[$nr]['months'][$m - 1] = $v;
-					} else if(substr($rest, 0, 3) == 'day'){
-						$rest = substr($rest, 3);
-						$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-						$this->schedArr[$nr]['days'][$d - 1] = $v;
-					} else if(substr($rest, 0, 4) == 'wday'){
-						$rest = substr($rest, 4);
-						$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-						$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
-					} else if(substr($rest, 0, 5) == 'time_'){
-						$rest = substr($rest, 5);
-						$foo = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-						if(!(isset($dates[$nr]) && is_array($dates[$nr]))){
-							$dates[$nr] = array();
-						}
-						$dates[$nr][$foo] = $v;
+					$sw = explode('_', $rest);
+					switch($sw){
+						case 'task':
+							$this->schedArr[$nr]['task'] = $v;
+							break;
+						case 'type':
+							$this->schedArr[$nr]['type'] = $v;
+							break;
+						case 'active':
+							$this->schedArr[$nr]['active'] = $v;
+							break;
+						case 'doctype':
+							$this->schedArr[$nr]['DoctypeID'] = $v;
+							break;
+						case 'doctypeAll':
+							$this->schedArr[$nr]['doctypeAll'] = $v;
+							break;
+						case 'parentid':
+							$this->schedArr[$nr]['ParentID'] = $v;
+							break;
+						case 'month':
+							$rest = substr($rest, 5);
+							$m = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+							$this->schedArr[$nr]['months'][$m - 1] = $v;
+							break;
+						case 'day':
+							$rest = substr($rest, 3);
+							$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+							$this->schedArr[$nr]['days'][$d - 1] = $v;
+							break;
+						case 'wday':
+							$rest = substr($rest, 4);
+							$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+							$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
+							break;
+						case 'time':
+							$rest = substr($rest, 5);
+							$foo = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+							if(!(isset($dates[$nr]) && is_array($dates[$nr]))){
+								$dates[$nr] = array();
+							}
+							$dates[$nr][$foo] = $v;
+							break;
 					}
 				}
 			}

@@ -260,7 +260,7 @@ class weCustomerFrames extends weModuleFrames{
 				return $out;
 				break;
 			case 'password':
-				return we_html_tools::htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
+				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 				break;
 			case 'img':
 

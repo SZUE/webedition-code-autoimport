@@ -49,7 +49,6 @@ if(isset($_REQUEST['tool'])){
 we_html_tools::htmlTop($title);
 
 print we_html_element::jsElement('
-
 	top.weToolWindow = true;
 
 	function toggleBusy(){
@@ -65,8 +64,6 @@ print we_html_element::jsElement('
 		}
 		eval("top.content.we_cmd("+args+")");
 	}
-
-
 ');
 
 if($_REQUEST['tool'] == "weSearch"){
@@ -113,9 +110,7 @@ print we_html_element::jsScript(JS_DIR . "keyListener.js") .
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
 	<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no"/>
 	<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php
-echo $_REQUEST['tool'];
-echo (isset($modelid)) ? ('&modelid=' . $modelid) : '';
-echo (isset($tab)) ? ('&tab=' . $tab) : '';
+echo $_REQUEST['tool'] . (isset($modelid) ? ('&modelid=' . $modelid) : '') . (isset($tab) ? ('&tab=' . $tab) : '');
 ?>" name="content" noresize scrolling="no"/>
 </frameset>
 <body bgcolor="#ffffff"></body>

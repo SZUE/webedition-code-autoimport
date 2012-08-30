@@ -18,7 +18,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   LinkID bigint(20) unsigned NOT NULL default '0',
   CurrentOnUrlPar tinyint(1) unsigned NOT NULL DEFAULT '0',
   CurrentOnAnker tinyint(1) unsigned NOT NULL DEFAULT '0',
-  SelectionType varchar(32) NOT NULL default '',
+  SelectionType enum('urlLink','category','catLink','classname','objLink','docLink','doctype') NOT NULL default 'docLink',
   FolderID bigint(20) unsigned NOT NULL default '0',
   DocTypeID smallint(6) unsigned NOT NULL,
   ClassID bigint(20) unsigned NOT NULL default '0',

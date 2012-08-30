@@ -152,7 +152,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "password"), g_l('global', '[password]'))));
 
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput("password", 25, "", 100, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput("password", 25, "", 32, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), we_html_tools::getPixel(5, 5));
 
