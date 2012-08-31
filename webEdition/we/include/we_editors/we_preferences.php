@@ -44,6 +44,9 @@ $configs = array(
 //key => comment, default, changed right (default Admin)
 // Variables for SEEM
 		'WE_SEEM' => array('// Enable seeMode', 1),
+// Variables for LogIn
+		'WE_LOGIN_HIDEWESTATUS' => array('// Hide if webEdition is Nightly or Alpha or.. Release Version', 1),
+		'WE_LOGIN_WEWINDOW' => array('// Decide how WE opens: 0 allow both, 1 POPUP only, 2 same Window only', 0),
 // Variables for thumbnails
 		'WE_THUMBNAIL_DIRECTORY' => array('// Directory in which to save thumbnails', "/__we_thumbs__"),
 // Variables for error handling
@@ -525,7 +528,19 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', ($settingvalue == 1 ? 0 : 1), true, $comment);
 			}
 			break;
-
+		
+		case 'WE_LOGIN_HIDEWESTATUS':
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			if($settingvalue != constant($settingname)){
+				$_file = weConfParser::changeSourceCode('define', $_file, 'WE_LOGIN_HIDEWESTATUS', $settingvalue, true, $comment);
+			}
+			break;
+		case 'WE_LOGIN_WEWINDOW':
+			if(constant($settingname) != $settingvalue){
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
+			}
+			break;
 
 		case 'SIDEBAR_DISABLED':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1031,6 +1046,26 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $_amount->getHtml(), 'space' => 200);
 
+
+			/*			 * ***************************************************************
+			 * Login
+			 * *************************************************************** */
+			if(we_hasPerm("ADMINISTRATOR")){t_e( get_value('WE_LOGIN_HIDEWESTATUS'));
+				$_loginWEst_disabler = we_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login_deactivateWEstatus]'));
+
+				$_we_windowtypes= array('0'=>g_l('prefs', '[login_windowtypeboth]'),'1'=>g_l('prefs', '[login_windowtypepopup]'),'2'=>g_l('prefs', '[login_windowtypesame]'));
+				$_we_windowtypeselect = new we_html_select(array('name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect'));
+				foreach($_we_windowtypes as $key => $value){
+					$_we_windowtypeselect->addOption($key, $value);
+
+					// Set selected extension
+					if($key == get_value('WE_LOGIN_WEWINDOW')){
+						$_we_windowtypeselect->selectOption($key);
+					}
+				}
+				// Build dialog if user has permission
+				$_settings[] = array('headline' => g_l('prefs', '[login]'), 'html' =>   $_loginWEst_disabler . we_html_element::htmlBr().g_l('prefs', '[login_windowtypes]'). we_html_element::htmlBr().$_we_windowtypeselect->getHtml() , 'space' => 200);
+			}
 
 			/*			 * ***************************************************************
 			 * SEEM

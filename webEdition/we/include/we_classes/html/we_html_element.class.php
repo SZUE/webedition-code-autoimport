@@ -400,10 +400,10 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
-	static function htmlIFrame($name, $src, $style){
+	static function htmlIFrame($name, $src, $style,$iframestyle='border:0px;width:100%;height:100%;overflow: hidden;'){
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_baseElement::getHtmlCode(
-					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => 'border:0px;width:100%;height:100%;overflow: hidden;'))
+					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
 				));
 	}
 
