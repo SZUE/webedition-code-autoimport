@@ -24,8 +24,8 @@
  */
 abstract class weFile{
 
-	static function load($filename, $flags = "rb", $rsize = 8192, $iscompressed = 0){
-		if($filename == ""){
+	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = 0){
+		if($filename == ''){
 			return false;
 		}
 		if(!weFile::hasURL($filename)){
@@ -53,7 +53,7 @@ abstract class weFile{
 			$close = 'gzclose';
 		}
 
-		$buffer = "";
+		$buffer = '';
 		$fp = @$open($filename, $flags);
 		if($fp){
 			do{
@@ -149,9 +149,9 @@ abstract class weFile{
 			return false;
 	}
 
-	static function save($filename, $content, $flags = "wb", $create_path = false){
+	static function save($filename, $content, $flags = 'wb', $create_path = false){
 		$oldFile = $filename;
-		if($filename == "" || weFile::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
+		if($filename == '' || weFile::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
 		} else{
@@ -176,16 +176,16 @@ abstract class weFile{
 		return false;
 	}
 
-	static function saveTemp($content, $filename = "", $flags = "wb"){
-		if($filename == ""){
+	static function saveTemp($content, $filename = '', $flags = 'wb'){
+		if($filename == ''){
 			$filename = weFile::getUniqueId();
 		}
-		$filename = TEMP_PATH . "/" . $filename;
+		$filename = TEMP_PATH . '/' . $filename;
 		return (weFile::save($filename, $content) ? $filename : false);
 	}
 
 	static function delete($filename){
-		if($filename == ""){
+		if($filename == ''){
 			return false;
 		}
 		if(!weFile::hasURL($filename)){
@@ -210,7 +210,7 @@ abstract class weFile{
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
 		return ($md5 ? md5(str_replace('.', '', uniqid('', true))) : uniqid(microtime()));
-		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid("",true))"
+		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid('',true))'
 	}
 
 	/**
@@ -218,13 +218,13 @@ abstract class weFile{
 	 *
 	 * Description: This function splits a file.
 	 */
-	static function splitFile($filename, $path, $pattern = "", $split_size = 0, $marker = ""){
+	static function splitFile($filename, $path, $pattern = '', $split_size = 0, $marker = ''){
 
-		if($pattern == "")
-			$pattern = basename($filename) . "%s";
-		$buff = "";
-		$filename_tmp = "";
-		$fh = fopen($filename, "rb");
+		if($pattern == '')
+			$pattern = basename($filename) . '%s';
+		$buff = '';
+		$filename_tmp = '';
+		$fh = fopen($filename, 'rb');
 		$num = -1;
 		$open_new = true;
 		$fsize = 0;
@@ -234,7 +234,7 @@ abstract class weFile{
 		if($fh){
 			while(!@feof($fh)) {
 				@set_time_limit(60);
-				$line = "";
+				$line = '';
 				$findline = false;
 
 				while($findline == false && !@feof($fh)) {
@@ -247,7 +247,7 @@ abstract class weFile{
 				if($open_new){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
-					$fh_temp = fopen($filename_tmp, "wb");
+					$fh_temp = fopen($filename_tmp, 'wb');
 					$open_new = false;
 				}
 
@@ -258,13 +258,10 @@ abstract class weFile{
 					//print substr($buff,(0-($marker_size+1)))."<br>\n";
 
 					if($marker_size){
-						if((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"))
-							$write = true;
-						else
-							$write = false;
-					}
-					else
+						$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"));
+					}else{
 						$write = true;
+					}
 
 					if($write){
 						//print "WRITE<br>\n";
@@ -275,7 +272,7 @@ abstract class weFile{
 							@fclose($fh_temp);
 							$fsize = 0;
 						}
-						$buff = "";
+						$buff = '';
 					}
 				} else{
 					return -1;
@@ -295,34 +292,34 @@ abstract class weFile{
 	}
 
 	static function mkpath($path){
-		$path = str_replace("\\", "/", $path);
+		$path = str_replace('\\', '/', $path);
 		if(weFile::hasURL($path))
 			return false;
-		if($path != ""){
+		if($path != ''){
 			return we_util_File::createLocalFolderByPath($path);
 		}
 		return false;
 	}
 
 	static function hasGzip(){
-		return function_exists("gzopen");
+		return function_exists('gzopen');
 	}
 
 	static function hasZip(){
-		return function_exists("zip_open");
+		return function_exists('zip_open');
 	}
 
 	static function hasBzip(){
-		return function_exists("bzopen");
+		return function_exists('bzopen');
 	}
 
 	static function hasCompression($comp){
 		switch($comp){
-			case "gzip":
+			case 'gzip':
 				return weFile::hasGzip();
-			case "zip":
+			case 'zip':
 				return weFile::hasZip();
-			case "bzip":
+			case 'bzip':
 				return weFile::hasBzip();
 			default:
 				return false;
@@ -330,30 +327,30 @@ abstract class weFile{
 	}
 
 	static function getComPrefix($compression){
-		if($compression == "gzip")
-			return "gz";
-		if($compression == "zip")
-			return "zip_";
-		if($compression == "bzip")
-			return "bz";
-		return "f";
+		if($compression == 'gzip')
+			return 'gz';
+		if($compression == 'zip')
+			return 'zip_';
+		if($compression == 'bzip')
+			return 'bz';
+		return 'f';
 	}
 
 	static function getZExtension($compression){
 		switch($compression){
-			case "gzip":
-				return "gz";
-			case "zip":
-				return "zip";
-			case "bzip":
-				return "bz";
+			case 'gzip':
+				return 'gz';
+			case 'zip':
+				return 'zip';
+			case 'bzip':
+				return 'bz';
 			default:
 				return '';
 		}
 	}
 
 	static function getCompression($filename){
-		$compressions = array("gzip", "zip", "bzip");
+		$compressions = array('gzip', 'zip', 'bzip');
 		foreach($compressions as $val){
 			$ext = '.' . weFile::getZExtension($val);
 			$extlen = strlen($ext);
@@ -361,23 +358,23 @@ abstract class weFile{
 				return $val;
 			}
 		}
-		return "none";
+		return 'none';
 	}
 
-	static function compress($file, $compression = "gzip", $destination = "", $remove = true, $writemode = "wb"){
+	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
 
 		if(!weFile::hasCompression($compression))
 			return false;
-		if($destination == "")
+		if($destination == '')
 			$destination = $file;
 		$prefix = weFile::getComPrefix($compression);
-		$open = $prefix . "open";
-		$write = $prefix . "write";
-		$close = $prefix . "close";
+		$open = $prefix . 'open';
+		$write = $prefix . 'write';
+		$close = $prefix . 'close';
 
-		$fp = @fopen($file, "rb");
+		$fp = @fopen($file, 'rb');
 		if($fp){
-			$zfile = $destination . ".gz";
+			$zfile = $destination . '.gz';
 			$gzfp = $open($zfile, $writemode);
 			if($gzfp){
 				do{
@@ -405,12 +402,12 @@ abstract class weFile{
 	}
 
 	static function decompress($gzfile, $remove = true){
-		$gzfp = @gzopen($gzfile, "rb");
+		$gzfp = @gzopen($gzfile, 'rb');
 		if($gzfp){
-			$file = str_replace(".gz", "", $gzfile);
+			$file = str_replace('.gz', '', $gzfile);
 			if($file == $gzfile)
-				$file = $gzfile . "xml";
-			$fp = @fopen($file, "wb");
+				$file = $gzfile . 'xml';
+			$fp = @fopen($file, 'wb');
 			if($fp){
 				do{
 					$data = gzread($gzfp, 8192);

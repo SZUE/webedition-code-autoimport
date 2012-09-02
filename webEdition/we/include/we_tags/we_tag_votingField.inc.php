@@ -25,10 +25,10 @@
 function we_tag_votingField($attribs){
 
 	if(isset($GLOBALS['_we_voting'])){
-		$name = weTag_getAttribute("name", $attribs);
-		$type = weTag_getAttribute("type", $attribs);
-		$precision = weTag_getAttribute("precision", $attribs, 0);
-		$num_format = weTag_getAttribute("num_format", $attribs);
+		$name = weTag_getAttribute('name', $attribs);
+		$type = weTag_getAttribute('type', $attribs);
+		$precision = weTag_getAttribute('precision', $attribs, 0);
+		$num_format = weTag_getAttribute('num_format', $attribs);
 
 		switch($name){
 			case 'id':
@@ -76,7 +76,7 @@ function we_tag_votingField($attribs){
 							}
 							if($GLOBALS['_we_voting']->AllowFreeText){
 								$countanswers--;
-								$atts['onclick'] = "_we_voting_answer_" . $GLOBALS['_we_voting']->ID . "_" . $countanswers . ".value='';";
+								$atts['onclick'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $countanswers . '.value="";';
 							}
 
 							$code .= getHtmlTag('input', $atts, '');
@@ -178,7 +178,7 @@ function we_tag_votingField($attribs){
 								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio){
 									$atts['onkeydown'] = '';
 									for($i = 0; $i < $countanswers - 1; $i++){
-										$atts['onkeydown'] .= "_we_voting_answer_" . $GLOBALS['_we_voting']->ID . "_" . $i . ".checked=0;";
+										$atts['onkeydown'] .= '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $i . '.checked=0;';
 									}
 								}
 								$code .= getHtmlTag('input', $atts, $value);
@@ -208,7 +208,7 @@ function we_tag_votingField($attribs){
 								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio){
 									$atts['onkeydown'] = '';
 									for($i = 0; $i < $countanswers - 1; $i++){
-										$atts['onkeydown'] .= "_we_voting_answer_" . $GLOBALS['_we_voting']->ID . "_" . $i . ".checked=0;";
+										$atts['onkeydown'] .= '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $i . '.checked=0;';
 									}
 								}
 								return getHtmlTag('textarea', $atts, $value, true);
@@ -227,8 +227,8 @@ function we_tag_votingField($attribs){
 			case 'result':
 				return $GLOBALS['_we_voting']->getResult($type, $num_format, $precision);
 			case 'date':
-				$format = weTag_getAttribute("format", $attribs);
-				return date(($format != "" ? $format : g_l('weEditorInfo', "[date_format]")), $GLOBALS['_we_voting']->PublishDate);
+				$format = weTag_getAttribute('format', $attribs);
+				return date(($format != '' ? $format : g_l('weEditorInfo', '[date_format]')), $GLOBALS['_we_voting']->PublishDate);
 		}
 	}
 	return '';
