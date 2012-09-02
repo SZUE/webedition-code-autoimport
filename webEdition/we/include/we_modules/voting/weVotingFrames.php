@@ -113,23 +113,18 @@ class weVotingFrames extends weModuleFrames{
 		}
 
 		$we_tabs->onResize();
-		$tabsHead = $we_tabs->getHeader('', 22);
 		$tabsBody = $we_tabs->getJS();
-
-		$js = we_html_element::jsElement('
-
+		$tabsHead = $we_tabs->getHeader('', 22) .
+			we_html_element::jsElement('
 				function setTab(tab) {
 					parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
 					parent.edbody.toggle("tab"+tab);
 					' . $this->topFrame . '.activ_tab=tab;
 					self.focus();
 				}
+				' . ($this->View->voting->ID ? '' : $this->topFrame . '.activ_tab=1;')
+		);
 
-				' . ($this->View->voting->ID ? '' : $this->topFrame . '.activ_tab=1;') . '
-
-		');
-
-		$tabsHead .= $js;
 
 		$table = new we_html_table(array("width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 1);
 
@@ -202,7 +197,7 @@ class weVotingFrames extends weModuleFrames{
 
 					}
 					") .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR ."edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				)
 		);
 	}
