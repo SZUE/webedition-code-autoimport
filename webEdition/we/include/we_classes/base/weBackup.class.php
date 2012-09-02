@@ -285,15 +285,7 @@ class weBackup extends we_backup{
 		$file = TEMP_DIR . "we_conf_global.inc.php";
 		$object->Path = $file;
 		$object->save(true);
-		$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
-
-		$newglobals = $parser->getData();
-
-		foreach($newglobals as $k => $v){
-			if($v != ''){
-				weConfParser::setGlobalPref($k, $v);
-			}
-		}
+		weConfParser::updateGlobalPrefByFile($file);
 		@unlink($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
