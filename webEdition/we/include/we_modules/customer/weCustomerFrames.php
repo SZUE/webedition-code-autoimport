@@ -85,17 +85,18 @@ class weCustomerFrames extends weModuleFrames{
 
 		$fields_names = array();
 		$fields_names = $this->View->customer->getFieldsNames($branch, $this->View->settings->getEditSort());
-		$this->jsOut_fieldTypesByName = "\tvar fieldTypesByName = new Array();\n";
+		$this->jsOut_fieldTypesByName = "var fieldTypesByName = new Array();";
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties($val);
-			$this->jsOut_fieldTypesByName .= "\tfieldTypesByName['$val'] = '" . (isset($tmp['type']) ? $tmp['type'] : "") . "';\n";
+			$this->jsOut_fieldTypesByName .= "fieldTypesByName['$val'] = '" . (isset($tmp['type']) ? $tmp['type'] : "") . "';";
 		}
 		if(is_array($fields_names)){
 			foreach($fields_names as $k => $field){
-				if($this->View->customer->isProperty($field))
+				if($this->View->customer->isProperty($field)){
 					$select->addOption($k, $this->View->settings->getPropertyTitle($field));
-				else
+				}else{
 					$select->addOption($k, $field);
+				}
 			}
 		}
 

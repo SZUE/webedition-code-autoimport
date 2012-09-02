@@ -107,7 +107,7 @@ class we_updater{
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "editorDocuintegration", " tinyint(1) NOT NULL default '1'", ' AFTER editorTooltipFontsize ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "BackendCharset", " varchar(22) NOT NULL default ''", ' AFTER Language ');
 		$GLOBALS['DB_WE']->addCol(PREFS_TABLE, "juploadPath", " text ", ' AFTER use_jupload ');
-		
+
 		if($GLOBALS['DB_WE']->isColExist(DOC_TYPES_TABLE, "DocType"))
 			$GLOBALS['DB_WE']->changeColType(DOC_TYPES_TABLE, "DocType", " varchar(64) NOT NULL default '' ");
 
@@ -135,7 +135,6 @@ class we_updater{
 		}
 		$GLOBALS['DB_WE']->addCol(THUMBNAILS_TABLE, "Fitinside", " smallint(5) unsigned NOT NULL default '0' ", ' AFTER Interlace ');
 		$GLOBALS['DB_WE']->changeColType(HISTORY_TABLE, "ContentType", "enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile') NOT NULL");
-		
 	}
 
 	static function convertPerms(){
@@ -278,10 +277,10 @@ class we_updater{
 		}
 		self::fix_icon();
 
-		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
-		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
-	
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
+
 
 		return true;
 	}
@@ -436,7 +435,6 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "Workspaces", " varchar(1000) NOT NULL default '' ");
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "DefaultWorkspaces", " varchar(1000) NOT NULL default '' ");
 		}
-		
 	}
 
 	static function updateObjectFiles(){
@@ -590,7 +588,6 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "Workspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspacesSelected", " varchar(1000) NOT NULL ");
-			 
 		}
 	}
 
@@ -602,7 +599,7 @@ class we_updater{
 		if(defined('WORKFLOW_TABLE')){
 			if($GLOBALS['DB_WE']->isColExist(WORKFLOW_TABLE, 'DocType')){
 				$GLOBALS['DB_WE']->changeColType(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''");
-			} else {
+			} else{
 				$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''", ' AFTER Folders ');
 			}
 			$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'ObjectFileFolders', "varchar(255) NOT NULL default ''", ' AFTER Objects ');
@@ -748,17 +745,23 @@ class we_updater{
 
 	static function fixInconsistentTables(){
 		$db = $GLOBALS['DB_WE'];
-		$del = array();
-		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')'));
+		$del = self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')');
 		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')'));
 
 		if(count($del)){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
-		$del = array_merge($del, self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')'));
+		$del = self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 		if(count($del)){
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
+		}
+
+		if(defined('CUSTOMER_ADMIN_TABLE')){
+			$dat = f('SELECT EditSort FROM ' . CUSTOMER_ADMIN_TABLE, 'EditSort', $db);
+			$dat = implode(',', trim($dat, ','));
+			$tmp=weCustomerView();
+
 		}
 	}
 
