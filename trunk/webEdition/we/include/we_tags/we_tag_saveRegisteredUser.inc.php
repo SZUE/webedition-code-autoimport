@@ -47,7 +47,7 @@ function we_tag_saveRegisteredUser($attribs){
 		//register new User
 		if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && intval($_REQUEST['s']['ID']) <= 0 && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
 			if($_REQUEST['s']['Password'] != '' && $_REQUEST['s']['Username'] != ''){ // wenn password und Username nicht leer
-				if(!weCustomer::customerNameExist($_REQUEST['s']['Username'])){ // username existiert noch nicht!
+				if(!weCustomer::customerNameExist($_REQUEST['s']['Username'],$GLOBALS['DB_WE'])){ // username existiert noch nicht!
 					$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
 					$ret = $hook->executeHook();
 

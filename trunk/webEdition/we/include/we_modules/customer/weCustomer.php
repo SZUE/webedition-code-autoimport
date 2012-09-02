@@ -134,7 +134,7 @@ class weCustomer extends weModelBase{
 		if(strpos($real_name, g_l('modules_customer', '[other]') !== FALSE)){
 			return $real_name;
 		}
-		$pre = explode("_", $real_name);
+		$pre = explode('_', $real_name);
 		if(($pre[0] != $real_name) && (!in_array($pre[0], $this->protected)) && (!in_array($pre[0], $this->properties))){
 			$banche = $pre[0];
 			$field = implode("_", array_slice($pre, 1));
@@ -237,7 +237,7 @@ class weCustomer extends weModelBase{
 
 	function getFieldsDbProperties(){
 		$ret = array();
-		$this->db->query("SHOW COLUMNS FROM " . $this->db->escape($this->table));
+		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
 		while($this->db->next_record()) {
 			$ret[$this->db->f("Field")] = $this->db->Record;
 		}
@@ -262,14 +262,14 @@ class weCustomer extends weModelBase{
 			unset($_SESSION["customer_session"]);
 	}
 
-	function customerNameExist($name){
-		$db = new DB_WE();
+	static function customerNameExist($name, $db = ''){
+		$db = $db ? $db : new DB_WE();
 		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db) == '1');
 	}
-	
-	function customerFieldValueExist($fieldname,$value,$condition=''){
+
+	function customerFieldValueExist($fieldname, $value, $condition = ''){
 		$db = new DB_WE();
-		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE '.$db->escape($fieldname).'="' . $db->escape($value) . '"'.($condition!=''? ' AND '. $condition:''), 'a', $db) == '1');
+		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition != '' ? ' AND ' . $condition : ''), 'a', $db) == '1');
 	}
 
 	function fieldExist($field){

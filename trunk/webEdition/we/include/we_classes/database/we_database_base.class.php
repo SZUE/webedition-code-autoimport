@@ -845,7 +845,6 @@ abstract class we_database_base{
 	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
 	 */
 	function moveCol($tab, $colName, $newPos){
-		//TODO: to implement
 		//get the old col def, use for alter table.
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){
@@ -861,7 +860,7 @@ abstract class we_database_base{
 			}
 		}
 		if($found){
-			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . $newPos);
+			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `'.trim($newPos,'`').'`'));
 		}
 		return false;
 	}
