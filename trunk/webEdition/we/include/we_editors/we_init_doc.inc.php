@@ -77,6 +77,7 @@ if(isset($we_ContentType) && $we_ContentType != ''){
 				$we_doc = new $we_doc();
 			} else{
 				t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
+				exit(1);
 			}
 	}
 } else{
