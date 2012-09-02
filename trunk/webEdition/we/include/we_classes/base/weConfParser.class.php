@@ -184,9 +184,11 @@ class weConfParser{
 		return self::_stripSlashes($value);
 	}
 
+	//FIXME: parse & add comments!
 	function _parse(){
 		// reset data array
 		$this->_data = array();
+		$match = array();
 		if($this->_content){
 			$pattern = '|define\(\s*["\']([^"]+)["\']\s*,\s*([^\r\n]+)\);[\r\n]?|Ui';
 			if(preg_match_all($pattern, $this->_content, $match, PREG_PATTERN_ORDER)){
