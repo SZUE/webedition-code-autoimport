@@ -39,8 +39,8 @@ $wasNew = 0;
 
 switch($_REQUEST['we_cmd'][0]){
 	case 'load_editor':
-		// set default tab for creating new imageDocuments to 'metadata':
-		if($we_doc->ContentType == 'image/*' && $we_doc->ID == '0'){
+		// set default tab for creating new imageDocuments to "metadata":
+		if($we_doc->ContentType == 'image/*' && $we_doc->ID == 0){
 			$_SESSION['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
@@ -425,7 +425,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 				if($we_doc->ContentType == 'text/weTmpl'){
 					if(isset($_REQUEST['we_cmd'][8]) && $_REQUEST['we_cmd'][8]){
-						// if  we_cmd[8] is set, it means that "automatic rebuild" was clicked
+						// if  we_cmd[8] is set, it means that 'automatic rebuild' was clicked
 						// so we need to check we_cmd[3] (means save immediately) and we_cmd[4] (means rebuild immediately)
 						$_REQUEST['we_cmd'][3] = 1;
 						$_REQUEST['we_cmd'][4] = 1;
@@ -445,12 +445,12 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 
 					if($_REQUEST['we_cmd'][2]){
 						//this is the second call to save_document (see next else command)
-						include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
+						include(WE_INCLUDES_PATH.'we_templates/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
 						$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else if(!$_REQUEST['we_cmd'][3] && $somethingNeedsToBeResaved){
-						// this happens when the template is saved and there are documents which use the template and 'automatic rebuild' is not checked!
-						include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_TemplateSave.inc.php'); // this calls again we_cmd with save_document and sets we_cmd[2]
+						// this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
+						include(WE_INCLUDES_PATH.'we_TemplateSave.inc.php'); // this calls again we_cmd with save_document and sets we_cmd[2]
 						$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else{
@@ -459,7 +459,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
-								"_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");" . $we_doc->getUpdateTreeScript() . ";"; // save/ rename a document
+								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if($_REQUEST['we_cmd'][4]){
@@ -480,12 +480,12 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2){
 						$we_responseText = g_l('weEditor', '[text/weTmpl][no_template_save]');
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-						include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
+						include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
 						exit();
 					}
 					//FIXME: is this safe??? Code-Injection!
 					if(isset($_REQUEST['we_cmd'][6]) && $_REQUEST['we_cmd'][6]){
-						$we_JavaScript .= "\n" . $_REQUEST['we_cmd'][6] . "\n";
+						$we_JavaScript .= $_REQUEST['we_cmd'][6];
 					}
 				} else{
 					$ct = new we_base_ContentTypes();
@@ -501,13 +501,21 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						if(!$_SESSION['perms']['ADMINISTRATOR'] && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+<<<<<<< .working
 							include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
+=======
+							include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
+>>>>>>> .merge-rechts.r4928
 							exit();
 						}
 						if(!$we_doc->userCanSave()){
 							$we_responseText = g_l('alert', '[access_denied]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+<<<<<<< .working
 							include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
+=======
+							include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
+>>>>>>> .merge-rechts.r4928
 							exit();
 						}
 
@@ -526,7 +534,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 								if($we_doc->i_publInScheduleTable()){
 									$foo = $we_doc->getNextPublishDate();
 									if($foo){
+<<<<<<< .working
 										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
+=======
+										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
+>>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 									}
 								} else{
@@ -536,7 +548,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 												we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 											}
 										}
+<<<<<<< .working
 										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+=======
+										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+>>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 										// SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
@@ -546,7 +562,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
 									} else{
+<<<<<<< .working
 										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
+=======
+										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
+>>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 									}
 								}
@@ -635,7 +655,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				we_schedpro::trigger_schedule();
 				$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 			}
+<<<<<<< .working
 			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
+=======
+			include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
+>>>>>>> .merge-rechts.r4928
 			break;
 		case 'unpublish':
 			if($we_doc->Published){
@@ -664,7 +688,11 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
+<<<<<<< .working
 			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_publish.inc.php');
+=======
+			include(WE_INCLUDES_PATH.'we_templates/we_editor_publish.inc.php');
+>>>>>>> .merge-rechts.r4928
 			break;
 		default:
 			$we_include = $we_doc->editor();
