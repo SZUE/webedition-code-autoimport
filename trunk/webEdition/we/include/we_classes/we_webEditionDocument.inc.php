@@ -185,12 +185,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function editor($baseHref = true){
-		$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
-		$prot = getServerProtocol();
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl() . $this->Path : "";
+		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : '';
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return 'we_templates/we_editor_properties.inc.php';
 			case WE_EDITPAGE_INFO:
 				$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
 				return "we_templates/we_editor_info.inc.php";
@@ -203,13 +201,10 @@ class we_webEditionDocument extends we_textContentDocument{
 				break;
 			case WE_EDITPAGE_VALIDATION:
 				return "we_templates/validateDocument.inc.php";
-				break;
 			case WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
-				break;
 			case WE_EDITPAGE_WEBUSER:
 				return "we_modules/customer/editor_weDocumentCustomerFilter.inc.php";
-				break;
 			default:
 				return parent::editor($baseHref);
 		}
@@ -475,23 +470,23 @@ class we_webEditionDocument extends we_textContentDocument{
 		$_charsetHandler = new charsetHandler();
 
 		if(isset($GLOBALS["meta"]["Charset"])){ //	charset-tag available
-			$name = "Charset";
+			$name = 'Charset';
 
 			//	This is the input field for the charset
-			$inputName = "we_" . $this->Name . "_txt[$name]";
+			$inputName = 'we_' . $this->Name . "_txt[$name]";
 
-			$chars = explode(",", $GLOBALS["meta"]["Charset"]["defined"]);
+			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
 
 			//	input field - check value
-			if($this->getElement($name) != ""){
+			if($this->getElement($name) != ''){
 				$value = $this->getElement($name);
 			} else if(isset($GLOBALS["meta"][$name])){
 				$value = $GLOBALS["meta"][$name]["default"];
 			} else{
-				$value = "";
+				$value = '';
 			}
 
-			$retInput = $this->htmlTextInput($inputName, 40, $value, "", " readonly ", "text", 254);
+			$retInput = $this->htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
 
 
 
@@ -504,7 +499,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 			if(!$_defaultInChars){
-				array_push($chars, DEFAULT_CHARSET);
+				$chars[] = DEFAULT_CHARSET;
 			}
 
 			$chars = $_charsetHandler->getCharsetsByArray($chars);
@@ -532,8 +527,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	// for internal use
 	private function setTemplatePath(){
 		$this->TemplatePath = $this->TemplateID ?
-			TEMPLATES_PATH . f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($this->TemplateID), "Path", $this->DB_WE) :
-			$_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_noTmpl.inc.php";
+			TEMPLATES_PATH . f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), 'Path', $this->DB_WE) :
+			WE_INCLUDES_PATH . 'we_templates/we_noTmpl.inc.php';
 	}
 
 	function setTemplateID($templID){
@@ -562,17 +557,17 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function getFieldType($tagname, $tag){
 		switch($tagname){
-			case "formfield":
-			case "img":
-			case "linklist":
-			case "list":
-			case "block":
+			case 'formfield':
+			case 'img':
+			case 'linklist':
+			case 'list':
+			case 'block':
 				return $tagname;
-			case "input":
+			case 'input':
 				return (strpos($tag, 'type="date"') !== false) ?
-					"date" : "txt";
+					'date' : 'txt';
 			default:
-				return "txt";
+				return 'txt';
 		}
 	}
 
@@ -754,22 +749,23 @@ class we_webEditionDocument extends we_textContentDocument{
 			default:
 				parent::we_load($from);
 				$this->setTemplatePath();
+				t_e($this);
 		}
 	}
 
 	function i_getDocument($includepath = ""){
-		$glob = "";
+		$glob = array();
 		foreach($GLOBALS as $k => $v){
 			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
-				$glob .= '$' . $k . ",";
+				$glob[] = '$' . $k;
 		}
-		$glob = rtrim($glob, ',');
-		eval('global ' . $glob . ';'); // globalen Namensraum herstellen.
+		eval('global ' . implode(',', $glob) . ';'); // globalen Namensraum herstellen.
 		$editpageSave = $this->EditPageNr;
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
 		$this->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
+		t_e($we_include);
 		if(isset($GLOBALS["we_baseHref"])){
 			$basehrefMerk = $GLOBALS["we_baseHref"];
 			unset($GLOBALS["we_baseHref"]);

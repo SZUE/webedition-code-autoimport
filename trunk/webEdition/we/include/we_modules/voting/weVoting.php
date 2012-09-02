@@ -111,17 +111,21 @@ class weVoting extends weModelBase{
 			);
 		}
 
-		if($this->Valid == 0)
+		if($this->Valid == 0){
 			$this->Valid = time() + 31536000; //365 days
+		}
 
-		if($this->Valid < time() && $this->ActiveTime == 1)
+		if($this->Valid < time() && $this->ActiveTime == 1){
 			$this->Active = 0;
+		}
 
-		if(empty($this->Scores))
+		if(empty($this->Scores)){
 			$this->Scores = array();
+		}
 
-		if($this->PublishDate == 0)
+		if($this->PublishDate == 0){
 			$this->PublishDate = time();
+		}
 	}
 
 	function load($id = 0){
@@ -147,8 +151,9 @@ class weVoting extends weModelBase{
 
 		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'link.gif');
 
-		if($this->ActiveTime && $this->Valid < time())
+		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;
+		}
 
 		if(!$this->IsFolder && ($with_scores || $this->ID == 0)){
 			$qaset_count = count($this->QASet[$this->defVersion]['answers']);
@@ -174,7 +179,7 @@ class weVoting extends weModelBase{
 		if(isset($_SESSION["user"]["ID"]) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION["user"]["ID"], $this->Owners)))
 			$this->Owners[] = $_SESSION["user"]["ID"];
 
-		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'", "QASet", $GLOBALS['DB_WE']);
+		$_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'", "QASet", $GLOBALS['DB_WE']);
 		$_new_QASet = $this->QASet;
 
 		$this->QASet = serialize($this->QASet);
@@ -209,11 +214,8 @@ class weVoting extends weModelBase{
 		parent::save();
 
 		$this->QASet = unserialize($this->QASet);
-		if($with_scores || $oldid == 0){
-			$this->Scores = unserialize($this->Scores);
-		} else{
-			$this->Scores = $temp;
-		}
+		$this->Scores = ($with_scores || $oldid == 0) ? unserialize($this->Scores) : $temp;
+
 		$this->QASetAdditions = unserialize($this->QASetAdditions);
 		$this->Owners = makeArrayFromCSV($this->Owners);
 		$this->BlackList = makeArrayFromCSV($this->BlackList);
@@ -221,26 +223,23 @@ class weVoting extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		if($serialize)
-			$field = serialize($this->$name);
-		else
-			$field = $this->$name;
-
-		$this->db->query('UPDATE ' . $this->table . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
-		return $this->db->affected_rows();
+		$field = ($serialize ? serialize($this->$name) : $this->$name);
+		return $this->db->query('UPDATE ' . $this->table . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
 	}
 
 	function delete(){
-		if(!$this->ID)
+		if(!$this->ID){
 			return false;
-		if($this->IsFolder)
+		}
+		if($this->IsFolder){
 			$this->deleteChilds();
+		}
 		parent::delete();
 		return true;
 	}
 
 	function deleteChilds(){
-		$this->db->query("SELECT ID FROM " . VOTING_TABLE . " WHERE ParentID=" . intval($this->ID));
+		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()) {
 			$child = new weVoting($this->db->f("ID"));
 			$child->delete();
@@ -248,16 +247,11 @@ class weVoting extends weModelBase{
 	}
 
 	function setPath(){
-		$ppath = f('SELECT Path FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($this->ParentID) . ';', 'Path', $this->db);
-		$this->Path = $ppath . "/" . $this->Text;
+		$this->Path = f('SELECT Path FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->db) . '/' . $this->Text;
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID != ' . intval($this->ID) . ';');
-		if($this->db->next_record())
-			return true;
-		else
-			return false;
+		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID != ' . intval($this->ID), 'a', $this->db) == '1';
 	}
 
 	function isSelf(){
@@ -266,20 +260,20 @@ class weVoting extends weModelBase{
 
 	function evalPath($id = 0){
 		$db_tmp = new DB_WE();
-		$path = "";
+		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
 			$path = $this->Text;
 		}
 
-		$foo = getHash("SELECT Text,ParentID FROM " . VOTING_TABLE . " WHERE ID=" . intval($id) . ";", $db_tmp);
-		$path = "/" . (isset($foo["Text"]) ? $foo["Text"] : "") . $path;
+		$foo = getHash('SELECT Text,ParentID FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
+		$path = '/' . (isset($foo["Text"]) ? $foo["Text"] : "") . $path;
 
 		$pid = isset($foo["ParentID"]) ? $foo["ParentID"] : "";
 		while($pid > 0) {
-			$db_tmp->query("SELECT Text,ParentID FROM " . VOTING_TABLE . " WHERE ID=" . intval($pid));
+			$db_tmp->query('SELECT Text,ParentID FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()) {
-				$path = "/" . $db_tmp->f("Text") . $path;
+				$path = '/' . $db_tmp->f("Text") . $path;
 				$pid = $db_tmp->f("ParentID");
 			}
 		}
@@ -302,14 +296,9 @@ class weVoting extends weModelBase{
 
 	function getNext(){
 		$this->answerCount++;
-		if($this->AllowFreeText){
-			$addOne = 0;
-		} else{
-			$addOne = 0;
-		}
-		if($this->answerCount < count($this->QASet[$this->defVersion]['answers']) + $addOne)
-			return true;
-		return false;
+//	if($this->AllowFreeText){
+		$addOne = 0;
+		return ($this->answerCount < count($this->QASet[$this->defVersion]['answers']) + $addOne);
 	}
 
 	function resetSets(){
@@ -320,7 +309,7 @@ class weVoting extends weModelBase{
 		return $this->QASet[$this->defVersion]['answers'][$this->answerCount];
 	}
 
-	function getResult($type = 'count', $num_format = '', $precision = weVoting::PRECISION){
+	function getResult($type = 'count', $num_format = '', $precision = self::PRECISION){
 		switch($type){
 			case 'percent':
 				$total = $this->getResult('total');
@@ -348,51 +337,35 @@ class weVoting extends weModelBase{
 		return $result;
 	}
 
-	function formatNumber($number, $format, $precision = weVoting::PRECISION){
+	function formatNumber($number, $format, $precision = self::PRECISION){
 		switch($format){
 			case 'german':
 			case 'deutsch':
-				$result = number_format($number, $precision, ",", ".");
-				break;
+				return number_format($number, $precision, ',', '.');
 			case 'french':
-				$result = number_format($number, $precision, ",", " ");
-				break;
-			case 'english':
-				$result = number_format($number, $precision, ".", "");
-				break;
+				return number_format($number, $precision, ',', ' ');
 			case 'swiss':
-				$result = number_format($number, $precision, ",", "'");
-				break;
+				return number_format($number, $precision, ',', "'");
+			case 'english':
 			default:
-				$result = number_format($number, $precision, ".", "");
+				return number_format($number, $precision, '.', '');
 		}
-		return $result;
 	}
 
 	function isLastSet(){
-		if($this->answerCount >= count($this->QASet[$this->defVersion]['answers']) - 1)
-			return true;
-		return false;
+		return ($this->answerCount >= count($this->QASet[$this->defVersion]['answers']) - 1);
 	}
 
 	function setDefVersion($version){
-		if($version < 0)
+		if($version < 0){
 			$this->defVersion = 0;
-		if($version < count($this->QASet))
-			$this->defVersion = $version;
-		else
-			$this->defVersion = count($this->QASet) - 1;
+		}
+		$this->defVersion = ($version < count($this->QASet) ? $version : count($this->QASet) - 1);
 	}
 
 	function isAllowedForUser(){
 
-		if($this->RestrictOwners == 0)
-			return true;
-
-		if(we_hasPerm('ADMINISTRATOR'))
-			return true;
-
-		if(in_array($_SESSION['user']['ID'], $this->Owners)){
+		if($this->RestrictOwners == 0 || we_hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
 			return true;
 		}
 
@@ -412,8 +385,9 @@ class weVoting extends weModelBase{
 	function getOwnersSql(){
 		$owners_sql = "";
 		if(!we_hasPerm('ADMINISTRATOR')){
-			$userids = array();
-			$userids[] = $_SESSION['user']['ID'];
+			$userids = array(
+				$_SESSION['user']['ID']
+			);
 			we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);
 
 			$sqlarr = array();
@@ -447,34 +421,27 @@ class weVoting extends weModelBase{
 				$GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;
 			}
 		}
-		return weVoting::SUCCESS;
+		return self::SUCCESS;
 	}
 
 	function vote($answers, $addfields = NULL){
-		if(isset($_SESSION['_we_voting_sessionID'])){
-			$votingsession = $_SESSION['_we_voting_sessionID'];
-		} else{
-			$votingsession = 0;
-		}
+		$votingsession = (isset($_SESSION['_we_voting_sessionID']) ? $_SESSION['_we_voting_sessionID'] : 0);
 		$answerID = makeCSVFromArray($answers);
 		$answertext = '';
 		$successor = 0;
-		if(!is_array($answers)){
-			if($this->Log)
-				$this->logVoting(weVoting::ERROR, $votingsession, $answerID, $answertext, $successor);
-			return weVoting::ERROR;
-		}
-		if(!(count($answers) > 0)){
-			if($this->Log)
-				$this->logVoting(weVoting::ERROR, $votingsession, $answerID, $answertext, $successor);
-			return weVoting::ERROR;
+		if(!is_array($answers) || !(count($answers) > 0)){
+			if($this->Log){
+				$this->logVoting(self::ERROR, $votingsession, $answerID, $answertext, $successor);
+			}
+			return self::ERROR;
 		}
 
 		$ret = $this->canVote();
 
-		if($ret != weVoting::SUCCESS){
-			if($this->Log)
+		if($ret != self::SUCCESS){
+			if($this->Log){
 				$this->logVoting($ret, $votingsession, $answerID, $answertext, $successor);
+			}
 			return $ret;
 		}
 
@@ -520,10 +487,12 @@ class weVoting extends weModelBase{
 				$this->saveField('Revote', true);
 				if($this->UserAgent){
 					$this->RevoteUserAgent = unserialize($this->RevoteUserAgent);
-					if(!is_array($this->RevoteUserAgent))
+					if(!is_array($this->RevoteUserAgent)){
 						$this->RevoteUserAgent = array();
-					if(!isset($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]) || !is_array($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]))
+					}
+					if(!isset($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]) || !is_array($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']])){
 						$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']] = array();
+					}
 					$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']][] = $_SERVER['HTTP_USER_AGENT'];
 					$this->saveField('RevoteUserAgent', true);
 				}
@@ -544,23 +513,24 @@ class weVoting extends weModelBase{
 	}
 
 	function canVote(){
-		if(!$this->isActive())
-			return weVoting::ERROR_ACTIVE;
-		if($this->isBlackIP())
-			return weVoting::ERROR_BLACKIP;
-		if($this->RevoteTime == 0)
-			return weVoting::SUCCESS;
-
-		if($this->RevoteControl == 2){
-			return $this->canVoteUserID();
-		} else{
-			if($this->RevoteControl == 1){
-				return $this->canVoteCookie();
-			} else{
-				return $this->canVoteIP();
-			}
+		if(!$this->isActive()){
+			return self::ERROR_ACTIVE;
 		}
-		return weVoting::SUCCESS;
+		if($this->isBlackIP()){
+			return self::ERROR_BLACKIP;
+		}
+		if($this->RevoteTime == 0){
+			return self::SUCCESS;
+		}
+
+		switch($this->RevoteControl){
+			case 2:
+				return $this->canVoteUserID();
+			case 1:
+				return $this->canVoteCookie();
+			default:
+				return $this->canVoteIP();
+		}
 	}
 
 	function canVoteCookie(){
@@ -571,12 +541,12 @@ class weVoting extends weModelBase{
 		}
 
 		if(isset($_COOKIE[md5('_we_voting_' . $this->ID)])){
-			return weVoting::ERROR_REVOTE;
+			return self::ERROR_REVOTE;
 		} else{
 			if($this->FallbackUserID){
 				return $this->canVoteUserID();
 			} else
-				return weVoting::SUCCESS;
+				return self::SUCCESS;
 		}
 	}
 
@@ -586,67 +556,55 @@ class weVoting extends weModelBase{
 		if(!is_array($this->Revote))
 			$this->Revote = array();
 
-		if($this->RevoteTime < 0)
-			$revotetime = time() + 5;
-		else
-			$revotetime = $this->RevoteTime;
+		$revotetime = ($this->RevoteTime < 0 ? time() + 5 : $this->RevoteTime);
 
 		if(in_array($_SERVER['REMOTE_ADDR'], array_keys($this->Revote))){
 			if(($revotetime + $this->Revote[$_SERVER['REMOTE_ADDR']]) > time()){
 				$revoteua = unserialize($this->RevoteUserAgent);
 				if($this->UserAgent){
 					if(!is_array($revoteua)){
-						return weVoting::ERROR_REVOTE;
+						return self::ERROR_REVOTE;
 					}
 					if(isset($revoteua[$_SERVER['REMOTE_ADDR']]) && is_array($revoteua[$_SERVER['REMOTE_ADDR']])){
 						if(in_array($_SERVER['HTTP_USER_AGENT'], $revoteua[$_SERVER['REMOTE_ADDR']])){
-							return weVoting::ERROR_REVOTE;
+							return self::ERROR_REVOTE;
 						} else{
 							if($this->FallbackUserID){
 								return $this->canVoteUserID();
 							} else
-								return weVoting::SUCCESS;
+								return self::SUCCESS;
 						}
 					}
 				}
 
-				return weVoting::ERROR_REVOTE;
+				return self::ERROR_REVOTE;
 			}
 			else{
 				if($this->FallbackUserID){
 					return $this->canVoteUserID();
 				} else
-					return weVoting::SUCCESS;
+					return self::SUCCESS;
 			}
 		} else{
 			if($this->FallbackUserID){
 				return $this->canVoteUserID();
 			} else
-				return weVoting::SUCCESS;
+				return self::SUCCESS;
 		}
 	}
 
 	function canVoteUserID(){
-		if(defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]){
-			$userid = $_SESSION["webuser"]["ID"];
-		} else{
-			$userid = -1;
-		}
+		$userid = (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : -1;
+
 		if(!$this->LogDB || ($userid <= 0)){
-			return weVoting::SUCCESS;
+			return self::SUCCESS;
 		} else{
-			if($this->RevoteTime < 0)
-				$testtime = 0;
-			else
-				$testtime = time() - $this->RevoteTime;
+			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime . ' ORDER BY time';
-
-			$logEntries = $this->db->query($logQuery);
-			while($this->db->next_record()) {
-				return weVoting::ERROR_REVOTE;
+			if(f('SELECT 1 AS a FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $this->ID . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . $userid . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . $testtime, 'a', $this->db) == '1'){
+				return self::ERROR_REVOTE;
 			}
-			return weVoting::SUCCESS;
+			return self::SUCCESS;
 		}
 	}
 
@@ -661,15 +619,13 @@ class weVoting extends weModelBase{
 	}
 
 	function cookieDisabled(){
-		if(isset($_SESSION['_we_cookie_']))
-			return false;
-		else
-			return true;
+		return !(isset($_SESSION['_we_cookie_']));
 	}
 
 	function isBlackIP(){
-		if(!$this->RestrictIP)
+		if(!$this->RestrictIP){
 			return false;
+		}
 		$ip = $_SERVER['REMOTE_ADDR'];
 		foreach($this->BlackList as $fip){
 			$reg = str_replace('*', '[0-9]+', $fip);
@@ -692,8 +648,9 @@ class weVoting extends weModelBase{
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
 		} else{
 			$this->LogData = unserialize($this->LogData);
-			if(!is_array($this->LogData))
+			if(!is_array($this->LogData)){
 				$this->LogData = array();
+			}
 			$this->LogData[] = array(
 				'time' => time(),
 				'ip' => $_SERVER['REMOTE_ADDR'],
@@ -725,9 +682,7 @@ class weVoting extends weModelBase{
 	}
 
 	function deleteGroupLogData(){
-		$querySammel = 'SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path . "%'";
-
-		$SammelEntries = $this->db->query($querySammel);
+		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path . "%'");
 		while($this->db->next_record()) {
 			$child = new weVoting($this->db->f("ID"));
 			$child->deleteLogDataDB();
@@ -760,10 +715,10 @@ class weVoting extends weModelBase{
 			$logQuery = 'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . $id . ' ORDER BY time';
 		}
 
-		$logEntries = $this->db->query($logQuery);
+		$this->db->query($logQuery);
 		$this->LogData = array();
 		while($this->db->next_record()) {
-			array_push($this->LogData, array('votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
+			$this->LogData[] = array('votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
 				'time' => $this->db->f('time'),
 				'ip' => $this->db->f('ip'),
 				'agent' => $this->db->f('agent'),
@@ -775,7 +730,7 @@ class weVoting extends weModelBase{
 				'answertext' => $this->db->f('answertext'),
 				'successor' => $this->db->f('successor'),
 				'additionalfields' => $this->db->f('additionalfields'),
-			));
+			);
 		}
 		return $this->LogData;
 	}
@@ -805,22 +760,21 @@ class weVoting extends weModelBase{
 		} else{
 			$userid = 0;
 		}
-		$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' .
-			'votingsession = \'' . $votingsession . '\', ' .
-			'voting = \'' . $this->ID . '\', ' .
-			'time = \'' . time() . '\', ' .
-			'ip = \'' . $_SERVER['REMOTE_ADDR'] . '\', ' .
-			'agent = \'' . $_SERVER['HTTP_USER_AGENT'] . '\', ' .
-			'userid  = \'' . $userid . '\', ' .
-			'cookie = \'' . $_cookieStatus . '\', ' .
-			'fallback = \'' . $this->FallbackActive . '\', ' .
-			'answer = \'' . $answer . '\', ' .
-			'answertext = \'' . $answertext . '\', ' .
-			'successor = \'' . $successor . '\', ' .
-			'additionalfields = \'' . $additionalfields . '\', ' .
-			'status = \'' . $status . '\'';
-
-		$this->db->query($myquery);
+		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
+				'votingsession' => $votingsession,
+				'voting' => $this->ID,
+				'time' => time(),
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'agent' => $_SERVER['HTTP_USER_AGENT'],
+				'userid' => $userid,
+				'cookie' => $_cookieStatus,
+				'fallback' => $this->FallbackActive,
+				'answer' => $answer,
+				'answertext' => $answertext,
+				'successor' => $successor,
+				'additionalfields' => $additionalfields,
+				'status' => $status,
+			)));
 
 		return true;
 	}
@@ -847,23 +801,22 @@ class weVoting extends weModelBase{
 		$LogData = @unserialize($this->LogData);
 		if(is_array($LogData) && !empty($LogData)){
 			foreach($LogData as $ld){
-				$myquery = 'INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' .
-					'votingsession = \'\', ' .
-					'voting = \'' . $this->ID . '\', ' .
-					'time = \'' . $ld['time'] . '\', ' .
-					'ip = \'' . $ld['ip'] . '\', ' .
-					'agent = \'' . $ld['agent'] . '\', ' .
-					'userid  = \'0\', ' .
-					'cookie = \'' . $ld['cookie'] . '\', ' .
-					'fallback = \'' . $ld['fallback'] . '\', ' .
-					'answer = \'\', ' .
-					'answertext = \'\', ' .
-					'successor = \'\', ' .
-					'additionalfields = \'\', ' .
-					'status = \'' . $ld['status'] . '\'';
-				$this->db->query($myquery);
+				$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
+						'votingsession' => '',
+						'voting' => $this->ID,
+						'time' => $ld['time'],
+						'ip' => $ld['ip'],
+						'agent' => $ld['agent'],
+						'userid' => 0,
+						'cookie' => $ld['cookie'],
+						'fallback' => $ld['fallback'],
+						'answer' => '',
+						'answertext' => '',
+						'successor' => '',
+						'additionalfields' => '',
+						'status' . $ld['status'],
+					)));
 			}
-			$this->LogData = '';
 			$this->LogData = '';
 			$this->saveField('LogData', false);
 			$this->LogDB = true;

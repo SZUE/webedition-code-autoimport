@@ -95,7 +95,7 @@ abstract class we_class{
 	/* returns the url $in with $we_transaction appended */
 
 	function url($in){
-		return $in . ( strstr($in, "?") ? "&" : "?") . "we_transaction=" . $GLOBALS['we_transaction'];
+		return $in . ( strpos($in, "?")!==FALSE ? "&" : "?") . "we_transaction=" . $GLOBALS['we_transaction'];
 	}
 
 	/* shortcut for print $this->url() */
@@ -434,8 +434,8 @@ abstract class we_class{
 ##### NEWSTUFF ####
 # public ##################
 
-	function initByID($ID, $Table = "", $from = we_class::LOAD_MAID_DB){
-		if($Table == ""){
+	function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
+		if($Table == ''){
 			$Table = FILE_TABLE;
 		}
 		$this->ID = intval($ID);

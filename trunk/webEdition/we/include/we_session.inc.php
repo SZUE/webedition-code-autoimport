@@ -234,7 +234,7 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 			}
 		}
 	} else{
-		$_SESSION["user"]["Username"] = "";
+		$_SESSION["user"]["Username"] = '';
 		foreach(array_keys($_SESSION) as $name){
 			unset($_SESSION[$name]);
 		}
