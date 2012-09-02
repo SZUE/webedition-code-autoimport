@@ -99,7 +99,7 @@ function we_tag_block($attribs){
 
 	if($list){
 		$list = unserialize($list);
-		if(count($list) && ((count($list) - 1) != max(array_keys($list)))){
+		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
 			$GLOBALS['we_doc']->setElement($name, serialize($list));
