@@ -749,7 +749,6 @@ class we_webEditionDocument extends we_textContentDocument{
 			default:
 				parent::we_load($from);
 				$this->setTemplatePath();
-				t_e($this);
 		}
 	}
 
@@ -765,7 +764,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->InWebEdition = false;
 		$this->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
-		t_e($we_include);
 		if(isset($GLOBALS["we_baseHref"])){
 			$basehrefMerk = $GLOBALS["we_baseHref"];
 			unset($GLOBALS["we_baseHref"]);

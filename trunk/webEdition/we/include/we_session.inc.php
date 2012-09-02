@@ -90,26 +90,26 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 					$a = makeArrayFromCSV($DB_WE->f("workSpace"));
 					foreach($a as $k => $v)
 						if(!in_array($v, $f))
-							array_push($f, $v);
+							$f[] = $v;
 
 					$a = makeArrayFromCSV($DB_WE->f("workSpaceTmp"));
 					foreach($a as $k => $v){
 						if(!in_array($v, $t)){
-							array_push($t, $v);
+							$t[] = $v;
 						}
 					}
 
 					$a = makeArrayFromCSV($DB_WE->f("workSpaceNav"));
 					foreach($a as $k => $v){
 						if(!in_array($v, $n)){
-							array_push($n, $v);
+							$n[] = $v;
 						}
 					}
 
 					$a = makeArrayFromCSV($DB_WE->f("workSpaceObj"));
 					foreach($a as $k => $v){
 						if(!in_array($v, $o)){
-							array_push($o, $v);
+							$o[] = $v;
 						}
 					}
 

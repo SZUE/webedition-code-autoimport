@@ -233,16 +233,10 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_loadInfo.inc.php';
 			break;
 		case 'delete':
-			if($_REQUEST['we_cmd'][1])
-				$INCLUDE = 'we_delete.inc.php';
-			else
-				$INCLUDE = 'home.inc.php';
+			$INCLUDE = ($_REQUEST['we_cmd'][1] ? 'we_delete.inc.php' : 'home.inc.php');
 			break;
 		case 'move':
-			if($_REQUEST['we_cmd'][1])
-				$INCLUDE = 'we_move.inc.php';
-			else
-				$INCLUDE = 'home.inc.php';
+			$INCLUDE = ($_REQUEST['we_cmd'][1] ? 'we_move.inc.php' : 'home.inc.php');
 			break;
 		case 'do_delete':
 		case 'delete_single_document':

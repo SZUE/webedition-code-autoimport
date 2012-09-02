@@ -26,7 +26,7 @@ we_html_tools::htmlTop();
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 $z = 0;
 $tab_head = 'var weTabs;';
@@ -175,7 +175,7 @@ function we_setPath(path, text, id) {
 }";
 
 $_js_we_cmd =
-"function we_cmd() {
+	"function we_cmd() {
 " . ($GLOBALS['we_doc']->ContentType != "text/weTmpl" ? "parent.openedWithWE = 1;" : "") . "
 
 	var args = '';
@@ -201,10 +201,10 @@ $_js_we_cmd =
 }";
 
 $_js_code =
-"var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
-_EditorFrame.setEditorEditPageNr(" . $we_doc->EditPageNr . ");".
-$_js_we_setPath.
-$_js_we_cmd;
+	"var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
+_EditorFrame.setEditorEditPageNr(" . $we_doc->EditPageNr . ");" .
+	$_js_we_setPath .
+	$_js_we_cmd;
 print we_html_element::jsElement($_js_code);
 
 //	Stylesheet and image prepader for buttons
