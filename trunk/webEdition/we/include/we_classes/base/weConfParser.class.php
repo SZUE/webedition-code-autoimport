@@ -59,7 +59,7 @@ class weConfParser{
 	}
 
 	function getValue($key){
-		return isset($_data[$key]) ? $_data[$key] : "";
+		return isset($_data[$key]) ? $_data[$key] : '';
 	}
 
 	function setValue($key, $value){
@@ -74,14 +74,12 @@ class weConfParser{
 		return $this->_content;
 	}
 
-	function changeSourceCode($type = "define", $text, $key, $value, $active = true, $comment = ""){
-		$_abort = false;
-
+	static function changeSourceCode($type = 'define', $text, $key, $value, $active = true, $comment = ''){
 		switch($type){
-			case "add":
-				return substr(trim($text), 0, -2) .
-					weConfParser::makeDefine($key, $value, $active, $comment) . "\n\n";
-			case "define":
+			case 'add':
+				return trim($text, "\n\t ") . "\n\n" .
+					weConfParser::makeDefine($key, $value, $active, $comment);
+			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]|Ui', $text, $match)){
 					return str_replace($match[0], weConfParser::makeDefine($key, $value, $active) . "\n", $text);
@@ -92,17 +90,11 @@ class weConfParser{
 	}
 
 	function _addSlashes($in){
-		$out = str_replace("\\", "\\\\", $in);
-		$out = str_replace("\"", "\\\"", $out);
-		$out = str_replace("\$", "\\\$", $out);
-		return $out;
+		return str_replace(array("\\", '"', "\$"), array("\\\\", '\"', "\\\$"), $in);
 	}
 
 	function _stripSlashes($in){
-		$out = str_replace("\\\\", "\\", $in);
-		$out = str_replace("\\\"", "\"", $out);
-		$out = str_replace("\\\$", "\$", $out);
-		return $out;
+		return str_replace(array("\\\\", "\\\"", "\\\$"), array("\\", '"', "\$"), $in);
 	}
 
 	function getFileContent(){
@@ -151,10 +143,10 @@ class weConfParser{
 		return $out;
 	}
 
-	function makeDefine($key, $val, $active = true, $comment = ""){
-		$comment = ($comment ? "//$comment\n" : "");
-		return $comment . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			(!is_numeric($val) ? '"' . weConfParser::_addSlashes($val) . '"' : $val) . ');';
+	static function makeDefine($key, $val, $active = true, $comment = ''){
+		return ($comment ? "//$comment\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
+			(is_bool($val) ? ($val ? 'true' : 'false') :
+				(!is_numeric($val) ? '"' . weConfParser::_addSlashes($val) . '"' : intval($val))) . ');';
 	}
 
 	function _correctMatchValue($value){
