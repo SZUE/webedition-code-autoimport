@@ -34,36 +34,30 @@ function we_tag_votingField($attribs){
 			case 'id':
 				switch($type){
 					case 'answer':
-						$returnvalue = $GLOBALS['_we_voting']->answerCount;
-						break;
+						return $GLOBALS['_we_voting']->answerCount;
 					case 'select':
-						$returnvalue = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
-						break;
+						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 					case 'radio':
 					case 'checkbox':
 					case 'chekbox':
-						$returnvalue = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
-						break;
+						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
+					case 'textarea':
+					case 'textinput':
+						return '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;
 					case 'voting':
 					default:
-						$returnvalue = $GLOBALS['_we_voting']->ID;
-						break;
+						return $GLOBALS['_we_voting']->ID;
 				}
 				break;
 			case 'question':
-				$returnvalue = stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['question']);
-				break;
+				return stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['question']);
 			case 'answer':
 				switch($type){
 					case 'radio':
 						$code = '';
 						$GLOBALS['_we_voting']->IsRadio = true;
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1){
-							$subb = 1;
-						} else{
-							$subb = 0;
-						}
+						$subb = ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1 ? 1 : 0);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
 							$atts = removeAttribs($attribs, array('name', 'type'));
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
@@ -87,17 +81,13 @@ function we_tag_votingField($attribs){
 
 							$code .= getHtmlTag('input', $atts, '');
 						}
-						$returnvalue = $code;
+						return $code;
 						break;
 					case 'checkbox':
 						$code = '';
 						$GLOBALS['_we_voting']->IsCheckbox = true;
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
-						if($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1){
-							$subb = 1;
-						} else{
-							$subb = 0;
-						}
+						$subb = ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1 ? 1 : 0);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
 							$atts = removeAttribs($attribs, array('name', 'type'));
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
@@ -111,7 +101,7 @@ function we_tag_votingField($attribs){
 							$atts['type'] = 'checkbox';
 							if(isset($_SESSION['_we_voting_sessionData']) && isset($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID])){
 								foreach($_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'] as $kk => $wert){
-									$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$kk];
+									//$selItem = $_SESSION['_we_voting_sessionData'][$GLOBALS['_we_voting']->ID]['value'][$kk];
 									$selItem = $wert;
 
 									if(is_numeric($selItem) && $selItem == $GLOBALS['_we_voting']->answerCount){
@@ -122,8 +112,7 @@ function we_tag_votingField($attribs){
 
 							$code .= getHtmlTag('input', $atts, '');
 						}
-						$returnvalue = $code;
-						break;
+						return $code;
 					case 'select':
 						$code = '';
 						if($GLOBALS['_we_voting']->answerCount == 0){
@@ -142,10 +131,8 @@ function we_tag_votingField($attribs){
 						if($GLOBALS['_we_voting']->isLastSet()){
 							$code .= '</select>';
 						}
-						$returnvalue = $code;
-						break;
+						return $code;
 					case 'image':
-						$code = '';
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers){
 							$myImageID = stripslashes($GLOBALS['_we_voting']->QASetAdditions[$GLOBALS['_we_voting']->defVersion]['imageID'][$GLOBALS['_we_voting']->answerCount]);
@@ -155,21 +142,19 @@ function we_tag_votingField($attribs){
 
 								$atts = removeAttribs($attribs, array('name', 'type', 'precision', 'num_format', 'nameto', 'to'));
 								$myImage->initByAttribs($atts);
-								$code = $myImage->getHtml();
+								return $myImage->getHtml();
 							}
 						}
-						$returnvalue = $code;
-						break;
+						return '';
 					case 'media':
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers){
 							$myMediaID = stripslashes($GLOBALS['_we_voting']->QASetAdditions[$GLOBALS['_we_voting']->defVersion]['mediaID'][$GLOBALS['_we_voting']->answerCount]);
 						}
-						$returnvalue = id_to_path($myMediaID);
-						break;
+						return id_to_path($myMediaID);
 					case 'textinput':
 						$code = '';
-						if($GLOBALS['_we_voting']['AllowFreeText']){
+						if($GLOBALS['_we_voting']->AllowFreeText){
 
 							$atts = removeAttribs($attribs, array('name', 'type'));
 							$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
@@ -199,10 +184,8 @@ function we_tag_votingField($attribs){
 								$code .= getHtmlTag('input', $atts, $value);
 							}
 						}
-						$returnvalue = $code;
-						break;
+						return $code;
 					case 'textarea':
-						$code = '';
 						if($GLOBALS['_we_voting']->AllowFreeText){
 							$atts = removeAttribs($attribs, array('name', 'type'));
 							$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
@@ -228,30 +211,25 @@ function we_tag_votingField($attribs){
 										$atts['onkeydown'] .= "_we_voting_answer_" . $GLOBALS['_we_voting']->ID . "_" . $i . ".checked=0;";
 									}
 								}
-								$code = getHtmlTag('textarea', $atts, $value, true);
+								return getHtmlTag('textarea', $atts, $value, true);
 							}
 						}
-						$returnvalue = $code;
-						break;
+						return '';
 					case 'text':
 					default:
-						$code = '';
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers){
-							$code = stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers'][$GLOBALS['_we_voting']->answerCount]);
+							return stripslashes($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers'][$GLOBALS['_we_voting']->answerCount]);
 						}
-						$returnvalue = $code;
-						break;
+						return '';
 				}
 				break;
 			case 'result':
-				$returnvalue = $GLOBALS['_we_voting']->getResult($type, $num_format, $precision);
-				break;
+				return $GLOBALS['_we_voting']->getResult($type, $num_format, $precision);
 			case 'date':
 				$format = weTag_getAttribute("format", $attribs);
-				$returnvalue = date(($format != "" ? $format : g_l('weEditorInfo', "[date_format]")), $GLOBALS['_we_voting']->PublishDate);
-				break;
+				return date(($format != "" ? $format : g_l('weEditorInfo', "[date_format]")), $GLOBALS['_we_voting']->PublishDate);
 		}
 	}
-	return $returnvalue;
+	return '';
 }
