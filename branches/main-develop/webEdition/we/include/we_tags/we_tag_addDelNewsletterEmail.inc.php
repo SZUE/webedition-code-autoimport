@@ -327,7 +327,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 				return;
 			}
-		} else{ //confirmID wurde �bermittelt, eine Best�tigung liegt also vor
+		} else{ //confirmID wurde übermittelt, eine Bestätigung liegt also vor
 			$emailwritten = 0;
 			if($customer){
 				$__db = new DB_WE();
@@ -416,7 +416,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				if(!$emailonly){ //in die Liste eintragen
 					foreach($paths as $p){
 						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
-						if(!@file_exists(dirname($realPath)) || strpos(realpath($realPath), $_SERVER['DOCUMENT_ROOT']) === FALSE){
+						if(!@file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
 							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							return;

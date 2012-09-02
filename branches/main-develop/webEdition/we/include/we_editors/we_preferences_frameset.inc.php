@@ -140,7 +140,7 @@ include(WE_INCLUDES_PATH. 'we_editors/we_preferences_footer.inc.php');
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;','onload'=>'setFrameSize()', 'onresize' => 'setFrameSize()')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'position:absolute;top:0px;height:'.getPreferencesTabsDefaultHeight().'px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('content', WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), 'position:absolute;top:'.getPreferencesTabsDefaultHeight().'px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('content', WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui" . ($tabname != "" ? "&tabname=" . $tabname : ""), 'position:absolute;top:'.getPreferencesTabsDefaultHeight().'px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
 					we_html_element::htmlExIFrame('we_preferences_footer',getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 				));
 

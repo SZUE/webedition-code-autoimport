@@ -247,20 +247,11 @@ class weBackupImport{
 	}
 
 	function handlePrefs(&$object){
-		$file = TEMP_DIR . "we_conf_global.inc.php";
+		$file = TEMP_DIR . 'we_conf_global.inc.php';
 		$object->Path = $file;
 		$object->save(true);
-		$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
 
-		$newglobals = $parser->getData();
-
-		foreach($newglobals as $k => $v){
-			if($k != 'BACKUP_STEPS' && $v != ''){
-				if($k != 'DB_SET_CHARSET'){
-					weConfParser::setGlobalPref($k, $v);
-				}
-			}
-		}
+		weConfParser::updateGlobalPrefByFile($_SERVER['DOCUMENT_ROOT'] . $file, array('BACKUP_STEPS', 'DB_SET_CHARSET'));
 		@unlink($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 

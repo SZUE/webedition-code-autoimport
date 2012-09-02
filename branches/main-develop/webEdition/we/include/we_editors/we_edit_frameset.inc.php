@@ -89,9 +89,9 @@ if(isset($_SESSION['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['we_data'][$we_transaction];
 }
 
-include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_doc.inc.php');
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 if(!$we_doc->fileExists){
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weInfoPages/weNoResource.inc.php');
+	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
 	exit();
 }
 $_needPerm = '';
@@ -106,7 +106,7 @@ if(isset($_REQUEST['we_cmd'][1])){
 	}
 }
 if($_needPerm != '' && !we_hasPerm($_needPerm)){
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weInfoPages/weNoPerms.inc.php');
+	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
 	exit();
 }
 
@@ -165,17 +165,17 @@ if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentT
 
 if($we_doc->ID){
 
-	if($ws = get_ws($we_Table)){
+	if(($ws = get_ws($we_Table))){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
-			case TEMPLATES_TABLE: //	different workspace. for template
-				$we_message = g_l('alert', '[' . ($we_ContentType == 'folder') ? 'folder' : $we_Table . '][not_im_ws]');
-				include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-				exit();
-			case FILE_TABLE: //	only preview mode allowed for docs
-				//	MUST change to Preview-Mode
-				$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
-				break;
+				case TEMPLATES_TABLE: //	different workspace. for template
+					$we_message = g_l('alert', '[' . ($we_ContentType == 'folder') ? 'folder' : $we_Table . '][not_im_ws]');
+					include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
+					exit();
+				case FILE_TABLE: //	only preview mode allowed for docs
+					//	MUST change to Preview-Mode
+					$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+					break;
 			}
 		}
 	}
@@ -367,7 +367,7 @@ if(isset($_REQUEST['we_cmd'][0]) && isset($parastr) && ($_REQUEST['we_cmd'][0] =
 }
 
 
-if($GLOBALS['we_doc']->ContentType != "text/weTmpl"){
+if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 	?>
 			function setOpenedWithWE(val){
 				openedWithWE = val;
@@ -445,11 +445,13 @@ function setOnload(){
 ?>
 </head>
 <?php
+$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]);
+
 if($_SESSION['we_mode'] == 'seem'){
 	?>
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
-		<frame <?php print setOnload(); ?> src="<?php print $we_doc->url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . print (isset($parastr) ? '&' . $parastr : ''); ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
+		<frame <?php print setOnload(); ?> src="<?php print $we_doc->url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 		<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize/>
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php print ( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ? "true" : "false") ?>" name="editFooter" scrolling=no noresize/>
 	</frameset><noframes></noframes>
@@ -474,5 +476,4 @@ if($_SESSION['we_mode'] == 'seem'){
 ?>
 <body>
 </body>
-</html><?php
-$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]);
+</html>

@@ -52,9 +52,7 @@ class we_textDocument extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor($baseHref=true){
-		$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
-		$prot = getServerProtocol();
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl() . $this->Path : "";
+		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : "";
 
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
@@ -72,14 +70,11 @@ class we_textDocument extends we_document{
 				} else{
 					$GLOBALS["we_editmode"] = false;
 					return "we_templates/we_srcTmpl.inc.php";
-					break;
 				}
 			case WE_EDITPAGE_VALIDATION:
 				return "we_templates/validateDocument.inc.php";
-				break;
 			case WE_EDITPAGE_VERSIONS:
 				return "we_versions/we_editor_versions.inc.php";
-				break;
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;

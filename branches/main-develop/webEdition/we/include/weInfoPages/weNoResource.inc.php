@@ -25,20 +25,17 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-print STYLESHEET;
-
-$content = "<p class=\"defaultfont\">" . g_l('alert', "[noResource]") . "</p>";
-?>
-<script  type="text/javascript">
+print STYLESHEET .
+	we_html_element::jsElement('
 	top.toggleBusy(0);
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.setEditorIsLoading(false);
-</script>
+	_EditorFrame.setEditorIsLoading(false);');
+?>
 </head>
 
 <body class="weDialogBody">
-<?php
-print we_html_tools::htmlDialogLayout($content, g_l('alert', "[noResourceTitle]"));
-?>
+	<?php
+	print we_html_tools::htmlDialogLayout("<p class=\"defaultfont\">" . g_l('alert', "[noResource]") . "</p>", g_l('alert', "[noResourceTitle]"));
+	?>
 </body>
 </html>

@@ -3,5 +3,5 @@
 
 $this->NeedsEndTag = false;
 //$this->Groups[] = 'input_tags';
-//$this->Module = '';
+$this->Module = 'voting';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);

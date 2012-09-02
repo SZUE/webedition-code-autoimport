@@ -32,7 +32,7 @@ $perms = $_SESSION['perms'];
 
 $we_dt = isset($_SESSION['we_data'][$we_transaction]) ? $_SESSION['we_data'][$we_transaction] : '';
 
-include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_doc.inc.php');
+include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
 $_insertReloadFooter = '';
 $wasNew = 0;
@@ -285,7 +285,6 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
 if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == 'text/webedition') && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == 'text/html' && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
-
 	$we_include = $we_doc->editor();
 	$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();

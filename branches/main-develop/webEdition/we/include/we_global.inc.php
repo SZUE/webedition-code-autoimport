@@ -234,8 +234,8 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
 			if($tmp){
 				$cat_tail[] = $tmp;
+			}
 		}
-	}
 
 		return (count($cat_tail) == 0 ?
 				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
@@ -1482,21 +1482,6 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
-	/*$email = html_entity_decode($email);
-	$namePart[0] = '';
-	$_email = array();
-	if(preg_match('/<(.)*>/', $email, $_email)){
-		$namePart = substr($email, 0, strpos($email, '<'));
-		$namePart = preg_replace('/"(.)*"/', "x", $namePart);
-		$namePart = preg_replace('/\\\\(.)/', "y", $namePart);
-		if(strpos($namePart, '"')){
-			return false;
-		}
-		$email = substr($_email[0], 1, strlen($_email[0]) - 2);
-	}
-
-	$validator = new Zend_Validate_EmailAddress();
-	return $validator->isValid($email);*/
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
@@ -1556,10 +1541,8 @@ function getPref($name){
 	if(isset($_SESSION['prefs'][$name])){
 		return $_SESSION['prefs'][$name];
 	} else{
-		$file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
-		$parser = weConfParser::getConfParserByFile($file_name);
-		$all = $parser->getData();
-		return isset($all[$name]) ? $all[$name] : '';
+		$parser = weConfParser::getConfParserByFile(WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php');
+		return $parser->getValue($name);
 	}
 }
 
