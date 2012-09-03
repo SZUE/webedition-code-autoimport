@@ -140,7 +140,6 @@ if(isset($_REQUEST["ucmd"])){
                            top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=";
                            top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
                         ');
-
 			}
 			break;
 		case "save_user":
@@ -247,7 +246,7 @@ if(isset($_REQUEST["ucmd"])){
 					$user_object->preserveState(intval($_REQUEST["oldtab"]), $_REQUEST["old_perm_branch"]);
 
 				$id = $user_object->ID;
-				if($user_object->username == "" && $user_object->Type != 2){
+				if($user_object->username == '' && $user_object->Type != 2){
 					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
@@ -256,8 +255,8 @@ if(isset($_REQUEST["ucmd"])){
 					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
-				$DB_WE->query("SELECT ID,username FROM " . USER_TABLE . " WHERE ID<>'" . $user_object->ID . "' AND username='" . $user_object->username . "'");
-				if($DB_WE->next_record() && $user_object->Type != 2){
+				$exist = (f('SELECT 1 AS a FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . " AND username='" . $user_object->username . "'", 'a', $GLOBALS['DB_WE']) == '1');
+				if($exist && $user_object->Type != 2){
 					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[username_exists]"), $user_object->username), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
@@ -266,11 +265,12 @@ if(isset($_REQUEST["ucmd"])){
 					break;
 				}
 
-				$foo = array();
 				if($user_object->ID){
-					$foo = getHash("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($user_object->ID), $user_object->DB_WE);
+					$foo = getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE);
 				} else{
-					$foo["ParentID"] = 0;
+					$foo = array(
+						"ParentID" => 0
+					);
 				}
 				$ret = $user_object->saveToDB();
 				$_SESSION["user_session_data"] = $user_object->getState();
@@ -290,7 +290,7 @@ if(isset($_REQUEST["ucmd"])){
 							//	Speichere seem_start_file aus SESSION
 							$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
 						}
-						$tmp->query("UPDATE " . PREFS_TABLE . " SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=" . intval($_REQUEST["uid"]));
+						$tmp->query('UPDATE ' . PREFS_TABLE . " SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=" . intval($_REQUEST["uid"]));
 						unset($tmp);
 						unset($seem_start_file);
 						if(isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]])){
@@ -308,22 +308,22 @@ if(isset($_REQUEST["ucmd"])){
 						$tree_code = 'top.content.makeNewEntry("user.gif",' . $user_object->ID . ',' . $user_object->ParentID . ',"' . $user_object->Text . '",false,"' . (($user_object->Type == 1) ? ("folder") : (($user_object->Type == 2) ? ("alias") : ("user"))) . '","' . USER_TABLE . '",' . ($user_object->checkPermission("ADMINISTRATOR") ? 1 : 0) . ');';
 					}
 
-					if($user_object->Type == 2){
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[alias_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
-					} else if($user_object->Type == 1){
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[group_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
-					} else{
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[user_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+					switch($user_object->Type){
+						case 2:
+							$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[alias_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+							break;
+						case 1:
+							$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[group_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+							break;
+						default:
+							$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', "[user_saved_ok]"), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+							break;
 					}
 
 					if($user_object->Type == 0){
-						$tree_code .= 'top.content.cgroup=' . $user_object->ParentID . ";\n";
+						$tree_code .= 'top.content.cgroup=' . $user_object->ParentID . ';';
 					}
-					print we_html_element::jsElement('
-	                        	top.content.usetHot();
-	                            ' . $tree_code . '
-	                            ' . $savemessage . '
-	                            ' . $ret);
+					print we_html_element::jsElement('top.content.usetHot();' . $tree_code . $savemessage . $ret);
 				}
 			}
 			break;
@@ -367,17 +367,20 @@ if(isset($_REQUEST["ucmd"])){
 						exit();
 					}
 				}
-				$question = "";
 
-				if($user_object->Type == 1){
-					$question = sprintf(g_l('modules_users', "[delete_alert_group]"), $user_object->Text);
-				} else if($user_object->Type == 2){
-					$question = sprintf(g_l('modules_users', "[delete_alert_alias]"), $user_object->Text);
-				} else{
-					$question = sprintf(g_l('modules_users', "[delete_alert_user]"), $user_object->Text);
+				switch($user_object->Type){
+					case 1:
+						$question = sprintf(g_l('modules_users', "[delete_alert_group]"), $user_object->Text);
+						break;
+					case 2:
+						$question = sprintf(g_l('modules_users', "[delete_alert_alias]"), $user_object->Text);
+						break;
+					default:
+						$question = sprintf(g_l('modules_users', "[delete_alert_user]"), $user_object->Text);
+						break;
 				}
-				print we_html_element::jsElement('
-                            if(confirm("' . $question . '")){
+				print we_html_element::jsElement(
+						'if(confirm("' . $question . '")){
                                 top.content.user_cmd.location="' . WE_USERS_MODULE_DIR . 'edit_users_cmd.php?ucmd=do_delete";
                             }
                         ');
@@ -439,9 +442,7 @@ if(isset($_REQUEST["ucmd"])){
 				}
 
 				if($found || we_hasPerm("ADMINISTRATOR")){
-					print we_html_element::jsElement('
-                                top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')
-                            ');
+					print we_html_element::jsElement('top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')');
 				} else{
 					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 				}

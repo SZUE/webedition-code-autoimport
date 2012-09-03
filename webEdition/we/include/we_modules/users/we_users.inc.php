@@ -144,10 +144,6 @@ class we_user{
 	var $preference_slots = array();
 	var $UseSalt = 1;
 
-	/*
-	 * FUNCTIONS
-	 */
-
 	// Constructor
 	function __construct(){
 		$this->ClassName = "we_user";
@@ -209,7 +205,7 @@ class we_user{
 	function initFromDB($id){
 		$ret = false;
 		if($id){
-			$this->DB_WE->query("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($id));
+			$this->DB_WE->query('SELECT * FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
 			if($this->DB_WE->next_record()){
 				$this->ID = $id;
 				$this->getPersistentSlotsFromDB();
@@ -289,10 +285,7 @@ class we_user{
 		$db_tmp = new DB_WE();
 		$isnew = $this->ID ? false : true;
 		if($this->Type == 1 && $this->ID != 0){
-			if($this->ParentID == 0)
-				$ppath = "/";
-			else
-				$ppath = $this->getPath($this->ParentID);
+			$ppath = ($this->ParentID == 0 ? '/' : $this->getPath($this->ParentID));
 			$dpath = $this->getPath($this->ID);
 			if(preg_match('|' . $dpath . '|', $ppath))
 				return -5;
@@ -334,10 +327,10 @@ class we_user{
 		}
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
-		if($oldpath != "" && $oldpath != "/"){
-			$this->DB_WE->query("SELECT ID,username FROM " . USER_TABLE . " WHERE Path LIKE '" . $this->DB_WE->escape($oldpath) . "%'");
+		if($oldpath != '' && $oldpath != '/'){
+			$this->DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->DB_WE->escape($oldpath) . "%'");
 			while($this->DB_WE->next_record()) {
-				$db_tmp->query("UPDATE " . USER_TABLE . " SET Path='" . $this->getPath($this->DB_WE->f("ID")) . "' WHERE ID='" . $this->DB_WE->f("ID") . "'");
+				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Path='" . $this->getPath($this->DB_WE->f("ID")) . "' WHERE ID='" . $this->DB_WE->f("ID") . "'");
 			}
 		}
 		$this->savePreferenceSlotsInDB($isnew);
@@ -350,14 +343,14 @@ class we_user{
 	function saveToSession(){
 
 		if($this->ID != $_SESSION['user']['ID']){
-			return "";
+			return '';
 		}
 
-		$save_javascript = "var _multiEditorreload = false;";
+		$save_javascript = "var _multiEditorreload = false;" .
+			$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
+			$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
+			$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset');
-		$save_javascript .= $this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case "cockpit":
@@ -961,20 +954,58 @@ class we_user{
 	}
 
 	function preserveState($tab, $sub_tab){
-
-		if($tab == 0){
-			foreach($this->persistent_slots as $pkey => $pval){
-				$obj = $this->Name . "_" . $pval;
-				if(isset($_POST[$obj])){
-					$this->$pval = $_POST[$obj];
+		switch($tab){
+			case 0:
+				foreach($this->persistent_slots as $pkey => $pval){
+					$obj = $this->Name . "_" . $pval;
+					if(isset($_POST[$obj])){
+						$this->$pval = $_POST[$obj];
+					}
 				}
-			}
 
-			if($this->Type == 2){
+				if($this->Type == 2){
+					$obj = $this->Name . '_ParentPerms';
+					$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
+					$obj = $this->Name . '_ParentWs';
+					$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
+					$obj = $this->Name . '_ParentWst';
+					$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
+
+					$obj = $this->Name . '_ParentWso';
+					$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
+
+					$obj = $this->Name . '_ParentWsn';
+					$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
+
+					$obj = $this->Name . '_ParentWsnl';
+					$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
+				}
+				break;
+			case 1:
+				foreach($this->permissions_slots as $pkey => $pval){
+					foreach($pval as $k => $v){
+
+						$obj = $this->Name . '_Permission_' . $k;
+						$this->setPermission($k, (isset($_POST[$obj]) ? 1 : 0));
+					}
+				}
 				$obj = $this->Name . '_ParentPerms';
 				$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
+				break;
+			case 2:
+				foreach($this->workspaces as $k => $v){
+					$obj = $this->Name . '_Workspace_' . $k . '_Values';
+					if(isset($_POST[$obj])){
+						$this->workspaces[$k] = ($_POST[$obj] != "" ? explode(",", $_POST[$obj]) : array());
+					}
+					$obj = $this->Name . '_defWorkspace_' . $k . '_Values';
+					if(isset($_POST[$obj])){
+						$this->workspaces_defaults[$k] = ($_POST[$obj] != "" ? explode(",", $_POST[$obj]) : array());
+					}
+				}
 				$obj = $this->Name . '_ParentWs';
 				$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
+
 				$obj = $this->Name . '_ParentWst';
 				$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
 
@@ -986,75 +1017,34 @@ class we_user{
 
 				$obj = $this->Name . '_ParentWsnl';
 				$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
-			}
-		}
-		if($tab == 1){
-			foreach($this->permissions_slots as $pkey => $pval){
-				foreach($pval as $k => $v){
-
-					$obj = $this->Name . '_Permission_' . $k;
-					$this->setPermission($k, (isset($_POST[$obj]) ? 1 : 0));
+				break;
+			case 3:
+				foreach($this->preference_slots as $val){
+					if($val == "seem_start_file" || $val == "seem_start_type" || $val == "seem_start_weapp"){
+						$obj = '';
+					} else{
+						$obj = $this->Name . '_Preference_' . $val;
+					}
+					$this->setPreference($val, (isset($_POST[$obj]) ? $_POST[$obj] : 0));
 				}
-			}
-			$obj = $this->Name . '_ParentPerms';
-			$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
-		}
-		if($tab == 2){
-			foreach($this->workspaces as $k => $v){
-				$obj = $this->Name . '_Workspace_' . $k . '_Values';
-				if(isset($_POST[$obj])){
-					$this->workspaces[$k] = ($_POST[$obj] != "" ? explode(",", $_POST[$obj]) : array());
+				switch($_REQUEST['seem_start_type']){
+					case "cockpit":
+						$this->setPreference("seem_start_file", 0);
+						$this->setPreference("seem_start_type", "cockpit");
+						break;
+					case "object":
+						$this->setPreference("seem_start_file", $_REQUEST["seem_start_object"]);
+						$this->setPreference("seem_start_type", "object");
+						break;
+					case "weapp":
+						$this->setPreference("seem_start_weapp", $_REQUEST["seem_start_weapp"]);
+						$this->setPreference("seem_start_type", "weapp");
+						break;
+					default:
+						$this->setPreference("seem_start_file", $_REQUEST["seem_start_document"]);
+						$this->setPreference("seem_start_type", "document");
 				}
-				$obj = $this->Name . '_defWorkspace_' . $k . '_Values';
-				if(isset($_POST[$obj])){
-					$this->workspaces_defaults[$k] = ($_POST[$obj] != "" ? explode(",", $_POST[$obj]) : array());
-				}
-			}
-			$obj = $this->Name . '_ParentWs';
-			$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
-
-			$obj = $this->Name . '_ParentWst';
-			$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
-
-			$obj = $this->Name . '_ParentWso';
-			$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
-
-			$obj = $this->Name . '_ParentWsn';
-			$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
-
-			$obj = $this->Name . '_ParentWsnl';
-			$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
-		}
-		if($tab == 3){
-			foreach($this->preference_slots as $key => $val){
-				if($val == "seem_start_file" || $val == "seem_start_type" || $val == "seem_start_weapp"){
-
-				} else{
-					$obj = $this->Name . '_Preference_' . $val;
-				}
-				if(isset($_POST[$obj])){
-					$this->setPreference($val, $_POST[$obj]);
-				} else{
-					$this->setPreference($val, 0);
-				}
-			}
-			switch($_REQUEST['seem_start_type']){
-				case "cockpit":
-					$this->setPreference("seem_start_file", 0);
-					$this->setPreference("seem_start_type", "cockpit");
-					break;
-				case "object":
-					$this->setPreference("seem_start_file", $_REQUEST["seem_start_object"]);
-					$this->setPreference("seem_start_type", "object");
-					break;
-				case "weapp":
-					$this->setPreference("seem_start_weapp", $_REQUEST["seem_start_weapp"]);
-					$this->setPreference("seem_start_type", "weapp");
-					break;
-				default:
-					$this->setPreference("seem_start_file", $_REQUEST["seem_start_document"]);
-					$this->setPreference("seem_start_type", "document");
-			}
+				break;
 		}
 		foreach($this->extensions_slots as $k => $v){
 			$this->extensions_slots[$k]->perserve($tab, $sub_tab);
@@ -1946,15 +1936,9 @@ class we_user{
 		}
 		global $_languages;
 
-
-
-		if(sizeof($_language) > 0){ // Build language select box
-			$_languages = new we_html_select(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
-			if(isset($this->Preferences['Language']) && $this->Preferences['Language'] != ''){
-				$myCompLang = $this->Preferences['Language'];
-			} else{
-				$myCompLang = $GLOBALS["WE_LANGUAGE"];
-			}
+		if(count($_language)){ // Build language select box
+			$_languages = new we_html_select(array("name" => $this->Name . '_Preference_Language', "class" => "weSelect"));
+			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] != '' ? $this->Preferences['Language'] : $GLOBALS["WE_LANGUAGE"]);
 
 			foreach($_language as $key => $value){
 				$_languages->addOption($key, $value);
@@ -1969,7 +1953,7 @@ class we_user{
 
 
 			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1));
+			$_settings[] = array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1);
 		}
 
 
@@ -1979,13 +1963,9 @@ class we_user{
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
 		}
-		if(isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] != ''){
-			$myCompChar = $this->Preferences['BackendCharset'];
-		} else{
-			$myCompChar = $GLOBALS['WE_BACKENDCHARSET'];
-		}
+		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] != '' ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
 		$_charset->selectOption($myCompChar);
-		array_push($_settings, array("headline" => g_l('prefs', '[choose_backendcharset]'), "html" => $_charset->getHtml(), "space" => 200));
+		$_settings[] = array("headline" => g_l('prefs', '[choose_backendcharset]'), "html" => $_charset->getHtml(), "space" => 200);
 
 
 		/*		 * ***************************************************************
