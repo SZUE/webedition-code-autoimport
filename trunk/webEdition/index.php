@@ -28,14 +28,10 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 
-/* * ***************************************************************************
- * INCLUDES
- * *************************************************************************** */
-
 if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
+	require_once(WE_INCLUDES_PATH . 'we_classes/base/weFile.class.php');
+	require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 	we_loadLanguageConfig();
 }
 
