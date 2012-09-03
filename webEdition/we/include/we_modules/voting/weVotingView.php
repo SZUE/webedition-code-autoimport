@@ -41,8 +41,8 @@ class weVotingView{
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->voting = new weVoting();
-		$this->item_pattern = '<img style="vertical-align: bottom" src="' . IMAGE_DIR . 'tree/icons/user.gif" />&nbsp;';
-		$this->group_pattern = '<img style="vertical-align: bottom" src="' . IMAGE_DIR . 'tree/icons/folder.gif" />&nbsp;';
+		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . IMAGE_DIR . 'tree/icons/user.gif" />&nbsp;');
+		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . IMAGE_DIR . 'tree/icons/folder.gif" />&nbsp;');
 	}
 
 	//----------- Utility functions ------------------
@@ -229,10 +229,8 @@ class weVotingView{
 	}
 
 	function getJSProperty(){
-		$out = "";
-		$out.=we_html_element::jsScript(JS_DIR . "windows.js");
-
-		$js = '
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsElement('
 			var loaded=0;
 
 			function doUnload() {
@@ -333,15 +331,11 @@ class weVotingView{
 
 			' . $this->getJSSubmitFunction() . '
 
-		';
-
-		$out.=we_html_element::jsElement($js);
-		return $out;
+		');
 	}
 
 	function getJSTreeHeader(){
 		return '
-
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -437,13 +431,11 @@ class weVotingView{
 						$_REQUEST["home"] = true;
 						break;
 					}
-					print we_html_element::jsElement('
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
-					');
+					print we_html_element::jsElement(
+							$this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";' .
+							$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 					break;
 				case "save_voting":
-
 					if(!we_hasPerm("NEW_VOTING") && !we_hasPerm("EDIT_VOTING")){
 						print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
@@ -540,35 +532,25 @@ class weVotingView{
 						}
 					}
 					if(!$error){
-
-						$js = "";
-
-						$newone = true;
-						if($this->voting->ID)
-							$newone = false;
+						$newone = ($this->voting->ID == 0);
 
 						$this->voting->save((isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']) ? true : false);
 
 						if($this->voting->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->voting->Path){
 							$db_tmp = new DB_WE();
-							$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE \'' . $db_tmp->escape($oldpath) . '%\' AND ID!=' . intval($this->voting->ID));
+							$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE "' . $db_tmp->escape($oldpath) . '%" AND ID!=' . intval($this->voting->ID));
 							while($this->db->next_record()) {
-								$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path=\'' . $this->voting->evalPath($this->db->f("ID")) . '\' WHERE ID=\'' . $this->db->f("ID") . '\';');
+								$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path="' . $this->voting->evalPath($this->db->f('ID')) . '" WHERE ID=' . $this->db->f('ID'));
 							}
 						}
 
-
-						if($newone){
-							$js = '
-								' . $this->topFrame . '.makeNewEntry(\'' . $this->voting->Icon . '\',\'' . $this->voting->ID . '\',\'' . $this->voting->ParentID . '\',\'' . $this->voting->Text . '\',0,\'' . ($this->voting->IsFolder ? 'folder' : 'item') . '\',\'' . VOTING_TABLE . '\',' . ($this->voting->isActive() ? 1 : 0) . ');
-							' . $this->topFrame . '.drawTree();';
-						} else{
-							$js = '' . $this->topFrame . '.updateEntry(' . $this->voting->ID . ',"' . $this->voting->Text . '","' . $this->voting->ParentID . '",' . ($this->voting->isActive() ? 1 : 0) . ');' . "\n";
-						}
-						print we_html_element::jsElement($js . '
-							' . $this->editorHeaderFrame . '.location.reload();
-							' . we_message_reporting::getShowMessageCall(($this->voting->IsFolder == 1 ? g_l('modules_voting', '[save_group_ok]') : g_l('modules_voting', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
-						');
+						$js = ($newone ?
+								$this->topFrame . '.makeNewEntry(\'' . $this->voting->Icon . '\',\'' . $this->voting->ID . '\',\'' . $this->voting->ParentID . '\',\'' . $this->voting->Text . '\',0,\'' . ($this->voting->IsFolder ? 'folder' : 'item') . '\',\'' . VOTING_TABLE . '\',' . ($this->voting->isActive() ? 1 : 0) . ');' . $this->topFrame . '.drawTree();' :
+								$this->topFrame . '.updateEntry(' . $this->voting->ID . ',"' . $this->voting->Text . '","' . $this->voting->ParentID . '",' . ($this->voting->isActive() ? 1 : 0) . ');'
+							);
+						print we_html_element::jsElement($js .
+								$this->editorHeaderFrame . '.location.reload();' .
+								we_message_reporting::getShowMessageCall(($this->voting->IsFolder == 1 ? g_l('modules_voting', '[save_group_ok]') : g_l('modules_voting', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 					}
 					break;
 				case "delete_voting":
@@ -580,10 +562,9 @@ class weVotingView{
 						return;
 					} else{
 						if($this->voting->delete()){
-							print we_html_element::jsElement('
-									' . $this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
-									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->voting->IsFolder == 1 ? g_l('modules_voting', '[group_deleted]') : g_l('modules_voting', '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
-							');
+							print we_html_element::jsElement(
+									$this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
+									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->voting->IsFolder == 1 ? g_l('modules_voting', '[group_deleted]') : g_l('modules_voting', '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);');
 							$this->voting = new weVoting();
 							$_REQUEST['home'] = '1';
 							$_REQUEST['pnt'] = 'edbody';
@@ -595,26 +576,24 @@ class weVotingView{
 					}
 					break;
 				case "switchPage":
-
 					break;
 				case "export_csv":
-					if($_REQUEST["csv_dir"] == "/"){
-						$fname = "/voting_" . $this->voting->ID . "_export_" . time() . ".csv";
-					} else{
-						$fname = $_REQUEST["csv_dir"] . "/voting_" . $this->voting->ID . "_export_" . time() . ".csv";
-					}
+					$fname = ($_REQUEST["csv_dir"] == '/' ? '' : $_REQUEST['csv_dir']) . '/voting_' . $this->voting->ID . '_export_' . time() . '.csv';
 
 					$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
 					$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
 					if(isset($_REQUEST['csv_lineend'])){
 						switch($_REQUEST['csv_lineend']){
-							case 'windows': $lineend = "\r\n";
+							default:
+							case 'windows':
+								$lineend = "\r\n";
 								break;
-							case 'unix': $lineend = "\n";
+							case 'unix':
+								$lineend = "\n";
 								break;
-							case 'mac': $lineend = "\r";
+							case 'mac':
+								$lineend = "\r";
 								break;
-							default: $lineend = "\r\n";
 						}
 					}
 
@@ -631,67 +610,49 @@ class weVotingView{
 					$_REQUEST["lnk"] = $fname;
 					break;
 				case "exportGroup_csv":
-
-					if($_REQUEST["csv_dir"] == "/"){
-						$fname = "/votingGroup_" . $this->voting->ID . "_export_" . time() . ".csv";
-					} else{
-						$fname = $_REQUEST["csv_dir"] . "/votingGroup_" . $this->voting->ID . "_export_" . time() . ".csv";
-					}
+					$fname = ($_REQUEST['csv_dir'] == '/' ? '' : $_REQUEST['csv_dir']) . '/votingGroup_' . $this->voting->ID . '_export_' . time() . '.csv';
 
 					$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
 					$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
 					if(isset($_REQUEST['csv_lineend'])){
 						switch($_REQUEST['csv_lineend']){
-							case 'windows': $lineend = "\r\n";
+							default:
+							case 'windows':
+								$lineend = "\r\n";
 								break;
-							case 'unix': $lineend = "\n";
+							case 'unix':
+								$lineend = "\n";
 								break;
-							case 'mac': $lineend = "\r";
+							case 'mac':
+								$lineend = "\r";
 								break;
-							default: $lineend = "\r\n";
 						}
 					}
 
-					$content = array();
 					$allData = $this->voting->loadDB();
 					if(!defined('DEFAULT_CHARSET')){
 						define('DEFAULT_CHARSET', 'UTF-8');
 					}
-					if(isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] != ''){
-						$CSV_Charset = $_REQUEST['the_charset'];
-					} else{
-						$CSV_Charset = 'UTF-8';
-					}
-
-					$headline = '';
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[time]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[ip]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[user_agent]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[cookie]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[log_fallback]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[status]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerID]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerText]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-successor]'))) . $enclose . $delimiter;
-					$headline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-additionalfields]'))) . $enclose . $delimiter;
-
-					$content[] = $headline;
+					$CSV_Charset = (isset($_REQUEST['the_charset']) && $_REQUEST['the_charset'] != '' ? $_REQUEST['the_charset'] : 'UTF-8');
+					$content = array(
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-session]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-id]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[time]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[ip]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[user_agent]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[cookie]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[log_fallback]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[status]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerID]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[answerText]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-successor]'))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(g_l('modules_voting', '[voting-additionalfields]'))) . $enclose . $delimiter
+					);
 
 					foreach($allData as $key => $data){
-						$myline = '';
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['votingsession'])) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter;
-
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', "[date_format]"), $data['time']))) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter;
 						$cookie = $data['cookie'] ? g_l('modules_voting', '[enabled]') : g_l('modules_voting', '[disabled]');
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter;
 						$fallback = $data['fallback'] ? g_l('global', '[yes]') : g_l('global', '[no]');
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter;
-						$mess = g_l('modules_voting', '[log_success]');
+
 						if($data['status'] != weVoting::SUCCESS){
 							switch($data['status']){
 								case weVoting::ERROR :
@@ -709,32 +670,40 @@ class weVotingView{
 								default:
 									$mess = g_l('modules_voting', '[log_error]');
 							}
+						} else{
+							$mess = g_l('modules_voting', '[log_success]');
 						}
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter;
-						$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
-						$addDataString = "";
-						if($data['additionalfields'] != ''){
 
+						$myline = $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['votingsession'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', "[date_format]"), $data['time']))) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
+
+						if($data['additionalfields'] != ''){
 							$addData = unserialize($data['additionalfields']);
 
 							if(is_array($addData) && !empty($addData)){
 								foreach($addData as $key => $values){
-									$addDataString .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($values)) . $enclose . $delimiter;
+									$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($values)) . $enclose . $delimiter;
 								}
 							} else{
-								$addDataString .= $enclose . '-' . $enclose . $delimiter;
+								$myline.= $enclose . '-' . $enclose . $delimiter;
 							}
 						} else{
-							$addDataString .= $enclose . '-' . $enclose . $delimiter;
+							$myline.= $enclose . '-' . $enclose . $delimiter;
 						}
-						$myline .= $addDataString;
 						$content[] = $myline;
 					}
 
 					weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, implode($lineend, $content));
-					$_REQUEST["lnk"] = $fname;
+					$_REQUEST['lnk'] = $fname;
 					break;
 
 				default:
@@ -747,12 +716,11 @@ class weVotingView{
 	function processVariables(){
 
 		if(isset($_SESSION["voting_session"])){
-
 			$this->voting = unserialize($_SESSION["voting_session"]);
 		}
 
 		if(is_array($this->voting->persistent_slots)){
-			foreach($this->voting->persistent_slots as $key => $val){
+			foreach($this->voting->persistent_slots as $val){
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){
 					$this->voting->{$val} = $_REQUEST[$varname];
@@ -770,9 +738,10 @@ class weVotingView{
 		if(isset($_REQUEST['question_name']) && isset($_REQUEST['variant_count']) && isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
 			for($i = 0; $i < $_REQUEST['variant_count']; $i++){
 				if(isset($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0'])){
-					$set = array();
-					$set['question'] = addslashes($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0']);
-					$set['answers'] = array();
+					$set = array(
+						'question' => addslashes($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0']),
+						'answers' => array(),
+					);
 
 					$an = $_REQUEST['answers_name'] . '_variant' . $i . '_' . $_REQUEST['answers_name'] . '_item';
 					$anImage = $an . 'ImageID';
@@ -784,25 +753,13 @@ class weVotingView{
 							$set['answers'][] = addslashes($_REQUEST[$an . $j]);
 						}
 						if(isset($_REQUEST[$anImage . $j])){
-							if($_REQUEST[$anImage . $j] != 'Array'){
-								$addset['imageID'][] = addslashes($_REQUEST[$anImage . $j]);
-							} else{
-								$addset['imageID'][] = 0;
-							}
+							$addset['imageID'][] = ($_REQUEST[$anImage . $j] != 'Array' ? addslashes($_REQUEST[$anImage . $j]) : 0);
 						}
 						if(isset($_REQUEST[$anMedia . $j])){
-							if($_REQUEST[$anMedia . $j] != 'Array'){
-								$addset['mediaID'][] = addslashes($_REQUEST[$anMedia . $j]);
-							} else{
-								$addset['mediaID'][] = 0;
-							}
+							$addset['mediaID'][] = ($_REQUEST[$anMedia . $j] != 'Array' ? addslashes($_REQUEST[$anMedia . $j]) : 0);
 						}
 						if(isset($_REQUEST[$anSuccessor . $j])){
-							if($_REQUEST[$anSuccessor . $j] != 'Array'){
-								$addset['successorID'][] = addslashes($_REQUEST[$anSuccessor . $j]);
-							} else{
-								$addset['successorID'][] = 0;
-							}
+							$addset['successorID'][] = ($_REQUEST[$anSuccessor . $j] != 'Array' ? addslashes($_REQUEST[$anSuccessor . $j]) : 0);
 						}
 					}
 					$qaset[] = $set;
@@ -818,8 +775,7 @@ class weVotingView{
 			$this->voting->Owners = array();
 			$an = $_REQUEST['owners_name'] . '_variant0_' . $_REQUEST['owners_name'] . '_item';
 			for($i = 0; $i < $_REQUEST['owners_count']; $i++){
-				$up = str_replace(stripslashes($this->item_pattern), '', $_REQUEST[$an . $i]);
-				$up = str_replace(stripslashes($this->group_pattern), '', $up);
+				$up = str_replace(array(stripslashes($this->item_pattern), stripslashes($this->group_pattern)), '', $_REQUEST[$an . $i]);
 				if(isset($_REQUEST[$an . $i]))
 					$this->voting->Owners[] = path_to_id($up, USER_TABLE);
 			}
@@ -865,5 +821,3 @@ class weVotingView{
 	}
 
 }
-
-?>
