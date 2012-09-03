@@ -130,9 +130,9 @@ class weVoting extends weModelBase{
 
 	function load($id = 0){
 		if(parent::load($id)){
-			$this->QASet = @unserialize($this->QASet);
-			$this->QASetAdditions = @unserialize($this->QASetAdditions);
-			$this->Scores = @unserialize($this->Scores);
+			$this->QASet = unserialize($this->QASet);
+			$this->QASetAdditions = unserialize($this->QASetAdditions);
+			$this->Scores = unserialize($this->Scores);
 			$this->Owners = makeArrayFromCSV($this->Owners);
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
 			if(empty($this->LogData)){
@@ -200,7 +200,6 @@ class weVoting extends weModelBase{
 
 		$this->QASetAdditions = serialize($this->QASetAdditions);
 
-
 		$logdata = $this->LogData;
 		unset($this->LogData);
 		$oldid = $this->ID;
@@ -214,7 +213,7 @@ class weVoting extends weModelBase{
 		parent::save();
 
 		$this->QASet = unserialize($this->QASet);
-		$this->Scores = ($with_scores || $oldid == 0) ? unserialize($this->Scores) : $temp;
+		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
 
 		$this->QASetAdditions = unserialize($this->QASetAdditions);
 		$this->Owners = makeArrayFromCSV($this->Owners);
@@ -755,11 +754,8 @@ class weVoting extends weModelBase{
 		if(is_null($additionalfields))
 			$additionalfields = '';
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
-		if(defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]){
-			$userid = $_SESSION["webuser"]["ID"];
-		} else{
-			$userid = 0;
-		}
+		$userid = (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] ?
+				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
 				'votingsession' => $votingsession,
 				'voting' => $this->ID,

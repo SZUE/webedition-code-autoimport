@@ -575,6 +575,16 @@ class we_updater{
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'answertext', 'text NOT NULL', ' AFTER answer ');
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'successor', 'bigint(20) unsigned NOT NULL DEFAULT 0', ' AFTER answertext ');
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'additionalfields', 'text NOT NULL', ' AFTER successor ');
+			//this looks weird but means just :\"question inside the table
+		$GLOBALS['DB_WE']->query('UPDATE '.VOTING_TABLE.' SET
+			QASet=REPLACE(QASet,\'\\\\"\',\'"\'),
+			QASetAdditions=REPLACE(QASetAdditions,\'\\\\"\',\'"\'),
+			Scores=REPLACE(Scores,\'\\\\"\',\'"\'),
+			Revote=REPLACE(Revote,\'\\\\"\',\'"\'),
+			RevoteUserAgent=REPLACE(RevoteUserAgent,\'\\\\"\',\'"\'),
+			LogData=REPLACE(LogData,\'\\\\"\',\'"\'),
+			BlackList=REPLACE(BlackList,\'\\\\"\',\'"\')
+			WHERE QASet LIKE \'%:\\\\\\\"question%\'');
 		}
 	}
 
@@ -756,7 +766,6 @@ class we_updater{
 		if(count($del)){
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
 		}
-
 	}
 
 	function doUpdate(){
