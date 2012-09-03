@@ -757,12 +757,6 @@ class we_updater{
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
 		}
 
-		if(defined('CUSTOMER_ADMIN_TABLE')){
-			$dat = f('SELECT EditSort FROM ' . CUSTOMER_ADMIN_TABLE, 'EditSort', $db);
-			$dat = implode(',', trim($dat, ','));
-			$tmp=weCustomerView();
-
-		}
 	}
 
 	function doUpdate(){
