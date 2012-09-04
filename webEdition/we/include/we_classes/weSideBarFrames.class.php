@@ -24,17 +24,14 @@
  */
 class weSideBarFrames{
 
-	var $_frameset = "";
+	var $_frameset = '';
 
-	function weSideBar(){
-
-		$_frameset = WEBEDITION_DIR . "we/includes/sidebar.php";
+	function __construct(){
+		$this->_frameset = WE_INCLUDES_DIR. 'sideBarFrame.php';
 	}
 
 	function getHTML($what){
-
 		switch($what){
-
 			case 'header':
 				print $this->getHTMLHeader();
 				break;
@@ -124,7 +121,6 @@ class weSideBarFrames{
 	}
 
 	function getHTMLContent(){
-
 		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 		$params = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 		define("WE_SIDEBAR", true);
