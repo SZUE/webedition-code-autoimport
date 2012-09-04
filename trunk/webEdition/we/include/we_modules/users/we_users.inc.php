@@ -236,9 +236,9 @@ class we_user{
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
 			if($fieldName == 'UseSalt' && $useSalt > 0){
-				$val = 1;
+				$val = $useSalt;
 			} else{
-				$val = isset($this->$fieldName) ? $this->$fieldName : '0';
+				$val = isset($this->$fieldName) ? $this->$fieldName : 0;
 			}
 			if($fieldName != 'ID'){
 				if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
@@ -1218,39 +1218,39 @@ class we_user{
 
 	function getState(){
 		$state = '$this->Name="' . $this->Name . '";
-			$this->Table="' . $this->Table . '";';
+			$this->Table=\'' . $this->Table . '\';';
 
 		foreach($this->persistent_slots as $k => $v){
 			$attrib = isset($this->$v) ? $this->$v : null;
-			$state.='$this->' . $v . '="' . addslashes($attrib) . '";';
+			$state.='$this->' . $v . '=\'' . addslashes($attrib) . '\';';
 		}
 
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $k => $v){
-				$state.='$this->permissions_slots["' . $key . '"]["' . $k . '"]="' . $v . '";';
+				$state.='$this->permissions_slots[\'' . $key . '\'][\'' . $k . '\']=\'' . addslashes($v) . '\';';
 			}
 		}
 
 		foreach($this->workspaces as $key => $val){
 			foreach($val as $k => $v){
-				$state.='$this->workspaces["' . $key . '"]["' . $k . '"]="' . $v . '";';
+				$state.='$this->workspaces[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
 			}
 		}
 
 		foreach($this->workspaces_defaults as $key => $val){
 			foreach($val as $k => $v){
-				$state.='$this->workspaces_defaults["' . $key . '"]["' . $k . '"]="' . $v . '";';
+				$state.='$this->workspaces_defaults[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
 			}
 		}
 
 		foreach($this->preference_slots as $key => $val){
-			$state.='$this->Preferences["' . $val . '"] = "' . $this->Preferences[$val] . '";';
+			$state.='$this->Preferences[\'' . $val . '\'] = \'' . $this->Preferences[$val] . '\';';
 		}
 
 		foreach($this->extensions_slots as $k => $v){
-			$state.='$this->extensions_slots["' . $k . '"]=new ' . $v->ClassName . '();
-			$this->extensions_slots["' . $k . '"]->init($this);' .
-				$this->extensions_slots[$k]->getState('$this->extensions_slots["' . $k . '"]');
+			$state.='$this->extensions_slots[\'' . $k . '\']=new ' . $v->ClassName . '();
+			$this->extensions_slots[\'' . $k . '\']->init($this);' .
+				$this->extensions_slots[$k]->getState('$this->extensions_slots[\'' . $k . '\']');
 		}
 
 		return serialize($state);
@@ -1841,7 +1841,7 @@ class we_user{
 		$content = $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch);
 
 		$parts = array(
-			$parts, array(
+			array(
 				'headline' => '',
 				'html' => $content,
 				'space' => 0
