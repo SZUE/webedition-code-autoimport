@@ -501,21 +501,13 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						if(!$_SESSION['perms']['ADMINISTRATOR'] && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-<<<<<<< .working
-							include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
-=======
 							include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
->>>>>>> .merge-rechts.r4928
 							exit();
 						}
 						if(!$we_doc->userCanSave()){
 							$we_responseText = g_l('alert', '[access_denied]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-<<<<<<< .working
-							include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
-=======
 							include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
->>>>>>> .merge-rechts.r4928
 							exit();
 						}
 
@@ -534,11 +526,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 								if($we_doc->i_publInScheduleTable()){
 									$foo = $we_doc->getNextPublishDate();
 									if($foo){
-<<<<<<< .working
-										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
-=======
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
->>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 									}
 								} else{
@@ -548,11 +536,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 												we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 											}
 										}
-<<<<<<< .working
-										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
-=======
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
->>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 										// SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
@@ -562,11 +546,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
 									} else{
-<<<<<<< .working
-										$we_responseText .= '\n' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
-=======
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
->>>>>>> .merge-rechts.r4928
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 									}
 								}
@@ -655,11 +635,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				we_schedpro::trigger_schedule();
 				$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 			}
-<<<<<<< .working
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_save.inc.php');
-=======
 			include(WE_INCLUDES_PATH.'we_templates/we_editor_save.inc.php');
->>>>>>> .merge-rechts.r4928
 			break;
 		case 'unpublish':
 			if($we_doc->Published){
@@ -688,11 +664,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
-<<<<<<< .working
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_editor_publish.inc.php');
-=======
 			include(WE_INCLUDES_PATH.'we_templates/we_editor_publish.inc.php');
->>>>>>> .merge-rechts.r4928
 			break;
 		default:
 			$we_include = $we_doc->editor();
