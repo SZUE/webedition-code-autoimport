@@ -267,14 +267,10 @@ class weCustomerFrames extends weModuleFrames{
 				');
 				$out.=we_html_tools::getPixel(5, 5) . $this->getDateInput2($field . "_select%s", $value, false, $format, "populateDate_$field()", "defaultfont", $this->View->settings->getSettings('start_year')) . we_html_tools::getPixel(5, 5);
 				return $out;
-				break;
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
-				break;
 			case 'img':
-
 				$imgId = intval($value);
-
 				$out = we_document::getFieldByVal($imgId, 'img');
 
 				$out = '
@@ -287,7 +283,6 @@ class weCustomerFrames extends weModuleFrames{
 							<td class="weEditmodeStyle" colspan="2" align="center">';
 				//javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $field . "\\'].value', '', 'opener.refreshForm()', '" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc2 = '';
 				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
 				$out .= we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 					'</td>
