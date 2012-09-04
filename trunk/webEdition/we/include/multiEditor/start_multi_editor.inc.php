@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 
 /**
@@ -39,7 +38,7 @@ function checkIfValidStartdocument($id, $type = "document"){
 	} else{
 		$ctype = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']);
 
-		return ($ctype == "text/webedition");
+		return ($ctype == 'text/webedition');
 	}
 }
 
@@ -53,67 +52,88 @@ function _buildJsCommand($cmdArray = array("", "", "cockpit", "open_cockpit", ""
 }
 
 $jsCommand = _buildJsCommand();
-
 if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] == 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
-	for($i = 1; $i < sizeof($_REQUEST['we_cmd']) && $i < 4; $i++){
+	for($i = 1; $i < count($_REQUEST['we_cmd']) && $i < 4; $i++){
 		$directCmd[] = $_REQUEST['we_cmd'][$i];
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 } else{ // check preferences for which document to open at startup
 // <we:linkToSeeMode> !!!!
 	if(isset($_SESSION["SEEM"]) && isset($_SESSION["SEEM"]["open_selected"])){
-
-		if(isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'document' && checkIfValidStartdocument($_SESSION["SEEM"]["startId"]) )){
-
-			$directCmd = array(
-				FILE_TABLE,
-				$_SESSION["SEEM"]["startId"],
-				'text/webedition',
-			);
-			$jsCommand = _buildJsCommand($directCmd);
-		} else if(isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'object')){
-
-			$directCmd = array(
-				OBJECT_FILES_TABLE,
-				$_SESSION["SEEM"]["startId"],
-				'objectFile'
-			);
-			$jsCommand = _buildJsCommand($directCmd);
+		switch($_SESSION["SEEM"]["startType"]){
+			case 'document':
+				if(checkIfValidStartdocument($_SESSION["SEEM"]["startId"])){
+					$directCmd = array(
+						FILE_TABLE,
+						$_SESSION["SEEM"]["startId"],
+						'text/webedition',
+					);
+					$jsCommand = _buildJsCommand($directCmd);
+				} else{
+					t_e('invalid start doc ' . $_SESSION["SEEM"]["startId"]);
+				}
+				break;
+			case 'object':
+				if(checkIfValidStartdocument($_SESSION["SEEM"]["startId"])){
+					$directCmd = array(
+						OBJECT_FILES_TABLE,
+						$_SESSION["SEEM"]["startId"],
+						'objectFile'
+					);
+					$jsCommand = _buildJsCommand($directCmd);
+				} else{
+					t_e('invalid start doc ' . $_SESSION["SEEM"]["startId"]);
+				}
+				break;
 		}
 		unset($_SESSION["SEEM"]["open_selected"]);
 
 // normal mode, start document depends on settings
-	} else if(isset($_SESSION["prefs"]["seem_start_type"])){
-		if($_SESSION["prefs"]["seem_start_type"] == "object" && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"], "object")){ //	if a stardocument is already selected - show this
-			$directCmd = array(
-				OBJECT_FILES_TABLE,
-				$_SESSION["prefs"]["seem_start_file"],
-				'objectFile',
-			);
-			$jsCommand = _buildJsCommand($directCmd);
-		} else if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "") && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){ //	if a stardocument is already selected - show this
-			$directCmd = array(
-				FILE_TABLE,
-				$_SESSION["prefs"]["seem_start_file"],
-				'text/webedition',
-			);
-			$jsCommand = _buildJsCommand($directCmd);
-		} else if($_SESSION["prefs"]["seem_start_type"] == "weapp" && $_SESSION["prefs"]["seem_start_weapp"] != ''){ //	if a we-app is choosen
-			$directCmd = array(
-				'', '', '', 'tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
-			);
-			$jsCommand = _buildJsCommand();
-			$jsCommand .= _buildJsCommand($directCmd);
-		} else if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
-			$_SESSION["prefs"]["seem_start_type"] = "cockpit";
-			$jsCommand = _buildJsCommand();
+	} else{
+		switch($_SESSION["prefs"]["seem_start_type"]){
+			case 'object':
+				if($_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"], "object")){ //	if a stardocument is already selected - show this
+					$directCmd = array(
+						OBJECT_FILES_TABLE,
+						$_SESSION["prefs"]["seem_start_file"],
+						'objectFile',
+					);
+					$jsCommand = _buildJsCommand($directCmd);
+				} else{
+					t_e('start doc not valid');
+				}
+				break;
+			case '0':
+				$_SESSION["prefs"]["seem_start_type"] = 0;
+				break;
+			case 'document':
+				if($_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){ //	if a stardocument is already selected - show this
+					$directCmd = array(
+						FILE_TABLE,
+						$_SESSION["prefs"]["seem_start_file"],
+						'text/webedition',
+					);
+					$jsCommand = _buildJsCommand($directCmd);
+					} else{
+					t_e('start doc not valid', $_SESSION["prefs"]["seem_start_file"]);
+				}
+				break;
+			case 'weapp':
+				if($_SESSION["prefs"]["seem_start_weapp"] != ''){ //	if a we-app is choosen
+					$directCmd = array(
+						'', '', '', 'tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
+					);
+					$jsCommand = _buildJsCommand() .
+						_buildJsCommand($directCmd);
+				}
+				break;
 		}
 	}
 // :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
-if($_SESSION["prefs"]["seem_start_type"] !== ""){
+if($_SESSION["prefs"]["seem_start_type"] !== 0){
 	print we_html_element::jsElement($jsCommand);
 } else{
 	print we_html_element::jsElement("top.weEditorFrameController.toggleFrames();");

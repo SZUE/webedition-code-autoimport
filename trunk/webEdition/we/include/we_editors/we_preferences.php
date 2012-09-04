@@ -1239,7 +1239,7 @@ function build_dialog($selected_setting = 'ui'){
 				}
 
 				$_seem_document_chooser = '';
-				if(userIsAllowed('seem_start_document')){
+				if(userIsAllowed('seem_start_file')){
 					$_start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 					$showStartType = true;
 					// Build SEEM select start document chooser
