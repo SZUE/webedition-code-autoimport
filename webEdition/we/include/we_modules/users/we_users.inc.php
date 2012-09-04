@@ -2047,7 +2047,7 @@ class we_user{
 		}
 
 		$_start_type = new we_html_select(array('name' => 'seem_start_type', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value); top.content.setHot();"));
-
+		$_start_type->addOption('0', '-');
 		$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 		$_start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 		if(defined('OBJECT_FILES_TABLE')){
