@@ -1021,10 +1021,7 @@ function build_dialog($selected_setting = 'ui'){
 				);
 			}
 
-			/*			 * ***************************************************************
-			 * AMOUNT COLUMNS IN COCKPIT
-			 * *************************************************************** */
-
+			 //AMOUNT COLUMNS IN COCKPIT
 			$_amount = new we_html_select(array('name' => 'newconf[cockpit_amount_columns]', 'class' => 'weSelect'));
 			for($i = 1; $i <= 10; $i++){
 				$_amount->addOption($i, $i);
@@ -1230,7 +1227,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				$showStartType = false;
 				$permitedStartTypes = array('');
-				$_start_type->addOption('', '-');
+				$_start_type->addOption('0', '-');
 				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? "33px" : "24px") . ";'>&nbsp;</div>";
 				if(we_hasPerm('CAN_SEE_QUICKSTART')){
 					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
