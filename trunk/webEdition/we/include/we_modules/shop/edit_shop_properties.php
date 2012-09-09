@@ -27,7 +27,7 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 print STYLESHEET;
 
-$weShopVatRule = weShopVatRule::getShopVatRule();
+//$weShopVatRule = weShopVatRule::getShopVatRule();
 
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
@@ -858,9 +858,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 if(isset($_REQUEST["deletethisorder"])){
 
-	$GLOBALS['DB_WE']->query("DELETE FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $_REQUEST["bid"]);
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . $_REQUEST['bid']);
 	echo we_html_element::jsElement('
-	top.content.deleteEntry(' . $_REQUEST["bid"] . ')') . '
+	top.content.deleteEntry(' . $_REQUEST['bid'] . ')') . '
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
@@ -872,22 +872,14 @@ if(isset($_REQUEST["deletethisorder"])){
 }
 
 if(isset($_REQUEST["deleteaartikle"])){
-
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $_REQUEST["deleteaartikle"]);
-	$GLOBALS['DB_WE']->query('SELECT IntID FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
-	$l = $GLOBALS['DB_WE']->num_rows();
+	$l = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'a', $GLOBALS['DB_WE']);
 	if($l < 1){
 		$letzerartikel = 1;
 	}
 }
 // Get Customer data
-$query = 'SELECT IntID, IntCustomerID	FROM ' . SHOP_TABLE . '	WHERE IntOrderID = ' . intval($_REQUEST["bid"]);
-
-$GLOBALS['DB_WE']->query($query);
-$GLOBALS['DB_WE']->next_record();
-
-// get all needed information for order-data
-$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
+$_REQUEST["cid"] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . '	WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'IntCustomerID', $GLOBALS['DB_WE']);
 
 $strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "edit_shop_properties"', 'strFelder', $GLOBALS['DB_WE']);
 
@@ -902,7 +894,7 @@ if(($fields = @unserialize($strFelder))){
 
 	// the save format used to be ...
 	// Vorname:tblWebUser||Forename,Nachname:tblWebUser||Surname,Contact/Address1:tblWebUser||Contact_Address1,Contact/Address1:tblWebUser||Contact_Address1,...
-	$_fieldInfos = explode(",", $strFelder);
+	$_fieldInfos = explode(',', $strFelder);
 
 	foreach($_fieldInfos as $_fieldInfo){
 
