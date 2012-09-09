@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 
 if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
-	require_once(WE_INCLUDES_PATH . 'we_classes/base/weFile.class.php');
+	require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 	require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 	we_loadLanguageConfig();
 }

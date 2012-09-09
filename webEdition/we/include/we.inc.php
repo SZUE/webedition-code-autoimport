@@ -53,9 +53,9 @@ if($_memlimit < 32){
 if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
 //start autoloader!
-include_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.php');
 
 // Activate the webEdition error handler
 include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
@@ -63,7 +63,7 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
-include_once (WE_INCLUDES_PATH . 'we_global.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
 
 include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
@@ -87,7 +87,7 @@ if(!isset($GLOBALS['DB_WE'])){
 
 if(!defined('NO_SESS')){
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_session.inc.php');
+	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_session.inc.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if(!empty($_tooldefines)){
 		foreach($_tooldefines as $_tooldefine){
@@ -104,8 +104,7 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 }
 //set new sessionID from dw-extension
 if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
-	$sid = strip_tags($_REQUEST['weSessionId']);
-	$sid = htmlspecialchars($sid);
+	$sid = htmlspecialchars(strip_tags($_REQUEST['weSessionId']));
 	session_id($sid);
 //	session_name(SESSION_NAME);
 	@session_start();
