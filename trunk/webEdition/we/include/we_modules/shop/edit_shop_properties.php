@@ -43,29 +43,21 @@ if($strFelder !== ''){
 }
 
 function getFieldFromShoparticle($array, $name, $length = 0){
+	$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 
-	$val = ( isset($array["we_$name"]) ? $array["we_$name"] : (isset($array[$name]) ? $array[$name] : '' ) );
-
-	if($length && ($length < strlen($val))){
-
-		return substr($val, 0, $length) . '...';
-	}
-	return $val;
+	return ($length && ($length < strlen($val)) ?
+			substr($val, 0, $length) . '...' :
+			$val);
 }
 
 function getOrderCustomerData($orderId, $orderData = false, $customerId = false, $strFelder = array()){
-
 	if(!$customerId){
-
 		// get customerID from order
-		$query = 'SELECT IntCustomerID, strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($orderId);
+		$tmp = getHash('SELECT IntCustomerID, strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($orderId), $GLOBALS['DB_WE']);
 
-		$GLOBALS['DB_WE']->query($query);
-
-		if($GLOBALS['DB_WE']->next_record()){
-			$customerId = $GLOBALS['DB_WE']->f('IntCustomerID');
-			$strSerialOrder = $GLOBALS['DB_WE']->f('strSerialOrder');
-			$orderData = @unserialize($strSerialOrder);
+		if(!empty($tmp)){
+			$customerId = $tmp['IntCustomerID'];
+			$orderData = @unserialize($tmp['strSerialOrder']);
 		}
 	}
 
@@ -79,9 +71,7 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 
 	// only fields explicity set with the order are shown here
 	if(isset($strFelder) && isset($strFelder['customerFields'])){
-
 		foreach($strFelder['customerFields'] as $k){
-
 			if(isset($customerDb[$k])){
 				$tmpCustomer[$k] = $customerDb[$k];
 			}
@@ -91,7 +81,6 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 	$_customer = array();
 
 	foreach($tmpCustomer as $k => $v){
-
 		if(!is_int($k)){
 			$_customer[$k] = $v;
 		}
@@ -124,6 +113,7 @@ function numfom($result){
 }
 
 function numfom2($result){
+	//FIXME: this code does sth. else as intended
 	return rtrim(rtrim(numfom($result), '.00'), ',00');
 }
 
@@ -253,8 +243,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 					$query = 'SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 						FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 						WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
-							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID
-					';
+							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ';
 
 					if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
 						$query .= ' AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
@@ -283,17 +272,14 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$start_entry = $page * $MAX_PER_PAGE + 1;
 			$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
-			if($start_entry - $MAX_PER_PAGE > 0){
-				$backBut = we_button::create_button('back', "javascript:switchEntriesPage(" . ($page - 1) . ");");
-			} else{
-				$backBut = we_button::create_button('back', "#", true, 100, 22, '', '', true);
-			}
+			$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
+					we_button::create_button('back', "javascript:switchEntriesPage(" . ($page - 1) . ");") :
+					we_button::create_button('back', "#", true, 100, 22, '', '', true));
 
-			if(($end_entry) < $AMOUNT_ARTICLES){
-				$nextBut = we_button::create_button('next', "javascript:switchEntriesPage(" . ($page + 1) . ");");
-			} else{
-				$nextBut = we_button::create_button('next', "#", true, 100, 22, '', '', true);
-			}
+			$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
+					we_button::create_button('next', "javascript:switchEntriesPage(" . ($page + 1) . ");") :
+					we_button::create_button('next', "#", true, 100, 22, '', '', true));
+
 
 			$shopArticlesSelect = $shopArticlesParts[$page];
 			asort($shopArticlesSelect);
@@ -301,8 +287,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			// determine which articles should be shown >>>
 
 
-			print we_html_element::jsElement('
-		self.focus();
+			print we_html_element::jsElement(
+					'self.focus();
 
 		function selectArticle(articleInfo) {
 
@@ -444,9 +430,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_article][title]'));
-			print '
-</form>
+			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_article][title]')) .
+				'</form>
 </body>
 </html>';
 			unset($saveBut);
@@ -500,8 +485,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 		case 'edit_shop_cart_custom_field':
 
-			print we_html_element::jsElement('
-	function we_submit() {
+			print we_html_element::jsElement('function we_submit() {
 		elem = document.getElementById("cartfieldname");
 
 		if (elem && elem.value) {
@@ -515,8 +499,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 <body class="weDialogBody">
 <form name="we_form">
 <input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
-<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />
-';
+<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
 			$saveBut = we_button::create_button('save', "javascript:we_submit();");
 			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
@@ -574,8 +557,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
 					$jsCmd = '
-					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");
-					' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) .
+					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) .
 						'window.close();';
 				} else{
 					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR) .
@@ -587,10 +570,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 					'window.close();';
 			}
 
-
-
-			print we_html_element::jsElement($jsCmd) . '
-			</head>
+			print we_html_element::jsElement($jsCmd) .
+				'</head>
 <body></body>
 </html>';
 			unset($serialOrder);
@@ -659,10 +640,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 				<body class="weDialogBody">
 				<form name="we_form" target="edbody">
 				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost');
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[edit_shipping_cost][title]'));
-			print '
-				</form>
+				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
+				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+				'</form>
 				</body>
 				</html>';
 			exit;
@@ -706,7 +686,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			$dontEdit = array('ID', 'Username', 'Password', 'MemberSince', 'LastLogin', 'LastAccess', 'ParentID', 'Path', 'IsFolder', 'Icon', 'Text', 'Forename', 'Surname');
 
-			$parts = array(array(
+			$parts = array(
+				array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), 2, 470),
 					'space' => 0
 				),
@@ -745,11 +726,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 						foreach($topCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 						}
-						if(defined("WE_COUNTRIES_SHOWN")){
-							$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-						} else{
-							$shownCountries = explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
-						}
+						$shownCountries = (defined("WE_COUNTRIES_SHOWN") ?
+								explode(',', WE_COUNTRIES_SHOWN) :
+								explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY"));
+
 						$shownCountries = array_flip($shownCountries);
 						foreach($shownCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
