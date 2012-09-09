@@ -623,7 +623,7 @@ function we_userCanEditModule($modName){
 	if($_SESSION['perms']['ADMINISTRATOR']){
 		return true;
 	}
-	foreach($GLOBALS['_we_available_modules'] as $m)
+	foreach($GLOBALS['_we_available_modules'] as $m){
 		if($m['name'] == $modName){
 
 			$p = isset($m['perm']) ? $m['perm'] : '';
@@ -631,14 +631,14 @@ function we_userCanEditModule($modName){
 			foreach($or as $k => $v){
 				$and = explode('&&', $v);
 				$one = true;
-				foreach($and as $key => $val){
-					array_push($set, 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])');
-					$and[$key] = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
+				foreach($and as &$val){
+					$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($val) . '\'])';
+					$val = '$_SESSION[\'perms\'][\'' . trim($val) . '\']';
 					$one = false;
 				}
 				$or[$k] = implode(' && ', $and);
 				if($one && !in_array('isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])', $set))
-					array_push($set, 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])');
+					$set[] = 'isset($_SESSION[\'perms\'][\'' . trim($v) . '\'])';
 			}
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
@@ -646,7 +646,8 @@ function we_userCanEditModule($modName){
 			eval('if (' . $set_str . '){ if (' . $condition_str . ') { $enable=1; } else { $enable=0; } }');
 			return $enable;
 		}
-	return $enable;
+	}
+	return true;
 }
 
 function makeOwnersSql($useCreatorID = true){

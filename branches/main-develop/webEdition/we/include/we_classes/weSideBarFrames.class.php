@@ -24,15 +24,14 @@
  */
 class weSideBarFrames{
 
-	var $_frameset = "";
+	var $_frameset = '';
 
 	function __construct(){
-		$_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
+		$this->_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
 	}
 
 	function getHTML($what){
 		switch($what){
-
 			case 'header':
 				print $this->getHTMLHeader();
 				break;

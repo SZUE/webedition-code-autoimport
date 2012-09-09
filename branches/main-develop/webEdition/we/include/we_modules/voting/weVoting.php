@@ -64,8 +64,8 @@ class weVoting extends weModelBase{
 	var $RevoteControl = 1;
 	var $RevoteTime = -1;
 	// it is not automatically (un)serialized
-	var $Revote = "";
-	var $RevoteUserAgent = "";
+	var $Revote = '';
+	var $RevoteUserAgent = '';
 	var $answerCount = -1;
 	var $defVersion = 0;
 	var $FallbackIp = 0;
@@ -77,7 +77,7 @@ class weVoting extends weModelBase{
 	var $RestrictIP = 0;
 	var $BlackList = array();
 	var $ActiveTime = 0;
-	var $protected = array("ID", "ParentID", "Icon", "IsFolder", "Path", "Text");
+	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
 	var $FallbackActive = 0;
 
 	/**
@@ -97,17 +97,17 @@ class weVoting extends weModelBase{
 		if(empty($this->QASet)){
 			$this->QASet = array(
 				0 => array(
-					"question" => "",
-					"answers" => array(
-						0 => "",
-						1 => ""
+					'question' => '',
+					'answers' => array(
+						0 => '',
+						1 => ''
 					)
 				)
 			);
 		}
 		if(empty($this->QASetAdditions)){
 			$this->QASetAdditions = array(
-				0 => array("imageID" => "", "mediaID" => "", "successorID" => "")
+				0 => array('imageID' => '', 'mediaID' => '', 'successorID' => '')
 			);
 		}
 
@@ -130,9 +130,9 @@ class weVoting extends weModelBase{
 
 	function load($id = 0){
 		if(parent::load($id)){
-			$this->QASet = @unserialize($this->QASet);
-			$this->QASetAdditions = @unserialize($this->QASetAdditions);
-			$this->Scores = @unserialize($this->Scores);
+			$this->QASet = unserialize($this->QASet);
+			$this->QASetAdditions = unserialize($this->QASetAdditions);
+			$this->Scores = unserialize($this->Scores);
 			$this->Owners = makeArrayFromCSV($this->Owners);
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
 			if(empty($this->LogData)){
@@ -176,8 +176,8 @@ class weVoting extends weModelBase{
 		}
 
 		$this->ParentID = !empty($this->ParentID) ? $this->ParentID : 0;
-		if(isset($_SESSION["user"]["ID"]) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION["user"]["ID"], $this->Owners)))
-			$this->Owners[] = $_SESSION["user"]["ID"];
+		if(isset($_SESSION['user']['ID']) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION['user']['ID'], $this->Owners)))
+			$this->Owners[] = $_SESSION['user']['ID'];
 
 		$_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'", "QASet", $GLOBALS['DB_WE']);
 		$_new_QASet = $this->QASet;
@@ -200,7 +200,6 @@ class weVoting extends weModelBase{
 
 		$this->QASetAdditions = serialize($this->QASetAdditions);
 
-
 		$logdata = $this->LogData;
 		unset($this->LogData);
 		$oldid = $this->ID;
@@ -214,7 +213,7 @@ class weVoting extends weModelBase{
 		parent::save();
 
 		$this->QASet = unserialize($this->QASet);
-		$this->Scores = ($with_scores || $oldid == 0) ? unserialize($this->Scores) : $temp;
+		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
 
 		$this->QASetAdditions = unserialize($this->QASetAdditions);
 		$this->Owners = makeArrayFromCSV($this->Owners);
@@ -241,7 +240,7 @@ class weVoting extends weModelBase{
 	function deleteChilds(){
 		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()) {
-			$child = new weVoting($this->db->f("ID"));
+			$child = new weVoting($this->db->f('ID'));
 			$child->delete();
 		}
 	}
@@ -267,14 +266,14 @@ class weVoting extends weModelBase{
 		}
 
 		$foo = getHash('SELECT Text,ParentID FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($id), $db_tmp);
-		$path = '/' . (isset($foo["Text"]) ? $foo["Text"] : "") . $path;
+		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
-		$pid = isset($foo["ParentID"]) ? $foo["ParentID"] : "";
+		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
 			$db_tmp->query('SELECT Text,ParentID FROM ' . VOTING_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()) {
-				$path = '/' . $db_tmp->f("Text") . $path;
-				$pid = $db_tmp->f("ParentID");
+				$path = '/' . $db_tmp->f('Text') . $path;
+				$pid = $db_tmp->f('ParentID');
 			}
 		}
 		return $path;
@@ -286,8 +285,8 @@ class weVoting extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION["voting_session"]))
-			unset($_SESSION["voting_session"]);
+		if(isset($_SESSION['voting_session']))
+			unset($_SESSION['voting_session']);
 	}
 
 	function filenameNotValid($text){
@@ -383,7 +382,7 @@ class weVoting extends weModelBase{
 	}
 
 	function getOwnersSql(){
-		$owners_sql = "";
+		$owners_sql = '';
 		if(!we_hasPerm('ADMINISTRATOR')){
 			$userids = array(
 				$_SESSION['user']['ID']
@@ -594,7 +593,7 @@ class weVoting extends weModelBase{
 	}
 
 	function canVoteUserID(){
-		$userid = (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : -1;
+		$userid = (defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : -1;
 
 		if(!$this->LogDB || ($userid <= 0)){
 			return self::SUCCESS;
@@ -637,8 +636,8 @@ class weVoting extends weModelBase{
 	}
 
 	function resetIpData(){
-		$this->Revote = "";
-		$this->RevoteUserAgent = "";
+		$this->Revote = '';
+		$this->RevoteUserAgent = '';
 		$this->saveField('Revote');
 		$this->saveField('RevoteUserAgent');
 	}
@@ -684,7 +683,7 @@ class weVoting extends weModelBase{
 	function deleteGroupLogData(){
 		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->Path . "%'");
 		while($this->db->next_record()) {
-			$child = new weVoting($this->db->f("ID"));
+			$child = new weVoting($this->db->f('ID'));
 			$child->deleteLogDataDB();
 		}
 		return true;
@@ -707,7 +706,7 @@ class weVoting extends weModelBase{
 	 * @author Alexander Lindenstruth
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
-	function loadDB($id = "0"){
+	function loadDB($id = '0'){
 
 		if($this->IsFolder){
 			$logQuery = 'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->Path . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time";
@@ -755,11 +754,8 @@ class weVoting extends weModelBase{
 		if(is_null($additionalfields))
 			$additionalfields = '';
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
-		if(defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"]){
-			$userid = $_SESSION["webuser"]["ID"];
-		} else{
-			$userid = 0;
-		}
+		$userid = (defined("CUSTOMER_TABLE") && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] ?
+				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
 				'votingsession' => $votingsession,
 				'voting' => $this->ID,

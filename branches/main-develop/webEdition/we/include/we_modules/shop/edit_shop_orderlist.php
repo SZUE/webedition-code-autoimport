@@ -22,22 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_SHOP_MODULE_PATH . 'shopFunctions.inc.php');
 
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
-if(isset($_REQUEST["cid"])){
+$Kundenname = '';
 
-	$foo = getHash("SELECT Forename,Surname FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($_REQUEST["cid"]), $DB_WE);
-	if(is_array($foo)){
-		$Kundenname = $foo["Forename"] . " " . $foo["Surname"];
-	}
-	$orderList = getCustomersOrderList($_REQUEST["cid"]);
+if(isset($_REQUEST["cid"])){
+	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($_REQUEST["cid"]), 'Name', $DB_WE);
+	$orderList = we_shop_functions::getCustomersOrderList($_REQUEST["cid"]);
 }
 ?>
 </head>

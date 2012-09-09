@@ -133,7 +133,6 @@ class we_updater{
 		}
 		$GLOBALS['DB_WE']->addCol(THUMBNAILS_TABLE, "Fitinside", " smallint(5) unsigned NOT NULL default '0' ", ' AFTER Interlace ');
 		$GLOBALS['DB_WE']->changeColType(HISTORY_TABLE, "ContentType", "enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile') NOT NULL");
-
 	}
 
 	static function convertPerms(){
@@ -141,9 +140,9 @@ class we_updater{
 		if(!($GLOBALS['DB_WE']->isColExist(USER_TABLE, "Permissions") && $GLOBALS['DB_WE']->getColTyp(USER_TABLE, "Permissions") != "text")){
 			return;
 		}
-		$GLOBALS['DB_WE']->changeColType(USER_TABLE, "Permissions", "TEXT");
+		$GLOBALS['DB_WE']->changeColType(USER_TABLE, 'Permissions', 'TEXT');
 		$db_tmp = new DB_WE();
-		$DB_WE->query("SELECT ID,username,Permissions from " . USER_TABLE);
+		$DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE);
 		while($DB_WE->next_record()) {
 			$perms_slot = array();
 			$pstr = $DB_WE->f("Permissions");
@@ -158,36 +157,38 @@ class we_updater{
 	static function fix_path(){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
+		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()) {
 			@set_time_limit(30);
-			$id = $db->f("ID");
-			$pid = $db->f("ParentID");
-			$path = "/" . $db->f("username");
+			$id = $db->f('ID');
+			$pid = $db->f('ParentID');
+			$path = '/' . $db->f("username");
 			while($pid > 0) {
-				$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
+				$db2->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
 				if($db2->next_record()){
-					$path = "/" . $db2->f("username") . $path;
+					$path = '/' . $db2->f("username") . $path;
 					$pid = $db2->f("ParentID");
 				} else{
 					$pid = 0;
 				}
 			}
-			$db2->query("UPDATE " . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
+			if($db->f('Path') != $path){
+				$db2->query('UPDATE ' . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
+			}
 		}
 	}
 
 	static function fix_icon(){
 		$db = new DB_WE();
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=2");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=1");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user.gif' WHERE Type NOT IN(1,2)");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=2");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=1");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type NOT IN(1,2)");
 	}
 
 	static function fix_icon_small(){
 		$db = new DB_WE();
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='usergroup.gif' WHERE IsFolder=1");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user.gif' WHERE IsFolder=0");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE IsFolder=1");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE IsFolder=0");
 	}
 
 	static function fix_text(){
@@ -279,8 +280,6 @@ class we_updater{
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="ISO-8859-1" WHERE (Language NOT LIKE "%_UTF-8%" AND Language!="") AND BackendCharset=""');
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language=REPLACE(Language,"_UTF-8","") WHERE (Language LIKE "%_UTF-8%") AND BackendCharset=""');
 		$GLOBALS['DB_WE']->query('UPDATE '.PREFS_TABLE.' SET BackendCharset="UTF-8",Language="Deutsch" WHERE Language="" AND BackendCharset=""');
-
-
 		return true;
 	}
 
@@ -434,7 +433,6 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "Workspaces", " varchar(1000) NOT NULL default '' ");
 			$GLOBALS['DB_WE']->changeColType(OBJECT_TABLE, "DefaultWorkspaces", " varchar(1000) NOT NULL default '' ");
 		}
-
 	}
 
 	static function updateObjectFiles(){
@@ -575,6 +573,16 @@ class we_updater{
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'answertext', 'text NOT NULL', ' AFTER answer ');
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'successor', 'bigint(20) unsigned NOT NULL DEFAULT 0', ' AFTER answertext ');
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'additionalfields', 'text NOT NULL', ' AFTER successor ');
+			//this looks weird but means just :\"question inside the table
+			$GLOBALS['DB_WE']->query('UPDATE ' . VOTING_TABLE . ' SET
+			QASet=REPLACE(QASet,\'\\\\"\',\'"\'),
+			QASetAdditions=REPLACE(QASetAdditions,\'\\\\"\',\'"\'),
+			Scores=REPLACE(Scores,\'\\\\"\',\'"\'),
+			Revote=REPLACE(Revote,\'\\\\"\',\'"\'),
+			RevoteUserAgent=REPLACE(RevoteUserAgent,\'\\\\"\',\'"\'),
+			LogData=REPLACE(LogData,\'\\\\"\',\'"\'),
+			BlackList=REPLACE(BlackList,\'\\\\"\',\'"\')
+			WHERE QASet LIKE \'%:\\\\\\\"question%\'');
 		}
 	}
 
@@ -588,7 +596,6 @@ class we_updater{
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "Workspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspaces", " varchar(1000) NOT NULL ");
 			$GLOBALS['DB_WE']->changeColType(VERSIONS_TABLE, "ExtraWorkspacesSelected", " varchar(1000) NOT NULL ");
-
 		}
 	}
 
@@ -600,7 +607,7 @@ class we_updater{
 		if(defined('WORKFLOW_TABLE')){
 			if($GLOBALS['DB_WE']->isColExist(WORKFLOW_TABLE, 'DocType')){
 				$GLOBALS['DB_WE']->changeColType(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''");
-			} else {
+			} else{
 				$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'DocType', "varchar(255) NOT NULL default ''", ' AFTER Folders ');
 			}
 			$GLOBALS['DB_WE']->addCol(WORKFLOW_TABLE, 'ObjectFileFolders', "varchar(255) NOT NULL default ''", ' AFTER Objects ');
@@ -704,7 +711,6 @@ class we_updater{
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');
-						;
 					}
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
 				}
@@ -746,15 +752,14 @@ class we_updater{
 
 	static function fixInconsistentTables(){
 		$db = $GLOBALS['DB_WE'];
-		$del = array();
-		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')'));
+		$del = self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')');
 		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')'));
 
 		if(count($del)){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
-		$del = array_merge($del, self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')'));
+		$del = self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 		if(count($del)){
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
 		}

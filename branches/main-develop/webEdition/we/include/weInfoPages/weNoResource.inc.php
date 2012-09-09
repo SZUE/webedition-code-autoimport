@@ -35,7 +35,7 @@ print STYLESHEET .
 
 <body class="weDialogBody">
 	<?php
-	print we_html_tools::htmlDialogLayout("<p class=\"defaultfont\">" . g_l('alert', "[noResource]") . "</p>", g_l('alert', "[noResourceTitle]"));
+	print we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', "[noResource]") . '</p>', g_l('alert', '[noResourceTitle]'));
 	?>
 </body>
 </html>

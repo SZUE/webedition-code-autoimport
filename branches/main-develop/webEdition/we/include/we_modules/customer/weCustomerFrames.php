@@ -258,14 +258,10 @@ class weCustomerFrames extends weModuleFrames{
 				');
 				$out.=we_html_tools::getPixel(5, 5) . $this->getDateInput2($field . "_select%s", $value, false, $format, "populateDate_$field()", "defaultfont", $this->View->settings->getSettings('start_year')) . we_html_tools::getPixel(5, 5);
 				return $out;
-				break;
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
-				break;
 			case 'img':
-
 				$imgId = intval($value);
-
 				$out = we_document::getFieldByVal($imgId, 'img');
 
 				$out = '
@@ -278,7 +274,6 @@ class weCustomerFrames extends weModuleFrames{
 							<td class="weEditmodeStyle" colspan="2" align="center">';
 				//javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $field . "\\'].value', '', 'opener.refreshForm()', '" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
-				$wecmdenc2 = '';
 				$wecmdenc3 = we_cmd_enc("opener.refreshForm()");
 				$out .= we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 					'</td>
@@ -487,34 +482,30 @@ class weCustomerFrames extends weModuleFrames{
 			);
 		}
 		if($preselect == g_l('modules_customer', '[orderTab]')){
+			$orderStr = we_shop_functions::getCustomersOrderList($this->View->customer->ID, false);
 
-			include_once(WE_SHOP_MODULE_PATH . 'shopFunctions.inc.php');
-
-			$orderStr = getCustomersOrderList($this->View->customer->ID, false);
-
-			array_push($parts, array(
+			$parts[] = array(
 				"html" => $orderStr,
 				"space" => 0
-				)
 			);
 		}
 		if($preselect == g_l('modules_customer', '[objectTab]')){
-			$query = 'SELECT ID,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path';
+
 			$DB_WE = new DB_WE();
-			$DB_WE->query($query);
+			$DB_WE->query('SELECT ID,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
 			$objectStr = '';
 			if($DB_WE->num_rows()){
-				$objectStr.='<table class="defaultfont" width="600">';
-				$objectStr.='<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+				$objectStr.='<table class="defaultfont" width="600">' .
+					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 				while($DB_WE->next_record()) {
-					$objectStr.='<tr>';
-					$objectStr.='<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>';
-					$objectStr.='<td>' . $DB_WE->f('ID') . '</td>';
-					$objectStr.='<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>';
-					$class = ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont');
-
-					$objectStr.='<td class="' . $class . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>';
-					$objectStr.='</tr>';
+					$objectStr.='<tr>' .
+						'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblObjectFiles'); }") . '</td>' .
+						'<td>' . $DB_WE->f('ID') . '</td>' .
+						'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
+						'<td class="' .
+						($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
+						. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
+						'</tr>';
 				}
 				$objectStr.='</table>';
 			} else{
@@ -528,48 +519,31 @@ class weCustomerFrames extends weModuleFrames{
 			);
 		}
 		if($preselect == g_l('modules_customer', '[documentTab]')){
-
 			$query = 'SELECT ID,Path,Text,Published,ModDate FROM ' . FILE_TABLE . ' WHERE ' . FILE_TABLE . '.WebUserID = ' . $this->View->customer->ID . ' ORDER BY ' . FILE_TABLE . '.Path';
 			$DB_WE = new DB_WE();
 			$DB_WE->query($query);
 			$documentStr = '';
 			if($DB_WE->num_rows()){
-				$documentStr.='<table class="defaultfont" width="600">';
-				$documentStr.='<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>';
-				$documentStr.='</tr>';
+				$documentStr.='<table class="defaultfont" width="600">' .
+					'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[Filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
+					'</tr>';
 				$db_we2 = new DB_WE();
 				while($DB_WE->next_record()) {
-					$documentStr.='<tr>';
-					$documentStr.='<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblFile'); }") . '</td>';
+					$titel = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Title' AND " .
+						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
 
-					$documentStr.='<td>' . $DB_WE->f('ID') . '</td>';
+					$beschreibung = f('SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Description' AND " .
+						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID'), 'Inhalt', $db_we2);
 
-					$documentStr.='<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>';
-					$class = ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont');
-
-					$documentStr.='<td class="' . $class . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>';
-					$titel = '';
-					$beschreibung = '';
-					$query2 = 'SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt, ' . LINK_TABLE . '.Name AS Name FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . '
-WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Title' AND " .
-						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID');
-					//$documentStr.='<td>'.$query2.'</td>';
-
-
-					$db_we2->query($query2);
-					if($db_we2->next_record()){
-						$titel = $db_we2->f('Inhalt');
-					}
-					$query2 = 'SELECT ' . CONTENT_TABLE . '.Dat AS Inhalt, ' . LINK_TABLE . '.Name AS Name FROM ' . FILE_TABLE . ', ' . LINK_TABLE . ',' . CONTENT_TABLE . '
-WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . ".Name='Description' AND " .
-						LINK_TABLE . ".DocumentTable='" . FILE_TABLE . "' AND " . FILE_TABLE . '.ID=' . $DB_WE->f('ID');
-					//$documentStr.='<td>'.$query2.'</td>';
-					$db_we2->query($query2);
-					if($db_we2->next_record()){
-						$beschreibung = $db_we2->f('Inhalt');
-					}
-
-					$documentStr.='<td title="' . $beschreibung . '">' . $titel . '</td></tr>';
+					$documentStr.='<tr>' .
+						'<td>' . we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','tblFile'); }") . '</td>' .
+						'<td>' . $DB_WE->f('ID') . '</td>' .
+						'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
+						'<td class="' .
+						($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
+						. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
+						'<td title="' . $beschreibung . '">' . $titel . '</td>' .
+						'</tr>';
 				}
 				$documentStr.='</table>';
 			} else{
@@ -736,16 +710,16 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(4, 1, array("valign" => "top"), we_html_tools::getPixel(10, 10));
 		$table->setCol(4, 2, array("valign" => "top"), $buttons_table->getHtml());
 
-		$out = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement("self.focus();") .
-				we_html_element::jsElement($this->View->getJSAdmin()) .
-				we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
-					we_html_element::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
-					we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_button::create_button("close", "javascript:self.close()"))
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
+					we_html_element::jsElement("self.focus();") .
+					we_html_element::jsElement($this->View->getJSAdmin()) .
+					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
+						we_html_element::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_button::create_button("close", "javascript:self.close()"))
+					)
 				)
 		);
-
-		return $this->getHTMLDocument($out);
 	}
 
 	function getHTMLFieldEditor($type, $mode){
@@ -795,23 +769,22 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			$save = we_button::create_button("save", "javascript:we_cmd('save_field')");
 		}
 
-		$out = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsElement($this->View->getJSAdmin()) .
-				we_html_element::jsElement("self.focus();") .
-				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-					we_html_tools::htmlDialogLayout($edit->getHtml(), (
-						$type == "branch" ?
-							(g_l('modules_customer', '[edit_branche]')) :
-							($mode == "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
-						), we_button::position_yes_no_cancel($save, null, $cancel)
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsElement($this->View->getJSAdmin()) .
+					we_html_element::jsElement("self.focus();") .
+					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_tools::htmlDialogLayout($edit->getHtml(), (
+							$type == "branch" ?
+								(g_l('modules_customer', '[edit_branche]')) :
+								($mode == "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
+							), we_button::position_yes_no_cancel($save, null, $cancel)
+						)
 					)
 				)
 		);
-
-		return $this->getHTMLDocument($out);
 	}
 
 	function getHTMLCmd(){
-		$out = "";
 		if(isset($_REQUEST["pid"])){
 			$pid = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') ?
 				utf8_encode($_REQUEST["pid"]) :
@@ -833,21 +806,19 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
 
-		$rootjs = "";
-		if(!$pid){
-			$rootjs.=
+		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' : '');
 
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
-		$out.=we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "10", "marginheight" => "10", "leftmargin" => "10", "topmargin" => "10"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-					we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weCustomerTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ""))))
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "10", "marginheight" => "10", "leftmargin" => "10", "topmargin" => "10"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(weCustomerTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ""))))
+					)
 				)
 		);
-		return $this->getHTMLDocument($out);
 	}
 
 	function getHTMLSortEditor(){
@@ -904,13 +875,15 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(0, 0, array(), $search->getHtml());
 		$table->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[search_result]'));
 		$table->setCol(2, 0, array(), $select->getHtml());
-		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => ($mode ? "" : "document.we_form.keyword.focus();")), we_html_element::linkElement(array("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua")) .
-				we_html_element::jsScript(JS_DIR . "utils/weDate.js") .
-				we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-				we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-				we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-				we_html_element::jsElement($this->View->getJSSearch()) .
-				we_html_element::jsElement("$this->jsOut_fieldTypesByName
+
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => ($mode ? "" : "document.we_form.keyword.focus();")), we_html_element::linkElement(array("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua")) .
+					we_html_element::jsScript(JS_DIR . "utils/weDate.js") .
+					we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+					we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
+					we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+					we_html_element::jsElement($this->View->getJSSearch()) .
+					we_html_element::jsElement("$this->jsOut_fieldTypesByName
 	var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
 	var fieldDate = new weDate(date_format_dateonly);
 
@@ -968,8 +941,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 					)
 				) .
 				((isset($_REQUEST['mode']) && $_REQUEST['mode']) ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : "")
-		);
-		return $this->getHTMLDocument($out);
+		));
 	}
 
 	function getHTMLSettings(){

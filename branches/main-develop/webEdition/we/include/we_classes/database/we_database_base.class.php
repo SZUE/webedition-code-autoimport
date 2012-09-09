@@ -722,18 +722,18 @@ abstract class we_database_base{
 	function addCol($tab, $col, $typ, $pos = ''){
 		$col = trim($col, '`');
 		if($this->isColExist($tab, $col)){
-			return;
+			return false;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
 	}
 
 	function changeColType($tab, $col, $newtyp){
 		$col = trim($col, '`');
 		if(!$this->isColExist($tab, $col)){
-			return;
+			return false;
 		}
 
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
 	}
 
 	function getColTyp($tab, $col){
@@ -846,7 +846,6 @@ abstract class we_database_base{
 	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
 	 */
 	function moveCol($tab, $colName, $newPos){
-		//TODO: to implement
 		//get the old col def, use for alter table.
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){
@@ -862,7 +861,7 @@ abstract class we_database_base{
 			}
 		}
 		if($found){
-			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . $newPos);
+			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `'.trim($newPos,'`').'`'));
 		}
 		return false;
 	}

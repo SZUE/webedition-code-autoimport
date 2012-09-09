@@ -27,7 +27,7 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 print STYLESHEET;
 
-$weShopVatRule = weShopVatRule::getShopVatRule();
+//$weShopVatRule = weShopVatRule::getShopVatRule();
 
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
@@ -43,29 +43,21 @@ if($strFelder !== ''){
 }
 
 function getFieldFromShoparticle($array, $name, $length = 0){
+	$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 
-	$val = ( isset($array["we_$name"]) ? $array["we_$name"] : (isset($array[$name]) ? $array[$name] : '' ) );
-
-	if($length && ($length < strlen($val))){
-
-		return substr($val, 0, $length) . '...';
-	}
-	return $val;
+	return ($length && ($length < strlen($val)) ?
+			substr($val, 0, $length) . '...' :
+			$val);
 }
 
 function getOrderCustomerData($orderId, $orderData = false, $customerId = false, $strFelder = array()){
-
 	if(!$customerId){
-
 		// get customerID from order
-		$query = 'SELECT IntCustomerID, strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($orderId);
+		$tmp = getHash('SELECT IntCustomerID, strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($orderId), $GLOBALS['DB_WE']);
 
-		$GLOBALS['DB_WE']->query($query);
-
-		if($GLOBALS['DB_WE']->next_record()){
-			$customerId = $GLOBALS['DB_WE']->f('IntCustomerID');
-			$strSerialOrder = $GLOBALS['DB_WE']->f('strSerialOrder');
-			$orderData = @unserialize($strSerialOrder);
+		if(!empty($tmp)){
+			$customerId = $tmp['IntCustomerID'];
+			$orderData = @unserialize($tmp['strSerialOrder']);
 		}
 	}
 
@@ -79,9 +71,7 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 
 	// only fields explicity set with the order are shown here
 	if(isset($strFelder) && isset($strFelder['customerFields'])){
-
 		foreach($strFelder['customerFields'] as $k){
-
 			if(isset($customerDb[$k])){
 				$tmpCustomer[$k] = $customerDb[$k];
 			}
@@ -91,7 +81,6 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 	$_customer = array();
 
 	foreach($tmpCustomer as $k => $v){
-
 		if(!is_int($k)){
 			$_customer[$k] = $v;
 		}
@@ -100,37 +89,36 @@ function getOrderCustomerData($orderId, $orderData = false, $customerId = false,
 }
 
 function getFieldFromOrder($bid, $field){
-	return f('SELECT ' . $GLOBALS['DB_WE']->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($_REQUEST['bid']), $field, $GLOBALS['DB_WE']);
+	return f('SELECT ' . $GLOBALS['DB_WE']->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $field, $GLOBALS['DB_WE']);
 }
 
 function updateFieldFromOrder($orderId, $fieldname, $value){
-
-	$upQuery = 'UPDATE ' . SHOP_TABLE . ' SET ' . $GLOBALS['DB_WE']->escape($fieldname) . '="' . $GLOBALS['DB_WE']->escape($value) . '"WHERE IntOrderID=' . intval($_REQUEST['bid']);
-	return ($GLOBALS['DB_WE']->query($upQuery) ? true : false);
+	return (bool) $GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $GLOBALS['DB_WE']->escape($fieldname) . '="' . $GLOBALS['DB_WE']->escape($value) . '" WHERE IntOrderID=' . intval($orderId));
 }
 
 // determine the number format
 function numfom($result){
-	$result = we_util::std_numberformat($result);
+	$result = doubleval(we_util::std_numberformat($result));
 	switch($GLOBALS['numberformat']){
 		case 'german':
-			return number_format($result, 2, ",", ".");
+			return number_format($result, 2, ',', '.');
 		case 'french':
-			return number_format($result, 2, ",", "&nbsp;");
+			return number_format($result, 2, ',', '&nbsp;');
 		case 'english':
-			return number_format($result, 2, ".", "");
+			return number_format($result, 2, '.', '');
 		case 'swiss':
-			return number_format($result, 2, ",", "'");
+			return number_format($result, 2, ',', "'");
 	}
 	return $result;
 }
 
 function numfom2($result){
+	//FIXME: this code does sth. else as intended
 	return rtrim(rtrim(numfom($result), '.00'), ',00');
 }
 
 // config
-$feldnamen = explode("|", f("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $GLOBALS['DB_WE']));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $GLOBALS['DB_WE']));
 
 $waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
 $dbTitlename = "shoptitle";
@@ -148,9 +136,7 @@ $datetimeform = "00.00.0000 00:00";
 
 
 if(isset($_REQUEST['we_cmd'][0])){
-
 	switch($_REQUEST['we_cmd'][0]){
-
 		case 'add_article':
 
 			if($_REQUEST["anzahl"] > 0){
@@ -183,12 +169,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 					unset($fields);
 				}
 
-
-				if($isObj){
-					$serialDoc = we_shop_Basket::getserial($id, 'o', $_REQUEST['we_variant'], $customFieldsTmp);
-				} else{
-					$serialDoc = we_shop_Basket::getserial($id, 'w', $_REQUEST['we_variant'], $customFieldsTmp);
-				}
+				$serialDoc = we_shop_Basket::getserial($id, ($isObj ? 'o' : 'w'), $_REQUEST['we_variant'], $customFieldsTmp);
 
 				unset($customFieldsTmp);
 
@@ -207,15 +188,13 @@ if(isset($_REQUEST['we_cmd'][0])){
 					}
 				}
 
-				$preis = getFieldFromShoparticle($serialDoc, 'price');
-
 				// now insert article to order:
 				$row = getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
 						'IntQuantity' => $_REQUEST["anzahl"],
-						'Price' => $preis,
+						'Price' => getFieldFromShoparticle($serialDoc, 'price'),
 						'IntOrderID' => $row["IntOrderID"],
 						'IntCustomerID' => $row["IntCustomerID"],
 						'DateOrder' => $row["DateOrder"],
@@ -264,12 +243,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 					$query = 'SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 						FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 						WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
-							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID
-					';
+							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ';
 
 					if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
-						$query .= '
-							AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
+						$query .= ' AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
 					}
 
 					$GLOBALS['DB_WE']->query($query);
@@ -286,9 +263,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			asort($shopArticles);
 			$MAX_PER_PAGE = 15;
-			$AMOUNT_ARTICLES = sizeof($shopArticles);
-
-
+			$AMOUNT_ARTICLES = count($shopArticles);
 
 			$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 0;
 
@@ -297,17 +272,14 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$start_entry = $page * $MAX_PER_PAGE + 1;
 			$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
-			if($start_entry - $MAX_PER_PAGE > 0){
-				$backBut = we_button::create_button('back', "javascript:switchEntriesPage(" . ($page - 1) . ");");
-			} else{
-				$backBut = we_button::create_button('back', "#", true, 100, 22, '', '', true);
-			}
+			$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
+					we_button::create_button('back', "javascript:switchEntriesPage(" . ($page - 1) . ");") :
+					we_button::create_button('back', "#", true, 100, 22, '', '', true));
 
-			if(($end_entry) < $AMOUNT_ARTICLES){
-				$nextBut = we_button::create_button('next', "javascript:switchEntriesPage(" . ($page + 1) . ");");
-			} else{
-				$nextBut = we_button::create_button('next', "#", true, 100, 22, '', '', true);
-			}
+			$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
+					we_button::create_button('next', "javascript:switchEntriesPage(" . ($page + 1) . ");") :
+					we_button::create_button('next', "#", true, 100, 22, '', '', true));
+
 
 			$shopArticlesSelect = $shopArticlesParts[$page];
 			asort($shopArticlesSelect);
@@ -315,8 +287,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			// determine which articles should be shown >>>
 
 
-			print we_html_element::jsElement('
-		self.focus();
+			print we_html_element::jsElement(
+					'self.focus();
 
 		function selectArticle(articleInfo) {
 
@@ -340,7 +312,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			if($AMOUNT_ARTICLES > 0){
 
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => '<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
@@ -354,19 +326,17 @@ if(isset($_REQUEST['we_cmd'][0])){
 					</tr>
 					</table>',
 					'noline' => 1
-					)
 				);
 			} else{
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => g_l('modules_shop', '[add_article][empty_articles]')
-					)
 				);
 			}
 
 			if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('global', '[search]'),
 					'space' => 100,
 					'html' => '<table border="0" cellpadding="0" cellspacing="0">
@@ -376,7 +346,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 					</tr>
 					</table>
 					</form>'
-					)
 				);
 			}
 
@@ -390,26 +359,22 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$id = $articleInfo[0];
 				$type = $articleInfo[1];
 
-				$variantData = array();
-
 				$variantOptions = array();
 				$variantOptions['-'] = '-';
 
 				if($type == 'o'){
-
 					$model = new we_objectFile();
 					$model->initByID($id, OBJECT_FILES_TABLE);
 
 					$variantData = weShopVariants::getVariantData($model, '-');
 				} else{
-
 					$model = new we_webEditionDocument();
 					$model->initByID($id);
 
 					$variantData = weShopVariants::getVariantData($model, '-');
 				}
 
-				$sizeVariantData = sizeof($variantData);
+				$sizeVariantData = count($variantData);
 				reset($variantData);
 				if($sizeVariantData > 1){
 					for($i = 0; $i < $sizeVariantData; $i++){
@@ -421,7 +386,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 					}
 				}
 
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => '
@@ -432,34 +397,30 @@ if(isset($_REQUEST['we_cmd'][0])){
 					'
 					<b>' . $model->elements['shoptitle']['dat'] . '</b>',
 					'noline' => 1
-					)
 				);
 
 				unset($model);
 
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[anzahl]'),
 					'space' => 100,
 					'html' => we_class::htmlTextInput('anzahl', 24, '', '', '', 'text', 380),
 					'noline' => 1
-					)
 				);
 
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[variant]'),
 					'space' => 100,
 					'html' => we_class::htmlSelect('we_variant', $variantOptions, 1, '', false, '', 'value', 380),
 					'noline' => 1
-					)
 				);
 
-				array_push($parts, array(
+				$parts[] = array(
 					'headline' => g_l('modules_shop', '[customField]'),
 					'space' => 100,
 					'html' => we_class::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 					'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 					'noline' => 1
-					)
 				);
 
 				unset($id);
@@ -469,9 +430,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_article][title]'));
-			print '
-</form>
+			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_article][title]')) .
+				'</form>
 </body>
 </html>';
 			unset($saveBut);
@@ -525,8 +485,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 		case 'edit_shop_cart_custom_field':
 
-			print we_html_element::jsElement('
-	function we_submit() {
+			print we_html_element::jsElement('function we_submit() {
 		elem = document.getElementById("cartfieldname");
 
 		if (elem && elem.value) {
@@ -535,14 +494,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 			' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}
 
-	}
-			') . '
+	}') . '
 			</head>
 <body class="weDialogBody">
 <form name="we_form">
 <input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
-<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />
-';
+<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
 			$saveBut = we_button::create_button('save', "javascript:we_submit();");
 			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
@@ -563,18 +520,16 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 			// make input field, for name or textfield
-			array_push($parts, array(
+			$parts[] = array(
 				'headline' => g_l('modules_shop', '[field_name]'),
 				'html' => $fieldHtml,
 				'space' => 120,
 				'noline' => 1
-				)
 			);
-			array_push($parts, array(
+			$parts[] = array(
 				'headline' => g_l('modules_shop', '[field_value]'),
 				'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
 				'space' => 120
-				)
 			);
 
 			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_shop_field]'));
@@ -602,26 +557,21 @@ if(isset($_REQUEST['we_cmd'][0])){
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
 					$jsCmd = '
-					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");
-					' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) . '
-					window.close();
-					';
+					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) .
+						'window.close();';
 				} else{
-					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR) . '
-					window.close();
-					';
+					$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR) .
+						'window.close();';
 				}
 			} else{
 
-				$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					window.close();
-					';
+				$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) .
+					'window.close();';
 			}
 
-
-
-			print we_html_element::jsElement($jsCmd) . '
-			</head>
+			print we_html_element::jsElement($jsCmd) .
+				'</head>
 <body></body>
 </html>';
 			unset($serialOrder);
@@ -663,28 +613,24 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$shippingVat = '19';
 			}
 
-			$parts = array();
-			array_push($parts, array(
-				'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
-				'space' => 150,
-				'html' => we_class::htmlTextInput("weShipping_costs", 24, $shippingCost),
-				'noline' => 1
-				)
-			);
-
-			array_push($parts, array(
-				'headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
-				'space' => 150,
-				'html' => we_class::htmlSelect("weShipping_isNet", array('1' => g_l('global', '[yes]'), '0' => g_l('global', '[no]')), 1, $shippingIsNet),
-				'noline' => 1
-				)
-			);
-
-			array_push($parts, array(
-				'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
-				'space' => 150,
-				'html' => we_getInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
-				'noline' => 1
+			$parts = array(
+				array(
+					'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
+					'space' => 150,
+					'html' => we_class::htmlTextInput("weShipping_costs", 24, $shippingCost),
+					'noline' => 1
+				),
+				array(
+					'headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
+					'space' => 150,
+					'html' => we_class::htmlSelect("weShipping_isNet", array('1' => g_l('global', '[yes]'), '0' => g_l('global', '[no]')), 1, $shippingIsNet),
+					'noline' => 1
+				),
+				array(
+					'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
+					'space' => 150,
+					'html' => we_getInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
+					'noline' => 1
 				)
 			);
 
@@ -694,10 +640,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 				<body class="weDialogBody">
 				<form name="we_form" target="edbody">
 				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost');
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[edit_shipping_cost][title]'));
-			print '
-				</form>
+				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
+				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+				'</form>
 				</body>
 				</html>';
 			exit;
@@ -741,32 +686,25 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 			$dontEdit = array('ID', 'Username', 'Password', 'MemberSince', 'LastLogin', 'LastAccess', 'ParentID', 'Path', 'IsFolder', 'Icon', 'Text', 'Forename', 'Surname');
 
-			$parts = array();
-			array_push($parts, array(
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), 2, 470),
-				'space' => 0
+			$parts = array(
+				array(
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), 2, 470),
+					'space' => 0
+				),
+				array(
+					'headline' => g_l('modules_customer', '[Forname]') . ": ",
+					'space' => 150,
+					'html' => we_class::htmlTextInput("weCustomerOrder[Forename]", 44, $_customer['Forename']),
+					'noline' => 1
+				),
+				array(
+					'headline' => g_l('modules_customer', '[Surname]') . ": ",
+					'space' => 150,
+					'html' => we_class::htmlTextInput("weCustomerOrder[Surname]", 44, $_customer['Surname']),
+					'noline' => 1
 				)
 			);
-			$editFields = array();
-
-
-			array_push($parts, array(
-				'headline' => g_l('modules_customer', '[Forname]') . ": ",
-				'space' => 150,
-				'html' => we_class::htmlTextInput("weCustomerOrder[Forename]", 44, $_customer['Forename']),
-				'noline' => 1
-				)
-			);
-			$editFields[] = 'Forename';
-
-			array_push($parts, array(
-				'headline' => g_l('modules_customer', '[Surname]') . ": ",
-				'space' => 150,
-				'html' => we_class::htmlTextInput("weCustomerOrder[Surname]", 44, $_customer['Surname']),
-				'noline' => 1
-				)
-			);
-			$editFields[] = 'Surname';
+			$editFields = array('Forename', 'Surname');
 
 			foreach($_customer as $k => $v){
 				if(!in_array($k, $dontEdit)){
@@ -788,11 +726,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 						foreach($topCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 						}
-						if(defined("WE_COUNTRIES_SHOWN")){
-							$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-						} else{
-							$shownCountries = explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
-						}
+						$shownCountries = (defined("WE_COUNTRIES_SHOWN") ?
+								explode(',', WE_COUNTRIES_SHOWN) :
+								explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY"));
+
 						$shownCountries = array_flip($shownCountries);
 						foreach($shownCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
@@ -818,12 +755,11 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 						$countryselect->selectOption($v);
 
-						array_push($parts, array(
+						$parts[] = array(
 							'headline' => "$k: ",
 							'space' => 150,
 							'html' => $countryselect->getHtml(),
 							'noline' => 1
-							)
 						);
 					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
 						$frontendL = $GLOBALS["weFrontendLanguages"];
@@ -839,39 +775,34 @@ if(isset($_REQUEST['we_cmd'][0])){
 						}
 						$languageselect->selectOption($v);
 
-						array_push($parts, array(
+						$parts[] = array(
 							'headline' => "$k: ",
 							'space' => 150,
 							'html' => $languageselect->getHtml(),
 							'noline' => 1
-							)
 						);
 					} else{
-						array_push($parts, array(
+						$parts[] = array(
 							'headline' => "$k: ",
 							'space' => 150,
 							'html' => we_class::htmlTextInput("weCustomerOrder[$k]", 44, $v),
 							'noline' => 1
-							)
 						);
 					}
 					$editFields[] = $k;
 				}
 			}
 
-			print '
-				</head>
+			print '</head>
 				<body class="weDialogBody">
-				<form name="we_form" target="edbody">
-				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_order_customer');
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[preferences][customerdata]'), "", 560);
-			print '
-				</form>
+				<form name="we_form" target="edbody">' .
+				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden("we_cmd[]", 'save_order_customer') .
+				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[preferences][customerdata]'), "", 560) .
+				'</form>
 				</body>
 				</html>';
 			exit;
-			break;
 
 		case 'save_order_customer':
 
@@ -903,11 +834,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 }
 
 if(isset($_REQUEST["deletethisorder"])){
-
-	$GLOBALS['DB_WE']->query("DELETE FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $_REQUEST["bid"]);
-	echo we_html_element::jsElement('
-	top.content.deleteEntry(' . $_REQUEST["bid"] . ')') . '
-	</head>
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . $_REQUEST['bid']);
+	echo we_html_element::jsElement('top.content.deleteEntry(' . $_REQUEST['bid'] . ')') .
+	'</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
@@ -918,34 +847,18 @@ if(isset($_REQUEST["deletethisorder"])){
 }
 
 if(isset($_REQUEST["deleteaartikle"])){
-
-	$GLOBALS['DB_WE']->query("DELETE FROM " . SHOP_TABLE . " WHERE IntID = " . $_REQUEST["deleteaartikle"]);
-	$GLOBALS['DB_WE']->query("SELECT IntID from " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$l = $GLOBALS['DB_WE']->num_rows();
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $_REQUEST["deleteaartikle"]);
+	$l = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'a', $GLOBALS['DB_WE']);
 	if($l < 1){
 		$letzerartikel = 1;
 	}
 }
 // Get Customer data
-$query = "SELECT IntID, IntCustomerID	FROM " . SHOP_TABLE . "	WHERE IntOrderID = " . intval($_REQUEST["bid"]);
+$_REQUEST["cid"] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . '	WHERE IntOrderID = ' . intval($_REQUEST["bid"]), 'IntCustomerID', $GLOBALS['DB_WE']);
 
-$GLOBALS['DB_WE']->query($query);
-$GLOBALS['DB_WE']->next_record();
+$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "edit_shop_properties"', 'strFelder', $GLOBALS['DB_WE']);
 
-// get all needed information for order-data
-$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
-
-$GLOBALS['DB_WE']->query(
-	'SELECT strFelder
-		FROM ' . ANZEIGE_PREFS_TABLE . '
-		WHERE strDateiname = "edit_shop_properties"'
-);
-
-$GLOBALS['DB_WE']->next_record();
-
-$strFelder = $GLOBALS['DB_WE']->f("strFelder");
-
-if($fields = @unserialize($strFelder)){
+if(($fields = @unserialize($strFelder))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )
@@ -956,7 +869,7 @@ if($fields = @unserialize($strFelder)){
 
 	// the save format used to be ...
 	// Vorname:tblWebUser||Forename,Nachname:tblWebUser||Surname,Contact/Address1:tblWebUser||Contact_Address1,Contact/Address1:tblWebUser||Contact_Address1,...
-	$_fieldInfos = explode(",", $strFelder);
+	$_fieldInfos = explode(',', $strFelder);
 
 	foreach($_fieldInfos as $_fieldInfo){
 
@@ -985,139 +898,22 @@ $_customer = getOrderCustomerData(0, 0, $_REQUEST['cid'], $fields);
 
 
 if(isset($_REQUEST["SendMail"])){
-;
 	$weShopStatusMails->sendEMail($_REQUEST["SendMail"], $_REQUEST["bid"], $_customer);
 }
-
-if(isset($_REQUEST["DatePayment"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DatePayment"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DatePayment='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Payment', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateConfirmation"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateConfirmation"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateConfirmation='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Confirmation', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomA"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomA"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomA='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomA', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomB"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomB"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomB='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomB', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomC"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomC"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomC='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomC', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomD"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomD"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomD='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomD', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomE"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomE"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomE='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomE', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomF"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomF"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomF='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomF', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomG"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomG"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomG='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomG', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomH"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomH"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomH='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomH', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomI"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomI"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomI='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomI', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateCustomJ"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCustomJ"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCustomJ='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('CustomJ', $_REQUEST["bid"], $_customer);
+foreach(weShopStatusMails::$StatusFields as $field){
+	if(isset($_REQUEST[$field])){
+		list($year, $month, $day) = explode('.', $_REQUEST[$field]);
+		$DateOrder = $year . "-" . $month . "-" . $day . " 00:00:00";
+		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $GLOBALS['DB_WE']->escape($DateOrder) . '" WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
+		$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST["bid"], $_customer);
+	}
 }
 
-if(isset($_REQUEST["DateCancellation"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateCancellation"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateCancellation='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Cancellation', $_REQUEST["bid"], $_customer);
-}
-if(isset($_REQUEST["DateFinished"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateFinished"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateFinished='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Finished', $_REQUEST["bid"], $_customer);
-}
-
-
-
-if(isset($_REQUEST["DateOrder"])){
-
-	$DateOrder_ARR = explode(".", $_REQUEST["DateOrder"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateOrder='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Order', $_REQUEST["bid"], $_customer);
-
-	$GLOBALS['DB_WE']->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
-	$GLOBALS['DB_WE']->next_record();
-}
-
-if(isset($_REQUEST["DateShipping"])){ // ist bearbeitet
-	$DateOrder_ARR = explode(".", $_REQUEST["DateShipping"]);
-	$DateOrder1 = $DateOrder_ARR[2] . "-" . $DateOrder_ARR[1] . "-" . $DateOrder_ARR[0] . " 00:00:00";
-
-	$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET DateShipping='" . $GLOBALS['DB_WE']->escape($DateOrder1) . "' WHERE IntOrderID = " . intval($_REQUEST["bid"]));
-	$weShopStatusMails->checkAutoMailAndSend('Shipping', $_REQUEST["bid"], $_customer);
-
-	$GLOBALS['DB_WE']->query("SELECT IntOrderID, DATE_FORMAT(DateOrder,'" . $da . "') as orddate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY intID DESC");
-	$GLOBALS['DB_WE']->next_record();
-}
 if(isset($_REQUEST["article"])){
 	if(isset($_REQUEST["preis"])){
-		$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET Price='" . abs($_REQUEST["preis"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($_REQUEST["preis"]) . ' WHERE IntID = ' . intval($_REQUEST["article"]));
 	} else if(isset($_REQUEST["anzahl"])){
-		$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET IntQuantity='" . abs($_REQUEST["anzahl"]) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($_REQUEST["anzahl"]) . ' WHERE IntID = ' . intval($_REQUEST["article"]));
 	} else if(isset($_REQUEST['vat'])){
 
 		$GLOBALS['DB_WE']->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID = ' . $GLOBALS['DB_WE']->escape($_REQUEST["article"]));
@@ -1130,7 +926,7 @@ if(isset($_REQUEST["article"])){
 			$tmpDoc = @unserialize($strSerial);
 			$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
-			$GLOBALS['DB_WE']->query("UPDATE " . SHOP_TABLE . " SET strSerial='" . $GLOBALS['DB_WE']->escape(serialize($tmpDoc)) . "' WHERE IntID = " . intval($_REQUEST["article"]));
+			$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $GLOBALS['DB_WE']->escape(serialize($tmpDoc)) . '" WHERE IntID = ' . intval($_REQUEST['article']));
 			unset($strSerial);
 			unset($tmpDoc);
 		}
@@ -1141,9 +937,16 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// first get all information about orders, we need this for the rest of the page
 	//
-	$GLOBALS['DB_WE']->query("SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, DATE_FORMAT(DateShipping,'" . $da . "') as DateShipping, DATE_FORMAT(DatePayment,'" . $da . "') as DatePayment, DATE_FORMAT(DateOrder,'" . $da . "') as DateOrder, DATE_FORMAT(DateConfirmation,'" . $da . "') as DateConfirmation, DATE_FORMAT(DateCustomA,'" . $da . "') as DateCustomA, DATE_FORMAT(DateCustomB,'" . $da . "') as DateCustomB, DATE_FORMAT(DateCustomC,'" . $da . "') as DateCustomC, DATE_FORMAT(DateCustomD,'" . $da . "') as DateCustomD, DATE_FORMAT(DateCustomE,'" . $da . "') as DateCustomE, DATE_FORMAT(DateCustomF,'" . $da . "') as DateCustomF, DATE_FORMAT(DateCustomG,'" . $da . "') as DateCustomG, DATE_FORMAT(DateCustomH,'" . $da . "') as DateCustomH, DATE_FORMAT(DateCustomI,'" . $da . "') as DateCustomI, DATE_FORMAT(DateCustomJ,'" . $da . "') as DateCustomJ, DATE_FORMAT(DateCancellation,'" . $da . "') as DateCancellation, DATE_FORMAT(DateFinished,'" . $da . "') as DateFinished,
-		DATE_FORMAT(MailShipping,'" . $db . "') as MailShipping, DATE_FORMAT(MailPayment,'" . $db . "') as MailPayment, DATE_FORMAT(MailOrder,'" . $db . "') as MailOrder, DATE_FORMAT(MailConfirmation,'" . $db . "') as MailConfirmation, DATE_FORMAT(MailCustomA,'" . $db . "') as MailCustomA, DATE_FORMAT(MailCustomB,'" . $db . "') as MailCustomB, DATE_FORMAT(MailCustomC,'" . $db . "') as MailCustomC, DATE_FORMAT(MailCustomD,'" . $db . "') as MailCustomD, DATE_FORMAT(MailCustomE,'" . $db . "') as MailCustomE, DATE_FORMAT(MailCustomF,'" . $db . "') as MailCustomF, DATE_FORMAT(MailCustomG,'" . $db . "') as MailCustomG, DATE_FORMAT(MailCustomH,'" . $db . "') as MailCustomH, DATE_FORMAT(MailCustomI,'" . $db . "') as MailCustomI, DATE_FORMAT(MailCustomJ,'" . $db . "') as MailCustomJ, DATE_FORMAT(MailCancellation,'" . $db . "') as MailCancellation, DATE_FORMAT(MailFinished,'" . $db . "') as MailFinished
-		FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+
+	$format = array();
+	foreach(weShopStatusMails::$StatusFields as $field){
+		$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS ' . $field;
+	}
+	foreach(weShopStatusMails::$MailFields as $field){
+		$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
+	}
+
+	$GLOBALS['DB_WE']->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
 
 	// loop through all articles
 	while($GLOBALS['DB_WE']->next_record()) {
@@ -1151,38 +954,12 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		// get all needed information for order-data
 		$_REQUEST["cid"] = $GLOBALS['DB_WE']->f("IntCustomerID");
 		$SerialOrder[] = $GLOBALS['DB_WE']->f("strSerialOrder");
-		$_REQUEST["DateOrder"] = $GLOBALS['DB_WE']->f("DateOrder");
-		$_REQUEST["DateConfirmation"] = $GLOBALS['DB_WE']->f("DateConfirmation");
-		$_REQUEST["DateCustomA"] = $GLOBALS['DB_WE']->f("DateCustomA");
-		$_REQUEST["DateCustomB"] = $GLOBALS['DB_WE']->f("DateCustomB");
-		$_REQUEST["DateCustomC"] = $GLOBALS['DB_WE']->f("DateCustomC");
-		$_REQUEST["DateCustomD"] = $GLOBALS['DB_WE']->f("DateCustomD");
-		$_REQUEST["DateCustomE"] = $GLOBALS['DB_WE']->f("DateCustomE");
-		$_REQUEST["DateCustomF"] = $GLOBALS['DB_WE']->f("DateCustomF");
-		$_REQUEST["DateCustomG"] = $GLOBALS['DB_WE']->f("DateCustomG");
-		$_REQUEST["DateCustomH"] = $GLOBALS['DB_WE']->f("DateCustomH");
-		$_REQUEST["DateCustomI"] = $GLOBALS['DB_WE']->f("DateCustomI");
-		$_REQUEST["DateCustomJ"] = $GLOBALS['DB_WE']->f("DateCustomJ");
-		$_REQUEST["DatePayment"] = $GLOBALS['DB_WE']->f("DatePayment");
-		$_REQUEST["DateShipping"] = $GLOBALS['DB_WE']->f("DateShipping");
-		$_REQUEST["DateCancellation"] = $GLOBALS['DB_WE']->f("DateCancellation");
-		$_REQUEST["DateFinished"] = $GLOBALS['DB_WE']->f("DateFinished");
-		$_REQUEST["MailOrder"] = $GLOBALS['DB_WE']->f("MailOrder");
-		$_REQUEST["MailConfirmation"] = $GLOBALS['DB_WE']->f("MailConfirmation");
-		$_REQUEST["MailCustomA"] = $GLOBALS['DB_WE']->f("MailCustomA");
-		$_REQUEST["MailCustomB"] = $GLOBALS['DB_WE']->f("MailCustomB");
-		$_REQUEST["MailCustomC"] = $GLOBALS['DB_WE']->f("MailCustomC");
-		$_REQUEST["MailCustomD"] = $GLOBALS['DB_WE']->f("MailCustomD");
-		$_REQUEST["MailCustomE"] = $GLOBALS['DB_WE']->f("MailCustomE");
-		$_REQUEST["MailCustomF"] = $GLOBALS['DB_WE']->f("MailCustomF");
-		$_REQUEST["MailCustomG"] = $GLOBALS['DB_WE']->f("MailCustomG");
-		$_REQUEST["MailCustomH"] = $GLOBALS['DB_WE']->f("MailCustomH");
-		$_REQUEST["MailCustomI"] = $GLOBALS['DB_WE']->f("MailCustomI");
-		$_REQUEST["MailCustomJ"] = $GLOBALS['DB_WE']->f("MailCustomJ");
-		$_REQUEST["MailPayment"] = $GLOBALS['DB_WE']->f("MailPayment");
-		$_REQUEST["MailShipping"] = $GLOBALS['DB_WE']->f("MailShipping");
-		$_REQUEST["MailCancellation"] = $GLOBALS['DB_WE']->f("MailCancellation");
-		$_REQUEST["MailFinished"] = $GLOBALS['DB_WE']->f("MailFinished");
+		foreach(weShopStatusMails::$StatusFields as $field){
+			$_REQUEST[$field] = $GLOBALS['DB_WE']->f($field);
+		}
+		foreach(weShopStatusMails::$MailFields as $field){
+			$_REQUEST[$field] = $GLOBALS['DB_WE']->f($field);
+		}
 
 		// all information for article
 		$ArticleId[] = $GLOBALS['DB_WE']->f("IntArticleID"); // id of article (object or document) in shopping cart
@@ -1192,11 +969,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
-
-		echo we_html_element::jsElement('
-		parent.parent.frames.shop_header_icons.location.reload();
-	') . '
-	</head>
+		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') .
+		'</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
@@ -1212,7 +986,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// no get information about complete order
 	// - pay VAT?
 	// - prices are net?
-	if(sizeof($ArticleId)){
+	if(!empty($ArticleId)){
 
 		// first unserialize order-data
 		if(!empty($SerialOrder[0])){
@@ -1225,16 +999,10 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		}
 
 		// prices are net?
-		$pricesAreNet = true;
-		if(isset($orderData[WE_SHOP_PRICE_IS_NET_NAME])){
-			$pricesAreNet = $orderData[WE_SHOP_PRICE_IS_NET_NAME];
-		}
+		$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
 
 		// must calculate vat?
-		$calcVat = true;
-		if(isset($orderData[WE_SHOP_CALC_VAT])){
-			$calcVat = $orderData[WE_SHOP_CALC_VAT];
-		}
+		$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
 	}
 	//
 	// no get information about complete order
@@ -1292,378 +1060,59 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 
 
-	$orderDataTable = '
-	<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
-	if(!$weShopStatusMails->FieldsHidden['DateOrder']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Order', $_REQUEST["DateOrder"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_shop', '[bestellnr]') . '</td>
-												<td class="defaultfont" valign="top" width="40" height="25"><b>' . $_REQUEST["bid"] . '</b></td>
-												<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateOrder'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateOrder">' . (($_REQUEST["DateOrder"] == $dateform) ? "-" : $_REQUEST["DateOrder"]) . '</div>
-													<input type="hidden" name="DateOrder" id="hidden_Calendar_DateOrder" value="' . (($_REQUEST["DateOrder"] == $dateform) ? "-" : $_REQUEST["DateOrder"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateOrder") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
+	$orderDataTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
+	foreach(weShopStatusMails::$StatusFields as $field){
+		if(!$weShopStatusMails->FieldsHidden[$field]){
+			$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Order', $_REQUEST[$field]);
+			$orderDataTable .= '<tr height="25">
+			<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
+			<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
+			<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
+			<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
+			<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
+			<td width="14" class="defaultfont" align="right" height="25">
+				<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
+				<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
+			</td>
+			<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
+			<td width="102" valign="top" height="25">' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+			<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
+		</tr>';
+		}
 	}
-	if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Confirmation', $_REQUEST["DateConfirmation"]);
-		$orderDataTable .= '
-											<tr height="25">
+	$orderDataTable .= '<tr height="5">
+			<td class="defaultfont" width="86" valign="top" height="5"></td>
+			<td class="defaultfont" valign="top" height="5" width="40"></td>
+			<td height="5" width="20"></td>
+			<td width="98" class="defaultfont" valign="top" height="5"></td>
+			<td height="5"></td>
+			<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
+			<td height="5"></td>
+			<td width="102" valign="top" height="5"></td>
+			<td width="30" height="5">' . we_html_tools::getPixel(30, 5) . '</td>
+		</tr>
+		<tr height="1">
+			<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">' . we_html_tools::getPixel(14, 1) . '</td>
 
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateConfirmation'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateConfirmation">' . (($_REQUEST["DateConfirmation"] == $dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '</div>
-													<input type="hidden" name="DateConfirmation" id="hidden_Calendar_DateConfirmation" value="' . (($_REQUEST["DateConfirmation"] == $dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateConfirmation") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomA']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomA', $_REQUEST["DateCustomA"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomA'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomA">' . (($_REQUEST["DateCustomA"] == $dateform) ? "-" : $_REQUEST["DateCustomA"]) . '</div>
-													<input type="hidden" name="DateCustomA" id="hidden_Calendar_DateCustomA" value="' . (($_REQUEST["DateCustomA"] == $dateform) ? "-" : $_REQUEST["DateCustomA"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomA") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomB']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomB', $_REQUEST["DateCustomB"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomB'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomB">' . (($_REQUEST["DateCustomB"] == $dateform) ? "-" : $_REQUEST["DateCustomB"]) . '</div>
-													<input type="hidden" name="DateCustomB" id="hidden_Calendar_DateCustomB" value="' . (($_REQUEST["DateCustomB"] == $dateform) ? "-" : $_REQUEST["DateCustomB"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomB") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomC']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomC', $_REQUEST["DateCustomC"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomC'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomC">' . (($_REQUEST["DateCustomC"] == $dateform) ? "-" : $_REQUEST["DateCustomC"]) . '</div>
-													<input type="hidden" name="DateCustomC" id="hidden_Calendar_DateCustomC" value="' . (($_REQUEST["DateCustomC"] == $dateform) ? "-" : $_REQUEST["DateCustomC"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomC") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateShipping']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Shipping', $_REQUEST["DateShipping"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateShipping'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateShipping">' . (($_REQUEST["DateShipping"] == $dateform) ? "-" : $_REQUEST["DateShipping"]) . '</div>
-													<input type="hidden" name="DateShipping" id="hidden_Calendar_DateShipping" value="' . (($_REQUEST["DateShipping"] == $dateform) ? "-" : $_REQUEST["DateShipping"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateShipping") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomD']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomD', $_REQUEST["DateCustomD"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomD'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomD">' . (($_REQUEST["DateCustomD"] == $dateform) ? "-" : $_REQUEST["DateCustomD"]) . '</div>
-													<input type="hidden" name="DateCustomD" id="hidden_Calendar_DateCustomD" value="' . (($_REQUEST["DateCustomD"] == $dateform) ? "-" : $_REQUEST["DateCustomD"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomD") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomE']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomE', $_REQUEST["DateCustomE"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomE'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomE">' . (($_REQUEST["DateCustomE"] == $dateform) ? "-" : $_REQUEST["DateCustomE"]) . '</div>
-													<input type="hidden" name="DateCustomE" id="hidden_Calendar_DateCustomE" value="' . (($_REQUEST["DateCustomE"] == $dateform) ? "-" : $_REQUEST["DateCustomE"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomE") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DatePayment']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Payment', $_REQUEST["DatePayment"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86" valign="top" height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DatePayment'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DatePayment">' . (($_REQUEST["DatePayment"] == $dateform) ? "-" : $_REQUEST["DatePayment"]) . '</div>
-													<input type="hidden" name="DatePayment" id="hidden_Calendar_DatePayment" value="' . (($_REQUEST["DatePayment"] == $dateform) ? "-" : $_REQUEST["DatePayment"]) . '" />
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DatePayment") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomF']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomF', $_REQUEST["DateCustomF"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomF'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomF">' . (($_REQUEST["DateCustomF"] == $dateform) ? "-" : $_REQUEST["DateCustomF"]) . '</div>
-													<input type="hidden" name="DateCustomF" id="hidden_Calendar_DateCustomF" value="' . (($_REQUEST["DateCustomF"] == $dateform) ? "-" : $_REQUEST["DateCustomF"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomF") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomG']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomG', $_REQUEST["DateCustomG"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomG'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomG">' . (($_REQUEST["DateCustomG"] == $dateform) ? "-" : $_REQUEST["DateCustomG"]) . '</div>
-													<input type="hidden" name="DateCustomG" id="hidden_Calendar_DateCustomG" value="' . (($_REQUEST["DateCustomG"] == $dateform) ? "-" : $_REQUEST["DateCustomG"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomG") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCancellation']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Cancellation', $_REQUEST["DateCancellation"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCancellation'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCancellation">' . (($_REQUEST["DateCancellation"] == $dateform) ? "-" : $_REQUEST["DateCancellation"]) . '</div>
-													<input type="hidden" name="DateCancellation" id="hidden_Calendar_DateCancellation" value="' . (($_REQUEST["DateCancellation"] == $dateform) ? "-" : $_REQUEST["DateCancellation"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCancellation") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomH']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomH', $_REQUEST["DateCustomH"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomH'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomH">' . (($_REQUEST["DateCustomH"] == $dateform) ? "-" : $_REQUEST["DateCustomH"]) . '</div>
-													<input type="hidden" name="DateCustomH" id="hidden_Calendar_DateCustomH" value="' . (($_REQUEST["DateCustomH"] == $dateform) ? "-" : $_REQUEST["DateCustomH"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomH") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomI']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomI', $_REQUEST["DateCustomI"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomI'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomI">' . (($_REQUEST["DateCustomI"] == $dateform) ? "-" : $_REQUEST["DateCustomI"]) . '</div>
-													<input type="hidden" name="DateCustomI" id="hidden_Calendar_DateCustomI" value="' . (($_REQUEST["DateCustomI"] == $dateform) ? "-" : $_REQUEST["DateCustomI"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomI") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateCustomJ']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('CustomJ', $_REQUEST["DateCustomJ"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateCustomJ'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateCustomJ">' . (($_REQUEST["DateCustomJ"] == $dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '</div>
-													<input type="hidden" name="DateCustomJ" id="hidden_Calendar_DateCustomJ" value="' . (($_REQUEST["DateCustomJ"] == $dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateCustomJ") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	if(!$weShopStatusMails->FieldsHidden['DateFinished']){
-		$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Finished', $_REQUEST["DateFinished"]);
-		$orderDataTable .= '
-											<tr height="25">
-
-												<td class="defaultfont" width="86"  height="25"></td>
-												<td class="defaultfont" valign="top" width="40" height="25"></td>
-												<td width="20" height="25"></td>
-												<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText['DateFinished'] . '</td>
-												<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
-												<td width="14" class="defaultfont" align="right" height="25">
-													<div id="div_Calendar_DateFinished">' . (($_REQUEST["DateFinished"] == $dateform) ? "-" : $_REQUEST["DateFinished"]) . '</div>
-													<input type="hidden" name="DateFinished" id="hidden_Calendar_DateFinished" value="' . (($_REQUEST["DateFinished"] == $dateform) ? "-" : $_REQUEST["DateFinished"]) . '" />
-												</td>
-												<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-												<td width="102" valign="top" height="25">
-													' . we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "button_Calendar_DateFinished") . '
-												</td>
-												<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
-											</tr>';
-	}
-	$orderDataTable .= '
-											<tr height="5">
-												<td class="defaultfont" width="86" valign="top" height="5"></td>
-												<td class="defaultfont" valign="top" height="5" width="40"></td>
-												<td height="5" width="20"></td>
-												<td width="98" class="defaultfont" valign="top" height="5"></td>
-												<td height="5"></td>
-												<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
-												<td height="5"></td>
-												<td width="102" valign="top" height="5"></td>
-												<td width="30" height="5">' . we_html_tools::getPixel(30, 5) . '</td>
-											</tr>
-											<tr height="1">
-												<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">' . we_html_tools::getPixel(14, 1) . '</td>
-
-											</tr>
-											<tr>
-												<td class="defaultfont" width="86" valign="top"></td>
-												<td class="defaultfont" valign="top" width="40"></td>
-												<td width="20"></td>
-												<td width="98" class="defaultfont" valign="top"></td>
-												<td></td>
-												<td width="14" class="defaultfont" align="right" valign="top"></td>
-												<td></td>
-												<td width="102" valign="top"></td>
-												<td width="30">' . we_html_tools::getPixel(30, 5) . '</td>
-											</tr>
-' . $customerFieldTable . '
-                                            <tr>
-                                            	<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
-                                            </tr>
-                                            <tr>
-                                            	<td colspan="9">' . (we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
-                                            </tr>
-										</table>';
+		</tr>
+		<tr>
+			<td class="defaultfont" width="86" valign="top"></td>
+			<td class="defaultfont" valign="top" width="40"></td>
+			<td width="20"></td>
+			<td width="98" class="defaultfont" valign="top"></td>
+			<td></td>
+			<td width="14" class="defaultfont" align="right" valign="top"></td>
+			<td></td>
+			<td width="102" valign="top"></td>
+			<td width="30">' . we_html_tools::getPixel(30, 5) . '</td>
+		</tr>' . $customerFieldTable . '
+		<tr>
+			<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
+		</tr>
+		<tr>
+			<td colspan="9">' . (we_hasPerm("EDIT_CUSTOMER") ? '<a href="javascript:we_cmd(\'edit_customer\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
+		</tr>
+	</table>';
 	//
 	// end of "Building table with customer fields"
 	// ********************************************************************************
@@ -1673,8 +1122,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 	// headline here - these fields are fix.
 	$pixelImg = we_html_tools::getPixel(14, 15);
-	$orderTable = '
-	<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
+	$orderTable = '<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
 	<tr>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
 		<td>' . $pixelImg . '</td>
@@ -1694,15 +1142,14 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$totalPrice = 0;
 	$articleVatArray = array();
 	// now loop through all articles in this order
-	for($i = 0; $i < sizeof($ArticleId); $i++){
+	for($i = 0; $i < count($ArticleId); $i++){
 
 		// now init each article
-		if(empty($Serial[$i])){ // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
-			// this should not happen any more
-			$shopArticleObject = we_shop_Basket::getserial($ArticleId[$i], 'w');
-		} else{ // output if $Serial[$i] is not empty. This is when a user ordered an article online
-			$shopArticleObject = @unserialize($Serial[$i]);
-		}
+		$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
+				// this should not happen any more
+				we_shop_Basket::getserial($ArticleId[$i], 'w') :
+				// output if $Serial[$i] is not empty. This is when a user ordered an article online
+				$shopArticleObject = @unserialize($Serial[$i]));
 
 		// determine taxes - correct price, etc.
 		$articlePrice = $Price[$i] * $Quantity[$i];
@@ -1710,35 +1157,24 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 
 		// calculate individual vat for each article
 		if($calcVat){
-
 			// now determine VAT
-			if(isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME])){
-				$articleVat = $shopArticleObject[WE_SHOP_VAT_FIELD_NAME];
-			} else if(isset($mwst)){
-				$articleVat = $mwst;
-			} else{
-				$articleVat = 0;
-			}
+			$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
+					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+					((isset($mwst)) ?
+						$mwst :
+						0));
 
 			if($articleVat > 0){
-
 				if(!isset($articleVatArray[$articleVat])){ // avoid notices
 					$articleVatArray[$articleVat] = 0;
 				}
 
-				if($pricesAreNet){
-					$articleVatArray[$articleVat] += ($articlePrice * $articleVat / 100);
-				} else{
-					$articleVatArray[$articleVat] += ($articlePrice * $articleVat / (100 + $articleVat));
-				}
+				$articleVatArray[$articleVat] += ($articlePrice * $articleVat / 100 + ($pricesAreNet ? 0 : $articleVat));
 			}
 		}
 
 		// table row of one article
-		$orderTable .= '
-	<tr>
-		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-	</tr>
+		$orderTable .= '<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>
 	<tr>
 		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
@@ -1751,22 +1187,19 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
 		' . ($calcVat ? '
 			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>' : '') . '
+			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>' :
+				'') . '
 		<td>' . $pixelImg . '</td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"] . "&deleteaartikle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
-	</tr>
-		';
+	</tr>';
 		// if this article has custom fields or is a variant - we show them in a extra rows
 		// add variant.
 		if(isset($shopArticleObject['WE_VARIANT']) && $shopArticleObject['WE_VARIANT']){
 
-			$orderTable .='
-	<tr>
+			$orderTable .='<tr>
 		<td colspan="4"></td>
-		<td class="small" colspan="6">' . g_l('modules_shop', '[variant]')
-				. ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
-	</tr>
-			';
+		<td class="small" colspan="6">' . g_l('modules_shop', '[variant]') . ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
+	</tr>';
 		}
 		// add custom fields
 		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && sizeof($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
@@ -1776,19 +1209,14 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				$caField .= "$key: $value; ";
 			}
 
-			$orderTable .='
-	<tr>
+			$orderTable .='<tr>
 		<td colspan="4"></td>
 		<td class="small" colspan="6">' . $caField . '</td>
-	</tr>
-			';
+	</tr>';
 		}
 	}
 
-	// ********************************************************************************
 	// "Sum of order"
-	//
-
 	// add shipping to costs
 	if(isset($orderData[WE_SHOP_SHIPPING])){
 
@@ -1814,30 +1242,25 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		}
 	}
 
-	$orderTable .= '
-	<tr>
+	$orderTable .= '<tr>
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>
 	<tr>
 		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPrice) . $waehr . '</strong></td>
-	</tr>
-	';
+	</tr>';
 
 	if($calcVat){ // add Vat to price
 		$totalPriceAndVat = $totalPrice;
 
 		if($pricesAreNet){ // prices are net
-			$orderTable .= '
-				<tr>
-					<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
-				</tr>';
+			$orderTable .= '<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>';
 
 			if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
 
 				$totalPriceAndVat += $shippingCostsNet;
-				$orderTable .= '
-					<tr>
+				$orderTable .=
+					'<tr>
 						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 						<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsNet) . $waehr . '</a></strong></td>
 					</tr>
@@ -1845,46 +1268,33 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 						<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 					</tr>';
 			}
-			$orderTable .='
-	<tr>
+			$orderTable .= '<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
-	</tr>
-	';
+	</tr>';
 			foreach($articleVatArray as $vatRate => $sum){
-
 				if($vatRate){
-
 					$totalPriceAndVat += $sum;
-					$orderTable .= '
-	<tr>
+					$orderTable .= '<tr>
 		<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
 		<td colspan="4" class="shopContentfontR">' . numfom($sum) . $waehr . '</td>
-	</tr>
-					';
+	</tr>';
 				}
 			}
-			$orderTable .= '
-	<tr>
+			$orderTable .= '<tr>
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>
 	<tr>
 		<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
 		<td colspan="4" class="shopContentfontR"><strong>' . numfom($totalPriceAndVat) . $waehr . '</strong></td>
-	</tr>
-			';
-		} else{ // prices are gros
-			$orderTable .= '
-	<tr>
-		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 	</tr>';
+		} else{ // prices are gros
+			$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
 
 			if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsGros)){
-
 				$totalPrice += $shippingCostsGros;
-				$orderTable .= '
-					<tr>
+				$orderTable .= '<tr>
 						<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 						<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . numfom($shippingCostsGros) . $waehr . '</a></td>
 					</tr>
@@ -1900,22 +1310,17 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 					</tr>';
 			}
 
-			$orderTable .= '
-
-	<tr>
+			$orderTable .= '<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
-	</tr>
-			';
+	</tr>';
 			foreach($articleVatArray as $vatRate => $sum){
 				if($vatRate){
-					$orderTable .= '
-	<tr>
+					$orderTable .= '<tr>
 		<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
 		<td colspan="4" class="shopContentfontR">' . numfom($sum) . $waehr . '</td>
-	</tr>
-					';
+	</tr>';
 				}
 			}
 		}
@@ -1924,8 +1329,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		if(isset($shippingCostsNet)){
 			$totalPrice += $shippingCostsNet;
 
-			$orderTable .= '
-	<tr>
+			$orderTable .= '<tr>
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
@@ -1949,12 +1353,10 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	</tr>
 	<tr>
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-	</tr>
-				';
+	</tr>';
 		} else{
 
-			$orderTable .= '
-	<tr>
+			$orderTable .= '<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
 		<td colspan="7"></td>
 		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
@@ -1983,8 +1385,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	if(sizeof($customCartFields)){
 
 		foreach($customCartFields as $key => $value){
-			$customCartFieldsTable .= '
-			<tr>
+			$customCartFieldsTable .= '<tr>
 				<td class="defaultfont" valign="top"><b>' . $key . ':</b></td>
 				<td>' . $pixelImg . '</td>
 				<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
@@ -1998,8 +1399,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 			</tr>';
 		}
 	}
-	$customCartFieldsTable .= '
-			<tr>
+	$customCartFieldsTable .= '<tr>
 				<td>' . we_button::create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
 			</tr>
 			</table>';
@@ -2080,7 +1480,6 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			hot = 1;
 	<?php
 	if(isset($alertMessage)){
-
 		print we_message_reporting::getShowMessageCall($alertMessage, $alertType);
 	}
 	?>
@@ -2090,25 +1489,20 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	<body class="weEditorBody" onUnload="doUnload()">
 
 		<?php
-		$parts = array();
-
-		array_push($parts, array(
-			"html" => $orderDataTable,
-			"space" => 0
-			)
-		);
-
-		array_push($parts, array(
-			"html" => $orderTable,
-			"space" => 0
+		$parts = array(array(
+				"html" => $orderDataTable,
+				"space" => 0
+			),
+			array(
+				"html" => $orderTable,
+				"space" => 0
 			)
 		);
 		if($customCartFieldsTable){
 
-			array_push($parts, array(
+			$parts[] = array(
 				"html" => $customCartFieldsTable,
 				"space" => 0
-				)
 			);
 		}
 
@@ -2133,12 +1527,9 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 				// field:
 				_field = calObject.params.inputField;
 				document.location = "' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&" + _field.name + "=" + _field.value;
-
 			}';
 
-	$all = array('DateOrder', 'DateConfirmation', 'DatePayment', 'DateFinished', 'DateShipping', 'DateCancellation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF',
-		'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ');
-	foreach($all as $cur){
+	foreach(weShopStatusMails::$StatusFields as $cur){
 		if(!$weShopStatusMails->FieldsHidden[$cur]){
 			$js.='		Calendar.setup({
 		"inputField" : "hidden_Calendar_' . $cur . '",
@@ -2152,6 +1543,5 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	}
 	echo we_html_element::jsElement($js);
 	?>
-
 </body>
 </html>

@@ -650,7 +650,7 @@ class weCustomerView{
 							. $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; '
 							. $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; '
 							. $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-						' . "\n");
+						');
 
 					break;
 				case 'switchPage':

@@ -1,4 +1,27 @@
 
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_toolfactory
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
 include_once($_SERVER['DOCUMENT_ROOT'].LIB_DIR.'we/core/autoload.php');
 include_once('conf/define.conf.php');
 
@@ -6,31 +29,12 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 
 	var $fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 
-	function we_<?php print $TOOLNAME; ?>DirSelector($id,
-								$JSIDName='',
-								$JSTextName='',
-								$JSCommand='',
-								$order='',
-								$we_editDirID='',
-								$FolderText=''){
-
+	function __construct($id,$JSIDName='',$JSTextName='',$JSCommand='',$order='',$we_editDirID='',$FolderText=''){
 		$JSIDName = stripslashes($JSIDName);
 		$JSTextName = stripslashes($JSTextName);
-
-		$this->we_dirSelector($id,
-								<?php print (isset($TABLECONSTANT) && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>,
-								$JSIDName,
-								$JSTextName,
-								$JSCommand,
-								$order,
-								'',
-								$we_editDirID,
-								$FolderText
-								);
+		parent::__construct($id,<?php print (isset($TABLECONSTANT) && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>,$JSIDName,$JSTextName,$JSCommand,$order,'',$we_editDirID,$FolderText);
 		$this->userCanMakeNewFolder = true;
-
 	}
-
 
   	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
@@ -233,7 +237,7 @@ function addEntry(ID,icon,text,isFolder,path){
 
 	function printCreateFolderHTML(){
 		we_html_tools::htmlTop();
-we_html_tools::protect();
+		we_html_tools::protect();
 
 		print '<script>top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);

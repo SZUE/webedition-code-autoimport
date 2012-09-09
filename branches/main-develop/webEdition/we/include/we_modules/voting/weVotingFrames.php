@@ -38,48 +38,63 @@ class weVotingFrames extends weModuleFrames{
 	}
 
 	function getHTML($what){
-
 		switch($what){
-			case "frameset": print $this->getHTMLFrameset();
+			case "frameset":
+				print $this->getHTMLFrameset();
 				break;
-			case "header": print $this->getHTMLHeader();
+			case "header":
+				print $this->getHTMLHeader();
 				break;
-			case "resize": print $this->getHTMLResize();
+			case "resize":
+				print $this->getHTMLResize();
 				break;
-			case "left": print $this->getHTMLLeft();
+			case "left":
+				print $this->getHTMLLeft();
 				break;
-			case "right": print $this->getHTMLRight();
+			case "right":
+				print $this->getHTMLRight();
 				break;
-			case "editor": print $this->getHTMLEditor();
+			case "editor":
+				print $this->getHTMLEditor();
 				break;
-			case "edheader": print $this->getHTMLEditorHeader();
+			case "edheader":
+				print $this->getHTMLEditorHeader();
 				break;
-			case "edbody": print $this->getHTMLEditorBody();
+			case "edbody":
+				print $this->getHTMLEditorBody();
 				break;
-			case "edfooter": print $this->getHTMLEditorFooter();
+			case "edfooter":
+				print $this->getHTMLEditorFooter();
 				break;
-			case "cmd": print $this->getHTMLCmd();
+			case "cmd":
+				print $this->getHTMLCmd();
 				break;
-			case "treeheader": print $this->getHTMLTreeHeader();
+			case "treeheader":
+				print $this->getHTMLTreeHeader();
 				break;
-			case "treefooter": print $this->getHTMLTreeFooter();
+			case "treefooter":
+				print $this->getHTMLTreeFooter();
 				break;
-			case "export_csv": print $this->getHTMLExportCsvMessage();
+			case "export_csv":
+				print $this->getHTMLExportCsvMessage();
 				break;
-			case "exportGroup_csv": print $this->getHTMLExportGroupCsvMessage();
+			case "exportGroup_csv":
+				print $this->getHTMLExportGroupCsvMessage();
 				break;
-			case "reset_ipdata": print $this->getHTMLResetIPData();
+			case "reset_ipdata":
+				print $this->getHTMLResetIPData();
 				break;
-			case "reset_logdata": print $this->getHTMLResetLogData();
+			case "reset_logdata":
+				print $this->getHTMLResetLogData();
 				break;
 			case "show_log": if($this->View->voting->LogDB){
 					print $this->getHTMLShowLogNew();
 				} else{
 					print $this->getHTMLShowLogOld();
 				}break;
-			case "delete_log": print $this->getHTMLDeleteLog();
+			case "delete_log":
+				print $this->getHTMLDeleteLog();
 				break;
-
 			default:
 				t_e(__FILE__ . " unknown reference: $what");
 		}
@@ -91,9 +106,7 @@ class weVotingFrames extends weModuleFrames{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() .
-			we_html_element::jsElement($this->Tree->getJSMakeNewEntry()
-		);
+		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	function getHTMLEditorHeader(){
@@ -158,18 +171,17 @@ class weVotingFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "voting";
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return
 				we_html_element::jsElement('
-								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
-								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
+			' . $this->topFrame . '.resize.right.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
+			' . $this->topFrame . '.resize.right.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
 			') . $out;
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties())
-		);
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onLoad" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -191,12 +203,10 @@ class weVotingFrames extends weModuleFrames{
 
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement("
+				we_html_element::jsElement('
 					function we_save() {
-						top.content.we_cmd('save_voting');
-
-					}
-					") .
+						top.content.we_cmd("save_voting");
+					}') .
 				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())
 				)
 		);
@@ -209,24 +219,23 @@ class weVotingFrames extends weModuleFrames{
 
 	function getHTMLVariant(){
 		$prefix = '';
-		$del_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();#####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
+		$del_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
 		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (we_hasPerm(
-				"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," .
+			(we_hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
 		$sel_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time());
-		$js .= we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());
-		$variant_js = '
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time()) .
+			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());
 
-			function callAnswerLimit() {
+		$variant_js =
+			' function callAnswerLimit() {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 
-			function setMultiEdits() {
-		';
+			function setMultiEdits() {';
 
 		if($this->View->voting->IsFolder == 0){
 			$variant_js .=
@@ -241,29 +250,30 @@ class weVotingFrames extends weModuleFrames{
 			}
 
 			foreach($this->View->voting->QASet as $variant => $value){
-
-				$variant_js .= '
-					question_edit.addVariant();
-					answers_edit.addVariant();
-				';
+				$variant_js .=
+					'question_edit.addVariant();
+				   answers_edit.addVariant();';
 				foreach($value as $k => $v){
-					if($k == 'question'){
-						$variant_js .= '
-							question_edit.setItem("' . $variant . '",0,"' . $v . '");
-						';
-					}
-					if($k == 'answers'){
-						foreach($v as $akey => $aval){
-							$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
-							$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
-							$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
-							$variant_js .=
-								'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
-
+					switch($k){
+						case 'question':
+							$variant_js .= 'question_edit.setItem("' . $variant . '",0,"' . $v . '");';
+							break;
+						case 'answers':
+							foreach($v as $akey => $aval){
+								if((isset($this->View->voting->QASetAdditions[$variant]) && isset($this->View->voting->QASetAdditions[$variant]['imageID'][$akey]))){
+									$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
+									$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
+									$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
+								} else{
+									$aval2 = $aval3 = $aval4 = '';
+								}
+								$variant_js .=
+									'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
 								answers_edit.setItemImageID("' . $variant . '","' . $akey . '","' . $aval2 . '");
 								answers_edit.setItemMediaID("' . $variant . '","' . $akey . '","' . $aval3 . '");
 								answers_edit.setItemSuccessorID("' . $variant . '","' . $akey . '","' . $aval4 . '");';
-						}
+							}
+							break;
 					}
 				}
 			}
@@ -273,53 +283,31 @@ class weVotingFrames extends weModuleFrames{
 				question_edit.showVariant(0);
 				answers_edit.showVariant(0);
 				question_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');
-				answers_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');';
-			if($this->View->voting->AllowFreeText){
-				$variant_js .= 'answers_edit.SetMinCount(1);';
-			} else{
-				$variant_js .= 'answers_edit.SetMinCount(2);';
-			}
-			if($this->View->voting->AllowImages){
-				$variant_js .= 'answers_edit.showImages();';
-			} else{
-				$variant_js .= 'answers_edit.hideImages();';
-			}
-			if($this->View->voting->AllowMedia){
-				$variant_js .= 'answers_edit.showMedia();';
-			} else{
-				$variant_js .= 'answers_edit.hideMedia();';
-			}
-			if($this->View->voting->AllowSuccessors){
-				$variant_js .= 'answers_edit.showSuccessors();';
-			} else{
-				$variant_js .= 'answers_edit.hideSuccessors();';
-			}
+				answers_edit.showVariant(' . (isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0) . ');
+				answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
+				answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
+				answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
+			  answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
 		}
-
-
-		$variant_js .= '
-			owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
-			owners_label.addVariant();
-		';
-		if(is_array($this->View->voting->Owners)){
-			foreach($this->View->voting->Owners as $owner){
-
-				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=\'' . $owner . '\';', 'IsFolder', $this->db);
-
-				$variant_js .= '
-					owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),"' . ($foo ? $this->View->group_pattern : $this->View->item_pattern) . id_to_path($owner, USER_TABLE) . '");
-				';
-			}
-		}
-		$variant_js .= '
-			owners_label.showVariant(0);
-		';
 
 
 		$variant_js .=
-			'iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
+			' owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
+			owners_label.addVariant();';
+		if(is_array($this->View->voting->Owners)){
+			foreach($this->View->voting->Owners as $owner){
+				$foo = f('SELECT IsFolder FROM ' . USER_TABLE . ' WHERE ID=' . $owner, 'IsFolder', $this->db);
+
+				$variant_js .=
+					' owners_label.addItem();
+					owners_label.setItem(0,(owners_label.itemCount-1),"' . ($foo ? $this->View->group_pattern : $this->View->item_pattern) . id_to_path($owner, USER_TABLE) . '");';
+			}
+		}
+		$variant_js .=
+			' owners_label.showVariant(0);
+			iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
 			iptable_label.addVariant();';
+
 		if(is_array($this->View->voting->BlackList)){
 			foreach($this->View->voting->BlackList as $ip){
 
@@ -329,14 +317,11 @@ class weVotingFrames extends weModuleFrames{
 					iptable_label.setItem(0,(iptable_label.itemCount-1),"' . $ip . '");';
 			}
 		}
-		$variant_js .= 'iptable_label.showVariant(0);';
+		$variant_js .=
+			'iptable_label.showVariant(0);
+	}';
 
-
-		$variant_js .= '}';
-
-		$js .= we_html_element::jsElement($variant_js);
-
-		return $js;
+		return $js . we_html_element::jsElement($variant_js);
 	}
 
 	function getHTMLTab1(){
@@ -1474,3 +1459,4 @@ class weVotingFrames extends weModuleFrames{
 	}
 
 }
+
