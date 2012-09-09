@@ -751,7 +751,7 @@ class weSiteImport{
 		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
 
 		$parts = array(
-			$parts, array(
+			 array(
 				"headline" => g_l('siteimport', "[dirs_headline]"),
 				"html" => $_importFrom . we_html_tools::getPixel(20, 5) . $_importTo,
 				"space" => 120
