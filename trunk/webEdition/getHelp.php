@@ -23,13 +23,13 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
+we_html_tools::protect();
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsElement('
+	url="http://help.webedition.org/index.php?language=' . $GLOBALS["WE_LANGUAGE"] . '";
+	self.location=url;');
 ?>
-<script type="text/javascript"><!--
-	url="http://help.webedition.org/index.php?language=<?php print $GLOBALS["WE_LANGUAGE"] ?>";
-	self.location=url;
-	//-->
 </script>
 </head>
 

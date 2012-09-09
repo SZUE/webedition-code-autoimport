@@ -142,9 +142,9 @@ class we_updater{
 		if(!($GLOBALS['DB_WE']->isColExist(USER_TABLE, "Permissions") && $GLOBALS['DB_WE']->getColTyp(USER_TABLE, "Permissions") != "text")){
 			return;
 		}
-		$GLOBALS['DB_WE']->changeColType(USER_TABLE, "Permissions", "TEXT");
+		$GLOBALS['DB_WE']->changeColType(USER_TABLE, 'Permissions', 'TEXT');
 		$db_tmp = new DB_WE();
-		$DB_WE->query("SELECT ID,username,Permissions from " . USER_TABLE);
+		$DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE);
 		while($DB_WE->next_record()) {
 			$perms_slot = array();
 			$pstr = $DB_WE->f("Permissions");
@@ -159,36 +159,38 @@ class we_updater{
 	static function fix_path(){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
+		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()) {
 			@set_time_limit(30);
-			$id = $db->f("ID");
-			$pid = $db->f("ParentID");
-			$path = "/" . $db->f("username");
+			$id = $db->f('ID');
+			$pid = $db->f('ParentID');
+			$path = '/' . $db->f("username");
 			while($pid > 0) {
-				$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
+				$db2->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
 				if($db2->next_record()){
-					$path = "/" . $db2->f("username") . $path;
+					$path = '/' . $db2->f("username") . $path;
 					$pid = $db2->f("ParentID");
 				} else{
 					$pid = 0;
 				}
 			}
-			$db2->query("UPDATE " . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
+			if($db->f('Path') != $path){
+				$db2->query('UPDATE ' . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
+			}
 		}
 	}
 
 	static function fix_icon(){
 		$db = new DB_WE();
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=2");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=1");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user.gif' WHERE Type NOT IN(1,2)");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=2");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=1");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type NOT IN(1,2)");
 	}
 
 	static function fix_icon_small(){
 		$db = new DB_WE();
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='usergroup.gif' WHERE IsFolder=1");
-		$db->query("UPDATE " . USER_TABLE . " SET Icon='user.gif' WHERE IsFolder=0");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE IsFolder=1");
+		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE IsFolder=0");
 	}
 
 	static function fix_text(){
@@ -576,7 +578,7 @@ class we_updater{
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'successor', 'bigint(20) unsigned NOT NULL DEFAULT 0', ' AFTER answertext ');
 			$GLOBALS['DB_WE']->addCol(VOTING_LOG_TABLE, 'additionalfields', 'text NOT NULL', ' AFTER successor ');
 			//this looks weird but means just :\"question inside the table
-		$GLOBALS['DB_WE']->query('UPDATE '.VOTING_TABLE.' SET
+			$GLOBALS['DB_WE']->query('UPDATE ' . VOTING_TABLE . ' SET
 			QASet=REPLACE(QASet,\'\\\\"\',\'"\'),
 			QASetAdditions=REPLACE(QASetAdditions,\'\\\\"\',\'"\'),
 			Scores=REPLACE(Scores,\'\\\\"\',\'"\'),
@@ -713,7 +715,6 @@ class we_updater{
 				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
 						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');
-						;
 					}
 					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
 				}
