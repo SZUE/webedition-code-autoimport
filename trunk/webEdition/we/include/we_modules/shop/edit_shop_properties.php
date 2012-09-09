@@ -813,19 +813,16 @@ if(isset($_REQUEST['we_cmd'][0])){
 				}
 			}
 
-			print '
-				</head>
+			print '</head>
 				<body class="weDialogBody">
-				<form name="we_form" target="edbody">
-				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_order_customer');
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[preferences][customerdata]'), "", 560);
-			print '
-				</form>
+				<form name="we_form" target="edbody">' .
+				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden("we_cmd[]", 'save_order_customer') .
+				we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[preferences][customerdata]'), "", 560) .
+				'</form>
 				</body>
 				</html>';
 			exit;
-			break;
 
 		case 'save_order_customer':
 
@@ -857,11 +854,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 }
 
 if(isset($_REQUEST["deletethisorder"])){
-
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . $_REQUEST['bid']);
-	echo we_html_element::jsElement('
-	top.content.deleteEntry(' . $_REQUEST['bid'] . ')') . '
-	</head>
+	echo we_html_element::jsElement('top.content.deleteEntry(' . $_REQUEST['bid'] . ')') .
+	'</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
@@ -962,14 +957,16 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// first get all information about orders, we need this for the rest of the page
 	//
-		$format = array();
+
+	$format = array();
 	foreach(weShopStatusMails::$StatusFields as $field){
 		$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS ' . $field;
 	}
+	foreach(weShopStatusMails::$MailFields as $field){
+		$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
+	}
 
-	$GLOBALS['DB_WE']->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . ",
-		DATE_FORMAT(MailShipping,'" . $db . "') as MailShipping, DATE_FORMAT(MailPayment,'" . $db . "') as MailPayment, DATE_FORMAT(MailOrder,'" . $db . "') as MailOrder, DATE_FORMAT(MailConfirmation,'" . $db . "') as MailConfirmation, DATE_FORMAT(MailCustomA,'" . $db . "') as MailCustomA, DATE_FORMAT(MailCustomB,'" . $db . "') as MailCustomB, DATE_FORMAT(MailCustomC,'" . $db . "') as MailCustomC, DATE_FORMAT(MailCustomD,'" . $db . "') as MailCustomD, DATE_FORMAT(MailCustomE,'" . $db . "') as MailCustomE, DATE_FORMAT(MailCustomF,'" . $db . "') as MailCustomF, DATE_FORMAT(MailCustomG,'" . $db . "') as MailCustomG, DATE_FORMAT(MailCustomH,'" . $db . "') as MailCustomH, DATE_FORMAT(MailCustomI,'" . $db . "') as MailCustomI, DATE_FORMAT(MailCustomJ,'" . $db . "') as MailCustomJ, DATE_FORMAT(MailCancellation,'" . $db . "') as MailCancellation, DATE_FORMAT(MailFinished,'" . $db . "') as MailFinished
-		FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]));
+	$GLOBALS['DB_WE']->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
 
 	// loop through all articles
 	while($GLOBALS['DB_WE']->next_record()) {
@@ -980,22 +977,9 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		foreach(weShopStatusMails::$StatusFields as $field){
 			$_REQUEST[$field] = $GLOBALS['DB_WE']->f($field);
 		}
-		$_REQUEST["MailOrder"] = $GLOBALS['DB_WE']->f("MailOrder");
-		$_REQUEST["MailConfirmation"] = $GLOBALS['DB_WE']->f("MailConfirmation");
-		$_REQUEST["MailCustomA"] = $GLOBALS['DB_WE']->f("MailCustomA");
-		$_REQUEST["MailCustomB"] = $GLOBALS['DB_WE']->f("MailCustomB");
-		$_REQUEST["MailCustomC"] = $GLOBALS['DB_WE']->f("MailCustomC");
-		$_REQUEST["MailCustomD"] = $GLOBALS['DB_WE']->f("MailCustomD");
-		$_REQUEST["MailCustomE"] = $GLOBALS['DB_WE']->f("MailCustomE");
-		$_REQUEST["MailCustomF"] = $GLOBALS['DB_WE']->f("MailCustomF");
-		$_REQUEST["MailCustomG"] = $GLOBALS['DB_WE']->f("MailCustomG");
-		$_REQUEST["MailCustomH"] = $GLOBALS['DB_WE']->f("MailCustomH");
-		$_REQUEST["MailCustomI"] = $GLOBALS['DB_WE']->f("MailCustomI");
-		$_REQUEST["MailCustomJ"] = $GLOBALS['DB_WE']->f("MailCustomJ");
-		$_REQUEST["MailPayment"] = $GLOBALS['DB_WE']->f("MailPayment");
-		$_REQUEST["MailShipping"] = $GLOBALS['DB_WE']->f("MailShipping");
-		$_REQUEST["MailCancellation"] = $GLOBALS['DB_WE']->f("MailCancellation");
-		$_REQUEST["MailFinished"] = $GLOBALS['DB_WE']->f("MailFinished");
+		foreach(weShopStatusMails::$MailFields as $field){
+			$_REQUEST[$field] = $GLOBALS['DB_WE']->f($field);
+		}
 
 		// all information for article
 		$ArticleId[] = $GLOBALS['DB_WE']->f("IntArticleID"); // id of article (object or document) in shopping cart
@@ -1005,10 +989,8 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		$Price[] = str_replace(',', '.', $GLOBALS['DB_WE']->f("Price")); // replace , by . for float values
 	}
 	if(!isset($ArticleId)){
-		echo we_html_element::jsElement('
-		parent.parent.frames.shop_header_icons.location.reload();
-	') . '
-	</head>
+		echo we_html_element::jsElement('parent.parent.frames.shop_header_icons.location.reload();') .
+		'</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
