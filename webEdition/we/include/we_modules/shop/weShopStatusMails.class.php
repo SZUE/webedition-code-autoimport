@@ -10,6 +10,7 @@ class weShopStatusMails{
 	var $LanguageData; // an array with the Language data, see getShopStatusMails
 	var $FieldsDocuments; // an array with dfault values and separate Arrays for each Langauge, see getShopStatusMails
 	public static $StatusFields = array('DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment', 'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished');
+	public static $MailFields = array('MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished');
 
 	function __construct($FieldsHidden, $FieldsHiddenCOV, $FieldsText, $FieldsMails, $EMailData, $LanguageData, $FieldsDocuments){
 
@@ -37,32 +38,33 @@ class weShopStatusMails{
 
 	function getShopStatusMails(){
 		global $DB_WE;
-		$docarray = array(
-			'DateOrder' => '',
-			'DateConfirmation' => '',
-			'DateCustomA' => '',
-			'DateCustomB' => '',
-			'DateCustomC' => '',
-			'DateShipping' => '',
-			'DateCustomD' => '',
-			'DateCustomE' => '',
-			'DateCancellation' => '',
-			'DateCustomF' => '',
-			'DateCustomG' => '',
-			'DatePayment' => '',
-			'DateCustomH' => '',
-			'DateCustomI' => '',
-			'DateCustomJ' => '',
-			'DateFinished' => ''
+		$documentsarray = array(
+			'default' => array(
+				'DateOrder' => 0,
+				'DateConfirmation' => 0,
+				'DateCustomA' => 0,
+				'DateCustomB' => 0,
+				'DateCustomC' => 0,
+				'DateShipping' => 0,
+				'DateCustomD' => 0,
+				'DateCustomE' => 0,
+				'DateCancellation' => 0,
+				'DateCustomF' => 0,
+				'DateCustomG' => 0,
+				'DatePayment' => 0,
+				'DateCustomH' => 0,
+				'DateCustomI' => 0,
+				'DateCustomJ' => 0,
+				'DateFinished' => 0,
+			)
 		);
-		$documentsarray['default'] = $docarray;
 		$frontendL = $GLOBALS["weFrontendLanguages"];
 		foreach($frontendL as $lc => &$lcvalue){
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
 		foreach($frontendL as $langkey){
-			$documentsarray[$langkey] = $docarray;
+			$documentsarray[$langkey] = $documentsarray['default'];
 		}
 		$zw = new weShopStatusMails(
 				array(//Fieldshidden

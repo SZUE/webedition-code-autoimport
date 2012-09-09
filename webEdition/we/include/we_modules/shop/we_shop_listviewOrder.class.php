@@ -104,9 +104,15 @@ class we_shop_listviewOrder extends listviewBase{
 		$where = $this->condition ? (' WHERE ' . $this->condition) . $group : $group;
 
 		$this->anz_all = f('SELECT COUNT(1) AS a FROM ' . SHOP_TABLE . $where, 'a', $this->DB_WE);
+		$format = array();
+		foreach(weShopStatusMails::$StatusFields as $field){
+			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
+		}
+		foreach(weShopStatusMails::$MailFields as $field){
+			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
+		}
 
-		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder, UNIX_TIMESTAMP(DateShipping) as DateShipping, UNIX_TIMESTAMP(DatePayment) as DatePayment, UNIX_TIMESTAMP(DateOrder) as DateOrder, UNIX_TIMESTAMP(DateConfirmation) as DateConfirmation, UNIX_TIMESTAMP(DateCustomA) as DateCustomA, UNIX_TIMESTAMP(DateCustomB) as DateCustomB, UNIX_TIMESTAMP(DateCustomC) as DateCustomC, UNIX_TIMESTAMP(DateCancellation) as DateCancellation, UNIX_TIMESTAMP(DateFinished) as DateFinished,
-		UNIX_TIMESTAMP(MailShipping) as MailShipping, UNIX_TIMESTAMP(MailPayment) as MailPayment, UNIX_TIMESTAMP(MailOrder) as MailOrder, UNIX_TIMESTAMP(MailConfirmation) as MailConfirmation, UNIX_TIMESTAMP(MailCustomA) as MailCustomA, UNIX_TIMESTAMP(MailCustomB) as MailCustomB, UNIX_TIMESTAMP(MailCustomC) as MailCustomC, UNIX_TIMESTAMP(MailCancellation) as MailCancellation, UNIX_TIMESTAMP(MailFinished) as MailFinished FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
