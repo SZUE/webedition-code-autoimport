@@ -26,11 +26,11 @@ class metadatatag{
 
 	var $DB_WE;
 	var $ClassName = __CLASS__;
-	var $object = "";
+	var $object = '';
 	var $avail = false;
 	var $id = 0;
 
-	function metadatatag($name){
+	function __construct($name){
 		$this->DB_WE = new DB_WE;
 
 		if($name){
@@ -62,11 +62,7 @@ class metadatatag{
 	}
 
 	function f($key){
-		if($this->id){
-			return $this->object->f($key);
-		} else{
-			return "";
-		}
+		return ($this->id?$this->object->f($key):'');
 	}
 
 }

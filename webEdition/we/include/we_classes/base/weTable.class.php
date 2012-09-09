@@ -192,11 +192,11 @@ class weTableAdv extends weTable{
 			}
 		}
 		// Charset and Collation
-		$charset_collation = "";
-		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
+		$charset_collation = '';
+		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined("DB_COLLATION") && DB_COLLATION != ''){
 			$Charset = DB_CHARSET;
 			$Collation = DB_COLLATION;
-			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+			$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
 		}
 		//FIXME: this is NOT Save for MySQL Updates!!!!
 		array_pop($myarray); //get rid of old Engine statement

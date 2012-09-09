@@ -33,7 +33,6 @@ class doclistView{
 	 * @return javascript code
 	 */
 	function getSearchJS(){
-
 		$h = 0;
 		$addinputRows = "";
 		if($GLOBALS ['we_doc']->searchclassFolder->mode){
@@ -43,17 +42,9 @@ class doclistView{
                 scrollheight = scrollheight + 26;
               }';
 		}
-		//FIXME: use we_browserDetect-class!!!
-		$IE6 = false;
+
 		//workaround for z-index ans selects in ie6
-		if((we_base_browserDetect::isIE())){
-			$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-			$version = abs(preg_replace('/[^0-9\\.]/', '', $foo [1]));
-			if($version < 7){
-				$IE6 = true;
-			}
-		}
-		if($IE6){
+		if(((we_base_browserDetect::isIE()) && we_base_browserDetect::getIEVersion() < 7)){
 			$showHideSelects = 'var AnzahlSelects = document.getElementsByTagName("select");
                 for (var k = 0; k <= AnzahlSelects.length; k++ ) {
                   var selectAnzahl = AnzahlSelects[k];
@@ -85,7 +76,7 @@ class doclistView{
 		}
 		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 
-		$_js = we_html_element::jsElement('
+		return we_html_element::jsElement('
 
       var ajaxURL = "/webEdition/rpc/rpc.php";
       var ajaxCallbackResultList = {
@@ -770,8 +761,6 @@ class doclistView{
       }
 
     ');
-
-		return $_js;
 	}
 
 	/**
@@ -789,9 +778,8 @@ class doclistView{
         <td width="100%">' . we_html_tools::getPixel(10, 2) . '
         </td>
         </tr>
-        </table>';
-
-		$out .= '<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+        </table>
+				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tr>
         <td class="weDocListSearchHeadline">' . g_l('searchtool', "[suchen]") . '
         </td>
@@ -801,9 +789,8 @@ class doclistView{
         <td width="100%">' . we_html_tools::getPixel(10, 2) . '
         </td>
         </tr>
-        </table>';
-
-		$out .= '<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+        </table>
+				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tbody id="filterTable">
         <tr>
           <td>' . $GLOBALS ['we_doc']->HiddenTrans() . '</td>
@@ -841,14 +828,12 @@ class doclistView{
 		for($i = 0; $i < $GLOBALS ['we_doc']->searchclassFolder->height; $i++){
 			$button = we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
-			$locationDisabled = "";
 			$handle = "";
 
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
-			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category")){
-				$locationDisabled = "disabled";
-			}
+			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category") ?
+					'disabled' : '');
 
 			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status"){
@@ -873,7 +858,6 @@ class doclistView{
 					//javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','text/weTmpl')
 					$wecmdenc1 = we_cmd_enc("document.we_form.elements['searchParentID[" . $i . "]'].value");
 					$wecmdenc2 = we_cmd_enc("document.we_form.elements['search[" . $i . "]'].value");
-					$wecmdenc3 = '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
@@ -903,9 +887,8 @@ class doclistView{
         ';
 		}
 
-		$out .= '</tbody></table>';
-
-		$out .= '<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+		$out .= '</tbody></table>
+			<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tr>
           <td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
         </tr>
@@ -918,7 +901,7 @@ class doclistView{
 
         </table>';
 
-		$out .= we_html_element::jsElement("calendarSetup(" . $GLOBALS ['we_doc']->searchclassFolder->height . ");");
+		$out .= we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -963,41 +946,33 @@ class doclistView{
 
 		$_table = FILE_TABLE;
 
-		if(isset($_REQUEST ['we_cmd'] ['searchFields'])){
-			$searchFields = $_REQUEST ['we_cmd'] ['searchFields'];
-		} else{
-			$searchFields = $obj->searchclassFolder->searchFields;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['search'])){
-			$searchText = $_REQUEST ['we_cmd'] ['search'];
-		} else{
-			$searchText = $obj->searchclassFolder->search;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['location'])){
-			$location = $_REQUEST ['we_cmd'] ['location'];
-		} else{
-			$location = $obj->searchclassFolder->location;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['order'])){
-			$_order = $_REQUEST ['we_cmd'] ['order'];
-		} else{
-			$_order = $obj->searchclassFolder->order;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['setView'])){
-			$_view = $_REQUEST ['we_cmd'] ['setView'];
-		} else{
-			$_view = $obj->searchclassFolder->setView;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['searchstart'])){
-			$_searchstart = $_REQUEST ['we_cmd'] ['searchstart'];
-		} else{
-			$_searchstart = $obj->searchclassFolder->searchstart;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['anzahl'])){
-			$_anzahl = $_REQUEST ['we_cmd'] ['anzahl'];
-		} else{
-			$_anzahl = $obj->searchclassFolder->anzahl;
-		}
+		$searchFields = (isset($_REQUEST ['we_cmd'] ['searchFields']) ?
+				$_REQUEST ['we_cmd'] ['searchFields'] :
+				$obj->searchclassFolder->searchFields);
+
+		$searchText = (isset($_REQUEST ['we_cmd'] ['search']) ?
+				$_REQUEST ['we_cmd'] ['search'] :
+				$obj->searchclassFolder->search);
+
+		$location = (isset($_REQUEST ['we_cmd'] ['location']) ?
+				$_REQUEST ['we_cmd'] ['location'] :
+				$obj->searchclassFolder->location);
+
+		$_order = (isset($_REQUEST ['we_cmd'] ['order']) ?
+				$_REQUEST ['we_cmd'] ['order'] :
+				$obj->searchclassFolder->order);
+
+		$_view = (isset($_REQUEST ['we_cmd'] ['setView']) ?
+				$_REQUEST ['we_cmd'] ['setView'] :
+				$obj->searchclassFolder->setView);
+
+		$_searchstart = (isset($_REQUEST ['we_cmd'] ['searchstart']) ?
+				$_REQUEST ['we_cmd'] ['searchstart'] :
+				$obj->searchclassFolder->searchstart);
+
+		$_anzahl = (isset($_REQUEST ['we_cmd'] ['anzahl']) ?
+				$_REQUEST ['we_cmd'] ['anzahl'] :
+				$obj->searchclassFolder->anzahl);
 
 		for($i = 0; $i < count($searchText); $i++){
 			if(isset($searchText [$i])){
@@ -1005,8 +980,8 @@ class doclistView{
 			}
 		}
 
-		$where = "";
-		$op = " AND ";
+		$where = '';
+		$op = ' AND ';
 		$obj->searchclassFolder->settable($_table);
 
 
@@ -1015,12 +990,8 @@ class doclistView{
 					we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 		} else{
-
-
 			if($obj->ID != 0){
-
-
-				$obj->searchclassFolder->createTempTable();
+			$obj->searchclassFolder->createTempTable();
 
 				for($i = 0; $i < count($searchFields); $i++){
 

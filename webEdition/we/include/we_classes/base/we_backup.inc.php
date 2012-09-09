@@ -1030,7 +1030,6 @@ class we_backup{
 	function getDiff(&$q, $tab, &$fupdate){
 		$fnames = array();
 		$fields = '';
-		$parts = array();
 		$sub_parts = array();
 		$len = strlen($q);
 		$br = 0;
@@ -1048,10 +1047,10 @@ class we_backup{
 				break;
 		}
 		$parts = explode(",", $fields);
-		foreach($parts as $k => $v){
+		foreach($parts as $v){
 			$sub_parts = explode(" ", trim($v));
 			if($sub_parts[0] != "" && $sub_parts[0] != "PRIMARY" && $sub_parts[0] != "UNIQUE" && $sub_parts[0] != "KEY"){
-				array_push($fnames, strtolower($sub_parts[0]));
+				$fnames[] = strtolower($sub_parts[0]);
 			}
 		}
 
@@ -1124,7 +1123,6 @@ class we_backup{
 	 * real table name
 	 */
 	function getDefaultTableName($tabname){
-
 		$tabname = strtolower($tabname);
 		if(defined("OBJECT_X_TABLE") && stripos($tabname, OBJECT_X_TABLE) !== false){
 			return str_ireplace(OBJECT_X_TABLE, "tblobject_", $tabname);
@@ -1145,10 +1143,10 @@ class we_backup{
 	 * is webEdition table name
 	 */
 	function isWeTable($tabname){
-		if(in_array(strtolower($tabname), array_keys($this->table_map)))
+		if(in_array(strtolower($tabname), array_keys($this->table_map))){
 			return true;
+		}
 		if(defined("OBJECT_X_TABLE")){
-
 			$object_x_table = stripTblPrefix(OBJECT_X_TABLE);
 
 			return stripos($tabname, $object_x_table) !== false;
@@ -1163,7 +1161,6 @@ class we_backup{
 	 */
 	function isFixed($tab){
 		$table = strtolower($tab);
-		$fixTable = array();
 		$fixTable = $this->fixedTable;
 
 		foreach($this->handle_options as $hok => $hov){
@@ -1228,10 +1225,9 @@ class we_backup{
 	 */
 	function arrayintersect($array1, $array2){
 		$ret = array();
-		foreach($array1 as $k => $v){
-			if(!is_array($v)){
-				if(in_array($v, $array2))
-					$ret[] = $v;
+		foreach($array1 as $v){
+			if(!is_array($v) && in_array($v, $array2)){
+				$ret[] = $v;
 			}
 		}
 		return $ret;
@@ -1244,10 +1240,9 @@ class we_backup{
 	 */
 	function arraydiff($array1, $array2){
 		$ret = array();
-		foreach($array1 as $k => $v){
-			if(!is_array($v) && !in_array($v, $ret)){
-				if(!in_array($v, $array2))
-					$ret[] = $v;
+		foreach($array1 as $v){
+			if(!is_array($v) && !in_array($v, $ret) && !in_array($v, $array2)){
+				$ret[] = $v;
 			}
 		}
 		return $ret;
@@ -1339,8 +1334,7 @@ class we_backup{
 
 		$d = dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp");
 		$co = -1;
-		$limit = time();
-		$limit = $limit - 86400;
+		$limit = time() - 86400;
 		while(false !== ($entry = $d->read())) {
 			if($entry != "." && $entry != ".." && $entry != "CVS" && !@is_dir($entry)){
 				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){

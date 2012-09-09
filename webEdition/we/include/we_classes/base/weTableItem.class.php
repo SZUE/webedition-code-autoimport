@@ -36,7 +36,7 @@ class weTableItem extends weModelBase{
 	function __construct($table){
 		if($GLOBALS['DB_WE']->isTabExist($table)){
 			parent::__construct($table);
-		}else{
+		} else{
 			$this->db = new DB_WE();
 			$this->table = $table;
 		}
@@ -57,7 +57,7 @@ class weTableItem extends weModelBase{
 
 	function getTableKey($table){
 		$table = strtolower($table);
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weTableKeys.inc.php');
+		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableKeys.inc.php');
 		if(in_array($table, array_keys($tableKeys))){
 			return $tableKeys[$table];
 		} else{
@@ -66,18 +66,12 @@ class weTableItem extends weModelBase{
 	}
 
 	function getFieldType($fieldname){
-		if(preg_match('/(.+?)_(.*)/', $fieldname, $regs)){
-			return $regs[1];
-		}
-		return "";
+		return (preg_match('/(.+?)_(.*)/', $fieldname, $regs) ? $regs[1] : '');
 	}
 
 	function isObjectXTable($tablename){
-		if(preg_match('/(.+?)_(.*)/', $tablename, $regs)){
-			if(isset($regs[1]) && $regs[1] . "_" == OBJECT_X_TABLE)
-				return true;
-		}
-		return false;
+		$regs = array();
+		return (preg_match('/(.+?)_(.*)/', $tablename, $regs) && isset($regs[1]) && $regs[1] . '_' == OBJECT_X_TABLE);
 	}
 
 	function doConvertCharset($was){ //dies konvertiert die Daten, die binary im backup waren
@@ -91,12 +85,7 @@ class weTableItem extends weModelBase{
 			$tables[ANZEIGE_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
-		if(array_key_exists($this->table, $tables)){
-			if(in_array($was, $tables[$this->table])){
-				return true;
-			}
-		}
-		return false;
+		return (array_key_exists($this->table, $tables)&& in_array($was, $tables[$this->table]));
 	}
 
 	function doCorrectExactCharsetString($was){
@@ -115,13 +104,7 @@ class weTableItem extends weModelBase{
 			$tables[NEWSLETTER_TABLE] = array('Charset');
 		}
 
-
-		if(array_key_exists($table, $tables)){
-			if(in_array($was, $tables[$table])){
-				return true;
-			}
-		}
-		return false;
+		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
 	}
 
 	function doCorrectSerializedLenghtValues($was){
@@ -129,7 +112,7 @@ class weTableItem extends weModelBase{
 		$table = $this->table;
 		$tables[NAVIGATION_TABLE] = array('Attributes');
 		$tables[CATEGORY_TABLE] = array('Catfields');
-		if(defined("OBJECT_TABLE")){
+		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_TABLE] = array('dDefaultValues'); //DefaultValues bewusst entfernt
 			$tables[OBJECT_X_TABLE] = array('link', 'variant'); //href nicht da ser str in ser str
 			if($this->isObjectXTable($table)){
@@ -137,29 +120,18 @@ class weTableItem extends weModelBase{
 				$was = $this->getFieldType($was);
 			}
 		}
-		if(defined("VOTING_TABLE")){
+		if(defined('VOTING_TABLE')){
 			$tables[VOTING_TABLE] = array('QASet', 'QASetAdditions', 'Scores', 'LogData');
 		}
 
-
-		if(array_key_exists($table, $tables)){
-			if(in_array($was, $tables[$table])){
-				return true;
-			}
-		}
-		return false;
+		return (array_key_exists($table, $tables)&& in_array($was, $tables[$table]));
 	}
 
 	function doPrepareCorrectSerializedLenghtValues($was){
 		$tables = array();
 		$tables[CATEGORY_TABLE] = array('Catfields');
 		$table = $this->table;
-		if(array_key_exists($table, $tables)){
-			if(in_array($was, $tables[$table])){
-				return true;
-			}
-		}
-		return false;
+		return (array_key_exists($table, $tables)&&in_array($was, $tables[$table]));
 	}
 
 	function doCorrectSerializedExactCharsetString($was){
@@ -168,12 +140,7 @@ class weTableItem extends weModelBase{
 			$tables[OBJECT_TABLE] = array('DefaultValues');
 		}
 
-		if(array_key_exists($this->table, $tables)){
-			if(in_array($was, $tables[$this->table])){
-				return true;
-			}
-		}
-		return false;
+		return (array_key_exists($this->table, $tables)&&in_array($was, $tables[$this->table]));
 	}
 
 	function convertCharsetEncoding($fromC, $toC){
@@ -186,7 +153,6 @@ class weTableItem extends weModelBase{
 						foreach($mydataUS as &$ad){
 							if(is_array($ad)){
 								foreach($ad as &$add){
-
 									if(is_array($add)){
 										foreach($add as &$addd){
 											$addd = convertCharsetEncoding($fromC, $toC, $addd);
@@ -194,7 +160,6 @@ class weTableItem extends weModelBase{
 											$addd = self::convertCharsetString($fromC, $toC, $addd);
 										}
 									} else{
-
 										$add = convertCharsetEncoding($fromC, $toC, $add);
 										$add = self::convertExactCharsetString($fromC, $toC, $add);
 										$add = self::convertCharsetString($fromC, $toC, $add);

@@ -721,18 +721,18 @@ abstract class we_database_base{
 	function addCol($tab, $col, $typ, $pos = ''){
 		$col = trim($col, '`');
 		if($this->isColExist($tab, $col)){
-			return;
+			return false;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
 	}
 
 	function changeColType($tab, $col, $newtyp){
 		$col = trim($col, '`');
 		if(!$this->isColExist($tab, $col)){
-			return;
+			return false;
 		}
 
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
 	}
 
 	function getColTyp($tab, $col){

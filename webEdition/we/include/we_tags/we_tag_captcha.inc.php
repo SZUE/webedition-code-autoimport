@@ -24,7 +24,8 @@
  */
 function we_parse_tag_captcha($attribs){
 	eval('$attribs = ' . $attribs . ';');
-	if(($foo = attributFehltError($attribs, 'width', __FUNCTION__)) || ($foo = attributFehltError($attribs, 'height', __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'width', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'height', __FUNCTION__))){
 		return $foo;
 	}
 
@@ -55,7 +56,6 @@ function we_parse_tag_captcha($attribs){
 	$style = weTag_getParserAttribute('style', $attribs, '');
 	$stylecolor = weTag_getParserAttribute('stylecolor', $attribs, '#cccccc');
 	$stylenumber = weTag_getParserAttribute('stylenumber', $attribs, '5,10');
-	$xml = weTag_getParserAttribute('xml', $attribs, '5,10');
 
 	// writing the temporary document
 	$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
@@ -65,22 +65,28 @@ function we_parse_tag_captcha($attribs){
 		contine;
 	}
 
-	// FIXME: what parts of we.in.php do we really need here? Include them and throw we.inc.php out.
-	$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
-			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
-			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");
-			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");' . "\n" . "\n" . "\$image = new CaptchaImage(" . $width . ", " . $height . ", " . $maxlength . ");\n";
-	if($fontpath != ""){
-		$php .= "\$image->setFontPath('" . $fontpath . "');\n";
-	}
-	$php .= "\$image->setFont('" . $font . "', '" . $fontsize . "', '" . $fontcolor . "');\n" . "\$image->setCharacterSubset('" . $subset . "', '" . $case . "', '" . $skip . "');\n" . "\$image->setAlign('" . $align . "');\n" . "\$image->setVerticalAlign('" . $valign . "');\n";
+	$php = '<?php
+		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
+		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
+		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");
+		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");
+		$image = new CaptchaImage(' . $width . ", " . $height . ", " . $maxlength . ');' .
+		($fontpath != '' ?
+			'$image->setFontPath(\'' . $fontpath . '\');' :
+			'') .
+		'$image->setFont(\'' . $font . "', '" . $fontsize . "', '" . $fontcolor . "');
+	\$image->setCharacterSubset('" . $subset . "', '" . $case . "', '" . $skip . "');
+	\$image->setAlign('" . $align . "');
+	\$image->setVerticalAlign('" . $valign . "');";
 	if(isset($bgcolor) && $transparent){
-		$php .= "\$image->setBackground('" . $bgcolor . "', true);\n";
+		$php .= "\$image->setBackground('" . $bgcolor . "', true);";
 		$type = "gif";
 	} else{
-		$php .= "\$image->setBackground('" . $bgcolor . "');\n";
+		$php .= "\$image->setBackground('" . $bgcolor . "');";
 	}
-	$php .= "\$image->setStyle('" . $style . "', '" . $stylecolor . "', '" . $stylenumber . "');\n" . "\$image->setAngleRange('" . $angle . "');\n" . "Captcha::display(\$image, '" . $type . "');\n" . "\n" . "?>";
+	$php .= '$image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber . '\');
+		$image->setAngleRange(\'' . $angle . '\');
+		Captcha::display($image, \'' . $type . '\');';
 	weFile::save($realPath, $php, 'w+');
 
 	// clean attribs
