@@ -138,13 +138,12 @@ $datetimeform = "00.00.0000 00:00";
 if(isset($_REQUEST['we_cmd'][0])){
 	switch($_REQUEST['we_cmd'][0]){
 		case 'add_article':
-
 			if($_REQUEST["anzahl"] > 0){
 
 				// add complete article / object here - inclusive request fields
 				$_strSerialOrder = getFieldFromOrder($_REQUEST["bid"], 'strSerialOrder');
 
-				$tmp = explode("_", $_REQUEST["add_article"]);
+				$tmp = explode('_', $_REQUEST["add_article"]);
 				$isObj = ($tmp[1] == "o");
 
 				$id = $tmp[0];
@@ -189,12 +188,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 				}
 
 				// now insert article to order:
-				$row = getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . abs($_REQUEST["bid"]), $GLOBALS['DB_WE']);
+				$row = getHash("SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment,IntPayment_Type FROM " . SHOP_TABLE . " WHERE IntOrderID = " . intval($_REQUEST["bid"]), $GLOBALS['DB_WE']);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 					we_database_base::arraySetter((array(
 						'IntArticleID' => $id,
 						'IntQuantity' => $_REQUEST["anzahl"],
-						'Price' => getFieldFromShoparticle($serialDoc, 'price'),
+						'Price' => getFieldFromShoparticle($serialDoc, 'shopprice'),
 						'IntOrderID' => $row["IntOrderID"],
 						'IntCustomerID' => $row["IntCustomerID"],
 						'DateOrder' => $row["DateOrder"],
@@ -210,27 +209,21 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 		case 'add_new_article':
 			$shopArticles = array();
-			$shopArticlesSelect = array();
-			$parts = array();
-
 
 			$saveBut = '';
 			$cancelBut = we_button::create_button('cancel', "javascript:window.close();");
 			$searchBut = we_button::create_button('search', "javascript:searchArticles();");
 
 			// first get all shop documents
-			$query = 'SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
+			$GLOBALS['DB_WE']->query('SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
 				' WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
 					AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 					AND ' . LINK_TABLE . '.Name = "shoptitle"
-					AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates"
-			';
-
-			if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
-				$query .= ' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
-			}
-
-			$GLOBALS['DB_WE']->query($query);
+					AND ' . LINK_TABLE . '.DocumentTable != "tblTemplates" ' .
+				(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+					' AND ' . CONTENT_TABLE . '.Dat LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"' :
+					'')
+			);
 
 			while($GLOBALS['DB_WE']->next_record()) {
 				$shopArticles[$GLOBALS['DB_WE']->f('documentId') . '_d'] = $GLOBALS['DB_WE']->f("shopTitle") . ' [' . $GLOBALS['DB_WE']->f("documentId") . ']' . g_l('modules_shop', '[isDoc]');
@@ -240,16 +233,15 @@ if(isset($_REQUEST['we_cmd'][0])){
 				// now get all shop objects
 				foreach($classIds as $_classId){
 					$_classId = intval($_classId);
-					$query = 'SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
+					$GLOBALS['DB_WE']->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle as shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
 						FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
 						WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
-							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ';
+							AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
+						(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle'] ?
+							' AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"' :
+							'')
+					);
 
-					if(isset($_REQUEST['searchArticle']) && $_REQUEST['searchArticle']){
-						$query .= ' AND ' . OBJECT_X_TABLE . $_classId . '.input_shoptitle  LIKE "%' . $GLOBALS['DB_WE']->escape($_REQUEST['searchArticle']) . '%"';
-					}
-
-					$GLOBALS['DB_WE']->query($query);
 					while($GLOBALS['DB_WE']->next_record()) {
 						$shopArticles[$GLOBALS['DB_WE']->f('objectId') . '_o'] = $GLOBALS['DB_WE']->f('shopTitle') . ' [' . $GLOBALS['DB_WE']->f('objectId') . ']' . g_l('modules_shop', '[isObj]');
 					}
@@ -310,9 +302,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 </head>
 <body class="weDialogBody">';
 
-			if($AMOUNT_ARTICLES > 0){
-
-				$parts[] = array(
+			$parts = array(($AMOUNT_ARTICLES > 0 ?
+					array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => '<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
@@ -326,14 +317,14 @@ if(isset($_REQUEST['we_cmd'][0])){
 					</tr>
 					</table>',
 					'noline' => 1
-				);
-			} else{
-				$parts[] = array(
+					) :
+					array(
 					'headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => 100,
 					'html' => g_l('modules_shop', '[add_article][empty_articles]')
-				);
-			}
+					)
+				)
+			);
 
 			if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
 				$parts[] = array(
@@ -350,17 +341,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 			if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
-
 				$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();window.close();");
+				list($id, $type) = explode('_', $_REQUEST['add_article']);
 
-
-				$articleInfo = explode('_', $_REQUEST['add_article']);
-
-				$id = $articleInfo[0];
-				$type = $articleInfo[1];
-
-				$variantOptions = array();
-				$variantOptions['-'] = '-';
+				$variantOptions = array(
+					'-' => '-'
+				);
 
 				if($type == 'o'){
 					$model = new we_objectFile();
@@ -392,8 +378,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 					'html' => '
 					<form name="we_form" target="edbody">
 					' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
-					we_html_tools::hidden("we_cmd[]", 'add_article') .
-					we_html_tools::hidden("add_article", $_REQUEST['add_article']) .
+					we_html_tools::hidden('we_cmd[]', 'add_article') .
+					we_html_tools::hidden('add_article', $_REQUEST['add_article']) .
 					'
 					<b>' . $model->elements['shoptitle']['dat'] . '</b>',
 					'noline' => 1
@@ -430,15 +416,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 			}
 
 
-			print we_multiIconBox::getHTML("", "100%", $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, "", "", false, g_l('modules_shop', '[add_article][title]')) .
+			print we_multiIconBox::getHTML('', '100%', $parts, 30, we_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 				'</form>
 </body>
 </html>';
-			unset($saveBut);
-			unset($cancelBut);
-			unset($selectBut);
-			unset($parts);
-			unset($shopArticles);
 			exit;
 			break;
 
