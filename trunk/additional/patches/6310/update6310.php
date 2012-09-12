@@ -49,20 +49,30 @@ function up6310_updateActiveModules(){
 function up6310_updateConf(){
 	$filename= $_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/conf/we_conf.inc.php';
 	$conf=file_get_contents($filename);
+	$changes = false;
 	if (strpos($conf,'_UTF-8')!==false){
 		$conf=str_replace('_UTF-8','',$conf);
 		$settingvalue='UTF-8';
+		$changes = true;
 	} else {
 		$settingvalue='ISO-8859-1';
 	}
-
 	if(strpos($conf,'define("WE_BACKENDCHARSET"')===false){
-		$conf = weConfParser::changeSourceCode("define", $conf, "WE_BACKENDCHARSET", $settingvalue);
+		$pos1 = strpos($conf, 'if (!isset($GLOBALS["WE_LANGUAGE');
+		$pos2 = strpos($conf, '// PHP 5.3 date init');
+		$insert = "// Original backend charset of this version of webEdition, used for login-screen\ndefine(\"WE_BACKENDCHARSET\", '" . $settingvalue . "');\n
+if (!isset(\$GLOBALS[\"WE_LANGUAGE\"])) {
+	\$GLOBALS[\"WE_LANGUAGE\"] = WE_LANGUAGE;
+}\n
+if (!isset(\$GLOBALS[\"WE_BACKENDCHARSET\"])) {
+	\$GLOBALS[\"WE_BACKENDCHARSET\"] = WE_BACKENDCHARSET;
+}\n\n";
+		$conf = ($pos1 !== false && $pos2 !== false) ? substr($conf,0,$pos1) . $insert . substr($conf,$pos2) :
+			(strpos($conf, '?>') ? substr($conf,0,-2) . $insert . '?>' : $conf . $insert . '?>');
 		$conf=str_replace('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")','',$conf);
-		return file_put_contents($filename,$conf);
-	} else {
-		return true;
+		$changes = true;
 	}
+	return $changes ? file_put_contents($filename,$conf) : true;
 }
 function up6310_removeFiles(){
 	$toRemove = array('Deutsch_UTF-8','Dutch_UTF-8','English_UTF-8','Finnish_UTF-8','French_UTF-8','Polish_UTF-8','Russian_UTF-8','Spanish_UTF-8');
