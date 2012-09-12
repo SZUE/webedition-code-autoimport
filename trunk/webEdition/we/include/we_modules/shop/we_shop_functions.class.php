@@ -34,7 +34,7 @@ class we_shop_functions{
 		foreach(weShopStatusMails::$StatusFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
-		$query = 'SELECT IntOrderID, ' . implode(',', weShopStatusMails::$StatusFields) . ', ' . implode($format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
+		$query = 'SELECT IntOrderID, ' . implode(',', weShopStatusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
 
 		$GLOBALS['DB_WE']->query($query);
 
