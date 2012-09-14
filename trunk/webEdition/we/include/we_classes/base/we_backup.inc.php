@@ -313,9 +313,7 @@ class we_backup{
 			}
 
 			if($ok){
-				$contents = addslashes($contents);
-				$contents = str_replace("\n", "\\n", $contents);
-				$contents = str_replace("\r", "\\r", $contents);
+				$contents = str_replace(array("\n", "\r"), array("\\n", "\\r"), $contents);
 				$q = 'INSERT INTO ' . BACKUP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'Path' => $path,
 						'Data' => $contents,
@@ -625,9 +623,7 @@ class we_backup{
 									$insert .= " '" . $new . "',";
 								}
 							}
-							$insert = str_replace("\n", "\\n", $insert);
-							$insert = str_replace("\r", "\\r", $insert);
-							$insert = rtrim($insert, ',');
+							$insert = rtrim(str_replace(array("\n", "\r"), array("\\n", "\\r"), $insert), ',');
 							if(!$this->offset)
 								$insert .= ");$nl";
 							@fwrite($fh, $insert);

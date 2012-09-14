@@ -89,7 +89,7 @@ class we_message extends we_msg_proto{
 			}
 
 		if(!empty($init_folders)){
-			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . addslashes(join(' OR obj_type=', $init_folders)) . ')');
+			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB->escape(implode(' OR obj_type=', $init_folders)) . ')');
 			while($this->DB->next_record()) {
 				$this->default_folders[$this->DB->f('obj_type')] = $this->DB->f('ID');
 			}
@@ -271,15 +271,15 @@ class we_message extends we_msg_proto{
 			$sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 			if($sf_uoff > -1){
-				$sfield_cond .= 'u.username LIKE "%' . addslashes($criteria['searchterm']) . '%" OR
-		u.First LIKE "%' . addslashes($criteria['searchterm']) . '%" OR
-		u.Second LIKE "%' . addslashes($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= 'u.username LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
+		u.First LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
+		u.Second LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 
 				array_splice($criteria['search_fields'], $sf_uoff, 1);
 			}
 
 			foreach($criteria['search_fields'] as $sf){
-				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . addslashes($criteria['searchterm']) . '%" OR ';
+				$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 			}
 
 			$sfield_cond = substr($sfield_cond, 0, -3);
@@ -350,7 +350,7 @@ class we_message extends we_msg_proto{
 
 		$id_str = '';
 		foreach($int_hdrs as $ih){
-			$id_str .= 'm.ID = ' . addslashes($ih['_ID']);
+			$id_str .= 'm.ID = ' . escape_sql_query($ih['_ID']);
 		}
 
 		$this->DB->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB->escape($this->table) . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . intval($this->userid));

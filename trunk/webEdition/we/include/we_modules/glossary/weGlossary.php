@@ -403,14 +403,9 @@ class weGlossary extends weModelBase{
 	function saveField($Name){
 		$table = $this->db->escape($this->table);
 		$Name = $this->db->escape($Name);
-		if(in_array($Name, $this->_Serialized)){
-			$value = unserialize($this->$Name);
-		} else{
-			$value = $this->$Name;
-		}
+		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
 
-		$query = "UPDATE " . $table . " SET " . $Name . " = '" . addslashes($field) . "' WHERE ID='" . $this->ID . "'";
-		$this->db->query($query);
+		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . " = '" . $this->db->escape($value) . "' WHERE ID='" . $this->ID . "'");
 
 		return $this->db->affected_rows();
 	}

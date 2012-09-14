@@ -153,7 +153,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$table = $_table;
 		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'limit ' . abs($start) . ',' . abs($anzahl) . '' : '';
 
-		$nodes = $db->fetchAll("SELECT " . addslashes($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . addslashes($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
+		$nodes = $db->fetchAll("SELECT " . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
 
 		if(!empty($nodes)){
 			if(!array_key_exists('Published', $nodes[0])){
@@ -262,19 +262,18 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		} else
 			$outClass = '';
 
-		$out = 'var myobj = { ';
-		$out .= 'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(htmlspecialchars($text)) . '</span>"';
+		return 'var myobj = { ' .
+			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(htmlspecialchars($text)) . '</span>"'.
 		//$out .= ',';
 		//$out .= 'href: "javascript:'.$doOnClick.'"';
-		$out .= ',';
-		$out .= 'id: "' . $id . '"';
-		$out .= ',';
-		$out .= 'text: "' . addslashes(htmlspecialchars($text)) . '"';
-		$out .= ',';
-		$out .= 'title: "' . $id . '"';
-		$out .= '}; ';
+		','.
+		'id: "' . $id . '"'.
+		','.
+		'text: "' . addslashes(htmlspecialchars($text)) . '"'.
+		','.
+		'title: "' . $id . '"'.
+		'}; ';
 
-		return $out;
 	}
 
 	/**

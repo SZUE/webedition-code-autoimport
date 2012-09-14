@@ -794,11 +794,11 @@ class searchtoolView extends weToolView{
    function newinputAdvSearch() {
 
     var searchFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, 'class="defaultfont" id="searchFieldsAdvSearch[__we_new_id__]" onChange="changeit(this.value, __we_new_id__);" '))) . '";
     var locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
     var search = "' . addslashes(
@@ -861,11 +861,11 @@ class searchtoolView extends weToolView{
     var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
 
     var searchFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, 'class="defaultfont" id="searchFieldsAdvSearch[__we_new_id__]" onChange="changeit(this.value, __we_new_id__);" '))) . '";
     var locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
     var search = "' . addslashes(
@@ -1012,7 +1012,7 @@ class searchtoolView extends weToolView{
      }
 
      search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getDoctypes(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
 
@@ -1038,7 +1038,7 @@ class searchtoolView extends weToolView{
      }
 
      search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
 
@@ -1064,7 +1064,7 @@ class searchtoolView extends weToolView{
      }
 
      search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
 
@@ -1085,7 +1085,7 @@ class searchtoolView extends weToolView{
      row.removeChild(locationTD);
 
      locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'locationAdvSearch[__we_new_id__]', $this->searchclass->getLocation("date"), 1, "", false, 'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
 
@@ -1133,7 +1133,7 @@ class searchtoolView extends weToolView{
      }
 
      search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
 
@@ -1159,7 +1159,7 @@ class searchtoolView extends weToolView{
      }
 
      search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, 'class="defaultfont" style="width:170px;" id="searchAdvSearch[__we_new_id__]" '))) . '";
 

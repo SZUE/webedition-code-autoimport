@@ -138,9 +138,9 @@ class XML_Import extends we_xml_parser{
 				$attrs = $this->getAttributes($node);
 				if($attrs["name"] == "Dat"){
 					$this->importAttrib($attrs, addslashes(base64_decode($this->getData($node))));
-				}
-				else
+				} else{
 					$this->importAttrib($attrs, $this->getData($node));
+				}
 			}
 		}
 

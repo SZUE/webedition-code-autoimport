@@ -187,7 +187,7 @@ class liveUpdateFrames{
 			$cond = '';
 
 			foreach($_REQUEST['deleteLanguages'] as $lng){
-				$cond .= ' OR Language="' . addslashes($lng) . '"';
+				$cond .= ' OR Language="' . $GLOBALS['DB_WE']->escape($lng) . '"';
 			}
 
 			$query = 'UPDATE ' . PREFS_TABLE . " SET Language = '" . WE_LANGUAGE . "' WHERE ( 0 $cond )";

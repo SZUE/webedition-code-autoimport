@@ -836,11 +836,11 @@ class searchtoolsearch extends we_search{
 							}
 						}
 						$searchname = path_to_id($searchname, $this->table);
-						$searching = " = '" . addslashes($searchname) . "' ";
+						$searching = " = '" . escape_sql_query($searchname) . "' ";
 						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 					} elseif(($searchfield == TEMPLATES_TABLE . ".MasterTemplateID" && $this->table == TEMPLATES_TABLE) || ($searchfield == FILE_TABLE . ".temp_template_id" && $this->table == FILE_TABLE) || ($searchfield == VERSIONS_TABLE . ".TemplateID" && $this->table == VERSIONS_TABLE)){
 						$searchname = path_to_id($searchname, TEMPLATES_TABLE);
-						$searching = " = '" . addslashes($searchname) . "' ";
+						$searching = " = '" . escape_sql_query($searchname) . "' ";
 
 						if(($searchfield == "temp_template_id" && $this->table == FILE_TABLE) || ($searchfield == "TemplateID" && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
@@ -900,26 +900,26 @@ class searchtoolsearch extends we_search{
 						if(isset($searchlocation)){
 							switch($searchlocation){
 								case "END" :
-									$searching = " LIKE '%" . addslashes($searchname) . "' ";
+									$searching = " LIKE '%" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 								case "START" :
-									$searching = " LIKE '" . addslashes($searchname) . "%' ";
+									$searching = " LIKE '" . escape_sql_query($searchname) . "%' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 								case "IS" :
-									$searching = " = '" . addslashes($searchname) . "' ";
+									$searching = " = '" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 								case "<" :
 								case "<=" :
 								case ">" :
 								case ">=" :
-									$searching = " " . $searchlocation . " '" . addslashes($searchname) . "' ";
+									$searching = " " . $searchlocation . " '" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 								default :
-									$searching = " LIKE '%" . addslashes($searchname) . "%' ";
+									$searching = " LIKE '%" . escape_sql_query($searchname) . "%' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
 							}

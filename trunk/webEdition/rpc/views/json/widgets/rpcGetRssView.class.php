@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,29 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class rpcGetRssView extends rpcJsonView  {
+class rpcGetRssView extends rpcJsonView{
 
 	/**
 	 * @param rpcResponse $response
 	 * @return string
 	 */
-	function getResponse( $response ) {
+	function getResponse($response){
 
-		if ( $response->Success ) {
+		if($response->Success){
 			$status = "response";
-
-		} else {
+		} else{
 			$status = "error";
 		}
 
 		return
-		'weResponse = {
+			'weResponse = {
 			"type":"' . $status . '",
-			"data":"' . addslashes( str_replace("\n", " ", str_replace("\r", " ", $response->getData("data")) ) ) . '",
+			"data":"' . addslashes(str_replace(array("\n", "\r"), " ", $response->getData("data"))) . '",
 			"titel":"' . addslashes($response->getData("titel")) . '",
 			"widgetType":"' . addslashes($response->getData("widgetType")) . '",
 			"widgetId":"' . addslashes($response->getData("widgetId")) . '"
 		};'
 		;
 	}
+
 }

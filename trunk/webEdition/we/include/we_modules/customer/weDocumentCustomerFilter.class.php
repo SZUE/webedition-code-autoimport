@@ -335,13 +335,13 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 			if($_docCustomerFilter->getMode() != weAbstractCustomerFilter::OFF && $model->ID){ // only save if its is active
 				$_filter = $_docCustomerFilter->getFilter();
-				$_filter = !empty($_filter) ? addslashes(serialize($_filter)) : "";
+				$_filter = !empty($_filter) ? serialize($_filter) : "";
 				$_specificCustomers = $_docCustomerFilter->getSpecificCustomers();
-				$_specificCustomers = !empty($_specificCustomers) ? addslashes(makeCSVFromArray($_specificCustomers, true)) : "";
+				$_specificCustomers = !empty($_specificCustomers) ? makeCSVFromArray($_specificCustomers, true) : "";
 				$_blackList = $_docCustomerFilter->getBlackList();
-				$_blackList = !empty($_blackList) ? addslashes(makeCSVFromArray($_blackList, true)) : "";
+				$_blackList = !empty($_blackList) ? makeCSVFromArray($_blackList, true) : "";
 				$_whiteList = $_docCustomerFilter->getWhiteList();
-				$_whiteList = !empty($_whiteList) ? addslashes(makeCSVFromArray($_whiteList, true)) : "";
+				$_whiteList = !empty($_whiteList) ? makeCSVFromArray($_whiteList, true) : "";
 
 				$_query = 'REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'modelId' => $model->ID,
