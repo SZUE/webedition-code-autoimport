@@ -305,7 +305,19 @@ abstract class listviewBase{
 	static function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = array();
 		//filter special variables
-		$filterArr = array('edit_object', 'edit_document', 'we_editObject_ID', 'we_editDocument_ID', 'we_transaction', 'we_cmd', 'we_cmd[1]', 'pv_id', 'pv_tid', 'bsuniquevid');
+		$filterArr = array(
+			'edit_object',
+			'edit_document',
+			'we_editObject_ID',
+			'we_editDocument_ID',
+			'we_transaction',
+			'we_cmd',
+			'we_cmd[1]',
+			'pv_id',
+			'pv_tid',
+			'bsuniquevid',
+			's'//password-form
+		);
 		//remove potential Cookies and filter from query
 		$filterArr = array_merge($filterArr, ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
@@ -332,8 +344,7 @@ abstract class listviewBase{
 			}
 		}
 		$url_tail .= $queryString;
-		$url_tail = rtrim($url_tail, '&');
-		return $url_tail;
+		return rtrim($url_tail, '&');
 	}
 
 	/**
