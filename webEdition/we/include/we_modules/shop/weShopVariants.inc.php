@@ -73,7 +73,7 @@ class weShopVariants{
 	 * @param object $model
 	 * @param boolean $save
 	 */
-	function correctModelFields(&$model, $save=true){
+	function correctModelFields(&$model, $save = true){
 
 		$elements = $model->elements;
 
@@ -127,7 +127,7 @@ class weShopVariants{
 	 * @param object $model
 	 * @param boolean $unserialize
 	 */
-	function setVariantDataForModel(&$model, $unserialize=false){
+	function setVariantDataForModel(&$model, $unserialize = false){
 
 		// set variation data from array and
 
@@ -235,7 +235,7 @@ class weShopVariants{
 		return array();
 	}
 
-	function getAllVariationFields($model, $pos=false){
+	function getAllVariationFields($model, $pos = false){
 
 		$elements = $model->elements;
 
@@ -589,21 +589,15 @@ class weShopVariants{
 			$elements = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 			//this elemets contains only the variant fields, not the non-variant fields of the object
 
-			$newPos = sizeof($elements);
+			$newPos = count($elements);
 
 			if($newPos > 0){
 
 				$elemdata = $elements[0];
 				if(is_array($elemdata) && $defaultname != ''){
-					if(strpos($defaultname, 'FIRST') === false){
-						$noFirst = true;
-					} else{
-						$noFirst = false;
-					}
+					$noFirst = (strpos($defaultname, 'FIRST') === false);
 					foreach($elemdata as $name => $varArr){
-
 						foreach($varArr as $key => $fieldArr){
-
 							if(isset($model->elements[$key])){
 								if($noFirst){
 									$elements[$newPos][$defaultname][$key] = $model->elements[$key];
@@ -626,9 +620,11 @@ class weShopVariants{
 					unset($modelelemets[$key]);
 				}
 			}
-			foreach($elements as $name => &$varArr){//now add the elements
-				foreach($varArr as $key => &$fieldArr){
-					$fieldArr = array_merge($modelelemets, $fieldArr);
+			if($newPos > 0){	//Fix #6883 - not sure if this has an impact
+				foreach($elements as $name => &$varArr){//now add the elements
+					foreach($varArr as $key => &$fieldArr){
+						$fieldArr = array_merge($modelelemets, $fieldArr);
+					}
 				}
 			}
 			//
@@ -640,5 +636,3 @@ class weShopVariants{
 	}
 
 }
-
-?>

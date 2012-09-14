@@ -360,12 +360,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 					$variantData = weShopVariants::getVariantData($model, '-');
 				}
 
-				$sizeVariantData = count($variantData);
-				reset($variantData);
-				if($sizeVariantData > 1){
-					for($i = 0; $i < $sizeVariantData; $i++){
-						reset($variantData[$i]);
-						list($key, $varData) = each($variantData[$i]);
+				if(count($variantData) > 1){
+					foreach($variantData as $cur){
+						list($key, $varData) = each($cur);
 						if($key != '-'){
 							$variantOptions[$key] = $key;
 						}
