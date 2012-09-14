@@ -17,8 +17,6 @@ if(empty($_SESSION["user"]["Username"])){
 we_html_tools::htmlTop();
 
 function saveSettings($default, $active, $langs=array()){
-
-
 	$_lang = '';
 
 	foreach($langs as $k => $v){
@@ -30,13 +28,11 @@ function saveSettings($default, $active, $langs=array()){
 	}
 
 	$_construct = '<?php
-
-				$spellcheckerConf = array();
-
-				$spellcheckerConf[\'default\'] = \'' . $default . '\';
-				$spellcheckerConf[\'active\'] = array(\'' . implode('\',\'', $active) . '\');
-				' . $_lang . '
-	?>';
+				$spellcheckerConf = array(
+				\'default\' => \'' . $default . '\',
+				\'active\' => array(\'' . implode('\',\'', $active) . '\'),
+				);
+				' . $_lang ;
 
 	weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 

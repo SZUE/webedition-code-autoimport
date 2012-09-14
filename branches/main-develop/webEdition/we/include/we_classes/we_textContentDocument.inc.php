@@ -115,7 +115,6 @@ class we_textContentDocument extends we_textDocument{
 		if(strlen($text) > $maxDB){
 			$text = substr($text, 0, $maxDB);
 		}
-		$text = addslashes($text);
 
 		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){

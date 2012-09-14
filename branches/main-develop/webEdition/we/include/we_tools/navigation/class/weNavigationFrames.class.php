@@ -915,8 +915,7 @@ class weNavigationFrames extends weToolFrames{
 
 	function getHTMLEditorPreview(){
 
-		$defaultPreviewCode = str_replace("\r\n", '\n', addslashes($this->Model->defaultPreviewCode));
-		$defaultPreviewCode = str_replace("\n", '\n', $defaultPreviewCode);
+		$defaultPreviewCode = str_replace(array("\r\n","\n"), '\n', addslashes($this->Model->defaultPreviewCode));
 		// build the page
 		$out = '<table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 		<tr>

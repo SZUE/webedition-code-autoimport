@@ -335,8 +335,15 @@ class weBanner extends weBannerBase{
 			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 		}
 		if(!$nocount){
-			$db->query("INSERT INTO " . BANNER_VIEWS_TABLE . " (ID,Timestamp,IP,Referer,DID,Page) VALUES(" . intval($id) . "," . time() . ",'" . $db->escape($_SERVER["REMOTE_ADDR"]) . "','" . addslashes($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "")) . "'," . intval($did) . ",'" . addslashes($page) . "')");
-			$db->query("UPDATE " . BANNER_TABLE . " SET views=views+1 WHERE ID='" . intval($id) . "'");
+			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => intval($id),
+					'Timestamp' => 'UNIX_TIMESTAMP()',
+					'IP' => $_SERVER["REMOTE_ADDR"],
+					'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
+					'DID' => intval($did),
+					'Page' => $page
+				)));
+			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 
 		$attsImage['xml'] = $xml ? "true" : "false";

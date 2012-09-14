@@ -514,12 +514,12 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 		case 'WE_COUNTRIES_TOP':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 2), true, $comment);
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, implode(',', array_keys($_REQUEST['newconf']['countries'], 2)), true, $comment);
 			break;
 
 		case 'WE_COUNTRIES_SHOWN':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
-			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, array_keys($_REQUEST['newconf']['countries'], 1), true, $comment);
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, implode(',', array_keys($_REQUEST['newconf']['countries'], 1)), true, $comment);
 			break;
 
 		case 'WE_SEEM':
@@ -887,7 +887,7 @@ function check_global_config(){
 	foreach($values as $define => $value){
 		if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 			// Add needed variable
-			$content = weConfParser::changeSourceCode('add', $content, $define, $value[1],true,$value[0]);
+			$content = weConfParser::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
 		}
 	}
 
@@ -1021,7 +1021,7 @@ function build_dialog($selected_setting = 'ui'){
 				);
 			}
 
-			 //AMOUNT COLUMNS IN COCKPIT
+			//AMOUNT COLUMNS IN COCKPIT
 			$_amount = new we_html_select(array('name' => 'newconf[cockpit_amount_columns]', 'class' => 'weSelect'));
 			for($i = 1; $i <= 10; $i++){
 				$_amount->addOption($i, $i);

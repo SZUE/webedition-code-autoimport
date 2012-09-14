@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Utility class for path manipulation and creation
- * 
+ *
  * @category   we
  * @package    we_util
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -75,7 +75,7 @@ class we_util_Path
 		if (is_null($db)) {
 			$db = we_io_DB::sharedAdapter();
 		}
-		
+
 		$id = we_util_Path::path2Id($path, $dbTable, $db);
 		return $id != 0;
 	}

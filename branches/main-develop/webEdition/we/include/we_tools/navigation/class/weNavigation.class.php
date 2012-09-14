@@ -362,12 +362,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		$path = addslashes($path);
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID));
-		if($this->db->next_record())
-			return true;
-		else
-			return false;
+		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID),'a',$this->db)==='1';
 	}
 
 	function isSelf(){

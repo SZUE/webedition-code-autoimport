@@ -58,18 +58,14 @@ function we_parse_tag_captcha($attribs){
 	$stylenumber = weTag_getParserAttribute('stylenumber', $attribs, '5,10');
 
 	// writing the temporary document
-	$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
-	$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $file);
-	if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-		t_e('warning', 'Acess outside document_root forbidden!', $realPath);
-		contine;
-	}
+	$file = 'we_captcha_' . $GLOBALS['we_doc']->ID . ".php";
+	$realPath = rtrim(realpath($_SERVER['DOCUMENT_ROOT'] . $path), '/') . '/' . $file;
+	/* 	if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+	  t_e('warning', 'Acess outside document_root forbidden!', $realPath);
+	  } */
 
 	$php = '<?php
 		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
-		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
-		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");
-		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");
 		$image = new CaptchaImage(' . $width . ", " . $height . ", " . $maxlength . ');' .
 		($fontpath != '' ?
 			'$image->setFontPath(\'' . $fontpath . '\');' :
@@ -87,6 +83,7 @@ function we_parse_tag_captcha($attribs){
 	$php .= '$image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber . '\');
 		$image->setAngleRange(\'' . $angle . '\');
 		Captcha::display($image, \'' . $type . '\');';
+
 	weFile::save($realPath, $php, 'w+');
 
 	// clean attribs
@@ -111,7 +108,7 @@ function we_parse_tag_captcha($attribs){
 		'stylenumber'
 		));
 
-	$attribs['src'] = $file;
+	$attribs['src'] = rtrim($path, '/') . '/' . $file;
 	return '<?php printElement(' . we_tag_tagParser::printTag('captcha', $attribs) . ');?>';
 }
 

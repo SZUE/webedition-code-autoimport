@@ -1161,7 +1161,7 @@ class we_user{
 		$path = '/' . (isset($foo['username']) ? $foo['username'] : '') . $path;
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-			$db_tmp->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intavl($pid));
+			$db_tmp->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
 			while($db_tmp->next_record()) {
 				$path = '/' . $db_tmp->f('username') . $path;
 				$pid = $db_tmp->f('ParentID');

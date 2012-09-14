@@ -89,7 +89,7 @@ class we_todo extends we_msg_proto{
 			}
 
 		if(!empty($init_folders)){
-			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . addslashes(implode(' OR obj_type=', $init_folders)) . ')');
+			$this->DB->query('SELECT ID, obj_type FROM ' . MSG_FOLDERS_TABLE . ' WHERE UserID=' . intval($this->userid) . ' AND msg_type=' . $this->sql_class_nr . ' AND (obj_type=' . $this->DB->escape(implode(' OR obj_type=', $init_folders)) . ')');
 			while($this->DB->next_record()) {
 				$this->default_folders[$this->DB->f('obj_type')] = $this->DB->f('ID');
 			}
@@ -189,7 +189,7 @@ class we_todo extends we_msg_proto{
 
 		$cond = '';
 		foreach($i_headers as $ih){
-			$cond .= 'ID=' . addslashes($ih['_ID']) . ' OR ';
+			$cond .= 'ID=' . intval($ih['_ID']) . ' OR ';
 		}
 
 		$cond = substr($cond, 0, -4);
@@ -307,7 +307,7 @@ class we_todo extends we_msg_proto{
 		}
 
 		if($this->history_update($msg['int_hdrs']['_ID'], $userid, $this->userid, $data['body'], we_msg_proto::ACTION_FORWARD) == 1){
-			$this->DB->query('UPDATE ' . $this->table . " SET ParentID=$in_folder, UserID=" . intval($userid) . ', seenStatus=0, headerAssigner=' . intval($this->userid) . " WHERE ID=" . addslashes($msg['int_hdrs']['_ID']) . ' AND UserID=' . intval($this->userid));
+			$this->DB->query('UPDATE ' . $this->table . " SET ParentID=$in_folder, UserID=" . intval($userid) . ', seenStatus=0, headerAssigner=' . intval($this->userid) . " WHERE ID=" . intval($msg['int_hdrs']['_ID']) . ' AND UserID=' . intval($this->userid));
 			$results['ok'][] = $rcpt;
 		} else{
 			$results['err'][] = g_l('modules_messaging', '[todo_err_history_update]');

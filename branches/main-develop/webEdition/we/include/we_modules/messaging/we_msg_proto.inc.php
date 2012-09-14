@@ -275,7 +275,7 @@ class we_msg_proto extends we_class{
 	function &get_f_children($id){
 		$fids = array();
 
-		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . addslashes($id) . ' AND UserID=' . intval($this->userid));
+		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 		while($this->DB->next_record())
 			$fids[] = $this->DB->f('ID');
 
@@ -305,7 +305,7 @@ class we_msg_proto extends we_class{
 
 		$cond = '';
 		foreach($rm_fids as $rf){
-			$cond .= 'ID=' . addslashes($rf) . ' OR ';
+			$cond .= 'ID=' . intval($rf) . ' OR ';
 		}
 		$cond = substr($cond, 0, -4);
 

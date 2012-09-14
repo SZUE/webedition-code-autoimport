@@ -184,7 +184,7 @@ class we_app_Model extends we_core_AbstractModel{
 				if($parentid == $this->ID){
 					return true;
 				}
-				$parentid = $db->fetchOne('SELECT ParentID FROM ' . addslashes($this->_table) . ' WHERE ID = ?', $parentid);
+				$parentid = $db->fetchOne('SELECT ParentID FROM ' . escape_sql_query($this->_table) . ' WHERE ID = ?', $parentid);
 				$count++;
 				if($count == 9999){
 					return false;

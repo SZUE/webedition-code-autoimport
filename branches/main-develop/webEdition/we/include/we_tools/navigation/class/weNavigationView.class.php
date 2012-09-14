@@ -838,9 +838,7 @@ class weNavigationView{
 						}
 					}
 					if($newone){
-						$js = '
-							' . $this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');
-							';
+						$js = $this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');';
 					} else{
 						$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');';
 					}
@@ -1102,11 +1100,7 @@ class weNavigationView{
 						$_cat->Catfields = unserialize($_cat->Catfields);
 
 						if(isset($_cat->Catfields['default']['Title'])){
-							print we_html_element::jsElement('
-								' .
-									$this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Catfields['default']['Title']) . '";
-								'
-								);
+							print we_html_element::jsElement($this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Catfields['default']['Title']) . '";');
 						}
 					}
 					break;

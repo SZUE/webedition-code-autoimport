@@ -113,12 +113,16 @@ class weNewsletterGroup extends weNewsletterBase{
 	function checkEmails($group, &$malformed){
 
 		if(defined("CUSTOMER_TABLE")){
-			$customers = makeArrayFromCSV($this->Customers);
-			foreach($customers as $customer){
-				$customer_mail = f("SELECT " . $this->settings["customer_email_field"] . " FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($customer), $this->settings["customer_email_field"], $this->db);
-				if(!$this->check_email($customer_mail)){
-					$malformed = $customer_mail;
-					return $group;
+			if(empty($this->settings["customer_email_field"])){
+				t_e('empty setting for customer email field');
+			} else{
+				$customers = makeArrayFromCSV($this->Customers);
+				foreach($customers as $customer){
+					$customer_mail = f('SELECT ' . $this->settings["customer_email_field"] . ' FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customer), $this->settings["customer_email_field"], $this->db);
+					if(!$this->check_email($customer_mail)){
+						$malformed = $customer_mail;
+						return $group;
+					}
 				}
 			}
 		}
