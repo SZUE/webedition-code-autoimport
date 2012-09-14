@@ -362,4 +362,3 @@ define("SEOINSIDE_HIDEINEDITMODE", 1);
 
 // decide how the scheduler works
 define('SCHEUDLER_TRIGGER', 1);
-?>
