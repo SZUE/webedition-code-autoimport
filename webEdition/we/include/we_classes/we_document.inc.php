@@ -1482,7 +1482,7 @@ class we_document extends we_root{
 					$rest = $regs[1];
 					$nr = preg_replace('/^.+_([0-9])+$/', '\1', $rest);
 					$sw = explode('_', $rest);
-					switch($sw){
+					switch($sw[0]){
 						case 'task':
 							$this->schedArr[$nr]['task'] = $v;
 							break;
@@ -1501,21 +1501,6 @@ class we_document extends we_root{
 						case 'parentid':
 							$this->schedArr[$nr]['ParentID'] = $v;
 							break;
-						case 'month':
-							$rest = substr($rest, 5);
-							$m = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-							$this->schedArr[$nr]['months'][$m - 1] = $v;
-							break;
-						case 'day':
-							$rest = substr($rest, 3);
-							$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-							$this->schedArr[$nr]['days'][$d - 1] = $v;
-							break;
-						case 'wday':
-							$rest = substr($rest, 4);
-							$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-							$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
-							break;
 						case 'time':
 							$rest = substr($rest, 5);
 							$foo = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
@@ -1524,6 +1509,22 @@ class we_document extends we_root{
 							}
 							$dates[$nr][$foo] = $v;
 							break;
+						default:
+							if(substr($sw[0],0,5) == 'month') {
+								$rest = substr($sw[0],5);
+								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$this->schedArr[$nr]['months'][$d-1] = $v;
+							}
+							else if(substr($sw[0],0,3) == 'day') {
+								$rest = substr($sw[0],3);
+								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$this->schedArr[$nr]['days'][$d-1] = $v;
+							}
+							else if(substr($sw[0],0,4) == 'wday') {
+								$rest = substr($sw[0],4);
+								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
+								$this->schedArr[$nr]['weekdays'][$d-1] = $v;
+							}
 					}
 				}
 			}
