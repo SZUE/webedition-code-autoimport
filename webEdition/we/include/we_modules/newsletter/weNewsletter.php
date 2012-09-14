@@ -156,9 +156,11 @@ class weNewsletter extends weNewsletterBase{
 		$groups = array();
 		foreach($this->blocks as $block){
 			$groups = makeArrayFromCSV($block->Groups);
-			foreach($groups as $k => $v)
-				if($v > $count_group)
+			foreach($groups as $k => $v){
+				if($v > $count_group){
 					array_splice($groups, $k);
+				}
+			}
 			$block->Groups = makeCSVFromArray($groups);
 			$block->NewsletterID = $this->ID;
 			$block->Source = addslashes($block->Source);

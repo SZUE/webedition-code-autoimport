@@ -305,8 +305,7 @@ function exit_close(){
 function htmlClipElement($smalltext, $text, $content){
 	$unique = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
 	$js = we_html_element::jsElement(
-			'
-		var state_' . $unique . '=0;
+			'var state_' . $unique . '=0;
 		function clip_' . $unique . '(){
 			var text_' . $unique . '="' . addslashes($text) . '";
 			var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";

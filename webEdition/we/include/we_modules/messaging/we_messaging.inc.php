@@ -624,7 +624,7 @@ class we_messaging extends we_class{
 
 	function userid_to_username($id){
 		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . addslashes($id));
+		$db2->query('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id));
 		if($db2->next_record()){
 			return $db2->f('username');
 		}

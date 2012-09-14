@@ -448,15 +448,15 @@ class weVersionsView{
 			function newinput() {
 
 				var searchFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, 'class="defaultfont" id="searchFields[__we_new_id__]" onChange="changeit(this.value, __we_new_id__);" '))) . '";
 				var locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'location[__we_new_id__]', $this->searchclass->getLocation(), 1, "", false, 'class="defaultfont" disabled id="location[__we_new_id__]"  '))) . '";
 				var search = "' . str_replace(
-					"\n", "\\n", addslashes(
+					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, 'class="defaultfont" style="width:190px;" id="search[__we_new_id__]" '))) . '";
 

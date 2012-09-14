@@ -60,12 +60,13 @@ echo 'top.we_tags=new Array();';
 $allWeTags = weTagWizard::getExistingWeTags();
 foreach($allWeTags as $tagName){
 	$GLOBALS['TagRefURLName'] = strtolower($tagName);
-	if(isset($weTag))
+	if(isset($weTag)){
 		unset($weTag);
+	}
 	$weTag = weTagData::getTagData($tagName);
-	echo sprintf('top.we_tags["we:%s"]= {', $tagName);
-	echo sprintf('"desc": "%s",', addslashes($weTag->getDescription()));
-	echo '"attributes":';
+	echo sprintf('top.we_tags["we:%s"]= {', $tagName) .
+		sprintf('"desc": "%s",', addslashes($weTag->getDescription())) .
+		'"attributes":';
 	$attr = $weTag->getAllAttributes();
 
 	if(count($attr)){
