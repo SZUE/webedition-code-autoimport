@@ -205,7 +205,7 @@ class we_objectEx extends we_object{
 			case "date":
 				return " INT(11) NOT NULL ";
 			case "input":
-				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "4095") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "255") . ") NOT NULL ";
 			case "country":
 			case "language":
 				return " VARCHAR(2) NOT NULL ";
