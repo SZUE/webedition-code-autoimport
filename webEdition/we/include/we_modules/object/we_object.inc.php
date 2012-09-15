@@ -499,7 +499,7 @@ class we_object extends we_document{
 	function switchtypes($name){
 		switch($this->getElement($name . "dtype", "dat")){
 			case "meta":
-				return " VARCHAR(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 4096)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
+				return " VARCHAR(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 255)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
 			case "date":
 				return " INT(11) NOT NULL ";
 			case "input":
@@ -897,7 +897,7 @@ class we_object extends we_document{
 			$maxLengthVal = $type == 'int' ? 10 : 4095;
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">' . g_l('modules_object', '[length]') . '</td>';
 			$content .= '<td width="170" class="defaultfont">';
-			$content .= $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "length]", 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 3), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388);
+			$content .= $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "length]", 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == 'int' ? 2 : 4), 'onChange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388);
 			$content .= '</td></tr>';
 		}
 
