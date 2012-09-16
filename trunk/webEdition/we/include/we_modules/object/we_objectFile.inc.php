@@ -2440,7 +2440,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB);
+		$oldUrl = f('SELECT Url FROM ' . $this->Table . ' WHERE ID=' . $this->ID, 'Url', $this->DB_WE);
 		if($saveinMainDB && !we_root::we_save(1)){
 			return false;
 		}
