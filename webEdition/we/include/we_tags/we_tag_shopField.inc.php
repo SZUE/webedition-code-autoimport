@@ -96,7 +96,7 @@ function we_tag_shopField($attribs){
 		case 'choice':
 			$reference = weTag_getAttribute("mode", $attribs);
 
-			return we_getInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
+			return we_html_tools::htmlInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
 
 			break;
 

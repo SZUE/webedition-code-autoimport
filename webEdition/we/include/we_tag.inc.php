@@ -373,47 +373,8 @@ function we_getHiddenField($name, $value, $xml = false){
 	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
-function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
-	//  This function replaced we_getChoiceField
-	//  we need input="text" and select-box
-	//  First input='text'
-	//<input type="text"'.($size ? ' size="'.$size.'"' : '').' name="'.$name.'" value="'.htmlspecialchars($value).'" '.$attr.($xml ? " /" :"").'>
-	$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
-
-	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
-	$attsOpts = array();
-
-	if($valuesIsHash){
-		foreach($values as $_val => $_text){
-			$attsOpts['value'] = htmlspecialchars($_val);
-			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
-		}
-	} else{
-		// options of select Menu
-		$options = makeArrayFromCSV($values);
-		if(isset($atts['xml'])){
-			$attsOpts['xml'] = $atts['xml'];
-		}
-
-		foreach($options as $option){
-			$attsOpts['value'] = htmlspecialchars($option);
-			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
-		}
-	}
-
-	// select menu
-	$onchange = ($mode == 'add' ? 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' : 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
-
-	if(isset($atts['id'])){ //  use another ID!!!!
-		$atts['id'] = 'tmp_' . $atts['id'];
-	}
-	$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
-	$atts['name'] = 'tmp_' . $name;
-	$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
-	$atts = removeAttribs($atts, array('size')); //  remove size for choice
-	$selectMenue = getHtmlTag('select', $atts, $opts, true);
-	return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
-}
+//function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
+//=> moved as statical function htmlInputChoiceField() to we_html_tools
 
 function we_getInputCheckboxField($name, $value, $attr){
 	//  returns a checkbox with associated hidden-field
