@@ -880,8 +880,8 @@ if(isset($_REQUEST["SendMail"])){
 }
 foreach(weShopStatusMails::$StatusFields as $field){
 	if(isset($_REQUEST[$field])){
-		list($year, $month, $day) = explode('.', $_REQUEST[$field]);
-		$DateOrder = $day . "-" . $month . "-" . $year . " 00:00:00";
+		list($day, $month, $year) = explode('.', $_REQUEST[$field]);
+		$DateOrder = $year . "-" . $month . "-" . $day . " 00:00:00";
 		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $GLOBALS['DB_WE']->escape($DateOrder) . '" WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
 		$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST["bid"], $_customer);
 	}
