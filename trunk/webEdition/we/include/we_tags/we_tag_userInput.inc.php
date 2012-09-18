@@ -817,7 +817,7 @@ function we_tag_userInput($attribs, $content){
 					'maxlength'
 					));
 				$mode = weTag_getAttribute("mode", $attribs);
-				return we_getInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
+				return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 			case "password" :
 				$atts = removeAttribs(
 					$attribs, array(

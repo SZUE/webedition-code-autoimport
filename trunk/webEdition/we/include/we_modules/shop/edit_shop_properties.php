@@ -558,7 +558,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			break;
 
 		case 'edit_shipping_cost':
-
 			$shopVats = weShopVats::getAllShopVATs();
 			$shippingVats = array();
 
@@ -607,7 +606,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				array(
 					'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
 					'space' => 150,
-					'html' => we_getInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
+					'html' => we_html_tools::htmlInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
 					'noline' => 1
 				)
 			);
