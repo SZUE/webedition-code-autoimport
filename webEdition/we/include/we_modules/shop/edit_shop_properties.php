@@ -1040,7 +1040,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$orderDataTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
 	foreach(weShopStatusMails::$StatusFields as $field){
 		if(!$weShopStatusMails->FieldsHidden[$field]){
-			$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Order', $_REQUEST[$field]);
+			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field,4), $_REQUEST[$field]);
 			$orderDataTable .= '<tr height="25">
 			<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
 			<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
