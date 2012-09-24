@@ -79,7 +79,11 @@ class we_document extends we_root{
 					$this->Category = $doc->Category;
 				}
 				$this->CreationDate = time();
-				$this->CreatorID = $_SESSION['user']['ID'];
+				if(isset($_SESSION['user'])){
+					$this->CreatorID = $_SESSION['user']['ID'];
+				} else {
+					$this->CreatorID =0;
+				}
 
 				$this->ID = 0;
 				$this->OldPath = '';
