@@ -72,7 +72,7 @@ function we_tag_saveRegisteredUser($attribs){
 						$uID = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', 'ID', $GLOBALS['DB_WE']);
 						$GLOBALS["we_customer_write_ID"] = $uID;
 						$GLOBALS["we_customer_writen"] = true;
-						$GLOBALS['we_customer_written'] = false;
+						$GLOBALS['we_customer_written'] = true;
 						if($uID && $changesessiondata){
 							$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uID, $GLOBALS['DB_WE']);
 							$_SESSION['webuser']['registered'] = true;
@@ -142,6 +142,8 @@ function we_tag_saveRegisteredUser($attribs){
 						$set_a['ModifyDate'] = 'UNIX_TIMESTAMP()';
 						$set_a['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
+						$GLOBALS["we_customer_writen"] = true;
+						$GLOBALS['we_customer_written'] = true;
 					}
 				}
 			} else{
