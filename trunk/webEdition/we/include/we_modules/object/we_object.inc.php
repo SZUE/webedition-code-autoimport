@@ -2301,7 +2301,6 @@ class we_object extends we_document{
 	 * @param	$field - the name of the field
 	 */
 	function isVariantField($field){
-            
 		$types = array('input', 'link', 'text', 'img', 'int', 'float', 'meta', 'date'); // #6924
 		$type = ($this->getElement($field . 'dtype', 'dat') != '') ? $this->getElement($field . 'dtype', 'dat') : '';
 		return in_array($type, $types);
