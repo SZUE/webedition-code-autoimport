@@ -568,7 +568,7 @@ class we_document extends we_root{
 		if($list){
 			if($isBlock){
 				foreach(array_keys($this->elements) as $key){
-					if(strpos($key, $names) !== FALSE){
+					if(preg_match('/' . $names .'(__.*)*$/', $key)){// # Bug 6904
 						unset($this->elements[$key]);
 					}
 				}
