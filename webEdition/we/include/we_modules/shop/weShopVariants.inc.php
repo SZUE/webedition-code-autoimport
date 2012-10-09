@@ -407,6 +407,7 @@ class weShopVariants{
 		$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
 		$content = $plusBut;
 
+                
 		array_push($parts, array('headline' => '',
 			'html' => $content,
 			'space' => 0
