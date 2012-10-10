@@ -121,7 +121,7 @@ class we_objectEx extends we_object{
 
 				$fieldtype = $this->getFieldType($arr[0]);
 				if(isset($value['length'])){
-					$len = ($fieldtype == 'string') ? ($value['length'] > 4095 ? 255 : $value['length']) : $value['length'];
+					$len = ($fieldtype == 'string') ? ($value['length'] > 1023 ? 1023 : $value['length']) : $value['length'];
 				} else{
 					$len = 0;
 				}
