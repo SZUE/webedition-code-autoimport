@@ -293,6 +293,10 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
 	$_pathA = explode('?', $path);
 	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
+	if(strlen($_url.$_pathA[1])<2000){
+		$url.='?'.$$_pathA[1];
+		unset($_pathA[1]);
+	}
 	$_params = array();
 
 	$_session = curl_init();
