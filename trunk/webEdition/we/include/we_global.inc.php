@@ -269,14 +269,16 @@ function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Cate
 }
 
 function getHttpOption(){
-	return 'curl';
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		if(ini_get('allow_url_fopen') != 1){
 			return (function_exists('curl_init') ? 'curl' : 'none');
+		} else{
+			return 'fopen';
 		}
+	} else{
+		return 'fopen'; 
 	}
-	return 'fopen';
 }
 
 function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
