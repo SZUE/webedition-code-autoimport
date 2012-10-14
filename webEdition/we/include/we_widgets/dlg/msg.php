@@ -26,7 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 
 we_html_tools::protect();
-$parts = array();
 $jsCode = "
 function init(){
 	_fo=document.forms[0];
@@ -50,9 +49,11 @@ function exit_close(){
 }
 ";
 
-array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+$parts = array(
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	)
+);
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
 $preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);

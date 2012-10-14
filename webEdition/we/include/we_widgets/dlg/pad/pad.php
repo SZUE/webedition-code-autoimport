@@ -183,7 +183,7 @@ $_sql = "INSERT INTO
 ) VALUES (
 	'" . $DB_WE->escape($_title) . "',
 	" . intval($_SESSION['user']['ID']) . ",
-	DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
+	CURDATE(),
 	'" . $DB_WE->escape($_get_title) . "',
 	'" . $DB_WE->escape($_get_text) . "',
 	'" . $DB_WE->escape($_get_prio) . "',

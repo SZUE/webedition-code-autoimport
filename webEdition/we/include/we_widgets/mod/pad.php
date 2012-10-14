@@ -50,20 +50,16 @@ $_sObjId = $_REQUEST['we_cmd'][5];
 
 switch($_REQUEST['we_cmd'][2]){
 	case 'delete' :
-		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . intval($q_Csv);
+		$_sql = 'DELETE FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ID = ' . intval($q_Csv);
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
-		$entTitle = base64_decode($q_Title);
-		$entTitle = str_replace("'", '&#039;', $entTitle);
-		$entTitle = str_replace('"', '&quot;', $entTitle);
+		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Title));
+		$entText = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Text));
 		if($q_Valid == "always" || $q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$entText = base64_decode($q_Text);
-		$entText = str_replace("'", '&#039;', $entText);
-		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "UPDATE " . $GLOBALS['DB_WE']->escape($_table) . " SET
+		$_sql = 'UPDATE ' . $GLOBALS['DB_WE']->escape($_table) . " SET
 			Title = '" . $GLOBALS['DB_WE']->escape($entTitle) . "',
 			Text = '" . $GLOBALS['DB_WE']->escape($entText) . "',
 			Priority = '" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
@@ -81,12 +77,8 @@ switch($_REQUEST['we_cmd'][2]){
 		if($q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$entTitle = base64_decode($q_Title);
-		$entTitle = str_replace("'", '&#039;', $entTitle);
-		$entTitle = str_replace('"', '&quot;', $entTitle);
-		$entText = base64_decode($q_Text);
-		$entText = str_replace("'", '&#039;', $entText);
-		$entText = str_replace('"', '&quot;', $entText);
+		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Title));
+		$entText = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Text));
 		$_sql = "INSERT INTO " . $GLOBALS['DB_WE']->escape($_table) . " (
 			WidgetName,
 			UserID,
@@ -100,7 +92,7 @@ switch($_REQUEST['we_cmd'][2]){
 		) VALUES (
 			'" . ($_title) . "',
 			" . intval($_SESSION['user']['ID']) . ",
-			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
+			CURDATE(),
 			'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
 			'" . $GLOBALS['DB_WE']->escape($entText) . "',
 			'" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
@@ -339,7 +331,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js").
+			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_element::jsElement(we_button::create_state_changer(false)) . we_html_element::jsElement(
