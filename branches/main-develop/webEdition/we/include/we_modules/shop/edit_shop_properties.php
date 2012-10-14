@@ -558,7 +558,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			break;
 
 		case 'edit_shipping_cost':
-
 			$shopVats = weShopVats::getAllShopVATs();
 			$shippingVats = array();
 
@@ -607,7 +606,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				array(
 					'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
 					'space' => 150,
-					'html' => we_getInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
+					'html' => we_html_tools::htmlInputChoiceField("weShipping_vatRate", $shippingVat, $shippingVats, array(), '', true),
 					'noline' => 1
 				)
 			);
@@ -880,7 +879,7 @@ if(isset($_REQUEST["SendMail"])){
 }
 foreach(weShopStatusMails::$StatusFields as $field){
 	if(isset($_REQUEST[$field])){
-		list($year, $month, $day) = explode('.', $_REQUEST[$field]);
+		list($day, $month, $year) = explode('.', $_REQUEST[$field]);
 		$DateOrder = $year . "-" . $month . "-" . $day . " 00:00:00";
 		$GLOBALS['DB_WE']->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $GLOBALS['DB_WE']->escape($DateOrder) . '" WHERE IntOrderID = ' . intval($_REQUEST["bid"]));
 		$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST["bid"], $_customer);
@@ -1041,7 +1040,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$orderDataTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
 	foreach(weShopStatusMails::$StatusFields as $field){
 		if(!$weShopStatusMails->FieldsHidden[$field]){
-			$EMailhandler = $weShopStatusMails->getEMailHandlerCode('Order', $_REQUEST[$field]);
+			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field,4), $_REQUEST[$field]);
 			$orderDataTable .= '<tr height="25">
 			<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
 			<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>

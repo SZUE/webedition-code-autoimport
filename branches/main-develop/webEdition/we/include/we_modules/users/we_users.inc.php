@@ -2516,13 +2516,12 @@ class we_user{
 				$tmp_str = str_shuffle($WE_SALTCHARS);
 				$salt .= $tmp_str[0];
 			}
-			$salted = crypt($passwd, $salt);
 			$useSalt = 2;
+			return crypt($passwd, $salt);
 		} else{
-			$salted = md5($passwd . md5($username));
 			$useSalt = 1;
+			return md5($passwd . md5($username));
 		}
-		return $salted;
 	}
 
 }

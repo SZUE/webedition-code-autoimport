@@ -72,7 +72,9 @@ top.document.forms[0].elements["newpasswd2"].focus();
 top.document.forms[0].elements["newpasswd2"].select();';
 		} else{
 			$useSalt = 0;
-			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION["user"]["Username"], $newpasswd)) . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
+			//essential leave this line
+			$pwd = $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION["user"]["Username"], $newpasswd));
+			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 				'top.close();';
 		}

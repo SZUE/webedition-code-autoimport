@@ -396,6 +396,47 @@ HTS;
 		return "$out</select>";
 	}
 
+	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
+		//  This function replaced we_getChoiceField
+		//  we need input="text" and select-box
+		//  First input='text'
+		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
+
+		$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+		$attsOpts = array();
+
+		if($valuesIsHash){
+			foreach($values as $_val => $_text){
+				$attsOpts['value'] = htmlspecialchars($_val);
+				$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
+			}
+		} else{
+			// options of select Menu
+			$options = makeArrayFromCSV($values);
+			if(isset($atts['xml'])){
+				$attsOpts['xml'] = $atts['xml'];
+			}
+
+			foreach($options as $option){
+				$attsOpts['value'] = htmlspecialchars($option);
+				$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
+			}
+		}
+
+		// select menu
+		$onchange = ($mode == 'add' ? 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' : 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
+
+		if(isset($atts['id'])){ //  use another ID!!!!
+			$atts['id'] = 'tmp_' . $atts['id'];
+		}
+		$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
+		$atts['name'] = 'tmp_' . $name;
+		$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
+		$atts = removeAttribs($atts, array('size')); //  remove size for choice
+		$selectMenue = getHtmlTag('select', $atts, $opts, true);
+		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
+	}
+
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
 
 		$img = '<img src="' . IMAGE_DIR . 'buttons/' . $name . ($disabled ? "_d" : "") . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' border="0" alt="' . $alt . '">';

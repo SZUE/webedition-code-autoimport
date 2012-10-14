@@ -78,7 +78,11 @@ class we_document extends we_root{
 					$this->Category = $doc->Category;
 				}
 				$this->CreationDate = time();
-				$this->CreatorID = $_SESSION['user']['ID'];
+				if(isset($_SESSION['user'])){
+					$this->CreatorID = $_SESSION['user']['ID'];
+				} else {
+					$this->CreatorID =0;
+				}
 
 				$this->ID = 0;
 				$this->OldPath = '';
@@ -563,7 +567,7 @@ class we_document extends we_root{
 		if($list){
 			if($isBlock){
 				foreach(array_keys($this->elements) as $key){
-					if(strpos($key, $names) !== FALSE){
+					if(preg_match('/' . $names .'(__.*)*$/', $key)){// # Bug 6904
 						unset($this->elements[$key]);
 					}
 				}

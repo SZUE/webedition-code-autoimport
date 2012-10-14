@@ -383,8 +383,8 @@ class weShopVariants{
 						$type = $regs[1];
 						$realname = $regs[2];
 					}
-					$name = WE_SHOP_VARIANTS_PREFIX . $i . '_' . $realname;
-
+					//$name = WE_SHOP_VARIANTS_PREFIX . $i . '_' . $realname; 
+                                        $name=""; //#6924
 					$content .= '<tr>
 						<td><span class="defaultfont"><b>' . $realname . '</b></span><div class="objectDescription">' . (isset($model->DefArray[$type . '_' . $realname]['editdescription']) ? $model->DefArray[$type . '_' . $realname]['editdescription'] : '') . '</div></td>
 						</tr>
@@ -407,6 +407,7 @@ class weShopVariants{
 		$plusBut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
 		$content = $plusBut;
 
+                
 		array_push($parts, array('headline' => '',
 			'html' => $content,
 			'space' => 0
