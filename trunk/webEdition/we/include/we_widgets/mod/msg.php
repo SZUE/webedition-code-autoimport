@@ -36,7 +36,6 @@ if(defined("MESSAGING_SYSTEM")){
 	$new_messages = g_l('modules_messaging', "[new_messages]");
 	$new_tasks = g_l('modules_messaging', "[new_tasks]");
 
-	$messaging = "";
 	$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->add_msgobj('we_message', 1);

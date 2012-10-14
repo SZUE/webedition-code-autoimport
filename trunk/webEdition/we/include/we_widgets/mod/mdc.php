@@ -23,11 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget MY DOCUMENTS
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $mdc = "";
 $ct["image"] = true;
-$aCsv = explode(";", $aProps[3]);
+if(!isset($aCsv)){
+	$aCsv = explode(';', $aProps[3]);
+}
 $_binary = $aCsv[1];
 $_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
 $_csv = $aCsv[2];
@@ -49,9 +52,8 @@ if(!$_binary{0} && !empty($_csv)){
 		$_cats = explode(",", $aCsv[4]);
 		$_categories = array();
 		foreach($_cats as $_myCat){
-			$_id = f(
-				'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($_myCat)) . '";', 'ID', $GLOBALS['DB_WE']);
-			$_categories[] = 'Category LIKE ",' . $GLOBALS['DB_WE']->escape($_id) . ',"';
+			$_id = f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($_myCat)) . '"', 'ID', $GLOBALS['DB_WE']);
+			$_categories[] = 'Category LIKE ",' . intval($_id) . ',"';
 		}
 	}
 	$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
@@ -65,8 +67,7 @@ if(!empty($_csv) && $DB_WE->query($_query)){
 					"src" => ICON_DIR . $DB_WE->f("Icon")
 			)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
 				array(
-				"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(
-					"ID") . '\',\'' . $DB_WE->f("ContentType") . '\')"',
+				"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 				"title" => $DB_WE->f("Path"),
 				"style" => "color:#000000;text-decoration:none;"
 				), $DB_WE->f("Path")) . '</td></tr>';

@@ -22,14 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
+// widget MY DOCUMENTS
 
-$mdc = "";
-$ct["image"] = true;
-$_binary = $_REQUEST['we_cmd'][0];
-$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
-$_csv = $_REQUEST['we_cmd'][1];
+list($dir, $dt_tid, $cats) = explode(";", $_REQUEST['we_cmd'][1]);
+$aCsv = array(
+	0, //unused - compatibility
+	$_REQUEST['we_cmd'][0],
+	$dir,
+	$dt_tid,
+	$cats
+);
+require_once('../../mod/mdc.php');
 
 $js = "
 var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
@@ -40,49 +43,6 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }
 ";
-
-if($_binary{0} && !empty($_csv)){
-	$_ids = explode(",", $_csv);
-	$_paths = makeArrayFromCSV(id_to_path($_ids, $_table));
-	$_where = array();
-	foreach($_paths as $_path){
-		$_where[] = 'Path LIKE "' . $_path . '%" ';
-	}
-	$_query = "SELECT ID,Path,Icon,Text,ContentType FROM " . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType<>"image/*"' : '') . ';';
-} else
-if(!$_binary{0} && $_binary{0} != ""){
-	list($dir, $dt_tid, $cats) = explode(";", $_csv);
-	list($folderID, $folderPath) = explode(",", $dir);
-	$q_path = 'Path LIKE "' . $folderPath . '%"';
-	$q_dtTid = ($dt_tid != 0) ? (!$_binary{1} ? 'DocType' : 'TableID') . '="' . $dt_tid . '"' : '';
-	if($cats != ""){
-		$_cats = explode(",", $cats);
-		$_categories = array();
-		foreach($_cats as $_myCat){
-			$_id = f(
-				'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($_myCat)) . '";', 'ID', $DB_WE);
-			$_categories[] = 'Category LIKE ",' . intval($_id) . ',"';
-		}
-	}
-	$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
-			$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
-}
-if(isset($_query) && $DB_WE->query($_query) && !empty($_csv)){
-	$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
-	while($DB_WE->next_record()) {
-		$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
-				array(
-					"src" => ICON_DIR . $DB_WE->f("Icon")
-			)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
-				array(
-				"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(
-					"ID") . '\',\'' . $DB_WE->f("ContentType") . '\');',
-				"title" => $DB_WE->f("Path"),
-				"style" => "color:#000000;text-decoration:none;"
-				), $DB_WE->f("Path")) . '</td></tr>';
-	}
-	$mdc .= '</table>';
-}
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
