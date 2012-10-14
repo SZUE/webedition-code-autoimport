@@ -105,25 +105,23 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"', $DB_WE);
 
 		if(!we_user::comparePasswords($userData['UseSalt'], $_SESSION["user"]["Username"], $userData['passwd'], $oldpasswd)){
-			print
-				we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
-		top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
+			print we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
+	top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
 		} else if(strlen($newpasswd) < 4){
-			print
-				we_message_reporting::getShowMessageCall(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
-		top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
+			print we_message_reporting::getShowMessageCall(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
+	top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
 		} else if($newpasswd != $newpasswd2){
-			print
-				we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
-		top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
+			print we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
+	top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
 		} else{
 			$useSalt = 0;
-			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION["user"]["Username"], $newpasswd)) . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
-			print
-				we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+			//essential leave this line
+			$pwd = $DB_WE->escape(we_user::makeSaltedPassword($useSalt, $_SESSION["user"]["Username"], $newpasswd));
+			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
+			print we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 				'top.close();';
 		}
 	}
