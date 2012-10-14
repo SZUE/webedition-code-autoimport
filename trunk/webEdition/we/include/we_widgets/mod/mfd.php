@@ -26,8 +26,9 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$sCsv = $aProps[3];
-$aCols = explode(";", $sCsv);
+if(!isset($aCols)){
+	$aCols = explode(";", $aProps[3]);
+}
 $sTypeBinary = $aCols[0];
 $bTypeDoc = (bool) $sTypeBinary{0};
 $bTypeTpl = (bool) $sTypeBinary{1};
@@ -103,19 +104,17 @@ if($_SESSION["we_mode"] == "seem"){
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;
 $i = $j = $k = 0;
+$_db = new DB_WE();
 while($j < $iMaxItems) {
-	$_query = "SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k * $_count) . " , " . $_count;
-	$k++;
-	$DB_WE->query($_query);
-	$_db = new DB_WE();
+	$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . abs($k++ * $_count) . ' , ' . abs($_count));
 	$num_rows = $DB_WE->num_rows();
 	if($num_rows == 0){
 		break;
 	}
 	while($DB_WE->next_record()) {
-		$_table = TBL_PREFIX . $DB_WE->f("DocumentTable");
+		$_table = TBL_PREFIX . $_db->f('DocumentTable');
 		$_paths = array();
-		$_bool_ot = (defined("OBJECT_TABLE")) ? (($_table != OBJECT_TABLE) ? true : false) : true;
+		$_bool_ot = (defined('OBJECT_TABLE')) ? (($_table != OBJECT_TABLE) ? true : false) : true;
 		if(!we_hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)){
 			if(isset($_ws[$_table])){
 				$_wsa = makeArrayFromCSV($_ws[$_table]);
@@ -124,30 +123,28 @@ while($j < $iMaxItems) {
 				}
 			}
 		}
-		$_hash = getHash("SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM " . $DB_WE->escape($_table) . " WHERE ID = " . $DB_WE->f("DID") . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '').' ORDER BY ModDate LIMIT 1', $_db);
+		$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $DB_WE->escape($_table) . ' WHERE ID = ' . $DB_WE->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
 		if(!empty($_hash)){
 			$_show = true;
-			$_bool_oft = (defined("OBJECT_FILES_TABLE")) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
+			$_bool_oft = (defined('OBJECT_FILES_TABLE')) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;
 
 			if($_table == FILE_TABLE || $_bool_oft){
 				$_show = we_history::userHasPerms($_hash['CreatorID'], $_hash['Owners'], $_hash['RestrictOwners']);
 			}
 			if($_show){
 				if($i + 1 <= $iMaxItems){
-					$i++;
-					$j++;
-					$lastModified .= '<tr>';
-					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(
-							4, 1) . '</td>';
-					$lastModified .= '<td valign="middle" class="middlefont">';
-					$lastModified .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\')" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
-					if($bMfdBy)
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f(
-								"UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
-					if($bDateLastMfd)
-						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(
-								g_l('date', '[format][default]'), $_hash['ModDate']) . '</td>';
-					$lastModified .= "</tr>\n";
+					++$i;
+					++$j;
+					$lastModified .= '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(4, 1) . '</td>' .
+						'<td valign="middle" class="middlefont">' .
+						'<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
+					if($bMfdBy){
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f("UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
+					}
+					if($bDateLastMfd){
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $_hash['ModDate']) . '</td>';
+					}
+					$lastModified .= '</tr>';
 				} else{
 					break;
 				}
@@ -160,4 +157,4 @@ while($j < $iMaxItems) {
 	}
 }
 
-$lastModified .= "</table>\n";
+$lastModified .= '</table>';
