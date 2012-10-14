@@ -297,7 +297,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
 	if(strlen($_url.$_pathA[1])<2000){
 		//it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
-		$url.='?'.$$_pathA[1];
+		$_url.='?'.$$_pathA[1];
 		unset($_pathA[1]);
 	}
 	$_params = array();
