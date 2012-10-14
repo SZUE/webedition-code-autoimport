@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-$aCols = explode(";", isset($aProps) ? $aProps[3] : $_REQUEST['we_cmd'][0]);
+$aCols = explode(';', isset($aProps) ? $aProps[3] : $_REQUEST['we_cmd'][0]);
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
 if(we_hasPerm("NEW_WEBEDITIONSITE")){
@@ -40,8 +40,7 @@ if(we_hasPerm("NEW_WEBEDITIONSITE")){
 			foreach($b as $k => $v){
 				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID=" . intval($v));
 				while($DB_WE->next_record())
-					array_push(
-						$paths, "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')");
+					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
 			}
 		}
 		if(is_array($paths) && count($paths) > 0){
@@ -99,7 +98,7 @@ if(we_hasPerm("EDIT_SETTINGS")){
 
 $shortcuts = array();
 foreach($aCols as $sCol){
-	$shortcuts[] = explode(",", $sCol);
+	$shortcuts[] = explode(',', $sCol);
 }
 
 $sSctOut = '';

@@ -32,10 +32,12 @@ $numRows = 25;
 
 $tbls = array();
 if($bTypeDoc && $bTypeObj){
-	if(defined("FILE_TABLE"))
+	if(defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
-	if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
+	}
+	if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
 		$tbls[] = OBJECT_FILES_TABLE;
+	}
 } else{
 	if($bTypeDoc && defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
@@ -70,7 +72,7 @@ foreach($tbls as $table){
 	$wsQuery = "";
 
 	if($table == FILE_TABLE)
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsArr = makeArrayFromCSV($ws);
 			foreach($wsArr as $i){
 				array_push($parents, $i);
@@ -171,4 +173,4 @@ reset($_cont);
 foreach($_cont as $k => $v){
 	$ct .= $v . "\n";
 }
-$ct .= "</table>\n";
+$ct .= '</table>';

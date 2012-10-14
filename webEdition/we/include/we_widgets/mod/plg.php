@@ -138,4 +138,3 @@ if($_isPrev){
 			), 1, 1);
 	$_pLog->setCol(0, 0, null, $_pLogOut);
 }
-?>
