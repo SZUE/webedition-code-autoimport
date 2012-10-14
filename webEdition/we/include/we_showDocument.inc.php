@@ -111,7 +111,7 @@ if(($we_include = $we_doc->editor($baseHref))){
 		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
 			//	@ -> to aware of unproper use of this element, f. ex in include-File
-			@we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
+			@we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
 		}
 
 		// --> Glossary Replacement
