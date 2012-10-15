@@ -30,7 +30,7 @@ class we_binaryDocument extends we_document{
 	var $ClassName = __CLASS__;
 
 	/* The HTML-Code which can be included in a HTML Document */
-	var $html = "";
+	var $html = '';
 	var $IsBinary = true;
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
 	var $LoadBinaryContent = true;
@@ -113,7 +113,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function i_getDocument(){
-		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
+		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
 
 	protected function i_writeDocument(){
@@ -160,7 +160,7 @@ class we_binaryDocument extends we_document{
 	/* gets the filesize of the document */
 
 	function getFilesize(){
-		return filesize($this->elements["data"]["dat"]);
+		return filesize($this->elements['data']['dat']);
 		/* 		if(!$size){
 		  t_e('filesize 0 in ' . $this->elements["data"]["dat"], $this->getSitePath());
 		  } */
@@ -186,7 +186,7 @@ class we_binaryDocument extends we_document{
 				'WorkspaceID' => intval($this->ParentID),
 				'Category' => $this->Category,
 				'Doctype' => '',
-				'Title' => $this->getElement("Title"),
+				'Title' => $this->getElement('Title'),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
 			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
