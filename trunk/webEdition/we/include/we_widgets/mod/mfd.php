@@ -111,7 +111,7 @@ while($j < $iMaxItems) {
 		break;
 	}
 	while($DB_WE->next_record()) {
-		$_table = TBL_PREFIX . $_db->f('DocumentTable');
+		$_table = TBL_PREFIX . $DB_WE->f('DocumentTable');
 		$_paths = array();
 		$_bool_ot = (defined('OBJECT_TABLE')) ? (($_table != OBJECT_TABLE) ? true : false) : true;
 		if(!we_hasPerm('ADMINISTRATOR') || ($_table != TEMPLATES_TABLE && $_bool_ot)){
