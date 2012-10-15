@@ -25,6 +25,9 @@
 class we_shop_shop{
 
 //FIXME: is this classname really correct?!
+// $ClassName is used in we:listview_multiobject.class.php: if($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart')
+// This could be changed to: if(get_class($GLOBALS['lv']) == 'we_shop_shop')
+
 	var $ClassName = "we_listview_shoppingCart";
 	var $DB_WE;
 	var $IDs = array();
@@ -46,16 +49,18 @@ class we_shop_shop{
 		}
 
 		$this->IDs = array_keys($this->ShoppingCartItems);
+
+		if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
+			$GLOBALS['we_lv_array'] = array();
+		}
+		array_push($GLOBALS['we_lv_array'], clone($this));
 	}
 
 	function next_record(){
-
 		$shoppingCartItems = $this->ShoppingCartItems;
-
 		$this->anz = count($this->IDs);
 
 		if($this->count < count($this->IDs)){
-
 			$cartKey = $this->IDs[$this->count];
 			$this->ShoppingCartKey = $cartKey;
 
@@ -73,6 +78,7 @@ class we_shop_shop{
 				}
 			}
 			$this->count++;
+			$GLOBALS["we_lv_array"][(sizeof($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			return true;
 		}
 		return false;
@@ -86,13 +92,10 @@ class we_shop_shop{
 	}
 
 	function getCustomFieldsAsRequest(){
-
 		$ret = '';
-
 		foreach($this->ActItem['customFields'] as $key => $value){
 			$ret .= "&" . WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$key]=$value";
 		}
-
 		return $ret;
 	}
 
