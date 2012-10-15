@@ -55,6 +55,7 @@ abstract class we_database_base{
 
 	/** 1 to enable Debug messages - static to be enabled from outside for all next queries */
 	public static $Debug = 0;
+	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor
 	 *
@@ -268,6 +269,10 @@ abstract class we_database_base{
 			$this->Errno = 0;
 			$this->Error = '';
 			$this->Row = 0;
+			if(self::$Trigger_cnt){
+				--self::$Trigger_cnt;
+				t_e($Query_String);
+			}
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if($Query_String == ''){
@@ -860,9 +865,13 @@ abstract class we_database_base{
 			}
 		}
 		if($found){
-			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `'.trim($newPos,'`').'`'));
+			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `' . trim($newPos, '`') . '`'));
 		}
 		return false;
+	}
+
+	public function t_e_query($cnt = 1){
+		self::$Trigger_cnt = $cnt;
 	}
 
 }
