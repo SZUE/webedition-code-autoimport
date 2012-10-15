@@ -56,7 +56,11 @@ function we_tag_repeatShopItem($attribs){
 			$GLOBALS["lv"] = new we_shop_shop($GLOBALS[$shopname]);
 			break;
 		case 'stop':
-			unset($GLOBALS["lv"]);
+			if(isset($GLOBALS['we_lv_array'])){
+				we_post_tag_listview();
+			} else{
+				unset($GLOBALS["lv"]);
+			}
 			break;
 	}
 }
