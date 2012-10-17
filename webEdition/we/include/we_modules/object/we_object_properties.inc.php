@@ -22,52 +22,54 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$parts = array();
 
 if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
-	array_push($parts, array(
-		"headline" => g_l('weClass', "[path]"),
-		"html" => $GLOBALS['we_doc']->formPath(),
-		"space" => 140,
-		"icon" => "path.gif")
-	);
-	array_push($parts, array(
-		"headline" => g_l('modules_object', '[default]'),
-		"html" => $GLOBALS['we_doc']->formDefault(),
-		"space" => 140,
-		"icon" => "default.gif")
-	);
-	array_push($parts, array(
-		"headline" => g_l('weClass', "[Charset]"),
-		"html" => $GLOBALS['we_doc']->formCharset(),
-		"space" => 140,
-		"icon" => "charset.gif")
-	);
-	array_push($parts, array(
-		"headline" => g_l('weClass', "[CSS]"),
-		"html" => $GLOBALS['we_doc']->formCSS(),
-		"space" => 140,
-		"icon" => "css.gif")
-	);
-	array_push($parts, array(
-		"headline" => g_l('modules_object', '[copyClass]'),
-		"html" => $GLOBALS['we_doc']->formCopyDocument(),
-		"space" => 140,
-		"icon" => "copy.gif")
+	$parts = array(
+		array(
+			"headline" => g_l('weClass', "[path]"),
+			"html" => $GLOBALS['we_doc']->formPath(),
+			"space" => 140,
+			"icon" => "path.gif"
+		),
+		array(
+			"headline" => g_l('modules_object', '[default]'),
+			"html" => $GLOBALS['we_doc']->formDefault(),
+			"space" => 140,
+			"icon" => "default.gif"
+		),
+		array(
+			"headline" => g_l('weClass', "[Charset]"),
+			"html" => $GLOBALS['we_doc']->formCharset(),
+			"space" => 140,
+			"icon" => "charset.gif"
+		),
+		array(
+			"headline" => g_l('weClass', "[CSS]"),
+			"html" => $GLOBALS['we_doc']->formCSS(),
+			"space" => 140,
+			"icon" => "css.gif"
+		),
+		array(
+			"headline" => g_l('modules_object', '[copyClass]'),
+			"html" => $GLOBALS['we_doc']->formCopyDocument(),
+			"space" => 140,
+			"icon" => "copy.gif"
+		)
 	);
 } else{
-
-	array_push($parts, array(
-		"headline" => g_l('weClass', "[workspaces]"),
-		"html" => $GLOBALS['we_doc']->formWorkspaces(),
-		"space" => 140,
-		"icon" => "workspace.gif")
-	);
-	array_push($parts, array(
-		"headline" => g_l('modules_object', '[behaviour]'),
-		"html" => $GLOBALS['we_doc']->formWorkspacesFlag(),
-		"space" => 140,
-		"icon" => "display.gif")
+	$parts = array(
+		array(
+			"headline" => g_l('weClass', "[workspaces]"),
+			"html" => $GLOBALS['we_doc']->formWorkspaces(),
+			"space" => 140,
+			"icon" => "workspace.gif"
+		),
+		array(
+			"headline" => g_l('modules_object', '[behaviour]'),
+			"html" => $GLOBALS['we_doc']->formWorkspacesFlag(),
+			"space" => 140,
+			"icon" => "display.gif"
+		)
 	);
 }
 print we_multiIconBox::getJS();
