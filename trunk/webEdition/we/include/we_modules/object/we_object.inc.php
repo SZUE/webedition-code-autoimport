@@ -1277,7 +1277,6 @@ class we_object extends we_document{
 		$attribs = array();
 		$n = $n . "default";
 		$attribs["name"] = $n;
-		$out = "";
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(!is_array($link))
 			$link = array();
@@ -1698,6 +1697,7 @@ class we_object extends we_document{
 		$all = $this->DefaultText;
 		$text1 = 0;
 		$zahl = 0;
+		$regs = array();
 
 		while(!empty($all)) {
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
@@ -1723,8 +1723,8 @@ class we_object extends we_document{
 			$zahl++;
 		}
 
-		$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
-		$select .= '<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
+		$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;" .
+			'<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
 
 		$var_flip = array_flip(g_l('modules_object', '[url]'));
 
@@ -1794,10 +1794,8 @@ class we_object extends we_document{
 			$zahl++;
 		}
 
-		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
-		$select2 .= '<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
-
-
+		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;" .
+			'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
 
 		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
@@ -1853,13 +1851,9 @@ class we_object extends we_document{
 			if(weFileExists($arr[$i])){
 				array_push($newArr, $arr[$i]);
 				if(in_array($arr[$i], $_defaultArr)){
-					array_push($_newDefaultArr, $arr[$i]);
+					$_newDefaultArr[] = $arr[$i];
 				}
-				if(isset($_tmplArr[$i])){
-					array_push($_newTmplArr, $_tmplArr[$i]);
-				} else{
-					array_push($_newTmplArr, '');
-				}
+				$_newTmplArr[] = (isset($_tmplArr[$i]) ? $_tmplArr[$i] : '');
 			}
 		}
 
@@ -1986,7 +1980,7 @@ class we_object extends we_document{
 		$tempArr = array();
 
 		foreach($workspaces as $ws){
-			array_push($tempArr, $ws);
+			$tempArr[] = $ws;
 		}
 
 		$this->Workspaces = makeCSVFromArray($tempArr, true);
@@ -2131,17 +2125,18 @@ class we_object extends we_document{
 				for($i = 0; $i < sizeof(makeArrayFromCSV($this->Workspaces)); $i++){
 					$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
 				}
-				if($this->Templates)
-					$this->Templates = "," . $this->Templates;
-				$this->DefaultWorkspaces = "";
+				if($this->Templates){
+					$this->Templates = ',' . $this->Templates;
+				}
+				$this->DefaultWorkspaces = '';
 				$wsp = makeArrayFromCSV($this->Workspaces);
 				for($i = 0; $i < sizeof($wsp); $i++){
 					if(isset($_REQUEST["we_" . $this->Name . "_DefaultWorkspaces_" . $i])){
-						$this->DefaultWorkspaces .= $wsp[$i] . ",";
+						$this->DefaultWorkspaces .= $wsp[$i] . ',';
 					}
 				}
 				if($this->DefaultWorkspaces)
-					$this->DefaultWorkspaces = "," . $this->DefaultWorkspaces;
+					$this->DefaultWorkspaces = ',' . $this->DefaultWorkspaces;
 			}
 		}
 	}
@@ -2224,11 +2219,7 @@ class we_object extends we_document{
 				}
 			}
 		}
-		if(empty($doubleNames)){
-			return false;
-		} else{
-			return $doubleNames;
-		}
+		return (empty($doubleNames) ? false : $doubleNames);
 	}
 
 	protected function i_writeDocument(){
@@ -2236,33 +2227,50 @@ class we_object extends we_document{
 	}
 
 	protected function i_setElementsFromHTTP(){
-		//reset radio fields which can be unset
-		unset($this->elements['title']['dat']);
-		unset($this->elements['desc']['dat']);
-		unset($this->elements['keywords']['dat']);
-		unset($this->elements['urlfield0']['dat']);
-		unset($this->elements['urlfield1']['dat']);
-		unset($this->elements['urlfield2']['dat']);
-		unset($this->elements['urlfield3']['dat']);
-
-		parent::i_setElementsFromHTTP();
-
-		$hrefFields = false;
-
+		$changeData = $hrefFields = false;
+		$regs = array();
 		foreach($_REQUEST as $n => $v){
-
 			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
+				$changeData = true;
 				if($regs[1] == "href"){
 					$hrefFields = true;
 					break;
 				}
 			}
 		}
+
+		if($changeData){
+			/*
+			  //reset radio fields which can be unset
+			  if(isset($this->elements['title']['dat'])){
+			  unset($this->elements['title']['dat']);
+			  }
+			  if(isset($this->elements['desc']['dat'])){
+			  unset($this->elements['desc']['dat']);
+			  }
+			  if(isset($this->elements['keywords']['dat'])){
+			  unset($this->elements['keywords']['dat']);
+			  }
+			  if(isset($this->elements['urlfield0']['dat'])){
+			  unset($this->elements['urlfield0']['dat']);
+			  }
+			  if(isset($this->elements['urlfield1']['dat'])){
+			  unset($this->elements['urlfield1']['dat']);
+			  }
+			  if(isset($this->elements['urlfield2']['dat'])){
+			  unset($this->elements['urlfield2']['dat']);
+			  }
+			  if(isset($this->elements['urlfield3']['dat'])){
+			  unset($this->elements['urlfield3']['dat']);
+			  } */
+		}
+		parent::i_setElementsFromHTTP();
+
 		if($hrefFields){
 
 			$this->resetElements();
 			$hrefs = array();
-			while(list($k, $v) = $this->nextElement('href')) {
+			while((list($k, $v) = $this->nextElement('href'))) {
 
 				$realName = preg_replace('/^(.+)_we_jkhdsf_.+$/', '\1', $k);
 				$key = preg_replace('/^.+_we_jkhdsf_(.+)$/', '\1', $k);
@@ -2367,8 +2375,9 @@ class we_object extends we_document{
 	function formDirChooser($width = "", $rootDirID = 0, $table = "", $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $pathID = 0, $identifier = ""){
 		$path = id_to_path($pathID);
 
-		if(!$table)
+		if(!$table){
 			$table = $this->Table;
+		}
 		$textname = 'we_' . $this->Name . '_' . $Pathname . ($identifier != "" ? "_" . $identifier : "");
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
