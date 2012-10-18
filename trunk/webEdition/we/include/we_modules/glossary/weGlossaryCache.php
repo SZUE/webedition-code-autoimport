@@ -44,21 +44,11 @@ class weGlossaryCache{
 	var $_cacheId = '';
 
 	/**
-	 * PHP5 Constructor
+	 * Constructor
 	 *
 	 * @param string $language
 	 */
 	function __construct($language){
-		$this->weGlossaryCache($language);
-	}
-
-	/**
-	 * PHP4 Constructor
-	 *
-	 * @param string $language
-	 * @return GlossaryCache
-	 */
-	function weGlossaryCache($language){
 		$this->language = $language;
 		$this->_createCacheId();
 	}

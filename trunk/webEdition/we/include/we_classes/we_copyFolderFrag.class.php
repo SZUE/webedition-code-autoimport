@@ -259,7 +259,6 @@ class copyFolderFrag extends taskFragment{
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data["CopyToId"]);
 		$path = preg_replace('|^' . $this->data["CopyFromPath"] . '/|', $this->copyToPath . '/', $this->data["Path"]);
-		//include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $this->data["ClassName"] . ".inc.php");
 		$GLOBALS['we_doc'] = new $this->data["ClassName"]();
 		if($this->data["IsFolder"]){
 			$GLOBALS['we_doc']->initByPath($path);

@@ -92,19 +92,7 @@ class weGlossarySearch{
 	 *
 	 */
 	function __construct($table){
-
-		$this->weGlossarySearch($table);
-	}
-
-	/**
-	 * PHP 4 Constructor
-	 *
-	 * @return weGlossarySearch
-	 */
-	function weGlossarySearch($table){
-
 		$this->DatabaseObject = new DB_WE();
-
 		$this->Table = $table;
 	}
 
@@ -182,10 +170,10 @@ class weGlossarySearch{
 
 		if(!$countStmt){
 			if($this->Order != ''){
-				$stmt .= " ORDER BY " . $this->Order . " " . $this->Sort;
+				$stmt .= ' ORDER BY ' . $this->Order . ' ' . $this->Sort;
 			}
 
-			$stmt .= " LIMIT " . $this->Offset . ", " . $this->Rows;
+			$stmt .= ' LIMIT ' . $this->Offset . ', ' . $this->Rows;
 		}
 
 		return trim($stmt);

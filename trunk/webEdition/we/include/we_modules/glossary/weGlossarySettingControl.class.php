@@ -76,7 +76,7 @@ class weGlossarySettingControl{
 
 EOF;
 
-		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
+		$configFile = WE_MODULES_PATH . 'glossary/we_conf_glossary_settings.inc.php';
 		return weFile::save($configFile, $code, 'w+');
 	}
 

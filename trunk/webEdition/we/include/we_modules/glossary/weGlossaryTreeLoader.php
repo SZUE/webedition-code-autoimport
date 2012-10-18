@@ -66,7 +66,7 @@ class weGlossaryTreeLoader{
 				'cmd' => "view_folder",
 			);
 
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
 		return $Items;
@@ -99,7 +99,7 @@ class weGlossaryTreeLoader{
 				'cmd' => 'view_type',
 			);
 
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
 		if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")){
@@ -117,7 +117,7 @@ class weGlossaryTreeLoader{
 				'Icon' => 'prog.gif'
 			);
 
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
 		return $Items;
@@ -149,26 +149,12 @@ class weGlossaryTreeLoader{
 				"tooltip" => "",
 				"offset" => $PrevOffset,
 			);
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
-		$Query = "SELECT "
-			. "ID, "
-			. "Type, "
-			. "Language, "
-			. "Text, "
-			. "Icon, "
-			. "abs(Text) as Nr, "
-			. "(Text REGEXP '^[0-9]') as isNr, "
-			. "Published "
-			. "FROM "
-			. $Table . " "
-			. $Where . " "
-			. "ORDER BY "
-			. "isNr DESC, "
-			. "Nr, "
-			. "Text "
-			. ($Segment ? "LIMIT " . abs($Offset) . "," . abs($Segment) : "");
+		$Query = 'SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . $Table . ' ' .
+			$Where . ' ORDER BY isNr DESC, Nr, Text ' .
+			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
 
 		$Db->query($Query);
 		while($Db->next_record()) {
@@ -207,15 +193,11 @@ class weGlossaryTreeLoader{
 
 			foreach($Db->Record as $Key => $Val){
 				if(!is_numeric($Key)){
-					if(strtolower($Key) == "text"){
-						$Item[strtolower($Key)] = htmlspecialchars($Val);
-					} else{
-						$Item[strtolower($Key)] = $Val;
-					}
+					$Item[strtolower($Key)] = (strtolower($Key) == "text" ? htmlspecialchars($Val) : $Val);
 				}
 			}
 
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
 		$Total = f('SELECT COUNT(1) as total FROM ' . $Db->escape($Table) . ' ' . $Where, 'total', $Db);
@@ -236,7 +218,7 @@ class weGlossaryTreeLoader{
 				"offset" => $NextOffset,
 			);
 
-			array_push($Items, $Item);
+			$Items[] = $Item;
 		}
 
 		return $Items;

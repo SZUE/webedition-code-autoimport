@@ -24,7 +24,7 @@
  */
 class weGlossaryTree extends weMainTree{
 
-	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
@@ -62,8 +62,7 @@ class weGlossaryTree extends weMainTree{
 				drawTree();
 			}
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
-			}
-			';
+			}';
 	}
 
 	function getJSUpdateItem(){
@@ -85,9 +84,7 @@ class weGlossaryTree extends weMainTree{
 	}
 
 	function getJSTreeFunctions(){
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
+		return weTree::getJSTreeFunctions() . '
 			function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
@@ -103,10 +100,7 @@ class weGlossaryTree extends weMainTree{
 						var node=' . $this->topFrame . '.get(id);
 						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
-			}
-			' . $this->topFrame . '.loaded=1;
-		';
-		return $out;
+			}' . $this->topFrame . '.loaded=1;';
 	}
 
 	function getJSStartTree(){
@@ -118,11 +112,8 @@ class weGlossaryTree extends weMainTree{
 	}
 
 	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
+		return weTree::getJSIncludeFunctions() .
+			$this->getJSStartTree();
 	}
 
 	function getJSMakeNewEntry(){
@@ -166,8 +157,7 @@ class weGlossaryTree extends weMainTree{
 
 		return '
 			function info(text) {
-			}
-		';
+			}';
 	}
 
 	function getJSShowSegment(){
@@ -178,8 +168,7 @@ class weGlossaryTree extends weMainTree{
 				parentnode.clear();
 				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
 				drawTree();
-			}
-		';
+			}';
 	}
 
 }
