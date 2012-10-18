@@ -431,7 +431,6 @@ class we_class_folder extends we_folder{
 					$ofid = $DB_WE->f("OF_ID");
 
 					if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
-						include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3)));
 
 						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=" . intval($ofid));
@@ -1116,8 +1115,6 @@ EOF;
 				$DB_WE->next_record();
 				$ofid = $DB_WE->f("OF_ID");
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
-
 					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3)));
 					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($ofid));
 					$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($ofid));

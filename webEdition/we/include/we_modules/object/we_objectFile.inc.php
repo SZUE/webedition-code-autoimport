@@ -583,7 +583,7 @@ class we_objectFile extends we_document{
 		if($this->EditPageNr == WE_EDITPAGE_PROPERTIES || $this->EditPageNr == WE_EDITPAGE_INFO){
 			$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
-		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");\n" . $this->getUpdateTreeScript();
+		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
 	function unpublishFromInsideDocument(){
@@ -591,7 +591,7 @@ class we_objectFile extends we_document{
 		if($this->EditPageNr == WE_EDITPAGE_PROPERTIES || $this->EditPageNr == WE_EDITPAGE_INFO){
 			$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
-		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");\n" . $this->getUpdateTreeScript();
+		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
 	function formPath(){
@@ -761,7 +761,7 @@ class we_objectFile extends we_document{
 			case 'quicktime':
 				return $this->getQuicktimeHTML($name, $attribs, $editable);
 			case 'date':
-				return $this->getDateFieldHTML($name, $attribs, $editable);
+				return $this->getDateFieldHTML($name, $attribs, $editable, $variant);
 			case 'checkbox':
 				return $this->getCheckboxFieldHTML($name, $attribs, $editable, $variant);
 			case 'int':
@@ -1266,7 +1266,6 @@ class we_objectFile extends we_document{
 			asort($shownCountries, SORT_LOCALE_STRING);
 			setlocale(LC_ALL, $oldLocale);
 
-			$content = '';
 			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
 				$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 			}
@@ -1363,11 +1362,14 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getDateFieldHTML($name, $attribs, $editable = true){
+	function getDateFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 			$d = abs($this->getElement($name));
-			$content = we_html_tools::getDateInput2("we_" . $this->Name . "_date[" . $name . "]", ($d ? $d : time()), true);
-			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["date_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content;
+			$content = we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
+			if($variant){
+				return $content;
+			}
+			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content;
 		} else{
 			$content = date(g_l('date', '[format][default]'), abs($this->getElement($name)));
 			return $this->getPreviewView($name, $content);

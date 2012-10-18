@@ -28,7 +28,7 @@ class weGlossarySettingFrames{
 	var $Controller;
 	var $db;
 
-	function weGlossarySettingFrames(){
+	function __construct(){
 		$this->Controller = new weGlossarySettingControl();
 		$this->db = new DB_WE();
 	}
@@ -64,16 +64,15 @@ class weGlossarySettingFrames{
 		}
 		include($configFile);
 
-		$parts = array();
-
 		// Automatic Replacement
 		$content = we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
-		array_push($parts, array(
-			'headline' => "",
-			'space' => 0,
-			'html' => $content,
-			'noline' => 1)
+		$parts = array(
+			array(
+				'headline' => "",
+				'space' => 0,
+				'html' => $content,
+				'noline' => 1)
 		);
 
 		$saveButton = we_button::create_button('save', 'javascript:document.we_form.submit();');

@@ -22,15 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMainTree.inc.php");
 
 class weExportTree extends weMainTree{
 
 	function getJSInfo(){
 		return '
 			function info(text){
-			}
-		';
+			}';
 	}
 
 	function getJSOpenClose(){

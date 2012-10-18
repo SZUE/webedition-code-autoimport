@@ -59,7 +59,6 @@ class weBackupImportSql{
 	function transfer(&$data, $charset = 'ISO-8859-1', $log = 0, &$create, &$insert){
 		if($create != ''){
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
 			$_table = weBackupUtil::getRealTableName($create);
 			if($_table !== false){
 				weBackupUtil::setBackupVar('current_table', $_table);

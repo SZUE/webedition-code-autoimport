@@ -283,7 +283,6 @@ top.clearEntries();
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/export/weExport.php");
 			$folder = new we_folder();
 			$folder->we_new();
