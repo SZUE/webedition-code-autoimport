@@ -52,19 +52,19 @@ class we_webEditionDocument extends we_textContentDocument{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
 	function __construct(){
-		if(defined("SHOP_TABLE")){
+		if(defined('SHOP_TABLE')){
 			array_push($this->EditPageNrs, WE_EDITPAGE_VARIANTS);
 		}
 
-		if(defined("CUSTOMER_TABLE")){
+		if(defined('CUSTOMER_TABLE')){
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}
 
 		parent::__construct();
-		if(isset($_SESSION["prefs"]["DefaultTemplateID"])){
-			$this->TemplateID = $_SESSION["prefs"]["DefaultTemplateID"];
+		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
+			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
-		array_push($this->persistent_slots, "TemplateID", "TemplatePath", "hidePages", "controlElement", "temp_template_id", "temp_doc_type", "temp_category");
+		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category');
 	}
 
 	public static function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = ''){
@@ -82,7 +82,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			if(isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 				$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
 			} else{
-				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", 'ID', $GLOBALS['we_document'][$formname]->DB_WE);
+				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", 'ID', $GLOBALS['we_document'][$formname]->DB_WE);
 				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
 				if($tid){
 					$GLOBALS['we_document'][$formname]->setTemplateID($tid);
@@ -111,9 +111,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(isset($_REQUEST['we_returnpage'])){
 			$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
 		}
-		if(isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])){
+		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
 			$dates = array();
-			foreach($_REQUEST["we_ui_$formname"] as $n => $v){
+			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $n, $regs)){
 					$dates[$regs[1]][$regs[2]] = $v;
 				} else{
@@ -138,11 +138,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 			$GLOBALS['we_document'][$formname]->Category = $cats;
 		}
-		if(isset($_REQUEST["we_ui_$formname" . '_Category'])){
-			if(is_array($_REQUEST["we_ui_$formname" . '_Category'])){
-				$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray($_REQUEST["we_ui_$formname" . '_Category'], true);
+		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
+			if(is_array($_REQUEST['we_ui_' . $formname . '_Category'])){
+				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true);
 			} else{
-				$_REQUEST["we_ui_$formname" . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname" . '_Category']), true);
+				$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
 			}
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
@@ -696,17 +696,17 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
-			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', false, false); // response deactivated
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
+			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', false, false); // response deactivated
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 
 		if($resave == 0){
-			$hy = unserialize(getPref("History"));
-			$hy['doc'][$this->ID] = array("Table" => $this->Table, "ModDate" => $this->ModDate);
-			setUserPref("History", serialize($hy));
+			$hy = unserialize(getPref('History'));
+			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
+			setUserPref('History', serialize($hy));
 		}
 		return $out;
 	}
@@ -737,10 +737,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID=" . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", "SerializedData", $this->DB_WE));
+				$sessDat = unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", 'SerializedData', $this->DB_WE));
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners");
+					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
 					break;
 				} else{
 					$from = we_class::LOAD_TEMP_DB;
@@ -752,10 +752,10 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function i_getDocument($includepath = ""){
+	function i_getDocument($includepath = ''){
 		$glob = array();
 		foreach($GLOBALS as $k => $v){
-			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
+			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != '_SESSION' && $k != '_GET' && $k != '_POST' && $k != '_REQUEST' && $k != '_SERVER' && $k != '_FILES' && $k != '_SESSION' && $k != '_ENV' && $k != '_COOKIE')
 				$glob[] = '$' . $k;
 		}
 		eval('global ' . implode(',', $glob) . ';'); // globalen Namensraum herstellen.
@@ -764,9 +764,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->InWebEdition = false;
 		$this->EditPageNr = WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
-		if(isset($GLOBALS["we_baseHref"])){
-			$basehrefMerk = $GLOBALS["we_baseHref"];
-			unset($GLOBALS["we_baseHref"]);
+		if(isset($GLOBALS['we_baseHref'])){
+			$basehrefMerk = $GLOBALS['we_baseHref'];
+			unset($GLOBALS['we_baseHref']);
 		}
 		ob_start();
 		if(is_file($we_include)){
@@ -775,7 +775,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$contents = ob_get_contents();
 		ob_end_clean();
 		if(isset($basehrefMerk)){
-			$GLOBALS["we_baseHref"] = $basehrefMerk;
+			$GLOBALS['we_baseHref'] = $basehrefMerk;
 			unset($basehrefMerk);
 		}
 		$this->EditPageNr = $editpageSave;
@@ -794,20 +794,20 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_scheduleToBeforeNow(){
-		if(defined("SCHEDULE_TABLE")){
+		if(defined('SCHEDULE_TABLE')){
 
 		}
 		return false;
 	}
 
 	function i_areVariantNamesValid(){
-		if(defined("SHOP_TABLE")){
+		if(defined('SHOP_TABLE')){
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
 			if(sizeof($variationFields)){
 				$i = 0;
 				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
-					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]["dat"])){
+					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
 						return false;
 					}
 				}
@@ -817,27 +817,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_publInScheduleTable(){
-		if(defined("SCHEDULE_TABLE")){
-			$this->DB_WE->query("DELETE FROM " . SCHEDULE_TABLE . " WHERE DID=" . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "'");
-			$ok = true;
-			$makeSched = false;
-			foreach($this->schedArr as $s){
-				if($s["task"] == we_schedpro::SCHEDULE_FROM && $s["active"]){
-					$serializedDoc = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE); // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
-					$makeSched = true;
-				} else{
-					$serializedDoc = "";
-				}
-				$Wann = we_schedpro::getNextTimestamp($s, time());
-
-				if(!$this->DB_WE->query("INSERT INTO " . SCHEDULE_TABLE .
-						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES(" . intval($this->ID) . "," . intval($Wann) . ",'" . abs($s["task"]) . "','" . $this->DB_WE->escape($this->ClassName) . "','" . $this->DB_WE->escape($serializedDoc) . "','" . $this->DB_WE->escape(serialize($s)) . "','" . abs($s["type"]) . "','" . abs($s["active"]) . "')"))
-					return false;
-			}
-			return $makeSched;
-		}
-		return false;
+		return (defined('SCHEDULE_TABLE') ?
+				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+				false);
 	}
 
 	// returns the filesize of the document
@@ -849,12 +831,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		  unlink($filename);
 		  return $fs;
 		 */
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->Path)){
-			$fs = filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path); //das ist ungenau
-		} else{
-			$fs = 0;
-		}
-		return $fs;
+		return (file_exists($_SERVER['DOCUMENT_ROOT'] . $this->Path) ?
+				filesize($_SERVER['DOCUMENT_ROOT'] . $this->Path) : //das ist ungenau
+				0);
 	}
 
 	protected function i_getDocumentToSave(){
@@ -871,7 +850,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				weShopVariants::correctModelFields($this);
 			}
 
-			$data[0]["InWebEdition"] = 0;
+			$data[0]['InWebEdition'] = 0;
 
 			return '<?php
 $GLOBALS[\'noSess\'] = true;
@@ -895,21 +874,21 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'/webEdition/we/include/we_showDocument.inc.php\');
 }';
 		} else{
-			if(isset($GLOBALS["DocStream"]) && isset($GLOBALS["DocStream"][$this->ID])){
-				$doc = $GLOBALS["DocStream"][$this->ID];
+			if(isset($GLOBALS['DocStream']) && isset($GLOBALS['DocStream'][$this->ID])){
+				$doc = $GLOBALS['DocStream'][$this->ID];
 			} else{
-				if(!isset($GLOBALS["DocStream"])){
-					$GLOBALS["DocStream"] = array();
+				if(!isset($GLOBALS['DocStream'])){
+					$GLOBALS['DocStream'] = array();
 				}
 				$doc = $this->i_getDocument();
 
 				// --> Glossary Replacement
-				if(defined("GLOSSARY_TABLE")){
+				if(defined('GLOSSARY_TABLE')){
 					if(isset($this->InGlossar) && $this->InGlossar == 0){
 						$doc = weGlossaryReplace::replace($doc, $this->Language);
 					}
 				}
-				$GLOBALS["DocStream"][$this->ID] = $doc;
+				$GLOBALS['DocStream'][$this->ID] = $doc;
 			}
 		}
 		return $doc;
@@ -961,8 +940,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 			if($_size > 0){
 
-				if(!in_array("controlElement", $this->persistent_slots)){
-					$this->persistent_slots[] = "controlElement";
+				if(!in_array('controlElement', $this->persistent_slots)){
+					$this->persistent_slots[] = 'controlElement';
 				} else{
 					unset($this->controlElement);
 				}
@@ -972,18 +951,18 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				for($i = 0; $i < $_size; $i++){ //	go through all matches
 					$_tagAttribs = makeArrayFromAttribs($_tags[2][$i]);
 
-					$_type = weTag_getAttribute("type", $_tagAttribs);
-					$_name = weTag_getAttribute("name", $_tagAttribs);
-					$_hide = weTag_getAttribute("hide", $_tagAttribs, false, true);
+					$_type = weTag_getAttribute('type', $_tagAttribs);
+					$_name = weTag_getAttribute('name', $_tagAttribs);
+					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, true);
 
 					if($_type && $_name){
 
-						if($_type == "button"){ //	only look, if the button shall be hidden or not
+						if($_type == 'button'){ //	only look, if the button shall be hidden or not
 							$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
-						} else if($_type == "checkbox"){
+						} else if($_type == 'checkbox'){
 
-							$_checked = weTag_getAttribute("checked", $_tagAttribs, false, true);
-							$_readonly = weTag_getAttribute("readonly", $_tagAttribs, true, true);
+							$_checked = weTag_getAttribute('checked', $_tagAttribs, false, true);
+							$_readonly = weTag_getAttribute('readonly', $_tagAttribs, true, true);
 
 							$_ctrlArray['checkbox'][$_name] = array(
 								'hide' => ( $_hide ? 1 : 0 ),
@@ -1007,7 +986,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		if($this->InWebEdition){
 
 			//	delete exisiting hidePages ...
-			if(in_array("hidePages", $this->persistent_slots)){
+			if(in_array('hidePages', $this->persistent_slots)){
 
 				unset($this->hidePages);
 			}
@@ -1018,10 +997,10 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				// here we only take the FIRST tag
 				$_tagAttribs = makeArrayFromAttribs($_tags[2][0]);
 
-				$_pages = weTag_getAttribute("pages", $_tagAttribs);
+				$_pages = weTag_getAttribute('pages', $_tagAttribs);
 
-				if(!in_array("hidePages", $this->persistent_slots)){
-					$this->persistent_slots[] = "hidePages";
+				if(!in_array('hidePages', $this->persistent_slots)){
+					$this->persistent_slots[] = 'hidePages';
 				} else{
 					unset($this->hidePages);
 				}
@@ -1122,8 +1101,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 			}
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:"){
-				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"]);
+			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == 'a:'){
+				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 				$this->hasVariants = (is_array($_vars) && !empty($_vars));
 			} else{
 				$this->hasVariants = false;
@@ -1140,11 +1119,11 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function initVariantDataFromDb(){
-		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"]){
+		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']){
 
 			// unserialize the variant data when loading the model
 			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"]);
+			$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 			//}
 			// now register variant fields in document
 			weShopVariants::setVariantDataForModel($this);

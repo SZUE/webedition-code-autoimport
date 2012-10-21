@@ -114,4 +114,27 @@ abstract class we_util{
 		return html_entity_decode($text, ENT_COMPAT, (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
 	}
 
+	/**
+	 * returns array of directory IDs of all directories which are located inside $folderID (recursive)
+	 *
+	 * @return array
+	 * @param int $folderID
+	 */
+	static function getFoldersInFolder($folderID, $table = FILE_TABLE, $db = ''){
+		$outArray = array(
+			$folderID
+		);
+		$db = ($db ? $db : new DB_WE());
+		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
+		$new = array();
+		while($db->next_record()) {
+			$new[] = $db->f('ID');
+		}
+		foreach($new as $cur){
+			$tmpArray = self::getFoldersInFolder($cur, $table, $db);
+			$outArray = array_merge($outArray, $tmpArray);
+		}
+		return $outArray;
+	}
+
 }

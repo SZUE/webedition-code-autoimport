@@ -222,28 +222,27 @@ class we_version{
 
 			if($categories){
 				$_foo = makeArrayFromCSV($categories);
-				$tmp=array();
+				$tmp = array();
 				foreach($_foo as $catID){
-					$tmp[]= " Category like '%," . intval($catID) . ",%'";
+					$tmp[] = " Category like '%," . intval($catID) . ",%'";
 				}
-				$_cat_query = "(" . implode(' '.($catAnd ? "AND" : "OR").' ',$tmp). ")";
+				$_cat_query = "(" . implode(' ' . ($catAnd ? "AND" : "OR") . ' ', $tmp) . ")";
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
-				$tmp=array();
+				$tmp = array();
 				foreach($_foo as $doctypeID){
 					$tmp .= " Doctype = '" . $GLOBALS['DB_WE']->escape($doctypeID) . "'";
 				}
-				$_doctype_query = "(" . implode(' OR ',$tmp) . ")";
+				$_doctype_query = "(" . implode(' OR ', $tmp) . ")";
 			}
 			if($folders){
 				$_foo = makeArrayFromCSV($folders);
-				$_foldersList = "";
+				$_foldersList = array();
 				foreach($_foo as $folderID){
-					$_foldersList .= makeCSVFromArray(we_version::getFoldersInFolder($folderID)) . ",";
+					$_foldersList[] = makeCSVFromArray(we_util::getFoldersInFolder($folderID));
 				}
-				$_foldersList = rtrim($_foldersList, ',');
-				$_folders_query = "( ParentID IN($_foldersList) )";
+				$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 			}
 
 			if($templateID){
@@ -429,12 +428,11 @@ class we_version{
 			$_folders_query = "";
 			if($thumbsFolders){
 				$_foo = makeArrayFromCSV($thumbsFolders);
-				$_foldersList = "";
+				$_foldersList = array();
 				foreach($_foo as $folderID){
-					$_foldersList .= makeCSVFromArray(we_version::getFoldersInFolder($folderID)) . ",";
+					$_foldersList[] = makeCSVFromArray(we_util::getFoldersInFolder($folderID));
 				}
-				$_foldersList = rtrim($_foldersList, ',');
-				$_folders_query = "( ParentID IN($_foldersList) )";
+				$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 			}
 			$GLOBALS['DB_WE']->query(
 				"SELECT ID,ClassName,Path,Extension FROM " . FILE_TABLE . " WHERE ContentType='image/*'" . ($_folders_query ? " AND $_folders_query " : "") . " ORDER BY ID");
@@ -454,27 +452,6 @@ class we_version{
 			}
 		}
 		return $data;
-	}
-
-	/**
-	 * returns array of directory IDs of all directories which are located inside $folderID (recursive)
-	 *
-	 * @return array
-	 * @param int $folderID
-	 */
-	function getFoldersInFolder($folderID){
-		$outArray = array(
-			$folderID
-		);
-		$db = new DB_WE();
-		$db->query("SELECT ID FROM " . FILE_TABLE . " WHERE ParentID=" . intval($folderID) . " AND IsFolder=1");
-		while($db->next_record()) {
-			$tmpArray = we_version::getFoldersInFolder($db->f("ID"));
-			foreach($tmpArray as $foo){
-				array_push($outArray, $foo);
-			}
-		}
-		return $outArray;
 	}
 
 }

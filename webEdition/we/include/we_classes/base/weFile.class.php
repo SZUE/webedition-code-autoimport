@@ -209,7 +209,7 @@ abstract class weFile{
 	static function getUniqueId($md5 = true){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		return ($md5 ? md5(str_replace('.', '', uniqid('', true))) : uniqid(microtime()));
+		return ($md5 ? md5(uniqid(__FILE__, true)) : uniqid(microtime()));
 		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid('',true))'
 	}
 
@@ -220,8 +220,9 @@ abstract class weFile{
 	 */
 	static function splitFile($filename, $path, $pattern = '', $split_size = 0, $marker = ''){
 
-		if($pattern == '')
+		if($pattern == ''){
 			$pattern = basename($filename) . '%s';
+		}
 		$buff = '';
 		$filename_tmp = '';
 		$fh = fopen($filename, 'rb');

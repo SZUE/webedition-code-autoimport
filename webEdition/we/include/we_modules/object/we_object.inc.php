@@ -2104,7 +2104,7 @@ class we_object extends we_document{
 		}
 	}
 
-	function i_setText(){
+	protected function i_setText(){
 		// do nothing here!
 	}
 

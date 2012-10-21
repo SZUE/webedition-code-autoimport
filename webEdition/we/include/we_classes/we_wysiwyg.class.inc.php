@@ -142,8 +142,8 @@ function tinyMCEchanged(inst){
 	}
 }');
 			case 'default':
-			include_once(WEBEDITION_PATH.'editors/content/wysiwyg/weWysiwygLang.inc.php');
-				return getWysiwygLang().'
+				include_once(WEBEDITION_PATH . 'editors/content/wysiwyg/weWysiwygLang.inc.php');
+				return getWysiwygLang() . '
 				<style type="text/css">
 					.tbButton {
 						border: 1px solid #F4F4F4;
@@ -235,7 +235,6 @@ function tinyMCEchanged(inst){
 				</style>' . we_html_element::jsElement('
 					var we_wysiwygs = new Array();
 					var we_wysiwyg_lng = new Array();
-					//FIXME: recognize in browser_check an set according
 					var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 					var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';
 					var isIE = ' . (we_base_browserDetect::isIE() ? 'true' : 'false') . ';
@@ -912,7 +911,7 @@ function tinyMCEchanged(inst){
 
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
-				list($lang, $code) = explode('_',$GLOBALS["weDefaultFrontendLanguage"]);
+				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 				//deactivated: template,save,layer
 				return we_html_element::jsElement('
 tinyMCE.init({

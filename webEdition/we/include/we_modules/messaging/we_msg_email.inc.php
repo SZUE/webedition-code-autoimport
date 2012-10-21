@@ -115,4 +115,3 @@ class we_msg_email extends we_msg_proto{
 	}
 
 }
-

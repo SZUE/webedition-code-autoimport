@@ -477,7 +477,7 @@ class we_folder extends we_root{
 		return true;
 	}
 
-	function i_setText(){
+	protected function i_setText(){
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 

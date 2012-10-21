@@ -47,7 +47,7 @@ $we_Table = FILE_TABLE;
 $we_dt = isset($_SESSION['we_data'][$we_transaction]) ? $_SESSION['we_data'][$we_transaction] : '';
 
 // init document
-include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_doc.inc.php');
+include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != 'ResetVersion' && $_REQUEST['cmd'] != 'PublishDocs'){
 	if(isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC){ // when called showDoc.php

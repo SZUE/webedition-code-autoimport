@@ -197,9 +197,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	/* saves the data of the object in $filename */
-	/* load  data in the object from $filename */
-
+	/** load  data in the object from $filename */
 	function loadFromFile($filename){
 		$str = weFile::load($filename);
 		if($str){
@@ -392,11 +390,9 @@ abstract class we_root extends we_class{
 ';
 		if($this->RestrictOwners){
 			$out .= '<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-<tr><td>' . $this->formOwners($canChange) . '</td></tr>
-';
+<tr><td>' . $this->formOwners($canChange) . '</td></tr>';
 		}
-		$out .= '</table>
-';
+		$out .= '</table>';
 
 		return $out;
 	}
@@ -411,7 +407,7 @@ abstract class we_root extends we_class{
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $owners))){
-				array_push($owners, $id);
+				$owners[] = $id;
 			}
 		}
 		$this->Owners = makeCSVFromArray($owners, true);
@@ -434,24 +430,23 @@ abstract class we_root extends we_class{
 	  the user is one of the restricted users
 	 */
 	function userHasPerms(){
-		if($_SESSION['perms']['ADMINISTRATOR'])
+		if($_SESSION['perms']['ADMINISTRATOR'] || !$this->RestrictOwners || we_isOwner($this->Owners) || we_isOwner($this->CreatorID)){
 			return true;
-		if(!$this->RestrictOwners)
-			return true;
-		if(we_isOwner($this->Owners) || we_isOwner($this->CreatorID))
-			return true;
+		}
 		return false;
 	}
 
 	function userIsCreator(){
-		if($_SESSION['perms']['ADMINISTRATOR'])
+		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
+		}
 		return we_isOwner($this->CreatorID);
 	}
 
 	function userCanSave(){
-		if($_SESSION['perms']['ADMINISTRATOR'])
+		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
+		}
 		if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
 			if(!(we_hasPerm('NEW_OBJECTFILE_FOLDER') || we_hasPerm('NEW_OBJECTFILE')))
 				return false;
@@ -479,8 +474,7 @@ abstract class we_root extends we_class{
 		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
 		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
 
-		$content = $this->htmlHidden($idname, $this->CopyID) . $but;
-		return $content;
+		return $this->htmlHidden($idname, $this->CopyID) . $but;
 	}
 
 	# return html code for button and field to select user
@@ -501,7 +495,6 @@ abstract class we_root extends we_class{
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc5 = '';
 		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_root::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_button::create_button('select', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user')"));
 	}
 
@@ -568,7 +561,7 @@ abstract class we_root extends we_class{
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3 = we_cmd_enc('opener._EditorFrame.setEditorIsHot(true);');
 
 		$button = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $ctype . "',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
@@ -725,7 +718,6 @@ abstract class we_root extends we_class{
 		return $this->we_save($resave, $skipHook);
 	}
 
-	#### Neu
 # public ##################
 
 	function we_new(){
@@ -769,7 +761,6 @@ abstract class we_root extends we_class{
 	 *
 	 */
 	function resaveWeDocumentCustomerFilter(){
-
 		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
 			weDocumentCustomerFilter::saveForModel($this);
 		}
@@ -822,7 +813,7 @@ abstract class we_root extends we_class{
 
 # private ###################
 
-	function i_setText(){
+	protected function i_setText(){
 		$this->Text = $this->Filename;
 	}
 
@@ -866,7 +857,7 @@ abstract class we_root extends we_class{
 				return true;
 			}
 		}
-		if(sizeof($_REQUEST)){
+		if(!empty($_REQUEST)){
 			$dates = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){

@@ -40,20 +40,19 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 	foreach($GLOBALS['we_doc']->DefArray as $n => $v){
 		if(is_array($v)){
 			if(isset($v["required"]) && $v["required"] && $_editMode){
-				array_push($parts, array(
+				$parts[] = array(
 					"headline" => "",
 					"html" => '*' . g_l('global', "[required_fields]"),
 					"space" => 0,
-					"name" => uniqid(""),
-					)
-				); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					"name" => uniqid(),
+				);
 				break;
 			}
 		}
 	}
 }
 
-we_html_tools::htmlTop('', $charset,5);
+we_html_tools::htmlTop('', $charset, 5);
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
@@ -94,35 +93,28 @@ $GLOBALS['we_doc']->pHiddenTrans();
 
 if($_editMode){
 
-	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(""), 30); // FIXME: #6590: str_replace('.', '', uniqid("",true))
-
-	echo $jsGUI->getContainer();
-
-	echo we_multiIconBox::_getBoxEnd("100%");
+	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(), 30) .
+	$jsGUI->getContainer() .
+	we_multiIconBox::_getBoxEnd("100%");
 
 	foreach($parts as $idx => $part){
-		$uniqid = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
-		$content = '<div id="' . $part['name'] . '">'
-			. '<a name="f' . $part['name'] . '"></a>'
-			. '<table cellpadding="0" cellspacing="0" border="0" width="100%">'
-			. '<tr>'
-			. '<td class="defaultfont" width="100%">'
-			. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
-			. '<tr>'
-			. '<td class="defaultfont">' . $part["html"] . '</td>'
-			. '</tr>'
-			. '</table>'
-			. '</td>'
-			. '</tr>'
-			. '<tr>'
-			. '<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div></td>'
-			. '</tr>'
-			. '</table>'
-			. '</div>'
-			. we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
-
-		echo $content;
+		echo '<div id="' . $part['name'] . '">
+			<a name="f' . $part['name'] . '"></a>
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td class="defaultfont" width="100%">
+					<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+						<tr><td class="defaultfont">' . $part["html"] . '</td></tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div></td>
+			</tr>
+			</table>
+			</div>' .
+		we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
 	}
 } else{
 	if($_SESSION["we_mode"] == "normal"){
