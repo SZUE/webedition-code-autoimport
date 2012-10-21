@@ -129,7 +129,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 	// init document
 	$we_dt = $_SESSION['we_data'][$we_transaction];
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_doc.inc.php');
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 } else{ //	view with template
 	$tid = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : (isset($we_objectTID) ? $we_objectTID : '');
 

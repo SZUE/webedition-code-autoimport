@@ -46,12 +46,10 @@ abstract class we_forms{
 	 */
 	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? uniqid($name . '_') : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
-
-		$labelonclick = "";
+		$_id = ($uniqid ? uniqid($name . '_') : $name);
 
 		// Create HTML tags
-		$foo = '
+		return '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
@@ -60,9 +58,6 @@ abstract class we_forms{
 					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
-
-		// Return generated tags
-		return $foo;
 	}
 
 	/**
@@ -135,34 +130,34 @@ abstract class we_forms{
 	 *
 	 */
 	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $path = "", $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false){
-		if($charset == ""){
-			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement("Charset")){
-				$charset = $GLOBALS['we_doc']->getElement("Charset");
+		if($charset == ''){
+			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement('Charset')){
+				$charset = $GLOBALS['we_doc']->getElement('Charset');
 			}
 		}
 
-		$out = "";
-		$dhtmledit = weTag_getAttribute("dhtmledit", $attribs, false, true); //4614
-		$wysiwyg = weTag_getAttribute("wysiwyg", $attribs, false, true);
+		$out = '';
+		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, true); //4614
+		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, true);
 
-		$wysiwyg = ($dhtmledit || $wysiwyg) && (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined("SAFARI_WYSIWYG") && we_base_browserDetect::isSafari()));
-		$cols = weTag_getAttribute("cols", $attribs);
-		$rows = weTag_getAttribute("rows", $attribs);
-		$width = weTag_getAttribute("width", $attribs);
-		$height = weTag_getAttribute("height", $attribs);
+		$wysiwyg &= (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined('SAFARI_WYSIWYG') && we_base_browserDetect::isSafari()));
+		$cols = weTag_getAttribute('cols', $attribs);
+		$rows = weTag_getAttribute('rows', $attribs);
+		$width = weTag_getAttribute('width', $attribs);
+		$height = weTag_getAttribute('height', $attribs);
 		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs));
-		$bgcolor = weTag_getAttribute("bgcolor", $attribs);
-		$wrap = weTag_getAttribute("wrap", $attribs);
-		$hideautobr = weTag_getAttribute("hideautobr", $attribs, false, true);
-		$class = weTag_getAttribute("class", $attribs);
-		$style = weTag_getAttribute("style", $attribs);
-		$id = weTag_getAttribute("id", $attribs);
-		$inlineedit = weTag_getAttribute("inlineedit", $attribs, defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true, true);
-		$tabindex = weTag_getAttribute("tabindex", $attribs);
+		$bgcolor = weTag_getAttribute('bgcolor', $attribs);
+		$wrap = weTag_getAttribute('wrap', $attribs);
+		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, true);
+		$class = weTag_getAttribute('class', $attribs);
+		$style = weTag_getAttribute('style', $attribs);
+		$id = weTag_getAttribute('id', $attribs);
+		$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
+		$tabindex = weTag_getAttribute('tabindex', $attribs);
 
-		$buttonpos = weTag_getAttribute("buttonpos", $attribs);
+		$buttonpos = weTag_getAttribute('buttonpos', $attribs);
 
-		$cssClasses = weTag_getAttribute("classes", $attribs);
+		$cssClasses = weTag_getAttribute('classes', $attribs);
 
 		$buttonTop = false;
 		$buttonBottom = false;
@@ -171,10 +166,10 @@ abstract class we_forms{
 			$foo = makeArrayFromCSV($buttonpos);
 			foreach($foo as $p){
 				switch($p){
-					case "top":
+					case 'top':
 						$buttonTop = true;
 						break;
-					case "bottom":
+					case 'bottom':
 						$buttonBottom = true;
 						break;
 				}
@@ -189,31 +184,31 @@ abstract class we_forms{
 			$style = preg_replace('/height:[^;"]+[;"]?/i', '', $style);
 			$style = trim($style);
 		}
-		$fontnames = weTag_getAttribute("fontnames", $attribs);
-		$showmenues = weTag_getAttribute("showmenus", $attribs, true, true);
-		if(isset($attribs["showMenues"])){ // old style compatibility
-			if($attribs["showMenues"] == "off" || $attribs["showMenues"] == "false"){
+		$fontnames = weTag_getAttribute('fontnames', $attribs);
+		$showmenues = weTag_getAttribute('showmenus', $attribs, true, true);
+		if(isset($attribs['showMenues'])){ // old style compatibility
+			if($attribs['showMenues'] == 'off' || $attribs['showMenues'] == 'false'){
 				$showmenues = false;
 			}
-		} else if(isset($attribs["showmenues"])){ // old style compatibility
-			if($attribs["showmenues"] == "off" || $attribs["showmenues"] == "false"){
+		} else if(isset($attribs['showmenues'])){ // old style compatibility
+			if($attribs['showmenues'] == 'off' || $attribs['showmenues'] == 'false'){
 				$showmenues = false;
 			}
 		}
-		$importrtf = weTag_getAttribute("importrtf", $attribs, false, true);
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != "" && $GLOBALS['we_doc']->ClassName == "we_objectFile"){
+		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile'){
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition);
 		} else{
-			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["WE_MAIN_DOC"]->InWebEdition) && $GLOBALS["WE_MAIN_DOC"]->InWebEdition);
+			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['WE_MAIN_DOC']->InWebEdition) && $GLOBALS['WE_MAIN_DOC']->InWebEdition);
 		}
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
 		if($wysiwyg){
-			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");
-			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : "200");
+			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : 520);
+			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : 200);
 			if(!$showmenues && (strlen($commands) == 0)){
-				$commands = implode(",", we_wysiwyg::getAllCmds());
+				$commands = implode(',', we_wysiwyg::getAllCmds());
 				$commands = str_replace('formatblock,', '', $commands);
 				$commands = str_replace('fontname,', '', $commands);
 				$commands = str_replace('fontsize,', '', $commands);
@@ -222,7 +217,7 @@ abstract class we_forms{
 				}
 			}
 			if($hidestylemenu && (strlen($commands) == 0)){
-				$commands = implode(",", we_wysiwyg::getAllCmds());
+				$commands = implode(',', we_wysiwyg::getAllCmds());
 				$commands = str_replace('applystyle,', '', $commands);
 			}
 
@@ -233,15 +228,15 @@ abstract class we_forms{
 
 			if($inlineedit){
 
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, "", $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, "", $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 				$out .= $e->getHTML();
 			} else{
-				$e = new we_wysiwyg($name, $width, $height, "", $commands, $bgcolor, "", $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, "", $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
+				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 
 				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 
 				// Bugfix => Workarround Bug # 7445
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != "we_objectFile" && $GLOBALS['we_doc']->ClassName != "we_object"){
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object'){
 					$value = $GLOBALS['we_doc']->getField($attribs);
 				} else{
 					$value = parseInternalLinks($value, 0);
@@ -252,8 +247,8 @@ abstract class we_forms{
 				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
-			if($style && substr($style, -1) != ";"){
-				$style .= ";";
+			if($style && substr($style, -1) != ';'){
+				$style .= ';';
 			}
 			if($width){
 				$style .= "width:$width;";

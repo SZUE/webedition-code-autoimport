@@ -69,7 +69,6 @@ if($we_doc->CSS){
 }
 print STYLESHEET;
 
-
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 ?>
 </head>
@@ -83,12 +82,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 			if($id != false){
 				$after = array_pop(explode("_", $id));
 				$afterid = $id;
-				$identifier = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			} else{
 				$after = false;
 				$afterid = false;
-				$identifier = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			}
+			$identifier = uniqid();
 			$uniqid = "entry_" . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);
 
@@ -97,31 +95,28 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 			$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
-			$content = '<div id="' . $uniqid . '">'
-				. '<a name="f' . $uniqid . '"></a>'
-				. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
-				. '<tr>'
-				. '<td class="defaultfont" width="600">'
-				. '<table cellpadding="6" cellspacing="0" border="0">'
-				. $we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid)
-				. '</table>'
-				. '</td>'
-				. '<td width="150" class = "defaultfont" valign="top">';
-
-			$content .= we_button::create_button_table(
+			$content = '<div id="' . $uniqid . '">
+				<a name="f' . $uniqid . '"></a>
+				<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+				<tr><td class="defaultfont" width="600">
+				<table cellpadding="6" cellspacing="0" border="0">' .
+				$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+				'</table>
+				</td>
+				<td width="150" class = "defaultfont" valign="top">' .
+				we_button::create_button_table(
 					array(
 					$plusbut,
 					$upbut,
 					$downbut,
 					$trashbut
-					), 5);
-
-			$content .= '</td>'
-				. '</tr>'
-				. '</table>'
-				. '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10)
-				. '</div>'
-				. '</div>';
+					), 5) .
+				'</td>
+				</tr>
+				</table>
+				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+				'</div>
+				</div>';
 
 			echo $jsGUI->getResponse('add', $uniqid, $content, $afterid);
 
@@ -143,32 +138,45 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 			$identifier = array_pop(explode("_", $id));
 			$uniqid = "entry_" . $identifier;
 
-			if($cmd == "insert_meta_at_class"){
-				$we_doc->addMetaToClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "delete_meta_class"){
-				$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "down_meta_at_class"){
-				$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "up_meta_at_class"){
-				$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "del_all_users"){
-				$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "add_user_to_field"){
-				$we_doc->add_user_to_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "del_user_from_field"){
-				$we_doc->del_user_from_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
-			} elseif($cmd == "remove_image_at_class"){
-				$we_doc->remove_image($_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "delete_link_at_class"){
-				if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]]))
-					unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
-			} elseif($cmd == "change_link_at_class"){
-				$we_doc->changeLink($_REQUEST['we_cmd'][3]);
-			} elseif($cmd == "change_multiobject_at_class"){
-				while($we_doc->elements[$_REQUEST['we_cmd'][3] . "count"]["dat"] > 0) {
+			switch($cmd){
+				case "insert_meta_at_class":
+					$we_doc->addMetaToClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "delete_meta_class":
+					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "down_meta_at_class":
+					$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "up_meta_at_class":
+					$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "del_all_users":
+					$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
+					break;
+				case "add_user_to_field":
+					$we_doc->add_user_to_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "del_user_from_field":
+					$we_doc->del_user_from_field($_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
+					break;
+				case "remove_image_at_class":
+					$we_doc->remove_image($_REQUEST['we_cmd'][3]);
+					break;
+				case "delete_link_at_class":
+					if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]])){
+						unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
+					}
+					break;
+				case "change_link_at_class":
+					$we_doc->changeLink($_REQUEST['we_cmd'][3]);
+					break;
+				case "change_multiobject_at_class":
+					while($we_doc->elements[$_REQUEST['we_cmd'][3] . "count"]["dat"] > 0) {
+						$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
+					}
 					$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
-				}
-				$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
+					break;
 			}
 
 			$upbut = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier);
@@ -176,31 +184,29 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 			$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
-			$content = '<div id="' . $uniqid . '">'
-				. '<a name="f' . $uniqid . '"></a>'
-				. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
-				. '<tr>'
-				. '<td class="defaultfont" width="600">'
-				. '<table cellpadding="6" cellspacing="0" border="0">'
-				. $we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid)
-				. '</table>'
-				. '</td>'
-				. '<td width="150" class = "defaultfont" valign="top">';
-
-			$content .= we_button::create_button_table(
+			$content = '<div id="' . $uniqid . '">
+				<a name="f' . $uniqid . '"></a>
+				<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td class="defaultfont" width="600">
+					<table cellpadding="6" cellspacing="0" border="0">' .
+				$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+				'	</table>
+				</td>
+				<td width="150" class = "defaultfont" valign="top">' .
+				we_button::create_button_table(
 					array(
 					$plusbut,
 					$upbut,
 					$downbut,
 					$trashbut
-					), 5);
-
-			$content .= '</td>'
-				. '</tr>'
-				. '</table>'
-				. '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10)
-				. '</div>'
-				. '</div>';
+					), 5) .
+				'</td>
+			</tr>
+			</table>
+			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+				'</div>
+				</div>';
 
 			echo $jsGUI->getResponse('reload', $uniqid, $content);
 
