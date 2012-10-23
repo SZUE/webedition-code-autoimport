@@ -338,8 +338,8 @@ class we_fileselector{
 
 		function getFramesetJavaScriptDef(){
 			$startPathQuery = new DB_WE();
-			$startPathQuery->query("SELECT Path FROM " . $startPathQuery->escape($this->table) . " WHERE ID=" . intval($this->dir));
-			$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
+			$startPathQuery->query('SELECT Path FROM ' . $startPathQuery->escape($this->table) . ' WHERE ID=' . intval($this->dir));
+			$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : '/';
 
 			return '<script  type="text/javascript">
 	var currentID="' . $this->id . '";
@@ -350,10 +350,10 @@ class we_fileselector{
 
 	var startPath="' . $startPath . '";
 
-	var parentID="' .
-				($this->dir ?
-					f("SELECT ParentID FROM $this->table WHERE ID='" . $this->dir . "'", "ParentID", $this->db) :
-					0) . '";
+	var parentID=' .
+				intval(($this->dir ?
+					f('SELECT ParentID FROM '.$this->table.' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+					0)) . ';
     var table="' . $this->table . '";
 	var order="' . $this->order . '";
 
