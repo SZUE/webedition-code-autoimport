@@ -114,7 +114,6 @@ class searchtoolsearch extends we_search{
 	}
 
 	function getModFields(){
-
 		$modFields = array();
 		$versions = new weVersions();
 		foreach($versions->modFields as $k => $v){
@@ -492,8 +491,7 @@ class searchtoolsearch extends we_search{
 			$modifications = array();
 			$ids = array();
 			$_ids = array();
-			$query = 'SELECT ID, modifications FROM ' . VERSIONS_TABLE . " WHERE modifications != '' ";
-			$db->query($query);
+			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . " WHERE modifications != '' ");
 
 			while($db->next_record()) {
 				$modifications[$db->f('ID')] = makeArrayFromCSV($db->f('modifications'));
@@ -552,17 +550,15 @@ class searchtoolsearch extends we_search{
 		switch($table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
-				$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
-						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query(stripTblPrefix($table)) . "'";
-				$_db->query($query);
+				$_db->query('SELECT a.Name, b.Dat, a.DID FROM ' . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
+						trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query(stripTblPrefix($table)) . "'");
 				while($_db->next_record()) {
 					$contents[] = $_db->f('DID');
 				}
 
 				if($table == FILE_TABLE){
-					$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
-							trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1";
-					$_db->query($query2);
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
+							trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()) {
 						$contents[] = $_db->f('DocumentID');
 					}
@@ -570,8 +566,7 @@ class searchtoolsearch extends we_search{
 
 				return (!empty($contents) ? "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")" : '');
 			case VERSIONS_TABLE:
-				$query2 = "SELECT ID, documentElements  FROM " . VERSIONS_TABLE . " ";
-				$_db->query($query2);
+				$_db->query("SELECT ID, documentElements  FROM " . VERSIONS_TABLE);
 				while($_db->next_record()) {
 					$tempDoc[0]['elements'] = unserialize(
 						html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES));
@@ -661,17 +656,16 @@ class searchtoolsearch extends we_search{
 	}
 
 //FIXME path is only implemented for filetable
-	function insertInTempTable($where = "", $table = "", $path = ""){
-		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
+	function insertInTempTable($where = '', $table = '', $path = ''){
+		$this->table = (empty($table)) ? ((empty($this->table)) ? '' : $this->table) : $table;
 
 		if(empty($this->table)){
 			return;
 		}
 
-		$this->where = (empty($where)) ? ((empty($this->where)) ? " WHERE 1 " : " WHERE " . $this->where) : " WHERE " . $where;
+		$this->where = (empty($where)) ? ((empty($this->where)) ? ' WHERE 1 ' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
 
 		switch($this->table){
-
 			case FILE_TABLE:
 				$tmpTableWhere = '';
 				if($path){
@@ -757,9 +751,9 @@ class searchtoolsearch extends we_search{
 			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
 		}
 
-		$tempTableTrue = ($this->checkRightTempTable() == '0') ? 'TEMPORARY' : '';
+		$tempTableTrue = (self::checkRightTempTable() == '0') ? 'TEMPORARY' : '';
 
-		if(!($this->checkRightDropTable() == '1' && $tempTableTrue == '')){
+		if(!(self::checkRightDropTable() == '1' && $tempTableTrue == '')){
 			$this->db->query('CREATE ' . $tempTableTrue . ' TABLE SEARCH_TEMP_TABLE (
 				`ID` BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 				`docID` BIGINT( 20 ) NOT NULL ,
@@ -790,16 +784,20 @@ class searchtoolsearch extends we_search{
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->table);
 
 		$whatParentID = "";
-
-		if($searchfield == "ParentIDDoc" || $searchfield == "ParentIDObj" || $searchfield == "ParentIDTmpl"){
-			$whatParentID = $searchfield;
-			$searchfield = "ParentID";
-		}
-
-		if($searchfield == "ID" || $searchfield == "CreatorID" || $searchfield == "WebUserID"){
-			if(!is_numeric($searchname)){
-				return " AND 0";
-			}
+		switch($searchfield){
+			case "ParentIDDoc":
+			case "ParentIDObj":
+			case "ParentIDTmpl":
+				$whatParentID = $searchfield;
+				$searchfield = "ParentID";
+				break;
+			case "ID":
+			case "CreatorID":
+			case "WebUserID":
+				if(!is_numeric($searchname)){
+					return " AND 0";
+				}
+				break;
 		}
 
 		//filter fields for each table
@@ -823,7 +821,7 @@ class searchtoolsearch extends we_search{
 			}
 
 			if($searchfield == $tableInfo[$y]["name"]){
-				$searchfield = $tablename . "." . $tableInfo[$y]["name"];
+				$searchfield = $tablename . '.' . $tableInfo[$y]["name"];
 
 				if(isset($searchname) && $searchname != "")
 					if(($whatParentID == "ParentIDDoc" && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == "ParentIDObj" && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == "ParentIDTmpl" && $this->table == TEMPLATES_TABLE)){
@@ -831,14 +829,14 @@ class searchtoolsearch extends we_search{
 							if($whatParentID == "ParentIDDoc"){
 								$this->table = FILE_TABLE;
 							}
-							if(defined("OBJECT_FILES_TABLE") && $whatParentID == "ParentIDObj"){
+							if(defined("OBJECT_FILES_TABLE") && $whatParentID == 'ParentIDObj'){
 								$this->table = OBJECT_FILES_TABLE;
 							}
 						}
 						$searchname = path_to_id($searchname, $this->table);
 						$searching = " = '" . escape_sql_query($searchname) . "' ";
 						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-					} elseif(($searchfield == TEMPLATES_TABLE . ".MasterTemplateID" && $this->table == TEMPLATES_TABLE) || ($searchfield == FILE_TABLE . ".temp_template_id" && $this->table == FILE_TABLE) || ($searchfield == VERSIONS_TABLE . ".TemplateID" && $this->table == VERSIONS_TABLE)){
+					} elseif(($searchfield == TEMPLATES_TABLE . '.MasterTemplateID' && $this->table == TEMPLATES_TABLE) || ($searchfield == FILE_TABLE . '.temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == VERSIONS_TABLE . '.TemplateID' && $this->table == VERSIONS_TABLE)){
 						$searchname = path_to_id($searchname, TEMPLATES_TABLE);
 						$searching = " = '" . escape_sql_query($searchname) . "' ";
 
@@ -853,18 +851,18 @@ class searchtoolsearch extends we_search{
 						} else{
 							$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 						}
-					} elseif($searchfield == "temp_doc_type" && $this->table == FILE_TABLE){
+					} elseif($searchfield == 'temp_doc_type' && $this->table == FILE_TABLE){
 						$searching = " = '" . $this->db->escape($searchname) . "' ";
 
-						$sql .= $this->sqlwhere($tablename . ".DocType", $searching, $operator . "( (Published >= ModDate AND Published !=0 AND ") .
-							$this->sqlwhere($searchfield, $searching, " ) OR (Published < ModDate AND ") .
+						$sql .= $this->sqlwhere($tablename . '.DocType', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
+							$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
 							'))';
 					} elseif(stristr($searchfield, ".Published") || stristr($searchfield, ".CreationDate") || stristr($searchfield, ".ModDate")){
 						if((stristr($searchfield, ".Published") && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, ".Published")){
 							if($this->table == VERSIONS_TABLE && (stristr($searchfield, ".CreationDate") || stristr($searchfield, ".ModDate"))){
-								$searchfield = $this->table . ".timestamp";
+								$searchfield = $this->table . '.timestamp';
 							}
-							$date = explode(".", $searchname);
+							$date = explode('.', $searchname);
 							$day = $date[0];
 							$month = $date[1];
 							$year = $date[2];
@@ -873,23 +871,23 @@ class searchtoolsearch extends we_search{
 
 							if(isset($searchlocation)){
 								switch($searchlocation){
-									case "IS" :
-										$searching = " BETWEEN " . $timestampStart . " AND " . $timestampEnd . " ";
+									case 'IS':
+										$searching = ' BETWEEN ' . $timestampStart . ' AND ' . $timestampEnd . ' ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case "<" :
-										$searching = " " . $searchlocation . " '" . $timestampStart . "' ";
+									case '<':
+										$searching = ' ' . $searchlocation . " '" . $timestampStart . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case "<=" :
+									case "<=":
 										$searching = " " . $searchlocation . " '" . $timestampEnd . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case ">" :
+									case ">":
 										$searching = " " . $searchlocation . " '" . $timestampEnd . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case ">=" :
+									case ">=":
 										$searching = " " . $searchlocation . " '" . $timestampStart . "' ";
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
@@ -899,22 +897,22 @@ class searchtoolsearch extends we_search{
 					} else{
 						if(isset($searchlocation)){
 							switch($searchlocation){
-								case "END" :
+								case "END":
 									$searching = " LIKE '%" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "START" :
+								case "START":
 									$searching = " LIKE '" . escape_sql_query($searchname) . "%' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "IS" :
+								case "IS":
 									$searching = " = '" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
-								case "<" :
-								case "<=" :
-								case ">" :
-								case ">=" :
+								case "<":
+								case "<=":
+								case ">":
+								case ">=":
 									$searching = " " . $searchlocation . " '" . escape_sql_query($searchname) . "' ";
 									$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 									break;
@@ -972,7 +970,7 @@ class searchtoolsearch extends we_search{
 		return ' AND ParentID = ' . intval($folderID);
 	}
 
-	function checkRightTempTable(){
+	static function checkRightTempTable(){
 		$db = new DB_WE();
 		$tableType = searchtoolsearch::getTableType();
 		$charset_collation = "";
@@ -987,10 +985,10 @@ class searchtoolsearch extends we_search{
 
 		$db->next_record();
 
-		$return = "0";
+		$return = 0;
 
-		if(stristr($db->Error, "Access denied")){
-			$return = "1";
+		if(stristr($db->Error, 'Access denied')){
+			$return = 1;
 		}
 
 		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
@@ -998,14 +996,14 @@ class searchtoolsearch extends we_search{
 		return $return;
 	}
 
-	function checkRightDropTable(){
+	static function checkRightDropTable(){
 		$db = new DB_WE();
 
-		$charset_collation = "";
-		if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
+		$charset_collation = '';
+		if(defined('DB_CHARSET') && DB_CHARSET != '' && defined('DB_COLLATION') && DB_COLLATION != ''){
 			$Charset = DB_CHARSET;
 			$Collation = DB_COLLATION;
-			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
+			$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
 		}
 
 		$tableType = searchtoolsearch::getTableType();
@@ -1016,15 +1014,13 @@ class searchtoolsearch extends we_search{
 				) ENGINE=' . $tableType . $charset_collation);
 		$db->next_record();
 
-		$return = "0";
-
 		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
 
-		if(stristr($db->Error, "command denied")){
-			$return = "1";
+		if(stristr($db->Error, 'command denied')){
+			return 1;
 		}
 
-		return $return;
+		return 0;
 	}
 
 	function getResultCount(){

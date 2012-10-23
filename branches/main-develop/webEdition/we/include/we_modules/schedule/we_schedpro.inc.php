@@ -392,7 +392,7 @@ class we_schedpro{
 
 //FIXME: why not for objectfiles????
 			if($s["type"] != self::TYPE_ONCE){
-				$nextWann = we_schedpro::getNextTimestamp($s, $now);
+				$nextWann = self::getNextTimestamp($s, $now);
 				if($nextWann){
 					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE DID=' . intval($id) . " AND ClassName!='we_objectFile' AND Type='" . $s['type'] . "' AND Was='" . $s['task'] . "'");
 				}
@@ -429,13 +429,13 @@ class we_schedpro{
 			$DB_WE->unlock();
 			$s = unserialize($rec["Schedpro"]);
 			if(is_array($s)){
-				$s["lasttime"] = we_schedpro::getPrevTimestamp($s, $now);
+				$s["lasttime"] = self::getPrevTimestamp($s, $now);
 				$tmp = array(
 					"value" => array($s),
 					"ClassName" => $rec["ClassName"],
 					"table" => $rec["ClassName"] == "we_objectFile" ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
-				we_schedpro::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
+				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else{
 				//data invalid, reset & make sure this is not processed the next time
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="" WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
@@ -653,6 +653,35 @@ class we_schedpro{
 		}
 	}
 
+	static function publInScheduleTable($object, $db = ''){
+		$db = $db ? $db : new DB_WE();
+		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
+		$makeSched = false;
+		foreach($object->schedArr as $s){
+			if($s["task"] == self::SCHEDULE_FROM && $s["active"]){
+				$serializedDoc = we_temporaryDocument::load($object->ID, $object->Table, $db); // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+				$makeSched = true;
+			} else{
+				$serializedDoc = '';
+			}
+			$Wann = self::getNextTimestamp($s, time());
+
+			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'DID' => $object->ID,
+						'Wann' => $Wann,
+						'Was' => $s["task"],
+						'ClassName' => $object->ClassName,
+						'SerializedData' => $serializedDoc,
+						'Schedpro' => serialize($s),
+						'Type' => $s["type"],
+						'Active' => $s["active"]
+					)))){
+				return false;
+			}
+		}
+		return $makeSched;
+	}
+
 }
 
 function weCmpSchedLast($a, $b){
@@ -661,3 +690,4 @@ function weCmpSchedLast($a, $b){
 	}
 	return ($a["lasttime"] < $b["lasttime"]) ? -1 : 1;
 }
+

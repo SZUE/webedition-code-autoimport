@@ -25,30 +25,17 @@
 class weGlossarySettingControl{
 
 	function processCommands(){
-
-		$js = '';
-		$html = '';
-
 		if(isset($_REQUEST['cmd'])){
-
 			switch($_REQUEST['cmd']){
-
-				case "save_glossary_setting":
-					if($this->saveSettings()){
-						$html .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE));
-					} else{
-						$html .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR));
-					}
+				case 'save_glossary_setting':
+					$html = ($this->saveSettings() ?
+							we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
+							we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)));
 					break;
 			}
 
-			print we_html_tools::htmlTop();
-			print we_html_element::jsElement($js);
-			print "</head>
-			<body>
-				$html
-			</body>
-			</html>";
+			print we_html_tools::htmlTop() .
+				'</head><body>' . $html . '</body></html>';
 			exit;
 		}
 	}
@@ -76,8 +63,7 @@ class weGlossarySettingControl{
 
 EOF;
 
-		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
-		return weFile::save($configFile, $code, 'w+');
+		return weFile::save(WE_GLOSSARY_MODULE_PATH . weGlossaryReplace::configFile, $code, 'w+');
 	}
 
 }

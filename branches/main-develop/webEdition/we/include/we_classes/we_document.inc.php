@@ -806,7 +806,7 @@ class we_document extends we_root{
 	 * private
 	 */
 
-	function i_setText(){
+	protected function i_setText(){
 		$this->Text = $this->Filename . $this->Extension;
 	}
 

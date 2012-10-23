@@ -28,7 +28,7 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 
 we_html_tools::htmlTop();
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
@@ -38,19 +38,19 @@ $we_doc->pHiddenTrans();
 
 switch($we_doc->ContentType){
 	case 'text/webedition':
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_editor_variants_webEditionDocument.inc.php');
+		include(WE_MODULES_PATH . 'shop/we_editor_variants_webEditionDocument.inc.php');
 		break;
 
 	case 'objectFile':
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_editor_variants_objectFile.inc.php');
+		include(WE_MODULES_PATH . 'shop/we_editor_variants_objectFile.inc.php');
 		break;
 
 	case 'text/weTmpl':
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_template_variant.inc.php');
+		include(WE_MODULES_PATH . 'shop/we_template_variant.inc.php');
 		break;
 
 	default:
-		print $we_doc->ContentType . ' not available (' . __FILE__ . ')';
+		print $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
 		break;
 }
 ?>

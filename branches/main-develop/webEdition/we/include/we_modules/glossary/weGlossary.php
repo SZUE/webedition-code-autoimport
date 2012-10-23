@@ -105,7 +105,7 @@ class weGlossary extends weModelBase{
 	 *
 	 * @var string
 	 */
-	var $Description = "";
+	var $Description = '';
 
 	/**
 	 * timestamp of creation
@@ -171,19 +171,19 @@ class weGlossary extends weModelBase{
 			if(isset($_REQUEST['cmd'])){
 				switch($_REQUEST['cmd']){
 					case 'new_glossary_abbreviation':
-						$this->Type = "abbreviation";
+						$this->Type = 'abbreviation';
 						break;
 					case 'new_glossary_acronym':
-						$this->Type = "acronym";
+						$this->Type = 'acronym';
 						break;
 					case 'new_glossary_foreignword':
-						$this->Type = "foreignword";
+						$this->Type = 'foreignword';
 						break;
 					case 'new_glossary_link':
-						$this->Type = "link";
+						$this->Type = 'link';
 						break;
 					case 'new_glossary_textreplacement':
-						$this->Type = "textreplacement";
+						$this->Type = 'textreplacement';
 						break;
 				}
 
@@ -199,10 +199,13 @@ class weGlossary extends weModelBase{
 		if($Type != 'all'){
 			$Query .= "AND Type = '" . $GLOBALS['DB_WE']->escape($Type) . "' ";
 		}
-		if($Mode == 'published'){
-			$Query .= "AND Published > 0 ";
-		} elseif($Mode == 'unpublished'){
-			$Query .= "AND Published = 0 ";
+		switch($Mode){
+			case 'published':
+				$Query .= 'AND Published > 0 ';
+				break;
+			case 'unpublished':
+				$Query .= 'AND Published = 0 ';
+				break;
 		}
 
 		$GLOBALS['DB_WE']->query($Query);
@@ -217,22 +220,17 @@ class weGlossary extends weModelBase{
 
 			if($GLOBALS['DB_WE']->f("Type") != "foreignword"){
 				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
-				if(isset($temp['lang'])){
-					$Item['Lang'] = $temp['lang'];
-				} else{
-					$Item['Lang'] = '';
-				}
+				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
 			} else{
 				$Item['Lang'] = '';
 			}
-			array_push($ReturnValue, $Item);
+			$ReturnValue[] = $Item;
 		}
 		return $ReturnValue;
 	}
 
 	function publishItem($Language, $Text){
-		$Query = "UPDATE " . GLOSSARY_TABLE
-			. " SET Published = " . time()
+		$Query = 'UPDATE ' . GLOSSARY_TABLE . ' SET Published = UNIX_TIMESTAMP()'
 			. " WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' "
 			. " AND Text = '" . $GLOBALS['DB_WE']->escape($Text) . "' ";
 
@@ -308,8 +306,7 @@ class weGlossary extends weModelBase{
 	 * @return boolean
 	 */
 	function _deleteChilds(){
-		$query = 'DELETE FROM ' . $this->db->escape($this->table) . ' WHERE Path LIKE = "' . $this->db->escape($this->Path) . '/%"';
-		return $this->db->query($query);
+		return $this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE Path LIKE = "' . $this->db->escape($this->Path) . '/%"');
 	}
 
 	/**
@@ -317,7 +314,7 @@ class weGlossary extends weModelBase{
 	 *
 	 */
 	function setPath(){
-		$this->Path = "/" . $this->Language . "/" . $this->Type . "/" . $this->Text;
+		$this->Path = '/' . $this->Language . '/' . $this->Type . '/' . $this->Text;
 	}
 
 	/**
@@ -353,9 +350,9 @@ class weGlossary extends weModelBase{
 	function pathExists($Path){
 		$table = $this->db->escape($this->table);
 		$Path = $this->db->escape($Path);
-		$query = "SELECT 1 AS a FROM " . $table . " WHERE Path Like Binary '" . $Path . "'";
+		$query = 'SELECT 1 AS a FROM ' . $table . " WHERE Path Like Binary '" . $Path . "'";
 		if($this->ID != 0){
-			$query .= " AND ID != '" . $this->ID . "'";
+			$query .= ' AND ID != ' . intval($this->ID);
 		}
 		$query.=' LIMIT 0,1';
 
@@ -363,8 +360,7 @@ class weGlossary extends weModelBase{
 	}
 
 	function getIDByPath($Path){
-		$query = 'SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($Path) . '"';
-		return intval(f($query, 'ID', $this->db));
+		return intval(f('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($Path) . '"', 'ID', $this->db));
 	}
 
 	/**
@@ -379,7 +375,6 @@ class weGlossary extends weModelBase{
 
 	//FIXME: some signs are broken due to utf-8
 	function escapeChars($Text){
-
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )
 
 		$escape = array('�', '{', '&', '/', '\'', '"', '�', '%');
@@ -405,7 +400,7 @@ class weGlossary extends weModelBase{
 		$Name = $this->db->escape($Name);
 		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
 
-		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . " = '" . $this->db->escape($value) . "' WHERE ID='" . $this->ID . "'");
+		$this->db->query('UPDATE ' . $table . ' SET ' . $Name . " = '" . $this->db->escape($value) . "' WHERE ID=" . intval($this->ID));
 
 		return $this->db->affected_rows();
 	}
@@ -466,11 +461,10 @@ class weGlossary extends weModelBase{
 		}
 
 		return $fileDir . $language . '@' . $_SERVER['SERVER_NAME'] . '.dict';
-		;
 	}
 
 	function checkFieldText($text){
-		$check = array("\\", "$", "|");
+		$check = array('\\', '$', '|');
 
 		foreach($check as $k){
 			if(stristr(trim($text), $k)){

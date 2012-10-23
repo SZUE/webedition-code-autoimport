@@ -22,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weShippingControl {
+class weShippingControl{
 
 	var $stateField = '';
 	var $isNet = true;
@@ -31,8 +30,7 @@ class weShippingControl {
 	var $shippings = array();
 	var $vatRate = 0;
 
-
-	function __construct($stateField, $isNet, $vatId, $shippings) {
+	function __construct($stateField, $isNet, $vatId, $shippings){
 
 		$this->stateField = $stateField;
 		$this->isNet = $isNet;
@@ -42,55 +40,51 @@ class weShippingControl {
 		$this->vatRate = weShopVats::getVatRateForSite($vatId);
 	}
 
-	function getShippingControl() {
-
+	function getShippingControl(){
 		global $DB_WE;
 
-		$query = 'SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
+		$DB_WE->query('SELECT * FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
-		$DB_WE->query($query);
-
-		if ($DB_WE->next_record()) {
+		if($DB_WE->next_record()){
 
 			$shippingControl = unserialize($DB_WE->f('strFelder'));
 			$shippingControl->vatRate = weShopVats::getVatRateForSite($shippingControl->vatId);
 
 			return $shippingControl;
-
-		} else {
+		} else{
 			return new weShippingControl(
-				'',
-				1,
-				1,
-				array(
-				)
+					'',
+					1,
+					1,
+					array(
+					)
 			);
 		}
 	}
 
-	function setByRequest($req) {
+	function setByRequest($req){
 
 		// this function inits a new entry, also it could change existing items
 		$this->stateField = $req['stateField'];
 		$this->isNet = $req['isNet'];
 		$this->vatId = $req['vatId'];
 
-		if (isset($req['weShippingId'])) {
+		if(isset($req['weShippingId'])){
 
 			$newShipping = new weShipping(
-				$req['weShippingId'],
-				$req['weShipping_text'],
-				self::makeArrayFromReq($req['weShipping_countries']),
-				$req['weShipping_cartValue'],
-				$req['weShipping_shipping'],
-				($req['weShipping_default'] == '1' ? 1 : 0)
+					$req['weShippingId'],
+					$req['weShipping_text'],
+					self::makeArrayFromReq($req['weShipping_countries']),
+					$req['weShipping_cartValue'],
+					$req['weShipping_shipping'],
+					($req['weShipping_default'] == '1' ? 1 : 0)
 			);
 			$this->shippings[$req['weShippingId']] = $newShipping;
 
-			if ($newShipping->default) {
+			if($newShipping->default){
 
-				foreach ($this->shippings as $id => $shipping) {
-					if ($id != $req['weShippingId']) {
+				foreach($this->shippings as $id => $shipping){
+					if($id != $req['weShippingId']){
 						$this->shippings[$id]->default = 0;
 					}
 				}
@@ -98,90 +92,76 @@ class weShippingControl {
 		}
 	}
 
-	function getNewEmptyShipping() {
+	function getNewEmptyShipping(){
 		return new weShipping(
-			uniqid('weShipping_'),
-			g_l('modules_shop','[new_entry]'),
-			array('Deutschland'),
-			array('10','20','100'),
-			array('15','5','0'),
-			0
-		); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+				uniqid('weShipping_'),
+				g_l('modules_shop', '[new_entry]'),
+				array('Deutschland'),
+				array('10', '20', '100'),
+				array('15', '5', '0'),
+				0
+		);
 	}
 
-	function save() {
-		//FIXME: change Primary Key!!
-		$DB_WE=$GLOBALS['DB_WE'];
-		// check if already inserted
-		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
+	function save(){
+		$DB_WE = $GLOBALS['DB_WE'];
 
-		$DB_WE->query($query);
-
-		if ($DB_WE->num_rows() > 0) {
-
-			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShippingControl"';
-
-		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")';
-		}
-
-		if ($DB_WE->query($query)) {
-			return true;
-		} else {
-			return false;
-		}
+		return $DB_WE->query('REPLACE INTO ' . ANZEIGE_PREFS_TABLE .
+				we_database_base::arraySetter(array(
+					'strDateiname' => 'weShippingControl',
+					'strFelder' => serialize($this)
+				)));
 	}
 
-	function delete($id) {
-
-		if (isset($this->shippings[$id])) {
+	function delete($id){
+		if(isset($this->shippings[$id])){
 			unset($this->shippings[$id]);
 		}
 		$this->save();
 	}
 
-	function getShippingById($id) {
+	function getShippingById($id){
 		return $this->shippings[$id];
 	}
 
-	function getDefaultShipping() {
+	function getDefaultShipping(){
 
-		foreach ($this->shippings as $shipping) {
-			if ($shipping->default) {
+		foreach($this->shippings as $shipping){
+			if($shipping->default){
 				return $shipping;
 			}
 		}
 		return false;
 	}
 
-	function getShippingCostByOrderValue($orderValue, $customer=false) {
+	function getShippingCostByOrderValue($orderValue, $customer = false){
 
-		if ($customer) {
+		if($customer){
 			// foreach, search the shipping
 
-			if (isset($customer[$this->stateField])) {
+			if(isset($customer[$this->stateField])){
 
-				foreach ($this->shippings as $key => $tmpShipping) {
-					if (in_array($customer[$this->stateField], $tmpShipping->countries)) {
+				foreach($this->shippings as $key => $tmpShipping){
+					if(in_array($customer[$this->stateField], $tmpShipping->countries)){
 						$shipping = $tmpShipping;
 						continue;
 					}
 				}
 			}
 		}
-		if (!isset($shipping)) { // take default shipping
+		if(!isset($shipping)){ // take default shipping
 			$shipping = $this->getDefaultShipping();
 		}
 
-		if ($shipping) {
+		if($shipping){
 
 			$shippingId = 0;
 
-			for ($i=0; $i<sizeof($shipping->cartValue);$i++) {
+			for($i = 0; $i < sizeof($shipping->cartValue); $i++){
 
-				if ($shipping->cartValue[$i] > $orderValue) {
+				if($shipping->cartValue[$i] > $orderValue){
 					continue;
-				} else {
+				} else{
 					$shippingId = $i;
 				}
 			}
@@ -190,22 +170,23 @@ class weShippingControl {
 		return 0;
 	}
 
-	function makeArrayFromReq($req) {
+	function makeArrayFromReq($req){
 
 		$entries = explode("\n", $req);
 		$retArr = array();
 
-		foreach ($entries as $entry) {
-			if (trim($entry)) {
+		foreach($entries as $entry){
+			if(trim($entry)){
 				$retArr[] = trim($entry);
 			}
 		}
 		array_unique($retArr);
 		return $retArr;
 	}
+
 }
 
-class weShipping {
+class weShipping{
 
 	var $id = '';
 	var $text = '';
@@ -214,7 +195,7 @@ class weShipping {
 	var $shipping = array();
 	var $default = false;
 
-	function weShipping ($id='', $text='', $countries, $cartValue, $shipping, $default) {
+	function weShipping($id = '', $text = '', $countries, $cartValue, $shipping, $default){
 
 		$this->id = $id;
 		$this->text = $text;
@@ -223,5 +204,7 @@ class weShipping {
 		$this->shipping = $shipping;
 		$this->default = $default;
 	}
+
 }
+
 ?>

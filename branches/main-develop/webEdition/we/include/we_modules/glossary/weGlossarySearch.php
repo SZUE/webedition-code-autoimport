@@ -92,19 +92,7 @@ class weGlossarySearch{
 	 *
 	 */
 	function __construct($table){
-
-		$this->weGlossarySearch($table);
-	}
-
-	/**
-	 * PHP 4 Constructor
-	 *
-	 * @return weGlossarySearch
-	 */
-	function weGlossarySearch($table){
-
 		$this->DatabaseObject = new DB_WE();
-
 		$this->Table = $table;
 	}
 
@@ -173,19 +161,19 @@ class weGlossarySearch{
 	 * @return string
 	 */
 	function _getStatement($countStmt = false){
-		$stmt = "SELECT " .
-			($countStmt ? "COUNT(1)" : implode(', ', $this->Fields)) .
-			" FROM " . escape_sql_query($this->Table) . " " .
-			"WHERE " . ($this->Where == "" ? "1" : $this->Where) .
-			($this->GroupBy != '' ? " GROUP BY " . $this->GroupBy : '') .
-			($this->Having != '' ? " HAVING " . $this->Having : '');
+		$stmt = 'SELECT ' .
+			($countStmt ? 'COUNT(1)' : implode(', ', $this->Fields)) .
+			' FROM ' . escape_sql_query($this->Table) . " " .
+			'WHERE ' . ($this->Where == '' ? '1' : $this->Where) .
+			($this->GroupBy != '' ? ' GROUP BY ' . $this->GroupBy : '') .
+			($this->Having != '' ? ' HAVING ' . $this->Having : '');
 
 		if(!$countStmt){
 			if($this->Order != ''){
-				$stmt .= " ORDER BY " . $this->Order . " " . $this->Sort;
+				$stmt .= ' ORDER BY ' . $this->Order . ' ' . $this->Sort;
 			}
 
-			$stmt .= " LIMIT " . $this->Offset . ", " . $this->Rows;
+			$stmt .= ' LIMIT ' . $this->Offset . ', ' . $this->Rows;
 		}
 
 		return trim($stmt);
@@ -197,7 +185,7 @@ class weGlossarySearch{
 	 * @return integer
 	 */
 	function countItems(){
-		return f($this->_getStatement(true), "COUNT(1)", $this->DatabaseObject);
+		return f($this->_getStatement(true), 'COUNT(1)', $this->DatabaseObject);
 	}
 
 	/**

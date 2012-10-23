@@ -31,4 +31,3 @@
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 	we_html_tools::protect();
 	print we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . $_REQUEST["we_cmd"][1] . "\">"));
-?>

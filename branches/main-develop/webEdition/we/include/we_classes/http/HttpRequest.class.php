@@ -242,7 +242,7 @@ class HttpRequest{
 			//  it is necessary to differ from POST/GET requests
 			if($this->http_method == 'POST'){ //  method 'POST'
 				//  boundary to seperate between different content blocks
-				$boundary = 'accessibility_' . (uniqid('webEdition') . time()); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+				$boundary = 'accessibility_' . (uniqid('webEdition') . time());
 
 				foreach($this->files as $file){
 					//  important not ot forget the leading '--'
@@ -294,12 +294,7 @@ class HttpRequest{
 	 * @desc returns the raw - httpResponse including header and content
 	 */
 	function getHttpResponseStr(){
-
-		if($this->error){
-			return '';
-		} else{
-			return $this->http_response;
-		}
+		return($this->error ? '' : $this->http_response);
 	}
 
 	/**

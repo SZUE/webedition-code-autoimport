@@ -112,7 +112,7 @@ abstract class we_html_element{
 	static function jsElement($content = '', $attribs = array()){
 		$attribs['type'] = 'text/javascript';
 		if(strpos($content, '<!--') === FALSE){
-			$content = "<!--\n" . $content . "\n//-->\n";
+			$content = "<!--\n" . trim($content," \n") . "\n//-->\n";
 		}
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
 	}

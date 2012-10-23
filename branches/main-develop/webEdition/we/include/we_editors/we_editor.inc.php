@@ -321,8 +321,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	 */
 	$cf = array();
 
-	$parent = dirname($tempName);
-	$parent = str_replace('\\', '/', $parent);
+	$parent = str_replace('\\', '/', dirname($tempName));
 
 	while(!we_util_File::checkAndMakeFolder($parent)) {
 		$cf[] = $parent;
@@ -332,8 +331,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	// url of document !!
 	srand((double) microtime() * 1000000);
 	$r = rand();
-	$_url = dirname($we_doc->getHttpSitePath());
-	$_url = str_replace('\\', '/', $_url);
+	$_url = str_replace('\\', '/', dirname($we_doc->getHttpSitePath()));
 
 	$contents = str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents);
 

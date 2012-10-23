@@ -179,7 +179,7 @@ class weXMLExIm{
 		}
 	}
 
-	function savePerserves($full=true){
+	function savePerserves($full = true){
 		$_SESSION["ExImRefTable"] = $this->RefTable->RefTable2Array($full);
 		$_SESSION["ExImRefUsers"] = $this->RefTable->Users;
 		$_SESSION["ExImCurrentRef"] = $this->RefTable->current;
@@ -301,15 +301,13 @@ class weXMLExIm{
 	function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = array();
-		$wsQuery = '';
+		$wsQuery = array();
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				if($wsQuery != '')
-					$wsQuery .=' OR ';
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
-				while($path != "/" && $path) {
-					array_push($parentpaths, $path);
+				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				while($path != '/' && $path) {
+					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
@@ -317,13 +315,11 @@ class weXMLExIm{
 			$ac = getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				if($wsQuery != '')
-					$wsQuery .=' OR ';
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery [] = " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
 			}
 		}
 
-		return makeOwnersSql() . ( $wsQuery ? 'AND (' . $wsQuery . ')' : '');
+		return makeOwnersSql() . ( $wsQuery ? 'AND (' . implode(' OR ', $wsQuery) . ')' : '');
 	}
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
@@ -389,9 +385,11 @@ class weXMLExIm{
 	}
 
 	function importInfoMap($nodeset){
+
 	}
 
 	function isBinary(){
+
 	}
 
 	function saveObject(&$object){

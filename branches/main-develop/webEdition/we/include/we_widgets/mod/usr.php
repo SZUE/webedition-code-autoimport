@@ -26,6 +26,7 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 	exit();
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+we_html_tools::protect();
 
 $UO = new we_users_online();
 

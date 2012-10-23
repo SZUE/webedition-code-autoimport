@@ -174,11 +174,10 @@ class we_button{
 		 */
 		// Check if the button is a text button or an image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button is NOT an image
-			$_button_name = ($uniqid ? 'we' . uniqid($name . "_") : $name); // FIXME: #6590: str_replace('.', '', uniqid("",true))
-			$_button_name .= $suffix;
+			$_button_name = ($uniqid ? 'we' . uniqid($name . "_") : $name) . $suffix;
 		} else{ // Button is an image - create a unique name
 			$_button_pure_name = substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY)));
-			$_button_name = ($uniqid ? 'we' . uniqid(substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . "_") : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$_button_name = ($uniqid ? 'we' . uniqid(substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . '_') : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
 		}
 		/**
 		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON

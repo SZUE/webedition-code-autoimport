@@ -42,11 +42,10 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	case "shop_preview_variant":
 		weShopVariants::correctModelFields($we_doc, false);
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/show_variant.inc.php');
+		require(WE_MODULES_PATH . 'shop/show_variant.inc.php');
 		exit;
 		break;
 }
 
 $parts = weShopVariants::getVariantsEditorMultiBoxArrayObjectFile($we_doc);
-print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
-?>
+print we_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);

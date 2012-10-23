@@ -64,6 +64,7 @@ function we_parse_tag_captcha($attribs){
 	  t_e('warning', 'Acess outside document_root forbidden!', $realPath);
 	  } */
 
+	
 	$php = '<?php
 		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we.inc.php");
 		$image = new CaptchaImage(' . $width . ", " . $height . ", " . $maxlength . ');' .

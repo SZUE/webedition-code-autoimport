@@ -1145,7 +1145,6 @@ top.close();');
 					  }
 					  else{
 					  if ($this->exportVars["type"]=="doctype"){
-					  include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/listview/we_listview.class.php");
 					  $doctypename=f("SELECT DocType FROM ".DOC_TYPES_TABLE." WHERE ID='".$this->exportVars["doctype"]."';","DocType",$this->db);
 
 					  $catss="";

@@ -322,10 +322,10 @@ class we_fileselector{
 
 	var startPath="' . $startPath . '";
 
-	var parentID="' .
-				($this->dir ?
-					f('SELECT ParentID FROM' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), "ParentID", $this->db) :
-					0) . '";
+	var parentID=' .
+				intval(($this->dir ?
+					f('SELECT ParentID FROM '.$this->db->escape($this->table).' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+					0)) . ';
     var table="' . $this->table . '";
 	var order="' . $this->order . '";
 

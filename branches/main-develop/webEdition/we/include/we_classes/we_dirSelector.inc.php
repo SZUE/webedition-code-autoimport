@@ -239,7 +239,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('</head>');
+			d.writeln('</head>');
 		d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? '  onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
 										 d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
@@ -751,10 +751,8 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder = new we_class_folder();
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder = new we_folder();
 			}
 
@@ -923,8 +921,8 @@ top.selectFile(top.currentID);
 				$result['Templates'] = $this->db->f('Templates');
 			}
 			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id), "Path", $this->db);
-			$out = we_html_tools::getHtmlTop() . '
-' . STYLESHEET . we_html_element::cssElement('
+			$out = we_html_tools::getHtmlTop() .
+STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -1034,17 +1032,14 @@ top.selectFile(top.currentID);
 								$thumbpath = WE_THUMB_PREVIEW_DIR . $this->id . '.' . $extension;
 								$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 								if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
-									include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 									$thumb = we_image_edit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
 								}
 							} else{
 								$thumbpath = $result['Path'];
 							}
 
-
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>";
-
-							$out .= $previewDefauts;
+							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>" .
+								$previewDefauts;
 
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
 							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>";

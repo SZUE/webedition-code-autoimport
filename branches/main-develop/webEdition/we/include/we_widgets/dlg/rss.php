@@ -26,7 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 
 we_html_tools::protect();
-$parts = array();
 $jsCode = "
 var _aTopRssFeeds_=opener._trf;
 var _iTopRssFeedsLen=_aTopRssFeeds_.length;
@@ -303,7 +302,7 @@ function exit_close(){
 ";
 
 function htmlClipElement($smalltext, $text, $content){
-	$unique = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+	$unique = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
 	$js = we_html_element::jsElement(
 			'var state_' . $unique . '=0;
 		function clip_' . $unique . '(){
@@ -411,22 +410,15 @@ $rssUri = $oIptUri . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() .
 		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
 
 $oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_content_rem]'), 2, 410);
-$oChbxContTitle = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContLink = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[link]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContDesc = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContEnc = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[content_encoded]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContPubDate = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxContCategory = we_forms::checkbox(
-		$value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[category]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oSctNumEntries = new we_html_select(array(
-		"name" => "sct_conf", "size" => "1", "class" => "defaultfont"
-	));
+$oChbxContTitle = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContLink = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[link]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContDesc = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContEnc = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[content_encoded]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContPubDate = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxContCategory = we_forms::checkbox($value = 0, $checked = 0, $name = "chbx_conf", $text = g_l('cockpit', '[category]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oSctNumEntries = new we_html_select(array("name" => "sct_conf", "size" => "1", "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[no]'));
+
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);
 	if($iCurrEntry >= 10){
@@ -462,22 +454,14 @@ $rssConf = $oRemRssConf . we_html_tools::getPixel(1, 5) . we_html_element::htmlB
 		g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
 
 $oRemLabel = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_label_rem]'), 2, 410);
-$oChbxTb[0] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[label_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[1] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "onDisableRdoGroup('title');", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[2] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[3] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[link_url]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[4] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[5] = we_forms::checkbox(
-		$value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[copyright]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oRdoTitle[0] = we_forms::radiobutton(
-		$value = 1, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[original_of_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoTitle[1] = we_forms::radiobutton(
-		$value = 0, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[personalized]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oChbxTb[0] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[label_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxTb[1] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "onDisableRdoGroup('title');", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxTb[2] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxTb[3] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[link_url]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxTb[4] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oChbxTb[5] = we_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[copyright]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
+$oRdoTitle[0] = we_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[original_of_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oRdoTitle[1] = we_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[personalized]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
 $oTitleTb = new we_html_table(array(
 		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
@@ -517,18 +501,20 @@ $oEditTb->setCol(5, 0, array(
 $rssLabel = $oRemLabel . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
 
-array_push($parts, array(
-	"headline" => "", "html" => $rssUri, "space" => 0
-));
-array_push($parts, array(
-	"headline" => "", "html" => $rssConf, "space" => 0
-));
-array_push($parts, array(
-	"headline" => "", "html" => $rssLabel, "space" => 0
-));
-array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+$parts = array(
+	array(
+		"headline" => "", "html" => $rssUri, "space" => 0
+	),
+	array(
+		"headline" => "", "html" => $rssConf, "space" => 0
+	),
+	array(
+		"headline" => "", "html" => $rssLabel, "space" => 0
+	),
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	)
+);
 
 $save_button = we_button::create_button('save', 'javascript:save();', false, -1, -1);
 $preview_button = we_button::create_button('preview', 'javascript:preview();', false, -1, -1);

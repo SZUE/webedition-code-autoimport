@@ -130,7 +130,7 @@ class we_shop_Basket{
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
 		} else{ // add the item
-			$key = uniqid('we_cart_'); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$key = uniqid('we_cart_');
 
 			if($quantity > 0){ // only add new item with positive number
 				$item = array(
@@ -153,7 +153,7 @@ class we_shop_Basket{
 	 * @return integer
 	 */
 	function Get_Basket_Count(){
-		return sizeof($this->ShoppingItems);
+		return count($this->ShoppingItems);
 	}
 
 	/**
@@ -174,7 +174,6 @@ class we_shop_Basket{
 	 * @return string
 	 */
 	function getserial($id, $type, $variant = false, $customFields = array()){
-
 		$DB_WE = new DB_WE;
 
 		$Record = array();
@@ -194,8 +193,7 @@ class we_shop_Basket{
 					weShopVariants::useVariantForShop($Record, $variant);
 				}
 
-
-				$DB_WE->query("SELECT * FROM " . FILE_TABLE . " WHERE ID=" . intval($id));
+				$DB_WE->query('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 				if($DB_WE->next_record()){
 					foreach($DB_WE->Record as $key => $val){
 						$Record["wedoc_$key"] = $val;
@@ -208,13 +206,8 @@ class we_shop_Basket{
 				$Record["WE_ID"] = $id;
 
 				// at last add custom fields to record and to path
-				if(sizeof($customFields)){
-
-					if($variant){
-						$Record['WE_PATH'] .= '&amp;';
-					} else{
-						$Record['WE_PATH'] .= '?';
-					}
+				if(!empty($customFields)){
+					$Record['WE_PATH'] .= ($variant ? '&amp;' : '?');
 
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
@@ -223,7 +216,7 @@ class we_shop_Basket{
 				}
 				break;
 			case "o":
-				$classArray = getHash("SELECT * FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), $DB_WE);
+				$classArray = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
 				$olv = new we_listview_object("0", 1, 0, "", 0, $classArray["TableID"], "", "", " " . OBJECT_X_TABLE . $classArray["TableID"] . ".ID=" . $classArray["ObjectID"]);
 				$olv->next_record();
@@ -274,7 +267,6 @@ class we_shop_Basket{
 	 * @return integer
 	 */
 	function Get_Item_Quantity($key){
-
 		return $this->ShoppingItems[$key]['quantity'];
 	}
 
@@ -310,7 +302,7 @@ class we_shop_Basket{
 	 */
 	function Set_Item($id, $quantity = 1, $type = "w", $variant = '', $customFields = array()){
 
-		if($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields)){ // item already in cart
+		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
 			} else{
@@ -361,4 +353,5 @@ class we_shop_Basket{
 	function setOrderID($id){
 		$this->orderID = $id;
 	}
+
 }

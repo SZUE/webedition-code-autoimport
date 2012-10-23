@@ -54,11 +54,11 @@ switch($_REQUEST['we_cmd'][2]){
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
-		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
+		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Title));
+		$entText = str_replace(array("'", '"'), array('&#039;', '&quot'), base64_decode($q_Text));
 		if($q_Valid == "always" || $q_Valid == "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
 		$_sql = 'UPDATE ' . $GLOBALS['DB_WE']->escape($_table) . ' SET ' . we_database_base::arraySetter(array(
 				'Title' => $entTitle,
 				'Text' => $entText,
