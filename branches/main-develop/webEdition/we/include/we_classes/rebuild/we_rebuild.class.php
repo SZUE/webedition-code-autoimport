@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_rebuild{
+abstract class we_rebuild{
 
 	function rebuild($data, $printIt = false){
 		if($printIt){
@@ -93,7 +93,7 @@ class we_rebuild{
 			default:
 				switch($data["type"]){
 					case 'document':
-						if(file_exists(WE_INCLUDES_PATH.'we_classes/' . $data['cn'] . '.inc.php')){
+						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
 
 						} else{ // it has to be an object
 							return false;
@@ -101,7 +101,7 @@ class we_rebuild{
 						$table = FILE_TABLE;
 						break;
 					case 'template':
-						if(file_exists(WE_INCLUDES_PATH.'we_classes/' . $data['cn'] . '.inc.php')){
+						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
 
 						} else{ // it has to be an object
 							return false;
@@ -109,7 +109,7 @@ class we_rebuild{
 						$table = TEMPLATES_TABLE;
 						break;
 					case 'object':
-						if(file_exists(WE_INCLUDES_PATH.'we_modules/object/' . $data['cn'] . '.inc.php')){
+						if(file_exists(WE_INCLUDES_PATH . 'we_modules/object/' . $data['cn'] . '.inc.php')){
 
 						} else{ // it has to be an object
 							return false;
@@ -182,11 +182,11 @@ class we_rebuild{
 	function getDocuments($btype = 'rebuild_all', $categories = '', $catAnd = false, $doctypes = '', $folders = '', $maintable = false, $tmptable = false, $templateID = 0){
 		switch($btype){
 			case 'rebuild_all':
-				return we_rebuild::getAllDocuments($maintable, $tmptable);
+				return self::getAllDocuments($maintable, $tmptable);
 			case 'rebuild_templates':
-				return we_rebuild::getTemplates();
+				return self::getTemplates();
 			case 'rebuild_filter':
-				return we_rebuild::getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID);
+				return self::getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID);
 		}
 	}
 
@@ -377,7 +377,7 @@ class we_rebuild{
 						'it' => 0);
 				}
 
-				$_template_query = array(' TemplateID=' . $templateID );
+				$_template_query = array(' TemplateID=' . $templateID);
 				foreach($arr['templateIDs'] as $tid){
 					$_template_query[] = ' TemplateID=' . intval($tid);
 				}
@@ -474,7 +474,7 @@ class we_rebuild{
 		}
 
 		if(isset($_REQUEST['rebuildStaticAfterNavi']) && $_REQUEST['rebuildStaticAfterNavi'] == 1){
-			$data2 = we_rebuild::getFilteredDocuments('', '', '', '', '');
+			$data2 = self::getFilteredDocuments('', '', '', '', '');
 			$data = array_merge($data, $data2);
 		}
 
