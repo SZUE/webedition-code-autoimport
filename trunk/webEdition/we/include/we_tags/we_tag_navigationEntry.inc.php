@@ -22,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_navigationEntry($attribs, $content) {
-	return '<?php printElement('.we_tag_tagParser::printTag('navigationEntry',$attribs,$content,true).');?>';
+function we_parse_tag_navigationEntry($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace('global $lv;', '', $content), true) . ');?>';
 }
 
-function we_tag_navigationEntry($attribs, $content) {
-	if (($foo = attributFehltError($attribs, 'type', __FUNCTION__))) {
+function we_tag_navigationEntry($attribs, $content){
+	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		echo $foo;
 		return;
 	}
@@ -39,8 +38,8 @@ function we_tag_navigationEntry($attribs, $content) {
 	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
 	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
 
-	foreach ($positions as $position) {
-		if ($position == 'first') {
+	foreach($positions as $position){
+		if($position == 'first'){
 			$position = 1;
 		}
 		$GLOBALS['we_navigation'][$navigationName]->setTemplate($content, $type, $level, $current, $position);
