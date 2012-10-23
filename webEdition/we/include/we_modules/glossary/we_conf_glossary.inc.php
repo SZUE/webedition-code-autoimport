@@ -22,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("GLOSSARY_TABLE", TBL_PREFIX . "tblglossary");
-define("WE_GLOSSARY_MODULE_DIR", WE_MODULES_DIR."glossary/");
-define("WE_GLOSSARY_MODULE_PATH",WE_MODULES_PATH."glossary/");
+define('GLOSSARY_TABLE', TBL_PREFIX . 'tblglossary');
+define('WE_GLOSSARY_MODULE_DIR', WE_MODULES_DIR . 'glossary/');
+define('WE_GLOSSARY_MODULE_PATH', WE_MODULES_PATH . 'glossary/');
 
 we_loadLanguageConfig();

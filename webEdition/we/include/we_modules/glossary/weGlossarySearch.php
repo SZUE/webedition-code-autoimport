@@ -161,12 +161,12 @@ class weGlossarySearch{
 	 * @return string
 	 */
 	function _getStatement($countStmt = false){
-		$stmt = "SELECT " .
-			($countStmt ? "COUNT(1)" : implode(', ', $this->Fields)) .
-			" FROM " . escape_sql_query($this->Table) . " " .
-			"WHERE " . ($this->Where == "" ? "1" : $this->Where) .
-			($this->GroupBy != '' ? " GROUP BY " . $this->GroupBy : '') .
-			($this->Having != '' ? " HAVING " . $this->Having : '');
+		$stmt = 'SELECT ' .
+			($countStmt ? 'COUNT(1)' : implode(', ', $this->Fields)) .
+			' FROM ' . escape_sql_query($this->Table) . " " .
+			'WHERE ' . ($this->Where == '' ? '1' : $this->Where) .
+			($this->GroupBy != '' ? ' GROUP BY ' . $this->GroupBy : '') .
+			($this->Having != '' ? ' HAVING ' . $this->Having : '');
 
 		if(!$countStmt){
 			if($this->Order != ''){
@@ -185,7 +185,7 @@ class weGlossarySearch{
 	 * @return integer
 	 */
 	function countItems(){
-		return f($this->_getStatement(true), "COUNT(1)", $this->DatabaseObject);
+		return f($this->_getStatement(true), 'COUNT(1)', $this->DatabaseObject);
 	}
 
 	/**

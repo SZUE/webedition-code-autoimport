@@ -769,6 +769,14 @@ class we_updater{
 		}
 	}
 
+	static function updateGlossar(){
+		//FIXME: remove after 7.0
+		foreach($GLOBALS['weFrontendLanguages'] as $lang){
+			$cache = new weGlossaryCache($lang);
+			$cache->write();
+		}
+	}
+
 	function doUpdate(){
 		self::updateTables();
 		self::updateUsers();
@@ -785,6 +793,7 @@ class we_updater{
 		self::updateTableKeys();
 		self::updateLangLink();
 		self::fixInconsistentTables();
+		self::updateGlossar();
 	}
 
 }
