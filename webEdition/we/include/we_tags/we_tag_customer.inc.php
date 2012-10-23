@@ -24,7 +24,7 @@
  */
 function we_parse_tag_customer($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 
 	$name = weTag_getParserAttribute("name", $arr);
 	if($name && strpos($name, ' ') !== false){
@@ -92,7 +92,7 @@ function we_tag_customer($attribs){
 	$GLOBALS["lv"] = new we_customertag($we_cid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 	if(is_array($GLOBALS["we_lv_array"]))
-		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
+		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
 	if($GLOBALS["lv"]->avail){
 //implement seem
 	}
