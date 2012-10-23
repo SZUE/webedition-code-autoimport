@@ -98,7 +98,7 @@ class paypal_class {
 
       $this->add_field('rm','2');           // Return method = POST
       $this->add_field('cmd','_cart');
-      $this->add_field('upload', '1');
+      $this->add_field('upload', '1'); // #6952
 
    }
 
