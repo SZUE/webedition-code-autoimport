@@ -1896,7 +1896,7 @@ function getWeFrontendLanguagesForBackend(){
 	}
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
-		if(sizeof($temp) == 1){
+		if(count($temp) == 1){
 			$la[$Locale] = CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale);
 		} else{
 			$la[$Locale] = CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale);
