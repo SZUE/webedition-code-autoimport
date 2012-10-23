@@ -62,16 +62,6 @@ function we_save() {
 	document.getElementById('content').contentDocument.getElementById('setting_save').style.display = '';
 	document.getElementById('content').contentDocument.we_form.save_settings.value = 'true';
 
-END_OF_SCRIPT;
-
-	if(we_hasPerm('FORMMAIL')){
-		$_javascript .= '
-		//document.content.send_recipients(); //FIX ME
-		';
-	}
-
-// Define needed JS
-	$_javascript .= <<< END_OF_SCRIPT
 	document.getElementById('content').contentDocument.we_form.submit();
 }
 

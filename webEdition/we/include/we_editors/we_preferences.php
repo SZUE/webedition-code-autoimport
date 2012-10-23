@@ -282,8 +282,8 @@ function get_value($settingname){
 
 		case 'proxy_proxy':
 			// Check for settings file
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php')){
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php');
+			if(file_exists(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php')){
+				include_once(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php');
 			}
 			return defined('WE_PROXYHOST');
 
@@ -499,7 +499,6 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 	if($settingvalue == null){ //checkboxes -> unchecked - all other values are set by the form
 		$settingvalue = 0;
 	}
-
 	switch($settingname){
 		default:
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -578,8 +577,7 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'formmail_values':
 			if((isset($_REQUEST['newconf']['formmail_values']) && $_REQUEST['newconf']['formmail_values'] != '') || (isset($_REQUEST['newconf']['formmail_deleted']) && $_REQUEST['newconf']['formmail_deleted'] != '')){
 				$_recipients = explode('<##>', $_REQUEST['newconf']['formmail_values']);
-
-				if(count($_recipients)){
+				if(!empty($_recipients)){
 					foreach($_recipients as $i => $_recipient){
 						$_single_recipient = explode('<#>', $_recipient);
 
@@ -2329,6 +2327,7 @@ else {
 											hot = true;
 
 											set_state_edit_delete_recipient();
+											send_recipients();
 										} else {
 											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 										}
@@ -2378,6 +2377,7 @@ else {
 										if (!inSelectBox(editRecipient)) {
 											p.options[p.selectedIndex].text = editRecipient;
 											hot = true;
+											send_recipients();
 										} else {
 											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 										}
