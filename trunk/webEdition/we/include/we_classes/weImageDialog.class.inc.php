@@ -295,7 +295,7 @@ class weImageDialog extends weDialog{
 			$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
 			unset($_p);
 
-			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")){
+			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")) || $this->args['editor'] == "tinyMce"){
 
 				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' . "\n";
 				$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>' . "\n";
@@ -305,7 +305,7 @@ class weImageDialog extends weDialog{
 				}
 				$thumbnails .= '</select>';
 
-				$thumbnails = we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]"));
+				$thumbnails = '<div id="selectThumbnail" style="display:true">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
 			} else{
 				$thumbnails = "";
 			}
@@ -470,7 +470,7 @@ function checkWidthHeight(field){
 	var ratioCheckBox = document.getElementById("_we_dialog_args[ratio]");
 	if(ratioCheckBox.checked){
 		if(field.value.indexOf("%") == -1){
-			if(ratiow && ratioh){
+			if(ratiow && ratioh){alert("naprawde jest");
 				if(field.name=="we_dialog_args[height]"){
 					field.form.elements["we_dialog_args[width]"].value = Math.round(field.value * ratioh);
 				}else{
