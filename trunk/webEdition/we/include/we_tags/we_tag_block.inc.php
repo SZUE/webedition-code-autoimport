@@ -114,7 +114,7 @@ function we_tag_block($attribs){
 		}
 	}
 
-	$listlen = sizeof($list);
+	$listlen = count($list);
 	if(!$list || $listlen == 0){
 		return false;
 	}

@@ -76,7 +76,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 			$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 			$we_doc->we_initSessDat($we_dt);
 
@@ -141,9 +141,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$we_ContentType = $_REQUEST['contenttype'];
 
 				$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
-				include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-				$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+				$tempName = TEMP_PATH . '/' . md5(uniqid(rand(), 1));
 				move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
 
 
