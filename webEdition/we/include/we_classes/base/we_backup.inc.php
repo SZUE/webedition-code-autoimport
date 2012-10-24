@@ -1070,7 +1070,7 @@ class we_backup{
 	 */
 	function isCreateQuery($q){
 		$m = array();
-		if(preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m)){
+		if(preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m)){
 			return $m[1];
 		}
 		else
@@ -1175,7 +1175,7 @@ class we_backup{
 	 */
 	function isInsertQuery($q){
 		$m = array();
-		return (preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m) ? $m[1] : '');
+		return (preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ? $m[1] : '');
 	}
 
 	/**

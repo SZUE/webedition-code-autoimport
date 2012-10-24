@@ -2740,7 +2740,7 @@ class we_objectFile extends we_document{
 	function i_getDocument($includepath = ''){
 		$glob = array();
 		foreach(array_keys($GLOBALS) as $k){
-			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
+			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_+-]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
 				$glob [] = '$' . $k;
 		}
 		eval('global ' . implode(',', $glob) . ';'); // globalen Namensraum herstellen.

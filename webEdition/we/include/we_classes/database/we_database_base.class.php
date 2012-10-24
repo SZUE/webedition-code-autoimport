@@ -748,7 +748,7 @@ abstract class we_database_base{
 		if(!$this->isColExist($tab, $col)){
 			return;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . $col);
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP `' . trim($col, '`') . '`');
 	}
 
 	function getTableCreateArray($tab){

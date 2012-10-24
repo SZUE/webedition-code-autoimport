@@ -559,7 +559,7 @@ class weSiteImport{
 				f.templateName.select();
 				return false;
 			}
-			var reg = /[^a-z0-9\._\-]/gi;
+			var reg = /[^a-z0-9\._+\-]/gi;
 			if (reg.test(f.templateName.value)) {
 				' . we_message_reporting::getShowMessageCall(
 					g_l('alert', "[we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
