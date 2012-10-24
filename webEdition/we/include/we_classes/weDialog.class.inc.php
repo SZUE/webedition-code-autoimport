@@ -248,6 +248,20 @@ class weDialog{
 	function getHeaderHTML($printJS_Style = false){
 		$out = we_html_tools::htmlTop($this->dialogTitle, $this->charset);
 
+		/* tinyMCE integration: // TODO: move to respective subclasses */
+		if(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce'){ 
+			$pathToTinyMce = WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/';
+			$out .= we_html_element::jsScript($pathToTinyMce . 'tiny_mce_popup.js') .
+			we_html_element::jsScript($pathToTinyMce . 'utils/mctabs.js') .
+			we_html_element::jsScript($pathToTinyMce . 'utils/form_utils.js') .
+			we_html_element::jsScript($pathToTinyMce . 'utils/validate.js') .
+			we_html_element::jsScript($pathToTinyMce . 'utils/editable_selects.js');
+			$out .= $this->ClassName == 'weImageDialog' ? we_html_element::jsScript($pathToTinyMce . 'plugins/advimage/js/image_init.js') : 
+			($this->ClassName == 'weHyperlinkDialog' ? we_html_element::jsScript($pathToTinyMce . 'plugins/advlink/js/advlink_init.js') :
+			'');
+		 }
+		/* tinyMCE integration */
+
 		if($printJS_Style){
 			$out .= STYLESHEET;
 			$out .= $this->getJs();
