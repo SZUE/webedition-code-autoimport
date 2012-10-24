@@ -315,6 +315,7 @@ if(tfd.style.display=="none"){
 }
 
 function setTreeArrow(direction) {
+try{
 self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
 if(direction=="right"){
 	self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
@@ -322,6 +323,9 @@ if(direction=="right"){
 }else{
 	self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
 	self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+}
+}	catch(e) {
+		// Nothing
 }
 }
 
@@ -378,8 +382,7 @@ if(target) {
 			}
 			top.lastUsedLoadFrame = target.name;
 		}
-	}
-	catch(e) {
+	}catch(e) {
 		// Nothing
 	}
 	target.location.replace(url);
