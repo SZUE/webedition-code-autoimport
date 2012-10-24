@@ -789,7 +789,9 @@ function showEditFooterForSEEMMode(){
 	}
 
 	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew.
-		"_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');"
+		"try{
+			_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');
+			}catch(e){;}"
 	);
 	?>
 </body>
