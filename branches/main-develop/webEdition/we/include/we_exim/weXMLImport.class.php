@@ -262,7 +262,7 @@ class weXMLImport extends weXMLExIm{
 						//assign TableID based on Path
 						// evaluate root dir for object
 						$match = array();
-						preg_match('(/+[a-zA-Z0-9_\-\.]*)', $object->Path, $match);
+						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 						if(isset($match[0])){
 							$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=\'' . escape_sql_query($match[0]) . '\';', 'ID', new DB_WE());
 						}

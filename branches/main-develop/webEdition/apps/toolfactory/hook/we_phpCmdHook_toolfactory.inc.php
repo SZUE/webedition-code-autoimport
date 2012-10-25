@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,8 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 switch($_REQUEST['we_cmd'][0]){
 	case 'tool_toolfactory_edit':
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/tools_frameset.php');
-	break;
+		include(WE_INCLUDES_PATH . 'we_tools/tools_frameset.php');
+		break;
 }

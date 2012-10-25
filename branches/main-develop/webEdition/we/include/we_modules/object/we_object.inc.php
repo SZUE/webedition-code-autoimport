@@ -266,7 +266,7 @@ class we_object extends we_document{
 				$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
 			}
 
-			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
+			$this->DB_WE->delTable($ctable);
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
 
 			//dummy eintrag schreiben
@@ -283,7 +283,7 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = '';
-
+			$regs = array();
 			foreach($tableInfo as $info){
 				if(preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 
@@ -292,13 +292,13 @@ class we_object extends we_document{
 						if(!in_array($info['name'], $fieldsToDelete)){
 
 							$nam = $this->getElement($info['name'] . 'dtype', 'dat') . '_' . $this->getElement($info['name'], 'dat');
-							$q .= ' CHANGE ' . $info['name'] . ' ' . $nam . ' ';
-							$q .= $this->switchtypes($info['name']);
+							$q .= ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
+								$this->switchtypes($info['name']);
 							//change from object is indexed to unindexed
 							if((strpos($info['name'], 'object_') === 0) && (strpos($nam, 'object_') !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
-								$q.=', DROP KEY ' . $info['name'] . ' ';
+								$q.=', DROP KEY `' . $info['name'] . '` ';
 							} else if((strpos($info['name'], 'object_') !== 0) && (strpos($nam, 'object_') === 0) && (strpos($info['flags'], 'multiple_key') === false)){
-								$q.=', ADD INDEX (' . $info['name'] . ') ';
+								$q.=', ADD INDEX (`' . $info['name'] . '`) ';
 							}
 
 							$arrt[$nam] = array(
@@ -359,7 +359,7 @@ class we_object extends we_document{
 								}
 							}
 						} else{
-							$q .= ' DROP ' . $info['name'] . ' ';
+							$q .= ' DROP `' . $info['name'] . '` ';
 						}
 						$q .= ',';
 					}
@@ -371,7 +371,7 @@ class we_object extends we_document{
 			foreach($neu as $cur){
 				if(isset($cur) && $cur != ''){
 					$nam = $this->getElement($cur . 'dtype', 'dat') . '_' . $this->getElement($cur, 'dat');
-					$q .= ' ADD ' . $nam . ' ';
+					$q .= ' ADD `' . $nam . '` ';
 					$arrt[$nam] = array(
 						'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
 						'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
@@ -428,7 +428,7 @@ class we_object extends we_document{
 					$q .= $this->switchtypes($cur);
 					//add index for complex queries
 					if($this->getElement($cur . 'dtype', 'dat') == 'object'){
-						$q .= ', ADD INDEX (' . $nam . ')';
+						$q .= ', ADD INDEX (`' . $nam . '`)';
 					}
 					$q .= ',';
 				}
@@ -462,11 +462,11 @@ class we_object extends we_document{
 
 				if($this->hasVariantFields() > 0){
 					if(!$exists){
-						$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD ' . $variant_field . ' TEXT NOT NULL');
+						$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD `' . $variant_field . '` TEXT NOT NULL');
 					}
 				} else{
 					if($exists){
-						$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $variant_field);
+						$this->DB_WE->delCol($ctable, $variant_field);
 					}
 				}
 			}
@@ -902,14 +902,14 @@ class we_object extends we_document{
 			case 'multiobject':
 				$content .= '<tr>' .
 					'<td  width="100" class="weMultiIconBoxHeadlineThin" valign="top" >' . g_l('contentTypes', '[object]') . '</td>' .
-					'<td  width="170" class="defaultfont"  valign="top">';
+					'<td  width="170" class="defaultfont" valign="top">';
 				$vals = array();
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
-				if(!sizeof($all)){
+				if(empty($all)){
 					$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				}
 				$count = 0;
-				while($count < sizeof($all)) {
+				while($count < count($all)) {
 					if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 						if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 							$this->DB_WE->query('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID = ' . intval($regs[2]));

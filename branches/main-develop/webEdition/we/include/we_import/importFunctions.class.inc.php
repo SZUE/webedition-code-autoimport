@@ -169,7 +169,7 @@ abstract class importFunctions{
 	 */
 	static function correctFilename($filename){
 		$filename = str_replace(array(' ', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('-', 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $filename);
-		$filename = preg_replace('%[^a-z0-9\._\-]%i', '', $filename);
+		$filename = preg_replace('%[^a-z0-9\._+-]%i', '', $filename);
 		if(strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}

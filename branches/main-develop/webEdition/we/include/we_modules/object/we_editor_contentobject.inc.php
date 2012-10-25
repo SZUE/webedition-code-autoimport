@@ -79,7 +79,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <script  type="text/javascript">
 	<!--
 	function we_checkObjFieldname(i){
-		if(i.value.search(/^([a-zA-Z0-9_])*$/)){
+		if(i.value.search(/^([a-zA-Z0-9_+-])*$/)){
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					i.focus();
 					i.select();
