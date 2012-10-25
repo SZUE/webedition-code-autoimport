@@ -85,7 +85,7 @@ class we_wysiwyg{
 			}
 			$this->tinyFonts = $tf;
 		} else{
-			$fn = $fontnames ? explode(",", $fontnames) : array("Arial, Helvetica, sans-serif", "Courier New, Courier, mono", "Geneva, Arial, Helvetica, sans-serif", "Georgia, Times New Roman, Times, serif", "Tahoma", "Times New Roman, Times, serif", "Verdana, Arial, Helvetica, sans-serif", "Wingdings");	
+			$fn = $fontnames ? explode(",", $fontnames) : array("Arial, Helvetica, sans-serif", "Courier New, Courier, mono", "Geneva, Arial, Helvetica, sans-serif", "Georgia, Times New Roman, Times, serif", "Tahoma", "Times New Roman, Times, serif", "Verdana, Arial, Helvetica, sans-serif", "Wingdings");
 			foreach($fn as $i => $font){
 				$fn[$i] = strtolower(str_replace(";", ",", $font));
 			}
@@ -103,7 +103,7 @@ class we_wysiwyg{
 			}
 			$this->cssClasses = substr($tf,0,-1);
 		}
-				
+
 		$this->Language = $Language;
 		$this->showSpell = $spell;
 		$this->isFrontendEdit = $isFrontendEdit;
@@ -164,7 +164,7 @@ class we_wysiwyg{
 			case 'tinyMCE':
 				//FIXME: remove onchange - bad practise
 				return '
-				<style type="text/css">	
+				<style type="text/css">
 					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
 					    background-image: url(/webEdition/images/pixel.gif);
@@ -462,7 +462,7 @@ function tinyMCEchanged(inst){
 				"h1" => g_l('wysiwyg', "[h1]"),
 				"h2" => g_l('wysiwyg', "[h2]"),
 				"h3" => g_l('wysiwyg', "[h3]"),
-				"h4" => g_l('wysiwyg', "[h4]"),					
+				"h4" => g_l('wysiwyg', "[h4]"),
 				"h5" => g_l('wysiwyg', "[h5]"),
 				"h6" => g_l('wysiwyg', "[h6]"),
 				"pre" => g_l('wysiwyg', "[pre]"),
@@ -983,69 +983,69 @@ function tinyMCEchanged(inst){
 			case 'tinyMCE':
 				$this->width = $this->width + 20;//imi
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
-				
+
 				$cmdMapping = array(
-					'abbr' => 'abbr', 
-					'acronym' => 'acronym', 
-					'anchor' => 'anchor', 
-					'applystyle' => 'styleselect', 
-					'backcolor' => 'backcolor', 
-					'bold' => 'bold', 
+					'abbr' => 'abbr',
+					'acronym' => 'acronym',
+					'anchor' => 'anchor',
+					'applystyle' => 'styleselect',
+					'backcolor' => 'backcolor',
+					'bold' => 'bold',
 					'caption' => '--', // Beschriftung: in tablecontrols integriert
 					//'color' => '--', // block: forecolor,backcolor <= mapping ok!
-					'copy' => 'copy', 
+					'copy' => 'copy',
 					//'copypaste' => '--', // block: cut,copy,paste <= mapping ok!
-					'createlink' => 'link', 
-					'cut' => 'cut', 
-					'decreasecolspan' => 'merge_cells', 
-					'deletecol' => 'delete_col', 
-					'deleterow' => 'delete_row', 
-					'editcell' => 'cell_props', 
-					'editsource' => 'code', 
-					'edittable' => '--', 
-					'fontname' => 'fontselect', 
-					'fontsize' => 'fontsizeselect', 
-					'forecolor' => 'forecolor', 
-					'formatblock' => 'formatselect', 
-					'fullscreen' => 'fullscreen', 
-					'importrtf' => '--', 
-					'increasecolspan' => 'split_cells', 
-					'indent' => 'indent', 
-					'insertbreak' => '', 
-					'insertcolumnleft' => 'col_before ', 
-					'insertcolumnright' => 'col_after', 
-					'inserthorizontalrule' => 'advhr', 
-					'insertimage' => 'image', 
-					'insertorderedlist' => 'numlist', 
-					'insertrowabove' => 'row_before', 
-					'insertrowbelow' => 'row_after', 
-					'insertspecialchar' => 'charmap', 
-					'inserttable' => 'table', 
-					'insertunorderedlist' => 'bullist', 
-					'italic' => 'italic', 
+					'createlink' => 'link',
+					'cut' => 'cut',
+					'decreasecolspan' => 'merge_cells',
+					'deletecol' => 'delete_col',
+					'deleterow' => 'delete_row',
+					'editcell' => 'cell_props',
+					'editsource' => 'code',
+					'edittable' => '--',
+					'fontname' => 'fontselect',
+					'fontsize' => 'fontsizeselect',
+					'forecolor' => 'forecolor',
+					'formatblock' => 'formatselect',
+					'fullscreen' => 'fullscreen',
+					'importrtf' => '--',
+					'increasecolspan' => 'split_cells',
+					'indent' => 'indent',
+					'insertbreak' => '',
+					'insertcolumnleft' => 'col_before ',
+					'insertcolumnright' => 'col_after',
+					'inserthorizontalrule' => 'advhr',
+					'insertimage' => 'image',
+					'insertorderedlist' => 'numlist',
+					'insertrowabove' => 'row_before',
+					'insertrowbelow' => 'row_after',
+					'insertspecialchar' => 'charmap',
+					'inserttable' => 'table',
+					'insertunorderedlist' => 'bullist',
+					'italic' => 'italic',
 					//'justify' => '--', // block: justifyleft,justifycenter,justifyright,justifyfull <= mapping ok!
-					'justifycenter' => 'justifycenter', 
-					'justifyfull' => 'justifyfull', 
-					'justifyleft' => 'justifyleft', 
-					'justifyright' => 'justifyright', 
-					'lang' => '', 
+					'justifycenter' => 'justifycenter',
+					'justifyfull' => 'justifyfull',
+					'justifyleft' => 'justifyleft',
+					'justifyright' => 'justifyright',
+					'lang' => '',
 					//'link' => '--', // block: createlink,unlink <= mapping ok!
 					//'list' => '--', // block: insertunorderedlist,insertorderedlist,indent,outdent <= mapping ok!
-					'outdent' => 'outdent', 
-					'paste' => 'paste', 
+					'outdent' => 'outdent',
+					'paste' => 'paste',
 					//'prop' => '', // block: bold,italic,underline,subscript,superscript,strikethrough,removeformat,cleanup => test removeformat and cleanup
-					'redo' => 'redo', 
+					'redo' => 'redo',
 					'removecaption' => '--', // Beschriftung: in tablecontrols integriert
-					'removeformat' => 'removeformat', 
-					'removetags' => 'cleanup', 
-					'spellcheck' => 'spellchecker', 
-					'strikethrough' => 'strikethrough', 
-					'subscript' => 'sub', 
-					'superscript' => 'sup', 
-					'underline' => 'underline', 
+					'removeformat' => 'removeformat',
+					'removetags' => 'cleanup',
+					'spellcheck' => 'spellchecker',
+					'strikethrough' => 'strikethrough',
+					'subscript' => 'sub',
+					'superscript' => 'sup',
+					'underline' => 'underline',
 					//'table' => '--', // complete block
 					'undo' => 'undo', // test exact function
-					'unlink' => 'unlink', 
+					'unlink' => 'unlink',
 					'visibleborders' => 'visualaid',
 
 					'unmapped1' => 'save',
@@ -1083,7 +1083,7 @@ function tinyMCEchanged(inst){
 					'unmapped_notImplementetd6' => 'template',
 					'unmapped_notImplementetd7' => 'absolute'
 				);
-				
+
 				//write command-rows: imi
 				$tinyRows = '';
 				$i = 0;
@@ -1095,18 +1095,18 @@ function tinyMCEchanged(inst){
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
 					}
-					$tinyRows = substr($tinyRows, 0, -1) . '", 
+					$tinyRows = substr($tinyRows, 0, -1) . '",
 ';
 					$i++;
 					$k++;
 				}
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",
-';				
-				
+';
+
 				//deactivated: template,save,layer
-				
+
 				//function openWeFileBrowser(): not needed anymore: imi
-				
+
 				//insert complete new: imi
 				return we_html_element::jsElement('
 tinyMCE.init({
@@ -1114,7 +1114,7 @@ tinyMCE.init({
 	mode : "exact",
 	elements : "' . $this->name . '",
 	theme : "advanced",
-	
+
 	accessibility_warnings : false,
 	relative_urls : false, //important!
 	convert_urls : false, //important!
@@ -1132,7 +1132,7 @@ tinyMCE.init({
 	' . $tinyRows . '
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
-	theme_advanced_styles: "' . $this->cssClasse . '",
+	theme_advanced_styles: "' . $this->cssClasses . '",
 	theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "bottom",
@@ -1144,7 +1144,7 @@ tinyMCE.init({
 	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
-	
+
 	// Skin options
 	skin : "o2k7",
 	skin_variant : "silver",
@@ -1383,5 +1383,5 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		}
 		return $out;
 	}
-	
+
 }
