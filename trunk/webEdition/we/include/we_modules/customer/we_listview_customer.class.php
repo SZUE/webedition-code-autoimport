@@ -70,7 +70,7 @@ class we_listview_customer extends listviewBase{
 		}
 
 		if($this->desc && $this->order != '' && (!preg_match("|.+ desc$|i", $this->order))){
-			$this->order .= " DESC";
+			$this->order .= ' DESC';
 		}
 
 		$orderstring = $extra = '';
@@ -86,7 +86,6 @@ class we_listview_customer extends listviewBase{
 		$this->anz_all = f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where, 'cnt', $this->DB_WE);
 
 		$q = 'SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
-		;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
