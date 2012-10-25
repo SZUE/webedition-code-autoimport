@@ -187,17 +187,19 @@ class weImageDialog extends weDialog{
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
+			
+						$preserveData = ($_REQUEST["wasThumbnailChange"] || $_REQUEST["isTinyMCEInitialization"]);
 						$width = $imgObj->getElement("width");
 						$height = $imgObj->getElement("height");
-						$alt = $_REQUEST["wasThumbnailChange"] ? $alt : $imgObj->getElement("alt");
-						$hspace = $_REQUEST["wasThumbnailChange"] ? $hspace : $imgObj->getElement("hspace");
-						$vspace = $_REQUEST["wasThumbnailChange"] ? $vspace : $imgObj->getElement("vspace");
-						$title = $_REQUEST["wasThumbnailChange"] ? $title : $imgObj->getElement("title");
-						$name = $_REQUEST["wasThumbnailChange"] ? $name : $imgObj->getElement("name");
-						$align = $_REQUEST["wasThumbnailChange"] ? $align : $imgObj->getElement("align");
-						$border = $_REQUEST["wasThumbnailChange"] ? $border : $imgObj->getElement("border");
-						$longdesc = $_REQUEST["wasThumbnailChange"] ? $longdesc : ($imgObj->getElement("longdescid") ? (id_to_path($imgObj->getElement("longdescid")) . "?id=" . $imgObj->getElement("longdescid")) : $longdesc);
-						$alt = $_REQUEST["wasThumbnailChange"] ? $alt : f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($fileID) . " AND " . LINK_TABLE . ".Name='alt'", "Dat", $this->db);
+						$alt = $preserveData ? $alt : $imgObj->getElement("alt");
+						$hspace = $preserveData ? $hspace : $imgObj->getElement("hspace");
+						$vspace = $preserveData ? $vspace : $imgObj->getElement("vspace");
+						$title = $preserveData ? $title : $imgObj->getElement("title");
+						$name = $preserveData ? $name : $imgObj->getElement("name");
+						$align = $preserveData ? $align : $imgObj->getElement("align");
+						$border = $preserveData ? $border : $imgObj->getElement("border");
+						$longdesc = $preserveData ? $longdesc : ($imgObj->getElement("longdescid") ? (id_to_path($imgObj->getElement("longdescid")) . "?id=" . $imgObj->getElement("longdescid")) : $longdesc);
+						$alt = $preserveData ? $alt : f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(FILE_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($fileID) . " AND " . LINK_TABLE . ".Name='alt'", "Dat", $this->db);
 					}
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
 					break;
@@ -295,8 +297,7 @@ class weImageDialog extends weDialog{
 			$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
 			unset($_p);
 
-			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")) || $this->args['editor'] == "tinyMce"){
-
+			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")) || (isset($this->args['editor']) && $this->args['editor'] == "tinyMce" && !isset($_REQUEST['isTinyMCEInitialization']))){
 				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' . "\n";
 				$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>' . "\n";
 				$this->db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
@@ -431,7 +432,7 @@ class weImageDialog extends weDialog{
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
 
 </table></div>
-' . we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0");
+' . we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") . we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0");
 		$thisPart = $table;
 		$thisPart .= $yuiSuggest->getYuiCss();
 		$thisPart .= $yuiSuggest->getYuiJs();
@@ -470,7 +471,11 @@ function checkWidthHeight(field){
 	var ratioCheckBox = document.getElementById("_we_dialog_args[ratio]");
 	if(ratioCheckBox.checked){
 		if(field.value.indexOf("%") == -1){
-			if(ratiow && ratioh){alert("naprawde jest");
+			ratiow = ratiow ? ratiow : 
+				(field.form.elements["tinyMCEInitRatioW"].value ? field.form.elements["tinyMCEInitRatioW"].value : 0);
+			ratioh = ratioh ? ratioh : 
+				(field.form.elements["tinyMCEInitRatioH"].value ? field.form.elements["tinyMCEInitRatioH"].value : 0);
+			if(ratiow && ratioh){
 				if(field.name=="we_dialog_args[height]"){
 					field.form.elements["we_dialog_args[width]"].value = Math.round(field.value * ratioh);
 				}else{

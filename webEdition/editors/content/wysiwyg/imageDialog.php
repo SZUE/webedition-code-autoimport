@@ -34,7 +34,6 @@ $dialog->registerCmdFn("weDoImgCmd");
 print $dialog->getHTML();
 
 function weDoImgCmd($args){
-
 	if($args["thumbnail"] && $args["fileID"]){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByImageIDAndThumbID($args["fileID"], $args["thumbnail"]);
@@ -42,7 +41,7 @@ function weDoImgCmd($args){
 			$thumbObj->createThumb();
 		}
 	}
-	
+
 	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
 
 		return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["class"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
@@ -50,6 +49,7 @@ top.close();
 ');
 
 	} else{
+		$longdesc = intval($args["longdescid"]) ? $args["longdescsrc"] . '?id=' . intval($args["longdescid"]) : ''; 
 		$out = '<form name="tiny_form">
 					<input type="hidden" name="src" value="'. $args["src"] . '">
 					<input type="hidden" name="width" value="'. $args["width"] . '">
@@ -62,7 +62,7 @@ top.close();
 					<input type="hidden" name="name" value="'. $args["name"] . '">
 					<input type="hidden" name="class" value="'. $args["class"] . '">
 					<input type="hidden" name="title" value="'. addslashes($args["title"]) . '">
-					<input type="hidden" name="longdesc" value="'. $args["longdesc"] . '">
+					<input type="hidden" name="longdesc" value="'. $longdesc . '">
 				</form>';
 
 		$pathToTinyMce = WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/';
@@ -75,4 +75,5 @@ top.close();
 
 		return $out;
 	}
+	
 }

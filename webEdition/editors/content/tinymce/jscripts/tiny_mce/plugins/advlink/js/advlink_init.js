@@ -5,8 +5,9 @@
 function preinit() {
 	var url;
 
-	if (url = tinyMCEPopup.getParam("external_link_list_url"))
+	if(url = tinyMCEPopup.getParam("external_link_list_url")){
 		document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+	}
 }
 
 function init() { 
@@ -17,15 +18,15 @@ function init() {
 	var elm = inst.selection.getNode();
 	var action = "insert";
 	var html;
-    
-    // Anchor list
+
+	// Anchor list
 	html = getAnchorListHTML('anchorlist','we_dialog_args[anchor]');
-	if (html != ""){
+	if(html != ""){
 		document.getElementById("anchorlistcontainer").innerHTML = html;
-    }
+	}
 
 	elm = inst.dom.getParent(elm, "A");
-	if (elm != null && elm.nodeName == "A") {
+	if(elm != null && elm.nodeName == "A"){
 		action = "update";
 	}
 
@@ -53,7 +54,7 @@ function init() {
 		var linktype = this.getLinkType(urlParts[0]);
 		this.selectOptionByValue(formObj, 'we_dialog_args[type]', linktype);
 
-		switch (linktype) {
+		switch(linktype){
 			case "int":
 				formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
 				break;
@@ -100,8 +101,8 @@ function getUrlParts(url) {
 	return new Array(u, anch, param);
 }
 
-function selectOptionByValue(form, selName, val){
-	for (var i=1; i < form.elements[selName].options.length; i++) {
+function selectOptionByValue(form, selName, val) {
+	for(var i=1; i < form.elements[selName].options.length; i++){
 			if(form.elements[selName].options[i].value == val){
 				form.elements[selName].options[i].selected = true;
 			} else{
@@ -115,13 +116,14 @@ function selectOptionByValue(form, selName, val){
 function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
-	for (i=0, len=nodes.length; i<len; i++) {
-		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+	for(i=0, len=nodes.length; i<len; i++){
+		if((name = ed.dom.getAttrib(nodes[i], "name")) != "")
 			html += '<option value="' + name + '">' + name + '</option>';
 	}
 
-	if (html == "")
+	if(html == ""){
 		return "";
+	}
 
 	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"'
 		+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
@@ -138,11 +140,13 @@ function getAnchorListHTML(id, target) {
 
 function checkPrefix(n) {
 
-	if (n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_email')))
+	if(n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_email'))){
 		n.value = 'mailto:' + n.value;
+	}
 
-	if (/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_external')))
+	if(/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_external'))){
 		n.value = 'http://' + n.value;
+	}
 }
 
 function setFormValue(name, value) {
@@ -150,7 +154,6 @@ function setFormValue(name, value) {
 }
 
 // the rest of tiny-functions is deleted
-
 
 // While loading
 preinit();
