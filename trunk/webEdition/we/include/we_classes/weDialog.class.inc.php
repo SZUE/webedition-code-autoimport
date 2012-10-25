@@ -373,5 +373,5 @@ class weDialog{
 						</select>';
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
 	}
-
+	
 }

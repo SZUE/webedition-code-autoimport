@@ -4,8 +4,9 @@ tinyMCEPopup.requireLangPack();
 
 function preinit() {
 	var url;
-	if (url = tinyMCEPopup.getParam("external_link_list_url"))
+	if(url = tinyMCEPopup.getParam("external_link_list_url")){
 		document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+	}
 }
 
 function init() {
@@ -17,16 +18,18 @@ function setAttrib(elm, attrib, value) {
 	var valueElm = formObj.elements[attrib.toLowerCase()];
 	var dom = tinyMCEPopup.editor.dom;
 
-	if (typeof(value) == "undefined" || value == null) {
+	if(typeof(value) == "undefined" || value == null){
 		value = "";
 
-		if (valueElm)
+		if(valueElm){
 			value = valueElm.value;
+		}
 	}
 
 	// Clean up the style
-	if (attrib == 'style')
+	if(attrib == 'style'){
 		value = dom.serializeStyle(dom.parseStyle(value), 'a');
+	}
 
 	dom.setAttrib(elm, attrib, value);
 }
@@ -34,13 +37,14 @@ function setAttrib(elm, attrib, value) {
 function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
-	for (i=0, len=nodes.length; i<len; i++) {
-		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+	for(i=0, len=nodes.length; i<len; i++){
+		if((name = ed.dom.getAttrib(nodes[i], "name")) != "")
 			html += '<option value="#' + name + '">' + name + '</option>';
 	}
 
-	if (html == "")
+	if(html == ""){
 		return "";
+	}
 
 	html = '<select id="' + id + '" name="' + id + '" class="mceAnchorList"'
 		+ ' onchange="this.form.' + target + '.value=this.options[this.selectedIndex].value"'
@@ -60,30 +64,30 @@ function insertAction() {
 	elm = inst.dom.getParent(elm, "A");
 
 	// Remove element if there is no href
-	if (!document.forms['tiny_form'].href.value) {
+	if(!document.forms['tiny_form'].href.value){
 		i = inst.selection.getBookmark();
 		inst.dom.remove(elm, 1);
 		inst.selection.moveToBookmark(i);
 		tinyMCEPopup.execCommand("mceEndUndoLevel");
 		tinyMCEPopup.close();
-        top.close();
+		top.close();
 		return;
 	}
 
 	// Create new anchor elements
-    
-	if (elm == null) {
+
+	if(elm == null){
 		inst.getDoc().execCommand("unlink", false, null);
 		tinyMCEPopup.execCommand("mceInsertLink", false, "#mce_temp_url#", {skip_undo : 1});
 		elementArray = tinymce.grep(inst.dom.select("a"), function(n) {return inst.dom.getAttrib(n, 'href') == '#mce_temp_url#';});
 		for (i=0; i<elementArray.length; i++)
 			setAllAttribs(elm = elementArray[i]);
 	} else{
-        setAllAttribs(elm);
-    }
-    
+		setAllAttribs(elm);
+	}
+
 	// Don't move caret if selection was image
-	if (elm.childNodes.length != 1 || elm.firstChild.nodeName != 'IMG') {
+	if(elm.childNodes.length != 1 || elm.firstChild.nodeName != 'IMG'){
 		inst.focus();
 		inst.selection.select(elm);
 		inst.selection.collapse(0);
@@ -92,7 +96,7 @@ function insertAction() {
 
 	tinyMCEPopup.execCommand("mceEndUndoLevel");
 	tinyMCEPopup.close();
-    top.close();
+	top.close();
 }
 
 function setAllAttribs(elm) {
@@ -129,12 +133,10 @@ function setAllAttribs(elm) {
 	//setAttrib(elm, 'onkeyup');
 
 	// Refresh in old MSIE
-	if (tinyMCE.isMSIE5)
+	if (tinyMCE.isMSIE5){
 		elm.outerHTML = elm.outerHTML;
+	}
 }
-
-
-
 
 // While loading
 preinit();

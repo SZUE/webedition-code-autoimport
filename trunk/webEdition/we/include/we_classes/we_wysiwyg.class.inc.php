@@ -56,7 +56,7 @@ class we_wysiwyg{
 
 	function __construct($name, $width, $height, $value = "", $propstring = "", $bgcol = "", $fullscreen = "", $className = "", $fontnames = "", $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = "", $charset = "", $cssClasses = "", $Language = "", $test = "", $spell = true, $isFrontendEdit = false){
 
-		$this->propstring = $propstring ? "," . $propstring . "," : "";t_e("prop",$propstring);
+		$this->propstring = $propstring ? "," . $propstring . "," : "";
 		$this->name = $name;
 		$this->bgcol = $bgcol;
 		$this->xml = $xml;
@@ -190,16 +190,16 @@ function tinyMCEchanged(inst){
 					}
 
 					function weWysiwygSetHiddenText(arg) {
-    					try {
-    						if (weWysiwygIsIntialized) {
-    							for (var i = 0; i < we_wysiwygs.length; i++) {
-    								we_wysiwygs[i].setHiddenText(arg);
-    							}
-    						}else{
+						try {
+							if (weWysiwygIsIntialized) {
+								for (var i = 0; i < we_wysiwygs.length; i++) {
+									we_wysiwygs[i].setHiddenText(arg);
 								}
-    					} catch(e) {
+							}else{
+								}
+						} catch(e) {
 							// Nothing
-    					}
+						}
 					}');
 
 			case 'default':
@@ -216,11 +216,11 @@ function tinyMCEchanged(inst){
 					}
 
 					.tbButtonMouseOverUp {
-    					border-bottom: 1px solid #000000;
-    					border-left: 1px solid #CCCCCC;
-    					border-right: 1px solid #000000;
-    					border-top: 1px solid #CCCCCC;
-    					cursor:pointer;
+						border-bottom: 1px solid #000000;
+						border-left: 1px solid #CCCCCC;
+						border-right: 1px solid #000000;
+						border-top: 1px solid #CCCCCC;
+						cursor:pointer;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -228,11 +228,11 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonMouseOverDown {
-    					border-bottom: 1px solid #CCCCCC;
-    					border-left: 1px solid #000000;
-    					border-right: 1px solid #CCCCCC;
-    					border-top: 1px solid #000000;
-    					cursor: pointer;
+						border-bottom: 1px solid #CCCCCC;
+						border-left: 1px solid #000000;
+						border-right: 1px solid #CCCCCC;
+						border-top: 1px solid #000000;
+						cursor: pointer;
 						margin: 0px;
 						padding: 0px;
 						text-align: left;
@@ -240,11 +240,11 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonDown {
-    					background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
-    					border-bottom: #CCCCCC solid 1px;
-    					border-left: #000000 solid 1px;
-    					border-right: #CCCCCC solid 1px;
-    					border-top:  #000000 solid 1px;
+						background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
+						border-bottom: #CCCCCC solid 1px;
+						border-left: #000000 solid 1px;
+						border-right: #CCCCCC solid 1px;
+						border-top:  #000000 solid 1px;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -252,8 +252,8 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonsHR {
-    					border-top:  #000000 solid 1px;
-    					border-bottom:  #CCCCCC solid 1px;
+						border-top:  #000000 solid 1px;
+						border-bottom:  #CCCCCC solid 1px;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -310,19 +310,19 @@ function tinyMCEchanged(inst){
 
 					var wePopupMenuArray = new Array();
 
-                    //  Bugfix do not overwrite body.onload !!!
-                    function weEvent(){}
-                    weEvent.addEvent = function(e, name, f) {
-                        if (e.addEventListener) {
-                            e.addEventListener(
-                                name,
-                                f,
-                                true);
-                        }
-                        if(e.attachEvent){
-                            e.attachEvent("on" + name, f);
-                        }
-                    }
+					// Bugfix do not overwrite body.onload !!!
+					function weEvent(){}
+					weEvent.addEvent = function(e, name, f) {
+						if (e.addEventListener) {
+							e.addEventListener(
+								name,
+								f,
+								true);
+						}
+						if(e.attachEvent){
+							e.attachEvent("on" + name, f);
+						}
+					}
 
 					//window.onerror = weNothing;
 					//  Bugfix do not overwrite body.onload !!!
@@ -333,14 +333,13 @@ function tinyMCEchanged(inst){
 						return true;
 					}
 
-
 					function weWysiwygInitializeIt() {
 						for (var i=0;i<we_wysiwygs.length;i++) {
 							we_wysiwygs[i].start();
 						}
 						for (var i=0;i<we_wysiwygs.length;i++) {
 							we_wysiwygs[i].finalize();
- 							we_wysiwygs[i].windowFocus();
+							we_wysiwygs[i].windowFocus();
 							we_wysiwygs[i].setButtonsState();
 						}
 						self.focus();
@@ -354,16 +353,16 @@ function tinyMCEchanged(inst){
 					}
 
 					function weWysiwygSetHiddenText(arg) {
-    					try {
-    						if (weWysiwygIsIntialized) {
-    							for (var i = 0; i < we_wysiwygs.length; i++) {
-    								we_wysiwygs[i].setHiddenText(arg);
-    							}
-    						}else{
+						try {
+							if (weWysiwygIsIntialized) {
+								for (var i = 0; i < we_wysiwygs.length; i++) {
+									we_wysiwygs[i].setHiddenText(arg);
 								}
-    					} catch(e) {
+							}else{
+								}
+						} catch(e) {
 							// Nothing
-    					}
+						}
 					}') .
 					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 					(we_base_browserDetect::isSafari() ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwygSafari.js') .
@@ -481,7 +480,7 @@ function tinyMCEchanged(inst){
 			}
 			$this->tinyFormatblock = substr($tfb,0,-1);
 		}
-	
+
 		$this->elements = array(
 			new we_wysiwygToolbarSelect(
 				$this,
@@ -1384,5 +1383,5 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		}
 		return $out;
 	}
-
+	
 }
