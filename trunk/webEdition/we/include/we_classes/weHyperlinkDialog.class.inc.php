@@ -282,7 +282,7 @@ class weHyperlinkDialog extends weDialog{
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$extHref = utf8_decode((substr($this->args["extHref"], 0, 1) == "#") ? "" : $this->args["extHref"]);
-		if($this->args["outsideWE"] == "1"){
+		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1){
 
 
 			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
