@@ -109,8 +109,8 @@ class we_objectFile extends we_document{
 
 				if($parentfolder){
 
-					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos(
-							$parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
+					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
+						strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
 						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
 						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
 					}
@@ -1999,8 +1999,8 @@ class we_objectFile extends we_document{
 				$zwtext = ltrim(str_replace($classN, '', $zwtext), '/');
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
-
-			$text = str_replace(' ', '-', $text);
+			//remove duplicate "//" which will produce errors
+			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
 			$text = (defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
 				preg_replace('~[^0-9a-zA-Z/._-]~', '', correctUml($text));
