@@ -23,9 +23,11 @@
 			case "clear_log":
 			case "exit_newsletter":
 				var fo=false;
+					if(jsWindow_count){
 				for(var k=jsWindow_count-1;k>-1;k--){
 					eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
 					if(fo) break;
 				}
 				<?php if(we_base_browserDetect::isIE()) print "wind.focus()"; ?>;
+				}
 				break;

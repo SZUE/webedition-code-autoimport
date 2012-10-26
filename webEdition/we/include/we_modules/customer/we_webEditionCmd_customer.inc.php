@@ -14,13 +14,17 @@
 		case "show_search":
 		case "import_customer":
 		case "export_customer":
-             var fo=false;
-             for(var k=jsWindow_count-1;k>-1;k--){
-              eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
-              if(fo) break;
-		     }
-		     wind.focus();
-            break;
+					var fo=false;
+					if(jsWindow_count){
+					 for(var k=jsWindow_count-1;k>-1;k--){
+						eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
+						if(fo){
+							break;
+						}
+					}
+					wind.focus();
+				 }
+         break;
         case "unlock":
 			we_repl(self.load,url,arguments[0]);
 	    	break;

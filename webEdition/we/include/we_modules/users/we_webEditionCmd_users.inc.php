@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -51,11 +50,13 @@
 	case "new_organization":
          <?php if(we_hasPerm("EDIT_USER")){?>
              var fo=false;
+					if(jsWindow_count){
              for(var k=jsWindow_count-1;k>-1;k--){
                eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
                if(fo) break;
 	          }
 	          if(wind) wind.focus();
+						}
           <?php }else{
 			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
           }?>
