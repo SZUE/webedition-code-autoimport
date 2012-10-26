@@ -30,9 +30,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	file is included and the matching functions are included.
 
 if(!isset($_SESSION["we_mode"]) || $_SESSION["we_mode"] == "normal"){ //	working in normal mode
-	include_once(WEBEDITION_PATH . 'webEdition_normal.inc.php');
+	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
 } else if($_SESSION["we_mode"] == "seem"){ //	working in super-easy-edit-mode
-	include_once(WEBEDITION_PATH . 'webEdition_seem.inc.php');
+	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
 
