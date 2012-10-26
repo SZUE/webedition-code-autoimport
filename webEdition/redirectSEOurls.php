@@ -84,11 +84,12 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			}
 		}
 		if($displayid){
-			$searchforInternal = $searchfor;
+			$searchforInternal = str_replace('//', '/', $searchfor);
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
-				$searchforInternal = urlencode($searchfor);
-				$searchforInternal = str_replace('%2F', '/', $searchforInternal);
+				$searchforInternal = str_replace('%2F', '/', urlencode($searchfor));
 			}
+
+			$searchforInternal = str_replace('//', '/', $searchforInternal);
 
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Url="' . $db->escape($searchforInternal) . '" LIMIT 1', 'ID', $db));
 			if($objectid){
@@ -118,8 +119,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		if($displayid){
 			$searchforInternal = $searchfor;
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
-				$searchforInternal = urlencode($searchfor);
-				$searchforInternal = str_replace('%2F', '/', $searchforInternal);
+				$searchforInternal = str_replace('%2F', '/', urlencode($searchfor));
 			}
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Url='" . $db->escape($searchforInternal) . "' LIMIT 1", "ID", $db));
 			if($objectid){
