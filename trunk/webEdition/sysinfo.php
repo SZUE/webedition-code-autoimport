@@ -248,6 +248,7 @@ $_info = array(
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 		'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
 		'post_max_size' => we_convertIniSizes(ini_get('post_max_size')),
+		'max_input_vars' => (ini_get('max_input_vars') < 5000 ? getWarning('>=5000', ini_get('max_input_vars')) : getOK('>=5000', ini_get_message('max_input_vars'))),
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', "[session.auto_start warning]"), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
 	),
@@ -302,54 +303,54 @@ $_parts[] = array(
 );
 we_html_tools::htmlTop(g_l('sysinfo', '[sysinfo]'));
 ?>
-		<script type="text/javascript"><!--
-			function closeOnEscape() {
-				return true;
-			}
+<script type="text/javascript"><!--
+	function closeOnEscape() {
+		return true;
+	}
 
-			function showPhpInfo() {
-				document.getElementById("info").style.display="none";
-				document.getElementById("more").style.display="block";
-				document.getElementById("phpinfo").src = "phpinfo.php";
-			}
+	function showPhpInfo() {
+		document.getElementById("info").style.display="none";
+		document.getElementById("more").style.display="block";
+		document.getElementById("phpinfo").src = "phpinfo.php";
+	}
 
-			function showInfoTable() {
-				document.getElementById("info").style.display="block";
-				document.getElementById("more").style.display="none";
-			}
-			//-->
-		</script>
+	function showInfoTable() {
+		document.getElementById("info").style.display="block";
+		document.getElementById("more").style.display="none";
+	}
+	//-->
+</script>
 
+<?php
+print STYLESHEET;
+?>
+
+</head>
+
+<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
+	<div id="info" style="display: block;">
 		<?php
-		print STYLESHEET;
+		print we_multiIconBox::getJS();
+		print we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
+	</div>
+	<div id="more" style="display:none;">
+		<?php
+		$_parts = array(
+			array(
+				'headline' => '',
+				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
+				'space' => $_space_size
+			),
+			array(
+				'headline' => '',
+				'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
+				'space' => 10
+			),
+		);
 
-	</head>
-
-	<body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
-		<div id="info" style="display: block;">
-			<?php
-			print we_multiIconBox::getJS();
-			print we_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
-			?>
-		</div>
-		<div id="more" style="display:none;">
-			<?php
-			$_parts = array(
-				array(
-					'headline' => '',
-					'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . '...</iframe>',
-					'space' => $_space_size
-				),
-				array(
-					'headline' => '',
-					'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-					'space' => 10
-				),
-			);
-
-			print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
-			?>
-		</div>
-	</body>
+		print we_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
+		?>
+	</div>
+</body>
 </html>
