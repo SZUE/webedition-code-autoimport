@@ -875,8 +875,10 @@ class we_objectFile extends we_document{
 		$idname = 'we_' . $this->Name . '_object[we_object_' . $ObjectID . ']';
 		$myid = $this->getElement('we_object_' . $ObjectID);
 		$path = $this->getElement('we_object_' . $ObjectID . '_path');
-		list($path, $npubl) = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db);
-
+		$tmp = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db);
+		if(!empty($tmp)){
+			list($path, $npubl) = $tmp;
+		}
 		if($path == ''){
 			$myid = 0;
 			$npubl = 1;
