@@ -53,7 +53,7 @@ class weHyperlinkDialog extends weDialog{
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if($this->args["outsideWE"]
+			if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1
 				&& (
 				substr($this->args["href"], 0, 7) == "object:"
 				|| substr($this->args["href"], 0, 9) == "document:"
@@ -558,7 +558,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_html_element::jsElement('
+		$out = weDialog::getJs() . we_html_element::jsElement('
 				var weAcCheckLoop = 0;
 				var weFocusedField;
 				function setFocusedField(elem){
@@ -638,6 +638,9 @@ class weHyperlinkDialog extends weDialog{
 					}
 					document.writeln(\'</select>\');
 				}
+		'); 
+		if(isset($this->args["editname"])){
+			$out .= we_html_element::jsElement('
 
 				function showanchors(name, val, onCh) {
 					var pageAnchors = top.opener.document.getElementsByTagName("A");
@@ -665,7 +668,10 @@ class weHyperlinkDialog extends weDialog{
 
 						document.writeln(\'</select>\');
 					}
-				}');
+				}
+			');
+		}
+		return $out;
 	}
 
 }
