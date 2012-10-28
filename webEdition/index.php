@@ -456,6 +456,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			} else{
 				$_SESSION['we_mode'] = $_REQUEST['mode'];
 			}
+			//FIX, if request is empty!
+			if($_SESSION['we_mode'] == ''){
+				$_SESSION['we_mode'] = 'normal';
+			}
 
 			$_body_javascript .= 'function open_we() {';
 
