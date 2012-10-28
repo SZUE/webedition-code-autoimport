@@ -730,14 +730,11 @@ function showEditFooterForSEEMMode(){
 		if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem){ //	changes for we:controlElement
-				if($we_doc->ID){
-					$_js_permnew = '
+				$_js_permnew = ($we_doc->ID ? '
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = false;
 			}
-			';
-				} else{
-					$_js_permnew = '
+			' : '
 			if( _EditorFrame.getEditorMakeSameDoc() ) {
 				if(self.document.we_form && self.document.we_form.makeSameDoc){
 					self.document.we_form.makeSameDoc.checked = true;
@@ -747,24 +744,13 @@ function showEditFooterForSEEMMode(){
 					self.document.we_form.makeSameDoc.checked = false;
 				}
 			}
-			';
-				}
+			');
 			} else{ //	$_ctrlElement determines values
-				if($we_doc->ID){
-					$_js_permnew = "
+				$_js_permnew = '
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
-				self.document.we_form.makeSameDoc.checked = " . ($_ctrlElem["checked"] ? "true" : "false") . ";
-				_EditorFrame.setEditorMakeSameDoc(" . $_ctrlElem["checked"] ? "true" : "false" . ");
-			}
-			";
-				} else{
-					$_js_permnew = '
-				if(self.document.we_form && self.document.we_form.makeSameDoc){
-					self.document.we_form.makeSameDoc.checked = ' . ($_ctrlElem["checked"] ? "true" : "false") . ';
-					_EditorFrame.setEditorMakeSameDoc(' . $_ctrlElem["checked"] ? "true" : "false" . ');
-				}
-			';
-				}
+				self.document.we_form.makeSameDoc.checked = ' . ($_ctrlElem["checked"] ? "true" : "false") . ';
+				_EditorFrame.setEditorMakeSameDoc(' . $_ctrlElem["checked"] ? "true" : "false" . ');
+			}';
 			}
 		}
 	}

@@ -35,7 +35,7 @@ if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
 //due to hoster bugs (1&1) we have to ensure servername is the called url. since http-host is not safe, we do some security additions.
 if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOST']){
 	//some security checks
-	if(strlen($_SERVER['HTTP_HOST']) < 256 && strpos($_SERVER['HTTP_HOST'],$_SERVER['SERVER_NAME'])){
+	if(strlen($_SERVER['HTTP_HOST']) < 256 && strpos($_SERVER['HTTP_HOST'], $_SERVER['SERVER_NAME'])){
 		$_SERVER['SERVER_NAME'] = rawurlencode($_SERVER['HTTP_HOST']);
 	}
 }
@@ -87,7 +87,7 @@ if(!isset($GLOBALS['DB_WE'])){
 
 if(!defined('NO_SESS')){
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
-	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_session.inc.php');
+	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if(!empty($_tooldefines)){
 		foreach($_tooldefines as $_tooldefine){
@@ -114,7 +114,7 @@ if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS'))
 	@session_start();
 }
 if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
-	if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])){
+	if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language'])){
 		$GLOBALS['WE_LANGUAGE'] = $_SESSION['prefs']['Language'];
 	} else{ //  bugfix #4229
 		$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
