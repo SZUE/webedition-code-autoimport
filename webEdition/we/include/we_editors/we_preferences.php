@@ -86,7 +86,7 @@ $configs = array(
 // pageLogger Dir
 		'WE_TRACKER_DIR' => array('// Directory in which pageLogger is installed', ""),
 		'DB_SET_CHARSET' => array('// connection charset to db', ""),
-		'WYSIWYG_TYPE' => array('// define used wysiwyg editor', "default"),
+		'WYSIWYG_TYPE' => array('// define used wysiwyg editor', 'default'),
 		'SAFARI_WYSIWYG' => array('// Flag if beta wysiwyg for safari should be used', false),
 //formmail stuff
 		'FORMMAIL_CONFIRM' => array('// Flag if formmail confirm function should be work', true), //this is restricted to admin
@@ -3279,35 +3279,32 @@ else {
 								}
 
 								document.getElementsByName('newconf[WE_ERROR_NOTICES]')[0].disabled = _new_state;
-
 								document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
 								document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
+								document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
 
-								document.getElementById('label_error_handling_notices').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
 
-								document.getElementById('label_error_handling_warnings').style.color = _new_style;
-								document.getElementById('label_error_handling_errors').style.color = _new_style;
-
-								document.getElementById('label_error_handling_notices').style.cursor = _new_cursor;
-
-								document.getElementById('label_error_handling_warnings').style.cursor = _new_cursor;
-								document.getElementById('label_error_handling_errors').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
 
 								document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
 								document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
 								document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
 
-								document.getElementById('label_error_display_errors').style.color = _new_style;
-								document.getElementById('label_error_log_errors').style.color = _new_style;
-								document.getElementById('label_error_mail_errors').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
+								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
 
-								document.getElementById('label_error_display_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_log_errors').style.cursor = _new_cursor;
-								document.getElementById('label_error_mail_errors').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
+								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
 
-								document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
-								document.getElementById('label_error_handling_deprecated').style.color = _new_style;
-								document.getElementById('label_error_handling_deprecated').style.cursor = _new_cursor;
 
 								set_state_mail();
 							}");
