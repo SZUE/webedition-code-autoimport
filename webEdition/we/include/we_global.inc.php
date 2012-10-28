@@ -1552,20 +1552,10 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
-	/* $email = html_entity_decode($email);
-	  $namePart[0] = '';
-	  $_email = array();
-	  if(preg_match('/<(.)*>/', $email, $_email)){
-	  $namePart = substr($email, 0, strpos($email, '<'));
-	  $namePart = preg_replace('/"(.)*"/', "x", $namePart);
-	  $namePart = preg_replace('/\\\\(.)/', "y", $namePart);
-	  if(strpos($namePart, '"'))
-	  return false;
-	  $email = substr($_email[0], 1, strlen($_email[0]) - 2);
-	  }
-
-	  $validator = new Zend_Validate_EmailAddress();
-	  return $validator->isValid($email); */
+	if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
+		++$pos;
+		$email = substr($email, $pos, strrpos($email, '>') - $pos);
+	}
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
