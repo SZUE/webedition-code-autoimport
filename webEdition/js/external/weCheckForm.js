@@ -71,7 +71,7 @@ function weCheckFormMandatory(form, reqFields){ //  return name of not set manda
 				ok = false;
 			}
 		} else if(elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi") ) {
-			if(!elem.selectedIndex || !elem.options[elem.selectedIndex].text){ // select
+			if(elem.selectedIndex==undefined || !elem.options[elem.selectedIndex].value==""){ // select
 				ok = false;
 			}
 		} else {
@@ -124,11 +124,7 @@ function weCheckFormPassword(form, pwFields){   //  return true in case of error
 		f2 = form[pwFields[1]].value;
 		f3 = pwFields[2];
 
-		if( (f1 == f2) && (f1.length >= f3 ) ){
-			return false;
-		} else {
-			return true;
-		}
+		return ( (f1 == f2) && (f1.length >= f3 ) ? false : true);
 	} else {
 		return true;
 	}
