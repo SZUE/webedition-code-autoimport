@@ -3692,16 +3692,16 @@ else {
 					"objectFile" => 'VERSIONING_OBJECT',
 				),
 				'other' => array(
-					"versions_time_days" => 'VERSIONS_TIME_DAYS',
-					"versions_time_weeks" => 'VERSIONS_TIME_WEEKS',
-					"versions_time_years" => 'VERSIONS_TIME_YEARS',
-					"versions_anzahl" => 'VERSIONS_ANZAHL',
-					"versions_create" => 'VERSIONS_CREATE',
-					"versions_create_tmpl" => 'VERSIONS_CREATE_TMPL',
-					"versions_time_days_tmpl" => 'VERSIONS_TIME_DAYS_TMPL',
-					"versions_time_weeks_tmpl" => 'VERSIONS_TIME_WEEKS_TMPL',
-					"versions_time_years_tmpl" => 'VERSIONS_TIME_YEARS_TMPL',
-					"versions_anzahl_tmpl" => 'VERSIONS_ANZAHL_TMPL'
+					"VERSIONS_TIME_DAYS" => 'VERSIONS_TIME_DAYS',
+					"VERSIONS_TIME_WEEKS" => 'VERSIONS_TIME_WEEKS',
+					"VERSIONS_TIME_YEARS" => 'VERSIONS_TIME_YEARS',
+					"VERSIONS_ANZAHL" => 'VERSIONS_ANZAHL',
+					"VERSIONS_CREATE" => 'VERSIONS_CREATE',
+					"VERSIONS_CREATE_TMPL" => 'VERSIONS_CREATE_TMPL',
+					"VERSIONS_TIME_DAYS_TMPL" => 'VERSIONS_TIME_DAYS_TMPL',
+					"VERSIONS_TIME_WEEKS_TMPL" => 'VERSIONS_TIME_WEEKS_TMPL',
+					"VERSIONS_TIME_YEARS_TMPL" => 'VERSIONS_TIME_YEARS_TMPL',
+					"VERSIONS_ANZAHL_TMPL" => 'VERSIONS_ANZAHL_TMPL'
 				)
 			);
 
@@ -3765,7 +3765,7 @@ else {
 				);
 
 				$_versions_time_days = new we_html_select(array(
-						"name" => "newconf[versions_time_days]",
+						"name" => "newconf[VERSIONS_TIME_DAYS]",
 						"style" => "",
 						"class" => "weSelect"
 						)
@@ -3779,11 +3779,11 @@ else {
 				for($x = 2; $x <= 31; $x++){
 					$_versions_time_days->addOption(($x * $secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
 				}
-				$_versions_time_days->selectOption(get_value("versions_time_days"));
+				$_versions_time_days->selectOption(get_value("VERSIONS_TIME_DAYS"));
 
 
 				$_versions_time_weeks = new we_html_select(array(
-						"name" => "newconf[versions_time_weeks]",
+						"name" => "newconf[VERSIONS_TIME_WEEKS]",
 						"style" => "",
 						"class" => "weSelect")
 				);
@@ -3792,11 +3792,11 @@ else {
 				for($x = 2; $x <= 52; $x++){
 					$_versions_time_weeks->addOption(($x * $secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
 				}
-				$_versions_time_weeks->selectOption(get_value("versions_time_weeks"));
+				$_versions_time_weeks->selectOption(get_value("VERSIONS_TIME_WEEKS"));
 
 
 				$_versions_time_years = new we_html_select(array(
-						"name" => "newconf[versions_time_years]",
+						"name" => "newconf[VERSIONS_TIME_YEARS]",
 						"style" => "",
 						"class" => "weSelect"
 						)
@@ -3806,7 +3806,7 @@ else {
 				for($x = 2; $x <= 10; $x++){
 					$_versions_time_years->addOption(($x * $secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
 				}
-				$_versions_time_years->selectOption(get_value("versions_time_years"));
+				$_versions_time_years->selectOption(get_value("VERSIONS_TIME_YEARS"));
 
 				$_settings[] = array(
 					'html' => $_versions_time_days->getHtml() . " " . $_versions_time_weeks->getHtml() . " " . $_versions_time_years->getHtml(),
@@ -3822,7 +3822,7 @@ else {
 				);
 
 
-				$_versions_anzahl = we_html_tools::htmlTextInput("newconf[versions_anzahl]", 24, get_value("versions_anzahl"), 5, "", "text", 50, 0, "");
+				$_versions_anzahl = we_html_tools::htmlTextInput("newconf[VERSIONS_ANZAHL]", 24, get_value("VERSIONS_ANZAHL"), 5, "", "text", 50, 0, "");
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
@@ -3837,8 +3837,8 @@ else {
 					'space' => 0
 				);
 
-				$_versions_create_publishing = we_forms::radiobutton("1", (get_value("versions_create") == "1"), "newconf[versions_create]", g_l('prefs', '[versions_create_publishing]'), true, "defaultfont", "", false, "");
-				$_versions_create_always = we_forms::radiobutton("0", (get_value("versions_create") == "0"), "newconf[versions_create]", g_l('prefs', '[versions_create_always]'), true, "defaultfont", "", false, "");
+				$_versions_create_publishing = we_forms::radiobutton("1", (get_value("VERSIONS_CREATE") == "1"), "newconf[VERSIONS_CREATE]", g_l('prefs', '[versions_create_publishing]'), true, "defaultfont", "", false, "");
+				$_versions_create_always = we_forms::radiobutton("0", (get_value("VERSIONS_CREATE") == 0), "newconf[VERSIONS_CREATE]", g_l('prefs', '[versions_create_always]'), true, "defaultfont", "", false, "");
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_create]'),
@@ -3853,7 +3853,7 @@ else {
 				);
 
 				$_versions_time_days_tmpl = new we_html_select(array(
-						"name" => "newconf[versions_time_days_tmpl]",
+						"name" => "newconf[VERSIONS_TIME_DAYS_TMPL]",
 						"style" => "",
 						"class" => "weSelect"
 						)
@@ -3867,11 +3867,11 @@ else {
 				for($x = 2; $x <= 31; $x++){
 					$_versions_time_days_tmpl->addOption(($x * $secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
 				}
-				$_versions_time_days_tmpl->selectOption(get_value("versions_time_days_tmpl"));
+				$_versions_time_days_tmpl->selectOption(get_value("VERSIONS_TIME_DAYS_TMPL"));
 
 
 				$_versions_time_weeks_tmpl = new we_html_select(array(
-						"name" => "newconf[versions_time_weeks_tmpl]",
+						"name" => "newconf[VERSIONS_TIME_WEEKS_TMPL]",
 						"style" => "",
 						"class" => "weSelect")
 				);
@@ -3880,11 +3880,11 @@ else {
 				for($x = 2; $x <= 52; $x++){
 					$_versions_time_weeks_tmpl->addOption(($x * $secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
 				}
-				$_versions_time_weeks_tmpl->selectOption(get_value("versions_time_weeks_tmpl"));
+				$_versions_time_weeks_tmpl->selectOption(get_value("VERSIONS_TIME_WEEKS_TMPL"));
 
 
 				$_versions_time_years_tmpl = new we_html_select(array(
-						"name" => "newconf[versions_time_years_tmpl]",
+						"name" => "newconf[VERSIONS_TIME_YEARS_TMPL]",
 						"style" => "",
 						"class" => "weSelect"
 						)
@@ -3894,7 +3894,7 @@ else {
 				for($x = 2; $x <= 10; $x++){
 					$_versions_time_years_tmpl->addOption(($x * $secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
 				}
-				$_versions_time_years_tmpl->selectOption(get_value("versions_time_years_tmpl"));
+				$_versions_time_years_tmpl->selectOption(get_value("VERSIONS_TIME_YEARS_TMPL"));
 
 				$_settings[] = array(
 					'html' => $_versions_time_days_tmpl->getHtml() . " " . $_versions_time_weeks_tmpl->getHtml() . " " . $_versions_time_years_tmpl->getHtml(),
@@ -3903,7 +3903,7 @@ else {
 					"headline" => g_l('prefs', '[versioning_time]')
 				);
 
-				$_versions_anzahl_tmpl = we_html_tools::htmlTextInput("newconf[versions_anzahl_tmpl]", 24, get_value("versions_anzahl_tmpl"), 5, "", "text", 50, 0, "");
+				$_versions_anzahl_tmpl = we_html_tools::htmlTextInput("newconf[VERSIONS_ANZAHL_TMPL]", 24, get_value("VERSIONS_ANZAHL_TMPL"), 5, "", "text", 50, 0, "");
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
@@ -3911,8 +3911,8 @@ else {
 					'noline' => 1,
 					'space' => 170
 				);
-				$_versions_create_tmpl_publishing = we_forms::radiobutton("1", (get_value("versions_create_tmpl") == "1"), "newconf[versions_create_tmpl]", g_l('prefs', '[versions_create_tmpl_publishing]'), true, "defaultfont", "", false, "");
-				$_versions_create_tmpl_always = we_forms::radiobutton("0", (get_value("versions_create_tmpl") == "0"), "newconf[versions_create_tmpl]", g_l('prefs', '[versions_create_tmpl_always]'), true, "defaultfont", "", false, "");
+				$_versions_create_tmpl_publishing = we_forms::radiobutton("1", (get_value("VERSIONS_CREATE_TMPL") == 1), "newconf[VERSIONS_CREATE_TMPL]", g_l('prefs', '[versions_create_tmpl_publishing]'), true, "defaultfont", "", false, "");
+				$_versions_create_tmpl_always = we_forms::radiobutton("0", (get_value("VERSIONS_CREATE_TMPL") == 0), "newconf[VERSIONS_CREATE_TMPL]", g_l('prefs', '[versions_create_tmpl_always]'), true, "defaultfont", "", false, "");
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[versioning_create]'),
@@ -4059,8 +4059,8 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 		}
 	}
 	// check if versioning number is correct
-	if(isset($_REQUEST['newconf']['versions_anzahl']) && $_REQUEST['newconf']['versions_anzahl'] != ""){
-		if(!pos_number($_REQUEST['newconf']['versions_anzahl'])){
+	if(isset($_REQUEST['newconf']['VERSIONS_ANZAHL']) && $_REQUEST['newconf']['VERSIONS_ANZAHL'] != ''){
+		if(!pos_number($_REQUEST['newconf']['VERSIONS_ANZAHL'])){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[versioning_anzahl]'), g_l('prefs', '[tab_versions]')) . "\\n";
 		}

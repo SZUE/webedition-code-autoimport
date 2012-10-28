@@ -1715,7 +1715,7 @@ function clearPath($path){
  *          attribs through the tagParser.
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+	include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 	//	default at the moment is xhtml-style
 	$_xmlClose = false;
 
