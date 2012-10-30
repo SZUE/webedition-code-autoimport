@@ -209,9 +209,8 @@ Options to use when type is set to "static":
                              If this is set, only documents with the specified
                              categories will be rebuilt
 
-  --catAnd                   comma separated string with document type ids
-                             If this is set, only documents with the specified
-                             document types will be rebuilt
+  --catAnd                   if set, all specified categories are ANDed.
+                             Only documents which have all categories set are rebuilt.
 
   --doctypes=DOCTYPES        DOCTYPES is a string with comma separated document type ids
                              If this is set, only documents with the specified
