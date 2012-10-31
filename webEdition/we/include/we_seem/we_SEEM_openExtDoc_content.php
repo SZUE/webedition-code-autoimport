@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 we_html_tools::protect();
 
-if(($content = weFile::load($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"])))!== false){
+if(($content = weFile::load($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"]))) !== false){
 	print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
 } else{
 
@@ -49,10 +49,10 @@ if(($content = weFile::load($_REQUEST["filepath"] . $seperator . urldecode($_REQ
 	//	there must be a navigation-history - so use it
 	$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
-	$_body = $_table->getHtml();
-	$_body = we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_body);
-
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
+	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+			$_head .
+			we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_table->getHtml())
+		);
 }
 
 echo we_html_element::jsElement('parent.openedWithWE = 1;');

@@ -99,12 +99,12 @@ class we_template extends we_document{
 				return "we_templates/we_srcTmpl.inc.php";
 			case WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . "/" . weFile::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . weFile::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
-				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . "/" . weFile::getUniqueId();
+				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . '/' . weFile::getUniqueId();
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case WE_EDITPAGE_VARIANTS:
