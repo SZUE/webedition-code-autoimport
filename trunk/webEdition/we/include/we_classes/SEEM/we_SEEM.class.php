@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_SEEM{
+abstract class we_SEEM{
 
 	/**
 	 * we_SEEM::getClassVars
@@ -33,7 +33,7 @@ class we_SEEM{
 	 * @param	string	name of the variable
 	 * @return  string	value of the variable
 	 */
-	function getClassVars($name){
+	static function getClassVars($name){
 		return '';
 		//	here are all variables.
 		if($_SESSION["we_mode"] == "normal"){
@@ -68,9 +68,7 @@ class we_SEEM{
 	 * @param    code    string
 	 * @return   code    string with parsed links
 	 */
-	function parseDocument($code){
-
-		//  #########################################################
+	static function parseDocument($code){
 		//  Parse all links of the webedition-document (Preview Mode)
 		//  Pressing the link inside the Preview of webedtion must show
 		//  the same behaviour like selecting the document in the file
@@ -82,37 +80,36 @@ class we_SEEM{
 		//  $linkarray[3] - Array of all get-Parameters: <a href="...->?test=1&..."<- ...
 		//  $linkarray[4] - Array of all after the href (styles and stuff)<a href="...?test=1"-> ... <->
 		//  All these informations are needed to replace the old link with a new one
-		$linkArray = we_SEEM::getAllHrefs($code);
+		$linkArray = self::getAllHrefs($code);
 
 		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
 
 			//  The edit-mode only changes SEEM-links
-			$code = we_SEEM::parseLinksForEditMode($code, $linkArray);
+			$code = self::parseLinksForEditMode($code, $linkArray);
 		}
 
 		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined("WE_SIDEBAR")){
 
 			//  in the preview mode all found links in the document shall be changed
-			$code = we_SEEM::parseLinksForPreviewMode($code, $linkArray);
+			$code = self::parseLinksForPreviewMode($code, $linkArray);
 		}
 
 
 
-		//  #########################################################
 		//  Now deal with all form-tags and submit-buttons
 		//  they shall be replaced in edit-mode
 		//  $allForms[0] - contains the original formular - this is needed to be replaced
 		//  if no form is found in $code, then false is returned.
 		//  This must be done always
 
-		$allForms = we_SEEM::getAllForms($code);
+		$allForms = self::getAllForms($code);
 		//  if in editMode, remove all forms but the "we_form"
 		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
-			return we_SEEM::parseFormsForEditMode($code, $allForms);
+			return self::parseFormsForEditMode($code, $allForms);
 		}
 		//  we are in preview mode or open an extern document - parse all found forms
 		if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
-			return we_SEEM::parseFormsForPreviewMode($code, $allForms);
+			return self::parseFormsForPreviewMode($code, $allForms);
 		}
 
 		//  All is done - return the code
@@ -133,18 +130,18 @@ class we_SEEM{
 	 *
 	 * @return string of the source code with changed links
 	 */
-	function parseLinksForEditMode($code, $linkArray){
+	static function parseLinksForEditMode($code, $linkArray){
 
 		//  Take all links with a seem="<attrib>" and put them in a new Array
 		//  $SEEM_Links[0] - Array of all found "<a ... >"
 		//  $SEEM_Links[1] - Array of all between href="<- ... ->", this is the path to the document
 		//  $SEEM_Links[2] - Array containing the the value of SEEM="<attrib>"
 		//  if no array is returned - false is returned.
-		$SEEM_Links = we_SEEM::getSEEM_Links($linkArray);
+		$SEEM_Links = self::getSEEM_Links($linkArray);
 
 		//  if an array is returned, modify the code
 		if($SEEM_Links && is_array($SEEM_Links)){
-			return we_SEEM::replaceSEEM_Links($code, $SEEM_Links);
+			return self::replaceSEEM_Links($code, $SEEM_Links);
 		}
 		return $code;
 	}
@@ -165,40 +162,40 @@ class we_SEEM{
 	 *
 	 * @return   string of the source code with changed links
 	 */
-	function parseLinksForPreviewMode($code, $linkArray){
+	static function parseLinksForPreviewMode($code, $linkArray){
 
-		$SEEM_Links = we_SEEM::getSEEM_Links($linkArray);
+		$SEEM_Links = self::getSEEM_Links($linkArray);
 		//  if an array is returned, modify the code
 		if($SEEM_Links && is_array($SEEM_Links)){
-			$code = we_SEEM::replaceSEEM_Links($code, $SEEM_Links);
+			$code = self::replaceSEEM_Links($code, $SEEM_Links);
 		}
-		$linkArray = we_SEEM::removeSEEMLinks($linkArray);
+		$linkArray = self::removeSEEMLinks($linkArray);
 
 		//  Remove all other Stuff from the linkArray
 		//  Here all further SEEM - Links are removed as well
 		if($linkArray && is_array($linkArray)){
 
-			$linkArray = we_SEEM::onlyUseHyperlinks($linkArray);
+			$linkArray = self::onlyUseHyperlinks($linkArray);
 
 			//  if an array is returned in onlyUseHyperlinks, then parse the $code, otherwise return the same code.
 			if($linkArray && is_array($linkArray)){
 
 				//  Remove all javascript, or target stuff, from links, they could disturb own functionality
 				//  Important are $linkArray[1][*] and $linkArray[4][*]
-				$linkArray = we_SEEM::cleanLinks($linkArray);
+				$linkArray = self::cleanLinks($linkArray);
 
 				//  $linkArray[5] - Array of the relative translation of given Link-targets, only with webEdition-Docs
-				$linkArray[5] = we_SEEM::findRelativePaths($linkArray[2]);
+				$linkArray[5] = self::findRelativePaths($linkArray[2]);
 
 				//  $linkArray[6] - Array which contains the docIds of the Documents, or -1
-				$linkArray[6] = we_SEEM::getDocIDsByPaths($linkArray[5]);
+				$linkArray[6] = self::getDocIDsByPaths($linkArray[5]);
 
 				//	$linkArray[7] - Array which contains the content-types of the documents or ''
-				$linkArray[7] = we_SEEM::getDocContentTypesByID($linkArray[6]);
+				$linkArray[7] = self::getDocContentTypesByID($linkArray[6]);
 
 				$code = (defined("WE_SIDEBAR") ?
-						we_SEEM::replaceLinksForSidebar($code, $linkArray) :
-						we_SEEM::replaceLinks($code, $linkArray));
+						self::replaceLinksForSidebar($code, $linkArray) :
+						self::replaceLinks($code, $linkArray));
 			}
 		}
 		return $code;
@@ -219,20 +216,20 @@ class we_SEEM{
 	 * @param   allForms    array with all forms found in the code
 	 * @return  code        string
 	 */
-	function parseFormsForPreviewMode($code, $allForms){
+	static function parseFormsForPreviewMode($code, $allForms){
 
 		if($allForms && is_array($allForms)){
 
 			//  $allForms[1] - the actions of the forms, or -1, when action is missing, then we must take the doc-ID
-			$allForms[1] = we_SEEM::getPathsFromForms($allForms);
+			$allForms[1] = self::getPathsFromForms($allForms);
 
 			//  $allForms[1] now has the relative translation of paths if possible
-			$allForms[1] = we_SEEM::findRelativePaths($allForms[1]);
+			$allForms[1] = self::findRelativePaths($allForms[1]);
 
 			//  $allForms[2] contains all doc-ids of the found forms
-			$allForms[2] = we_SEEM::getDocIDsByPaths($allForms[1]);
+			$allForms[2] = self::getDocIDsByPaths($allForms[1]);
 
-			$code = we_SEEM::rebuildForms($code, $allForms);
+			$code = self::rebuildForms($code, $allForms);
 		}
 		return $code;
 	}
@@ -250,14 +247,14 @@ class we_SEEM{
 	 * @param   allForms    array with all found forms
 	 * @return  code        the new code
 	 */
-	function parseFormsForEditMode($code, $allForms){
+	static function parseFormsForEditMode($code, $allForms){
 
 		//  remove all forms but the form with name "we_form" from the code.
 		//  also remove all tags where forms where closed and add one at the end of the file.
 		//  This makes some problems, if forms are given in some HTML-Preview fields.
-//            $code = we_SEEM::removeAllButWE_FORM($code, $allForms);
+//            $code = self::removeAllButWE_FORM($code, $allForms);
 		//  now we must change all submit-buttons to normal buttons
-//            $code = we_SEEM::changeSubmitToButton($code);
+//            $code = self::changeSubmitToButton($code);
 
 		return $code;
 	}
@@ -270,7 +267,7 @@ class we_SEEM{
 	 * @param   code        string, source code of the document
 	 * @return  code        string only with the "we_form", needed to edit the page
 	 */
-	function changeSubmitToButton($code){
+	static function changeSubmitToButton($code){
 		$allInputs = array();
 		//  Searchpattern for all <input ..> in the code
 		$pattern = "/<input[^>]*type=[\"|']?submit[\"|']?[^>]*>/si";
@@ -279,7 +276,7 @@ class we_SEEM{
 		//  Replace the input type="submit" with input type="button"
 		foreach($allInputs[0] as $cur){
 
-			$attribs = we_SEEM::getAttributesFromTag($cur);
+			$attribs = self::getAttributesFromTag($cur);
 			// THIS FUNCTION IS NOT USED ATM
 			$tmpInput = '<input onclick="#"';
 
@@ -301,11 +298,11 @@ class we_SEEM{
 	 * @param   code        string, source code of the document
 	 * @return  code        string only with the "we_form", needed to edit the page
 	 */
-	function removeAllButWE_FORM($code, $formArray){
+	static function removeAllButWE_FORM($code, $formArray){
 		$deletedForms = false;
 		foreach($formArray[0] as $cur){
 
-			$attribs = we_SEEM::getAttributesFromTag($cur);
+			$attribs = self::getAttributesFromTag($cur);
 			$we_form = false;
 			foreach($attribs as $key => $value){
 				if($key == "name" && $value == "we_form"){
@@ -339,7 +336,7 @@ class we_SEEM{
 
 	 * @return   code           string the new code, where all seem_links are replaced with new functionality
 	 */
-	function replaceSEEM_Links($code, $SEEM_LinkArray){
+	static function replaceSEEM_Links($code, $SEEM_LinkArray){
 		$mode = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT ? "edit" : "preview");
 
 		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
@@ -384,16 +381,15 @@ class we_SEEM{
 	 * @param    oldArray    array with all found hyperlinks of getAllHrefs()
 	 * @return   $newArray   array with the SEEM-Links
 	 */
-	function getSEEM_Links($oldArray){
+	static function getSEEM_Links($oldArray){
 		$newArray = array();
 		$seem_attrib = array();
-		for($i = 0, $j = 0; $i < count($oldArray[0]); $i++){
+		for($i = 0; $i < count($oldArray[0]); $i++){
 			if(preg_match('/ seem="(.*)"/', $oldArray[0][$i], $seem_attrib)){
 
-				$newArray[0][$j] = $oldArray[0][$i];
-				$newArray[1][$j] = $oldArray[2][$i];
-				$newArray[2][$j] = $seem_attrib[1];
-				$j++;
+				$newArray[0][] = $oldArray[0][$i];
+				$newArray[1][] = $oldArray[2][$i];
+				$newArray[2][] = $seem_attrib[1];
 			} else{
 				//  this link has no function="seem" inside, so it isn't taken to newArray
 			}
@@ -410,7 +406,7 @@ class we_SEEM{
 	 * @param    $linkArray  array with <a hrefs ... > in the document
 	 * @return               links without attributes, which can affect bad with webEdition.
 	 */
-	function cleanLinks($linkArray){
+	static function cleanLinks($linkArray){
 		$trenner = "[\040|\n|\t|\r]*";
 		$pattern = array(
 			'/' . $trenner . 'onclick' . $trenner . '=/i' => ' thiswasonclick=',
@@ -426,7 +422,7 @@ class we_SEEM{
 		return $linkArray;
 	}
 
-	function replaceLinksForSidebar($srcCode, $linkArray){
+	static function replaceLinksForSidebar($srcCode, $linkArray){
 
 		//	This is Code, to have the same effect like pressing a vertical tab
 		$destCode = $srcCode;
@@ -435,15 +431,15 @@ class we_SEEM{
 
 			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
-					$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 					$javascriptCode = (array_key_exists("we_objectID", $theParameterArray) ?
 							//	target is a object
-							" onclick=\"" . we_SEEM::getClassVars("vtabSrcObjs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" " :
+							" onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" " :
 							//	target is a normal file.
-							" onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" " . $linkArray[4][$i] . " ");
+							" onclick=\"" . self::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" " . $linkArray[4][$i] . " ");
 				} else{ //  without parameters
-					//$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');return true;\" onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ".$linkArray[4][$i]." ";
+					//$javascriptCode = " onclick=\"" . self::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');return true;\" onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ".$linkArray[4][$i]." ";
 					$javascriptCode = "  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" " . $linkArray[4][$i] . " ";
 				}
 
@@ -462,7 +458,7 @@ class we_SEEM{
 	 * @param    linkArray   array with all links
 	 * @return   code        string the new HTML code with for SEEM changed links
 	 */
-	function replaceLinks($srcCode, $linkArray){
+	static function replaceLinks($srcCode, $linkArray){
 		//	This is Code, to have the same effect like pressing a vertical tab
 		$destCode = $srcCode;
 
@@ -470,16 +466,16 @@ class we_SEEM{
 
 			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
-					$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 					if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
-						$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" ";
+						$javascriptCode = " onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" ";
 					} else{ //	target is a normal file.
-						$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd'));
-						$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ";
+						$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
+						$javascriptCode = " onclick=\"" . self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ";
 					}
 				} else{ //  without parameters
-					$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');return true;\" onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ";
+					$javascriptCode = " onclick=\"" . self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');return true;\" onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ";
 				}
 				$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
 
@@ -496,12 +492,12 @@ class we_SEEM{
 						$theParameters = "";
 
 						if($linkArray[3][$i] != ""){
-							$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
-							$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd'));
+							$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+							$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
 						}
 
 						$javascriptCode = (array_key_exists("we_objectID", $theParameterArray) ? //	target is a object
-								" onclick=\"" . we_SEEM::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" " :
+								" onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" " :
 								" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','text/webedition','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_doc_with_parameter]") . "');\" onMouseOut=\"top.info(' ');\"");
 
 						$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $javascriptCode . $linkArray[4][$i] . " >", $destCode);
@@ -528,7 +524,7 @@ class we_SEEM{
 	 * @param    code        string Some HTML, PHP-Code
 	 * @return   allLinks    array containing all <a href ...>-Tags, the targets and parameters
 	 */
-	function getAllHrefs($code){
+	static function getAllHrefs($code){
 
 		$trenner = "[\040|\n|\t|\r]*";
 		$allLinks = array();
@@ -542,7 +538,6 @@ class we_SEEM{
 		$pattern = '/<(a' . $trenner . '[^>]+href' . $trenner . "[\=\"|\=\'|\=|\=\\\\]*" . $trenner . ")([^\'\">\040? \\\]*)([^\"\' \040\\\\>]*)(" . $trenner . '[^>]*)>/sie';
 
 		preg_match_all($pattern, $code, $allLinks);
-		//ERROR_LOG2($allLinks);
 		return $allLinks;
 	}
 
@@ -555,12 +550,12 @@ class we_SEEM{
 	 * @param    foundPaths      array with all paths in the document
 	 * @return   relativePaths   array with the relative translation of the paths
 	 */
-	function findRelativePaths($foundPaths){
+	static function findRelativePaths($foundPaths){
 
 		$relativePaths = array();
-		for($i = 0; $i < count($foundPaths); $i++){
-			$relativePaths[$i] = str_replace(getServerUrl(), "", $foundPaths[$i]);
-			$relativePaths[$i] = we_SEEM::translateRelativePath($relativePaths[$i]);
+		$url = getServerUrl();
+		foreach($foundPaths as $i => $path){
+			$relativePaths[$i] = self::translateRelativePath(str_replace($url, '', $path));
 		}
 		return $relativePaths;
 	}
@@ -572,7 +567,7 @@ class we_SEEM{
 	 * @param    path            string a path found in a link
 	 * @return   path            string absulute translation of the path matching from the DOCUMENT_ROOT
 	 */
-	function translateRelativePath($path){
+	static function translateRelativePath($path){
 
 		//	Take the path of the doc to find out, if the same doc is target
 		//	or from the url of the document (only when extern)
@@ -603,13 +598,14 @@ class we_SEEM{
 	 * @return   docIds      array with the document-id ofthe correspending document
 	 *
 	 */
-	function getDocIDsByPaths($docPaths){
+	static function getDocIDsByPaths($docPaths){
 		$docIds = array();
-		for($i = 0; $i < count($docPaths); $i++){
+		$db = new DB_WE();
+		foreach($docPaths as $path){
 
 			//  if the link still begins with "http://", the links points to no we-document, so we neednt look for his id
 			//	all links to same webServer have been removed
-			$docIds[$i] = (substr($docPaths[$i], 0, 7) == "http://" || substr($docPaths[$i], 0, 8) == "https://" ? -1 : we_SEEM::getDocIDbyPath($docPaths[$i]));
+			$docIds[$i] = (substr($path, 0, 7) == "http://" || substr($path, 0, 8) == "https://" ? -1 : self::getDocIDbyPath($path, '', $db));
 		}
 		return $docIds;
 	}
@@ -622,9 +618,9 @@ class we_SEEM{
 	 * @param    tbl             string table to look for the paths
 	 * @return   ID              string Document-ID to which the path belongs to or -1
 	 */
-	function getDocIDbyPath($docPath, $tbl = ""){
+	static function getDocIDbyPath($docPath, $tbl = "", $db = ''){
 		//FIXME: does this work for SEO Url's???
-		$db = new DB_WE();
+		$db = ($db ? $db : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
 		if(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath) - 1] == '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
@@ -641,7 +637,7 @@ class we_SEEM{
 	 * @param    oldArray        array with all found hrefs
 	 * @return   array
 	 */
-	function removeSEEMLinks($oldArray){
+	static function removeSEEMLinks($oldArray){
 		$newArray = array();
 
 		for($i = 0, $j = 0; $i < count($oldArray[2]); $i++){
@@ -667,20 +663,19 @@ class we_SEEM{
 	 * @param    oldArray        array with all found hrefs
 	 * @return   newArray        array - false if all links were removed or array of hyperlinks
 	 */
-	function onlyUseHyperlinks($oldArray){
+	static function onlyUseHyperlinks($oldArray){
 
 		$newArray = array();
 
-		for($i = 0, $j = 0; $i < sizeof($oldArray[2]); $i++){
+		for($i = 0; $i < count($oldArray[2]); $i++){
 			if(substr($oldArray[2][$i], 0, 1) == "#" || substr($oldArray[2][$i], 0, 10) == "javascript" && substr($oldArray[2][$i], 0, 18) != "javascript:history" || substr($oldArray[2][$i], 0, 6) == "mailto" || substr($oldArray[2][$i], 0, 9) == "document:" || substr($oldArray[2][$i], 0, 7) == "object:"){
 				//  this link must not be changed - so it will be removed
 			} else{
-				$newArray[0][$j] = $oldArray[0][$i];
-				$newArray[1][$j] = $oldArray[1][$i];
-				$newArray[2][$j] = $oldArray[2][$i];
-				$newArray[3][$j] = $oldArray[3][$i];
-				$newArray[4][$j] = $oldArray[4][$i];
-				$j++;
+				$newArray[0][] = $oldArray[0][$i];
+				$newArray[1][] = $oldArray[1][$i];
+				$newArray[2][] = $oldArray[2][$i];
+				$newArray[3][] = $oldArray[3][$i];
+				$newArray[4][] = $oldArray[4][$i];
 			}
 		}
 
@@ -695,7 +690,7 @@ class we_SEEM{
 	 * @param   code        string   the source code of a special document
 	 * @return  allForms    array with all found form-tags
 	 */
-	function getAllForms($code){
+	static function getAllForms($code){
 		$allForms = array();
 		$pattern = "/<form[^>]*>/sie";
 
@@ -712,11 +707,11 @@ class we_SEEM{
 	 * @param   formArray   array with all forms
 	 * @return  thePaths    array with all actions of the given form-tags
 	 */
-	function getPathsFromForms($formArray){
+	static function getPathsFromForms($formArray){
 		$thePaths = array();
 
 		for($i = 0; $i < count($formArray[0]); $i++){
-			$theAttribs = we_SEEM::getAttributesFromTag($formArray[0][$i]);
+			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
 			$thePaths[$i] = (isset($theAttribs["action"]) ?
 					$theAttribs["action"] :
 					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : $_REQUEST["filepath"]));
@@ -735,7 +730,7 @@ class we_SEEM{
 	 *
 	 * @return  $code       string with the replaced forms
 	 */
-	function getAttributesFromGet($paraStr, $ignor){
+	static function getAttributesFromGet($paraStr, $ignor){
 
 		$attribs = array();
 
@@ -764,7 +759,7 @@ class we_SEEM{
 	 *
 	 * @return  attribs     array (assoziative) with name/value pairs of the Parameters in the form
 	 */
-	function getAttributesFromTag($tag){
+	static function getAttributesFromTag($tag){
 		$attribs = array();
 		$trenner = "[\040|\n|\t|\r]*";
 		$parameters = array();
@@ -787,10 +782,10 @@ class we_SEEM{
 	 *
 	 * @return  code        string the new code
 	 */
-	function rebuildForms($code, $formArray){
+	static function rebuildForms($code, $formArray){
 		for($i = 0; $i < count($formArray[0]); $i++){
 
-			$theAttribs = we_SEEM::getAttributesFromTag($formArray[0][$i]);
+			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
 			$newForm = '<form';
 
 			if($formArray[2][$i] == -1 && (substr($formArray[1][$i], 0, 7) == "http://" || substr($formArray[1][$i], 0, 8) == "https://")){ // Formular is on another webServer
@@ -844,7 +839,7 @@ class we_SEEM{
 	 * @param   ignor       array
 	 * @return  string
 	 */
-	function arrayToParameters($array, $arrayname, $ignor){
+	static function arrayToParameters($array, $arrayname, $ignor){
 
 		//	possible improvement - handle none arrays first!!!!!
 
@@ -857,7 +852,7 @@ class we_SEEM{
 					$key = '[' . $key . ']';
 				}
 				if(is_array($val)){
-					$parastr .= we_SEEM::arrayToParameters($val, $arrayname . $key, $ignor);
+					$parastr .= self::arrayToParameters($val, $arrayname . $key, $ignor);
 				} else if($val != ''){
 					$parastr .= '&' . $arrayname . $key . '=' . $val;
 				}
@@ -875,31 +870,31 @@ class we_SEEM{
 	 * @param   link   		string
 	 * @return  string
 	 */
-	function getJavaScriptCommandForOneLink($link){
+	static function getJavaScriptCommandForOneLink($link){
 
-		$linkArray = we_SEEM::getAllHrefs($link);
+		$linkArray = self::getAllHrefs($link);
 
 		//  Remove all other Stuff from the linkArray
 		//  Here all SEEM - Links are removed as well
-		$linkArray = we_SEEM::onlyUseHyperlinks($linkArray);
+		$linkArray = self::onlyUseHyperlinks($linkArray);
 
 		//  if an array is returned in onlyUseHyperlinks, then parse the $code, otherwise return the same code.
 		if($linkArray && is_array($linkArray)){
 
 			//  Remove all javascript, or target stuff, from links, they could disturb own functionality
 			//  Important are $linkArray[1][*] and $linkArray[4][*1]
-			$linkArray = we_SEEM::cleanLinks($linkArray);
+			$linkArray = self::cleanLinks($linkArray);
 
 			//  $linkArray[5] - Array of the relative translation of given Link-targets, only with webEdition-Docs
-			$linkArray[5] = we_SEEM::findRelativePaths($linkArray[2]);
+			$linkArray[5] = self::findRelativePaths($linkArray[2]);
 
 			//  $linkArray[6] - Array which contains the docIds of the Documents, or -1
-			$linkArray[6] = we_SEEM::getDocIDsByPaths($linkArray[5]);
+			$linkArray[6] = self::getDocIDsByPaths($linkArray[5]);
 
 			//	$linkArray[7] - contains the ContentTypes of the target, or ''
-			$linkArray[7] = we_SEEM::getDocContentTypesByID($linkArray[6]);
+			$linkArray[7] = self::getDocContentTypesByID($linkArray[6]);
 
-			$code = we_SEEM::link2we_cmd($linkArray);
+			$code = self::link2we_cmd($linkArray);
 		}
 		return $code;
 	}
@@ -910,7 +905,7 @@ class we_SEEM{
 	 * @param   linkArray	array
 	 * @return  string
 	 */
-	function link2we_cmd($linkArray){
+	static function link2we_cmd($linkArray){
 
 		$i = 0;
 
@@ -920,16 +915,16 @@ class we_SEEM{
 		if($linkArray[6][$i] != -1){
 
 			if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
-				$theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+				$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 				if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
-					$code = we_SEEM::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
+					$code = self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
 				} else{ //	target is a normal file.
-					$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd'));
-					$code = we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
+					$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
+					$code = self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
 				}
 			} else{ //	No Parameters
-				$code = we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');";
+				$code = self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');";
 			}
 
 			//  The target is NO webEdition - Document
@@ -950,8 +945,8 @@ class we_SEEM{
 					$theParameters = "";
 
 					if($linkArray[3][$i] != ""){
-						$theParametersArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
-						$theParameters = we_SEEM::arrayToParameters($theParametersArray, "", array('we_cmd'));
+						$theParametersArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+						$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
 					}
 
 					if(!isset($GLOBALS['we_doc'])){
@@ -976,12 +971,12 @@ class we_SEEM{
 	 * @param array $_docIDArray
 	 * @desc Searchs the contentTypes of the gibven document ids - saves them in an array and returns them
 	 */
-	function getDocContentTypesByID($_docIDArray){
+	static function getDocContentTypesByID($_docIDArray){
 
 		$_docContentTypes = array();
-
-		for($i = 0; $i < count($_docIDArray); $i++){
-			$_docContentTypes[$i] = ($_docIDArray[$i] != -1 ? we_SEEM::getDocContentTypeByID($_docIDArray[$i]) : '');
+		$db = new DB_WE();
+		foreach($_docIDArray as $i => $cur){
+			$_docContentTypes[$i] = ($cur != -1 ? self::getDocContentTypeByID($cur, $db) : '');
 		}
 		return $_docContentTypes;
 	}
@@ -991,17 +986,8 @@ class we_SEEM{
 	 * @param int $id
 	 * @desc Looks for the ContentType of the document with the given id and returns it
 	 */
-	function getDocContentTypeByID($id){
-
-		$db = new DB_WE();
-		$query = 'SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id);
-		$db->query($query);
-		if($db->num_rows() == 1){
-			$db->next_record();
-			return $db->f("ContentType");
-		} else{
-			return '';
-		}
+	static function getDocContentTypeByID($id, $db = ''){
+		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? $db : new DB_WE()));
 	}
 
 	/**
@@ -1013,7 +999,7 @@ class we_SEEM{
 	 *
 	 * @return  string
 	 */
-	function addEditButtonToTag($which = "edit"){
+	static function addEditButtonToTag($which = "edit"){
 		return '';
 		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
 		  return "";

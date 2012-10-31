@@ -1185,29 +1185,25 @@ function t_e($type = 'warning'){
 }
 
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
-
 	if(!$path){
 		$path = $_SERVER['SCRIPT_NAME'];
 	}
-	if(!$DB_WE){
-		$DB_WE = new DB_WE();
-	}
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 
 	if(!$id){
 		return '';
 	}
-	$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 		// check if object is published.
-		if(!$foo['Published']){
+		if(!f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Published', $DB_WE)){
 			$GLOBALS['we_link_not_published'] = 1;
 			return '';
 		}
 	}
 
-	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id), $DB_WE);
-	if(count($foo) == 0){
+	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+	if(empty($foo)){
 		return '';
 	}
 	$showLink = false;
@@ -1279,8 +1275,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 }
 
 function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
-	if(!$DB_WE)
-		$DB_WE = new DB_WE();
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
 		return $path;
 	}
@@ -1357,12 +1352,8 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 			}
 		}
 	}
-	$suchmuster = '/\<a>(.*)\<\/a>/siU';
-	$ersetzung = '\1';
 
-	$text = preg_replace($suchmuster, $ersetzung, $text);
-
-	return $text;
+	return preg_replace('/\<a>(.*)\<\/a>/siU', '\1', $text);
 }
 
 function removeHTML($val){
