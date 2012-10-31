@@ -63,7 +63,7 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 	$overwrite = $_REQUEST["overwrite"];
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
-	$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+	$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadedFile']["tmp_name"], $tempName);
 
 	$tmp_Filename = preg_replace("/[^A-Za-z0-9._-]/", "", $_FILES["we_uploadedFile"]["name"]);

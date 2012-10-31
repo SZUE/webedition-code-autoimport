@@ -666,16 +666,16 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		echo '
 if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-	var clone=gel("rpcBusy").cloneNode(true);
-	var wpNode=gel(elementId+"_wrapper");
-	var ctNode=gel(elementId+"_content");
+var clone=gel("rpcBusy").cloneNode(true);
+var wpNode=gel(elementId+"_wrapper");
+var ctNode=gel(elementId+"_content");
 
-	ctNode.style.display="none";
-	wpNode.style.textAlign="center";
-	wpNode.style.verticalAlign="middle";
-	wpNode.insertBefore(clone,ctNode);
-	clone.id="rpcBusyClone_" + elementId;
-	clone.style.display="inline";
+ctNode.style.display="none";
+wpNode.style.textAlign="center";
+wpNode.style.verticalAlign="middle";
+wpNode.insertBefore(clone,ctNode);
+clone.id="rpcBusyClone_" + elementId;
+clone.style.display="inline";
 }';
 	}
 	?>
@@ -893,9 +893,9 @@ if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per wid
 		echo "_trf[" . $iCurrRssFeed . "]=['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'];\n";
 		$iCurrRssFeed++;
 	}
-	$_transact = md5(uniqid(rand()));
+	$_transact = md5(uniqid(__FILE__, true));
 
-	echo "function newMessage(username){\n";
+	echo "function newMessage(username){";
 	if(defined("WE_MESSAGING_MODULE_DIR")){
 		echo "	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
 	}

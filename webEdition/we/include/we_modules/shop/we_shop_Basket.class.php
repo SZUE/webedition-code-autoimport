@@ -130,7 +130,7 @@ class we_shop_Basket{
 				$this->Del_Item($id, $type, $variant, $customFields);
 			}
 		} else{ // add the item
-			$key = uniqid('we_cart_');
+			$key = str_replace('.', '', uniqid('we_cart_', true));
 
 			if($quantity > 0){ // only add new item with positive number
 				$item = array(

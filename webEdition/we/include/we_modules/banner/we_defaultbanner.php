@@ -32,15 +32,15 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
 	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => $DefaultBannerID)));
 
-	print we_html_element::jsElement('top.close();').'</head><body></body></html>';
+	print we_html_element::jsElement('top.close();') . '</head><body></body></html>';
 	exit();
 }
 $yuiSuggest = & weSuggest::getInstance();
 
-function formBannerChooser($width="", $table=BANNER_TABLE, $idvalue, $idname, $title="", $cmd=""){
+function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue, $idname, $title = "", $cmd = ""){
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
-	$textname = md5(uniqid(rand()));
+	$textname = md5(uniqid(__FUNCTION__, true));
 	//javascript:we_cmd('openBannerSelector',document.we_form.elements['$idname'].value,'document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','".$cmd."')
 	$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 	$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -101,11 +101,11 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				document.we_form.submit();;
 			} else {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							}
-						}
-					}
+			}
+		}
+	}
 
-					self.focus();
+	self.focus();
 </script>
 <?php echo $yuiSuggest->getYuiJsFiles(); ?>
 

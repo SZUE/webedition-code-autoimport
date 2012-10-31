@@ -44,7 +44,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 					"headline" => "",
 					"html" => '*' . g_l('global', "[required_fields]"),
 					"space" => 0,
-					"name" => uniqid(),
+					"name" => str_replace('.', '', uniqid('', true)),
 				);
 				break;
 			}
@@ -93,7 +93,7 @@ $GLOBALS['we_doc']->pHiddenTrans();
 
 if($_editMode){
 
-	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(), 30) .
+	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), md5(uniqid(__FILE__, true)), 30) .
 	$jsGUI->getContainer() .
 	we_multiIconBox::_getBoxEnd("100%");
 

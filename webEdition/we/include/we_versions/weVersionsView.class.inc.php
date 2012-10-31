@@ -1257,32 +1257,24 @@ class weVersionsView{
 	function tblListRow($content){
 
 		$anz = count($content) - 1;
-		$out = '';
-
-		$out .= '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>';
-
-		$out .= '<td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:110px;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[4]["dat"]) && $content[4]["dat"]) ? $content[4]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" rowspan="2" style="line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[3]["dat"]) && $content[3]["dat"]) ? $content[3]["dat"] : "&nbsp;") . '</td>';
-
-		$out .= '</tr>';
-		$out .= '<tr>';
-
-		$out .= '<td style="width:15px;border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(15, 1) . '</td>';
-
-		$out .= '<td valign="top" colspan="2" style="width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") . ((isset($content[7]["dat"]) && $content[7]["dat"]) ? $content[7]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[6]["dat"]) && $content[6]["dat"]) ? $content[6]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>';
-		$out .= '<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(1, 1) . '</td>';
-
-		return $out;
+		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
+<td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:110px;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:120px;" class="middlefont">' . ((isset($content[4]["dat"]) && $content[4]["dat"]) ? $content[4]["dat"] : "&nbsp;") . '</td>
+<td valign="top" rowspan="2" style="line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[3]["dat"]) && $content[3]["dat"]) ? $content[3]["dat"] : "&nbsp;") . '</td>
+</tr>
+<tr>
+<td style="width:15px;border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(15, 1) . '</td>
+<td valign="top" colspan="2" style="width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") . ((isset($content[7]["dat"]) && $content[7]["dat"]) ? $content[7]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[6]["dat"]) && $content[6]["dat"]) ? $content[6]["dat"] : "&nbsp;") . '</td>
+<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>
+<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(1, 1) . '</td>';
 	}
 
 	function getHTMLforVersions($content){
 
-		$uniqname = md5(uniqid(rand(), true));
+		$uniqname = md5(uniqid(__FUNCTION__, true));
 
 		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
@@ -1294,11 +1286,9 @@ class weVersionsView{
 
 			$rightContent = '<div class="defaultfont">' . $mainContent . '</div>';
 
-			$out .= '<div style="margin-left:0px" id="div_' . $uniqname . '_' . $i . '">';
-
-			$out .= $rightContent;
-
-			$out .= '</div>';
+			$out .= '<div style="margin-left:0px" id="div_' . $uniqname . '_' . $i . '">' .
+				$rightContent .
+				'</div>';
 		}
 
 		$out .= '</td></tr></table>';
@@ -1309,5 +1299,3 @@ class weVersionsView{
 	}
 
 }
-
-?>

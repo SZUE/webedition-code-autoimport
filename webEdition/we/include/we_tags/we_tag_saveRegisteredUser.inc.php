@@ -194,14 +194,14 @@ function we_saveCustomerImages(){
 				$ct = getContentTypeFromFile($filename);
 				if($ct == 'image/*'){
 
-					$_serverPath = TEMP_PATH . '/' . md5(uniqid(rand(), 1));
+					$_serverPath = TEMP_PATH . '/' . weFile::getUniqueId();
 					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
 
 					$we_size = we_thumbnail::getimagesize($_serverPath);
 
 					if(count($we_size) > 0){
 
-						$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
+						$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
 						$tmp = explode('.', $tmp_Filename);
 						$_extension = '.' . $tmp[count($tmp) - 1];
 						unset($tmp[count($tmp) - 1]);

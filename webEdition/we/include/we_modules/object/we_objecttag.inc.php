@@ -46,7 +46,7 @@ class we_objecttag{
 		$this->objectseourls = $objectseourls;
 
 		$this->triggerID = $triggerID;
-		$unique = md5(uniqid(rand()));
+		$unique = md5(uniqid(__FUNCTION__,true));
 
 		if($this->id){
 			$foo = getHash("SELECT TableID,ObjectID FROM ".OBJECT_FILES_TABLE." WHERE ID=".intval($this->id),$this->DB_WE);

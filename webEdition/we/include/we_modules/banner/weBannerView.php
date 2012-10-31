@@ -1007,7 +1007,7 @@ class weBannerView extends weBannerBase{
 	function formBannerChooser($width = "", $IDName = "bannerID", $IDValue = "0", $title = "", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
-		$Pathname = md5(uniqid(rand()));
+		$Pathname = md5(uniqid(__FUNCTION__, true));
 		//javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','',0,'image/*')"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
@@ -1031,7 +1031,7 @@ class weBannerView extends weBannerBase{
 	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue, $idname, $title = "", $cmd = "", $acID = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
-		$textname = md5(uniqid(rand()));
+		$textname = md5(uniqid(__FUNCTION__, true));
 		//javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'document.we_form.elements[\'$idname\'].value','document.we_form.elements[\'$textname\'].value','".$cmd."')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -1054,7 +1054,7 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formBannerNumbers(){
-		$cn = md5(uniqid(rand()));
+		$cn = md5(uniqid(__FUNCTION__, true));
 		$activeCheckbox = we_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "top.content.setHot();");
 		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", "onchange=\"top.content.setHot();\"", "text", "100", 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
 		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", "100", 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
@@ -1078,7 +1078,7 @@ class weBannerView extends weBannerBase{
 		$idname = $this->uid . "_bannerIntID";
 
 		$Pathvalue = $idvalue ? id_to_path($idvalue, FILE_TABLE, $this->db) : "";
-		$Pathname = md5(uniqid(rand()));
+		$Pathname = md5(uniqid(__FUNCTION__, true));
 
 		$cmd = "opener.document.we_form.elements[\\'" . $this->uid . "_IntHref\\'][1].checked=true";
 

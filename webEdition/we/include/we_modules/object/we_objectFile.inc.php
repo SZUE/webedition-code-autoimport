@@ -435,7 +435,7 @@ class we_objectFile extends we_document{
 				$regs = array();
 				if(preg_match('/%unique([^%]*)%/', $text, $regs)){
 					$anz = ($regs[1] ? abs($regs[1]) : 16);
-					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
+					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, $text);
 				}
 				if(strpos($text, '%ID%') !== false){
@@ -898,7 +898,7 @@ class we_objectFile extends we_document{
 			$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
 
-			$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "down", g_l('global', "[openCloseBox]"));
 			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
@@ -940,7 +940,7 @@ class we_objectFile extends we_document{
 				$objectpreview;
 		} else{
 
-			$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			$txt = $ob->Text ? $ob->Text : $name;
 			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 
@@ -990,14 +990,14 @@ class we_objectFile extends we_document{
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
-					$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$editObjectButton = we_button::create_button("image:btn_edit_object", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 					$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 
 					$inputWidth = 346;
 
-					$uniq = uniqid(""); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "right", g_l('global', "[openCloseBox]"));
 					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
@@ -1077,7 +1077,7 @@ class we_objectFile extends we_document{
 				for($f = 0; $f < $show; $f++){
 					$myid = $objects[$f];
 					if($myid){
-						$uniq = uniqid(''); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+						$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 						$ob = new we_objectFile();
 						$ob->initByID($myid, OBJECT_FILES_TABLE);
 						$ob->DefArray = $ob->getDefaultValueArray();
@@ -1680,7 +1680,7 @@ class we_objectFile extends we_document{
 		if(count($values) < 1){
 			$addbut = '';
 		} else{
-			$textname = md5(uniqid(rand(), 1));
+			$textname = md5(uniqid(__FUNCTION__, true));
 //$idname = md5(uniqid(rand(), 1));
 			$foo = array("" => g_l('global', "[add_workspace]"));
 			foreach($values as $key => $val){
@@ -1787,8 +1787,8 @@ class we_objectFile extends we_document{
 		if(count($values) < 1){
 			$addbut = "";
 		} else{
-			$textname = md5(uniqid(rand(), 1));
-			$idname = md5(uniqid(rand(), 1));
+			$textname = md5(uniqid(__FUNCTION__, true));
+			$idname = md5(uniqid(__FUNCTION__,true));
 			$foo = array("" => g_l('global', "[add_workspace]"));
 			foreach($values as $key => $val){
 				$foo[$key] = $val;
@@ -1959,7 +1959,7 @@ class we_objectFile extends we_document{
 
 			if(preg_match('/%urlunique([^%]*)%/', $text, $regs)){
 				$anz = (!$regs[1] ? 16 : abs($regs[1]));
-				$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
+				$unique = substr(md5(uniqid(__FUNCTION__,true)), 0, min($anz, 32));
 				$text = preg_replace('/%urlunique[^%]*%/', $unique, $text);
 			}
 

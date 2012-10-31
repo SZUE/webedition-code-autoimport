@@ -148,7 +148,7 @@ class we_user{
 	// Constructor
 	function __construct(){
 		$this->ClassName = 'we_user';
-		$this->Name = 'user_' . md5(uniqid(rand()));
+		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ID', 'Type', 'ParentID', 'Salutation', 'First', 'Second', 'Address', 'HouseNo', 'City', 'PLZ', 'State', 'Country', 'Tel_preselection', 'Telephone', 'Fax', 'Fax_preselection', 'Handy', 'Email', 'username', 'passwd', 'clearpasswd', 'Text', 'Path', 'Permissions', 'ParentPerms', 'Description', 'Alias', 'Icon', 'IsFolder', 'CreatorID', 'CreateDate', 'ModifierID', 'ModifyDate', 'Ping', 'workSpace', 'workSpaceDef', 'workSpaceTmp', 'workSpaceNav', 'workSpaceNwl', 'workSpaceObj', 'ParentWs', 'ParentWst', 'ParentWsn', 'ParentWso', 'ParentWsnl', 'altID', 'LoginDenied', 'UseSalt');
 
 		array_push($this->preference_slots, 'sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');

@@ -379,7 +379,7 @@ function we_getHiddenField($name, $value, $xml = false){
 function we_getInputCheckboxField($name, $value, $attr){
 	//  returns a checkbox with associated hidden-field
 
-	$tmpname = md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(time())
+	$tmpname = md5(uniqid(__FUNCTION__,true)); // #6590, changed from: uniqid(time())
 	if($value){
 		$attr['checked'] = 'checked';
 	}
