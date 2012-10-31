@@ -1039,10 +1039,8 @@ class we_imageDocument extends we_binaryDocument{
 								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . md5(
-										uniqid(rand(), 1));
-								move_uploaded_file(
-									$_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
+								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . '/' . weFile::getUniqueId();
+								move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
 								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
@@ -1051,7 +1049,7 @@ class we_imageDocument extends we_binaryDocument{
 									return;
 								}
 
-								$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' .
+								$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' .
 									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){

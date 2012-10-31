@@ -45,7 +45,7 @@ if($ok){
 r = Math.random();
 document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?r="+r+"&amp;bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;type=js&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '&amp;page=' . rawurlencode($page) . '"+(document.referer ? ("&amp;referer="+escape(document.referer)) : "")+"\"><" + "/script>");
 
-') . '<noscript><a href="' . $clickscript . '?u=' . md5(uniqid(rand(0, 99999))) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
+') . '<noscript><a href="' . $clickscript . '?u=' . md5(uniqid('', true)) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
 	} else{
 		$code = '<iframe
 	src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;type=iframe&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;page=' . rawurlencode($page) . '"
@@ -59,7 +59,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 	src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;type=iframe&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;page=' . rawurlencode($page) . '"
 	width="' . $width . '"
 	height="' . $height . '"
-></ilayer><nolayer><a href="' . $clickscript . '?u=' . md5(uniqid(rand(0, 99999))) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a>
+></ilayer><nolayer><a href="' . $clickscript . '?u=' . md5(uniqid('', true)) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a>
 </nolayer>
 </iframe>';
 	}

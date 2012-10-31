@@ -86,7 +86,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_e
 				$after = false;
 				$afterid = false;
 			}
-			$identifier = uniqid();
+			$identifier = str_replace('.', '', uniqid('', true));
 			$uniqid = "entry_" . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);
 

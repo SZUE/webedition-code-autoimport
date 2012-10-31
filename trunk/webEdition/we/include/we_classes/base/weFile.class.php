@@ -209,7 +209,7 @@ abstract class weFile{
 	static function getUniqueId($md5 = true){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
-		return ($md5 ? md5(uniqid(__FILE__, true)) : uniqid(microtime()));
+		return ($md5 ? md5(uniqid(__FILE__, true)) : str_replace('.', '', uniqid('', true)));
 		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid('',true))'
 	}
 
@@ -260,7 +260,7 @@ abstract class weFile{
 
 					if($marker_size){
 						$write = ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"));
-					}else{
+					} else{
 						$write = true;
 					}
 

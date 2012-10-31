@@ -39,7 +39,7 @@ $we_alerttext = "";
 
 if(isset($_FILES['we_uploadFile'])){
 	$overwrite = $_REQUEST["overwrite"];
-	$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+	$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadFile']["tmp_name"], $tempName);
 	if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
 		if($overwrite == "yes"){

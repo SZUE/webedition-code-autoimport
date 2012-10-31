@@ -808,7 +808,7 @@ abstract class we_root extends we_class{
 				$this->i_loadNavigationItems();
 			}
 		}
-		$this->Name = md5(uniqid(rand()));
+		$this->Name = md5(uniqid(__FUNCTION__, true));
 	}
 
 # private ###################

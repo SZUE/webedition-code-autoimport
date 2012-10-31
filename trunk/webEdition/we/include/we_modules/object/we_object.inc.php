@@ -201,7 +201,7 @@ class we_object extends we_document{
 							'hreftype' => isset($this->elements[$cur . 'hreftype']['dat']) ? $this->elements[$cur . 'hreftype']['dat'] : '',
 							'hrefdirectory' => isset($this->elements[$cur . 'hrefdirectory']['dat']) ? $this->elements[$cur . 'hrefdirectory']['dat'] : 'false',
 							'hreffile' => isset($this->elements[$cur . 'hreffile']['dat']) ? $this->elements[$cur . 'hreffile']['dat'] : 'true',
-							'uniqueID' => md5(uniqid(rand(), 1)),
+							'uniqueID' => md5(uniqid(__FILE__, true)),
 						);
 
 						if($this->isVariantField($cur) && isset($this->elements[$cur . 'variant']['dat']) && $this->elements[$cur . 'variant']['dat'] == 1){
@@ -331,7 +331,7 @@ class we_object extends we_document{
 								'hreftype' => $this->elements[$info['name'] . 'hreftype']['dat'],
 								'hrefdirectory' => $this->elements[$info['name'] . 'hrefdirectory']['dat'],
 								'hreffile' => $this->elements[$info['name'] . 'hreffile']['dat'],
-								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? $this->SerializedArray[$info['name']]['uniqueID'] : md5(uniqid(rand(), 1)),
+								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? $this->SerializedArray[$info['name']]['uniqueID'] : md5(uniqid(__FILE__, true)),
 							);
 							if($this->isVariantField($info['name']) && isset($this->elements[$info['name'] . 'variant']['dat']) && $this->elements[$info['name'] . 'variant']['dat'] == 1){
 								$arrt[$nam]['variant'] = $this->elements[$info['name'] . 'variant']['dat'];
@@ -400,7 +400,7 @@ class we_object extends we_document{
 						'hreftype' => isset($this->elements[$cur . 'hreftype']['dat']) ? $this->elements[$cur . 'hreftype']['dat'] : '',
 						'hrefdirectory' => isset($this->elements[$cur . 'hrefdirectory']['dat']) ? $this->elements[$cur . 'hrefdirectory']['dat'] : 'false',
 						'hreffile' => isset($this->elements[$cur . 'hreffile']['dat']) ? $this->elements[$cur . 'hreffile']['dat'] : 'true',
-						'uniqueID' => md5(uniqid(rand(), 1)),
+						'uniqueID' => md5(uniqid(__FILE__, true)),
 					);
 //					$arrt[$nam]['variant'] = (isset($this->elements[$cur.'variant']['dat']) && $this->elements[$cur.'variant']['dat']==1) ? $this->elements[$cur.'variant']['dat'] : '';
 					if($this->isVariantField($cur) && isset($this->elements[$cur . 'variant']['dat']) && $this->elements[$cur . 'variant']['dat'] == 1){
@@ -556,7 +556,7 @@ class we_object extends we_document{
 				if($v < 0){
 					$v = 0;
 				}
-				$sort[str_replace('.', '', uniqid("", true))] = $v;
+				$sort[str_replace('.', '', uniqid(__FUNCTION__, true))] = $v;
 			}
 			$this->setElement("we_sort", $sort);
 		}
@@ -1669,7 +1669,7 @@ class we_object extends we_document{
 				$key = $regs[1];
 				if(preg_match('/unique([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 16 : abs($regs[1]));
-					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
+					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 					$select .= $this->htmlTextInput("we_" . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
@@ -1726,7 +1726,7 @@ class we_object extends we_document{
 				$key = $regs[1];
 				if(preg_match('/urlunique([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 16 : abs($regs[1]));
-					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
+					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlunique%", "", 'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"', "value", 140) . "&nbsp;";
 					$select2 .= $this->htmlTextInput("we_" . $this->Name . "_input[urlunique_" . $zahl . "]", 40, $anz, 255, 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 140);

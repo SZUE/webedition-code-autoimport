@@ -656,7 +656,7 @@ class weCustomerEIWizard{
 		if($import_from == "local"){
 			if(isset($_FILES['upload']) && $_FILES["upload"]["size"]){
 				// creating a temp name and copy the file to the we tmp directory with the new temp name
-				$filename = TEMP_DIR . md5(uniqid(rand(), 1)) . $ext;
+				$filename = TEMP_DIR . weFile::getUniqueId() . $ext;
 				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 				move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
 			}

@@ -236,7 +236,7 @@ class we_objectEx extends we_object{
 		return '';
 	}
 
-	function isFieldExists($name, $type=''){
+	function isFieldExists($name, $type = ''){
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 		foreach($this->SerializedArray as $fieldname => $value){
@@ -276,7 +276,7 @@ class we_objectEx extends we_object{
 		return false;
 	}
 
-	function addField($name, $type='', $default=''){
+	function addField($name, $type = '', $default = ''){
 
 		$defaultArr = array();
 		$defaultArr['default'] = '';
@@ -306,7 +306,7 @@ class we_objectEx extends we_object{
 		$defaultArr['hreftype'] = '';
 		$defaultArr['hrefdirectory'] = '';
 		$defaultArr['hreffile'] = '';
-		$defaultArr['uniqueID'] = md5(uniqid(rand(), 1));
+		$defaultArr['uniqueID'] = md5(uniqid(__FUNCTION__, true));
 		switch($type){
 			case 'text':
 			case 'input':
@@ -332,7 +332,7 @@ class we_objectEx extends we_object{
 		return $this->saveToDB(true);
 	}
 
-	function dropField($name, $type=''){
+	function dropField($name, $type = ''){
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$isfound = false;
 		foreach($this->SerializedArray as $field => $value){
@@ -370,7 +370,7 @@ class we_objectEx extends we_object{
 		return false;
 	}
 
-	function modifyField($name, $newtype, $type, $default='', $delete=''){
+	function modifyField($name, $newtype, $type, $default = '', $delete = ''){
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$defaultArr = $this->SerializedArray[$type . '_' . $name];
 		if($newtype == $type){
@@ -402,6 +402,7 @@ class we_objectEx extends we_object{
 		$this->DefaultValues = serialize($this->SerializedArray);
 		return $this->saveToDB(true);
 	}
+
 	function resetOrder(){
 		unset($this->elements['we_sort']);
 		$this->setSort();

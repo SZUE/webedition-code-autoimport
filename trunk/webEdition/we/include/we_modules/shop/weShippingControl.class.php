@@ -94,7 +94,7 @@ class weShippingControl{
 
 	function getNewEmptyShipping(){
 		return new weShipping(
-				uniqid('weShipping_'),
+				'weShipping_' . md5(uniqid('', true)),
 				g_l('modules_shop', '[new_entry]'),
 				array('Deutschland'),
 				array('10', '20', '100'),

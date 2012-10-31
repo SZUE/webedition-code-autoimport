@@ -174,10 +174,10 @@ class we_button{
 		 */
 		// Check if the button is a text button or an image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button is NOT an image
-			$_button_name = ($uniqid ? 'we' . uniqid($name . "_") : $name) . $suffix;
+			$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
 		} else{ // Button is an image - create a unique name
 			$_button_pure_name = substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY)));
-			$_button_name = ($uniqid ? 'we' . uniqid(substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . '_') : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
+			$_button_name = ($uniqid ? 'we' . substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . '_' . md5(uniqid(__FUNCTION__, true)) : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
 		}
 		/**
 		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON

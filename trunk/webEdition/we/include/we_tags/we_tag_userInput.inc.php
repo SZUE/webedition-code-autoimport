@@ -89,9 +89,7 @@ function we_tag_userInput($attribs, $content){
 		switch($type){
 			case "img" :
 
-				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $name] : md5(
-						uniqid(rand()));
-
+				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 				if($editable){
 
@@ -188,10 +186,7 @@ function we_tag_userInput($attribs, $content){
 					}
 				}
 			case "flashmovie" :
-
-				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(
-						uniqid(rand()));
-
+				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 				if($editable){
 
@@ -298,8 +293,7 @@ function we_tag_userInput($attribs, $content){
 				}
 			case "quicktime" :
 
-				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name] : md5(
-						uniqid(rand()));
+				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 
 				if($editable){
@@ -404,8 +398,7 @@ function we_tag_userInput($attribs, $content){
 				}
 			case "binary" :
 
-				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $name] : md5(
-						uniqid(rand()));
+				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $name] : md5(uniqid(__FUNCTION__, true));
 
 				if($editable){
 
@@ -791,7 +784,7 @@ function we_tag_userInput($attribs, $content){
 				);
 				return getHtmlTag('input', $attsHidden);
 			case "print" :
-				return  $orgVal;
+				return $orgVal;
 			case "choice" :
 				$atts = removeAttribs(
 					$attribs, array(

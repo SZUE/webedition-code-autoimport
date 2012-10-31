@@ -34,8 +34,8 @@ class weBannerBase{
 	var $table = "";
 	var $ClassName;
 
-	function weBannerBase(){
-		$this->uid = "ba_" . md5(uniqid(rand()));
+	function __construct(){
+		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 		$this->ClassName = "weBannerBase";
 	}

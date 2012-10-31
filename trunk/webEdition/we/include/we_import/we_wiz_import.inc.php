@@ -1249,7 +1249,7 @@ HTS;
 		$v = $_REQUEST["v"];
 
 		if($v["rdofloc"] == "lLocal" && (isset($_FILES['uploaded_xml_file']) and $_FILES["uploaded_xml_file"]["size"])){
-			$uniqueId = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
+			$uniqueId = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
 			$v["import_from"] = TEMP_DIR . "we_xml_" . $uniqueId . ".xml";
 			move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . $v["import_from"]);
 		}
@@ -1803,7 +1803,7 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 		if(((isset($_FILES['uploaded_csv_file']) and $_FILES["uploaded_csv_file"]["size"])) || $v["file_format"] == "mac"){
-			$uniqueId = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
+			$uniqueId = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 			switch($v["rdofloc"]){
 				case "lLocal":

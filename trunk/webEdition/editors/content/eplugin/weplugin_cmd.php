@@ -143,7 +143,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
 				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-				$tempName = TEMP_PATH . '/' . md5(uniqid(rand(), 1));
+				$tempName = TEMP_PATH . '/' . weFile::getUniqueId();
 				move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
 
 

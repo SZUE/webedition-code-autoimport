@@ -81,7 +81,7 @@ abstract class we_class{
 	/* Constructor */
 
 	function __construct(){
-		$this->Name = uniqid();
+		$this->Name = uniqid(__FILE__, true);
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
 		$this->DB_WE = new DB_WE;
 	}

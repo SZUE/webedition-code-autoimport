@@ -71,7 +71,7 @@ class we_todo extends we_msg_proto{
 
 	function __construct(){
 		$this->Short_Description = g_l('modules_messaging', "[we_todo]");
-		$this->Name = 'todo_' . md5(uniqid(rand()));
+		$this->Name = 'todo_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields', 'default_folders');
 		$this->DB = new DB_WE();
 	}

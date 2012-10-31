@@ -100,8 +100,8 @@ class we_msg_proto extends we_class{
 
 	/* Constructor */
 
-	function we_msg_proto(){
-		$this->Name = 'msg_proto_' . md5(uniqid(rand()));
+	function __construct(){
+		$this->Name = 'msg_proto_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached');
 		$this->DB = new DB_WE();
 	}

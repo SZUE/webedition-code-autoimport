@@ -117,7 +117,7 @@ class we_flashDocument extends we_binaryDocument{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn=false){
+	function getHtml($dyn = false){
 		$_data = $this->getElement("data");
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 
@@ -153,15 +153,15 @@ class we_flashDocument extends we_binaryDocument{
 				}
 			}
 
-			if($xml){	//  XHTML-Version
+			if($xml){ //  XHTML-Version
 				$allowedAtts = $this->ObjectParamNames;
 				$filter = array("alt", 'parentid', 'startid');
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){	 //  use as name="value"
+					if(in_array($k, $allowedAtts)){ //  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){	//  use as <param>
+					} else if(!in_array($k, $filter)){ //  use as <param>
 						$params[$k] = $v["dat"];
 					}
 				}
@@ -169,16 +169,16 @@ class we_flashDocument extends we_binaryDocument{
 				//   needed attribs
 				$attribs["type"] = "application/x-shockwave-flash";
 				$attribs["data"] = $src;
-			} else{					//  Normal-Version - with embed-tag
+			} else{	 //  Normal-Version - with embed-tag
 				$filter = array("type", "alt", 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){	 //  use as name="value"
+					if(in_array($k, $allowedAtts)){ //  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){	//  use as <param>
+					} else if(!in_array($k, $filter)){ //  use as <param>
 						$params[$k] = $v["dat"];
 					}
 					if(!in_array($k, $filter)){
@@ -475,14 +475,10 @@ class we_flashDocument extends we_binaryDocument{
 								$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
 								// move document from upload location to tmp dir
-								$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . "/" . md5(
-										uniqid(rand(), 1));
-								move_uploaded_file(
-									$_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
+								$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . weFile::getUniqueId();
+								move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
 
-
-
-								$tmp_Filename = $flashName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+								$tmp_Filename = $flashName . "_" . weFile::getUniqueId() . "_" . preg_replace(
 										'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
 
 								if($flashId){

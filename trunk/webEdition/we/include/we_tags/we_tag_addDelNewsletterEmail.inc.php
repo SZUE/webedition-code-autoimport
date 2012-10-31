@@ -125,7 +125,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		}
 
 		if($doubleoptin && (!isset($_REQUEST["confirmID"]))){ // Direkte ANmeldung mit doubleoptin => zuerst confirmmail verschicken.
-			$confirmID = md5(uniqid(rand()));
+			$confirmID = md5(uniqid(__FUNCTION__, true));
 			$lists = '';
 			$emailExistsInOneOfTheLists = false;
 			if($customer){

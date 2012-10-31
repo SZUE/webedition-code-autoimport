@@ -34,7 +34,7 @@ class metadatatag{
 		$this->DB_WE = new DB_WE;
 
 		if($name){
-			$unique = md5(uniqid(rand()));
+			$unique = md5(uniqid(__FILE__, true));
 			if(!isset($GLOBALS["lv"])){
 				// determine the id of the element
 				$_value = $GLOBALS['we_doc']->getElement($name, "bdid");
@@ -62,7 +62,7 @@ class metadatatag{
 	}
 
 	function f($key){
-		return ($this->id?$this->object->f($key):'');
+		return ($this->id ? $this->object->f($key) : '');
 	}
 
 }

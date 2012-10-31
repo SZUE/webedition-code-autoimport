@@ -1846,7 +1846,7 @@ class weNewsletterView{
 					}
 
 					if(isset($we_File)){
-						$unique = md5(uniqid(rand(), 1));
+						$unique = weFile::getUniqueId();
 						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
@@ -1868,7 +1868,7 @@ class weNewsletterView{
 					if(isset($_FILES["we_File"]))
 						$we_File = $_FILES["we_File"];
 					if(isset($we_File)){
-						$unique = md5(uniqid(rand(), 1));
+						$unique = weFile::getUniqueId();
 						$tempName = TEMP_PATH . "/" . $unique;
 
 						if(move_uploaded_file($we_File["tmp_name"], $tempName)){
