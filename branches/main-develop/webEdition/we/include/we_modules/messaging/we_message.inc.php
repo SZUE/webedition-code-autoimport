@@ -71,7 +71,7 @@ class we_message extends we_msg_proto{
 	/* Constructor */
 
 	function __construct(){
-		$this->Name = 'message_' . md5(uniqid(rand()));
+		$this->Name = 'message_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'available_folders', 'search_folder_ids', 'search_fields');
 		$this->DB = new DB_WE();
 	}

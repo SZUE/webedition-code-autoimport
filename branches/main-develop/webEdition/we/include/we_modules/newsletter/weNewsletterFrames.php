@@ -1213,7 +1213,7 @@ class weNewsletterFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "newsletter";
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;
@@ -1222,7 +1222,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$js = $this->View->getJSProperty();
 
 		$js .= we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsElement(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsElement(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 		$js .=we_html_element::jsElement('
@@ -2632,21 +2632,11 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 
 			if($salutation && $lastname && ($salutation == $this->View->settings["female_salutation"]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
+				$content = ($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF) : $contentF);
+				$content = str_replace(array('###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###', '###TITLE###',), array($firstname, $lastname, $customerid, $title,), $content);
 
-				$content = str_replace('###FIRSTNAME###', $firstname, $contentF);
-				$content = str_replace('###LASTNAME###', $lastname, $content);
-				$content = str_replace('###CUSTOMERID###', $customerid, $content);
-				if($title){
-					$content = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content);
-				}
-				$content = str_replace('###TITLE###', $title, $content);
-				$content_plain = str_replace('###FIRSTNAME###', $firstname, $contentF_plain);
-				$content_plain = str_replace('###LASTNAME###', $lastname, $content_plain);
-				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
-				if($title){
-					$content_plain = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content_plain);
-				}
-				$content_plain = str_replace('###TITLE###', $title, $content_plain);
+				$content_plain = ($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF_plain) : $contentF_plain);
+				$content_plain = str_replace(array('###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###', '###TITLE###'), array($firstname, $lastname, $customerid, $title), $content_plain);
 			} else if($salutation && $lastname && ($salutation == $this->View->settings["male_salutation"]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 
 				$content = str_replace('###FIRSTNAME###', $firstname, $contentM);
@@ -2723,18 +2713,15 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$not_black = !$this->View->isBlack($email); //Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
-				$emailName = '';
-				if($title){
-					$emailName.= $title . " ";
-				}
-				if($firstname){
-					$emailName.= $firstname . " ";
-				}
-				$emailName.= $lastname . "<" . $email . ">";
-				$email = $emailName;
+				$emailName = ($title ? $title . ' ' : '') .
+					($firstname ? $firstname . ' ' : '') .
+					$lastname . '<' . $email . '>';
+				//$email = $emailName;
+			} else{
+				$emailName = $email;
 			}
 			$phpmail = new we_util_Mailer(
-					$email,
+					$emailName,
 					$this->View->newsletter->Subject,
 					$this->View->newsletter->Sender,
 					$this->View->newsletter->Reply,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,35 +22,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
-
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-echo we_html_element::jsScript(JS_DIR.'windows.js').
-we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
-we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$headCal = we_html_element::cssLink(JS_DIR."jscalendar/skins/aqua/theme.css").
-		   we_html_element::jsScript(JS_DIR."jscalendar/calendar.js").
-		   we_html_element::jsScript(WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js").
-		   we_html_element::jsScript(JS_DIR."jscalendar/calendar-setup.js");
+$headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+	we_html_element::jsScript(WE_INCLUDES_DIR. 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 echo $headCal;
 
 $_view = new weVersionsView();
 
-echo $_view->getJS();
-
-print STYLESHEET;
-
-echo '
+print $_view->getJS() .
+	STYLESHEET .'
 <style type="text/css" media="screen">
 #scrollContent {overflow: auto; }
 #searchTable {display: block; }
@@ -95,13 +89,13 @@ echo '<body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if
 echo '<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
 
 $_parts = array();
-$_parts[] = array("html"=>"<div id='searchTable'>".$_view->getBodyTop()."</div>");
+$_parts[] = array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>");
 
 $content = $_view->getVersionsOfDoc();
 $headline = $_view->makeHeadLines();
 $foundItems = count($content);
 
-$_parts[] = array("html"=>"<div id='parametersTop'>".$_view->getParameterTop($foundItems)."</div>".$_view->tblList($content,$headline)."<div id='parametersBottom'>".$_view->getParameterBottom($foundItems)."</div>");
+$_parts[] = array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $headline) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>");
 
 echo $_view->getHTMLforVersions($_parts);
 

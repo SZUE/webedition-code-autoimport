@@ -105,7 +105,7 @@ class weBackupPreparer{
 			}
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 		if($_SESSION['weBackupVars']['protect'] && !$_SESSION['weBackupVars']['options']['compress']){
 			weFile::save($_SESSION['weBackupVars']['backup_file'], $GLOBALS['weXmlExImProtectCode'] . $GLOBALS['weXmlExImHeader']);
 		} else{
@@ -126,7 +126,7 @@ class weBackupPreparer{
 			return false;
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 
 		$_offset = strlen($GLOBALS['weXmlExImProtectCode']);
 		$_SESSION['weBackupVars']['offset'] = (weFile::loadLine($_SESSION['weBackupVars']['backup_file'], 0, ($_offset + 1)) == $GLOBALS['weXmlExImProtectCode']) ? $_offset : 0;
@@ -234,7 +234,7 @@ class weBackupPreparer{
 	}
 
 	function getTables($options){
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weTableMap.inc.php');
+		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableMap.inc.php');
 
 		$tables = array();
 		foreach($options as $group => $enabled){
@@ -421,18 +421,18 @@ class weBackupPreparer{
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
-								top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
+								top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";
 							}');
 				} else{
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
+							top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
+						top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
+						top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 
@@ -468,7 +468,7 @@ class weBackupPreparer{
 		}
 
 		return we_html_element::jsElement(we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) . '
-					top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";');
+					top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 	}
 
 	function makeCleanGzip($gzfile, $offset){

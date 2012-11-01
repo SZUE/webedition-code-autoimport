@@ -37,7 +37,7 @@ class we_workflow_base{
 	var $Log;
 
 	function __construct(){
-		$this->uid = "wf_" . md5(uniqid(rand()));
+		$this->uid = "wf_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 		$this->Log = new we_workflow_log();
 	}

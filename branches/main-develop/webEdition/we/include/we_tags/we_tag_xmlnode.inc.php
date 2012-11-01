@@ -48,7 +48,7 @@ function we_parse_tag_xmlnode($attribs, $content){
 		case "session" :
 			$printstart='$_SESSION["'.$nameTo.'"] = ';
 			break;
-		case "top" :		
+		case "top" :
 			$printstart='$GLOBALS["WE_MAIN_DOC"]->setElement('.$nameTo.',';
 			$printend=');';
 			break;
@@ -56,18 +56,18 @@ function we_parse_tag_xmlnode($attribs, $content){
 			$printstart='$GLOBALS["we_doc"]->setElement('.$nameTo.',';
 			$printend=');';
 			break;
-		
+
 		case "sessionfield" :
 			$printstart='if(isset($_SESSION["webuser"]["'.$nameTo.'"]))$_SESSION["webuser"]["'.$nameTo.'"] = ';
 			break;
 	}
-	$unq = '$_xmlnode' .  uniqid(rand());
+	$unq = '$_xmlnode' .  md5(uniqid(__FUNCTION__, true));
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 		while(' . $unq . '->next()){
 			if(  ' . $unq . '->hasChild() ){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
 			}else{
-			   ' .$printstart. $unq . '->getFeedData()'.$printend.'	  
+			   ' .$printstart. $unq . '->getFeedData()'.$printend.'
 			}
 			//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
 			// fix me
@@ -122,7 +122,7 @@ function we_tag_xmlnode($attribs){
 		} else {
 			$got_name = false;
 			$c_name = 0;
-	
+
 			if(!empty($parent_name)){
 				for($c_name = $pind_name; $c_name > -1; $c_name--){
 					$otac_name = $GLOBALS["xstack"][$c_name];

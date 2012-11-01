@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
+include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 
 we_html_tools::protect();
@@ -33,9 +33,8 @@ foreach($js_load as $js){
 }
 unset($js_load);
 
-print STYLESHEET;
-
-print we_html_element::cssElement('
+print STYLESHEET .
+	we_html_element::cssElement('
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
@@ -63,7 +62,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			while(sizeof($aDat) > $iLayoutCols) {
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
-					array_push($aDat[sizeof($aDat) - 1], $aShiftWidget);
+					$aDat[sizeof($aDat) - 1][]= $aShiftWidget;
 				}
 			}
 			setUserPref("cockpit_dat", serialize($aDat));
@@ -321,8 +320,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
 			top.YAHOO.util.Connect.setForm(fo);
 			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php
-	echo WEBEDITION_DIR;
-	?>we/include/we_widgets/cmd.php', top.weDummy);
+	echo WE_INCLUDES_DIR;
+	?>we_widgets/cmd.php', top.weDummy);
 		}
 
 		function resizeIdx(a,id){
@@ -644,8 +643,8 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 			function composeUri(args){
 				var uri='<?php
-	echo WEBEDITION_DIR;
-	?>we/include/we_widgets/dlg/'+args[0]+'.php?';
+	echo WE_INCLUDES_DIR;
+	?>we_widgets/dlg/'+args[0]+'.php?';
 				for(var i=1;i<args.length;i++){
 					uri+='we_cmd['+(i-1)+']='+args[i];
 					if(i<(args.length-1)){
@@ -666,16 +665,16 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		echo '
 if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-	var clone=gel("rpcBusy").cloneNode(true);
-	var wpNode=gel(elementId+"_wrapper");
-	var ctNode=gel(elementId+"_content");
+var clone=gel("rpcBusy").cloneNode(true);
+var wpNode=gel(elementId+"_wrapper");
+var ctNode=gel(elementId+"_content");
 
-	ctNode.style.display="none";
-	wpNode.style.textAlign="center";
-	wpNode.style.verticalAlign="middle";
-	wpNode.insertBefore(clone,ctNode);
-	clone.id="rpcBusyClone_" + elementId;
-	clone.style.display="inline";
+ctNode.style.display="none";
+wpNode.style.textAlign="center";
+wpNode.style.verticalAlign="middle";
+wpNode.insertBefore(clone,ctNode);
+clone.id="rpcBusyClone_" + elementId;
+clone.style.display="inline";
 }';
 	}
 	?>
@@ -811,8 +810,8 @@ if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per wid
 				_tmpForm.id = "_tmpSubmitForm";
 				_tmpForm.method = "POST";
 				_tmpForm.action = '<?php
-	echo WEBEDITION_DIR;
-	?>we/include/we_widgets/'+path+'.php';
+	echo WE_INCLUDES_DIR;
+	?>we_widgets/'+path+'.php';
 				_tmpForm.target = "RSIFrame";
 				for(var i=0;i<arguments.length;i++){
 					var _tmpField = document.createElement('input');
@@ -893,9 +892,9 @@ if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per wid
 		echo "_trf[" . $iCurrRssFeed . "]=['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'];\n";
 		$iCurrRssFeed++;
 	}
-	$_transact = md5(uniqid(rand()));
+	$_transact = md5(uniqid(__FILE__, true));
 
-	echo "function newMessage(username){\n";
+	echo "function newMessage(username){";
 	if(defined("WE_MESSAGING_MODULE_DIR")){
 		echo "	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
 	}

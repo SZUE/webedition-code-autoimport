@@ -2,8 +2,9 @@ var ImageDialog = {
 	preInit : function() {
 		var url;
 		tinyMCEPopup.requireLangPack();
-		if (url = tinyMCEPopup.getParam("external_image_list_url"))
+		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+		}
 	},
 
 	init : function(ed) {
@@ -13,7 +14,7 @@ var ImageDialog = {
 	insert : function(file, title) {
 		var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
 		// remove <img> if src=""
-		if (f.src.value === '') {
+		if(f.src.value === ''){
 			if (ed.selection.getNode().nodeName == 'IMG') {
 				ed.dom.remove(ed.selection.getNode());
 				ed.execCommand('mceRepaint');
@@ -23,10 +24,11 @@ var ImageDialog = {
 		}
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
-			if (!f.alt.value) {
+			if(!f.alt.value){
 				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
-					if (s)
+					if (s){
 						t.insertAndClose();
+					}
 				});
 				return;
 			}
@@ -40,17 +42,18 @@ var ImageDialog = {
 		tinyMCEPopup.restoreSelection();
 
 		// Fixes crash in Safari
-		if (tinymce.isWebKit)
+		if(tinymce.isWebKit){
 			ed.getWin().focus();
+		}
 
-		if (!ed.settings.inline_styles) {
+		if(!ed.settings.inline_styles){
 			args = {
 				vspace : nl.vspace.value,
 				hspace : nl.hspace.value,
 				border : nl.border.value,
 				align : getSelectValue(f, 'align')
 			};
-		} else {
+		} else{
 			// Remove deprecated values
 			args = {
 				vspace : '',
@@ -82,9 +85,9 @@ var ImageDialog = {
 
 		el = ed.selection.getNode();
 
-		if (el && el.nodeName == 'IMG') {
+		if(el && el.nodeName == 'IMG'){
 			ed.dom.setAttribs(el, args);
-		} else {
+		} else{
 			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
 			//ed.execCommand('mceInsertContent', false, '<img />', {skip_undo : 1});
 			ed.dom.setAttribs('__mce_tmp', args);

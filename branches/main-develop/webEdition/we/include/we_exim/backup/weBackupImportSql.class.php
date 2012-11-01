@@ -28,7 +28,6 @@ class weBackupImportSql{
 
 	function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupSqlFileReader.class.php');
 
 		if($log){
 			weBackupUtil::addLog(sprintf('Reading offset %s', $offset));

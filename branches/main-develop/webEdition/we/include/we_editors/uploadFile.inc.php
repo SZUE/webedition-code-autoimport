@@ -42,7 +42,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 } else{
 
 	$we_dt = $_SESSION["we_data"][$we_transaction];
-	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	switch($we_doc->ContentType){
 		case "image/*";
@@ -55,7 +55,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 	}
 
 	if(isset($_FILES["we_File"]) && $_FILES["we_File"]["name"] != "" && $_FILES['we_File']["type"] && (($allowedContentTypes == "") || (!(strpos($allowedContentTypes, $_FILES['we_File']["type"]) === false)))){
-		$we_File = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+		$we_File = TEMP_PATH . "/" . weFile::getUniqueId();
 		move_uploaded_file($_FILES["we_File"]["tmp_name"], $we_File);
 		if((!$we_doc->Filename) || (!$we_doc->ID)){
 			// Bug Fix #6284
@@ -121,16 +121,16 @@ if($we_alerttext){
 	if($error){
 		?>
 					top.close();
-	<?php
+		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-		opener.we_cmd("update_file");
-		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
-		self.close();
+			opener.we_cmd("update_file");
+			_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+			_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
+			self.close();
 <?php } ?>
 	//-->
 </script>
@@ -140,7 +140,7 @@ if(isset($we_File) && (!$we_alerttext)){
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
+			<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
 		</form>
 	</center>
 </body>

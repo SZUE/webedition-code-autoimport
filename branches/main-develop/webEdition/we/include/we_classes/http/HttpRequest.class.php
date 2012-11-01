@@ -242,21 +242,21 @@ class HttpRequest{
 			//  it is necessary to differ from POST/GET requests
 			if($this->http_method == 'POST'){ //  method 'POST'
 				//  boundary to seperate between different content blocks
-				$boundary = 'accessibility_' . (uniqid('webEdition') . time());
+				$boundary = 'accessibility_webEdition' . str_replace('.', '', uniqid('', true));
 
 				foreach($this->files as $file){
 					//  important not ot forget the leading '--'
-					$body .= '--' . $boundary . "\r\n";
-					$body .= 'Content-Disposition: form-data; name="' . $file['varname'] . '"; filename="' . $file["filename"] . '"' . "\r\n";
-					$body .= 'Content-Type: ' . $file['contentType'] . "\r\n";
-					$body .= "\r\n" . $file['content'] . "\r\n";
+					$body .= '--' . $boundary . "\r\n" .
+						'Content-Disposition: form-data; name="' . $file['varname'] . '"; filename="' . $file["filename"] . '"' . "\r\n" .
+						'Content-Type: ' . $file['contentType'] . "\r\n" .
+						"\r\n" . $file['content'] . "\r\n";
 				}
 
 				foreach($this->vars as $var){
 
-					$body .= '--' . $boundary . "\r\n";
-					$body .= 'Content-Disposition: form-data; name="' . $var['name'] . "\"\r\n";
-					$body .= "\r\n" . $var['value'] . "\r\n";
+					$body .= '--' . $boundary . "\r\n" .
+						'Content-Disposition: form-data; name="' . $var['name'] . "\"\r\n" .
+						"\r\n" . $var['value'] . "\r\n";
 				}
 				//  at last boundary we must attach '--'
 				$body .= '--' . $boundary . "--\r\n";

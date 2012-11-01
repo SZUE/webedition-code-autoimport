@@ -381,7 +381,7 @@ HTS;
 							$cp->setEnclosure($encl);
 							$cp->parseCSV();
 							$num_files = 0;
-							$unique_id = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
+							$unique_id = weFile::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 							$path = TEMP_PATH . $unique_id;
 							we_util_File::createLocalFolder($path);

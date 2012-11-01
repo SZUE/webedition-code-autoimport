@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 
 we_html_tools::protect();
 $jsCode = "
@@ -302,7 +302,7 @@ function exit_close(){
 ";
 
 function htmlClipElement($smalltext, $text, $content){
-	$unique = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(microtime())
+	$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
 	$js = we_html_element::jsElement(
 			'var state_' . $unique . '=0;
 		function clip_' . $unique . '(){

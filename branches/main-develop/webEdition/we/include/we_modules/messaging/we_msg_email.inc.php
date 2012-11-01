@@ -46,8 +46,8 @@ class we_msg_email extends we_msg_proto{
 
 	/* Constructor */
 
-	function we_msg_email(){
-		$this->Name = 'msg_email_' . md5(uniqid(rand()));
+	function __construct(){
+		$this->Name = 'msg_email_' . md5(uniqid(__FILE__, true));
 		$this->DB = new DB_WE();
 	}
 

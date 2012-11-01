@@ -29,7 +29,7 @@ function we_tag_conditionAdd($attribs){
 
 	// initialize possible Attributes
 	$field = weTag_getAttribute('field', $attribs);
-	$value = weTag_getAttribute('value', $attribs);
+	$value = str_replace(array('&gt;', '&lt;'), array('>', '<'), weTag_getAttribute('value', $attribs));
 	$compare = weTag_getAttribute('compare', $attribs, '=');
 	$var = weTag_getAttribute('var', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
@@ -39,11 +39,8 @@ function we_tag_conditionAdd($attribs){
 	// end initialize possible Attributes
 
 
-	$value = str_replace('&gt;', '>', $value);
-	$value = str_replace('&lt;', '<', $value);
-
 	$regs = array();
-	if($var && $compare == 'like'){
+	if($var && strtolower($compare) == 'like'){
 		if(preg_match('/^(%)?([^%]+)(%)?$/', $var, $regs)){
 			$var = $regs[2];
 		}
@@ -59,11 +56,7 @@ function we_tag_conditionAdd($attribs){
 		case 'document' :
 			if($var){
 				$doc = we_getDocForTag($docAttr, false);
-				if($property){
-					$value = $doc->$var;
-				} else{
-					$value = $doc->getElement($var);
-				}
+				$value = ($property ? $doc->$var : $doc->getElement($var));
 			}
 			break;
 		case 'request' :

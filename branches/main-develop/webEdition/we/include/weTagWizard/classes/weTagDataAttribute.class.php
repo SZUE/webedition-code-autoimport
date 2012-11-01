@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/taged.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/taged.inc.php');
 
 /**
  * webEdition CMS
@@ -58,7 +58,7 @@ class weTagDataAttribute{
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required, $module = '', $description='', $deprecated=false){
+	function __construct($name, $required, $module = '', $description = '', $deprecated = false){
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;

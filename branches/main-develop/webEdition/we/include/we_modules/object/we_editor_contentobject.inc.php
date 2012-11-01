@@ -25,7 +25,7 @@
 //	---> Includes
 //
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
@@ -81,28 +81,28 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	function we_checkObjFieldname(i){
 		if(i.value.search(/^([a-zA-Z0-9_+-])*$/)){
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					i.focus();
-					i.select();
-					i.value = i.getAttribute("oldValue");
-				}else if(i.value=='Title' || i.value=='Description'){
+			i.focus();
+			i.select();
+			i.value = i.getAttribute("oldValue");
+		}else if(i.value=='Title' || i.value=='Description'){
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					i.focus();
-					i.select();
-					i.value = i.getAttribute("oldValue");
-				}else if(i.value.length==0){
+			i.focus();
+			i.select();
+			i.value = i.getAttribute("oldValue");
+		}else if(i.value.length==0){
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					//		i.focus(); # 1052
-					//		i.select();
-					i.value = i.getAttribute("oldValue");
-				} else {
-					i.setAttribute("oldValue", i.value);
-				}
-			}
-			//-->
+			//		i.focus(); # 1052
+			//		i.select();
+			i.value = i.getAttribute("oldValue");
+		} else {
+			i.setAttribute("oldValue", i.value);
+		}
+	}
+	//-->
 </script>
 <?php
 echo $jsGUI->getJS(WEBEDITION_DIR . "js");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 
 </head>
@@ -119,16 +119,14 @@ if($we_doc->ID){
 $sort = $we_doc->getElement("we_sort");
 $count = $we_doc->getElement("Sortgesamt");
 
-$uniquename = md5(uniqid(rand(), true));
+$uniquename = md5(uniqid(__FILE__, true));
 $width = 800;
 
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 
-echo we_multiIconBox::_getBoxStart("100%", $uniquename);
-
-echo $jsGUI->getContainer(array());
-
-echo '<div id="' . $uniquename . '_div">'
+echo we_multiIconBox::_getBoxStart("100%", $uniquename) .
+ $jsGUI->getContainer(array()) .
+ '<div id="' . $uniquename . '_div">'
  . '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
  . '<tr>'
  . '<td valign="top"></td>'

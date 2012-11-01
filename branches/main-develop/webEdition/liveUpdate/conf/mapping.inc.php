@@ -67,4 +67,3 @@ $LU_IgnoreRequestParameters = array(
 	session_name(),
 	'we' . session_id()
 );
-?>

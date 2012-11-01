@@ -27,7 +27,7 @@
  *
  * Provides functions for creating html tags used in forms.
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 abstract class we_forms{
 
@@ -45,7 +45,7 @@ abstract class we_forms{
 	 */
 	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = 0, $width = 0, $html = ''){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? uniqid($name . '_') : $name);
+		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
 		// Create HTML tags
 		return '
@@ -89,7 +89,8 @@ abstract class we_forms{
 	 */
 	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $onMouseUp = "", $extra_content = ""){
 		// Check if we have to create a uniqe id
-		$_id = $name . ($uniqid ? '_' . uniqid(rand()) : '');
+		$_id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
+
 		// Create HTML tags
 		return '
 			<table cellpadding="0" border="0" cellspacing="0">

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/meta.conf.php');
+include (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 ?>
     case "tool_weSearch_edit":
@@ -36,9 +36,11 @@ include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/c
 	case "tool_weSearch_save":
 	case "tool_weSearch_exit":
 		var fo=false;
+					if(jsWindow_count){
 		for(var k=jsWindow_count-1;k>-1;k--){
 			eval("if(jsWindow"+k+"Object.ref=='tool_window_weSearch'){ jsWindow"+k+"Object.wind.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
 			if(fo) break;
 		}
 		wind.focus();
+		}
 	break;

@@ -56,7 +56,7 @@ class we_wysiwyg{
 
 	function __construct($name, $width, $height, $value = "", $propstring = "", $bgcol = "", $fullscreen = "", $className = "", $fontnames = "", $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = "", $charset = "", $cssClasses = "", $Language = "", $test = "", $spell = true, $isFrontendEdit = false){
 
-		$this->propstring = $propstring ? "," . $propstring . "," : "";t_e("prop",$propstring);
+		$this->propstring = $propstring ? "," . $propstring . "," : "";
 		$this->name = $name;
 		$this->bgcol = $bgcol;
 		$this->xml = $xml;
@@ -85,7 +85,7 @@ class we_wysiwyg{
 			}
 			$this->tinyFonts = $tf;
 		} else{
-			$fn = $fontnames ? explode(",", $fontnames) : array("Arial, Helvetica, sans-serif", "Courier New, Courier, mono", "Geneva, Arial, Helvetica, sans-serif", "Georgia, Times New Roman, Times, serif", "Tahoma", "Times New Roman, Times, serif", "Verdana, Arial, Helvetica, sans-serif", "Wingdings");	
+			$fn = $fontnames ? explode(",", $fontnames) : array("Arial, Helvetica, sans-serif", "Courier New, Courier, mono", "Geneva, Arial, Helvetica, sans-serif", "Georgia, Times New Roman, Times, serif", "Tahoma", "Times New Roman, Times, serif", "Verdana, Arial, Helvetica, sans-serif", "Wingdings");
 			foreach($fn as $i => $font){
 				$fn[$i] = strtolower(str_replace(";", ",", $font));
 			}
@@ -103,13 +103,13 @@ class we_wysiwyg{
 			}
 			$this->cssClasses = substr($tf,0,-1);
 		}
-				
+
 		$this->Language = $Language;
 		$this->showSpell = $spell;
 		$this->isFrontendEdit = $isFrontendEdit;
 
 		$this->_imagePath = IMAGE_DIR . "wysiwyg/";
-		$this->_image_languagePath = WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg/";
+		$this->_image_languagePath = WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg/";
 
 		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
 		$this->charset = $charset;
@@ -164,7 +164,7 @@ class we_wysiwyg{
 			case 'tinyMCE':
 				//FIXME: remove onchange - bad practise
 				return '
-				<style type="text/css">	
+				<style type="text/css">
 					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
 					    background-image: url(/webEdition/images/pixel.gif);
@@ -190,16 +190,16 @@ function tinyMCEchanged(inst){
 					}
 
 					function weWysiwygSetHiddenText(arg) {
-    					try {
-    						if (weWysiwygIsIntialized) {
-    							for (var i = 0; i < we_wysiwygs.length; i++) {
-    								we_wysiwygs[i].setHiddenText(arg);
-    							}
-    						}else{
+						try {
+							if (weWysiwygIsIntialized) {
+								for (var i = 0; i < we_wysiwygs.length; i++) {
+									we_wysiwygs[i].setHiddenText(arg);
 								}
-    					} catch(e) {
+							}else{
+								}
+						} catch(e) {
 							// Nothing
-    					}
+						}
 					}');
 
 			case 'default':
@@ -216,11 +216,11 @@ function tinyMCEchanged(inst){
 					}
 
 					.tbButtonMouseOverUp {
-    					border-bottom: 1px solid #000000;
-    					border-left: 1px solid #CCCCCC;
-    					border-right: 1px solid #000000;
-    					border-top: 1px solid #CCCCCC;
-    					cursor:pointer;
+						border-bottom: 1px solid #000000;
+						border-left: 1px solid #CCCCCC;
+						border-right: 1px solid #000000;
+						border-top: 1px solid #CCCCCC;
+						cursor:pointer;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -228,11 +228,11 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonMouseOverDown {
-    					border-bottom: 1px solid #CCCCCC;
-    					border-left: 1px solid #000000;
-    					border-right: 1px solid #CCCCCC;
-    					border-top: 1px solid #000000;
-    					cursor: pointer;
+						border-bottom: 1px solid #CCCCCC;
+						border-left: 1px solid #000000;
+						border-right: 1px solid #CCCCCC;
+						border-top: 1px solid #000000;
+						cursor: pointer;
 						margin: 0px;
 						padding: 0px;
 						text-align: left;
@@ -240,11 +240,11 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonDown {
-    					background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
-    					border-bottom: #CCCCCC solid 1px;
-    					border-left: #000000 solid 1px;
-    					border-right: #CCCCCC solid 1px;
-    					border-top:  #000000 solid 1px;
+						background-image: url(' . IMAGE_DIR . 'java_menu/background_dark.gif);
+						border-bottom: #CCCCCC solid 1px;
+						border-left: #000000 solid 1px;
+						border-right: #CCCCCC solid 1px;
+						border-top:  #000000 solid 1px;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -252,8 +252,8 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonsHR {
-    					border-top:  #000000 solid 1px;
-    					border-bottom:  #CCCCCC solid 1px;
+						border-top:  #000000 solid 1px;
+						border-bottom:  #CCCCCC solid 1px;
 						margin: 0px;
 						padding:0px;
 						text-align: left;
@@ -310,19 +310,19 @@ function tinyMCEchanged(inst){
 
 					var wePopupMenuArray = new Array();
 
-                    //  Bugfix do not overwrite body.onload !!!
-                    function weEvent(){}
-                    weEvent.addEvent = function(e, name, f) {
-                        if (e.addEventListener) {
-                            e.addEventListener(
-                                name,
-                                f,
-                                true);
-                        }
-                        if(e.attachEvent){
-                            e.attachEvent("on" + name, f);
-                        }
-                    }
+					// Bugfix do not overwrite body.onload !!!
+					function weEvent(){}
+					weEvent.addEvent = function(e, name, f) {
+						if (e.addEventListener) {
+							e.addEventListener(
+								name,
+								f,
+								true);
+						}
+						if(e.attachEvent){
+							e.attachEvent("on" + name, f);
+						}
+					}
 
 					//window.onerror = weNothing;
 					//  Bugfix do not overwrite body.onload !!!
@@ -333,14 +333,13 @@ function tinyMCEchanged(inst){
 						return true;
 					}
 
-
 					function weWysiwygInitializeIt() {
 						for (var i=0;i<we_wysiwygs.length;i++) {
 							we_wysiwygs[i].start();
 						}
 						for (var i=0;i<we_wysiwygs.length;i++) {
 							we_wysiwygs[i].finalize();
- 							we_wysiwygs[i].windowFocus();
+							we_wysiwygs[i].windowFocus();
 							we_wysiwygs[i].setButtonsState();
 						}
 						self.focus();
@@ -354,16 +353,16 @@ function tinyMCEchanged(inst){
 					}
 
 					function weWysiwygSetHiddenText(arg) {
-    					try {
-    						if (weWysiwygIsIntialized) {
-    							for (var i = 0; i < we_wysiwygs.length; i++) {
-    								we_wysiwygs[i].setHiddenText(arg);
-    							}
-    						}else{
+						try {
+							if (weWysiwygIsIntialized) {
+								for (var i = 0; i < we_wysiwygs.length; i++) {
+									we_wysiwygs[i].setHiddenText(arg);
 								}
-    					} catch(e) {
+							}else{
+								}
+						} catch(e) {
 							// Nothing
-    					}
+						}
 					}') .
 					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 					(we_base_browserDetect::isSafari() ? we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/wysiwyg/weWysiwygSafari.js') .
@@ -463,7 +462,7 @@ function tinyMCEchanged(inst){
 				"h1" => g_l('wysiwyg', "[h1]"),
 				"h2" => g_l('wysiwyg', "[h2]"),
 				"h3" => g_l('wysiwyg', "[h3]"),
-				"h4" => g_l('wysiwyg', "[h4]"),					
+				"h4" => g_l('wysiwyg', "[h4]"),
 				"h5" => g_l('wysiwyg', "[h5]"),
 				"h6" => g_l('wysiwyg', "[h6]"),
 				"pre" => g_l('wysiwyg', "[pre]"),
@@ -481,7 +480,7 @@ function tinyMCEchanged(inst){
 			}
 			$this->tinyFormatblock = substr($tfb,0,-1);
 		}
-	
+
 		$this->elements = array(
 			new we_wysiwygToolbarSelect(
 				$this,
@@ -984,69 +983,69 @@ function tinyMCEchanged(inst){
 			case 'tinyMCE':
 				$this->width = $this->width + 20;//imi
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
-				
+
 				$cmdMapping = array(
-					'abbr' => 'abbr', 
-					'acronym' => 'acronym', 
-					'anchor' => 'anchor', 
-					'applystyle' => 'styleselect', 
-					'backcolor' => 'backcolor', 
-					'bold' => 'bold', 
+					'abbr' => 'abbr',
+					'acronym' => 'acronym',
+					'anchor' => 'anchor',
+					'applystyle' => 'styleselect',
+					'backcolor' => 'backcolor',
+					'bold' => 'bold',
 					'caption' => '--', // Beschriftung: in tablecontrols integriert
 					//'color' => '--', // block: forecolor,backcolor <= mapping ok!
-					'copy' => 'copy', 
+					'copy' => 'copy',
 					//'copypaste' => '--', // block: cut,copy,paste <= mapping ok!
-					'createlink' => 'link', 
-					'cut' => 'cut', 
-					'decreasecolspan' => 'merge_cells', 
-					'deletecol' => 'delete_col', 
-					'deleterow' => 'delete_row', 
-					'editcell' => 'cell_props', 
-					'editsource' => 'code', 
-					'edittable' => '--', 
-					'fontname' => 'fontselect', 
-					'fontsize' => 'fontsizeselect', 
-					'forecolor' => 'forecolor', 
-					'formatblock' => 'formatselect', 
-					'fullscreen' => 'fullscreen', 
-					'importrtf' => '--', 
-					'increasecolspan' => 'split_cells', 
-					'indent' => 'indent', 
-					'insertbreak' => '', 
-					'insertcolumnleft' => 'col_before ', 
-					'insertcolumnright' => 'col_after', 
-					'inserthorizontalrule' => 'advhr', 
-					'insertimage' => 'image', 
-					'insertorderedlist' => 'numlist', 
-					'insertrowabove' => 'row_before', 
-					'insertrowbelow' => 'row_after', 
-					'insertspecialchar' => 'charmap', 
-					'inserttable' => 'table', 
-					'insertunorderedlist' => 'bullist', 
-					'italic' => 'italic', 
+					'createlink' => 'link',
+					'cut' => 'cut',
+					'decreasecolspan' => 'merge_cells',
+					'deletecol' => 'delete_col',
+					'deleterow' => 'delete_row',
+					'editcell' => 'cell_props',
+					'editsource' => 'code',
+					'edittable' => '--',
+					'fontname' => 'fontselect',
+					'fontsize' => 'fontsizeselect',
+					'forecolor' => 'forecolor',
+					'formatblock' => 'formatselect',
+					'fullscreen' => 'fullscreen',
+					'importrtf' => '--',
+					'increasecolspan' => 'split_cells',
+					'indent' => 'indent',
+					'insertbreak' => '',
+					'insertcolumnleft' => 'col_before ',
+					'insertcolumnright' => 'col_after',
+					'inserthorizontalrule' => 'advhr',
+					'insertimage' => 'image',
+					'insertorderedlist' => 'numlist',
+					'insertrowabove' => 'row_before',
+					'insertrowbelow' => 'row_after',
+					'insertspecialchar' => 'charmap',
+					'inserttable' => 'table',
+					'insertunorderedlist' => 'bullist',
+					'italic' => 'italic',
 					//'justify' => '--', // block: justifyleft,justifycenter,justifyright,justifyfull <= mapping ok!
-					'justifycenter' => 'justifycenter', 
-					'justifyfull' => 'justifyfull', 
-					'justifyleft' => 'justifyleft', 
-					'justifyright' => 'justifyright', 
-					'lang' => '', 
+					'justifycenter' => 'justifycenter',
+					'justifyfull' => 'justifyfull',
+					'justifyleft' => 'justifyleft',
+					'justifyright' => 'justifyright',
+					'lang' => '',
 					//'link' => '--', // block: createlink,unlink <= mapping ok!
 					//'list' => '--', // block: insertunorderedlist,insertorderedlist,indent,outdent <= mapping ok!
-					'outdent' => 'outdent', 
-					'paste' => 'paste', 
+					'outdent' => 'outdent',
+					'paste' => 'paste',
 					//'prop' => '', // block: bold,italic,underline,subscript,superscript,strikethrough,removeformat,cleanup => test removeformat and cleanup
-					'redo' => 'redo', 
+					'redo' => 'redo',
 					'removecaption' => '--', // Beschriftung: in tablecontrols integriert
-					'removeformat' => 'removeformat', 
-					'removetags' => 'cleanup', 
-					'spellcheck' => 'spellchecker', 
-					'strikethrough' => 'strikethrough', 
-					'subscript' => 'sub', 
-					'superscript' => 'sup', 
-					'underline' => 'underline', 
+					'removeformat' => 'removeformat',
+					'removetags' => 'cleanup',
+					'spellcheck' => 'spellchecker',
+					'strikethrough' => 'strikethrough',
+					'subscript' => 'sub',
+					'superscript' => 'sup',
+					'underline' => 'underline',
 					//'table' => '--', // complete block
 					'undo' => 'undo', // test exact function
-					'unlink' => 'unlink', 
+					'unlink' => 'unlink',
 					'visibleborders' => 'visualaid',
 
 					'unmapped1' => 'save',
@@ -1084,7 +1083,7 @@ function tinyMCEchanged(inst){
 					'unmapped_notImplementetd6' => 'template',
 					'unmapped_notImplementetd7' => 'absolute'
 				);
-				
+
 				//write command-rows: imi
 				$tinyRows = '';
 				$i = 0;
@@ -1096,18 +1095,18 @@ function tinyMCEchanged(inst){
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
 					}
-					$tinyRows = substr($tinyRows, 0, -1) . '", 
+					$tinyRows = substr($tinyRows, 0, -1) . '",
 ';
 					$i++;
 					$k++;
 				}
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",
-';				
-				
+';
+
 				//deactivated: template,save,layer
-				
+
 				//function openWeFileBrowser(): not needed anymore: imi
-				
+
 				//insert complete new: imi
 				return we_html_element::jsElement('
 tinyMCE.init({
@@ -1115,7 +1114,7 @@ tinyMCE.init({
 	mode : "exact",
 	elements : "' . $this->name . '",
 	theme : "advanced",
-	
+
 	accessibility_warnings : false,
 	relative_urls : false, //important!
 	convert_urls : false, //important!
@@ -1133,7 +1132,7 @@ tinyMCE.init({
 	' . $tinyRows . '
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
-	theme_advanced_styles: "' . $this->cssClasse . '",
+	theme_advanced_styles: "' . $this->cssClasses . '",
 	theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "bottom",
@@ -1145,7 +1144,7 @@ tinyMCE.init({
 	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
-	
+
 	// Skin options
 	skin : "o2k7",
 	skin_variant : "silver",

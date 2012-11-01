@@ -438,7 +438,7 @@ class we_backup{
 		$phase_start = false;
 		$ret = 0;
 		if(!$this->tempfilename){
-			$this->tempfilename = md5(str_replace('.', '', uniqid('', true))) . ".php"; // #6590, changed from: uniqid(time())
+			$this->tempfilename = weFile::getUniqueId() . '.php'; // #6590, changed from: uniqid(time())
 			$this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
 			$this->backup_step = 0;
 			$this->backup_steps = $this->default_backup_steps;
@@ -825,7 +825,7 @@ class we_backup{
 		$this->current_description = g_l('backup', "[preparing_file]");
 
 		$filename = $backup_select;
-		$backup_select = uniqid(rand());
+		$backup_select = weFile::getUniqueId();
 
 		$filename_tmp = "";
 		$fh = fopen($filename, "rb");
@@ -1286,7 +1286,7 @@ class we_backup{
 		}
 
 		if($of == ""){
-			$of = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
+			$of = weFile::getUniqueId(); // #6590, changed from: uniqid(time())
 		}
 		weFile::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $save, 'wb');
 		return $of;

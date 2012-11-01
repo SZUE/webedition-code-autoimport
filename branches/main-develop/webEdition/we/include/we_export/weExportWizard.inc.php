@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("EXPORT_PATH", WE_INCLUDES_DIR . 'we_export/');
+define('EXPORT_PATH', WE_INCLUDES_DIR . 'we_export/');
 
 define("CSV_DELIMITER", ";");
 define("CSV_ENCLOSE", "\"");
@@ -1163,7 +1163,6 @@ top.close();');
 					  }
 					  else {
 					  if (defined("OBJECT_FILES_TABLE")) {
-					  include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 
 					  $catss = "";
 

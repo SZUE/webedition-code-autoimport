@@ -29,7 +29,7 @@ switch($_REQUEST['we_cmd'][0]){
 		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
 		break;
 	case "add" :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
+		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
 		$aProps = array();
 		$aProps[0] = $_REQUEST['we_cmd'][1];
@@ -48,10 +48,10 @@ switch($_REQUEST['we_cmd'][0]){
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
 			if($aProps[0] == "msg")
-				$_transact = md5(uniqid(rand()));
-			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
+				$_transact = md5(uniqid(__FUNCTION__, true));
+			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
 		}
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
+		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
 		$js = "
 function gel(id_){
@@ -63,7 +63,7 @@ function transmit(){
 	}
 }
 ";
-		print we_html_element::htmlDocType() . 
+		print we_html_element::htmlDocType() .
 			we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement(

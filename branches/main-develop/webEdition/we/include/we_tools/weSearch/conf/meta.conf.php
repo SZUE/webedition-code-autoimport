@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/weSearch/conf/define.conf.php");
+include_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 $metaInfo = array(
-		'name' => 'weSearch',
-		'classname' => 'searchtool',
-		'maintable' => SUCHE_TABLE,
-		'datasource' => 'table:' . SUCHE_TABLE,
-		'startpermission' => '',
-		'supportshooks' => 0
+	'name' => 'weSearch',
+	'classname' => 'searchtool',
+	'maintable' => SUCHE_TABLE,
+	'datasource' => 'table:' . SUCHE_TABLE,
+	'startpermission' => '',
+	'supportshooks' => 0
 );

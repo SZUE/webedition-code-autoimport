@@ -21,15 +21,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!$_SESSION["user"]["Username"]){
+if(!$_SESSION['user']['Username']){
 	session_id;
 }
 
 we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
 we_html_tools::htmlTop();
 
-$docroot = $_SERVER['DOCUMENT_ROOT'];
-$docroot = str_replace('\\', '/', (substr($docroot, -1) == '/') ? substr($docroot, 0, strlen($docroot) - 1) : $docroot);
+$docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 we_cmd_dec(4);
 we_cmd_dec(1);
 
@@ -40,18 +39,18 @@ $currentDir = ( isset($_REQUEST['we_cmd'][3]) ?
 				$_REQUEST['we_cmd'][3] :
 				str_replace('\\', '/', dirname($_REQUEST['we_cmd'][3])))) :
 		'');
-$currentName = ($filter != "folder" ? basename(isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : "") : '');
-if(!file_exists($docroot . $currentDir . "/" . $currentName)){
+$currentName = ($filter != 'folder' ? basename(isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '') : '');
+if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
 	$currentName = '';
 }
 
-$currentID = $docroot . $currentDir . ($filter == "folder" || $filter == "filefolder" ? '' : (($currentDir != "") ? "/" : "") . $currentName);
+$currentID = $docroot . $currentDir . ($filter == 'folder' || $filter == 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
-$currentID = str_replace("\\", "/", $currentID);
-$currentDir = str_replace("\\", "/", $currentDir);
+$currentID = str_replace('\\', '/', $currentID);
+$currentDir = str_replace('\\', '/', $currentDir);
 
-$rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != "") ? $_REQUEST['we_cmd'][5] : "");
+$rootDir = ((isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5] != '') ? $_REQUEST['we_cmd'][5] : '');
 ?>
 <script  type="text/javascript"><!--
 	var rootDir="<?php print $rootDir; ?>";
@@ -98,7 +97,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != ""){
 		return true;
 
 	}
-//-->
+	//-->
 </script>
 <?php echo we_html_element::jsScript(JS_DIR . 'keyListener.js').'</head>' ?>
 

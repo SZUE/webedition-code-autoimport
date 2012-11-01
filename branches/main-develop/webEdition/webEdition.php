@@ -29,10 +29,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
 
-if(!isset($_SESSION["we_mode"])||$_SESSION["we_mode"] == "normal"){ //	working in normal mode
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/webEdition_normal.inc.php");
+if(!isset($_SESSION["we_mode"]) || $_SESSION["we_mode"] == "normal"){ //	working in normal mode
+	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
 } else if($_SESSION["we_mode"] == "seem"){ //	working in super-easy-edit-mode
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/webEdition_seem.inc.php");
+	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
 
@@ -76,8 +76,7 @@ print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 	we_html_element::jsScript(JS_DIR . 'messageConsole.js');
-  include(JS_PATH . 'weJsStrings.inc.php');
-
+include(JS_PATH . 'weJsStrings.inc.php');
 ?>
 
 <script  type="text/javascript"><!--
@@ -309,16 +308,16 @@ if(tfd.style.display=="none"){
 
 function setTreeArrow(direction) {
 try{
-self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
-if(direction=="right"){
-	self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
-	self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
-}else{
-	self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
-	self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
-}
+	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
+	if(direction=="right"){
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+	}else{
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+	}
 }	catch(e) {
-		// Nothing
+	// Nothing
 }
 }
 
@@ -458,9 +457,9 @@ switch (arguments[0]) {
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 
-	if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
+	if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
+		include_once(WE_INCLUDES_PATH . 'we_modules/' . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
 	}
 }{ // deal with uninstalled modules
 	foreach($_we_available_modules as $m){
@@ -748,41 +747,49 @@ if(!empty($_jsincludes)){
 							break;
 						case "help_modules":
 							var fo=false;
-							for(var k=jsWindow_count-1;k>-1;k--){
-								eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
-								if(fo) break;
+							if(jsWindow_count){
+								for(var k=jsWindow_count-1;k>-1;k--){
+									eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
+									if(fo) break;
+								}
+								wind.focus();
 							}
-							wind.focus();
 							url="/webEdition/getHelp.php";
 							new jsWindow(url,"help",-1,-1,800,600,true,false,true,true);
 							break;
 						case "info_modules":
 							var fo=false;
-							for(var k=jsWindow_count-1;k>-1;k--){
-								eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
-								if(fo) break;
+							if(jsWindow_count){
+								for(var k=jsWindow_count-1;k>-1;k--){
+									eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
+									if(fo) break;
+								}
+								wind.focus();
 							}
-							wind.focus();
 							url="/webEdition/we_cmd.php?we_cmd[0]=info";
 							new jsWindow(url,"info",-1,-1,432,350,true,false,true);
 							break;
 						case "help_tools":
 							var fo=false;
-							for(var k=jsWindow_count-1;k>-1;k--){
-								eval("if(jsWindow"+k+"Object.ref=='tool_window' || jsWindow"+k+"Object.ref=='tool_window_navigation' || jsWindow"+k+"Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow"+k+"Object.wind}");
-								if(fo) break;
+							if(jsWindow_count){
+								for(var k=jsWindow_count-1;k>-1;k--){
+									eval("if(jsWindow"+k+"Object.ref=='tool_window' || jsWindow"+k+"Object.ref=='tool_window_navigation' || jsWindow"+k+"Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow"+k+"Object.wind}");
+									if(fo) break;
+								}
+								wind.focus();
 							}
-							wind.focus();
 							url="/webEdition/getHelp.php";
 							new jsWindow(url,"help",-1,-1,800,600,true,false,true,true);
 							break;
 						case "info_tools":
 							var fo=false;
-							for(var k=jsWindow_count-1;k>-1;k--){
-								eval("if(jsWindow"+k+"Object.ref=='tool_window' || jsWindow"+k+"Object.ref=='tool_window_navigation' || jsWindow"+k+"Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow"+k+"Object.wind}");
-								if(fo) break;
+							if(jsWindow_count){
+								for(var k=jsWindow_count-1;k>-1;k--){
+									eval("if(jsWindow"+k+"Object.ref=='tool_window' || jsWindow"+k+"Object.ref=='tool_window_navigation' || jsWindow"+k+"Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow"+k+"Object.wind}");
+									if(fo) break;
+								}
+								wind.focus();
 							}
-							wind.focus();
 							url="/webEdition/we_cmd.php?we_cmd[0]=info";
 							new jsWindow(url,"info",-1,-1,432,350,true,false,true);
 							break;

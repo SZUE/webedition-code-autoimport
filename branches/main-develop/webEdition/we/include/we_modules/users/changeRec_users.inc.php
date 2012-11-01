@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,32 +21,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 we_html_tools::protect();
 $ok = false;
 
 if($_SESSION["perms"]["ADMINISTRATOR"]){
-	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:0);
+	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 	// init document
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 
-	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$childs = array();
-	pushChilds($childs,$we_doc->ID,$we_doc->Table);
+	pushChilds($childs, $we_doc->ID, $we_doc->Table);
 	$childlist = makeCSVFromArray($childs);
-	if($childlist) {
+	if($childlist){
 		$q = "
-			UPDATE ".$we_doc->Table."
-			SET CreatorID='".$we_doc->CreatorID."',Owners='".$we_doc->Owners."',RestrictOwners='".$we_doc->RestrictOwners."',OwnersReadOnly='".$we_doc->OwnersReadOnly."'
-			WHERE ID IN(".$childlist.")";
+			UPDATE " . $we_doc->Table . "
+			SET CreatorID='" . $we_doc->CreatorID . "',Owners='" . $we_doc->Owners . "',RestrictOwners='" . $we_doc->RestrictOwners . "',OwnersReadOnly='" . $we_doc->OwnersReadOnly . "'
+			WHERE ID IN(" . $childlist . ")";
 		$ok = $DB_WE->query($q);
 	}
 }
 
 we_html_tools::htmlTop();
-	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_ok]"), ($ok?we_message_reporting::WE_MESSAGE_NOTICE:we_message_reporting::WE_MESSAGE_ERROR))); ?>
+print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[grant_owners_ok]"), ($ok ? we_message_reporting::WE_MESSAGE_NOTICE : we_message_reporting::WE_MESSAGE_ERROR)));
+?>
 </head>
 
 <body>

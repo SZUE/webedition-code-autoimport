@@ -38,7 +38,7 @@ abstract class we_multiIconBox{
 	 * @return	string
 	 */
 	static function getHTML($name, $width, $content, $marginLeft = "0", $buttons = "", $foldAtNr = -1, $foldRight = "", $foldDown = "", $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
-		$uniqname = $name ? $name : md5(uniqid(rand(), true));
+		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?
 			we_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :

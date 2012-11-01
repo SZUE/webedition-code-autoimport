@@ -1687,7 +1687,7 @@ class weSiteImport{
 		$we_ContentType = $contentType;
 
 		// initializing $we_doc
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+		include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();

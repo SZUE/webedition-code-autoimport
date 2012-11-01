@@ -29,6 +29,7 @@
 				break;
 			case "default_banner":
 				var fo=false;
+					if(jsWindow_count){
 				for(var k=jsWindow_count-1;k>-1;k--){
 	            	eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
 	            	if(fo) break;
@@ -36,15 +37,18 @@
 			   	if(typeof(wind) != "undefined") {
 			    	wind.focus();
 			    }
+					}
 				new jsWindow(url,"defaultbanner",-1,-1,500,220,true,false,true,true);
 				break;
 			case "banner_code":
 				var fo=false;
+				if(jsWindow_count){
 				for(var k=jsWindow_count-1;k>-1;k--){
 	            	eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
 	            	if(fo) break;
 			    }
 			   	wind.focus();
+				}
 				new jsWindow(url,"bannercode",-1,-1,500,420,true,true,true,false);
 				break;
 			case "new_banner":
@@ -53,9 +57,11 @@
 			case "exit_banner":
 			case "delete_banner":
 				var fo=false;
+					if(jsWindow_count){
 				for(var k=jsWindow_count-1;k>-1;k--){
 					eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
 					if(fo) break;
 				}
 				if(wind && arguments[0]!="empty_log") wind.focus();
+				}
 				break;

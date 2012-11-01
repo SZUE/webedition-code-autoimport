@@ -164,7 +164,7 @@ class we_schedpro{
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';
 				}
 				$doctypepop .= '</select>';
-				$checknname = md5(uniqid(rand(), 1));
+				$checknname = md5(uniqid(__FUNCTION__, true));
 				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
 						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;")
 					. '<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
@@ -227,7 +227,7 @@ class we_schedpro{
 </select>';
 
 
-		$checknname = md5(uniqid(rand(), 1));
+		$checknname = md5(uniqid(__FUNCTION__, true));
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[task][headline]") . ':</td>
@@ -338,7 +338,7 @@ class we_schedpro{
 
 			if($s["task"] == self::DELETE){
 				$GLOBALS["NOT_PROTECT"] = true;
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+				include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 				deleteEntry($id, $schedFile['table']);
 				$deleted = true;
 				$changeTmpDoc = false;

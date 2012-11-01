@@ -24,6 +24,6 @@
  */
 function we_tag_votingSession(){
 	if(!$GLOBALS['we_editmode']){
-		$_SESSION['_we_voting_sessionID'] = uniqid();
+		$_SESSION['_we_voting_sessionID'] = md5(uniqid(__FUNCTION__, true));
 	}
 }

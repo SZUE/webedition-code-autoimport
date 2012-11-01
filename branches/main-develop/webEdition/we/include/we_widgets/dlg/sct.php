@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
@@ -97,8 +97,7 @@ if(we_hasPerm("EDIT_SETTINGS")){
 
 $jsLang = "";
 foreach($shortcuts as $k => $v){
-		$jsLang .= "_aLang['" . $k . "']='" . $v . "';";
-
+	$jsLang .= "_aLang['" . $k . "']='" . $v . "';";
 }
 
 $oSctPool = new we_html_select(

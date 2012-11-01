@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_ifVarSet.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_tags/we_tag_ifVarSet.inc.php');
 
 function we_isVarNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$match_orig = weTag_getAttribute('match', $attribs);
-	$match = we_tag_getPostName($match_orig);//#6367
+	$match = we_tag_getPostName($match_orig); //#6367
 
 	$name = weTag_getAttribute('name', $attribs);
 

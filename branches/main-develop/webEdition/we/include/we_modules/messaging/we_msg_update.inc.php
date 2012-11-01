@@ -51,7 +51,7 @@ class we_msg_update extends we_class{
 	/* Constructor */
 
 	function we_clipboard(){
-		$this->Name = 'msg_clipboard_' . md5(uniqid(rand()));
+		$this->Name = 'msg_clipboard_' . md5(uniqid(__FUNCTION__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'sort_order', 'last_sortfield', 'search_ids', 'available_folders', 'search_folders', 'search_fields');
 	}
 

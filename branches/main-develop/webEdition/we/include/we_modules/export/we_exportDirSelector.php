@@ -26,7 +26,7 @@ class we_exportDirSelector extends we_dirSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function __construct($id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $we_editDirID="", $FolderText=""){
+	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $we_editDirID = "", $FolderText = ""){
 
 		parent::__construct($id, EXPORT_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, "", $we_editDirID, $FolderText);
 		$this->title = g_l('fileselector', '[exportDirSelector][title]');
@@ -104,12 +104,12 @@ class we_exportDirSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>""><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>""><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
 
-		<?php print $this->getJS_attachKeyListener(); ?>
+				<?php print $this->getJS_attachKeyListener(); ?>
 
 				//from we_showMessage.js
 				d.writeln('var WE_MESSAGE_INFO = -1;');
@@ -157,15 +157,15 @@ class we_exportDirSelector extends we_dirSelector{
 				d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 				d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 				d.writeln('}');
-		<?php if($this->multiple){ ?>
+				<?php if($this->multiple){ ?>
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-		<?php } else{ ?>
+				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
-		<?php } ?>
+				<?php } ?>
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
+			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>">');
 					if(top.we_editDirID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
@@ -208,8 +208,8 @@ class we_exportDirSelector extends we_dirSelector{
 						d.writeln('</table></form>');
 				if(makeNewFolder || top.we_editDirID){
 				d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
-					}
-					d.writeln('</body>');
+			}
+			d.writeln('</body>');
 		d.close();
 		}
 
@@ -222,10 +222,12 @@ class we_exportDirSelector extends we_dirSelector{
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
-		return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID;
+		return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php
+		print $this->rootDirID;
 		if(isset($this->open_doc)){
 			print "&open_doc=" . $this->open_doc;
-		} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+		}
+		?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}
 
 		<?php
@@ -283,7 +285,6 @@ top.clearEntries();
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('export', "[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/export/weExport.php");
 			$folder = new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -344,7 +345,6 @@ top.clearEntries();
 		if($txt == ""){
 			print we_message_reporting::getShowMessageCall(g_l('export', "[folder_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;

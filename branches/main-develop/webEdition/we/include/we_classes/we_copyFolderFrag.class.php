@@ -267,7 +267,6 @@ class copyFolderFrag extends taskFragment{
 					if($this->data['CreateTemplate']){
 						$CreateMasterTemplate = isset($_REQUEST['CreateMasterTemplate']) ? $_REQUEST['CreateTemplate'] : false;
 						$CreateIncludedTemplate = isset($_REQUEST['CreateIncludedTemplate']) ? $_REQUEST['CreateTemplate'] : false;
-						//include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_template.inc.php");
 						// check if a template was created from prior doc
 						if(!(isset($_SESSION['WE_CREATE_TEMPLATE']) && isset(
 								$_SESSION['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]))){

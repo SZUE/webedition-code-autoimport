@@ -54,15 +54,16 @@ function seeMode_dealWithLinks() {
 	var _aTags = document.getElementsByTagName("a");
 
 	for (i = 0; i < _aTags.length; i++) {
-
 		var _href = _aTags[i].href;
 
 		if (	!(	_href.indexOf("javascript:") === 0
 					|| _href.indexOf("#") === 0
+					|| (_href.indexOf("#") === document.URL.length && _href === (document.URL+_aTags[i].hash))
 					|| _href.indexOf("mailto:") === 0
 					|| _href.indexOf("document:") === 0
 					|| _href.indexOf("object:") === 0
 					|| _href.indexOf("?") === 0
+					|| _href===""
 				)
 		){
 			_aTags[i].href = "javascript:seeMode_clickLink('" + _aTags[i].href + "')";

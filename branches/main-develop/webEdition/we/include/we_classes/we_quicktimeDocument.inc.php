@@ -345,14 +345,12 @@ class we_quicktimeDocument extends we_binaryDocument{
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . md5(
-								uniqid(rand(), 1));
-						move_uploaded_file(
-							$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
+						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . weFile::getUniqueId();
+						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
 
 
 
-						$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+						$tmp_Filename = $quicktimeName . "_" . weFile::getUniqueId() . "_" . preg_replace(
 								"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$quicktimeName]);
 
 						if($quicktimeId){

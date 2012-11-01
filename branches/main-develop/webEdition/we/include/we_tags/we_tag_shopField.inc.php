@@ -80,7 +80,7 @@ function we_tag_shopField($attribs){
 
 			//$atts['name'] = $fieldname; changed to $tnpname because of new hidden field #6544
 			//we_getInputCheckboxField() not possible because sessionField type="checkbox" has a mandatory value
-			$tmpname = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
+			$tmpname = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(time())
 			$atts['name'] = $tmpname;
 			$atts['type'] = 'checkbox';
 			$atts['value'] = $value;

@@ -32,7 +32,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	$we_transaction = $_REQUEST['we_transaction'];
 
 	$we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
-	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$GLOBALS['we_doc']->InWebEdition = false;
 
@@ -75,9 +75,9 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 	$filename = '/' . $we_transaction . $extension;
 
 	//  check what should happen with document
-	if($_REQUEST['checkvia'] == 'fileupload'){	//  submit via fileupload
+	if($_REQUEST['checkvia'] == 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
-	} else{		//  submit via onlinecheck - site must be available online
+	} else{	//  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
 		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType == "text/html"){
 			$content = str_replace("<?xml", '<?php print "<?xml"; ?>', $content);
@@ -102,7 +102,7 @@ if(isset($_REQUEST['we_transaction'])){ //  initialise Document
 		if($http_response->getHttp_answer('code') == 200){
 			//  change base href -> css of included page is loaded correctly
 			print str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
-		} else{		//  no correct answer
+		} else{	//  no correct answer
 			we_html_tools::htmlTop();
 			print STYLESHEET;
 			print '</head>

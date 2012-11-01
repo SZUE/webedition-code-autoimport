@@ -27,7 +27,7 @@ class searchtoolTree extends weToolTree{
 	function searchtoolTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-		$this->setTreeIconDir('/webEdition/we/include/we_tools/weSearch/layout/icons/');
+		$this->setTreeIconDir(WE_INCLUDES_DIR . 'we_tools/weSearch/layout/icons/');
 	}
 
 	function getJSTreeFunctions(){

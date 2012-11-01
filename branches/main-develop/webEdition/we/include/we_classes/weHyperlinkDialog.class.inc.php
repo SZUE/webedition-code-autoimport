@@ -53,7 +53,7 @@ class weHyperlinkDialog extends weDialog{
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if($this->args["outsideWE"]
+			if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1
 				&& (
 				substr($this->args["href"], 0, 7) == "object:"
 				|| substr($this->args["href"], 0, 9) == "document:"
@@ -282,7 +282,7 @@ class weHyperlinkDialog extends weDialog{
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$extHref = utf8_decode((substr($this->args["extHref"], 0, 1) == "#") ? "" : $this->args["extHref"]);
-		if($this->args["outsideWE"] == "1"){
+		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1){
 
 
 			$_select_type = '<select name="we_dialog_args[type]" size="1" style="margin-bottom:5px;" onchange="changeTypeSelect(this);">
@@ -558,7 +558,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_html_element::jsElement('
+		$out = weDialog::getJs() . we_html_element::jsElement('
 				var weAcCheckLoop = 0;
 				var weFocusedField;
 				function setFocusedField(elem){
@@ -612,7 +612,7 @@ class weHyperlinkDialog extends weDialog{
 					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 					switch (arguments[0]) {
-    					case "openDocselector":
+						case "openDocselector":
 							new jsWindow(url,"we_docselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 							break;
 
@@ -638,6 +638,9 @@ class weHyperlinkDialog extends weDialog{
 					}
 					document.writeln(\'</select>\');
 				}
+		'); 
+		if(isset($this->args["editname"])){
+			$out .= we_html_element::jsElement('
 
 				function showanchors(name, val, onCh) {
 					var pageAnchors = top.opener.document.getElementsByTagName("A");
@@ -665,7 +668,10 @@ class weHyperlinkDialog extends weDialog{
 
 						document.writeln(\'</select>\');
 					}
-				}');
+				}
+			');
+		}
+		return $out;
 	}
 
 }

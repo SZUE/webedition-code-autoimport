@@ -21,7 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
+we_html_tools::protect();?>
+<style type="text/css">
+	.weEditmodeStyle {
+		border: 0px ! important;
+	}
+
+</style>
+<?php
+
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
 if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
@@ -478,11 +486,3 @@ print we_message_reporting::getShowMessageCall("'" . $_msg . "'", we_message_rep
 								}
 								//-->
 </script>
-
-
-<style type="text/css">
-	.weEditmodeStyle {
-		border: 0px ! important;
-	}
-
-</style>

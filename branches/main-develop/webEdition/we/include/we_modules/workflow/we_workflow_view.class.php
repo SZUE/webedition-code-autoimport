@@ -115,7 +115,7 @@ class we_workflow_view extends we_workflow_base{
 			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/home.inc.php');
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{
@@ -433,7 +433,7 @@ class we_workflow_view extends we_workflow_base{
 
 		$vals = array();
 		$q = getDoctypeQuery($this->db);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		while($this->db->next_record()) {
 			$v = $this->db->f('ID');
 			$t = $this->db->f('DocType');
@@ -815,7 +815,7 @@ class we_workflow_view extends we_workflow_base{
 							}
 
 		<?php } ?>
-	//-->
+					//-->
 		</script>
 		<?php
 	}
@@ -1348,7 +1348,7 @@ class we_workflow_view extends we_workflow_base{
 		);
 
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');
+		include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
@@ -1379,7 +1379,7 @@ class we_workflow_view extends we_workflow_base{
 
 	static function getDocumentStatus($workflowDocID){
 		$db = new DB_WE;
-		$headline=array(array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'));
+		$headline = array(array('dat' => '<div class="middlefont">' . g_l('modules_workflow', '[step]') . '</div>'));
 
 		$workflowDocument = new we_workflow_document($workflowDocID);
 
@@ -1450,7 +1450,7 @@ class we_workflow_view extends we_workflow_base{
 			}
 
 
-			$headline[++$counter1]=array('dat' => g_l('modules_workflow', '[worktime]'));
+			$headline[++$counter1] = array('dat' => g_l('modules_workflow', '[worktime]'));
 
 			$content[$counter][$counter1] = array(
 				'dat' => ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $workflowStep->Worktime . '</div>',

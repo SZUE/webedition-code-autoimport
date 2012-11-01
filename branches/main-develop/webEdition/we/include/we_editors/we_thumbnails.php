@@ -29,7 +29,7 @@ we_html_tools::protect();
 if(isset($_GET["newthumbnail"]) && $_GET["newthumbnail"] != ""){
 	if(we_hasPerm('ADMINISTRATOR')){
 		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name ="' . $DB_WE->escape($_GET["newthumbnail"]) . '"');
-		header('Location: ' . getServerUrl(true) . '/webEdition/we/include/we_editors/we_thumbnails.php?id=' . $DB_WE->getInsertId());
+		header('Location: ' . getServerUrl(true) . WE_INCLUDES_DIR . 'we_editors/we_thumbnails.php?id=' . f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name = '" . $DB_WE->escape($_GET["newthumbnail"]) . "'", "ID", $DB_WE));
 		exit();
 	}
 }
@@ -43,7 +43,7 @@ if(isset($_GET["deletethumbnail"]) && $_GET["deletethumbnail"] != ""){
 		// Delete entry in database
 		$DB_WE->query('DELETE FROM ' . THUMBNAILS_TABLE . ' WHERE ID = ' . intval($_GET["deletethumbnail"]));
 
-		header('Location: ' . getServerUrl() . '/webEdition/we/include/we_editors/we_thumbnails.php');
+		header("Location: " . getServerUrl() . WE_INCLUDES_DIR . 'we_editors/we_thumbnails.php');
 		exit();
 	}
 }

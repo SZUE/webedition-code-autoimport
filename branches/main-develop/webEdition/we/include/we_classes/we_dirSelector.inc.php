@@ -850,10 +850,8 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder = new we_class_folder();
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder = new we_folder();
 			}
 

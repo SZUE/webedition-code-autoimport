@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
@@ -44,7 +44,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 					"headline" => "",
 					"html" => '*' . g_l('global', "[required_fields]"),
 					"space" => 0,
-					"name" => uniqid(),
+					"name" => str_replace('.', '', uniqid('', true)),
 				);
 				break;
 			}
@@ -82,7 +82,7 @@ echo we_multiIconBox::getJs();
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
@@ -93,7 +93,7 @@ $GLOBALS['we_doc']->pHiddenTrans();
 
 if($_editMode){
 
-	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), uniqid(), 30) .
+	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), md5(uniqid(__FILE__, true)), 30) .
 	$jsGUI->getContainer() .
 	we_multiIconBox::_getBoxEnd("100%");
 

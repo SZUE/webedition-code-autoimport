@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 $parts = array();
 
@@ -32,7 +32,7 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 if($GLOBALS['we_editmode']){
 	we_html_tools::htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 	echo we_html_element::jsScript(JS_DIR . 'windows.js');
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+	include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	print STYLESHEET;
 
 	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
@@ -348,7 +348,7 @@ return;';
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'                ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'                 ?>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }
@@ -780,12 +780,12 @@ function we_getCodeMirror2Code($code){
 			font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px;
 			line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
 			border: outset 1px;
-			box-shadow: 0 2px 2px rgba(0,0,0,0.3);'.
-		(false && we_base_browserDetect::isFF() ? '
+			box-shadow: 0 2px 2px rgba(0,0,0,0.3);' .
+				(false && we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-			-moz-border-radius: 3px;':(we_base_browserDetect::isSafari() ? '
+			-moz-border-radius: 3px;' : (we_base_browserDetect::isSafari() ? '
 			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-			-webkit-border-radius: 3px;':'')).'
+			-webkit-border-radius: 3px;' : '')) . '
 			border-radius: 3px;
 			}
 	span.c-like-keyword {

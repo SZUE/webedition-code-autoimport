@@ -73,7 +73,7 @@ class we_format extends we_class{
 	/* Constructor */
 
 	function __construct($mode, $sel_msg = NULL){
-		$this->Name = 'messageformat_' . md5(uniqid(rand()));
+		$this->Name = 'messageformat_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'mode', 'userid', 'username');
 		$this->DB = new DB_WE();
 		$this->mode = $mode;

@@ -283,14 +283,14 @@ class weNavigationView{
 						new jsWindow(url,"we_catselector",-1,-1,' . WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 						break;
 					case "openNavigationDirselector":
-						url = "' . WEBEDITION_DIR . 'we/include/we_tools/navigation/we_navigationDirSelect.php?";
+						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
 						new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 						break;
 					case "openFieldSelector":
-						url = "' . WEBEDITION_DIR . 'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
+						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
 						new jsWindow(url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
 						break;
 					case "copyNaviFolder":
@@ -299,7 +299,7 @@ class weNavigationView{
 						setTimeout("copyNaviFolder(folderPath, folderID)",100);
 						break;
 					case "rebuildNavi":
-						//new jsWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
+						//new jsWindow(\'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
 						break;
 					default:
 						for (var i = 0; i < arguments.length; i++) {
@@ -984,7 +984,7 @@ class weNavigationView{
 
 					print we_html_element::jsScript(JS_DIR . "windows.js") .
 						we_html_element::jsElement('
-						url = "' . WEBEDITION_DIR . 'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
+						url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 						);
 					break;

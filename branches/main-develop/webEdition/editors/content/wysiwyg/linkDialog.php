@@ -40,7 +40,7 @@ function weDoLinkCmd($args){
 	$anchor = ($args["anchor"] ? "#" . str_replace("#", "", $args["anchor"]) : "");
 	$anchor = trim($anchor);
 	$href = $args["href"] . $param . $anchor;
-	
+
 	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
 		return we_html_element::jsElement(
 			'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
@@ -75,7 +75,7 @@ top.close();
 				we_html_element::jsScript($pathToTinyMce . 'utils/validate.js') .
 				we_html_element::jsScript($pathToTinyMce . 'utils/editable_selects.js') .
 				we_html_element::jsScript($pathToTinyMce . 'plugins/advlink/js/advlink_insert.js');
-t_e("out",$out);
+//t_e("out",$out);
 		return $out;
 	}
 }

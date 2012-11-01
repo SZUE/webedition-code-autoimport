@@ -58,12 +58,14 @@
 
 		case "glossary_settings":
 			var fo=false;
+					if(jsWindow_count){
 			for(var k=jsWindow_count-1;k>-1;k--){
 	            eval("if(jsWindow"+k+"Object.ref=='edit_module'){ fo=true;wind=jsWindow"+k+"Object.wind}");
 	        	if(fo) break;
 			}
 			if(typeof(wind) != "undefined") {
 			    wind.focus();
+			}
 			}
 			new jsWindow(url,"edit_glossary_settings",-1,-1,490,250,true,true,true,true);
 			break;
@@ -101,6 +103,7 @@
         case "save_glossary":
         case "delete_glossary":
         	var fo=false;
+					if(jsWindow_count){
         	for(var k=jsWindow_count-1;k>-1;k--) {
         		if(arguments[1] != undefined) {
         			eval("if(jsWindow"+k+"Object.ref=='edit_module'){ jsWindow"+k+"Object.wind.content.we_cmd('"+arguments[0]+"','"+arguments[1]+"');fo=true;wind=jsWindow"+k+"Object.wind}");
@@ -112,6 +115,7 @@
         		}
         	}
         	wind.focus();
+					}
         	break;
 
         case "unlock":

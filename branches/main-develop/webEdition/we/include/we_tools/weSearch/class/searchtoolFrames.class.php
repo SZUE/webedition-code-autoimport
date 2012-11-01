@@ -27,7 +27,7 @@ class searchtoolFrames extends weToolFrames{
 	function __construct(){
 		$this->toolName = 'weSearch';
 		$this->toolClassName = 'searchtool';
-		$this->toolUrl = '/webEdition/we/include/we_tools/' . $this->toolName . '/';
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->toolName . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
@@ -255,7 +255,7 @@ class searchtoolFrames extends weToolFrames{
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 

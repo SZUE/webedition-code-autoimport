@@ -89,7 +89,7 @@ abstract class weToolLookup{
 		}
 		if($addInternTools){
 
-			$internToolDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/';
+			$internToolDir = WE_INCLUDES_PATH . 'we_tools/';
 			$internTools = array('weSearch', 'navigation');
 
 			foreach($internTools as $_toolName){
@@ -153,10 +153,10 @@ abstract class weToolLookup{
 		$_inc = array();
 		$_tools = weToolLookup::getAllTools(true, true);
 		foreach($_tools as $_tool){
-			if(($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
-			} elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
+			if(($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
+				$_inc[] = WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
+			} elseif(file_exists(WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
+				$_inc[] = WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
 			}
 		}
 
@@ -388,7 +388,7 @@ abstract class weToolLookup{
 
 	static function getBackupTables($name){
 		$toolFolder = (($name == 'weSearch' || $name == 'navigation') ?
-				$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' :
+				WE_INCLUDES_PATH . 'we_tools/' :
 				(defined('WE_APPS_PATH') ? WE_APPS_PATH : $GLOBALS['__WE_APP_PATH__'] . '/'));
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
@@ -455,7 +455,7 @@ abstract class weToolLookup{
 
 	static function getModelClassName($name){
 		if($name == 'weSearch' || $name == 'navigation'){
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $name . '/conf/meta.conf.php');
+			include(WE_INCLUDES_PATH . 'we_tools/' . $name . '/conf/meta.conf.php');
 			return $metaInfo['classname'];
 		}
 

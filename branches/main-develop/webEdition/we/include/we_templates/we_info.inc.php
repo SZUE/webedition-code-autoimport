@@ -76,7 +76,7 @@ if(defined("WE_VERSION_SUPP")){
 	}
 }
 if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"] && defined('WE_LOGIN_HIDEWESTATUS') && WE_LOGIN_HIDEWESTATUS){
-	$_logo = "info.jpg";	
+	$_logo = "info.jpg";
 }
 $_table = new we_html_table(array(
 		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'),
@@ -175,19 +175,18 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
 	if(defined("WE_SEEM") && !WE_SEEM){ //	deactivate See-Mode
-		if (defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
-			$_modetable->setCol(0, 0,array(),'');
-			if(WE_LOGIN_WEWINDOW=='1'){
-				$_modetable->setCol(0, 1,array("align" => "right",
-				"valign" => "bottom",
-				"rowspan" => "2"),'<input type="hidden" name="popup" value="popup"/>'. $loginButton);
-			} else {
-				$_modetable->setCol(0, 1,array("align" => "right",
-				"valign" => "bottom",
-				"rowspan" => "2"),''. $loginButton);
+		if(defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
+			$_modetable->setCol(0, 0, array(), '');
+			if(WE_LOGIN_WEWINDOW == 1){
+				$_modetable->setCol(0, 1, array("align" => "right",
+					"valign" => "bottom",
+					"rowspan" => "2"), '<input type="hidden" name="popup" value="popup"/>' . $loginButton);
+			} else{
+				$_modetable->setCol(0, 1, array("align" => "right",
+					"valign" => "bottom",
+					"rowspan" => "2"), $loginButton);
 			}
-			
-		} else {
+		} else{
 			$_modetable->setCol(0, 0, array(), we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 			$_modetable->setCol(0, 1, array("align" => "right",
 				"valign" => "bottom",
@@ -196,29 +195,27 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	} else{ //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), ((defined("WE_SEEM") && !WE_SEEM) ? "" : g_l('SEEM', "[start_mode]")));
+		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), ((defined('WE_SEEM') && !WE_SEEM) ? '' : g_l('SEEM', '[start_mode]')));
 		$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
-		
-		if (defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
-			if(WE_LOGIN_WEWINDOW=='1'){
-				$we_login_type='<input type="hidden" name="popup" value="popup"/>';
-			} else {
-				$we_login_type='';
-			}
-		} else {
-			$we_login_type=we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
+
+		if(defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
+			$we_login_type = (WE_LOGIN_WEWINDOW == 1 ?
+					'<input type="hidden" name="popup" value="popup"/>' :
+					'');
+		} else{
+			$we_login_type = we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
 		}
-		
-		
+
+
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>' . $we_login_type .
 			'</td></tr><td>' .
-			we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
+			we_forms::radiobutton('normal', getValueLoginMode('normal'), 'mode', g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', "[start_mode_seem]") . '</acronym>', true, "small") . '</td>
+			<td>' . we_forms::radiobutton('seem', getValueLoginMode('seem'), 'mode', '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', "[start_mode_seem]") . '</acronym>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",

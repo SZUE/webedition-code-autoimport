@@ -417,7 +417,7 @@ if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 						);
 
 							editHeader.location = "about:blank";
-							editFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
+							editFooter.location = "<?php print WE_INCLUDES_DIR . "we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 
 		<?php
 	}
@@ -436,7 +436,6 @@ function setOnload(){
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
 	if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'/* && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW */){
-		//if($GLOBALS['we_doc']->ContentType != 'text/weTmpl' && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW){
 		return 'onload="if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"';
 	} else{
 		return '';

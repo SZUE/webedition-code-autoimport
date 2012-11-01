@@ -116,11 +116,11 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 
 			case "revenue_view":
 
-<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects              ?>
+<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects               ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
-<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects              ?>
+<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects               ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
-<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects              ?>
+<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects               ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } ?>
 
@@ -131,7 +131,7 @@ $yearshop = "2002";
 $z = 1;
 while($yearshop <= date("Y")) {
 	echo ' case "year' . $yearshop . '":
-							 top.content.location="/webEdition/we/include/we_modules/show.php?mod=shop&year=' . $yearshop . '";
+							 top.content.location="' . WE_INCLUDES_DIR . 'we_modules/show.php?mod=shop&year=' . $yearshop . '";
 					 break;
 			';
 	$yearshop++;

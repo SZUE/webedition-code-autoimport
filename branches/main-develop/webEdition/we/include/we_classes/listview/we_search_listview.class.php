@@ -34,7 +34,7 @@
 class we_search_listview extends listviewBase{
 
 	var $docType = ""; /* doctype string */
-	var $class = 0;	/* ID of a class. Search only in Objects of this class */
+	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $ClassName = __CLASS__;
@@ -60,13 +60,13 @@ class we_search_listview extends listviewBase{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-	function __construct($name="0", $rows=99999999, $offset=0, $order="", $desc=false, $docType="", $class=0, $cats="", $catOr=false, $casesensitive=false, $workspaceID="", $triggerID = "",$cols="", $customerFilterType='off', $languages='', $hidedirindex=false, $objectseourls=false){
+	function __construct($name = "0", $rows = 99999999, $offset = 0, $order = "", $desc = false, $docType = "", $class = 0, $cats = "", $catOr = false, $casesensitive = false, $workspaceID = "", $triggerID = "", $cols = "", $customerFilterType = 'off', $languages = '', $hidedirindex = false, $objectseourls = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols);
 		$this->customerFilterType = $customerFilterType;
-		
+
 		$this->triggerID = $triggerID;
-		
+
 		$this->languages = $languages;
 		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		if($this->languages != ''){
@@ -92,11 +92,11 @@ class we_search_listview extends listviewBase{
 
 				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . "," . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
-				$ord = str_replace('we_creationdate','');
+				$ord = str_replace('we_creationdate', '');
 				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
 			} else{
 				$orderArr1 = makeArrayFromCSV($this->order);
-				if (in_array('random()', $orderArr1)) {
+				if(in_array('random()', $orderArr1)){
 					$random = true;
 				} else{
 					foreach($orderArr1 as $o){
@@ -104,7 +104,7 @@ class we_search_listview extends listviewBase{
 							$foo = preg_split('/ +/', $o);
 							$oname = $foo[0];
 							$otype = isset($foo[1]) ? $foo[1] : "";
-							array_push($orderArr, array("oname" => $oname, "otype" => $otype));
+							$orderArr[] = array("oname" => $oname, "otype" => $otype);
 						}
 					}
 					$this->order = "";
@@ -139,7 +139,7 @@ class we_search_listview extends listviewBase{
 
 		$cat_tail = getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE);
 
-		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '" . $this->DB_WE->escape($this->docType) . "'", "ID", $this->DB_WE) : "";
+		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $this->DB_WE->escape($this->docType) . "'", "ID", $this->DB_WE) : '';
 
 		$cl = $this->class;
 
@@ -157,45 +157,42 @@ class we_search_listview extends listviewBase{
 
 		$bedingungen = preg_split('/ +/', $this->search);
 		$ranking = "0";
-		$worte = array();
-		$spalten = array(INDEX_TABLE . "." . $searchfield);
-		reset($bedingungen);
-		while(list($k1, $v1) = each($bedingungen)) {
+		$spalten = array(INDEX_TABLE . '.' . $searchfield);
+		foreach($bedingungen as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$not = (preg_match('|^-|', $v1)) ? 'NOT ' : '';
 				$bed = preg_replace('|^[-\+]|', '', $v1);
 				$klammer = array();
 				reset($spalten);
-				while(list($k, $v) = each($spalten)) {
+				foreach($spalten as $v){
 					$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
 				}
-				if($not)
-					$bedingungen3_sql[] = $not . "(" . join($klammer, " OR ") . ")";
-				else
-					$bedingungen_sql[] = "(" . join($klammer, " OR ") . ")";
+				if($not){
+					$bedingungen3_sql[] = $not . '(' . implode($klammer, ' OR ') . ')';
+				} else{
+					$bedingungen_sql[] = '(' . implode($klammer, ' OR ') . ')';
+				}
 			} else{
 				$klammer = array();
 				reset($spalten);
-				while(list($k, $v) = each($spalten)) {
+				foreach($spalten as $v){
 					$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
 				}
-				$bed2 = "(" . join($klammer, " OR ") . ")";
+				$bed2 = "(" . implode($klammer, " OR ") . ")";
 				$ranking .= "-" . $bed2;
 				$bedingungen2_sql[] = $bed2;
 			}
 		}
 
 		if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-			$bedingung_sql1 = " ( " . join($bedingungen_sql, " AND ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . join($bedingungen3_sql, " AND ")) : "") . " ) ";
+			$bedingung_sql1 = " ( " . implode($bedingungen_sql, " AND ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND ")) : "") . " ) ";
 		} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-			$bedingung_sql2 = " ( ( " . join($bedingungen2_sql, " OR ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . join($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
+			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, " OR ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
 		} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
-			$bedingung_sql2 = join($bedingungen3_sql, " AND ");
+			$bedingung_sql2 = implode($bedingungen3_sql, " AND ");
 		}
 
-		if(isset($bedingung_sql1) && $bedingung_sql1 && isset($bedingung_sql2) && $bedingung_sql2){
-			$bedingung_sql = " ( " . $bedingung1_sql . " AND " . $bedingung2_sql . " ) ";
-		} else if(isset($bedingung_sql1) && $bedingung_sql1){
+		if(isset($bedingung_sql1) && $bedingung_sql1){
 			$bedingung_sql = $bedingung_sql1;
 		} else{
 			$bedingung_sql = $bedingung_sql2;
@@ -221,11 +218,7 @@ class we_search_listview extends listviewBase{
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		if($random){
-			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . ".Language as Language, RAND() as RANDOM FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY RANDOM" . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
-		} else{
-			$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . ".Language as Language, $ranking as ranking FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
-		}
+		$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
 	}
@@ -240,7 +233,7 @@ class we_search_listview extends listviewBase{
 				$objecturl = $objectdaten['Url'];
 				$objecttriggerid = $objectdaten['TriggerID'];
 				if($this->triggerID){
-					$objecttriggerid=$this->triggerID;
+					$objecttriggerid = $this->triggerID;
 				}
 				if($objecttriggerid){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));
@@ -249,7 +242,7 @@ class we_search_listview extends listviewBase{
 				if($this->DB_WE->Record["WorkspaceID"]){
 					$pidstr = '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]);
 				}
-				if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					if($objecturl != ''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 					} else{

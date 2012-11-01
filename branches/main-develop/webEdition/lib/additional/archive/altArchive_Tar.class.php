@@ -1,18 +1,18 @@
 <?php
 /**
  * additional classes
- * 
+ *
  * Creates/Extracts a (compressed) Tar archive (even without PEAR)
  * This replaces PEAR/Archive_Tar for systems without PEAR or without PEAR/Archive_Tar
  *
- * @author Vincent Blavet <vincent@phpconcept.net> 
- * @version Revision: 1.43 
- * @license http://www.opensource.org/licenses/bsd-license.php New BSD License 
+ * @author Vincent Blavet <vincent@phpconcept.net>
+ * @version Revision: 1.43
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * found at: http://drupalcontrib.org/api/drupal/drupal--modules--system--system.tar.inc/class/Archive_Tar/8
  *
  *
  *
- * 
+ *
  */
 class altArchive_Tar {
   /**
@@ -89,7 +89,7 @@ class altArchive_Tar {
           $this->_compress = true;
           $this->_compress_type = 'gz';
         }
-        elseif ((substr($p_tarname, -3) == 'bz2') || 
+        elseif ((substr($p_tarname, -3) == 'bz2') ||
                           (substr($p_tarname, -2) == 'bz')) {
           $this->_compress = true;
           $this->_compress_type = 'bz2';
@@ -371,7 +371,7 @@ class altArchive_Tar {
     $v_result = true;
 
     if (!$this->_isArchive()) {
-      $v_result = $this->createModify($p_filelist, $p_add_dir, 
+      $v_result = $this->createModify($p_filelist, $p_add_dir,
 			                                $p_remove_dir);
     }
     else {
@@ -471,7 +471,7 @@ class altArchive_Tar {
     $v_list_detail = array();
 
     if ($v_result = $this->_openRead()) {
-      $v_result = $this->_extractList($p_path, $v_list_detail, 
+      $v_result = $this->_extractList($p_path, $v_list_detail,
 			                                "complete", 0, $p_remove_path);
       $this->_close();
     }
@@ -536,7 +536,7 @@ class altArchive_Tar {
     }
 
     if ($v_result = $this->_openRead()) {
-      $v_result = $this->_extractList($p_path, $v_list_detail, "partial", 
+      $v_result = $this->_extractList($p_path, $v_list_detail, "partial",
 			                                $v_list, $p_remove_path);
       $this->_close();
     }
@@ -760,7 +760,7 @@ class altArchive_Tar {
     // Note that it might be interesting to keep the url for a time : ToDo
     if ($this->_temp_tarname != '') {
       //@drupal_unlink($this->_temp_tarname);
-	  @we_util_File::delete($this->_temp_tarname); 
+	  @we_util_File::delete($this->_temp_tarname);
       $this->_temp_tarname = '';
     }
 
@@ -947,8 +947,8 @@ class altArchive_Tar {
               $p_temp_list[0] = $p_hitem;
             }
 
-            $v_result = $this->_addList($p_temp_list, 
-					                            $p_add_dir, 
+            $v_result = $this->_addList($p_temp_list,
+					                            $p_add_dir,
 												$p_remove_dir);
           }
         }
@@ -1047,7 +1047,7 @@ class altArchive_Tar {
     // ----- Calculate the stored filename
     $p_filename = $this->_translateWinPath($p_filename, false);
 
-    if (!$this->_writeHeaderBlock($p_filename, strlen($p_string), 
+    if (!$this->_writeHeaderBlock($p_filename, strlen($p_string),
 	                                  time(), 384, "", 0, 0)) {
       return false;
     }
@@ -1113,12 +1113,12 @@ class altArchive_Tar {
 
     $v_prefix = '';
 
-    $v_binary_data_first = pack("a100a8a8a8a12A12", 
-		                            $v_reduce_filename, $v_perms, $v_uid, 
+    $v_binary_data_first = pack("a100a8a8a8a12A12",
+		                            $v_reduce_filename, $v_perms, $v_uid,
 									$v_gid, $v_size, $v_mtime);
-    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12", 
-		                           $v_typeflag, $v_linkname, $v_magic, 
-								   $v_version, $v_uname, $v_gname, 
+    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12",
+		                           $v_typeflag, $v_linkname, $v_magic,
+								   $v_version, $v_uname, $v_gname,
 								   $v_devmajor, $v_devminor, $v_prefix, '');
 
     // ----- Calculate the checksum
@@ -1152,7 +1152,7 @@ class altArchive_Tar {
   // }}}
 
   // {{{ _writeHeaderBlock()
-  function _writeHeaderBlock($p_filename, $p_size, $p_mtime = 0, $p_perms = 0, 
+  function _writeHeaderBlock($p_filename, $p_size, $p_mtime = 0, $p_perms = 0,
 	                           $p_type = '', $p_uid = 0, $p_gid = 0) {
     $p_filename = $this->_pathReduction($p_filename);
 
@@ -1191,12 +1191,12 @@ class altArchive_Tar {
 
     $v_prefix = '';
 
-    $v_binary_data_first = pack("a100a8a8a8a12A12", 
-		                            $p_filename, $v_perms, $v_uid, $v_gid, 
+    $v_binary_data_first = pack("a100a8a8a8a12A12",
+		                            $p_filename, $v_perms, $v_uid, $v_gid,
 									$v_size, $v_mtime);
-    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12", 
-		                           $p_type, $v_linkname, $v_magic, 
-								   $v_version, $v_uname, $v_gname, 
+    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12",
+		                           $p_type, $v_linkname, $v_magic,
+								   $v_version, $v_uname, $v_gname,
 								   $v_devmajor, $v_devminor, $v_prefix, '');
 
     // ----- Calculate the checksum
@@ -1251,11 +1251,11 @@ class altArchive_Tar {
 
     $v_prefix = '';
 
-    $v_binary_data_first = pack("a100a8a8a8a12A12", 
+    $v_binary_data_first = pack("a100a8a8a8a12A12",
 		                            '././@LongLink', 0, 0, 0, $v_size, 0);
-    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12", 
-		                           $v_typeflag, $v_linkname, $v_magic, 
-								   $v_version, $v_uname, $v_gname, 
+    $v_binary_data_last = pack("a1a100a6a2a32a32a8a8a155a12",
+		                           $v_typeflag, $v_linkname, $v_magic,
+								   $v_version, $v_uname, $v_gname,
 								   $v_devmajor, $v_devminor, $v_prefix, '');
 
     // ----- Calculate the checksum
@@ -1328,7 +1328,7 @@ class altArchive_Tar {
 
     $v_data = unpack("a100filename/a8mode/a8uid/a8gid/a12size/a12mtime/"
 		                 . "a8checksum/a1typeflag/a100link/a6magic/a2version/"
-						 . "a32uname/a32gname/a8devmajor/a8devminor", 
+						 . "a32uname/a32gname/a8devmajor/a8devminor",
 						 $v_binary_data);
 
     // ----- Extract the checksum
@@ -1468,7 +1468,7 @@ class altArchive_Tar {
           }
           if (($v_header['size'] % 512) != 0) {
             $v_content = $this->_readBlock();
-            $v_result_str .= substr($v_content, 0, 
+            $v_result_str .= substr($v_content, 0,
 					                          ($v_header['size'] % 512));
           }
           return $v_result_str;
@@ -1484,7 +1484,7 @@ class altArchive_Tar {
   // }}}
 
   // {{{ _extractList()
-  function _extractList($p_path, &$p_list_detail, $p_mode, 
+  function _extractList($p_path, &$p_list_detail, $p_mode,
 	                      $p_file_list, $p_remove_path) {
     $v_result = true;
     $v_nb = 0;
@@ -1575,7 +1575,7 @@ class altArchive_Tar {
         if (($p_remove_path != '')
              && (substr($v_header['filename'], 0, $p_remove_path_size)
 			    == $p_remove_path)) {
-          $v_header['filename'] = substr($v_header['filename'], 
+          $v_header['filename'] = substr($v_header['filename'],
 		                                 $p_remove_path_size);
         }
         if (($p_path != './') && ($p_path != '/')) {
@@ -1628,7 +1628,7 @@ class altArchive_Tar {
               // Drupal integration.
               // Changed the code to use drupal_mkdir() instead of mkdir().
 			  //if (!@drupal_mkdir($v_header['filename'], 0777)) {
-			  if (!@we_util_File::delete($v_header['filename'], 0777)) {	  
+			  if (!@we_util_File::delete($v_header['filename'], 0777)) {
                 $this->_error('Unable to create directory {'
 					              . $v_header['filename'] . '}');
                 return false;
@@ -1850,8 +1850,8 @@ class altArchive_Tar {
 
     $p_parent_dir = dirname($p_dir);
 
-    if (($p_parent_dir != $p_dir) && 
-            ($p_parent_dir != '') && 
+    if (($p_parent_dir != $p_dir) &&
+            ($p_parent_dir != '') &&
             (!$this->_dirCheck($p_parent_dir))) {
       return false;
     }

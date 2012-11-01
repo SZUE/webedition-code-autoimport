@@ -377,7 +377,7 @@ class weCustomerFrames extends weModuleFrames{
 			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => "0")));
 			$GLOBALS["mod"] = "customer";
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/home.inc.php');
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;
@@ -881,7 +881,7 @@ class weCustomerFrames extends weModuleFrames{
 					we_html_element::jsScript(JS_DIR . "utils/weDate.js") .
 					we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 					we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-					we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+					we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 					we_html_element::jsElement($this->View->getJSSearch()) .
 					we_html_element::jsElement("$this->jsOut_fieldTypesByName
 	var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';

@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$frames = new weExportWizard("/webEdition/we/include/we_export/export_frameset.php");
+$frames = new weExportWizard(WE_INCLUDES_DIR . "we_export/export_frameset.php");
 we_html_tools::protect();
 //	Starting output .
 

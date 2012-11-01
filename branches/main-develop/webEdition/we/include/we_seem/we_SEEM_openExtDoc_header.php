@@ -29,11 +29,10 @@ we_html_tools::protect();
 
 $_webEditionSiteUrl = getServerUrl() . SITE_DIR;
 
-if(strpos($_REQUEST["url"], $_webEditionSiteUrl) === 0){
-	$_errormsg = g_l('SEEM', "[ext_doc_tmp]");
-} else{
-	$_errormsg = sprintf(g_l('SEEM', "[ext_doc]"), $_REQUEST["url"]);
-}
+$_errormsg = (strpos($_REQUEST["url"], $_webEditionSiteUrl) === 0 ?
+		g_l('SEEM', "[ext_doc_tmp]") :
+		sprintf(g_l('SEEM', "[ext_doc]"), $_REQUEST["url"]));
+
 
 $_table = new we_html_table(array("cellpadding" => 0,
 		"cellspacing" => 0,

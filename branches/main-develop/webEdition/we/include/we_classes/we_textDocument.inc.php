@@ -64,12 +64,12 @@ class we_textDocument extends we_document{
 				return "we_templates/we_srcTmpl.inc.php";
 			case WE_EDITPAGE_PREVIEW:
 				if($GLOBALS["we_EDITOR"]){
-					$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . "/" . md5(uniqid(rand())) . $this->Extension;
+					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . '/' . weFile::getUniqueId(). $this->Extension;
 					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 					return $GLOBALS["we_file_to_delete_after_include"];
 				} else{
 					$GLOBALS["we_editmode"] = false;
-					return "we_templates/we_srcTmpl.inc.php";
+					return 'we_templates/we_srcTmpl.inc.php';
 				}
 			case WE_EDITPAGE_VALIDATION:
 				return "we_templates/validateDocument.inc.php";

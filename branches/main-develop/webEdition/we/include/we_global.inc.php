@@ -1137,27 +1137,22 @@ function t_e($type = 'warning'){
 }
 
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
-	if(!$id){
-		return '';
-	}
-
 	if(!$path){
 		$path = $_SERVER['SCRIPT_NAME'];
 	}
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
-	$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
 
 	if(!$GLOBALS['we_doc']->InWebEdition){
 		// check if object is published.
-		if(!$foo['Published']){
+		if(!f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Published', $DB_WE)){
 			$GLOBALS['we_link_not_published'] = 1;
 			return '';
 		}
 	}
 
 	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
-	if(count($foo) == 0){
+	if(empty($foo)){
 		return '';
 	}
 	$showLink = false;
@@ -1229,7 +1224,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 }
 
 function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 	if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', 'IsDynamic', $DB_WE)){
 		return $path;
 	}
@@ -1490,6 +1485,10 @@ function getServerUrl($useUserPwd = false){
 }
 
 function we_check_email($email){ // Zend validates only the pure address
+	if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
+		++$pos;
+		$email = substr($email, $pos, strrpos($email, '>') - $pos);
+	}
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
@@ -1639,7 +1638,7 @@ function clearPath($path){
  *          attribs through the tagParser.
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+	include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 	//	default at the moment is xhtml-style
 	$_xmlClose = false;
 

@@ -56,7 +56,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 
 	function __construct($fileName, $applyFontNames = true, $applyFontSize = true, $applyFontColor = true){
-		$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+		$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
 		move_uploaded_file($fileName, $tempName);
 		$fileName = $tempName;
 		$this->fName = $fileName;

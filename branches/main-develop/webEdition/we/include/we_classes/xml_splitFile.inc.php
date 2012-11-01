@@ -232,9 +232,9 @@ class XML_SplitFile extends we_xml_parser{
 	 */
 	function getUniqueString($len = 8){
 		$str = "";
-		$set = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		$set .= "abcdefghijklmnopqrstuvwxyz";
-		$set .= "0123456789";
+		$set = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" .
+			"abcdefghijklmnopqrstuvwxyz" .
+			"0123456789";
 		// Seed with microseconds since last 'whole' second.
 		srand((double) microtime() * 1234567);
 		for($i = 0; $i < $len; $i++){
@@ -251,7 +251,7 @@ class XML_SplitFile extends we_xml_parser{
 	function getUniqueId(){
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid prevents from simultanious access, within a microsecond.
-		return md5(str_replace('.', '', uniqid('',true))); // #6590, changed from: uniqid(microtime())
+		return md5(uniqid(__FILE__, true)); // #6590, changed from: uniqid(microtime())
 	}
 
 	/**
@@ -261,10 +261,7 @@ class XML_SplitFile extends we_xml_parser{
 	 * @return     string
 	 */
 	function replaceEntities($text){
-		$text = str_replace("<", "&lt;", $text);
-		$text = str_replace(">", "&gt;", $text);
-		$text = str_replace("&nbsp;", "&amp;nbsp;", $text);
-		return $text;
+		return str_replace(array("<", ">", "&nbsp;"), array("&lt;", "&gt;", "&amp;nbsp;"), $text);
 	}
 
 }

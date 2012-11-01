@@ -301,7 +301,7 @@ class weBanner extends weBannerBase{
 
 	function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
 		$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername);
-		$uniq = md5(uniqid(rand()));
+		$uniq = md5(uniqid(__FUNCTION__,true));
 		$showlink = true;
 		$db = new DB_WE();
 		$prot = getServerProtocol();

@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 
-$_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php";
+$_SERVER["SCRIPT_NAME"] = WE_INCLUDES_DIR . "we_modules/newsletter/we_newsletterDirSelector.php";
 if(isset($_REQUEST["JSIDName"]) && strpos($_REQUEST["JSIDName"], 'WECMDENC_') !== false){
 	$_REQUEST["JSIDName"] = base64_decode(urldecode(substr($_REQUEST["JSIDName"], 9)));
 }

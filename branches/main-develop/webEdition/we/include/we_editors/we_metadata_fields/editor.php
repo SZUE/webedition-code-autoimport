@@ -27,7 +27,7 @@
  * *************************************************************************** */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 we_html_tools::protect();
 

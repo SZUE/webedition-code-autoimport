@@ -65,7 +65,7 @@ function getRevRelSelect($type, $value){
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be determined in template
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
@@ -446,8 +446,8 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist){
 	$_SESSION["WE_LINKLIST"] = $linklist;
 	?>
-			 opener.setScrollTo();
-			 opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
+			opener.setScrollTo();
+			opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link){
 	$_SESSION["WE_LINK"] = $link;

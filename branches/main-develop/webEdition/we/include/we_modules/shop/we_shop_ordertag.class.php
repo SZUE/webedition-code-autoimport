@@ -36,7 +36,7 @@ class we_shop_ordertag{
 		$this->DB_WE = new DB_WE;
 		$this->id = $id;
 		$this->hidedirindex = $hidedirindex;
-		$unique = md5(uniqid(rand()));
+		$unique = md5(uniqid(__FILE__, true));
 
 		if($this->id){
 			$this->object = new we_shop_listviewOrder($unique, 1, 0, "", 0, "(IntOrderID=" . intval($this->id) . ")" . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);

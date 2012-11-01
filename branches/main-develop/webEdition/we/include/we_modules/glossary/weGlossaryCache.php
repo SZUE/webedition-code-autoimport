@@ -430,12 +430,13 @@ class weGlossaryCache{
 					return array();
 				}
 			}
-include($cacheFilename);
-			$this->content = $content;//@unserialize(@gzinflate(weFile::load($cacheFilename)));
+			include($cacheFilename);
+			$this->content = $content; //@unserialize(@gzinflate(weFile::load($cacheFilename)));
 		}
 		if(!empty($this->content)){
 			return $this->content[$type];
 		}
+		return array();
 	}
 
 }

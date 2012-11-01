@@ -94,11 +94,7 @@ class weNavigationItem{
 		$this->customers = $customers;
 
 		if($this->table == FILE_TABLE){
-			if(strpos($this->href, '#') !== false && strpos($this->href, '?') === false){
-				list($__path) = explode("#", $this->href);
-			} else{
-				list($__path) = explode("?", $this->href);
-			}
+			list($__path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
 
 			$__id = path_to_id($__path, FILE_TABLE);
 			if($__id){
@@ -108,7 +104,7 @@ class weNavigationItem{
 			if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 				$mypath = id_to_path($this->docid, FILE_TABLE);
 				$mypath_parts = pathinfo($mypath);
-				if(in_array($mypath_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
 					$this->visible = !empty($_v) ? 'true' : 'false';
 				}
@@ -124,7 +120,6 @@ class weNavigationItem{
 	}
 
 	function setCurrent(&$weNavigationItems, $self = true){
-
 		if($self){
 			$this->current = 'true';
 		}
@@ -136,7 +131,6 @@ class weNavigationItem{
 	}
 
 	function unsetCurrent(&$weNavigationItems, $self = true){
-
 		if($self){
 			$this->current = 'false';
 		}
@@ -161,8 +155,7 @@ class weNavigationItem{
 	function isCurrent($weNavigationItems){
 		$thishref = $this->href;
 		if($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
-			$thishref = str_replace(strstr($thishref, '#'), '', $thishref);
-			$thishref = str_replace('&amp;', '&', $thishref);
+			$thishref = str_replace(array(strstr($thishref, '#'), '&amp;'), array('', '&'), $thishref);
 		}
 		if(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref){
 			// fastest way
@@ -188,20 +181,23 @@ class weNavigationItem{
 			}
 		}
 
-		if(isset($GLOBALS['we_obj']) && $this->table == OBJECT_FILES_TABLE){
-			$id = $GLOBALS['we_obj']->ID;
-		} else
-		if(isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID)) && $this->table == FILE_TABLE){
-			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
+		switch($this->table){
+			case OBJECT_FILES_TABLE:
+				if(isset($GLOBALS['we_obj'])){
+					$id = $GLOBALS['we_obj']->ID;
+				}
+				break;
+			case FILE_TABLE:
+				if(isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID))){
+					$id = $GLOBALS["WE_MAIN_DOC"]->ID;
+				}
+				break;
 		}
-
 		if(isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)){
 			$this->setCurrent($weNavigationItems);
 			return true;
 		} else{
-
 			if($this->current == 'true'){
-
 				$this->unsetCurrent($weNavigationItems);
 			}
 			return false;
@@ -231,7 +227,7 @@ class weNavigationItem{
 		}
 		$template = $weNavigationItems->getTemplate($this);
 
-		$GLOBALS['weNavigationItemArray'][] = & $this;
+		$GLOBALS['weNavigationItemArray'][] = &$this;
 
 		$content = $template;
 		ob_start();
@@ -250,18 +246,14 @@ class weNavigationItem{
 		// name
 		if($fieldname){
 			if(isset($this->$fieldname) && $this->$fieldname != ''){
-				if($fieldname == 'title'){
-					return htmlspecialchars($this->$fieldname);
-				} else{
-					return $this->$fieldname;
-				}
+				return ($fieldname == 'title' ?
+						htmlspecialchars($this->$fieldname) :
+						$this->$fieldname);
 			} else
 			if(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != ''){
-				if($fieldname == 'title'){
-					return htmlspecialchars($this->attributes[$fieldname]);
-				} else{
-					return $this->attributes[$fieldname];
-				}
+				return ($fieldname == 'title' ?
+						htmlspecialchars($this->attributes[$fieldname]) :
+						$this->attributes[$fieldname]);
 			} else{
 				return '';
 			}
@@ -289,7 +281,7 @@ class weNavigationItem{
 		if(isset($attribs['attributes'])){
 			$_attributes = $this->getNavigationFieldAttributes($attribs);
 			foreach($_attributes as $_key => $_value){
-				$code .= ' '.$_key.'="' . $_value . '"';
+				$code .= ' ' . $_key . '="' . $_value . '"';
 			}
 		}
 		return $code;
@@ -319,20 +311,14 @@ class weNavigationItem{
 						);
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
-								if($field == 'title'){
-									$attribs[$field] = htmlspecialchars($this->$field);
-								} else{
-									$attribs[$field] = $this->$field;
-								}
-								//$attribs[$field] = $this->$field;
+								$attribs[$field] = ($field == 'title' ?
+										htmlspecialchars($this->$field) :
+										$this->$field);
 							} else
 							if(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
-								//$attribs[$field] = $this->attributes[$field];
-								if($field == 'link_attribute'){ // Bug #3741
-									$attribs[$field] = $this->attributes[$field];
-								} else{
-									$attribs[$field] = htmlspecialchars($this->attributes[$field]);
-								}
+								$attribs[$field] = ($field == 'link_attribute' ? // Bug #3741
+										$this->attributes[$field] :
+										htmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -344,9 +330,7 @@ class weNavigationItem{
 						$_iconid = path_to_id($this->icon, FILE_TABLE);
 						if($_iconid){
 							$attribs['src'] = $this->icon;
-							$useFields = array(
-								'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title'
-							);
+							$useFields = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title');
 							foreach($useFields as $field){
 								if(isset($this->attributes['icon_' . $field]) && $this->attributes['icon_' . $field] != ''){
 									$attribs[$field] = $this->attributes['icon_' . $field];
@@ -355,7 +339,7 @@ class weNavigationItem{
 							$_imgObj = new we_imageDocument();
 							$_imgObj->initByID($_iconid);
 
-							$_js = $_imgObj->getRollOverScript('','',false);
+							$_js = $_imgObj->getRollOverScript('', '', false);
 							$_js = preg_replace("|<[^>]+><!--|", "", $_js);
 							$_js = preg_replace("|//--><[^>]+>|", "", $_js);
 							$_js = str_replace(array("\r\n", "\n"), '', $_js);

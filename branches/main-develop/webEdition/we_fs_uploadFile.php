@@ -58,12 +58,12 @@ if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploaded
 		$we_ContentType = getContentTypeFromFile($_FILES['we_uploadedFile']["name"]);
 	}
 	// initializing $we_doc
-	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 	$pid = $_REQUEST["pid"];
 	$overwrite = $_REQUEST["overwrite"];
 
 	// creating a temp name and copy the file to the we tmp directory with the new temp name
-	$tempName = TEMP_PATH . "/" . md5(uniqid(rand(), 1));
+	$tempName = TEMP_PATH . "/" . weFile::getUniqueId();
 	move_uploaded_file($_FILES['we_uploadedFile']["tmp_name"], $tempName);
 
 	$tmp_Filename = preg_replace("/[^A-Za-z0-9._-]/", "", $_FILES["we_uploadedFile"]["name"]);
@@ -192,22 +192,22 @@ if($we_alerttext){
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 	if($we_doc->ID){
 		?>
-			 var ref;
-			 if(opener.top.opener && opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top;
-			 else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top;
-			 else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top.opener.top;
+					var ref;
+					if(opener.top.opener && opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top;
+					else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top;
+					else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top.opener.top;
 
 
-			 if (ref.makeNewEntry) {
-				 ref.makeNewEntry("<?php print $we_doc->Icon ?>","<?php print $we_doc->ID ?>","<?php print $we_doc->ParentID ?>","<?php print $we_doc->Text ?>",1,"<?php print $we_doc->ContentType ?>","<?php print $we_doc->Table ?>");
-			 }
-			 opener.top.reloadDir();
-			 opener.top.unselectAllFiles();
-			 opener.top.addEntry("<?php print $we_doc->ID ?>","<?php print $we_doc->Icon ?>","<?php print $we_doc->Text ?>","<?php print $we_doc->IsFolder ?>","<?php print $we_doc->Path ?>");
-			 opener.top.doClick(<?php print $we_doc->ID; ?>,0);
-			 setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)',200);
+					if (ref.makeNewEntry) {
+						ref.makeNewEntry("<?php print $we_doc->Icon ?>","<?php print $we_doc->ID ?>","<?php print $we_doc->ParentID ?>","<?php print $we_doc->Text ?>",1,"<?php print $we_doc->ContentType ?>","<?php print $we_doc->Table ?>");
+					}
+					opener.top.reloadDir();
+					opener.top.unselectAllFiles();
+					opener.top.addEntry("<?php print $we_doc->ID ?>","<?php print $we_doc->Icon ?>","<?php print $we_doc->Text ?>","<?php print $we_doc->IsFolder ?>","<?php print $we_doc->Path ?>");
+					opener.top.doClick(<?php print $we_doc->ID; ?>,0);
+					setTimeout('opener.top.selectFile(<?php print $we_doc->ID; ?>)',200);
 	<?php } ?>
-		setTimeout('self.close()',250);
+			setTimeout('self.close()',250);
 <?php } ?>
 	//-->
 </script>
@@ -217,7 +217,7 @@ if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
 			<input type="hidden" name="table" value="<?php print $_REQUEST["tab"]; ?>" />
 			<input type="hidden" name="pid" value="<?php print $_REQUEST["dir"]; ?>" />
 			<input type="hidden" name="ct" value="<?php print $we_ContentType; ?>" />
-<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
+			<?php print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 560); ?>
 		</form></center>
 </body>
 </html>

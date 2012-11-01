@@ -99,13 +99,13 @@ if(defined("WORKFLOW_TABLE")){
 
 print STYLESHEET;
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
-<?php
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
-?>
+	<?php
+	print we_multiIconBox::getJS();
+	print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	?>
 </body>
 </html>

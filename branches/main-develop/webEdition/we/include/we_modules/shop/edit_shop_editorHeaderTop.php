@@ -26,7 +26,7 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	print '<body bgcolor="#F0EFF0"></body></html>';
 	exit;
 }
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
+include_once(WE_INCLUDES_PATH . 'we_modules/shop/handle_shop_dbitemConnect.php');
 
 we_html_tools::protect();
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -18,7 +19,6 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * Base class for localisation
  *
@@ -26,11 +26,10 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 !defined('NO_SESS') && define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-class we_core_Local {
+class we_core_Local{
 
 	/**
 	 * cache attribute
@@ -73,15 +72,13 @@ class we_core_Local {
 	 * @param string $lang
 	 * @return string
 	 */
-	public static function weLangToLocale($lang)
-	{
+	public static function weLangToLocale($lang){
 		$locales = array(
-
-		'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
+			'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
 
 		$lang = str_replace('_UTF-8', '', $lang);
 
-		if (isset($locales[$lang])) {
+		if(isset($locales[$lang])){
 			return $locales[$lang];
 		}
 		return $lang;
@@ -93,17 +90,15 @@ class we_core_Local {
 	 * @param string $locale
 	 * @return string
 	 */
-	public static function localeToWeLang($locale)
-	{
+	public static function localeToWeLang($locale){
 		$langs = array(
-
-		'de' => 'Deutsch', 'en' => 'English', 'nl' => 'Dutch', 'fi' => 'Finnish', 'fr' => 'French', 'pl' => 'Polish', 'ru' => 'Russian', 'es' => 'Spanish', 'no' => 'Norwegian');
+			'de' => 'Deutsch', 'en' => 'English', 'nl' => 'Dutch', 'fi' => 'Finnish', 'fr' => 'French', 'pl' => 'Polish', 'ru' => 'Russian', 'es' => 'Spanish', 'no' => 'Norwegian');
 
 		$locale = substr($locale, 0, 2);
 
-		if (isset($langs[$locale])) {
+		if(isset($langs[$locale])){
 			$charset = self::getComputedUICharset();
-			if ($charset == 'UTF-8') {
+			if($charset == 'UTF-8'){
 				return $langs[$locale] . '_UTF-8';
 			}
 			return $langs[$locale];
@@ -116,8 +111,7 @@ class we_core_Local {
 	 *
 	 * @return string
 	 */
-	public static function getLocale()
-	{
+	public static function getLocale(){
 		return self::weLangToLocale(self::getComputedUILang());
 	}
 
@@ -126,35 +120,33 @@ class we_core_Local {
 	 *
 	 * @return string
 	 */
-	public static function getComputedUILang()
-	{
+	public static function getComputedUILang(){
 		// get from cache if there
-		if (self::$_lang !== '') {
+		if(self::$_lang !== ''){
 			return self::$_lang;
 		}
 
-		if (defined('WE_WEBUSER_LANGUAGE')) {
+		if(defined('WE_WEBUSER_LANGUAGE')){
 			self::$_lang = WE_WEBUSER_LANGUAGE;
-		} else {
-			if (!isset($_SESSION)) {
+		} else{
+			if(!isset($_SESSION)){
 				Zend_Session::start();
 			}
 
-			if (isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== '') {
-				if (is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])) {
+			if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== ''){
+				if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language'])){
 					self::$_lang = $_SESSION['prefs']['Language'];
-				} else if (defined('WE_LANGUAGE')) { //  bugfix #4229
+				} else if(defined('WE_LANGUAGE')){ //  bugfix #4229
 					$_SESSION['prefs']['Language'] = WE_LANGUAGE;
 					self::$_lang = WE_LANGUAGE;
 				}
-
-			} else {
-				if (defined('WE_LANGUAGE')) {
+			} else{
+				if(defined('WE_LANGUAGE')){
 					self::$_lang = WE_LANGUAGE;
 				}
 			}
 		}
-		if (self::$_lang === '') {
+		if(self::$_lang === ''){
 			self::$_lang = 'English_UTF-8';
 		}
 		return self::$_lang;
@@ -165,14 +157,13 @@ class we_core_Local {
 	 *
 	 * @return string
 	 */
-	public static function getComputedUICharset()
-	{
+	public static function getComputedUICharset(){
 		// get from cache if there
-		if (self::$_charset !== '') {
+		if(self::$_charset !== ''){
 			return self::$_charset;
 		}
 		$lang = self::getComputedUILang();
-		if ($GLOBALS['WE_BACKENDCHARSET']===false) {
+		if($GLOBALS['WE_BACKENDCHARSET'] === false){
 			//we_util_Log::errorlog('Error: No charset language file found, using UTF-8 now!');
 			self::$_charset = 'UTF-8';
 			return self::$_charset;
@@ -188,24 +179,23 @@ class we_core_Local {
 	 * @param string $appName
 	 * @return object
 	 */
-	public static function addTranslation($file, $appName = '')
-	{
+	public static function addTranslation($file, $appName = ''){
 		$locale = self::getLocale();
 		$path = ($appName === '') ? ($GLOBALS['__WE_BASE_PATH__'] . '/lang/' . $locale . '/' . $file) : ($GLOBALS['__WE_APP_PATH__'] . '/' . $appName . '/lang/' . $locale . '/' . $file);
-		if(!file_exists($path)) {
-			if(defined('WE_LANGUAGE')) {
+		if(!file_exists($path)){
+			if(defined('WE_LANGUAGE')){
 				$locale = self::weLangToLocale(WE_LANGUAGE);
 				$path = ($appName === '') ? ($GLOBALS['__WE_BASE_PATH__'] . '/lang/' . $locale . '/' . $file) : ($GLOBALS['__WE_APP_PATH__'] . '/' . $appName . '/lang/' . $locale . '/' . $file);
 			}
 		}
 
-		if(file_exists($path)) {
-			if (!in_array($path, self::$_translationSources)) {
+		if(file_exists($path)){
+			if(!in_array($path, self::$_translationSources)){
 
-				if (is_null(self::$_translate)) {
+				if(is_null(self::$_translate)){
 					self::$_translate = new we_core_Translate('tmx', $path, $locale);
 					self::$_translate->setLocale($locale);
-				} else {
+				} else{
 					self::$_translate->addTranslation($path, $locale);
 				}
 				self::$_translationSources[] = $path;

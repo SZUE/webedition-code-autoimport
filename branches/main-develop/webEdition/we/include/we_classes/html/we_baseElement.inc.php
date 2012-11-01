@@ -25,7 +25,6 @@
 
 /**
  * Filename:    we_baseElement.inc.php
- * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Utility class that implements basic html elements operations
  *
@@ -61,10 +60,7 @@ class we_baseElement{
 	 * @return	void
 	 */
 	function setUniquieID($secure = true){
-		if($secure)
-			$this->uid = md5(uniqid(rand()));
-		else
-			$this->uid = uniqid(rand());
+		$this->uid = ($secure ? md5(uniqid(__FILE__, true)) : str_replace('.', '', uniqid('', true)));
 	}
 
 	/**

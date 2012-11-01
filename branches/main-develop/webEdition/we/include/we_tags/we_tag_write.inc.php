@@ -76,7 +76,7 @@ function we_tag_write($attribs){
 		}
 
 		if($ok){
-			
+
 			$isOwner = false;
 			if($protected && isset($_SESSION['webuser']['ID'])){
 				$isOwner = ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID);
@@ -119,7 +119,7 @@ function we_tag_write($attribs){
 					$_WE_DOC_SAVE = $GLOBALS['we_doc'];
 				}
 				$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
-				$GLOBALS['we_doc']->IsSearchable=$searchable;
+				$GLOBALS['we_doc']->IsSearchable = $searchable;
 				if(strlen($workspaces) > 0 && $type == 'object'){
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
@@ -169,25 +169,25 @@ function we_tag_write($attribs){
 								$GLOBALS['we_' . $type][$name]->Text = $objname;
 								break;
 							case 'increment':
-								$z=1;
-								$footext = $objname."_".$z;
-								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query(str_replace('//','/',$GLOBALS["we_$type"][$name]->Path."/".$footext))."'", "ID", $db)){
+								$z = 1;
+								$footext = $objname . "_" . $z;
+								while(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . escape_sql_query(str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . "/" . $footext)) . "'", "ID", $db)) {
 									$z++;
-									$footext = $objname."_".$z;
+									$footext = $objname . "_" . $z;
 								}
-								$GLOBALS["we_$type"][$name]->Path = str_replace('//','/',$GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+								$GLOBALS["we_$type"][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
 								$GLOBALS["we_$type"][$name]->Text = $footext;
 								break;
 						}
 					}
 				}
 				if($doWrite){
-					$GLOBALS['we_' . $type][$name]->we_save();
+					$ret = $GLOBALS['we_' . $type][$name]->we_save();
 					if($publish && !$doworkflow){
 						if($type == 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
-							$GLOBALS['we_doc']->we_publish();
+							$ret1 = $GLOBALS['we_doc']->we_publish();
 						} else{
-							$GLOBALS['we_' . $type][$name]->we_publish();
+							$ret1 = $GLOBALS['we_' . $type][$name]->we_publish();
 						}
 					}
 
@@ -207,7 +207,7 @@ function we_tag_write($attribs){
 						$workflowID = we_workflow_utility::getWorkflowID($workflowname, $tab);
 
 						if(!we_workflow_utility::insertDocInWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table, $workflowID, $workflowuserid, $wf_text)){
-							t_e('error inserting document to workflow. Additional data:',$GLOBALS['we_doc']->Table, $workflowID, $workflowuserid);
+							t_e('error inserting document to workflow. Additional data:', $GLOBALS['we_doc']->Table, $workflowID, $workflowuserid);
 						}
 					}
 					$GLOBALS['we_object_write_ID'] = $GLOBALS['we_doc']->ID;
@@ -270,7 +270,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 					if($flashDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($flashId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
@@ -284,8 +284,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 					if($flashId){
 						// document has already an image
 						// so change binary data
-						$flashDocument->initByID(
-							$flashId);
+						$flashDocument->initByID($flashId);
 					}
 
 					$flashDocument->Filename = $_SESSION[$_flashmovieDataId]['fileName'];
@@ -346,7 +345,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 					if($quicktimeDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($quicktimeId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
@@ -422,7 +421,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 					if($imgDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
@@ -498,7 +497,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 					if($binaryDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($binaryId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);

@@ -539,8 +539,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 										// SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
 										if($_SESSION['we_mode'] != 'seem' && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
-											$_REQUEST['we_cmd'][5] = '
-													top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
+											$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
 									} else{
@@ -685,7 +684,6 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				$contents = ob_get_contents();
 				ob_end_clean();
 
-
 				//  SEEM the file
 				//  but only, if we are not in the template-editor
 				if($we_doc->ContentType != 'text/weTmpl' || ($we_doc->ContentType == 'text/weTmpl' && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE)){
@@ -726,8 +724,8 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				print $_insertReloadFooter;
 			}
 			$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
-			if(isset($we_file_to_delete_after_include)){
-				we_util_File::deleteLocalFile($we_file_to_delete_after_include);
+			if(isset($GLOBALS['we_file_to_delete_after_include'])){
+				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
 			if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS){
 				print we_html_element::jsElement('setTimeout("doScrollTo();",100);');

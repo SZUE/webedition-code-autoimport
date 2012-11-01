@@ -106,7 +106,7 @@ class we_messaging extends we_class{
 	/* Constructor */
 
 	function __construct(&$transact){
-		$this->Name = 'messaging_' . md5(uniqid(rand()));
+		$this->Name = 'messaging_' . md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected', 'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached');
 		$this->we_transact = &$transact;
 		$this->DB = new DB_WE();
@@ -661,7 +661,6 @@ class we_messaging extends we_class{
 			}
 		} else if(isset($addr_is_email) && $addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
-
 		} else{
 			$rcpt_info['msg_obj'] = 'we_message';
 		}

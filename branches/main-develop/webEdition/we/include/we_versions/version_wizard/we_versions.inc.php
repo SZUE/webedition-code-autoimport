@@ -24,7 +24,7 @@
  */
 we_html_tools::protect();
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/version_wizard/we_versions_wizard.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_versions/version_wizard/we_versions_wizard.inc.php');
 
 $fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : '';
 

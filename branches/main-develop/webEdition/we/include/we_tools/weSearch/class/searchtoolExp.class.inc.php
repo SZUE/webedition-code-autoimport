@@ -222,7 +222,7 @@ class searchtoolExp extends we_search{
 			}
 			// if operand2 is empty make some impossible condition
 			if(empty($_expr['operand2']) && ($_expr['operator'] == 'LIKE' || $_expr['operator'] == '=')){
-				$_expr['operand2'] = uniqid(time());
+				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}
 
@@ -237,7 +237,7 @@ class searchtoolExp extends we_search{
 			}
 			// if operand2 is empty make some impossible condition
 			if(empty($_expr['operand2']) && $_expr['operator'] == 'LIKE'){
-				$_expr['operand2'] = uniqid(time());
+				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}
 
