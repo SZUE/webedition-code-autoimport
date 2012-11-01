@@ -857,6 +857,7 @@ abstract class we_root extends we_class{
 				return true;
 			}
 		}
+		$regs = array();
 		if(!empty($_REQUEST)){
 			$dates = array();
 			foreach($_REQUEST as $n => $v){

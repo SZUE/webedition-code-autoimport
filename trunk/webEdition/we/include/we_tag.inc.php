@@ -261,37 +261,96 @@ function makeArrayFromAttribs($attr){
 	return $arr;
 }
 
+function cutSimpleText($text, $len){
+	$pos = array(
+		0,
+		strrpos($text, ' ', $len),
+		strrpos($text, "\n", $len),
+		strrpos($text, "\t", $len),
+	);
+	//cut to last whitespace
+	return substr($text, 0, max($pos));
+}
+
 function cutText($text, $max = 0){
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
-	if(!strlen($text)){
-		return '';
+	//no tags, simple cut off
+	if(strstr($text, '<') == FALSE){
+		return cutSimpleText($text, $max) . '...';
 	}
 
-	$text = we_util::html2uml(strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>'));
-	$htmlfree = strip_tags($text);
-	$left = substr($htmlfree, 0, $max);
-	//FIXME: ereg
-	$left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
-	$lastword = ereg_replace('^.+[ \.,;\r\n](.+)$', '\1', $left);
-	$orgpos = @strpos($text, $lastword);
-	$foo = ($orgpos ? strip_tags(substr($text, 0, $orgpos + strlen($lastword))) : $text);
-	$cutpos = $max;
-	while($orgpos && (strlen($foo) < $max)) {
-		$cutpos = $orgpos + strlen($lastword);
-		$orgpos = @strpos($text, $lastword, $orgpos + 1);
-		$foo = substr($text, 0, $orgpos + strlen($lastword));
-		$foo = strip_tags($foo);
+	$ret = '';
+	$tags = $foo = array();
+	//split text on tags, entities and "rest"
+	preg_match_all('%(&#?[[:alnum:]]+;)|([^<&]*)|<(/?)([[:alnum:]]+)([ \t\r\n]+[[:alnum:]]+[ \t\r\n]*=[ \t\r\n]*"[^"]*")*[ \t\r\n]*(/?)>%sm', $text, $foo, PREG_SET_ORDER);
+
+	foreach($foo as $cur){
+		switch(count($cur)){
+			case 2://entity
+				if($max > 0){
+					$ret.=$cur[0];
+					$max-=1;
+				}
+				break;
+			case 3://text
+				if($max > 0){
+					$len = strlen($cur[0]);
+					$ret.=($len > $max ? cutSimpleText($cur[0], $max) : $cur[0]);
+					$max-=$len;
+					if($max <= 0){
+						$ret.='...';
+					}
+				}
+				break;
+			case 7://tags
+				if($max > 0){
+					$ret.=$cur[0];
+					if(!$cur[6]){//!selfclosing
+						if($cur[3]){//close
+							array_pop($tags);
+						} else{
+							array_push($tags, $cur[4]);
+						}
+					}
+				}
+				break;
+		}
 	}
-	$text = substr($text, 0, $cutpos);
-	$regs = array();
-	if(preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)){
-		$text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
-	} else if(preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)){
-		$text = $regs[1];
+
+//close open tags
+	while(count($tags)) {
+		$ret.='</' . array_pop($tags) . '>';
 	}
-	return $text . '...';
+
+	return $ret;
+
+	/*
+	  $text = we_util::html2uml(strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>'));
+	  $htmlfree = strip_tags($text);
+	  $left = substr($htmlfree, 0, $max);
+	  //FIXME: ereg
+	  $left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
+	  $lastword = ereg_replace('^.+[ \.,;\r\n](.+)$', '\1', $left);
+	  $orgpos = @strpos($text, $lastword);
+	  $foo = ($orgpos ? strip_tags(substr($text, 0, $orgpos + strlen($lastword))) : $text);
+	  $cutpos = $max;
+	  while($orgpos && (strlen($foo) < $max)) {
+	  $cutpos = $orgpos + strlen($lastword);
+	  $orgpos = @strpos($text, $lastword, $orgpos + 1);
+	  $foo = strip_tags(substr($text, 0, $orgpos + strlen($lastword)));
+	  }
+	  $text = substr($text, 0, $cutpos);
+	  $regs = array();
+	  if(preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)){
+	  $text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
+	  } else if(preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)){
+	  $text = $regs[1];
+	  }
+	  return $text . '...';
+
+	 */
 }
 
 function we_getDocForTag($docAttr, $maindefault = false){
@@ -313,7 +372,7 @@ function we_getDocForTag($docAttr, $maindefault = false){
 }
 
 function modulFehltError($modul, $tag){
-	$tag = str_replace(array('we_tag_','we_parse_tag_'), '', $tag);
+	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
 	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
 }
 
@@ -323,7 +382,7 @@ function parseError($text){
 }
 
 function attributFehltError($attribs, $attr, $tag, $canBeEmpty = false){
-	$tag = str_replace(array('we_tag_','we_parse_tag_'), '', $tag);
+	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
 	if($canBeEmpty){
 		if(!isset($attribs[$attr]))
 			return parseError(sprintf(g_l('parser', '[attrib_missing2]'), $attr, $tag));
@@ -379,7 +438,7 @@ function we_getHiddenField($name, $value, $xml = false){
 function we_getInputCheckboxField($name, $value, $attr){
 	//  returns a checkbox with associated hidden-field
 
-	$tmpname = md5(uniqid(__FUNCTION__,true)); // #6590, changed from: uniqid(time())
+	$tmpname = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(time())
 	if($value){
 		$attr['checked'] = 'checked';
 	}
