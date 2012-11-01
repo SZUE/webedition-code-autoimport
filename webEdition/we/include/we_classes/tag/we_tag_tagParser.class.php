@@ -109,7 +109,7 @@ class we_tag_tagParser{
 		}
 
 		//	now we need all between these tags - beware of selfclosing tags
-		for($i = 0; $i < sizeof($_tags);){
+		for($i = 0; $i < count($_tags);){
 
 			if(preg_match("|<we:(.*)/>|i", $_tags[$i])){ //  selfclosing xhtml-we:tag
 				$_start = strpos($code, $_tags[$i]);
