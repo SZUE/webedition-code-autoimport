@@ -27,7 +27,7 @@ class we_wizard{
 	var $path = "";
 
 	function __construct(){
-		$this->path = WEBEDITION_DIR . "we/include/we_import/we_wiz_frameset.php";
+		$this->path = WE_INCLUDES_DIR. "we_import/we_wiz_frameset.php";
 	}
 
 	function getWizFrameset(){

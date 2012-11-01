@@ -280,7 +280,7 @@ class weExportView{
 						submitForm();
 						break;
 					case "openExportDirselector":
-						url="/webEdition/we/include/we_modules/export/we_exportDirSelectorFrameset.php?";
+						url="' . WE_INCLUDES_DIR . 'we_modules/export/we_exportDirSelectorFrameset.php?";
 						for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 						new jsWindow(url,"we_exportselector",-1,-1,600,350,true,true,true);
 						break;

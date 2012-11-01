@@ -1848,7 +1848,7 @@ class we_object extends we_document{
 	}
 
 	function formCSS(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once(WE_INCLUDES_PATH . 'we_tools/MultiDirChooser.inc.php');
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/css', 1,1)");

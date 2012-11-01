@@ -36,7 +36,7 @@ class weCodeWizard{
 	 *
 	 */
 	function __construct(){
-		$this->SnippetPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/weCodeWizard/data/";
+		$this->SnippetPath = WE_INCLUDES_PATH . 'weCodeWizard/data/';
 	}
 
 	/**

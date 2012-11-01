@@ -38,5 +38,5 @@ switch($_REQUEST['we_cmd'][0]){
 }
 
 if(isset($toolInclude)){
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $toolInclude);
+	include(WE_INCLUDES_PATH . 'we_tools/' . $toolInclude);
 }

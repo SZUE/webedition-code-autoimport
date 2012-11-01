@@ -24,9 +24,6 @@
 header("Content-Type: text/css");
 $GLOBALS['show_stylesheet'] = true;
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_base_browserDetect.class.php');
-//FIXME: remove latter ones
-// Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 ?>
 

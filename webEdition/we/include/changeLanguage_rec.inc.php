@@ -21,29 +21,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 $ok = false;
 
-if ($_SESSION["perms"]["ADMINISTRATOR"]) {
-	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:0);
+if($_SESSION["perms"]["ADMINISTRATOR"]){
+	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
 	// init document
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 
-	include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$ok = $we_doc->changeLanguageRecursive();
-
 }
 
 we_html_tools::htmlTop();
 
-	if ($ok) {
-		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
-	} else {
-		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_notok]"), we_message_reporting::WE_MESSAGE_ERROR));
-	}
-	?>
+if($ok){
+	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
+} else{
+	print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', "[grant_language_notok]"), we_message_reporting::WE_MESSAGE_ERROR));
+}
+?>
 </head>
 
 <body>

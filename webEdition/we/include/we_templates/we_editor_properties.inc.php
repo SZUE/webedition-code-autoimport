@@ -34,7 +34,7 @@ we_html_tools::headerCtCharset('text/html', $charset);
 we_html_tools::htmlTop('', $charset);
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print STYLESHEET;
 ?>
 </head>
@@ -44,36 +44,36 @@ $we_doc->pHiddenTrans();
 $implementYuiAC = false;
 switch($we_doc->ContentType){
 	case "folder":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_folder_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
 		$implementYuiAC = true;
 		break;
 	case "text/webedition":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_webedition_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_webedition_properties.inc.php');
 		break;
 	case "text/xml":
 	case "text/css":
 	case "text/js":
 	case "text/htaccess":
 	case "text/plain":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_textfile_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_textfile_properties.inc.php');
 		break;
 	case "text/html":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_htmlfile_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_htmlfile_properties.inc.php');
 		break;
 	case "text/weTmpl":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_template_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_template_properties.inc.php');
 		break;
 	case "image/*":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_image_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_image_properties.inc.php');
 		break;
 	case "application/x-shockwave-flash":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_flash_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
 		break;
 	case "video/quicktime":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_quicktime_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_quicktime_properties.inc.php');
 		break;
 	case "application/*":
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_other_properties.inc.php");
+		include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
 		break;
 	default:
 
@@ -83,8 +83,8 @@ switch($we_doc->ContentType){
 			$moduleDir .= "/";
 		}
 
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php")){
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php");
+		if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php")){
+			include(WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php");
 		} else{
 			exit("Can NOT include property File");
 		}

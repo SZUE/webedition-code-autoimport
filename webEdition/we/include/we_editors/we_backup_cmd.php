@@ -143,8 +143,8 @@ if(isset($_REQUEST['cmd'])){
 												top.busy.setProgress(' . $percent . ');
 											}
 
-											top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=export";
-											top.checker.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=checker";
+											top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
+											top.checker.location="' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=checker";
 
 								}
 
@@ -152,7 +152,7 @@ if(isset($_REQUEST['cmd'])){
 							');
 			} else{
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+				include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 
 				$_files = array();
 				// export spellchecker files
@@ -177,8 +177,8 @@ if(isset($_REQUEST['cmd'])){
 					if($_SESSION['weBackupVars']['backup_log']){
 						weBackupUtil::addLog('Exporting settings');
 					}
-					$_files[] = WE_INCLUDES_DIR.'conf/we_conf_global.inc.php';
-					$_files[] = WE_INCLUDES_DIR.'conf/we_conf_language.inc.php';
+					$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
+					$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php';
 				}
 
 				if(count($_files)){
@@ -244,7 +244,7 @@ if(isset($_REQUEST['cmd'])){
 						'if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 								if(top.busy.setProgress) top.busy.setProgress(100);
 								//top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2";
-								top.body.setLocation("/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&step=2");
+								top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
 								//top.checker.location = "' . HTML_DIR . 'white.html";
 								if(top.checker != "undefined"){
 									top.checker.setLocation("' . HTML_DIR . 'white.html");
@@ -307,11 +307,9 @@ if(isset($_REQUEST['cmd'])){
 				$description = g_l('backup', '[delete_old_files]');
 			} else{
 				if($_SESSION['weBackupVars']['options']['format'] == 'xml'){
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupImport.class.php');
 					weBackupImport::import($_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['compress'], $_SESSION['weBackupVars']['encoding'], $_SESSION['weBackupVars']['backup_log']
 					);
 				} else{
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupImportSql.class.php');
 					weBackupImportSql::import($_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['compress'], $_SESSION['weBackupVars']['encoding'], $_SESSION['weBackupVars']['backup_log']
 					);
 				}
@@ -333,8 +331,8 @@ if(isset($_REQUEST['cmd'])){
 												top.busy.setProgressText("current_description","' . $description . '");
 												top.busy.setProgress(' . $percent . ');
 											}
-											top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=import";
-											top.checker.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker";
+											top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
+											top.checker.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=checker";
 								}
 
 								run();
@@ -342,7 +340,6 @@ if(isset($_REQUEST['cmd'])){
 			} else{
 
 				// perform update
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
 				$updater = new weBackupUpdater();
 				$updater->doUpdate();
 
@@ -365,13 +362,13 @@ if(isset($_REQUEST['cmd'])){
 								top.checker.location = "' . HTML_DIR . 'white.html";
 								var op = top.opener.top.makeFoldersOpenString();
 								top.opener.top.we_cmd("load",top.opener.top.treeData.table);
-								'.we_main_headermenu::getMenuReloadCode().'
+								' . we_main_headermenu::getMenuReloadCode() . '
 								//top.opener.top.initClickMenu();
-								top.busy.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
+								top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 								' . (( $_SESSION['weBackupVars']['options']['rebuild']) ? ('
-									top.cmd.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";
+									top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";
 								 ') : ('
-								top.body.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=4&temp_filename=' . $_SESSION['weBackupVars']['backup_file'] . '";
+								top.body.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=4&temp_filename=' . $_SESSION['weBackupVars']['backup_file'] . '";
 								')) . '
 
 								if(top.busy.setProgressText){

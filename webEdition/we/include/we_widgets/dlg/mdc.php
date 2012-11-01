@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/tree.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/tree.inc.php');
 
 we_html_tools::protect();
 $yuiSuggest = new weSuggest();
@@ -264,7 +264,7 @@ function we_cmd(){
 function we_submit(){
 	var bSelection=_fo.Selection.selectedIndex;
 	var bSelType=_fo.headerSwitch.selectedIndex;
-	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mdc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
+	_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mdc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
 		(bSelection?'1':'0')+(bSelType?'1':'0')+';'+(bSelection?getTreeSelected():'');
 	_fo.method='post';
 	_fo.submit();

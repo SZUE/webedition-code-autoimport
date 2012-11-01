@@ -270,7 +270,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 					if($flashDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($flashId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
@@ -345,7 +345,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 					if($quicktimeDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($quicktimeId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
@@ -421,7 +421,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 					if($imgDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
@@ -497,7 +497,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 					if($binaryDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 						$GLOBALS['NOT_PROTECT'] = true;
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+						include_once (WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 						deleteEntry($binaryId, FILE_TABLE);
 						$GLOBALS['NOT_PROTECT'] = false;
 						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);

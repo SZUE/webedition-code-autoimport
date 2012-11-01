@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_createShop($attribs){
 	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
@@ -35,7 +34,7 @@ function we_tag_createShop($attribs){
 	$deleteshoponlogout = weTag_getAttribute("deleteshoponlogout", $attribs, false, true);
 	$shopname = weTag_getAttribute("shopname", $attribs);
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+	include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
 
 	if(!isset($_SESSION)){
 		@session_start();

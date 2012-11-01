@@ -27,7 +27,7 @@
  *
  * Provides functions for creating html tags used in forms.
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 abstract class we_forms{
 

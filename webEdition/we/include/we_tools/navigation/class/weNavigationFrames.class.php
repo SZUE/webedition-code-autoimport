@@ -27,7 +27,7 @@ class weNavigationFrames extends weToolFrames{
 	function __construct(){
 		$this->toolName = 'navigation';
 		$this->toolClassName = 'weNavigation';
-		$this->toolUrl = '/webEdition/we/include/we_tools/' . $this->toolName . '/';
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->toolName . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
 		parent::__construct($_frameset);
@@ -501,7 +501,7 @@ class weNavigationFrames extends weToolFrames{
 			$parts, array(
 			'headline' => g_l('weClass', "[copyFolder]"),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
-				$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
+					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
 				g_l('weClass', "[copy_owners_expl]") . $_disabledNote, 2, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
 				array(
 					'name' => 'CopyFolderID', "value" => ''
@@ -934,7 +934,7 @@ class weNavigationFrames extends weToolFrames{
 
 	function getHTMLEditorPreview(){
 
-		$defaultPreviewCode = str_replace(array("\r\n","\n"), '\n', addslashes($this->Model->defaultPreviewCode));
+		$defaultPreviewCode = str_replace(array("\r\n", "\n"), '\n', addslashes($this->Model->defaultPreviewCode));
 		// build the page
 		$out = '<table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
 		<tr>
@@ -978,7 +978,7 @@ class weNavigationFrames extends weToolFrames{
 
 	function getHTMLEditorPreviewIframe(){
 
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+		require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 		$templateCode = $this->Model->previewCode;
 

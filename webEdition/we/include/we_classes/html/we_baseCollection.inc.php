@@ -25,7 +25,6 @@
 
 /**
  * Filename:    we_baseCollection.inc.php
- * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Utility class that implements basic html collection operations
  *

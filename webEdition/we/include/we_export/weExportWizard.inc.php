@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("EXPORT_PATH", "/webEdition/we/include/we_export/");
+define("EXPORT_PATH", WE_INCLUDES_DIR . "we_export/");
 
 define("CSV_DELIMITER", ";");
 define("CSV_ENCLOSE", "\"");
@@ -129,7 +129,7 @@ class weExportWizard{
 		$_SESSION["exportVars"] = array();
 		if(isset($_REQUEST['we_cmd'][1]))
 			$args .= "&we_cmd[1]=" . $_REQUEST['we_cmd'][1];
-		$this->Tree = new weExportTree("/webEdition/we/include/we_export/export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
+		$this->Tree = new weExportTree(WE_INCLUDES_DIR . "we_export/export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
 
 		$js = $this->getJSTop();
 		$js.=$this->Tree->getJSTreeCode();
@@ -1166,7 +1166,6 @@ top.close();');
 					  }
 					  else {
 					  if (defined("OBJECT_FILES_TABLE")) {
-					  include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 
 					  $catss = "";
 

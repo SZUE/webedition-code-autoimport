@@ -47,7 +47,7 @@ function we_tag_repeatShopItem($attribs){
 				print $foo;
 				return;
 			}
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+			include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
 			$_SESSION["we_shopname"] = $shopname;
 
 			if(!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])){

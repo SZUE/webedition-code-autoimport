@@ -37,6 +37,12 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+define('LOGIN_DENIED', 4);
+define('LOGIN_OK', 2);
+define('LOGIN_CREDENTIALS_INVALID', 1);
+define('LOGIN_UNKNOWN', 0);
+
+
 $ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_browser'] === 'true');
 
 function getValueLoginMode($val){
@@ -66,7 +72,7 @@ function printHeader($login){
 		we_html_element::jsScript(JS_DIR . 'windows.js');
 	include(JS_PATH . 'weJsStrings.inc.php');
 
-	if($login != 2){
+	if($login != LOGIN_OK){
 		print we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
 			we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
@@ -168,17 +174,17 @@ if($count >= LOGIN_FAILED_NR){
  * SWITCH MODE
  * *************************************************************************** */
 //set denied as default
-$login = 4;
+$login = LOGIN_DENIED;
 if(isset($GLOBALS['userLoginDenied'])){
-	$login = 4;
+	$login = LOGIN_DENIED;
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
-	$login = 2;
+	$login = LOGIN_OK;
 	setcookie('we_mode', $_REQUEST['mode'], time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
-	$login = 1;
+	$login = LOGIN_CREDENTIALS_INVALID;
 } else{
-	$login = 0;
+	$login = LOGIN_UNKNOWN;
 	if($ignore_browser){
 		setcookie('ignore_browser', 'true', time() + 2592000); //	Cookie remembers that the incompatible mode has been selected, it will expire in one Month !!!
 	}
@@ -366,7 +372,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	 * BUILD DIALOG
 	 * *********************************************************************** */
 
-	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
+	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
 	include(WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
 
 	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
@@ -410,9 +416,9 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layouttable->setCol(0, 3, array('colspan' => 2, 'width' => $_layoutRight), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_right.gif', 'width' => $_layoutRight, 'height' => 21)));
 
 	//	Here is table to log in
-	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
+	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
 
-	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
+	include(WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
 
 	$_layouttable->setCol(1, 0, array('background' => IMAGE_DIR . 'info/left2.gif'), we_html_tools::getPixel($_layoutLeft2, 1));
 	$_layouttable->setCol(1, 1, array('colspan' => 3, 'width' => $_contenttable), $_loginTable);
@@ -434,7 +440,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	 * *********************************************************************** */
 
 	switch($login){
-		case 2:
+		case LOGIN_OK:
 			$_body_javascript = '';
 
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
@@ -455,17 +461,18 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 				$_SESSION['we_mode'] = 'normal';
 			}
 
-			$_body_javascript .= 'function open_we() {
-			var aw=' . (isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0 ? $_SESSION['prefs']['weWidth'] : 8000) . ';
-			var ah=' . (isset($_SESSION['prefs']['weHeight']) && $_SESSION['prefs']['weHeight'] > 0 ? $_SESSION['prefs']['weHeight'] : 6000) . ';
-			win = new jsWindow(\'' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__,true)) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert', "[popupLoginError]") . "', '" . WEBEDITION_DIR . "index.php'); }";
-
-			if(!isset($_REQUEST['popup'])){
+			if(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
 				header('HTTP/1.1 303 See Other');
 				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
+				$_body_javascript.='alert("automatic redirect disabled");';
+			} else{
+				$_body_javascript .= 'function open_we() {
+			var aw=' . (isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0 ? $_SESSION['prefs']['weWidth'] : 8000) . ';
+			var ah=' . (isset($_SESSION['prefs']['weHeight']) && $_SESSION['prefs']['weHeight'] > 0 ? $_SESSION['prefs']['weHeight'] : 6000) . ';
+			win = new jsWindow(\'' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert', "[popupLoginError]") . "', '" . WEBEDITION_DIR . "index.php'); }";
 			}
 			break;
-		case 1:
+		case LOGIN_CREDENTIALS_INVALID:
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="tblUser", Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
 
 			/*			 * ***************************************************************************
@@ -480,7 +487,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		case 3:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location = '/webEdition/index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? "true" : "false")) : "") . "';";
 			break;
-		case 4:
+		case LOGIN_DENIED:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_denied_for_user]"), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		default:
@@ -490,5 +497,5 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }

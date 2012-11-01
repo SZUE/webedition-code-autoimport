@@ -109,7 +109,7 @@ class we_wysiwyg{
 		$this->isFrontendEdit = $isFrontendEdit;
 
 		$this->_imagePath = IMAGE_DIR . "wysiwyg/";
-		$this->_image_languagePath = WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg/";
+		$this->_image_languagePath = WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg/";
 
 		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
 		$this->charset = $charset;

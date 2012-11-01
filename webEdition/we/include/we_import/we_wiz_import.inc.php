@@ -154,9 +154,9 @@ class we_wizard_import extends we_wizard{
 	 * @desc replaces string1 by string2 in file
 	 */
 	function massReplace($string1, $string2, $file){
-		$contents = weFile::load($file,'r');
+		$contents = weFile::load($file, 'r');
 		$replacement = preg_replace("/$string1/i", $string2, $contents);
-		weFile::save($file,$replacement,'w');
+		weFile::save($file, $replacement, 'w');
 	}
 
 	function getStep0(){
@@ -486,7 +486,7 @@ class we_wizard_import extends we_wizard{
 				}
 				switch (arguments[0]) {" .
 			'case "openNavigationDirselector":
-				url = "/webEdition/we/include/we_tools/navigation/we_navigationDirSelect.php?";
+				url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
 				for(var i = 0; i < arguments.length; i++){
 					url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 				}
@@ -1821,10 +1821,10 @@ HTS;
 						break;
 					}
 
-					$contents = weFile::load($fp,'r');
+					$contents = weFile::load($fp, 'r');
 					$v["import_from"] = TEMP_DIR . "we_csv_" . $uniqueId . ".csv";
 					$replacement = str_replace("\r", "\n", $contents);
-					weFile::save($fp,$replacement,'w+');
+					weFile::save($fp, $replacement, 'w+');
 					break;
 			}
 		}
@@ -2491,18 +2491,20 @@ HTS;
 	}
 
 	function getTMPaccess(){
-		if(file_exists(TEMP_PATH . '.htaccess')){
-			unlink(TEMP_PATH . '.htaccess');
-		}
+//FIMXE: remove function
+		/* 		if(file_exists(TEMP_PATH . '.htaccess')){
+		  unlink(TEMP_PATH . '.htaccess');
+		  } */
 	}
 
 	function denyTMPaccess(){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
-			$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-			if(!file_exists(TEMP_PATH . '.htaccess')){
-				file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
-			}
-		}
+//FIMXE: remove function
+		/* 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
+		  $htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
+		  if(!file_exists(TEMP_PATH . '.htaccess')){
+		  file_put_contents(TEMP_PATH . '.htaccess', $htaccessdata);
+		  }
+		  } */
 	}
 
 }

@@ -29,7 +29,7 @@ we_html_tools::protect();
 if(isset($_GET["newthumbnail"]) && $_GET["newthumbnail"] != ""){
 	if(we_hasPerm("ADMINISTRATOR")){
 		$DB_WE->query("INSERT INTO " . THUMBNAILS_TABLE . " (Name) VALUES ('" . $DB_WE->escape($_GET["newthumbnail"]) . "')");
-		header('Location: ' . getServerUrl(true) . '/webEdition/we/include/we_editors/we_thumbnails.php?id=' . f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name = '" . $DB_WE->escape($_GET["newthumbnail"]) . "'", "ID", $DB_WE));
+		header('Location: ' . getServerUrl(true) . WE_INCLUDES_DIR . 'we_editors/we_thumbnails.php?id=' . f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name = '" . $DB_WE->escape($_GET["newthumbnail"]) . "'", "ID", $DB_WE));
 		exit();
 	}
 }
@@ -43,7 +43,7 @@ if(isset($_GET["deletethumbnail"]) && $_GET["deletethumbnail"] != ""){
 		// Delete entry in database
 		$DB_WE->query("DELETE FROM " . THUMBNAILS_TABLE . " WHERE ID = " . intval($_GET["deletethumbnail"]));
 
-		header("Location: ".getServerUrl()."/webEdition/we/include/we_editors/we_thumbnails.php");
+		header("Location: " . getServerUrl() . WE_INCLUDES_DIR . "we_editors/we_thumbnails.php");
 		exit();
 	}
 }
@@ -302,7 +302,7 @@ function build_dialog($selected_setting = "ui"){
 							} else if (in_array(thumbnail_names, name)) {
 								" . we_message_reporting::getShowMessageCall(g_l('alert', "[thumbnail_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 							} else {
-								self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?newthumbnail=' + escape(name);
+								self.location = '" . WE_INCLUDES_DIR . "we_editors/we_thumbnails.php?newthumbnail=' + escape(name);
 							}
 						}
 					}
@@ -312,13 +312,13 @@ function build_dialog($selected_setting = "ui"){
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', "[delete_prompt]"), f("SELECT Name FROM " . THUMBNAILS_TABLE . " WHERE ID='" . $_GET["id"] . "'", "Name", $DB_WE)) . "');
 
 							if (deletion == true) {
-								self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?deletethumbnail=" . $_GET["id"] . "';
+								self.location = '" . WE_INCLUDES_DIR . "we_editors/we_thumbnails.php?deletethumbnail=" . $_GET["id"] . "';
 							}" :
 					"") . "
 					}
 
 					function change_thumbnail() {
-						var url = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?id=' + arguments[0];
+						var url = '" . WE_INCLUDES_DIR. "we_editors/we_thumbnails.php?id=' + arguments[0];
 
 						self.location = url;
 					}
@@ -517,7 +517,7 @@ if(isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true"
 
 		$save_javascript = we_html_element::jsElement(
 				$save_javascript . we_message_reporting::getShowMessageCall(g_l('thumbnails', "[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) .
-				"self.location = '" . WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php?id=" . $_REQUEST["edited_id"] . "';");
+				"self.location = '" . WE_INCLUDES_DIR . "we_editors/we_thumbnails.php?id=" . $_REQUEST["edited_id"] . "';");
 	}
 
 	print STYLESHEET . $save_javascript . '</head>' .

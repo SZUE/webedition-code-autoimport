@@ -35,7 +35,7 @@ function we_tag_addDelShopItem($attribs){
 	$floatquantities = weTag_getAttribute("floatquantities", $attribs, false, true);
 	$floatquantities = empty($floatquantities) ? 0 : $floatquantities;
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+	include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
 
 	$floatfilter = new Zend_Filter_LocalizedToNormalized();
 	if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"] == $shopname) || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"] == ""){
@@ -69,7 +69,7 @@ function we_tag_addDelShopItem($attribs){
 		} else if(isset($_REQUEST["shop_artikelid"]) && ($artID = intval($_REQUEST["shop_artikelid"])) > 0 && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != "0"){
 			if($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0)){
 				if($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0)){
-					$GLOBALS[$shopname]->Add_Item($artID, $floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]):intval($_REQUEST["shop_anzahl"]), $_REQUEST["type"], (isset($_REQUEST[WE_SHOP_VARIANT_REQUEST]) ? $_REQUEST[WE_SHOP_VARIANT_REQUEST] : ""), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD] : array()));
+					$GLOBALS[$shopname]->Add_Item($artID, $floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]) : intval($_REQUEST["shop_anzahl"]), $_REQUEST["type"], (isset($_REQUEST[WE_SHOP_VARIANT_REQUEST]) ? $_REQUEST[WE_SHOP_VARIANT_REQUEST] : ""), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? $_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD] : array()));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 				$_SESSION["tb"] = $_REQUEST["t"];

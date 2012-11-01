@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 
 $javascript = '';
@@ -69,7 +69,7 @@ if($javascript != ''){
 	echo we_html_element::jsElement($javascript);
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 print STYLESHEET;
 

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $createNavigation = we_button::create_button(
 		'new_item', "javascript:we_cmd('tool_navigation_new');", true, -1, -1, "", "", !we_hasPerm('EDIT_NAVIGATION'));
 $createNavigationGroup = we_button::create_button(
@@ -32,4 +31,4 @@ $content = $createNavigation . we_html_tools::getPixel(2, 14) . $createNavigatio
 $tool = "navigation";
 $title = g_l('navigation', '[navigation]');
 
-include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/home.inc.php');
+include (WE_INCLUDES_PATH . 'we_tools/home.inc.php');

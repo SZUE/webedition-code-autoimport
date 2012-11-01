@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/weSearch/conf/define.conf.php");
+include_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 $toolTables = array();
 $toolTables['tblsearchtool'] = SUCHE_TABLE;

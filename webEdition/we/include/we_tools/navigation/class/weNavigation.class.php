@@ -101,7 +101,7 @@ class weNavigation extends weModelBase{
 			$this->load($navigationID);
 		}
 
-		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_navigationSettings.inc.php');
+		include (WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
 		if(defined('DEFAULT_CHARSET')){
@@ -175,7 +175,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function save($order = true, $rebuild = false){
-		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+		$configFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weNavigationSettingControl::saveSettings(true);
 		}
@@ -254,7 +254,7 @@ class weNavigation extends weModelBase{
 		}
 		$this->Categories = $_paths;
 		$this->Sort = $_preSort;
-		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_navigationSettings.inc.php');
+		include (WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
 
@@ -301,7 +301,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function delete(){
-		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+		$configFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
 		if(!file_exists($configFile) || !is_file($configFile)){
 			weNavigationSettingControl::saveSettings(true);
 		}
@@ -362,7 +362,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID),'a',$this->db)==='1';
+		return f('SELECT 1 AS a FROM ' . $this->db->escape($this->table) . ' WHERE Path = \'' . $this->db->escape($path) . '\' AND ID !=' . intval($this->ID), 'a', $this->db) === '1';
 	}
 
 	function isSelf(){

@@ -38,7 +38,7 @@ function we_tag_voting($attribs){
 		return $foo;
 	}
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
+	include_once(WE_INCLUDES_PATH . 'we_modules/voting/weVoting.php');
 	$version = ($version > 0) ? ($version - 1) : 0;
 	$GLOBALS["_we_voting_namespace"] = $name;
 	$GLOBALS['_we_voting'] = new weVoting();

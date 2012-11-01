@@ -29,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 /**
  * The notepad widtget functions
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/mod/wePadFunctions.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_widgets/mod/wePadFunctions.inc.php');
 
 we_html_tools::protect();
 /**
@@ -332,7 +332,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_element::jsElement(we_button::create_state_changer(false)) . we_html_element::jsElement(
 				(($_REQUEST['we_cmd'][6] == "pad/pad") ? "

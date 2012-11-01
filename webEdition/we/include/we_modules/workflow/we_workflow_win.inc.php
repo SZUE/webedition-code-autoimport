@@ -34,7 +34,7 @@ $wf_text = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_text"] : "";
 
 ###### init document #########
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 
 we_html_tools::htmlTop();

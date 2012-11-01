@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 ###### init document #########
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 we_html_tools::protect();
 

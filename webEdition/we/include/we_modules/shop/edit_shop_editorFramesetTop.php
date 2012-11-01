@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
+include_once(WE_INCLUDES_PATH . 'we_modules/shop/handle_shop_dbitemConnect.php');
 
 we_html_tools::protect();
 
@@ -53,26 +53,26 @@ $DB_WE->next_record();
 $resultD = $DB_WE->f("Anzahl");
 we_html_tools::htmlTop();
 ?>
-	</head>
-	<frameset rows="40,*" framespacing="0" border="0" frameborder="no">
-    <frame src="edit_shop_editorHeaderTop.php?mid=<?php print $mid; ?>&bid=<?php print $bid; ?>&home=<?php print $home; ?>&typ=object&ViewClass=<?php print $classid; ?>" name="edheader" noresize scrolling=no>
-			<?php
-			if($home){
-				print "<frame src='/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop' name='edbody' scrolling=auto>";
-			} else if($mid){
-				// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
-				print "<frame src='edit_shop_overviewTop.php?mid=\"$mid\"' name='edbody' scrolling=auto>";
-			} else{
-				if(($resultD > 0) && (empty($resultO))){ // docs but no objects
-					print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
-				} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
-					print "<frame src='edit_shop_article_extend.php?typ=object&ViewClass=$classid' name='edbody' scrolling=auto>";
-				} elseif(($resultD > 0) && (!empty($resultO))){
-					print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
-				}
-			}
-			?>
-	</frameset>
-  <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
-	</body>
+</head>
+<frameset rows="40,*" framespacing="0" border="0" frameborder="no">
+	<frame src="edit_shop_editorHeaderTop.php?mid=<?php print $mid; ?>&bid=<?php print $bid; ?>&home=<?php print $home; ?>&typ=object&ViewClass=<?php print $classid; ?>" name="edheader" noresize scrolling=no>
+	<?php
+	if($home){
+		print "<frame src='/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop' name='edbody' scrolling=auto>";
+	} else if($mid){
+		// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
+		print "<frame src='edit_shop_overviewTop.php?mid=\"$mid\"' name='edbody' scrolling=auto>";
+	} else{
+		if(($resultD > 0) && (empty($resultO))){ // docs but no objects
+			print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
+		} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
+			print "<frame src='edit_shop_article_extend.php?typ=object&ViewClass=$classid' name='edbody' scrolling=auto>";
+		} elseif(($resultD > 0) && (!empty($resultO))){
+			print "<frame src='edit_shop_article_extend.php?typ=document' name='edbody' scrolling=auto>";
+		}
+	}
+	?>
+</frameset>
+<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+</body>
 </html>

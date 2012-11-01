@@ -1213,7 +1213,7 @@ class weNewsletterFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "newsletter";
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;
@@ -1222,7 +1222,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$js = $this->View->getJSProperty();
 
 		$js .= we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsElement(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsElement(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 		$js .=we_html_element::jsElement('
