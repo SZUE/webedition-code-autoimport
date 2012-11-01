@@ -22,84 +22,102 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_messaging['000100']['text'] = g_l('javaMenu_messaging', '[file]');
-$we_menu_messaging['000100']['parent'] = '000000';
-$we_menu_messaging['000100']['enabled'] = '1';
-
-$we_menu_messaging['000110']['text'] = g_l('javaMenu_messaging', '[new]');
-$we_menu_messaging['000110']['parent'] = '000100';
-$we_menu_messaging['000110']['enabled'] = '1';
-
-$we_menu_messaging['000111']['text'] = g_l('javaMenu_messaging', '[message]') . "...";
-$we_menu_messaging['000111']['cmd'] = 'messaging_new_message';
-$we_menu_messaging['000111']['parent'] = '000110';
-$we_menu_messaging['000111']['enabled'] = '1';
-
-$we_menu_messaging['000112']['text'] = g_l('javaMenu_messaging', '[todo]') . "...";
-$we_menu_messaging['000112']['cmd'] = 'messaging_new_todo';
-$we_menu_messaging['000112']['parent'] = '000110';
-$we_menu_messaging['000112']['enabled'] = '1';
-
-$we_menu_messaging['000113']['text'] = g_l('javaMenu_messaging', '[folder]');
-$we_menu_messaging['000113']['cmd'] = 'messaging_new_folder';
-$we_menu_messaging['000113']['parent'] = '000110';
-$we_menu_messaging['000113']['enabled'] = '1';
-
-$we_menu_messaging['000120']['text'] = g_l('javaMenu_messaging', '[delete]');
-$we_menu_messaging['000120']['parent'] = '000100';
-$we_menu_messaging['000120']['enabled'] = '1';
-
-$we_menu_messaging['000122']['text'] = g_l('javaMenu_messaging', '[folder]');
-$we_menu_messaging['000122']['cmd'] = 'messaging_delete_mode_on';
-$we_menu_messaging['000122']['parent'] = '000120';
-$we_menu_messaging['000122']['enabled'] = '1';
-
-$we_menu_messaging['000190']['text'] = g_l('javaMenu_messaging', '[quit]');
-$we_menu_messaging['000190']['cmd'] = 'messaging_exit';
-$we_menu_messaging['000190']['parent'] = '000100';
-$we_menu_messaging['000190']['enabled'] = '1';
-
-
-$we_menu_messaging['000200']['text'] = g_l('javaMenu_messaging', '[edit]');
-$we_menu_messaging['000200']['parent'] = '000000';
-$we_menu_messaging['000200']['enabled'] = '1';
-
-$we_menu_messaging['000220']['text'] = g_l('javaMenu_messaging', '[folder]');
-$we_menu_messaging['000220']['cmd'] = 'messaging_edit_folder';
-$we_menu_messaging['000220']['parent'] = '000200';
-$we_menu_messaging['000220']['enabled'] = '1';
-
-$we_menu_messaging['000230']['text'] = g_l('javaMenu_messaging', '[settings]') . "...";
-$we_menu_messaging['000230']['cmd'] = 'messaging_settings';
-$we_menu_messaging['000230']['parent'] = '000200';
-$we_menu_messaging['000230']['enabled'] = '1';
-
-$we_menu_messaging['000240']['text'] = g_l('javaMenu_messaging', '[copy]');
-$we_menu_messaging['000240']['cmd'] = 'messaging_copy';
-$we_menu_messaging['000240']['parent'] = '000200';
-$we_menu_messaging['000240']['enabled'] = '1';
-
-$we_menu_messaging['000250']['text'] = g_l('javaMenu_messaging', '[cut]');
-$we_menu_messaging['000250']['cmd'] = 'messaging_cut';
-$we_menu_messaging['000250']['parent'] = '000200';
-$we_menu_messaging['000250']['enabled'] = '1';
-
-$we_menu_messaging['000260']['text'] = g_l('javaMenu_messaging', '[paste]');
-$we_menu_messaging['000260']['cmd'] = 'messaging_paste';
-$we_menu_messaging['000260']['parent'] = '000200';
-$we_menu_messaging['000260']['enabled'] = '1';
-
-
-$we_menu_messaging["000300"]["text"] = g_l('javaMenu_messaging', '[help]');
-$we_menu_messaging["000300"]["parent"] = "000000";
-$we_menu_messaging["000300"]["enabled"] = "1";
-
-$we_menu_messaging["000310"]["text"] = g_l('javaMenu_messaging', '[help]') . "...";
-$we_menu_messaging["000310"]["parent"] = "000300";
-$we_menu_messaging["000310"]["cmd"] = "help_modules";
-$we_menu_messaging["000310"]["enabled"] = "1";
-
-$we_menu_messaging["000320"]["text"] = g_l('javaMenu_messaging', '[info]') . "...";
-$we_menu_messaging["000320"]["parent"] = "000300";
-$we_menu_messaging["000320"]["cmd"] = "info_modules";
-$we_menu_messaging["000320"]["enabled"] = "1";
+$we_menu_messaging = array(
+	'000100' => array(
+		'text' => g_l('javaMenu_messaging', '[file]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	'000110' => array(
+		'text' => g_l('javaMenu_messaging', '[new]'),
+		'parent' => '000100',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[message]') . '...',
+		'cmd' => 'messaging_new_message',
+		'parent' => '000110',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[todo]') . '...',
+		'cmd' => 'messaging_new_todo',
+		'parent' => '000110',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[folder]'),
+		'cmd' => 'messaging_new_folder',
+		'parent' => '000110',
+		'enabled' => '1',
+	),
+	'000120' => array(
+		'text' => g_l('javaMenu_messaging', '[delete]'),
+		'parent' => '000100',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[folder]'),
+		'cmd' => 'messaging_delete_mode_on',
+		'parent' => '000120',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[quit]'),
+		'cmd' => 'messaging_exit',
+		'parent' => '000100',
+		'enabled' => '1',
+	),
+	'000200' => array(
+		'text' => g_l('javaMenu_messaging', '[edit]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[folder]'),
+		'cmd' => 'messaging_edit_folder',
+		'parent' => '000200',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[settings]') . '...',
+		'cmd' => 'messaging_settings',
+		'parent' => '000200',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[copy]'),
+		'cmd' => 'messaging_copy',
+		'parent' => '000200',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[cut]'),
+		'cmd' => 'messaging_cut',
+		'parent' => '000200',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[paste]'),
+		'cmd' => 'messaging_paste',
+		'parent' => '000200',
+		'enabled' => '1',
+	),
+	'000300' => array(
+		'text' => g_l('javaMenu_messaging', '[help]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[help]') . '...',
+		'parent' => '000300',
+		'cmd' => 'help_modules',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_messaging', '[info]') . '...',
+		'parent' => '000300',
+		'cmd' => 'info_modules',
+		'enabled' => '1',
+	)
+);

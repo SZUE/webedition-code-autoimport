@@ -22,64 +22,79 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-$we_menu_users["000100"]["text"] = g_l('javaMenu_users','[menu_user]');
-$we_menu_users["000100"]["parent"] = "000000";
-$we_menu_users["000100"]["enabled"] = "0";
-
-$we_menu_users["000150"]["text"] = g_l('javaMenu_users','[menu_new]');
-$we_menu_users["000150"]["parent"] = "000100";
-$we_menu_users["000150"]["enabled"] = "0";
-
-$we_menu_users["000200"]["text"] = g_l('javaMenu_users','[menu_user]');
-$we_menu_users["000200"]["parent"] = "000150";
-$we_menu_users["000200"]["cmd"] = "new_user";
-$we_menu_users["000200"]["perm"] = "NEW_USER || ADMINISTRATOR";
-$we_menu_users["000200"]["enabled"] = "0";
-
-$we_menu_users["000600"]["text"] = g_l('javaMenu_users','[menu_save]');
-$we_menu_users["000600"]["parent"] = "000100";
-$we_menu_users["000600"]["cmd"] = "save_user";
-$we_menu_users["000600"]["perm"] = "NEW_GROUP || NEW_USER || SAVE_USER || SAVE_GROUP || ADMINISTRATOR";
-$we_menu_users["000600"]["enabled"] = "0";
-
-$we_menu_users["000700"]["text"] = g_l('javaMenu_users','[menu_delete]');
-$we_menu_users["000700"]["parent"] = "000100";
-$we_menu_users["000700"]["cmd"] = "delete_user";
-$we_menu_users["000700"]["perm"] = "DELETE_USER || DELETE_GROUP || ADMINISTRATOR";
-$we_menu_users["000700"]["enabled"] = "0";
-
-$we_menu_users["000800"]["parent"] = "000100"; // separator
-
-$we_menu_users["000900"]["text"] = g_l('javaMenu_users','[menu_exit]');
-$we_menu_users["000900"]["parent"] = "000100";
-$we_menu_users["000900"]["cmd"] = "exit_users";
-$we_menu_users["000900"]["enabled"] = "1";
-
-$we_menu_users["001500"]["text"] = g_l('javaMenu_users','[menu_help]');
-$we_menu_users["001500"]["parent"] = "000000";
-$we_menu_users["001500"]["enabled"] = "1";
-
-$we_menu_users["001600"]["text"] = g_l('javaMenu_users','[menu_help]') . "...";
-$we_menu_users["001600"]["parent"] = "001500";
-$we_menu_users["001600"]["cmd"] = "help_modules";
-$we_menu_users["001600"]["enabled"] = "1";
-
-$we_menu_users["001700"]["text"] = g_l('javaMenu_users','[menu_info]') . "...";
-$we_menu_users["001700"]["parent"] = "001500";
-$we_menu_users["001700"]["cmd"] = "info_modules";
-$we_menu_users["001700"]["enabled"] = "1";
-
-$we_menu_users["000300"]["text"] = g_l('javaMenu_users','[menu_alias]');
-$we_menu_users["000300"]["parent"] = "000150";
-$we_menu_users["000300"]["cmd"] = "new_alias";
-$we_menu_users["000300"]["perm"] = "NEW_USER || ADMINISTRATOR";
-$we_menu_users["000300"]["enabled"] = "0";
-
-$we_menu_users["000350"]["parent"] = "000150"; // separator
-
-$we_menu_users["000400"]["text"] = g_l('javaMenu_users','[group]');
-$we_menu_users["000400"]["parent"] = "000150";
-$we_menu_users["000400"]["cmd"] = "new_group";
-$we_menu_users["000400"]["perm"] = "NEW_GROUP || ADMINISTRATOR";
-$we_menu_users["000400"]["enabled"] = "0";
+$we_menu_users = array(
+	'000100' => array(
+		'text' => g_l('javaMenu_users', '[menu_user]'),
+		'parent' => '000000',
+		'enabled' => '0',
+	),
+	'000150' => array(
+		'text' => g_l('javaMenu_users', '[menu_new]'),
+		'parent' => '000100',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_user]'),
+		'parent' => '000150',
+		'cmd' => 'new_user',
+		'perm' => 'NEW_USER || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_save]'),
+		'parent' => '000100',
+		'cmd' => 'save_user',
+		'perm' => 'NEW_GROUP || NEW_USER || SAVE_USER || SAVE_GROUP || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_delete]'),
+		'parent' => '000100',
+		'cmd' => 'delete_user',
+		'perm' => 'DELETE_USER || DELETE_GROUP || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_exit]'),
+		'parent' => '000100',
+		'cmd' => 'exit_users',
+		'enabled' => '1',
+	),
+	'001500' => array(
+		'text' => g_l('javaMenu_users', '[menu_help]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_help]') . '...',
+		'parent' => '001500',
+		'cmd' => 'help_modules',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_info]') . '...',
+		'parent' => '001500',
+		'cmd' => 'info_modules',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_alias]'),
+		'parent' => '000150',
+		'cmd' => 'new_alias',
+		'perm' => 'NEW_USER || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'parent' => '000150', // separator
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[group]'),
+		'parent' => '000150',
+		'cmd' => 'new_group',
+		'perm' => 'NEW_GROUP || ADMINISTRATOR',
+		'enabled' => '0',
+	)
+);
