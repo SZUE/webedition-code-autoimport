@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,101 +22,123 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$we_menu_navigation = array(
+	'000100' => array(
+		'text' => g_l('navigation', '[navigation]'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	'000200' => array(
+		'text' => g_l('navigation', '[menu_new]'),
+		'parent' => '000100',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('navigation', '[entry]'),
+		'parent' => '000200',
+		'cmd' => 'tool_navigation_new',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('navigation', '[group]'),
+		'parent' => '000200',
+		'cmd' => 'tool_navigation_new_group',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('navigation', '[menu_save]'),
+		'parent' => '000100',
+		'cmd' => 'tool_navigation_save',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('navigation', '[menu_delete]'),
+		'parent' => '000100',
+		'cmd' => 'tool_navigation_delete',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => g_l('navigation', '[menu_exit]'),
+		'parent' => '000100',
+		'cmd' => 'tool_navigation_exit',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	/*
+	  '001500'=>array(
+	  'text'=> g_l('navigation','[menu_options]'),
+	  'parent'=> '000000',
+	  'perm'=> '',
+	  'enabled'=> '1',
+	  ),
+	  array(
 
+	  'text'=> g_l('navigation','[menu_generate]').'...',
+	  'parent'=> '001500',
+	  'cmd'=> 'generate_navigation',
+	  'perm'=> '',
+	  'enabled'=> '1',
+	  ),
+	  array(
 
-$we_menu_navigation = array();
+	  'text'=> g_l('navigation','[menu_settings]'),
+	  'parent'=> '001500',
+	  'cmd'=> 'settings_navigation',
+	  'perm'=> '',
+	  'enabled'=> '1',
+	  ), */
 
-$we_menu_navigation['000100']['text'] = g_l('navigation','[navigation]');
-$we_menu_navigation['000100']['parent'] = '000000';
-$we_menu_navigation['000100']['perm'] = '';
-$we_menu_navigation['000100']['enabled'] = '1';
-
-$we_menu_navigation['000200']['text'] = g_l('navigation','[menu_new]');
-$we_menu_navigation['000200']['parent'] = '000100';
-$we_menu_navigation['000200']['perm'] = '';
-$we_menu_navigation['000200']['enabled'] = '1';
-
-$we_menu_navigation['000300']['text'] = g_l('navigation','[entry]');
-$we_menu_navigation['000300']['parent'] = '000200';
-$we_menu_navigation['000300']['cmd'] = 'tool_navigation_new';
-$we_menu_navigation['000300']['perm'] = 'EDIT_NAVIGATION || ADMINISTRATOR';
-$we_menu_navigation['000300']['enabled'] = '1';
-
-$we_menu_navigation['000400']['text'] = g_l('navigation','[group]');
-$we_menu_navigation['000400']['parent'] = '000200';
-$we_menu_navigation['000400']['cmd'] = 'tool_navigation_new_group';
-$we_menu_navigation['000400']['perm'] = 'EDIT_NAVIGATION || ADMINISTRATOR';
-$we_menu_navigation['000400']['enabled'] = '1';
-
-$we_menu_navigation['000500']['text'] = g_l('navigation','[menu_save]');
-$we_menu_navigation['000500']['parent'] = '000100';
-$we_menu_navigation['000500']['cmd'] = 'tool_navigation_save';
-$we_menu_navigation['000500']['perm'] = 'EDIT_NAVIGATION || ADMINISTRATOR';
-$we_menu_navigation['000500']['enabled'] = '1';
-
-$we_menu_navigation['000600']['text'] = g_l('navigation','[menu_delete]');
-$we_menu_navigation['000600']['parent'] = '000100';
-$we_menu_navigation['000600']['cmd'] = 'tool_navigation_delete';
-$we_menu_navigation['000600']['perm'] = 'EDIT_NAVIGATION || ADMINISTRATOR';
-$we_menu_navigation['000600']['enabled'] = '1';
-
-$we_menu_navigation['000950']['parent'] = '000100'; // separator
-
-$we_menu_navigation['001000']['text'] = g_l('navigation','[menu_exit]');
-$we_menu_navigation['001000']['parent'] = '000100';
-$we_menu_navigation['001000']['cmd'] = 'tool_navigation_exit';
-$we_menu_navigation['001000']['perm'] = '';
-$we_menu_navigation['001000']['enabled'] = '1';
-/*
-$we_menu_navigation['001500']['text'] = g_l('navigation','[menu_options]');
-$we_menu_navigation['001500']['parent'] = '000000';
-$we_menu_navigation['001500']['perm'] = '';
-$we_menu_navigation['001500']['enabled'] = '1';
-
-$we_menu_navigation['001600']['text'] = g_l('navigation','[menu_generate]').'...';
-$we_menu_navigation['001600']['parent'] = '001500';
-$we_menu_navigation['001600']['cmd'] = 'generate_navigation';
-$we_menu_navigation['001600']['perm'] = '';
-$we_menu_navigation['001600']['enabled'] = '1';
-
-$we_menu_navigation['001700']['text'] = g_l('navigation','[menu_settings]');
-$we_menu_navigation['001700']['parent'] = '001500';
-$we_menu_navigation['001700']['cmd'] = 'settings_navigation';
-$we_menu_navigation['001700']['perm'] = '';
-$we_menu_navigation['001700']['enabled'] = '1';*/
-
-$we_menu_navigation['002000']['text'] = g_l('navigation','[menu_options]');
-$we_menu_navigation['002000']['parent'] = '000000';
-$we_menu_navigation['002000']['perm'] = '';
-$we_menu_navigation['002000']['enabled'] = '1';
-
-$we_menu_navigation['002100']['text'] = g_l('navigation','[menu_highlight_rules]');
-$we_menu_navigation['002100']['parent'] = '002000';
-$we_menu_navigation['002100']['perm'] = '';
-$we_menu_navigation['002100']['cmd'] = 'tool_navigation_rules';
-$we_menu_navigation['002100']['enabled'] = '1';
-
-if (defined("CUSTOMER_TABLE")) {
-	$we_menu_navigation['002200']['text'] = g_l('navigation','[reset_customer_filter]');
-	$we_menu_navigation['002200']['parent'] = '002000';
-	$we_menu_navigation['002200']['perm'] = 'ADMINISTRATOR';
-	$we_menu_navigation['002200']['cmd'] = 'tool_navigation_reset_customer_filter';
-	$we_menu_navigation['002200']['enabled'] = '1';
+	'002000' => array(
+		'text' => g_l('navigation', '[menu_options]'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('navigation', '[menu_highlight_rules]'),
+		'parent' => '002000',
+		'perm' => '',
+		'cmd' => 'tool_navigation_rules',
+		'enabled' => '1',
+	));
+if(defined('CUSTOMER_TABLE')){
+	$we_menu_navigation['002200'] = array(
+		'text' => g_l('navigation', '[reset_customer_filter]'),
+		'parent' => '002000',
+		'perm' => 'ADMINISTRATOR',
+		'cmd' => 'tool_navigation_reset_customer_filter',
+		'enabled' => '1',
+	);
 }
 
-$we_menu_navigation['003000']['text'] = g_l('navigation','[menu_help]');
-$we_menu_navigation['003000']['parent'] = '000000';
-$we_menu_navigation['003000']['perm'] = '';
-$we_menu_navigation['003000']['enabled'] = '1';
+$we_menu_navigation['003000'] = array(
+	'text' => g_l('navigation', '[menu_help]'),
+	'parent' => '000000',
+	'perm' => '',
+	'enabled' => '1',
+);
 
-$we_menu_navigation['003100']['text'] = g_l('navigation','[menu_help]').'...';
-$we_menu_navigation['003100']['parent'] = '003000';
-$we_menu_navigation['003100']['cmd'] = 'help_tools';
-$we_menu_navigation['003100']['perm'] = '';
-$we_menu_navigation['003100']['enabled'] = '1';
+$we_menu_navigation['003100'] = array(
+	'text' => g_l('navigation', '[menu_help]') . '...',
+	'parent' => '003000',
+	'cmd' => 'help_tools',
+	'perm' => '',
+	'enabled' => '1',
+);
 
-$we_menu_navigation['003200']['text'] = g_l('navigation','[menu_info]').'...';
-$we_menu_navigation['003200']['parent'] = '003000';
-$we_menu_navigation['003200']['cmd'] = 'info_tools';
-$we_menu_navigation['003200']['perm'] = '';
-$we_menu_navigation['003200']['enabled'] = '1';
+$we_menu_navigation['003200'] = array(
+	'text' => g_l('navigation', '[menu_info]') . '...',
+	'parent' => '003000',
+	'cmd' => 'info_tools',
+	'perm' => '',
+	'enabled' => '1',
+);

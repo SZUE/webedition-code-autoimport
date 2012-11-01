@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,63 +22,75 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-$we_menu_voting["000100"]["text"] =g_l('modules_voting','[voting]');
-$we_menu_voting["000100"]["parent"] = "000000";
-$we_menu_voting["000100"]["perm"] = "";
-$we_menu_voting["000100"]["enabled"] = "1";
-
-$we_menu_voting["000200"]["text"] = g_l('modules_voting','[menu_new]');
-$we_menu_voting["000200"]["parent"] = "000100";
-$we_menu_voting["000200"]["perm"] = "";
-$we_menu_voting["000200"]["enabled"] = "1";
-
-$we_menu_voting["000300"]["text"] = g_l('modules_voting','[voting]');
-$we_menu_voting["000300"]["parent"] = "000200";
-$we_menu_voting["000300"]["cmd"] = "new_voting";
-$we_menu_voting["000300"]["perm"] = "NEW_VOTING || ADMINISTRATOR";
-$we_menu_voting["000300"]["enabled"] = "1";
-
-$we_menu_voting["000400"]["text"] = g_l('modules_voting','[group]');
-$we_menu_voting["000400"]["parent"] = "000200";
-$we_menu_voting["000400"]["cmd"] = "new_voting_group";
-$we_menu_voting["000400"]["perm"] = "NEW_VOTING || ADMINISTRATOR";
-$we_menu_voting["000400"]["enabled"] = "1";
-
-$we_menu_voting["000500"]["text"] = g_l('modules_voting','[menu_save]');
-$we_menu_voting["000500"]["parent"] = "000100";
-$we_menu_voting["000500"]["cmd"] = "save_voting";
-$we_menu_voting["000500"]["perm"] = "EDIT_VOTING || NEW_VOTING || ADMINISTRATOR";
-$we_menu_voting["000500"]["enabled"] = "1";
-
-$we_menu_voting["000600"]["text"] = g_l('modules_voting','[menu_delete]');
-$we_menu_voting["000600"]["parent"] = "000100";
-$we_menu_voting["000600"]["cmd"] = "delete_voting";
-$we_menu_voting["000600"]["perm"] = "DELETE_VOTING || ADMINISTRATOR";
-$we_menu_voting["000600"]["enabled"] = "1";
-
-$we_menu_voting["000950"]["parent"] = "000100"; // separator
-
-$we_menu_voting["001000"]["text"] = g_l('modules_voting','[menu_exit]');
-$we_menu_voting["001000"]["parent"] = "000100";
-$we_menu_voting["001000"]["cmd"] = "exit_voting";
-$we_menu_voting["001000"]["perm"] = "";
-$we_menu_voting["001000"]["enabled"] = "1";
-
-$we_menu_voting["001100"]["text"] = g_l('modules_voting','[menu_help]');
-$we_menu_voting["001100"]["parent"] = "000000";
-$we_menu_voting["001100"]["perm"] = "";
-$we_menu_voting["001100"]["enabled"] = "1";
-
-$we_menu_voting["001200"]["text"] = g_l('modules_voting','[menu_help]')."...";;
-$we_menu_voting["001200"]["parent"] = "001100";
-$we_menu_voting["001200"]["cmd"] = "help_modules";
-$we_menu_voting["001200"]["perm"] = "";
-$we_menu_voting["001200"]["enabled"] = "1";
-
-$we_menu_voting["001300"]["text"] = g_l('modules_voting','[menu_info]')."...";;
-$we_menu_voting["001300"]["parent"] = "001100";
-$we_menu_voting["001300"]["cmd"] = "info_modules";
-$we_menu_voting["001300"]["perm"] = "";
-$we_menu_voting["001300"]["enabled"] = "1";
+$we_menu_voting = array(
+	'000100' => array(
+		'text' => g_l('modules_voting', '[voting]'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	'000200' => array(
+		'text' => g_l('modules_voting', '[menu_new]'),
+		'parent' => '000100',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[voting]'),
+		'parent' => '000200',
+		'cmd' => 'new_voting',
+		'perm' => 'NEW_VOTING || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[group]'),
+		'parent' => '000200',
+		'cmd' => 'new_voting_group',
+		'perm' => 'NEW_VOTING || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[menu_save]'),
+		'parent' => '000100',
+		'cmd' => 'save_voting',
+		'perm' => 'EDIT_VOTING || NEW_VOTING || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[menu_delete]'),
+		'parent' => '000100',
+		'cmd' => 'delete_voting',
+		'perm' => 'DELETE_VOTING || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => g_l('modules_voting', '[menu_exit]'),
+		'parent' => '000100',
+		'cmd' => 'exit_voting',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	'001100' => array(
+		'text' => g_l('modules_voting', '[menu_help]'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[menu_help]') . '...',
+		'parent' => '001100',
+		'cmd' => 'help_modules',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_voting', '[menu_info]') . '...',
+		'parent' => '001100',
+		'cmd' => 'info_modules',
+		'perm' => '',
+		'enabled' => '1',
+	)
+);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
 
@@ -31,51 +31,62 @@ include_once ('meta.conf.php');
 $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
-$we_menu_toolfactory['000100']['text'] = $translate->_('toolfactory');
-$we_menu_toolfactory['000100']['parent'] = '000000';
-$we_menu_toolfactory['000100']['perm'] = '';
-$we_menu_toolfactory['000100']['enabled'] = '1';
-
-$we_menu_toolfactory['000200']['text'] = $translate->_('New Entry');
-$we_menu_toolfactory['000200']['parent'] = '000100';
-$we_menu_toolfactory['000200']['cmd'] = 'app_' . $appName . '_new';
-$we_menu_toolfactory['000200']['perm'] = 'NEW_APP_TOOLFACTORY || ADMINISTRATOR';
-$we_menu_toolfactory['000200']['enabled'] = '1';
-
-$we_menu_toolfactory['000300']['text'] = $translate->_('Delete Entry/Group.');
-$we_menu_toolfactory['000300']['parent'] = '000100';
-$we_menu_toolfactory['000300']['cmd'] = 'app_' . $appName . '_checkdelete';
-$we_menu_toolfactory['000300']['perm'] = 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR';
-$we_menu_toolfactory['000300']['enabled'] = '1';
-
-$we_menu_toolfactory['000400']['text'] = $translate->_('Generate TGZ-File from App');
-$we_menu_toolfactory['000400']['parent'] = '000100';
-$we_menu_toolfactory['000400']['cmd'] = 'app_' . $appName . '_generateTGZ';
-$we_menu_toolfactory['000400']['perm'] = 'NEW_APP_TOOLFACTORY || ADMINISTRATOR';
-$we_menu_toolfactory['000400']['enabled'] = '1';
-
-$we_menu_toolfactory['000800']['parent'] = '000100'; // separator
-
-$we_menu_toolfactory['001000']['text'] = $translate->_('Close');
-$we_menu_toolfactory['001000']['parent'] = '000100';
-$we_menu_toolfactory['001000']['cmd'] = 'app_' . $appName . '_exit';
-$we_menu_toolfactory['001000']['perm'] = '';
-$we_menu_toolfactory['001000']['enabled'] = '1';
-
-$we_menu_toolfactory['003000']['text'] = $translate->_('Help');
-$we_menu_toolfactory['003000']['parent'] = '000000';
-$we_menu_toolfactory['003000']['perm'] = '';
-$we_menu_toolfactory['003000']['enabled'] = '1';
-
-$we_menu_toolfactory['003100']['text'] = $translate->_('Help') . '...';
-$we_menu_toolfactory['003100']['parent'] = '003000';
-$we_menu_toolfactory['003100']['cmd'] = 'app_' . $appName . '_help';
-$we_menu_toolfactory['003100']['perm'] = '';
-$we_menu_toolfactory['003100']['enabled'] = '1';
-
-$we_menu_toolfactory['003200']['text'] = $translate->_('Info') . '...';
-$we_menu_toolfactory['003200']['parent'] = '003000';
-$we_menu_toolfactory['003200']['cmd'] = 'app_' . $appName . '_info';
-$we_menu_toolfactory['003200']['perm'] = '';
-$we_menu_toolfactory['003200']['enabled'] = '1';
-?>
+$we_menu_toolfactory = array(
+	'000100' => array(
+		'text' => $translate->_('toolfactory'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => $translate->_('New Entry'),
+		'parent' => '000100',
+		'cmd' => 'app_' . $appName . '_new',
+		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => $translate->_('Delete Entry/Group.'),
+		'parent' => '000100',
+		'cmd' => 'app_' . $appName . '_checkdelete',
+		'perm' => 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => $translate->_('Generate TGZ-File from App'),
+		'parent' => '000100',
+		'cmd' => 'app_' . $appName . '_generateTGZ',
+		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => $translate->_('Close'),
+		'parent' => '000100',
+		'cmd' => 'app_' . $appName . '_exit',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	'003000' => array(
+		'text' => $translate->_('Help'),
+		'parent' => '000000',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => $translate->_('Help') . '...',
+		'parent' => '003000',
+		'cmd' => 'app_' . $appName . '_help',
+		'perm' => '',
+		'enabled' => '1',
+	),
+	array(
+		'text' => $translate->_('Info') . '...',
+		'parent' => '003000',
+		'cmd' => 'app_' . $appName . '_info',
+		'perm' => '',
+		'enabled' => '1',
+	)
+);
