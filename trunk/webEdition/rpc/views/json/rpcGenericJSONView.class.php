@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,12 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGenericJSONView extends rpcView{
 
-class rpcGenericJSONView extends rpcView {
-
-	function getResponse($response) {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/JSON.php");
+	function getResponse($response){
+		include_once(WE_INCLUDES_PATH . 'we_classes/JSON.php');
 		$json = new Services_JSON();
 		return $json->encode($response);
 	}
+
 }

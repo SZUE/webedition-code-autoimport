@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
 
 /**
  * This function writes the shop data (order) to the database
@@ -184,19 +184,19 @@ function we_tag_writeShopData($attribs){
 		}
 		//}
 		if(isset($GLOBALS['weEconda'])){
-		  /*
-		  * first get the prefs for country, city, address by shop default settings and shop payment settings
-		  */
-            $shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_CountryLanguage"', 'strFelder', $DB_WE));
-            if(is_array($shopDefaultPrefs)){ // check for array
-                $fieldCountry = $shopDefaultPrefs['stateField'];
-                $emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
-            }
-            $shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
-            if(isset($shopPaymentPrefs[2]) && isset($shopPaymentPrefs[3]) && isset($shopPaymentPrefs[4])){
-                $emosBillingCity = substr($_SESSION['webuser'][$shopPaymentPrefs[3]],0,1)."/".substr($_SESSION['webuser'][$shopPaymentPrefs[3]],0,2)."/".$_SESSION['webuser'][$shopPaymentPrefs[4]]."/".$_SESSION['webuser'][$shopPaymentPrefs[3]];
-                //$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];
-            }
+			/*
+			 * first get the prefs for country, city, address by shop default settings and shop payment settings
+			 */
+			$shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_CountryLanguage"', 'strFelder', $DB_WE));
+			if(is_array($shopDefaultPrefs)){ // check for array
+				$fieldCountry = $shopDefaultPrefs['stateField'];
+				$emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
+			}
+			$shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
+			if(isset($shopPaymentPrefs[2]) && isset($shopPaymentPrefs[3]) && isset($shopPaymentPrefs[4])){
+				$emosBillingCity = substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 1) . "/" . substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 2) . "/" . $_SESSION['webuser'][$shopPaymentPrefs[4]] . "/" . $_SESSION['webuser'][$shopPaymentPrefs[3]];
+				//$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];
+			}
 			$GLOBALS['weEconda']['emosBilling'] .= "
                 if(typeof emosBillingPageArray == 'undefined') var emosBillingPageArray = new Array();
                 emosBillingPageArray [0]='" . $orderID . "';

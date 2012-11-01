@@ -25,7 +25,6 @@
 
 /**
  * Filename:    we_html_select.inc.php
- * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Utility class that implements operations on selects
  *

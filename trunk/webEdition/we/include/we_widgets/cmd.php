@@ -29,7 +29,7 @@ switch($_REQUEST['we_cmd'][0]){
 		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
 		break;
 	case "add" :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
+		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
 		$aProps = array();
 		$aProps[0] = $_REQUEST['we_cmd'][1];

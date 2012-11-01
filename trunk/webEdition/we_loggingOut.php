@@ -21,15 +21,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
- * This file is opened by js-function dounload() which is only triggered 
+ * This file is opened by js-function dounload() which is only triggered
  * when webEdition.php is not closed regularily (by using menu -> quit): window.onbeforeunload()
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $isIncluded = true;
-include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_logout.inc.php');
+include(WE_INCLUDES_PATH . 'we_logout.inc.php');
 
 if($_REQUEST['isopener']){
 	header("location: " . WEBEDITION_DIR . "index.php");
@@ -37,15 +36,15 @@ if($_REQUEST['isopener']){
 ?>
 
 <html>
-<head>
-<script type="text/javascript"><!--
-function closeIt(){
-	self.close();
-}
-//-->
-</script>
-</head>
-<body onLoad="self.setTimeout(closeIt,1000);" style="background-color:#386AAB;color:white">
-	<?php echo g_l('global', "[irregular_logout]");?>
-</body>
+	<head>
+		<script type="text/javascript"><!--
+			function closeIt(){
+				self.close();
+			}
+			//-->
+		</script>
+	</head>
+	<body onLoad="self.setTimeout(closeIt,1000);" style="background-color:#386AAB;color:white">
+		<?php echo g_l('global', "[irregular_logout]"); ?>
+	</body>
 </html>

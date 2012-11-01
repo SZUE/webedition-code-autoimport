@@ -33,12 +33,12 @@ function we_include_tag_file($name){
 		// do noting
 		return true;
 	}
-	if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/' . $fn . '.inc.php')){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/' . $fn . '.inc.php');
+	if(file_exists(WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php')){
+		include_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
 		return true;
 	}
-	if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . $fn . '.inc.php')){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . $fn . '.inc.php');
+	if(file_exists(WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php')){
+		include_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
 		return true;
 	}
 

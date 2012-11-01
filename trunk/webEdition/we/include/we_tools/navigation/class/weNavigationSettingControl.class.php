@@ -61,7 +61,7 @@ class weNavigationSettingControl{
 
 EOF;
 
-			$languageFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+			$languageFile = WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_conf_navigation.inc.php';
 			return weFile::save($languageFile, $code, "w+");
 		}
 	}

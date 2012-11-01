@@ -28,24 +28,21 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_tran
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 function inWorkflow($doc){
-	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc)
+	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc){
 		return false;
-
+	}
 	return ($doc->ID ? we_workflow_utility::inWorkflow($doc->ID, $doc->Table) : false);
 }
 
 function getControlElement($type, $name){
 	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
-		if(isset($GLOBALS['we_doc']->controlElement[$type][$name])){
-
-			return $GLOBALS['we_doc']->controlElement[$type][$name];
-		} else{
-			return false;
-		}
+		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
+				$GLOBALS['we_doc']->controlElement[$type][$name] :
+				false);
 	} else{
 		return false;
 	}

@@ -156,7 +156,7 @@ class weExportFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "export";
 			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;
@@ -505,7 +505,7 @@ class weExportFrames extends weModuleFrames{
 			switch($_REQUEST["cmd"]){
 				case "load":
 					if(isset($_REQUEST["pid"])){
-						$out = we_html_element::jsElement("self.location='/webEdition/we/include/we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+						$out = we_html_element::jsElement("self.location='" . WE_INCLUDES_DIR . "we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset($_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 					}
 					break;
 				case "mainload":

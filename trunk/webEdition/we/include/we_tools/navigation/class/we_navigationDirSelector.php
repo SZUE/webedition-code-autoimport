@@ -302,7 +302,6 @@ top.clearEntries();
 		if($txt == ''){
 			print we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 			$folder = new we_folder();
 			$folder->we_new();
 			$folder->setParentID($this->dir);

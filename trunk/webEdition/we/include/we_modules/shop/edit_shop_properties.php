@@ -1040,7 +1040,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$orderDataTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
 	foreach(weShopStatusMails::$StatusFields as $field){
 		if(!$weShopStatusMails->FieldsHidden[$field]){
-			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field,4), $_REQUEST[$field]);
+			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
 			$orderDataTable .= '<tr height="25">
 			<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
 			<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
@@ -1393,7 +1393,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	//
 echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-	we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
@@ -1437,7 +1437,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","edit_order_customer",-1,-1,545,600,true,true,true,false);
 					break;
 				case "edit_customer":
-					top.document.location = '/webEdition/we/include/we_modules/show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
+					top.document.location = '<?php print WE_INCLUDES_DIR;?>we_modules/show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
 					break;
 				case "add_new_article":
 					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","add_new_article",-1,-1,650,600,true,false,true,false);

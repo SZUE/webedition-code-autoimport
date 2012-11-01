@@ -82,7 +82,7 @@ class weBannerView extends weBannerBase{
 			$GLOBALS["mod"] = "banner";
 			ob_start();
 
-			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{

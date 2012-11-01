@@ -94,35 +94,35 @@ if(defined("OBJECT_FILES_TABLE")){
  * GET WIDTH AND HEIGHT OF VERTICAL TABS
  */
 // Documents
-if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/documents_normal.gif")){
-	$_v_tab_documents = getimagesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/documents_normal.gif");
+if(file_exists(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/documents_normal.gif")){
+	$_v_tab_documents = getimagesize(WE_INCLUDES_PATH . 'we_language/'. $GLOBALS["WE_LANGUAGE"] . "/v-tabs/documents_normal.gif");
 }
 
 // Templates
-if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates_normal.gif")){
-	$_v_tab_templates = getimagesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates_normal.gif");
+if(file_exists(WE_INCLUDES_PATH . 'we_language/'. $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates_normal.gif")){
+	$_v_tab_templates = getimagesize(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates_normal.gif");
 }
 
 // Check for other tabs if Object module installed
 if(defined("OBJECT_TABLE")){
 	// Objects
-	if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects_normal.gif")){
-		$_v_tab_objects = getimagesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects_normal.gif");
+	if(file_exists(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects_normal.gif")){
+		$_v_tab_objects = getimagesize(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects_normal.gif");
 	}
 
 	// Classes
-	if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes_normal.gif")){
-		$_v_tab_classes = getimagesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes_normal.gif");
+	if(file_exists(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes_normal.gif")){
+		$_v_tab_classes = getimagesize(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes_normal.gif");
 	}
 }
 ?>
 
 			var we_tabs = new Array(
-			new we_tab('#','<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_normal.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_active.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_disabled.gif', <?php isset($_v_tab_documents[0]) ? (print $_v_tab_documents[0]) : (print "19") ?>, <?php isset($_v_tab_documents[1]) ? (print $_v_tab_documents[1]) : (print "83") ?>, <?php print ($showDocuments ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print FILE_TABLE; ?>');};treeOut();we_cmd('load', '<?php print FILE_TABLE; ?>' ,0)"),
-			new we_tab('#','<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_normal.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_active.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_disabled.gif', <?php isset($_v_tab_templates[0]) ? (print $_v_tab_templates[0]) : (print "19") ?>, <?php isset($_v_tab_templates[1]) ? (print $_v_tab_templates[1]) : (print "83") ?>, <?php print ($showTemplates ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print TEMPLATES_TABLE; ?>');};treeOut();we_cmd('load', '<?php print TEMPLATES_TABLE; ?>', 0)")
+			new we_tab('#','<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_normal.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_active.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/documents_disabled.gif', <?php isset($_v_tab_documents[0]) ? (print $_v_tab_documents[0]) : (print "19") ?>, <?php isset($_v_tab_documents[1]) ? (print $_v_tab_documents[1]) : (print "83") ?>, <?php print ($showDocuments ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print FILE_TABLE; ?>');};treeOut();we_cmd('load', '<?php print FILE_TABLE; ?>' ,0)"),
+			new we_tab('#','<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_normal.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_active.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/templates_disabled.gif', <?php isset($_v_tab_templates[0]) ? (print $_v_tab_templates[0]) : (print "19") ?>, <?php isset($_v_tab_templates[1]) ? (print $_v_tab_templates[1]) : (print "83") ?>, <?php print ($showTemplates ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print TEMPLATES_TABLE; ?>');};treeOut();we_cmd('load', '<?php print TEMPLATES_TABLE; ?>', 0)")
 <?php if(defined("OBJECT_TABLE")){ ?>,
-				new we_tab('#','<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_normal.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_active.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_disabled.gif', <?php isset($_v_tab_objects[0]) ? (print $_v_tab_objects[0]) : (print "19") ?>, <?php isset($_v_tab_objects[1]) ? (print $_v_tab_objects[1]) : (print "83") ?>, <?php print ($showObjects ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print OBJECT_FILES_TABLE; ?>');};treeOut();we_cmd('load', '<?php print OBJECT_FILES_TABLE; ?>', 0)"),
-				new we_tab('#','<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_normal.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_active.gif', '<?php print WEBEDITION_DIR; ?>we/include/we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_disabled.gif', <?php isset($_v_tab_classes[0]) ? (print $_v_tab_classes[0]) : (print "19") ?>, <?php isset($_v_tab_classes[1]) ? (print $_v_tab_classes[1]) : (print "83") ?>, <?php print ($showClasses ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print OBJECT_TABLE; ?>');};treeOut();we_cmd('load', '<?php print OBJECT_TABLE; ?>', 0)")
+				new we_tab('#','<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_normal.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_active.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/objects_disabled.gif', <?php isset($_v_tab_objects[0]) ? (print $_v_tab_objects[0]) : (print "19") ?>, <?php isset($_v_tab_objects[1]) ? (print $_v_tab_objects[1]) : (print "83") ?>, <?php print ($showObjects ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print OBJECT_FILES_TABLE; ?>');};treeOut();we_cmd('load', '<?php print OBJECT_FILES_TABLE; ?>', 0)"),
+				new we_tab('#','<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_normal.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_active.gif', '<?php print WE_INCLUDES_DIR;?>we_language/<?php print $GLOBALS["WE_LANGUAGE"]; ?>/v-tabs/classes_disabled.gif', <?php isset($_v_tab_classes[0]) ? (print $_v_tab_classes[0]) : (print "19") ?>, <?php isset($_v_tab_classes[1]) ? (print $_v_tab_classes[1]) : (print "83") ?>, <?php print ($showClasses ? "TAB_ACTIVE" : "TAB_DISABLED"); ?>, "if(top.deleteMode){we_cmd('exit_delete', '<?php print OBJECT_TABLE; ?>');};treeOut();we_cmd('load', '<?php print OBJECT_TABLE; ?>', 0)")
 <?php } ?>
 		);
 

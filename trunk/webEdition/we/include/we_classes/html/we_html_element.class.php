@@ -25,7 +25,6 @@
 
 /**
  * Filename:    we_html_element.inc.php
- * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Class to create html tags
  *

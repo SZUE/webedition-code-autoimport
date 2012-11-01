@@ -44,7 +44,7 @@ switch($_REQUEST['we_cmd'][0]){
 		break;
 	case "shop_preview_variant":
 		weShopVariants::correctModelFields($we_doc, false);
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/show_variant.inc.php');
+		require(WE_INCLUDES_PATH . 'we_modules/shop/show_variant.inc.php');
 		exit;
 		break;
 }

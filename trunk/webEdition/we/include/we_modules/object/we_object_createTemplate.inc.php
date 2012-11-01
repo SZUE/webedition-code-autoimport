@@ -24,7 +24,7 @@
  */
 class we_makenewtemplate extends we_template{
 
-	function formDirChooser($width="", $rootDirID=0, $table=TEMPLATES_TABLE, $Pathname="ParentPath", $IDName="ParentID", $cmd=""){
+	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
 		if(!$table)
 			$table = $this->Table;
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
@@ -46,7 +46,7 @@ class we_makenewtemplate extends we_template{
 
 }
 
-function getObjectTags($id, $isField=false){
+function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '		<table cellpadding="2" cellspacing="0" border="1" width="400">
 ';
@@ -95,7 +95,7 @@ function getMultiObjectTags($name){
 	return $content;
 }
 
-function getTemplTag($type, $name, $isField=false){
+function getTemplTag($type, $name, $isField = false){
 	switch($type){
 		case "meta":
 			return $isField ? '<we:field type="select" name="' . $name . '">' : '<we:var type="select" name="' . $name . '">';
@@ -124,7 +124,7 @@ function getTemplTag($type, $name, $isField=false){
 	return "";
 }
 
-function getTmplTableRow($type, $name, $isField=false){
+function getTmplTableRow($type, $name, $isField = false){
 	if($type == "multiobject"){
 		if($isField){
 			$open = '<we:ifFieldNotEmpty match="' . $name . '" type="' . $type . '">';
@@ -160,7 +160,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 print STYLESHEET;
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo "</head><body class='weDialogBody'><form name='we_form'>";
 $tmpl = new we_makenewtemplate();

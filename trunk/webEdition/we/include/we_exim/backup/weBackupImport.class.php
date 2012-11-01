@@ -26,7 +26,7 @@ class weBackupImport{
 
 	function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 		if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
 			$data = '<?xml version="1.0" encoding="' . $_SESSION['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
 				'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];

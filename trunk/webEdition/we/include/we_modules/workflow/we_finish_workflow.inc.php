@@ -30,7 +30,7 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_tran
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "", true)){
 	if($we_doc->i_publInScheduleTable()){
@@ -53,7 +53,7 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 } else{
 	$we_responseText = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_notok]');
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-	$we_responseText = '';
+	//$we_responseText = '';
 }
 
-include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_editor_save.inc.php");
+include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');

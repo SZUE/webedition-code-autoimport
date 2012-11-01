@@ -1414,7 +1414,7 @@ abstract class we_versions_wizard{
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 		$headCal .= we_html_element::jsScript(JS_DIR . 'windows.js') .

@@ -38,7 +38,6 @@ if (isset($_REQUEST["setTestUpdate"])){
 	 $ischecked = $_REQUEST["setTestUpdate"];
 }
 if($ischecked){
-	require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 	$conf=  weFile::load(LIVEUPDATE_DIR . 'conf/conf.inc.php');
 
 	if (strpos($conf,'$'."_REQUEST['testUpdate'] = 0;")!==false){

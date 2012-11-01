@@ -417,7 +417,7 @@ if($GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 						);
 
 							editHeader.location = "about:blank";
-							editFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
+							editFooter.location = "<?php print WE_INCLUDES_DIR . "we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 
 		<?php
 	}

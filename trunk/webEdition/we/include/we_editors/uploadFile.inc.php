@@ -42,7 +42,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 } else{
 
 	$we_dt = $_SESSION["we_data"][$we_transaction];
-	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	switch($we_doc->ContentType){
 		case "image/*";
@@ -121,16 +121,16 @@ if($we_alerttext){
 	if($error){
 		?>
 					top.close();
-	<?php
+		<?php
 	}
 }
 
 if(isset($we_File) && (!$we_alerttext)){
 	?>
-		opener.we_cmd("update_file");
-		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
-		self.close();
+			opener.we_cmd("update_file");
+			_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+			_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
+			self.close();
 <?php } ?>
 	//-->
 </script>
@@ -140,7 +140,7 @@ if(isset($we_File) && (!$we_alerttext)){
 	<center>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
+			<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
 		</form>
 	</center>
 </body>

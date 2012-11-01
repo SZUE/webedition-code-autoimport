@@ -658,7 +658,7 @@ class weBackupWizard{
 				if(document.we_form.we_upload_file.value) {
 					startBusy();
 					top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
-					document.we_form.action = "/webEdition/we/include/we_editors/we_backup_cmd.php";
+					document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 					setTimeout("document.we_form.submit()",100);
 				}
 				else
@@ -668,7 +668,7 @@ class weBackupWizard{
 					startBusy();
 					top.body.delete_backup_enabled = top.body.switch_button_state("delete_backup", "delete_backup_enabled", "disabled");
 					top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
-					document.we_form.action = "/webEdition/we/include/we_editors/we_backup_cmd.php";
+					document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 					setTimeout("document.we_form.submit()",100);
 				}
 				else
@@ -1150,7 +1150,7 @@ class weBackupWizard{
 									}
 									else {
 										top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=2";
-										top.body.we_submitForm("cmd","/webEdition/we/include/we_editors/we_backup_cmd.php");
+										top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 									}
 								}
 						');
@@ -1164,7 +1164,7 @@ class weBackupWizard{
 				case 3:
 					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
 					if($do_import_after_backup == 1){
-						$body = we_button::create_button("next", "javascript:top.body.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy';");
+						$body = we_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
 					} else if(isset($_SESSION["inbackup"]) && $_SESSION["inbackup"]){
 						$body = we_button::create_button("next", "javascript:top.opener.weiter();top.close();");
 						unset($_SESSION["inbackup"]);
@@ -1201,9 +1201,9 @@ class weBackupWizard{
 								" . we_message_reporting::getShowMessageCall(g_l('backup', "[recover_backup_unsaved_changes]"), we_message_reporting::WE_MESSAGE_WARNING) . "
 
 							} else {
-								top.body.location='/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&do_import_after_backup=1';
-								top.busy.location='/webEdition/we/include/we_editors/we_make_backup.php?pnt=busy';
-								top.cmd.location='/webEdition/we/include/we_editors/we_make_backup.php?pnt=cmd';
+								top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=body&do_import_after_backup=1';
+								top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=busy';
+								top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=cmd';
 							}
 
 						}");
@@ -1698,7 +1698,7 @@ class weBackupWizard{
 			}
  			var reload = 0;
  			function reloadFrame(){
- 				top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=' . $cmd . '&reload=1";
+ 				top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=' . $cmd . '&reload=1";
  				reload++;
  				if(reload<' . $_retry . ') {
  					setTimeout("reloadFrame()",' . $_execute . ');

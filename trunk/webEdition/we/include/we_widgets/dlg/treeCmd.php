@@ -30,7 +30,7 @@ if(isset($_REQUEST["cmd"])){
 			if(isset($_REQUEST["pid"])){
 				print
 					we_html_element::jsElement(
-						"self.location='/webEdition/we/include/we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset(
+						"self.location='" . WE_INCLUDES_DIR . "we_export/exportLoadTree.php?we_cmd[1]=" . $_REQUEST["tab"] . "&we_cmd[2]=" . $_REQUEST["pid"] . "&we_cmd[3]=" . (isset(
 							$_REQUEST["openFolders"]) ? $_REQUEST["openFolders"] : "") . "&we_cmd[4]=top'");
 			}
 			break;

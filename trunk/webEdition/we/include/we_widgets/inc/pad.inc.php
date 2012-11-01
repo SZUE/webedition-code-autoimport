@@ -27,7 +27,7 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==st
 
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
-$_iFrmPadAtts['src'] = WEBEDITION_DIR . 'we/include/we_widgets/mod/pad.php?we_cmd[0]=' . $pad_csv . '&amp;we_cmd[1]=&amp;we_cmd[2]=home&amp;we_cmd[3]=' . $aProps[1] . '&amp;we_cmd[4]=' . rawurlencode(
+$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?we_cmd[0]=' . $pad_csv . '&amp;we_cmd[1]=&amp;we_cmd[2]=home&amp;we_cmd[3]=' . $aProps[1] . '&amp;we_cmd[4]=' . rawurlencode(
 		$pad_header_enc) . '&amp;we_cmd[5]=' . $iCurrId . '&amp;we_cmd[6]=' . $aProps[1] . '&amp;we_cmd[7]=home';
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';

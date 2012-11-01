@@ -1215,7 +1215,7 @@ class weVersions{
 					$vers = $this->getVersion();
 
 					$versionName = $document["ID"] . "_" . $document["Table"] . "_" . $vers . $document["Extension"];
-					$binaryPath = VERSION_DIR . $versionName.'.gz';
+					$binaryPath = VERSION_DIR . $versionName . '.gz';
 
 					if($document["IsDynamic"]){
 						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
@@ -1502,7 +1502,7 @@ class weVersions{
 	 * @abstract create file to preview dynamic documents
 	 */
 	function writePreviewDynFile($id, $siteFile, $tmpFile, $document){
-		weFile::save($tmpFile, gzencode($this->getDocContent($document, $siteFile),9));
+		weFile::save($tmpFile, gzencode($this->getDocContent($document, $siteFile), 9));
 	}
 
 	function getDocContent($we_doc, $includepath = ""){
@@ -1571,7 +1571,7 @@ class weVersions{
 			$_REQUEST['we_cmd'] = array();
 			$_REQUEST['we_cmd'][1] = $we_doc->ID;
 			$FROM_WE_SHOW_DOC = true;
-			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_showDocument.inc.php');
+			include(WE_INCLUDES_PATH . 'we_showDocument.inc.php');
 			$contents = ob_get_contents();
 			ob_end_clean();
 		}

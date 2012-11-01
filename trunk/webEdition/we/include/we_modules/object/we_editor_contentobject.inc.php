@@ -25,7 +25,7 @@
 //	---> Includes
 //
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
@@ -102,7 +102,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 </script>
 <?php
 echo $jsGUI->getJS(WEBEDITION_DIR . "js");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 
 </head>

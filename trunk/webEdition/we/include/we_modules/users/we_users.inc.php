@@ -259,7 +259,7 @@ class we_user{
 
 	function createAccount(){
 		if(defined('MESSAGING_SYSTEM')){
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/messaging/messaging_interfaces.inc.php');
+			require_once(WE_INCLUDES_PATH . 'we_modules/messaging/messaging_interfaces.inc.php');
 			msg_create_folders($this->ID);
 		}
 	}

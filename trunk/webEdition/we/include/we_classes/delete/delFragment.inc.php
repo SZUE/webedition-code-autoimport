@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 class delFragment extends taskFragment{
 
@@ -86,7 +86,7 @@ class delFragment extends taskFragment{
 
 	function printHeader(){
 		we_html_tools::protect();
-		print we_html_tools::htmlTop()."</head>";
+		print we_html_tools::htmlTop() . "</head>";
 	}
 
 }

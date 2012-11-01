@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
-include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/meta.conf.php');
-
-switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case 'tool_weSearch_edit' :
 		$toolInclude = 'tools_frameset.php';
 		break;
 }
 
-if (isset($toolInclude)) {
-	include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $toolInclude);
+if(isset($toolInclude)){
+	include (WE_INCLUDES_PATH . 'we_tools/' . $toolInclude);
 }
-
-?>

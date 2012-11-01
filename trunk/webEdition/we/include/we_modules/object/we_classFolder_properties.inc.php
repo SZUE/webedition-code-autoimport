@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
 
 $javascript = '';
 
@@ -60,34 +60,28 @@ we_html_tools::protect();
 // Ausgabe beginnen
 we_html_tools::htmlTop();
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
-
-echo $we_doc->getSearchJS();
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ $we_doc->getSearchJS();
 
 if($javascript != ''){
 	echo we_html_element::jsElement($javascript);
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-print STYLESHEET;
-
-echo '</head>
+print STYLESHEET .
+	'</head>
 
 <body class="weEditorBody" onUnload="doUnload()">';
 
 
-$_parts = array();
-$_parts[] = array('html' => $we_doc->getSearchDialog());
-$_parts[] = array('html' => $we_doc->searchProperties());
+$_parts = array(
+	array('html' => $we_doc->getSearchDialog()),
+	array('html' => $we_doc->searchProperties())
+);
 
-echo we_multiIconBox::getHTML('', '100%', $_parts, '30', '', -1, '', '', false);
-
-
-///////////////////////////////////////////////////////////////////////
-
-
-echo '
+echo we_multiIconBox::getHTML('', '100%', $_parts, '30', '', -1, '', '', false) .
+ '
 
 </body>
 </html>';

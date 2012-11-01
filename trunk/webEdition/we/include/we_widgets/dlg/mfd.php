@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
+include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", $_REQUEST['we_cmd'][1]);
@@ -70,7 +70,7 @@ function addUserToField(){
 		}
 	}
 	if(!bUsrExists){
-		_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.php?we_cmd[0]='+
+		_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mfd.php?we_cmd[0]='+
 			_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+
 				_oSctNumEntries.selectedIndex+';'+getBinary('display_opt')+';'+_sUsers+','+iNewUsrId;
 		_fo.method='post';
@@ -95,7 +95,7 @@ function delUser(iUsrId){
 			if(i!=iUsersLen-1) sUsers+=',';
 		}
 	}
-	_fo.action='" . WEBEDITION_DIR . "we/include/we_widgets/dlg/mfd.php?we_cmd[0]='+
+	_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mfd.php?we_cmd[0]='+
 		_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.selectedIndex+
 			';'+getBinary('display_opt')+';'+sUsers;
 	_fo.method='post';

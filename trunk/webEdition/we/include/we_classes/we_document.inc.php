@@ -22,7 +22,7 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 /* the parent class for documents */
 
@@ -81,8 +81,8 @@ class we_document extends we_root{
 				$this->CreationDate = time();
 				if(isset($_SESSION['user'])){
 					$this->CreatorID = $_SESSION['user']['ID'];
-				} else {
-					$this->CreatorID =0;
+				} else{
+					$this->CreatorID = 0;
 				}
 
 				$this->ID = 0;
@@ -568,7 +568,7 @@ class we_document extends we_root{
 		if($list){
 			if($isBlock){
 				foreach(array_keys($this->elements) as $key){
-					if(preg_match('/' . $names .'(__.*)*$/', $key)){// # Bug 6904
+					if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
 						unset($this->elements[$key]);
 					}
 				}
@@ -1051,7 +1051,7 @@ class we_document extends we_root{
 					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
 					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
 				} else{
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_date.inc.php');
+					include_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
 					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
 					$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
 					return $dt->format(correctDateFormat($format, $dt));
@@ -1514,20 +1514,18 @@ class we_document extends we_root{
 							$dates[$nr][$foo] = $v;
 							break;
 						default:
-							if(substr($sw[0],0,5) == 'month') {
-								$rest = substr($sw[0],5);
+							if(substr($sw[0], 0, 5) == 'month'){
+								$rest = substr($sw[0], 5);
 								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-								$this->schedArr[$nr]['months'][$d-1] = $v;
-							}
-							else if(substr($sw[0],0,3) == 'day') {
-								$rest = substr($sw[0],3);
+								$this->schedArr[$nr]['months'][$d - 1] = $v;
+							} else if(substr($sw[0], 0, 3) == 'day'){
+								$rest = substr($sw[0], 3);
 								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-								$this->schedArr[$nr]['days'][$d-1] = $v;
-							}
-							else if(substr($sw[0],0,4) == 'wday') {
-								$rest = substr($sw[0],4);
+								$this->schedArr[$nr]['days'][$d - 1] = $v;
+							} else if(substr($sw[0], 0, 4) == 'wday'){
+								$rest = substr($sw[0], 4);
 								$d = preg_replace('/^([^_]+)_[0-9]+$/', '\1', $rest);
-								$this->schedArr[$nr]['weekdays'][$d-1] = $v;
+								$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
 							}
 					}
 				}

@@ -751,7 +751,7 @@ class weSiteImport{
 		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
 
 		$parts = array(
-			 array(
+			array(
 				"headline" => g_l('siteimport', "[dirs_headline]"),
 				"html" => $_importFrom . we_html_tools::getPixel(20, 5) . $_importTo,
 				"space" => 120
@@ -1721,7 +1721,7 @@ class weSiteImport{
 		$we_ContentType = $contentType;
 
 		// initializing $we_doc
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+		include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();

@@ -121,10 +121,10 @@ echo $yuiSuggest->getYuiCssFiles() .
 			case "openNavigationDirselector":
 			case "openNewsletterDirselector":
 				if(arguments[0] == "openNewsletterDirselector") {
-					url = "/webEdition/we/include/we_modules/newsletter/we_dirfs.php?";
+					url = "<?php echo WE_INCLUDES_DIR; ?>we_modules/newsletter/we_dirfs.php?";
 				}
 				else {
-					url = "/webEdition/we/include/we_tools/navigation/we_navigationDirSelect.php?";
+					url = "<?php echo WE_INCLUDES_DIR; ?>we_tools/navigation/we_navigationDirSelect.php?";
 				}
 				for(var i = 0; i < arguments.length; i++){
 					url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
