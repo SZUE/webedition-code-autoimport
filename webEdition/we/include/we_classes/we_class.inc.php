@@ -81,7 +81,7 @@ abstract class we_class{
 	/* Constructor */
 
 	function __construct(){
-		$this->Name = uniqid(__FILE__, true);
+		$this->Name = md5(uniqid(__FILE__, true));
 		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
 		$this->DB_WE = new DB_WE;
 	}
@@ -209,7 +209,7 @@ abstract class we_class{
 		$out = '<select class="defaultfont" name="we_' . $this->Name . '_' . $type . '[' . $name . ']' . '" size="' . $size . '">' . "\n";
 		$value = $this->getElement($name);
 		reset($values);
-		while(list($val, $txt) = each($values)) {
+		while((list($val, $txt) = each($values))) {
 			$out .= '<option value="' . $val . '"' . (($val == $value) ? " selected" : "") . '>' . $txt . "</option>\n";
 		}
 		$out .= '</select>';
@@ -217,8 +217,9 @@ abstract class we_class{
 	}
 
 	function formTextInput($elementtype, $name, $text, $size = 24, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
-		if(!$elementtype)
+		if(!$elementtype){
 			$ps = $this->$name;
+		}
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
