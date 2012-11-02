@@ -37,13 +37,13 @@ class we_search{
 	var $Order;
 	var $anzahl = 10;
 	var $searchstart = 0;
-	public $Record=array();
+	public $Record = array();
 
 	function __construct(){
 		$this->db = new DB_WE();
 	}
 
-	function init($sessDat=""){
+	function init($sessDat = ""){
 		for($i = 0; $i <= sizeof($sessDat); $i++){
 			if(isset($GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]])){
 				$v = $GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]];
@@ -59,13 +59,13 @@ class we_search{
 	//																("OR","XOR")
 	//									Searchid["type"] => "START"
 	//																("IS","END","CONTAIN","<","<=",">",..)
-	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows=-1, $start=0, $order="", $desc=0){
+	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = "", $desc = 0){
 
 		$this->tablename = $tablename;
 		$i = 0;
 		$sql = "";
 
-		for($i = 0; $i < sizeof($searchfield); $i++){
+		for($i = 0; $i < count($searchfield); $i++){
 
 			if(!empty($searchname[$i])){
 				$regs = explode('_', $searchfield[$i], 2); //bug #3694
@@ -84,12 +84,10 @@ class we_search{
 						case "<=":
 						case ">":
 						case ">=":
-							$searching = " " . $searchlocation[$i] . " " . $from . " ";
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql .= $this->sqlwhere($searchfield[$i], ' ' . $searchlocation[$i] . ' ' . $from . ' ', null);
 							break;
 						default :
-							$searching = " BETWEEN $from AND $till ";
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql .= $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ', null);
 							break;
 					}
 				} else{
@@ -129,16 +127,16 @@ class we_search{
 	}
 
 	function sqlwhere($we_SearchField, $searchlocation, $concat){
-		$concat = (isset($concat)) ? $concat : "AND";
+		$concat = (isset($concat)) ? $concat : 'AND';
 		if(strpos($we_SearchField, ',') !== false){
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
 			foreach($foo as $f){
-				$q []= $f.' '.$searchlocation;
+				$q [] = '`'.$f . '` ' . $searchlocation;
 			}
-			return ' '.$concat.' ( '.implode(' OR ',$q).' ) ';
+			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
-			return " $concat $we_SearchField $searchlocation  ";
+			return ' ' . $concat . ' `' . $we_SearchField . '` ' . $searchlocation . ' ';
 		}
 	}
 
@@ -147,13 +145,13 @@ class we_search{
 
 		if(!empty($this->table)){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? "1" : $this->where) : $where;
-			return f('SELECT count(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
+			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
 		} else{
 			return -1;
 		}
 	}
 
-	function searchquery($where = "", $get="*", $table="", $order="", $limit=""){
+	function searchquery($where = "", $get = "*", $table = "", $order = "", $limit = ""){
 
 		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
 
@@ -174,7 +172,7 @@ class we_search{
 		}
 	}
 
-	function setlimit($anzahl="", $searchstart=""){
+	function setlimit($anzahl = "", $searchstart = ""){
 		$this->anzahl = (empty($anzahl)) ? ((empty($this->anzahl)) ? $this->defaultanzahl : $this->anzahl) : $anzahl;
 		$this->searchstart = (empty($searchstart)) ? ((empty($this->searchstart)) ? "0" : $this->searchstart) : $searchstart;
 
@@ -240,7 +238,7 @@ class we_search{
 			}');
 	}
 
-	function getLocation($name="locationField", $select="", $size=1, $sprach=array()){
+	function getLocation($name = "locationField", $select = "", $size = 1, $sprach = array()){
 		// get Class
 		$opts = "";
 		$loc = array("CONTAIN", "IS", "START", "END", "<", "<=", ">=", ">");
@@ -253,7 +251,7 @@ class we_search{
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
 	}
 
-	function getLocationDate($name="locationField", $select="", $size=1, $sprach=array()){
+	function getLocationDate($name = "locationField", $select = "", $size = 1, $sprach = array()){
 		// get Class
 		$opts = "";
 		$loc = array("IS", "<", "<=", ">=", ">");
@@ -266,7 +264,7 @@ class we_search{
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '">' . $opts . '</select>';
 	}
 
-	function getLocationMeta($name="locationField", $select="", $size=1, $sprach=array()){
+	function getLocationMeta($name = "locationField", $select = "", $size = 1, $sprach = array()){
 		// get Class
 		$opts = "";
 		$loc = array("IS");
@@ -325,13 +323,13 @@ class we_search{
 			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);
 		}
 
-		$out .= $select.'</td></tr></table>';
+		$out .= $select . '</td></tr></table>';
 		return $out;
 	}
 
 	function next_record(){
-		$ret=$this->db->next_record();
-		$this->Record=$this->db->Record;
+		$ret = $this->db->next_record();
+		$this->Record = $this->db->Record;
 		return $ret;
 	}
 
@@ -346,7 +344,9 @@ class we_search{
 	function num_rows(){
 		return $this->db->num_rows();
 	}
+
 	function escape($val){
 		return $this->db->escape($val);
 	}
+
 }

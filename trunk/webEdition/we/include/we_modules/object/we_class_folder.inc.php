@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $yuiSuggest = & weSuggest::getInstance();
 
 /* a class for handling templates */
@@ -47,6 +46,7 @@ class we_class_folder extends we_folder{
 	var $SearchField = '';
 	var $SearchStart = 0;
 	var $TriggerID = 0;
+
 	/* Constructor */
 
 	function __construct(){
@@ -95,7 +95,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 	}
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		$sp = explode('/', $this->Path);
 		if(isset($sp[2]) && $sp[2] != ''){
 			$this->IsClassFolder = 0;
@@ -104,7 +104,7 @@ class we_class_folder extends we_folder{
 		return true;
 	}
 
-	function initByPath($path, $tblName=OBJECT_FILES_TABLE, $IsClassFolder=0, $IsNotEditable=0, $skipHook=0){
+	function initByPath($path, $tblName = OBJECT_FILES_TABLE, $IsClassFolder = 0, $IsNotEditable = 0, $skipHook = 0){
 		$id = f("SELECT ID FROM " . $tblName . " WHERE Path='$path' AND IsFolder=1", "ID", $this->DB_WE);
 		if($id != ''){
 			$this->initByID($id, $tblName);
@@ -113,13 +113,13 @@ class we_class_folder extends we_folder{
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
 			$p = array();
-			$anz = sizeof($spl);
+			$anz = count($spl);
 			$last_pid = 0;
 			for($i = 0; $i < $anz; $i++){
-				$p[]= array_shift($spl);
+				$p[] = array_shift($spl);
 				$pa = $this->DB_WE->escape(implode('/', $p));
 				if($pa){
-					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="$pa"', 'ID', new DB_WE());
+					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', 'ID', new DB_WE());
 					if(!$pid){
 						$folder = new self();
 						$folder->init();
@@ -199,17 +199,12 @@ class we_class_folder extends we_folder{
 	}
 
 	function getUserDefaultWsPath(){
-
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(intval($userDefaultWsID) != 0){
-			$userDefaultWsPath = id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']);
-		} else{
-			$userDefaultWsPath = '/';
-		}
-
-		return $userDefaultWsPath;
+		return (intval($userDefaultWsID) != 0 ?
+				id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']) :
+				'/');
 	}
 
 	function formCopyDocument(){
@@ -228,28 +223,19 @@ class we_class_folder extends we_folder{
 
 		//javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folder_not_valid]"), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}','',".$this->RootfolderID.");
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
 		$but = we_button::create_button('select', $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', "[copy_folders_no_id]"), we_message_reporting::WE_MESSAGE_ERROR), true, 100, 22, "", "", $_disabled);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[copy_owners_expl]") . $_disabledNote, 2, 388, false) . '</td><td>' .
+		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[copy_owners_expl]") . $_disabledNote, 2, 388, false) . '</td><td>' .
 			$this->htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
-
-
-		return $content;
 	}
 
 	function searchProperties(){
-
 		$DB_WE = new DB_WE();
 
 		if(!isset($_REQUEST['Order'])){
-			if(isset($this->Order)){
-				$_REQUEST['Order'] = $this->Order;
-			} else{
-				$_REQUEST['Order'] = 'ModDate DESC';
-			}
+			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'ModDate DESC');
 		} else{
 			$this->searchclass->Order = $_REQUEST['Order'];
 		}
@@ -266,28 +252,20 @@ class we_class_folder extends we_folder{
 		//$this->searchclass->setlimit(1);
 		$we_obectPathLength = 32;
 
-		if(!isset($javascript)){
-			$javascript = '';
-		}
-
 		//$this->searchclass->setlimit(2);
 		$we_wsLength = 26;
 		$we_extraWsLength = 26;
 
 		$userWSArray = makeArrayFromCSV(get_ws());
 
-		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(intval($userDefaultWsID) != 0){
-			$userDefaultWsPath = id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE);
-		} else{
-			$userDefaultWsPath = '/';
-		}
+		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
+		$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 
 		//#4076
 		$this->setClassProp();
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 
 
 		$userDefaultWsPath = $this->getUserDefaultWsPath();
@@ -388,11 +366,7 @@ class we_class_folder extends we_folder{
 		$DB_WE = new DB_WE();
 
 		if(!isset($_REQUEST['Order'])){
-			if(isset($this->Order)){
-				$_REQUEST['Order'] = $this->Order;
-			} else{
-				$_REQUEST['Order'] = 'OF_PATH';
-			}
+			$_REQUEST['Order'] = (isset($this->Order) ? $this->Order : 'OF_PATH');
 		} else{
 			if(stripos($_REQUEST['Order'], "ModDate") === 0 || stripos($_REQUEST['Order'], "OF_Published") === 0){
 				$_REQUEST['Order'] = 'OF_PATH';
@@ -419,20 +393,16 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		// get Class
-		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mxysql_real_escape_string($this->Path)."'",$DB_WE); #4076 orig
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
 
 		if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete"){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
-					$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3)));
-					$DB_WE->next_record();
-					$ofid = $DB_WE->f("OF_ID");
+					$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3), 'OF_ID', $DB_WE));
 
 					if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3)));
-
 						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=" . intval($ofid));
 						$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " where ID=" . intval($ofid));
 						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE);
@@ -443,24 +413,20 @@ class we_class_folder extends we_folder{
 
 		$userWSArray = makeArrayFromCSV(get_ws());
 
-		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(intval($userDefaultWsID) != 0){
-			$userDefaultWsPath = id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE);
-		} else{
-			$userDefaultWsPath = "/";
-		}
+		$userDefaultWsID = !empty($userWSArray) ? $userWSArray[0] : 0;
+		$userDefaultWsPath = (intval($userDefaultWsID) != 0 ? id_to_path($userDefaultWsID, FILE_TABLE, $DB_WE) : '/');
 
-		$fields = "*";
+		$fields = '*';
 
 		$userDefaultWsPath = $this->getUserDefaultWsPath();
 		$this->WorkspacePath = ($this->WorkspacePath != "") ? $this->WorkspacePath : $userDefaultWsPath;
 		$this->WorkspaceID = ($this->WorkspaceID != "") ? $this->WorkspaceID : $userDefaultWsID;
 
 		if(isset($this->searchclass->searchname)){
-			$where = "1" . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $classArray["ID"], $rows = -1, $start = 0, $order = "", $desc = 0);
-			$where .= $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
+			$where = '1' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $classArray["ID"], $rows = -1, $start = 0, $order = "", $desc = 0) .
+				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
 		} else{
-			$where = "1" . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
+			$where = '1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
 		}
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $classArray["ID"]);
@@ -475,9 +441,7 @@ class we_class_folder extends we_folder{
 		//$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields); #4076 orig
 		$this->searchclass->searchquery($where . " AND OF_PATH LIKE '" . $this->Path . "/%' AND OF_ID !=0 ", $fields);
 
-		$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=" . intval($this->ID));
-		$DB_WE->next_record();
-		$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
+		$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ID), 'DefaultValues', $DB_WE));
 
 		$content = array();
 		$foo = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($classArray["ID"]), "DefaultValues", $DB_WE));
@@ -485,6 +449,13 @@ class we_class_folder extends we_folder{
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
 		$javascriptAll = "";
+		$headline = array(
+			array("dat" => ""),
+			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
+			array("dat" => ''),
+			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
+			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
+		);
 
 		if($foundItems){
 
@@ -497,26 +468,29 @@ class we_class_folder extends we_folder{
 				 */
 				if($f == 0){
 					$i = 0;
-
+					$regs = array();
 					foreach($this->searchclass->getRecord() as $key => $val){
 						if(preg_match('/(.+?)_(.*)/', $key, $regs)){
-							if($regs[1] != "OF"){
-								if($regs[1] == "object"){
+							switch($regs[1]){
+								case "object":
 									$object[$i + 5] = $regs[2];
 									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $regs[2] . "'", "Text", $DB_WE) . '</td><td></td></tr></table>';
 									$type[$i + 5] = $regs[1];
 									$i++;
-								} elseif($regs[1] == "multiobject"){
+									break;
+								case "multiobject":
 									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
 									$head[$i + 5]["dat"] = $regs[2];
 									$type[$i + 5] = $regs[1];
 									$i++;
-								} else{
-									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
-									$head[$i + 5]["dat"] = $regs[2];
-									$type[$i + 5] = $regs[1];
-									$i++;
-								}
+									break;
+								default:
+									if($regs[1] != "OF"){
+										$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
+										$head[$i + 5]["dat"] = $regs[2];
+										$type[$i + 5] = $regs[1];
+										$i++;
+									}
 							}
 						}
 					}
@@ -524,80 +498,86 @@ class we_class_folder extends we_folder{
 					$count = $i;
 				}
 
-				$content[$f][1]["align"] = "center";
+				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
 				$content[$f][0]["height"] = 35;
 				$content[$f][0]["align"] = "center";
-				if(we_hasPerm("DELETE_OBJECTFILE")){
-					$content[$f][0]["dat"] = '<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />';
-				} else{
-					$content[$f][0]["dat"] = '<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />';
-				}
-				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
+				$content[$f][0]["dat"] = (we_hasPerm("DELETE_OBJECTFILE") ?
+						'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
+						'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
+					);
 
-				if($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok))){
-					$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />';
-				} else{
-					$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />';
-				}
-				if($this->searchclass->f("OF_IsSearchable")){
-					$content[$f][2]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />';
-				} else{
-					$content[$f][2]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />';
-				}
+				$content[$f][1]["align"] = "center";
+				$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+						'we_boebbel_blau.gif' :
+						'we_boebbel_grau.gif'
+					) . '" width="16" height="18" />';
+				$content[$f][2]["dat"] = ($this->searchclass->f("OF_IsSearchable") ?
+						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
+						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />'
+					);
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>';
 
 				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>';
 
 				for($i = 0; $i < $count; $i++){
-					if($type[$i + 5] == "date"){
-						$content[$f][$i + 5]["dat"] = date(g_l('date', '[format][default]'), $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
-					} else if($type[$i + 5] == "object"){
-						$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $DB_WE);
-						if($tmp != ""){
-							$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "Published", $DB_WE);
-							$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" style="text-decoration:none; ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $DB_WE), $we_obectPathLength) . '</a>';
-						} else{
-							$obj = "&nbsp;";
-						}
-						$content[$f][$i + 5]["dat"] = $obj;
-					} else if($type[$i + 5] == "multiobject"){
-						$temp = unserialize($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
-						if(is_array($temp['objects']) && sizeof($temp['objects']) > 0){
-							$objects = $temp['objects'];
-							$class = $temp['class'];
-							$content[$f][$i + 5]["dat"] = "";
-							foreach($objects as $idx => $id){
-								$content[$f][$i + 5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE) . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE), $we_obectPathLength) . ".</a><br />"; //
+					switch($type[$i + 5]){
+						case "date":
+							$content[$f][$i + 5]["dat"] = date(g_l('date', '[format][default]'), $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
+							break;
+						case "object":
+							$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $DB_WE);
+							if($tmp != ""){
+								$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "Published", $DB_WE);
+								$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" style="text-decoration:none; ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $DB_WE), $we_obectPathLength) . '</a>';
+							} else{
+								$obj = "&nbsp;";
 							}
-						} else{
-							$content[$f][$i + 5]["dat"] = "-";
-						}
-					} else if($type[$i + 5] == "checkbox"){
-						$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-						$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
-					} else if($type[$i + 5] == "meta"){
-						if($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]) != ""
-							&& isset($DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
-							$text = $DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
-							$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
-						} else{
-							$content[$f][$i + 5]["dat"] = "&nbsp;";
-						}
-					} else if($type[$i + 5] == "link"){
-						$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-						$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
-					} else if($type[$i + 5] == "href"){
-						$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
-						$hrefArr = $text ? unserialize($text) : array();
-						if(!is_array($hrefArr))
-							$hrefArr = array();
+							$content[$f][$i + 5]["dat"] = $obj;
+							break;
+						case "multiobject":
+							$temp = unserialize($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
+							if(is_array($temp['objects']) && sizeof($temp['objects']) > 0){
+								$objects = $temp['objects'];
+								$class = $temp['class'];
+								$content[$f][$i + 5]["dat"] = "";
+								foreach($objects as $idx => $id){
+									$content[$f][$i + 5]["dat"] .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" style="text-decoration:none" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE) . '">' . shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $class . " WHERE OF_ID='" . $id . "'", "OF_Path", $DB_WE), $we_obectPathLength) . ".</a><br />"; //
+								}
+							} else{
+								$content[$f][$i + 5]["dat"] = "-";
+							}
+							break;
+						case "checkbox":
+							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							$content[$f][$i + 5]["dat"] = ($text == "1" ? g_l('global', "[yes]") : g_l('global', "[no]") );
+							break;
+						case "meta":
+							if($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]) != ""
+								&& isset($DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
+								$text = $DefaultValues[$type[$i + 5] . "_" . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])];
+								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
+							} else{
+								$content[$f][$i + 5]["dat"] = "&nbsp;";
+							}
+							break;
+						case "link":
+							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
+							break;
+						case "href":
+							$text = $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]);
+							$hrefArr = $text ? unserialize($text) : array();
+							if(!is_array($hrefArr))
+								$hrefArr = array();
 
-						$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
-						//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
-						//$content[$f][$i+3]["dat"] = "TEST";
-					}else{
-						$text = strip_tags($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
-						$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
+							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
+							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
+							//$content[$f][$i+3]["dat"] = "TEST";
+							break;
+						default:
+							$text = strip_tags($this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
+							$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
+							break;
 					}
 				}
 
@@ -606,12 +586,6 @@ class we_class_folder extends we_folder{
 		} else{
 			//$out .= "Leider nichts gefunden!";
 		}
-		$headline[0]["dat"] = "";
-		$headline[1]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>';
-		$headline[2]["dat"] = '';
-		$headline[3]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>';
-		$headline[4]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>';
-
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
 	}
 
@@ -631,27 +605,22 @@ class we_class_folder extends we_folder{
 
 		for($i = 0; $i <= $this->searchclass->height; $i++){
 
-			if($i == 0){
-				$button = we_html_tools::getPixel(26, 10);
-			} else{
-				$button = we_button::create_button("image:btn_function_trash", "javascript:del(" . $i . ");", true, 26, 22, "", "", false);
-			}
+			$button = ($i == 0 ?
+					we_html_tools::getPixel(26, 10) :
+					we_button::create_button("image:btn_function_trash", "javascript:del(" . $i . ");", true, 26, 22, "", "", false)
+				);
+
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) == "checkbox")){
-				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ID)); #4076 orig
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=" . intval($this->ClassID));
+				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
 
-				$DB_WE->next_record();
-				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
-
-				if(substr($this->searchclass->objsearchField[$i], 0, 4) == "meta"){
-					$values = $DefaultValues[$this->searchclass->objsearchField[$i]]["meta"];
-				} else{
-					$values = array(
+				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" ?
+						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
+						array(
 						0 => g_l('global', '[no]'),
 						1 => g_l('global', '[yes]'),
+						)
 					);
-				}
 
 				$out .= '
 				<tr>
@@ -662,54 +631,31 @@ class we_class_folder extends we_folder{
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
 					<td width="50">' . $this->searchclass->getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i], false, "", "value") . '</td>
+					<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i], false, '', 'value') . '</td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
 					<td align="right">' . $button . '</td>
 				</tr>';
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) == "date"){
-				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ID)); #4976 orig
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=" . intval($this->ClassID));
-				$DB_WE->next_record();
-				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
+				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
 
-				$month = array();
-				$month[''] = "";
+				$month = array('' => '');
 				for($j = 1; $j <= 12; $j++){
-					if($j < 10){
-						$month[$j] = "0" . $j;
-					} else{
-						$month[$j] = $j;
-					}
+					$month[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$day = array();
-				$day[''] = "";
+				$day = array('' => '');
 				for($j = 1; $j <= 31; $j++){
-					if($j < 10){
-						$day[$j] = "0" . $j;
-					} else{
-						$day[$j] = $j;
-					}
+					$day[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$hour = array();
-				$hour[''] = "";
+				$hour = array('' => '');
 				for($j = 0; $j <= 23; $j++){
-					if($j < 10){
-						$hour[$j] = "0" . $j;
-					} else{
-						$hour[$j] = $j;
-					}
+					$hour[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
-				$minute = array();
-				$minute[''] = "";
+				$minute = array('' => '');
 				for($j = 0; $j <= 59; $j++){
-					if($j < 10){
-						$minute[$j] = "0" . $j;
-					} else{
-						$minute[$j] = $j;
-					}
+					$minute[$j] = ($j < 10 ? '0' : '') . $j;
 				}
 
 				$out .= '
@@ -748,8 +694,7 @@ class we_class_folder extends we_folder{
 			}
 		}
 
-		$out .= '
-				<tr>
+		$out .= '<tr>
 					<td colspan="9"><br></td>
 				</tr>
 				<tr>
@@ -765,15 +710,11 @@ class we_class_folder extends we_folder{
 
 	function getSearchresult($content, $headline, $foundItems, $javascriptAll){
 		$yuiSuggest = & weSuggest::getInstance();
-		$out = "";
 
 		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000);
 
-
 		// JS einbinden
-		$out .= $this->searchclass->getJSinWEsearchobj($this->Name);
-
-		$out .= '
+		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 		<form name="we_form" method="post">
 		' . $this->hiddenTrans() . '
 		<table border="0" cellpadding="0" cellspacing="0">
@@ -786,17 +727,13 @@ class we_class_folder extends we_folder{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
-			<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", 'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'');
-
-		$out .= we_html_tools::hidden("Order", $this->searchclass->Order);
-		$out .= we_html_tools::hidden("do", "");
-
-		$out .= '</td>
+			<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", 'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'') .
+			we_html_tools::hidden("Order", $this->searchclass->Order) .
+			we_html_tools::hidden("do", "") .
+			'</td>
 			<td>&nbsp;</td>
 			<td>' . we_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
-		</tr>';
-
-		$out .= '
+		</tr>
 		<tr>
 			<td>' . we_html_tools::getPixel(128, 20) . '</td>
 			<td>' . we_html_tools::getPixel(40, 15) . '</td>
@@ -806,24 +743,17 @@ class we_class_folder extends we_folder{
 		</table>
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td class="defaultgray">';
-
-		if(isset($this->searchclass->searchname)){
-			$out .= g_l('modules_objectClassfoldersearch', '[teilsuche]');
-		}
-
-		$out .= '</td>
+			<td class="defaultgray">' .
+			(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
+			'</td>
 			<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 		</tr>
 		<tr>
 			<td>' . we_html_tools::getPixel(175, 12) . '</td>
 			<td>' . we_html_tools::getPixel(460, 12) . '</td>
 		</tr>
-		</table>';
-
-		$out .= we_html_tools::htmlDialogBorder3(900, 0, $content, $headline);
-
-		$out .= '
+		</table>' .
+			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>' . we_html_tools::getPixel(175, 12) . '</td>
@@ -963,14 +893,11 @@ class we_class_folder extends we_folder{
 		</tr>
 		</table>
 		</form>
-		';
-		$out .= $yuiSuggest->getYuiCssFiles();
-		$out .= $yuiSuggest->getYuiCss();
-
-		$out .= $yuiSuggest->getYuiJsFiles();
-		$out .= $yuiSuggest->getYuiJs();
-
-		return $out;
+		' .
+			$yuiSuggest->getYuiCssFiles() .
+			$yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJsFiles() .
+			$yuiSuggest->getYuiJs();
 	}
 
 	function getSearchJS(){
@@ -980,7 +907,6 @@ class we_class_folder extends we_folder{
 		$modulepath = WE_OBJECT_MODULE_DIR;
 
 		$ret = <<<EOF
-		<script  type="text/javascript">
 		function sub(){
 
 			// not needed anymore since version 5?! (Bug Fix #989)
@@ -1060,12 +986,9 @@ EOF;
 				document.we_form_search.todo.value="changemeta";
 				document.we_form_search.submit();
 		}
-
-
-</script>
 EOF;
 
-		return $ret;
+		return we_html_element::jsElement($ret);
 	}
 
 	function getSortImage($for){
@@ -1101,9 +1024,7 @@ EOF;
 
 		$DB_WE = new DB_WE();
 		$this->setClassProp(); //4076
-
-		$javascript = "";
-
+		$javascript = '';
 		$deletedItems = array();
 
 		// get Class
@@ -1111,9 +1032,7 @@ EOF;
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
 				//$this->query("");
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3)));
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3), 'OF_ID', $DB_WE));
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " WHERE ID=" . intval(substr($f, 3)));
 					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($ofid));
@@ -1130,7 +1049,7 @@ EOF;
 			}
 		}
 
-		$javascript .= "
+		return $javascript . "
 			top.drawTree();
 
 			// close all Editors with deleted documents
@@ -1145,26 +1064,18 @@ EOF;
 					_usedEditors[frameId].setEditorIsHot(false);
 					top.weEditorFrameController.closeDocument(frameId);
 				}
-			}
-		";
-
-		return $javascript;
+			}";
 	}
 
 	function copyWSfromClass(){
 		$DB_WE = new DB_WE();
 
-		$javascript = "";
-
 		$this->setClassProp(); //4076
-		$foo = getHash("SELECT Workspaces,Templates FROM " . OBJECT_TABLE . " WHERE ID='" . $this->ClassID . "'", $DB_WE);
+		$foo = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), $DB_WE);
 
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $this->ClassID . " WHERE ID=" . substr($f, 3));
-
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . $this->ClassID . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
@@ -1182,37 +1093,22 @@ EOF;
 				}
 			}
 		}
-		$javascript .= "
-			top.drawTree();
-        ";
-
-		return $javascript;
+		return 'top.drawTree();';
 	}
 
 	function copyCharsetfromClass(){
 		$DB_WE = new DB_WE();
 		$this->setClassProp();
-		$foo = getHash("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID='" . $this->ClassID . "'", $DB_WE);
-		$fooo = unserialize($foo["DefaultValues"]);
+		$fooo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
 
-		if(isset($fooo["elements"]["Charset"]["dat"])){
-			$Charset = $fooo["elements"]["Charset"]["dat"];
-		} else{
-			if(defined("DEFAULT_CHARSET")){
-				$Charset = DEFAULT_CHARSET;
-			} else{
-				$Charset = "";
-			}
-		}
-		$javascript = "";
-
+		$Charset = (isset($fooo["elements"]["Charset"]["dat"]) ? $fooo["elements"]["Charset"]["dat"] :
+				(defined("DEFAULT_CHARSET") ? DEFAULT_CHARSET : '')
+			);
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3));
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
@@ -1226,28 +1122,24 @@ EOF;
 				}
 			}
 		}
-		return $javascript;
+		return '';
 	}
 
 	function copyTIDfromClass(){
 		$DB_WE = new DB_WE();
 		$this->setClassProp();
-		$foo = getHash("SELECT DefaultTriggerID FROM " . OBJECT_TABLE . " WHERE ID='" . $this->ClassID . "'", $DB_WE);
-
-		$javascript = "";
+		$DefaultTriggerID = f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultTriggerID', $DB_WE);
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3));
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . ' WHERE ID=' . substr($f, 3), 'OF_ID', $DB_WE);
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
-					$obj->TriggerID = $foo["DefaultTriggerID"];
+					$obj->TriggerID = $DefaultTriggerID;
 					$oldModDate = $obj->ModDate;
 					$obj->we_save(0, 1);
 					if($obj->Published != 0 && $obj->Published == $oldModDate){
@@ -1256,7 +1148,7 @@ EOF;
 				}
 			}
 		}
-		return $javascript;
+		return '';
 	}
 
 	function searchableObjects($searchable = true){
@@ -1264,25 +1156,17 @@ EOF;
 		$DB_WE = new DB_WE();
 		$this->setClassProp();
 
-		$javascript = "";
-
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3));
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 					$obj->getContentDataFromTemporaryDocs($ofid);
-					if($searchable != true){
-						$obj->IsSearchable = 0;
-					} else{
-						$obj->IsSearchable = 1;
-					}
+					$obj->IsSearchable = ($searchable != true ? 0 : 1);
 					$oldModDate = $obj->ModDate;
 					$obj->we_save(0, 1);
 					if($obj->Published != 0 && $obj->Published == $oldModDate){
@@ -1292,7 +1176,7 @@ EOF;
 			}
 		}
 
-		return $javascript;
+		return '';
 	}
 
 	function publishObjects($publish = true){
@@ -1303,13 +1187,10 @@ EOF;
 		$javascript = "";
 
 		// get Class
-		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f, 0, 3) == "weg"){
-
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3));
-				$DB_WE->next_record();
-				$ofid = $DB_WE->f("OF_ID");
+				$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $classArray["ID"] . " WHERE ID=" . substr($f, 3), 'OF_ID', $DB_WE);
 
 				if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
 					if($publish != true){
@@ -1320,7 +1201,7 @@ EOF;
 						if($obj->we_unpublish()){
 							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();"
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								. $obj->getUpdateTreeScript(false) . "\n"
+								. $obj->getUpdateTreeScript(false)
 								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
 								. "top.rframe.bframe.bm_vtabs.we_cmd('load', '" . OBJECT_FILES_TABLE . "', 0);"
 								. "}"
