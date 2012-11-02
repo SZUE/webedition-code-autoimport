@@ -242,40 +242,39 @@ $_js_we_cmd = "
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
 		url += \"we_cmd[\"+i+\"]=\"+escape(arguments[i]);
-		if(i < (arguments.length - 1))
+		if(i < (arguments.length - 1)){
 			url += \"&\";
+		}
 	}
+		switch(arguments[0]) {
 ";
 if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
-	$_js_we_cmd .= "
-		if(arguments[0] == \"save_document\") {	// its a folder
-	" . ( $we_doc->ContentType == "folder" ?
+	$_js_we_cmd .= '
+		case "save_document":	// its a folder
+	' . ( $we_doc->ContentType == 'folder' ?
 			"
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');" : "
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'',arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
-" ) . "
+" ) . '
 			return;
-		}";
+		';
 } else{ //	Its not a template
-	$_js_we_cmd .= "
-		switch(arguments[0]) {
-			case \"check_glossary\":
-				new jsWindow(url,\"check_glossary\",-1,-1,730,400,true,false,true);
+	$_js_we_cmd .= '
+			case "check_glossary":
+				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 				return;
-			case \"save_document\":
-				top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ",arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
+			case "save_document":
+				top.we_cmd("save_document","' . $we_transaction . '",0,1,' . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? '( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )' : '0' ) . ',arguments[5] ? arguments[5] : "",arguments[6] ? arguments[6] : "",arguments[7] ? arguments[7] : "");
 				return;
-" .
-		((isset($we_doc->IsClassFolder) ?
-			$_js_we_cmd .= "
-			case \"obj_search\":
-				top.we_cmd(\"obj_search\",'" . $we_transaction . "',document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
+' .
+		(isset($we_doc->IsClassFolder) ? '
+			case "obj_search":
+				top.we_cmd("obj_search","' . $we_transaction . '",document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 				return;
-" : '')) . '
-		}';
+' : '');
 }
 
-$_js_we_cmd .= "
+$_js_we_cmd .= "}
 		var args = '';
 		for(var i = 0; i < arguments.length; i++) {
 			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
@@ -284,20 +283,17 @@ $_js_we_cmd .= "
 	}
 ";
 
-$_js_we_submitForm = "
-
+$_js_we_submitForm = '
 	function we_submitForm(target, url){
-
 		var f = self.document.we_form;
 		f.target = target;
 		f.action = url;
-		f.method = 'post';
+		f.method = "post";
 		f.submit();
 	}
-";
+';
 //	########################	build complete JS-Source #########################################################
-$_js_code = '
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");' .
+$_js_code = 'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");' .
 	$_js_we_save_document .
 	$_js_workflow_functions .
 	$_js_weCanSave .
@@ -306,8 +302,8 @@ var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . 
 	$_js_we_submitForm;
 
 //	########################	print javascript src	#########################################################
-print we_html_element::jsScript(JS_DIR . "windows.js") .
-	STYLESHEET .
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . "windows.js") .
 	we_html_element::jsElement($_js_code);
 ?>
 </head>
