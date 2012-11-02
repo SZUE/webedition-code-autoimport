@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,11 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcCopyNavigationFolderView extends rpcView{
 
-
-class rpcCopyNavigationFolderView extends rpcView {
-
-
-	function getResponse($response) {
+	function getResponse($response){
 		header('Content-type: text/plain');
 		return $response->getData("folders");
 	}
+
 }

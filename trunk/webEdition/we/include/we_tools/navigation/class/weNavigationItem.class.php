@@ -93,40 +93,40 @@ class weNavigationItem{
 		$this->limitaccess = $limitaccess;
 		$this->customers = $customers;
 
-		if($this->table == FILE_TABLE){
-			list($__path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
+		switch($this->table){
+			case FILE_TABLE:
+				list($__path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
 
-			$__id = path_to_id($__path, FILE_TABLE);
-			if($__id){
-				$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
+				$__id = path_to_id($__path, FILE_TABLE);
+				if($__id){
+					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
+					$this->visible = !empty($_v) ? 'true' : 'false';
+				}
+				if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+					$mypath = id_to_path($this->docid, FILE_TABLE);
+					$mypath_parts = pathinfo($mypath);
+					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+						$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
+						$this->visible = !empty($_v) ? 'true' : 'false';
+					}
+				}
+				break;
+
+			// #6916
+			case OBJECT_FILES_TABLE:
+				$__id = $this->docid;
+				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
 				$this->visible = !empty($_v) ? 'true' : 'false';
-			}
-			if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
-				$mypath = id_to_path($this->docid, FILE_TABLE);
-				$mypath_parts = pathinfo($mypath);
-				if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
-					$this->visible = !empty($_v) ? 'true' : 'false';
+
+				if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
+					$mypath_parts = pathinfo($mypath);
+					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+						$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
+						$this->visible = !empty($_v) ? 'true' : 'false';
+					}
 				}
-			}
-		}
-                
-                // #6916
-                 if($this->table == OBJECT_FILES_TABLE){
-			
-			$__id = $this->docid;
-			$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
-		        $this->visible = !empty($_v) ? 'true' : 'false';
-			
-                        if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
-				$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
-				$mypath_parts = pathinfo($mypath);
-				if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', 'ID', new DB_WE());
-					$this->visible = !empty($_v) ? 'true' : 'false';
-				}
-			}
-			
+				break;
 		}
 	}
 
@@ -287,7 +287,7 @@ class weNavigationItem{
 				if($_compl == 'image'){
 					return getHtmlTag('img', $attribs);
 				} else{
-					return getHtmlTag('a', $attribs, $this->text);
+					return (isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text);
 				}
 			}
 			return '';

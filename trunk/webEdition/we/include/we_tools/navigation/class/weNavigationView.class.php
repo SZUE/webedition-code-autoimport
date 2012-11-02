@@ -131,7 +131,7 @@ class weNavigationView{
 								if(' . $this->editorBodyFrame . '.document.we_form.presetFolder) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = makeNewDoc;
 								var cont = true;
 								if(typeof(' . $this->editorBodyFrame . '.document.we_form.Selection)!="undefined") {
-									if(' . $this->editorBodyFrame . '.document.we_form.Selection.options[' . $this->editorBodyFrame . '.document.we_form.Selection.selectedIndex].value=="dynamic" && ' . $this->editorBodyFrame . '.document.we_form.IsFolder.value=="1"){
+									if(' . $this->editorBodyFrame . '.document.we_form.Selection.options[' . $this->editorBodyFrame . '.document.we_form.Selection.selectedIndex].value=="' . weNavigation::SELECTION_DYNAMIC . '" && ' . $this->editorBodyFrame . '.document.we_form.IsFolder.value=="1"){
 										cont = confirm("' . g_l('navigation', '[save_populate_question]') . '");
 									}
 								}
@@ -252,7 +252,7 @@ class weNavigationView{
 		$out = "";
 		$out.=we_html_element::jsScript(JS_DIR . "windows.js");
 		$_objFields = "\n";
-		if($this->Model->SelectionType == 'classname'){
+		if($this->Model->SelectionType == weNavigation::STPYE_CLASS){
 			if(defined('OBJECT_TABLE')){
 
 				$_class = new we_object();
@@ -362,7 +362,7 @@ class weNavigationView{
 					removeAllCats();
 					' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "select_enabled", "enabled");
 					' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "select_enabled", "enabled");
-					if(st.options[st.selectedIndex].value=="classname" && document.we_form.ClassID.options.length<1){
+					if(st.options[st.selectedIndex].value=="' . weNavigation::STPYE_CLASS . '" && document.we_form.ClassID.options.length<1){
 						' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "select_enabled", "disabled");
 						' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "select_enabled", "disabled");
 						document.getElementById("yuiAcInputFolderPath").disabled=true;
@@ -370,7 +370,7 @@ class weNavigationView{
 						' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "select_enabled", "enabled");
 						document.getElementById("yuiAcInputFolderPath").disabled=false;
 					}
-					if(st.options[st.selectedIndex].value=="doctype"){
+					if(st.options[st.selectedIndex].value=="' . weNavigation::STPYE_DOCTYPE . '"){
 						setVisible("docFolder",true);
 						setVisible("objFolder",false);
 						setVisible("catFolder",false);
@@ -379,7 +379,7 @@ class weNavigationView{
 							' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "select_enabled", "disabled");
 						}
 					}
-					if(st.options[st.selectedIndex].value=="classname"){
+					if(st.options[st.selectedIndex].value=="' . weNavigation::STPYE_CLASS . '"){
 						setVisible("docFolder",false);
 						setVisible("objFolder",true);
 						setVisible("catFolder",false);
@@ -404,7 +404,7 @@ class weNavigationView{
 						document.we_form.Url.value="http://";
 					}
 
-					if(st.options[st.selectedIndex].value=="category"){
+					if(st.options[st.selectedIndex].value=="' . weNavigation::STPYE_CATEGORY . '"){
 						setVisible("docFolder",false);
 						setVisible("objFolder",false);
 						setVisible("catFolder",true);
@@ -444,12 +444,12 @@ class weNavigationView{
 				' . $this->topFrame . '.mark();
 				var st = document.we_form.SelectionType;
 				st.options.length = 0;
-				if(type=="dynamic"){
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[documents]') . '","doctype");
+				if(type=="' . weNavigation::SELECTION_DYNAMIC . '"){
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[documents]') . '","' . weNavigation::STPYE_DOCTYPE . '");
 					' . (defined('OBJECT_TABLE') ? '
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[objects]') . '","classname");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[objects]') . '","' . weNavigation::STPYE_CLASS . '");
 					' : '' ) . '
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[categories]') . '","category");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[categories]') . '","' . weNavigation::STPYE_CATEGORY . '");
 					setVisible("doctype",true);
 					setVisible("classname",false);
 					setVisible("docFolder",true);
@@ -457,12 +457,12 @@ class weNavigationView{
 					setVisible("catFolder",false);
 					setStaticSelection("document");
 				} else {
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[docLink]') . '","docLink");
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[urlLink]') . '","urlLink");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[docLink]') . '","' . weNavigation::STPYE_DOCLINK . '");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[urlLink]') . '","' . weNavigation::STYPE_URLLINK . '");
 					' . (defined('OBJECT_TABLE') ? '
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[objLink]') . '","objLink");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[objLink]') . '","' . weNavigation::STPYE_OBJLINK . '");
 					' : '' ) . '
-					st.options[st.options.length] = new Option("' . g_l('navigation', '[catLink]') . '","catLink");
+					st.options[st.options.length] = new Option("' . g_l('navigation', '[catLink]') . '","' . weNavigation::STPYE_CATLINK . '");
 					setVisible("classname",true);
 					setVisible("doctype",false);
 					setVisible("docFolder",false);
@@ -475,8 +475,8 @@ class weNavigationView{
 			}
 
 			function closeAllSelection(){
-				setVisible("dynamic",false);
-				setVisible("static",false);
+				setVisible("' . weNavigation::SELECTION_DYNAMIC . '",false);
+				setVisible("' . weNavigation::SELECTION_STATIC . '",false);
 			}
 
 			function closeAllType(){
@@ -546,16 +546,16 @@ class weNavigationView{
 			function setWorkspaces(value) {
 				setVisible("objLinkWorkspaceClass",false);
 				setVisible("objLinkWorkspace",false);
-				if(value=="classname"){
+				if(value=="' . weNavigation::STPYE_CLASS . '"){
 					setVisible("objLinkWorkspaceClass",true);
 				}
-				if(value=="objLink"){
+				if(value=="' . weNavigation::STPYE_OBJLINK . '"){
 					setVisible("objLinkWorkspace",true);
 				}
 			}
 
 			function setStaticSelection(value){
-				if(value=="category"){
+				if(value=="' . weNavigation::STPYE_CATEGORY . '"){
 					setVisible("dynUrl",true);
 					setVisible("dynamic_LinkSelectionDiv",true);
 					dynamic_setLinkSelection("intern");
@@ -563,10 +563,10 @@ class weNavigationView{
 
 					setVisible("dynUrl",false);
 
-					if(value=="catLink"){
+					if(value=="' . weNavigation::STPYE_CATLINK . '"){
 						setVisible("staticSelect",true);
 						setVisible("staticUrl",true);
-					} else if(value=="urlLink" || value=="catLink"){
+					} else if(value=="' . weNavigation::STYPE_URLLINK . '" || value=="' . weNavigation::STPYE_CATLINK . '"){
 						setVisible("staticSelect",false);
 						setVisible("staticUrl",true);
 					} else {
@@ -574,17 +574,17 @@ class weNavigationView{
 						setVisible("staticUrl",false);
 					}
 
-					if(value=="docLink" || value=="objLink" || value=="catLink"){
+					if(value=="' . weNavigation::STPYE_DOCLINK . '" || value=="' . weNavigation::STPYE_OBJLINK . '" || value=="' . weNavigation::STPYE_CATLINK . '"){
 						setVisible("docLink",false);
 						setVisible("objLink",false);
 						setVisible("catLink",false);
 						setVisible(value,true);
 					}
 
-					if(value=="urlLink") {
+					if(value=="' . weNavigation::STYPE_URLLINK . '") {
 						setVisible("LinkSelectionDiv",false);
 						setLinkSelection("extern");
-					} else if(value=="catLink") {
+					} else if(value=="' . weNavigation::STPYE_CATLINK . '") {
 						setVisible("LinkSelectionDiv",true);
 						setLinkSelection("intern");
 					}
@@ -598,13 +598,13 @@ class weNavigationView{
 					document.we_form.LinkPath.value = "";
 					document.we_form.FolderUrl.value = "http://";
 					document.we_form.FolderWsID.value = -1;
-					if(value=="urlLink"){
+					if(value=="' . weNavigation::STYPE_URLLINK . '"){
 						setVisible("folderSelectionDiv",false);
 						setVisible("docFolderLink",false);
 						setVisible("objFolderLink",false);
 						setVisible("objLinkFolderWorkspace",false);
 						setVisible("folderUrlDiv",true);
-					}else if(value=="docLink"){
+					}else if(value=="' . weNavigation::STPYE_DOCLINK . '"){
 						setVisible("folderSelectionDiv",true);
 						setVisible("docFolderLink",true);
 						setVisible("objFolderLink",false);
@@ -796,7 +796,7 @@ class weNavigationView{
 						break;
 					}
 
-					if($this->Model->SelectionType == "classname" && $this->Model->TitleField != ""){
+					if($this->Model->SelectionType == weNavigation::STPYE_CLASS && $this->Model->TitleField != ""){
 						$_classFields = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
 						if(is_array($_classFields) && count($_classFields) > 0){
 							$_fieldsByNamePart = array();
@@ -843,7 +843,7 @@ class weNavigationView{
 						$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');';
 					}
 
-					if($this->Model->IsFolder && $this->Model->Selection == 'dynamic'){
+					if($this->Model->IsFolder && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 						$_old_items = array();
 						if($this->Model->hasDynChilds()){
 							$_old_items = $this->Model->depopulateGroup();
@@ -1033,7 +1033,7 @@ class weNavigationView{
 				case 'populateWorkspaces':
 
 					$_objFields = "\n";
-					if($this->Model->SelectionType == 'classname'){
+					if($this->Model->SelectionType == weNavigation::STPYE_CLASS){
 						$__fields = array();
 						if(defined('OBJECT_TABLE')){
 
@@ -1049,7 +1049,7 @@ class weNavigationView{
 
 					$_prefix = '';
 
-					if($this->Model->Selection == 'dynamic'){
+					if($this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 						$_values = weDynList::getWorkspacesForClass($this->Model->ClassID);
 						$_prefix = 'Class';
 					} else{
@@ -1094,7 +1094,7 @@ class weNavigationView{
 					}
 					break;
 				case 'populateText':
-					if(empty($this->Model->Text) && $this->Model->Selection == 'static' && $this->Model->SelectionType == 'catLink'){
+					if(empty($this->Model->Text) && $this->Model->Selection == 'static' && $this->Model->SelectionType == weNavigation::STPYE_CATLINK){
 						$_cat = new we_category();
 						$_cat->load($this->Model->LinkID);
 						$_cat->Catfields = unserialize($_cat->Catfields);
@@ -1161,7 +1161,7 @@ class weNavigationView{
 			}
 		}
 
-		if($this->Model->Selection == 'dynamic'){
+		if($this->Model->Selection == weNavigation::SELECTION_DYNAMIC){
 
 			if(isset($_REQUEST['WorkspaceIDClass'])){
 				$this->Model->WorkspaceID = $_REQUEST['WorkspaceIDClass'];
@@ -1171,7 +1171,7 @@ class weNavigationView{
 				$this->Model->Parameter = $_REQUEST['dynamic_Parameter'];
 			}
 
-			if($this->Model->SelectionType == 'category' && isset($_REQUEST['dynamic_Url'])){
+			if($this->Model->SelectionType == weNavigation::STPYE_CATEGORY && isset($_REQUEST['dynamic_Url'])){
 				$this->Model->Url = $_REQUEST['dynamic_Url'];
 				$this->Model->UrlID = $_REQUEST['dynamic_UrlID'];
 				$this->Model->LinkSelection = $_REQUEST['dynamic_LinkSelection'];

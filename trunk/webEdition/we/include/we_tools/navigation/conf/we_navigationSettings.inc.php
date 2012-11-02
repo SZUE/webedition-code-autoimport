@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $this->defaultPreviewCode = '<we:navigation navigationname="default" parentid="@###PARENTID###@" />
 
 <we:navigationEntry type="folder" navigationname="default">

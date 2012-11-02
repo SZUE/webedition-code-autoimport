@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * collection of the navigation items
  */
@@ -84,11 +83,10 @@ class weNavigationItems{
 		$this->items['id' . $_navigation->ID] = new weNavigationItem(
 				$_navigation->ID,
 				$_navigation->LinkID,
-				($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
+				($_navigation->IsFolder ? ($_navigation->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == weNavigation::STPYE_CLASS || $_navigation->SelectionType == weNavigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)),
 				$_navigation->Text,
 				$_navigation->Display,
-				$_navigation->getHref(
-					$_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID),
+				$_navigation->getHref($_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID),
 				$showRoot ? 'folder' : 'root',
 				$this->id2path($_navigation->IconID),
 				$_navigation->Attributes,
@@ -156,7 +154,7 @@ class weNavigationItems{
 					'name' => !empty($_dyn['field']) ? $_dyn['field'] : (isset($_dyn['name']) && !empty(
 							$_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
-					'table' => (($_nav->SelectionType == 'classname' || $_nav->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE),
+					'table' => (($_nav->SelectionType == weNavigation::STPYE_CLASS || $_nav->SelectionType == weNavigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 					'href' => $_href,
 					'type' => 'item',
 					'parentid' => $_nav->ID,
@@ -250,7 +248,7 @@ class weNavigationItems{
 		$this->items['id' . $_navigation->ID] = new weNavigationItem(
 				$_navigation->ID,
 				$_navigation->LinkID,
-				($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
+				($_navigation->IsFolder ? ($_navigation->FolderSelection == weNavigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == weNavigation::STPYE_CLASS || $_navigation->SelectionType == weNavigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)),
 				$_navigation->Text,
 				$_navigation->Display,
 				$_navigation->getHref($this->Storage['ids']),
@@ -350,7 +348,7 @@ class weNavigationItems{
 
 				$_ponder = 4;
 
-				if($_rule->SelectionType == 'doctype' && $_rule->DoctypeID){
+				if($_rule->SelectionType == weNavigation::STPYE_DOCTYPE && $_rule->DoctypeID){
 					if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
 						$_ponder--;
 					} else{
@@ -358,7 +356,7 @@ class weNavigationItems{
 					}
 				}
 
-				if($_rule->SelectionType == 'classname' && $_rule->ClassID){
+				if($_rule->SelectionType == weNavigation::STPYE_CLASS && $_rule->ClassID){
 					if(isset($GLOBALS["WE_MAIN_DOC"]->TableID) && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
 						$_ponder--;
 					} else{
@@ -367,7 +365,7 @@ class weNavigationItems{
 				}
 
 				$parentPath = '';
-				if($_rule->SelectionType == 'classname' && $_isObject){
+				if($_rule->SelectionType == weNavigation::STPYE_CLASS && $_isObject){
 
 					//$parentPath = id_to_path($_rule->WorkspaceID, FILE_TABLE);
 					$parentPath = $this->id2path($_rule->WorkspaceID);
@@ -377,7 +375,7 @@ class weNavigationItems{
 					}
 				}
 
-				if($_rule->SelectionType == 'doctype' && !$_isObject){
+				if($_rule->SelectionType == weNavigation::STPYE_DOCTYPE && !$_isObject){
 
 					//$parentPath = id_to_path($_rule->FolderID, FILE_TABLE);
 					$parentPath = $this->id2path($_rule->FolderID);
@@ -571,19 +569,18 @@ class weNavigationItems{
 
 		$_db->query($query);
 		while($_db->next_record()) {
-
 			$_tmpItem = $_db->Record;
 			$_tmpItem["Name"] = $_tmpItem["Text"];
 			$this->Storage['items'][] = $_tmpItem;
 			unset($_tmpItem);
 
-			if($_db->Record['IsFolder'] == '1' && ($_db->Record['FolderSelection'] == '' || $_db->Record['FolderSelection'] == 'docLink')){
+			if($_db->Record['IsFolder'] == '1' && ($_db->Record['FolderSelection'] == '' || $_db->Record['FolderSelection'] == weNavigation::STPYE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
 			} else
-			if($_db->Record['Selection'] == 'static' && $_db->Record['SelectionType'] == 'docLink'){
+			if($_db->Record['Selection'] == weNavigation::SELECTION_STATIC && $_db->Record['SelectionType'] == weNavigation::STPYE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
 			} else
-			if(($_db->Record['SelectionType'] == 'category' || $_db->Record['SelectionType'] == 'catLink') && $_db->Record['LinkSelection'] != 'extern'){
+			if(($_db->Record['SelectionType'] == weNavigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == weNavigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != 'extern'){
 				$_ids[] = $_db->Record['UrlID'];
 			}
 

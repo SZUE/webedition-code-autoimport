@@ -31,7 +31,7 @@ function we_tag_navigationWrite($attribs){
 		$depth = false;
 	}
 	$ret = '';
-	
+
 	if(isset($GLOBALS['we_navigation'][$name])){
 
 		$GLOBALS['weNavigationDepth'] = $depth;

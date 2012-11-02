@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,47 +22,46 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcCopyNavigationFolderCmd extends rpcCmd{
 
-class rpcCopyNavigationFolderCmd extends rpcCmd {
-
-	function execute() {
+	function execute(){
 		$resp = new rpcResponse();
-		if(		isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) &&
-				isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
-				isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
-				isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
-				(strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) ===false || strpos($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0]) > 0)
+		if(isset($_REQUEST['we_cmd'][0]) && !empty($_REQUEST['we_cmd'][0]) &&
+			isset($_REQUEST['we_cmd'][1]) && !empty($_REQUEST['we_cmd'][1]) &&
+			isset($_REQUEST['we_cmd'][2]) && !empty($_REQUEST['we_cmd'][2]) &&
+			isset($_REQUEST['we_cmd'][3]) && !empty($_REQUEST['we_cmd'][3]) &&
+			(strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) === false || strpos($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0]) > 0)
 		){
 
 			$db = new DB_WE();
-			$query = "SELECT * FROM " . NAVIGATION_TABLE . " WHERE Path LIKE '".$db->escape($_REQUEST['we_cmd'][2])."/%' ORDER BY Path";
+			$query = "SELECT * FROM " . NAVIGATION_TABLE . " WHERE Path LIKE '" . $db->escape($_REQUEST['we_cmd'][2]) . "/%' ORDER BY Path";
 			$db->query($query);
 			$result = $db->getAll();
 			$querySet = "";
 			$query = "";
 			$folders = array($_REQUEST['we_cmd'][1]);
-			$mapedId = array($_REQUEST['we_cmd'][3]=>$_REQUEST['we_cmd'][1]);
-			foreach ($result as $row) {
+			$mapedId = array($_REQUEST['we_cmd'][3] => $_REQUEST['we_cmd'][1]);
+			foreach($result as $row){
 				$querySet = "(";
-				foreach ($row as $key=>$val) {
-					switch ($key){
+				foreach($row as $key => $val){
+					switch($key){
 						case "ID" :
 							$querySet .= "''";
 							break;
 						case "Path" :
-							$path = str_replace($_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][0],$val);
-							$querySet .= ", '".$db->escape($path)."'";
+							$path = str_replace($_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][0], $val);
+							$querySet .= ", '" . $db->escape($path) . "'";
 							break;
 						case "ParentID" :
-							$querySet .= ", '".abs($mapedId[$val])."'";
+							$querySet .= ", '" . abs($mapedId[$val]) . "'";
 							break;
 						default :
 							$querySet .= ", '$val'";
 					}
 				}
 				$querySet .= ")";
-				if ($row['IsFolder']) {
-					if (!empty($query)) {
+				if($row['IsFolder']){
+					if(!empty($query)){
 						$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query;
 						$db->query($query);
 					}
@@ -70,28 +70,29 @@ class rpcCopyNavigationFolderCmd extends rpcCmd {
 					$mapedId[$row['ID']] = $db->getInsertId();
 					$folders[] = $mapedId[$row['ID']];
 					$query = "";
-				} else {
-					if (!empty($query)) {
+				} else{
+					if(!empty($query)){
 						$query .= ", ";
 					}
 					$query .= $querySet;
 				}
 				$lastInserted = $row['IsFolder'];
 			}
-			if (!$lastInserted) {
+			if(!$lastInserted){
 				$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query;
 				$db->query($query);
 			}
-			foreach ($folders as $folder) {
+			foreach($folders as $folder){
 				$newNavi = new weNavigation($folder);
 				$newNavi->save();
 			}
-			$resp->setData("status","ok") ;
-			$resp->setData("folders",$folders) ;
-		} else {
-			$resp->setData("folders","") ;
+			$resp->setData("status", "ok");
+			$resp->setData("folders", $folders);
+		} else{
+			$resp->setData("folders", "");
 		}
 
 		return $resp;
 	}
+
 }
