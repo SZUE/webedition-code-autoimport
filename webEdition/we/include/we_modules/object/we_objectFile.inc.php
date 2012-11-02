@@ -2415,6 +2415,9 @@ class we_objectFile extends we_document{
 		if($oldUrl != $this->Url){
 			$this->rewriteNavigation();
 		}
+//clear navigation cache to see change if object in navigation #6916
+                weNavigationCache::clean(true);
+                
 		return $this->insertAtIndex();
 	}
 
@@ -2438,7 +2441,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-
+//clear navigation cache to see change if object in navigation #6916
+                weNavigationCache::clean(true);
+                
 		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 	}
 
