@@ -111,7 +111,7 @@ abstract class we_html_element{
 	static function jsElement($content = '', $attribs = array()){
 		$attribs['type'] = 'text/javascript';
 		if(strpos($content, '<!--') === FALSE){
-			$content = "<!--\n" . trim($content," \n") . "\n//-->\n";
+			$content = "<!--\n" . trim($content, " \n") . "\n//-->\n";
 		}
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
 	}
@@ -399,7 +399,7 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
-	static function htmlIFrame($name, $src, $style,$iframestyle='border:0px;width:100%;height:100%;overflow: hidden;'){
+	static function htmlIFrame($name, $src, $style, $iframestyle = 'border:0px;width:100%;height:100%;overflow: hidden;'){
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_baseElement::getHtmlCode(
 					new we_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
@@ -417,5 +417,6 @@ abstract class we_html_element{
 		}
 		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div')
 				, $tmp);
-}
+	}
+
 }

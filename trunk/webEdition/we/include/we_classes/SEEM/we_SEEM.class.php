@@ -459,6 +459,9 @@ abstract class we_SEEM{
 	 * @return   code        string the new HTML code with for SEEM changed links
 	 */
 	static function replaceLinks($srcCode, $linkArray){
+		if(!isset($linkArray[0])){
+			return $srcCode;
+		}
 		//	This is Code, to have the same effect like pressing a vertical tab
 		$destCode = $srcCode;
 
