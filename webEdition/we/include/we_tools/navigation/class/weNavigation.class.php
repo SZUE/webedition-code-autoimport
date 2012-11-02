@@ -29,6 +29,16 @@
  */
 class weNavigation extends weModelBase{
 
+	const SELECTION_STATIC = 'static';
+	const SELECTION_DYNAMIC = 'dynamic';
+	const STYPE_URLLINK = 'urlLink';
+	const STPYE_DOCLINK = 'docLink';
+	const STPYE_DOCTYPE = 'doctype';
+	const STPYE_OBJLINK = 'objLink';
+	const STPYE_CLASS = 'classname';
+	const STPYE_CATLINK = 'catLink';
+	const STPYE_CATEGORY = 'category';
+
 	//properties
 	var $ID = 0;
 	var $Text = '';
@@ -40,8 +50,8 @@ class weNavigation extends weModelBase{
 	var $IsFolder = 0;
 	var $Path = '/';
 	var $Published = 1;
-	var $Selection = 'static';
-	var $SelectionType = 'docLink';
+	var $Selection = self::SELECTION_STATIC;
+	var $SelectionType = self::STPYE_DOCLINK;
 	var $FolderID = 0;
 	var $DocTypeID = 0;
 	var $ClassID = 0;
@@ -66,7 +76,7 @@ class weNavigation extends weModelBase{
 	var $ClassName = __CLASS__;
 	var $ContentType = 'weNavigation';
 	var $Attributes = array();
-	var $FolderSelection = 'docLink';
+	var $FolderSelection = self::STPYE_DOCLINK;
 	var $FolderParameter = '';
 	var $FolderWsID = -1;
 	var $FolderUrl = 'http://';
@@ -150,11 +160,11 @@ class weNavigation extends weModelBase{
 		$_id = 0;
 		$_table = "";
 		switch(($this->IsFolder ? $this->FolderSelection : $this->SelectionType)){
-			case "objLink":
+			case self::STPYE_OBJLINK:
 				$_table = OBJECT_FILES_TABLE;
 				$_id = $this->LinkID;
 				break;
-			case "docLink":
+			case self::STPYE_DOCLINK:
 				$_table = FILE_TABLE;
 				$_id = $this->LinkID;
 				break;
@@ -327,7 +337,7 @@ class weNavigation extends weModelBase{
 	}
 
 	function deleteStaticChilds(){
-		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Selection="static" ');
+		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Selection="' . self::SELECTION_STATIC . '" ');
 		while($this->db->next_record()) {
 			$child = new weNavigation($this->db->f("ID"));
 			$child->delete();
@@ -425,18 +435,15 @@ class weNavigation extends weModelBase{
 	}
 
 	function getDynamicEntries(){
-		if($this->Selection == 'dynamic'){
-
-			if($this->SelectionType == 'doctype'){
-				return weDynList::getDocuments(
-						$this->DocTypeID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField);
-			} else
-			if($this->SelectionType == 'category'){
-				return weDynList::getCatgories($this->FolderID, $this->ShowCount);
-			} else{
-
-				return $this->ClassID > 0 ? weDynList::getObjects(
-						$this->ClassID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField) : array();
+		if($this->Selection == self::SELECTION_DYNAMIC){
+			switch($this->SelectionType){
+				case self::STPYE_DOCTYPE:
+					return weDynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField);
+				case self::STPYE_CATEGORY:
+					return weDynList::getCatgories($this->FolderID, $this->ShowCount);
+				default:
+					return $this->ClassID > 0 ? weDynList::getObjects(
+							$this->ClassID, $this->FolderID, $this->Categories, $this->Sort, $this->ShowCount, $this->TitleField) : array();
 			}
 		}
 	}
@@ -485,9 +492,9 @@ class weNavigation extends weModelBase{
 			$_navigation = new weNavigation();
 
 			$_navigation->ParentID = $this->ID;
-			$_navigation->Selection = 'static';
+			$_navigation->Selection = self::SELECTION_STATIC;
 
-			$_navigation->SelectionType = ($this->SelectionType == 'doctype' ? 'docLink' : ($this->SelectionType == 'category' ? 'catLink' : 'objLink'));
+			$_navigation->SelectionType = ($this->SelectionType == self::STPYE_DOCTYPE ? self::STPYE_DOCLINK : ($this->SelectionType == self::STPYE_CATEGORY ? self::STPYE_CATLINK : self::STPYE_OBJLINK));
 			$_navigation->LinkID = $_item['id'];
 			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['ordn'] : $_k;
 			$_navigation->Depended = 1;
@@ -564,7 +571,7 @@ class weNavigation extends weModelBase{
 
 				$_nav = new weNavigation();
 				$_nav->initByRawData($item);
-				if($_nav->IsFolder || $_nav->Selection != 'dynamic'){
+				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
 					$_items[] = array(
 						'id' => $_nav->ID,
 						//'text'=>str_replace('&amp;','&',$_nav->Text),
@@ -572,7 +579,7 @@ class weNavigation extends weModelBase{
 						'text' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : $_nav->Text,
 						'display' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : "",
 						'docid' => $_nav->LinkID,
-						'table' => $_nav->IsFolder ? ($_nav->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_nav->SelectionType == 'classname' || $_nav->SelectionType == 'objLink' ? OBJECT_FILES_TABLE : FILE_TABLE)),
+						'table' => $_nav->IsFolder ? ($_nav->FolderSelection == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE)),
 						'href' => $_nav->getHref($storage['ids']),
 						'type' => $_nav->IsFolder ? 'folder' : 'item',
 						'parentid' => $_nav->ParentID,
@@ -588,7 +595,7 @@ class weNavigation extends weModelBase{
 					);
 				}
 
-				if($_nav->IsFolder == 0 && $_nav->Selection == 'dynamic'){
+				if($_nav->IsFolder == 0 && $_nav->Selection == self::SELECTION_DYNAMIC){
 
 					$_dyn_items = $_nav->getDynamicEntries();
 					foreach($_dyn_items as $_dyn){
@@ -601,7 +608,7 @@ class weNavigation extends weModelBase{
 							'text' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
 							'display' => !empty($_dyn['display']) ? $_dyn['display'] : "",
 							'docid' => $_dyn['id'],
-							'table' => (($_nav->SelectionType == 'classname' || $_nav->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE),
+							'table' => (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 							'href' => $_href,
 							'type' => 'item',
 							'parentid' => $_nav->ParentID,
@@ -682,39 +689,40 @@ class weNavigation extends weModelBase{
 
 	function getHref(&$storage, $id = 0){
 		if($this->IsFolder){
-
 			$_path = '';
 			//FIXME: remove eval
 			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->FolderParameter)) . '";');
-			if($this->FolderSelection == 'urlLink'){
-				$_path = $this->FolderUrl;
-			} else{
-				$objecturl = '';
-				if($this->FolderSelection == 'objLink'){
-					if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
-						$_db = new DB_WE();
-						$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
-						$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
-						$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
-						if($objecturl == ''){
+			switch($this->FolderSelection){
+				case self::STYPE_URLLINK:
+					$_path = $this->FolderUrl;
+					break;
+				default:
+					$objecturl = '';
+					if($this->FolderSelection == self::STPYE_OBJLINK){
+						if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
+							$_db = new DB_WE();
+							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
+							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
+							$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
+							if($objecturl == ''){
+								$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+							}
+						} else{
 							$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
 						}
+						$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->FolderWsID));
 					} else{
-						$_param = 'we_objectID=' . $this->LinkID . (!empty($_param) ? '&' : '') . $_param;
+						$_id = $this->LinkID;
 					}
-					$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->FolderWsID));
-				} else{
-					$_id = $this->LinkID;
-				}
-				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-				if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
-					$path_parts = pathinfo($_path);
-					if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl;
-					} else{
-						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl;
+					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
+					$_path = $_path == '/' ? '' : $_path;
+					if(defined('NAVIGATION_OBJECTSEOURLS') && NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
+						$path_parts = pathinfo($_path);
+						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+							(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ? '' : $path_parts['filename'] . '/') .
+							$objecturl;
 					}
-				}
+					break;
 			}
 		} else{
 			$_id = ($id ? $id : $this->LinkID);
@@ -723,46 +731,48 @@ class weNavigation extends weModelBase{
 			//FIXME: remove eval
 			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
 
-			if($this->SelectionType == 'urlLink'){
-				$_path = $this->Url;
-			} else
-			if($this->SelectionType == 'category' || $this->SelectionType == 'catLink'){
-				$_path = $this->LinkSelection == 'extern' ? $this->Url :
-					($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($this->UrlID, FILE_TABLE));
-				if(!empty($this->CatParameter)){
-					$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
-				}
-			} else{
-				if($this->SelectionType == 'classname' || $this->SelectionType == 'objLink'){
-					$objecturl = '';
-					if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
-						$_db = new DB_WE();
-						//$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . intval($this->LinkID) . "' LIMIT 1", $_db);
-						$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($_id) . " LIMIT 1", $_db);
-						if(isset($objectdaten['Url'])){
-							$objecturl = $objectdaten['Url'];
-							$objecttriggerid = $objectdaten['TriggerID'];
+			switch($this->SelectionType){
+				case self::STYPE_URLLINK:
+					$_path = $this->Url;
+					break;
+				case self::STPYE_CATEGORY:
+				case self::STPYE_CATLINK:
+					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($this->UrlID, FILE_TABLE));
+					if(!empty($this->CatParameter)){
+						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+					}
+					break;
+				default:
+					if($this->SelectionType == self::STPYE_CLASS || $this->SelectionType == self::STPYE_OBJLINK){
+						$objecturl = '';
+						if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
+							$_db = new DB_WE();
+							$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($_id) . " LIMIT 1", $_db);
+							if(isset($objectdaten['Url'])){
+								$objecturl = $objectdaten['Url'];
+								$objecttriggerid = $objectdaten['TriggerID'];
+							} else{
+								$objecturl = '';
+								$objecttriggerid = '';
+							}
+							if($objecturl == ''){
+								$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+							}
 						} else{
-							$objecturl = '';
-							$objecttriggerid = '';
-						}
-						if($objecturl == ''){
 							$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 						}
-					} else{
-						$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+						$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->WorkspaceID));
 					}
-					$_id = ($objecttriggerid ? $objecttriggerid : weDynList::getFirstDynDocument($this->WorkspaceID));
-				}
 
-				$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-				if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
-					$path_parts = pathinfo($_path);
-					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-						(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-							$path_parts['filename'] . '/' : ''
-						) . $objecturl;
-				}
+					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
+					$_path = $_path == '/' ? '' : $_path;
+					if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
+						$path_parts = pathinfo($_path);
+						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
+							(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+								$path_parts['filename'] . '/' : ''
+							) . $objecturl;
+					}
 			}
 		}
 
@@ -770,9 +780,9 @@ class weNavigation extends weModelBase{
 			$this->Attributes = @unserialize($this->Attributes);
 		}
 
-		$_path = $_path . ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
-		$_path = $_path . (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '');
-		$_path = $_path . ((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
+		$_path .= ($_param != '' ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '') .
+			(($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
+			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
@@ -851,26 +861,20 @@ class weNavigation extends weModelBase{
 	}
 
 	function encodeSpecChars($string){
-		$open = "!@###";
-		$close = "!###@";
-		$amp = "!!##@";
+		$open = '!@###';
+		$close = '!###@';
+		$amp = '!!##@';
 
 		$string = preg_replace("|<br(\/)?>|", $open . "br\\1" . $close, $string);
 		$string = preg_replace("|<(\/)?b>|", $open . "\\1b" . $close, $string);
 		$string = preg_replace("|<(\/)?i>|", $open . "\\1i" . $close, $string);
 		$string = preg_replace("|&([^;]+);|", $amp . "\\1;", $string);
 
-		$string = htmlspecialchars($string);
-
-		$string = str_replace($open, "<", $string);
-		$string = str_replace($close, ">", $string);
-		$string = str_replace($amp, "&", $string);
-
-		return $string;
+		return str_replace(array($open, $close, $amp,), array("<", ">", "&",), htmlspecialchars($string));
 	}
 
 	function getNavCondition($id, $table){
-		$_linkType = ($table == OBJECT_FILES_TABLE) ? 'objLink' : 'docLink';
+		$_linkType = ($table == OBJECT_FILES_TABLE) ? self::STPYE_OBJLINK : self::STPYE_DOCLINK;
 		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval(
 				$id) . ' ';
 	}

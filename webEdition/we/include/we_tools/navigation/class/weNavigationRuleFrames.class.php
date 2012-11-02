@@ -126,19 +126,20 @@ class weNavigationRuleFrames{
 			'noline' => 1
 		));
 
-		$selectionTypes = array();
-		$selectionTypes['doctype'] = g_l('global', "[documents]");
+		$selectionTypes = array(
+			weNavigation::STPYE_DOCTYPE => g_l('global', "[documents]")
+		);
 		if(defined('OBJECT_TABLE')){
-			$selectionTypes['classname'] = g_l('global', "[objects]");
+			$selectionTypes[weNavigation::STPYE_CLASS] = g_l('global', "[objects]");
 		}
 
-		array_push(
-			$parts, array(
+
+		$parts[] = array(
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => 200,
 			'html' => we_html_tools::htmlSelect(
 				'SelectionType', $selectionTypes, 1, 0, false, "style=\"width: 275px;\" onchange=\"switchType(this.value);\"")
-		));
+		);
 
 		// getDoctypes
 		$docTypes = array(
@@ -238,8 +239,8 @@ var allFields = new Array("FolderID", "DoctypeID", "ClassID", "WorkspaceID");
 var resetFields = new Array("NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID");
 
 var dependencies = new Array();
-dependencies["classname"] = new Array("ClassID", "WorkspaceID", "Categories");
-dependencies["doctype"] = new Array("FolderID", "DoctypeID", "Categories");
+dependencies["' . weNavigation::STPYE_CLASS . '"] = new Array("ClassID", "WorkspaceID", "Categories");
+dependencies["' . weNavigation::STPYE_DOCTYPE . '"] = new Array("FolderID", "DoctypeID", "Categories");
 
 
 function switchType(value) {

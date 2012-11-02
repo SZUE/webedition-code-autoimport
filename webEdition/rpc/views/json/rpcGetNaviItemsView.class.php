@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class rpcGetNaviItemsView extends rpcJsonView {
-
+class rpcGetNaviItemsView extends rpcJsonView{
 
 }

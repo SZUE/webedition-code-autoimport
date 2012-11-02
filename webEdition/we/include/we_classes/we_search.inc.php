@@ -132,7 +132,7 @@ class we_search{
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
 			foreach($foo as $f){
-				$q [] = '`'.$f . '` ' . $searchlocation;
+				$q [] = '`' . $f . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
