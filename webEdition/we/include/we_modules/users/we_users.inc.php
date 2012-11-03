@@ -863,8 +863,8 @@ class we_user{
 						$_SESSION['prefs']['editorSizeOpt'] = 1;
 					}
 
-					if(!$editor_reloaded){
-						$editor_reloaded = true;
+					if(!$GLOBALS['editor_reloaded']){
+						$GLOBALS['editor_reloaded'] = true;
 
 						$save_javascript .= "
 					if ( !_multiEditorreload ) {
