@@ -93,14 +93,14 @@ class weConfParser{
 		return $this->_content;
 	}
 
-	static function changeSourceCode($type = 'define', $text, $key, $value, $active = true, $comment = ''){
+	static function changeSourceCode($type, $text, $key, $value, $active = true, $comment = ''){
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
 					self::makeDefine($key, $value, $active, $comment);
 			case 'define':
 				$match = array();
-				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]|Ui', $text, $match)){
+				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
 					return str_replace($match[0], self::makeDefine($key, $value, $active) . "\n", $text);
 				}
 		}
@@ -159,7 +159,7 @@ class weConfParser{
 	}
 
 	static function makeDefine($key, $val, $active = true, $comment = ''){
-		return ($comment ? "//$comment\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
+		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
 			(is_bool($val) || $val == 'true' || $val == 'false' ? ($val ? 'true' : 'false') :
 				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
 	}
