@@ -182,7 +182,7 @@ $GLOBALS['configs'] = array(
 		'xhtml_show_wrong_error_log' => array(null),
 		'use_jupload' => array(null),
 		'specify_jeditor_colors' => array(null),
-		'seem_start_type' => array('', 'CHANGE_START_DOCUMENT'),
+		'seem_start_type' => array('cockpit', 'CHANGE_START_DOCUMENT'),
 		'seem_start_file' => array(0),
 		'seem_start_weapp' => array(0),
 	),
