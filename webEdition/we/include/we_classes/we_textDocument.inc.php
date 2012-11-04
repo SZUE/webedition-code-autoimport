@@ -77,7 +77,7 @@ class we_textDocument extends we_document{
 				return "we_versions/we_editor_versions.inc.php";
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return "we_templates/we_editor_properties.inc.php";
 		}
 		return $this->TemplatePath;

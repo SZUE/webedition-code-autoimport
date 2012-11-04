@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,15 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcPreparePreviewCmd extends rpcCmd{
 
-class rpcPreparePreviewCmd extends rpcCmd {
+	function execute(){
 
-	function execute() {
-
-		$_SESSION["rpc_previewCode"] = $_REQUEST["source"];
+		$_SESSION['weS']['rpc_previewCode'] = $_REQUEST["source"];
 
 		// an empty rpcResponse is enough
 		$resp = new rpcResponse();
 		return $resp;
 	}
+
 }

@@ -403,12 +403,12 @@ class weBackupWizard{
 	}
 
 	function getHTMLRecoverStep3(){
-		if(isset($_SESSION['weBackupVars'])){
+		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = array();
 			// workaround end
-			unset($_SESSION['weBackupVars']);
+			unset($_SESSION['weS']['weBackupVars']);
 		}
 		$parts = array();
 
@@ -749,12 +749,12 @@ class weBackupWizard{
 	function getHTMLRecoverStep4(){
 		$parts = array();
 
-		if(isset($_SESSION['weBackupVars'])){
+		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = array();
 			// workaround end
-			unset($_SESSION['weBackupVars']);
+			unset($_SESSION['weS']['weBackupVars']);
 		}
 
 		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[finished_success]"), 2, 600), "space" => 0, "noline" => 1));
@@ -785,12 +785,12 @@ class weBackupWizard{
 	}
 
 	function getHTMLBackupStep1(){
-		if(isset($_SESSION['weBackupVars'])){
+		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = array();
 			// workaround end
-			unset($_SESSION['weBackupVars']);
+			unset($_SESSION['weS']['weBackupVars']);
 		}
 
 		$parts = array();
@@ -960,9 +960,9 @@ class weBackupWizard{
 		$table->setCol(0, 0, null, g_l('backup', '[finish]'));
 		$table->setCol(1, 0, null, we_html_tools::getPixel(5, 20));
 
-		if($_SESSION['weBackupVars']['options']['export2send']){
-			$_down = $_SESSION['weBackupVars']['backup_file'];
-			if(is_file($_SESSION['weBackupVars']['backup_file'])){
+		if($_SESSION['weS']['weBackupVars']['options']['export2send']){
+			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
+			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
 
 				$_link = weBackupUtil::getHttpLink($_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : ''));
 
@@ -989,7 +989,7 @@ class weBackupWizard{
 
 		$content.=$table->getHtml();
 
-		$do_import_after_backup = (isset($_SESSION['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
+		$do_import_after_backup = (isset($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
 		$js = we_html_element::jsElement('
 			function setLocation(loc){
 				location.href=loc;
@@ -1052,18 +1052,18 @@ class weBackupWizard{
 			print $this->build_error_message();
 		}
 
-		if(isset($_SESSION['weBackupVars']['backup_file']) && isset($_SESSION['weBackupVars']['options']['export2server']) &&
-			is_file($_SESSION['weBackupVars']['backup_file']) && $_SESSION['weBackupVars']['options']['export2server'] != 1){
+		if(isset($_SESSION['weS']['weBackupVars']['backup_file']) && isset($_SESSION['weS']['weBackupVars']['options']['export2server']) &&
+			is_file($_SESSION['weS']['weBackupVars']['backup_file']) && $_SESSION['weS']['weBackupVars']['options']['export2server'] != 1){
 
-			we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'], time());
+			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time());
 		}
 
-		if(isset($_SESSION['weBackupVars'])){
+		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = array();
 			// workaround end
-			unset($_SESSION['weBackupVars']);
+			unset($_SESSION['weS']['weBackupVars']);
 		}
 	}
 
@@ -1539,7 +1539,7 @@ class weBackupWizard{
 					break;
 				case "deleteall":
 					$_SESSION["backup_delete"] = 1;
-					$_SESSION["delete_files_nok"] = array();
+					$_SESSION['weS']['delete_files_nok'] = array();
 					$_SESSION["delete_files_info"] = g_l('backup', "[files_not_deleted]");
 					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement('

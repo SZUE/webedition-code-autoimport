@@ -38,8 +38,7 @@ $offset = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : 0;
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 	$table = $_REQUEST['we_cmd'][1];
 	$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
-	$openDirs = makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]);
-	$openDirs = array_flip($openDirs);
+	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
 	new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
@@ -97,11 +96,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 
 		$DB_WE = new DB_WE();
-		$where = " WHERE ";
-
-		$where .= " ParentID=" . intval($ParentID) . " ";
-		$where .= makeOwnersSql();
-		$where .= $wsQuery;
+		$where = " WHERE  ParentID=" . intval($ParentID) . " " . makeOwnersSql() . $wsQuery;
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" . (($table == FILE_TABLE || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined(
@@ -116,8 +111,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 			$elem .= ",ContentType";
 
-		$query = "SELECT $elem, LOWER(Text) AS lowtext, ABS(REPLACE(Text,'info','')) AS Nr, (Text REGEXP '^[0-9]') AS isNr FROM $table $where ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext" . ($segment != 0 ? " LIMIT $offset,$segment;" : ";");
-		$DB_WE->query($query);
+		$DB_WE->query("SELECT $elem, LOWER(Text) AS lowtext, ABS(REPLACE(Text,'info','')) AS Nr, (Text REGEXP '^[0-9]') AS isNr FROM $table $where ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext" . ($segment != 0 ? " LIMIT $offset,$segment;" : ";"));
 
 		$ct = new we_base_ContentTypes();
 		while($DB_WE->next_record()) {
@@ -135,10 +129,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 			$IsClassFolder = $DB_WE->f("IsClassFolder");
 			$IsNotEditable = $DB_WE->f("IsNotEditable");
 
-			if(in_array($ID, $openFolders))
-				$OpenCloseStatus = 1;
-			else
-				$OpenCloseStatus = 0;
+			$OpenCloseStatus = (in_array($ID, $openFolders) ? 1 : 0);
 			$disabled = in_array($Path, $parentpaths) ? 1 : 0;
 
 			$typ = $IsFolder ? "group" : "item";
@@ -192,7 +183,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		foreach($wsPathArray as $path){
 			$wsQuery .= " Path like '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . " OR ";
 			while($path != "/" && $path != "\\" && $path) {
-				array_push($parentpaths, $path);
+				$parentpaths[] = $path;
 				$path = dirname($path);
 			}
 		}
@@ -201,13 +192,12 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$ac = getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);
-			$wsQuery .= " Path like '" . $DB_WE->escape($path) . "/%' OR Path='" . $DB_WE->escape($path) . "' OR ";
+			$wsQuery .= " Path LIKE '" . $DB_WE->escape($path) . "/%' OR Path='" . $DB_WE->escape($path) . "' OR ";
 		}
 	}
 
 	if($wsQuery){
-		$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-		$wsQuery = " AND ($wsQuery) ";
+		$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ') ';
 	}
 
 	if(isset($_REQUEST['we_cmd'][3])){
@@ -215,51 +205,46 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST['we_cmd'][4])] = $_REQUEST['we_cmd'][3];
 	}
 
-	if(isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)])){
-		$openFolders = explode(",", $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]);
-	} else{
-		$openFolders = array();
-	}
+	$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?
+			explode(",", $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
+			array());
+
 
 	if($parentFolder){
 		if(!in_array($parentFolder, $openFolders)){
-			array_push($openFolders, $parentFolder);
+			$openFolders[] = $parentFolder;
 			$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(",", $openFolders);
 		}
 	}
 
 	$js = '';
-	if($_SESSION["we_mode"] != "seem"){
+	if($_SESSION['weS']['we_mode'] != "seem"){
 		$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
 
 		$treeItems = array();
 
 		getItems($parentFolder, $offset, $Tree->default_segment);
 
-		$js =
-			'if(!' . $Tree->topFrame . '.treeData) {' .
-			we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) .
-			'}';
-
-		if(!$parentFolder)
-			$js .=
-				$Tree->topFrame . '.treeData.clear();' .
-				$Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));';
-
-		$js .= $Tree->getJSLoadTree($treeItems);
-
-		$js .=
-			'first=' . $Tree->topFrame . '.firstLoad;
+		$js = we_html_element::jsElement(
+				'if(!' . $Tree->topFrame . '.treeData) {' .
+				we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) .
+				'}' .
+				($parentFolder ? '' :
+					$Tree->topFrame . '.treeData.clear();' .
+					$Tree->topFrame . '.treeData.add(new ' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
+				) .
+				$Tree->getJSLoadTree($treeItems) .
+				'first=' . $Tree->topFrame . '.firstLoad;
 		if(top.firstLoad){
 			' . $Tree->topFrame . '.toggleBusy(0);
 		}else{
 			' . $Tree->topFrame . '.firstLoad = true;
-		}';
+		}');
 	}
 
 	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
 				we_html_tools::getHtmlInnerHead('File-Tree') .
-				we_html_element::jsElement($js)
+				$js
 			) . we_html_element::htmlBody(array("bgcolor" => "white"))
 		);
 }

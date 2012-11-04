@@ -193,7 +193,7 @@ class we_class_folder extends we_folder{
 			 */
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}

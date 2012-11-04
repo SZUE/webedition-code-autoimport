@@ -41,7 +41,7 @@ switch($_REQUEST['we_cmd'][0]){
 	case 'load_editor':
 		// set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == 'image/*' && $we_doc->ID == 0){
-			$_SESSION['EditPageNr'] = WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
 		}
@@ -121,7 +121,7 @@ switch($_REQUEST['we_cmd'][0]){
 	case 'wrap_on_off':
 		$_SESSION['we_wrapcheck'] = ($_REQUEST['we_cmd'][1] == 'true') ? 1 : 0;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-		$_SESSION['EditPageNr'] = WE_EDITPAGE_CONTENT;
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		break;
 	case 'add_owner':
 		$we_doc->add_owner($_REQUEST['we_cmd'][1]);
@@ -163,9 +163,9 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->ws_from_class();
 		break;
 	case 'switch_edit_page':
-		$_SESSION['EditPageNr'] = $_REQUEST['we_cmd'][1];
+		$_SESSION['weS']['EditPageNr'] = $_REQUEST['we_cmd'][1];
 		$we_doc->EditPageNr = $_REQUEST['we_cmd'][1];
-		if($_SESSION['we_mode'] == 'seem'){
+		if($_SESSION['weS']['we_mode'] == 'seem'){
 			$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};') . SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
 		}
 		break;
@@ -265,13 +265,13 @@ $_userID = $we_doc->isLockedByUser();
 if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
 	if(in_array(WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
 		$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
-		$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 	} else{
 		include_once(WE_USERS_MODULE_PATH . 'we_users_lockmessage.inc.php');
 		exit;
 	}
 } else{ // lock document, if in seeMode and EditMode !!, don't lock when already locked
-	if($_userID != $_SESSION['user']['ID'] && $_SESSION['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+	if($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == 'seem' && $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 		$we_doc->lockDocument();
 	}
 }
@@ -538,7 +538,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 										// SEEM, here a doc is published
 										$GLOBALS['publish_doc'] = true;
-										if($_SESSION['we_mode'] != 'seem' && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
+										if($_SESSION['weS']['we_mode'] != 'seem' && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) && (!$_REQUEST['we_cmd'][4])){
 											$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 										}
@@ -609,7 +609,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 						}
 						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 						//	switch to propertiy page, when user is allowed to do so.
-						switch($_SESSION['we_mode']){
+						switch($_SESSION['weS']['we_mode']){
 							case 'seem':
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
 								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . (we_hasPerm('CAN_SEE_PROPERTIES') ? WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';

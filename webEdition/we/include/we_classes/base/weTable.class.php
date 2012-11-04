@@ -79,10 +79,10 @@ class weTable{
 	}
 
 	function save(){
-		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
-			$_SESSION['weBackupVars']['tablekeys'] = array();
+		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
+			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
 		}
-		$_SESSION['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
+		$_SESSION['weS']['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
 		$this->db->delTable($this->table);
 		$cols = array();
 		$keys = array();
@@ -167,17 +167,17 @@ class weTableAdv extends weTable{
 
 	function save(){
 		global $DB_WE;
-		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
-			$_SESSION['weBackupVars']['tablekeys'] = array();
+		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
+			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
 		}
-		if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
 			$doConvert = true;
 			$searchArray = array('CHARACTER SET latin1', 'COLLATE latin1_bin', 'COLLATE latin1_danish_ci', 'COLLATE latin1_general_ci', 'COLLATE latin1_general_cs', 'COLLATE latin1_german1_ci', 'COLLATE latin1_german2_ci', 'COLLATE latin1_spanish_ci', 'COLLATE latin1_swedish_ci');
 		} else{
 			$doConvert = false;
 		}
 		if($this->db->isTabExist($this->table)){
-			$_SESSION['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
+			$_SESSION['weS']['weBackupVars']['tablekeys'][$this->table] = $this->db->getTableKeyArray($this->table);
 			$this->db->delTable($this->table);
 		}
 		$myarray = $this->elements['create'];

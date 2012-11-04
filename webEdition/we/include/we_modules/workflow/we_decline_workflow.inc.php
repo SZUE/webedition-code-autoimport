@@ -35,10 +35,10 @@ if($cmd == "ok"){
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		//	in SEEM-Mode back to Preview page
-		if($_SESSION["we_mode"] == "seem"){
+		if($_SESSION['weS']['we_mode'] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-		} else if($_SESSION["we_mode"] == "normal"){
+		} else if($_SESSION['weS']['we_mode'] == "normal"){
 
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
@@ -50,10 +50,10 @@ if($cmd == "ok"){
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_notok]');
 		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 		//	in SEEM-Mode back to Preview page
-		if($_SESSION["we_mode"] == "seem"){
+		if($_SESSION['weS']['we_mode'] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-		} else if($_SESSION["we_mode"] == "normal"){
+		} else if($_SESSION['weS']['we_mode'] == "normal"){
 
 			$script = '';
 		}

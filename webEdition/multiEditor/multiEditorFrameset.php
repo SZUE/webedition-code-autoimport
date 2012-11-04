@@ -38,7 +38,7 @@ EOF
 ?>
 	</head>
 	<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;"><?php
-$MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16;
+$MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem') ? 1 : 16;
 
 for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
 	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;overflow: hidden;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';

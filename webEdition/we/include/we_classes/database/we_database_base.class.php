@@ -290,8 +290,7 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
 			if(preg_match('/[\s\(`=\)\/]union[\s\(`\/]/i', $Query_String)){
-				$queryToCheck = str_replace("\\\"", '', $Query_String);
-				$queryToCheck = str_replace("\\'", '', $queryToCheck);
+				$queryToCheck = str_replace(array("\\\"", "\\'"), '', $Query_String);
 
 				$singleQuote = false;
 				$doubleQuote = false;

@@ -25,8 +25,15 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
+//NOTE: only add "newConf" to entries set in $GLOBALS['configs']. All "temporary" entries should remain in main-Request-Scope
+
 we_html_tools::protect();
 $yuiSuggest = &weSuggest::getInstance();
+
+define('secondsDay', 86400);
+define('secondsWeek', 604800);
+define('secondsYear', 31449600);
+
 
 // Check which group of settings to work with
 if(!isset($_REQUEST['setting']) || $_REQUEST['setting'] == ''){
@@ -139,6 +146,27 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		switch($settingname){
 			default:
 				$_SESSION['prefs'][$settingname] = ($settingvalue == null ? 0 : $settingvalue);
+				break;
+			case 'seem_start_file'://don't do anything here
+				break;
+			case 'seem_start_type':
+				switch($settingvalue){
+					case 'document':
+						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+						if(!$tmp){
+							$_SESSION['prefs'][$settingname] = 'cockpit';
+						}
+						break;
+					case 'object':
+						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+						if(!$tmp){
+							$_SESSION['prefs'][$settingname] = 'cockpit';
+						}
+						break;
+					default:
+						$_SESSION['prefs'][$settingname] = $settingvalue;
+						break;
+				}
 				break;
 			case 'sizeOpt':
 				if($settingvalue == 0){
@@ -636,12 +664,13 @@ function save_all_values(){
 	foreach($GLOBALS['config_files'] as $key => $file){
 		if($file['content'] != $file['contentBak']){ //only save if anything changed
 			weFile::save($file['filename'] . '.bak', $file['contentBak']);
-			weFile::save($file['filename'], trim($file['content'],"\n "));
+			weFile::save($file['filename'], trim($file['content'], "\n "));
 		}
 	}
 
-	if(count(array_diff_assoc($_SESSION["prefs"], $oldPrefs))){
-		doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $_SESSION["prefs"], (" WHERE userID=" . intval($_SESSION["prefs"]["userID"])));
+	$tmp = array_diff_assoc($_SESSION['prefs'], $oldPrefs);
+	if(!empty($tmp)){
+		doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $tmp, (' WHERE userID=' . intval($_SESSION["prefs"]["userID"])));
 	}
 }
 
@@ -810,7 +839,6 @@ function build_dialog($selected_setting = 'ui'){
 
 			// SEEM start document
 			if(we_base_preferences::userIsAllowed('seem_start_type')){
-
 				// Generate needed JS
 				$_needed_JavaScript .= we_html_element::jsElement("
 							function selectSidebarDoc() {
@@ -850,9 +878,9 @@ function build_dialog($selected_setting = 'ui'){
 								" .
 						//FIXME frames['content'] will probably not work here
 						(defined("OBJECT_FILES_TABLE") ?
-							"parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['newconf[seem_start_object]'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'newconf[seem_start_object]\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
+							"parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['newconf[seem_start_document]'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'newconf[seem_start_document]\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -921,9 +949,9 @@ function build_dialog($selected_setting = 'ui'){
 				$_object_id = 0;
 				$_document_path = '';
 				$_document_id = 0;
-				$_seem_start_type = '';
 
 				switch(get_value('seem_start_type')){
+					default:
 					case 'cockpit':
 						$_SESSION['prefs']['seem_start_file'] = 0;
 						$_SESSION['prefs']['seem_start_weapp'] = '';
@@ -968,7 +996,7 @@ function build_dialog($selected_setting = 'ui'){
 				$showStartType = false;
 				$permitedStartTypes = array('');
 				$_start_type->addOption('0', '-');
-				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? "33px" : "24px") . ";'>&nbsp;</div>";
+				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? '33px' : '24px') . ";'>&nbsp;</div>";
 				if(we_hasPerm('CAN_SEE_QUICKSTART')){
 					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;
@@ -976,17 +1004,17 @@ function build_dialog($selected_setting = 'ui'){
 				}
 
 				$_seem_document_chooser = '';
-				if(we_base_preferences::userIsAllowed('seem_start_file')){
+				if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 					$_start_type->addOption('document', g_l('prefs', '[seem_start_type_document]'));
 					$showStartType = true;
 					// Build SEEM select start document chooser
 
 					$yuiSuggest->setAcId('Doc');
 					$yuiSuggest->setContentType('folder,text/webEdition,text/html,image/*');
-					$yuiSuggest->setInput('seem_start_document_name', $_document_path, '', get_value('WE_SEEM'));
+					$yuiSuggest->setInput('seem_start_document_name', $_document_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult('newconf[seem_start_document]', $_document_id);
+					$yuiSuggest->setResult('seem_start_document', $_document_id);
 					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setWidth(150);
 					$yuiSuggest->setSelectButton(we_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', get_value('WE_SEEM'), false), 10);
@@ -996,17 +1024,17 @@ function build_dialog($selected_setting = 'ui'){
 					$permitedStartTypes[] = 'document';
 				}
 				$_seem_object_chooser = '';
-				if(defined('OBJECT_FILES_TABLE') && we_base_preferences::userIsAllowed('seem_start_object')){
+				if(defined('OBJECT_FILES_TABLE') && we_hasPerm('CAN_SEE_OBJECTFILES')){
 					$_start_type->addOption('object', g_l('prefs', '[seem_start_type_object]'));
 					$showStartType = true;
 					// Build SEEM select start object chooser
 
 					$yuiSuggest->setAcId('Obj');
 					$yuiSuggest->setContentType('folder,objectFile');
-					$yuiSuggest->setInput('seem_start_object_name', $_object_path, '', get_value('WE_SEEM'));
+					$yuiSuggest->setInput('seem_start_object_name', $_object_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
-					$yuiSuggest->setResult('newconf[seem_start_object]', $_object_id);
+					$yuiSuggest->setResult('seem_start_object', $_object_id);
 					$yuiSuggest->setSelector('Docselector');
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
@@ -1034,8 +1062,6 @@ function build_dialog($selected_setting = 'ui'){
 					$permitedStartTypes[] = 'weapp';
 				}
 
-
-
 				// Build final HTML code
 				if($showStartType){
 					if(in_array($_seem_start_type, $permitedStartTypes)){
@@ -1060,8 +1086,6 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_disable = get_value('SIDEBAR_DISABLED');
 				$_sidebar_show = ($_sidebar_disable) ? 'none' : 'block';
 
-				$_sidebar_show_on_startup = get_value('SIDEBAR_SHOW_ON_STARTUP');
-				$_sidebar_width = get_value('SIDEBAR_DEFAULT_WIDTH');
 				$_sidebar_id = get_value('SIDEBAR_DEFAULT_DOCUMENT');
 				$_sidebar_paths = getPathsFromTable(FILE_TABLE, '', FILE_ONLY, $_sidebar_id);
 				$_sidebar_path = '';
@@ -1073,10 +1097,10 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_disabler = we_forms::checkbox(1, $_sidebar_disable, 'newconf[SIDEBAR_DISABLED]', g_l('prefs', '[sidebar_deactivate]'), false, 'defaultfont', "document.getElementById('sidebar_options').style.display=(this.checked?'none':'block');");
 
 				// Show on Startup
-				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, 'newconf[SIDEBAR_SHOW_ON_STARTUP]', g_l('prefs', '[sidebar_show_on_startup]'), false, 'defaultfont', '');
+				$_sidebar_show_on_startup = we_forms::checkbox(1, get_value('SIDEBAR_SHOW_ON_STARTUP'), 'newconf[SIDEBAR_SHOW_ON_STARTUP]', g_l('prefs', '[sidebar_show_on_startup]'), false, 'defaultfont', '');
 
 				// Sidebar width
-				$_sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
+				$_sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, get_value('SIDEBAR_DEFAULT_WIDTH'), 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", 'text', 150);
 				$_sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, "onChange=\"document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
 
 				// Sidebar document
@@ -1119,9 +1143,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_settings[] = array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('newconf[use_jupload]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, ''), 'space' => 200);
 
 
-			/*			 * ***************************************************************
-			 * TREE
-			 * *************************************************************** */
+			// TREE
 
 			$_value_selected = false;
 			$_tree_count = get_value('default_tree_count');
@@ -1165,18 +1187,12 @@ function build_dialog($selected_setting = 'ui'){
 
 			//WINDOW DIMENSIONS
 
-			/**
-			 * Window dimensions
-			 */
-			$_window_max = false;
-			$_window_specify = false;
-
 			if(get_value('sizeOpt') == 0){
+				$_window_specify = false;
 				$_window_max = true;
-			}
-
-			if(get_value('sizeOpt') == 1){
+			} else{
 				$_window_specify = true;
+				$_window_max = false;
 			}
 
 			// Build maximize window
@@ -3497,14 +3513,11 @@ else {
 						"class" => "weSelect"
 						)
 				);
-				$secondsDay = 86400;
-				$secondsWeek = 604800;
-				$secondsYear = 31449600;
 
 				$_versions_time_days->addOption(-1, "");
-				$_versions_time_days->addOption($secondsDay, g_l('prefs', '[1_day]'));
+				$_versions_time_days->addOption(secondsDay, g_l('prefs', '[1_day]'));
 				for($x = 2; $x <= 31; $x++){
-					$_versions_time_days->addOption(($x * $secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
+					$_versions_time_days->addOption(($x * secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
 				}
 				$_versions_time_days->selectOption(get_value("VERSIONS_TIME_DAYS"));
 
@@ -3515,9 +3528,9 @@ else {
 						"class" => "weSelect")
 				);
 				$_versions_time_weeks->addOption(-1, "");
-				$_versions_time_weeks->addOption($secondsWeek, g_l('prefs', '[1_week]'));
+				$_versions_time_weeks->addOption(secondsWeek, g_l('prefs', '[1_week]'));
 				for($x = 2; $x <= 52; $x++){
-					$_versions_time_weeks->addOption(($x * $secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
+					$_versions_time_weeks->addOption(($x * secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
 				}
 				$_versions_time_weeks->selectOption(get_value("VERSIONS_TIME_WEEKS"));
 
@@ -3529,9 +3542,9 @@ else {
 						)
 				);
 				$_versions_time_years->addOption(-1, "");
-				$_versions_time_years->addOption($secondsYear, g_l('prefs', '[1_year]'));
+				$_versions_time_years->addOption(secondsYear, g_l('prefs', '[1_year]'));
 				for($x = 2; $x <= 10; $x++){
-					$_versions_time_years->addOption(($x * $secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
+					$_versions_time_years->addOption(($x * secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
 				}
 				$_versions_time_years->selectOption(get_value("VERSIONS_TIME_YEARS"));
 
@@ -3585,14 +3598,11 @@ else {
 						"class" => "weSelect"
 						)
 				);
-				$secondsDay = 86400;
-				$secondsWeek = 604800;
-				$secondsYear = 31449600;
 
-				$_versions_time_days_tmpl->addOption(-1, "");
-				$_versions_time_days_tmpl->addOption($secondsDay, g_l('prefs', '[1_day]'));
+				$_versions_time_days_tmpl->addOption(-1, '');
+				$_versions_time_days_tmpl->addOption(secondsDay, g_l('prefs', '[1_day]'));
 				for($x = 2; $x <= 31; $x++){
-					$_versions_time_days_tmpl->addOption(($x * $secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
+					$_versions_time_days_tmpl->addOption(($x * secondsDay), sprintf(g_l('prefs', '[more_days]'), $x));
 				}
 				$_versions_time_days_tmpl->selectOption(get_value("VERSIONS_TIME_DAYS_TMPL"));
 
@@ -3603,9 +3613,9 @@ else {
 						"class" => "weSelect")
 				);
 				$_versions_time_weeks_tmpl->addOption(-1, "");
-				$_versions_time_weeks_tmpl->addOption($secondsWeek, g_l('prefs', '[1_week]'));
+				$_versions_time_weeks_tmpl->addOption(secondsWeek, g_l('prefs', '[1_week]'));
 				for($x = 2; $x <= 52; $x++){
-					$_versions_time_weeks_tmpl->addOption(($x * $secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
+					$_versions_time_weeks_tmpl->addOption(($x * secondsWeek), sprintf(g_l('prefs', '[more_weeks]'), $x));
 				}
 				$_versions_time_weeks_tmpl->selectOption(get_value("VERSIONS_TIME_WEEKS_TMPL"));
 
@@ -3617,9 +3627,9 @@ else {
 						)
 				);
 				$_versions_time_years_tmpl->addOption(-1, "");
-				$_versions_time_years_tmpl->addOption($secondsYear, g_l('prefs', '[1_year]'));
+				$_versions_time_years_tmpl->addOption(secondsYear, g_l('prefs', '[1_year]'));
 				for($x = 2; $x <= 10; $x++){
-					$_versions_time_years_tmpl->addOption(($x * $secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
+					$_versions_time_years_tmpl->addOption(($x * secondsYear), sprintf(g_l('prefs', '[more_years]'), $x));
 				}
 				$_versions_time_years_tmpl->selectOption(get_value("VERSIONS_TIME_YEARS_TMPL"));
 
@@ -3675,7 +3685,6 @@ else {
 	return (isset($_dialog)) ? $_dialog : '';
 }
 
-
 /**
  * This functions renders the complete dialog.
  *
@@ -3724,11 +3733,11 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 	// check seemode start document | object
 	switch($_REQUEST['newconf']['seem_start_type']){
 		case "document":
-			if(empty($_REQUEST['newconf']['seem_start_document'])){
+			if(empty($_REQUEST['seem_start_document'])){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
 			} else{
-				$acResponse = $acQuery->getItemById($_REQUEST['newconf']['seem_start_document'], FILE_TABLE, array("IsFolder"));
+				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_document'], FILE_TABLE, array("IsFolder"));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
@@ -3742,11 +3751,11 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 			}
 			break;
 		case "object":
-			if(empty($_REQUEST['newconf']['seem_start_object'])){
+			if(empty($_REQUEST['seem_start_object'])){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
 			} else{
-				$acResponse = $acQuery->getItemById($_REQUEST['newconf']['seem_start_object'], OBJECT_FILES_TABLE, array("IsFolder"));
+				$acResponse = $acQuery->getItemById($_REQUEST['seem_start_object'], OBJECT_FILES_TABLE, array("IsFolder"));
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
@@ -3783,7 +3792,8 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 if($doSave && !$acError){
 	save_all_values();
 
-	$save_javascript = we_html_element::jsElement('
+	print STYLESHEET .
+		we_html_element::jsElement('
 							function doClose() {
 
 								var _multiEditorreload = false;
@@ -3792,10 +3802,8 @@ if($doSave && !$acError){
 							   //top.opener.top.frames[0].location.reload();
 							   top.close();
 							}
-					   ');
-
-
-	print STYLESHEET . $save_javascript . '</head>' .
+					   ') .
+		'</head>' .
 		we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doClose()"), build_dialog("saved")) . "</html>";
 } else{
 	$_form = we_html_element::htmlForm(array("onSubmit" => "return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
@@ -3835,11 +3843,10 @@ function setColorField(name) {
 	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
-	$_we_win_js = we_html_element::jsScript(JS_DIR . 'windows.js');
 
 
 
-	print STYLESHEET . $_we_cmd_js . $_we_win_js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
+	print STYLESHEET . $_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() . '</head>' .
 		we_html_element::htmlBody(array("class" => "weDialogBody"), $_form) .
 		$yuiSuggest->getYuiCss() .
 		$yuiSuggest->getYuiJs() .

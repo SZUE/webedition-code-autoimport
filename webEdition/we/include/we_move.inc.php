@@ -91,18 +91,18 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single
 				moveItem($targetDirectroy, $selectedItems[$i], $table, $notMovedItems);
 			}
 
-			if($_SESSION["we_mode"] == "normal"){ //	only update tree when in normal mode
+			if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
 				$script .= moveTreeEntries($table == OBJECT_FILES_TABLE);
 			}
 
 			$script .= "\ntop.toggleBusy(0);\n";
-			if($_SESSION["we_mode"] == "normal"){ //	different messages in normal or seeMode
+			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
 				if(sizeof($notMovedItems)){
-					$_SESSION["move_files_nok"] = array();
+					$_SESSION['weS']['move_files_nok'] = array();
 					$_SESSION["move_files_info"] = str_replace(
 						"\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));
 					foreach($notMovedItems as $item){
-						$_SESSION["move_files_nok"][] = array(
+						$_SESSION['weS']['move_files_nok'][] = array(
 							"icon" => $item['Icon'], "path" => $item['Path']
 						);
 					}
@@ -130,7 +130,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single
 //	in seeMode return to startDocument ...
 
 
-if($_SESSION["we_mode"] == "seem"){
+if($_SESSION['weS']['we_mode'] == "seem"){
 
 	if($retVal){ //	document moved -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(

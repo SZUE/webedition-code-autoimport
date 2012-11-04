@@ -1767,7 +1767,7 @@ class weVersions{
 					$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . $lastBinaryPath;
 				}
 
-				$resetDoc->EditPageNr = $_SESSION['EditPageNr'];
+				$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 
 				$existsInFileTable = f("SELECT ID FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID=" . intval($resetDoc->ID), "ID", $db);
 				//if document was deleted

@@ -117,7 +117,7 @@ if($_editMode){
 		we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
 	}
 } else{
-	if($_SESSION["we_mode"] == "normal"){
+	if($_SESSION['weS']['we_mode'] == "normal"){
 		$_msg = "";
 	}
 	print we_SEEM::parseDocument(we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false));

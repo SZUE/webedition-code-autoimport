@@ -39,13 +39,10 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 		$GLOBALS['we_doc'] = new we_template();
 		$GLOBALS['we_doc']->we_initSessDat($we_dt);
 
-		$GLOBALS['we_doc']->setElement("data", stripslashes($_SESSION["rpc_previewCode"]));
+		$GLOBALS['we_doc']->setElement("data", stripslashes($_SESSION['weS']['rpc_previewCode']));
+		unset($_SESSION['weS']['rpc_previewCode']);
 
-		if($_REQUEST["mode"] == "preview"){
-			$GLOBALS['we_doc']->EditPageNr = WE_EDITPAGE_PREVIEW_TEMPLATE;
-		} else{
-			$GLOBALS['we_doc']->EditPageNr = WE_EDITPAGE_PREVIEW;
-		}
+		$GLOBALS['we_doc']->EditPageNr = ($_REQUEST["mode"] == "preview" ? WE_EDITPAGE_PREVIEW_TEMPLATE : WE_EDITPAGE_PREVIEW);
 
 		$we_doc = $GLOBALS['we_doc'];
 

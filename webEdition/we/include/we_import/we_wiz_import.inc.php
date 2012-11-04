@@ -1163,12 +1163,13 @@ HTS;
 		$optid = 0;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
-			$DB_WE->query("SELECT ID,Text FROM " . OBJECT_TABLE . " " . ($ac ? " WHERE ID IN($ac) " : "") . "ORDER BY Text");
+			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 			while($DB_WE->next_record()) {
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));
-				if($DB_WE->f("ID") == $v["classID"])
+				if($DB_WE->f("ID") == $v["classID"]){
 					$CLselect->selectOption($DB_WE->f("ID"));
+				}
 			}
 		}
 		else
@@ -2124,7 +2125,7 @@ HTS;
 		$optid = 0;
 		$ac = makeCSVFromArray(getAllowedClasses($DB_WE));
 		if($ac){
-			$DB_WE->query("SELECT ID,Text FROM " . OBJECT_TABLE . " " . ($ac ? " WHERE ID IN($ac) " : "") . "ORDER BY Text");
+			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 			while($DB_WE->next_record()) {
 				$optid++;
 				$CLselect->insertOption($optid, $DB_WE->f("ID"), $DB_WE->f("Text"));

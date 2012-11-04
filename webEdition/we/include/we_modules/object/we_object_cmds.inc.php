@@ -62,7 +62,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->Search = $_REQUEST['we_cmd'][2];
 		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
 		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;
-		$_SESSION["EditPageNr"] = WE_EDITPAGE_WORKSPACE;
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
 		break;

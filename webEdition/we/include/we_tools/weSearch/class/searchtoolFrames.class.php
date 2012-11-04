@@ -123,7 +123,7 @@ class searchtoolFrames extends weToolFrames{
 						"id" => "tab_1", "style" => "display:$displayEntry"
 				)));
 		}
-		if($_SESSION["we_mode"] != "seem" && we_hasPerm('CAN_SEE_TEMPLATES')){
+		if($_SESSION['weS']['we_mode'] != "seem" && we_hasPerm('CAN_SEE_TEMPLATES')){
 			$we_tabs->addTab(
 				new we_tab(
 					'#',
@@ -277,7 +277,7 @@ class searchtoolFrames extends weToolFrames{
 	//          } elseif ($cmdid > 8) {
 	//              $tabNr = 1;
 	//          }
-	//          if (!we_hasPerm('CAN_SEE_DOCUMENTS') && ($_SESSION["we_mode"] == "seem" || !we_hasPerm('CAN_SEE_TEMPLATES'))) {
+	//          if (!we_hasPerm('CAN_SEE_DOCUMENTS') && ($_SESSION['weS']['we_mode'] == "seem" || !we_hasPerm('CAN_SEE_TEMPLATES'))) {
 	//              $tabNr = 3;
 	//          }
 	//

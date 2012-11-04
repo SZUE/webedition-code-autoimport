@@ -36,7 +36,7 @@ abstract class we_SEEM{
 	static function getClassVars($name){
 		return '';
 		//	here are all variables.
-		if($_SESSION["we_mode"] == "normal"){
+		if($_SESSION['weS']['we_mode'] == "normal"){
 			$vtabSrcDocs = "top.Vtabs.we_cmd('load','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
 			if(defined("OBJECT_FILES_TABLE")){
 				$vtabSrcObjs = (we_hasPerm("CAN_SEE_OBJECTFILES") ?
@@ -49,7 +49,7 @@ abstract class we_SEEM{
 		}
 
 
-		return (isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal" ? (isset($$name) ? $$name : '') : '');
+		return (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal" ? (isset($$name) ? $$name : '') : '');
 	}
 
 	/**
@@ -342,7 +342,7 @@ abstract class we_SEEM{
 		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 		for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
 
-			if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){
 
 					//  Edit an included document from webedition.
@@ -1002,7 +1002,7 @@ abstract class we_SEEM{
 	 */
 	static function addEditButtonToTag($which = "edit"){
 		return '';
-		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
+		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem"){
 		  return "";
 		  } else{
 		  return "";
