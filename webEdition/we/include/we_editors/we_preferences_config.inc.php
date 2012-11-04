@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
+
 $GLOBALS['configs'] = array(
 // Create array for needed configuration variables
 	'global' => array(
