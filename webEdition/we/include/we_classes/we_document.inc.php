@@ -394,15 +394,7 @@ class we_document extends we_root{
 				$_naviItem->SelectionType = 'doctype';
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				if($charset != ''){
-					$_naviItem->Charset = $charset;
-				} else{
-					if(defined('DEFAULT_CHARSET')){
-						$_naviItem->Charset = DEFAULT_CHARSET;
-					} else{
-						$_naviItem->Charset = $GLOBALS['WE_BACKENDCHARSET'];
-					}
-				}
+				$_naviItem->Charset = ($charset != '' ? $charset : (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else{
 				$_naviItem->Selection = 'static';
 				$_naviItem->SelectionType = 'docLink';

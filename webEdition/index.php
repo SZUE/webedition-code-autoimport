@@ -40,7 +40,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //FIXME: implement resave of config files
 if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && version_compare(WE_VERSION, CONF_SAVED_VERSION) != 0)){
 	//resave config file(s)
-	we_base_preferences::check_global_config();
+	we_base_preferences::check_global_config(true);
 }
 
 define('LOGIN_DENIED', 4);
