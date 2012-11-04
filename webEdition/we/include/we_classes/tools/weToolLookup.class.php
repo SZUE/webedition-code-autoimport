@@ -129,23 +129,28 @@ abstract class weToolLookup{
 
 	static function getPhpCmdInclude(){
 
-		$_inc = '';
 		if(isset($_REQUEST['we_cmd'][0])){
+			//FIX for charset in tools, due to not started session
+			$tmp = explode('_', $_REQUEST['we_cmd'][0]);
+			if($tmp[1] == 'weSearch' || $tmp[1] == 'navigation'){
+				$_REQUEST['tool'] = $tmp[1];
+				return 'we_tools/' . $tmp[1] . '/hook/we_phpCmdHook_' . $tmp[1] . '.inc.php';
+			}
 			$_tools = weToolLookup::getAllTools(true, true);
 			foreach($_tools as $_tool){
 				if(stripos($_REQUEST['we_cmd'][0], 'tool_' . $_tool['name'] . '_') === 0){
 					$_REQUEST['tool'] = $_tool['name'];
 					if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){
-						$_inc = 'we_tools/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
+						return 'we_tools/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 					} else{
-						$_inc = 'apps/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
+						return 'apps/' . $_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 					}
 					break;
 				}
 			}
 		}
 
-		return $_inc;
+		return '';
 	}
 
 	static function getJsCmdInclude(){
