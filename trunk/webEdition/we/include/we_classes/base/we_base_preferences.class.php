@@ -72,7 +72,7 @@ class we_base_preferences{
 	 *
 	 * @return         void
 	 */
-	static function check_global_config(){
+	static function check_global_config($updateVersion = false){
 		$values = $GLOBALS['configs']['global'];
 
 		// Read the global configuration file
@@ -88,7 +88,9 @@ class we_base_preferences{
 				$content = weConfParser::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
 			}
 		}
-
+		if($updateVersion){
+			$content = weConfParser::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_VERSION, true);
+		}
 		// Check if we need to rewrite the config file
 		if($content != $oldContent){
 			weFile::save($_file_name_backup, $oldContent);
