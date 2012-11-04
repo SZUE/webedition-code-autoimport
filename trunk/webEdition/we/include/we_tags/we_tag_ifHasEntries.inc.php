@@ -24,8 +24,8 @@
  */
 function we_tag_ifHasEntries(){
 	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
-		$element = $GLOBALS['weNavigationItemArray'][(sizeof($GLOBALS['weNavigationItemArray']) - 1)];
-		if(sizeof($element->items)){
+		$element = $GLOBALS['weNavigationItemArray'][(count($GLOBALS['weNavigationItemArray']) - 1)];
+		if(!empty($element->items)){
 			foreach($element->items as $item){
 				if($item->visible){
 					return true;
