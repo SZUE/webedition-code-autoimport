@@ -86,7 +86,7 @@ class we_object extends we_document{
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
-		if(!isset($this->IsInApp)){// allows to save Classes from within WE-Apps
+		if(!isset($this->isInApp)){// allows to save Classes from within WE-Apps
 			$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
 				$this->getUpdateTreeScript() .
 				we_main_headermenu::getMenuReloadCode('top.');
