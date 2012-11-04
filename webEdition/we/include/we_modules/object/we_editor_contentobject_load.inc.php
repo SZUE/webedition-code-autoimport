@@ -34,7 +34,7 @@ $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
 
 $we_doc = new we_object();
 
-$we_dt = $_SESSION["we_data"][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 $we_doc->we_initSessDat($we_dt);
 //
 //	---> Setting the Content-Type
@@ -120,7 +120,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 			echo $jsGUI->getResponse('add', $uniqid, $content, $afterid);
 
-			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
 
 		case 'reload_entry_at_class':
@@ -210,7 +210,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 			echo $jsGUI->getResponse('reload', $uniqid, $content);
 
-			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
 
 		case 'delete_entry_at_class':
@@ -219,7 +219,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = "entry_" . $identifier;
 				$we_doc->removeEntryFromClass($identifier);
 				echo $jsGUI->getResponse('delete', $uniqid);
-				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;
 
@@ -231,7 +231,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = "entry_" . $identifier;
 				$we_doc->upEntryAtClass($identifier);
 				echo $jsGUI->getResponse('up', $uniqid);
-				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;
 
@@ -243,7 +243,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				$uniqid = "entry_" . $identifier;
 				$we_doc->downEntryAtClass($identifier);
 				echo $jsGUI->getResponse('down', $uniqid);
-				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			}
 			break;
 

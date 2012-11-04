@@ -37,8 +37,8 @@ $INCLUDE = '';
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
 if(isset($GLOBALS['_we_active_integrated_modules'])){
 	foreach($GLOBALS['_we_active_integrated_modules'] as $m){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $m . '/we_cmd_' . $m . '.inc.php')){
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $m . '/we_cmd_' . $m . '.inc.php');
+		if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $m . '/we_cmd_' . $m . '.inc.php')){
+			include_once(WE_INCLUDES_PATH . 'we_modules/' . $m . '/we_cmd_' . $m . '.inc.php');
 		}
 	}
 }
@@ -155,7 +155,7 @@ if(!$INCLUDE){
 			$INCLUDE = 'we_editors/we_edit_frameset.inc.php';
 			break;
 		case 'edit_include_document' :
-			$INCLUDE = '/we_editors/SEEM_edit_include_document.inc.php';
+			$INCLUDE = 'we_editors/SEEM_edit_include_document.inc.php';
 			break;
 		case 'load_editor':
 			$INCLUDE = 'we_editors/we_editor.inc.php';
@@ -368,7 +368,6 @@ if($INCLUDE){
 	}
 	//  This statement prevents the page from being reloaded
 	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
-
 		print we_html_element::jsElement('parent.openedWithWE = 1;');
 	}
 

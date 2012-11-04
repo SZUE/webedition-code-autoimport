@@ -332,7 +332,7 @@ class we_schedpro{
 		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
 		$deleted = false;
 		$changeTmpDoc = false;
-		$_SESSION["Versions"]['fromScheduler'] = true;
+		$_SESSION['weS']['versions']['fromScheduler'] = true;
 
 		foreach($schedFile["value"] as $s){
 
@@ -414,7 +414,7 @@ class we_schedpro{
 
 		$GLOBALS['we_doc'] = $doc_save;
 
-		$_SESSION["Versions"]['fromScheduler'] = false;
+		$_SESSION['weS']['versions']['fromScheduler'] = false;
 
 		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND TYPE="' . self::TYPE_ONCE . '"');
 	}

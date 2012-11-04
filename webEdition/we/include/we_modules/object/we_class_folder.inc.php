@@ -73,8 +73,8 @@ class we_class_folder extends we_folder{
 		we_folder::we_initSessDat($sessDat);
 		if(isset($this->searchclass_class) && !is_object($this->searchclass_class)){
 			$this->searchclass_class = unserialize($this->searchclass_class);
-		} else if(isset($_SESSION['we_objectSearch'][$this->ID])){
-			$temp = unserialize($_SESSION['we_objectSearch'][$this->ID]);
+		} else if(isset($_SESSION['weS']['we_objectSearch'][$this->ID])){
+			$temp = unserialize($_SESSION['weS']['we_objectSearch'][$this->ID]);
 			$this->searchclass_class = unserialize($temp['Serialized']);
 			$this->SearchStart = $temp['SearchStart'];
 			$this->GreenOnly = $temp['GreenOnly'];
@@ -1005,13 +1005,13 @@ EOF;
 
 		parent::saveInSession($save);
 
-		if(!isset($_SESSION['we_objectSearch'])){
-			$_SESSION['we_objectSearch'] = array();
+		if(!isset($_SESSION['weS']['we_objectSearch'])){
+			$_SESSION['weS']['we_objectSearch'] = array();
 		}
-		if(!isset($_SESSION['we_objectSearch'][$this->ID])){
-			$_SESSION['we_objectSearch'][$this->ID] = array();
+		if(!isset($_SESSION['weS']['we_objectSearch'][$this->ID])){
+			$_SESSION['weS']['we_objectSearch'][$this->ID] = array();
 		}
-		$_SESSION['we_objectSearch'][$this->ID] = serialize(array(
+		$_SESSION['weS']['we_objectSearch'][$this->ID] = serialize(array(
 			'Serialized' => serialize($this->searchclass),
 			'SearchStart' => $this->SearchStart,
 			'GreenOnly' => $this->GreenOnly,

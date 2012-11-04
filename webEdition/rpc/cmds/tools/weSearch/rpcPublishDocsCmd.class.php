@@ -49,7 +49,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 						we_temporaryDocument::delete($object->ID);
 						$object->initByID($object->ID);
 						$object->ModDate = $object->Published;
-						$_SESSION['versions']['doPublish'] = true;
+						$_SESSION['weS']['versions']['doPublish'] = true;
 						$object->we_save();
 						$object->we_publish();
 						if(defined("WORKFLOW_TABLE") && $object->ContentType == "text/webedition"){
@@ -57,7 +57,7 @@ class rpcPublishDocsCmd extends rpcCmd{
 								we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION["user"]["ID"], "");
 							}
 						}
-						unset($_SESSION['versions']['doPublish']);
+						unset($_SESSION['weS']['versions']['doPublish']);
 					}
 				}
 			}

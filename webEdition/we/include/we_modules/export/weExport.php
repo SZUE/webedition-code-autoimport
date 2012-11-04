@@ -146,7 +146,7 @@ class weExport extends weModelBase{
 	 * ******************************** */
 
 	function deleteChilds(){
-		$this->db->query("SELECT ID FROM " . EXPORT_TABLE . " WHERE ParentID='" . $this->ID . "'");
+		$this->db->query("SELECT ID FROM " . EXPORT_TABLE . ' WHERE ParentID=' . intval($this->ID));
 		while($this->db->next_record()) {
 			$child = new weExport($this->db->f("ID"));
 			$child->delete();
@@ -154,12 +154,10 @@ class weExport extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION["export_session"]))
-			unset($_SESSION["export_session"]);
-		if(isset($_SESSION["ExportSession"]))
-			unset($_SESSION["ExportSession"]);
-		if(isset($_SESSION["exportVars"]))
-			unset($_SESSION["exportVars"]);
+		if(isset($_SESSION['weS']['ExportSession']))
+			unset($_SESSION['weS']['ExportSession']);
+		if(isset($_SESSION['weS']['exportVars']))
+			unset($_SESSION['weS']['exportVars']);
 	}
 
 	function filenameNotValid($text){
@@ -168,7 +166,6 @@ class weExport extends weModelBase{
 	}
 
 	function exportToFilenameValid($filename){
-
 		return (preg_match('%p?html?%i', $filename) || stripos($filename, 'inc') !== false || preg_match('%php3?%i', $filename));
 	}
 

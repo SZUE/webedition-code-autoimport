@@ -33,7 +33,7 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 		$_REQUEST['we_cmd'][0] = "";
 
 		if(isset($_REQUEST["we_dt"])){
-			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_dt"]]) ? $_SESSION["we_data"][$_REQUEST["we_dt"]] : "";
+			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_dt"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_dt"]] : "";
 		}
 
 		$GLOBALS['we_doc'] = new we_template();

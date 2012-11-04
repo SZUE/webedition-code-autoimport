@@ -38,32 +38,26 @@ $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") 
 	we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
-echo $headCal;
-
 $_view = new doclistView ( );
 
-echo $_view->getSearchJS();
+print $headCal .
+	$_view->getSearchJS() .
+	STYLESHEET .
+	'</head>
 
-print STYLESHEET;
+<body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
+<div id="mouseOverDivs_doclist"></div>
+<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
 
-echo '</head>
-
-<body class="weEditorBody" onUnload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onLoad="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">';
-
-echo '<div id="mouseOverDivs_doclist"></div>';
-
-echo '<form name="we_form" onSubmit="return false;" style="padding:0px;margin:0px;">';
-
-$_parts = array();
-$_parts [] = array("html" => $_view->getSearchDialog());
 $content = $_view->searchProperties();
 $headline = $_view->makeHeadLines();
-$foundItems = (isset($_SESSION['weSearch']['foundItems'])) ? $_SESSION['weSearch']['foundItems'] : 0;
-$_parts [] = array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . searchtoolView::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>");
+$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
+$_parts = array(
+	array("html" => $_view->getSearchDialog()),
+	array("html" => "<div id='parametersTop'>" . $_view->getSearchParameterTop($foundItems) . "</div>" . searchtoolView::tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $_view->getSearchParameterBottom($foundItems) . "</div>"),
+);
 
-echo $_view->getHTMLforDoclist($_parts);
-
-echo '
+echo $_view->getHTMLforDoclist($_parts) . '
 </form>
 </body>
 </html>';

@@ -716,13 +716,13 @@ class weGlossaryView{
 			}
 		}
 
-		$_SESSION["weGlossarySession"] = serialize($this->Glossary);
+		$_SESSION['weS']['weGlossarySession'] = serialize($this->Glossary);
 	}
 
 	function processVariables(){
 
-		if(isset($_SESSION["weGlossarySession"])){
-			$this->Glossary = unserialize($_SESSION["weGlossarySession"]);
+		if(isset($_SESSION['weS']['weGlossarySession'])){
+			$this->Glossary = unserialize($_SESSION['weS']['weGlossarySession']);
 		}
 
 		if(is_array($this->Glossary->persistent_slots)){

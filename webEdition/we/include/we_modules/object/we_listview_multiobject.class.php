@@ -149,7 +149,7 @@ class we_listview_multiobject extends listviewBase{
 		}
 
 		// IMPORTANT for seeMode !!!! #5317
-		$this->LastDocPath = (isset($_SESSION['last_webEdition_document']) ? $_SESSION['last_webEdition_document']['Path'] : '');
+		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
 
 		$matrix = array();
 		$join = $this->fillMatrix($matrix, $this->classID, $this->DB_WE);

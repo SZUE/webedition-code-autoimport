@@ -41,7 +41,7 @@ $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 
 $we_doc = new we_objectFile();
 
-$we_dt = $_SESSION["we_data"][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 $we_doc->we_initSessDat($we_dt);
 
 //
@@ -140,7 +140,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 			echo $jsGUI->getResponse('reload', $identifier, $content);
 
-			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
 
 		default:

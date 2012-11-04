@@ -591,7 +591,7 @@ class weCustomerView{
 							);
 						break;
 					}
-					$c = unserialize($_SESSION['customer_session']);
+					$c = unserialize($_SESSION['weS']['customer_session']);
 					if($c->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){//bei Password�nderungen die persistentlogins l�schen
 						$this->db->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($this->customer->ID));
 					}
@@ -967,18 +967,18 @@ class weCustomerView{
 			}
 		}
 
-		$_SESSION['customer_session'] = serialize($this->customer);
+		$_SESSION['weS']['customer_session'] = serialize($this->customer);
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['customer_session'])){
+		if(isset($_SESSION['weS']['customer_session'])){
 
-			$this->customer = unserialize($_SESSION['customer_session']);
+			$this->customer = unserialize($_SESSION['weS']['customer_session']);
 		}
 
 		if(isset($_REQUEST['sid'])){
 			$this->customer = new weCustomer(addslashes($_REQUEST['sid']));
-			$_SESSION['customer_session'] = serialize($this->customer);
+			$_SESSION['weS']['customer_session'] = serialize($this->customer);
 		}
 		if(is_array($this->customer->persistent_slots)){
 			foreach($this->customer->persistent_slots as $key => $val){

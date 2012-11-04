@@ -816,9 +816,9 @@ class weVersions{
 	public function setInitialDocObject($obj){
 		if(is_object($obj)){
 			$index = $obj->ID . '_' . $obj->Table;
-			$_SESSION['versions']['versionToCompare'][$index] = serialize($obj);
+			$_SESSION['weS']['versions']['versionToCompare'][$index] = serialize($obj);
 			if(in_array($obj->ContentType, self::getContentTypesVersioning()) && $obj->ID != 0 && !$this->versionsExist($obj->ID, $obj->ContentType)){
-				$_SESSION['versions']['initialVersions'] = true;
+				$_SESSION['weS']['versions']['initialVersions'] = true;
 				$this->save($obj);
 			}
 		}
@@ -892,34 +892,34 @@ class weVersions{
 	function save($docObj, $status = "saved"){
 
 		if(isset($_SESSION["user"]["ID"])){
-			$_SESSION["Versions"]['fromImport'] = 0;
+			$_SESSION['weS']['versions']['fromImport'] = 0;
 
 			//import
 			if(isset($_REQUEST["jupl"]) && $_REQUEST["jupl"]){
-				$_SESSION["Versions"]['fromImport'] = 1;
+				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			} elseif(isset($_REQUEST["pnt"]) && $_REQUEST["pnt"] == "wizcmd"){
 				if($_REQUEST["v"]["type"] == "CSVImport" || $_REQUEST["v"]["type"] == "GXMLImport"){
-					$_SESSION["Versions"]['fromImport'] = 1;
+					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
 				} elseif(isset($_SESSION["ExImRefTable"])){
 					foreach($_SESSION["ExImRefTable"] as $k => $v){
 						if($v["ID"] == $docObj->ID){
-							$_SESSION["Versions"]['fromImport'] = 1;
+							$_SESSION['weS']['versions']['fromImport'] = 1;
 							$this->saveVersion($docObj);
 						}
 					}
 				}
 			} elseif(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "siteImport" || $_REQUEST['we_cmd'][0] == "import_files")){
-				$_SESSION["Versions"]['fromImport'] = 1;
+				$_SESSION['weS']['versions']['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			} else{
-				if((isset($_SESSION["Versions"]['fromScheduler']) && $_SESSION["Versions"]['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "save_document" || $_REQUEST['we_cmd'][0] == "unpublish" || $_REQUEST['we_cmd'][0] == "revert_published"))
+				if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == "save_document" || $_REQUEST['we_cmd'][0] == "unpublish" || $_REQUEST['we_cmd'][0] == "revert_published"))
 					|| (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ResetVersion" || $_REQUEST["cmd"] == "PublishDocs" || $_REQUEST["cmd"] == "ResetVersionsWizard"))
 					|| (isset($_REQUEST["type"]) && $_REQUEST["type"] == "reset_versions")
-					|| (isset($_SESSION['versions']['initialVersions']) && $_SESSION['versions']['initialVersions'])){
-					if(isset($_SESSION['versions']['initialVersions'])){
-						unset($_SESSION['versions']['initialVersions']);
+					|| (isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions'])){
+					if(isset($_SESSION['weS']['versions']['initialVersions'])){
+						unset($_SESSION['weS']['versions']['initialVersions']);
 					}
 					$this->saveVersion($docObj, $status);
 				}
@@ -1087,7 +1087,7 @@ class weVersions{
 				$status = "published";
 			}
 
-			if(isset($_SESSION['versions']['doPublish']) && $_SESSION['versions']['doPublish']){
+			if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
 				$status = "published";
 			}
 
@@ -1101,8 +1101,8 @@ class weVersions{
 			}
 
 			//look if there were made changes
-			if(isset($_SESSION['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]) && $_SESSION['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] != ''){
-				$lastEntry = unserialize($_SESSION['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]);
+			if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] != ''){
+				$lastEntry = unserialize($_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]]);
 				$lastEntry = $this->objectToArray($lastEntry);
 
 				$diffExists = array();
@@ -1138,7 +1138,7 @@ class weVersions{
 					$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . $theSet);
 					$vers = (isset($document["version"]) ? $document["version"] : $this->version);
 					$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active = 0 WHERE documentID = ' . intval($document['ID']) . ' AND documentTable = "' . $db->escape($document["Table"]) . '" AND version != ' . intval($vers));
-					$_SESSION['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] = serialize($documentObj);
+					$_SESSION['weS']['versions']['versionToCompare'][$document["ID"] . '_' . $document["Table"]] = serialize($documentObj);
 				}
 			}
 
@@ -1385,7 +1385,7 @@ class weVersions{
 				$entry = $this->IsScheduler();
 				break;
 			case "fromImport":
-				$entry = (isset($_SESSION["Versions"]['fromImport']) && $_SESSION["Versions"]['fromImport']) ? 1 : 0;
+				$entry = (isset($_SESSION['weS']['versions']['fromImport']) && $_SESSION['weS']['versions']['fromImport']) ? 1 : 0;
 				break;
 			case "resetFromVersion":
 				$entry = (isset($document["resetFromVersion"]) && $document["resetFromVersion"] != "") ? $document["resetFromVersion"] : 0;
@@ -1403,8 +1403,8 @@ class weVersions{
 	 */
 	function IsScheduler(){
 		$fromScheduler = 0;
-		if(isset($_SESSION["Versions"]['fromScheduler'])){
-			$fromScheduler = $_SESSION["Versions"]['fromScheduler'];
+		if(isset($_SESSION['weS']['versions']['fromScheduler'])){
+			$fromScheduler = $_SESSION['weS']['versions']['fromScheduler'];
 		}
 
 		return $fromScheduler;
@@ -1664,11 +1664,11 @@ class weVersions{
 			$binaryPath = "";
 			while($db->next_record()) {
 				$binaryPath = $db->f('binaryPath');
-				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['Text'] = $db->f('Text');
-				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['ContentType'] = $db->f('ContentType');
-				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['Path'] = $db->f('Path');
-				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['Version'] = $db->f('version');
-				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['documentID'] = $db->f('documentID');
+				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')]['Text'] = $db->f('Text');
+				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')]['ContentType'] = $db->f('ContentType');
+				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')]['Path'] = $db->f('Path');
+				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')]['Version'] = $db->f('version');
+				$_SESSION['weS']['versions']['logDeleteIds'][$db->f('ID')]['documentID'] = $db->f('documentID');
 			}
 
 			$filePath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
@@ -1792,7 +1792,7 @@ class weVersions{
 						foreach($folders as $k => $v){
 							if($k != 0 && $k != (count($folders) - 1)){
 
-								$parentID = (isset($_SESSION['versions']['lastPathID'])) ? $_SESSION['versions']['lastPathID'] : 0;
+								$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 								if(defined("OBJECT_FILES_TABLE") && $resetArray["documentTable"] == OBJECT_FILES_TABLE){
 									$folder = new we_class_folder();
 								} else{
@@ -1812,15 +1812,15 @@ class weVersions{
 								$existsFolderPathID = f("SELECT ID FROM " . $db->escape($resetArray["documentTable"]) . " WHERE Path='" . $db->escape($folder->Path) . "' AND IsFolder='1' ", "ID", $db);
 								if(empty($existsFolderPathID)){
 									$folder->we_save();
-									$_SESSION['versions']['lastPathID'] = $folder->ID;
+									$_SESSION['weS']['versions']['lastPathID'] = $folder->ID;
 								} else{
-									$_SESSION['versions']['lastPathID'] = $existsFolderPathID;
+									$_SESSION['weS']['versions']['lastPathID'] = $existsFolderPathID;
 								}
 							}
 						}
 
 						$resetDoc->ID = 0;
-						$resetDoc->ParentID = $_SESSION['versions']['lastPathID'];
+						$resetDoc->ParentID = $_SESSION['weS']['versions']['lastPathID'];
 						$resetDoc->Path = $resetArray["Path"];
 					}
 				}
@@ -1838,13 +1838,13 @@ class weVersions{
 					}
 				}
 
-				if((isset($_SESSION['versions']['lastPathID']))){
-					unset($_SESSION['versions']['lastPathID']);
+				if((isset($_SESSION['weS']['versions']['lastPathID']))){
+					unset($_SESSION['weS']['versions']['lastPathID']);
 				}
 
 				$resetDoc->resetFromVersion = $version;
 
-				$resetDoc->saveInSession($_SESSION["we_data"][$we_transaction]);
+				$resetDoc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 				$GLOBALS['we_doc'] = $resetDoc;
 
@@ -1864,11 +1864,11 @@ class weVersions{
 					$resetDoc->Published = 0;
 				}
 				if($publish){
-					$_SESSION['versions']['doPublish'] = true;
+					$_SESSION['weS']['versions']['doPublish'] = true;
 				}
 				$resetDoc->we_save();
 				if($publish){
-					unset($_SESSION['versions']['doPublish']);
+					unset($_SESSION['weS']['versions']['doPublish']);
 					$resetDoc->we_publish();
 				}
 
@@ -1878,11 +1878,11 @@ class weVersions{
 					}
 				}
 
-				$_SESSION['versions']['logResetIds'][$resetArray['ID']]['Text'] = $resetArray['Text'];
-				$_SESSION['versions']['logResetIds'][$resetArray['ID']]['ContentType'] = $resetArray['ContentType'];
-				$_SESSION['versions']['logResetIds'][$resetArray['ID']]['Path'] = $resetArray['Path'];
-				$_SESSION['versions']['logResetIds'][$resetArray['ID']]['Version'] = $resetArray['version'];
-				$_SESSION['versions']['logResetIds'][$resetArray['ID']]['documentID'] = $resetArray['documentID'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Text'] = $resetArray['Text'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['ContentType'] = $resetArray['ContentType'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Path'] = $resetArray['Path'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['Version'] = $resetArray['version'];
+				$_SESSION['weS']['versions']['logResetIds'][$resetArray['ID']]['documentID'] = $resetArray['documentID'];
 
 				//update versions if id or path were changed
 				if(empty($existsInFileTable)){

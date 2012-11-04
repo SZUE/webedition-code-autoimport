@@ -154,7 +154,7 @@ class we_docSelector extends we_dirSelector{
 
 	function setDefaultDirAndID($setLastDir){
 		if($setLastDir){
-			$this->dir = isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0;
+			$this->dir = isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0;
 		} else{
 			$this->dir = 0;
 		}
@@ -554,7 +554,7 @@ class we_docSelector extends we_dirSelector{
 				top.parentID = "' . $this->values["ParentID"] . '";
 			//-->
 			</script>';
-			$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+			$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		}
 
 		function printFooterTable(){

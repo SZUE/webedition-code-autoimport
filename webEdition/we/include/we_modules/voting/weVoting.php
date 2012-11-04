@@ -280,13 +280,13 @@ class weVoting extends weModelBase{
 	}
 
 	function initByName($name){
-		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text=\'' . $this->db->escape($name) . '\';', 'ID', $this->db);
+		$id = f('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Text="' . $this->db->escape($name) . '"', 'ID', $this->db);
 		return $this->load($id);
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['voting_session']))
-			unset($_SESSION['voting_session']);
+		if(isset($_SESSION['weS']['voting_session']))
+			unset($_SESSION['weS']['voting_session']);
 	}
 
 	function filenameNotValid($text){

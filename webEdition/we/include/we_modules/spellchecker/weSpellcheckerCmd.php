@@ -36,7 +36,7 @@ function saveSettings($default, $active, $langs=array()){
 
 	weFile::save(WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php', $_construct);
 
-	$_SESSION['dictLang'] = $default;
+	$_SESSION['weS']['dictLang'] = $default;
 }
 
 if(isset($_REQUEST['cmd'][0])){
@@ -78,7 +78,7 @@ if(isset($_REQUEST['cmd'][0])){
 			break;
 		case 'setLangDict' :
 			if(isset($_REQUEST['cmd'][1])){
-				$_SESSION['dictLang'] = $_REQUEST['cmd'][1];
+				$_SESSION['weS']['dictLang'] = $_REQUEST['cmd'][1];
 			}
 			print we_html_element::jsElement('
 				top.document.we_form.submit();

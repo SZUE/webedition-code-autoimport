@@ -35,8 +35,8 @@ class searchtoolTreeDataSource extends weToolTreeDataSource{
 		$table = $this->SourceName;
 		$openFolders = array();
 
-		if(isset($_SESSION["weSearch"]["modelidForTree"])){
-			$id = $_SESSION["weSearch"]["modelidForTree"];
+		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
+			$id = $_SESSION['weS']['weSearch']["modelidForTree"];
 			$pid = f("
         SELECT ParentID
         FROM " . $db->escape($table) . "

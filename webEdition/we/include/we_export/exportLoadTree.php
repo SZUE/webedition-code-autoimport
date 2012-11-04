@@ -148,12 +148,12 @@ function getItems($ParentID){
 		$IsNotEditable = $DB_WE->f("IsNotEditable");
 
 		$checked = 0;
-		if($GLOBALS['table'] == FILE_TABLE && isset($_SESSION["exportVars"]["selDocs"])){
-			if(in_array($ID, makeArrayFromCSV($_SESSION["exportVars"]["selDocs"])))
+		if($GLOBALS['table'] == FILE_TABLE && isset($_SESSION['weS']['exportVars']["selDocs"])){
+			if(in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars']["selDocs"])))
 				$checked = 1;
 		}
-		else if(defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE && isset($_SESSION["exportVars"]["selObjs"])){
-			if(in_array($ID, makeArrayFromCSV($_SESSION["exportVars"]["selObjs"])))
+		else if(defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE && isset($_SESSION['weS']['exportVars']["selObjs"])){
+			if(in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars']["selObjs"])))
 				$checked = 1;
 		}
 

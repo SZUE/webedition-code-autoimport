@@ -383,7 +383,7 @@ class we_textContentDocument extends we_textDocument{
 		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
 		$this->rewriteNavigation();
 //		}
-		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
+		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
 			$version = new weVersions();
 			$version->save($this, 'published');
 		}

@@ -182,8 +182,8 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 $we_transaction = isset($_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : md5(uniqID('', true));
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : md5(uniqID('', true)));
 
-if(!isset($_SESSION['we_data'])){
-	$_SESSION['we_data'] = array($we_transaction => '');
+if(!isset($_SESSION['weS']['we_data'])){
+	$_SESSION['weS']['we_data'] = array($we_transaction => '');
 }
 
 $_SESSION['weS']['EditPageNr'] = (isset($_SESSION['weS']['EditPageNr']) && (($_SESSION['weS']['EditPageNr'] != '') || ($_SESSION['weS']['EditPageNr'] == 0))) ? $_SESSION['weS']['EditPageNr'] : 1;
