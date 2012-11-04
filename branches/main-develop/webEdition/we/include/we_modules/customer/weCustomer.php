@@ -78,8 +78,9 @@ class weCustomer extends weModelBase{
 		foreach($tableInfo as $t){
 			$fname = $t["name"];
 			$this->persistent_slots[] = $fname;
-			if(!isset($this->$fname))
+			if(!isset($this->$fname)){
 				$this->$fname = '';
+			}
 		}
 	}
 
@@ -196,8 +197,9 @@ class weCustomer extends weModelBase{
 
 		$arr = array();
 
-		if($branch == '')
+		if($branch == ''){
 			$branch = g_l('modules_customer', '[other]');
+		}
 
 		if($branch == g_l('modules_customer', '[common]')){
 			if(is_array($common)){
@@ -214,10 +216,11 @@ class weCustomer extends weModelBase{
 
 		$ret = array();
 		foreach(array_keys($arr) as $b){
-			if($branch == g_l('modules_customer', '[other]'))
+			if($branch == g_l('modules_customer', '[other]')){
 				$ret[$b] = $b;
-			else
+			} else{
 				$ret[$branch . "_" . $b] = $b;
+			}
 		}
 		return $ret;
 	}
@@ -228,9 +231,11 @@ class weCustomer extends weModelBase{
 			$buff = $this->getFieldsDbProperties();
 		}
 
-		foreach($buff as $b)
-			if($b["Field"] == $field_name)
+		foreach($buff as $b){
+			if($b["Field"] == $field_name){
 				return $b;
+			}
+		}
 
 		return array();
 	}
@@ -258,8 +263,8 @@ class weCustomer extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION["customer_session"]))
-			unset($_SESSION["customer_session"]);
+		if(isset($_SESSION['weS']['customer_session']))
+			unset($_SESSION['weS']['customer_session']);
 	}
 
 	static function customerNameExist($name, $db = ''){
@@ -280,8 +285,9 @@ class weCustomer extends weModelBase{
 		$result = array();
 		$fields = $this->getFieldsDbProperties();
 		foreach($fields as $k => $v){
-			if(!$this->isProtected($k))
+			if(!$this->isProtected($k)){
 				$result[] = $k;
+			}
 		}
 		return $result;
 	}

@@ -39,15 +39,15 @@ class rpcDeleteVersionCmd extends rpcCmd {
 		}
 
 		if(!empty($ids)) {
-			$_SESSION['versions']['logDeleteIds'] = array();
+			$_SESSION['weS']['versions']['logDeleteIds'] = array();
 			foreach($ids as $k => $v) {
 				weVersions::deleteVersion($v);
 			}
-			if(!empty($_SESSION['versions']['logDeleteIds'])) {
+			if(!empty($_SESSION['weS']['versions']['logDeleteIds'])) {
 				$versionslog = new versionsLog();
-				$versionslog->saveVersionsLog($_SESSION['versions']['logDeleteIds'],versionsLog::VERSIONS_DELETE);
+				$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logDeleteIds'],versionsLog::VERSIONS_DELETE);
 			}
-			unset($_SESSION['versions']['logDeleteIds']);
+			unset($_SESSION['weS']['versions']['logDeleteIds']);
 		}
 	}
 }

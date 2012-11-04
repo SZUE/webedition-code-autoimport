@@ -54,16 +54,16 @@ class we_fileselector{
 
 	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $rootDirID = 0, $filter = ''){
 
-		if(!isset($_SESSION["we_fs_lastDir"])){
-			$_SESSION["we_fs_lastDir"] = array();
-			$_SESSION["we_fs_lastDir"][$table] = 0;
+		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
+			$_SESSION['weS']['we_fs_lastDir'] = array();
+			$_SESSION['weS']['we_fs_lastDir'][$table] = 0;
 		}
 		if($order){
 			$this->order = $order;
 		}
 		$this->db = new DB_WE();
 		$this->id = $id;
-		$this->lastDir = isset($_SESSION["we_fs_lastDir"][$table]) ? intval($_SESSION["we_fs_lastDir"][$table]) : 0;
+		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 		$this->table = $table;
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
@@ -101,7 +101,7 @@ class we_fileselector{
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
 
 		$this->path = '';
@@ -133,7 +133,7 @@ class we_fileselector{
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
 			( ($this->filter != '' ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '" . $this->db->escape($this->filter) . "' " : "AND ContentType = '" . $this->db->escape($this->filter) . "' ") : '' ) ) .
 			($this->order ? (' ORDER BY ' . $this->order) : ''));
-		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function next_record(){

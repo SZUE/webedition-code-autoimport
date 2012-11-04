@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-t_e(get_defined_constants());
 we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";

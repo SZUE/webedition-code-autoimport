@@ -70,7 +70,7 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-	$GLOBALS['messaging']->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$GLOBALS['messaging']->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 }
 
 function update_treeview(){
@@ -87,11 +87,11 @@ if(!isset($_REQUEST['we_transaction'])){
 } else{
 	$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 }
-$GLOBALS['messaging'] = new we_messaging($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging'] = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
 $GLOBALS['messaging']->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 
-$GLOBALS['messaging']->init($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+$GLOBALS['messaging']->init($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
 
 if(!isset($_REQUEST["mcmd"])){
 	$_REQUEST["mcmd"] = "goToDefaultCase";
@@ -139,7 +139,7 @@ switch($_REQUEST["mcmd"]){
 			</script>
 			<?php
 		}
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]);
 		break;
 	case 'new_message':
 		echo we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -209,15 +209,15 @@ switch($_REQUEST["mcmd"]){
 		$arr = array('todo_status' => '100');
 		$messaging->used_msgobjs['we_todo']->update_status($arr, $messaging->selected_message['int_hdrs']);
 		refresh_work(true);
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		break;
 	case 'copy_msg':
 		$messaging->set_clipboard($_REQUEST['entrsel'], 'copy');
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		break;
 	case 'cut_msg':
 		$messaging->set_clipboard($_REQUEST['entrsel'], 'cut');
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		break;
 	case 'paste_msg':
 		$errs = array();
@@ -225,7 +225,7 @@ switch($_REQUEST["mcmd"]){
 		$messaging->reset_ids_selected();
 		$messaging->get_fc_data($messaging->Folder_ID, '', '', 0);
 
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		?>
 		<script type="text/javascript">
 
@@ -255,7 +255,7 @@ switch($_REQUEST["mcmd"]){
 		$messaging->reset_ids_selected();
 		$messaging->get_fc_data(isset($_REQUEST['id']) ? $_REQUEST['id'] : '', empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], isset($_REQUEST['searchterm']) ? $_REQUEST['searchterm'] : '', 1);
 
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		?>
 		<script type="text/javascript">
 			<!--
@@ -289,7 +289,7 @@ switch($_REQUEST["mcmd"]){
 
 			$messaging->get_fc_data($id, empty($_REQUEST['sort']) ? '' : $_REQUEST['sort'], '', 0);
 
-			$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			print_fc_html($blank);
 		}
 		break;
@@ -336,7 +336,7 @@ switch($_REQUEST["mcmd"]){
 						print "  top.content.menuDaten.add(new top.content.urlEntry('" . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . ".gif','" . $folder['ID'] . "','" . $folder['ParentID'] . "','" . $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ")','leaf_Folder','" . MESSAGES_TABLE . "', '" . ($folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder') . "'));\n";
 					}
 
-				$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+				$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 				?>
 					top.content.drawEintraege();
 					//-->

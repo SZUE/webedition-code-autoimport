@@ -116,9 +116,9 @@ switch($_REQUEST['we_cmd'][0]){
 
 	case "openDelSelector":
 		$openTable = FILE_TABLE;
-		if(isset($_SESSION['seemForOpenDelSelector']['Table'])){
-			$openTable = $_SESSION['seemForOpenDelSelector']['Table'];
-			unset($_SESSION['seemForOpenDelSelector']['Table']);
+		if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
+			$openTable = $_SESSION['weS']['seemForOpenDelSelector']['Table'];
+			unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
 		}
 		$_cmd = 'top.we_cmd("openDelSelector","","' . $openTable . '","","","","","","",1);';
 		print "setTimeout('$_cmd',50)";

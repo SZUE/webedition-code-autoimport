@@ -36,12 +36,12 @@ we_html_tools::htmlTop(g_l('newFile', "[import_File_from_hd_title]"));
 
 print STYLESHEET;
 
-if(!isset($_SESSION["we_data"][$we_transaction])){
+if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_alerttext = $we_maxfilesize_text;
 	$error = true;
 } else{
 
-	$we_dt = $_SESSION["we_data"][$we_transaction];
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	switch($we_doc->ContentType){
@@ -84,11 +84,11 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 		$we_doc->Path = $we_doc->getPath();
 		$we_doc->DocChanged = true;
 
-		$_SESSION["we_data"]["tmpName"] = $we_File;
+		$_SESSION['weS']['we_data']["tmpName"] = $we_File;
 		if(isset($_REQUEST["import_metadata"]) && !empty($_REQUEST["import_metadata"])){
 			$we_doc->importMetaData();
 		}
-		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
+		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	} else if(isset($_FILES['we_File']['name']) && !empty($_FILES['we_File']['name'])){
 		$we_alerttext = g_l('alert', "[wrong_file][" . $we_doc->ContentType . ']');
 	} else if(isset($_FILES['we_File']['name']) && empty($_FILES['we_File']['name'])){

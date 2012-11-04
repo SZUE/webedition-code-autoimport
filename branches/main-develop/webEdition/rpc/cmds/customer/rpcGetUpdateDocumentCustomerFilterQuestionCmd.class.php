@@ -33,7 +33,7 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 		$_filterOfFolder = $this->getFilterOfFolder($_REQUEST["folderId"], $_REQUEST["table"]);
 
 		if(isset($_REQUEST["we_transaction"])){
-			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) ? $_SESSION["we_data"][$_REQUEST["we_transaction"]] : "";
+			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]] : "";
 		}
 
 		// filter of document

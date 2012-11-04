@@ -1420,8 +1420,8 @@ class searchtoolView extends weToolView{
 		$searchstart = 0;
 
 		if(isset($_REQUEST['we_cmd']['obj'])){
-			$anzahl = $_SESSION['weSearch']['anzahl' . $whichSearch];
-			$searchstart = $_SESSION['weSearch']['searchstart' . $whichSearch];
+			$anzahl = $_SESSION['weS']['weSearch']['anzahl' . $whichSearch];
+			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
 		} else{
 			switch($whichSearch){
 				case "DocSearch" :
@@ -1636,18 +1636,18 @@ class searchtoolView extends weToolView{
 			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 		}
 
-		if(isset($_SESSION["weSearch"]["checkWhich"])){
-			if($_SESSION["weSearch"]["checkWhich"] == 3){
+		if(isset($_SESSION['weS']['weSearch']["checkWhich"])){
+			if($_SESSION['weS']['weSearch']["checkWhich"] == 3){
 				$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
 				$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-			} elseif($_SESSION["weSearch"]["checkWhich"] == 4){
+			} elseif($_SESSION['weS']['weSearch']["checkWhich"] == 4){
 				$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
 				$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
 				$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
 				$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
 				$this->Model->search_tables_advSearch[OBJECT_TABLE] = 1;
 			}
-			unset($_SESSION["weSearch"]["checkWhich"]);
+			unset($_SESSION['weS']['weSearch']["checkWhich"]);
 		}
 
 		$_table = new we_html_table(
@@ -1725,14 +1725,14 @@ class searchtoolView extends weToolView{
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
 
-				if((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset(
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset(
 						$_REQUEST["tab"]) && $_REQUEST["tab"] == 1)){
-					$this->Model->searchDocSearch[0] = ($_SESSION["weSearch"]["keyword"]);
+					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
 					}
 
-					unset($_SESSION["weSearch"]["keyword"]);
+					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
 
 				if(!is_array($this->Model->searchDocSearch)){
@@ -1764,12 +1764,12 @@ class searchtoolView extends weToolView{
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
 
-				if((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 2)){
-					$this->Model->searchTmplSearch[0] = $_SESSION["weSearch"]["keyword"];
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset($_REQUEST["tab"]) && $_REQUEST["tab"] == 2)){
+					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
 					}
-					unset($_SESSION["weSearch"]["keyword"]);
+					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
 
 				if(!is_array($this->Model->searchTmplSearch)){
@@ -1809,7 +1809,7 @@ class searchtoolView extends weToolView{
 		$saveArrayIds = array();
 		$_tables = array();
 		$searchText = array();
-		$_SESSION['weSearch']['foundItems' . $whichSearch] = 0;
+		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
 
 		if(isset($_REQUEST['we_cmd']['obj'])){
 			$thisObj = new searchtoolView();
@@ -2001,7 +2001,7 @@ class searchtoolView extends weToolView{
 					$_result[$k]['SiteTitle'] = "";
 				}
 			}
-			$_SESSION['weSearch']['foundItems' . $whichSearch] = count($_result);
+			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 		} elseif(($obj->IsFolder != 1 && (($whichSearch == 'DocSearch' && $tab == 1) || ($whichSearch == 'TmplSearch' && $tab == 2) || ($whichSearch == 'AdvSearch' && $tab == 3))) || (isset(
 				$_REQUEST['cmdid']) && $_REQUEST['cmdid'] != "") || (isset($_REQUEST['view']) && ($_REQUEST['view'] == "GetSearchResult" || $_REQUEST['view'] == "GetMouseOverDivs"))){
 
@@ -2159,27 +2159,27 @@ class searchtoolView extends weToolView{
 									$isCheckedFileTable = $thisObj->Model->search_tables_advSearch[FILE_TABLE];
 									$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $thisObj->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
 								}
-								$_SESSION['weSearch']['onlyObjects'] = true;
-								$_SESSION['weSearch']['onlyDocs'] = true;
-								$_SESSION['weSearch']['ObjectsAndDocs'] = true;
-								$_SESSION['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . OBJECT_FILES_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
-								$_SESSION['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . FILE_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
+								$_SESSION['weS']['weSearch']['onlyObjects'] = true;
+								$_SESSION['weS']['weSearch']['onlyDocs'] = true;
+								$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = true;
+								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . OBJECT_FILES_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
+								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . FILE_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
 								if(!empty($workspacesTblFile)){
-									$_SESSION['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
+									$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
 								}
 								if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-									$_SESSION['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
+									$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . $thisObj->searchclass->ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
 								}
 
 								if(!$isCheckedFileTable && $isCheckedObjFileTable){
-									$_SESSION['weSearch']['onlyDocs'] = false;
+									$_SESSION['weS']['weSearch']['onlyDocs'] = false;
 									$whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . OBJECT_FILES_TABLE . '" ';
-									$_SESSION['weSearch']['ObjectsAndDocs'] = false;
+									$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
 								}
 								if($isCheckedFileTable && !$isCheckedObjFileTable){
-									$_SESSION['weSearch']['onlyObjects'] = false;
+									$_SESSION['weS']['weSearch']['onlyObjects'] = false;
 									$whereQuery .= ' AND ' . escape_sql_query($_table) . ".documentTable='" . FILE_TABLE . "' ";
-									$_SESSION['weSearch']['ObjectsAndDocs'] = false;
+									$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
 								}
 								break;
 						}
@@ -2230,11 +2230,11 @@ class searchtoolView extends weToolView{
 						}
 					}
 				}
-				$_SESSION['weSearch']['foundItems' . $whichSearch] = $thisObj->searchclass->getResultCount();
+				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $thisObj->searchclass->getResultCount();
 			}
 		}
 
-		if($_SESSION['weSearch']['foundItems' . $whichSearch] > 0){
+		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] > 0){
 
 			foreach($_result as $k => $v){
 				$_result[$k]["Description"] = '';
@@ -2616,13 +2616,13 @@ class searchtoolView extends weToolView{
 			$this->Model->searchAdvSearch = unserialize($this->Model->searchAdvSearch);
 		}
 
-		if((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset(
+		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (isset(
 				$_REQUEST["tab"]) && $_REQUEST["tab"] == 3)){
-			$this->Model->searchAdvSearch[0] = $_SESSION["weSearch"]["keyword"];
+			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 			if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
 				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
 			}
-			unset($_SESSION["weSearch"]["keyword"]);
+			unset($_SESSION['weS']['weSearch']["keyword"]);
 		}
 
 		$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);

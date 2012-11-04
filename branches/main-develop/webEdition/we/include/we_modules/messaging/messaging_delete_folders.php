@@ -35,9 +35,9 @@ if(!preg_match('|^([a-f0-9]){32}$|', $_REQUEST['we_transaction'])){
 }
 
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 ?>
 <script type="text/javascript"><!--
 	function we_submitForm(target,url) {
@@ -75,7 +75,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'delete_folders'){
 		$v = array_shift($res);
 		if($v > 0){
 
-			$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+			$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 			?>
 							top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_folders&folders=<?php echo join(',', $v) ?>';
 							top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : '' ?>');

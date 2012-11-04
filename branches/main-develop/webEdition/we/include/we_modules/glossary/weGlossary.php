@@ -410,8 +410,8 @@ class weGlossary extends weModelBase{
 	 *
 	 */
 	function clearSessionVars(){
-		if(isset($_SESSION["weGlossarySession"])){
-			unset($_SESSION["weGlossarySession"]);
+		if(isset($_SESSION['weS']['weGlossarySession'])){
+			unset($_SESSION['weS']['weGlossarySession']);
 		}
 	}
 

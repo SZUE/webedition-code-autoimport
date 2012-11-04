@@ -108,7 +108,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$ws = get_ws($this->table, true);
 		if($ws && strpos($ws, ("," . $this->dir . ",")) !== true){
 			$this->dir = "";
@@ -174,7 +174,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>');
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('<scr'+'ipt>');
 
@@ -685,7 +685,7 @@ function enableNewFolderBut(){
 top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? "/" : $this->values["Text"]) . '";';
 		}
-		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		$out.='top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";';
 		echo we_html_element::jsElement($out);

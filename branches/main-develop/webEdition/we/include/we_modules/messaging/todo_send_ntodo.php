@@ -29,9 +29,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
 if(isset($_REQUEST['td_deadline_hour'])){
 	$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);

@@ -57,18 +57,19 @@ switch($_REQUEST['we_cmd'][0]){
 
 switch($_REQUEST['we_cmd'][0]){
 	case 'openDirselector' :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_dirSelect.php');
+		include_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
 	case 'openSelector' :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_fs.php');
+		include_once (WEBEDITION_PATH . 'we_fs.php');
 		break;
 	case 'openDocselector' :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_docSelect.php');
+		include_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
 	case 'openCatselector' :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_catSelect.php');
+		include_once (WEBEDITION_PATH . 'we_catSelect.php');
 		break;
 	case 'openDelSelector' :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_delSelect.php');
+	case "openDelSelector" :
+		include_once (WEBEDITION_PATH . 'we_delSelect.php');
 		break;
 }

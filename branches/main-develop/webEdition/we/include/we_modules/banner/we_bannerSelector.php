@@ -92,7 +92,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	//-->
 </script>
 ';
-		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function printHTML($what = we_fileselector::FRAMESET){

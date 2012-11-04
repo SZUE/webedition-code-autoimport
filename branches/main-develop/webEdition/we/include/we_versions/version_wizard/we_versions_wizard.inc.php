@@ -898,9 +898,9 @@ abstract class we_versions_wizard{
 		$cont = array();
 		$docIds = array();
 		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,binaryPath,timestamp,version FROM " . VERSIONS_TABLE . " WHERE " . $whereCt . " AND " . $timestampWhere . " ORDER BY ID";
-		$_SESSION['versions']['deleteWizardWhere'] = $whereCt . " AND " . $timestampWhere;
+		$_SESSION['weS']['versions']['deleteWizardWhere'] = $whereCt . " AND " . $timestampWhere;
 		$GLOBALS['DB_WE']->query($query);
-		$_SESSION['versions']['logDeleteIds'] = array();
+		$_SESSION['weS']['versions']['logDeleteIds'] = array();
 		while($GLOBALS['DB_WE']->next_record()) {
 			if(!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)){
 				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
@@ -917,16 +917,16 @@ abstract class we_versions_wizard{
 				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
 				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
 			);
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Text'] = $GLOBALS['DB_WE']->f('Text');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['ContentType'] = $GLOBALS['DB_WE']->f(
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Text'] = $GLOBALS['DB_WE']->f('Text');
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['ContentType'] = $GLOBALS['DB_WE']->f(
 				'ContentType');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Path'] = $GLOBALS['DB_WE']->f('Path');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Version'] = $GLOBALS['DB_WE']->f(
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Path'] = $GLOBALS['DB_WE']->f('Path');
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Version'] = $GLOBALS['DB_WE']->f(
 				'version');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['documentID'] = $GLOBALS['DB_WE']->f(
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['documentID'] = $GLOBALS['DB_WE']->f(
 				'documentID');
 			if($GLOBALS['DB_WE']->f("binaryPath") != ""){
-				$_SESSION['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f("binaryPath");
+				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f("binaryPath");
 			}
 		}
 
@@ -985,7 +985,7 @@ abstract class we_versions_wizard{
 
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
 
-		$_SESSION['versions']['logResetIds'] = array();
+		$_SESSION['weS']['versions']['logResetIds'] = array();
 
 		$version_reset = array();
 
@@ -1046,7 +1046,7 @@ abstract class we_versions_wizard{
 		$docIds = array();
 		$query = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . intval($timestamp) . ' AND ' . $w . ' GROUP BY documentTable,documentID ORDER BY version DESC';
 
-		$_SESSION['versions']['query'] = $query;
+		$_SESSION['weS']['versions']['query'] = $query;
 		$GLOBALS['DB_WE']->query($query);
 		while($GLOBALS['DB_WE']->next_record()) {
 			if(!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)){

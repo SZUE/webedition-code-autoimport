@@ -27,7 +27,7 @@ $we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : $we_t
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
 
 // init document
-$we_dt = $_SESSION["we_data"][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 function inWorkflow($doc){
@@ -667,8 +667,8 @@ function showEditFooterForSEEMMode(){
 	<form name="we_form"<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onSubmit="sub();return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
 		<?php
-		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
-		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
+		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;
+		$_SESSION['weS']['seemForOpenDelSelector']['Table'] = $we_doc->Table;
 
 		if($we_doc->userCanSave()){
 

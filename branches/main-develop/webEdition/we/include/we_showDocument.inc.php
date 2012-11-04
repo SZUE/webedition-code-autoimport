@@ -44,7 +44,7 @@ $createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cm
 $we_ID = $id;
 $we_Table = FILE_TABLE;
 
-$we_dt = isset($_SESSION['we_data'][$we_transaction]) ? $_SESSION['we_data'][$we_transaction] : '';
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 // init document
 include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

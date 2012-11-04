@@ -42,7 +42,7 @@ if($cmd == "ok"){
 
 		if($_REQUEST['we_cmd'][2]){ // make same new
 			$we_doc->makeSameNew();
-			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef�gt
 		}else{
 			if(($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO)){

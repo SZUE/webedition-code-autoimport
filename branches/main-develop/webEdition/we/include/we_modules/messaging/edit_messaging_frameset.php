@@ -32,7 +32,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 $cmd_params = '';
 
-$messaging = new we_messaging($_SESSION["we_data"][$we_transaction]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$we_transaction]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 if(!$messaging->check_folders()){
@@ -42,13 +42,13 @@ if(!$messaging->check_folders()){
 	}
 }
 
-$messaging->init($_SESSION["we_data"][$we_transaction]);
+$messaging->init($_SESSION['weS']['we_data'][$we_transaction]);
 
 $messaging->add_msgobj('we_message', 0);
 $messaging->add_msgobj('we_todo', 0);
 $messaging->add_msgobj('we_msg_email', 0);
 
-$messaging->saveInSession($_SESSION["we_data"][$we_transaction]);
+$messaging->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 print STYLESHEET;
 

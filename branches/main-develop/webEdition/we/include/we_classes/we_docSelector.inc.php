@@ -40,8 +40,9 @@ class we_docSelector extends we_dirSelector{
 		if($table == ''){
 			$table = FILE_TABLE;
 		}
-		if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
+		if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)){
 			$this->fields .= ",Published";
+		}
 		$this->canSelectDir = $canSelectDir;
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -128,12 +129,12 @@ class we_docSelector extends we_dirSelector{
 			function exit_open() {
 				if(currentID) {';
 		if($this->JSIDName){
-			$out .= 'opener.' . $this->JSIDName . '= currentID ? currentID : "";';
+			$out .= 'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";';
 		}
 		if($this->JSTextName){
 			$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
-			$out .= 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
-					if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+			$out .= 'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+					if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 					';
 		}
 		if($this->JSCommand){
@@ -147,7 +148,7 @@ class we_docSelector extends we_dirSelector{
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = ($setLastDir && isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0);
+		$this->dir = ($setLastDir && isset($_SESSION['weS']["we_fs_lastDir"][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0);
 
 		if($this->rootDirID && (!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db))){
 			$this->dir = $this->rootDirID;
@@ -216,7 +217,7 @@ class we_docSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -523,7 +524,7 @@ class we_docSelector extends we_dirSelector{
 				top.parentID = "' . $this->values["ParentID"] . '";
 			//-->
 			</script>';
-			$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+			$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		}
 
 		function printFooterTable(){

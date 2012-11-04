@@ -43,7 +43,7 @@ class rpcResetVersionCmd extends rpcCmd {
 			);
 		}
 
-		$_SESSION['versions']['logResetIds'] = array();
+		$_SESSION['weS']['versions']['logResetIds'] = array();
 
 		foreach($ids as $k => $id) {
 
@@ -69,11 +69,11 @@ class rpcResetVersionCmd extends rpcCmd {
 
 		}
 
-		if(!empty($_SESSION['versions']['logResetIds'])) {
+		if(!empty($_SESSION['weS']['versions']['logResetIds'])) {
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'],versionsLog::VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'],versionsLog::VERSIONS_RESET);
 		}
-		unset($_SESSION['versions']['logResetIds']);
+		unset($_SESSION['weS']['versions']['logResetIds']);
 
 
 	}

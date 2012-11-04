@@ -26,7 +26,7 @@ $we_transaction = $_REQUEST['we_cmd'][1] ? $_REQUEST['we_cmd'][1] : $we_transact
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : '');
 
 // init document
-$we_dt = $_SESSION["we_data"][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 include( WE_OBJECT_MODULE_PATH . "we_objectFile.inc.php");
 
@@ -63,7 +63,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
 		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;
 		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_WORKSPACE;
-		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 		print we_html_element::jsElement('top.we_cmd("switch_edit_page",' . WE_EDITPAGE_WORKSPACE . ',"' . $_REQUEST['we_cmd'][1] . '");');
 		break;
 }

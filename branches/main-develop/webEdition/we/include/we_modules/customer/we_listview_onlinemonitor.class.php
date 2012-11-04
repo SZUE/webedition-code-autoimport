@@ -68,19 +68,15 @@ class we_listview_onlinemonitor extends listviewBase{
 		$this->hidedirindex = $hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
-		if(isset($_SESSION['last_webEdition_document'])){
-			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
+		if(isset($_SESSION['weS']['last_webEdition_document'])){
+			$this->LastDocPath = $_SESSION['weS']['last_webEdition_document']['Path'];
 		}
 
 		if($this->desc && $this->order != '' && (!preg_match("|.+ desc$|i", $this->order))){
 			$this->order .= " DESC";
 		}
 
-		if($this->order != ''){
-			$orderstring = " ORDER BY " . $this->order . " ";
-		} else{
-			$orderstring = '';
-		}
+		$orderstring = ($this->order != ''?			" ORDER BY " . $this->order . " ":'');
 		$laStr = '';
 		$llStr = '';
 		if($this->lastloginlimit != ''){

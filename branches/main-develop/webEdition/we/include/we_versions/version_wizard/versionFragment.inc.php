@@ -44,11 +44,11 @@ class versionFragment extends taskFragment{
 	}
 
 	function finish(){
-		if(!empty($_SESSION['versions']['logResetIds'])){
+		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
-		unset($_SESSION['versions']['logResetIds']);
+		unset($_SESSION['weS']['versions']['logResetIds']);
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		we_html_tools::htmlTop();
 		if($_REQUEST['type'] == "delete_versions"){

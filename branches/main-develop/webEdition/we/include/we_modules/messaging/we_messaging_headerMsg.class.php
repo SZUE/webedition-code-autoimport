@@ -30,7 +30,7 @@ class we_messaging_headerMsg{
 		if(is_object(self::$messaging)){
 			return;
 		}
-		self::$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
+		self::$messaging = new we_messaging($_SESSION['weS']['we_data']["we_transaction"]);
 		self::$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 		self::$messaging->add_msgobj('we_message', 1);
 		self::$messaging->add_msgobj('we_todo', 1);

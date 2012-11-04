@@ -38,7 +38,7 @@ class we_usersSelector extends we_multiSelector{
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$foo = getHash("SELECT IsFolder,Text,Path FROM " . $this->db->escape($this->table) . " WHERE ID='" . $this->dir . "'", $this->db);
 		if(isset($foo["IsFolder"]) && $foo["IsFolder"] && $this->dir){
 			$this->values = array("ParentID" => $this->dir,
@@ -169,7 +169,7 @@ top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";
 ';
 		}
-		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 //-->

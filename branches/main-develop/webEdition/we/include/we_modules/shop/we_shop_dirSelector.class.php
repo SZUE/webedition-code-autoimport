@@ -74,8 +74,6 @@ class we_shop_dirSelector extends we_multiSelector{
 		function setDir(id){
 		top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
 		}
-
-
 		<?php
 	}
 
@@ -95,7 +93,7 @@ top.clearEntries();
 top.parentID = "' . $this->values["ParentID"] . '";
 	//-->
 </script>';
-		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function printHTML($what=we_fileselector::FRAMESET){

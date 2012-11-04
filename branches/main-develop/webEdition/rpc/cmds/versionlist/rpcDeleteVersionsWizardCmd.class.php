@@ -32,19 +32,19 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 
 		$db = new DB_WE();
 
-		$query = "DELETE FROM `" . VERSIONS_TABLE . "` WHERE " . $_SESSION['versions']['deleteWizardWhere'];
+		$query = "DELETE FROM `" . VERSIONS_TABLE . "` WHERE " . $_SESSION['weS']['versions']['deleteWizardWhere'];
 		$db->query($query);
 
-		unset($_SESSION['versions']['deleteWizardWhere']);
+		unset($_SESSION['weS']['versions']['deleteWizardWhere']);
 
 //		while($db->next_record()) {
 //			weVersions::deleteVersion($db->f("ID"));
 //		}
-//		foreach($_SESSION['versions']['IDs'] as $k=>$v) {
+//		foreach($_SESSION['weS']['versions']['IDs'] as $k=>$v) {
 //			weVersions::deleteVersion($v);
 //		}
-		if(isset($_SESSION['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['versions']['deleteWizardbinaryPath']) && !empty($_SESSION['versions']['deleteWizardbinaryPath'])){
-			foreach($_SESSION['versions']['deleteWizardbinaryPath'] as $k => $v){
+		if(isset($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && !empty($_SESSION['weS']['versions']['deleteWizardbinaryPath'])){
+			foreach($_SESSION['weS']['versions']['deleteWizardbinaryPath'] as $k => $v){
 				$binaryPath = $_SERVER['DOCUMENT_ROOT'] . $v;
 				$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath='" . $db->escape($v) . "' LIMIT 1", "binaryPath", $db);
 
@@ -52,14 +52,14 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 					@unlink($binaryPath);
 				}
 			}
-			unset($_SESSION['versions']['deleteWizardbinaryPath']);
+			unset($_SESSION['weS']['versions']['deleteWizardbinaryPath']);
 		}
 
-		if(!empty($_SESSION['versions']['logDeleteIds'])){
+		if(!empty($_SESSION['weS']['versions']['logDeleteIds'])){
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logDeleteIds'], versionsLog::VERSIONS_DELETE);
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logDeleteIds'], versionsLog::VERSIONS_DELETE);
 		}
-		unset($_SESSION['versions']['logDeleteIds']);
+		unset($_SESSION['weS']['versions']['logDeleteIds']);
 
 
 		$WE_PB = new we_progressBar(100, 0, true);

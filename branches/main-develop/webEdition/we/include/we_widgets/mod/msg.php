@@ -27,16 +27,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(defined("MESSAGING_SYSTEM")){
 	include_once(WE_MESSAGING_MODULE_PATH . "we_message.inc.php");
 
-	$_SESSION['we_data'][$_transact] = array();
+	$_SESSION['weS']['we_data'][$_transact] = array();
 
-	$_we_messaging = new we_messaging($_SESSION['we_data'][$_transact]);
+	$_we_messaging = new we_messaging($_SESSION['weS']['we_data'][$_transact]);
 	$_we_messaging->add_msgobj('we_message');
-	$_we_messaging->saveInSession($_SESSION['we_data'][$_transact]);
+	$_we_messaging->saveInSession($_SESSION['weS']['we_data'][$_transact]);
 	$messaging_text = g_l('javaMenu_moduleInformation', '[messaging][text]') . ":";
 	$new_messages = g_l('modules_messaging', "[new_messages]");
 	$new_tasks = g_l('modules_messaging', "[new_tasks]");
 
-	$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
+	$messaging = new we_messaging($_SESSION['weS']['we_data']["we_transaction"]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->add_msgobj('we_message', 1);
 	$messaging->add_msgobj('we_todo', 1);

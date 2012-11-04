@@ -26,22 +26,22 @@ we_html_tools::protect();
 switch($_REQUEST['we_cmd'][1]){
 	case "image/*":
 		$we_doc = new we_imageDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $we_doc->getElement("type");
 		break;
 	case "application/x-shockwave-flash":
 		$we_doc = new we_flashDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
 	case "video/quicktime":
 		$we_doc = new we_quicktimeDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		$contenttype = $_REQUEST['we_cmd'][1];
 		break;
 	case "application/*":
 		$we_doc = new we_otherDocument();
-		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][2]]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][2]]);
 		switch($we_doc->Extension){
 			case ".zip":
 				$contenttype = "application/zip";

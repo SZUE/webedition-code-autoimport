@@ -82,8 +82,8 @@ class we_shop_listviewOrderitem extends listviewBase{
 		$this->hidedirindex = $hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = '';
-		if(isset($_SESSION['last_webEdition_document'])){
-			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
+		if(isset($_SESSION['weS']['last_webEdition_document'])){
+			$this->LastDocPath = $_SESSION['weS']['last_webEdition_document']['Path'];
 		}
 
 

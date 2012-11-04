@@ -153,12 +153,14 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				switch($settingvalue){
 					case 'document':
 						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+						$_SESSION['prefs'][$settingname] = $settingvalue;
 						if(!$tmp){
 							$_SESSION['prefs'][$settingname] = 'cockpit';
 						}
 						break;
 					case 'object':
 						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+						$_SESSION['prefs'][$settingname] = $settingvalue;
 						if(!$tmp){
 							$_SESSION['prefs'][$settingname] = 'cockpit';
 						}
@@ -641,23 +643,23 @@ function save_all_values(){
 		}
 	}
 
-	$_SESSION['versions']['logPrefsChanged'] = array();
-	foreach($_SESSION['versions']['logPrefs'] as $k => $v){
+	$_SESSION['weS']['versions']['logPrefsChanged'] = array();
+	foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
 		if(isset($_REQUEST['newconf'][$k])){
-			if($_SESSION['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
-				$_SESSION['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
+			if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
+				$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
 			}
-		} elseif($_SESSION['versions']['logPrefs'][$k] != ""){
-			$_SESSION['versions']['logPrefsChanged'][$k] = "";
+		} elseif($_SESSION['weS']['versions']['logPrefs'][$k] != ""){
+			$_SESSION['weS']['versions']['logPrefsChanged'][$k] = "";
 		}
 	}
 
-	if(!empty($_SESSION['versions']['logPrefsChanged'])){
+	if(!empty($_SESSION['weS']['versions']['logPrefsChanged'])){
 		$versionslog = new versionsLog();
-		$versionslog->saveVersionsLog($_SESSION['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
+		$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
 	}
-	unset($_SESSION['versions']['logPrefs']);
-	unset($_SESSION['versions']['logPrefsChanged']);
+	unset($_SESSION['weS']['versions']['logPrefs']);
+	unset($_SESSION['weS']['versions']['logPrefsChanged']);
 
 	//SAVE CHANGES
 	// Third save all changes of the config files
@@ -856,7 +858,7 @@ function build_dialog($selected_setting = 'ui'){
 										break;
 									}
 								}
-								parent.opener.top.we_cmd('openDocselector',myWind.getElementById('content').contentDocument.forms[0].elements['newconf[SIDEBAR_DEFAULT_DOCUMENT]'].value,'" . FILE_TABLE . "',myWindStr + '.frames[\'content\'].document.forms[0].elements[\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\'].value',myWindStr + '.frames[\'content\'].document.forms[0].elements[\'ui_sidebar_file_name\'].value','','" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 							}
 
 							function select_seem_start() {
@@ -878,9 +880,9 @@ function build_dialog($selected_setting = 'ui'){
 								" .
 						//FIXME frames['content'] will probably not work here
 						(defined("OBJECT_FILES_TABLE") ?
-							"parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
+							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '" . session_id() . "', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', myWind.getElementById('content').contentDocument.forms[0].elements['seem_start_document'].value, '" . FILE_TABLE . "', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_document\'].value', myWindStr + '.frames[\'content\'].document.forms[0].elements[\'seem_start_document_name\'].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '" . session_id() . "', '', 'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 								}
 							}
 							function show_seem_chooser(val) {
@@ -952,6 +954,8 @@ function build_dialog($selected_setting = 'ui'){
 
 				switch(get_value('seem_start_type')){
 					default:
+						$_seem_start_type = '0';
+						break;
 					case 'cockpit':
 						$_SESSION['prefs']['seem_start_file'] = 0;
 						$_SESSION['prefs']['seem_start_weapp'] = '';
@@ -3418,7 +3422,7 @@ else {
 			break;
 
 		case 'versions':
-			$_SESSION['versions']['Prefs'] = array(
+			$_SESSION['weS']['versions']['Prefs'] = array(
 				'ctypes' => array(
 					"image/*" => 'VERSIONING_IMAGE',
 					"text/html" => 'VERSIONING_TEXT_HTML',
@@ -3451,7 +3455,7 @@ else {
 			//js
 			$jsCheckboxCheckAll = '';
 
-			foreach($_SESSION['versions']['Prefs']['ctypes'] as $v){
+			foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $v){
 				$jsCheckboxCheckAll .= 'document.getElementById("newconf[' . $v . ']").checked = checked;';
 			}
 
@@ -3473,10 +3477,10 @@ else {
 					}');
 
 
-			$_SESSION['versions']['logPrefs'] = array();
-			foreach($_SESSION['versions']['Prefs'] as $v){
+			$_SESSION['weS']['versions']['logPrefs'] = array();
+			foreach($_SESSION['weS']['versions']['Prefs'] as $v){
 				foreach($v as $val){
-					$_SESSION['versions']['logPrefs'][$val] = get_value($val);
+					$_SESSION['weS']['versions']['logPrefs'][$val] = get_value($val);
 				}
 			}
 
@@ -3485,7 +3489,7 @@ else {
 
 				$checkboxes = we_forms::checkbox(1, false, 'version_all', g_l('prefs', '[version_all]'), false, "defaultfont", 'checkAll(this);') . '<br/>';
 
-				foreach($_SESSION['versions']['Prefs']['ctypes'] as $k => $v){
+				foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $k => $v){
 					$checkboxes .= we_forms::checkbox(1, get_value($v), 'newconf[' . $v . ']', g_l('contentTypes', '[' . $k . ']'), false, "defaultfont", 'checkAllRevert(this);') . '<br/>';
 				}
 
@@ -3764,7 +3768,7 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 			break;
 	}
 	// check sidebar document
-	if((isset($_REQUEST['newconf']['SIDEBAR_DISABLED']) && !$_REQUEST['newconf']['SIDEBAR_DISABLED'] && $_REQUEST['newconf']['ui_sidebar_file_name']) != ""){
+	if((isset($_REQUEST['newconf']['SIDEBAR_DISABLED']) && !$_REQUEST['newconf']['SIDEBAR_DISABLED'] && $_REQUEST['ui_sidebar_file_name']) != ""){
 		$acResponse = $acQuery->getItemById($_REQUEST['newconf']['newconf[SIDEBAR_DEFAULT_DOCUMENT]'], FILE_TABLE, array("IsFolder"));
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;

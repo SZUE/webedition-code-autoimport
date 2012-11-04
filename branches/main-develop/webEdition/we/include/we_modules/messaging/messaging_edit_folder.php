@@ -26,9 +26,9 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 we_html_tools::htmlTop(g_l('modules_messaging', '[folder_settings]'));
 ?>
 <script type="text/javascript"><!--
@@ -42,7 +42,7 @@ if(isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_folder_settings'){
 	$ID = array_shift($res);
 	if($ID >= 0){
 
-		$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+		$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 		?>
 			top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=save_folder_settings&name=<?php echo $_REQUEST['folder_name'] ?>&id=<?php echo $ID ?>&mode=<?php echo $_REQUEST['mode'] ?>&parent_id=<?php echo $_REQUEST['parent_folder'] ?>&type=<?php echo $_REQUEST['foldertypes'] ?>';
 			top.content.we_cmd('messaging_start_view','','<?php echo isset($_REQUEST['table']) ? $_REQUEST['table'] : "" ?>');

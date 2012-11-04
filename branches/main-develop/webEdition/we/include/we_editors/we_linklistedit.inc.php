@@ -64,7 +64,7 @@ function getRevRelSelect($type, $value){
 }
 
 // init document
-$we_dt = $_SESSION["we_data"][$we_transaction];
+$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be determined in template
@@ -429,7 +429,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 $_REQUEST["we_transaction"] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 0);
 
 if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_class"){
-	$_SESSION["WE_LINK"] = $link;
+	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
 	?>
 			opener.setScrollTo();
@@ -437,7 +437,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			top.close();
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object"){
-	$_SESSION["WE_LINK"] = $link;
+	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link_at_object", "<?php print $_REQUEST["we_transaction"]; ?>", "link_<?php print $_REQUEST["name"]; ?>");
@@ -450,7 +450,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
 } else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link){
-	$_SESSION["WE_LINK"] = $link;
+	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
@@ -923,5 +923,5 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 </html>
 <?php
 if(!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]){
-	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }

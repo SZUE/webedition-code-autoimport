@@ -168,8 +168,8 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				break;
 			case 'load_editor':
 				$header = (!(isset($_REQUEST['we_transaction']) &&
-					isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) &&
-					$_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+					isset($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]) &&
+					$_SESSION['weS']['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
 					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
 					));
 				break;

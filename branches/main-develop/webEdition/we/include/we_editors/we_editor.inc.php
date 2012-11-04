@@ -30,7 +30,7 @@ $perms = $_SESSION['perms'];
 // init document
 
 
-$we_dt = isset($_SESSION['we_data'][$we_transaction]) ? $_SESSION['we_data'][$we_transaction] : '';
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
@@ -286,7 +286,7 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
  */
 if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'publish' && $_REQUEST['we_cmd'][0] != 'unpublish') && (($we_doc->ContentType == 'text/webedition') && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType == 'text/html' && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != 'save_document')) && (!$we_doc->IsDynamic)){
 	$we_include = $we_doc->editor();
-	$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	ob_start();
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 		include($we_include);
@@ -307,7 +307,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 		}
 	}
 	/*
-	  $we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+	  $we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 	 */
 	$we_ext = ($we_doc->Extension == '.js' || $we_doc->Extension == '.css' || $we_doc->Extension == '.wml' || $we_doc->Extension == '.xml') ? '.html' : $we_doc->Extension;
 	//FIXME: php temporary file?
@@ -444,12 +444,12 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					if($_REQUEST['we_cmd'][2]){
 						//this is the second call to save_document (see next else command)
 						include(WE_INCLUDES_PATH.'we_templates/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
-						$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else if(!$_REQUEST['we_cmd'][3] && $somethingNeedsToBeResaved){
 						// this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
 						include(WE_INCLUDES_PATH.'we_TemplateSave.inc.php'); // this calls again we_cmd with save_document and sets we_cmd[2]
-						$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else{
 						//this happens when we_cmd[3] is set and not we_cmd[2]
@@ -626,7 +626,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				}
 			}
 			$we_responseText.=$we_doc->getErrMsg();
-			$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 
 			if(defined('SCHEDULE_TABLE')){
 				we_schedpro::trigger_schedule();
@@ -655,7 +655,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
-				$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			} else{
 				$we_JavaScript = '';
 				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path);
@@ -668,7 +668,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 			if(!$we_include){ // object does not handle html-output, so we need to include a template( return value)
 				exit('Nothing to include ...');
 			}
-			$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$_serverDocRoot = $_SERVER['DOCUMENT_ROOT'];
 			if($_serverDocRoot != '' && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 
@@ -723,7 +723,7 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 				}
 				print $_insertReloadFooter;
 			}
-			$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]); // save the changed object in session
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
 				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}

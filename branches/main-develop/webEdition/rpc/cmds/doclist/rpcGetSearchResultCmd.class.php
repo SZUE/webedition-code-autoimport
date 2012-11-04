@@ -33,7 +33,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$setView = $_REQUEST['we_cmd']['setView'];
 
 		if(isset($_REQUEST["we_transaction"])){
-			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) ? $_SESSION["we_data"][$_REQUEST["we_transaction"]] : "";
+			$we_dt = isset($_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]]) ? $_SESSION['weS']['we_data'][$_REQUEST["we_transaction"]] : "";
 		}
 
 		$_document = new $_REQUEST["classname"];

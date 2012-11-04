@@ -145,7 +145,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function newMessage(username){
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION["we_data"][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
 	}
 	//-->
 </script>
@@ -153,9 +153,9 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 </head>
 <body leftmargin="7" topmargin="5" marginwidth="7" marginheight="5" bgcolor="#ffffff">
 <?php
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 ?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
 	$passed_dls = array();
 	foreach($messaging->selected_set as $key => $val){

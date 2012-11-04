@@ -35,11 +35,11 @@ class we_version{
 		//		if($data["type"] == "version_delete"){
 		//
 		//			weVersions::deleteVersion($data["ID"]);
-		//			$_SESSION['versions']['logDeleteIds'][$data["ID"]]['Version'] = $data["version"];
-		//			$_SESSION['versions']['logDeleteIds'][$data["ID"]]['Text'] = $data["text"];
-		//			$_SESSION['versions']['logDeleteIds'][$data["ID"]]['ContentType'] = $data["contenttype"];
-		//			$_SESSION['versions']['logDeleteIds'][$data["ID"]]['Path'] = $data["path"];
-		//			$_SESSION['versions']['logDeleteIds'][$data["ID"]]['documentID'] = $data["documentID"];
+		//			$_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Version'] = $data["version"];
+		//			$_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Text'] = $data["text"];
+		//			$_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['ContentType'] = $data["contenttype"];
+		//			$_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['Path'] = $data["path"];
+		//			$_SESSION['weS']['versions']['logDeleteIds'][$data["ID"]]['documentID'] = $data["documentID"];
 		//
 		//		}
 		//
@@ -51,11 +51,11 @@ class we_version{
 				$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 				weVersions::resetVersion($data["ID"], $data["version"], $publish);
 
-				$_SESSION['versions']['logResetIds'][$data["ID"]]['Text'] = $data["text"];
-				$_SESSION['versions']['logResetIds'][$data["ID"]]['ContentType'] = $data["contenttype"];
-				$_SESSION['versions']['logResetIds'][$data["ID"]]['Path'] = $data["path"];
-				$_SESSION['versions']['logResetIds'][$data["ID"]]['Version'] = $data["version"];
-				$_SESSION['versions']['logResetIds'][$data["ID"]]['documentID'] = $data["documentID"];
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['Text'] = $data["text"];
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['ContentType'] = $data["contenttype"];
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['Path'] = $data["path"];
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['Version'] = $data["version"];
+				$_SESSION['weS']['versions']['logResetIds'][$data["ID"]]['documentID'] = $data["documentID"];
 
 				break;
 
@@ -101,7 +101,7 @@ class we_version{
 		$data = array();
 		if(we_hasPerm("ADMINISTRATOR")){
 
-			$GLOBALS['DB_WE']->query($_SESSION['versions']['query']);
+			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 					$data, array(
@@ -116,7 +116,7 @@ class we_version{
 					"text" => $GLOBALS['DB_WE']->f("Text")
 				));
 			}
-			unset($_SESSION['versions']['query']);
+			unset($_SESSION['weS']['versions']['query']);
 		}
 		return $data;
 	}
@@ -125,7 +125,7 @@ class we_version{
 		$data = array();
 		if(we_hasPerm("ADMINISTRATOR")){
 
-			$GLOBALS['DB_WE']->query($_SESSION['versions']['query']);
+			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 			while($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 					$data, array(
@@ -140,7 +140,7 @@ class we_version{
 					"text" => $GLOBALS['DB_WE']->f("Text")
 				));
 			}
-			unset($_SESSION['versions']['query']);
+			unset($_SESSION['weS']['versions']['query']);
 		}
 		return $data;
 	}
