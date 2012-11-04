@@ -419,5 +419,27 @@ class we_objectEx extends we_object{
 		$this->strOrder = implode(',', $we_sort);
 		$this->we_save();
 	}
-
+	
+	function setOrder($order){
+		$ctable = OBJECT_X_TABLE . intval($this->ID);
+		$metadata= $this->DB_WE->metadata($ctable,true);
+		if(is_array($order)){
+			$last='';
+			foreach($order as $oval){
+				if($last==''){$last='OF_Language';}
+				$ovalname=$this->getFieldPrefix($oval).'_'.$oval;
+				if(array_key_exists($ovalname,$metadata['meta'])){
+					$nummer=$metadata['meta'][$ovalname];
+					$type=$metadata[$nummer]['type'];
+					if($type=='string'){
+						$len=$metadata[$nummer]['len'];
+						$type='VARCHAR('.$len.')';
+					}
+					$q="ALTER TABLE ".$ctable." MODIFY COLUMN ".$ovalname.' '.$type." AFTER ".$last.";";
+					$this->DB_WE->query($q);
+					$last=$ovalname;
+				}		
+			}
+		}
+	}
 }
