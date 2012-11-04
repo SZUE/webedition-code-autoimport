@@ -121,10 +121,10 @@ return we_html_tools::htmlTop(g_l('navigation', '[menu_highlight_rules]')) . STY
 		);
 
 		$selectionTypes = array(
-			'doctype' => g_l('global', '[documents]')
-			);
+			weNavigation::STPYE_DOCTYPE => g_l('global', '[documents]')
+		);
 		if(defined('OBJECT_TABLE')){
-			$selectionTypes['classname'] = g_l('global', '[objects]');
+			$selectionTypes[weNavigation::STPYE_CLASS] = g_l('global', "[objects]");
 		}
 
 		$parts[] = array(
@@ -232,8 +232,8 @@ var allFields = new Array("FolderID", "DoctypeID", "ClassID", "WorkspaceID");
 var resetFields = new Array("NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID");
 
 var dependencies = new Array();
-dependencies["classname"] = new Array("ClassID", "WorkspaceID", "Categories");
-dependencies["doctype"] = new Array("FolderID", "DoctypeID", "Categories");
+dependencies["' . weNavigation::STPYE_CLASS . '"] = new Array("ClassID", "WorkspaceID", "Categories");
+dependencies["' . weNavigation::STPYE_DOCTYPE . '"] = new Array("FolderID", "DoctypeID", "Categories");
 
 
 function switchType(value) {

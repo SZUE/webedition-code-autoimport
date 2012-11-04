@@ -86,9 +86,11 @@ class we_object extends we_document{
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
-		$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
-			$this->getUpdateTreeScript() .
-			we_main_headermenu::getMenuReloadCode('top.');
+		if(!isset($this->isInApp)){// allows to save Classes from within WE-Apps
+			$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
+				$this->getUpdateTreeScript() .
+				we_main_headermenu::getMenuReloadCode('top.');
+		}
 	}
 
 	function saveToDB(){
@@ -585,7 +587,7 @@ class we_object extends we_document{
 				return "we_modules/object/we_editor_contentobject.inc.php";
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return "we_templates/we_editor_properties.inc.php";
 		}
 	}

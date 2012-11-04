@@ -46,6 +46,7 @@ class we_wysiwyg{
 	var $removeFirstParagraph = true;
 	var $charset = "";
 	var $inlineedit = true;
+
 	var $cssClasses = "";
 	var $Language = "";
 	var $_imagePath;
@@ -108,7 +109,7 @@ class we_wysiwyg{
 		$this->showSpell = $spell;
 		$this->isFrontendEdit = $isFrontendEdit;
 
-		$this->_imagePath = IMAGE_DIR . "wysiwyg/";
+		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
 		$this->_image_languagePath = WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/wysiwyg/";
 
 		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();

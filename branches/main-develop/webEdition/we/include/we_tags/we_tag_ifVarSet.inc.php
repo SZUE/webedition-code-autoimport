@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_isVarSet($name, $orig,$type, $docAttr, $property = false, $formname = '', $shopname = ''){
+function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname = '', $shopname = ''){
 	switch($type){
 		case 'request' :
 			return isset($_REQUEST[$orig]);
@@ -31,7 +31,7 @@ function we_isVarSet($name, $orig,$type, $docAttr, $property = false, $formname 
 		case 'get' :
 			return isset($_GET[$orig]);
 		case 'global' :
-			return isset($GLOBALS[$name])||isset($GLOBALS[$orig]);
+			return isset($GLOBALS[$name]) || isset($GLOBALS[$orig]);
 		case 'session' :
 			return isset($_SESSION[$orig]);
 		case 'sessionfield' :
@@ -55,25 +55,23 @@ function we_isVarSet($name, $orig,$type, $docAttr, $property = false, $formname 
 			}
 			if($doc){
 				if($property){
-					return isset($doc->$name)||isset($doc->orig);
+					return isset($doc->$name) || isset($doc->orig);
 				} else{
-					if($type == 'href'){
-						if($doc->elements[$name . '_we_jkhdsf_int']['dat']){
-							return isset($doc->elements[$name . '_we_jkhdsf_intPath']['dat']);
-						}
+					if($type == 'href' && $doc->elements[$name . '_we_jkhdsf_int']['dat']){
+						return isset($doc->elements[$name . '_we_jkhdsf_intPath']['dat']);
 					}
 					$fieldType = isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : '';
 					$issetElemNameDat = isset($doc->elements[$name]['dat']);
-					if($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0)
-						return false;
-					return $issetElemNameDat;
+					return ($fieldType == 'checkbox_feld' && $issetElemNameDat && $doc->elements[$name]['dat'] == 0 ?
+							false :
+							$issetElemNameDat);
 				}
 			}
 			return false;
 	}
 }
 
-function we_tag_ifVarSet($attribs, $content){
+function we_tag_ifVarSet($attribs){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		print($foo);
 		return false;
@@ -87,5 +85,5 @@ function we_tag_ifVarSet($attribs, $content){
 	$property = weTag_getAttribute("property", $attribs, false, true);
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
-	return we_isVarSet($name, $name_orig,$type, $doc, $property, $formname, $shopname);
+	return we_isVarSet($name, $name_orig, $type, $doc, $property, $formname, $shopname);
 }

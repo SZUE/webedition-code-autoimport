@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,11 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 // File > Glossary Check
-$we_menu["1099000"]["text"] = g_l('javaMenu_glossary','[glossary_check]');
-$we_menu["1099000"]["parent"] = "1000000";
-$we_menu["1099000"]["cmd"] = "check_glossary";
-$we_menu["1099000"]["perm"] = "";
-$we_menu["1099000"]["enabled"] = "1";
+$we_menu['1099000'] = array(
+	'text' => g_l('javaMenu_glossary', '[glossary_check]'),
+	'parent' => '1000000',
+	'cmd' => 'check_glossary',
+	'perm' => '',
+	'enabled' => '1',
+);

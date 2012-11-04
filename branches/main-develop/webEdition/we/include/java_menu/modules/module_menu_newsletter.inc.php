@@ -22,129 +22,159 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_newsletter["000100"]["text"] = g_l('modules_newsletter', '[newsletter]');
-$we_menu_newsletter["000100"]["parent"] = "000000";
-$we_menu_newsletter["000100"]["enabled"] = "1";
-
-$we_menu_newsletter["000200"]["text"] = g_l('modules_newsletter', '[new]');
-$we_menu_newsletter["000200"]["parent"] = "000100";
-$we_menu_newsletter["000200"]["enabled"] = "0";
-
-$we_menu_newsletter["000230"]["text"] = g_l('modules_newsletter', '[newsletter]');
-$we_menu_newsletter["000230"]["cmd"] = "new_newsletter";
-$we_menu_newsletter["000230"]["perm"] = "NEW_NEWSLETTER || ADMINISTRATOR";
-$we_menu_newsletter["000230"]["parent"] = "000200";
-$we_menu_newsletter["000230"]["enabled"] = "0";
-
-$we_menu_newsletter["000260"]["text"] = g_l('modules_newsletter', '[group]');
-$we_menu_newsletter["000260"]["cmd"] = "new_newsletter_group";
-$we_menu_newsletter["000260"]["perm"] = "NEW_NEWSLETTER || ADMINISTRATOR";
-$we_menu_newsletter["000260"]["parent"] = "000200";
-$we_menu_newsletter["000260"]["enabled"] = "0";
-
-$we_menu_newsletter["000300"]["text"] = g_l('modules_newsletter', '[save]');
-$we_menu_newsletter["000300"]["parent"] = "000100";
-$we_menu_newsletter["000300"]["cmd"] = "save_newsletter";
-$we_menu_newsletter["000300"]["perm"] = "NEW_NEWSLETTER || EDIT_NEWSLETTER || ADMINISTRATOR";
-$we_menu_newsletter["000300"]["enabled"] = "0";
-
-$we_menu_newsletter["000400"]["text"] = g_l('modules_newsletter', '[delete]');
-$we_menu_newsletter["000400"]["parent"] = "000100";
-$we_menu_newsletter["000400"]["cmd"] = "delete_newsletter";
-$we_menu_newsletter["000400"]["perm"] = "DELETE_NEWSLETTER || ADMINISTRATOR";
-$we_menu_newsletter["000400"]["enabled"] = "0";
-
-$we_menu_newsletter["000500"]["parent"] = "000100"; // separator
-
-$we_menu_newsletter["000600"]["text"] = g_l('modules_newsletter', '[send]') . "...";
-$we_menu_newsletter["000600"]["parent"] = "000100";
-$we_menu_newsletter["000600"]["cmd"] = "send_newsletter";
-$we_menu_newsletter["000600"]["perm"] = "SEND_NEWSLETTER || ADMINISTRATOR";
-$we_menu_newsletter["000600"]["enabled"] = "0";
-
-$we_menu_newsletter["000700"]["parent"] = "000100"; // separator
-
-$we_menu_newsletter["000800"]["text"] = g_l('modules_newsletter', '[quit]');
-$we_menu_newsletter["000800"]["parent"] = "000100";
-$we_menu_newsletter["000800"]["cmd"] = "exit_newsletter";
-$we_menu_newsletter["000800"]["enabled"] = "1";
-
-$we_menu_newsletter["002000"]["text"] = g_l('modules_newsletter', '[options]');
-$we_menu_newsletter["002000"]["parent"] = "000000";
-$we_menu_newsletter["002000"]["enabled"] = "1";
-
-$we_menu_newsletter["002100"]["text"] = g_l('modules_newsletter', '[domain_check]') . "...";
-$we_menu_newsletter["002100"]["parent"] = "002000";
-$we_menu_newsletter["002100"]["cmd"] = "domain_check";
-$we_menu_newsletter["002100"]["enabled"] = "1";
-
-$we_menu_newsletter["002200"]["text"] = g_l('modules_newsletter', '[lists_overview_menu]') . "...";
-$we_menu_newsletter["002200"]["parent"] = "002000";
-$we_menu_newsletter["002200"]["cmd"] = "print_lists";
-$we_menu_newsletter["002200"]["enabled"] = "1";
-
-$we_menu_newsletter["002300"]["text"] = g_l('modules_newsletter', '[show_log]') . "...";
-$we_menu_newsletter["002300"]["parent"] = "002000";
-$we_menu_newsletter["002300"]["cmd"] = "show_log";
-$we_menu_newsletter["002300"]["enabled"] = "1";
-
-$we_menu_newsletter["002400"]["parent"] = "002000"; // separator
-
-$we_menu_newsletter["002500"]["text"] = g_l('modules_newsletter', '[newsletter_test]') . "...";
-$we_menu_newsletter["002500"]["parent"] = "002000";
-$we_menu_newsletter["002500"]["cmd"] = "test_newsletter";
-$we_menu_newsletter["002500"]["enabled"] = "1";
-
-$we_menu_newsletter["002600"]["text"] = g_l('modules_newsletter', '[preview]') . "...";
-$we_menu_newsletter["002600"]["parent"] = "002000";
-$we_menu_newsletter["002600"]["cmd"] = "preview_newsletter";
-$we_menu_newsletter["002600"]["enabled"] = "1";
-
-$we_menu_newsletter["002700"]["text"] = g_l('modules_newsletter', '[send_test]');
-$we_menu_newsletter["002700"]["parent"] = "002000";
-$we_menu_newsletter["002700"]["cmd"] = "send_test";
-$we_menu_newsletter["002700"]["perm"] = "SEND_TEST_EMAIL || ADMINISTRATOR";
-$we_menu_newsletter["002700"]["enabled"] = "0";
-
-$we_menu_newsletter["002800"]["text"] = g_l('modules_newsletter', '[search_email]');
-$we_menu_newsletter["002800"]["parent"] = "002000";
-$we_menu_newsletter["002800"]["cmd"] = "search_email";
-$we_menu_newsletter["002800"]["enabled"] = "1";
-
-$we_menu_newsletter["002900"]["parent"] = "002000"; // separator
-
-$we_menu_newsletter["003000"]["text"] = g_l('modules_newsletter', '[edit_file]') . "...";
-$we_menu_newsletter["003000"]["parent"] = "002000";
-$we_menu_newsletter["003000"]["cmd"] = "edit_file";
-$we_menu_newsletter["003000"]["enabled"] = "1";
-
-$we_menu_newsletter["003100"]["text"] = g_l('modules_newsletter', '[black_list]') . "...";
-$we_menu_newsletter["003100"]["parent"] = "002000";
-$we_menu_newsletter["003100"]["cmd"] = "black_list";
-$we_menu_newsletter["003100"]["enabled"] = "1";
-
-$we_menu_newsletter["003200"]["text"] = g_l('modules_newsletter', '[clear_log]') . "...";
-$we_menu_newsletter["003200"]["parent"] = "002000";
-$we_menu_newsletter["003200"]["cmd"] = "clear_log";
-$we_menu_newsletter["003200"]["perm"] = "NEWSLETTER_SETTINGS || ADMINISTRATOR";
-$we_menu_newsletter["003200"]["enabled"] = "1";
-
-$we_menu_newsletter["003300"]["text"] = g_l('modules_newsletter', '[settings]') . "...";
-$we_menu_newsletter["003300"]["parent"] = "002000";
-$we_menu_newsletter["003300"]["cmd"] = "newsletter_settings";
-$we_menu_newsletter["003300"]["perm"] = "NEWSLETTER_SETTINGS || ADMINISTRATOR";
-$we_menu_newsletter["003300"]["enabled"] = "1";
-
-$we_menu_newsletter["004000"]["text"] = g_l('modules_newsletter', '[help]');
-$we_menu_newsletter["004000"]["parent"] = "000000";
-$we_menu_newsletter["004000"]["enabled"] = "1";
-
-$we_menu_newsletter["004100"]["text"] = g_l('modules_newsletter', '[help]') . "...";
-$we_menu_newsletter["004100"]["parent"] = "004000";
-$we_menu_newsletter["004100"]["cmd"] = "help_modules";
-$we_menu_newsletter["004100"]["enableadd"] = "1";
-
-$we_menu_newsletter["004200"]["text"] = g_l('modules_newsletter', '[info]') . "...";
-$we_menu_newsletter["004200"]["parent"] = "004000";
-$we_menu_newsletter["004200"]["cmd"] = "info_modules";
-$we_menu_newsletter["004200"]["enabled"] = "1";
+$we_menu_newsletter = array(
+	'000100' => array(
+		'text' => g_l('modules_newsletter', '[newsletter]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	'000200' => array(
+		'text' => g_l('modules_newsletter', '[new]'),
+		'parent' => '000100',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[newsletter]'),
+		'cmd' => 'new_newsletter',
+		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
+		'parent' => '000200',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[group]'),
+		'cmd' => 'new_newsletter_group',
+		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
+		'parent' => '000200',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[save]'),
+		'parent' => '000100',
+		'cmd' => 'save_newsletter',
+		'perm' => 'NEW_NEWSLETTER || EDIT_NEWSLETTER || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[delete]'),
+		'parent' => '000100',
+		'cmd' => 'delete_newsletter',
+		'perm' => 'DELETE_NEWSLETTER || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[send]') . '...',
+		'parent' => '000100',
+		'cmd' => 'send_newsletter',
+		'perm' => 'SEND_NEWSLETTER || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'parent' => '000100', // separator
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[quit]'),
+		'parent' => '000100',
+		'cmd' => 'exit_newsletter',
+		'enabled' => '1',
+	),
+	'002000' => array(
+		'text' => g_l('modules_newsletter', '[options]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[domain_check]') . '...',
+		'parent' => '002000',
+		'cmd' => 'domain_check',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[lists_overview_menu]') . '...',
+		'parent' => '002000',
+		'cmd' => 'print_lists',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[show_log]') . '...',
+		'parent' => '002000',
+		'cmd' => 'show_log',
+		'enabled' => '1',
+	),
+	array(
+		'parent' => '002000', // separator
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[newsletter_test]') . '...',
+		'parent' => '002000',
+		'cmd' => 'test_newsletter',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[preview]') . '...',
+		'parent' => '002000',
+		'cmd' => 'preview_newsletter',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[send_test]'),
+		'parent' => '002000',
+		'cmd' => 'send_test',
+		'perm' => 'SEND_TEST_EMAIL || ADMINISTRATOR',
+		'enabled' => '0',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[search_email]'),
+		'parent' => '002000',
+		'cmd' => 'search_email',
+		'enabled' => '1',
+	),
+	array(
+		'parent' => '002000', // separator
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[edit_file]') . '...',
+		'parent' => '002000',
+		'cmd' => 'edit_file',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[black_list]') . '...',
+		'parent' => '002000',
+		'cmd' => 'black_list',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[clear_log]') . '...',
+		'parent' => '002000',
+		'cmd' => 'clear_log',
+		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[settings]') . '...',
+		'parent' => '002000',
+		'cmd' => 'newsletter_settings',
+		'perm' => 'NEWSLETTER_SETTINGS || ADMINISTRATOR',
+		'enabled' => '1',
+	),
+	'004000' => array(
+		'text' => g_l('modules_newsletter', '[help]'),
+		'parent' => '000000',
+		'enabled' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[help]') . '...',
+		'parent' => '004000',
+		'cmd' => 'help_modules',
+		'enableadd' => '1',
+	),
+	array(
+		'text' => g_l('modules_newsletter', '[info]') . '...',
+		'parent' => '004000',
+		'cmd' => 'info_modules',
+		'enabled' => '1',
+	)
+);

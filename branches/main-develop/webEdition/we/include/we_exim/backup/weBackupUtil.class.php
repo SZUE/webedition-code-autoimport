@@ -28,13 +28,13 @@ class weBackupUtil{
 		$table = strtolower($table);
 		$match = array();
 		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
-			return (isset($_SESSION['weBackupVars']['tables']['tblobject_']) ?
-					$_SESSION['weBackupVars']['tables']['tblobject_'] . $match[1] :
+			return (isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_']) ?
+					$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
 					false);
 		}
 
-		return (isset($_SESSION['weBackupVars']['tables'][$table]) ?
-				$_SESSION['weBackupVars']['tables'][$table] :
+		return (isset($_SESSION['weS']['weBackupVars']['tables'][$table]) ?
+				$_SESSION['weS']['weBackupVars']['tables'][$table] :
 				false);
 	}
 
@@ -42,7 +42,7 @@ class weBackupUtil{
 
 		$match = array();
 		if(defined('OBJECT_X_TABLE') && preg_match("|^" . OBJECT_X_TABLE . "([0-9]*)$|i", $table, $match)){
-			if(isset($_SESSION['weBackupVars']['tables']['tblobject_'])){
+			if(isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_'])){
 				$_max = f('SELECT MAX(ID) AS MaxTableID FROM ' . OBJECT_TABLE, 'MaxTableID', new DB_WE());
 				if($match[1] <= $_max){
 					return 'tblobject_' . $match[1];
@@ -53,8 +53,8 @@ class weBackupUtil{
 		}
 
 
-//$_def_table = array_search($table,$_SESSION['weBackupVars']['tables']);
-		foreach($_SESSION['weBackupVars']['tables'] as $_key => $_value){
+//$_def_table = array_search($table,$_SESSION['weS']['weBackupVars']['tables']);
+		foreach($_SESSION['weS']['weBackupVars']['tables'] as $_key => $_value){
 			if(strtolower($table) == strtolower($_value)){
 				$_def_table = $_key;
 			}
@@ -69,7 +69,7 @@ class weBackupUtil{
 	}
 
 	function setBackupVar($name, $value){
-		$_SESSION['weBackupVars'][$name] = $value;
+		$_SESSION['weS']['weBackupVars'][$name] = $value;
 	}
 
 	function getDescription($table, $prefix){
@@ -106,17 +106,17 @@ class weBackupUtil{
 	}
 
 	function getImportPercent(){
-		if(isset($_SESSION['weBackupVars']['files_to_delete_count'])){
-			$rest1 = ((int) $_SESSION['weBackupVars']['files_to_delete_count'] - count($_SESSION['weBackupVars']['files_to_delete']));
-			$rest2 = (int) $_SESSION['weBackupVars']['files_to_delete_count'];
+		if(isset($_SESSION['weS']['weBackupVars']['files_to_delete_count'])){
+			$rest1 = ((int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'] - count($_SESSION['weS']['weBackupVars']['files_to_delete']));
+			$rest2 = (int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'];
 		} else{
 			$rest1 = 0;
 			$rest2 = 0;
 		}
 
 		$percent = (int) (((float)
-			((int) ($_SESSION['weBackupVars']['offset'] + $rest1) /
-			((int) $_SESSION['weBackupVars']['offset_end'] + $rest2))) * 100);
+			((int) ($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
+			((int) $_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100);
 
 		if($percent > 100){
 			return 100;
@@ -128,13 +128,13 @@ class weBackupUtil{
 
 	function getExportPercent(){
 
-		$all = (int) $_SESSION['weBackupVars']['row_count'];
+		$all = (int) $_SESSION['weS']['weBackupVars']['row_count'];
 
-		$done = (int) $_SESSION['weBackupVars']['row_counter'];
+		$done = (int) $_SESSION['weS']['weBackupVars']['row_counter'];
 
-		if(isset($_SESSION['weBackupVars']['extern_files'])){
-			$all += (int) $_SESSION['weBackupVars']['extern_files_count'];
-			$done += ((int) $_SESSION['weBackupVars']['extern_files_count'] - count($_SESSION['weBackupVars']['extern_files']));
+		if(isset($_SESSION['weS']['weBackupVars']['extern_files'])){
+			$all += (int) $_SESSION['weS']['weBackupVars']['extern_files_count'];
+			$done += ((int) $_SESSION['weS']['weBackupVars']['extern_files_count'] - count($_SESSION['weS']['weBackupVars']['extern_files']));
 		}
 
 		$percent = (int) (($done / $all) * 100);
@@ -149,19 +149,19 @@ class weBackupUtil{
 
 	function canImportBinary($id, $path){
 
-		if(!empty($id) && $_SESSION['weBackupVars']['options']['backup_binary']){
+		if(!empty($id) && $_SESSION['weS']['weBackupVars']['options']['backup_binary']){
 			return true;
 		}
 
-		if(empty($id) && ($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weBackupVars']['handle_options']['settings']){
+		if(empty($id) && ($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 			return true;
 		}
 
-		if(empty($id) && $_SESSION['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
+		if(empty($id) && $_SESSION['weS']['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
 			return true;
 		}
 
-		if(empty($id) && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weBackupVars']['handle_options']['spellchecker']){
+		if(empty($id) && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 			return true;
 		}
 
@@ -169,7 +169,7 @@ class weBackupUtil{
 	}
 
 	function canImportVersion($id, $path){
-		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weBackupVars']['handle_options']['versions_binarys']);
+		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']);
 	}
 
 	function exportFile($file, $fh){
@@ -202,9 +202,9 @@ class weBackupUtil{
 		$_do = true;
 
 		do{
-			if(++$_SESSION['weBackupVars']['current_table_id'] < count($_tables)){
+			if(++$_SESSION['weS']['weBackupVars']['current_table_id'] < count($_tables)){
 // get real table name from database
-				$_table = $_tables[$_SESSION['weBackupVars']['current_table_id']]['table_name'];
+				$_table = $_tables[$_SESSION['weS']['weBackupVars']['current_table_id']]['table_name'];
 
 				$_def_table = weBackupUtil::getDefaultTableName($_table);
 
@@ -212,34 +212,34 @@ class weBackupUtil{
 
 					$_do = false;
 
-					$_SESSION['weBackupVars']['current_table'] = $_table;
+					$_SESSION['weS']['weBackupVars']['current_table'] = $_table;
 				}
 			} else{
-				$_SESSION['weBackupVars']['current_table'] = false;
+				$_SESSION['weS']['weBackupVars']['current_table'] = false;
 				$_do = false;
 			}
 		} while($_do);
 
-		return $_SESSION['weBackupVars']['current_table'];
+		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
 
 	function getCurrentTable(){
-		/* if(!isset($_SESSION['weBackupVars']['current_table'])){
+		/* if(!isset($_SESSION['weS']['weBackupVars']['current_table'])){
 		  return weBackupUtil::getNextTable();
 		  } else { */
-		return $_SESSION['weBackupVars']['current_table'];
+		return $_SESSION['weS']['weBackupVars']['current_table'];
 //}
 	}
 
 	function addLog($log){
-		if(isset($_SESSION['weBackupVars']['backup_log_data'])){
-			$_SESSION['weBackupVars']['backup_log_data'] .= '[' . date('d-M-Y H:i:s', time()) . '] ' . $log . "\r\n";
+		if(isset($_SESSION['weS']['weBackupVars']['backup_log_data'])){
+			$_SESSION['weS']['weBackupVars']['backup_log_data'] .= '[' . date('d-M-Y H:i:s', time()) . '] ' . $log . "\r\n";
 		}
 	}
 
 	function writeLog(){
-		weFile::save($_SESSION['weBackupVars']['backup_log_file'], $_SESSION['weBackupVars']['backup_log_data'], 'ab');
-		$_SESSION['weBackupVars']['backup_log_data'] = '';
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], $_SESSION['weS']['weBackupVars']['backup_log_data'], 'ab');
+		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
 
 	function getHttpLink($server, $url, $port = '', $username = '', $password = ''){
@@ -340,7 +340,7 @@ class weBackupUtil{
 
 	function hasNextTable(){
 
-		$_current_id = $_SESSION['weBackupVars']['current_table_id'];
+		$_current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
 		$_current_id++;
 
 		$_db = new DB_WE();

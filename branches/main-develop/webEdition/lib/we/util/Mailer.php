@@ -112,8 +112,7 @@ class we_util_Mailer extends Zend_Mail{
 		if(defined("WE_MAILER")){
 			switch(WE_MAILER){
 				case 'smtp' :
-
-					if(defined('SMTP_SERVER')){
+					if(defined('SMTP_SERVER') && SMTP_SERVER != ''){
 						$smtp_config = array();
 						if(defined('SMTP_PORT')){
 							$smtp_config['port'] = SMTP_PORT;
@@ -140,8 +139,9 @@ class we_util_Mailer extends Zend_Mail{
 						$this->setDefaultTransport($tr);
 					}
 					break;
-				default :
 
+				default:
+				case 'php':
 					//this should set return-path
 					$safeMode = ini_get('safe_mode');
 					$suhosin = in_array('suhosin', get_loaded_extensions());
@@ -266,17 +266,18 @@ class we_util_Mailer extends Zend_Mail{
 					if(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$directory = dirname($url);
-						($directory == '.') ? $directory = '' : '';
-						$directory = str_replace("..", "", "$directory");
+						if($directory == '.'){
+							$directory = '';
+						}
+						$directory = str_replace('..', '', "$directory");
 						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 						}
 
-
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
 
-						if($this->basedir == ""){
+						if($this->basedir == ''){
 							$this->basedir = $_SERVER['DOCUMENT_ROOT'];
 						}
 						if(strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/'){
@@ -299,13 +300,13 @@ class we_util_Mailer extends Zend_Mail{
 
 			if($this->isUseBaseHref){//Bug #3735
 				if($this->ContentType == 'text/html' && !strpos($this->Body, "<base")){
-					$this->Body = str_replace("</head>", "<base href='" . getServerUrl() . "' />\n</head>", $this->Body);
+					$this->Body = str_replace('</head>', "<base href='" . getServerUrl() . "' />\n</head>", $this->Body);
 				}
 			}
 
-			if($this->AltBody == ""){ // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
-				//	$this->parseHtml2TextPart($this->Body);
-			}
+			/* if($this->AltBody == ""){ // nur ersetzen wenn nicht schon eine Textversion gesetzt wurde, wie z.B. im Newsletter häufig der Fall
+			  $this->parseHtml2TextPart($this->Body);
+			  } */
 		}
 		/**
 		 * Problem ist mit Zend Mail eine E-Mail Nachricht hinzubekommen, die den Regeln entspricht
@@ -337,11 +338,23 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function parseHtml2TextPart($html){
-		$lineBreacks = array("\n" => "", "\r" => "", "</h1>" => "</h1>\n\n", "</h2>" => "</h2>\n\n", "</h3>" => "</h3>\n\n", "</h4>" => "</h4>\n\n", "</h5>" => "</h5>\n\n", "</h6>" => "</h6>\n\n", "</p>" => "</p>\n\n", "</div>" => "</div>\n", "</li>" => "</li>\n", "&lt;" => "<", "&gt;" => ">");
+		$lineBreaks = array(
+			"\n" => '',
+			"\r" => '',
+			'</h1>' => "</h1>\n\n",
+			'</h2>' => "</h2>\n\n",
+			"</h3>" => "</h3>\n\n",
+			"</h4>" => "</h4>\n\n",
+			"</h5>" => "</h5>\n\n",
+			"</h6>" => "</h6>\n\n",
+			"</p>" => "</p>\n\n",
+			"</div>" => "</div>\n",
+			"</li>" => "</li>\n",
+			"&lt;" => '<',
+			"&gt;" => '>',
+		);
 
-		$textpart = strtr($html, $lineBreacks);
-		$textpart = preg_replace('/<br[^>]*>/s', "\n", $textpart);
-		$textpart = preg_replace('/<(ul|ol)[^>]*>/s', "\n\n", $textpart);
+		$textpart = preg_replace(array('/<br[^>]*>/s', '/<(ul|ol)[^>]*>/s'), array("\n", "\n\n"), strtr($html, $lineBreaks));
 		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $textpart)));
 	}
 
@@ -358,7 +371,7 @@ class we_util_Mailer extends Zend_Mail{
 			$fileParts = pathinfo($filename);
 			$ext = $fileParts['extension'];
 			$at->type = $this->get_mime_type($ext, $filename);
-			$loc = getServerUrl(). $rep;
+			$loc = getServerUrl() . $rep;
 			$at->location = $loc;
 			$this->inlineAtt[] = $at;
 			return $at->id;
@@ -395,7 +408,7 @@ class we_util_Mailer extends Zend_Mail{
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public function get_mime_type($ext = '', $name=''){
+	public function get_mime_type($ext = '', $name = ''){
 		$mimetypes = array(
 			'hqx' => 'application/mac-binhex40',
 			'cpt' => 'application/mac-compactpro',

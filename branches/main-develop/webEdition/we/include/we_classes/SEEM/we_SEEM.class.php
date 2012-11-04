@@ -36,7 +36,7 @@ abstract class we_SEEM{
 	static function getClassVars($name){
 		return '';
 		//	here are all variables.
-		if($_SESSION["we_mode"] == "normal"){
+		if($_SESSION['weS']['we_mode'] == "normal"){
 			$vtabSrcDocs = "top.Vtabs.we_cmd('load','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
 			if(defined("OBJECT_FILES_TABLE")){
 				$vtabSrcObjs = (we_hasPerm("CAN_SEE_OBJECTFILES") ?
@@ -49,7 +49,7 @@ abstract class we_SEEM{
 		}
 
 
-		return (isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal" ? (isset($$name) ? $$name : '') : '');
+		return (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal" ? (isset($$name) ? $$name : '') : '');
 	}
 
 	/**
@@ -342,17 +342,17 @@ abstract class we_SEEM{
 		$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 		for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
 
-			if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
 				switch($SEEM_LinkArray[2][$i]){
 
 					//  Edit an included document from webedition.
 					case "edit_image":
-						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('/webEdition/we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=image/*&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
+						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=image/*&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
 						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
 						break;
 					case "include" :
 						//  a new window is opened which stays as long, as the browser is closed, or the window is closed manually
-						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('/webEdition/we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=text/webedition&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
+						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=text/webedition&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
 						$code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
 						break;
 
@@ -459,6 +459,9 @@ abstract class we_SEEM{
 	 * @return   code        string the new HTML code with for SEEM changed links
 	 */
 	static function replaceLinks($srcCode, $linkArray){
+		if(!isset($linkArray[0])){
+			return $srcCode;
+		}
 		//	This is Code, to have the same effect like pressing a vertical tab
 		$destCode = $srcCode;
 
@@ -483,11 +486,11 @@ abstract class we_SEEM{
 			} else{
 
 				//  Target document is on another Web-Server - leave webEdition !!!!!
-				if(substr($linkArray[5][$i], 0, 7) == "http://" || substr($linkArray[5][$i], 0, 8) == "https://"){
+				if(strpos($linkArray[5][$i], 'http://') === 0 || strpos($linkArray[5][$i], 'https://') === 0){
 					$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', "[ext_document_on_other_server_selected]") . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\" onMouseOut=\"top.info(' ');\" ";
 					$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
 				} else{ //  Target is on the same Web-Server - open doc with webEdition.
-					if(substr($linkArray[5][$i], 0, 22) == "/webEdition/we_cmd.php"){ //  it is a command link - use open_document_with_parameters
+					if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
 						//  Work with the parameters ...
 						$theParameters = "";
 
@@ -503,7 +506,7 @@ abstract class we_SEEM{
 						$destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $javascriptCode . $linkArray[4][$i] . " >", $destCode);
 					} else{
 						//	This is a javascript:history link, to get back to the last document.
-						$javascriptCode = (substr($linkArray[2][$i], 0, 10) == "javascript" && strpos($linkArray[2][$i], "history") ?
+						$javascriptCode = (strpos($linkArray[2][$i], "javascript") === 0 && strpos($linkArray[2][$i], "history") ?
 								' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_link_does_not_work]") . "')\" onMouseOut=\"top.info('');\"" :
 								//  Check, if the current document was changed ...
 								" onclick=\"if(confirm('" . g_l('SEEM', "[ext_doc_selected]") . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onMouseOver=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\" onMouseOut=\"top.info(' ')\" ");
@@ -575,7 +578,7 @@ abstract class we_SEEM{
 		$tmpPath = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : (isset($_REQUEST["url"]) ? str_replace(getServerUrl(), "", $_REQUEST["url"]) : "");
 
 		//  extern or as absolut recognized paths shall not be changed.
-		if(substr($path, 0, 1) != "/" && substr($path, 0, 7) != "http://" && substr($path, 0, 8) != "https://"){
+		if(substr($path, 0, 1) != "/" && strpos($path, "http://") === FALSE && strpos($path, "https://") === FALSE){
 			$tmpPath = substr($tmpPath, 0, strrpos($tmpPath, '/'));
 			while(substr($path, 0, 3) == '../') {
 				$path = substr($path, 3);
@@ -605,7 +608,7 @@ abstract class we_SEEM{
 
 			//  if the link still begins with "http://", the links points to no we-document, so we neednt look for his id
 			//	all links to same webServer have been removed
-			$docIds[$i] = (substr($path, 0, 7) == "http://" || substr($path, 0, 8) == "https://" ? -1 : self::getDocIDbyPath($path, '', $db));
+			$docIds[] = (strpos($path, "http://") === 0 || strpos($path, "https://") === 0 ? -1 : self::getDocIDbyPath($path, '', $db));
 		}
 		return $docIds;
 	}
@@ -668,7 +671,7 @@ abstract class we_SEEM{
 		$newArray = array();
 
 		for($i = 0; $i < count($oldArray[2]); $i++){
-			if(substr($oldArray[2][$i], 0, 1) == "#" || substr($oldArray[2][$i], 0, 10) == "javascript" && substr($oldArray[2][$i], 0, 18) != "javascript:history" || substr($oldArray[2][$i], 0, 6) == "mailto" || substr($oldArray[2][$i], 0, 9) == "document:" || substr($oldArray[2][$i], 0, 7) == "object:"){
+			if(substr($oldArray[2][$i], 0, 1) == '#' || strpos($oldArray[2][$i], "javascript") === 0 && strpos($oldArray[2][$i], "javascript:history") === FALSE || strpos($oldArray[2][$i], "mailto") === 0 || strpos($oldArray[2][$i], "document:") === 0 || strpos($oldArray[2][$i], "object:") === 0){
 				//  this link must not be changed - so it will be removed
 			} else{
 				$newArray[0][] = $oldArray[0][$i];
@@ -788,14 +791,12 @@ abstract class we_SEEM{
 			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
 			$newForm = '<form';
 
-			if($formArray[2][$i] == -1 && (substr($formArray[1][$i], 0, 7) == "http://" || substr($formArray[1][$i], 0, 8) == "https://")){ // Formular is on another webServer
+			if($formArray[2][$i] == -1 && (strpos($formArray[1][$i], "http://") === 0 || strpos($formArray[1][$i], "https://") === 0)){ // Formular is on another webServer
 				$newForm .= " onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_other_server]") . "\")){return true;} else {return false;};' target='_blank'";
 
 				foreach($theAttribs as $key => $value){
 					//  the target must be changed and shall open in a new window
-					if(strtolower($key) == 'target'){
-
-					} else{
+					if(strtolower($key) != 'target'){
 						$newForm .= ' ' . $key . '="' . $value . '"';
 					}
 				}
@@ -805,8 +806,8 @@ abstract class we_SEEM{
 			} else{
 
 				// target is a webEdition Document
-				$newForm .= ' target="load" action="/webEdition/we_cmd.php"' .
-					($formArray[2][$i] != -1 || substr($formArray[1][$i], 0, 22) == '/webEdition/we_cmd.php' ? '' :
+				$newForm .= ' target="load" action="' . WEBEDITION_DIR . 'we_cmd.php"' .
+					($formArray[2][$i] != -1 || strpos($formArray[1][$i], WEBEDITION_DIR . 'we_cmd.php') === 0 ? '' :
 						" onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_we_server]") . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
@@ -931,7 +932,7 @@ abstract class we_SEEM{
 		} else{
 
 			//  Target document is on another Web-Server - leave webEdition !!!!!
-			if(substr($linkArray[5][$i], 0, 7) == "http://"){
+			if(strpos($linkArray[5][$i], "http://") === 0){
 
 				$code = "window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');";
 
@@ -939,7 +940,7 @@ abstract class we_SEEM{
 			} else{
 				//  it is a command link - use open_document_with_parameters
 
-				if(substr($linkArray[5][$i], 0, 22) == "/webEdition/we_cmd.php"){
+				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){
 
 					//  Work with the parameters ...
 					$theParameters = "";
@@ -1001,7 +1002,7 @@ abstract class we_SEEM{
 	 */
 	static function addEditButtonToTag($which = "edit"){
 		return '';
-		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
+		/* 		if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem"){
 		  return "";
 		  } else{
 		  return "";

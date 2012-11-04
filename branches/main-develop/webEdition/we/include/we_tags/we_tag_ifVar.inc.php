@@ -37,7 +37,7 @@ function we_tag_ifVar($attribs){
 	$operator = weTag_getAttribute("operator", $attribs,'equal');
 
 	$matchArray = makeArrayFromCSV($match);
-	$_size = sizeof($matchArray);
+	$_size = count($matchArray);
 
 	switch($type){
 		case "customer" :

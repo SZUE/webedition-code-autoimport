@@ -445,7 +445,7 @@ function we_tag_field($attribs){
 				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . $newWinProps . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;
 			} else{ // we are in webEdition
-				if($_SESSION['we_mode'] == 'seem'){ //	we are in seeMode -> open in edit_include ?....
+				if($_SESSION['weS']['we_mode'] == 'seem'){ //	we are in seeMode -> open in edit_include ?....
 				}
 			}
 		}
@@ -590,12 +590,12 @@ function we_tag_field($attribs){
 		}
 	}
 
-	if($isImageDoc && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem' && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
+	if($isImageDoc && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl'){
 		$out .= '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="edit_image"></a>';
 	}
 
 	//	Add a anchor to tell seeMode that this is an object.
-	if(isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem' && (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') && isset(
+	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' && (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') && isset(
 			$GLOBALS['_we_listview_object_flag']) && $GLOBALS['_we_listview_object_flag'] && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl' && $GLOBALS['lv']->seeMode && $seeMode){
 
 		$out = '<a href="' . $GLOBALS['lv']->DB_WE->Record['OF_ID'] . '" seem="object"></a>

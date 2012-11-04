@@ -308,7 +308,7 @@ class weHyperlinkDialog extends weDialog{
 <option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="int"' . (($this->args["type"] == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
-' . ((defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ? '
+' . ((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ? '
 <option value="obj"' . (($this->args["type"] == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' : '') . '
 </select>';
 
@@ -343,7 +343,7 @@ class weHyperlinkDialog extends weDialog{
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "text", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
-			if(defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
+			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
 				//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[objID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[objHref]\\'].value', '', '', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");", false, 100, 22, "", "", !we_hasPerm("CAN_SEE_OBJECTFILES")
 				$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[objID]'].value");
 				$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[objHref]'].value");

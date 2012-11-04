@@ -274,7 +274,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				deleteEntry($sel, $table);
 			}
 
-			if($_SESSION["we_mode"] == "normal"){ //	only update tree when in normal mode
+			if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
 				$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
 			}
 
@@ -342,12 +342,12 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 			$script .= 'top.toggleBusy(0);';
 
-			if($_SESSION["we_mode"] == "normal"){ //	different messages in normal or seeMode
+			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
 				if(sizeof($GLOBALS["we_folder_not_del"])){
-					$_SESSION["delete_files_nok"] = array();
+					$_SESSION['weS']['delete_files_nok'] = array();
 					$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
 					foreach($GLOBALS["we_folder_not_del"] as $datafile){
-						$_SESSION["delete_files_nok"][] = array("icon" => "folder.gif", "path" => $datafile);
+						$_SESSION['weS']['delete_files_nok'][] = array("icon" => "folder.gif", "path" => $datafile);
 					}
 					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else{
@@ -386,7 +386,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 //	in seeMode return to startDocument ...
 
 
-if($_SESSION["we_mode"] == "seem"){
+if($_SESSION['weS']['we_mode'] == "seem"){
 	if($retVal){ //	document deleted -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');";
 	} else{

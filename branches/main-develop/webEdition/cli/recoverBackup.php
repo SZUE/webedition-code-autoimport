@@ -323,11 +323,11 @@ if(weBackupPreparer::prepareImport() === true){
 	if($_REQUEST['verbose']){
 		print "\nImporting from " . $_backup_filename . "...\n";
 	}
-	while(($_SESSION['weBackupVars']['offset'] < $_SESSION['weBackupVars']['offset_end'])) {
+	while(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])) {
 		if($_REQUEST['verbose']){
 			print "-";
 		}
-		weBackupImport::import($_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['compress'], $_SESSION['weBackupVars']['encoding'], $_SESSION['weBackupVars']['backup_log']
+		weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']
 		);
 	}
 
@@ -342,7 +342,7 @@ if(weBackupPreparer::prepareImport() === true){
 	print weBackupPreparer::getErrorMessage();
 }
 
-unset($_SESSION['weBackupVars']);
+unset($_SESSION['weS']['weBackupVars']);
 //unlink($_SERVER['DOCUMENT_ROOT'].'/webEdition/we_backup/'.$_REQUEST['backup_select']);
 
 if($_REQUEST['verbose']){

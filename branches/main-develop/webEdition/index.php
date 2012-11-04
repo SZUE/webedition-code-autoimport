@@ -37,6 +37,12 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+//FIXME: implement resave of config files
+if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && version_compare(WE_VERSION, CONF_SAVED_VERSION) != 0)){
+	//resave config file(s)
+	we_base_preferences::check_global_config(true);
+}
+
 define('LOGIN_DENIED', 4);
 define('LOGIN_OK', 2);
 define('LOGIN_CREDENTIALS_INVALID', 1);
@@ -179,7 +185,9 @@ if(isset($GLOBALS['userLoginDenied'])){
 	$login = LOGIN_DENIED;
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_OK;
-	setcookie('we_mode', $_REQUEST['mode'], time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
+	if(isset($_REQUEST['mode'])){
+		setcookie('we_mode', $_REQUEST['mode'], time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
+	}
 	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
@@ -446,22 +454,19 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
-			if($_REQUEST['mode'] == 'normal'){
+			if(!isset($_REQUEST['mode'])||$_REQUEST['mode'] == ''||$_REQUEST['mode'] == 'normal'){
 				if(permissionhandler::isUserAllowedForAction('work_mode', 'normal')){
-					$_SESSION['we_mode'] = $_REQUEST['mode'];
+					$_SESSION['weS']['we_mode'] = 'normal';
 				} else{
 					$_body_javascript .= we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
-					$_SESSION['we_mode'] = 'seem';
+					$_SESSION['weS']['we_mode'] = 'seem';
 				}
 			} else{
-				$_SESSION['we_mode'] = $_REQUEST['mode'];
-			}
-			//FIX, if request is empty!
-			if($_SESSION['we_mode'] == ''){
-				$_SESSION['we_mode'] = 'normal';
+				$_SESSION['weS']['we_mode'] = $_REQUEST['mode'];
 			}
 
-			if(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
+			if((!defined('WE_LOGIN_WEWINDOW') && (!isset($_REQUEST['popup']))) ||
+				(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup']))))){
 				header('HTTP/1.1 303 See Other');
 				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
 				$_body_javascript.='alert("automatic redirect disabled");';

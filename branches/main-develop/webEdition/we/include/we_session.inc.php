@@ -54,7 +54,6 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		if(we_user::comparePasswords($useSalt, $_POST['username'], $DB_WE->f('passwd'), $_POST['password'])){
 			$_userdata = $DB_WE->Record;
 
-
 			if($_userdata['LoginDenied']){ // userlogin is denied
 				$GLOBALS['userLoginDenied'] = true;
 			} else{
@@ -70,124 +69,72 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				$_SESSION['user']['Username'] = $_userdata['username'];
 				$_SESSION['user']['ID'] = $_userdata['ID'];
 
-				$a = array();
-				$f = array();
-				$t = array();
-				$o = array();
-				$n = array();
-				$nl = array();
+				$workspaces = array(
+					FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs'),
+					TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst'),
+					NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsn'),
+				);
+				if(defined('OBJECT_FILES_TABLE')){
+					$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso');
+				}
+				if(defined('NEWSLETTER_TABLE')){
+					$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl');
+				}
+				$fields = array('ParentID');
+				foreach($workspaces as $cur){
+					$fields[] = $cur['key'];
+					$fields[] = $cur['parentKey'];
+				}
+				$fields = implode(',', $fields);
+
 				$_userGroups = array(); //	Get Groups user belongs to.
 				$db_tmp = new DB_WE();
-				$get_ws = 0;
-				$get_wst = 0;
-				$get_wso = 0;
-				$get_wsn = 0;
-				$get_wsnl = 0;
 
-				$DB_WE->query('SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ' OR Alias=' . intval($_SESSION['user']['ID']));
+				$DB_WE->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ' OR Alias=' . intval($_SESSION['user']['ID']));
 				while($DB_WE->next_record()) {
-					// get workspaces
-					$a = makeArrayFromCSV($DB_WE->f('workSpace'));
-					foreach($a as $k => $v)
-						if(!in_array($v, $f))
-							$f[] = $v;
-
-					$a = makeArrayFromCSV($DB_WE->f('workSpaceTmp'));
-					foreach($a as $k => $v){
-						if(!in_array($v, $t)){
-							$t[] = $v;
-						}
-					}
-
-					$a = makeArrayFromCSV($DB_WE->f('workSpaceNav'));
-					foreach($a as $k => $v){
-						if(!in_array($v, $n)){
-							$n[] = $v;
-						}
-					}
-
-					$a = makeArrayFromCSV($DB_WE->f('workSpaceObj'));
-					foreach($a as $k => $v){
-						if(!in_array($v, $o)){
-							$o[] = $v;
-						}
-					}
-
-					$a = makeArrayFromCSV($DB_WE->f('workSpaceNwl'));
-					foreach($a as $k => $v){
-						if(!in_array($v, $nl)){
-							$nl[] = $v;
-						}
-					}
-
-					// get parent workspaces
 					$pid = $DB_WE->f('ParentID');
-					$get_ws = $DB_WE->f('ParentWs');
-					$get_wst = $DB_WE->f('ParentWst');
-					$get_wso = $DB_WE->f('ParentWso');
-					$get_wsn = $DB_WE->f('ParentWsn');
-					$get_wsnl = $DB_WE->f('ParentWsnl');
+
+					foreach($workspaces as &$cur){
+						// get workspaces
+						$a = makeArrayFromCSV($DB_WE->f($cur['key']));
+						foreach($a as $k => $v){
+							if(!in_array($v, $cur['value'])){
+								$cur['value'][] = $v;
+							}
+						}
+						$cur['parent'] = $DB_WE->f($cur['parentKey']);
+					}
 
 					while($pid) { //	For each group
 						$_userGroups[] = $pid;
 
-						$db_tmp->query('SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
+						$db_tmp->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
 						if($db_tmp->next_record()){
-							if($get_ws){
-								$a = makeArrayFromCSV($db_tmp->f('workSpace'));
-								foreach($a as $k => $v)
-									if(!in_array($v, $f))
-										$f[] = $v;
-							}
-							if($get_wst){
-								$a = makeArrayFromCSV($db_tmp->f('workSpaceTmp'));
-								foreach($a as $k => $v)
-									if(!in_array($v, $t))
-										$t[] = $v;
-							}
-							if($get_wso){
-								$a = makeArrayFromCSV($db_tmp->f('workSpaceObj'));
-								foreach($a as $k => $v)
-									if(!in_array($v, $o))
-										$o[] = $v;
-							}
-							if($get_wsn){
-								$a = makeArrayFromCSV($db_tmp->f('workSpaceNav'));
-								foreach($a as $k => $v)
-									if(!in_array($v, $n))
-										$n[] = $v;
-							}
-							if($get_wsnl){
-								$a = makeArrayFromCSV($db_tmp->f('workSpaceNwl'));
-								foreach($a as $k => $v)
-									if(!in_array($v, $nl))
-										$nl[] = $v;
-							}
 							$pid = $db_tmp->f('ParentID');
-							$get_ws = $db_tmp->f('ParentWs');
-							$get_wst = $db_tmp->f('ParentWst');
-							$get_wso = $db_tmp->f('ParentWso');
-							$get_wsn = $db_tmp->f('ParentWsn');
-							$get_wsnl = $db_tmp->f('ParentWsnl');
+							foreach($workspaces as &$cur){
+								if($cur['parent']){
+									// get workspaces
+									$a = makeArrayFromCSV($DB_WE->f($cur['key']));
+									foreach($a as $k => $v){
+										if(!in_array($v, $cur['value'])){
+											$cur['value'][] = $v;
+										}
+									}
+								}
+								$cur['parent'] = $DB_WE->f($cur['parentKey']);
+							}
 						} else{
 							$pid = 0;
 						}
 					}
 				}
 				$_SESSION['user']['groups'] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				$_SESSION['user']['workSpace'] = array(
-					FILE_TABLE => $f,
-					TEMPLATES_TABLE => $t,
-					NAVIGATION_TABLE => $n,
-				);
-				if(defined('OBJECT_FILES_TABLE')){
-					$_SESSION['user']['workSpace'][OBJECT_FILES_TABLE] = $o;
-				}
-				if(defined('NEWSLETTER_TABLE')){
-					$_SESSION['user']['workSpace'][NEWSLETTER_TABLE] = $nl;
+				$_SESSION['user']['workSpace'] = array();
+				foreach($workspaces as $key => $cur){
+					$_SESSION['user']['workSpace'][$key] = $cur['value'];
 				}
 
-				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE);
+				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
 				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && sizeof($exprefs) > 0){
 					$_SESSION['prefs'] = $exprefs;
 				} else{
@@ -204,18 +151,10 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				}
 				$_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
 
-
 				$_SESSION['user']['groups'] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
-				$_SESSION['user']['workSpace'] = array(
-					FILE_TABLE => $f,
-					TEMPLATES_TABLE => $t,
-					NAVIGATION_TABLE => $n,
-				);
-				if(defined('OBJECT_FILES_TABLE')){
-					$_SESSION['user']['workSpace'][OBJECT_FILES_TABLE] = $o;
-				}
-				if(defined('NEWSLETTER_TABLE')){
-					$_SESSION['user']['workSpace'][NEWSLETTER_TABLE] = $nl;
+				$_SESSION['user']['workSpace'] = array();
+				foreach($workspaces as $key => $cur){
+					$_SESSION['user']['workSpace'][$key] = $cur['value'];
 				}
 
 				if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){
@@ -247,4 +186,4 @@ if(!isset($_SESSION['we_data'])){
 	$_SESSION['we_data'] = array($we_transaction => '');
 }
 
-$_SESSION['EditPageNr'] = (isset($_SESSION['EditPageNr']) && (($_SESSION['EditPageNr'] != '') || ($_SESSION['EditPageNr'] == 0))) ? $_SESSION['EditPageNr'] : 1;
+$_SESSION['weS']['EditPageNr'] = (isset($_SESSION['weS']['EditPageNr']) && (($_SESSION['weS']['EditPageNr'] != '') || ($_SESSION['weS']['EditPageNr'] == 0))) ? $_SESSION['weS']['EditPageNr'] : 1;

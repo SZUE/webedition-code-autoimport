@@ -28,25 +28,23 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-print STYLESHEET;
-
-
-$jmenu = new weJavaMenu($we_menu_banner, "top.opener.top.load");
-
-echo we_html_element::jsScript(JS_DIR . 'images.js');
-echo we_html_element::jsElement('
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'images.js') .
+	we_html_element::jsElement('
 	       function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
 	    }
 
 	');
+
+$jmenu = new weJavaMenu($we_menu_banner, "top.opener.top.load");
 ?>
 </head>
 <body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-				<?php $jmenu->printMenu(); ?>
+<?php $jmenu->printMenu(); ?>
 			</td>
 			<td align="right">
 				<?php

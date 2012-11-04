@@ -48,7 +48,7 @@ function showContent(){
 
 $_userID = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->isLockedByUser() : 0);
 
-if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'switch_edit_page' || (isset($_SESSION['EditPageNr']) && $_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
+if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
 	//	We must choose the right template to show the object.
 	//	Therefore we must look, if $_SESSION['SEEM']['lastPath'] exists to check the workspace.
 	//	First check the workspaces for the document.

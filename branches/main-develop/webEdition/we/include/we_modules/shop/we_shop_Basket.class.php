@@ -24,6 +24,7 @@
  */
 class we_shop_Basket{
 
+	//FIXME: this is set back to public due to some shop restrictions, see #6530, #6954
 	/**
 	 * 	this array contains all shopping items
 	 * 	a shopping item is an associated array containining
@@ -36,15 +37,15 @@ class we_shop_Basket{
 	 *
 	 * @var array
 	 */
-	private $ShoppingItems = array();
+	public $ShoppingItems = array();
 
 	/**
 	 * user can define custom fields saved with the order.
 	 *
 	 * @var array
 	 */
-	private $CartFields = array();
-	private $orderID = 0;
+	public $CartFields = array();
+	public $orderID = 0;
 
 	function initCartFields(){
 

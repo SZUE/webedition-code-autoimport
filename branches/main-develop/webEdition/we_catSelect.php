@@ -25,9 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 
-$_SERVER['SCRIPT_NAME'] = "/webEdition/we_catSelect.php";
-//$_SERVER['SCRIPT_NAME'] = str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__);
-
+$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR. 'we_catSelect.php';
 
 $fs = new we_catSelector(
 		isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),

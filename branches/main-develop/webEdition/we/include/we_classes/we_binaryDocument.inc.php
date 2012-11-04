@@ -72,7 +72,7 @@ class we_binaryDocument extends we_document{
 				break;
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return "we_templates/we_editor_properties.inc.php";
 		}
 	}
@@ -305,7 +305,7 @@ class we_binaryDocument extends we_document{
 			$filetype .= substr($this->Extension, 1);
 		}
 
-		$md = ($_SESSION["we_mode"] == "seem" ?
+		$md = ($_SESSION['weS']['we_mode'] == "seem" ?
 				'' :
 				g_l('metadata', "[supported_types]") . ': ' .
 				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .

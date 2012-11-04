@@ -33,6 +33,7 @@ $DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSIO
 
 cleanTempFiles(true);
 
+//FIXME: is there any need for this?
 if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
 	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], ' WHERE userID=' . intval($_SESSION["prefs"]["userID"]));
 }
@@ -54,6 +55,7 @@ if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with t
 	$_path = WEBEDITION_DIR;
 }
 
+//FIXME: this should be removed if all variables are located inside weS; fix other!!
 if(isset($_SESSION)){
 	while(list($name, $val) = each($_SESSION)) {
 		unset($_SESSION[$name]);

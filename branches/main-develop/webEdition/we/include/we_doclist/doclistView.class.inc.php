@@ -801,22 +801,18 @@ class doclistView{
 		$r3 = array();
 		if(isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search)){
 			foreach($GLOBALS ['we_doc']->searchclassFolder->search as $k => $v){
-				$r [] = $GLOBALS ['we_doc']->searchclassFolder->search [$k];
+				$r[] = $GLOBALS ['we_doc']->searchclassFolder->search [$k];
 			}
 		}
 		if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS ['we_doc']->searchclassFolder->search)){
 			foreach($GLOBALS ['we_doc']->searchclassFolder->searchFields as $k => $v){
-				$r2 [] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
+				$r2[] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
 			}
 		}
 		if(isset($_REQUEST ['location']) && is_array($_REQUEST ['location'])){
 			$m = 0;
 			foreach($_REQUEST ['searchFields'] as $k => $v){
-				if(isset($_REQUEST ['location'] [$k])){
-					$r3 [$m] = $_REQUEST ['location'] [$k];
-				} else{
-					$r3 [$m] = "disabled";
-				}
+				$r3[$m] = (isset($_REQUEST ['location'] [$k]) ? $_REQUEST ['location'] [$k] : "disabled");
 				$m++;
 			}
 		}
@@ -899,9 +895,8 @@ class doclistView{
           <td></td>
         </tr>
 
-        </table>';
-
-		$out .= we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
+        </table>' .
+			we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -991,17 +986,13 @@ class doclistView{
 				);
 		} else{
 			if($obj->ID != 0){
-			$obj->searchclassFolder->createTempTable();
+				$obj->searchclassFolder->createTempTable();
 
 				for($i = 0; $i < count($searchFields); $i++){
 
 					$w = "";
 					if(isset($searchText [0])){
-						if(isset($searchText [$i])){
-							$searchString = $searchText [$i];
-						} else{
-							$searchString = $searchText [0];
-						}
+						$searchString = (isset($searchText [$i]) ? $searchText [$i] : $searchText [0]);
 					}
 					if(isset($searchString) && $searchString != ""){
 
@@ -1057,24 +1048,19 @@ class doclistView{
 
 				if($where != ""){
 					$whereQuery = "1 " . $where;
-
-					if($_table == FILE_TABLE){
-						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . abs($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%'))";
-					}
-
-					if(defined("OBJECT_FILES_TABLE")){
-						if($_table == OBJECT_FILES_TABLE){
-							$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . abs($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%'))";
-						}
-					}
-					if(defined("OBJECT_TABLE")){
-						if($_table == OBJECT_TABLE){
-							$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
-						}
+					switch($_table){
+						case FILE_TABLE:
+							$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+							break;
+						case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+							$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+							break;
+						case (defined("OBJECT_TABLE") ? OBJECT_TABLE : OBJECT_TABLE):
+							$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+							break;
 					}
 
 					$obj->searchclassFolder->setwhere($whereQuery);
-
 					$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
 
 					$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
@@ -1094,12 +1080,8 @@ class doclistView{
 		}
 
 		if($_SESSION ['weSearch'] ['foundItems'] > 0){
-
-			$_db2 = new DB_WE ( );
-
-			$q = 'DROP TABLE IF EXISTS SEARCH_TEMP_TABLE';
-			$_db2->query($q);
-
+			$_db2 = new DB_WE();
+			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 			foreach($_result as $k => $v){
 				$_result [$k] ["Description"] = "";
@@ -1109,8 +1091,7 @@ class doclistView{
 						$_result [$k] ["Description"] = $DB_WE->f('Dat');
 					}
 				} else{
-					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($_result [$k] ["ID"]) . " AND DocTable = 'tblFile' AND Active = 1";
-					$_db2->query($query2);
+					$_db2->query("SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($_result [$k] ["ID"]) . " AND DocTable = 'tblFile' AND Active = 1");
 					while($_db2->next_record()) {
 						$tempDoc = unserialize($_db2->f('DocumentObject'));
 						if(isset($tempDoc [0] ['elements'] ['Description']) && $tempDoc [0] ['elements'] ['Description'] ['dat'] != ""){
@@ -1128,20 +1109,17 @@ class doclistView{
 	}
 
 	function makeHeadLines(){
-		$headline [0] ["dat"] = '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . $this->getSortImage('Text') . '</span>';
-		$headline [1] ["dat"] = '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . $this->getSortImage('SiteTitle') . '</span>';
-		$headline [2] ["dat"] = '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . $this->getSortImage('CreationDate') . '</span>';
-		$headline [3] ["dat"] = '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . $this->getSortImage('ModDate') . '</span>';
-
-		return $headline;
+		return array(
+			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . $this->getSortImage('Text') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . $this->getSortImage('SiteTitle') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . $this->getSortImage('CreationDate') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . $this->getSortImage('ModDate') . '</span>'),
+		);
 	}
 
 	function getSortImage($for){
-		if(isset($_REQUEST ['order'])){
-			$order = $_REQUEST ['order'];
-		} else{
-			$order = $GLOBALS ['we_doc']->searchclassFolder->order;
-		}
+		$order = (isset($_REQUEST ['order']) ? $_REQUEST ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
+
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
@@ -1290,55 +1268,25 @@ class doclistView{
 	 * @return string, html search result
 	 */
 	function getSearchParameterTop($foundItems){
-		$out = "";
-
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		if(isset($_REQUEST ['we_cmd'] ['obj'])){
-			$thisObj = new doclistView ( );
-		} else{
-			$thisObj = $this;
-		}
+		$thisObj = (isset($_REQUEST ['we_cmd'] ['obj']) ? new doclistView() : $this);
+		$order = (isset($_REQUEST ['we_cmd'] ['order']) ? $_REQUEST ['we_cmd'] ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
+		$mode = (isset($_REQUEST ['we_cmd'] ['mode']) ? $_REQUEST ['we_cmd'] ['mode'] : $GLOBALS ['we_doc']->searchclassFolder->mode);
+		$setView = (isset($_REQUEST ['we_cmd'] ['setView']) ? $_REQUEST ['we_cmd'] ['setView'] : $GLOBALS ['we_doc']->searchclassFolder->setView);
+		$_anzahl = (isset($_REQUEST ['we_cmd'] ['anzahl']) ? $_REQUEST ['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
+		$id = (isset($_REQUEST ['id']) ? $_REQUEST ['id'] : $GLOBALS ['we_doc']->ID);
+		$we_transaction = (isset($_REQUEST ['we_cmd'] ['we_transaction']) ?
+				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST ['we_cmd'] ['we_transaction']) ? $_REQUEST ['we_cmd'] ['we_transaction'] : 0) :
+				$GLOBALS ['we_transaction']);
 
-		if(isset($_REQUEST ['we_cmd'] ['order'])){
-			$order = $_REQUEST ['we_cmd'] ['order'];
-		} else{
-			$order = $GLOBALS ['we_doc']->searchclassFolder->order;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['mode'])){
-			$mode = $_REQUEST ['we_cmd'] ['mode'];
-		} else{
-			$mode = $GLOBALS ['we_doc']->searchclassFolder->mode;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['setView'])){
-			$setView = $_REQUEST ['we_cmd'] ['setView'];
-		} else{
-			$setView = $GLOBALS ['we_doc']->searchclassFolder->setView;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['anzahl'])){
-			$_anzahl = $_REQUEST ['we_cmd'] ['anzahl'];
-		} else{
-			$_anzahl = $GLOBALS ['we_doc']->searchclassFolder->anzahl;
-		}
-		if(isset($_REQUEST ['id'])){
-			$id = $_REQUEST ['id'];
-		} else{
-			$id = $GLOBALS ['we_doc']->ID;
-		}
-		if(isset($_REQUEST ['we_cmd'] ['we_transaction'])){
-			$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST ['we_cmd'] ['we_transaction']) ? $_REQUEST ['we_cmd'] ['we_transaction'] : 0);
-		} else{
-			$we_transaction = $GLOBALS ['we_transaction'];
-		}
-
-
-		$out .= we_html_tools::hidden("we_transaction", $we_transaction);
-		$out .= we_html_tools::hidden("order", $order);
-		$out .= we_html_tools::hidden("todo", "");
-		$out .= we_html_tools::hidden("mode", $mode);
-		$out .= we_html_tools::hidden("setView", $setView);
-
-		$out .= '<table border="0" cellpadding="0" cellspacing="0">
+		return
+			we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("todo", "") .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("setView", $setView) .
+			'<table border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td>' . we_html_tools::getPixel(19, 12) . '</td>
           <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
@@ -1360,22 +1308,21 @@ class doclistView{
           <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
         </tr>
         </table>';
-
-		return $out;
 	}
 
 	function getSearchParameterBottom($foundItems){
 		$thisObj = (isset($_REQUEST ['we_cmd'] ['obj']) ? new doclistView () : $this);
 
-		$publishButton = "";
-		$publishButtonCheckboxAll = "";
-
 		if(we_hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
+		} else{
+			$publishButton = "";
+			$publishButtonCheckboxAll = "";
 		}
 
-		$out = '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+		return
+			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
          <tr>
           <td>' . $publishButtonCheckboxAll . '</td>
           <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -1383,8 +1330,6 @@ class doclistView{
           <td style="width:370px;">' . $thisObj->getNextPrev($foundItems) . '</td>
         </tr>
         </table>';
-
-		return $out;
 	}
 
 	/**
@@ -1403,34 +1348,20 @@ class doclistView{
 			$searchstart = $obj->searchclassFolder->searchstart;
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
-
-		if($searchstart){
-			$out .= we_button::create_button("back", "javascript:back(" . $anzahl . ");");
-		} else{
-
-			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
-
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
-        <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
-
-		if(($we_search_anzahl - $searchstart) < $anzahl){
-			$out .= $we_search_anzahl;
-		} else{
-
-			$out .= $searchstart + $anzahl;
-		}
-
-		$out .= ' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
-
-		if(($searchstart + $anzahl) < $we_search_anzahl){
-			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");");
-		} else{
-
-			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
-		}
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+			($searchstart ?
+				we_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+        <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1448,9 +1379,8 @@ class doclistView{
 			}
 		}
 
-		$out .= $select;
-
-		$out .= '</td></tr></table>';
+		$out .= $select .
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -1468,19 +1398,12 @@ class doclistView{
             <td class="defaultfont">';
 
 		foreach($content as $i => $c){
-
 			$_forceRightHeadline = (isset($c ["forceRightHeadline"]) && $c ["forceRightHeadline"]);
-
 			$icon = (isset($c ["icon"]) && $c ["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
-
 			$headline = (isset($c ["headline"]) && $c ["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c ["headline"] . '</div>') : "";
-
 			$mainContent = (isset($c ["html"]) && $c ["html"]) ? $c ["html"] : "";
-
 			$leftWidth = (isset($c ["space"]) && $c ["space"]) ? abs($c ["space"]) : 0;
-
 			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
-
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			$out .= '<div style="margin-left:' . $marginLeft . 'px" >';
@@ -1492,18 +1415,15 @@ class doclistView{
 				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
 			}
 
-			$out .= $rightContent;
-
-			$out .= '</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+			$out .= $rightContent .
+				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c ["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
 			}
 		}
 
-		$boxHTML = $out . '</td></tr></table>';
-
-		return $boxHTML;
+		return $out . '</td></tr></table>';
 	}
 
 	function getDateSelector($_label, $_name, $_btn, $value){

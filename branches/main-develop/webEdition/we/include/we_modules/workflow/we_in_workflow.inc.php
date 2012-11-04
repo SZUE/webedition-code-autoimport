@@ -32,10 +32,10 @@ if($cmd == "ok"){
 	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
-		if($_SESSION["we_mode"] == "seem"){
+		if($_SESSION['weS']['we_mode'] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-		} else if($_SESSION["we_mode"] == "normal"){
+		} else if($_SESSION['weS']['we_mode'] == "normal"){
 
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
@@ -54,10 +54,10 @@ if($cmd == "ok"){
 		else {
 			$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_notok]');
 			$msgType = we_message_reporting::WE_MESSAGE_ERROR;
-			if($_SESSION["we_mode"] == "seem"){
+			if($_SESSION['weS']['we_mode'] == "seem"){
 
 				$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-			} else if($_SESSION["we_mode"] == "normal"){
+			} else if($_SESSION['weS']['we_mode'] == "normal"){
 
 			$script = '';
 		}

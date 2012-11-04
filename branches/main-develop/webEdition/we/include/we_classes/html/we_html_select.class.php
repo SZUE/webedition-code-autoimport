@@ -40,7 +40,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return		we_html_select
 	 */
-	function __construct($attribs=array(), $opt_num=0){
+	function __construct($attribs = array(), $opt_num = 0){
 		parent::__construct("select", true, $attribs);
 		for($i = 0; $i < $opt_num; $i++){
 			$this->addOption();
@@ -64,7 +64,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOption($value, $text, $attribs=array()){
+	function addOption($value, $text, $attribs = array()){
 		if(empty($attribs)){
 			$this->childs[] = new we_baseElement("option", true, array("value" => $value), $text);
 		} else{
@@ -82,7 +82,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOptions($opt_num=1, $values=array(), $texts=array()){
+	function addOptions($opt_num = 1, $values = array(), $texts = array()){
 		for($i = 0; $i < $opt_num; $i++)
 			$this->childs[] = new we_baseElement("option", false, array("value" => $values[$i]), $texts[$i]);
 	}
@@ -128,15 +128,16 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function insertOption($optid, $value, $text, $over=false){
+	function insertOption($optid, $value, $text, $over = false){
 		$new_opt = new we_baseElement("option", false, array("value" => $value), $text);
 
 
 		if($over){
 			$this->childs[$optid] = $new_opt;
 		} else{
-			if($optid == 0)
+			if($optid == 0){
 				$optid = -1;
+			}
 			if(count($this->childs) >= $optid + 1){
 				$array_pre = array_slice($this->childs, 0, ($optid + 1));
 				$array_pre[] = $new_opt;
@@ -157,7 +158,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function setOption($optid, $attribs=array(), $content=null){
+	function setOption($optid, $attribs = array(), $content = null){
 
 		$opt = & $this->getChild($optid);
 		$opt->setAttributes($attribs);
@@ -220,7 +221,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return  void
 	 */
-	function addOptionGroup($attribs=array()){
+	function addOptionGroup($attribs = array()){
 		$this->childs[] = new we_baseCollection("optgroup", true, $attribs);
 	}
 
@@ -243,7 +244,7 @@ class we_html_select extends we_baseCollection{
 	 *
 	 * @return  we_baseElement
 	 */
-	function getNewOptionGroup($attribs=array()){
+	function getNewOptionGroup($attribs = array()){
 		return new we_baseCollection("optgroup", true, $attribs);
 	}
 

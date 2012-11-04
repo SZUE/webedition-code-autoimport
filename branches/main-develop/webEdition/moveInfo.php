@@ -24,16 +24,13 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$parts = array();
-$out = "";
-
-if(isset($_SESSION["move_files_nok"]) && is_array($_SESSION["move_files_nok"])){
+if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_files_nok'])){
 	$i = 0;
 
 	$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
 	$i = 0;
 	$table->setCol(0, 0, null, we_html_tools::getPixel(10, 10));
-	foreach($_SESSION["move_files_nok"] as $data){
+	foreach($_SESSION['weS']['move_files_nok'] as $data){
 		$table->addRow();
 		$i++;
 		$table->setCol($i, 0, null, we_html_tools::getPixel(10, 2));
@@ -47,17 +44,16 @@ if(isset($_SESSION["move_files_nok"]) && is_array($_SESSION["move_files_nok"])){
 }
 
 
-
-array_push($parts, array(
-	"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION["move_files_info"], 1, 500),
-	"html" => "",
-	"space" => 10,
-	"noline" => 1)
-);
-array_push($parts, array(
-	"headline" => "",
-	"html" => we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
-	"space" => 10)
+$parts = array(
+	array(
+		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION["move_files_info"], 1, 500),
+		"html" => "",
+		"space" => 10,
+		"noline" => 1),
+	array(
+		"headline" => "",
+		"html" => we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
+		"space" => 10),
 );
 
 $buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "align" => "right", "border" => 0, "class" => "defaultfont"), 1, 1);

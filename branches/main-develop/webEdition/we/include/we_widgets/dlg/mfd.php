@@ -216,7 +216,7 @@ if(we_hasPerm('CAN_SEE_DOCUMENTS')){
 } else{
 	$oChbxDocs = "";
 }
-if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION["we_mode"] != "seem"){
+if(we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != "seem"){
 	$oChbxTmpl = we_forms::checkbox(
 			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[templates]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("TEMPLATES_TABLE") && we_hasPerm('CAN_SEE_TEMPLATES')), $description = "", $type = 0, $width = 0);
 } else{
@@ -228,7 +228,7 @@ if(we_hasPerm('CAN_SEE_OBJECTS')){
 } else{
 	$oChbxObjs = "";
 }
-if(we_hasPerm('CAN_SEE_CLASSES') && $_SESSION["we_mode"] != "seem"){
+if(we_hasPerm('CAN_SEE_CLASSES') && $_SESSION['weS']['we_mode'] != "seem"){
 	$oChbxCls = we_forms::checkbox(
 			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[classes]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined("OBJECT_TABLE") && we_hasPerm('CAN_SEE_OBJECTS')), $description = "", $type = 0, $width = 0);
 } else{

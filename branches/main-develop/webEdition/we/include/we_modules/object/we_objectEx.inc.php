@@ -275,9 +275,8 @@ class we_objectEx extends we_object{
 		}
 		return false;
 	}
-
-	function addField($name, $type = '', $default = ''){
-
+	
+	function getDefaultArray($type = '', $default = ''){
 		$defaultArr = array();
 		$defaultArr['default'] = '';
 		$defaultArr['defaultThumb'] = '';
@@ -323,6 +322,12 @@ class we_objectEx extends we_object{
 				$defaultArr[$k] = $v;
 			}
 		}
+		return $defaultArr;
+	}
+	
+	function addField($name, $type = '', $default = ''){
+
+		$defaultArr = $this->getDefaultArray($type, $default);
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		$this->DefaultValues = serialize($this->SerializedArray);
@@ -349,7 +354,6 @@ class we_objectEx extends we_object{
 					break;
 				}
 			} else{
-				p_r($fieldname);
 				if($fieldname == $name && $fieldtype == $type){
 					unset($this->SerializedArray[$field]);
 					$isfound = true;
@@ -383,8 +387,11 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-				$this->SerializedArray[$type . '_' . $name] = $defaultArr;
+				
+			} else {
+				$defaultArr=  $this->getDefaultArray($newtype,$default);
 			}
+			$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		} else{
 			unset($this->SerializedArray[$type . '_' . $name]);
 			if($default != '' && is_array($default)){
@@ -396,8 +403,10 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-				$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
+			} else {
+				$defaultArr=  $this->getDefaultArray($newtype,$default);
 			}
+			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
 		return $this->saveToDB(true);
@@ -410,5 +419,27 @@ class we_objectEx extends we_object{
 		$this->strOrder = implode(',', $we_sort);
 		$this->we_save();
 	}
-
+	
+	function setOrder($order){
+		$ctable = OBJECT_X_TABLE . intval($this->ID);
+		$metadata= $this->DB_WE->metadata($ctable,true);
+		if(is_array($order)){
+			$last='';
+			foreach($order as $oval){
+				if($last==''){$last='OF_Language';}
+				$ovalname=$this->getFieldPrefix($oval).'_'.$oval;
+				if(array_key_exists($ovalname,$metadata['meta'])){
+					$nummer=$metadata['meta'][$ovalname];
+					$type=$metadata[$nummer]['type'];
+					if($type=='string'){
+						$len=$metadata[$nummer]['len'];
+						$type='VARCHAR('.$len.')';
+					}
+					$q="ALTER TABLE ".$ctable." MODIFY COLUMN ".$ovalname.' '.$type." AFTER ".$last.";";
+					$this->DB_WE->query($q);
+					$last=$ovalname;
+				}		
+			}
+		}
+	}
 }

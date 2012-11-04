@@ -74,7 +74,7 @@ if(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS")){
 if(defined('FILE_TABLE') && we_hasPerm("CAN_SEE_DOCUMENTS") && !$_disableNew){
 	$js["new_document"] = $_cmdNew;
 }
-if(defined('TEMPLATES_TABLE') && we_hasPerm("NEW_TEMPLATE") && $_SESSION["we_mode"] == "normal"){
+if(defined('TEMPLATES_TABLE') && we_hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == "normal"){
 	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','text/weTmpl');";
 }
 if(we_hasPerm("NEW_DOC_FOLDER")){
@@ -89,7 +89,7 @@ if(defined('OBJECT_FILES_TABLE') && we_hasPerm("CAN_SEE_OBJECTFILES") && !$_disa
 if(defined('OBJECT_FILES_TABLE') && we_hasPerm("NEW_OBJECTFILE") && !$_disableObjects){
 	$js["new_object"] = "top.we_cmd('new_objectFile');";
 }
-if(defined('OBJECT_TABLE') && we_hasPerm("NEW_OBJECT") && $_SESSION["we_mode"] == "normal"){
+if(defined('OBJECT_TABLE') && we_hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == "normal"){
 	$js["new_class"] = "top.we_cmd('new_object');";
 }
 if(we_hasPerm("EDIT_SETTINGS")){
