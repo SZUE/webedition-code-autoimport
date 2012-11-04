@@ -76,13 +76,13 @@ function enableDelBut(){
 		if(isFileSelected(entries[i].ID)){
 		todel += entries[i].ID + ",";
 		<?php
-		if(isset($_SESSION['seemForOpenDelSelector']['ID'])){
+		if(isset($_SESSION['weS']['seemForOpenDelSelector']['ID'])){
 			?>
-			if(entries[i].ID=="<?php print $_SESSION['seemForOpenDelSelector']['ID']; ?>") {
+			if(entries[i].ID=="<?php print $_SESSION['weS']['seemForOpenDelSelector']['ID']; ?>") {
 			docIsOpen = true;
 			}
 			<?php
-			unset($_SESSION['seemForOpenDelSelector']['ID']);
+			unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
 		}
 		?>
 		}

@@ -114,7 +114,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
 		$ws = get_ws($this->table, true);
 		if($ws && strpos($ws, ("," . $this->dir . ",")) !== true){
 			$this->dir = "";
@@ -697,7 +697,7 @@ top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? "/" : $this->values["Text"]) . '";
 ';
 		}
-		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 </script>

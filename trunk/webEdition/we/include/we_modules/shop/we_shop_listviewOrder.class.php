@@ -84,7 +84,7 @@ class we_shop_listviewOrder extends listviewBase{
 
 		$this->hidedirindex = $hidedirindex;
 		// IMPORTANT for seeMode !!!! #5317
-		$this->LastDocPath = (isset($_SESSION['last_webEdition_document'])) ? $_SESSION['last_webEdition_document']['Path'] : '';
+		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
 
 		$group = " GROUP BY IntOrderID ";
 

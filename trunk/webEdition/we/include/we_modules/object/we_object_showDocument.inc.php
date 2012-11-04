@@ -64,19 +64,19 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 		exit();
 	}
 
-	$we_dt = $_SESSION['we_data'][$we_transaction];
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 
 	//	determine Path from last opened wE-Document
-	$_lastDoc = isset($_SESSION['last_webEdition_document']) ? $_SESSION['last_webEdition_document'] : array();
+	$_lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
 
 
-	if(isset($_SESSION['we_data'][$we_transaction]['0']['Templates'])){
+	if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates'])){
 
-		$tids = makeArrayFromCSV($_SESSION['we_data'][$we_transaction]['0']['Templates']); //	get all templateIds.
-		$workspaces = makeArrayFromCSV($_SESSION['we_data'][$we_transaction]['0']['Workspaces']);
+		$tids = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction]['0']['Templates']); //	get all templateIds.
+		$workspaces = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction]['0']['Workspaces']);
 
-		$workspaces[] = $_SESSION['we_data'][$we_transaction]['0']['ExtraWorkspaces'];
-		$tids[] = $_SESSION['we_data'][$we_transaction]['0']['ExtraTemplates'];
+		$workspaces[] = $_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraWorkspaces'];
+		$tids[] = $_SESSION['weS']['we_data'][$we_transaction]['0']['ExtraTemplates'];
 
 		$tmpDB = new DB_WE();
 
@@ -93,7 +93,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 						//	init document
 						$tid = $tids[$i];
 						$GLOBALS['we_doc']->we_initSessDat($we_dt);
-						$_REQUEST['we_objectID'] = $_SESSION['we_data'][$we_transaction][0]['ID'];
+						$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
 						break;
 					}
 				}
@@ -117,7 +117,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		//	init document
 		$GLOBALS['we_doc']->we_initSessDat($we_dt);
-		$_REQUEST['we_objectID'] = $_SESSION['we_data'][$we_transaction][0]['ID'];
+		$_REQUEST['we_objectID'] = $_SESSION['weS']['we_data'][$we_transaction][0]['ID'];
 	} else{
 		showContent();
 		exit;
@@ -128,7 +128,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	$we_transaction = $_REQUEST['we_cmd'][3];
 
 	// init document
-	$we_dt = $_SESSION['we_data'][$we_transaction];
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 } else{ //	view with template
 	$tid = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : (isset($we_objectTID) ? $we_objectTID : '');
@@ -252,7 +252,7 @@ if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $G
   $we_doc->CacheLifeTime = isset($h['CacheLifeTime']) ? $h['CacheLifeTime'] : 0;
  */
 //	If in webEdition, parse the document !!!!
-if(isset($_SESSION['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
+if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
 	$contentOrig = implode('', file(TEMPLATES_PATH . $tmplPath));
 
 	ob_start();

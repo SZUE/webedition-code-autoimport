@@ -46,10 +46,10 @@ $Transaction = $_REQUEST['we_cmd'][2];
 
 if($_REQUEST['we_cmd'][1] == 'frameset'){
 
-	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
+	$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
 
 	$we_doc = new $ClassName();
-	$we_doc->we_initSessDat($_SESSION['we_data'][$Transaction]);
+	$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
 
 	$Language = $we_doc->Language;
 
@@ -839,10 +839,10 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			} else if($_REQUEST['we_cmd'][1] == 'finish'){
 
 
-				$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
+				$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
 
 				$we_doc = new $ClassName();
-				$we_doc->we_initSessDat($_SESSION['we_data'][$Transaction]);
+				$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
 
 				$Language = $we_doc->Language;
 
@@ -901,7 +901,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 					}
 				}
 
-				$we_doc->saveinSession($_SESSION['we_data'][$Transaction]);
+				$we_doc->saveinSession($_SESSION['weS']['we_data'][$Transaction]);
 
 				//
 				// --> Actualize to Cache

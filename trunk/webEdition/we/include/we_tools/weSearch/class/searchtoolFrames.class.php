@@ -89,10 +89,10 @@ class searchtoolFrames extends weToolFrames{
 						$rootjs . $this->Tree->getJSLoadTree(
 							$_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
 
-		if(isset($_SESSION["weSearch"]["modelidForTree"])){
+		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
 			$out .= we_html_element::jsElement(
-					'' . $this->topFrame . '.treeData.selectnode("' . ($_SESSION["weSearch"]["modelidForTree"]) . '");');
-			unset($_SESSION["weSearch"]["modelidForTree"]);
+					'' . $this->topFrame . '.treeData.selectnode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
+			unset($_SESSION['weS']['weSearch']["modelidForTree"]);
 		}
 
 		return $this->getHTMLDocument($out);
@@ -462,7 +462,7 @@ class searchtoolFrames extends weToolFrames{
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '
       <div>
@@ -526,7 +526,7 @@ class searchtoolFrames extends weToolFrames{
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '
       <div>
@@ -576,7 +576,7 @@ class searchtoolFrames extends weToolFrames{
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '
       <div>

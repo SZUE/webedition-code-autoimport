@@ -85,8 +85,8 @@ if(isset($_REQUEST['we_cmd'][3])){
 }
 
 // init document
-if(isset($_SESSION['we_data'][$we_transaction])){
-	$we_dt = $_SESSION['we_data'][$we_transaction];
+if(isset($_SESSION['weS']['we_data'][$we_transaction])){
+	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 }
 
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -257,7 +257,7 @@ if(!isset($we_doc->IsClassFolder)){
 // objects need to know the last webEdition Path, because of Workspaces
 if($we_doc->ContentType == 'text/webedition'){
 
-	$_SESSION['last_webEdition_document'] = array(
+	$_SESSION['weS']['last_webEdition_document'] = array(
 		'Path' => $we_doc->Path
 	);
 }
@@ -444,7 +444,7 @@ function setOnload(){
 ?>
 </head>
 <?php
-$we_doc->saveInSession($_SESSION['we_data'][$we_transaction]);
+$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 if($_SESSION['weS']['we_mode'] == 'seem'){
 	?>

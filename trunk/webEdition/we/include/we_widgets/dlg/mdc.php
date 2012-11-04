@@ -47,7 +47,7 @@ if($_selection){
 		$_selTable = ($_selType) ? OBJECT_FILES_TABLE : FILE_TABLE;
 	}
 
-	$_SESSION["exportVars"][$selType] = $sCsv;
+	$_SESSION['weS']['exportVars'][$selType] = $sCsv;
 }
 $jsTree = "
 

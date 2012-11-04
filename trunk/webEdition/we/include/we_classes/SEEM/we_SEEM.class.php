@@ -951,7 +951,7 @@ abstract class we_SEEM{
 					}
 
 					if(!isset($GLOBALS['we_doc'])){
-						$GLOBALS['we_doc']->ID = $_SESSION["we_data"][$theParametersArray["we_transaction"]][0]["ID"];
+						$GLOBALS['we_doc']->ID = $_SESSION['weS']['we_data'][$theParametersArray["we_transaction"]][0]["ID"];
 					}
 
 					$code = (isset($theParameterArray) && is_array($theParameterArray) && array_key_exists("we_objectID", $theParameterArray) ? //	target is a object

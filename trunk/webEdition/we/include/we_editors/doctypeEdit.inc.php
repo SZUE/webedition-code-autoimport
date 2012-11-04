@@ -36,7 +36,7 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		if(preg_match('|[\'",]|', $we_doc->DocType)){
 			$we_responseText = g_l('alert', "[doctype_hochkomma]");
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
@@ -112,7 +112,7 @@ switch($_REQUEST['we_cmd'][0]){
 		}
 		break;
 	case "add_dt_template":
-		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		$ids = makeArrayFromCSV($_REQUEST['we_cmd'][1]);
 		foreach($ids as $id){
@@ -123,7 +123,7 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->Templates = makeCSVFromArray($foo);
 		break;
 	case "delete_dt_template":
-		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		if($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1], $foo))){
 			$pos = getArrayKey($_REQUEST['we_cmd'][1], $foo);
@@ -141,12 +141,12 @@ switch($_REQUEST['we_cmd'][0]){
 		$we_doc->Templates = makeCSVFromArray($foo);
 		break;
 	case "dt_add_cat":
-		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		if($_REQUEST['we_cmd'][1])
 			$we_doc->addCat($_REQUEST['we_cmd'][1]);
 		break;
 	case "dt_delete_cat":
-		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		if($_REQUEST['we_cmd'][1]){
 			$we_doc->delCat($_REQUEST['we_cmd'][1]);
 		}
@@ -414,5 +414,5 @@ echo we_main_headermenu::getMenuReloadCode();
 </html>
 
 <?php
-$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 

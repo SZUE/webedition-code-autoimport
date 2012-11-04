@@ -28,11 +28,11 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->get_mv_data($_REQUEST["id"]);
-$messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+$messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
 if(sizeof($messaging->selected_message) == 0){
 	exit;

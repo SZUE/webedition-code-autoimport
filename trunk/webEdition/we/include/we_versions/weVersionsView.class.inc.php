@@ -930,8 +930,8 @@ class weVersionsView{
 
 		if(isset($_REQUEST['we_cmd']['obj'])){
 			$thisObj = new weVersionsView();
-			$anzahl = $_SESSION['Versions']['anzahl'];
-			$searchstart = $_SESSION['Versions']['searchstart'];
+			$anzahl = $_SESSION['weS']['versions']['anzahl'];
+			$searchstart = $_SESSION['weS']['versions']['searchstart'];
 		} else{
 			$thisObj = $this;
 			$anzahl = $thisObj->searchclass->anzahl;
@@ -1029,7 +1029,7 @@ class weVersionsView{
 
 		$resultCount = count($_versions);
 
-		$_SESSION['Versions']['foundItems'] = $resultCount;
+		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 
 		if($resultCount > 0){
 

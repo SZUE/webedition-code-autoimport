@@ -643,23 +643,23 @@ function save_all_values(){
 		}
 	}
 
-	$_SESSION['versions']['logPrefsChanged'] = array();
-	foreach($_SESSION['versions']['logPrefs'] as $k => $v){
+	$_SESSION['weS']['versions']['logPrefsChanged'] = array();
+	foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
 		if(isset($_REQUEST['newconf'][$k])){
-			if($_SESSION['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
-				$_SESSION['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
+			if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
+				$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
 			}
-		} elseif($_SESSION['versions']['logPrefs'][$k] != ""){
-			$_SESSION['versions']['logPrefsChanged'][$k] = "";
+		} elseif($_SESSION['weS']['versions']['logPrefs'][$k] != ""){
+			$_SESSION['weS']['versions']['logPrefsChanged'][$k] = "";
 		}
 	}
 
-	if(!empty($_SESSION['versions']['logPrefsChanged'])){
+	if(!empty($_SESSION['weS']['versions']['logPrefsChanged'])){
 		$versionslog = new versionsLog();
-		$versionslog->saveVersionsLog($_SESSION['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
+		$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
 	}
-	unset($_SESSION['versions']['logPrefs']);
-	unset($_SESSION['versions']['logPrefsChanged']);
+	unset($_SESSION['weS']['versions']['logPrefs']);
+	unset($_SESSION['weS']['versions']['logPrefsChanged']);
 
 	//SAVE CHANGES
 	// Third save all changes of the config files
@@ -3422,7 +3422,7 @@ else {
 			break;
 
 		case 'versions':
-			$_SESSION['versions']['Prefs'] = array(
+			$_SESSION['weS']['versions']['Prefs'] = array(
 				'ctypes' => array(
 					"image/*" => 'VERSIONING_IMAGE',
 					"text/html" => 'VERSIONING_TEXT_HTML',
@@ -3455,7 +3455,7 @@ else {
 			//js
 			$jsCheckboxCheckAll = '';
 
-			foreach($_SESSION['versions']['Prefs']['ctypes'] as $v){
+			foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $v){
 				$jsCheckboxCheckAll .= 'document.getElementById("newconf[' . $v . ']").checked = checked;';
 			}
 
@@ -3477,10 +3477,10 @@ else {
 					}');
 
 
-			$_SESSION['versions']['logPrefs'] = array();
-			foreach($_SESSION['versions']['Prefs'] as $v){
+			$_SESSION['weS']['versions']['logPrefs'] = array();
+			foreach($_SESSION['weS']['versions']['Prefs'] as $v){
 				foreach($v as $val){
-					$_SESSION['versions']['logPrefs'][$val] = get_value($val);
+					$_SESSION['weS']['versions']['logPrefs'][$val] = get_value($val);
 				}
 			}
 
@@ -3489,7 +3489,7 @@ else {
 
 				$checkboxes = we_forms::checkbox(1, false, 'version_all', g_l('prefs', '[version_all]'), false, "defaultfont", 'checkAll(this);') . '<br/>';
 
-				foreach($_SESSION['versions']['Prefs']['ctypes'] as $k => $v){
+				foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $k => $v){
 					$checkboxes .= we_forms::checkbox(1, get_value($v), 'newconf[' . $v . ']', g_l('contentTypes', '[' . $k . ']'), false, "defaultfont", 'checkAllRevert(this);') . '<br/>';
 				}
 

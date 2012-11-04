@@ -698,27 +698,27 @@ class searchtoolsearch extends we_search{
 				break;
 
 			case VERSIONS_TABLE:
-				if($_SESSION['weSearch']['onlyDocs'] || $_SESSION['weSearch']['ObjectsAndDocs']){
-					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyDocsRestrUsersWhere'] . " ";
+				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
+					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] . " ";
 					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
 					$this->db->query($query);
 				}
 				if(defined("OBJECT_FILES_TABLE")){
-					if($_SESSION['weSearch']['onlyObjects'] || $_SESSION['weSearch']['ObjectsAndDocs']){
-						$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
+					if($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
+						$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
 						if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 							$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
 						}
 						$this->db->query($query);
 					}
 				}
-				unset($_SESSION['weSearch']['onlyObjects']);
-				unset($_SESSION['weSearch']['onlyDocs']);
-				unset($_SESSION['weSearch']['ObjectsAndDocs']);
-				unset($_SESSION['weSearch']['onlyObjectsRestrUsersWhere']);
-				unset($_SESSION['weSearch']['onlyDocsRestrUsersWhere']);
+				unset($_SESSION['weS']['weSearch']['onlyObjects']);
+				unset($_SESSION['weS']['weSearch']['onlyDocs']);
+				unset($_SESSION['weS']['weSearch']['ObjectsAndDocs']);
+				unset($_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere']);
+				unset($_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere']);
 				break;
 
 			case TEMPLATES_TABLE:
@@ -930,7 +930,7 @@ class searchtoolsearch extends we_search{
 	}
 
 	function ofFolderAndChildsOnly($folderID, $table){
-		$_SESSION["weSearch"]["countChilds"] = array();
+		$_SESSION['weS']['weSearch']["countChilds"] = array();
 		$childsOfFolderId = array();
 		//fix #2940
 		if(is_array($folderID)){
@@ -954,16 +954,16 @@ class searchtoolsearch extends we_search{
 
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		while($DB_WE->next_record()) {
-			$_SESSION["weSearch"]["countChilds"][] = $DB_WE->f("ID");
+			$_SESSION['weS']['weSearch']["countChilds"][] = $DB_WE->f("ID");
 			$this->getChildsOfParentId($DB_WE->f("ID"), $table);
 		}
 
-		$_SESSION["weSearch"]["countChilds"][] = $folderID;
+		$_SESSION['weS']['weSearch']["countChilds"][] = $folderID;
 		// doppelte Eintr�ge aus array entfernen
-		$_SESSION["weSearch"]["countChilds"] = array_values(
-			array_unique($_SESSION["weSearch"]["countChilds"]));
+		$_SESSION['weS']['weSearch']["countChilds"] = array_values(
+			array_unique($_SESSION['weS']['weSearch']["countChilds"]));
 
-		return $_SESSION["weSearch"]["countChilds"];
+		return $_SESSION['weS']['weSearch']["countChilds"];
 	}
 
 	function ofFolderOnly($folderID){

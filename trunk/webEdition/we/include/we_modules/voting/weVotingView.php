@@ -710,13 +710,13 @@ class weVotingView{
 			}
 		}
 
-		$_SESSION["voting_session"] = serialize($this->voting);
+		$_SESSION['weS']['voting_session'] = serialize($this->voting);
 	}
 
 	function processVariables(){
 
-		if(isset($_SESSION["voting_session"])){
-			$this->voting = unserialize($_SESSION["voting_session"]);
+		if(isset($_SESSION['weS']['voting_session'])){
+			$this->voting = unserialize($_SESSION['weS']['voting_session']);
 		}
 
 		if(is_array($this->voting->persistent_slots)){

@@ -30,7 +30,7 @@ $name = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "";
 $we_transaction = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : "";
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : '');
 
-$we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(isset($_REQUEST["ok"])){
@@ -45,7 +45,7 @@ if(isset($_REQUEST["ok"])){
 	$we_doc->elements[$name . "height"]["dat"] = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 50;
 	$we_doc->elements[$name . "width"]["dat"] = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 200;
 	$we_doc->elements[$name . "cssClasses"]["dat"] = isset($_REQUEST["cssClasses"]) ? $_REQUEST["cssClasses"] : "";
-	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }
 
 if(isset($_REQUEST["ok"])){

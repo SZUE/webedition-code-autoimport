@@ -47,7 +47,7 @@ class Finish extends leWizardStepBase{
 		}
 
 		// now change paths in sidebar document(!)
-		$content = implode("", file($NewSidebarFile));
+		$content = implode('', file($NewSidebarFile));
 		$Parser = new weSidebarDocumentParser();
 		$content = $Parser->parseCode($content, $_SESSION['we_fsw_document_path']);
 
@@ -59,13 +59,12 @@ class Finish extends leWizardStepBase{
 			}
 		}
 		we_loadDefaultMasterTemplateConfig();
-		$query = "UPDATE " . TEMPLATES_TABLE . " SET MasterTemplateID = " . FSW_DEFAULT_MASTER_TEMPLATE . " WHERE ID IN (" . implode(
-				",", $TemplateIds) . ")"; // AND MasterTemplateID != 0";
+		$query = "UPDATE " . TEMPLATES_TABLE . " SET MasterTemplateID = " . FSW_DEFAULT_MASTER_TEMPLATE . " WHERE ID IN (" . implode(",", $TemplateIds) . ")"; // AND MasterTemplateID != 0";
 		$DB_WE = new DB_WE();
 		$DB_WE->query($query);
 
 		// write new content
-		if(!weFile::save($NewSidebarFile, $content,"w+")){
+		if(!weFile::save($NewSidebarFile, $content, "w+")){
 			return LE_WIZARDSTEP_ERROR;
 		}
 

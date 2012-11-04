@@ -44,7 +44,7 @@ function we_tag_textarea($attribs, $content){
 	if(!$showAutobr && $GLOBALS['we_editmode']){
 		$autobr = "off";
 		$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
-		$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
+		$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 	}
 
 	$autobrName = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]';
@@ -54,7 +54,7 @@ function we_tag_textarea($attribs, $content){
 	if($GLOBALS['we_editmode']){
 		if((!$GLOBALS['we_doc']->getElement($name)) && $value){ // when not inlineedit, we need to save the content in the object, if the field is empty
 			$GLOBALS['we_doc']->setElement($name, $value);
-			$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
+			$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 		}
 		return we_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
 	} else{

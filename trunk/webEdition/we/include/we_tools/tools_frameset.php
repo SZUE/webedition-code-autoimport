@@ -71,7 +71,7 @@ print we_html_element::jsElement('
 
 if($_REQUEST['tool'] == "weSearch"){
 	if(isset($_REQUEST['we_cmd'][1])){
-		$_SESSION["weSearch"]["keyword"] = $_REQUEST['we_cmd'][1];
+		$_SESSION['weS']['weSearch']["keyword"] = $_REQUEST['we_cmd'][1];
 	}
 	//look which search is activ
 	if(isset($_REQUEST['we_cmd'][2])){
@@ -79,19 +79,19 @@ if($_REQUEST['tool'] == "weSearch"){
 		switch($table){
 			case FILE_TABLE:
 				$tab = 1;
-				$_SESSION["weSearch"]["checkWhich"] = 1;
+				$_SESSION['weS']['weSearch']["checkWhich"] = 1;
 				break;
 			case TEMPLATES_TABLE:
 				$tab = 2;
-				$_SESSION["weSearch"]["checkWhich"] = 2;
+				$_SESSION['weS']['weSearch']["checkWhich"] = 2;
 				break;
 			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$tab = 3;
-				$_SESSION["weSearch"]["checkWhich"] = 3;
+				$_SESSION['weS']['weSearch']["checkWhich"] = 3;
 				break;
 			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$tab = 3;
-				$_SESSION["weSearch"]["checkWhich"] = 4;
+				$_SESSION['weS']['weSearch']["checkWhich"] = 4;
 				break;
 
 			default:

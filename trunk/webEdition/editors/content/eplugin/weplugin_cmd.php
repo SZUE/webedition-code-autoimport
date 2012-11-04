@@ -37,8 +37,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_session = session_id();
 			$_we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 
-			if(isset($_SESSION['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['we_data'][$_we_transaction][0]['Path'])){
-				$_filename = $_SESSION['we_data'][$_we_transaction][0]['Path'];
+			if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['Path'])){
+				$_filename = $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'];
 			} else{
 				$_filename = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 			}
@@ -47,12 +47,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_source = isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '###EDITORPLUGIN:EMPTYSTRING###';
 
 			if($_source == '###EDITORPLUGIN:EMPTYSTRING###'){
-				$_source = $_SESSION["we_data"][$_we_transaction][0]['elements']['data']['dat'];
+				$_source = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['data']['dat'];
 			}
 
 			// charset is necessary when encoding=true
-			if(isset($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
-				$charset = $_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
+			if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
+				$charset = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
 			} else{
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 			}
@@ -75,7 +75,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			$_session = session_id();
 			$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
-			$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
+			$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 			$we_doc->we_initSessDat($we_dt);
@@ -104,10 +104,10 @@ if(isset($_REQUEST['we_cmd'][0])){
 			break;
 		case "setSource":
 
-			if(isset($_SESSION["we_data"][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"])){
+			if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"])){
 
-				$_SESSION["we_data"][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
-				$_SESSION["we_data"][$_REQUEST['we_cmd'][1]][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+				$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"] = $_REQUEST['we_cmd'][2];
+				$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][1]][1]["data"]["dat"] = $_REQUEST['we_cmd'][2];
 			}
 
 			break;
@@ -140,7 +140,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 				$we_ContentType = $_REQUEST['contenttype'];
 
-				$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
+				$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
 				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 				$tempName = TEMP_PATH . '/' . weFile::getUniqueId();
@@ -160,7 +160,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 					$we_doc->setElement('data', $tempName, 'dat');
 				}
 
-				$we_doc->saveInSession($_SESSION["we_data"][$_we_transaction]);
+				$we_doc->saveInSession($_SESSION['weS']['we_data'][$_we_transaction]);
 			}
 			break;
 
@@ -172,8 +172,8 @@ if(isset($_REQUEST['we_cmd'][0])){
 	$charset = '';
 
 	if(isset($_we_transaction)){
-		if(isset($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
-			$charset = $_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
+		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])){
+			$charset = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
 			we_html_tools::headerCtCharset('text/html', $charset);
 		}
 	}

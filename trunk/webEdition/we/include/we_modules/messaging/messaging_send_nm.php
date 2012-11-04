@@ -24,12 +24,12 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $_REQUEST['we_transaction'] = (preg_match("/^([a-f0-9]){32}$/i", $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
-if(is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])){
+if(is_array($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']])){
 
 	$messaging = new we_messaging($_SESSION["user"]["ID"]);
-	$messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$messaging = new we_messaging($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-	$messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
+	$messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
 	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body']);
 

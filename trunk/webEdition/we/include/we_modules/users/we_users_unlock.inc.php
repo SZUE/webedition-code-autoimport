@@ -32,8 +32,8 @@ $_transaction = isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : null; /
 $queries = array();
 
 if($_transaction){ // clean session
-	if(isset($_SESSION["we_data"][$_transaction])){
-		unset($_SESSION["we_data"][$_transaction]); // we_transaction is resetted here
+	if(isset($_SESSION['weS']['we_data'][$_transaction])){
+		unset($_SESSION['weS']['we_data'][$_transaction]); // we_transaction is resetted here
 	}
 }
 
