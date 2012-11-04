@@ -40,8 +40,9 @@ class we_docSelector extends we_dirSelector{
 		if($table == ""){
 			$table = FILE_TABLE;
 		}
-		if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
+		if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)){
 			$this->fields .= ",Published";
+		}
 		$this->canSelectDir = $canSelectDir;
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -87,10 +88,7 @@ class we_docSelector extends we_dirSelector{
 		}
 
 
-		$q = "
-			SELECT " . $this->fields . " FROM " .
-			$this->db->escape($this->table) .
-			' WHERE ParentID=' . intval($this->dir) . ' ' .
+		$q = "SELECT " . $this->fields . " FROM " .$this->db->escape($this->table) .' WHERE ParentID=' . intval($this->dir) . ' ' .
 			makeOwnersSql() .
 			$wsQuery .
 			$filterQuery . //$publ_q.
@@ -136,12 +134,12 @@ class we_docSelector extends we_dirSelector{
 			function exit_open() {
 				if(currentID) {';
 		if($this->JSIDName){
-			$out .= 'opener.' . $this->JSIDName . '= currentID ? currentID : "";';
+			$out .= 'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";';
 		}
 		if($this->JSTextName){
 			$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
-			$out .= 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
-					if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+			$out .= 'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+					if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 					';
 		}
 		if($this->JSCommand){
