@@ -75,7 +75,7 @@ if(defined('FORMMAIL_LOG') && FORMMAIL_LOG){
 }
 
 if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
-	if($_SERVER['SCRIPT_NAME'] == '/webEdition/we_formmail.php')
+	if($_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . 'we_formmail.php')
 		$_blocked = true;
 }
 
@@ -177,7 +177,7 @@ function error_page(){
 	}
 }
 
-function ok_page($_subject=''){
+function ok_page($_subject = ''){
 	if($_REQUEST['ok_page']){
 		$ok_page = (get_magic_quotes_gpc() == 1) ? stripslashes($_REQUEST['ok_page']) : $_REQUEST['ok_page'];
 		if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT){
@@ -194,7 +194,7 @@ function ok_page($_subject=''){
 	}
 }
 
-function redirect($url, $_emosScontact=''){
+function redirect($url, $_emosScontact = ''){
 	if($_emosScontact != ''){
 		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
 	}
