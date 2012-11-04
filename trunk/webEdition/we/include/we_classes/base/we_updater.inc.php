@@ -651,8 +651,8 @@ class we_updater{
 	}
 
 	static function updateTableKeys(){
-		if(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])){
-			$myarray = $_SESSION['weBackupVars']['tablekeys'];
+		if(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys'])){
+			$myarray = $_SESSION['weS']['weBackupVars']['tablekeys'];
 			foreach($myarray as $table => $v){
 				if(is_array($v)){
 					foreach($v as $tabkey){

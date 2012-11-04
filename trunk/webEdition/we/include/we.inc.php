@@ -49,7 +49,7 @@ if($_memlimit < 32){
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
 
-//prepare space for we-variables; $_SESSION['we'] is set in we_session
+//prepare space for we-variables; $_SESSION['weS'] is set in we_session
 if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
@@ -155,9 +155,9 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				$header = false;
 				break;
 			case 'reload_editpage':
-				$header = (!($_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW ||
-					$_SESSION['EditPageNr'] == WE_EDITPAGE_CONTENT ||
-					$_SESSION['EditPageNr'] == WE_EDITPAGE_PROPERTIES
+				$header = (!($_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW ||
+					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_CONTENT ||
+					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PROPERTIES
 					));
 				break;
 			case 'switch_edit_page':
@@ -170,7 +170,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				$header = (!(isset($_REQUEST['we_transaction']) &&
 					isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) &&
 					$_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
-					$_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW
+					$_SESSION['weS']['EditPageNr'] == WE_EDITPAGE_PREVIEW
 					));
 				break;
 			default:

@@ -118,17 +118,17 @@ $we_doc->setDocumentControlElements();
 
 //	in SEEM-Mode the first page is the preview page.
 //	when editing an image-document we go to edit page
-if($_SESSION['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == 'seem'){
 
 	if(isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include'] && $we_doc->userHasAccess() == 1){ //	Open seem_edit_include pages in edit-mode
-		$_SESSION['EditPageNr'] = WE_EDITPAGE_CONTENT;
+		$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 	} else{
 		if($we_doc->ClassName == 'we_imageDocument'){
-			$_SESSION['EditPageNr'] = WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 		} else{
-			$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 			$we_doc->EditPageNr = WE_EDITPAGE_PREVIEW;
 		}
 	}
@@ -136,12 +136,12 @@ if($_SESSION['we_mode'] == 'seem'){
 
 //  This code was over the comment: init document !!!!!!! (line 82?)
 if(!isset($we_ID)){
-	$_SESSION['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
+	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', WE_EDITPAGE_PROPERTIES);
 }
 
 if((isset($_REQUEST['we_cmd'][10])) && ($we_Table == FILE_TABLE) && ($we_ContentType == 'text/webedition')){
 	$we_doc->setTemplateID($_REQUEST['we_cmd'][10]);
-	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, 1);
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 }
 
 //predefine ParentPath
@@ -154,12 +154,12 @@ if(isset($_REQUEST['we_cmd'][0]) && isset($_REQUEST['we_cmd'][5]) && $_REQUEST['
 
 if((isset($_REQUEST['we_cmd'][8])) && ($we_Table == FILE_TABLE) && ($we_ContentType == 'text/webedition')){
 	$we_doc->changeDoctype($_REQUEST['we_cmd'][8]);
-	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, 1);
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 } else if(isset($_REQUEST['we_cmd'][8]) && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
 	$we_doc->TableID = $_REQUEST['we_cmd'][8];
 	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
-	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, WE_EDITPAGE_CONTENT);
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, WE_EDITPAGE_CONTENT);
 }
 
 
@@ -174,7 +174,7 @@ if($we_doc->ID){
 					exit();
 				case FILE_TABLE: //	only preview mode allowed for docs
 					//	MUST change to Preview-Mode
-					$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+					$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 					break;
 			}
 		}
@@ -182,7 +182,7 @@ if($we_doc->ID){
 	$_access = $we_doc->userHasAccess();
 	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
 		if($we_ContentType != 'object'){
-			$_SESSION['EditPageNr'] = WE_EDITPAGE_PREVIEW;
+			$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PREVIEW;
 		} else{
 			include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 			exit();
@@ -198,11 +198,11 @@ if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID)){
 
 if($we_doc->ID == 0){
 	$we_doc->EditPageNr = getTabs($we_doc->ClassName, WE_EDITPAGE_PROPERTIES);
-} else if(isset($_SESSION['EditPageNr'])){
+} else if(isset($_SESSION['weS']['EditPageNr'])){
 	if(defined('SHOP_TABLE'))
 		$we_doc->checkTabs();
-	if(in_array($_SESSION['EditPageNr'], $we_doc->EditPageNrs)){
-		$we_doc->EditPageNr = getTabs($we_doc->ClassName, $_SESSION['EditPageNr']);
+	if(in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs)){
+		$we_doc->EditPageNr = getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']);
 	} else{
 		//	Here we must get the first valid EDIT_PAGE
 		$we_doc->EditPageNr = getFirstValidEditPageNr($we_doc, WE_EDITPAGE_CONTENT);
@@ -211,7 +211,7 @@ if($we_doc->ID == 0){
 
 if($we_Table == FILE_TABLE && $we_ContentType == 'folder' && isset($we_ID) && !empty($we_ID)){
 	$we_doc->EditPageNr = WE_EDITPAGE_DOCLIST;
-	$_SESSION['EditPageNr'] = getTabs($we_doc->ClassName, 16);
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
 }
 
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
@@ -241,7 +241,7 @@ if(!isset($we_doc->IsClassFolder)){
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file
-			if($_SESSION['we_mode'] == 'normal' || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
+			if($_SESSION['weS']['we_mode'] == 'normal' || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
 		}
@@ -446,7 +446,7 @@ function setOnload(){
 <?php
 $we_doc->saveInSession($_SESSION['we_data'][$we_transaction]);
 
-if($_SESSION['we_mode'] == 'seem'){
+if($_SESSION['weS']['we_mode'] == 'seem'){
 	?>
 	<frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

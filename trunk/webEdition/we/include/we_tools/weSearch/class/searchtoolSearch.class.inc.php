@@ -189,7 +189,7 @@ class searchtoolsearch extends we_search{
 			unset($tableFields["ParentIDObj"]);
 		}
 
-		if($_SESSION["we_mode"] == "seem"){
+		if($_SESSION['weS']['we_mode'] == "seem"){
 			unset($tableFields["ParentIDTmpl"]);
 		}
 

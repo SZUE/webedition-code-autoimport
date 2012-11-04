@@ -38,51 +38,51 @@ function pWebEdition_Tree(){
 function pWebEdition_JSFunctions(){
 	?>
 	function toggleBusy(w) {
-		if(w == busy || firstLoad==false){
-			return;
-		}
-		if(self.header){
-			if(self.header.toggleBusy){
-				busy=w;
-				self.header.toggleBusy(w);
-				return;
-			}
-		}
-		setTimeout("toggleBusy("+w+");",300);
+	if(w == busy || firstLoad==false){
+	return;
+	}
+	if(self.header){
+	if(self.header.toggleBusy){
+	busy=w;
+	self.header.toggleBusy(w);
+	return;
+	}
+	}
+	setTimeout("toggleBusy("+w+");",300);
 	}
 
 	var regular_logout = false;
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
-		if(!regular_logout){
-			try{
-				if(jsWindow_count){
-					for(i = 0;i < jsWindow_count;i++){
-						eval("jsWindow"+i+"Object.close()");
-					}
-				}
-				if(browserwind){
-					browserwind.close();
-				}
-			} catch(e){}
+	if(!regular_logout){
+	try{
+	if(jsWindow_count){
+	for(i = 0;i < jsWindow_count;i++){
+	eval("jsWindow"+i+"Object.close()");
+	}
+	}
+	if(browserwind){
+	browserwind.close();
+	}
+	} catch(e){}
 
-			if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
-											// FIXME: closing-actions for SEEM
-				if(top.opener) {
-					<?php if( !(we_base_browserDetect::isCHROME() || we_base_browserDetect::isSAFARI()) ){ ?>
-						top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
-						top.opener.focus();
-					<?php } else{ ?>
-						top.opener.location.reload();
- 						var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
- 						logoutpopup.focus();
-					<?php } ?>
-				}
-				else{
- 					var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
- 					logoutpopup.focus();
-				}
-			}
-		}
+	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
+	// FIXME: closing-actions for SEEM
+	if(top.opener) {
+	<?php if(!(we_base_browserDetect::isCHROME() || we_base_browserDetect::isSAFARI())){ ?>
+		top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
+		top.opener.focus();
+	<?php } else{ ?>
+		top.opener.location.reload();
+		var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+		logoutpopup.focus();
+	<?php } ?>
+	}
+	else{
+	var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+	logoutpopup.focus();
+	}
+	}
+	}
 	}
 
 	var widthBeforeDeleteMode = 0;
@@ -190,32 +190,32 @@ function pWebEdition_JSwe_cmds(){
  */
 function pWebEdition_Frameset(){
 	?>
-		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-			<?php we_main_header::pbody(); ?>
+	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
+		<?php we_main_header::pbody(); ?>
+	</div>
+	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
+		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+	</div>
+	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: <?php echo (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? '100' : '0'; ?>px;border: 1px solid;">
+		<div style="height:100%;float:left;width:25%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
 		</div>
-		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		<div style="height:100%;float:left;width:25%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
 		</div>
-		<div style="position:absolute;left:0px;right:0px;bottom:0px;height: <?php echo (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)?'100':'0';?>px;border: 1px solid;">
-			<div style="height:100%;float:left;width:25%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:25%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
-			</div>
-			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
-			</div>
+		<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+		<div style="height:100%;float:left;width:10%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		</div>
+		<div style="height:100%;float:left;width:10%;border:0px;">
+			<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+		</div>
+		<div style="height:100%;float:left;width:10%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+		</div>
+		<div style="height:100%;float:left;width:10%;border:0px;">
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+		</div>
+	</div>
 	<?php
 }

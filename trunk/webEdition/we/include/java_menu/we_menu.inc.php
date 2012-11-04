@@ -22,7 +22,7 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$seeMode = !(isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'normal');
+$seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'normal');
 $we_menu = array(
 	'1000000' => array(
 // File

@@ -27,8 +27,8 @@ class weBackupImport{
 	function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1', $log = 0){
 
 		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-		if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
-			$data = '<?xml version="1.0" encoding="' . $_SESSION['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
+		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
+			$data = '<?xml version="1.0" encoding="' . $_SESSION['weS']['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
 				'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
 		} else{
 			$data = $GLOBALS['weXmlExImHeader'];
@@ -53,7 +53,7 @@ class weBackupImport{
 		}
 
 		$parser = new weXMLParser();
-		//if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){ vor 4092
+		//if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){ vor 4092
 		if(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != ''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 			$parser->parse($data, DEFAULT_CHARSET);
 		} else{
@@ -146,9 +146,9 @@ class weBackupImport{
 
 				if($log){
 					$addtext = '';
-					if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+					if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
 						if(method_exists($object, 'convertCharsetEncoding')){
-							$addtext = " - Converting Charset: " . $_SESSION['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET;
+							$addtext = " - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET;
 						} else{
 							$addtext = " - Converting Charset: NO ";
 						}
@@ -166,13 +166,13 @@ class weBackupImport{
 						weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
 					}
 				}
-				if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
 					if(method_exists($object, 'convertCharsetEncoding'))
-						$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'], DEFAULT_CHARSET);
+						$object->convertCharsetEncoding($_SESSION['weS']['weBackupVars']['encoding'], DEFAULT_CHARSET);
 				}
 				if(isset($object->Path) && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 					weBackupImport::handlePrefs($object);
-				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
+				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing
 				} else{
 					$object->save(true);
@@ -180,9 +180,9 @@ class weBackupImport{
 
 				//speedup for some tables
 				if(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE)){
-					$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
+					$_SESSION['weS']['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
 				} else{
-					$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS;
+					$_SESSION['weS']['weBackupVars']['backup_steps'] = BACKUP_STEPS;
 				}
 
 				$parser->gotoMark('first');

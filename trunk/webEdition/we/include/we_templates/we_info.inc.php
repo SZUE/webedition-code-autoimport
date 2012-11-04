@@ -31,9 +31,9 @@ $_middlePart = ($_widthTotal - (2 * $_space));
 $_logoPart = 140;
 $_leftPart = $_middlePart - $_logoPart;
 
-$_credits = '<br /><span style="line-height:160%">'
-	. g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>'
-	. g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
+$_credits = '<br /><span style="line-height:160%">' .
+	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
+	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
@@ -45,8 +45,9 @@ if(!isset($GLOBALS['loginpage'])){
 		$we_version .= WE_VERSION_SUPP_VERSION;
 }
 
-$_logo = "info.jpg";
-if(defined("WE_VERSION_SUPP")){
+if(isset($GLOBALS["loginpage"]) && WE_LOGIN_HIDEWESTATUS){
+	$_logo = "info.jpg";
+} elseif(defined("WE_VERSION_SUPP")){
 	switch(strtolower(WE_VERSION_SUPP)){
 		case "rc":
 			$_logo = "info_rc.jpg";
@@ -75,11 +76,9 @@ if(defined("WE_VERSION_SUPP")){
 			break;
 	}
 }
-if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"] && defined('WE_LOGIN_HIDEWESTATUS') && WE_LOGIN_HIDEWESTATUS){
-	$_logo = "info.jpg";
-}
+
 $_table = new we_html_table(array(
-		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'),
+		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'),
 		8,
 		3);
 $_actRow = 0;
@@ -147,15 +146,10 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	);
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput("username", 25, "", 100, "id=\"username\" style=\"width: 250px;\" ", "text", 0, 0));
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::getPixel(5, 5));
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "password"), g_l('global', '[password]'))));
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput("password", 25, "", 32, "id=\"password\" style=\"width: 250px;\" ", "password", 0, 0));
-
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), we_html_tools::getPixel(5, 5));
 
 
@@ -198,14 +192,16 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), ((defined('WE_SEEM') && !WE_SEEM) ? '' : g_l('SEEM', '[start_mode]')));
 		$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
-		if(defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
-			$we_login_type = (WE_LOGIN_WEWINDOW == 1 ?
-					'<input type="hidden" name="popup" value="popup"/>' :
-					'');
-		} else{
-			$we_login_type = we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
+		switch(WE_LOGIN_WEWINDOW){
+			case 0:
+				$we_login_type = we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]'));
+				break;
+			case 1:
+				$we_login_type = '<input type="hidden" name="popup" value="popup"/>';
+				break;
+			default:
+				$we_login_type = '';
 		}
-
 
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table border="0" cellpadding="0" cellspacing="0">
@@ -225,24 +221,17 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	//	16th
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-		"class" => "small"), $_modetable->getHtml());
+	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), $_modetable->getHtml());
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 	//	17th row
-	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-		"colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
+	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 15));
 } else if(isset($GLOBALS["loginpage"]) && !$GLOBALS["loginpage"]){
 
 	srand((double) microtime() * 1000000);
 	$r = rand();
 
 	$loginRow = 0;
-
-	$_content = "";
-	if($_SESSION["user"]["Username"] && $_POST["password"] && $_POST["username"]){
-		$_content = g_l('global', '[loginok]');
-	}
 
 	$_content = g_l('global', '[loginok]');
 

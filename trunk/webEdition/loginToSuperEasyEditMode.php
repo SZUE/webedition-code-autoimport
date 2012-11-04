@@ -31,6 +31,7 @@ if(!isset($_SESSION)){
 	@session_start();
 }
 
+//FIXME: this should be removed if all variables are located inside weS
 while((list($name, $val) = each($_SESSION))) {
 	if($name != "webuser"){
 		unset($_SESSION[$name]);
@@ -48,7 +49,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
 	if(isset($_SESSION["user"]["Username"])){ //	login ok!
 		//	we must give some information, that we start in Super-Easy-Edit-Mode
-		$_SESSION["we_mode"] = "seem";
+		$_SESSION['weS']['we_mode'] = "seem";
 		$_SESSION["SEEM"]["startId"] = $_POST["id"];
 		$_SESSION["SEEM"]["startType"] = $_POST["type"];
 		$_SESSION["SEEM"]["startPath"] = $_POST["path"];

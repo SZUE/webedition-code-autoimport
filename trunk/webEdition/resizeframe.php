@@ -131,7 +131,7 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 	startEditIncludeMode();
 
 //  We are in SEEM-Mode
-} else if($_SESSION["we_mode"] == "seem"){
+} else if($_SESSION['weS']['we_mode'] == "seem"){
 	startSEEMMode();
 
 //  Open webEdition normally

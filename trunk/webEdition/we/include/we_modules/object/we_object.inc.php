@@ -587,7 +587,7 @@ class we_object extends we_document{
 				return "we_modules/object/we_editor_contentobject.inc.php";
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return "we_templates/we_editor_properties.inc.php";
 		}
 	}

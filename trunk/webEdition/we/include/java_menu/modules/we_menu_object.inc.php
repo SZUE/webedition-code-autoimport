@@ -41,7 +41,7 @@ if(defined('OBJECT_TABLE')){
 		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
 		'enabled' => '1',
 	);
-	if($_SESSION['we_mode'] == 'normal'){
+	if($_SESSION['weS']['we_mode'] == 'normal'){
 
 		// File > Open > Class
 		$we_menu['1030400'] = array(
@@ -82,7 +82,7 @@ if(defined('OBJECT_TABLE')){
 	// object from which class
 	$ac = makeCSVFromArray(getAllowedClasses($GLOBALS['DB_WE']));
 	if($ac){
-		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN($ac) ' : '') . 'ORDER BY Text');
+		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 		$nr = 801;
 		while($GLOBALS['DB_WE']->next_record()) {
 
@@ -106,7 +106,7 @@ if(defined('OBJECT_TABLE')){
 	}
 
 
-	if($_SESSION['we_mode'] == 'normal'){
+	if($_SESSION['weS']['we_mode'] == 'normal'){
 		// separator
 		$we_menu['1010999'] = array('parent' => '1010000'); // separator
 		// File > Delete

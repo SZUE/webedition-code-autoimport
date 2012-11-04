@@ -80,7 +80,7 @@ class delFragment extends taskFragment{
 			$alert = we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
 		}
 		unset($_SESSION["we_not_deleted_entries"]);
-		print we_html_element::jsElement($alert . (($_SESSION["we_mode"] == "seem" && $_SESSION["we_go_seem_start"]) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
+		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == "seem" && $_SESSION["we_go_seem_start"]) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
 		unset($_SESSION["we_go_seem_start"]);
 	}
 

@@ -91,14 +91,14 @@ if($bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE
 	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
-if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION["we_mode"] != "seem"){
+if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
 	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION["we_mode"] != "seem"){
+if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
 	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
-$_whereSeem =($_SESSION["we_mode"] == "seem")? " AND ContentType!='folder' ":'';
+$_whereSeem =($_SESSION['weS']['we_mode'] == "seem")? " AND ContentType!='folder' ":'';
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
 $_count = 10;

@@ -330,9 +330,9 @@ $_REQUEST['filename'] = basename($_backup_filename);
 // include needed libraries
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
+if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 
-	$_SESSION['weBackupVars'] = array();
+	$_SESSION['weS']['weBackupVars'] = array();
 
 	if(weBackupPreparer::prepareExport() === true){
 
@@ -340,15 +340,15 @@ if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
 			print "\nExporting to " . $_backup_filename . "\n";
 		}
 
-		if(isset($_SESSION['weBackupVars']['extern_files']) && count($_SESSION['weBackupVars']['extern_files']) > 0){
+		if(isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0){
 
 			if($_REQUEST['verbose']){
 				print "Exporting extern files...\n";
 			}
 
-			$fh = fopen($_SESSION['weBackupVars']['backup_file'], 'ab');
+			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
-				foreach($_SESSION['weBackupVars']['extern_files'] as $file_to_export){
+				foreach($_SESSION['weS']['weBackupVars']['extern_files'] as $file_to_export){
 					if($_REQUEST['verbose']){
 						print "-";
 					}
@@ -363,39 +363,39 @@ if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
 		if($_REQUEST['verbose']){
 			print "\nExporting repository\n";
 		}
-		while(($_SESSION['weBackupVars']['row_counter'] < $_SESSION['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()) {
+		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()) {
 			if($_REQUEST['verbose']){
 				print "-";
 			}
 			if(weBackupExport::export(
-					$_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['row_counter'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['backup_binary'], $_SESSION['weBackupVars']['backup_log']
+					$_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']
 				) === false){
 				// force end
-				$_SESSION['weBackupVars']['row_counter'] = $_SESSION['weBackupVars']['row_count'];
+				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}
 		}
 
-		if($_SESSION['weBackupVars']['handle_options']['settings']){
-			$fh = fopen($_SESSION['weBackupVars']['backup_file'], 'ab');
+		if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
+			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
 				$file_to_export = WE_INCLUDES_DIR .'conf/we_conf_global.inc.php';
 				weBackupUtil::exportFile($file_to_export, $fh);
 				fclose($fh);
 			}
 		}
-		weFile::save($_SESSION['weBackupVars']['backup_file'], $GLOBALS['weXmlExImFooter'], 'ab');
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], $GLOBALS['weXmlExImFooter'], 'ab');
 
-		if(!empty($_SESSION['weBackupVars']['options']['compress'])){
+		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){
 				print "\nCompressing...\n";
 			}
-			$_SESSION['weBackupVars']['backup_file'] = weFile::compress($_SESSION['weBackupVars']['backup_file'], 'gzip');
-			$_SESSION['weBackupVars']['filename'] .= '.gz';
+			$_SESSION['weS']['weBackupVars']['backup_file'] = weFile::compress($_SESSION['weS']['weBackupVars']['backup_file'], 'gzip');
+			$_SESSION['weS']['weBackupVars']['filename'] .= '.gz';
 			$_backup_filename .= '.gz';
 		}
 
 		//copy the file to right location
-		rename($_SESSION['weBackupVars']['backup_file'], $_backup_filename);
+		rename($_SESSION['weS']['weBackupVars']['backup_file'], $_backup_filename);
 	}
 }
 
@@ -403,8 +403,8 @@ if($_REQUEST['verbose']){
 	print "\nDone\n";
 }
 
-if(isset($_SESSION['weBackupVars'])){
-	unset($_SESSION['weBackupVars']);
+if(isset($_SESSION['weS']['weBackupVars'])){
+	unset($_SESSION['weS']['weBackupVars']);
 }
 
 function _checkAll($flag=true){

@@ -165,8 +165,7 @@ abstract class we_html_tools{
 	}
 
 	static function targetBox($name, $size, $width = "", $id = "", $value = "", $onChange = "", $abstand = 8, $selectboxWidth = "", $disabled = false){
-		$jsvarname = str_replace("[", "_", $name);
-		$jsvarname = str_replace("]", "_", $jsvarname);
+		$jsvarname = str_replace(array("[", "]"), "_", $name);
 		$_inputs = array(
 			"class" => "weSelect",
 			"name" => "sel_" . $name,
@@ -176,9 +175,7 @@ abstract class we_html_tools{
 		);
 
 		if($disabled){
-			$_inputs = array_merge($_inputs, array(
-				"disabled" => "true"
-				));
+			$_inputs["disabled"] = "true";
 		}
 
 		$_target_box = new we_html_select($_inputs, 0);
@@ -193,35 +190,27 @@ abstract class we_html_tools{
 				), 1, 3);
 
 		$_inputs = array(
-			"name" => $name, "class" => "defaultfont"
+			"name" => $name,
+			"class" => "defaultfont"
 		);
 
 		if($width){
-			$_inputs = array_merge($_inputs, array(
-				"style" => "width: " . $width . "px;"
-				));
+			$_inputs ["style"] = "width: " . $width . "px;";
 		}
 
 		if($id){
-			$_inputs = array_merge($_inputs, array(
-				"id" => $id
-				));
+			$_inputs["id"] = $id;
 		}
 
 		if($value){
-			$_inputs = array_merge($_inputs, array(
-				"value" => htmlspecialchars($value)
-				));
+			$_inputs["value"] = htmlspecialchars($value);
 		}
 
 		if($onChange){
-			$_inputs = array_merge($_inputs, array(
-				"onchange" => $onChange
-				));
+			$_inputs["onchange"] = $onChange;
 		}
 
-		$_table->setCol(
-			0, 0, array(
+		$_table->setCol(0, 0, array(
 			"class" => "defaultfont"
 			), we_html_tools::htmlTextInput(
 				$name, $size, $value, "", (!empty($onChange) ? 'onchange="' . $onChange . '"' : ''), "text", $width, 0, "", $disabled));
@@ -231,12 +220,6 @@ abstract class we_html_tools{
 		$_table->setCol(0, 2, array(
 			"class" => "defaultfont"
 			), $_target_box->getHtml());
-		$js = <<<HTS
-<script type="testjavascript">
- var change$jsvarname = 0;
-</script>
-
-HTS;
 
 		return $_table->getHtml();
 	}
@@ -481,6 +464,9 @@ HTS;
 		if($h == ''){
 			$h = 0;
 		}
+/*		if(!is_numeric($w) && $h == 1){
+			t_e('x');
+		}*/
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}
 

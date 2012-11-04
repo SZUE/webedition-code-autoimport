@@ -26,7 +26,7 @@
 /**
   @param $query: SQL query; an empty query resets the cache
  */
-function getHash($query, $DB_WE){
+function getHash($query, $DB_WE, $resultType = MYSQL_BOTH){
 	static $cache = array();
 	if($query == ''){
 		$cache = array();
@@ -38,7 +38,7 @@ function getHash($query, $DB_WE){
 			return array();
 		}
 		$DB_WE->query($query);
-		$cache[$query] = ($DB_WE->next_record() ? $DB_WE->Record : array());
+		$cache[$query] = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
 	}
 	return $cache[$query];
 }
@@ -49,12 +49,15 @@ function f($query, $field, $DB_WE){
 }
 
 function doUpdateQuery($DB_WE, $table, $hash, $where){
+	if(empty($hash)){
+		return;
+	}
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
 	foreach($tableInfo as $f){
 		$fieldName = $f["name"];
-		if($fieldName != "ID"){
-			$fn[$fieldName] = isset($hash[$fieldName]) ? $hash[$fieldName] : '';
+		if($fieldName != "ID" && isset($hash[$fieldName])){
+			$fn[$fieldName] = $hash[$fieldName];
 		}
 	}
 	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);

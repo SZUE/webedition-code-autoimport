@@ -25,13 +25,13 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(isset($_SESSION["delete_files_nok"]) && is_array($_SESSION["delete_files_nok"])){
+if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 	$i = 0;
 
 	$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
 	$i = 0;
 	$table->setCol(0, 0, null, we_html_tools::getPixel(10, 10));
-	foreach($_SESSION["delete_files_nok"] as $data){
+	foreach($_SESSION['weS']['delete_files_nok'] as $data){
 		$table->addRow();
 		$table->setCol(++$i, 0, null, we_html_tools::getPixel(10, 2));
 		$table->setCol($i, 1, null, (isset($data["icon"]) ? we_html_element::htmlImg(array("src" => ICON_DIR . $data["icon"])) : ""));

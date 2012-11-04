@@ -260,7 +260,7 @@ function getVariableMax($var, $db = ''){
 			$ret = '';
 			$clone = array_diff_key($_SESSION, array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => ''));
 			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])){
-				$ret.= 'ID: ' . $_SESSION['webuser']['ID'] . ' Username: ' . $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')' . "\n";
+				$ret.= 'webUser - ID: ' . $_SESSION['webuser']['ID'] . ' Username: ' . $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')' . "\n";
 			}
 			if(isset($_SESSION['perms'])){
 				$ret.= print_r(array_filter($_SESSION['perms']), true);

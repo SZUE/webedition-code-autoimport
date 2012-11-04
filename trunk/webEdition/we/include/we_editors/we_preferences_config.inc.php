@@ -174,8 +174,7 @@ $GLOBALS['configs'] = array(
 		'use_jupload' => array(null),
 		'specify_jeditor_colors' => array(null),
 		'seem_start_type' => array('', 'CHANGE_START_DOCUMENT'),
-		'seem_start_file' => array(0, 'CAN_SEE_DOCUMENTS'),
-		'seem_start_object' => array(0, 'CAN_SEE_OBJECTFILES'),
+		'seem_start_file' => array(0),
 		'seem_start_weapp' => array(0),
 	),
 	'other' => array(

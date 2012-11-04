@@ -57,7 +57,7 @@ class delBackup extends taskFragment{
 		$item = makeArrayFromCSV($this->data);
 		if(!weFile::delete($item[0])){
 			if(file_exists($item[0]))
-				array_push($_SESSION["delete_files_nok"], array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]));
+				array_push($_SESSION['weS']['delete_files_nok'], array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]));
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		$text = str_replace($_SERVER['DOCUMENT_ROOT'], "", clearPath($item[0]));
@@ -71,7 +71,7 @@ class delBackup extends taskFragment{
 	}
 
 	function finish(){
-		if(isset($_SESSION["delete_files_nok"]) && is_array($_SESSION["delete_files_nok"]) && count($_SESSION["delete_files_nok"])){
+		if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) && count($_SESSION['weS']['delete_files_nok'])){
 			print we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);

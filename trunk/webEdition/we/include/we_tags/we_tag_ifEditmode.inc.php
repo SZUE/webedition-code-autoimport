@@ -28,6 +28,6 @@ function we_tag_ifEditmode($attribs){
 		case 'self' :
 			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && isset($GLOBALS['we_editmode']) && $GLOBALS["we_editmode"];
 		default :
-			return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') */;
+			return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || $GLOBALS['WE_MAIN_EDITMODE']/* || (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem') */;
 	}
 }

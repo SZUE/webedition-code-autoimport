@@ -85,7 +85,7 @@ top.weSidebar = weSidebar;
 		include(WE_INCLUDES_PATH . "java_menu/we_menu.inc.php");
 		ksort($we_menu);
 		if(// menu for normalmode
-			isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
+			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal"){
 
 			$jmenu = new weJavaMenu($we_menu, "top.load");
 		} else{ // menu for seemode
@@ -107,7 +107,7 @@ top.weSidebar = weSidebar;
 
 		if(!isset($_REQUEST["SEEM_edit_include"])){ // there is only a menu when not in seem_edit_include!
 			if(// menu for normalmode
-				isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal"){
+				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "normal"){
 
 			} else{ // menu for seemode
 				if(permissionhandler::isUserAllowedForAction("header", "with_java")){

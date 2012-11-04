@@ -672,7 +672,7 @@ function showEditFooterForSEEMMode(){
 
 		if($we_doc->userCanSave()){
 
-			switch($_SESSION["we_mode"]){
+			switch($_SESSION['weS']['we_mode']){
 				default:
 				case "normal": // open footer for NormalMode
 					showEditFooterForNormalMode();
@@ -683,7 +683,7 @@ function showEditFooterForSEEMMode(){
 			}
 		} else{
 
-			if($_SESSION["we_mode"] == "seem"){
+			if($_SESSION['weS']['we_mode'] == "seem"){
 
 				$_noPermTable = new we_html_table(array("cellpadding" => 0,
 						"cellspacing" => 0,
@@ -720,7 +720,7 @@ function showEditFooterForSEEMMode(){
 	}
 
 	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-		if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+		if($_SESSION['weS']['we_mode'] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem){ //	changes for we:controlElement
 				$_js_permnew = ($we_doc->ID ? '

@@ -573,7 +573,7 @@ class we_objectFile extends we_document{
 				return 'we_versions/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
-				$_SESSION['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = WE_EDITPAGE_PROPERTIES;
 				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
@@ -893,7 +893,7 @@ class we_objectFile extends we_document{
 		$table = OBJECT_FILES_TABLE;
 
 //	editObjectFile Button
-		if(isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem'){
+		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem'){
 			$editObjectButton = we_button::create_button('image:btn_edit_object', "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 			$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
@@ -985,7 +985,7 @@ class we_objectFile extends we_document{
 				$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='$classPath'", "ID", $db);
 
 
-				if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
+				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem"){
 
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
@@ -1045,7 +1045,7 @@ class we_objectFile extends we_document{
 				$content .= $this->htmlFormElementTable(
 					$this->htmlTextInput($textname, 30, $path, 255, 'onChange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
 
-				if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $myid){
+				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == "seem" && $myid){
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();

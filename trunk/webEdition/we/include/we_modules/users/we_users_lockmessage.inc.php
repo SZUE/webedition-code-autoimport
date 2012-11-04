@@ -44,7 +44,7 @@ $content = "<p class='defaultfont'>" . sprintf(g_l('alert', "[temporaere_no_acce
 print we_html_tools::htmlDialogLayout($content, g_l('alert', "[temporaere_no_access]"));
 
 //	For SEEM-Mode
-if($_SESSION["we_mode"] == "seem"){
+if($_SESSION['weS']['we_mode'] == "seem"){
 	?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM', "[try_doc_again]") ?></a>
 		<?php
 	}

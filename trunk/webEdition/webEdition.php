@@ -29,9 +29,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
 
-if(!isset($_SESSION["we_mode"]) || $_SESSION["we_mode"] == "normal"){ //	working in normal mode
+if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == "normal"){ //	working in normal mode
 	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
-} else if($_SESSION["we_mode"] == "seem"){ //	working in super-easy-edit-mode
+} else if($_SESSION['weS']['we_mode'] == "seem"){ //	working in super-easy-edit-mode
 	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
@@ -106,7 +106,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	var weSidebar = null;
 
 	// seeMode
-	var seeMode = <?php print ($_SESSION["we_mode"] == "seem") ? "true" : "false"; ?>; // in seeMode
+	var seeMode = <?php print ($_SESSION['weS']['we_mode'] == "seem") ? "true" : "false"; ?>; // in seeMode
 	var seeMode_edit_include = <?php print (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
 	var wePerms = {

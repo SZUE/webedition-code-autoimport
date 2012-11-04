@@ -1641,8 +1641,7 @@ function onFolderSelectionChangeJS(elem) {
 					$this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[anchor]'));
 
 		$_target = we_html_tools::htmlFormElementTable(
-				we_html_tools::targetBox(
-					'Attributes[target]', 30, ($this->_width_size - 100), '', $this->Model->getAttribute('target'), '' . $this->topFrame . '.mark();', 'text', 100), g_l('navigation', '[target]'));
+				we_html_tools::targetBox('Attributes[target]', 30, ($this->_width_size - 100), '', $this->Model->getAttribute('target'), '' . $this->topFrame . '.mark();', 8, 100), g_l('navigation', '[target]'));
 
 		$_link = we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(

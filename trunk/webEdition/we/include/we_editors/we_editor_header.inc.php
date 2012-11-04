@@ -32,7 +32,7 @@ $z = 0;
 $tab_head = 'var weTabs;';
 $tab_js = '';
 
-if($_SESSION['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
+if($_SESSION['weS']['we_mode'] != 'seem'){ //	No tabs in Super-Easy-Edit_mode
 	$we_tabs = new we_tabs();
 	// user has no access to file - only preview mode.
 	if($we_doc->userHasAccess() != we_root::USER_HASACCESS && $we_doc->userHasAccess() != we_root::USER_NO_SAVE){
@@ -217,7 +217,7 @@ print we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&
 	($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
 	'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)</div>' . we_html_tools::getPixel(100, 3);
 
-if($_SESSION['we_mode'] != 'seem'){
+if($_SESSION['weS']['we_mode'] != 'seem'){
 	print $we_tabs->getHTML();
 }
 ?></div>

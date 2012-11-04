@@ -185,9 +185,9 @@ function showWorkflowFooterForSEEMMode(){
 
 if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
 
-	if($_SESSION["we_mode"] == "normal"){
+	if($_SESSION['weS']['we_mode'] == "normal"){
 		$_table = showWorkflowFooterForNormalMode();
-	} else if($_SESSION["we_mode"] == "seem"){
+	} else if($_SESSION['weS']['we_mode'] == "seem"){
 		$_table = showWorkflowFooterForSEEMMode();
 	}
 

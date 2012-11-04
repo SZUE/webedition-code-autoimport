@@ -288,7 +288,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$textname = 'we_' . $this->Name . '_TemplateName';
 		$idname = 'we_' . $this->Name . '_TemplateID';
 		$ueberschrift = g_l('weClass', "[template]");
-		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION["we_mode"] != "seem"){
+		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']['we_mode'] != "seem"){
 			$ueberschriftLink = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $idname . '\'].value)">' . g_l('weClass', "[template]") . '</a>';
 		} else{
 			$ueberschriftLink = $ueberschrift;
