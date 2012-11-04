@@ -954,6 +954,8 @@ function build_dialog($selected_setting = 'ui'){
 
 				switch(get_value('seem_start_type')){
 					default:
+						$_seem_start_type = '0';
+						break;
 					case 'cockpit':
 						$_SESSION['prefs']['seem_start_file'] = 0;
 						$_SESSION['prefs']['seem_start_weapp'] = '';
