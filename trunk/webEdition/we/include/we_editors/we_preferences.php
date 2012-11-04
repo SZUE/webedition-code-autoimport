@@ -153,12 +153,14 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 				switch($settingvalue){
 					case 'document':
 						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+						$_SESSION['prefs'][$settingname] = $settingvalue;
 						if(!$tmp){
 							$_SESSION['prefs'][$settingname] = 'cockpit';
 						}
 						break;
 					case 'object':
 						$tmp = $_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+						$_SESSION['prefs'][$settingname] = $settingvalue;
 						if(!$tmp){
 							$_SESSION['prefs'][$settingname] = 'cockpit';
 						}
