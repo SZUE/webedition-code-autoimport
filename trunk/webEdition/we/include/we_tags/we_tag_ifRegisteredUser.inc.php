@@ -34,7 +34,7 @@ function we_tag_ifRegisteredUser($attribs){
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
 
 	if($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition){
-		return isset($_SESSION['we_set_registered']) && $_SESSION['we_set_registered'];
+		return isset($_SESSION['weS']['we_set_registered']) && $_SESSION['weS']['we_set_registered'];
 	}
 
 	//return true only on registered users - or if cfilter is set to "no filter"

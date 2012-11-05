@@ -40,7 +40,7 @@ while((list($name, $val) = each($_SESSION))) {
 
 if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
-	$_SESSION["we_set_registered"] = true;
+	$_SESSION['weS']['we_set_registered'] = true;
 
 	$_POST["password"] = $_SESSION["webuser"]["Password"];
 

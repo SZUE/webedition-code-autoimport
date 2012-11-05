@@ -3422,7 +3422,7 @@ else {
 			break;
 
 		case 'versions':
-			$_SESSION['weS']['versions']['Prefs'] = array(
+			$versionsPrefs = array(
 				'ctypes' => array(
 					"image/*" => 'VERSIONING_IMAGE',
 					"text/html" => 'VERSIONING_TEXT_HTML',
@@ -3455,7 +3455,7 @@ else {
 			//js
 			$jsCheckboxCheckAll = '';
 
-			foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $v){
+			foreach($versionsPrefs['ctypes'] as $v){
 				$jsCheckboxCheckAll .= 'document.getElementById("newconf[' . $v . ']").checked = checked;';
 			}
 
@@ -3478,7 +3478,7 @@ else {
 
 
 			$_SESSION['weS']['versions']['logPrefs'] = array();
-			foreach($_SESSION['weS']['versions']['Prefs'] as $v){
+			foreach($versionsPrefs as $v){
 				foreach($v as $val){
 					$_SESSION['weS']['versions']['logPrefs'][$val] = get_value($val);
 				}
@@ -3489,7 +3489,7 @@ else {
 
 				$checkboxes = we_forms::checkbox(1, false, 'version_all', g_l('prefs', '[version_all]'), false, "defaultfont", 'checkAll(this);') . '<br/>';
 
-				foreach($_SESSION['weS']['versions']['Prefs']['ctypes'] as $k => $v){
+				foreach($versionsPrefs['ctypes'] as $k => $v){
 					$checkboxes .= we_forms::checkbox(1, get_value($v), 'newconf[' . $v . ']', g_l('contentTypes', '[' . $k . ']'), false, "defaultfont", 'checkAllRevert(this);') . '<br/>';
 				}
 
