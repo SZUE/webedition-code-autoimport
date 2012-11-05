@@ -36,8 +36,8 @@ class delFragment extends taskFragment{
 	}
 
 	function init(){
-		if(isset($_SESSION["todel"]) && $_SESSION["todel"]){
-			$filesToDel = makeArrayFromCSV($_SESSION["todel"]);
+		if(isset($_SESSION['weS']['todel']) && $_SESSION['weS']['todel']){
+			$filesToDel = makeArrayFromCSV($_SESSION['weS']['todel']);
 			$this->alldata = array();
 			foreach($filesToDel as $id){
 				if(f('SELECT IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'IsFolder', $this->db)){
@@ -49,8 +49,8 @@ class delFragment extends taskFragment{
 				array_push($this->alldata, $id);
 			}
 
-			$_SESSION["we_not_deleted_entries"] = array();
-			$_SESSION["we_go_seem_start"] = false;
+			$_SESSION['weS']['we_not_deleted_entries'] = array();
+			$_SESSION['weS']['we_go_seem_start'] = false;
 		}
 	}
 
@@ -63,25 +63,25 @@ class delFragment extends taskFragment{
 
 		deleteEntry($this->data, $this->table, false);
 		if(count($GLOBALS["we_folder_not_del"]) > 0){
-			array_push($_SESSION["we_not_deleted_entries"], $GLOBALS["we_folder_not_del"][0]);
+			array_push($_SESSION['weS']['we_not_deleted_entries'], $GLOBALS["we_folder_not_del"][0]);
 		}
 		if($this->data == $currentID){
-			$_SESSION["we_go_seem_start"] = true;
+			$_SESSION['weS']['we_go_seem_start'] = true;
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		print we_html_element::jsElement('parent.delmain.setProgressText("pb1","' . sprintf(g_l('delete', "[delete_entry]"), $p) . '");parent.delmain.setProgress(' . $percent . ');');
 	}
 
 	function finish(){
-		unset($_SESSION["todel"]);
-		if(count($_SESSION["we_not_deleted_entries"])){
-			$alert = we_message_reporting::getShowMessageCall(makeAlertDelFolderNotEmpty($_SESSION["we_not_deleted_entries"]), we_message_reporting::WE_MESSAGE_ERROR);
+		unset($_SESSION['weS']['todel']);
+		if(count($_SESSION['weS']['we_not_deleted_entries'])){
+			$alert = we_message_reporting::getShowMessageCall(makeAlertDelFolderNotEmpty($_SESSION['weS']['we_not_deleted_entries']), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			$alert = we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
 		}
-		unset($_SESSION["we_not_deleted_entries"]);
-		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == "seem" && $_SESSION["we_go_seem_start"]) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
-		unset($_SESSION["we_go_seem_start"]);
+		unset($_SESSION['weS']['we_not_deleted_entries']);
+		print we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == "seem" && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
+		unset($_SESSION['weS']['we_go_seem_start']);
 	}
 
 	function printHeader(){

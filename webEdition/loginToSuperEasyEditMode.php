@@ -50,11 +50,11 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 	if(isset($_SESSION["user"]["Username"])){ //	login ok!
 		//	we must give some information, that we start in Super-Easy-Edit-Mode
 		$_SESSION['weS']['we_mode'] = "seem";
-		$_SESSION["SEEM"]["startId"] = $_POST["id"];
-		$_SESSION["SEEM"]["startType"] = $_POST["type"];
-		$_SESSION["SEEM"]["startPath"] = $_POST["path"];
+		$_SESSION['weS']['SEEM']["startId"] = $_POST["id"];
+		$_SESSION['weS']['SEEM']["startType"] = $_POST["type"];
+		$_SESSION['weS']['SEEM']["startPath"] = $_POST["path"];
 
-		$_SESSION["SEEM"]["open_selected"] = true; //	This var is only temporary
+		$_SESSION['weS']['SEEM']["open_selected"] = true; //	This var is only temporary
 		//	now start webEdition
 		we_html_tools::htmlTop();
 		print '

@@ -345,8 +345,8 @@ class weNavigation extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['navigation_session'])){
-			unset($_SESSION['navigation_session']);
+		if(isset($_SESSION['weS']['navigation_session'])){
+			unset($_SESSION['weS']['navigation_session']);
 		}
 	}
 

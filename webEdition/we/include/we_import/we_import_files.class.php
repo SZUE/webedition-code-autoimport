@@ -208,7 +208,7 @@ class we_import_files{
 	function getStep1(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$this->loadPropsFromSession();
-		unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
+		unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 
 		// create Start Screen ##############################################################################
 
@@ -488,13 +488,13 @@ class we_import_files{
 
 		$parts = array();
 
-		if(isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
+		if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 
 			$filelist = "";
-			foreach($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err){
+			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
 				$filelist .= '- ' . $err["filename"] . ' => ' . $err['error'] . we_html_element::htmlBr();
 			}
-			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
+			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 
 			$parts[] = array(
 				'html' => we_html_tools::htmlAlertAttentionBox(
@@ -530,10 +530,10 @@ class we_import_files{
 			$bodyAttribs["onload"] = "next();";
 			$error = $this->importFile();
 			if(count($error)){
-				if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
-					$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
+				if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
+					$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 				}
-				$_SESSION["WE_IMPORT_FILES_ERRORs"][] = $error;
+				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = $error;
 			}
 		}
 
@@ -585,13 +585,13 @@ class we_import_files{
 				document.getElementById("progressbar").style.display = "none";
 ';
 
-		if(isset($_SESSION["WE_IMPORT_FILES_ERRORs"]) && $formnum == $formcount && $formnum != 0){
+		if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $formnum == $formcount && $formnum != 0){
 
 			$filelist = "";
-			foreach($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err){
+			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
 				$filelist .= "- " . $err["filename"] . " => " . g_l('importFiles', '[' . $err["error"] . ']') . "\\n";
 			}
-			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
+			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 			$js .= "			" . we_message_reporting::getShowMessageCall(
 					sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
@@ -990,16 +990,16 @@ class we_import_files{
 	}
 
 	function savePropsInSession(){
-		$_SESSION['_we_import_files'] = array();
+		$_SESSION['weS']['_we_import_files'] = array();
 		$_vars = get_object_vars($this);
 		foreach($_vars as $_name => $_value){
-			$_SESSION['_we_import_files'][$_name] = $_value;
+			$_SESSION['weS']['_we_import_files'][$_name] = $_value;
 		}
 	}
 
 	function loadPropsFromSession(){
-		if(isset($_SESSION['_we_import_files'])){
-			foreach($_SESSION['_we_import_files'] as $_name => $_var){
+		if(isset($_SESSION['weS']['_we_import_files'])){
+			foreach($_SESSION['weS']['_we_import_files'] as $_name => $_var){
 				$this->$_name = $_var;
 			}
 		}

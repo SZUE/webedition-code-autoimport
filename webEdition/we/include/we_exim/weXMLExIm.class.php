@@ -168,32 +168,32 @@ class weXMLExIm{
 	}
 
 	function loadPerserves(){
-		if(isset($_SESSION["ExImRefTable"])){
-			$this->RefTable->Array2RefTable($_SESSION["ExImRefTable"]);
+		if(isset($_SESSION['weS']['ExImRefTable'])){
+			$this->RefTable->Array2RefTable($_SESSION['weS']['ExImRefTable']);
 		}
-		if(isset($_SESSION["ExImRefUsers"])){
-			$this->RefTable->Users = $_SESSION["ExImRefUsers"];
+		if(isset($_SESSION['weS']['ExImRefUsers'])){
+			$this->RefTable->Users = $_SESSION['weS']['ExImRefUsers'];
 		}
-		if(isset($_SESSION["ExImCurrentRef"])){
-			$this->RefTable->current = $_SESSION["ExImCurrentRef"];
+		if(isset($_SESSION['weS']['ExImCurrentRef'])){
+			$this->RefTable->current = $_SESSION['weS']['ExImCurrentRef'];
 		}
 	}
 
 	function savePerserves($full = true){
-		$_SESSION["ExImRefTable"] = $this->RefTable->RefTable2Array($full);
-		$_SESSION["ExImRefUsers"] = $this->RefTable->Users;
-		$_SESSION["ExImCurrentRef"] = $this->RefTable->current;
+		$_SESSION['weS']['ExImRefTable'] = $this->RefTable->RefTable2Array($full);
+		$_SESSION['weS']['ExImRefUsers'] = $this->RefTable->Users;
+		$_SESSION['weS']['ExImCurrentRef'] = $this->RefTable->current;
 	}
 
 	function unsetPerserves(){
-		if(isset($_SESSION["ExImRefTable"])){
-			unset($_SESSION["ExImRefTable"]);
+		if(isset($_SESSION['weS']['ExImRefTable'])){
+			unset($_SESSION['weS']['ExImRefTable']);
 		}
-		if(isset($_SESSION["ExImRefUsers"])){
-			unset($_SESSION["ExImRefUsers"]);
+		if(isset($_SESSION['weS']['ExImRefUsers'])){
+			unset($_SESSION['weS']['ExImRefUsers']);
 		}
-		if(isset($_SESSION["ExImCurrentRef"])){
-			unset($_SESSION["ExImCurrentRef"]);
+		if(isset($_SESSION['weS']['ExImCurrentRef'])){
+			unset($_SESSION['weS']['ExImCurrentRef']);
 		}
 	}
 

@@ -32,7 +32,7 @@ class delBackup extends taskFragment{
 	}
 
 	function init(){
-		if(isset($_SESSION["backup_delete"]) && $_SESSION["backup_delete"]){
+		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
 			while($this->db->next_record()) {
@@ -77,7 +77,7 @@ class delBackup extends taskFragment{
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');
 		}
-		unset($_SESSION["backup_delete"]);
+		unset($_SESSION['weS']['backup_delete']);
 		print we_html_element::jsElement('top.close();');
 	}
 

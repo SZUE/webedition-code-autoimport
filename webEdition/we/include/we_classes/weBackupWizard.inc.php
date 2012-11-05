@@ -1165,9 +1165,9 @@ class weBackupWizard{
 					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
 					if($do_import_after_backup == 1){
 						$body = we_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
-					} else if(isset($_SESSION["inbackup"]) && $_SESSION["inbackup"]){
+					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
 						$body = we_button::create_button("next", "javascript:top.opener.weiter();top.close();");
-						unset($_SESSION["inbackup"]);
+						unset($_SESSION['weS']['inbackup']);
 					} else{
 						$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
 						$body = we_button::create_button("close", "javascript:top.close();");
@@ -1538,7 +1538,7 @@ class weBackupWizard{
 					}
 					break;
 				case "deleteall":
-					$_SESSION["backup_delete"] = 1;
+					$_SESSION['weS']['backup_delete'] = 1;
 					$_SESSION['weS']['delete_files_nok'] = array();
 					$_SESSION["delete_files_info"] = g_l('backup', "[files_not_deleted]");
 					print we_html_element::jsScript(JS_DIR . "windows.js");

@@ -39,14 +39,14 @@ if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when
 }
 
 //	getJSCommand
-if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
+if(isset($_SESSION['weS']['SEEM']["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
 	$keys = array_keys($_SESSION);
 	foreach($keys as $key){
 		if($key != "webuser"){
 			unset($_SESSION[$key]);
 		}
 	}
-	$_path = $_SESSION["SEEM"]["startPath"];
+	$_path = $_SESSION['weS']['SEEM']["startPath"];
 } else{ //	normal logout from webEdition.
 	unset($_SESSION["user"]);
 	if(isset($_SESSION['weS'])){
