@@ -618,7 +618,7 @@ class we_document extends we_root{
 	}
 
 	function changeLinklist($name, $linklist){
-		$this->setElement($name, $_SESSION['WE_LINKLIST']);
+		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST']);
 	}
 
 	function getNamesFromContent($content){

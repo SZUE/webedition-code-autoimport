@@ -47,11 +47,11 @@ class copyFolderFrag extends taskFragment{
 		}
 		$newCategories = implode(",", $newCategories);
 
-		if(isset($_SESSION["WE_CREATE_DOCTYPE"])){
-			unset($_SESSION["WE_CREATE_DOCTYPE"]);
+		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
+			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
 		}
-		if(isset($_SESSION["WE_CREATE_TEMPLATE"])){
-			unset($_SESSION["WE_CREATE_TEMPLATE"]);
+		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
+			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		$checkTable = (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1);
 		if($fromID && $toID && $table != $checkTable){
@@ -102,7 +102,7 @@ class copyFolderFrag extends taskFragment{
 			}
 		} else{
 			if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
-				$_SESSION["WE_COPY_OBJECTS"] = true;
+				$_SESSION['weS']['WE_COPY_OBJECTS'] = true;
 				$fromPath = id_to_path($fromID, OBJECT_FILES_TABLE);
 
 				$qfolders = ($ObjectCopyNoFolders ? ' ParentID = ' . $fromID . ' AND IsFolder = 0 AND ' : '');
@@ -268,14 +268,14 @@ class copyFolderFrag extends taskFragment{
 						$CreateMasterTemplate = isset($_REQUEST['CreateMasterTemplate']) ? $_REQUEST['CreateTemplate'] : false;
 						$CreateIncludedTemplate = isset($_REQUEST['CreateIncludedTemplate']) ? $_REQUEST['CreateTemplate'] : false;
 						// check if a template was created from prior doc
-						if(!(isset($_SESSION['WE_CREATE_TEMPLATE']) && isset(
-								$_SESSION['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]))){
+						if(!(isset($_SESSION['weS']['WE_CREATE_TEMPLATE']) && isset(
+								$_SESSION['weS']['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]))){
 
 							$createdTemplate = $this->copyTemplate(
 								$GLOBALS['we_doc']->TemplateID, $this->data['CreateTemplateInFolderID'], $CreateMasterTemplate, $CreateIncludedTemplate);
 						}
 
-						$GLOBALS['we_doc']->setTemplateID($_SESSION['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]);
+						$GLOBALS['we_doc']->setTemplateID($_SESSION['weS']['WE_CREATE_TEMPLATE'][$GLOBALS['we_doc']->TemplateID]);
 					}
 
 					if($this->data['OverwriteCategories']){
@@ -290,8 +290,8 @@ class copyFolderFrag extends taskFragment{
 
 					if($GLOBALS['we_doc']->DocType && $this->data['CreateDoctypes']){
 						// check if a doctype was created from prior doc
-						if(!(isset($_SESSION['WE_CREATE_DOCTYPE']) && isset(
-								$_SESSION['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
+						if(!(isset($_SESSION['weS']['WE_CREATE_DOCTYPE']) && isset(
+								$_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
 
 							$dt = new we_docTypes();
 							;
@@ -332,13 +332,13 @@ class copyFolderFrag extends taskFragment{
 							$dt->we_save();
 							$newID = $dt->ID;
 
-							if(!isset($_SESSION['WE_CREATE_DOCTYPE'])){
-								$_SESSION['WE_CREATE_DOCTYPE'] = array();
+							if(!isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
+								$_SESSION['weS']['WE_CREATE_DOCTYPE'] = array();
 							}
-							$_SESSION['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType] = $newID;
+							$_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType] = $newID;
 						}
 
-						$GLOBALS['we_doc']->DocType = $_SESSION['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType];
+						$GLOBALS['we_doc']->DocType = $_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType];
 					}
 
 					// bugfix 0001582
@@ -369,10 +369,10 @@ class copyFolderFrag extends taskFragment{
 	function copyTemplate($templateID, $parentID, $CreateMasterTemplate = false, $CreateIncludedTemplate = false, $counter = 0){
 		$counter++;
 		$templVars = array();
-		if(!isset($_SESSION['WE_CREATE_TEMPLATE'])){
-			$_SESSION['WE_CREATE_TEMPLATE'] = array();
+		if(!isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
+			$_SESSION['weS']['WE_CREATE_TEMPLATE'] = array();
 		}
-		if(!isset($_SESSION['WE_CREATE_TEMPLATE'][$templateID])){
+		if(!isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$templateID])){
 
 			$templ = new we_template();
 			$templ->initByID($templateID, TEMPLATES_TABLE);
@@ -397,11 +397,11 @@ class copyFolderFrag extends taskFragment{
 			$newID = $templ->ID;
 			$templVars['newID'] = $newID;
 
-			$_SESSION['WE_CREATE_TEMPLATE'][$templateID] = $newID;
+			$_SESSION['weS']['WE_CREATE_TEMPLATE'][$templateID] = $newID;
 			if($counter < 10){
 				if($CreateMasterTemplate && $templ->MasterTemplateID > 0){
-					if(isset($_SESSION['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID])){
-						$templ->MasterTemplateID = $_SESSION['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID];
+					if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID])){
+						$templ->MasterTemplateID = $_SESSION['weS']['WE_CREATE_TEMPLATE'][$templ->MasterTemplateID];
 					} else{
 						$createdMasterVars = $this->copyTemplate(
 							$templ->MasterTemplateID, $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
@@ -414,10 +414,10 @@ class copyFolderFrag extends taskFragment{
 					$code = $templ->elements['data']['dat'];
 					foreach($includedTemplates as $incTempl){
 						if(!empty($incTempl) && $incTempl > 0){
-							if(isset($_SESSION['WE_CREATE_TEMPLATE'][trim($incTempl)])){
+							if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)])){
 								$templID = str_replace(
-									$incTempl, $_SESSION['WE_CREATE_TEMPLATE'][trim($incTempl)], $templ->IncludedTemplates);
-								$newTemplId = $_SESSION['WE_CREATE_TEMPLATE'][trim($incTempl)];
+									$incTempl, $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)], $templ->IncludedTemplates);
+								$newTemplId = $_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)];
 							} else{
 								$createdIncVars = $this->copyTemplate(
 									trim($incTempl), $parentID, $CreateMasterTemplate, $CreateIncludedTemplate, $counter);
@@ -682,11 +682,11 @@ class copyFolderFrag extends taskFragment{
 	function finish(){
 		$cancelButton = we_button::create_button('cancel', 'javascript:top.close()');
 
-		if(isset($_SESSION['WE_CREATE_DOCTYPE'])){
-			unset($_SESSION['WE_CREATE_DOCTYPE']);
+		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
+			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
 		}
 
-		if(isset($_SESSION['WE_CREATE_TEMPLATE'])){
+		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 
 			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
@@ -696,15 +696,15 @@ class copyFolderFrag extends taskFragment{
 			flush();
 			print we_html_element::jsElement(
 					'setTimeout(\'self.location = "' . WE_INCLUDES_DIR . 'copyFolder.inc.php?finish=1"\',100);');
-			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
+			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} else{
 			$checkTable = (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1);
-			if(!isset($_SESSION['WE_COPY_OBJECTS'])){
+			if(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
 				print we_html_element::jsElement(
 						'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			} else{
-				unset($_SESSION['WE_COPY_OBJECTS']);
+				unset($_SESSION['weS']['WE_COPY_OBJECTS']);
 				print we_html_element::jsElement(
 						'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
 							g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');

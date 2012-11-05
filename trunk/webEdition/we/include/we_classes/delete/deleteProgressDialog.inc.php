@@ -67,7 +67,7 @@ class deleteProgressDialog{
 	}
 
 	function cmd(){
-		if(isset($_SESSION["backup_delete"]) && $_SESSION["backup_delete"]){
+		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 			$taskname = md5(session_id() . "_backupdel");
 			$fr = new delBackup($taskname, 1, 0);
 		} else{

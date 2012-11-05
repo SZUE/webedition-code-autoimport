@@ -1108,12 +1108,12 @@ class weNavigationView{
 			}
 		}
 
-		$_SESSION["navigation_session"] = serialize($this->Model);
+		$_SESSION['weS']['navigation_session'] = serialize($this->Model);
 	}
 
 	function processVariables(){
-		if(isset($_SESSION["navigation_session"])){
-			$this->Model = unserialize($_SESSION["navigation_session"]);
+		if(isset($_SESSION['weS']['navigation_session'])){
+			$this->Model = unserialize($_SESSION['weS']['navigation_session']);
 		}
 
 		if(defined('CUSTOMER_TABLE')){

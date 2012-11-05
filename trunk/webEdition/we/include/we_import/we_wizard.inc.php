@@ -519,7 +519,7 @@ HTS;
 										we_html_element::jsElement($JScript . "setTimeout('we_import(1," . $v['cid'] . ");',15);"));
 							} else{
 								if($type == "first_steps_wizard"){
-									$_SESSION['fsw_importRefTable'] = isset($_SESSION["ExImRefTable"]) ? $_SESSION["ExImRefTable"] : array();
+									$_SESSION['fsw_importRefTable'] = isset($_SESSION['weS']['ExImRefTable']) ? $_SESSION['weS']['ExImRefTable'] : array();
 
 									$JScript = "
 										function we_import_handler(e) { we_import(1," . ($v['numFiles'] - 1) . "); }

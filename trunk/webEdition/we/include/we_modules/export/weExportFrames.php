@@ -536,7 +536,7 @@ class weExportFrames extends weModuleFrames{
 
 					$_progress_update = '';
 					$exports = 0;
-					if(!isset($_SESSION["ExImRefTable"])){
+					if(!isset($_SESSION['weS']['ExImRefTable'])){
 
 						if($this->View->export->Selection == 'manual'){
 							$finalDocs = makeArrayFromCSV($this->View->export->selDocs);
@@ -587,7 +587,7 @@ class weExportFrames extends weModuleFrames{
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
 								)
 						);
-					} else if($_SESSION['ExImPrepare']){
+					} else if($_SESSION['weS']['ExImPrepare']){
 						$xmlExIm = new weExportPreparer();
 
 						$xmlExIm->loadPerserves();
@@ -706,7 +706,7 @@ class weExportFrames extends weModuleFrames{
 							we_html_element::jsElement('
 									if (' . $this->topFrame . '.resize.right.editor.edfooter.doProgress) ' . $this->topFrame . '.resize.right.editor.edfooter.doProgress(' . $percent . ');
 						') . "\n";
-						$_SESSION["ExImCurrentRef"] = $xmlExIm->RefTable->current;
+						$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
 						$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 							we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
