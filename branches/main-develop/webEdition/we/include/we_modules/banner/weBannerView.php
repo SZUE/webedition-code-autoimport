@@ -38,8 +38,8 @@ class weBannerView extends weBannerBase{
 	var $Order = "views";
 	var $pageFields = array();
 
-	function weBannerView(){
-		weBannerBase::weBannerBase();
+	function __construct(){
+		parent::__construct();
 		$this->banner = new weBanner();
 		$this->page = 0;
 		$this->settings = $this->getSettings();
@@ -50,15 +50,15 @@ class weBannerView extends weBannerBase{
 	}
 
 	function getHiddens(){
-		$out = $this->htmlHidden("home", "0");
-		$out.=$this->htmlHidden("ncmd", "new_banner");
-		$out.=$this->htmlHidden("ncmdvalue", "");
-		$out.=$this->htmlHidden("bid", $this->banner->ID);
-		$out.=$this->htmlHidden("pnt", $_REQUEST["pnt"]);
-		$out.=$this->htmlHidden("page", $this->page);
-		$out.=$this->htmlHidden("bname", $this->uid);
-		$out.=$this->htmlHidden("order", $this->Order);
-		$out.=$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
+		$out = $this->htmlHidden("home", "0") .
+			$this->htmlHidden("ncmd", "new_banner") .
+			$this->htmlHidden("ncmdvalue", "") .
+			$this->htmlHidden("bid", $this->banner->ID) .
+			$this->htmlHidden("pnt", $_REQUEST["pnt"]) .
+			$this->htmlHidden("page", $this->page) .
+			$this->htmlHidden("bname", $this->uid) .
+			$this->htmlHidden("order", $this->Order) .
+			$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
 		foreach($this->banner->persistents as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};

@@ -45,11 +45,6 @@ we_html_tools::htmlTop();
 		eval('parent.we_cmd('+args+')');
 	}
 
-	function doSafariLoad() {
-		window.frames["multiEditorDocumentControllerFrame"].document.location = "<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php";
-
-	}
-
 	function startMultiEditor() {
 		we_cmd('start_multi_editor'<?php print $_cmd_string; ?>);
 

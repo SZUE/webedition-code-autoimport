@@ -2009,6 +2009,9 @@ class we_user{
 		$_document_id = 0;
 
 		switch($this->Preferences['seem_start_type']){
+			default:
+				$_seem_start_type = '0';
+				break;
 			case 'cockpit':
 				$_SESSION['prefs']['seem_start_file'] = 0;
 				$_seem_start_type = 'cockpit';
@@ -2031,7 +2034,7 @@ class we_user{
 				}
 				break;
 			// Document
-			default:
+			case 'document':
 				$_seem_start_type = 'document';
 				if($this->Preferences['seem_start_file'] != 0){
 					$_document_id = $this->Preferences['seem_start_file'];

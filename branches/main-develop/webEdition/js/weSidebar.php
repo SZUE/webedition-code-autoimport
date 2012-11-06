@@ -78,8 +78,8 @@ weSidebar.open = function() {
 
 
 weSidebar.close = function() {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right = 0 + "px";
-	top.rframe.document.getElementById("sidebarDiv").style.width = 0 + "px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right="0px";
+	top.rframe.document.getElementById("sidebarDiv").style.width = "0px";
 
 }
 

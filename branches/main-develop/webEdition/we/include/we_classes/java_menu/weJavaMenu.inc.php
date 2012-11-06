@@ -44,13 +44,13 @@ class weJavaMenu{
 		$this->lcmdFrame = $lcmdFrame;
 	}
 
-	function printMenu(){
+	function printMenu($cmd = ''){
 
-		print $this->getCode();
+		print $this->getCode(true, $cmd);
 	}
 
-	function getCode($old = true){
-		return ($old ? $this->getJS() : '') . $this->getHTML($old);
+	function getCode($old = true, $cmd = ''){
+		return ($old ? $this->getJS() : '') . $this->getHTML($old, $cmd);
 	}
 
 	function getJS(){
@@ -61,7 +61,8 @@ class weJavaMenu{
 				}');
 	}
 
-	function getHTML($old = true){
+	//remove cmdTarget in 6.4 after Java Menu is removed
+	function getHTML($old = true, $cmdTarget = ''){
 		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
@@ -99,7 +100,8 @@ class weJavaMenu{
 			$out .= '
 				<div id="divForSelectMenu"></div>
 				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
-					<param name="phpext" value=".php"/>';
+					<param name="phpext" value=".php"/>' .
+				($cmdTarget ? '<param name="cmdTarget" value="' . $cmdTarget . '"/>' : '');
 			$i = 0;
 			foreach($this->entries as $id => $m){
 				if(we_hasPerm('ADMINISTRATOR')){

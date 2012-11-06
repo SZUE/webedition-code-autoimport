@@ -19,7 +19,7 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   openFolders_tblObjectFiles text,
   phpOnOff tinyint(1) unsigned NOT NULL default '0',
   seem_start_file int(11) unsigned NOT NULL default '0',
-  seem_start_type enum('0','cockpit','document','weapp') NOT NULL default 'cockpit',
+  seem_start_type enum('0','cockpit','document','object','weapp') NOT NULL default 'cockpit',
   seem_start_weapp varchar(255) NOT NULL default '',
   editorSizeOpt tinyint(1) unsigned NOT NULL default '0',
   editorWidth smallint unsigned NOT NULL default '0',

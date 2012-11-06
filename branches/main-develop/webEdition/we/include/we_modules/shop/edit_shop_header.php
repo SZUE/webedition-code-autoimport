@@ -51,7 +51,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-				<?php $jmenu->printMenu(); ?>
+				<?php $jmenu->printMenu();//'shop_cmd'?>
 			</td>
 			<td align="right">
 				<?php

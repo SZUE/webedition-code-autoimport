@@ -30,6 +30,14 @@ print we_html_element::jsElement('
 	var makeNewEntry = 0;
 	var publishWhenSave = 0;
 	var weModuleWindow = true;
+
+function we_cmd() {
+		args = "";
+		for(var i = 0; i < arguments.length; i++) {
+					args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+		}
+		eval("top.content.we_cmd("+args+")");
+	}
 ');
 print we_html_element::jsScript(JS_DIR . "keyListener.js");
 if(isset($_REQUEST['mod']) && !isset($mod)){
