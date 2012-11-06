@@ -40,7 +40,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 
 <script type="text/javascript"><!--
 	function menuaction(cmd){
-		top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
+		top.opener.top.load.location.replace("<?php echo WEBEDITION_DIR; ?>we_lcmd.php?we_cmd[0]="+cmd);
 	}
 	//-->
 </script>

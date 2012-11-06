@@ -57,7 +57,7 @@ class weJavaMenu{
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			we_html_element::jsElement('
 				function menuaction(cmd) {
-					' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . '/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
+					' . $this->lcmdFrame . '.location.replace("' . getServerUrl() . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
 				}');
 	}
 

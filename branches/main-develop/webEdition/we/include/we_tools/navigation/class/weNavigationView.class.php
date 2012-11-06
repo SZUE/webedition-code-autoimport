@@ -44,8 +44,8 @@ class weNavigationView{
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new weNavigation();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/navigation.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/folder.gif\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'navigation.gif\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'folder.gif\" />&nbsp;';
 	}
 
 	//----------- Utility functions ------------------

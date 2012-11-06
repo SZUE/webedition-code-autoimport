@@ -38,7 +38,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>
 <script type="text/javascript"><!--
 	function menuaction(cmd){
-		top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
+		top.load.location.replace("<?php echo WEBEDITION_DIR; ?>we_lcmd.php?wecmd0="+cmd);
 	}
 	//-->
 </script>

@@ -22,13 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/**
- * Global include file
- */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-/**
- * The notepad widtget functions
- */
 include_once (WE_INCLUDES_PATH . 'we_widgets/mod/wePadFunctions.inc.php');
 
 we_html_tools::protect();
@@ -43,7 +37,7 @@ $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
-$q_Csv = $_REQUEST['we_cmd'][1];
+$q_Csv = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 $_title = base64_decode($_REQUEST['we_cmd'][4]);
 $_sObjId = $_REQUEST['we_cmd'][5];
 

@@ -1118,12 +1118,22 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getFrameset(){
-		$tail =
-			(isset($_REQUEST["btype"]) ? $tail .= "&amp;btype=" . rawurlencode($_REQUEST["btype"]) : '') .
-			(isset($_REQUEST["type"]) ? $tail .= "&amp;type=" . rawurlencode($_REQUEST["type"]) : '') .
-			(isset($_REQUEST["templateID"]) ? $tail .= "&amp;templateID=" . rawurlencode($_REQUEST["templateID"]) : '') .
-			(isset($_REQUEST["step"]) ? $tail .= "&amp;step=" . rawurlencode($_REQUEST["step"]) : '') .
-			(isset($_REQUEST["responseText"]) ? $tail .= "&amp;responseText=" . rawurlencode($_REQUEST["responseText"]) : '');
+		$query = array();
+		if(isset($_REQUEST["btype"])){
+			$query['btype'] = $_REQUEST["btype"];
+		}
+		if(isset($_REQUEST["type"])){
+			$query['type'] = $_REQUEST["type"];
+		}
+		if(isset($_REQUEST["templateID"])){
+			$query['templateID'] = $_REQUEST["templateID"];
+		}
+		if(isset($_REQUEST["step"])){
+			$query['step'] = $_REQUEST["step"];
+		}
+		if(isset($_REQUEST["responseText"])){
+			$query['responseText'] = $_REQUEST["responseText"];
+		}
 
 		$taskname = md5(session_id() . "_version_wizard");
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
@@ -1131,21 +1141,23 @@ abstract class we_versions_wizard{
 			weFile::delete($taskFilename);
 		}
 
-		if($tail){
+		if(!empty($query)){
+			$query['we_cmd[0]'] = 'versions_wizard';
+			$query['fr'] = 'body';
 			//maybe restore of a given version?
 			$body = we_html_element::htmlBody(array(
 					'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;',
-					'onload' => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body" . $tail . "';")
+					'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?'.http_build_query(query). "';")
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 					));
 		} else{
 			$body = we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
-						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=busy", 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
-						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=versions_wizard&amp;fr=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'body'), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy'), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'cmd'), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 					));
 		}
 
@@ -1172,7 +1184,7 @@ abstract class we_versions_wizard{
 				"go", 'javascript:parent.wizbody.handle_event("next");', true, -1, -1, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
-		$js = 'window.onload = function(){
+		return 'window.onload = function(){
 					top.focus();
 				}
 				function handle_event(what){
@@ -1196,7 +1208,7 @@ abstract class we_versions_wizard{
 					}
 				}
 
-				var ajaxURL = "/webEdition/rpc/rpc.php";
+				var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
 				var ajaxCallbackDeleteVersionsWizard = {
 					success: function(o) {
@@ -1289,8 +1301,6 @@ abstract class we_versions_wizard{
 					}
 				}
 				set_button_state(false);';
-
-		return $js;
 	}
 
 	/**
@@ -1310,8 +1320,8 @@ abstract class we_versions_wizard{
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
 			)) . we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+			we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js');
 
 		$headCal .= we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .

@@ -109,7 +109,7 @@ abstract class we_rebuild{
 						$table = TEMPLATES_TABLE;
 						break;
 					case 'object':
-						if(file_exists(WE_INCLUDES_PATH . 'we_modules/object/' . $data['cn'] . '.inc.php')){
+						if(file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
 
 						} else{ // it has to be an object
 							return false;

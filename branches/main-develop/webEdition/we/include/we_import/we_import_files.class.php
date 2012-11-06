@@ -137,12 +137,12 @@ class we_import_files{
 
 				function we_trashButDown(but){
 					if(but.src.indexOf("disabled") == -1){
-						but.src = "' . IMAGE_DIR . 'button/btn_function_trash_down.gif";
+						but.src = "' . BUTTONS_DIR . 'btn_function_trash_down.gif";
 					}
 				}
 				function we_trashButUp(but){
 					if(but.src.indexOf("disabled") == -1){
-						but.src = "' . IMAGE_DIR . 'button/btn_function_trash.gif";
+						but.src = "' . BUTTONS_DIR . 'btn_function_trash.gif";
 					}
 				}
 
@@ -419,9 +419,7 @@ class we_import_files{
 		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', "[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
 				35, 5) . '</td><td>' . $fileinput . '</td></tr></table>';
 
-		$form_content = $this->_getHiddens("buttons", $this->step) .
-			str_replace("WE_FORM_NUM", "1", $fileinput) .
-			str_replace("WEFORMNUM", "0", $form_content);
+		$form_content = str_replace("WEFORMNUM", "0", $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", "1", $fileinput));
 		$formhtml = we_html_element::htmlForm(
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php",
@@ -434,7 +432,7 @@ class we_import_files{
 		// JUpload part0
 
 
-		if(getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar')){
+		if(getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar')){
 
 			$_weju = new weJUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
@@ -444,8 +442,8 @@ class we_import_files{
 			"headline" => '', "html" => $formhtml, "space" => 0
 		);
 
-		$content = we_html_element::htmlDiv(array("id" => "forms", "style" => "display:block"), (
-				getPref('use_jupload') && file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar') ? we_html_element::htmlForm(array(
+		$content = we_html_element::htmlDiv(
+				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
 						), "") : "") .
 				we_html_element::htmlForm(
@@ -595,7 +593,7 @@ class we_import_files{
 			var imgs = top.imgimportcontent.document.getElementsByTagName('IMG');
 			for(var i = 0; i<imgs.length; i++){
 				if(imgs[i].id.length > prefix.length && imgs[i].id.substring(0,prefix.length) == prefix){
-				imgs[i].src='" . IMAGE_DIR . "button/btn_function_trash_dis.gif';
+				imgs[i].src='" . BUTTONS_DIR . "btn_function_trash_dis.gif';
 				imgs[i].style.cursor='default';
 			}
 			}
@@ -869,7 +867,7 @@ class we_import_files{
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(
-					'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
+					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
 			)));

@@ -34,7 +34,7 @@ function we_tag_createShop($attribs){
 	$deleteshoponlogout = weTag_getAttribute("deleteshoponlogout", $attribs, false, true);
 	$shopname = weTag_getAttribute("shopname", $attribs);
 
-	include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
+	include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 	if(!isset($_SESSION)){
 		@session_start();

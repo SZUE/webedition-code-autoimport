@@ -213,7 +213,7 @@ function enableDelBut(){
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('<scr'+'ipt>');
 				d.writeln('var ctrlpressed=false');
@@ -1049,14 +1049,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
-		$we_responseText = sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path);
 
-		print STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement('
+		print STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
-	var url = "/webEdition/we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]){
 		case "openSelector":
@@ -1073,7 +1070,7 @@ function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {
 ' .
-				we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '
+			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}

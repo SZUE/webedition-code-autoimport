@@ -72,7 +72,7 @@ function we_tag_linkToSeeMode($attribs){
 						'method' => 'post',
 						'name' => 'startSeeMode_' . $type . '_' . $id,
 						'target' => '_parent',
-						'action' => '/webEdition/loginToSuperEasyEditMode.php'
+						'action' => WEBEDITION_DIR . 'loginToSuperEasyEditMode.php'
 						), getHtmlTag(
 							'input', array(
 							'type' => 'hidden',

@@ -268,7 +268,7 @@ EOS;
 	function getMultiEdit($name, $data, $headline="", $isVisible=true){
 
 
-		$_delBut = addslashes('<img src="' . IMAGE_DIR . 'button/btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
+		$_delBut = addslashes('<img src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
 
 		$_script = <<<EO_SCRIPT
 

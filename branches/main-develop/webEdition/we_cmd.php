@@ -37,8 +37,8 @@ $INCLUDE = '';
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
 if(isset($GLOBALS['_we_active_integrated_modules'])){
 	foreach($GLOBALS['_we_active_integrated_modules'] as $m){
-		if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $m . '/we_cmd_' . $m . '.inc.php')){
-			include_once(WE_INCLUDES_PATH . 'we_modules/' . $m . '/we_cmd_' . $m . '.inc.php');
+		if(file_exists(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php')){
+			include_once(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php');
 		}
 	}
 }

@@ -46,7 +46,7 @@ switch($browser->getBrowser()){
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr><span><img src="/webEdition/images/pixel.gif" height="0" /></span></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr><span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "";
 		break;
@@ -55,7 +55,7 @@ switch($browser->getBrowser()){
 		$textvalign = "middle";
 		$imgmargintop = 0;
 		$imgvalign = "middle";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "background-position:bottom";
 		break;
@@ -64,14 +64,14 @@ switch($browser->getBrowser()){
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
 		</div>';
 		$tabBorder = "border: 0px; border-bottom: 1px solid #888888; border-right: 1px solid #888888;";
 		$tabBG = "";
 		switch($browser->getSystem()){
 			case we_base_browserDetect::SYS_MAC:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
-					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
+					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else{
 					$tabContainerMargin = "0px";
 				}
@@ -79,7 +79,7 @@ switch($browser->getBrowser()){
 				break;
 			case we_base_browserDetect::SYS_UNIX:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
-					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
+					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else{
 					$tabContainerMargin = "0px";
 				}
@@ -260,9 +260,9 @@ print we_html_element::jsElement($content = $_contentTypes);
 		 */
 		setModified: function(frameId, modified) {
 			if(modified) {
-				this.myDoc.getElementById('mod_' + frameId).src = "/webEdition/images/multiTabs/modified.gif";
+				this.myDoc.getElementById('mod_' + frameId).src = "<?php echo IMAGE_DIR; ?>multiTabs/modified.gif";
 			} else {
-				this.myDoc.getElementById('mod_' + frameId).src = "/webEdition/images/pixel.gif";
+				this.myDoc.getElementById('mod_' + frameId).src = "<?php echo IMAGE_DIR; ?>pixel.gif";
 			}
 		},
 		/**
@@ -270,7 +270,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		 */
 		setLoading: function(frameId, loading) {
 			if(loading) {
-				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/spinner.gif)";
+				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>spinner.gif)";
 			} else {
 
 
@@ -278,9 +278,9 @@ print we_html_element::jsElement($content = $_contentTypes);
 				if ( _Contentypes[this.contentType[frameId]]) {
 					var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 					var _ext = _text ? _text.replace(/^.*\./,".") : "";
-					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/tree/icons/" + _getIcon(this.contentType[frameId], _ext) + ")";
+					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo ICON_DIR; ?>" + _getIcon(this.contentType[frameId], _ext) + ")";
 				} else {
-					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/pixel.gif)";
+					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>pixel.gif)";
 				}
 			}
 		},
@@ -327,7 +327,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		font-size: 10px;
 		color: #000000;
 		background-color: silver;
-		background-image: url(/webEdition/images/backgrounds/multitabBG.gif);
+		background-image: url(<?php echo IMAGE_DIR; ?>backgrounds/multitabBG.gif);
 	}
 	#tabContainer{
 		width: 100%;
@@ -339,7 +339,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		margin: 0px; padding: 0px;
 		<?php echo $tabBorder; ?>
 		display:inline-block;
-		background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
+		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_normal.gif);
 		background-repeat: repeat-x;
 		line-height:21px;
 		font-size:17px;
@@ -349,7 +349,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		margin: 0px; padding: 0px;
 		<?php echo $tabBorder; ?>
 		display:inline-block;
-		background-image:url(/webEdition/images/multiTabs/tabsBG_over.gif);
+		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_over.gif);
 		background-repeat: repeat-x;
 		<?php echo $tabBG; ?>
 		line-height:21px;
@@ -360,7 +360,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		margin: 0px; padding: 0px;
 		<?php echo $tabBorder; ?>
 		display: inline-block;
-		background-image:url(/webEdition/images/multiTabs/tabsBG_active.gif);
+		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_active.gif);
 		background-repeat: repeat-x;
 		<?php echo $tabBG; ?>
 		line-height:21px;

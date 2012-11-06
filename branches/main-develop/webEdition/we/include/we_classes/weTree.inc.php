@@ -575,10 +575,10 @@ class weTree{
 
 		$js = we_html_element::jsElement('
 function setCheckNode(imgName){
-	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check0.gif";}
+	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check0.gif";}
 }
 function setUnCheckNode(imgName){
-	if(document.images[imgName]){document.images[imgName].src="' . IMAGE_DIR . 'tree/check1.gif";}
+	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check1.gif";}
 }');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

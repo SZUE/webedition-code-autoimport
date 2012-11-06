@@ -60,7 +60,7 @@ $closeButton = we_button::create_button("close", "javascript:window.close();");
 	.dialogButtonDiv {
 		left				: 0;
 		height				: 40px;
-		background-image	: url(/webEdition/images/edit/editfooterback.gif);
+		background-image	: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
 		position			: absolute;
 		bottom				: 0;
 		width				: 100%;
@@ -75,18 +75,18 @@ $closeButton = we_button::create_button("close", "javascript:window.close();");
 
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-<?php print g_l('versions', '[versions_log]') ?>
+			<?php print g_l('versions', '[versions_log]') ?>
 		</div>
 	</div>
 	<div id="versionsDiv">
-<?php
-print $out;
-?>
+		<?php
+		print $out;
+		?>
 
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="position:absolute;top:10px;right:20px;">
-		<?php print $closeButton; ?>
+			<?php print $closeButton; ?>
 		</div>
 	</div>
 </body>

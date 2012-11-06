@@ -107,7 +107,7 @@ class weSideBarFrames{
 	function getHTMLFooter(){
 		?>
 		</head>
-		<body bgcolor="#f0f0f0"  background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
+		<body bgcolor="#f0f0f0"  background="<?php echo IMAGE_DIR; ?>edit/editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
 		</body>
 
 		</html>

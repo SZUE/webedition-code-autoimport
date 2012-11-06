@@ -259,7 +259,7 @@ class we_user{
 
 	function createAccount(){
 		if(defined('MESSAGING_SYSTEM')){
-			require_once(WE_INCLUDES_PATH . 'we_modules/messaging/messaging_interfaces.inc.php');
+			require_once(WE_MODULES_PATH . 'messaging/messaging_interfaces.inc.php');
 			msg_create_folders($this->ID);
 		}
 	}
@@ -673,7 +673,7 @@ class we_user{
 							}
 							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
 								if (top.opener.top.table) {
-									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='/webEdition/we_vtabs.php?table=' + top.opener.top.table;
+									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
 								}
 							}
 							if (top.opener.top.rframe.bframe.bm_vtabs) {
@@ -729,7 +729,7 @@ class we_user{
 							}
 							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
 								if (top.opener.top.table) {
-									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='/webEdition/we_vtabs.php?table=' + top.opener.top.table;
+									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
 								}
 							}
 							if (top.opener.top.rframe.bframe.bm_vtabs) {

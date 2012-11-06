@@ -36,7 +36,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>
 <script type="text/javascript"><!--
 	function menuaction(cmd){
-		top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
+		top.opener.top.load.location.replace("<?php echo WEBEDITION_DIR; ?>we_lcmd.php?we_cmd[0]="+cmd);
 	}
 	//-->
 </script>
@@ -45,12 +45,12 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-<?php $jmenu->printMenu(); ?>
+				<?php $jmenu->printMenu(); ?>
 			</td>
 			<td align="right">
-<?php
-print createMessageConsole("moduleFrame");
-?>
+				<?php
+				print createMessageConsole("moduleFrame");
+				?>
 			</td>
 		</tr>
 	</table>

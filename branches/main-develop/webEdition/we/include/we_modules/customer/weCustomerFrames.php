@@ -377,7 +377,7 @@ class weCustomerFrames extends weModuleFrames{
 			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => "0")));
 			$GLOBALS["mod"] = "customer";
 			ob_start();
-			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
+			include(WE_MODULES_PATH . 'home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;

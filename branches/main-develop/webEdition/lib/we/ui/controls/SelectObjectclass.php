@@ -37,6 +37,7 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 	/**
 	 * Default class name for Select
 	 */
+
 	const kSelectClass = 'we_ui_controls_Select';
 
 	/**
@@ -58,8 +59,8 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 
 		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
 
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php")){
-				include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php");
+			if(file_exists(WE_MODULES_PATH . "object/we_conf_object.inc.php")){
+				include_once (WE_MODULES_PATH . "object/we_conf_object.inc.php");
 				$db = new DB_WE();
 				$db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 				$this->addOption(0, '-');

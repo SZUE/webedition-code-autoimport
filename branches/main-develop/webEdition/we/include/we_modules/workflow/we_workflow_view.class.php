@@ -115,7 +115,7 @@ class we_workflow_view extends we_workflow_base{
 			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
-			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
+			include(WE_MODULES_PATH . 'home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 		} else{
@@ -608,7 +608,7 @@ class we_workflow_view extends we_workflow_base{
 							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . ',' . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
 							break;
 						case "openObjselector":
-							url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[1]=&we_cmd[2]=<?php print (defined("OBJECT_TABLE") ? OBJECT_TABLE : ""); ?>&we_cmd[5]="+arguments[5]+"&we_cmd[9]=1";
+							url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[1]=&we_cmd[2]=<?php print (defined("OBJECT_TABLE") ? OBJECT_TABLE : ""); ?>&we_cmd[5]="+arguments[5]+"&we_cmd[9]=1";
 							new jsWindow(url,"we_objectselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true);
 							break;
 						case "add_cat":

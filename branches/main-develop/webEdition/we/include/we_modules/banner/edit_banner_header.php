@@ -32,7 +32,7 @@ print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
 	we_html_element::jsElement('
 	       function menuaction(cmd){
-				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
+				top.opener.top.load.location.replace("' . WEBEDITION_DIR . 'we_lcmd.php?wecmd0="+cmd);
 	    }
 
 	');
@@ -44,7 +44,7 @@ $jmenu = new weJavaMenu($we_menu_banner, "top.opener.top.load");
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-<?php $jmenu->printMenu(); ?>
+				<?php $jmenu->printMenu(); ?>
 			</td>
 			<td align="right">
 				<?php

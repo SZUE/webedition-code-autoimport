@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,7 +32,7 @@ print STYLESHEET;
 	function we_cmd(){
 
 		var args = "";
-		var url = "/webEdition/we_cmd.php?";
+		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 		for(var i = 0; i < arguments.length; i++){
 			url += "we_cmd["+i+"]="+escape(arguments[i]);
 			if(i < (arguments.length - 1)){
@@ -79,7 +78,6 @@ print STYLESHEET;
 </head>
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
-
 	//  deal with action
 	$services = array();
 
@@ -184,4 +182,3 @@ print STYLESHEET;
 	print '<form name="we_form" onsubmit="return false;">' . we_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_button::position_yes_no_cancel(we_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', !(sizeof($services) > 0)), we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
 		. '</form>' .
 		'</body></html>';
-

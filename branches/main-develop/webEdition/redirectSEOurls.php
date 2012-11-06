@@ -48,7 +48,7 @@ if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES
 $path_parts = array();
 if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
-} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != '' && $_SERVER['REDIRECT_URL'] != '/webEdition/redirectSEOurls.php'){
+} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != '' && $_SERVER['REDIRECT_URL'] != WEBEDITION_DIR . 'redirectSEOurls.php'){
 	$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
 } elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != ''){
 	if(strpos($_SERVER['REQUEST_URI'], '?') !== false){

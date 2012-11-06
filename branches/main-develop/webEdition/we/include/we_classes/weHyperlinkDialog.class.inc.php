@@ -94,7 +94,7 @@ class weHyperlinkDialog extends weDialog{
 					break;
 				default:
 					$this->args["type"] = "ext";
-					$this->args["extHref"] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^/webEdition/|', '', preg_replace('|^/webEdition/we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
+					$this->args["extHref"] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
 					$this->args["fileID"] = "";
 					$this->args["fileHref"] = "";
 					$this->args["mailHref"] = "";
@@ -638,7 +638,7 @@ class weHyperlinkDialog extends weDialog{
 					}
 					document.writeln(\'</select>\');
 				}
-		'); 
+		');
 		if(isset($this->args["editname"])){
 			$out .= we_html_element::jsElement('
 

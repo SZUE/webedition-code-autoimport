@@ -700,7 +700,7 @@ print STYLESHEET;
 		</div>
 	</div>
 
-	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:fixed;bottom:0px;width:100%">
+	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:fixed;bottom:0px;width:100%">
 		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 

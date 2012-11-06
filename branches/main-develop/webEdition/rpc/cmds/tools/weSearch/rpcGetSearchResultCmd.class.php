@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,27 +22,25 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class rpcGetSearchResultCmd extends rpcCmd {
+class rpcGetSearchResultCmd extends rpcCmd{
 
-	function execute() {
-
+	function execute(){
 		$resp = new rpcResponse();
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/define.conf.php');
-
-		$whichsearch=$_REQUEST['whichsearch'];
-		$setView = $_REQUEST['we_cmd']['setView'.$whichsearch.''];
+		$whichsearch = $_REQUEST['whichsearch'];
+		$setView = $_REQUEST['we_cmd']['setView' . $whichsearch . ''];
 
 		$_REQUEST['we_cmd']['obj'] = unserialize($_SESSION['weSearch_session']);
 
 		$content = searchtoolView::searchProperties($whichsearch);
 
-		$code = searchtoolView::tabListContent($setView,$content,$class="middlefont",$whichsearch);
+		$code = searchtoolView::tabListContent($setView, $content, $class = "middlefont", $whichsearch);
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
 	}
+
 }
 

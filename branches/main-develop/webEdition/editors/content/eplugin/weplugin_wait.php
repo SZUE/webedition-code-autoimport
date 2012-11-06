@@ -63,7 +63,7 @@ $js = we_html_element::jsElement('
 
 		self.focus();
 	');
-$css = we_html_element::cssLink('/webEdition/css/global.php');
+$css = we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead($css . "\n" . $js) .

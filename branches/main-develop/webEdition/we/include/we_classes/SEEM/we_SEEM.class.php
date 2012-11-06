@@ -357,7 +357,6 @@ abstract class we_SEEM{
 						break;
 
 					case "object" :
-
 						$handler = "top.doClickDirect('" . $SEEM_LinkArray[1][$i] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
 						$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', we_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
 						break;

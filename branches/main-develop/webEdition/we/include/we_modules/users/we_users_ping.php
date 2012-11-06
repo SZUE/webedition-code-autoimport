@@ -36,7 +36,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 <script  type="text/javascript">
 	<!--
 
-	var ajaxURL = "/webEdition/rpc/rpc.php";
+	var ajaxURL = "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php";
 	var weRpcFailedCnt = 0;
 	var ajaxCallback = {
 		success: function(o) {

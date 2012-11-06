@@ -78,7 +78,7 @@ class doclistView{
 
 		return we_html_element::jsElement('
 
-      var ajaxURL = "/webEdition/rpc/rpc.php";
+      var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
       var ajaxCallbackResultList = {
         success: function(o) {
           if(typeof(o.responseText) != "undefined" && o.responseText != "") {
@@ -582,7 +582,7 @@ class doclistView{
               + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
               + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
-              + "<img src=\"' . IMAGE_DIR . 'button/icons/date_picker.gif\" class=\"weBtnImage\" />\n"
+              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />\n"
               + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
 
 
@@ -1180,13 +1180,13 @@ class doclistView{
 							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f] ["Extension"]);
 							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else{
-							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
+							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
 						}
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f] ["Extension"]))){
 							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f] ["Extension"]);
 							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else{
-							$imageViewPopup = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
+							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $bigSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
 						}
 					} else{
 						$imagesize = array(0, 0);

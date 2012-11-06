@@ -212,7 +212,7 @@ EOF;
 				'type' => 'WXMLImport', // dont change this
 				'fserver' => '/', // dont change this
 				'rdofloc' => 'lLocal', // dont change this
-				'import_from' => '/webEdition/liveUpdate/tmp/files/Import.xml',
+				'import_from' => WEBEDITION_DIR . 'liveUpdate/tmp/files/Import.xml',
 				'collision' => 'replace',
 				'import_owners' => 0,
 				'owners_overwrite' => 0,

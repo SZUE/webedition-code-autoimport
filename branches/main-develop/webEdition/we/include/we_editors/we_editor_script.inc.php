@@ -21,7 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();?>
+we_html_tools::protect();
+?>
 <style type="text/css">
 	.weEditmodeStyle {
 		border: 0px ! important;
@@ -29,7 +30,6 @@ we_html_tools::protect();?>
 
 </style>
 <?php
-
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
 if(isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview"){
@@ -120,7 +120,7 @@ if(isset($GLOBALS['we_doc'])){
 				if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
 					_parentid = _elem.value;
 					if ( _parentid != _oldparentid ) {
-						top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php
+						top.YAHOO.util.Connect.asyncRequest( 'GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php
 	if(isset($_REQUEST["we_transaction"]))
 		print $_REQUEST["we_transaction"];
 	?>&table=<?php print $GLOBALS['we_doc']->Table; ?>&classname=<?php print $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback );
@@ -326,7 +326,7 @@ if(isset($GLOBALS['we_doc'])){
 					case "check_glossary":
 						new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 						break;
-<?php
+	<?php
 }
 
 if(isset($we_doc) && $we_doc->ContentType == "image/*"){

@@ -364,7 +364,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 color: #006699;
 font-size: 11px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
-background-image: url(/webEdition/we/include/we_modules/shop/images/shopInfast.gif);
+background-image: url(<?php echo WE_MODULES_DIR; ?>shop/images/shopInfast.gif);
 background-position: bottom left;
 background-repeat: no-repeat;
 }
@@ -479,7 +479,7 @@ padding: 0px;
 .weDefaultStyle{
 background: transparent;
 background-color: transparent;
-background-image: url(/webEdition/images/pixel.gif);
+background-image: url(<?php echo IMAGE_DIR; ?>pixel.gif);
 border: 0px;
 color: #000000;
 cursor: default;
@@ -567,7 +567,7 @@ background-color: #EDEDED;
 margin: 0;
 padding: 10px 10px;
 background-color: #EDEDED;
-background-image: url(/webEdition/images/edit/editfooterback.gif);
+background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
 }
 
 .weTreeHeader {
@@ -596,7 +596,7 @@ margin-bottom:3px;
 }
 
 .weSidebarBody {
-background	: #ffffff url(/webEdition/images/backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
+background	: #ffffff url(<?php echo IMAGE_DIR;?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
 margin		: 5px;
 padding		: 0px;
 }

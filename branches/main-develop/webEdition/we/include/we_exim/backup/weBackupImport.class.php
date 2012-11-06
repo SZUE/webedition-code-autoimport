@@ -172,7 +172,7 @@ class weBackupImport{
 				}
 				if(isset($object->Path) && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 					weBackupImport::handlePrefs($object);
-				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
+				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, WE_MODULES_DIR . 'spellchecker/') === 0) && !$_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing
 				} else{
 					$object->save(true);

@@ -308,7 +308,7 @@ if(tfd.style.display=="none"){
 
 function setTreeArrow(direction) {
 try{
-	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
+	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR ?>icons/direction_" + direction+ ".gif";
 	if(direction=="right"){
 		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
 		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
@@ -457,9 +457,9 @@ switch (arguments[0]) {
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 
-	if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
+	if(file_exists(WE_MODULES_PATH . $mod . "/we_webEditionCmd_" . $mod . ".inc.php")){
 
-		include_once(WE_INCLUDES_PATH . 'we_modules/' . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
+		include_once(WE_MODULES_PATH . $mod . "/we_webEditionCmd_" . $mod . ".inc.php");
 	}
 }{ // deal with uninstalled modules
 	foreach($_we_available_modules as $m){
@@ -754,7 +754,7 @@ if(!empty($_jsincludes)){
 								}
 								wind.focus();
 							}
-							url="/webEdition/getHelp.php";
+							url="<?php echo WEBEDITION_DIR; ?>getHelp.php";
 							new jsWindow(url,"help",-1,-1,800,600,true,false,true,true);
 							break;
 						case "info_modules":
@@ -766,7 +766,7 @@ if(!empty($_jsincludes)){
 								}
 								wind.focus();
 							}
-							url="/webEdition/we_cmd.php?we_cmd[0]=info";
+							url="<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=info";
 							new jsWindow(url,"info",-1,-1,432,350,true,false,true);
 							break;
 						case "help_tools":
@@ -778,7 +778,7 @@ if(!empty($_jsincludes)){
 								}
 								wind.focus();
 							}
-							url="/webEdition/getHelp.php";
+							url="<?php echo WEBEDITION_DIR; ?>getHelp.php";
 							new jsWindow(url,"help",-1,-1,800,600,true,false,true,true);
 							break;
 						case "info_tools":
@@ -790,18 +790,18 @@ if(!empty($_jsincludes)){
 								}
 								wind.focus();
 							}
-							url="/webEdition/we_cmd.php?we_cmd[0]=info";
+							url="<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=info";
 							new jsWindow(url,"info",-1,-1,432,350,true,false,true);
 							break;
 						case "help":
 <?php if($online_help){ ?>
 								if(arguments[1])
-									url="/webEdition/getHelp.php?hid="+arguments[1];
+									url="<?php echo WEBEDITION_DIR; ?>getHelp.php?hid="+arguments[1];
 								else
-									url="/webEdition/getHelp.php";
+									url="<?php echo WEBEDITION_DIR; ?>getHelp.php";
 								new jsWindow(url,"help",-1,-1,720,600,true,false,true,true);
 <?php } else{ ?>
-								url="/webEdition/noAvailable.php";
+								url="<?php echo WEBEDITION_DIR; ?>noAvailable.php";
 								new jsWindow(url,"help_no_available",-1,-1,380,140,true,false,true);
 <?php } ?>
 							break;
@@ -1011,7 +1011,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) != "undefined" && _currentEditorRootFrame.frames[2].location != "about:blank") {
 								// tell the backend the right edit page nr and break (don't send the form)
 								//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
-								YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
+								YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
 								break;
 							}
 
@@ -1270,10 +1270,10 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							weplugin_wait=new jsWindow("<?php print WEBEDITION_DIR; ?>editors/content/eplugin/weplugin_wait.php?callback="+arguments[1],"weplugin_wait",-1,-1,300,100,true,false,true);
 							break;
 						case "edit_settings_newsletter":
-							new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_modules/newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);
+							new jsWindow("<?php print WE_MODULES_DIR; ?>newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings","newsletter_settings",-1,-1,600,750,true,false,true);
 							break;
 						case "edit_settings_customer":
-							new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_modules/customer/edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,520,300,true,false,true);
+							new jsWindow("<?php print WE_MODULES_DIR; ?>customer/edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,520,300,true,false,true);
 							break;
 						case "edit_settings_shop":
 <?php
@@ -1440,7 +1440,7 @@ if($_table_to_load){
 								url = "/";
 							}
 							try{
-								browserwind = window.open("/webEdition/openBrowser.php?url="+escape(url),"browser","menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
+								browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url="+escape(url),"browser","menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 							}catch(e) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[browser_crashed]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 							}

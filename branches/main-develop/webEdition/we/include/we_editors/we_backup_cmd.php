@@ -243,7 +243,7 @@ if(isset($_REQUEST['cmd'])){
 				print we_html_element::jsElement(
 						'if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 								if(top.busy.setProgress) top.busy.setProgress(100);
-								//top.body.location="/webEdition/we/include/we_editors/we_make_backup.php?pnt=body&amp;step=2";
+								//top.body.location="' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&amp;step=2";
 								top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
 								//top.checker.location = "' . HTML_DIR . 'white.html";
 								if(top.checker != "undefined"){

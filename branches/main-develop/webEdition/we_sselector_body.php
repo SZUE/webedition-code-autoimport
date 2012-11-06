@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array('BROWSE_SERVER', 'ADMINISTRATOR'));
 
-$supportDebuggingFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we_sselector_inc.php";
+$supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php';
 $supportDebugging = false;
 if(file_exists($supportDebuggingFile)){
 
@@ -341,13 +341,13 @@ var i = 0;
 		</table>
 		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
 			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
-		<?php } ?>
+<?php } ?>
 	</form>
 
-	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 		<script  type="text/javascript">
 			document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();

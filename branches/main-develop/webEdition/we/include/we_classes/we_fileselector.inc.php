@@ -520,9 +520,8 @@ class we_fileselector{
 			}
 
 			function getJS_attachKeyListener(){
-
 				// attach the keylistener
-				$_attachKeyListener = file($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/attachKeyListener.js');
+				$_attachKeyListener = file(JS_PATH . 'attachKeyListener.js');
 				$_addJs = "";
 				for($i = 0; $i < count($_attachKeyListener); $i++){
 					if(trim($_attachKeyListener[$i])){
