@@ -331,7 +331,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
-			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal"){
+			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal"){
 				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>';
 			} else{
 				$ueberschrift = g_l('weClass', '[template]');
@@ -392,7 +392,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			//if($TID == "")
 			$TID = $this->TemplateID;
 		}
-		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal"){
+		if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION['weS']["we_mode"] == "normal"){
 			$ueberschrift = '<a href="javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)">' . g_l('weClass', "[template]") . '</a>';
 		} else{
 			$ueberschrift = g_l('weClass', "[template]");

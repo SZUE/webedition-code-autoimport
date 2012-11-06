@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,18 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcSelectorSuggestView extends rpcView{
 
-
-class rpcSelectorSuggestView extends rpcView {
-
-
-	function getResponse($response) {
-
+	function getResponse($response){
 		header('Content-type: text/plain');
 		$suggests = $response->getData("data");
-		$html = "";
-		if (is_array($suggests)) {
-			foreach ($suggests as $sug) {
-				$html .= $sug['Path'] . "	" . $sug['ID'];
-				$html .= (isset($sug['ContentType']) ? "	" . $sug['ContentType'] : "") . "\n";
+		$html = '';
+		if(is_array($suggests)){
+			foreach($suggests as $sug){
+				$html .= $sug['Path'] . "	" . $sug['ID'] . (isset($sug['ContentType']) ? "	" . $sug['ContentType'] : "") . "\n";
 			}
 		}
 		return $html;
 	}
+
 }

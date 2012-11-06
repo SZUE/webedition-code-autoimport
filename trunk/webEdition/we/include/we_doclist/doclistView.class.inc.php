@@ -363,7 +363,7 @@ class doclistView{
 
       }
 
-      var rows = ' . (isset($_REQUEST ["searchFields"]) ? count($_REQUEST ["searchFields"]) - 1 : 0) . ';
+      var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 
       function newinput() {
 
@@ -809,10 +809,10 @@ class doclistView{
 				$r2[] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
 			}
 		}
-		if(isset($_REQUEST ['location']) && is_array($_REQUEST ['location'])){
+		if(isset($_REQUEST['location']) && is_array($_REQUEST['location'])){
 			$m = 0;
-			foreach($_REQUEST ['searchFields'] as $k => $v){
-				$r3[$m] = (isset($_REQUEST ['location'] [$k]) ? $_REQUEST ['location'] [$k] : "disabled");
+			foreach($_REQUEST['searchFields'] as $k => $v){
+				$r3[$m] = (isset($_REQUEST['location'] [$k]) ? $_REQUEST['location'] [$k] : "disabled");
 				$m++;
 			}
 		}
@@ -913,60 +913,60 @@ class doclistView{
 		$_result = array();
 		$saveArrayIds = array();
 		$searchText = array();
-		$_SESSION ['weSearch'] ['foundItems'] = 0;
+		$_SESSION['weS']['weSearch'] ['foundItems'] = 0;
 
-		foreach($_REQUEST ['we_cmd'] as $k => $v){
+		foreach($_REQUEST['we_cmd'] as $k => $v){
 			if(stristr($k, 'searchFields[') && !stristr($k, 'hidden_')){
-				$_REQUEST ['we_cmd'] ['searchFields'] [] = $v;
+				$_REQUEST['we_cmd'] ['searchFields'] [] = $v;
 			}
 			if(stristr($k, 'location[')){
-				$_REQUEST ['we_cmd'] ['location'] [] = $v;
+				$_REQUEST['we_cmd'] ['location'] [] = $v;
 			}
 			if(stristr($k, 'search[')){
-				$_REQUEST ['we_cmd'] ['search'] [] = $v;
+				$_REQUEST['we_cmd'] ['search'] [] = $v;
 			}
 		}
 
-		if(isset($_REQUEST ['we_cmd'] ['obj'])){
-			$obj = $_REQUEST ['we_cmd'] ['obj'];
+		if(isset($_REQUEST['we_cmd'] ['obj'])){
+			$obj = $_REQUEST['we_cmd'] ['obj'];
 			$thisObj = new doclistView ( );
 		} else{
 			$obj = $GLOBALS ['we_doc'];
 			$thisObj = $this;
 		}
 
-		if(isset($_REQUEST ["searchstart"])){
-			$obj->searchclassFolder->searchstart = $_REQUEST ["searchstart"];
+		if(isset($_REQUEST["searchstart"])){
+			$obj->searchclassFolder->searchstart = $_REQUEST["searchstart"];
 		}
 
 		$_table = FILE_TABLE;
 
-		$searchFields = (isset($_REQUEST ['we_cmd'] ['searchFields']) ?
-				$_REQUEST ['we_cmd'] ['searchFields'] :
+		$searchFields = (isset($_REQUEST['we_cmd'] ['searchFields']) ?
+				$_REQUEST['we_cmd'] ['searchFields'] :
 				$obj->searchclassFolder->searchFields);
 
-		$searchText = (isset($_REQUEST ['we_cmd'] ['search']) ?
-				$_REQUEST ['we_cmd'] ['search'] :
+		$searchText = (isset($_REQUEST['we_cmd'] ['search']) ?
+				$_REQUEST['we_cmd'] ['search'] :
 				$obj->searchclassFolder->search);
 
-		$location = (isset($_REQUEST ['we_cmd'] ['location']) ?
-				$_REQUEST ['we_cmd'] ['location'] :
+		$location = (isset($_REQUEST['we_cmd'] ['location']) ?
+				$_REQUEST['we_cmd'] ['location'] :
 				$obj->searchclassFolder->location);
 
-		$_order = (isset($_REQUEST ['we_cmd'] ['order']) ?
-				$_REQUEST ['we_cmd'] ['order'] :
+		$_order = (isset($_REQUEST['we_cmd'] ['order']) ?
+				$_REQUEST['we_cmd'] ['order'] :
 				$obj->searchclassFolder->order);
 
-		$_view = (isset($_REQUEST ['we_cmd'] ['setView']) ?
-				$_REQUEST ['we_cmd'] ['setView'] :
+		$_view = (isset($_REQUEST['we_cmd'] ['setView']) ?
+				$_REQUEST['we_cmd'] ['setView'] :
 				$obj->searchclassFolder->setView);
 
-		$_searchstart = (isset($_REQUEST ['we_cmd'] ['searchstart']) ?
-				$_REQUEST ['we_cmd'] ['searchstart'] :
+		$_searchstart = (isset($_REQUEST['we_cmd'] ['searchstart']) ?
+				$_REQUEST['we_cmd'] ['searchstart'] :
 				$obj->searchclassFolder->searchstart);
 
-		$_anzahl = (isset($_REQUEST ['we_cmd'] ['anzahl']) ?
-				$_REQUEST ['we_cmd'] ['anzahl'] :
+		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ?
+				$_REQUEST['we_cmd'] ['anzahl'] :
 				$obj->searchclassFolder->anzahl);
 
 		for($i = 0; $i < count($searchText); $i++){
@@ -1065,7 +1065,7 @@ class doclistView{
 
 					$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
 
-					$_SESSION ['weSearch'] ['foundItems'] = $foundItems;
+					$_SESSION['weS']['weSearch'] ['foundItems'] = $foundItems;
 
 					$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
@@ -1079,7 +1079,7 @@ class doclistView{
 			}
 		}
 
-		if($_SESSION ['weSearch'] ['foundItems'] > 0){
+		if($_SESSION['weS']['weSearch'] ['foundItems'] > 0){
 			$_db2 = new DB_WE();
 			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
@@ -1118,7 +1118,7 @@ class doclistView{
 	}
 
 	function getSortImage($for){
-		$order = (isset($_REQUEST ['order']) ? $_REQUEST ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
+		$order = (isset($_REQUEST['order']) ? $_REQUEST['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
@@ -1270,14 +1270,14 @@ class doclistView{
 	function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		$thisObj = (isset($_REQUEST ['we_cmd'] ['obj']) ? new doclistView() : $this);
-		$order = (isset($_REQUEST ['we_cmd'] ['order']) ? $_REQUEST ['we_cmd'] ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
-		$mode = (isset($_REQUEST ['we_cmd'] ['mode']) ? $_REQUEST ['we_cmd'] ['mode'] : $GLOBALS ['we_doc']->searchclassFolder->mode);
-		$setView = (isset($_REQUEST ['we_cmd'] ['setView']) ? $_REQUEST ['we_cmd'] ['setView'] : $GLOBALS ['we_doc']->searchclassFolder->setView);
-		$_anzahl = (isset($_REQUEST ['we_cmd'] ['anzahl']) ? $_REQUEST ['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
-		$id = (isset($_REQUEST ['id']) ? $_REQUEST ['id'] : $GLOBALS ['we_doc']->ID);
-		$we_transaction = (isset($_REQUEST ['we_cmd'] ['we_transaction']) ?
-				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST ['we_cmd'] ['we_transaction']) ? $_REQUEST ['we_cmd'] ['we_transaction'] : 0) :
+		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView() : $this);
+		$order = (isset($_REQUEST['we_cmd'] ['order']) ? $_REQUEST['we_cmd'] ['order'] : $GLOBALS ['we_doc']->searchclassFolder->order);
+		$mode = (isset($_REQUEST['we_cmd'] ['mode']) ? $_REQUEST['we_cmd'] ['mode'] : $GLOBALS ['we_doc']->searchclassFolder->mode);
+		$setView = (isset($_REQUEST['we_cmd'] ['setView']) ? $_REQUEST['we_cmd'] ['setView'] : $GLOBALS ['we_doc']->searchclassFolder->setView);
+		$_anzahl = (isset($_REQUEST['we_cmd'] ['anzahl']) ? $_REQUEST['we_cmd'] ['anzahl'] : $GLOBALS ['we_doc']->searchclassFolder->anzahl);
+		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS ['we_doc']->ID);
+		$we_transaction = (isset($_REQUEST['we_cmd'] ['we_transaction']) ?
+				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd'] ['we_transaction']) ? $_REQUEST['we_cmd'] ['we_transaction'] : 0) :
 				$GLOBALS ['we_transaction']);
 
 		return
@@ -1311,7 +1311,7 @@ class doclistView{
 	}
 
 	function getSearchParameterBottom($foundItems){
-		$thisObj = (isset($_REQUEST ['we_cmd'] ['obj']) ? new doclistView () : $this);
+		$thisObj = (isset($_REQUEST['we_cmd'] ['obj']) ? new doclistView () : $this);
 
 		if(we_hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
@@ -1338,10 +1338,10 @@ class doclistView{
 	 */
 	function getNextPrev($we_search_anzahl){
 
-		if(isset($_REQUEST ['we_cmd'] ['obj'])){
-			$obj = $_REQUEST ['we_cmd'] ['obj'];
-			$anzahl = $_SESSION ['weSearch'] ['anzahl'];
-			$searchstart = $_SESSION ['weSearch'] ['searchstart'];
+		if(isset($_REQUEST['we_cmd'] ['obj'])){
+			$obj = $_REQUEST['we_cmd'] ['obj'];
+			$anzahl = $_SESSION['weS']['weSearch'] ['anzahl'];
+			$searchstart = $_SESSION['weS']['weSearch'] ['searchstart'];
 		} else{
 			$obj = $GLOBALS ['we_doc'];
 			$anzahl = $obj->searchclassFolder->anzahl;
@@ -1372,7 +1372,7 @@ class doclistView{
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, "onChange=\"this.form.elements['searchstart'].value = this.value; search(false);\"");
 
-		if(!isset($_REQUEST ['we_cmd'] ['setInputSearchstart'])){
+		if(!isset($_REQUEST['we_cmd'] ['setInputSearchstart'])){
 			if(!defined("searchstart")){
 				define("searchstart", true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);

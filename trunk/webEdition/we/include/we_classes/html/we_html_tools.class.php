@@ -259,26 +259,6 @@ abstract class we_html_tools{
 				"", $width, $parts, $marginLeft, $buttons, -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
-	static function htmlDialogBorder3Row($content, $class = "middlefont", $bgColor = ""){
-		$anz = sizeof($content);
-		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' . we_html_tools::getPixel(
-				8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
-
-		for($f = 0; $f < $anz; $f++){
-			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
-			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' . ((isset(
-					$content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' . ((isset(
-					$content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' . ((isset(
-					$content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
-		}
-		$out .= '
-					<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' . we_html_tools::getPixel(
-				8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>
-
-				';
-		return $out;
-	}
-
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$anz = sizeof($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
@@ -295,7 +275,7 @@ abstract class we_html_tools{
 		//CONTENT
 		$zn1 = sizeof($content);
 		for($i = 0; $i < $zn1; $i++){
-			$out .= '<tr>' . self::htmlDialogBorder3Row($content[$i], $class, $bgColor) . '</tr>';
+			$out .= '<tr>' . self::htmlDialogBorder4Row($content[$i], $class, $bgColor) . '</tr>';
 		}
 
 		$out .= '</table>';
@@ -328,7 +308,7 @@ abstract class we_html_tools{
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' . ((isset(
 					$content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' . ((isset(
 					$content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' . ((isset(
-					$content[$f]["dat"]) && $content[$f]["dat"] != '') ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+					$content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 		}
 		$out .= '
 					<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' . we_html_tools::getPixel(
