@@ -262,11 +262,12 @@ function makeArrayFromAttribs($attr){
 }
 
 function cutSimpleText($text, $len){
+	$text = substr($text, 0, $len);
 	$pos = array(
 		0,
-		strrpos($text, ' ', $len),
-		strrpos($text, "\n", $len),
-		strrpos($text, "\t", $len),
+		strrpos($text, ' '),
+		strrpos($text, "\n"),
+		strrpos($text, "\t"),
 	);
 	//cut to last whitespace
 	return substr($text, 0, max($pos));
