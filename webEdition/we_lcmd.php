@@ -29,8 +29,8 @@ we_html_tools::htmlTop('command-bridge', '', 5);
 	// bugfix WE-356
 	self.focus();
 <?php
-if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
-	$_REQUEST['we_cmd'][0] = $_REQUEST["wecmd0"];
+if(isset($_REQUEST['wecmd0'])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
+	$_REQUEST['we_cmd'][0] = $_REQUEST['wecmd0'];
 }
 foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));

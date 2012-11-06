@@ -59,9 +59,14 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 		if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
 			$src = $thumbObj->getOutputPath(false) . '?rand=' . $randval;
 		} else{
-			$src = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&amp;we_cmd[1]=' .
-				$we_doc->ContentType . '&amp;we_cmd[2]=' .
-				$we_transaction . '&amp;we_cmd[3]=' . ($useOrig ? "" : $thumbid) . '&amp;rand=' . $randval;
+			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
+					array(
+					'we_cmd[0]' => 'show_binaryDoc',
+					'we_cmd[1]' => $we_doc->ContentType,
+					'we_cmd[2]' => $we_transaction,
+					'we_cmd[3]' => ($useOrig ? '' : $thumbid),
+					'rand' => $randval
+					), '', '&amp;');
 		}
 
 		$table .= '<td><image src="' . $src . '" width="' . $thumbObj->getOutputWidth() . '" height="' . $thumbObj->getOutputHeight() . '" border="0"></td>';

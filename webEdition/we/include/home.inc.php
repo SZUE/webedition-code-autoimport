@@ -915,7 +915,7 @@ clone.style.display="inline";
 
 
 			function getUser(){
-				var url = '/webEdition/we_cmd.php?';
+				var url = '<?php echo WEBEDITION_DIR;?>we_cmd.php?';
 				for(var i = 0; i < arguments.length; i++) {
 					url += 'we_cmd['+i+']='+escape(arguments[i]);
 					if(i < (arguments.length - 1)) url += '&';

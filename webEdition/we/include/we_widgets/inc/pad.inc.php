@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
-$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?we_cmd[0]=' . $pad_csv . '&amp;we_cmd[1]=&amp;we_cmd[2]=home&amp;we_cmd[3]=' . $aProps[1] . '&amp;we_cmd[4]=' . rawurlencode(
-		$pad_header_enc) . '&amp;we_cmd[5]=' . $iCurrId . '&amp;we_cmd[6]=' . $aProps[1] . '&amp;we_cmd[7]=home';
+$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_query(array('we_cmd[0]' => $pad_csv, 'we_cmd[2]' => 'home', 'we_cmd[3]' => $aProps[1], 'we_cmd[4]' =>
+		$pad_header_enc, 'we_cmd[5]' => $iCurrId, 'we_cmd[6]' => $aProps[1], 'we_cmd[7]' => 'home'));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';
 $_iFrmPadAtts['scrolling'] = 'no';
@@ -39,9 +40,9 @@ $_iFrmPadAtts['frameborder'] = '0';
 $_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 
 $oTblCont = new we_html_table(array(
-	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
-), 1, 1);
+		"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
+		), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
-	g_l('cockpit','[notes]') . " - " . base64_decode($pad_header_enc), ""
+	g_l('cockpit', '[notes]') . " - " . base64_decode($pad_header_enc), ""
 );

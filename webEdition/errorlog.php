@@ -107,20 +107,20 @@ function getNavButtons($size, $start){
 		$prevDiv = $start - $div;
 
 		return '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-			we_button::create_button("first", '/webEdition/errorlog.php?start=' . ($size - 1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) . '</td><td>' .
-			we_button::getButton("-" . $div, 'btn', "window.location.href='/webEdition/errorlog.php?start=" . $nextDiv . "';", we_button::WIDTH, '', ($nextDiv >= $size)) . '</td><td>' .
-			we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
+			we_button::create_button("first", WEBEDITION_DIR . 'errorlog.php?start=' . ($size - 1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) . '</td><td>' .
+			we_button::getButton("-" . $div, 'btn', "window.location.href='" . WEBEDITION_DIR . "errorlog.php?start=" . $nextDiv . "';", we_button::WIDTH, '', ($nextDiv >= $size)) . '</td><td>' .
+			we_button::create_button("back", WEBEDITION_DIR . 'errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
 			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start) .
 			"&nbsp;" . g_l('global', '[from]') . " " . ($size) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
-			we_button::create_button("next", '/webEdition/errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) . '</td><td>' .
-			we_button::getButton("+" . $div, 'btn2', "window.location.href='/webEdition/errorlog.php?start=" . $prevDiv . "';", we_button::WIDTH, '', ($prevDiv <= 0)) . '</td><td>' .
-			we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
+			we_button::create_button("next", WEBEDITION_DIR . 'errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) . '</td><td>' .
+			we_button::getButton("+" . $div, 'btn2', "window.location.href='" . WEBEDITION_DIR . "errorlog.php?start=" . $prevDiv . "';", we_button::WIDTH, '', ($prevDiv <= 0)) . '</td><td>' .
+			we_button::create_button("last", WEBEDITION_DIR . 'errorlog.php?start=0', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
 			"</td></tr></table>";
 	}
 }
 
 $buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("delete_all", '/webEdition/errorlog.php' . "?delete"), we_button::create_button("refresh", '/webEdition/errorlog.php'), we_button::create_button("close", "javascript:self.close()")
+		we_button::create_button("delete_all", WEBEDITION_DIR . 'errorlog.php' . "?delete"), we_button::create_button("refresh", WEBEDITION_DIR . 'errorlog.php'), we_button::create_button("close", "javascript:self.close()")
 );
 
 

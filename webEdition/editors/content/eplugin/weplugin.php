@@ -208,7 +208,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlBody(array("bgcolor" => "white", "onload" => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array("id" => "debug"), "") .
 			we_html_element::htmlHidden(array("name" => "hm", "value" => "0")) .
 			$applet .
-			we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => "/webEdition/editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) .
+			we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => WEBEDITION_DIR . "editors/content/eplugin/weplugin_cmd.php", "method" => "post", "accept-charset" => $charset), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "")) .
 				we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => "")) .
 				we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => "")) .
 				we_html_element::htmlHidden(array("name" => "we_cmd[3]", "value" => "")) .

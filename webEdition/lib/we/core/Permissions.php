@@ -57,7 +57,7 @@ class we_core_Permissions{
 
 		if(!isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ""){
 			$page = new we_ui_layout_HTMLPage();
-			$page->addJSFile('/webEdition/js/we_showMessage.js');
+			$page->addJSFile(JS_DIR . 'we_showMessage.js');
 
 			$message = we_util_Strings::quoteForJSString($translate->_('You are not permitted to perform this action! Please login again.'), false);
 
