@@ -127,13 +127,10 @@ switch($_REQUEST['we_cmd'][0]){
 	case "export_documents":
 		$_tbl = FILE_TABLE;
 	case "export_templates":
-		if(!isset($_tbl)){
-			$_tbl = TEMPLATES_TABLE;
-		}
+		$_tbl = (!isset($_tbl) ? $_tbl : TEMPLATES_TABLE);
 	case "export_objects":
-		if(!isset($_tbl)){
-			$_tbl = OBJECT_FILES_TABLE;
-		}
+		$_tbl = (!isset($_tbl) ? $_tbl : OBJECT_FILES_TABLE);
+
 
 
 	default:

@@ -203,7 +203,7 @@ class weToolFrames extends weModuleFrames{
 
 		$menu = '';
 		ob_start();
-		$jmenu->printMenu();
+		$jmenu->printMenu('cmd');
 		$menu = ob_get_contents();
 		ob_end_clean();
 
