@@ -32,17 +32,16 @@ class weBannerBase{
 	var $db;
 	var $persistents = array();
 	var $table = "";
-	var $ClassName;
+	var $ClassName = "weBannerBase";
 
 	function __construct(){
 		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
-		$this->ClassName = "weBannerBase";
 	}
 
 	function load(){
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT * FROM " . $this->table . " WHERE ID=" . intval($this->ID));
+		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record())
 			for($i = 0; $i < sizeof($tableInfo); $i++){
 				$fieldName = $tableInfo[$i]["name"];

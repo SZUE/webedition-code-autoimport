@@ -103,6 +103,7 @@ class weJavaMenu{
 				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
 					<param name="phpext" value=".php"/>' .
 				($cmdTarget ? '<param name="cmdTarget" value="' . $cmdTarget . '"/>' : '');
+			t_e($cmdTarget);
 			$i = 0;
 			foreach($this->entries as $id => $m){
 				if(we_hasPerm('ADMINISTRATOR')){
