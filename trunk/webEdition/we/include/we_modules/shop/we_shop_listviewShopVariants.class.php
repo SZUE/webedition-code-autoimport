@@ -100,33 +100,18 @@ class we_shop_listviewShopVariants extends listviewBase{
 	}
 
 	function next_record(){
-
 		$this->Position = ($this->count + $this->start);
-
 		if(isset($this->VariantData['Record'][$this->Position])){
-
 			$ret = $this->VariantData['Record'][$this->Position];
 
 			list($key, $vardata) = each($ret);
 			foreach($vardata as $name => $value){
 
-				if(isset($value['type']) && $value['type'] == 'img'){
-					// there is a difference between objects and webEdition Documents
-					$ret[$name] = isset($value['bdid']) ? $value['bdid'] : $value['dat'];
-				} else{
-					/* dies f�hrt dazu, dass nur im Default (und nicht in den varianten) die nicht-varianten-Felder auftauchen
-					  if ($key == $this->DefaultName) {
-					  $ret[$name] = $this->Model->getElement($name);
-					  } else {
-					  $ret[$name] = $this->Model->getElement(WE_SHOP_VARIANTS_PREFIX . $this->Position . '_' . $name);
-					  }
-					 */
-					if(isset($value['dat'])){
-						$ret[$name] = $value['dat'];
-					} else{
-						$ret[$name] = '';
-					}
-				}
+				$ret[$name] = (isset($value['type']) && $value['type'] == 'img' ?
+						// there is a difference between objects and webEdition Documents
+						isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
+						(isset($value['dat']) ? $value['dat'] : '')
+					);
 			}
 
 			$varUrl = '';
@@ -146,29 +131,30 @@ class we_shop_listviewShopVariants extends listviewBase{
 					$Url = f("SELECT Url from " . OBJECT_FILES_TABLE . " WHERE ID=" . $this->Id, 'Url', $this->DB_WE);
 					if($Url != ''){
 
-						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-							$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $Url . ($varUrl ? "?$varUrl" : '');
-						} else{
-							$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $Url . ($varUrl ? "?$varUrl" : '');
-						}
+						$ret['WE_PATH'] =
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
+							( show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+								'' : '/' . $path_parts['filename']
+							) . '/' . $Url . ($varUrl ? "?$varUrl" : '');
 					} else{
-						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-							$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
-						} else{
-							$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
-						}
+						$ret['WE_PATH'] = (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '') :
+								$GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '')
+							);
 					}
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
+					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+						$ret['WE_PATH'] =
+							$GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
 					} else{
 						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
 					}
 				}
 			} else{ // webEdition Document
 				$path_parts = pathinfo($this->Model->Path);
-				if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
+				if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					$ret['WE_PATH'] =
+						$this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
 				} else{
 					$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? "?$varUrl" : '');
 				}
@@ -182,14 +168,8 @@ class we_shop_listviewShopVariants extends listviewBase{
 	}
 
 	function f($key){
-
-		if(isset($this->Record[$key])){
-			return $this->Record[$key];
-		} else{
-			return '';
-		}
+		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
 	}
 
 }
 
-?>

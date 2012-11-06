@@ -36,9 +36,9 @@ class weJUpload{
 	function __construct(){
 
 		$this->Params = array(
-			'postURL' => getServerUrl(true) . '/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
+			'postURL' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/import.php?jupl=1&csid=' . session_id(),
 			'maxFileSize' => getUploadMaxFilesize(false) - (10 * 1024),
-			'afterUploadURL' => getServerUrl(true) . '/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
+			'afterUploadURL' => getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
 			'serverProtocol' => 'HTTP/1.1',
 			'showLogWindow' => 'onError',
 			'debugLevel' => 99,
