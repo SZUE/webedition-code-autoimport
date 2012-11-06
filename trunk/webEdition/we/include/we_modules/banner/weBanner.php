@@ -80,7 +80,7 @@ class weBanner extends weBannerBase{
 	 * Can load or create new Banner Definition depends of parameter
 	 */
 	function __construct($bannerID = 0, $IsFolder = 0){
-		$this->weBannerBase();
+		parent::__construct();
 		$this->table = BANNER_TABLE;
 
 		$this->persistents = array("ID",
@@ -153,7 +153,7 @@ class weBanner extends weBannerBase{
 			$this->ID = $id;
 		}
 		if($this->ID){
-			weBannerBase::load();
+			parent::load();
 			$ppath = id_to_path($this->ParentID, BANNER_TABLE);
 			$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
 			return true;
@@ -181,7 +181,7 @@ class weBanner extends weBannerBase{
 	function save(){
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
 		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
-		weBannerBase::save();
+		parent::save();
 	}
 
 	/**
@@ -192,7 +192,7 @@ class weBanner extends weBannerBase{
 			return false;
 		}
 
-		weBannerBase::delete();
+		parent::delete();
 		$this->db->query("DELETE FROM " . BANNER_VIEWS_TABLE . " WHERE ID=" . intval($this->ID));
 		$this->db->query("DELETE FROM " . BANNER_CLICKS_TABLE . " WHERE ID=" . intval($this->ID));
 		if($this->IsFolder){
