@@ -276,7 +276,7 @@ class we_objectEx extends we_object{
 		return false;
 	}
 	
-	function getDefaultArray($type = '', $default = ''){
+	function getDefaultArray($name,$type = '', $default = ''){
 		$defaultArr = array();
 		$defaultArr['default'] = '';
 		$defaultArr['defaultThumb'] = '';
@@ -327,7 +327,7 @@ class we_objectEx extends we_object{
 	
 	function addField($name, $type = '', $default = ''){
 
-		$defaultArr = $this->getDefaultArray($type, $default);
+		$defaultArr = $this->getDefaultArray($name, $type, $default);
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		$this->DefaultValues = serialize($this->SerializedArray);
@@ -389,7 +389,7 @@ class we_objectEx extends we_object{
 				}
 				
 			} else {
-				$defaultArr=  $this->getDefaultArray($newtype,$default);
+				$defaultArr=  $this->getDefaultArray($name,$newtype,$default);
 			}
 			$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		} else{
