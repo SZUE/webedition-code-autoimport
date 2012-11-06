@@ -57,7 +57,7 @@ we_html_tools::htmlTop();
 	//-->
 </script>
 <?php
-include(WE_INCLUDES_PATH . 'multiEditor/EditorFrameController.inc.php');
+include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 ?>
 </head>
 <body>
