@@ -361,8 +361,6 @@ class weBackupWizard{
 	}
 
 	function getHTMLRecoverStep2(){
-		$parts = array();
-
 		$js = we_html_element::jsElement('
 			function setLocation(loc){
 				location.href=loc;
@@ -381,9 +379,10 @@ class weBackupWizard{
 
 			self.focus();
 		');
-
-		array_push($parts, array("headline" => "", "html" => we_forms::radiobutton("import_server", true, "import_from", g_l('backup', "[import_from_server]")), "space" => 0, "noline" => 1));
-		array_push($parts, array("headline" => "", "html" => we_forms::radiobutton("import_upload", false, "import_from", g_l('backup', "[import_from_local]")), "space" => 0, "noline" => 1));
+		$parts = array(
+			array("headline" => "", "html" => we_forms::radiobutton("import_server", true, "import_from", g_l('backup', "[import_from_server]")), "space" => 0, "noline" => 1),
+			array("headline" => "", "html" => we_forms::radiobutton("import_upload", false, "import_from", g_l('backup', "[import_from_local]")), "space" => 0, "noline" => 1)
+		);
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 					we_html_element::htmlHidden(array("name" => "step", "value" => "3")) .
@@ -415,13 +414,13 @@ class weBackupWizard{
 
 		if(isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == "import_upload"){
 			if($maxsize){
-				array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), 1, 600, false), "space" => 0, "noline" => 1));
+				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 				if(!(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '')){
-					array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), 1, 600, false), "space" => 0, "noline" => 1));
+					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 				}
-				array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, 600), "space" => 0, "noline" => 1));
-				array_push($parts, array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => "35")), "space" => 0, "noline" => 1));
-				array_push($parts, array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1));
+				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, 600), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => "35")), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 			}
 		} else{
 
@@ -462,8 +461,7 @@ class weBackupWizard{
 								} else if((substr_count($ts, '_') == 6)){
 									$comp = weFile::getCompression($entry);
 									$_dateParts = explode('__', $ts);
-									$_date = explode('_', $_dateParts[0]);
-									$_date = array_reverse($_date);
+									$_date = array_reverse(explode('_', $_dateParts[0]));
 									$url = '';
 									if(isset($_date[3])){
 										$url = $_date[3];
@@ -720,10 +718,11 @@ class weBackupWizard{
 				self.focus();
 		');
 
-		if((isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == "import_upload"))
+		if((isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == "import_upload")){
 			$form_attribs = array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data");
-		else
+		} else{
 			$form_attribs = array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd");
+		}
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 					we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
@@ -744,7 +743,6 @@ class weBackupWizard{
 	}
 
 	function getHTMLRecoverStep4(){
-		$parts = array();
 
 		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
@@ -754,8 +752,10 @@ class weBackupWizard{
 			unset($_SESSION['weS']['weBackupVars']);
 		}
 
-		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[finished_success]"), 2, 600), "space" => 0, "noline" => 1));
-		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), 1, 600, false), "space" => 0, "noline" => 1));
+		$parts = array(
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[finished_success]"), 2, 600), "space" => 0, "noline" => 1),
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), 1, 600, false), "space" => 0, "noline" => 1)
+		);
 
 		$js = we_html_element::jsElement('
 			function setLocation(loc){
@@ -855,13 +855,14 @@ class weBackupWizard{
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup', "[filename_compression]") : g_l('backup', "[filename_info]")), 2, 600, false), "space" => 0, "noline" => 1),
-			array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, "weBackup_" . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . ".xml", "", "", "text"), "space" => 100, "noline" => 1),
+			array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, "weBackup_" . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . ".xml", "", "", "text"), "space" => 100, "noline" => 1)
 		);
 
-		$switchbut = 7;
 		if($compression){
 			$switchbut = 9;
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox("gzip", true, "compress", g_l('backup', "[compress]"), false, "defaultfont", "", false, g_l('backup', '[ftp_hint]')), "space" => 100);
+		} else{
+			$switchbut = 7;
 		}
 
 
@@ -1173,9 +1174,9 @@ class weBackupWizard{
 					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
 					if($do_import_after_backup == 1){
 						$body = we_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
-					} else if(isset($_SESSION["inbackup"]) && $_SESSION["inbackup"]){
+					} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
 						$body = we_button::create_button("next", "javascript:top.opener.weiter();top.close();");
-						unset($_SESSION["inbackup"]);
+						unset($_SESSION['weS']['inbackup']);
 					} else{
 						$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
 						$body = we_button::create_button("close", "javascript:top.close();");
@@ -1331,40 +1332,44 @@ class weBackupWizard{
 
 					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
 
-					if($ret == 1){
-						$percent = $we_backup_obj->getExportPercent();
-						print
-							we_html_element::jsElement('
+					switch($ret){
+						case 1:
+							$percent = $we_backup_obj->getExportPercent();
+							print
+								we_html_element::jsElement('
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . $we_backup_obj->current_description . '");
 										if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
 										top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=backup&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
 									');
-					} else if($ret == -1){
-						print
-							we_html_element::jsElement('
+							break;
+						case -1:
+							print
+								we_html_element::jsElement('
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
 									');
-					} else{
-						$we_backup_obj->writeFooter();
-						$ok = $we_backup_obj->printDump2BackupDir();
-						$temp_filename = $we_backup_obj->saveState($temp_filename);
-						if($ok){
-							print
-								we_html_element::jsElement('
+							break;
+						default:
+							$we_backup_obj->writeFooter();
+							$ok = $we_backup_obj->printDump2BackupDir();
+							$temp_filename = $we_backup_obj->saveState($temp_filename);
+							if($ok){
+								print
+									we_html_element::jsElement('
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=true&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
 									');
-						} else{
-							print
-								we_html_element::jsElement('
+							} else{
+								print
+									we_html_element::jsElement('
 										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 										if(top.busy.setProgress) top.busy.setProgress(100);
 										top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
 									');
-						}
+							}
+							break;
 					}
 					unset($we_backup_obj);
 					break;
@@ -1429,10 +1434,8 @@ class weBackupWizard{
 						} else if($we_upload_file && ($we_upload_file != "none")){
 							$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"];
 							if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
-								print we_html_element::jsElement(
-										'top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
-									);
+								print we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
+										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 								return '';
 							}
 							we_util_File::insertIntoCleanUp($we_backup_obj->filename, time());
@@ -1440,9 +1443,7 @@ class weBackupWizard{
 						} else{
 							$we_alerttext = sprintf(g_l('alert', "[we_backup_import_upload_err]"), ini_get("upload_max_filesize"));
 							print
-								we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR)
-								);
+								we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR));
 							$ok = false;
 						}
 
@@ -1454,17 +1455,8 @@ class weBackupWizard{
 						$we_backup_obj->getVersion($we_backup_obj->filename);
 						$we_backup_obj->file_end = $we_backup_obj->splitFile2();
 						if($we_backup_obj->file_end < 0){
-							if($we_backup_obj->file_end == -10){
-								print we_html_element::jsElement(
-										'top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_split_file]"), basename($we_backup_obj->filename)) . g_l('backup', "[cannot_split_file_ziped]"), we_message_reporting::WE_MESSAGE_ERROR)
-									);
-							} else{
-								print we_html_element::jsElement(
-										'top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_split_file]"), basename($we_backup_obj->filename)), we_message_reporting::WE_MESSAGE_ERROR)
-									);
-							}
+							print we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
+									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_split_file]"), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', "[cannot_split_file_ziped]") : ''), we_message_reporting::WE_MESSAGE_ERROR));
 							return '';
 						}
 						if($handle_options["core"]){
@@ -1541,7 +1533,7 @@ class weBackupWizard{
 					}
 					break;
 				case "deleteall":
-					$_SESSION["backup_delete"] = 1;
+					$_SESSION['weS']['backup_delete'] = 1;
 					$_SESSION['weS']['delete_files_nok'] = array();
 					$_SESSION["delete_files_info"] = g_l('backup', "[files_not_deleted]");
 					print we_html_element::jsScript(JS_DIR . "windows.js");
@@ -1650,10 +1642,10 @@ class weBackupWizard{
 		$steps = array(1, 10, 20, 60, 100, 150, 200, 300, 400, 500, 600, 800, 1000, 5000, 10000);
 		$steps_code = "";
 		foreach($steps as $step){
-			if($step == $weBackup->default_backup_steps)
-				$steps_code.=we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "backup_steps", "checked" => true)) . "&nbsp;&nbsp;";
-			else
-				$steps_code.=we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "backup_steps")) . "&nbsp;&nbsp;";
+			$steps_code.=($step == $weBackup->default_backup_steps ?
+					we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "backup_steps", "checked" => true)) :
+					we_html_element::htmlInput(array("type" => "radio", "value" => "$step", "name" => "backup_steps"))
+				) . "&nbsp;&nbsp;";
 		}
 
 		$perf->setCol(1, 0, array("class" => "defaultfont", "colspan" => 3), $steps_code);
@@ -1684,11 +1676,7 @@ class weBackupWizard{
 		}
 		$_execute = $_execute * 1500;
 
-		if($this->mode == self::RECOVER){
-			$cmd = 'import';
-		} else{
-			$cmd = 'export';
-		}
+		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
 		$_retry = 5;
 

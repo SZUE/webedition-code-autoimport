@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,29 +22,27 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetCategoryView extends rpcView{
 
-class rpcGetCategoryView extends rpcView {
-
-	function getResponse($response) {
-
+	function getResponse($response){
 		$_elems = "";
-		$_i=0;
+		$_i = 0;
 
-		foreach ($response->getData("elementsById") as $_element => $_property) {
-			$_elems .=($_i>0?", ":"")."
-		".$_i.':{
-			elemId: "'.$_element.'",
+		foreach($response->getData("elementsById") as $_element => $_property){
+			$_elems .=($_i > 0 ? ", " : "") . "
+		" . $_i . ':{
+			elemId: "' . $_element . '",
 			props: {';
-				$_loop = 0;
-				foreach ($_property as $_propertyName => $_propertyValue) {
-					$_elems .= ($_loop>0?", ":"") . "
-				".$_loop .':{
-					prop:"' . $_propertyName.'",
-					val: "'.$_propertyValue.'"
+			$_loop = 0;
+			foreach($_property as $_propertyName => $_propertyValue){
+				$_elems .= ($_loop > 0 ? ", " : "") . "
+				" . $_loop . ':{
+					prop:"' . $_propertyName . '",
+					val: "' . $_propertyValue . '"
 				}';
-					$_loop++;
-				}
-				$_elems .= '
+				$_loop++;
+			}
+			$_elems .= '
 			}
 		}';
 			$_i++;
@@ -58,4 +57,5 @@ HTS1;
 
 		return $json;
 	}
+
 }

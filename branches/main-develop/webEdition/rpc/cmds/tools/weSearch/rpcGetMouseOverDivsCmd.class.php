@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,39 +22,36 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/define.conf.php');
 
-class rpcGetMouseOverDivsCmd extends rpcCmd {
+class rpcGetMouseOverDivsCmd extends rpcCmd{
 
-	function execute() {
+	function execute(){
 
 		$resp = new rpcResponse();
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/define.conf.php');
-
-
-		$whichsearch=$_REQUEST['whichsearch'];
-		$setView = $_REQUEST['we_cmd']['setView'.$whichsearch.''];
-		$anzahl = $_REQUEST['we_cmd']['anzahl'.$whichsearch.''];
-		$searchstart = $_REQUEST['we_cmd']['searchstart'.$whichsearch.''];
+		$whichsearch = $_REQUEST['whichsearch'];
+		$setView = $_REQUEST['we_cmd']['setView' . $whichsearch . ''];
+		$anzahl = $_REQUEST['we_cmd']['anzahl' . $whichsearch . ''];
+		$searchstart = $_REQUEST['we_cmd']['searchstart' . $whichsearch . ''];
 
 		$_REQUEST['we_cmd']['obj'] = unserialize($_SESSION['weSearch_session']);
 
 		$code = "";
-		if($setView==1) {
+		if($setView == 1){
 
 			$content = searchtoolView::searchProperties($whichsearch);
 
-			$x = $searchstart+$anzahl;
-			if ($x>sizeof($content)) {
-				$x = $x-($x-sizeof($content));
+			$x = $searchstart + $anzahl;
+			if($x > count($content)){
+				$x = $x - ($x - count($content));
 			}
-			$code = searchtoolView::makeMouseOverDivs($x,$content,$whichsearch);
+			$code = searchtoolView::makeMouseOverDivs($x, $content, $whichsearch);
 		}
 
-		$resp->setData("data",$code) ;
+		$resp->setData("data", $code);
 
 		return $resp;
-
 	}
 
 }

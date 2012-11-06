@@ -26,12 +26,12 @@
 class copyFolderFinishFrag extends copyFolderFrag{
 
 	function init(){
-		if(isset($_SESSION["WE_CREATE_TEMPLATE"])){
+		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$this->alldata = array();
-			foreach($_SESSION["WE_CREATE_TEMPLATE"] as $id){
+			foreach($_SESSION['weS']['WE_CREATE_TEMPLATE'] as $id){
 				array_push($this->alldata, $id);
 			}
-			unset($_SESSION["WE_CREATE_TEMPLATE"]);
+			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 	}
 
@@ -70,8 +70,8 @@ class copyFolderFinishFrag extends copyFolderFrag{
 
 	function finish(){
 
-		if(isset($_SESSION["WE_CREATE_TEMPLATE"])){
-			unset($_SESSION["WE_CREATE_TEMPLATE"]);
+		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
+			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		print we_html_element::jsElement(
 			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(

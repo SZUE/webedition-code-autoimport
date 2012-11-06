@@ -32,12 +32,12 @@ we_html_tools::protect();
 
 $import_files = new we_import_files();
 
-if(isset($_SESSION['_we_import_files'])){
+if(isset($_SESSION['weS']['_we_import_files'])){
 	$import_files->loadPropsFromSession();
 }
 
 if(isset($_REQUEST['pathinfo0'])){
-	$_SESSION["prefs"]['juploadPath']= $_REQUEST['pathinfo0'];
+	$_SESSION["prefs"]['juploadPath'] = $_REQUEST['pathinfo0'];
 }
 
 $_counter = 0;
@@ -48,10 +48,10 @@ foreach($_FILES as $_index => $_file){
 		$error = $import_files->importFile();
 
 		if(count($error)){
-			if(!isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
-				$_SESSION["WE_IMPORT_FILES_ERRORs"] = array();
+			if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
+				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 			}
-			$_SESSION["WE_IMPORT_FILES_ERRORs"][] = $error;
+			$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = $error;
 		}
 
 		flush();
@@ -62,12 +62,13 @@ foreach($_FILES as $_index => $_file){
 	}
 }
 
-if(isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
+if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 	echo 'ERROR: ';
-	foreach($_SESSION["WE_IMPORT_FILES_ERRORs"] as $err){
+	foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
 		echo '- ' . $err['filename'] . ' => ' . $err['error'] . '\n';
 	}
 	echo "\n";
+	unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 } else{
 	echo "SUCCESS\n";
 }

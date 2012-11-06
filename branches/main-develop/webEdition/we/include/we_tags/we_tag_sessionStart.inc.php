@@ -56,7 +56,7 @@ function we_tag_sessionStart($attribs){
 		$GLOBALS['WE_LOGOUT'] = true;
 	} else{
 		if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
-			$_SESSION['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
+			$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 		}
 		if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 			if(!isset($_SESSION['webuser'])){

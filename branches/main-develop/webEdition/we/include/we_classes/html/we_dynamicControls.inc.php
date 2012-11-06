@@ -73,22 +73,8 @@ class we_dynamicControls{
 	 * @return     string
 	 */
 	function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
-		// Define start of JavaScript
-		$_JavaScript_start = '
-			<script  type="text/javascript">
-			<!--';
-
-		// Define end of JavaScript
-		$_JavaScript_end = '
-			//-->
-			</script>';
-
-		// Initialize JavaScript functions variable
-		$_JavaScript_functions = "";
-
-
 		// Build regular JavaScript functions
-		$_JavaScript_functions .= '
+		$_JavaScript_functions = '
 				/**
 				 * This function opens or closes one group
 				 *
@@ -245,9 +231,7 @@ class we_dynamicControls{
 				}';
 
 		// Build string to be returned by the function
-		$_JavaScript = $_JavaScript_start . $_JavaScript_functions . $_JavaScript_end;
-
-		return $_JavaScript;
+		return we_html_element::jsElement($_JavaScript_functions);
 	}
 
 	/**

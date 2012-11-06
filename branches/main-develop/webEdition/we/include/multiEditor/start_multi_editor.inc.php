@@ -61,34 +61,34 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 	$jsCommand = _buildJsCommand($directCmd);
 } else{ // check preferences for which document to open at startup
 // <we:linkToSeeMode> !!!!
-	if(isset($_SESSION["SEEM"]) && isset($_SESSION["SEEM"]["open_selected"])){
-		switch($_SESSION["SEEM"]["startType"]){
+	if(isset($_SESSION['weS']['SEEM']) && isset($_SESSION['weS']['SEEM']["open_selected"])){
+		switch($_SESSION['weS']['SEEM']["startType"]){
 			case 'document':
-				if(checkIfValidStartdocument($_SESSION["SEEM"]["startId"])){
+				if(checkIfValidStartdocument($_SESSION['weS']['SEEM']["startId"])){
 					$directCmd = array(
 						FILE_TABLE,
-						$_SESSION["SEEM"]["startId"],
+						$_SESSION['weS']['SEEM']["startId"],
 						'text/webedition',
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else{
-					t_e('invalid start doc ' . $_SESSION["SEEM"]["startId"]);
+					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']["startId"]);
 				}
 				break;
 			case 'object':
-				if(checkIfValidStartdocument($_SESSION["SEEM"]["startId"])){
+				if(checkIfValidStartdocument($_SESSION['weS']['SEEM']["startId"])){
 					$directCmd = array(
 						OBJECT_FILES_TABLE,
-						$_SESSION["SEEM"]["startId"],
+						$_SESSION['weS']['SEEM']["startId"],
 						'objectFile'
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else{
-					t_e('invalid start doc ' . $_SESSION["SEEM"]["startId"]);
+					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']["startId"]);
 				}
 				break;
 		}
-		unset($_SESSION["SEEM"]["open_selected"]);
+		unset($_SESSION['weS']['SEEM']["open_selected"]);
 
 // normal mode, start document depends on settings
 	} else{

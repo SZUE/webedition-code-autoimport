@@ -902,8 +902,8 @@ class weVersions{
 				if($_REQUEST["v"]["type"] == "CSVImport" || $_REQUEST["v"]["type"] == "GXMLImport"){
 					$_SESSION['weS']['versions']['fromImport'] = 1;
 					$this->saveVersion($docObj);
-				} elseif(isset($_SESSION["ExImRefTable"])){
-					foreach($_SESSION["ExImRefTable"] as $k => $v){
+				} elseif(isset($_SESSION['weS']['ExImRefTable'])){
+					foreach($_SESSION['weS']['ExImRefTable'] as $k => $v){
 						if($v["ID"] == $docObj->ID){
 							$_SESSION['weS']['versions']['fromImport'] = 1;
 							$this->saveVersion($docObj);

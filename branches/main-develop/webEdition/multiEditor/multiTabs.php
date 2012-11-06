@@ -140,7 +140,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 
 	// fits the frame height on resize, add or remove tabs if the tabs wrap
 	function setFrameSize() {
-		tabsHeight = (document.getElementById('tabContainer').clientHeight ? document.getElementById('tabContainer').clientHeight : document.body.clientHeight)<?php echo $heightPlus; ?>;
+		tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight <?php echo $heightPlus; ?>) : (document.body.clientHeight <?php echo $heightPlus; ?> ) );
 		tabsHeight = tabsHeight < <?php echo $frameDefaultHeight; ?> ? <?php echo $frameDefaultHeight; ?> : tabsHeight;
 		parent.document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight+"px";
 		parent.document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight+"px";

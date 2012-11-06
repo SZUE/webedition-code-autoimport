@@ -42,14 +42,12 @@ print STYLESHEET .
 	font-family: ' . g_l('css', '[font_family]') . ' ! important;
 }
 
-
 .rssDiv a {
 	color: black;
 	text-decoration:none;
 }') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
 
 if(we_hasPerm("CAN_SEE_QUICKSTART")){
-
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 	if(!$bResetProps && $iLayoutCols){
@@ -62,7 +60,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			while(sizeof($aDat) > $iLayoutCols) {
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
-					$aDat[sizeof($aDat) - 1][]= $aShiftWidget;
+					$aDat[sizeof($aDat) - 1][] = $aShiftWidget;
 				}
 			}
 			setUserPref("cockpit_dat", serialize($aDat));
@@ -83,16 +81,17 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	function in_array_recursive($value, $array){
 		foreach($array as $item){
 			if(!is_array($item)){
-				if($item == $value)
+				if($item == $value){
 					return true;
-				else
+				} else{
 					continue;
+				}
 			}
-			if(in_array($value, $item))
+			if(in_array($value, $item)){
 				return true;
-			else
-			if(in_array_recursive($value, $item))
+			} elseif(in_array_recursive($value, $item)){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -187,7 +186,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$count_i = sizeof($d);
 		echo "\t\t[";
 		reset($d);
-		while(list(, $v) = each($d)) {
+		while((list(, $v) = each($d))) {
 			$i++;
 			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':" . $v[2] . ",'csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
 		}
@@ -319,9 +318,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			fo=self.document.forms['we_form'];
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
 			top.YAHOO.util.Connect.setForm(fo);
-			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php
-	echo WE_INCLUDES_DIR;
-	?>we_widgets/cmd.php', top.weDummy);
+			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php	echo WE_INCLUDES_DIR;	?>we_widgets/cmd.php', top.weDummy);
 		}
 
 		function resizeIdx(a,id){
@@ -333,7 +330,6 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					break;
 				case 'get':
 					return res;
-					break;
 				}
 			}
 
@@ -475,9 +471,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				}
 				var _bgObjs=[gel(wizId+'_lbl_mgnl'),gel(wizId+'_lbl'),gel(wizId+'_lbl_mgnr')];
 				for(var o in _bgObjs){
-					_bgObjs[o].style.background='url(<?php
-	echo IMAGE_DIR;
-	?>pd/header_'+wizTheme+'.gif)';
+					_bgObjs[o].style.background='url(<?php echo IMAGE_DIR; ?>pd/header_'+wizTheme+'.gif)';
 				}
 			}
 
@@ -618,11 +612,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			}
 
 			function removeWidget(wizId){
-				var remove=confirm('<?php
-	echo g_l('cockpit', "[pre_remove]");
-	?>"'+getLabel(wizId)+'"<?php
-	echo g_l('cockpit', "[post_remove]");
-	?>');
+				var remove=confirm('<?php	echo g_l('cockpit', "[pre_remove]");	?>"'+getLabel(wizId)+'"<?php	echo g_l('cockpit', "[post_remove]");	?>');
 				if(remove==true){
 					gel(wizId).parentNode.removeChild(gel(wizId));
 					updateJsStyleCls();
@@ -642,9 +632,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			}
 
 			function composeUri(args){
-				var uri='<?php
-	echo WE_INCLUDES_DIR;
-	?>we_widgets/dlg/'+args[0]+'.php?';
+				var uri='<?php	echo WE_INCLUDES_DIR;	?>we_widgets/dlg/'+args[0]+'.php?';
 				for(var i=1;i<args.length;i++){
 					uri+='we_cmd['+(i-1)+']='+args[i];
 					if(i<(args.length-1)){
@@ -763,9 +751,7 @@ clone.style.display="inline";
 						_cmdName = "GetRss";
 						break;
 				}
-				top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php
-	print session_id();
-	?>' , ajaxCallback );
+				top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>' , ajaxCallback );
 
 			}
 
@@ -809,9 +795,7 @@ clone.style.display="inline";
 				var path=(sType!='rss'&&sType!='pad'&&sType!='plg'&&sType!='sct')?'dlg/'+arguments[6]:'mod/'+sType;
 				_tmpForm.id = "_tmpSubmitForm";
 				_tmpForm.method = "POST";
-				_tmpForm.action = '<?php
-	echo WE_INCLUDES_DIR;
-	?>we_widgets/'+path+'.php';
+				_tmpForm.action = '<?php echo WE_INCLUDES_DIR; ?>we_widgets/'+path+'.php';
 				_tmpForm.target = "RSIFrame";
 				for(var i=0;i<arguments.length;i++){
 					var _tmpField = document.createElement('input');
@@ -884,21 +868,19 @@ clone.style.display="inline";
 				}
 			}
 
+			_isHotTrf=false;
+			var _trf=new Array();
 	<?php
-	echo "\n_isHotTrf=false;\n";
-	echo "var _trf=new Array();\n";
 	$iCurrRssFeed = 0;
 	foreach($aTrf as $aRssFeed){
-		echo "_trf[" . $iCurrRssFeed . "]=['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'];\n";
+		echo "_trf[" . $iCurrRssFeed . "]=['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'];";
 		$iCurrRssFeed++;
 	}
 	$_transact = md5(uniqid(__FILE__, true));
 
-	echo "function newMessage(username){";
-	if(defined("WE_MESSAGING_MODULE_DIR")){
-		echo "	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);\n";
-	}
-	echo "}";
+	echo "function newMessage(username){" . ( defined("WE_MESSAGING_MODULE_DIR") ?
+		"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
+	) . "}";
 	?>
 
 			function setMsgCount(num){
@@ -954,9 +936,7 @@ clone.style.display="inline";
 			$in
 			), array_slice($aDat[0], 0));
 	}
-	$aDiscard = array(
-		'rss', 'pad'
-	);
+	$aDiscard = array('rss', 'pad');
 	$s1 = '';
 	$iCurrCol = 0;
 	$iCurrId = 0;
@@ -972,33 +952,29 @@ clone.style.display="inline";
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if(!in_array($aProps[0], $aDiscard)){
 					if($aProps[0] == 'upb' && $aProps[3] == ''){
-						if(defined('OBJECT_TABLE')){
-							$aProps[3] = '11';
-						} else{
-							$aProps[3] = '10';
-						}
+						$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
 					}
 					include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
 					if($aProps[0] == 'usr' || $aProps[0] == 'msg'){
-						array_push($aDiscard, $aProps[0]);
+						$aDiscard[] = $aProps[0];
 					}
 				}
 				if($aProps[2]){
 					$bExtendedCol = true;
 				}
-				include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
+				include (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$$aProps[0] = we_widget::create(
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
 						array(
 						"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
-						), $$aProps[0]->getHtml());
-				$s2 .= we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
+						), $$aProps[0]->getHtml()) .
+					we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}
-		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . (($bExtendedCol) ? "_expand" : "_collapse") . "\">\n";
-		$s1 .= $s2;
-		$s1 .= we_html_element::htmlDiv(array(
+		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . (($bExtendedCol) ? "_expand" : "_collapse") . "\">" .
+			$s2 .
+			we_html_element::htmlDiv(array(
 				"class" => "wildcard"
 				), "") . "</td>\n";
 		if($iDatLen > $iCurrCol){
@@ -1010,9 +986,8 @@ clone.style.display="inline";
 		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . "_collapse\">" . we_html_element::htmlDiv(
 				array(
 				"class" => "wildcard"
-				), "") . "</td>\n";
-		if($iLayoutCols > $iCurrCol)
-			$s1 .= "<td>&nbsp;&nbsp;</td>\n";
+				), "") . "</td>" .
+			($iLayoutCols > $iCurrCol ? "<td>&nbsp;&nbsp;</td>" : '');
 	}
 
 	$oTblWidgets = new we_html_table(array(
@@ -1024,12 +999,10 @@ clone.style.display="inline";
 		), we_html_element::htmlDiv(
 			array(
 			"id" => "modules"
-			), "<table id=\"le_tblWidgets\" cellspacing=\"0\" border=\"0\">\n<tr id=\"rowWidgets\">\n" . $s1 . "</tr>\n</table>"));
+			), "<table id=\"le_tblWidgets\" cellspacing=\"0\" border=\"0\">\n<tr id=\"rowWidgets\">" . $s1 . '</tr></table>'));
 
 	// this is the clone widget
-	$oClone = we_widget::create("clone", "_reCloneType_", null, array(
-			"", ""
-			), "white", 0, "", 100, 60);
+	$oClone = we_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
 
 	print
 		we_html_element::htmlBody(
@@ -1084,9 +1057,7 @@ clone.style.display="inline";
 			"EditorEditCmd":"open_cockpit"
 		}
 		);
-	');
-
-	print
+	') .
 		we_html_element::cssElement('
 		html {
 			heigth: 90%;
@@ -1107,10 +1078,8 @@ clone.style.display="inline";
 			margin: auto;
 			padding: 1px;
 		}
-		');
-
-	print '</head>';
-	print
+		') .
+		'</head>' .
 		we_html_element::htmlBody(
 			array(
 			"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"

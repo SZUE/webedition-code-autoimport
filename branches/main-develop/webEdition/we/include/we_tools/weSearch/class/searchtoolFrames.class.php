@@ -305,7 +305,7 @@ class searchtoolFrames extends weToolFrames{
 		//		} elseif ($cmdid > 8) {
 		//			$tabNr = 1;
 		//		}
-		//		if (! we_hasPerm ( 'CAN_SEE_DOCUMENTS' ) && ($_SESSION ["we_mode"] == "seem" || ! we_hasPerm ( 'CAN_SEE_TEMPLATES' ))) {
+		//		if (! we_hasPerm ( 'CAN_SEE_DOCUMENTS' ) && ($_SESSION['weS']["we_mode"] == "seem" || ! we_hasPerm ( 'CAN_SEE_TEMPLATES' ))) {
 		//			$tabNr = 3;
 		//		}
 		//
@@ -418,47 +418,26 @@ class searchtoolFrames extends weToolFrames{
 		//parameter: search of the tab (load only search dependent model data in the view)
 		$innerSearch = "DocSearch";
 
-		$parts = array();
+		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
 
-		$_searchDirChooser_block = '
-      <div>
-      ' . $this->View->getDirSelector($innerSearch) . '
-      </div>
-    ';
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[suchenIn]'),
-			'html' => $_searchDirChooser_block,
-			'space' => $this->_space_size
-		));
-
-		$_searchField_block = '
-      <div>
-      ' . $this->View->getSearchDialog($innerSearch) . '
-      </div>
-    ';
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[text]'),
-			'html' => $_searchField_block,
-			'space' => $this->_space_size
-		));
-
-		$_searchCheckboxes_block = '
-      <div>
-      ' . $this->View->getSearchDialogCheckboxes(
-				$innerSearch) . '
-      </div>
-    ';
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[optionen]'),
-			'html' => $_searchCheckboxes_block,
-			'space' => $this->_space_size
-		));
+		$parts = array(
+			array(
+				'headline' => g_l('searchtool', '[suchenIn]'),
+				'html' => $_searchDirChooser_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[optionen]'),
+				'html' => $_searchCheckboxes_block,
+				'space' => $this->_space_size
+			));
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
@@ -482,47 +461,27 @@ class searchtoolFrames extends weToolFrames{
 	function getHTMLTabTemplates(){
 		$innerSearch = "TmplSearch";
 
-		$parts = array();
 
-		$_searchDirChooser_block = '
-      <div>
-      ' . $this->View->getDirSelector($innerSearch) . '
-      </div>
-    ';
+		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
 
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[suchenIn]'),
-			'html' => $_searchDirChooser_block,
-			'space' => $this->_space_size
-		));
-
-		$_searchField_block = '
-      <div>
-      ' . $this->View->getSearchDialog($innerSearch) . '
-      </div>
-    ';
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[text]'),
-			'html' => $_searchField_block,
-			'space' => $this->_space_size
-		));
-
-		$_searchCheckboxes_block = '
-      <div>
-      ' . $this->View->getSearchDialogCheckboxes(
-				$innerSearch) . '
-      </div>
-    ';
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('searchtool', '[optionen]'),
-			'html' => $_searchCheckboxes_block,
-			'space' => $this->_space_size
-		));
+		$parts = array(
+			array(
+				'headline' => g_l('searchtool', '[suchenIn]'),
+				'html' => $_searchDirChooser_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[optionen]'),
+				'html' => $_searchCheckboxes_block,
+				'space' => $this->_space_size
+			));
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);

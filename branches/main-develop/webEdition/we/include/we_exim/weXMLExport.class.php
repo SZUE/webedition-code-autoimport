@@ -299,26 +299,26 @@ class weXMLExport extends weXMLExIm{
 
 	function loadPerserves(){
 		parent::loadPerserves();
-		if(isset($_SESSION['ExImPrepare']))
-			$this->prepare = $_SESSION['ExImPrepare'];
-		if(isset($_SESSION['ExImOptions']))
-			$this->options = $_SESSION['ExImOptions'];
+		if(isset($_SESSION['weS']['ExImPrepare']))
+			$this->prepare = $_SESSION['weS']['ExImPrepare'];
+		if(isset($_SESSION['weS']['ExImOptions']))
+			$this->options = $_SESSION['weS']['ExImOptions'];
 	}
 
 	//---------------------
 	function savePerserves(){
 		parent::savePerserves();
-		$_SESSION['ExImPrepare'] = $this->prepare;
-		$_SESSION['ExImOptions'] = $this->options;
+		$_SESSION['weS']['ExImPrepare'] = $this->prepare;
+		$_SESSION['weS']['ExImOptions'] = $this->options;
 	}
 
 	//---------------------
 	function unsetPerserves(){
 		parent::unsetPerserves();
-		if(isset($_SESSION['ExImPrepare']))
-			unset($_SESSION['ExImPrepare']);
-		if(isset($_SESSION['ExImOptions']))
-			unset($_SESSION['ExImOptions']);
+		if(isset($_SESSION['weS']['ExImPrepare']))
+			unset($_SESSION['weS']['ExImPrepare']);
+		if(isset($_SESSION['weS']['ExImOptions']))
+			unset($_SESSION['weS']['ExImOptions']);
 	}
 
 }
