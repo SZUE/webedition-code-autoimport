@@ -84,20 +84,16 @@ class weJUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-
 		$_params = '';
 
 		foreach($this->Params as $name => $value){
-			$_params .= '<param name="' . $name . '" value="' . $value . '">
-				';
+			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
 		}
 
-		return '
-			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . '/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
+		return '<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
 				' . $_params . '
 				' . $content . '
-			</applet>
-			';
+			</applet>';
 	}
 
 	function getJS(){

@@ -3824,11 +3824,11 @@ if($doSave && !$acError){
 			new jsWindow(url,"openDocselector",-1,-1,' . WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 			break;
 		case "show_formmail_log":
-			url = "/webEdition/we/include/we_editors/weFormmailLog.php"
+			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
 			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
 			break;
 		case "show_formmail_block_log":
-			url = "/webEdition/we/include/we_editors/weFormmailBlockLog.php"
+			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
 			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
 			break;
 		case "openColorChooser":

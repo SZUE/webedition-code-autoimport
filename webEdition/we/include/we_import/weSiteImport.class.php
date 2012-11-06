@@ -169,7 +169,7 @@ class weSiteImport{
 					if (document.we_form.templateID.value > 0) {
 						document.getElementById("specifyParam").style.display="block";
 						var iframeObj = document.getElementById("iloadframe");
-						iframeObj.src = "/webEdition/we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
+						iframeObj.src = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
 					}
 				}
 				') .

@@ -1437,7 +1437,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","edit_order_customer",-1,-1,545,600,true,true,true,false);
 					break;
 				case "edit_customer":
-					top.document.location = '<?php print WE_INCLUDES_DIR;?>we_modules/show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
+					top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST["cid"]; ?>';
 					break;
 				case "add_new_article":
 					var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST["bid"]; ?>","add_new_article",-1,-1,650,600,true,false,true,false);

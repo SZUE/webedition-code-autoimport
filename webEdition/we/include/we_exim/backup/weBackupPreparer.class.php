@@ -190,8 +190,6 @@ class weBackupPreparer{
 		$options['do_import_after_backup'] = (isset($_REQUEST['do_import_after_backup']) && $_REQUEST['do_import_after_backup']) ? 1 : 0;
 
 
-		//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weTableMap.inc.php');
-
 		$handle_options['user'] = (isset($_REQUEST['handle_user']) && $_REQUEST['handle_user']) ? 1 : 0;
 		$handle_options['customer'] = (isset($_REQUEST['handle_customer']) && $_REQUEST['handle_customer']) ? 1 : 0;
 		$handle_options['shop'] = (isset($_REQUEST['handle_shop']) && $_REQUEST['handle_shop']) ? 1 : 0;

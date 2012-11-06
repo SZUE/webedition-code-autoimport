@@ -364,7 +364,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 color: #006699;
 font-size: 11px;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
-background-image: url(<?php echo WE_INCLUDES_DIR; ?>we_modules/shop/images/shopInfast.gif);
+background-image: url(<?php echo WE_MODULES_DIR; ?>shop/images/shopInfast.gif);
 background-position: bottom left;
 background-repeat: no-repeat;
 }

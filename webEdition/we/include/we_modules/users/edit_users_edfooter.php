@@ -36,7 +36,7 @@ if(isset($_SESSION["user_session_data"])){
 ?>
 </head>
 <?php if(isset($user_object)){ ?>
-	<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+	<body bgcolor="white" background="<?php echo IMAGE_DIR; ?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 		<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
 				<td></td>

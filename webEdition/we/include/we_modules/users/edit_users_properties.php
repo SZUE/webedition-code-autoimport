@@ -121,7 +121,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 			case "openNavigationDirselector":
 			case "openNewsletterDirselector":
 				if(arguments[0] == "openNewsletterDirselector") {
-					url = "<?php echo WE_INCLUDES_DIR; ?>we_modules/newsletter/we_dirfs.php?";
+					url = "<?php echo WE_MODULES_DIR; ?>newsletter/we_dirfs.php?";
 				}
 				else {
 					url = "<?php echo WE_INCLUDES_DIR; ?>we_tools/navigation/we_navigationDirSelect.php?";

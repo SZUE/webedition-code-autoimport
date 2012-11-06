@@ -1121,7 +1121,6 @@ class blaettern{
 	 * 	@access private
 	 * 	@var (string)
 	 */
-	//var $link_first_text			= '<img src="/webEdition/we/include/we_modules/shop/images/shopCardB.gif" border="0">';
 	var $link_first_text = 'Start';
 
 	/** Text fuer 'Ende' (letzte Seite), siehe 'Variablen fuer Links'

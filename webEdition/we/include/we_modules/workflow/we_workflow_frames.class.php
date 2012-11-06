@@ -161,7 +161,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 			}
 		</script>
 		</head>
-		<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
+		<body bgcolor="white" background="<?php echo IMAGE_DIR;?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode == 0){ ?> onLoad="setStatusCheck()"<?php } ?>>
 			<form name="we_form">
 				<table border="0" cellpadding="0" cellspacing="0" width="3000">
 					<tr>

@@ -28,7 +28,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
  STYLESHEET;
 ?>
 </head>
-<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+<body bgcolor="white" background="<?php echo IMAGE_DIR; ?>edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 	<form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
 		<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>

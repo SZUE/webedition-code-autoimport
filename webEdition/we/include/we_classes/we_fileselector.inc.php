@@ -352,8 +352,8 @@ class we_fileselector{
 
 	var parentID=' .
 				intval(($this->dir ?
-					f('SELECT ParentID FROM '.$this->table.' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
-					0)) . ';
+						f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+						0)) . ';
     var table="' . $this->table . '";
 	var order="' . $this->order . '";
 
@@ -556,27 +556,21 @@ class we_fileselector{
 				$this->printFramesetJSFunctionAddEntries();
 			}
 
-			##############################################
-			############## BODY FUNCTIONS ################
-			##############################################
-
 			function printBodyHTML(){
-				print we_html_element::htmlDocType().'<html><head></head>
+				print we_html_element::htmlDocType() . '<html><head></head>
 				<body bgcolor="white" onLoad="top.writeBody(self.document);"></body></html>';
 			}
 
 			function getJS_attachKeyListener(){
-
 				// attach the keylistener
-				$_attachKeyListener = file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/attachKeyListener.js");
+				$_attachKeyListener = file(JS_PATH . 'attachKeyListener.js');
 				$_addJs = "";
 				for($i = 0; $i < sizeof($_attachKeyListener); $i++){
 					if(trim($_attachKeyListener[$i])){
 						$_addJs .= "d.writeln('" . trim($_attachKeyListener[$i]) . "');\n";
 					}
 				}
-				return $_addJs
-				;
+				return $_addJs;
 			}
 
 			##############################################

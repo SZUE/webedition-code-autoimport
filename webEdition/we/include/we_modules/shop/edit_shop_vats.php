@@ -128,7 +128,7 @@ $jsFunction = '
 		function we_cmd(){
 
             var args = "";
-            var url = "/webEdition/we_cmd.php?";
+            var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
             for(var i = 0; i < arguments.length; i++){
                 url += "we_cmd["+i+"]="+escape(arguments[i]);
                 if(i < (arguments.length - 1)){

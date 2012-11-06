@@ -2011,7 +2011,7 @@ function g_l($name, $specific, $omitErrors = false){
 					$tmp);
 		}
 	}
-	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
+	$file = WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
 	if(file_exists($file)){
 		include($file);
 		$tmp = (isset(${'l_' . $name}) ? getVarArray(${'l_' . $name}, $specific) : false);
@@ -2081,30 +2081,6 @@ function we_templateInit(){
 		if(!in_array($GLOBALS['CHARSET'], charsetHandler::getAvailCharsets())){
 			$GLOBALS['CHARSET'] = DEFAULT_CHARSET;
 		}
-		//FIXME: this code doesn't work!
-		/*
-		  list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
-		  if($__lang){
-		  $__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
-		  $__last = array_pop($__parts);
-		  // Charset of page is not UTF-8 but languge files of page are UTF-8
-		  // Then change language files to non UTF-8 pedant if available
-		  if(count($__parts) && $__last === 'UTF-8' && $GLOBALS['CHARSET'] !== 'UTF-8'){
-		  $__lang = $__parts[0];
-		  if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
-		  $GLOBALS['WE_LANGUAGE'] = $__lang;
-		  }
-
-		  // Charset of page is  UTF-8 but languge files of page are not UTF-8
-		  // Then change language files to UTF-8 pedant if available
-		  } else if($__last !== 'UTF-8' && $GLOBALS['CHARSET'] === 'UTF-8'){
-		  $__lang = $GLOBALS['WE_LANGUAGE'] . '_UTF-8';
-		  if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $__lang)){
-		  $GLOBALS['WE_LANGUAGE'] = $__lang;
-		  }
-		  }
-		  }
-		 */
 	}
 }
 
@@ -2112,7 +2088,7 @@ function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 		print we_html_element::jsScript(JS_DIR . 'windows.js');
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');
+		include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	}
 }
 

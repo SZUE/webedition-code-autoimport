@@ -872,11 +872,11 @@ abstract class we_html_tools{
 
 					if(state_' . $unique . '==0){
 						text.innerHTML = "' . addslashes($text) . '";
-						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_down.gif\' alt=\'down\' border=\'0\'></a>";
+						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . BUTTONS_DIR . 'btn_direction_down.gif\' alt=\'down\' border=\'0\'></a>";
 						state_' . $unique . '=1;
 					}else {
 						text.innerHTML = "' . addslashes($smalltext) . '";
-						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_right.gif\' alt=\'right\' border=\'0\'></a>";
+						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . BUTTONS_DIR . 'btn_direction_right.gif\' alt=\'right\' border=\'0\'></a>";
 						state_' . $unique . '=0;
 					}
 			}
@@ -891,7 +891,7 @@ abstract class we_html_tools{
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . IMAGE_DIR . 'button/btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . BUTTONS_DIR . 'btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
 	}
 
 }

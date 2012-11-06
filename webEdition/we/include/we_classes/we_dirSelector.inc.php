@@ -159,20 +159,6 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		<?php
 	}
 
-	function getJS_attachKeyListener(){
-
-		// attach the keylistener
-		$_attachKeyListener = file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/attachKeyListener.js");
-		$_addJs = "";
-		for($i = 0; $i < sizeof($_attachKeyListener); $i++){
-			if(trim($_attachKeyListener[$i])){
-				$_addJs .= "d.writeln('" . trim($_attachKeyListener[$i]) . "');\n";
-			}
-		}
-		return $_addJs
-		;
-	}
-
 	function printFramesetJSFunctioWriteBody(){
 		$htmltop = preg_replace("/[[:cntrl:]]/", "", trim(str_replace("'", "\\'", we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
@@ -180,7 +166,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>');
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('<scr'+'ipt>');
 
@@ -1034,7 +1020,7 @@ top.selectFile(top.currentID);
 				$previewDefauts .= "<tr class='odd'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>";
 				$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
 				$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
-				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . IMAGE_DIR . "tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
+				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
 				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a></td></tr>";
 				if($result['CreationDate']){
 					$previewDefauts .= "<tr class='odd'><td class='odd'>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";

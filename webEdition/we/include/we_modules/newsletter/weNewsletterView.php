@@ -628,7 +628,7 @@ class weNewsletterView{
 						break;
 
 					case "openNewsletterDirselector":
-						url = "' . WE_INCLUDES_DIR . 'we_modules/newsletter/we_dirfs.php?";
+						url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
 						for(var i = 0; i < arguments.length; i++){
 							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 						}
@@ -2146,10 +2146,10 @@ class weNewsletterView{
 					case weNewsletterBlock::DOCUMENT:
 						$path = "";
 						if($block->Field != "" && $block->Field != 0){
-							$path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates" . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
+							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
 						} else if($block->LinkID){
 							$tid = f("SELECT TemplateID FROM " . FILE_TABLE . " WHERE ID='" . $block->LinkID . "';", "TemplateID", $this->db);
-							$path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates" . preg_replace('/\.tmpl$/i', '.php', id_to_path($tid, TEMPLATES_TABLE));
+							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($tid, TEMPLATES_TABLE));
 						}
 						if($block->LinkID && $path)
 							$content .= ($block->LinkID > 0) && weFileExists($block->LinkID) ? we_getDocumentByID($block->LinkID, $path) : 'No such File';
@@ -2164,7 +2164,7 @@ class weNewsletterView{
 					case weNewsletterBlock::OBJECT:
 						$path = "";
 						if($block->Field != "" && $block->Field != 0){
-							$path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates" . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
+							$path = TEMPLATES_PATH . preg_replace('/\.tmpl$/i', '.php', id_to_path($block->Field, TEMPLATES_TABLE));
 						}
 						if($block->LinkID && $path)
 							$content = we_getObjectFileByID($block->LinkID, $path);

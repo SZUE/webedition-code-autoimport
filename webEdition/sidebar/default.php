@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop('sideBar');
-echo we_html_element::cssLink('/webEdition/css/global.php');
+echo we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 ?>
 
 </head>
@@ -35,17 +35,17 @@ echo we_html_element::cssLink('/webEdition/css/global.php');
 
 		function showSidebarText(&$textArray){
 			unset($textArray[2]); // #6261: do not show entry [2]
-			foreach($textArray as $i => $val) {
+			foreach($textArray as $i => $val){
 				if(isset($textArray[$i])){
-					
+
 					$text = &$textArray[$i];
 
 					$link = "%s";
 					if(isset($text['link']) && $text['link'] != ""){
-						
+
 						if(stripos($text['link'], 'javascript:') === 0){
-							$text['link'] = str_replace("\"","'",$text['link']); #6625
-							$text['link'] = str_replace("`","'",$text['link']); #6625
+							$text['link'] = str_replace("\"", "'", $text['link']); #6625
+							$text['link'] = str_replace("`", "'", $text['link']); #6625
 							$link = "<a href=\"" . $text['link'] . "\">%s</a>";
 						} else{
 							$link = "<a href=\"" . $text['link'] . "\" target=\"_blank\">%s</a>";
@@ -54,7 +54,7 @@ echo we_html_element::cssLink('/webEdition/css/global.php');
 
 					$icon = "";
 					if(isset($text['icon']) && $text['icon'] != ""){
-						$icon = sprintf($link, "<img src=\"/webEdition/sidebar/img/" . $text['icon'] . "\" width=\"42\" height=\"42\" border=\"0\" />");
+						$icon = sprintf($link, '<img src="' . WEBEDITION_DIR . 'sidebar/img/' . $text['icon'] . '" width="42" height="42" border="0" />');
 					}
 
 					$headline = "";
@@ -62,13 +62,10 @@ echo we_html_element::cssLink('/webEdition/css/global.php');
 						$headline = sprintf($link, $text['headline']);
 					}
 					?>
-					<tr>
-						<td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td>
-					</tr>
-					<tr>
-						<?php
-						if($icon == ""){
-							?>
+					<tr><td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td></tr>
+					<tr><?php
+			if($icon == ""){
+						?>
 							<td class="defaultfont" valign="top" colspan="2">
 								<strong><?php echo $headline; ?></strong><br />
 								<?php we_html_tools::pPixel(1, 4); ?>
@@ -90,16 +87,16 @@ echo we_html_element::cssLink('/webEdition/css/global.php');
 					</tr>
 					<tr>
 						<?php
+					}
 				}
 			}
-		}
 
-		showSidebarText(g_l('sidebar', '[default]'));
+			showSidebarText(g_l('sidebar', '[default]'));
 
-		if(we_hasPerm("ADMINISTRATOR")){
-			showSidebarText(g_l('sidebar', '[admin]'));
-		}
-		?>
+			if(we_hasPerm("ADMINISTRATOR")){
+				showSidebarText(g_l('sidebar', '[admin]'));
+			}
+			?>
 	</table>
 
 </body>

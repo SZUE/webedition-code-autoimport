@@ -774,7 +774,7 @@ class we_docSelector extends we_dirSelector{
 							$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
 						} else{
 							$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-							$_thumbpath = '/webEdition/thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
+							$_thumbpath = WEBEDITION_DIR. 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 							$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 						}
 					}
@@ -794,7 +794,7 @@ class we_docSelector extends we_dirSelector{
 						"caption" => g_l('fileselector', "[name]"),
 						"content" => (
 						$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . getServerUrl(true) . $result['Path'] .
-							"' target='_blank' style='color:black'><img src='" . IMAGE_DIR . "tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
+							"' target='_blank' style='color:black'><img src='" . ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
 						) . "<div style='margin-right:14px'>" . (
 						$showPriview ? "<a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
 						) . "</div>"
@@ -804,7 +804,7 @@ class we_docSelector extends we_dirSelector{
 						"caption" => "ID",
 						"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>" .
 						"<div style='float:left; vertical-align:baseline; margin-right:4px;'>" .
-						"<img src='" . IMAGE_DIR . "tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'>" .
+						"<img src='" . ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'>" .
 						"</div></a>" .
 						"<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>" .
 						"<div>" . $this->id . "</div>" .

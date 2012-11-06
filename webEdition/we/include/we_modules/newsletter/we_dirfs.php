@@ -34,4 +34,4 @@ $rootDirID = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : "";
 $filter = isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : "";
 $multiple = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : "";
 
-include_once(WE_INCLUDES_PATH . 'we_modules/newsletter/we_newsletterDirSelector.php');
+include_once(WE_MODULES_PATH . 'newsletter/we_newsletterDirSelector.php');

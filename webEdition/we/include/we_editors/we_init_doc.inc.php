@@ -72,11 +72,11 @@ if(isset($we_ContentType) && $we_ContentType != ''){
 				$moduleDir .= '/';
 			}
 
-			if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
+			if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
 				$we_doc = 'we_' . $we_ContentType;
 				$we_doc = new $we_doc();
 			} else{
-				t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
+				t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . WE_MODULES_PATH . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
 				exit(1);
 			}
 	}

@@ -172,7 +172,7 @@ class weSuggest{
 			var ajaxResponseStep = 100;
 			var ajaxResponseCT = 0;
 			var countMark = 0;
-			var ajaxURL = "/webEdition/rpc/rpc.php";';
+			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
 		$weFieldWS = "	/* WORKSPACES */
 			var weWorkspacePathArray = new Array();";
 		$fildsById = "\n	/* AC-FIEDS BY ID */
@@ -890,79 +890,79 @@ function doDebugResizeH(){
 
 	//not in use
 	/*
-	function createAutocompleter($acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10){
+	  function createAutocompleter($acId, $button, $inputField, $inputId = "", $resultField, $resultId = "", $label = "", $table, $contentType = "", $selector = "", $maxResults = 10, $queryDelay = 0, $checkFieldsValue = true, $width = "100%", $inputMayBeEmpty = 'true', $inputButtonSpace = 20, $buttonButtonSpace = 10){
 
-		$this->setInputId($inputId);
-		$elog = '';
-		foreach(func_get_args() as $val){
-			$elog.= "\n\n$val";
-		}
-		$layerId = "yuiAcLayer" . $acId;
-		$inputId = (is_array($inputField) && isset($inputField['id'])) ? $inputField['id'] : ($inputId ? $inputId : "yuiAcInput$acId");
-		$containerId = "yuiAcContainer" . $acId;
+	  $this->setInputId($inputId);
+	  $elog = '';
+	  foreach(func_get_args() as $val){
+	  $elog.= "\n\n$val";
+	  }
+	  $layerId = "yuiAcLayer" . $acId;
+	  $inputId = (is_array($inputField) && isset($inputField['id'])) ? $inputField['id'] : ($inputId ? $inputId : "yuiAcInput$acId");
+	  $containerId = "yuiAcContainer" . $acId;
 
-		$iField = "";
-		if(is_array($inputField)){
-		} else{
-			$iField = $inputField;
-		}
+	  $iField = "";
+	  if(is_array($inputField)){
+	  } else{
+	  $iField = $inputField;
+	  }
 
-		$autoSuggest = "<div id=\"$layerId\" class=\"yuiAcLayer\">" . $iField . "<div id=\"$containerId\"></div></div>" . we_html_tools::getPixel(1, 1);
-		$containerWidth = (empty($this->containerWidth) ? $width : $this->containerWidth);
-		if(!$this->containerWidthForAll){
-			$this->containerWidth = "";
-		}
-		$this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $inputMayBeEmpty);
+	  $autoSuggest = "<div id=\"$layerId\" class=\"yuiAcLayer\">" . $iField . "<div id=\"$containerId\"></div></div>" . we_html_tools::getPixel(1, 1);
+	  $containerWidth = (empty($this->containerWidth) ? $width : $this->containerWidth);
+	  if(!$this->containerWidthForAll){
+	  $this->containerWidth = "";
+	  }
+	  $this->setAutocompleteField($inputId, $containerId, $table, $contentType, $selector, $maxResults, $queryDelay, $layerId, array($resultId), $checkFieldsValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $inputMayBeEmpty);
 
-		$_button1 = "";
-		if(is_array($button)){
-			if(we_base_browserDetect::isIE()){
-				$_button = array("text" => "<div>" . $button[0] . "</div>", "valign" => "top");
-				$_button1 = array("text" => "<div>" . $button[1] . "</div>", "valign" => "top");
-				$_space = $width + $inputButtonSpace - 1;
-				$_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
-			} else{
-				$_button = array("text" => $button[0], "valign" => "top");
-				$_button1 = array("text" => $button[1], "valign" => "top");
-				$_space = $width + $inputButtonSpace;
-				$_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
-			}
-		} else{
-			if(we_base_browserDetect::isIE()){
-				$_button = array("text" => "<div>" . $button . "</div>", "valign" => "top");
-				$_space = $width + $inputButtonSpace - 1;
-				$_space2 = "";
-			} else{
-				$_button = array("text" => "<div style='position:relative; top:-3px'>" . $button . "</div>", "valig" => "top", "style" => "");
-				$_space = $width + $inputButtonSpace;
-				$_space2 = "";
-			}
-		}
+	  $_button1 = "";
+	  if(is_array($button)){
+	  if(we_base_browserDetect::isIE()){
+	  $_button = array("text" => "<div>" . $button[0] . "</div>", "valign" => "top");
+	  $_button1 = array("text" => "<div>" . $button[1] . "</div>", "valign" => "top");
+	  $_space = $width + $inputButtonSpace - 1;
+	  $_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
+	  } else{
+	  $_button = array("text" => $button[0], "valign" => "top");
+	  $_button1 = array("text" => $button[1], "valign" => "top");
+	  $_space = $width + $inputButtonSpace;
+	  $_space2 = we_html_tools::getPixel($buttonButtonSpace, 4);
+	  }
+	  } else{
+	  if(we_base_browserDetect::isIE()){
+	  $_button = array("text" => "<div>" . $button . "</div>", "valign" => "top");
+	  $_space = $width + $inputButtonSpace - 1;
+	  $_space2 = "";
+	  } else{
+	  $_button = array("text" => "<div style='position:relative; top:-3px'>" . $button . "</div>", "valig" => "top", "style" => "");
+	  $_space = $width + $inputButtonSpace;
+	  $_space2 = "";
+	  }
+	  }
 
-		// check if input value is ok.
-		if(empty($this->inputValue)){
-			if(!$this->mayBeEmpty){
-				$this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
-			}
-		} else{
-			$weAcQuery = new weSelectorQuery();
-			$ct = explode(",", str_replace(" ", "", $this->contentType));
-			if($this->inputValue == "/"){
+	  // check if input value is ok.
+	  if(empty($this->inputValue)){
+	  if(!$this->mayBeEmpty){
+	  $this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
+	  }
+	  } else{
+	  $weAcQuery = new weSelectorQuery();
+	  $ct = explode(",", str_replace(" ", "", $this->contentType));
+	  if($this->inputValue == "/"){
 
-			} elseif(in_array("folder", $ct)){
+	  } elseif(in_array("folder", $ct)){
 
-				$weAcQueryResult = $weAcQuery->getItemByPath($this->inputValue, $this->table, array("IsFolder"));
-				if((count($weAcQueryResult) < 1) || (count($ct) == 1 && $ct[0] == "folder" && $weAcQueryResult[0]['IsFolder'] == 0) || ((count($ct) > 1 || (count($ct) == 1 && $ct[0] != "folder")) && $weAcQueryResult[0]['IsFolder'] == 1)){
-					$this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
-				}
-			}
-		}
+	  $weAcQueryResult = $weAcQuery->getItemByPath($this->inputValue, $this->table, array("IsFolder"));
+	  if((count($weAcQueryResult) < 1) || (count($ct) == 1 && $ct[0] == "folder" && $weAcQueryResult[0]['IsFolder'] == 0) || ((count($ct) > 1 || (count($ct) == 1 && $ct[0] != "folder")) && $weAcQueryResult[0]['IsFolder'] == 1)){
+	  $this->preCheck .= "setTimeout(\"YAHOO.autocoml.setNotValidById('{$this->inputId}')\",100);\n";
+	  }
+	  }
+	  }
 
-		return htmlFormElementTable(
-				array("text" => $resultField . $autoSuggest . we_html_tools::getPixel($_space, 4), "valign" => "top", "style" => "height:10px"), $label, "left", "defaultfont", $_button, $_space2, $_button1
-		);
-	}
-*/
+	  return htmlFormElementTable(
+	  array("text" => $resultField . $autoSuggest . we_html_tools::getPixel($_space, 4), "valign" => "top", "style" => "height:10px"), $label, "left", "defaultfont", $_button, $_space2, $_button1
+	  );
+	  }
+	 */
 
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;

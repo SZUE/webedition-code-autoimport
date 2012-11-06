@@ -46,7 +46,6 @@ class we_wysiwyg{
 	var $removeFirstParagraph = true;
 	var $charset = "";
 	var $inlineedit = true;
-
 	var $cssClasses = "";
 	var $Language = "";
 	var $_imagePath;
@@ -68,12 +67,12 @@ class we_wysiwyg{
 		$this->outsideWE = $outsideWE;
 		if(WYSIWYG_TYPE == 'tinyMCE'){
 			if($fontnames){
-				$fn  = explode(",", $fontnames);
+				$fn = explode(",", $fontnames);
 				$tf = '';
-				foreach($fn as $key=>$val){
+				foreach($fn as $key => $val){
 					$tf .= $val . '=' . strtolower($val) . ';';
 				}
-				$tf = substr($tf,0,-1);
+				$tf = substr($tf, 0, -1);
 			} else{
 				$tf = "Arial=arial,helvetica,sans-serif;" .
 					"Courier New=courier new,courier;" .
@@ -82,7 +81,7 @@ class we_wysiwyg{
 					"Tahoma=Tahoma;" .
 					"Times New Roman=Times New Roman,Times,serif;" .
 					"Verdana=Verdana, Arial, Helvetica, sans-serif;" .
-                	"Wingdings=wingdings,zapf dingbats";
+					"Wingdings=wingdings,zapf dingbats";
 			}
 			$this->tinyFonts = $tf;
 		} else{
@@ -97,12 +96,12 @@ class we_wysiwyg{
 		}
 		$this->cssClasses = $cssClasses;
 		if($this->cssClasses != "" && WYSIWYG_TYPE == 'tinyMCE'){
-			$cc  = explode(",", $this->cssClasses);
+			$cc = explode(",", $this->cssClasses);
 			$tf = '';
-			foreach($fn as $key=>$val){
+			foreach($fn as $key => $val){
 				$tf .= $val . '=' . $val . ';';
 			}
-			$this->cssClasses = substr($tf,0,-1);
+			$this->cssClasses = substr($tf, 0, -1);
 		}
 
 		$this->Language = $Language;
@@ -122,9 +121,9 @@ class we_wysiwyg{
 
 		if($inlineedit){
 			if($value){
-				$value = WYSIWYG_TYPE == 'tinyMCE' ? $value : str_replace("\\", "\\\\", $value);//imi
-				$value = WYSIWYG_TYPE == 'tinyMCE' ? str_replace("\n", "", $value) : str_replace("\n", "\\n", $value);//imi
-				$value = WYSIWYG_TYPE == 'tinyMCE' ? str_replace("\r", "", $value) : str_replace("\r", "\\r", $value);//imi
+				$value = WYSIWYG_TYPE == 'tinyMCE' ? $value : str_replace("\\", "\\\\", $value); //imi
+				$value = WYSIWYG_TYPE == 'tinyMCE' ? str_replace("\n", "", $value) : str_replace("\n", "\\n", $value); //imi
+				$value = WYSIWYG_TYPE == 'tinyMCE' ? str_replace("\r", "", $value) : str_replace("\r", "\\r", $value); //imi
 				$value = str_replace('script', '##scr#ipt##', $value);
 				$value = str_replace('Script', '##Scr#ipt##', $value);
 				$value = str_replace('SCRIPT', '##SCR#IPT##', $value);
@@ -168,7 +167,7 @@ class we_wysiwyg{
 				<style type="text/css">
 					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
-					    background-image: url(/webEdition/images/pixel.gif);
+					    background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						margin: 0px;
 						padding:4px;
 						text-align: left;
@@ -177,14 +176,14 @@ class we_wysiwyg{
 					}
 				</style>
 				'
-				. we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
+					. we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
 		_EditorFrame.setEditorIsHot(true);
 	}
 }
 				') .
-				we_html_element::jsElement('
+					we_html_element::jsElement('
 					function weWysiwygSetHiddenTextSync(){
 						weWysiwygSetHiddenText(1);
 						setTimeout(weWysiwygSetHiddenTextSync,500);
@@ -264,7 +263,7 @@ function tinyMCEchanged(inst){
 					.tbButtonWysiwygBorder
 					{
 						border: 1px solid #006DB8;
-					    background-image: url(/webEdition/images/pixel.gif);
+					    background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						margin: 0px;
 						padding:4px;
 						text-align: left;
@@ -272,12 +271,12 @@ function tinyMCEchanged(inst){
 						position: relative;
 					}
 					.tbButtonWysiwygBackground{
-						background-image: url(/webEdition/images/backgrounds/aquaBackground.gif) ! important;
+						background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif) ! important;
 					}
 					.tbButtonWysiwygDefaultStyle{
 						background: transparent;
 						background-color: transparent;
-						background-image: url(/webEdition/images/pixel.gif);
+						background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						border: 0px;
 						color: #000000;
 						cursor: default;
@@ -304,9 +303,9 @@ function tinyMCEchanged(inst){
 					var isIE9 = ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() == 9) ? 'true' : 'false') . ';
 					var weWysiwygLoaded = false;
 					var weNodeList = new Array();
-					var weWysiwygFolderPath = "/webEdition/editors/content/wysiwyg/";
-					var weWysiwygImagesFolderPath = "/webEdition/images/wysiwyg/";
-					var weWysiwygBgGifPath = "' . IMAGE_DIR . 'backgrounds/aquaBackground.gif";
+					var weWysiwygFolderPath = "' . WEBEDITION_DIR . 'editors/content/wysiwyg/";
+					var weWysiwygImagesFolderPath = "' . IMAGE_DIR . 'wysiwyg/";
+					var weWysiwygBgGifPath = "' . IMAGE_DIR . 'bacskgrounds/aquaBackground.gif";
 					var weWysiwygIsIntialized = false;
 
 					var wePopupMenuArray = new Array();
@@ -479,7 +478,7 @@ function tinyMCEchanged(inst){
 			foreach($formatblockArr as $key => $val){
 				$tfb .= $key . ',';
 			}
-			$this->tinyFormatblock = substr($tfb,0,-1);
+			$this->tinyFormatblock = substr($tfb, 0, -1);
 		}
 
 		$this->elements = array(
@@ -982,7 +981,7 @@ function tinyMCEchanged(inst){
 
 		switch(WYSIWYG_TYPE){
 			case 'tinyMCE':
-				$this->width = $this->width + 20;//imi
+				$this->width = $this->width + 20; //imi
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
 				$cmdMapping = array(
@@ -1048,7 +1047,6 @@ function tinyMCEchanged(inst){
 					'undo' => 'undo', // test exact function
 					'unlink' => 'unlink',
 					'visibleborders' => 'visualaid',
-
 					'unmapped1' => 'save',
 					'unmapped2' => 'newdocument',
 					'unmapped3' => 'pastetext',
@@ -1075,7 +1073,6 @@ function tinyMCEchanged(inst){
 					'unmapped24' => 'visualchars',
 					'unmapped25' => 'help',
 					'unmapped26' => 'nonbreaking',
-
 					'unmapped_notImplementetd1' => 'moveforward',
 					'unmapped_notImplementetd2' => 'movebackward',
 					'unmapped_notImplementetd3' => 'iespell',
@@ -1105,9 +1102,7 @@ function tinyMCEchanged(inst){
 ';
 
 				//deactivated: template,save,layer
-
 				//function openWeFileBrowser(): not needed anymore: imi
-
 				//insert complete new: imi
 				return we_html_element::jsElement('
 tinyMCE.init({
@@ -1175,7 +1170,7 @@ tinyMCE.init({
 				$realWidth = max($min_w, $this->width);
 				$out .= '<table border="0" cellpadding="0" cellspacing="0"  class="tbButtonWysiwygDefaultStyle"><tr><td class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:' . $realWidth . 'px; height:' . $this->height . 'px;" id="' . $this->ref . 'edit_src" name="' . $this->ref . 'edit_src"></textarea><iframe contenteditable  width="' . $realWidth . 'px" height="' . $this->height . 'px" name="' . $this->ref . 'edit" id="' . $this->ref . 'edit" allowTransparency="true" ' .
 					'style="display: block;color: black;border: 1px solid #A5ACB2;' .
-					(we_base_browserDetect::isSafari() ? '-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"' : '"') .
+					(we_base_browserDetect::isSafari() ? '-khtml-user-select:none;"  src="'.WEBEDITION_DIR. 'editors/content/wysiwyg/empty.html"' : '"') .
 					'></iframe></td></tr>
 </table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . htmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
 ' . we_html_element::jsElement('

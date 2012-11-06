@@ -304,7 +304,7 @@ class we_updater{
 					$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('SortView','');");
 					$DB_WE->query("INSERT INTO " . CUSTOMER_ADMIN_TABLE . "(Name,Value) VALUES('Prefs','');");
 
-					include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weCustomerSettings.php");
+					include(WE_MODULES_PATH . 'customer/weCustomerSettings.php');
 					$settings = new weCustomerSettings();
 					$settings->customer = new weCustomer();
 					$fields = $settings->customer->getFieldsDbProperties();

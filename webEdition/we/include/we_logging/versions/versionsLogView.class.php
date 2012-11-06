@@ -35,7 +35,7 @@ class versionsLogView{
 	function getJS(){
 
 		$js = we_html_element::jsElement('
-			var ajaxURL = "/webEdition/rpc/rpc.php";
+			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
 			var currentId = 0;
 

@@ -62,12 +62,12 @@ $jsFunction = '
 
 		var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);':'document.onkeydown = doKeyDown;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 		function doKeyDown(e) {
 			var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
 			switch (key) {
 				case 27:
@@ -78,7 +78,7 @@ $jsFunction = '
 		function IsDigit(e) {
 			var key;
 
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;':'key = event.keyCode;').'
+' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 
 			return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
 		}
@@ -94,7 +94,7 @@ $jsFunction = '
 		function we_cmd(){
 
             var args = "";
-            var url = "/webEdition/we_cmd.php?";
+            var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
             for(var i = 0; i < arguments.length; i++){
                 url += "we_cmd["+i+"]="+escape(arguments[i]);
                 if(i < (arguments.length - 1)){
@@ -196,7 +196,7 @@ $jsFunction = '
         ';
 
 
-print we_html_element::jsElement($jsFunction)."
+print we_html_element::jsElement($jsFunction) . "
 	</script>
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();'>

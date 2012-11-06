@@ -34,8 +34,8 @@ function we_tag_banner($attribs, $content){
 	$height = weTag_getAttribute("height", $attribs, ($type == "pixel") ? "1" : "");
 	$link = weTag_getAttribute("link", $attribs, true, true);
 	$page = weTag_getAttribute("page", $attribs);
-	$bannerclick = weTag_getAttribute("clickscript", $attribs, "/webEdition/bannerclick.php");
-	$getbanner = weTag_getAttribute("getscript", $attribs, "/webEdition/getBanner.php");
+	$bannerclick = weTag_getAttribute("clickscript", $attribs, WEBEDITION_DIR . "bannerclick.php");
+	$getbanner = weTag_getAttribute("getscript", $attribs, WEBEDITION_DIR . "getBanner.php");
 	$xml = weTag_getAttribute('xml', $attribs, false, true);
 
 	$nocount = $GLOBALS["WE_MAIN_DOC"]->InWebEdition;

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_INCLUDES_PATH . 'we_modules/shop/we_conf_shop.inc.php');
+include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
 
 function we_tag_showShopItemNumber($attribs){
 

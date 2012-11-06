@@ -30,5 +30,5 @@ $JSIDName = stripslashes(we_cmd_dec(2));
 $JSTextName = stripslashes(we_cmd_dec(3));
 $JSCommand = stripslashes(we_cmd_dec(4));
 
-include_once(WE_INCLUDES_PATH . 'we_modules/export/we_exportDirSelect.php');
+include_once(WE_MODULES_PATH . 'export/we_exportDirSelect.php');
 we_html_tools::protect();

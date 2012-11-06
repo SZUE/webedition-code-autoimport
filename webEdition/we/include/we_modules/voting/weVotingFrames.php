@@ -171,7 +171,7 @@ class weVotingFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "voting";
 			ob_start();
-			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
+			include(WE_MODULES_PATH . 'home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return
@@ -219,13 +219,13 @@ class weVotingFrames extends weModuleFrames{
 
 	function getHTMLVariant(){
 		$prefix = '';
-		$del_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
-		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
+		$del_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
+		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
 
 		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," .
 			(we_hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
-		$sel_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
+		$sel_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time()) .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());

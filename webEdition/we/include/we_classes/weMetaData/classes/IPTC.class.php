@@ -72,7 +72,7 @@ class weMetaData_IPTC extends weMetaData{
 	}
 
 	function _checkDependencies(){
-		return(is_readable($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php"));
+		return(is_readable(WE_INCLUDES_PATH . 'we_classes/weMetaData/lib/PEAR_IPTC.php'));
 	}
 
 	function getUsedFields(){
