@@ -755,9 +755,7 @@ class we_folder extends we_root{
 
 	}
 
-	protected
-
-	function updateRemoteLang($db, $id, $lang, $type){
+	protected function updateRemoteLang($db, $id, $lang, $type){
 		$oldLang = f('SELECT Language FROM ' . $this->Table . ' WHERE ID=' . $id, 'Language', $db);
 		if($oldLang == $lang){
 			return;

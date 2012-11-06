@@ -26,12 +26,15 @@ abstract class we_codeConvertor{
 
 	static function toUnicode($cp, $code){
 		switch($cp){
-			case "1251": return we_codeConvertor::cp1251_to_unicode($code);
+			case "1251":
+				return self::cp1251_to_unicode($code);
 				break;
-			case "1252": return we_codeConvertor::cp1252_to_unicode($code);
+			case "1252":
+				return self::cp1252_to_unicode($code);
 				break;
 			case "10000":
-			case "10029": return we_codeConvertor::cp10029_to_unicode($code);
+			case "10029":
+				return self::cp10029_to_unicode($code);
 				break;
 		}
 	}

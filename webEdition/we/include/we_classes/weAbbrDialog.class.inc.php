@@ -67,7 +67,6 @@ class weAbbrDialog extends weDialog{
 	}
 
 	function getDialogContentHTML(){
-
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] : ""), "", '', "text", 350);
 		$title = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[title]"));
 

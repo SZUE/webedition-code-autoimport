@@ -1244,12 +1244,7 @@ class we_backup{
 		return $ret;
 	}
 
-	/**
-	 * Function: saveState
-	 *
-	 * Description:
-	 */
-	function saveState($of = ""){
+	protected function _saveState(){
 		// Initialize variable
 		$save = '';
 
@@ -1284,7 +1279,16 @@ class we_backup{
 			$tmp = addslashes($v);
 			$save.='$this->dummy[' . $k . ']=\'' . $tmp . '\'' . ";\n";
 		}
+		return $save;
+	}
 
+	/**
+	 * Function: saveState
+	 *
+	 * Description:
+	 */
+	function saveState($of = ""){
+		$save = $this->_saveState();
 		if($of == ""){
 			$of = weFile::getUniqueId(); // #6590, changed from: uniqid(time())
 		}

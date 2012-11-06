@@ -1020,7 +1020,6 @@ class weNewsletterFrames extends weModuleFrames{
 		$out = we_multiIconBox::getJS();
 
 		for($i = 0; $i < $count; $i++){
-
 			$parts = array();
 
 			if(defined("CUSTOMER_TABLE")){
@@ -1046,19 +1045,16 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLNewsletterHeader(){
-		$parts = array(
-			array("headline" => "", "html" => "", "space" => 140, "noline" => 1)
-		);
-
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", 37, stripslashes($this->View->newsletter->Text), "", 'onKeyUp="top.content.hot=1;" id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"', 'text', $this->def_width), g_l('modules_newsletter', '[name]')));
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(10, 10));
-
 		$table->setCol(2, 0, array(), we_html_tools::htmlFormElementTable($this->View->formNewsletterDirChooser(($this->def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=1;", $this->weAutoColpleter), g_l('modules_newsletter', '[dir]')));
 
 		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(NEWSLETTER_TABLE,"320",0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
-
-		$parts[] = array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), "space" => 140);
+		$parts = array(
+			array("headline" => "", "html" => "", "space" => 140, "noline" => 1),
+			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), "space" => 140),
+		);
 
 		if(!$this->View->newsletter->IsFolder){
 			$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 9, 1);
@@ -1072,18 +1068,14 @@ class weNewsletterFrames extends weModuleFrames{
 					we_html_element::htmlInput(array("type" => "checkbox", "value" => "0", "name" => "reply_same", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"))
 				);
 			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"), g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
-
 			$table->setCol(5, 0, array(), we_html_tools::getPixel(10, 10));
-
 			$table->setCol(6, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Test", 37, $this->View->newsletter->Test, "", "onKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[test_email]')));
-
 			$table->setCol(7, 0, array(), we_html_tools::getPixel(10, 10));
 
-			if($this->View->newsletter->isEmbedImages){
-				$_embedImagesChk = we_html_element::htmlInput(array("type" => "checkbox", "value" => "1", "name" => "isEmbedImagesChk", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}", "checked" => null), g_l('modules_newsletter', '[isEmbedImages]'));
-			} else{
-				$_embedImagesChk = we_html_element::htmlInput(array("type" => "checkbox", "value" => "1", "name" => "isEmbedImagesChk", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'));
-			}
+			$_embedImagesChk = ($this->View->newsletter->isEmbedImages ?
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => "1", "name" => "isEmbedImagesChk", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}", "checked" => null), g_l('modules_newsletter', '[isEmbedImages]')) :
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => "1", "name" => "isEmbedImagesChk", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'))
+				);
 			$_embedImagesHid = we_html_element::htmlHidden(array("name" => "isEmbedImages", "value" => $this->View->newsletter->isEmbedImages));
 			//$_embedImagesChk = we_html_element::htmlInput(array("type"=>"checkbox", "value"=>"1", "name"=>"_isEmbedImages" ,"onClick"=>$this->topFrame.".hot=1;","checked"=>($this->View->newsletter->isEmbedImages?"true":"false")),g_l('modules_newsletter','[isEmbedImages]'));
 			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
@@ -1636,7 +1628,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$table->setCol(3, 0, array("colspan" => "3"), $this->View->htmlHidden("csv_import", "1") .
 				$import_box->getHtml()
 			);
-		}elseif($seb){
+		} elseif($seb){
 			$ok = we_button::create_button("ok", "javascript:document.we_form.seb.value=0;we_cmd('export_black');");
 			$cancel = we_button::create_button("cancel", "javascript:set_export(0);");
 			$export_box = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 1);

@@ -671,50 +671,17 @@ class weBackup extends we_backup{
 	}
 
 	function saveState($of = ""){
-
-		// Initialize variable
-		$save = '';
-
-		foreach($this->errors as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->errors[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		foreach($this->warnings as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->warnings[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		foreach($this->extables as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->extables[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		$tmp = addslashes($this->dumpfilename);
-		$save.='$this->dumpfilename=\'' . $tmp . '\'' . ";\n";
-
-		$tmp = addslashes($this->tempfilename);
-		$save.='$this->tempfilename=\'' . $tmp . '\'' . ";\n";
-
-		foreach($this->handle_options as $k => $v){
-			$save.='$this->handle_options["' . $k . '"]=\'' . $v . '\'' . ";\n";
-		}
-
-		foreach($this->properties as $prop){
-			$tmp = addslashes($this->$prop);
-			$save.='$this->' . $prop . '=\'' . $tmp . '\'' . ";\n";
-		}
-
-		foreach($this->dummy as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->dummy[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
+		$save = $this->_saveState();
 
 		foreach($this->file_list as $k => $v){
 			$tmp = addslashes($v);
 			$save.='$this->file_list[' . $k . ']=\'' . $tmp . '\'' . ";\n";
 		}
 
-		if($of == "")
+		if($of == ""){
 			$of = weFile::getUniqueId();
-		weFile::save($this->backup_dir_tmp . "$of", $save);
+		}
+		weFile::save($this->backup_dir_tmp . $of, $save);
 		return $of;
 	}
 

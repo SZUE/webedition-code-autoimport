@@ -198,102 +198,50 @@ if(isset($GLOBALS['userLoginDenied'])){
 	}
 }
 
+function getError($reason,$cookie=false){
+	$_error = we_html_element::htmlB($reason);
+	$_error_count = 0;
+	$tmp = ini_get('session.save_path');
+
+	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
+	}
+
+	if(!ini_get('session.use_cookies')){
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
+	}
+
+	if(ini_get('session.cookie_path') != '/'){
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
+	}
+
+	if($cookie && $_error_count == 0){
+		$_error .=++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
+	}
+
+	$_error .= we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
+
+	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	return $_layout;
+}
 
 /* * ***************************************************************************
  * CHECK FOR PROBLEMS
  * *************************************************************************** */
 
 if(isset($_POST['checkLogin']) && !count($_COOKIE)){
-	$_error = we_html_element::htmlB(g_l('start', '[cookies_disabled]'));
-
-	$_error_count = 0;
-	$tmp = ini_get('session.save_path');
-
-	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
-	}
-
-	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
-	}
-
-	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
-	}
-
-	if($_error_count == 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
-	} else if($_error_count > 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
-	}
-
-	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
-	$_error = we_html_element::htmlB(g_l('start', '[no_db_connection]'));
-
-	$_error_count = 0;
-	$tmp = ini_get('session.save_path');
-
-	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
-	}
-
-	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
-	}
-
-	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
-	}
-
-	if($_error_count == 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
-	} else if($_error_count > 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
-	}
-
-	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_error = we_html_element::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr());
-
-	$_error_count = 0;
-	$tmp = ini_get('session.save_path');
-
-	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .=++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
-	}
-
-	if(!ini_get('session.use_cookies')){
-		$_error .=++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
-	}
-
-	if(ini_get('session.cookie_path') != '/'){
-		$_error .=++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
-	}
-
-	if($_error_count == 0){
-		$_error .=++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
-	}
-
-	if($_error_count == 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
-	} else if($_error_count > 1){
-		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
-	}
-
-	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr());
 
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
@@ -454,7 +402,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
-			if(!isset($_REQUEST['mode'])||$_REQUEST['mode'] == ''||$_REQUEST['mode'] == 'normal'){
+			if(!isset($_REQUEST['mode']) || $_REQUEST['mode'] == '' || $_REQUEST['mode'] == 'normal'){
 				if(permissionhandler::isUserAllowedForAction('work_mode', 'normal')){
 					$_SESSION['weS']['we_mode'] = 'normal';
 				} else{

@@ -51,8 +51,8 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 			$content = doclistView::searchProperties($whichsearch);
 
 			$x = $searchstart + $anzahl;
-			if($x > sizeof($content)){
-				$x = $x - ($x - sizeof($content));
+			if($x > count($content)){
+				$x = $x - ($x - count($content));
 			}
 
 			$code = searchtoolView::makeMouseOverDivs($x, $content, $whichsearch);
