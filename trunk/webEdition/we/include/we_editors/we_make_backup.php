@@ -30,7 +30,7 @@ $what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : 'frameset';
 
 $step = (isset($_REQUEST["step"])) ? $_REQUEST["step"] : 1;
 
-$weBackupWizard = new weBackupWizard("/webEdition/we/include/we_editors/we_make_backup.php", weBackupWizard::BACKUP);
+$weBackupWizard = new weBackupWizard(WE_INCLUDES_DIR . 'we_editors/we_make_backup.php', weBackupWizard::BACKUP);
 
 switch($what){
 	case "frameset":

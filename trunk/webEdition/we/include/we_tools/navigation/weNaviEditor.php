@@ -151,7 +151,7 @@ $_js = we_button::create_state_changer(false) . '
 				    },
 
 				    startRequest:function(id) {
-				       YAHOO.util.Connect.asyncRequest("POST", "/webEdition/rpc/rpc.php", callback, "cmd=GetNaviItems&nid="+id);
+				       YAHOO.util.Connect.asyncRequest("POST", "' . WEBEDITION_DIR . 'rpc/rpc.php", callback, "cmd=GetNaviItems&nid="+id);
 				    }
 
 				};
@@ -189,9 +189,9 @@ $_body = we_html_element::htmlBody(
 
 $_head = //FIXME: missing title
 	we_html_tools::getHtmlInnerHead() . STYLESHEET .
-	we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js') .
-	we_html_element::jsScript('/webEdition/js/libs/yui/event-min.js') .
-	we_html_element::jsScript('/webEdition/js/libs/yui/connection-min.js') .
+	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+	we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+	we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
 	we_html_element::jsElement($_js);
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);

@@ -263,7 +263,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
 	$_table->setCol($_actRow, 1, array("width" => $_middlePart,
 		"class" => "small",
-		"align" => "right"), we_button::create_button("back_to_login", "/webEdition/index.php?r=$r"));
+		"align" => "right"), we_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 	//	12th row

@@ -227,7 +227,7 @@ class weBanner extends weBannerBase{
 		foreach($parents as $p){
 			$foo .= " FolderIDs LIKE '%," . intval($p) . ",%' OR ";
 		}
-		$where = " $where AND (  $foo  FolderIDs='' ) ";
+		$where .= " AND (  $foo  FolderIDs='' ) ";
 
 		$dtArr = makeArrayFromCSV($dt);
 
@@ -235,7 +235,7 @@ class weBanner extends weBannerBase{
 		foreach($dtArr as $d){
 			$foo .= " DoctypeIDs LIKE '%," . intval($d) . ",%' OR ";
 		}
-		$where = " $where AND (  $foo  DoctypeIDs='' ) ";
+		$where .= " AND (  $foo  DoctypeIDs='' ) ";
 
 		$catArr = makeArrayFromCSV($cats);
 
@@ -244,7 +244,7 @@ class weBanner extends weBannerBase{
 		foreach($catArr as $c){
 			$foo .= " CategoryIDs LIKE '%," . $db->escape($filter->filter($c)) . ",%' OR ";
 		}
-		$where = " $where AND (  $foo  CategoryIDs='' ) ";
+		$where .= " AND (  $foo  CategoryIDs='' ) ";
 
 		if($paths){
 			$pathsArray = makeArrayFromCsv($paths);
@@ -252,7 +252,7 @@ class weBanner extends weBannerBase{
 				$foo .= " Path LIKE '" . $db->escape($p) . "/%' OR Path = '" . $db->escape($p) . "' OR ";
 			}
 			$foo = rtrim($foo, 'OR ');
-			$where = " $where AND ( $foo ) ";
+			$where .= " AND ( $foo ) ";
 		}
 
 		$where .= ' AND ( (StartOk=0 OR StartDate <= ' . time() . ') AND (EndOk=0 OR EndDate > ' . time() . ') ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
@@ -268,8 +268,9 @@ class weBanner extends weBannerBase{
 		while($anz == 0 && $weight <= $maxweight) {
 			$db->query("SELECT ID, bannerID FROM " . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
 			$anz = $db->num_rows();
-			if($anz == 0)
+			if($anz == 0){
 				$weight++;
+			}
 		}
 
 		if($anz > 0){
@@ -313,8 +314,9 @@ class weBanner extends weBannerBase{
 			if($bannerData["bannerID"]){
 				$bannersrc = getServerUrl() . id_to_path($bannerData["bannerID"]);
 				$attsImage = array_merge($attsImage, weBanner::getImageInfos($bannerData["bannerID"]));
-				if(isset($attsImage['longdescid']))
+				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
+				}
 			}else{
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;bid=" . $bannerData["bannerID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 			}

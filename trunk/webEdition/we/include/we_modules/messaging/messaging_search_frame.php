@@ -47,7 +47,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	//-->
 </script>
 </head>
-<body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="/webEdition/images/msg_white_bg.gif">
+<body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="<?php echo IMAGE_DIR; ?>msg_white_bg.gif">
 <nobr>
 	<form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_frame.php" onSubmit="return doSearch()">
 		<?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>

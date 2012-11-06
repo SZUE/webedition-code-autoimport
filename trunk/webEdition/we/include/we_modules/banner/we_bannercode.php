@@ -35,8 +35,8 @@ $target = isset($_REQUEST["target"]) ? $_REQUEST["target"] : "";
 $width = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 468;
 $height = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 60;
 $paths = isset($_REQUEST["paths"]) ? $_REQUEST["paths"] : "";
-$getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : getServerUrl() . "/webEdition/getBanner.php";
-$clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getServerUrl() . "/webEdition/bannerclick.php";
+$getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : getServerUrl() . WEBEDITION_DIR . "getBanner.php";
+$clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getServerUrl() . WEBEDITION_DIR . "bannerclick.php";
 
 if($ok){
 //FIXME: replace by call of jsScript

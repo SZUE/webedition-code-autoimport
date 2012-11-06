@@ -127,8 +127,8 @@ class weGlossaryView{
 		$this->setFramesetName($FrameSet);
 		$this->setTopFrame($TopFrame);
 
-		$this->ItemPattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/prog.gif\" />&nbsp;';
-		$this->GroupPattern = '<img style=\"vertical-align: bottom\" src=\"' . IMAGE_DIR . 'tree/icons/folder.gif\" />&nbsp;';
+		$this->ItemPattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'prog.gif\" />&nbsp;';
+		$this->GroupPattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'folder.gif\" />&nbsp;';
 	}
 
 	//----------- Utility functions ------------------

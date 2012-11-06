@@ -68,22 +68,22 @@ $_buttons = we_button::position_yes_no_cancel($deleteAllButton, null, $closeButt
 	.dialogButtonDiv {
 		left				: 0;
 		height				: 40px;
-		background-image	: url(/webEdition/images/edit/editfooterback.gif);
+		background-image	: url(<?php echo IMAGE_DIR;?>edit/editfooterback.gif);
 		position			: absolute;
 		bottom				: 0;
 		width				: 100%;
 	}
 
 	li.msgNotice {
-		background			: url(/webEdition/images/messageConsole/noticeActive.gif);
+		background			: url(<?php echo IMAGE_DIR;?>messageConsole/noticeActive.gif);
 		color				: black;
 	}
 	li.msgWarning {
-		background			: url(/webEdition/images/messageConsole/warningActive.gif);
+		background			: url(<?php echo IMAGE_DIR;?>messageConsole/warningActive.gif);
 		color				: darkgray;
 	}
 	li.msgError {
-		background			: url(/webEdition/images/messageConsole/errorActive.gif);
+		background			: url(<?php echo IMAGE_DIR;?>messageConsole/errorActive.gif);
 		color				: red;
 	}
 </style>

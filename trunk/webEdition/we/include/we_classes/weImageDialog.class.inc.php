@@ -78,7 +78,7 @@ class weImageDialog extends weDialog{
 				$this->args["thumbnail"] = $thumb;
 			} else{
 				$this->args["type"] = "ext";
-				$this->args["extSrc"] = preg_replace('|^/webEdition/|', '', preg_replace('|^/webEdition/we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
+				$this->args["extSrc"] = preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";
 				$this->args["thumbnail"] = 0;
@@ -187,7 +187,7 @@ class weImageDialog extends weDialog{
 						$imgpath = $_SERVER['DOCUMENT_ROOT'] . id_to_path($fileID);
 						$imgObj = new we_imageDocument();
 						$imgObj->initByID($fileID);
-			
+
 						$preserveData = ($_REQUEST["wasThumbnailChange"] || $_REQUEST["isTinyMCEInitialization"]);
 						$width = $imgObj->getElement("width");
 						$height = $imgObj->getElement("height");
@@ -471,9 +471,9 @@ function checkWidthHeight(field){
 	var ratioCheckBox = document.getElementById("_we_dialog_args[ratio]");
 	if(ratioCheckBox.checked){
 		if(field.value.indexOf("%") == -1){
-			ratiow = ratiow ? ratiow : 
+			ratiow = ratiow ? ratiow :
 				(field.form.elements["tinyMCEInitRatioW"].value ? field.form.elements["tinyMCEInitRatioW"].value : 0);
-			ratioh = ratioh ? ratioh : 
+			ratioh = ratioh ? ratioh :
 				(field.form.elements["tinyMCEInitRatioH"].value ? field.form.elements["tinyMCEInitRatioH"].value : 0);
 			if(ratiow && ratioh){
 				if(field.name=="we_dialog_args[height]"){
@@ -490,10 +490,10 @@ function checkWidthHeight(field){
 }
 
 				function showclasss(name, val, onCh) {' .
-				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ?'
+				((isset($this->args["cssClasses"]) && $this->args["cssClasses"]) ? '
 					var classCSV = "' . $this->args["cssClasses"] . '";
-					classNames = classCSV.split(/,/);' :'
-					classNames = top.opener.we_classNames;') .'
+					classNames = classCSV.split(/,/);' : '
+					classNames = top.opener.we_classNames;') . '
 					document.writeln(\'<select class="defaul	qqtfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 

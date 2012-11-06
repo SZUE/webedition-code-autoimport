@@ -54,16 +54,14 @@ class weGlossaryFrameEditorHome{
 		$GLOBALS["mod"] = "glossary";
 
 		ob_start();
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/home.inc.php");
+		include(WE_MODULES_PATH . 'home.inc.php');
 		$out = ob_get_contents();
 		ob_end_clean();
 
-		$_js = $weGlossaryFrames->topFrame . '.resize.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&home=1";'
-			. $weGlossaryFrames->topFrame . '.resize.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&home=1";';
-
-		$js = we_html_element::jsElement($_js);
-
-		$content = $js . $out;
+		$content =
+			we_html_element::jsElement($weGlossaryFrames->topFrame . '.resize.right.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&home=1";' .
+				$weGlossaryFrames->topFrame . '.resize.right.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&home=1";') .
+			$out;
 
 		$_body = array(
 			'bgcolor' => 'white',
@@ -74,9 +72,7 @@ class weGlossaryFrameEditorHome{
 			'onLoad' => 'loaded=1;',
 		);
 
-		$body = we_html_element::htmlBody($_body, $content);
-
-		return $weGlossaryFrames->getHTMLDocument($content, "");
+		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, $content), "");
 	}
 
 	function Footer(&$weGlossaryFrames){
@@ -85,9 +81,7 @@ class weGlossaryFrameEditorHome{
 			'bgcolor' => '#EFF0EF',
 		);
 
-		$body = we_html_element::htmlBody($_body, "");
-
-		return $weGlossaryFrames->getHTMLDocument($body);
+		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, ""));
 	}
 
 }

@@ -763,7 +763,7 @@ HTS;
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(
-					'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
+					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
 			)));

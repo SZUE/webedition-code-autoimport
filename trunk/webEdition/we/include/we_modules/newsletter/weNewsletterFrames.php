@@ -1106,7 +1106,7 @@ class weNewsletterFrames extends weModuleFrames{
 			);
 			$GLOBALS["mod"] = "newsletter";
 			ob_start();
-			include(WE_INCLUDES_PATH . 'we_modules/home.inc.php');
+			include(WE_MODULES_PATH . 'home.inc.php');
 			$out = ob_get_contents();
 			ob_end_clean();
 			return $out;

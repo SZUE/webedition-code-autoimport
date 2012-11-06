@@ -33,24 +33,24 @@ we_html_tools::htmlTop();
 </head>
 <frameset rows="40,*" framespacing="0" border="0" frameborder="no">
 	<frame src="edit_shop_editorHeader.php?home=<?php print $home; ?>&mid=<?php print $mid . $yearView; ?>&bid=<?php print $bid; ?>" name="edheader" noresize scrolling=no>
-<?php if($home){ ?>
+	<?php if($home){ ?>
 
-		<frame src="/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop" name="edbody" scrolling=auto>,
+		<frame src="<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=mod_home&mod=shop" name="edbody" scrolling=auto>,
 
 		<!--
 		 <frame src="edit_shop_pref.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
 		-->
 
-<?php
-} elseif($mid){
+		<?php
+	} elseif($mid){
 
-	$year = substr($mid, (strlen($mid) - 4));
-	$month = str_replace($year, '', $_REQUEST["mid"]);
+		$year = substr($mid, (strlen($mid) - 4));
+		$month = str_replace($year, '', $_REQUEST["mid"]);
 
-	print '<frame src="edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month . '" name="edbody" scrolling=auto>';
-	?>
+		print '<frame src="edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month . '" name="edbody" scrolling=auto>';
+		?>
 
-	<?php
+		<?php
 	} elseif($yearView){
 
 		$year = $yearView;

@@ -1447,13 +1447,14 @@ class weBackupWizard{
 
 						if($handle_options["core"]){
 							$we_backup_obj->getSiteFiles();
-							$we_backup_obj->getFileList($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates", true, false);
+							$we_backup_obj->getFileList(TEMPLATES_PATH, true, false);
 						}
 
 						$we_backup_obj->getVersion($we_backup_obj->filename);
 						$we_backup_obj->file_end = $we_backup_obj->splitFile2();
 						if($we_backup_obj->file_end < 0){
-							print we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
+							print we_html_element::jsElement('top.busy.location = "' . $this->frameset . '?pnt=busy";
+							' .
 									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', "[cannot_split_file]"), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', "[cannot_split_file_ziped]") : ''), we_message_reporting::WE_MESSAGE_ERROR));
 							return "";
 						}
@@ -1484,9 +1485,9 @@ class weBackupWizard{
 						$percent = $we_backup_obj->getImportPercent();
 						print "\n" .
 							we_html_element::jsElement('
-										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[delete_old_files]") . '");
-										if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-										top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
+							if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . g_l('backup', "[delete_old_files]") . '");
+							if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
+							top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
 							') . "\n";
 					} else if($we_backup_obj->file_counter < $we_backup_obj->file_end){
 						$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
@@ -1507,16 +1508,16 @@ class weBackupWizard{
 
 							print
 								we_html_element::jsElement('
-										if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . $we_backup_obj->current_description . '");
-										if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-										top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
-								');
+							if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . $we_backup_obj->current_description . '");
+							if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
+							top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
+							');
 						} else{
 							print
 								we_html_element::jsElement('
-											top.busy.location="' . $this->frameset . '?pnt=busy";
-											top.body.location="' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";
-									');
+							top.busy.location = "' . $this->frameset . '?pnt=busy";
+							top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";
+							');
 						}
 					} else{
 						$we_backup_obj->doUpdate();
@@ -1524,14 +1525,14 @@ class weBackupWizard{
 							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
 						print
 							we_html_element::jsElement('
-								top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
-								top.opener.top.we_cmd("exit_delete");
-								top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', "[finished]") . '&percent=100";
-								' . ($we_backup_obj->rebuild && !count($we_backup_obj->errors) ? ('
-									top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";
-								 ') : ('
-								top.body.location="' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";
-								')) . '
+							top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
+							top.opener.top.we_cmd("exit_delete");
+							top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', "[finished]") . '&percent=100";
+							' . ($we_backup_obj->rebuild && !count($we_backup_obj->errors) ? ('
+							top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";
+							') : ('
+							top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";
+							')) . '
 							');
 					}
 					break;
@@ -1541,7 +1542,7 @@ class weBackupWizard{
 					$_SESSION["delete_files_info"] = g_l('backup', "[files_not_deleted]");
 					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement('
-									new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1","we_del",-1,-1,600,130,true,true,true);
+							new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);
 							');
 					break;
 				case "deletebackup":
@@ -1557,8 +1558,8 @@ class weBackupWizard{
 						} else{
 							if(unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $bfile)){
 								print we_html_element::jsElement('
-										if(top.body.delSelItem) top.body.delSelItem();
-									');
+							if(top.body.delSelItem) top.body.delSelItem();
+							');
 							} else{
 								print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
@@ -1685,19 +1686,22 @@ class weBackupWizard{
 
 		return we_html_element::jsElement(
 				'function setLocation(loc){
-				location.href=loc;
-			}
- 			var reload = 0;
- 			function reloadFrame(){
- 				top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=' . $cmd . '&reload=1";
- 				reload++;
- 				if(reload<' . $_retry . ') {
- 					setTimeout("reloadFrame()",' . $_execute . ');
- 				} else {
- 					' . we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR) . '
- 				}
- 			}
- 			setTimeout("reloadFrame()",' . $_execute . ');');
+							location.href = loc;
+							}
+							var reload = 0;
+
+							function reloadFrame(){
+								top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=' . $cmd . '&reload=1";
+								reload++;
+								if(reload < ' . $_retry . '){
+									setTimeout("reloadFrame()", ' . $_execute . ');
+								} else{
+									' . we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+								}
+							}
+
+							setTimeout("reloadFrame()", ' . $_execute . ');
+							');
 	}
 
 	static function getDownloadLinkText(){
@@ -1722,3 +1726,4 @@ class weBackupWizard{
 	}
 
 }
+

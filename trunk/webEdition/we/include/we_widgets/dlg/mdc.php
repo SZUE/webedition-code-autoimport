@@ -133,7 +133,7 @@ function getHTMLCategory(){
 	$del_but = addslashes(
 		we_html_element::htmlImg(
 			array(
-				'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
+				'src' => BUTTONS_DIR . 'btn_function_trash.gif',
 				'onclick' => 'javascript:#####placeHolder#####;top.mark();',
 				'style' => 'cursor: pointer; width: 27px;'
 		)));
@@ -240,7 +240,7 @@ var table='" . $_selTable . "';
 
 function we_cmd(){
 	var args='';
-	var url='/webEdition/we_cmd.php?';
+	var url='" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i=0;i<arguments.length;i++){
 		url+='we_cmd['+i+']='+escape(arguments[i]);
 		if(i<(arguments.length-1)){

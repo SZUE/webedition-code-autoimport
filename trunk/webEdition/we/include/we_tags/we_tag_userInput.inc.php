@@ -545,7 +545,7 @@ function we_tag_userInput($attribs, $content){
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else{
 					echo we_html_element::jsElement('weFrontpageEdit=true;');
-					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/we_textarea_include.inc.php");
+					include_once (JS_PATH . "we_textarea_include.inc.php");
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");

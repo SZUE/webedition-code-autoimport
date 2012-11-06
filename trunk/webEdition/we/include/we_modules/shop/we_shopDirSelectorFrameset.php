@@ -28,4 +28,4 @@ $JSIDName = $_REQUEST['we_cmd'][2];
 $JSTextName = $_REQUEST['we_cmd'][3];
 $JSCommand = $_REQUEST['we_cmd'][4];
 
-include_once(WE_INCLUDES_PATH . 'we_modules/raw/we_ShopDirSelect.php');
+include_once(WE_MODULES_PATH . 'raw/we_ShopDirSelect.php');

@@ -73,9 +73,9 @@ class weImportUpdater extends weXMLExIm{
 					"ContentType" => "text/weTmpl"
 				)
 			);
-			if($ref)
+			if($ref){
 				$object->TemplateID = $ref->ID;
-			else if(isset($object->TemplatePath) && $object->TemplatePath){
+			}else if(isset($object->TemplatePath) && $object->TemplatePath){
 				$ref = $this->RefTable->getRef(
 					array(
 						"ID" => $object->ID,
@@ -83,10 +83,11 @@ class weImportUpdater extends weXMLExIm{
 					)
 				);
 				if($ref && isset($ref->OldTemplatePath)){
-					$tpath = clearPath(preg_replace("|^.+webEdition/we/templates|i", '', $ref->OldTemplatePath));
+					$tpath = clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
 					$id = path_to_id($tpath, TEMPLATES_TABLE);
-					if($id)
+					if($id){
 						$object->TemplateID = $id;
+					}
 				}
 			}
 		}
@@ -564,7 +565,7 @@ class weImportUpdater extends weXMLExIm{
 		}
 	}
 
-	function updateSource($patterns, &$source, $field="ID", $table=FILE_TABLE){
+	function updateSource($patterns, &$source, $field = "ID", $table = FILE_TABLE){
 
 		if(is_array($source)){ // shop exception - handle array in the content
 			foreach($source as $_k1 => $_item1){

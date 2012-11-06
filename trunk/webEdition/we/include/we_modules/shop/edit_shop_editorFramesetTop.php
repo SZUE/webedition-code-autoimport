@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_modules/shop/handle_shop_dbitemConnect.php');
+include_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
 
 we_html_tools::protect();
 
@@ -58,7 +58,7 @@ we_html_tools::htmlTop();
 	<frame src="edit_shop_editorHeaderTop.php?mid=<?php print $mid; ?>&bid=<?php print $bid; ?>&home=<?php print $home; ?>&typ=object&ViewClass=<?php print $classid; ?>" name="edheader" noresize scrolling=no>
 	<?php
 	if($home){
-		print "<frame src='/webEdition/we_cmd.php?we_cmd[0]=mod_home&mod=shop' name='edbody' scrolling=auto>";
+		print "<frame src='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=mod_home&mod=shop' name='edbody' scrolling=auto>";
 	} else if($mid){
 		// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 		print "<frame src='edit_shop_overviewTop.php?mid=\"$mid\"' name='edbody' scrolling=auto>";

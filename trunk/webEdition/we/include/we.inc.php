@@ -75,8 +75,8 @@ include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // we_active_integrated_modules - all active integrated modules
 
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
-		include_once (WE_INCLUDES_PATH . 'we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
+	if(file_exists(WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php')){
+		include_once (WE_MODULES_PATH . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
 

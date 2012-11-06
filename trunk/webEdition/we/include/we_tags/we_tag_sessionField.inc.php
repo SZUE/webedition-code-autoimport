@@ -193,7 +193,7 @@ function we_tag_sessionField($attribs, $content){
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
 			} else{
 				echo we_html_element::jsElement('weFrontpageEdit=true;');
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
+				include_once(JS_PATH . 'we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';
 				$showAutobr = isset($attribs['autobr']);
 				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');

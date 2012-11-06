@@ -130,7 +130,7 @@ $yearshop = "2002";
 $z = 1;
 while($yearshop <= date("Y")) {
 	echo ' case "year' . $yearshop . '":
-							 top.content.location="' . WE_INCLUDES_DIR . 'we_modules/show.php?mod=shop&year=' . $yearshop . '";
+							 top.content.location="' . WE_MODULES_DIR . 'show.php?mod=shop&year=' . $yearshop . '";
 					 break;
 			';
 	$yearshop++;

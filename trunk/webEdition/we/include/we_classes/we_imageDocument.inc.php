@@ -753,7 +753,7 @@ class we_imageDocument extends we_binaryDocument{
 
 	function getThumbnail(){
 		if($this->getElement('data') && is_readable($this->getElement('data'))){
-			return '<img src="/webEdition/thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
+			return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $this->ID . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
 		} else{
 			return $this->getHtml();
 		}

@@ -356,7 +356,7 @@ return;';
 function we_getJavaEditorCode($code){
 	global $we_doc;
 	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
-    <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl(true) . '/webEdition/editors/template/editor"/>
+    <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl(true) . WEBEDITION_DIR. 'editors/template/editor"/>
     <param name="phpext" value=".php"/>
 	<param name="serverUrl" value="' . getServerUrl(true) . '"/>
 	<param name="editorPath" value="webEdition/editors/template/editor"/>';

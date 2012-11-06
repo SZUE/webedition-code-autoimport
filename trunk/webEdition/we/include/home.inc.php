@@ -318,7 +318,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			fo=self.document.forms['we_form'];
 			fo.elements['we_cmd[1]'].value = serialize(aDat);
 			top.YAHOO.util.Connect.setForm(fo);
-			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php	echo WE_INCLUDES_DIR;	?>we_widgets/cmd.php', top.weDummy);
+			var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '<?php echo WE_INCLUDES_DIR; ?>we_widgets/cmd.php', top.weDummy);
 		}
 
 		function resizeIdx(a,id){
@@ -612,7 +612,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			}
 
 			function removeWidget(wizId){
-				var remove=confirm('<?php	echo g_l('cockpit', "[pre_remove]");	?>"'+getLabel(wizId)+'"<?php	echo g_l('cockpit', "[post_remove]");	?>');
+				var remove=confirm('<?php echo g_l('cockpit', "[pre_remove]"); ?>"'+getLabel(wizId)+'"<?php echo g_l('cockpit', "[post_remove]"); ?>');
 				if(remove==true){
 					gel(wizId).parentNode.removeChild(gel(wizId));
 					updateJsStyleCls();
@@ -632,7 +632,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 			}
 
 			function composeUri(args){
-				var uri='<?php	echo WE_INCLUDES_DIR;	?>we_widgets/dlg/'+args[0]+'.php?';
+				var uri='<?php echo WE_INCLUDES_DIR; ?>we_widgets/dlg/'+args[0]+'.php?';
 				for(var i=1;i<args.length;i++){
 					uri+='we_cmd['+(i-1)+']='+args[i];
 					if(i<(args.length-1)){
@@ -751,7 +751,7 @@ clone.style.display="inline";
 						_cmdName = "GetRss";
 						break;
 				}
-				top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>' , ajaxCallback );
+				top.YAHOO.util.Connect.asyncRequest( 'GET', '<?php echo WEBEDITION_DIR; ?>rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args + '&weSessionId=<?php print session_id(); ?>' , ajaxCallback );
 
 			}
 
@@ -915,7 +915,7 @@ clone.style.display="inline";
 
 
 			function getUser(){
-				var url = '<?php echo WEBEDITION_DIR;?>we_cmd.php?';
+				var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 				for(var i = 0; i < arguments.length; i++) {
 					url += 'we_cmd['+i+']='+escape(arguments[i]);
 					if(i < (arguments.length - 1)) url += '&';
@@ -954,7 +954,7 @@ clone.style.display="inline";
 					if($aProps[0] == 'upb' && $aProps[3] == ''){
 						$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
 					}
-					include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
+					include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
 					if($aProps[0] == 'usr' || $aProps[0] == 'msg'){
 						$aDiscard[] = $aProps[0];
 					}
@@ -962,7 +962,7 @@ clone.style.display="inline";
 				if($aProps[2]){
 					$bExtendedCol = true;
 				}
-				include (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
+				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$$aProps[0] = we_widget::create(
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(

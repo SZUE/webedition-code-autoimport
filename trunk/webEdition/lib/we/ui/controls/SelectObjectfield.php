@@ -98,8 +98,8 @@ class we_ui_controls_SelectObjectfield extends we_ui_controls_Select{
 		include (WE_INCLUDES_PATH . 'we_active_integrated_modules.inc.php');
 		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
 
-			if(file_exists(WE_INCLUDES_PATH . 'we_modules/object/we_conf_object.inc.php')){
-				include_once (WE_INCLUDES_PATH . 'we_modules/object/we_conf_object.inc.php');
+			if(file_exists(WE_MODULES_PATH . 'object/we_conf_object.inc.php')){
+				include_once (WE_MODULES_PATH . 'object/we_conf_object.inc.php');
 				$db = new DB_WE();
 				$db->query("SHOW FIELDS FROM " . OBJECT_X_TABLE . $this->getObjectclassid());
 				$this->addOption(0, '-');

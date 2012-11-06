@@ -36,7 +36,7 @@ if(isset($_REQUEST["step"]))
 else
 	$step = 1;
 
-$weBackupWizard = new weBackupWizard("/webEdition/we/include/we_editors/we_recover_backup.php", weBackupWizard::RECOVER);
+$weBackupWizard = new weBackupWizard(WE_INCLUDES_DIR . "we_editors/we_recover_backup.php", weBackupWizard::RECOVER);
 
 switch($what){
 	case "frameset": print $weBackupWizard->getHTMLFrameset();

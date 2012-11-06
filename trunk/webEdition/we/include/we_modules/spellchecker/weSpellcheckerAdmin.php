@@ -273,32 +273,32 @@ $_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" arc
 				if(document.spellchecker.uploadFinished()) {
 					if(document.spellchecker.packingFinished()) {
 <?php print we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
-											}
-											hideDictSelector();
-											appletActiv=false;
-											loadTable();
-											return;
-										}
-									}
+					}
+					hideDictSelector();
+					appletActiv=false;
+					loadTable();
+					return;
+				}
+			}
 
-								}
+		}
 
-								setTimeout("checkApplet()",2000);
-							}
+		setTimeout("checkApplet()",2000);
+	}
 
-							function deleteDict(name) {
-								if(confirm(sprintf("<?php print g_l('modules_spellchecker', '[ask_dict_del]'); ?>",name))){
-									hiddenCmd.dispatch("deleteDict",name);
-								}
-							}
+	function deleteDict(name) {
+		if(confirm(sprintf("<?php print g_l('modules_spellchecker', '[ask_dict_del]'); ?>",name))){
+			hiddenCmd.dispatch("deleteDict",name);
+		}
+	}
 
-							function loadTable() {
-								if(hiddenCmd.dispatch) {
-									hiddenCmd.dispatch("refresh");
-								} else {
-									setTimeout("loadTable()",1000);
-								}
-							}
+	function loadTable() {
+		if(hiddenCmd.dispatch) {
+			hiddenCmd.dispatch("refresh");
+		} else {
+			setTimeout("loadTable()",1000);
+		}
+	}
 
 
 
@@ -311,11 +311,11 @@ $_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" arc
 
 <body onLoad="loadTable()" class="weDialogBody">
 
-<?php print $tabsBody; ?>
+	<?php print $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-	<?php print $_tab_1 ?>
+			<?php print $_tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
@@ -324,7 +324,7 @@ $_applet_code2 = '<applet name="spellcheckerCmd" code="LeSpellchecker.class" arc
 
 	</div>
 
-	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
+	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
 	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height 0px;" src="<?php print WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>

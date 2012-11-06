@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH. "java_menu/modules/module_menu_workflow.inc.php");
+include_once(WE_INCLUDES_PATH . "java_menu/modules/module_menu_workflow.inc.php");
 include_once(WE_INCLUDES_PATH . "jsMessageConsole/messageConsole.inc.php" );
 
 we_html_tools::protect();
@@ -36,7 +36,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 ?>
 <script type="text/javascript"><!--
 	function menuaction(cmd){
-		top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
+		top.opener.top.load.location.replace("<?php echo WEBEDITION_DIR; ?>we_lcmd.php?wecmd0="+cmd);
 	}
 	//-->
 </script>

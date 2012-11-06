@@ -83,8 +83,8 @@ switch($we_doc->ContentType){
 			$moduleDir .= "/";
 		}
 
-		if(file_exists(WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php")){
-			include(WE_INCLUDES_PATH . 'we_modules/' . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php");
+		if(file_exists(WE_MODULES_PATH . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php")){
+			include(WE_MODULES_PATH . $moduleDir . "we_" . $we_doc->ContentType . "_properties.inc.php");
 		} else{
 			exit("Can NOT include property File");
 		}

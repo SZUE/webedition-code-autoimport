@@ -315,8 +315,8 @@ if(isset($options[1][0])){
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_REQUEST['backup_select'] = basename($_backup_filename);
-if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_backup/' . $_REQUEST['backup_select']){
-	copy($_backup_filename, $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_backup/' . $_REQUEST['backup_select']);
+if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['backup_select']){
+	copy($_backup_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $_REQUEST['backup_select']);
 }
 
 if(weBackupPreparer::prepareImport() === true){
@@ -349,7 +349,7 @@ if($_REQUEST['verbose']){
 	print "\nDone\n";
 }
 
-function _checkAll($flag=true){
+function _checkAll($flag = true){
 	$_REQUEST['handle_core'] = $flag;
 	$_REQUEST['handle_binary'] = $flag;
 	$_REQUEST['handle_versions'] = $flag;

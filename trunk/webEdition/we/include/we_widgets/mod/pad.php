@@ -22,13 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/**
- * Global include file
- */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-/**
- * The notepad widtget functions
- */
 include_once (WE_INCLUDES_PATH . 'we_widgets/mod/wePadFunctions.inc.php');
 
 we_html_tools::protect();

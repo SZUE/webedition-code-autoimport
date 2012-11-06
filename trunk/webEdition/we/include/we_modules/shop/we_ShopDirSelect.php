@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$_SERVER["SCRIPT_NAME"] = WE_INCLUDES_DIR . "we_modules/shop/we_shopDirSelect.php";
+$_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "shop/we_shopDirSelect.php";
 $fs = new we_shop_dirSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),
 		isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ''),
 		isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : ''),
