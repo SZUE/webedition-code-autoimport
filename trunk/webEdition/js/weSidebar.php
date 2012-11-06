@@ -78,15 +78,15 @@ weSidebar.open = function() {
 
 
 weSidebar.close = function() {
-	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = 0 + "px";
-	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = 0 + "px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right="0px";
+	top.rframe.document.getElementById("sidebarDiv").style.width = "0px";
 
 }
 
 
 weSidebar.resize = function(width) {
-	top.frames["rframe"].document.getElementById("bm_content_frameDiv").style.right = width + "px";
-	top.frames["rframe"].document.getElementById("sidebarDiv").style.width = width + "px";
+	top.rframe.document.getElementById("bm_content_frameDiv").style.right=width+"px";
+	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
 
 }
 

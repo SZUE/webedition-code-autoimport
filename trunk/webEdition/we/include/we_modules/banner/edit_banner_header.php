@@ -44,7 +44,7 @@ $jmenu = new weJavaMenu($we_menu_banner, "top.opener.top.load", 350, 30);
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-				<?php $jmenu->printMenu(); ?>
+				<?php $jmenu->printMenu('cmd'); ?>
 			</td>
 			<td align="right">
 				<?php
