@@ -369,7 +369,7 @@ class weHyperlinkDialog extends weDialog{
 			}
 		}
 
-		$_anchorSel = $this->args["editor"] != 'tinyMce' ? we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")') : '<div id="anchorlistcontainer"></div>';
+		$_anchorSel = (isset($this->args["editor"]) && $this->args["editor"] == 'tinyMce') ? '<div id="anchorlistcontainer"></div>' : we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")');
 		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", "", "text", 300);
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
