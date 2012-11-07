@@ -69,7 +69,7 @@ abstract class we_class{
 	protected $errMsg = '';
 
 	//Overwrite
-	function we_new(){
+	public function we_new(){
 
 	}
 

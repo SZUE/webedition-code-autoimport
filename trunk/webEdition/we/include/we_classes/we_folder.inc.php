@@ -59,7 +59,7 @@ class we_folder extends we_root{
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class');
 	}
 
-	function we_new(){
+	public function we_new(){
 		parent::we_new();
 		$this->adjustEditPageNr();
 	}
