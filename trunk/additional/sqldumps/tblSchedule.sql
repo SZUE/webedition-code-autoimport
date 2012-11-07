@@ -8,7 +8,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   Schedpro longtext,
   `Type` tinyint(3) unsigned NOT NULL default '0',
   Active tinyint(1) unsigned default NULL,
-  PRIMARY KEY (DID,Wann,Was,`Type`,Active),
+  PRIMARY KEY (DID,Wann,Was,`Type`,Active,ClassName),
   KEY Wann (Wann,`lockedUntil`),
   KEY Active (Active,Schedpro(1))
 ) ENGINE=MyISAM;
