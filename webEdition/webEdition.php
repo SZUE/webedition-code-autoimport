@@ -189,7 +189,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 
 			// Error
 		case <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>:
-			win.alert(we_string_message_reporting_error + ":\n" + message);
+				win.alert(we_string_message_reporting_error + ":\n" + message);
 			break;
 		}
 	}
@@ -528,7 +528,9 @@ if(!empty($_jsincludes)){
 				var isFolder = cType == "folder" ? 1 : 0;
 				var hasPerm = 0;
 
-				if(wePerms.ADMINISTRATOR) {
+				if(eTable==""){
+					hasPerm = 0;
+				}else if(wePerms.ADMINISTRATOR) {
 					hasPerm = 1;
 				} else if(isFolder) {
 					switch(eTable){
