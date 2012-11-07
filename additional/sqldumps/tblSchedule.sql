@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   Wann int(11) unsigned NOT NULL default '0',
   `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Was int(11) unsigned NOT NULL default '0',
-  ClassName varchar(64) NOT NULL default '',
+  ClassName enum('we_htmlDocument','we_webEditionDocument','we_objectFile') NOT NULL,
   SerializedData longblob,
   Schedpro longtext,
   `Type` tinyint(3) unsigned NOT NULL default '0',
