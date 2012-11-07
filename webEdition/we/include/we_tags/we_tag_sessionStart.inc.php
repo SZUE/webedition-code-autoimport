@@ -46,7 +46,6 @@ function we_tag_sessionStart($attribs){
 		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'] && ( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 			setcookie('_we_autologin', '', ($currenttime - 3600), '/');
-			;
 		}
 		unset($_SESSION['webuser']);
 		unset($_SESSION['s']);
@@ -65,6 +64,8 @@ function we_tag_sessionStart($attribs){
 				);
 			}
 			if(isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID']))){
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
+
 				if($_REQUEST['s']['Username'] != ''){
 					$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"', $GLOBALS['DB_WE']);
 					if(isset($u['Password']) && $u['LoginDenied'] != 1){
@@ -86,16 +87,19 @@ function we_tag_sessionStart($attribs){
 							$_SESSION['webuser'] = array(
 								'registered' => false, 'loginfailed' => true
 							);
+							we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
 						}
 					} else{
 						$_SESSION['webuser'] = array(
 							'registered' => false, 'loginfailed' => true
 						);
+						we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
 					}
 				} else{
 					$_SESSION['webuser'] = array(
 						'registered' => false, 'loginfailed' => true
 					);
+					we_log_loginFailed('tblWebUser', $_REQUEST['s']['Username']);
 				}
 			}
 			if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
@@ -140,11 +144,7 @@ function we_tag_sessionStart($attribs){
 		$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 		if($_SESSION['webuser']['registered']){
 			$WebUserID = $_SESSION['webuser']['ID'];
-			if($monitorgroupfield != ''){
-				$WebUserGroup = $_SESSION['webuser'][$monitorgroupfield];
-			} else{
-				$WebUserGroup = 'we_guest';
-			}
+			$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 			$WebUserDescription = '';
 		} else{
 			$WebUserID = 0;

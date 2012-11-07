@@ -2107,3 +2107,8 @@ function cleanWEZendCache(){
 		unlink(ZENDCACHE_PATH . 'clean');
 	}
 }
+
+function we_log_loginFailed($table, $user){
+	$db = $GLOBALS['DB_WE'];
+	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="' . $db->escape($table) . '", Username="' . $db->escape(user) . '", IP="' . $db->escape($_SERVER['REMOTE_ADDR']) . '"');
+}
