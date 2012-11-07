@@ -58,8 +58,9 @@ abstract class weFile{
 		if($fp){
 			do{
 				$data = $read($fp, $rsize);
-				if(strlen($data) == 0)
+				if(strlen($data) == 0){
 					break;
+				}
 				$buffer .= $data;
 			} while(true);
 			$close($fp);
@@ -328,13 +329,16 @@ abstract class weFile{
 	}
 
 	static function getComPrefix($compression){
-		if($compression == 'gzip')
-			return 'gz';
-		if($compression == 'zip')
-			return 'zip_';
-		if($compression == 'bzip')
-			return 'bz';
-		return 'f';
+		switch($compression){
+			case 'gzip':
+				return 'gz';
+			case 'zip':
+				return 'zip_';
+			case 'bzip':
+				return 'bz';
+			default:
+				return 'f';
+		}
 	}
 
 	static function getZExtension($compression){

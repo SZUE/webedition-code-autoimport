@@ -641,7 +641,7 @@ class we_document extends we_root{
 	 * public
 	 */
 
-	function we_new(){
+	public function we_new(){
 		parent::we_new();
 		$this->i_setExtensions();
 		if(is_array($this->Extensions) && sizeof($this->Extensions)){

@@ -194,7 +194,7 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	function we_new(){
+	public function we_new(){
 		parent::we_new();
 		$this->Filename = $this->i_getDefaultFilename();
 	}

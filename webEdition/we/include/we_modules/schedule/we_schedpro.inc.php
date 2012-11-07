@@ -63,7 +63,6 @@ class we_schedpro{
 			$this->ParentID = isset($s["ParentID"]) ? $s["ParentID"] : 0;
 			$this->active = isset($s["active"]) ? $s["active"] : 1;
 			$this->doctypeAll = isset($s["doctypeAll"]) ? $s["doctypeAll"] : 0;
-			;
 		} else{
 			$this->task = 1;
 			$this->type = 0;
@@ -97,8 +96,8 @@ class we_schedpro{
 
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
-				$days .= '<td>' . we_forms::checkbox("1", $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)")
-					. '<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+				$days .= '<td>' . we_forms::checkbox("1", $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 			} else{
 				$days .= '<td colspan="3">';
 			}
@@ -118,8 +117,8 @@ class we_schedpro{
 		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
 
 		for($i = 1; $i <= 7; $i++){
-			$wd .= '<td>' . we_forms::checkbox("1", $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)")
-				. '<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+			$wd .= '<td>' . we_forms::checkbox("1", $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
+				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
 		$wd .= '</tr></table>';
@@ -127,12 +126,11 @@ class we_schedpro{
 	}
 
 	function getSpacerRowHTML(){
-		return '	<tr valign="top">
+		return '<tr valign="top">
 		<td>' . we_html_tools::getPixel(80, 10) . '</td>
 		<td>' . we_html_tools::getPixel(565, 10) . '</td>
 		<td>' . we_html_tools::getPixel(26, 10) . '</td>
-	</tr>
-';
+	</tr>';
 	}
 
 	function getHTML($isobj = false){
@@ -166,8 +164,8 @@ class we_schedpro{
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
 				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
-						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;")
-					. '<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
+						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
+					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', "[doctype]");
 				break;
 			case self::CATEGORY:
@@ -187,7 +185,7 @@ class we_schedpro{
 				$myid = $this->ParentID;
 				$path = id_to_path($this->ParentID, $GLOBALS['we_doc']->Table);
 
-				if($GLOBALS['we_doc']->ClassName == "we_objectFile"){
+				if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
 					if($path == "/"){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
@@ -232,8 +230,8 @@ class we_schedpro{
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', "[task][headline]") . ':</td>
 		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_forms::checkbox("1", $this->active, $checknname, g_l('modules_schedule', "[active]")
-				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);")
-			. '<input type="hidden" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
+				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);") .
+			'<input type="hidden" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_schedule','" . $this->nr . "')") . '</td>
 	</tr>' . $this->getSpacerRowHTML();
 		if($extracont){
@@ -320,12 +318,12 @@ class we_schedpro{
 	</tr>';
 				break;
 		}
-		$table .= '</table>' . "\n";
+		$table .= '</table>';
 		return we_html_element::jsElement('var we_hasExtraRow_' . $this->nr . '=' . ($extracont ? 'true' : 'false')) . $table;
 	}
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
-		usort($schedFile["value"], "weCmpSchedLast");
+		usort($schedFile["value"], 'weCmpSchedLast');
 
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
@@ -336,32 +334,29 @@ class we_schedpro{
 
 		foreach($schedFile["value"] as $s){
 
-			if($s["task"] == self::DELETE){
-				$GLOBALS["NOT_PROTECT"] = true;
-				include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
-				deleteEntry($id, $schedFile['table']);
-				$deleted = true;
-				$changeTmpDoc = false;
-				break;
-			}
+			//	shall the in webEdition edited doc be changed.
+			//$_scheduleEditedDoc = (isset($GLOBALS['we_doc']) && $schedFile["table"] == $GLOBALS['we_doc']->Table); //	in webEdition bearbeitetes Dokument wird gescheduled
 
-			$_scheduleEditedDoc = false; //	shall the in webEdition edited doc be changed.
-			if(isset($GLOBALS['we_doc']) && $schedFile["table"] == $GLOBALS['we_doc']->Table){ //	in webEdition bearbeitetes Dokument wird gescheduled
-				$_scheduleEditedDoc = true;
-			}
+			switch($s['task']){
+				case self::DELETE:
+					$GLOBALS["NOT_PROTECT"] = true;
+					include_once(WE_INCLUDES_PATH . 'we_delete_fn.inc.php');
+					deleteEntry($id, $schedFile['table']);
+					$deleted = true;
+					$changeTmpDoc = false;
+					break 2; //exit foreach
 
-			switch($s["task"]){
 				case self::SCHEDULE_FROM:
 					$GLOBALS['we_doc']->Published = $now;
-					if($_scheduleEditedDoc){
-						$GLOBALS['we_doc']->Published = $now;
-					}
+					/* 		if($_scheduleEditedDoc){
+					  $GLOBALS['we_doc']->Published = $now;
+					  } */
 					break;
 				case self::SCHEDULE_TO:
 					$GLOBALS['we_doc']->Published = 0;
-					if($_scheduleEditedDoc){
-						$GLOBALS['we_doc']->Published = 0;
-					}
+					/* if($_scheduleEditedDoc){
+					  $GLOBALS['we_doc']->Published = 0;
+					  } */
 					break;
 				case self::DOCTYPE:
 					if($GLOBALS['we_doc']->Published){
@@ -390,25 +385,27 @@ class we_schedpro{
 					break;
 			}
 
-//FIXME: why not for objectfiles????
-			if($s["type"] != self::TYPE_ONCE){
-				$nextWann = self::getNextTimestamp($s, $now);
-				if($nextWann){
-					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE DID=' . intval($id) . " AND ClassName!='we_objectFile' AND Type='" . $s['type'] . "' AND Was='" . $s['task'] . "'");
-				}
+			if($s["type"] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			} else{
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			}
 		}
 
 		if($changeTmpDoc){
-			$GLOBALS['we_doc']->we_save();
+			if(!$GLOBALS['we_doc']->we_save()){
+				t_e('while scheduled save of document');
+			}
 		}
+
 		if(!$deleted){
 			if($GLOBALS['we_doc']->Published){
-				$GLOBALS['we_doc']->we_publish();
+				$pub = $GLOBALS['we_doc']->we_publish();
 			} else{
-				$GLOBALS['we_doc']->we_unpublish();
+				$pub = $GLOBALS['we_doc']->we_unpublish();
+			}
+			if(!$pub){
+				t_e('while scheduled publish/unpublish of document');
 			}
 		}
 
@@ -416,7 +413,7 @@ class we_schedpro{
 
 		$_SESSION['weS']['versions']['fromScheduler'] = false;
 
-		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND TYPE="' . self::TYPE_ONCE . '"');
+		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
 	}
 
 	static function trigger_schedule(){
@@ -433,12 +430,13 @@ class we_schedpro{
 				$tmp = array(
 					"value" => array($s),
 					"ClassName" => $rec["ClassName"],
-					"table" => $rec["ClassName"] == "we_objectFile" ? OBJECT_FILES_TABLE : FILE_TABLE,
+					'Wann' => $rec['Wann'],
+					"table" => $rec["ClassName"] == 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else{
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="" WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,Schedpro="" WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
 			}
 		}
 		//make sure DB is unlocked!
@@ -467,11 +465,11 @@ class we_schedpro{
 			$s["active"] = 1;
 			$s["doctypeAll"] = 0;
 
-			array_push($scheddy, $s);
+			$scheddy[] = $s;
 		}
 
 		foreach($scheddy as $s){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="' . $DB_WE->escape('s:0:"";') . '" WHERE DID=' . intval($s["did"]) . " AND Was=" . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . " AND Was=" . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
 		}
 	}
 
@@ -671,7 +669,7 @@ class we_schedpro{
 						'Wann' => $Wann,
 						'Was' => $s["task"],
 						'ClassName' => $object->ClassName,
-						'SerializedData' => $serializedDoc,
+						'SerializedData' => gzcompress($serializedDoc, 9),
 						'Schedpro' => serialize($s),
 						'Type' => $s["type"],
 						'Active' => $s["active"]
@@ -690,4 +688,3 @@ function weCmpSchedLast($a, $b){
 	}
 	return ($a["lasttime"] < $b["lasttime"]) ? -1 : 1;
 }
-

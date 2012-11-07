@@ -83,7 +83,7 @@ class we_format extends we_class{
 	}
 
 	//overwrite abstract method
-	function we_new(){
+	public function we_new(){
 
 	}
 
