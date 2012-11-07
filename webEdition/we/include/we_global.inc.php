@@ -199,73 +199,58 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
 		$path = trim($path);
 		if(substr($path, 0, 1) != "/")
 			$path = "/" . $path;
-		$id = f("
-			SELECT ID
-			FROM $table
-			WHERE Path='" . $db->escape($path) . "'", "ID", $db);
-		if($id)
-			array_push($outArray, $id);
+		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+		if($id){
+			$outArray[] = $id;
+		}
 	}
 	return makeCSVFromArray($outArray, $prePostKomma);
 }
 
-function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = "", $fieldName = "Category", $getParentCats = true, $categoryids = ''){
-	$cat_tail = array();
+function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = '', $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
 	$db = $db ? $db : new DB_WE();
-
+	$catCSV = trim($catCSV, ' ,');
+	$idarray = array();
 	if($categoryids){
-
-		$idarray = makeArrayFromCSV($categoryids);
-
-		foreach($idarray as $catId){
-			$catId = intval(trim($catId));
-			if($catId){
-				$cat_tail[] = getSQLForOneCatId($catId, $table, $db, $fieldName, $getParentCats);
+		$idarray2 = array_map('trim', explode(',', trim($categoryids, ',')));
+		sort($idarray2);
+		$idarray2 = array_unique($idarray2);
+		$db->query('SELECT ID,IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2).')');
+		while($db->next_record()) {
+			if($db->f('IsFolder')){
+				//all folders need to be searched in deep
+				$catCSV.=',' . $db->f('Folder');
+			} else{
+				$idarray[] = $db->f('ID');
 			}
 		}
-
-		return (count($cat_tail) == 0 ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
-				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
-	} else if($catCSV){
-		$foo = makeArrayFromCSV($catCSV);
-		foreach($foo as $cat){
-			$cat = trim($cat);
-			if(strlen($cat) > 0 && substr($cat, -1) == '/'){
-				$cat = substr($cat, 0, strlen($cat) - 1);
-			}
-			if(substr($cat, 0, 1) != '/'){
-				$cat = '/' . $cat;
-			}
-			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
-			if($tmp){
-				$cat_tail[] = $tmp;
-			}
-		}
-
-		return (count($cat_tail) == 0 ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
-				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
 	}
 
-	return '';
-}
+	if($catCSV){
+		$idarray1 = array_map('trim', explode(',', trim($catCSV, ',')));
+		sort($idarray1);
+		$idarray1 = array_unique($idarray1);
+		foreach($idarray1 as $cat){
+			$cat = '/' . trim($cat, '/ ');
 
-function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true){
-	$db = ($db ? $db : new DB_WE());
-	// 1st get path of id
-	$catPath = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID = ' . intval($cat), 'Path', $db);
+			$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+			while($db->next_record()) {
+				$idarray[] = $db->f('ID');
+			}
+		}
+	}
+	if(empty($idarray)){
+		return '';
+	}
+	sort($idarray);
+	$idarray = array_unique($idarray);
 
-	return ($catPath ? getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats) : '');
-}
+	$pre = ' FIND_IN_SET("';
+	$post = '",' . $table . '.' . $fieldName . ') ';
 
-function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category"){
-	$db = ($db ? $db : new DB_WE());
-	$db->query('SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
-	$sql = array();
-	while($db->next_record())
-		$sql [] = $table . '.' . $fieldName . ' like "%,' . intval($db->f('ID')) . ',%"';
-	return (count($sql) ? '( ' . implode(' OR ', $sql) . ' )' : '');
+	return (empty($idarray) ?
+			' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
+			' AND (' . $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, $idarray) . $post . ' )');
 }
 
 function getHttpOption(){
@@ -719,7 +704,7 @@ function makeArrayFromCSV($csv){
 
 	$foo = explode(',', $csv);
 	foreach($foo as &$f){
-		$f = str_replace('###komma###', ',', $f);
+		$f = trim(str_replace('###komma###', ',', $f));
 	}
 	return $foo;
 }
