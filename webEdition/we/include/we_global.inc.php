@@ -2110,5 +2110,13 @@ function cleanWEZendCache(){
 
 function we_log_loginFailed($table, $user){
 	$db = $GLOBALS['DB_WE'];
-	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="' . $db->escape($table) . '", Username="' . $db->escape(user) . '", IP="' . $db->escape($_SERVER['REMOTE_ADDR']) . '"');
+	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET '.we_database_base::arraySetter(array(
+		'UserTable'=>$table,
+		'Username'=>$user,
+		'IP'=>$_SERVER['REMOTE_ADDR'],
+		'Servername'=>$_SERVER['SERVER_NAME'],
+		'Port'=>$_SERVER['SERVER_PORT'],
+		'Script'=>$_SERVER['SCRIPT_NAME']
+	)));
+
 }
