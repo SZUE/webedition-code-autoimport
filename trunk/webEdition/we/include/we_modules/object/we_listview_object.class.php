@@ -132,7 +132,7 @@ class we_listview_object extends listviewBase{
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
-		$cat_tail = getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids);
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = "";
 		if($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")){

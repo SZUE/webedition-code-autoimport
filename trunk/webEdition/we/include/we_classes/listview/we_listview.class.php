@@ -160,7 +160,7 @@ class we_listview extends listviewBase{
 		}
 		$orderstring = count($order) ? ' ORDER BY ' . implode(',', $order) : '';
 
-		$sql_tail = getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', true, $this->categoryids);
+		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', true, $this->categoryids) : '');
 
 		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', 'ID', $this->DB_WE) : '#NODOCTYPE#';
 

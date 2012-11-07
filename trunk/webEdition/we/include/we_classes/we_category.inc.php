@@ -45,4 +45,50 @@ class we_category extends weModelBase{
 		weModelBase::save();
 	}
 
+	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = '', $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
+		$db = $db ? $db : new DB_WE();
+		$catCSV = trim($catCSV, ' ,');
+		$idarray = array();
+		if($categoryids){
+			$idarray2 = array_map('trim', explode(',', trim($categoryids, ',')));
+			sort($idarray2);
+			$idarray2 = array_unique($idarray2);
+			$db->query('SELECT ID,IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
+			while($db->next_record()) {
+				if($db->f('IsFolder')){
+					//all folders need to be searched in deep
+					$catCSV.=',' . $db->f('Folder');
+				} else{
+					$idarray[] = $db->f('ID');
+				}
+			}
+		}
+
+		if($catCSV){
+			$idarray1 = array_map('trim', explode(',', trim($catCSV, ',')));
+			sort($idarray1);
+			$idarray1 = array_unique($idarray1);
+			foreach($idarray1 as $cat){
+				$cat = '/' . trim($cat, '/ ');
+
+				$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+				while($db->next_record()) {
+					$idarray[] = $db->f('ID');
+				}
+			}
+		}
+		if(empty($idarray)){
+			return '';
+		}
+		sort($idarray);
+		$idarray = array_unique($idarray);
+
+		$pre = ' FIND_IN_SET("';
+		$post = '",' . $table . '.' . $fieldName . ') ';
+
+		return (empty($idarray) ?
+				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
+				' AND (' . $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, $idarray) . $post . ' )');
+	}
+
 }
