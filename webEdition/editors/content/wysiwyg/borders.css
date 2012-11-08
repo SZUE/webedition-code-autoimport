@@ -18,17 +18,42 @@
  */
 
 acronym, abbr {
-	border: 1px dotted green;
+	//border: 1px dotted green;
 }
 
 img, table, caption, thead, tbody, tfoot, tr, td, th {
-	border: 1px dotted grey;
+	//border: 1px dotted grey;
 }
 
 a {
-	border: 1px dotted blue;
+	//border: 1px dotted blue;
 }
 
 span[lang] {
-	border: 1px dotted red;
+	//border: 1px dotted red;
 }
+
+
+body {
+//background: #000 url('somebg.gif');
+}
+
+/* TinyMCE specific rules */
+body.mceContentBody {
+	//background: #ff0000;
+	font-size:12px;
+}
+
+acronym.mceItemWeAcronym{
+	border: 1px dotted green;
+}
+
+span.mceItemWeLang{
+	border: 1px dotted yellow;
+}
+
+.mceContentBody a {
+   //color: red !important; /* FF requires a important here */
+}
+
+
