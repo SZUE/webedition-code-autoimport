@@ -940,7 +940,7 @@ class we_objectFile extends we_document{
 				$objectpreview;
 		} else{
 
-			$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+			$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 			$txt = $ob->Text ? $ob->Text : $name;
 			$but = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','" . $txt . "','" . $txt . "')", "down", g_l('global', "[openCloseBox]"));
 
@@ -990,14 +990,14 @@ class we_objectFile extends we_document{
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
-					$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$editObjectButton = we_button::create_button("image:btn_edit_object", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 					$editObjectButtonDis = we_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
 
 					$inputWidth = 346;
 
-					$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+					$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 
 					$openCloseButton = we_multiIconBox::_getButton($uniq, "weToggleBox('$uniq','','')", "right", g_l('global', "[openCloseBox]"));
 					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
@@ -1077,7 +1077,7 @@ class we_objectFile extends we_document{
 				for($f = 0; $f < $show; $f++){
 					$myid = $objects[$f];
 					if($myid){
-						$uniq = md5(uniqid(__FUNCTION__,true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
+						$uniq = md5(uniqid(__FUNCTION__, true)); // FIXME: #6590: str_replace('.', '', uniqid("",true))
 						$ob = new we_objectFile();
 						$ob->initByID($myid, OBJECT_FILES_TABLE);
 						$ob->DefArray = $ob->getDefaultValueArray();
@@ -1788,7 +1788,7 @@ class we_objectFile extends we_document{
 			$addbut = "";
 		} else{
 			$textname = md5(uniqid(__FUNCTION__, true));
-			$idname = md5(uniqid(__FUNCTION__,true));
+			$idname = md5(uniqid(__FUNCTION__, true));
 			$foo = array("" => g_l('global', "[add_workspace]"));
 			foreach($values as $key => $val){
 				$foo[$key] = $val;
@@ -1959,7 +1959,7 @@ class we_objectFile extends we_document{
 
 			if(preg_match('/%urlunique([^%]*)%/', $text, $regs)){
 				$anz = (!$regs[1] ? 16 : abs($regs[1]));
-				$unique = substr(md5(uniqid(__FUNCTION__,true)), 0, min($anz, 32));
+				$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 				$text = preg_replace('/%urlunique[^%]*%/', $unique, $text);
 			}
 
@@ -2304,11 +2304,11 @@ class we_objectFile extends we_document{
 	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $this->ID . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE));
-
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 				if($sessDat){
 					$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
-					$this->i_initSerializedDat($sessDat);
+					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
+
 //make sure at least TableID is set from db
 //and Published as well #5742
 					$this->i_getPersistentSlotsFromDB('TableID,Published');
@@ -2416,8 +2416,8 @@ class we_objectFile extends we_document{
 			$this->rewriteNavigation();
 		}
 //clear navigation cache to see change if object in navigation #6916
-                weNavigationCache::clean(true);
-                
+		weNavigationCache::clean(true);
+
 		return $this->insertAtIndex();
 	}
 
@@ -2442,8 +2442,8 @@ class we_objectFile extends we_document{
 			}
 		}
 //clear navigation cache to see change if object in navigation #6916
-                weNavigationCache::clean(true);
-                
+		weNavigationCache::clean(true);
+
 		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 	}
 

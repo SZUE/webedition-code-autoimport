@@ -28,7 +28,6 @@ if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['ou
 }
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
-
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
 	$Glossary->Type = "foreignword";
@@ -55,9 +54,13 @@ print $appendJS;
 
 function weDoLangJS(){
 	return '
-eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-var lang = document.we_form.elements["we_dialog_args[lang]"].value;
-editorObj.editLang(lang);
-top.close();
-';
+if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){	
+	WelangDialog.insert();
+	top.close();
+} else{
+	eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
+	var lang = document.we_form.elements["we_dialog_args[lang]"].value;
+	editorObj.editLang(lang);
+	top.close();
+}';
 }

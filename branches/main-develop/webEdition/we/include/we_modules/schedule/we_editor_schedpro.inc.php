@@ -28,8 +28,8 @@ if(defined("SCHEDULE_TABLE")){
 we_html_tools::htmlTop();
 
 include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>
 <body  class="weEditorBody" onunload="doUnload()">
@@ -41,21 +41,21 @@ $parts = array();
 foreach($we_doc->schedArr as $i => $sched){
 	$schedObj = new we_schedpro($sched, $i);
 
-	$ofT = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
+	$ofT = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '';
 
-	array_push($parts, array("headline" => "",
-		"html" => $schedObj->getHTML($GLOBALS['we_doc']->Table == $ofT),
-		"space" => 0
-		)
+	$parts[] = array(
+		'headline' => '',
+		'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == $ofT),
+		'space' => 0
 	);
 }
-array_push($parts, array("headline" => "",
-	"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', "[descriptiontext]"), 2, "700") . '<br><br>' . we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
-	"space" => 0
-	)
+$parts[] = array(
+	'headline' => '',
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), 2, 700) . '<br><br>' . we_button::create_button('image:btn_add_schedule', "javascript:we_cmd('add_schedule')"),
+	'space' => 0
 );
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("", "100%", $parts, 20, "", -1, "", "", false);
+print we_multiIconBox::getJS() .
+	we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 ?>
 	</form>
 </body>

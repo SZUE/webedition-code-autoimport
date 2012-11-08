@@ -44,6 +44,12 @@ class weAbbrDialog extends weDialog{
 		$this->args["class"] = "";
 		$this->args["style"] = "";
 	}
+	
+	function getTinyMceJS(){
+		$out = parent::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weabbr/js/abbr_init.js');
+		return $out;
+	}	
 
 	function getJs(){
 
@@ -51,13 +57,17 @@ class weAbbrDialog extends weDialog{
 
 		if(defined("GLOSSARY_TABLE")){
 			$js .= we_html_element::jsElement('
-					function weSaveToGlossaryFn() {
-						eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-						document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-						if(editorObj.getSelectedText().length > 0) {
-							document.we_form.elements[\'text\'].value = editorObj.getSelectedText();
-						} else {
-							document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("ABBR",true,false).innerHTML;
+					function weSaveToGlossaryFn() {alert("go");
+						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
+						} else{alert("goto")
+							eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
+							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
+							if(editorObj.getSelectedText().length > 0) {
+								document.we_form.elements[\'text\'].value = editorObj.getSelectedText();
+							} else {
+								document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("ABBR",true,false).innerHTML;
+							}
 						}
 						document.we_form.submit();
 					}');

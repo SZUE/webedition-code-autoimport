@@ -24,11 +24,6 @@
  */
 /* clipboard object class */
 class we_msg_update extends we_class{
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
-
-	/* Name of the class => important for reconstructing the class from outside the class */
 
 	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */

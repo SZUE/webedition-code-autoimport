@@ -225,6 +225,12 @@ class weImageDialog extends weDialog{
 		$this->args["type"] = "ext";
 		$this->args["ratio"] = "1";
 	}
+	
+	function getTinyMceJS(){
+		$out = parent::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js');
+		return $out;
+	}
 
 	function getFormHTML(){
 		$hiddens = "";

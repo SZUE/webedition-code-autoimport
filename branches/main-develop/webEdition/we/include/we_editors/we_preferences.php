@@ -371,14 +371,14 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 		case 'WE_SEEM':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 			if(intval($settingvalue) == constant($settingname)){
-				$_file = weConfParser::changeSourceCode('define', $_file, 'WE_SEEM', ($settingvalue == 1 ? 0 : 1), true, $comment);
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, ($settingvalue == 1 ? 0 : 1), true, $comment);
 			}
 			break;
 
 		case 'WE_LOGIN_HIDEWESTATUS':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 			if($settingvalue != constant($settingname)){
-				$_file = weConfParser::changeSourceCode('define', $_file, 'WE_LOGIN_HIDEWESTATUS', $settingvalue, true, $comment);
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
 			break;
 		case 'WE_LOGIN_WEWINDOW':
@@ -487,14 +487,14 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 		// ADVANCED
 		case 'DB_CONNECT':
 			$_file = &$GLOBALS['config_files']['conf']['content'];
-			$_file = weConfParser::changeSourceCode('define', $_file, 'DB_CONNECT', $settingvalue);
+			$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue);
 			break;
 
 		case 'DB_SET_CHARSET':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
-			if(!defined('DB_SET_CHARSET') || $settingvalue != DB_SET_CHARSET){
-				$_file = weConfParser::changeSourceCode('define', $_file, 'DB_SET_CHARSET', $settingvalue, true, $comment);
+			if(!defined($settingname) || $settingvalue != constant($settingname)){
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
 			break;
 
@@ -587,9 +587,9 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 			break;
 
 		case 'ERROR_DOCUMENT_NO_OBJECTFILE':
-			if(!defined('ERROR_DOCUMENT_NO_OBJECTFILE') || ERROR_DOCUMENT_NO_OBJECTFILE != $settingvalue){
+			if(!defined($settingname) || constant($settingname) != $settingvalue){
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode('define', $_file, "ERROR_DOCUMENT_NO_OBJECTFILE", $settingvalue, true, $comment);
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
 			break;
 
@@ -597,7 +597,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
 			if($settingvalue != constant($settingname)){
-				$_file = weConfParser::changeSourceCode('define', $_file, "DISABLE_TEMPLATE_CODE_CHECK", $settingvalue, true, $comment);
+				$_file = weConfParser::changeSourceCode('define', $_file, $settingname, $settingvalue, true, $comment);
 			}
 
 			break;
@@ -666,7 +666,7 @@ function save_all_values(){
 
 	$tmp = array_diff_assoc($_SESSION['prefs'], $oldPrefs);
 	if(!empty($tmp)){
-		doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $tmp, (' WHERE userID=' . intval($_SESSION["prefs"]["userID"])));
+		doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $tmp, (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
 	}
 }
 

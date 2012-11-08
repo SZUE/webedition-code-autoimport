@@ -31,11 +31,12 @@ switch($_REQUEST['we_cmd'][0]){
 	case "add" :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 
-		$aProps = array();
-		$aProps[0] = $_REQUEST['we_cmd'][1];
-		$aProps[1] = $aPrefs[$aProps[0]]["cls"];
-		$aProps[2] = $aPrefs[$aProps[0]]["res"];
-		$aProps[3] = $aPrefs[$aProps[0]]["csv"];
+		$aProps = array(
+			$_REQUEST['we_cmd'][1],
+			$aPrefs[$aProps[0]]["cls"],
+			$aPrefs[$aProps[0]]["res"],
+			$aPrefs[$aProps[0]]["csv"],
+		);
 		foreach($aCfgProps as $a){
 			foreach($a as $arr){
 				if($arr[0] == $aProps[0]){

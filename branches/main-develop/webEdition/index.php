@@ -112,7 +112,7 @@ function showMessage(message, prio, win){
 		win = window;
 	}
 	if (!prio) { // default is error, to avoid missing messages
-		prio = 4;
+		prio = '.we_message_reporting::WE_MESSAGE_ERROR.';
 	}
 
 	if (prio & messageSettings) { // show it, if you should
@@ -163,9 +163,9 @@ if($cnt > ERROR_LOG_MAX_ITEM_COUNT){
 
 
 //CHECK FOR FAILED LOGIN ATTEMPTS
-$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
+$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
 
-$count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
+$count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
 
 if($count >= LOGIN_FAILED_NR){
 	we_html_tools::htmlTop('webEdition ');
@@ -426,12 +426,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			$GLOBALS['DB_WE']->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="tblUser", Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
+			we_log_loginFailed('tblUser',$_POST['username']);
 
 			/*			 * ***************************************************************************
 			 * CHECK FOR FAILED LOGIN ATTEMPTS
 			 * *************************************************************************** */
-			$cnt = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
+			$cnt = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
 
 			$_body_javascript = ($cnt >= LOGIN_FAILED_NR ?
 					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :

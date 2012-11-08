@@ -214,8 +214,7 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 			$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblObjectFile' AND LDID = '" . abs($id) . "'");
 		}
 		if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
-			$DB_WE->query(
-				'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
+			$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 		}
 	}
 	$DB_WE->query('DELETE FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id));

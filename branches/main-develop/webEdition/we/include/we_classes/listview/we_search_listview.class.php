@@ -136,8 +136,7 @@ class we_search_listview extends listviewBase{
 
 		$searchfield = $this->casesensitive ? "BText" : "Text";
 
-
-		$cat_tail = getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE);
+		$cat_tail = ($this->cats? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE):'');
 
 		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $this->DB_WE->escape($this->docType) . "'", "ID", $this->DB_WE) : '';
 

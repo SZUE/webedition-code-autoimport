@@ -349,7 +349,7 @@ class weXMLExIm{
 					$catss = makeCSVFromArray($cats);
 				}
 
-				$cat_sql = getCatSQLTail($catss, FILE_TABLE, true, $this->db);
+				$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
 				$ws_where = "";
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);

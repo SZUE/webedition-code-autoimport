@@ -194,72 +194,12 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
 		$path = trim($path);
 		if(substr($path, 0, 1) != "/")
 			$path = "/" . $path;
-		$id = f("
-			SELECT ID
-			FROM $table
-			WHERE Path='" . $db->escape($path) . "'", "ID", $db);
-		if($id)
-			array_push($outArray, $id);
+		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+		if($id){
+			$outArray[] = $id;
+		}
 	}
 	return makeCSVFromArray($outArray, $prePostKomma);
-}
-
-function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = "", $fieldName = "Category", $getParentCats = true, $categoryids = ''){
-	$cat_tail = array();
-	$db = $db ? $db : new DB_WE();
-
-	if($categoryids){
-		$idarray = makeArrayFromCSV($categoryids);
-
-		foreach($idarray as $catId){
-			$catId = intval(trim($catId));
-			if($catId){
-				$cat_tail[] = getSQLForOneCatId($catId, $table, $db, $fieldName, $getParentCats);
-			}
-		}
-
-		return (count($cat_tail) == 0 ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
-				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
-	} else if($catCSV){
-		$foo = makeArrayFromCSV($catCSV);
-		foreach($foo as $cat){
-			$cat = trim($cat);
-			if(strlen($cat) > 0 && substr($cat, -1) == '/'){
-				$cat = substr($cat, 0, strlen($cat) - 1);
-			}
-			if(substr($cat, 0, 1) != '/'){
-				$cat = '/' . $cat;
-			}
-			$tmp = getSQLForOneCat($cat, $table, $db, $fieldName, $getParentCats);
-			if($tmp){
-				$cat_tail[] = $tmp;
-			}
-		}
-
-		return (count($cat_tail) == 0 ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
-				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $cat_tail) . ') ');
-	}
-
-	return '';
-}
-
-function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true){
-	$db = ($db ? $db : new DB_WE());
-	// 1st get path of id
-	$catPath = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID = ' . intval($cat), 'Path', $db);
-
-	return ($catPath ? getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats) : '');
-}
-
-function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category"){
-	$db = ($db ? $db : new DB_WE());
-	$db->query('SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
-	$sql = array();
-	while($db->next_record())
-		$sql [] = $table . '.' . $fieldName . ' like "%,' . intval($db->f('ID')) . ',%"';
-	return (count($sql) ? '( ' . implode(' OR ', $sql) . ' )' : '');
 }
 
 function getHttpOption(){
@@ -712,7 +652,7 @@ function makeArrayFromCSV($csv){
 
 	$foo = explode(',', $csv);
 	foreach($foo as &$f){
-		$f = str_replace('###komma###', ',', $f);
+		$f = trim(str_replace('###komma###', ',', $f));
 	}
 	return $foo;
 }
@@ -1545,12 +1485,9 @@ function number2System($value, $chars = array(), $str = ''){
  * @return         string
  */
 function getPref($name){
-	if(isset($_SESSION['prefs'][$name])){
-		return $_SESSION['prefs'][$name];
-	} else{
-		$parser = weConfParser::getConfParserByFile(WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php');
-		return $parser->getValue($name);
-	}
+	return (isset($_SESSION['prefs'][$name]) ?
+			$_SESSION['prefs'][$name] :
+			(defined($name) ? constant($name) : ''));
 }
 
 /**
@@ -1566,9 +1503,7 @@ function getPref($name){
 function setUserPref($name, $value){
 	if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
 		$_SESSION['prefs'][$name] = $value;
-		$_db = new DB_WE();
-		$_db->query('UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . intval($_SESSION['prefs']['userID']));
-		return true;
+		return doUpdateQuery(new DB_WE(), PREFS_TABLE, array($name => $value), (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
 	}
 	return false;
 }
@@ -2103,4 +2038,16 @@ function cleanWEZendCache(){
 		//remove file
 		unlink(ZENDCACHE_PATH . 'clean');
 	}
+}
+
+function we_log_loginFailed($table, $user){
+	$db = $GLOBALS['DB_WE'];
+	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'UserTable' => $table,
+			'Username' => $user,
+			'IP' => $_SERVER['REMOTE_ADDR'],
+			'Servername' => $_SERVER['SERVER_NAME'],
+			'Port' => $_SERVER['SERVER_PORT'],
+			'Script' => $_SERVER['SCRIPT_NAME']
+		)));
 }

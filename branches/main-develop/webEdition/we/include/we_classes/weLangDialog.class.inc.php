@@ -39,6 +39,12 @@ class weLangDialog extends weDialog{
 		$this->args["lang"] = "";
 	}
 
+	function getTinyMceJS(){
+		$out = parent::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welang/js/lang_init.js');
+		return $out;
+	}
+
 	function getJs(){
 
 		$js = weDialog::getJs();
@@ -46,12 +52,16 @@ class weLangDialog extends weDialog{
 		if(defined("GLOSSARY_TABLE")){
 			$js .= we_html_element::jsElement('
 					function weSaveToGlossaryFn() {
-						eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-						document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-						if(editorObj.getSelectedText().length > 0) {
-							document.we_form.elements[\'text\'].value = editorObj.getSelectedText();
-						} else {
-							document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("SPAN",true,false).innerHTML;
+						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
+						} else{
+							eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
+							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
+							if(editorObj.getSelectedText().length > 0) {
+								document.we_form.elements[\'text\'].value = editorObj.getSelectedText();
+							} else {
+								document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("SPAN",true,false).innerHTML;
+							}
 						}
 						document.we_form.submit();
 					}');

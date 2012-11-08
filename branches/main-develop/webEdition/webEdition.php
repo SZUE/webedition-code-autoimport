@@ -124,9 +124,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 	/**
 	 * setting integer, any sum of 1,2,4
 	 */
-	var messageSettings = <?php print (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
-
-
+	var messageSettings = <?php print (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 	var weEditorWasLoaded = false;
 
 	function reload_weJsStrings(newLng) {
@@ -166,7 +164,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 			win = window;
 		}
 		if (!prio) { // default is error, to avoid missing messages
-			prio = 4;
+			prio = <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;
 		}
 
 		// always show in console !
@@ -188,7 +186,7 @@ include(JS_PATH . 'weJsStrings.inc.php');
 
 			// Error
 		case <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>:
-			win.alert(we_string_message_reporting_error + ":\n" + message);
+				win.alert(we_string_message_reporting_error + ":\n" + message);
 			break;
 		}
 	}
@@ -502,9 +500,9 @@ if(!empty($_jsincludes)){
 				top.weSidebar.open("default");
 				break;
 
-		case "loadSidebarDocument":
-			top.rframe.sidebar.weSidebarContent.location.href = url;
-			break;
+			case "loadSidebarDocument":
+				top.rframe.sidebar.weSidebarContent.location.href = url;
+				break;
 
 			case "versions_preview":
 				new jsWindow(url,"version_preview",-1,-1,1000,750,true,false,true,false);
@@ -524,7 +522,9 @@ if(!empty($_jsincludes)){
 				var isFolder = cType == "folder" ? 1 : 0;
 				var hasPerm = 0;
 
-				if(wePerms.ADMINISTRATOR) {
+				if(eTable==""){
+					hasPerm = 0;
+				}else if(wePerms.ADMINISTRATOR) {
 					hasPerm = 1;
 				} else if(isFolder) {
 					switch(eTable){

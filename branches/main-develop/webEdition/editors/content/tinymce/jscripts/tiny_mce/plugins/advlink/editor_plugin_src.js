@@ -33,7 +33,7 @@
 
 			// Register buttons
 			ed.addButton('link', {
-				title : 'advlink.link_desc',
+				title : tinyMceGL.welink.tooltip,
 				cmd : 'mceAdvLink'
 			});
 

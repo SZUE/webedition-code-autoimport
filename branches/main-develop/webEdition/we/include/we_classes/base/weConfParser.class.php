@@ -37,56 +37,20 @@ class weConfParser{
 		return new self($fileContents);
 	}
 
-	static function updateGlobalPrefByFile($filename, array $ignore = array()){
-		$parser = self::getConfParserByFile($filename);
-		$newglobals = $parser->getData();
-		foreach($ignore as $cur){
-			if(isset($newglobals[$cur])){
-				unset($newglobals[$cur]);
-			}
-		}
-		self::updateGlobalPref($newglobals);
-	}
-
-	static function updateGlobalPref(array $settings){
-		$file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
-		$parser = self::getConfParserByFile($file_name);
-		$settings = $parser->getData();
-		$backup = $content = $parser->getContent();
-
-		foreach($settings as $name => $value){
-			if($value != ''){
-				$content = self::changeSourceCode((in_array($name, array_keys($settings)) ? 'define' : 'add'), $content, $name, $value, true, '');
-			}
-		}
-		if($content != $backup){
-			weFile::save($file_name . '.bak', $backup);
-			weFile::save($file_name, $content);
-		}
-	}
-
-	function setGlobalPrefInContent(&$content, $name, $value, $comment = ""){
-		$parser = new self($content);
-		$settings = $parser->getData();
-		$content = self::changeSourceCode((in_array($name, array_keys($settings)) ? "define" : 'add'), $content, $name, $value, true, $comment);
-
-		return true;
-	}
-
 	function saveToFile($file){
 		return weFile::save($file, $this->getFileContent(), 'wb');
 	}
 
 	function getValue($key){
-		return isset($_data[$key]) ? $_data[$key] : '';
+		return isset($this->_data[$key]) ? $this->_data[$key] : '';
 	}
 
 	function setValue($key, $value){
-		$_data[$key] = $value;
+		$this->_data[$key] = $value;
 	}
 
 	function getData(){
-		return $this->_data;
+		return $this->this->_data;
 	}
 
 	function getContent(){
@@ -101,7 +65,7 @@ class weConfParser{
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
-					return str_replace($match[0], self::makeDefine($key, $value, $active) . "\n", $text);
+					return str_replace($match[0], self::makeDefine($key, $value, $active), $text);
 				}
 		}
 
@@ -164,6 +128,7 @@ class weConfParser{
 				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
 	}
 
+//FIXME: this won't work with current implementation
 	function _correctMatchValue($value){
 		// remove whitespaces at beginning and end
 		$value = trim($value);
@@ -175,12 +140,12 @@ class weConfParser{
 			$value = trim($value, '"\'');
 		} else{
 			// something is not right, so  correct it as an empty string
-			$value = "";
+			$value = '';
 		}
 		return self::_stripSlashes($value);
 	}
 
-	//FIXME: parse & add comments!
+	//FIXME: parse & add comments! this won't work with current implementation
 	function _parse(){
 		// reset data array
 		$this->_data = array();

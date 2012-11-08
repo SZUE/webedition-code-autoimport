@@ -550,7 +550,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	  }
 	  } */
 
-	function we_new(){
+	public function we_new(){
 		parent::we_new();
 		$this->setTemplatePath();
 	}
@@ -737,9 +737,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", 'SerializedData', $this->DB_WE));
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM , 'SerializedData', $this->DB_WE);
 				if($sessDat){
-					$this->i_initSerializedDat($sessDat);
+					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
 					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
 					break;
 				} else{

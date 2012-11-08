@@ -4,6 +4,10 @@ CREATE TABLE ###TBLPREFIX###tblFailedLogins (
   IP varchar(40) NOT NULL default '',
   LoginDate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UserTable enum('tblUser','tblWebUser') NOT NULL,
-PRIMARY KEY (`ID`),
-  KEY IP (LoginDate,IP)
+  Servername varchar(150) NOT NULL,
+  Port mediumint(8) NOT NULL,
+  Script varchar(150) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY IP (LoginDate,UserTable,IP),
+  KEY user (LoginDate,Username)
 ) ENGINE=MyISAM;
