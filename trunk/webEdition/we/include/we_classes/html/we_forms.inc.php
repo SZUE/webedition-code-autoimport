@@ -175,11 +175,8 @@ abstract class we_forms{
 			$buttonBottom = true;
 		}
 
-		if($style){
-			$style = preg_replace('/width:[^;"]+[;"]?/i', '', $style);
-			$style = preg_replace('/height:[^;"]+[;"]?/i', '', $style);
-			$style = trim($style);
-		}
+		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : array());
+
 		$fontnames = weTag_getAttribute('fontnames', $attribs);
 		$showmenues = weTag_getAttribute('showmenus', $attribs, true, true);
 		if(isset($attribs['showMenues'])){ // old style compatibility
@@ -192,11 +189,8 @@ abstract class we_forms{
 			}
 		}
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
-		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile'){
-			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition);
-		} else{
-			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['WE_MAIN_DOC']->InWebEdition) && $GLOBALS['WE_MAIN_DOC']->InWebEdition);
-		}
+		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && $GLOBALS['we_doc']->ClassName == 'we_objectFile' ? 'we_doc' : 'WE_MAIN_DOC');
+		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
@@ -204,59 +198,50 @@ abstract class we_forms{
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : 520);
 			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : 200);
 			if(!$showmenues && (strlen($commands) == 0)){
-				$commands = implode(',', we_wysiwyg::getAllCmds());
-				$commands = str_replace('formatblock,', '', $commands);
-				$commands = str_replace('fontname,', '', $commands);
-				$commands = str_replace('fontsize,', '', $commands);
+				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', implode(',', we_wysiwyg::getAllCmds()));
 				if($hidestylemenu){
 					$commands = str_replace('applystyle,', '', $commands);
 				}
 			}
 			if($hidestylemenu && (strlen($commands) == 0)){
-				$commands = implode(',', we_wysiwyg::getAllCmds());
-				$commands = str_replace('applystyle,', '', $commands);
+				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg::getAllCmds()));
 			}
-
 
 			$out .= we_wysiwyg::getHeaderHTML();
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 
 			if($inlineedit){
-
 				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 				$out .= $e->getHTML();
 			} else{
 				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 
-				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
-
+				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object'){
-					$value = $GLOBALS['we_doc']->getField($attribs);
-				} else{
-					$value = parseInternalLinks($value, 0);
-				}
+				$value = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
+					isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
+						$GLOBALS['we_doc']->getField($attribs) :
+						parseInternalLinks($value, 0)
+					)
+				);
+
 				// Ende Bugfix
 
-				$value = str_replace("##|r##", "\r", str_replace("##|n##", "\n", $value));
 				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
 		} else{
-			if($style && substr($style, -1) != ';'){
-				$style .= ';';
-			}
 			if($width){
-				$style .= "width:$width;";
+				$style[] = "width:$width;";
 			}
 			if($height){
-				$style .= "height:$height;";
+				$style[] = "height:$height;";
 			}
 
 			if($showAutobr || $showSpell){
 				$clearval = $value;
 				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
-				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
+				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
 					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($clearval) . '</textarea></noscript>';
 			} else{
 				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($value) . '</textarea>';
@@ -271,18 +256,19 @@ abstract class we_forms{
 		if(preg_match_all('/(href|src)="document:(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
-					$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
-					$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>|i', '', $text);
-					$text = preg_replace('|<img [^>]*src="document:' . $reg[2] . $reg[3] . '"[^>]*>|i', '', $text);
+					$text = preg_replace(array(
+						'|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>([^<]+)</a>|i',
+						'|<a [^>]*href="document:' . $reg[2] . $reg[3] . '"[^>]*>|i',
+						'|<img [^>]*src="document:' . $reg[2] . $reg[3] . '"[^>]*>|i',
+						), array('\1'), $text);
 				}
 			}
 		}
 		if(preg_match_all('/src="thumbnail:(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$imgID = $thumbID = 0;
-				list($imgID, $thumbID) = explode(",", $reg[1]);
+				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
-				if(!$thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
+				if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
 					$text = preg_replace('|<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>|i', '', $text);
 				}
 			}
@@ -291,8 +277,10 @@ abstract class we_forms{
 			if(preg_match_all('/href="object:(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
-						$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>([^<]+)</a>|i', '\1', $text);
-						$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|i', '', $text);
+						$text = preg_replace(array(
+							'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>([^<]+)</a>|i',
+							'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|i',
+							), array('\1'), $text);
 					}
 				}
 			}
