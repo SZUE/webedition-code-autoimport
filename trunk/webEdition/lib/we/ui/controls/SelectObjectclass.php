@@ -55,10 +55,8 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
-
+		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
 		if(in_array('object', $GLOBALS['_we_active_integrated_modules'])){
-
 			if(file_exists(WE_MODULES_PATH . "object/we_conf_object.inc.php")){
 				include_once (WE_MODULES_PATH . "object/we_conf_object.inc.php");
 				$db = new DB_WE();
