@@ -68,18 +68,31 @@ class we_base_preferences{
 	 * Checks the global configuration file we_conf_global.inc.php if every needed value
 	 * is available and adds missing values.
 	 *
-	 * @param          $values                                 array
+	 * @param
 	 *
 	 * @return         void
 	 */
-	static function check_global_config($updateVersion = false){
+	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
 		$values = $GLOBALS['configs']['global'];
 
 		// Read the global configuration file
 		$_file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
 		$_file_name_backup = $_file_name . '.bak';
+		$oldContent = weFile::load($_file_name);
+
+		if($file != '' && $file != $_file_name){
+			$_file_name = $file;
+			$content = weFile::load($_file_name);
+			//leave settings in their current state
+			foreach($leave as $settingname){
+				$content = weConfParser::changeSourceCode('define', $content, $settingname, constant($settingname), true);
+			}
+		} else{
+			$content = $oldContent;
+		}
 		// load & Cut closing PHP tag from configuration file
-		$oldContent = $content = trim(str_replace('?>', '', weFile::load($_file_name)), "\n ");
+		$content = trim(str_replace('?>', '', $content), "\n ");
+		$oldContent = trim(str_replace('?>', '', $oldContent), "\n ");
 
 		// Go through all needed values
 		foreach($values as $define => $value){

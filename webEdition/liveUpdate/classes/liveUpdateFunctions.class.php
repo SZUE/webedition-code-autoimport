@@ -97,6 +97,10 @@ class liveUpdateFunctions{
 		return $content;
 	}
 
+	function replaceDocRootNeeded(){
+		return (!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
+	}
+
 	/**
 	 * checks if document root exists, and replaces $_SERVER['DOCMENT_ROOT'] in
 	 * $content if needed
@@ -105,9 +109,7 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-
 		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
-
 			$content = str_replace('$_SERVER[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 			$content = str_replace('$_SERVER["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 			$content = str_replace('$GLOBALS[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
@@ -126,10 +128,9 @@ class liveUpdateFunctions{
 	 * @param array $allFiles
 	 */
 	function getFilesOfDir(&$allFiles, $baseDir){
-
 		if(file_exists($baseDir)){
 			$dh = opendir($baseDir);
-			while($entry = readdir($dh)) {
+			while(($entry = readdir($dh))) {
 				if($entry != "" && $entry != "." && $entry != ".."){
 					$_entry = $baseDir . "/" . $entry;
 					if(!is_dir($_entry)){
@@ -162,13 +163,13 @@ class liveUpdateFunctions{
 
 		$dh = opendir($dir);
 		if($dh){
-			while($entry = readdir($dh)) {
-				if($entry != "" && $entry != "." && $entry != ".."){
-					$_entry = $dir . "/" . $entry;
+			while(($entry = readdir($dh))) {
+				if($entry != '' && $entry != "." && $entry != '..'){
+					$_entry = $dir . '/' . $entry;
 					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
 					} else{
-						unlink($_entry);
+						$this->deleteFile($_entry);
 					}
 				}
 			}
@@ -186,7 +187,6 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function getFileContent($filePath){
-
 		$content = '';
 		$fh = fopen($filePath, 'rb');
 		if($fh){
@@ -205,7 +205,6 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function filePutContent($filePath, $newContent){
-
 		if($this->checkMakeDir(dirname($filePath))){
 			$fh = fopen($filePath, 'wb');
 			if($fh){
@@ -227,7 +226,6 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
-
 		// open_base_dir - seperate document-root from rest
 		if(strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0){
 			$preDir = LIVEUPDATE_SOFTWARE_DIR;
@@ -282,6 +280,9 @@ class liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
+		if(!isset($_SESSION['moveOk'])){
+			$_SESSION['moveOk'] = true;
+		}
 
 		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
@@ -332,6 +333,9 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
+		if(!$this->replaceDocRootNeeded()){
+			return true;
+		}
 
 		// decode parameters
 		$needle = $this->decodeCode($needle);
@@ -340,19 +344,9 @@ class liveUpdateFunctions{
 		if(file_exists($filePath)){
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
-			if($needle){
-				/* This version is used in OnlineInstaller! which one is correct?
-				  $newneedle= preg_quote($needle, '~');
-				  $newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
-				 */
-				$newContent = preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent);
-			} else{
-				$newContent = $replace;
-			}
+			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
-			if(!$this->filePutContent($filePath, $newContent)){
-				return false;
-			}
+			return ($this->filePutContent($filePath, $newContent));
 		} else{
 			return false;
 		}
@@ -589,8 +583,8 @@ class liveUpdateFunctions{
 	 *
 	 * @param string $query
 	 */
-	function executeUpdateQuery($query){
-		$db = new DB_WE();
+	function executeUpdateQuery($query, $db = ''){
+		$db = ($db ? $db : new DB_WE());
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
@@ -872,4 +866,3 @@ class liveUpdateFunctions{
 	}
 
 }
-

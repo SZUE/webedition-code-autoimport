@@ -1012,21 +1012,17 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				$parentid = $result['ParentID'];
 
 				if($parentid == 0){
-					$parentPath = "/";
-					$path = "/" . $category;
+					$parentPath = '/';
+					$path = '/' . $category;
 				} else{
-					$tmp = explode("/", $path);
+					$tmp = explode('/', $path);
 					array_pop($tmp);
-					$parentPath = implode("/", $tmp);
-					$path = $parentPath . "/" . $category;
+					$parentPath = implode('/', $tmp);
+					$path = $parentPath . '/' . $category;
 				}
 				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '$parentid';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '$parentPath';";
 			} else{
-				if($parentid == 0){
-					$path = "/" . $category;
-				} else{
-					$path = $targetPath . "/" . $category;
-				}
+				$path = ($parentid != 0 ? $targetPath : '') . '/' . $category;
 			}
 			$updateok = $db->query("UPDATE " . CATEGORY_TABLE . " SET Category='" . $db->escape($category) . "', Text='" . $db->escape($category) . "', Path='" . $db->escape($path) . "', ParentID=" . intval($parentid) . ", Catfields='" . $db->escape(serialize($fields)) . "' WHERE ID=" . intval($_POST["catid"]));
 			if($updateok){
@@ -1034,11 +1030,10 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			}
 			we_html_tools::htmlTop();
 			we_html_tools::protect();
-			print '<script>' . $js . 'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
-				. '</script>';
-
-			print '</head><body></body></html>';
+			print we_html_element::jsElement($js . 'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
+					($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+				) .
+				'</head><body></body></html>';
 		}
 	}
 
@@ -1054,13 +1049,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		$description = "";
 		if($showPrefs){
 			$result = getHash("SELECT ID,Category,Catfields,Path,ParentID FROM " . CATEGORY_TABLE . " WHERE id=" . intval($_REQUEST["catid"]), new DB_WE());
-			if(isset($result["Catfields"]) && $result["Catfields"]){
-				$fields = unserialize($result["Catfields"]);
-			} else{
-				$fields = array(
-					"default" => array("Title" => "", "Description" => "")
+			$fields = (isset($result["Catfields"]) && $result["Catfields"] ?
+					unserialize($result["Catfields"]) :
+					array("default" => array("Title" => "", "Description" => ""))
 				);
-			}
+
 			if($result["ParentID"] != 0){
 				$result2 = getHash("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($result["ParentID"]), new DB_WE());
 				$path = isset($result2["Path"]) ? $result2["Path"] : '/';
@@ -1122,7 +1115,7 @@ function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {
 ' .
-			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}

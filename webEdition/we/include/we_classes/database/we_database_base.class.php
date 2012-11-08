@@ -577,7 +577,7 @@ abstract class we_database_base{
 // if no $table specified, assume that we are working with a query
 // result
 		if($table){
-			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1;')){
+			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
 				$this->halt("Metadata query failed.");
 			}
 		} else{
@@ -590,11 +590,13 @@ abstract class we_database_base{
 		}
 
 		for($i = 0; $i < $count; $i++){
-			$res[$i]["table"] = $this->field_table($i);
-			$res[$i]["name"] = $this->field_name($i);
-			$res[$i]["type"] = $this->field_type($i);
-			$res[$i]["len"] = $this->field_len($i);
-			$res[$i]["flags"] = $this->field_flags($i);
+			$res[$i] = array(
+				"table" => $this->field_table($i),
+				"name" => $this->field_name($i),
+				"type" => $this->field_type($i),
+				"len" => $this->field_len($i),
+				"flags" => $this->field_flags($i),
+			);
 		}
 		if($full){
 			$res["num_fields"] = $count;

@@ -46,6 +46,7 @@ $GLOBALS['we']['errorhandler'] = array(
 	'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
 	'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
 	'error' => true,
+	'sql' => true,
 	'display' => false,
 	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
 	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
@@ -58,6 +59,7 @@ function we_error_setHandleAll(){
 		'deprecated' => true,
 		'warning' => true,
 		'error' => true,
+		'sql' => true,
 		'display' => false,
 		'log' => true,
 		'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
@@ -194,13 +196,9 @@ function getBacktrace($skip){
  * @return         bool
  */
 function display_error_message($type, $message, $file, $line, $skipBT = false){
-	if(strpos($message, 'MYSQL-ERROR') === 0){
-		$type = E_SQL;
-	}
-
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
+		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
 	} else if(is_string($skipBT)){
 		$detailedError = $skipBT;
 	}
@@ -268,7 +266,7 @@ function getVariableMax($var, $db = ''){
 			}
 
 			if(isset($_SESSION['perms'])){
-				$ret.= "Effective Permissions:\n".print_r(array_filter($_SESSION['perms']), true);
+				$ret.= "Effective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true);
 			}
 			$ret.= print_r($clone, true);
 
@@ -304,13 +302,9 @@ function getVariableMax($var, $db = ''){
 
 function log_error_message($type, $message, $file, $_line, $skipBT = false){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
-
-	if(strpos($message, 'MYSQL-ERROR') === 0){
-		$type = E_SQL;
-	}
 	$_detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
+		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
 	} else if(is_string($skipBT)){
 		$_detailedError = $skipBT;
 	}
@@ -364,38 +358,29 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 }
 
 function mail_error_message($type, $message, $file, $line, $skipBT = false){
-	if(strpos($message, 'MYSQL-ERROR') === 0){
-		$type = E_SQL;
-	}
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
+		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
 	} else if(is_array($skipBT)){
 		list($detailedError, $_caller, $file, $line) = $skipBT;
 	}
 
-	// Build the error table
-	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n";
-
-	// Domain
-	$_detailedError .= 'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n";
-
-	// Error type
 	$ttype = translate_error_type($type);
-	$_detailedError .= 'Error type: ' . $ttype . ",\n";
 
-	// Error message
-	$_detailedError .= 'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . ",\n";
-
-	// Script name
-	$_detailedError .= 'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . ",\n";
-
-	// Line
-	$_detailedError .= 'Line number: ' . $line . ",\n";
-
-
-	$_detailedError .=' Caller: ' . $_caller . ",\n";
-	$_detailedError .=' Backtrace: ' . $detailedError;
+	// Build the error table
+	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
+		// Domain
+		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+		// Error type
+		'Error type: ' . $ttype . ",\n" .
+		// Error message
+		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . ",\n" .
+		// Script name
+		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . ",\n" .
+		// Line
+		'Line number: ' . $line . ",\n" .
+		' Caller: ' . $_caller . ",\n" .
+		' Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
@@ -407,52 +392,51 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 }
 
+function error_showDevice($type, $message, $file, $line, $skip = false){
+	// Display error?
+	if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
+		display_error_message($type, $message, $file, $line, $skip);
+	}
+
+	// Log error?
+	if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
+		log_error_message($type, $message, $file, $line, $skip);
+	}
+
+	// Mail error?
+	if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+		mail_error_message($type, $message, $file, $line, $skip);
+	}
+}
+
 function error_handler($type, $message, $file, $line, $context){
 	// Don't respond to the error if it was suppressed with a '@'
 	if(error_reporting() == 0){
 		return;
+	}
+	if(strpos($message, 'MYSQL-ERROR') === 0){
+		$type = E_SQL;
+		if(!$GLOBALS['we']['errorhandler']['sql']){
+			//sql-handling disabled
+			return true;
+		}
 	}
 
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
 			if(defined('WE_ERROR_NOTICES') && (WE_ERROR_NOTICES == 1)){
-				// Display error?
-				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
-					display_error_message($type, $message, $file, $line);
-				}
-
-				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
-					log_error_message($type, $message, $file, $line);
-				}
-
-				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-					mail_error_message($type, $message, $file, $line);
-				}
+				error_showDevice($type, $message, $file, $line);
 			}
 			break;
 
+		case E_SQL:
 		case E_WARNING:
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
 			if(defined('WE_ERROR_WARNINGS') && (WE_ERROR_WARNINGS == 1)){
-				// Display error?
-				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
-					display_error_message($type, $message, $file, $line);
-				}
-
-				// Log error?
-				if(true || !isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
-					log_error_message($type, $message, $file, $line);
-				}
-
-				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-					mail_error_message($type, $message, $file, $line);
-				}
+				error_showDevice($type, $message, $file, $line);
 			}
 
 			break;
@@ -464,20 +448,7 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
 			if(defined('WE_ERROR_ERRORS') && (WE_ERROR_ERRORS == 1)){
-				// Display error?
-				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
-					display_error_message($type, $message, $file, $line, true);
-				}
-
-				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
-					log_error_message($type, $message, $file, $line, true);
-				}
-
-				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-					mail_error_message($type, $message, $file, $line, true);
-				}
+				error_showDevice($type, $message, $file, $line, true);
 			}
 
 			// Stop execution
@@ -486,20 +457,7 @@ function error_handler($type, $message, $file, $line, $context){
 		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
 		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
 			if(defined('WE_ERROR_DEPRECATED') && (WE_ERROR_DEPRECATED == 1)){
-				// Display error?
-				if($GLOBALS['we']['errorhandler']['display']){
-					display_error_message($type, $message, $file, $line);
-				}
-
-				// Log error?
-				if($GLOBALS['we']['errorhandler']['log']){
-					log_error_message($type, $message, $file, $line);
-				}
-
-				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-					mail_error_message($type, $message, $file, $line);
-				}
+				error_showDevice($type, $message, $file, $line);
 			}
 			break;
 		default:
@@ -534,17 +492,5 @@ function we_exception_handler($exception){
 	$line = $exception->getLine();
 	$bt = $exception->getTraceAsString();
 
-	if($GLOBALS['we']['errorhandler']['display']){
-		display_error_message($type, $message, $file, $line, $bt);
-	}
-
-	// Log error?
-	if($GLOBALS['we']['errorhandler']['log']){
-		log_error_message($type, $message, $file, $line, $bt);
-	}
-
-	// Mail error?
-	if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
-		mail_error_message($type, $message, $file, $line, $bt);
-	}
+	error_showDevice($type, $message, $file, $line, $bt);
 }

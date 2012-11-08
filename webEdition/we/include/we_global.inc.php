@@ -1542,12 +1542,9 @@ function number2System($value, $chars = array(), $str = ''){
  * @return         string
  */
 function getPref($name){
-	if(isset($_SESSION['prefs'][$name])){
-		return $_SESSION['prefs'][$name];
-	} else{
-		$parser = weConfParser::getConfParserByFile(WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php');
-		return $parser->getValue($name);
-	}
+	return (isset($_SESSION['prefs'][$name]) ?
+			$_SESSION['prefs'][$name] :
+			(defined($name) ? constant($name) : ''));
 }
 
 /**
@@ -1563,9 +1560,7 @@ function getPref($name){
 function setUserPref($name, $value){
 	if(isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']){
 		$_SESSION['prefs'][$name] = $value;
-		$_db = new DB_WE();
-		$_db->query('UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . intval($_SESSION['prefs']['userID']));
-		return true;
+		return doUpdateQuery(new DB_WE(), PREFS_TABLE, array($name => $value), (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
 	}
 	return false;
 }
@@ -2110,13 +2105,12 @@ function cleanWEZendCache(){
 
 function we_log_loginFailed($table, $user){
 	$db = $GLOBALS['DB_WE'];
-	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET '.we_database_base::arraySetter(array(
-		'UserTable'=>$table,
-		'Username'=>$user,
-		'IP'=>$_SERVER['REMOTE_ADDR'],
-		'Servername'=>$_SERVER['SERVER_NAME'],
-		'Port'=>$_SERVER['SERVER_PORT'],
-		'Script'=>$_SERVER['SCRIPT_NAME']
-	)));
-
+	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'UserTable' => $table,
+			'Username' => $user,
+			'IP' => $_SERVER['REMOTE_ADDR'],
+			'Servername' => $_SERVER['SERVER_NAME'],
+			'Port' => $_SERVER['SERVER_PORT'],
+			'Script' => $_SERVER['SCRIPT_NAME']
+		)));
 }

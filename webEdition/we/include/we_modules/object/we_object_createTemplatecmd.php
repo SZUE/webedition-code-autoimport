@@ -82,6 +82,6 @@ self.close();');
 	} else{
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
-		include_once(WE_OBJECT_MODULE_PATH . "we_object_createTemplate.inc.php");
+		include_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');
 	}
 }
