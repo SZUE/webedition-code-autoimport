@@ -65,11 +65,12 @@ function we_tag_path($attribs){
 		$filePath = $db->f('Path');
 		if($fileID){
 			$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . ".Name='" . $db->escape($dirfield) . " ' AND " . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID', 'Dat', $db);
-			if(!$show && $fieldforfolder)
+			if(!$show && $fieldforfolder){
 				$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . ".Name='" . $db->escape($field) . " ' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . '.CID', 'Dat', $db);
-			if(!$show)
+			}
+			if(!$show){
 				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), 'Text', $db);
-
+			}
 			if($fileID != $doc->ID){
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
 				$link_post = '</a>';
@@ -78,18 +79,15 @@ function we_tag_path($attribs){
 			}
 		} else{
 			$link_pre = $link_post = '';
-			$show = f("SELECT Text FROM " . FILE_TABLE . " WHERE ID=" . intval($pID), "Text", $db);
+			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "Text", $db);
 		}
-		$pID = f("SELECT ParentID from " . FILE_TABLE . " WHERE ID=" . intval($pID), "ParentID", $db);
+		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "ParentID", $db);
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
 	}
-	$show = '';
-	$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)');
-	$db->next_record();
-	$fileID = $db->f("ID");
-	$filePath = $db->f("Path");
+
+	list($fileID, $filePath) = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
 	if($fileID){
-		$show = f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($fileID) . " AND " . LINK_TABLE . ".Name='" . $db->escape($field) . "' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID", "Dat", $db);
+		$show = f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . LINK_TABLE . ',' . CONTENT_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($fileID) . ' AND ' . LINK_TABLE . '.Name="' . $db->escape($field) . '" AND ' . CONTENT_TABLE . '.ID = ' . LINK_TABLE . '.CID', 'Dat', $db);
 		if(!$show){
 			$show = $home;
 		}
@@ -99,6 +97,5 @@ function we_tag_path($attribs){
 		$link_pre = $link_post = '';
 		$show = $home;
 	}
-	$show = ($hidehome ? '' : $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post);
-	return $show . $path;
+	return ($hidehome ? '' : $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post) . $path;
 }
