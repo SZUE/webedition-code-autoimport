@@ -46,8 +46,10 @@ function weDoLinkCmd($args){
 			'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
 top.close();
 ');
-	} else{
-		//$pos = strpos($href, 'mailto:');
+	} else{		
+		$out = weDialog::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_insert.js');
+
 		if(strpos($href, 'mailto:') === 0){
 			$href = $args["href"];
 			foreach($args as $key=>$val){
@@ -55,7 +57,7 @@ top.close();
 			}
 		}
 
-		$out = '<form name="tiny_form">
+		$out .= '<form name="tiny_form">
 			<input type="hidden" name="href" value="'. $href . '">
 			<input type="hidden" name="target" value="'. $args["target"] . '">
 			<input type="hidden" name="class" value="'. $args["class"] . '">
@@ -68,14 +70,6 @@ top.close();
 			<input type="hidden" name="rev" value="'. $args["rev"] . '">
 			</form>';
 
-		$pathToTinyMce = WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/';
-		$out .= we_html_element::jsScript($pathToTinyMce . 'tiny_mce_popup.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/mctabs.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/form_utils.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/validate.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/editable_selects.js') .
-				we_html_element::jsScript($pathToTinyMce . 'plugins/advlink/js/advlink_insert.js');
-//t_e("out",$out);
 		return $out;
 	}
 }

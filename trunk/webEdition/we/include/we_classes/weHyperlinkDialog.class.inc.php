@@ -556,6 +556,12 @@ class weHyperlinkDialog extends weDialog{
 </select>
 ';
 	}
+	
+	function getTinyMceJS(){
+		$out = parent::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_init.js');
+		return $out;
+	}
 
 	function getJs(){
 		$out = weDialog::getJs() . we_html_element::jsElement('

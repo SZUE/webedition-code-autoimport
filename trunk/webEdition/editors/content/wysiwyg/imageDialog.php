@@ -24,7 +24,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1)){
-	//we_html_tools::protect();
+	we_html_tools::protect();
 }
 
 $dialog = new weImageDialog();
@@ -49,8 +49,11 @@ top.close();
 ');
 
 	} else{
+		$out = weDialog::getTinyMceJS();
+		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js');
+		
 		$longdesc = intval($args["longdescid"]) ? $args["longdescsrc"] . '?id=' . intval($args["longdescid"]) : ''; 
-		$out = '<form name="tiny_form">
+		$out .= '<form name="tiny_form">
 					<input type="hidden" name="src" value="'. $args["src"] . '">
 					<input type="hidden" name="width" value="'. $args["width"] . '">
 					<input type="hidden" name="height" value="'. $args["height"] . '">
@@ -64,14 +67,6 @@ top.close();
 					<input type="hidden" name="title" value="'. addslashes($args["title"]) . '">
 					<input type="hidden" name="longdesc" value="'. $longdesc . '">
 				</form>';
-
-		$pathToTinyMce = WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/';
-		$out .= we_html_element::jsScript($pathToTinyMce . 'tiny_mce_popup.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/mctabs.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/form_utils.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/validate.js') .
-				we_html_element::jsScript($pathToTinyMce . 'utils/editable_selects.js') .
-				we_html_element::jsScript($pathToTinyMce . 'plugins/advimage/js/image_insert.js');
 
 		return $out;
 	}

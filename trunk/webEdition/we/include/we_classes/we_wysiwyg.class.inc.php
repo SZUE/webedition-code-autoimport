@@ -176,7 +176,7 @@ class we_wysiwyg{
 					}
 				</style>
 				'
-					. we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
+				. we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/languageAdapter.php') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
 		_EditorFrame.setEditorIsHot(true);
@@ -985,8 +985,8 @@ function tinyMCEchanged(inst){
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
 				$cmdMapping = array(
-					'abbr' => 'abbr',
-					'acronym' => 'acronym',
+					'abbr' => 'weabbr',
+					'acronym' => 'weacronym',
 					'anchor' => 'anchor',
 					'applystyle' => 'styleselect',
 					'backcolor' => 'backcolor',
@@ -1011,11 +1011,11 @@ function tinyMCEchanged(inst){
 					'importrtf' => '--',
 					'increasecolspan' => 'split_cells',
 					'indent' => 'indent',
-					'insertbreak' => '',
+					'insertbreak' => 'weinsertbreak',
 					'insertcolumnleft' => 'col_before ',
 					'insertcolumnright' => 'col_after',
 					'inserthorizontalrule' => 'advhr',
-					'insertimage' => 'image',
+					'insertimage' => 'weimage',
 					'insertorderedlist' => 'numlist',
 					'insertrowabove' => 'row_before',
 					'insertrowbelow' => 'row_after',
@@ -1028,7 +1028,7 @@ function tinyMCEchanged(inst){
 					'justifyfull' => 'justifyfull',
 					'justifyleft' => 'justifyleft',
 					'justifyright' => 'justifyright',
-					'lang' => '',
+					'lang' => 'welang',
 					//'link' => '--', // block: createlink,unlink <= mapping ok!
 					//'list' => '--', // block: insertunorderedlist,insertorderedlist,indent,outdent <= mapping ok!
 					'outdent' => 'outdent',
@@ -1046,7 +1046,7 @@ function tinyMCEchanged(inst){
 					//'table' => '--', // complete block
 					'undo' => 'undo', // test exact function
 					'unlink' => 'unlink',
-					'visibleborders' => 'visualaid',
+					'visibleborders' => 'wevisualaid',
 					'unmapped1' => 'save',
 					'unmapped2' => 'newdocument',
 					'unmapped3' => 'pastetext',
@@ -1100,10 +1100,14 @@ function tinyMCEchanged(inst){
 				}
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",
 ';
-
-				//deactivated: template,save,layer
 				//function openWeFileBrowser(): not needed anymore: imi
-				//insert complete new: imi
+				
+				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
+					$this->bgcol = substr($this->bgcol,1);
+				} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
+					$this->bgcol = 'white';
+				}
+				
 				return we_html_element::jsElement('
 tinyMCE.init({
 	language : "' . $lang . '",
@@ -1122,16 +1126,16 @@ tinyMCE.init({
 	//CallBacks
 	//file_browser_callback : "openWeFileBrowser",
 	onchange_callback : "tinyMCEchanged",
-	plugins : "spellchecker,style,table,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
+	plugins : "spellchecker,style,table,advhr,weimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak",
 
 	// Theme options
 	' . $tinyRows . '
-	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_location : "top", //external: toolbar floating on top of textarea
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
 	theme_advanced_styles: "' . $this->cssClasses . '",
 	theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
 	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_statusbar_location : "top",
 	theme_advanced_resizing : false,
 	theme_advanced_source_editor_height : "300",
 	theme_advanced_source_editor_width : "500",
@@ -1140,6 +1144,8 @@ tinyMCE.init({
 	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
+	content_css : "' . WEBEDITION_DIR . '/editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
+
 
 	// Skin options
 	skin : "o2k7",
