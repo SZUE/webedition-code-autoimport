@@ -112,7 +112,7 @@ function showMessage(message, prio, win){
 		win = window;
 	}
 	if (!prio) { // default is error, to avoid missing messages
-		prio = 4;
+		prio = '.we_message_reporting::WE_MESSAGE_ERROR.';
 	}
 
 	if (prio & messageSettings) { // show it, if you should

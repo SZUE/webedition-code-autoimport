@@ -72,7 +72,6 @@ if(isset($_REQUEST['update_cmd'])){
 			print liveUpdateFrames::htmlConnectionError();
 		}
 		exit();
-
 	}
 	/*
 	 * Before an update_cmd is submitted to the server, there must be an
@@ -113,12 +112,9 @@ if(isset($_REQUEST['update_cmd'])){
 
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		if($liveUpdateResponse->initByHttpResponse($response)){
-
-			print $liveUpdateResponse->getOutput();
-		} else{
-			print liveUpdateFrames::htmlConnectionError();
-		}
+		print ($liveUpdateResponse->initByHttpResponse($response) ?
+				$liveUpdateResponse->getOutput() :
+				liveUpdateFrames::htmlConnectionError());
 	} else{
 		/*
 		 * No response from the update-server. Error message

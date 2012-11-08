@@ -18,7 +18,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
 class we_updater{
+
+	static function replayUpdateDB(){
+		if(file_exists(WE_INCLUDES_PATH . 'dbQueries.inc.php')){
+			$data = @unserialize(@gzinflate(weFile::load(WE_INCLUDES_PATH . 'dbQueries.inc.php')));
+			$lf = new liveUpdateFunctions();
+			//disable sql-error handling!
+			$GLOBALS['we']['errorhandler']['sql'] = false;
+			foreach($data as $content){
+				$queries = explode("/* query separator */", $content);
+				foreach($queries as $query){
+					$success &= $lf->executeUpdateQuery($query, $GLOBALS['DB_WE']);
+				}
+			}
+			$GLOBALS['we']['errorhandler']['sql'] = false;
+		}
+	}
 
 	static function updateTables(){
 		global $DB_WE;
@@ -759,13 +776,21 @@ class we_updater{
 		$del = self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')');
 		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')'));
 
-		if(count($del)){
+		if(!empty($del)){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
 		$del = self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
-		if(count($del)){
+		if(!empty($del)){
 			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
+		}
+
+		if(defined('SCHEDULE_TABLE')){
+			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName != "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
+
+			if(defined('OBJECT_FILES_TABLE')){
+				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName = "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+			}
 		}
 	}
 
@@ -778,6 +803,7 @@ class we_updater{
 	}
 
 	function doUpdate(){
+
 		self::updateTables();
 		self::updateUsers();
 		self::updateShop();
