@@ -50,7 +50,6 @@ function we_tag_path($attribs){
 		$q[] = ' Text="' . $v . '"';
 	}
 	$q = implode(' OR ', $q);
-	$id = $doc->ID;
 	$show = $doc->getElement($field);
 	if(!in_array($doc->Text, $indexArray)){
 		if(!$show){
@@ -84,6 +83,10 @@ function we_tag_path($attribs){
 		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "ParentID", $db);
 		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
 	}
+	
+	if($hidehome){
+		return $path;
+	}
 
 	list($fileID, $filePath) = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', $db);
 	if($fileID){
@@ -97,5 +100,5 @@ function we_tag_path($attribs){
 		$link_pre = $link_post = '';
 		$show = $home;
 	}
-	return ($hidehome ? '' : $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post) . $path;
+	return $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
 }

@@ -17,18 +17,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$defaultCharset = "UTF-8";
-
-we_html_tools::headerCtCharset('text/html', $defaultCharset);
 we_html_tools::protect();
 
-
 $fieldName = $_REQUEST['we_cmd'][1];
-we_html_tools::htmlTop(
-	sprintf(g_l('wysiwyg', "[window_title]"), $fieldName), $defaultCharset);
+we_html_tools::htmlTop(sprintf(g_l('wysiwyg', "[window_title]"), $fieldName), 'UTF-8');
 
 if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]){
 
