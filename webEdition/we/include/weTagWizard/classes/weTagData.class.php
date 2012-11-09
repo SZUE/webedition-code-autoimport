@@ -59,7 +59,8 @@ class weTagData{
 	private $Module = 'basis';
 	private $Groups = array();
 	private $Deprecated = false;
-
+	private $noDocuLink = false;
+	
 	private function __construct($tagName){
 		$this->Name = $tagName;
 		// include the selected tag, its either normal, or custom tag
@@ -97,16 +98,20 @@ class weTagData{
 			if(!is_array($this->TypeAttribute->Options)){
 				t_e('Error in TypeAttribute of we:' . $this->Name);
 			} else{
-				foreach($this->TypeAttribute->Options as &$value){
-					$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
-					$value->AllowedAttributes[] = $tmp;
-					if($value->Value != '-'){
-						$this->Attributes[] = $tmp;
+				if(!$this->noDocuLink){
+					foreach($this->TypeAttribute->Options as &$value){
+						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
+						$value->AllowedAttributes[] = $tmp;
+						if($value->Value != '-'){
+							$this->Attributes[] = $tmp;
+						}
 					}
 				}
 			}
 		} else{
-			$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]')); // Bug #6341
+			if(!$this->noDocuLink){
+				$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]')); // Bug #6341
+			}
 		}
 	}
 
