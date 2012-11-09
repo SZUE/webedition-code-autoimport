@@ -418,7 +418,7 @@ class weBackupWizard{
 		if(isset($_REQUEST["import_from"]) && $_REQUEST["import_from"] == "import_upload"){
 			if($maxsize){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
-				if(!(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '')){
+				if(!(DEFAULT_CHARSET != '')){
 					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 				}
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), round($maxsize / (1024 * 1024), 3) . "MB"), 1, 600), "space" => 0, "noline" => 1);
@@ -518,7 +518,7 @@ class weBackupWizard{
 			}
 
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[charset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
-			if(!(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '')){
+			if(!(DEFAULT_CHARSET != '')){
 				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), 1, 600, false), "space" => 0, "noline" => 1);
 			}
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[old_backups_warning]"), 1, 600, false), "space" => 0, "noline" => 1);

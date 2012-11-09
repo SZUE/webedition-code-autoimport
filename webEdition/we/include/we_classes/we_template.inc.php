@@ -50,10 +50,8 @@ class we_template extends we_document{
 		/* $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
 		  $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0; */
 		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", /* "CacheType","CacheLifeTime", */ "TagWizardCode", "TagWizardSelection");
-		if(defined('DEFAULT_CHARSET')){
-			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
-		}
-		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
+		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->EditPageNrs[] = WE_EDITPAGE_VERSIONS;
 	}
 
 	function copyDoc($id){
@@ -250,7 +248,7 @@ class we_template extends we_document{
 			return $foo;
 		}
 
-		if(!(defined('DISABLE_TEMPLATE_CODE_CHECK') && DISABLE_TEMPLATE_CODE_CHECK)){
+		if(DISABLE_TEMPLATE_CODE_CHECK){
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 

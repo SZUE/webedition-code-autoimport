@@ -30,13 +30,11 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 
 
 // get attributes
-$error404doc = (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE) ? ERROR_DOCUMENT_NO_OBJECTFILE : 0;
-
-$suppresserrorcode = (defined('SUPPRESS404CODE') && SUPPRESS404CODE);
+$error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
 
 $hiddendirindex = false;
 $dirindexarray = array();
-if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))){
+if(NAVIGATION_DIRECTORYINDEX_NAMES != '' && ( NAVIGATION_DIRECTORYINDEX_HIDE || WYSIWYGLINKS_DIRECTORYINDEX_HIDE || TAGLINKS_DIRECTORYINDEX_HIDE )){
 	$dirindexarray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 	$keys = array_keys($dirindexarray);
 	/* foreach($keys as $key){
@@ -85,7 +83,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		}
 		if($displayid){
 			$searchforInternal = str_replace('//', '/', $searchfor);
-			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+			if(URLENCODE_OBJECTSEOURLS){
 				$searchforInternal = str_replace('%2F', '/', urlencode($searchfor));
 			}
 
@@ -118,7 +116,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		}
 		if($displayid){
 			$searchforInternal = $searchfor;
-			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
+			if(URLENCODE_OBJECTSEOURLS){
 				$searchforInternal = str_replace('%2F', '/', urlencode($searchfor));
 			}
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Url='" . $db->escape($searchforInternal) . "' LIMIT 1", "ID", $db));
@@ -140,7 +138,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		exit;
 	} elseif($error404doc){
-		if($suppresserrorcode){
+		if(SUPPRESS404CODE){
 			header('HTTP/1.0 200 OK', true, 200);
 			header('Status: 200 OK', true, 200);
 		} else{

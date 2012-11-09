@@ -191,11 +191,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 			if(!@is_dir($path)){
 				$oldumask = @umask(0000);
 
-				if(defined("WE_NEW_FOLDER_MOD")){
-					$mod = octdec(WE_NEW_FOLDER_MOD);
-				} else{
-					$mod = 0755;
-				}
+				$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 				if(!we_util_File::createLocalFolder($path)){
 					print we_message_reporting::getShowMessageCall(g_l('alert', "[create_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR);

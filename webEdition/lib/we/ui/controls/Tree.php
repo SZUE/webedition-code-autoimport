@@ -250,17 +250,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 			$outClasses[] = $Status;
 		}
 		if(!empty($outClasses)){
-			$ClassesStr = implode(' ', $outClasses);
-			$ClassesStr = trim($ClassesStr, ' ');
-		} else{
-			$ClassesStr = '';
+			$ClassesStr = trim(implode(' ', $outClasses,' '));
 		}
 
 		$doOnClick = "alert(&quot;Pub:-" . $Published . "- Status:-" . $Status . "- classes:" . $ClassesStr . "-&quot;);";
-		if($ClassesStr != ''){
+		if(!empty($ClassesStr)){
 			$outClass = 'class=\"' . $ClassesStr . '\"';
-		} else
-			$outClass = '';
+		}
 
 		return 'var myobj = { ' .
 			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(htmlspecialchars($text)) . '</span>"'.

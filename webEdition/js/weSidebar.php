@@ -65,7 +65,7 @@ weSidebar.open = function() {
 		width = parseInt(arguments[1]);
 
 	} else {
-		width = <?php echo (!defined("SIDEBAR_DEFAULT_WIDTH") ? 300 : SIDEBAR_DEFAULT_WIDTH); ?>;
+		width = <?php echo SIDEBAR_DEFAULT_WIDTH; ?>;
 
 	}
 	if (isNaN( width ) ||  width < 100 ) {

@@ -52,9 +52,7 @@ class we_object extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
-		if(defined('DEFAULT_CHARSET')){
-			$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
-		}
+		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 	}
 
 	function save(){

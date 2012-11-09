@@ -215,11 +215,7 @@ class weCustomerEI{
 
 	function getCSVDataset($filename, $delimiter, $enclose, $lineend, $fieldnames, $charset){
 		if($charset == ''){
-			if(defined('DEFAULT_CHARSET')){
 				$charset = DEFAULT_CHARSET;
-			} else{
-				$charset = "UTF-8";
-			}
 		}
 		if($delimiter == "\\t")
 			$delimiter = "\t";

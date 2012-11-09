@@ -37,7 +37,7 @@ function we_tag_userInput($attribs, $content){
 	$hidden = weTag_getAttribute("hidden", $attribs, false, true);
 	$size = weTag_getAttribute("size", $attribs);
 	$values = weTag_getAttribute("values", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 
 	if($hidden && ($type != "date")){
@@ -613,17 +613,11 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-				$topCountries = explode(',', defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH");
-				$topCountries = array_flip($topCountries);
+				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
-				if(defined("WE_COUNTRIES_SHOWN")){
-					$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-				} else{
-					$shownCountries = explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
-				}
-				$shownCountries = array_flip($shownCountries);
+				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
@@ -634,7 +628,7 @@ function we_tag_userInput($attribs, $content){
 				setlocale(LC_ALL, $oldLocale);
 
 				$options = '';
-				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
+				if(WE_COUNTRIES_DEFAULT != ''){
 					$options.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>' . "\n";
 				}
 				foreach($topCountries as $countrykey => &$countryvalue){

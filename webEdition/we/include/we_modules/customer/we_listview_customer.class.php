@@ -49,18 +49,17 @@ class we_listview_customer extends listviewBase{
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false, $condition="", $cols="", $docID=0, $hidedirindex=false){
+	function __construct($name = "0", $rows = 100000000, $offset = 0, $order = "", $desc = false, $condition = "", $cols = "", $docID = 0, $hidedirindex = false){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
 
-		if($this->docID){
-			$this->Path = id_to_path($this->docID, FILE_TABLE, $this->DB_WE);
-		} else{
-			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-		}
+		$this->Path = ($this->docID ?
+				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
+
 		$this->hidedirindex = $hidedirindex;
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -85,9 +84,7 @@ class we_listview_customer extends listviewBase{
 
 		$this->anz_all = f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where, 'cnt', $this->DB_WE);
 
-		$q = 'SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
-
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
@@ -104,10 +101,11 @@ class we_listview_customer extends listviewBase{
 		} else{
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array();
-				$this->DB_WE->Record["WE_PATH"] = "";
-				$this->DB_WE->Record["WE_TEXT"] = "";
-				$this->DB_WE->Record["WE_ID"] = "";
+				$this->DB_WE->Record = array(
+					"WE_PATH" => "",
+					"WE_TEXT" => "",
+					"WE_ID" => "",
+				);
 				$this->count++;
 				return true;
 			}

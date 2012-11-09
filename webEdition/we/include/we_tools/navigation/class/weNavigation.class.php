@@ -114,9 +114,7 @@ class weNavigation extends weModelBase{
 		include (WE_INCLUDES_PATH . 'we_tools/navigation/conf/we_navigationSettings.inc.php');
 		$this->defaultPreviewCode = str_replace('@###PARENTID###@', $this->ID, $this->defaultPreviewCode);
 		$this->previewCode = $this->defaultPreviewCode;
-		if(defined('DEFAULT_CHARSET')){
-			$this->Charset = DEFAULT_CHARSET;
-		}
+		$this->Charset = DEFAULT_CHARSET;
 	}
 
 	function load($id = '0'){
@@ -699,7 +697,7 @@ class weNavigation extends weModelBase{
 				default:
 					$objecturl = '';
 					if($this->FolderSelection == self::STPYE_OBJLINK){
-						if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
+						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
 							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
 							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
@@ -715,11 +713,11 @@ class weNavigation extends weModelBase{
 						$_id = $this->LinkID;
 					}
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = $_path == '/' ? '' : $_path;
-					if(defined('NAVIGATION_OBJECTSEOURLS') && NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
+					$_path = ($_path == '/' ? '' : $_path);
+					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ? '' : $path_parts['filename'] . '/') .
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ? '' : $path_parts['filename'] . '/') .
 							$objecturl;
 					}
 					break;
@@ -745,7 +743,7 @@ class weNavigation extends weModelBase{
 				default:
 					if($this->SelectionType == self::STPYE_CLASS || $this->SelectionType == self::STPYE_OBJLINK){
 						$objecturl = '';
-						if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
+						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
 							$objectdaten = getHash("SELECT  Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($_id) . " LIMIT 1", $_db);
 							if(isset($objectdaten['Url'])){
@@ -765,11 +763,11 @@ class weNavigation extends weModelBase{
 					}
 
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = $_path == '/' ? '' : $_path;
-					if(defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
+					$_path = ($_path == '/' ? '' : $_path);
+					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-							(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
 								$path_parts['filename'] . '/' : ''
 							) . $objecturl;
 					}
@@ -786,7 +784,7 @@ class weNavigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$_path = str_replace($dirindexnames, '/', $_path);
 		}

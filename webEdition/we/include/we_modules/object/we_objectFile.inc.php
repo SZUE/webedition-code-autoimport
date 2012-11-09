@@ -283,7 +283,7 @@ class we_objectFile extends we_document{
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
 				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . (int) $this->ID . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE));
@@ -1252,12 +1252,12 @@ class we_objectFile extends we_document{
 		$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
 
-		$topCountries = array_flip(defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', 'DE,AT,CH'));
+		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
 		foreach($topCountries as $countrykey => &$countryvalue){
 			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 		}
-		$shownCountries = array_flip(defined('WE_COUNTRIES_SHOWN') ? explode(',', WE_COUNTRIES_SHOWN) : explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY'));
+		$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 		foreach($shownCountries as $countrykey => &$countryvalue){
 			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 		}
@@ -1267,7 +1267,7 @@ class we_objectFile extends we_document{
 		asort($shownCountries, SORT_LOCALE_STRING);
 		setlocale(LC_ALL, $oldLocale);
 
-		if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
+		if(WE_COUNTRIES_DEFAULT != ''){
 			$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 		}
 		foreach($topCountries as $countrykey => &$countryvalue){
@@ -1984,7 +1984,7 @@ class we_objectFile extends we_document{
 			}
 			//remove duplicate "//" which will produce errors
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
-			$text = (defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS) ?
+			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
 				preg_replace('~[^0-9a-zA-Z/._-]~', '', correctUml($text));
 			$this->Url = substr($text, 0, 256);
@@ -2232,7 +2232,7 @@ class we_objectFile extends we_document{
 			$version = new weVersions();
 			$version->save($this);
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
+		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

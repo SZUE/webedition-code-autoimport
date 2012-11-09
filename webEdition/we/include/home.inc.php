@@ -947,7 +947,7 @@ clone.style.display="inline";
 		foreach($d as $aProps){
 			$iCurrId++;
 			if(!((($aProps[0] == 'usr' || $aProps[0] == 'msg') && !defined('USER_TABLE')) || ($aProps[0] == 'msg' && !defined(
-					'MESSAGING_SYSTEM')) || ($aProps[0] == 'plg' && (!defined("WE_TRACKER_DIR") || !WE_TRACKER_DIR || !file_exists(
+					'MESSAGING_SYSTEM')) || ($aProps[0] == 'plg' && (!WE_TRACKER_DIR || !file_exists(
 					$_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))){
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if(!in_array($aProps[0], $aDiscard)){

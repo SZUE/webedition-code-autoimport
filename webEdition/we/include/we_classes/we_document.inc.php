@@ -183,7 +183,7 @@ class we_document extends we_root{
 		$_languages = getWeFrontendLanguagesForBackend();
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
 
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
 				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
@@ -236,16 +236,16 @@ class we_document extends we_root{
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
 		if($this->ID == 0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
-			if($this->ContentType == 'text/html'){ //	is HTML-File
-				$selected = (defined('DEFAULT_HTML_EXT') ? DEFAULT_HTML_EXT : '.html');
-			} else if($this->ContentType == 'text/webedition'){ //	webEdition Document
-				if($this->IsDynamic == 1){ //	dynamic
-					$selected = (defined('DEFAULT_DYNAMIC_EXT') ? DEFAULT_DYNAMIC_EXT : '.php');
-				} else{ //	static
-					$selected = (defined('DEFAULT_STATIC_EXT') ? DEFAULT_STATIC_EXT : '.html');
-				}
-			} else{ //	no webEdition Document
-				$selected = $this->Extension;
+			switch($this->ContentType){
+				case 'text/html': //	is HTML-File
+					$selected = DEFAULT_HTML_EXT;
+					break;
+				case 'text/webedition': //	webEdition Document
+					$selected = ($this->IsDynamic == 1 ? DEFAULT_DYNAMIC_EXT : DEFAULT_STATIC_EXT);
+					break;
+				default: //	no webEdition Document
+					$selected = $this->Extension;
+					break;
 			}
 		} else{ //	bestehendes Dokument oder Dokument mit DocType
 			$selected = $this->Extension;
@@ -389,12 +389,12 @@ class we_document extends we_root{
 			$_naviItem->LinkID = $this->ID;
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
-			if(defined('NAVIGATION_ENTRIES_FROM_DOCUMENT') && NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
+			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
 				$_naviItem->Selection = 'nodynamic';
 				$_naviItem->SelectionType = 'doctype';
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				$_naviItem->Charset = ($charset != '' ? $charset : (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
+				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else{
 				$_naviItem->Selection = 'static';
 				$_naviItem->SelectionType = 'docLink';
@@ -967,8 +967,8 @@ class we_document extends we_root{
 
 				$only = weTag_getAttribute('only', $attribs);
 
-				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-				$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 
 				if($pathOnly || $only == 'href'){
 
@@ -992,7 +992,7 @@ class we_document extends we_root{
 						$img->setElement('name', $_useName, 'dat');
 					}
 
-					$xml = weTag_getAttribute('xml', $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true, false);
+					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
 					$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
 						if($only == 'content'){
@@ -1083,7 +1083,7 @@ class we_document extends we_root{
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = we_util::rmPhp($retval);
 				}
-				$xml = weTag_getAttribute('xml', $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT), true);
+				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true);
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
@@ -1233,7 +1233,7 @@ class we_document extends we_root{
 			} else{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
 				$path_parts = pathinfo($path);
-				if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''
+				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != ''
 					&& in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}

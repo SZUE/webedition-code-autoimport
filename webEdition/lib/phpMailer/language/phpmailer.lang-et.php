@@ -20,5 +20,3 @@ $PHPMAILER_LANG["file_access"]          = 'Pole piisavalt &otilde;iguseid j&auml
 $PHPMAILER_LANG["file_open"]            = 'Faili Viga: Faili avamine eba&otilde;nnestus: ';
 $PHPMAILER_LANG["encoding"]             = 'Tundmatu Unknown kodeering: ';
 $PHPMAILER_LANG["signing"]              = 'Signing Error: ';
-
-?>

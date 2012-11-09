@@ -36,7 +36,7 @@ class weHook{
 	private $errStr = '';
 
 	function __construct($action, $appName = '', $param = array()){
-		if(!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)){
+		if(!EXECUTE_HOOKS){
 			return;
 		}
 		$this->action = $action;
@@ -48,7 +48,7 @@ class weHook{
 	}
 
 	function executeHook(){
-		if(!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)){
+		if(!EXECUTE_HOOKS){
 			return true;
 		}
 

@@ -21,5 +21,3 @@ $PHPMAILER_LANG["file_access"]          = 'Kreeg geen toegang tot bestand: ';
 $PHPMAILER_LANG["file_open"]            = 'Bestandsfout: Kon bestand niet openen: ';
 $PHPMAILER_LANG["encoding"]             = 'Onbekende codering: ';
 $PHPMAILER_LANG["signing"]              = 'Signing Error: ';
-
-?>
