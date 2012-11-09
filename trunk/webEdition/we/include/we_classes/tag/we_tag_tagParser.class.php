@@ -353,7 +353,7 @@ class we_tag_tagParser{
 			}
 		}
 
-		if((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)){
+		if(PHPLOCALSCOPE){
 			$attribs = str_replace('\$', '$', 'array(' . rtrim($attribs, ',') . ')'); //#6330
 			//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
 		} else{

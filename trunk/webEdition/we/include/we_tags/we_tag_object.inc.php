@@ -24,7 +24,7 @@
  */
 function we_parse_tag_object($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
+	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	$name = weTag_getParserAttribute('name', $arr);
 	if($name && strpos($name, ' ') !== false){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
@@ -50,8 +50,8 @@ function we_tag_object($attribs){
 	$size = weTag_getAttribute('size', $attribs, 30);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
 	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-	$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 
 	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();

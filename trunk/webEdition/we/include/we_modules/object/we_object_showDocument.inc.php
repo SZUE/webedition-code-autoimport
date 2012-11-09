@@ -141,12 +141,10 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		header('HTTP/1.1 404 Not Found');
 
-		if(defined('ERROR_DOCUMENT_NO_OBJECTFILE')){
 
-			$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
-			if($path){
-				header('Location: ' . $path);
-			}
+		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
+		if($path){
+			header('Location: ' . $path);
 		}
 		exit;
 	}
@@ -226,12 +224,9 @@ if(!$tid){
 
 	header('HTTP/1.1 404 Not Found');
 
-	if(defined('ERROR_DOCUMENT_NO_OBJECTFILE')){
-
-		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
-		if($path){
-			header('Location: ' . $path);
-		}
+	$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
+	if($path){
+		header('Location: ' . $path);
 	}
 	exit;
 }

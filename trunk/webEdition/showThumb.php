@@ -66,7 +66,7 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 					'we_cmd[2]' => $we_transaction,
 					'we_cmd[3]' => ($useOrig ? '' : $thumbid),
 					'rand' => $randval
-					), '', '&amp;');
+					));
 		}
 
 		$table .= '<td><image src="' . $src . '" width="' . $thumbObj->getOutputWidth() . '" height="' . $thumbObj->getOutputHeight() . '" border="0"></td>';

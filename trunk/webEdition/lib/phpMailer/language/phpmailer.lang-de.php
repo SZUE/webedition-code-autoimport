@@ -22,5 +22,3 @@ $PHPMAILER_LANG["file_access"]          = 'Zugriff auf folgende Datei fehlgeschl
 $PHPMAILER_LANG["file_open"]            = 'Datei Fehler: konnte folgende Datei nicht &ouml;ffnen: ';
 $PHPMAILER_LANG["encoding"]             = 'Unbekanntes Encoding-Format: ';
 $PHPMAILER_LANG["signing"]              = 'Fehler beim Signieren: ';
-
-?>

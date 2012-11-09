@@ -624,7 +624,7 @@ abstract class we_SEEM{
 		//FIXME: does this work for SEO Url's???
 		$db = ($db ? $db : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
-		if(defined('NAVIGATION_DIRECTORYINDEX_HIDE') && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath) - 1] == '/'){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $docPath[strlen($docPath) - 1] == '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}

@@ -67,9 +67,7 @@ class we_listview_object extends listviewBase{
 	 *
 	 */
 	function __construct($name = "0", $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
-
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
-
 
 		$this->classID = $classID;
 		$this->triggerID = $triggerID;
@@ -105,15 +103,14 @@ class we_listview_object extends listviewBase{
 
 		$this->we_predefinedSQL = $we_predefinedSQL;
 
-		if($this->docID){
-			$this->Path = id_to_path($this->docID, FILE_TABLE, $this->DB_WE);
-		} else{
-			if($this->triggerID && show_SeoLinks()){
-				$this->Path = id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE);
-			} else{
-				$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-			}
-		}
+		$this->Path =
+			($this->docID ?
+				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
+				($this->triggerID && show_SeoLinks() ?
+					id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
+				)
+			);
 
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -141,14 +138,13 @@ class we_listview_object extends listviewBase{
 
 		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
-			$custArr = makeArrayFromCSV($this->customers);
 
-			$_wsql = " " . $_obxTable . ".OF_WebUserID IN(" . $this->customers . ") ";
-
-			foreach($custArr as $cid){
-				$customerData = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($cid), $this->DB_WE);
-				$this->customerArray["cid_" . $customerData["ID"]] = $customerData;
+			$_wsql = ' ' . $_obxTable . '.OF_WebUserID IN(' . $this->customers . ') ';
+			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
+			while($this->DB_WE->next_record()) {
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
 			}
+
 			$webUserID_tail = ' AND (' . $_wsql . ') ';
 		}
 
@@ -169,12 +165,12 @@ class we_listview_object extends listviewBase{
 					$cond = array();
 					foreach($workspaces as $id){
 						$workspace = id_to_path($id, OBJECT_FILES_TABLE, $this->DB_WE);
-						array_push($cond, "(" . $_obxTable . ".OF_Path like '$workspace/%' OR " . $_obxTable . ".OF_Path='$workspace')");
+						$cond[] = $_obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
+						$cond[] = $_obxTable . '.OF_Path="' . $workspace . '"';
 					}
 					$ws_tail = count($cond) ? ' AND (' . implode(' OR ', $cond) . ') ' : '';
 				}
-				$q = 'SELECT ' . $_obxTable . ".ID as ID $calendar_select FROM " . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'];
-				$this->DB_WE->query($q);
+				$this->DB_WE->query('SELECT ' . $_obxTable . ".ID as ID $calendar_select FROM " . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()) {
@@ -184,7 +180,7 @@ class we_listview_object extends listviewBase{
 						}
 					}
 				}
-				$q = "SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE " . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
+				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
@@ -199,7 +195,7 @@ class we_listview_object extends listviewBase{
 				if(count($_idListArray) > 0){
 					$_idlist = implode(",", array_unique($_idListArray));
 					$db = new DB_WE();
-					$db->query("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID IN($_idlist)");
+					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
 					while($db->next_record()) {
 						$this->customerArray["cid_" . $db->f("ID")] = $db->Record;
 					}
@@ -218,18 +214,19 @@ class we_listview_object extends listviewBase{
 	}
 
 	function tableInMatrix($matrix, $table){
-		if(OBJECT_X_TABLE . $this->classID == $table)
+		if(OBJECT_X_TABLE . $this->classID == $table){
 			return true;
+		}
 		foreach($matrix as $foo){
-			if($foo["table"] == $table)
+			if($foo["table"] == $table){
 				return true;
+			}
 		}
 		return false;
 	}
 
 	function fillMatrix(&$matrix, $classID, $db = ''){
-		if(!$db)
-			$db = new DB_WE();
+		$db = ($db ? $db : new DB_WE());
 		$table = OBJECT_X_TABLE . $classID;
 		$joinWhere = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $db, true);
@@ -263,10 +260,9 @@ class we_listview_object extends listviewBase{
 	}
 
 	static function encodeEregString($in){
-
-		$out = "";
+		$out = '';
 		for($i = 0; $i < strlen($in); $i++){
-			$out .= "&" . ord(substr($in, $i, 1)) . ";";
+			$out .= '&' . ord(substr($in, $i, 1)) . ';';
 		}
 		return "'" . $out . "'";
 	}
@@ -283,8 +279,7 @@ class we_listview_object extends listviewBase{
 		$descArr = array();
 		$ordertmp = array();
 
-		$cond = str_replace('&gt;', '>', $cond);
-		$cond = str_replace('&lt;', '<', $cond);
+		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<',), $cond);
 
 		$cond = " " . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . " ";
 
@@ -293,7 +288,7 @@ class we_listview_object extends listviewBase{
 			$foo = makeArrayFromCSV($order);
 			foreach($foo as $f){
 				$g = explode(" ", trim($f));
-				array_push($orderArr, $g[0]);
+				$orderArr[] = $g[0];
 				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) == 'desc');
 			}
 		}
@@ -327,8 +322,8 @@ class we_listview_object extends listviewBase{
 				$n = substr($n, 10);
 			}
 			$f .= $p['table'] . '.' . $p['type'] . '_' . $n . ' as we_' . $n2 . ',';
-			array_push($from, $p["table"]);
-			array_push($from, $p["table2"]);
+			$from[] = $p["table"];
+			$from[] = $p["table2"];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
 				$ordertmp[$pos] = $p["table"] . "." . $p["type"] . "_" . $n . ($descArr[$pos] ? ' DESC' : '');
@@ -412,23 +407,19 @@ class we_listview_object extends listviewBase{
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record['OF_Url'];
-					} else{
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record['OF_Url'];
-					}
+					$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+							'' :
+							$path_parts['filename'] . '/' ) .
+						$this->DB_WE->Record['OF_Url'];
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 					} else{
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 					}
 				}
-				if($this->triggerID){
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
-				} else{
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = intval($this->DB_WE->f("OF_TriggerID"));
-				}
+				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : intval($this->DB_WE->f("OF_TriggerID")));
 				$this->DB_WE->Record["we_WE_URL"] = $this->DB_WE->f("OF_Url");
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->f("OF_Text");
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->f("OF_ID");
@@ -455,10 +446,11 @@ class we_listview_object extends listviewBase{
 			} else{
 				$this->stop_next_row = $this->shouldPrintEndTR();
 				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-					$this->DB_WE->Record = array();
-					$this->DB_WE->Record["WE_PATH"] = "";
-					$this->DB_WE->Record["WE_TEXT"] = "";
-					$this->DB_WE->Record["WE_ID"] = "";
+					$this->DB_WE->Record = array(
+						"WE_PATH" => '',
+						"WE_TEXT" => "",
+						"WE_ID" => "",
+					);
 					$this->count++;
 					return true;
 				}

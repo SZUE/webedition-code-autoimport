@@ -150,7 +150,7 @@ class weCustomerFrames extends weModuleFrames{
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 				$countryselect = new we_html_select(array('name' => $field, 'size' => '1', 'style' => 'width:240px;', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
-				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
+				$topCountries = explode(',', WE_COUNTRIES_TOP);
 
 				$topCountries = array_flip($topCountries);
 				if(!Zend_Locale::hasCache()){
@@ -159,12 +159,7 @@ class weCustomerFrames extends weModuleFrames{
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
-				if(defined('WE_COUNTRIES_SHOWN')){
-					$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-				} else{
-					$shownCountries = explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY');
-				}
-				$shownCountries = array_flip($shownCountries);
+				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
@@ -175,7 +170,7 @@ class weCustomerFrames extends weModuleFrames{
 				setlocale(LC_ALL, $oldLocale);
 
 				$content = '';
-				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
+				if(WE_COUNTRIES_DEFAULT != ''){
 					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 				}
 				foreach($topCountries as $countrykey => &$countryvalue){

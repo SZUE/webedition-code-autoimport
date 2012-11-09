@@ -60,7 +60,7 @@ class we_docTypes extends we_class{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, "Category", "DocType", "Extension", "ParentID", "ParentPath", "TemplateID", "ContentTable", "IsDynamic", "IsSearchable", "Notify", "NotifyTemplateID", "NotifySubject", "NotifyOnChange", "SubDir", "Templates", "Language");
-		$this->Extension = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+		$this->Extension = DEFAULT_STATIC_EXT;
 	}
 
 	function we_save($resave = 0){
@@ -76,7 +76,7 @@ class we_docTypes extends we_class{
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
 
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
 			}
@@ -150,7 +150,7 @@ class we_docTypes extends we_class{
 
 		$_languages = getWeFrontendLanguagesForBackend();
 
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
@@ -381,8 +381,8 @@ class we_docTypes extends we_class{
 		if($this->ID){
 			$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
 		}
-		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
-		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
+		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 		$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}' . "\n";
 		$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;' . "\n";
 		if($this->ID){

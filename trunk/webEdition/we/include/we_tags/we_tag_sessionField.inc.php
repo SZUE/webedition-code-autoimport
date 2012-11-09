@@ -81,14 +81,12 @@ function we_tag_sessionField($attribs, $content){
 			}
 
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-			$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', 'DE,AT,CH'));
-			$topCountries = array_flip($topCountries);
+			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
 
-			$shownCountries = (defined('WE_COUNTRIES_SHOWN') ? explode(',', WE_COUNTRIES_SHOWN) : explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY'));
-			$shownCountries = array_flip($shownCountries);
+			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
@@ -99,7 +97,7 @@ function we_tag_sessionField($attribs, $content){
 			setlocale(LC_ALL, $oldLocale);
 
 			$content = '';
-			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
+			if(WE_COUNTRIES_DEFAULT != ''){
 				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){

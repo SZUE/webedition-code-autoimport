@@ -943,57 +943,31 @@ class weVersions{
 
 		switch($ct){
 			case "text/webedition":
-				if((defined("VERSIONING_TEXT_WEBEDITION") && !VERSIONING_TEXT_WEBEDITION) || (!defined("VERSIONING_TEXT_WEBEDITION")))
-					return false;
-				break;
+				return VERSIONING_TEXT_WEBEDITION;
 			case "image/*":
-				if((defined("VERSIONING_IMAGE") && !VERSIONING_IMAGE) || (!defined("VERSIONING_IMAGE")))
-					return false;
-				break;
+				return VERSIONING_IMAGE;
 			case "text/html":
-				if((defined("VERSIONING_TEXT_HTML") && !VERSIONING_TEXT_HTML) || (!defined("VERSIONING_TEXT_HTML")))
-					return false;
-				break;
+				return VERSIONING_TEXT_HTML;
 			case "text/js":
-				if((defined("VERSIONING_TEXT_JS") && !VERSIONING_TEXT_JS) || (!defined("VERSIONING_TEXT_JS")))
-					return false;
-				break;
+				return VERSIONING_TEXT_JS;
 			case "text/css":
-				if((defined("VERSIONING_TEXT_CSS") && !VERSIONING_TEXT_CSS) || (!defined("VERSIONING_TEXT_CSS")))
-					return false;
-				break;
+				return VERSIONING_TEXT_CSS;
 			case "text/plain":
-				if((defined("VERSIONING_TEXT_PLAIN") && !VERSIONING_TEXT_PLAIN) || (!defined("VERSIONING_TEXT_PLAIN")))
-					return false;
-				break;
+				return VERSIONING_TEXT_PLAIN;
 			case "text/htaccess":
-				if((defined("VERSIONING_TEXT_HTACCESS") && !VERSIONING_TEXT_HTACCESS) || (!defined("VERSIONING_TEXT_HTACCESS")))
-					return false;
-				break;
+				return VERSIONING_TEXT_HTACCESS;
 			case "text/weTmpl":
-				if((defined("VERSIONING_TEXT_WETMPL") && !VERSIONING_TEXT_WETMPL) || (!defined("VERSIONING_TEXT_WETMPL")))
-					return false;
-				break;
+				return VERSIONING_TEXT_WETMPL;
 			case "application/x-shockwave-flash":
-				if((defined("VERSIONING_FLASH") && !VERSIONING_FLASH) || (!defined("VERSIONING_FLASH")))
-					return false;
-				break;
+				return VERSIONING_FLASH;
 			case "video/quicktime":
-				if((defined("VERSIONING_QUICKTIME") && !VERSIONING_QUICKTIME) || (!defined("VERSIONING_QUICKTIME")))
-					return false;
-				break;
+				return VERSIONING_QUICKTIME;
 			case "application/*":
-				if((defined("VERSIONING_SONSTIGE") && !VERSIONING_SONSTIGE) || (!defined("VERSIONING_SONSTIGE")))
-					return false;
-				break;
+				return VERSIONING_SONSTIGE;
 			case "text/xml":
-				if((defined("VERSIONING_TEXT_XML") && !VERSIONING_TEXT_XML) || (!defined("VERSIONING_TEXT_XML")))
-					return false;
-				break;
+				return VERSIONING_TEXT_XML;
 			case "objectFile":
-				if((defined("VERSIONING_OBJECT") && !VERSIONING_OBJECT) || (!defined("VERSIONING_OBJECT")))
-					return false;
-				break;
+				return VERSIONING_OBJECT;
 		}
 
 		return true;
@@ -1004,13 +978,13 @@ class weVersions{
 		$db = new DB_WE();
 
 		if($docTable == TEMPLATES_TABLE){
-			$prefTimeDays = (defined("VERSIONS_TIME_DAYS_TMPL") && VERSIONS_TIME_DAYS_TMPL != "-1") ? VERSIONS_TIME_DAYS_TMPL : "";
-			$prefTimeWeeks = (defined("VERSIONS_TIME_WEEKS_TMPL") && VERSIONS_TIME_WEEKS_TMPL != "-1") ? VERSIONS_TIME_WEEKS_TMPL : "";
-			$prefTimeYears = (defined("VERSIONS_TIME_YEARS_TMPL") && VERSIONS_TIME_YEARS_TMPL != "-1") ? VERSIONS_TIME_YEARS_TMPL : "";
+			$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != "-1") ? VERSIONS_TIME_DAYS_TMPL : "";
+			$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != "-1") ? VERSIONS_TIME_WEEKS_TMPL : "";
+			$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != "-1") ? VERSIONS_TIME_YEARS_TMPL : "";
 		} else{
-			$prefTimeDays = (defined("VERSIONS_TIME_DAYS") && VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
-			$prefTimeWeeks = (defined("VERSIONS_TIME_WEEKS") && VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
-			$prefTimeYears = (defined("VERSIONS_TIME_YEARS") && VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
+			$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
+			$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
+			$prefTimeYears = (VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
 		}
 
 		$prefTime = 0;
@@ -1030,18 +1004,14 @@ class weVersions{
 			$where = " timestamp < " . $deletetime . " AND CreationDate!=timestamp ";
 			$this->deleteVersion("", $where);
 		}
-		if($docTable == TEMPLATES_TABLE){
-			$prefAnzahl = (defined("VERSIONS_ANZAHL_TMPL") && VERSIONS_ANZAHL_TMPL != "") ? VERSIONS_ANZAHL_TMPL : "";
-		} else{
-			$prefAnzahl = (defined("VERSIONS_ANZAHL") && VERSIONS_ANZAHL != "") ? VERSIONS_ANZAHL : "";
-		}
+		$prefAnzahl = intval($docTable == TEMPLATES_TABLE ? VERSIONS_ANZAHL_TMPL : VERSIONS_ANZAHL);
+
 		$anzahl = f("SELECT COUNT(1) AS Count FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "'", "Count", $db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
-			$query = "SELECT ID, version FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' ORDER BY version ASC LIMIT " . intval($toDelete);
 			$m = 0;
-			$db->query($query);
+			$db->query("SELECT ID, version FROM " . VERSIONS_TABLE . " WHERE documentId = " . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' ORDER BY version ASC LIMIT " . intval($toDelete));
 			while($db->next_record()) {
 				if($m < $toDelete){
 					$this->deleteVersion($db->f('ID'), '');

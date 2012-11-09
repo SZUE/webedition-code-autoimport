@@ -112,7 +112,7 @@ function showMessage(message, prio, win){
 		win = window;
 	}
 	if (!prio) { // default is error, to avoid missing messages
-		prio = '.we_message_reporting::WE_MESSAGE_ERROR.';
+		prio = ' . we_message_reporting::WE_MESSAGE_ERROR . ';
 	}
 
 	if (prio & messageSettings) { // show it, if you should
@@ -413,8 +413,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 				$_SESSION['weS']['we_mode'] = $_REQUEST['mode'];
 			}
 
-			if((!defined('WE_LOGIN_WEWINDOW') && (!isset($_REQUEST['popup']))) ||
-				(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup']))))){
+			if(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
 				header('HTTP/1.1 303 See Other');
 				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
 				$_body_javascript.='alert("automatic redirect disabled");';
@@ -426,7 +425,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			we_log_loginFailed('tblUser',$_POST['username']);
+			we_log_loginFailed('tblUser', $_POST['username']);
 
 			/*			 * ***************************************************************************
 			 * CHECK FOR FAILED LOGIN ATTEMPTS

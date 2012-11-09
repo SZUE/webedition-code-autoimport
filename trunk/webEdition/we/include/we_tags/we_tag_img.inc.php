@@ -34,20 +34,20 @@ function we_tag_img($attribs){
 	//FIXME: wtf is showthumbcontrol?! what does it do?
 	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, false, true);
 	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
-	$showinputs = weTag_getAttribute("showinputs", $attribs, (defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true), true);
+	$showinputs = weTag_getAttribute("showinputs", $attribs, SHOWINPUTS_DEFAULT, true);
 
 	//$attribs = removeAttribs($attribs, array('name', 'xmltype','to','nameto'));
 
 
-	
+
 	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-	$id = $id ? $id :  weTag_getAttribute("id", $attribs);
-	
-	if(isset($attribs['showcontrol']) && !$showcontrol &&  weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+	$id = $id ? $id : weTag_getAttribute("id", $attribs);
+
+	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$id = weTag_getAttribute("id", $attribs);
-		$attribs['id']=$id; //siehe korrespondierende Änderung in we:document::getField
-		$attribs['showcontrol']=$showcontrol;//sicherstellen das es boolean iost
+		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
+		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
 
 	//look if image exists in tblfile, and is an image
@@ -107,7 +107,7 @@ function we_tag_img($attribs){
 			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
 			$attribs['alt'] = 'no-img';
-			$attribs=  removeAttribs($attribs, array('thumbnail'));
+			$attribs = removeAttribs($attribs, array('thumbnail'));
 			$out = getHtmlTag('img', $attribs);
 		} else{
 			$out = ''; //no_image war noch in der Vorscha sichtbar

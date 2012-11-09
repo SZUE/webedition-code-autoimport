@@ -38,13 +38,11 @@ class we_textDocument extends we_document{
 
 	function __construct(){
 		parent::__construct();
-		if(defined('DEFAULT_CHARSET')){
-			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
-		}
+		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 	}
 
-
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
+
 	function editor($baseHref = true){
 		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl(true) . $this->Path : "";
 

@@ -24,50 +24,50 @@
  */
 function we_parse_tag_xmlnode($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	//fixme code zum umleiten fehlt noch 6495
 	$to = weTag_getParserAttribute('to', $arr, 'screen');
-	$nameTo =weTag_getParserAttribute("nameto", $arr);
-	$printend=';';
+	$nameTo = weTag_getParserAttribute("nameto", $arr);
+	$printend = ';';
 	switch($to){
 		case "screen" :
-			$printstart='print ';
+			$printstart = 'print ';
 			break;
 		case "request" :
-			$printstart='$_REQUEST["'.$nameTo.'"] = ';
+			$printstart = '$_REQUEST["' . $nameTo . '"] = ';
 			break;
 		case "post" :
-			$printstart='$_POST["'.$nameTo.'"] = ';
+			$printstart = '$_POST["' . $nameTo . '"] = ';
 			break;
 		case "get" :
-			$printstart='$_GET["'.$nameTo.'"] = ';
+			$printstart = '$_GET["' . $nameTo . '"] = ';
 			break;
 		case "global" :
-			$printstart='$GLOBALS["'.$nameTo.'"] = ';
+			$printstart = '$GLOBALS["' . $nameTo . '"] = ';
 			break;
 		case "session" :
-			$printstart='$_SESSION["'.$nameTo.'"] = ';
+			$printstart = '$_SESSION["' . $nameTo . '"] = ';
 			break;
 		case "top" :
-			$printstart='$GLOBALS["WE_MAIN_DOC"]->setElement('.$nameTo.',';
-			$printend=');';
+			$printstart = '$GLOBALS["WE_MAIN_DOC"]->setElement(' . $nameTo . ',';
+			$printend = ');';
 			break;
 		case "self" :
-			$printstart='$GLOBALS["we_doc"]->setElement('.$nameTo.',';
-			$printend=');';
+			$printstart = '$GLOBALS["we_doc"]->setElement(' . $nameTo . ',';
+			$printend = ');';
 			break;
 
 		case "sessionfield" :
-			$printstart='if(isset($_SESSION["webuser"]["'.$nameTo.'"]))$_SESSION["webuser"]["'.$nameTo.'"] = ';
+			$printstart = 'if(isset($_SESSION["webuser"]["' . $nameTo . '"]))$_SESSION["webuser"]["' . $nameTo . '"] = ';
 			break;
 	}
-	$unq = '$_xmlnode' .  md5(uniqid(__FUNCTION__, true));
+	$unq = '$_xmlnode' . md5(uniqid(__FUNCTION__, true));
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 		while(' . $unq . '->next()){
 			if(  ' . $unq . '->hasChild() ){
 			$GLOBALS[\'xsuperparent\']=' . $unq . '->getNode();?>' . $content . '<?php
 			}else{
-			   ' .$printstart. $unq . '->getFeedData()'.$printend.'
+			   ' . $printstart . $unq . '->getFeedData()' . $printend . '
 			}
 			//array_pop($GLOBALS["xstack"]);  //ausgeblendet wegen 6339 und beobachtetem Verhalten, das immer maximal zwei Sachen angeziegt wurden
 			// fix me
@@ -94,11 +94,11 @@ function we_tag_xmlnode($attribs){
 		$GLOBALS["xpaths"] = array();
 	if(!isset($GLOBALS["xstack"]))
 		$GLOBALS["xstack"] = array();
-	$pind_name = count($GLOBALS["xstack"])-1;
+	$pind_name = count($GLOBALS["xstack"]) - 1;
 	if($pind_name < 0){
 		$pind_name = 0;
 		$parent_name = '';
-	} else {
+	} else{
 		$parent_name = $GLOBALS["xstack"][$pind_name];
 	}
 
@@ -114,12 +114,12 @@ function we_tag_xmlnode($attribs){
 		$feed_name = new weXMLBrowser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
-	} else {
+	} else{
 		if($feed){
 			$feed_name = $GLOBALS["xmlfeeds"][$feed];
 			$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
 			$got_name = true;
-		} else {
+		} else{
 			$got_name = false;
 			$c_name = 0;
 
@@ -165,7 +165,7 @@ function we_tag_xmlnode($attribs){
 		}
 		if(count($nodes_name) != 0){
 			$got_name = true;
-		} else {
+		} else{
 			$got_name = true;
 		}
 	}

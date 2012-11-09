@@ -24,7 +24,7 @@
  */
 function we_parse_tag_listview($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	switch(weTag_getParserAttribute('type', $arr)){
 		default:
 		case 'document':
@@ -130,8 +130,8 @@ function we_tag_listview($attribs){
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
 	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-	$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
 	if(!isset($GLOBALS['we_lv_array'])){
@@ -171,7 +171,7 @@ function we_tag_listview($attribs){
 			$GLOBALS['lv'] = new we_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex);
 			break;
 		case 'search':
-			$GLOBALS['lv'] = new we_search_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid,$cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_search_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $class, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $triggerid, $cols, $cfilter, $we_lv_languages, $hidedirindex, $objectseourls);
 			if(!isset($GLOBALS['weEconda'])){
 				$GLOBALS['weEconda'] = '';
 			}
@@ -189,7 +189,7 @@ function we_tag_listview($attribs){
 			if(f('SELECT 1 AS a FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class), 'a', $GLOBALS['DB_WE']) == '1'){
 				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else{
-				t_e('warning', 'Object with id=' . intval($class) . ' does not exist');
+				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
 				return false;
 			}
 			break;

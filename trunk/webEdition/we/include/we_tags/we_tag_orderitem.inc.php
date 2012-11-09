@@ -38,7 +38,7 @@ function we_tag_orderitem($attribs){
 	$condition = weTag_getAttribute("condition", $attribs, 0);
 	$we_orderitemid = weTag_getAttribute("id", $attribs, 0);
 
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 
 	$condition = ($condition ? $condition . ' AND ' : '') . "IntID = " . $we_orderitemid;
 

@@ -31,8 +31,8 @@ function we_tag_linklist($attribs){
 		default:
 			$name = weTag_getAttribute("name", $attribs);
 			$foo = attributFehltError($attribs, "name", __FUNCTION__);
-			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-			$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+			$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, true);
 			if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 				return $foo;
 			}

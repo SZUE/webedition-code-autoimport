@@ -197,11 +197,9 @@ class we_image_edit{
 			$_searchstring = "bundled (";
 
 			// Detect information string now
-			if(substr($_gdinfo["GD Version"], 0, strlen($_searchstring)) == $_searchstring){
-				$_gdversion = substr($_gdinfo["GD Version"], strlen($_searchstring), 3);
-			} else{
-				$_gdversion = substr($_gdinfo["GD Version"], 0, 3);
-			}
+			$_gdversion = (substr($_gdinfo["GD Version"], 0, strlen($_searchstring)) == $_searchstring ?
+					substr($_gdinfo["GD Version"], strlen($_searchstring), 3) :
+					substr($_gdinfo["GD Version"], 0, 3));
 		}
 
 		return $_gdversion;
@@ -222,7 +220,7 @@ class we_image_edit{
 				$_image_create_from_string_replacement_function = "ImageCreateFromPNG";
 				break;
 			default:
-				break;
+				return '';
 		}
 
 		if(($_tempfilename = tempnam(TEMP_PATH, ''))){

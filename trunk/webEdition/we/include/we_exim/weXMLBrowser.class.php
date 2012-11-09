@@ -54,8 +54,6 @@ class weXMLBrowser extends we_xml_parser{
 			$expire = time() + 1800;
 		}
 
-//		$mod = (defined("WE_NEW_FOLDER_MOD") ? octdec(WE_NEW_FOLDER_MOD) : 0755);
-
 		if(!is_dir(dirname($cache))){
 			we_util_File::createLocalFolder(dirname($cache));
 		}

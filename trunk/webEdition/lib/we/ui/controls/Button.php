@@ -766,7 +766,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
 				style="position:absolute;z-index:2;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;"
-				type="image" src="'.IMAGE_DIR.'pixel.gif" title="' . $this->getTitle() . '">';
+				type="image" src="' . IMAGE_DIR . 'pixel.gif" title="' . $this->getTitle() . '">';
 		}
 
 		return "";
@@ -858,21 +858,23 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 		$attribs = '';
 		foreach($arr as $attribName){
 			$internalName = "_$attribName";
-			if($internalName === "_onMouseDown"){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
-			}
-			if($internalName === "_onMouseUp"){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
-			}
-			if($internalName === "_onMouseOut"){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+			switch($internalName){
+				case "_onMouseDown":
+					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					break;
+				case "_onMouseUp":
+					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					break;
+				case "_onMouseOut":
+					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					break;
 			}
 			if(isset($this->$internalName) && $this->$internalName !== ''){
-				if($internalName === "_onClick"){
-					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
-				} else{
-					$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($this->$internalName) . '"';
-				}
+				$attribs .= ' ' . htmlspecialchars($attribName) . '="' .
+					($internalName === "_onClick" ?
+						'if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}' :
+						htmlspecialchars($this->$internalName)) .
+					'"';
 			}
 		}
 		return $attribs;

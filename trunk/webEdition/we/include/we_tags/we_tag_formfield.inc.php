@@ -38,7 +38,7 @@ function we_tag_formfield($attribs){
 
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
-	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 	$ff = array();
 
 	$ret = "";
@@ -276,21 +276,11 @@ function we_tag_formfield($attribs){
 			}
 
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-			if(defined("WE_COUNTRIES_TOP")){
-				$topCountries = explode(',', WE_COUNTRIES_TOP);
-			} else{
-				$topCountries = explode(',', "DE,AT,CH");
-			}
-			$topCountries = array_flip($topCountries);
+			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
-			if(defined("WE_COUNTRIES_SHOWN")){
-				$shownCountries = explode(',', WE_COUNTRIES_SHOWN);
-			} else{
-				$shownCountries = explode(',', "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");
-			}
-			$shownCountries = array_flip($shownCountries);
+				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
@@ -301,7 +291,7 @@ function we_tag_formfield($attribs){
 			setlocale(LC_ALL, $oldLocale);
 
 			$tagContent = '';
-			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
+			if(WE_COUNTRIES_DEFAULT != ''){
 				$tagContent.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>' . "\n";
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){

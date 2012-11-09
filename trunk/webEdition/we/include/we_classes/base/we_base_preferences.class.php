@@ -93,7 +93,7 @@ class we_base_preferences{
 			$content = $oldContent;
 		}
 		// load & Cut closing PHP tag from configuration file
-		$content = trim(str_replace('?>', '', $content), "\n ");
+		$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
 		$oldContent = trim(str_replace('?>', '', $oldContent), "\n ");
 
 		// Go through all needed values
@@ -101,6 +101,8 @@ class we_base_preferences{
 			if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 				// Add needed variable
 				$content = self::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
+				//define it in running session
+				define($define, $value[1]);
 			}
 		}
 		if($updateVersion){

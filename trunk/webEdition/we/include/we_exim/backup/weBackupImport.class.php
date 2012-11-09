@@ -54,7 +54,7 @@ class weBackupImport{
 
 		$parser = new weXMLParser();
 		//if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){ vor 4092
-		if(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != ''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		if(DEFAULT_CHARSET != ''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 			$parser->parse($data, DEFAULT_CHARSET);
 		} else{
 			$parser->parse($data);

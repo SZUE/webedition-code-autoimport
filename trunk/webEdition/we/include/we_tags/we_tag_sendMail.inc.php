@@ -108,15 +108,15 @@ function we_tag_sendMail($attribs, $content){
 
 				// insert into log
 				$GLOBALS['DB_WE']->query("INSERT INTO " . FORMMAIL_LOG_TABLE . " (ip, unixTime) VALUES('" . $GLOBALS['DB_WE']->escape($_ip) . "', UNIX_TIMESTAMP())");
-				if(defined("FORMMAIL_EMPTYLOG") && (FORMMAIL_EMPTYLOG > -1)){
+				if(FORMMAIL_EMPTYLOG > -1){
 					$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_LOG_TABLE . " WHERE unixTime < " . intval($_now - FORMMAIL_EMPTYLOG));
 				}
 
 				if($useFormmailBlock){
 
 					$_num = 0;
-					$_trials = (defined("FORMMAIL_TRIALS") ? FORMMAIL_TRIALS : 3);
-					$_blocktime = (defined("FORMMAIL_BLOCKTIME") ? FORMMAIL_BLOCKTIME : 86400);
+					$_trials = FORMMAIL_TRIALS;
+					$_blocktime = FORMMAIL_BLOCKTIME;
 
 					// first delete all entries from blocktable which are older then now - blocktime
 					$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()");

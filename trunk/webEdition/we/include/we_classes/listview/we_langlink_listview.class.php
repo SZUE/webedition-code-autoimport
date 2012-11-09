@@ -230,13 +230,13 @@ class we_langlink_listview extends listviewBase{
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
 
 
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->foundlinks[$count]['Url'];
 					} else{
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->foundlinks[$count]['Url'];
 					}
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->Record["WE_ID"];
 					} else{
 						$this->Record["WE_PATH"] = $_SERVER['SCRIPT_NAME'] . "?$paramName=" . $this->Record["WE_ID"];

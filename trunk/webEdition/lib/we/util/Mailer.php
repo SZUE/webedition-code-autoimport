@@ -109,56 +109,48 @@ class we_util_Mailer extends Zend_Mail{
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0){
 		$this->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 
-		if(defined("WE_MAILER")){
-			switch(WE_MAILER){
-				case 'smtp' :
-					if(defined('SMTP_SERVER') && SMTP_SERVER != ''){
-						$smtp_config = array();
-						if(defined('SMTP_PORT')){
-							$smtp_config['port'] = SMTP_PORT;
-						}
-						if(defined('SMTP_AUTH') && SMTP_AUTH){
-							$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterst�tzte Version - Zend kann auch plain und crammd5
-							if(defined('SMTP_USERNAME')){
-								$smtp_config['username'] = SMTP_USERNAME;
-							}
-							if(defined('SMTP_PASSWORD')){
-								$smtp_config['password'] = SMTP_PASSWORD;
-							}
-						}
-						if(defined('SMTP_TIMEOUT') && SMTP_TIMEOUT != ''){//sitzt wohl auf 5 Minuten fest, keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht
-						}
-						if(defined('SMTP_HALO')){//keine M�glichkeit gefunden das zu �ndern, aber auch nicht lange gesucht, scheint den Host zu �bergeben
-						}
-						if(defined('SMTP_ENCRYPTION')){
-							if((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != ''){
-								$smtp_config['ssl'] = SMTP_ENCRYPTION;
-							}
-						}
-						$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config);
-						$this->setDefaultTransport($tr);
+		switch(WE_MAILER){
+			case 'smtp' :
+				if(SMTP_SERVER != ''){
+					$smtp_config = array();
+					if(SMTP_PORT != ''){
+						$smtp_config['port'] = SMTP_PORT;
 					}
-					break;
+					if(SMTP_AUTH){
+						$smtp_config['auth'] = 'login'; // das ist die vom phpMailer unterst�tzte Version - Zend kann auch plain und crammd5
+						if(SMTP_USERNAME != ''){
+							$smtp_config['username'] = SMTP_USERNAME;
+						}
+						if(SMTP_PASSWORD != ''){
+							$smtp_config['password'] = SMTP_PASSWORD;
+						}
+					}
+					if((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != ''){
+						$smtp_config['ssl'] = SMTP_ENCRYPTION;
+					}
+					$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config);
+					$this->setDefaultTransport($tr);
+				}
+				break;
 
-				default:
-				case 'php':
-					//this should set return-path
-					$safeMode = ini_get('safe_mode');
-					$suhosin = in_array('suhosin', get_loaded_extensions());
-					if($reply != '' && !$safeMode && !$suhosin){
-						$_reply = $this->parseEmailUser($reply);
-						$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
+			default:
+			case 'php':
+				//this should set return-path
+				$safeMode = ini_get('safe_mode');
+				$suhosin = in_array('suhosin', get_loaded_extensions());
+				if($reply != '' && !$safeMode && !$suhosin){
+					$_reply = $this->parseEmailUser($reply);
+					$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
+				} else{
+					$_sender = $this->parseEmailUser($sender);
+					if(isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin){
+						$tr = new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']);
 					} else{
-						$_sender = $this->parseEmailUser($sender);
-						if(isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin){
-							$tr = new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']);
-						} else{
-							$tr = new Zend_Mail_Transport_Sendmail();
-						}
+						$tr = new Zend_Mail_Transport_Sendmail();
 					}
-					Zend_Mail::setDefaultTransport($tr);
-					break;
-			}
+				}
+				Zend_Mail::setDefaultTransport($tr);
+				break;
 		}
 
 
