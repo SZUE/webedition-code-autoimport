@@ -704,11 +704,11 @@ class we_wizard_import extends we_wizard{
 
 
 			$xml_encoding = we_xml_parser::getEncoding($_import_file);
-			if(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != '' && (DEFAULT_CHARSET == 'ISO-8859-1' || DEFAULT_CHARSET == 'UTF-8' ) && ($xml_encoding == 'ISO-8859-1' || $xml_encoding == 'UTF-8' )){
+			if(DEFAULT_CHARSET != '' && (DEFAULT_CHARSET == 'ISO-8859-1' || DEFAULT_CHARSET == 'UTF-8' ) && ($xml_encoding == 'ISO-8859-1' || $xml_encoding == 'UTF-8' )){
 				if(($xml_encoding != DEFAULT_CHARSET)){
 					$parts[] = array(
 						'headline' => g_l('import', '[encoding_headline]'),
-						'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : '-' ) . g_l('import', '[encoding_default]')) . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" /><input type="hidden" name="v[import_TARGETencoding]" value="' . DEFAULT_CHARSET . '" />',
+						'html' => we_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" /><input type="hidden" name="v[import_TARGETencoding]" value="' . DEFAULT_CHARSET . '" />',
 						'space' => 120
 					);
 				}
@@ -858,8 +858,8 @@ class we_wizard_import extends we_wizard{
 		if(!defined("OBJECT_TABLE"))
 			$hdns .= we_html_element::htmlHidden(array("name" => "v[import_type]", "value" => "documents")) . "\n";
 
-		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
-		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
+		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 
 		$functions = we_button::create_state_changer(false) . "
 			function we_cmd() {
@@ -1850,8 +1850,8 @@ HTS;
 		if(!defined("OBJECT_TABLE"))
 			$hdns .= we_html_element::htmlHidden(array("name" => "v[import_type]", "value" => "documents")) . "\n";
 
-		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
-		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
+		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 
 		$functions = we_button::create_state_changer(false) . "
 			function we_cmd() {

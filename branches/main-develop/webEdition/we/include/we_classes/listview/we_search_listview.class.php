@@ -241,7 +241,7 @@ class we_search_listview extends listviewBase{
 				if($this->DB_WE->Record["WorkspaceID"]){
 					$pidstr = '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]);
 				}
-				if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(NAVIGATION_DIRECTORYINDEX_NAMES != '' && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					if($objecturl != ''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 					} else{

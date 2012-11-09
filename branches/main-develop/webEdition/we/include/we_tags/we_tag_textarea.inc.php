@@ -28,7 +28,7 @@ function we_tag_textarea($attribs, $content){
 	}
 
 	$name = weTag_getAttribute("name", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 

@@ -460,7 +460,7 @@ abstract class we_html_tools{
 			foreach($attribs as $key => $val){
 				$attribute .= $key . '="' . $val . '" ';
 			}
-		} if(defined('XHTML_DEFAULT') && XHTML_DEFAULT){
+		} if(XHTML_DEFAULT){
 			$tagende = '/>';
 		} else{
 			$tagende = '>';

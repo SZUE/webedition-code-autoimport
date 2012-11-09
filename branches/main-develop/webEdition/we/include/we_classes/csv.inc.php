@@ -185,13 +185,8 @@ class CSVImport extends CSV{
 	function __construct(){
 		parent::__construct();
 		$this->FieldDelim = ";";
-		if(defined('DEFAULT_CHARSET')){
-			$this->FromCharset = DEFAULT_CHARSET;
-			$this->ToCharset = DEFAULT_CHARSET;
-		} else{
-			$this->FromCharset = "UTF-8";
-			$this->ToCharset = "UTF-8";
-		}
+		$this->FromCharset = DEFAULT_CHARSET;
+		$this->ToCharset = DEFAULT_CHARSET;
 	}
 
 	function setDelim($delimiter){

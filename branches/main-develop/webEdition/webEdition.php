@@ -477,7 +477,7 @@ if(!empty($_jsincludes)){
 }
 ?>
 			case "we_tracker":
-				new jsWindow("<?php print defined('WE_TRACKER_DIR') ? WE_TRACKER_DIR : '/pageLogger'; ?>/controlcenter.php","we_tracker",-1,-1,1024,768,true,true,true);
+				new jsWindow("<?php print WE_TRACKER_DIR; ?>/controlcenter.php","we_tracker",-1,-1,1024,768,true,true,true);
 				break;
 			case "openFirstStepsWizardMasterTemplate":
 			case "openFirstStepsWizardDetailTemplates":

@@ -102,7 +102,7 @@ class weNavigationItem{
 					$_v = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
 					$this->visible = !empty($_v) ? 'true' : 'false';
 				}
-				if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
@@ -118,7 +118,7 @@ class weNavigationItem{
 				$_v = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', 'ID', new DB_WE());
 				$this->visible = !empty($_v) ? 'true' : 'false';
 
-				if(defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
+				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != ''){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){

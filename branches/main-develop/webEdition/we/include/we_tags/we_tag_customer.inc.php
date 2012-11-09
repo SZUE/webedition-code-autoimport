@@ -24,7 +24,7 @@
  */
 function we_parse_tag_customer($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE) ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
+	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 
 	$name = weTag_getParserAttribute("name", $arr);
 	if($name && strpos($name, ' ') !== false){
@@ -47,7 +47,7 @@ function we_tag_customer($attribs){
 	$name = weTag_getAttribute("name", $attribs);
 	$_showName = weTag_getAttribute("_name_orig", $attribs);
 	$size = weTag_getAttribute("size", $attribs, 30);
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 
 	if(!isset($GLOBALS["we_lv_array"])){
 		$GLOBALS["we_lv_array"] = array();

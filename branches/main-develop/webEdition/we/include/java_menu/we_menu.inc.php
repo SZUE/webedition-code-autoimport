@@ -628,7 +628,7 @@ $we_menu['2020800'] = array(
 );
 
 // Cockpit > new Widget > pageLogger
-if(defined('WE_TRACKER_DIR') && WE_TRACKER_DIR &&
+if(WE_TRACKER_DIR &&
 	file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . '/includes/showme.inc.php')){
 	$we_menu['2020900'] = array(
 		'text' => g_l('javaMenu_global', '[pagelogger]'),
@@ -699,7 +699,7 @@ foreach($GLOBALS['_we_available_modules'] as $key => $val){
 //$_SESSION['we_module_list'] = rtrim($moduleList, '|');
 
 // Modules > pagelogger
-if(defined('WE_TRACKER_DIR') && WE_TRACKER_DIR){
+if(WE_TRACKER_DIR){
 	$we_menu['3020000'] = array(
 		'text' => 'pageLogger',
 		'parent' => '3000000',
@@ -956,7 +956,7 @@ if(!$seeMode){
 		'enabled' => 1,
 	);
 }
-if(!defined('SIDEBAR_DISABLED') || SIDEBAR_DISABLED == 0){
+if(SIDEBAR_DISABLED == 0){
 	$we_menu['5015000'] = array(
 		'text' => g_l('javaMenu_global', '[sidebar]') . '...',
 		'parent' => '5000000',

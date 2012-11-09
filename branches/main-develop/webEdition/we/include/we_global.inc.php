@@ -1123,7 +1123,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 
 		if(!($GLOBALS['we_editmode'] || $GLOBALS['WE_MAIN_EDITMODE']) && $hidedirindex){
 			$path_parts = pathinfo($path);
-			if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 			}
 		}
@@ -1144,7 +1144,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 		}
 		if($objectseourls && $objecturl != ''){
 
-			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+			if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $objecturl . $pidstr;
 			} else{
 				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr;
@@ -1197,7 +1197,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 
 			if($_path){
 				$path_parts = pathinfo($_path);
-				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $_path . ($reg[3] ? '?' : '') . $reg[4], $text);
@@ -1221,10 +1221,8 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 	}
 	if(defined('OBJECT_TABLE')){
 		if(preg_match_all('/href="object:(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
-			$hidedirindex = defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE;
-			$objectseourls = defined('WYSIWYGLINKS_OBJECTSEOURLS') && WYSIWYGLINKS_OBJECTSEOURLS;
 			foreach($regs as $reg){
-				$href = getHrefForObject($reg[1], $pid, $path, "", $hidedirindex, $objectseourls);
+				$href = getHrefForObject($reg[1], $pid, $path, "", WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 				if(isset($GLOBALS['we_link_not_published'])){
 					unset($GLOBALS['we_link_not_published']);
 				}
@@ -1233,8 +1231,9 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 							str_replace('href="object:' . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 							str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 				} else{
-					$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui', '\1', $text);
-					$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui', '', $text);
+					$text = preg_replace(array('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui',
+						'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui',),
+						array('\1'), $text);
 				}
 			}
 		}
@@ -1339,7 +1338,7 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? getMaxAllowedPacket($db) : PHP_INT_MAX));
 
-	if(!defined('WE_MAX_UPLOAD_SIZE') || WE_MAX_UPLOAD_SIZE == 0){
+	if(intval(WE_MAX_UPLOAD_SIZE) == 0){
 		return $min;
 	} else{
 		return min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min);
@@ -1578,7 +1577,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$_xmlClose = false;
 
 	//	take values given from the tag - later from preferences.
-	$xhtml = weTag_getAttribute('xml', $attribs, ((defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1)), true);
+	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
 
 	// at the moment only transitional is supported
 	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
@@ -1598,15 +1597,14 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	if($xhtml){ //	xhtml, check if and what we shall debug
 		$_xmlClose = true;
 
-		if(defined('XHTML_DEBUG') && XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
+		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
 			include_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
 
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
 					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
-			$removeWrong = (defined('XHTML_REMOVE_WRONG') && XHTML_REMOVE_WRONG); //  check if XML_REMOVE_WRONG is true (constant)
 
 
-			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, $removeWrong);
+			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
 		}
 	}
 
@@ -1708,7 +1706,7 @@ function getDoctypeQuery($db = ''){
 	$ws = get_ws(FILE_TABLE);
 	if($ws){
 		$b = makeArrayFromCSV($ws);
-		if((!defined('WE_DOCTYPE_WORKSPACE_BEHAVIOR')) || WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
+		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0){
 			foreach($b as $k => $v){
 				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
 				while($db->next_record()) {
@@ -1932,7 +1930,7 @@ function we_templateInit(){
 		}
 		//check for Trigger
 		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(defined('SCHEDULER_TRIGGER') && SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
 		){
 			we_schedpro::trigger_schedule();
@@ -1986,7 +1984,7 @@ function we_templatePost(){
 	}
 	//check for Trigger
 	if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		((defined('SCHEDULER_TRIGGER') && SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEDULER_TRIGGER')) &&
+		(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 		(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 	){ //is set to Post or not set (new default)
 		we_schedpro::trigger_schedule();
@@ -1995,8 +1993,8 @@ function we_templatePost(){
 
 function show_SeoLinks(){
 	return (
-		!(defined('SEOINSIDE_HIDEINWEBEDITION') && SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		!(defined('SEOINSIDE_HIDEINEDITMODE') && SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
+		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		!(SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
 		);
 }
 

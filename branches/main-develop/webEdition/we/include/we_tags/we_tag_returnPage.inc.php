@@ -24,7 +24,7 @@
  */
 function we_tag_returnPage($attribs){
 
-	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 
 	return isset($_REQUEST["we_returnpage"]) ?
 		($xml ?

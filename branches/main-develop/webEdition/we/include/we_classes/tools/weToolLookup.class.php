@@ -253,17 +253,14 @@ abstract class weToolLookup{
 	}
 
 	static function getAllToolTags($toolname, $includeDisabled = false){
-
-		return weToolLookup::getFileRegister($toolname, '/tags', '^we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
+		return weToolLookup::getFileRegister($toolname, '/tags', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
 	static function getAllToolTagWizards($toolname, $includeDisabled = false){
-
-		return weToolLookup::getFileRegister($toolname, '/tagwizard', '^we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
+		return weToolLookup::getFileRegister($toolname, '/tagwizard', 'we_tag_', 'we_tag_', '.inc.php', $includeDisabled);
 	}
 
 	static function getAllToolServices($toolname, $includeDisabled = false){
-
 		return weToolLookup::getFileRegister($toolname, '/service/cmds', '^rpc', 'rpc', 'Cmd.class.php', $includeDisabled);
 	}
 

@@ -114,7 +114,6 @@ abstract class we_autoloader{
 			'we_class' => 'we_class.inc.php',
 			'we_codeConvertor' => 'we_codeConvertor.inc.php',
 			'weColorDialog' => 'weColorDialog.class.inc.php',
-			'weConfParser' => 'base/weConfParser.class.php',
 			'we_delSelector' => 'we_delSelector.inc.php',
 			'weDialog' => 'weDialog.class.inc.php',
 			'we_dirSelector' => 'we_dirSelector.inc.php',

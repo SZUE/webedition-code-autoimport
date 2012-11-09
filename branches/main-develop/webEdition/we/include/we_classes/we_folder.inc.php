@@ -279,7 +279,7 @@ class we_folder extends we_root{
 		if($resave == 0 && $update){
 			weNavigationCache::clean(true);
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
+		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
 			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', true, ($this->ClassName == 'we_class_folder'));
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
@@ -555,7 +555,7 @@ class we_folder extends we_root{
 		$inputName = 'we_' . $this->Name . '_Language';
 
 		$_languages = getWeFrontendLanguagesForBackend();
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			$isobject = (defined('OBJECT_FILES_TABLE') && ($this->Table == OBJECT_FILES_TABLE) ? 1 : 0);
 			foreach($_languages as $langkey => $lang){

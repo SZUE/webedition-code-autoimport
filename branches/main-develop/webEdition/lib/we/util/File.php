@@ -436,15 +436,14 @@ abstract class we_util_File{
 		$parent = str_replace("\\", "/", $parent);
 
 		while(!self::checkAndMakeFolder($parent)) {
-			array_push($cf, $parent);
-			$parent = dirname($parent);
-			$parent = str_replace("\\", "/", $parent);
+			$cf[]= $parent;
+			$parent = str_replace("\\", "/", dirname($parent));
 		}
 
 		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
 			$oldumask = @umask(0000);
 
-			$mod = (defined("WE_NEW_FOLDER_MOD") ? octdec(intval(WE_NEW_FOLDER_MOD)) : 0755);
+			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 			if(!@mkdir($cf[$i], $mod)){
 				t_e('warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
@@ -480,7 +479,7 @@ abstract class we_util_File{
 
 		$oldumask = @umask(0000);
 
-		$mod = (defined('WE_NEW_FOLDER_MOD') ? octdec(abs(WE_NEW_FOLDER_MOD)) : 0755);
+		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 		// check for directories: create it if we could no write into it:
 		if(!@mkdir($path, $mod, $recursive)){

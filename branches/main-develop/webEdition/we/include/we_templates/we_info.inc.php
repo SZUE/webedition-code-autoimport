@@ -168,8 +168,8 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			3);
 
 	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
-	if(defined("WE_SEEM") && !WE_SEEM){ //	deactivate See-Mode
-		if(defined('WE_LOGIN_WEWINDOW') && WE_LOGIN_WEWINDOW){
+	if(!WE_SEEM){ //	deactivate See-Mode
+		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
 			if(WE_LOGIN_WEWINDOW == 1){
 				$_modetable->setCol(0, 1, array("align" => "right",
@@ -189,7 +189,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	} else{ //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), ((defined('WE_SEEM') && !WE_SEEM) ? '' : g_l('SEEM', '[start_mode]')));
+		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), (!WE_SEEM ? '' : g_l('SEEM', '[start_mode]')));
 		$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 		switch(WE_LOGIN_WEWINDOW){

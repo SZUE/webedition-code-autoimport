@@ -54,6 +54,8 @@ class we_base_preferences{
 			$config['content'] = weFile::load($config['filename']);
 			$config['contentBak'] = $config['content'];
 		}
+		//finally add old session prefs
+		$GLOBALS['config_files']['oldPrefs'] = $_SESSION['prefs'];
 	}
 
 	static function setConfigContent($type, $content){
@@ -85,30 +87,52 @@ class we_base_preferences{
 			$content = weFile::load($_file_name);
 			//leave settings in their current state
 			foreach($leave as $settingname){
-				$content = weConfParser::changeSourceCode('define', $content, $settingname, constant($settingname), true);
+				$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
 			}
 		} else{
 			$content = $oldContent;
 		}
 		// load & Cut closing PHP tag from configuration file
-		$content = trim(str_replace('?>', '', $content), "\n ");
+		$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
 		$oldContent = trim(str_replace('?>', '', $oldContent), "\n ");
 
 		// Go through all needed values
 		foreach($values as $define => $value){
 			if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 				// Add needed variable
-				$content = weConfParser::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
+				$content = self::changeSourceCode('add', $content, $define, $value[1], true, $value[0]);
+				//define it in running session
+				define($define, $value[1]);
 			}
 		}
 		if($updateVersion){
-			$content = weConfParser::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_VERSION, true);
+			$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_VERSION, true);
 		}
 		// Check if we need to rewrite the config file
 		if($content != $oldContent){
 			weFile::save($_file_name_backup, $oldContent);
 			weFile::save($_file_name, $content);
 		}
+	}
+
+	static function saveConfigs($oldPrefs){
+		if(!isset($GLOBALS['configs'])){
+			t_e('no config set');
+			return;
+		}
+
+		foreach($GLOBALS['config_files'] as $key => $file){
+			if($file['content'] != $file['contentBak']){ //only save if anything changed
+				weFile::save($file['filename'] . '.bak', $file['contentBak']);
+				weFile::save($file['filename'], trim($file['content'], "\n "));
+			}
+		}
+
+		$tmp = array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']);
+		if(!empty($tmp)){
+			doUpdateQuery($GLOBALS['DB_WE'], PREFS_TABLE, $tmp, (' WHERE userID=' . intval($_SESSION['prefs']['userID'])));
+		}
+		unset($GLOBALS['config_files']);
 	}
 
 	static function userIsAllowed($setting){
@@ -125,6 +149,31 @@ class we_base_preferences{
 				}
 			}
 		}
+	}
+
+	public static function changeSourceCode($type, $text, $key, $value, $active = true, $comment = ''){
+		switch($type){
+			case 'add':
+				return trim($text, "\n\t ") . "\n\n" .
+					self::makeDefine($key, $value, $active, $comment);
+			case 'define':
+				$match = array();
+				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
+					return str_replace($match[0], self::makeDefine($key, $value, $active), $text);
+				}
+		}
+
+		return $text;
+	}
+
+	private static function makeDefine($key, $val, $active = true, $comment = ''){
+		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
+			(is_bool($val) || $val == 'true' || $val == 'false' ? ($val ? 'true' : 'false') :
+				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
+	}
+
+	private static function _addSlashes($in){
+		return str_replace(array("\\", '"', "\$"), array("\\\\", '\"', "\\\$"), $in);
 	}
 
 }

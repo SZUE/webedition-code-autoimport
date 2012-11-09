@@ -31,8 +31,8 @@ function we_tag_url($attribs){
 	$type = weTag_getAttribute("type", $attribs, 'document');
 	$id = weTag_getAttribute("id", $attribs);
 	$triggerid = weTag_getAttribute("triggerid", $attribs, '0');
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-	$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	if($type == 'document'){
 		if(isset($urls[$id])){ // do only work you have never done before
 			return $urls[$id];
@@ -56,13 +56,13 @@ function we_tag_url($attribs){
 					}
 					$path_parts = pathinfo(id_to_path($triggerid));
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
-						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+						if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 							$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $GLOBALS['WE_MAIN_DOC']->Url;
 						} else{
 							$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $GLOBALS['WE_MAIN_DOC']->Url;
 						}
 					} else{
-						if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+						if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 							$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $GLOBALS['WE_MAIN_DOC']->OF_ID;
 						} else{
 							$url = $GLOBALS['WE_MAIN_DOC']->Path . "?we_objectID=" . $GLOBALS['WE_MAIN_DOC']->OF_ID;
@@ -76,10 +76,10 @@ function we_tag_url($attribs){
 		}
 		if($urlNotSet){
 			if($type == 'document'){
-				$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=" . intval($testid), new DB_WE());
+				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid), new DB_WE());
 				$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
 				$path_parts = pathinfo($url);
-				if(show_SeoLinks() && $hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(show_SeoLinks() && $hidedirindex && NAVIGATION_DIRECTORYINDEX_NAMES != '' && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			} else{
@@ -93,13 +93,13 @@ function we_tag_url($attribs){
 				}
 				$path_parts = pathinfo(id_to_path($triggerid));
 				if($objectseourls && $row['Url'] != '' && show_SeoLinks()){
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $row['Url'];
 					} else{
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $row['Url'];
 					}
 				} else{
-					if(show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim',explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $row['ID'];
 					} else{
 						$url = id_to_path($triggerid) . "?we_objectID=" . $row['ID'];

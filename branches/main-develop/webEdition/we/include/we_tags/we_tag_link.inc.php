@@ -33,7 +33,7 @@ function we_tag_link($attribs, $content){
 		return $linkcontent;
 	}
 	$name = weTag_getAttribute("name", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
 	$text = weTag_getAttribute("text", $attribs);
 	$imageid = weTag_getAttribute("imageid", $attribs, 0);
 	$id = weTag_getAttribute("id", $attribs);

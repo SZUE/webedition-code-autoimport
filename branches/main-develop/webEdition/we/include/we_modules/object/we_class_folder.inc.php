@@ -1101,9 +1101,7 @@ EOF;
 		$this->setClassProp();
 		$fooo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->ClassID), 'DefaultValues', $DB_WE));
 
-		$Charset = (isset($fooo["elements"]["Charset"]["dat"]) ? $fooo["elements"]["Charset"]["dat"] :
-				(defined("DEFAULT_CHARSET") ? DEFAULT_CHARSET : '')
-			);
+		$Charset = (isset($fooo["elements"]["Charset"]["dat"]) ? $fooo["elements"]["Charset"]["dat"] : DEFAULT_CHARSET );
 		// get Class
 		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $this->ClassPath . "'", $DB_WE);
 		foreach(array_keys($_REQUEST) as $f){

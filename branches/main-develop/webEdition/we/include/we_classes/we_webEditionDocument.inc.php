@@ -227,8 +227,8 @@ class we_webEditionDocument extends we_textContentDocument{
 				$out.='var a=document.we_form.elements;' . "\n";
 				if($this->ID)
 					$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
-				$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
-				$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+				$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
+				$DefaultStaticExt = DEFAULT_STATIC_EXT;
 				$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) var changeto="' . $DefaultDynamicExt . '"; else var changeto="' . $DefaultStaticExt . '";' . "\n";
 				$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;' . "\n";
 				if($this->ID)
@@ -696,7 +696,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
+		if(LANGLINK_SUPPORT && isset($_REQUEST['we_' . $this->Name . '_LanguageDocID']) && $_REQUEST['we_' . $this->Name . '_LanguageDocID'] != 0){
 			$this->setLanguageLink($_REQUEST['we_' . $this->Name . '_LanguageDocID'], 'tblFile', false, false); // response deactivated
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

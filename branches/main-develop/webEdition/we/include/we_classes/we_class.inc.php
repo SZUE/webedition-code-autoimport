@@ -479,7 +479,7 @@ abstract class we_class{
 	}
 
 	function we_delete(){
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			switch($this->ClassName){
 				case 'we_objectFile':
 					$deltype = 'tblObjectFile';
@@ -626,7 +626,7 @@ abstract class we_class{
 	 * existing LangLinks from and to this document.
 	 */
 	function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
-		if(!(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT)){
+		if(!(LANGLINK_SUPPORT)){
 			return true;
 		}
 		//global $l_we_class;

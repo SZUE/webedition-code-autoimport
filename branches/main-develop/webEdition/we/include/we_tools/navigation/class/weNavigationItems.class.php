@@ -412,7 +412,7 @@ class weNavigationItems{
 					return true;
 				} else{
 					if($_ponder <= $_score){
-						if(defined('NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') && NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
+						if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 							$this->setCurrent($_rule->NavigationID, null);
 						} else{
 							$_score = $_ponder;

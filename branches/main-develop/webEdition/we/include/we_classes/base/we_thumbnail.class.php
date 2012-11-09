@@ -373,11 +373,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	static function getThumbDirectory($realpath = false){
-		$dir = (defined('WE_THUMBNAIL_DIRECTORY') && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
-		$dir = preg_replace('#^\.?(.*)$#', '\1', $dir);
-		if(substr($dir, 0, 1) != '/'){
-			$dir = '/' . $dir;
-		}
+		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__')), '/');
 		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
 	}
 

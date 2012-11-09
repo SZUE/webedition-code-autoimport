@@ -130,9 +130,7 @@ class weSideBarFrames{
 		}
 
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
-			if(defined("SIDEBAR_DEFAULT_DOCUMENT")){
-				$file = id_to_path(SIDEBAR_DEFAULT_DOCUMENT, FILE_TABLE);
-			}
+			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE);
 			if($file == '' || substr($file, -1) == '/' || $file == 'default'){
 				$file = WEBEDITION_DIR . 'sidebar/default.php';
 			}

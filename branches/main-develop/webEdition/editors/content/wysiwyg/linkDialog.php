@@ -33,43 +33,44 @@ print $dialog->getHTML();
 
 function weDoLinkCmd($args){
 	if((!isset($args["href"])) || $args["href"] == "http://"){
-		$args["href"] = "";
+		$args["href"] = '';
 	}
-	$param = ($args["param"] ? "?" . str_replace("?", "", $args["param"]) : "");
-	$param = trim($param, '&');
-	$anchor = ($args["anchor"] ? "#" . str_replace("#", "", $args["anchor"]) : "");
-	$anchor = trim($anchor);
-	$href = $args["href"] . $param . $anchor;
+	$param = trim($args["param"], '?& ');
+	$anchor = trim($args["anchor"], '# ');
+	if(!empty($param)){
+		$tmp = array();
+		parse_str($param, $tmp);
+		$param = '?' . http_build_query($tmp);
+	}
+
+	$href = $args["href"] . $param . ($anchor ? '#' . $anchor : '');
 
 	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
 		return we_html_element::jsElement(
-			'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
+				'top.opener.weWysiwygObject_' . $args["editname"] . '.createLink("' . $href . '","' . $args["target"] . '","' . $args["class"] . '","' . $args["lang"] . '","' . $args["hreflang"] . '","' . $args["title"] . '","' . $args["accesskey"] . '","' . $args["tabindex"] . '","' . $args["rel"] . '","' . $args["rev"] . '");
 top.close();
 ');
-	} else{		
-		$out = weDialog::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_insert.js');
-
+	} else{
 		if(strpos($href, 'mailto:') === 0){
 			$href = $args["href"];
-			foreach($args as $key=>$val){
-				$args[$key] = '';
+			foreach($args as &$val){
+				$val = '';
 			}
 		}
 
-		$out .= '<form name="tiny_form">
-			<input type="hidden" name="href" value="'. $href . '">
-			<input type="hidden" name="target" value="'. $args["target"] . '">
-			<input type="hidden" name="class" value="'. $args["class"] . '">
-			<input type="hidden" name="lang" value="'. $args["lang"] . '">
-			<input type="hidden" name="hreflang" value="'. $args["hreflang"] . '">
-			<input type="hidden" name="title" value="'. $args["title"] . '">
-			<input type="hidden" name="accesskey" value="'. $args["accesskey"] . '">
-			<input type="hidden" name="tabindex" value="'. $args["tabindex"] . '">
-			<input type="hidden" name="rel" value="'. $args["rel"] . '">
-			<input type="hidden" name="rev" value="'. $args["rev"] . '">
+		return weDialog::getTinyMceJS() .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_insert.js') .
+			'<form name="tiny_form">
+			<input type="hidden" name="href" value="' . $href . '">
+			<input type="hidden" name="target" value="' . $args["target"] . '">
+			<input type="hidden" name="class" value="' . $args["class"] . '">
+			<input type="hidden" name="lang" value="' . $args["lang"] . '">
+			<input type="hidden" name="hreflang" value="' . $args["hreflang"] . '">
+			<input type="hidden" name="title" value="' . $args["title"] . '">
+			<input type="hidden" name="accesskey" value="' . $args["accesskey"] . '">
+			<input type="hidden" name="tabindex" value="' . $args["tabindex"] . '">
+			<input type="hidden" name="rel" value="' . $args["rel"] . '">
+			<input type="hidden" name="rev" value="' . $args["rev"] . '">
 			</form>';
-
-		return $out;
 	}
 }

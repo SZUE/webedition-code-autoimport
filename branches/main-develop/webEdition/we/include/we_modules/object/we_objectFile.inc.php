@@ -283,7 +283,7 @@ class we_objectFile extends we_document{
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
 				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . (int) $this->ID . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE));
@@ -1226,16 +1226,14 @@ class we_objectFile extends we_document{
 	}
 
 	function getInputFieldHTML($name, $attribs, $editable = true, $variant = false){
-		if($editable){
-			$content = $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
-			if($variant){
-				return $content;
-			}
-
-			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (isset($this->DefArray["input_" . $name]['editdescription']) && $this->DefArray["input_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["input_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content;
-		} else{
+		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
+		$content = $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+		return ($variant ?
+				$content :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (isset($this->DefArray["input_" . $name]['editdescription']) && $this->DefArray["input_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["input_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
+			);
 	}
 
 	function getCountryFieldHTML($name, $attribs, $editable = true, $variant = false){
@@ -1243,137 +1241,125 @@ class we_objectFile extends we_document{
 			Zend_Locale::setCache(getWEZendCache());
 		}
 
-		if($editable){
-			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
-			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-			$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
-
-			$topCountries = defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', 'DE,AT,CH');
-
-			$topCountries = array_flip($topCountries);
-			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-			}
-			$shownCountries = defined('WE_COUNTRIES_SHOWN') ? explode(',', WE_COUNTRIES_SHOWN) : explode(',', 'BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY');
-			$shownCountries = array_flip($shownCountries);
-			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-			}
-			$oldLocale = setlocale(LC_ALL, NULL);
-			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
-			asort($topCountries, SORT_LOCALE_STRING);
-			asort($shownCountries, SORT_LOCALE_STRING);
-			setlocale(LC_ALL, $oldLocale);
-
-			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != ''){
-				$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
-			}
-			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-			}
-			if(!empty($topCountries) && !empty($shownCountries)){
-				$countryselect->addOption('-', '----', array("disabled" => "disabled"));
-			}
-
-			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
-			}
-
-			$countryselect->selectOption($this->getElement($name));
-			$content = $countryselect->getHtml();
-
-//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
-			if($variant){
-				return $content;
-			}
-
-			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["country_" . $name]['editdescription']) && $this->DefArray["country_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["country_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content;
-		} else{
+		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'territory', $langcode)) . '</div>' :
 					'');
 		}
+
+		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+		$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+		$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+
+		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+
+		foreach($topCountries as $countrykey => &$countryvalue){
+			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+		}
+		$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+		foreach($shownCountries as $countrykey => &$countryvalue){
+			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+		}
+		$oldLocale = setlocale(LC_ALL, NULL);
+		setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
+		asort($topCountries, SORT_LOCALE_STRING);
+		asort($shownCountries, SORT_LOCALE_STRING);
+		setlocale(LC_ALL, $oldLocale);
+
+		if(WE_COUNTRIES_DEFAULT != ''){
+			$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+		}
+		foreach($topCountries as $countrykey => &$countryvalue){
+			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+		}
+		if(!empty($topCountries) && !empty($shownCountries)){
+			$countryselect->addOption('-', '----', array("disabled" => "disabled"));
+		}
+
+		foreach($shownCountries as $countrykey => &$countryvalue){
+			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+		}
+
+		$countryselect->selectOption($this->getElement($name));
+		$content = $countryselect->getHtml();
+
+//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+		return ($variant ?
+				$content :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["country_" . $name]['editdescription']) && $this->DefArray["country_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["country_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
+			);
 	}
 
 	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
-		if($editable){
-			$frontendL = $GLOBALS["weFrontendLanguages"];
-			foreach($frontendL as &$lcvalue){
-				$lccode = explode('_', $lcvalue);
-				$lcvalue = $lccode[0];
-			}
-			$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
-			if(!$this->DefArray["language_" . $name]["required"]){
-				$languageselect->addOption('--', '');
-			}
-
-			foreach(g_l('languages', '') as $languagekey => $languagevalue){
-				if(in_array($languagekey, $frontendL)){
-					$languageselect->addOption($languagekey, $languagevalue);
-				}
-			}
-			$languageselect->selectOption($this->getElement($name));
-			$content = $languageselect->getHtml();
-//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
-			if($variant){
-				return $content;
-			}
-
-			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["language_" . $name]['editdescription']) && $this->DefArray["language_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["language_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content;
-		} else{
+		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) != '' ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', $lccode)) . '</div>' :
 					'');
 		}
+		$frontendL = $GLOBALS["weFrontendLanguages"];
+		foreach($frontendL as &$lcvalue){
+			$lccode = explode('_', $lcvalue);
+			$lcvalue = $lccode[0];
+		}
+		$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+		if(!$this->DefArray["language_" . $name]["required"]){
+			$languageselect->addOption('--', '');
+		}
+
+		foreach(g_l('languages', '') as $languagekey => $languagevalue){
+			if(in_array($languagekey, $frontendL)){
+				$languageselect->addOption($languagekey, $languagevalue);
+			}
+		}
+		$languageselect->selectOption($this->getElement($name));
+		$content = $languageselect->getHtml();
+//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
+		return ($variant ?
+				$content :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["language_" . $name]['editdescription']) && $this->DefArray["language_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["language_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
+			);
 	}
 
 	function getCheckboxFieldHTML($name, $attribs, $editable = true){
-		if($editable){
-			$content = we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
-			return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
-		} else{
+		if(!$editable){
 			return $this->getPreviewView($name, ($this->getElement($name) ? g_l('global', "[yes]") : g_l('global', "[no]")));
 		}
+		$content = we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
+		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
 	}
 
 	function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
-		if($editable){
-			$content = $this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
-			return ($variant ? '' : '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["int_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["int_" . $name]['editdescription']) && $this->DefArray["int_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["int_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
-				) . $content;
-		} else{
+		if(!$editable){
 			return $this->getPreviewView($name, (strlen($this->getElement($name)) ? $this->getElement($name) : ''));
 		}
+		$content = $this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+		return ($variant ? '' : '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["int_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["int_" . $name]['editdescription']) && $this->DefArray["int_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["int_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
+			) . $content;
 	}
 
 	function getFloatFieldHTML($name, $attribs, $editable = true, $variant = false){
-		if($editable){
-			$content = $this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
-
-			if($variant){
-				return $content;
-			}
-
-			return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["float_" . $name]['editdescription']) && $this->DefArray["float_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["float_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
-		} else{
-			$content = strlen($this->getElement($name)) ? $this->getElement($name) : "";
-			return $this->getPreviewView($name, $content);
+		if(!$editable){
+			return $this->getPreviewView($name, $this->getElement($name));
 		}
+		$content = $this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+
+		return ($variant ?
+				$content :
+				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["float_" . $name]['editdescription']) && $this->DefArray["float_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["float_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content
+			);
 	}
 
 	function getDateFieldHTML($name, $attribs, $editable = true, $variant = false){
-		if($editable){
-			$d = abs($this->getElement($name));
-			$content = we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
-			if($variant){
-				return $content;
-			}
-			return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content;
-		} else{
-			$content = date(g_l('date', '[format][default]'), abs($this->getElement($name)));
-			return $this->getPreviewView($name, $content);
+		if(!$editable){
+			return $this->getPreviewView($name, date(g_l('date', '[format][default]'), abs($this->getElement($name))));
 		}
+		$d = abs($this->getElement($name));
+		$content = we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
+		return ($variant ?
+				$content :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content
+			);
 	}
 
 	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
@@ -1420,12 +1406,11 @@ class we_objectFile extends we_document{
 // identifying default thumbnail of class:
 		$defvals = $this->getDefaultValueArray();
 		$thumbID = isset($defvals["img_" . $name]["defaultThumb"]) ? $defvals["img_" . $name]["defaultThumb"] : "";
-		$thumbID;
 // creating thumbnail only if it really exists:
 		$thumbdb = new DB_WE();
-		$thumbdb->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE);
+		$thumbdb->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE);
 		$thumbs = $thumbdb->getAll();
-		array_unshift($thumbs, "");
+		array_unshift($thumbs, '');
 		if(!empty($thumbID) && isset($thumbs[$thumbID]["ID"]) && $thumbID <= count($thumbs)){
 			if($img->ID > 0){
 				$thumbObj = new we_thumbnail();
@@ -1443,27 +1428,25 @@ class we_objectFile extends we_document{
 			$thumbID = "";
 		}
 
-		$content = "";
-		if($editable){
-			$fname = 'we_' . $this->Name . '_img[' . $name . ']';
-			$content .= '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />';
-// show thumbnail of image if there exists one:
-			$content .= (!empty($thumbID) ?
-					'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
-					$img->getHtml());
-
-			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
-			$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
-
-			$content .= we_button::create_button_table(array(we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
-					we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
-
-			return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
-				) . $content;
-		} else{
-			$content .= $img->getHtml();
-			return $this->getPreviewView($name, $content);
+		if(!$editable){
+			return $this->getPreviewView($name, $img->getHtml());
 		}
+		$fname = 'we_' . $this->Name . '_img[' . $name . ']';
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3 = we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
+
+		$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
+// show thumbnail of image if there exists one:
+			(!empty($thumbID) ?
+				'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
+				$img->getHtml()) .
+			we_button::create_button_table(array(we_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id != 0 ? $id : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','" . session_id() . "', " . (isset($this->DefArray["img_$name"]['rootdir']) && $this->DefArray["img_$name"]['rootdir'] != "" ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'image/*')"),
+				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
+
+		return ($variant ?
+				'' :
+				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr())
+			) . $content;
 	}
 
 	function getBinaryHTML($name, $attribs, $editable = true){
@@ -2001,7 +1984,7 @@ class we_objectFile extends we_document{
 			}
 			//remove duplicate "//" which will produce errors
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
-			$text = (defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS) ?
+			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
 				preg_replace('~[^0-9a-zA-Z/._-]~', '', correctUml($text));
 			$this->Url = substr($text, 0, 256);
@@ -2249,7 +2232,7 @@ class we_objectFile extends we_document{
 			$version = new weVersions();
 			$version->save($this);
 		}
-		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
+		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

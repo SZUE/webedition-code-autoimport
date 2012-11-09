@@ -66,7 +66,7 @@ $GLOBALS['configs'] = array(
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', false),
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', 0),
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
-		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', true),
+		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1),//postdoc
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', true),
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),

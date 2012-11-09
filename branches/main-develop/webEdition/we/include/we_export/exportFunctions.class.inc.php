@@ -53,13 +53,8 @@ abstract class exportFunctions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					if(defined('DEFAULT_CHARSET')){
-						$_text = '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n";
-					} else{
-						$_text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-					}
-
-					$_text .= "<webEdition>\n";
+					$_text = '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" .
+						"<webEdition>\n";
 
 					weFile::save($_file_name, $_text);
 				}

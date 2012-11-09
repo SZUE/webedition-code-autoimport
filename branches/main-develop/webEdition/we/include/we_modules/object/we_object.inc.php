@@ -52,9 +52,7 @@ class we_object extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
-		if(defined('DEFAULT_CHARSET')){
-			$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
-		}
+		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 	}
 
 	function save(){
@@ -1559,17 +1557,13 @@ class we_object extends we_document{
 		// gets thumbnails and shows a select field, if there are any:
 		$thumbdb = new DB_WE();
 		$thumbdb->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
-		$thumbs = $thumbdb->getAll();
-		if(count($thumbs)){
+		$thumbList = $thumbdb->getAll();
+		if(count($thumbList)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
-			$thumbList = array("-");
-			foreach($thumbs as $id => $thumb){
-				$thumbList[] = $thumb["Name"];
-			}
+			array_unshift($thumbList, '-');
 			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
 					$this->elements["" . $name . "Thumb"]["dat"] :
 					'');
-
 
 			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", 'onchange="_EditorFrame.setEditorIsHot(true);" name="we_' . $this->Name . '_input[' . $name . 'Thumb]"', "value", 388);
 		}

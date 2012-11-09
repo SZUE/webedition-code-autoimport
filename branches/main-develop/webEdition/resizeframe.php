@@ -38,17 +38,10 @@ we_html_tools::htmlTop();
  */
 function getSidebarWidth(){
 // Get the width of the sidebar
-	$_sidebarwidth = 0;
-	if(defined("SIDEBAR_DISABLED") && SIDEBAR_DISABLED == 1){
-		$_sidebarwidth = 0;
-	} else if(!defined("SIDEBAR_SHOW_ON_STARTUP") || SIDEBAR_SHOW_ON_STARTUP == 1){
-		if(defined("SIDEBAR_DEFAULT_WIDTH")){
-			$_sidebarwidth = SIDEBAR_DEFAULT_WIDTH;
-		} else{
-			$_sidebarwidth = 300;
-		}
+	if(SIDEBAR_DISABLED != 1 && SIDEBAR_SHOW_ON_STARTUP == 1){
+		return SIDEBAR_DEFAULT_WIDTH;
 	}
-	return $_sidebarwidth;
+	return 0;
 }
 
 function startNormalMode(){
@@ -62,8 +55,7 @@ function startNormalMode(){
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-		<?php 
-		if(!(defined("SIDEBAR_DISABLED") && SIDEBAR_DISABLED == 1)){ ?>
+		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
 				<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;border-left:1px solid black;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>

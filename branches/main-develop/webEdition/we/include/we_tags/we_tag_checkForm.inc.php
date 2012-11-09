@@ -24,7 +24,7 @@
  */
 function we_parse_tag_checkForm($attribs, $content){
 	$arr = array();
-	eval('$arr = ' . ((defined('PHPLOCALSCOPE') && PHPLOCALSCOPE)? str_replace('$', '\$', $attribs):$attribs) . ';'); //Bug #6516
+	eval('$arr = ' . (PHPLOCALSCOPE ? str_replace('$', '\$', $attribs) : $attribs) . ';'); //Bug #6516
 	if(($foo = attributFehltError($arr, 'match', __FUNCTION__)))
 		return $foo;
 	if(($foo = attributFehltError($arr, 'type', __FUNCTION__)))

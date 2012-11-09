@@ -33,21 +33,20 @@ $_blocked = false;
 
 // check to see if we need to lock or block the formmail request
 
-if(defined('FORMMAIL_LOG') && FORMMAIL_LOG){
+if(FORMMAIL_LOG){
 	$_ip = $_SERVER['REMOTE_ADDR'];
 	$_now = time();
 
 	// insert into log
 	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("' . $GLOBALS['DB_WE']->escape($_ip) . '", UNIX_TIMESTAMP())');
-	if(defined('FORMMAIL_EMPTYLOG') && (FORMMAIL_EMPTYLOG > -1)){
+	if(FORMMAIL_EMPTYLOG > -1){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . intval($_now - FORMMAIL_EMPTYLOG));
 	}
 
-	if(defined('FORMMAIL_BLOCK') && FORMMAIL_BLOCK){
-
+	if(FORMMAIL_BLOCK){
 		$_num = 0;
-		$_trials = (defined('FORMMAIL_TRIALS') ? FORMMAIL_TRIALS : 3);
-		$_blocktime = (defined('FORMMAIL_BLOCKTIME') ? FORMMAIL_BLOCKTIME : 86400);
+		$_trials = FORMMAIL_TRIALS;
+		$_blocktime = FORMMAIL_BLOCKTIME;
 
 		// first delete all entries from blocktable which are older then now - blocktime
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()');
@@ -74,7 +73,7 @@ if(defined('FORMMAIL_LOG') && FORMMAIL_LOG){
 	}
 }
 
-if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
+if(FORMMAIL_VIAWEDOC){
 	if($_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . 'we_formmail.php')
 		$_blocked = true;
 }
@@ -437,7 +436,7 @@ if($recipient){
 
 
 
-	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && (!defined('FORMMAIL_CONFIRM') || FORMMAIL_CONFIRM)){
+	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && FORMMAIL_CONFIRM){
 		if($wasSent){
 			// validation
 			if(!is_valid_email($email)){

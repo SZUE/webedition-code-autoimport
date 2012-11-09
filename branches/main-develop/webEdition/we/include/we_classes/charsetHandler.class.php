@@ -32,75 +32,92 @@ class charsetHandler{
 	 */
 	function __construct(){
 		//	First ISO-8859-charsets
-		$_charsets["west_european"]["national"] = "West Europe"; //	Here is the name of the country in mother language
-		$_charsets["west_european"]["charset"] = "ISO-8859-1";
-		$_charsets["west_european"]["international"] = g_l('charset', "[titles][west_european]"); //	Name in selected language
-
-		$_charsets["central_european"]["national"] = "Central Europe";
-		$_charsets["central_european"]["charset"] = "ISO-8859-2";
-		$_charsets["central_european"]["international"] = g_l('charset', "[titles][central_european]");
-
-		$_charsets["south_european"]["national"] = "South Europe";
-		$_charsets["south_european"]["charset"] = "ISO-8859-3";
-		$_charsets["south_european"]["international"] = g_l('charset', "[titles][south_european]");
-
-		$_charsets["north_european"]["national"] = "North Europe";
-		$_charsets["north_european"]["charset"] = "ISO-8859-4";
-		$_charsets["north_european"]["international"] = g_l('charset', "[titles][north_european]");
-
-		$_charsets["cyrillic"]["national"] = ";&#1077;&#1086;&#1073;&#1077;&#1089;&#1087;&#1077;&#1095;";
-		$_charsets["cyrillic"]["charset"] = "ISO-8859-5";
-		$_charsets["cyrillic"]["international"] = g_l('charset', "[titles][cyrillic]");
-
-		$_charsets["arabic"]["national"] = "&#1578;&#1587;&#1580;&#1617;&#1604; &#1575;&#1604;&#1570;&#1606;";
-		$_charsets["arabic"]["charset"] = "ISO-8859-6";
-		$_charsets["arabic"]["international"] = g_l('charset', "[titles][arabic]");
-
-		$_charsets["greek"]["national"] = "Greek";
-		$_charsets["greek"]["charset"] = "ISO-8859-7";
-		$_charsets["greek"]["international"] = g_l('charset', "[titles][greek]");
-
-		$_charsets["hebrew"]["national"] = "&#1488;&#1497;&#1512;&#1493;&#1508;&#1492;";
-		$_charsets["hebrew"]["charset"] = "ISO-8859-8";
-		$_charsets["hebrew"]["international"] = g_l('charset', "[titles][hebrew]");
-
-		$_charsets["turkish"]["national"] = "Turkish";
-		$_charsets["turkish"]["charset"] = "ISO-8859-9";
-		$_charsets["turkish"]["international"] = g_l('charset', "[titles][turkish]");
-
-		$_charsets["nordic"]["national"] = "Nordic";
-		$_charsets["nordic"]["charset"] = "ISO-8859-10";
-		$_charsets["nordic"]["international"] = g_l('charset', "[titles][nordic]");
-
-		$_charsets["thai"]["national"] = "Thai";
-		$_charsets["thai"]["charset"] = "ISO-8859-11";
-		$_charsets["thai"]["international"] = g_l('charset', "[titles][thai]");
-
-		$_charsets["baltic"]["national"] = "baltic";
-		$_charsets["baltic"]["charset"] = "ISO-8859-13";
-		$_charsets["baltic"]["international"] = g_l('charset', "[titles][baltic]");
-
-		$_charsets["keltic"]["national"] = "keltic";
-		$_charsets["keltic"]["charset"] = "ISO-8859-14";
-		$_charsets["keltic"]["international"] = g_l('charset', "[titles][keltic]");
-
-		$_charsets["extended_european"]["national"] = "ISO-8859-15";
-		$_charsets["extended_european"]["charset"] = "ISO-8859-15";
-		$_charsets["extended_european"]["international"] = g_l('charset', "[titles][extended_european]");
-
-		$_charsets["unicode"]["national"] = "Unicode";
-		$_charsets["unicode"]["charset"] = "UTF-8";
-		$_charsets["unicode"]["international"] = g_l('charset', "[titles][unicode]");
-
-		$_charsets["windows_1251"]["national"] = "Windows-1251";
-		$_charsets["windows_1251"]["charset"] = "Windows-1251";
-		$_charsets["windows_1251"]["international"] = g_l('charset', "[titles][windows_1251]");
-
-		$_charsets["windows_1252"]["national"] = "Windows-1252";
-		$_charsets["windows_1252"]["charset"] = "Windows-1252";
-		$_charsets["windows_1252"]["international"] = g_l('charset', "[titles][windows_1252]");
-
-		$this->charsets = $_charsets;
+		$this->charsets = array(
+			'west_european' => array(
+				'national' => 'West Europe', //	Here is the name of the country in mother language
+				'charset' => 'ISO-8859-1',
+				'international' => g_l('charset', '[titles][west_european]'), //	Name in selected language
+			),
+			'central_european' => array(
+				'national' => 'Central Europe',
+				'charset' => 'ISO-8859-2',
+				'international' => g_l('charset', '[titles][central_european]'),
+			),
+			'south_european' => array(
+				'national' => 'South Europe',
+				'charset' => 'ISO-8859-3',
+				'international' => g_l('charset', '[titles][south_european]'),
+			),
+			'north_european' => array('national' => 'North Europe',
+				'charset' => 'ISO-8859-4',
+				'international' => g_l('charset', '[titles][north_european]'),
+			),
+			'cyrillic' => array(
+				'national' => ',&#1077,&#1086,&#1073,&#1077,&#1089,&#1087,&#1077,&#1095,',
+				'charset' => 'ISO-8859-5',
+				'international' => g_l('charset', '[titles][cyrillic]'),
+			),
+			'arabic' => array(
+				'national' => '&#1578,&#1587,&#1580,&#1617,&#1604, &#1575,&#1604,&#1570,&#1606,',
+				'charset' => 'ISO-8859-6',
+				'international' => g_l('charset', '[titles][arabic]'),
+			),
+			'greek' => array(
+				'national' => 'Greek',
+				'charset' => 'ISO-8859-7',
+				'international' => g_l('charset', '[titles][greek]'),
+			),
+			'hebrew' => array(
+				'national' => '&#1488,&#1497,&#1512,&#1493,&#1508,&#1492,',
+				'charset' => 'ISO-8859-8',
+				'international' => g_l('charset', '[titles][hebrew]'),
+			),
+			'turkish' => array(
+				'national' => 'Turkish',
+				'charset' => 'ISO-8859-9',
+				'international' => g_l('charset', '[titles][turkish]'),
+			),
+			'nordic' => array(
+				'national' => 'Nordic',
+				'charset' => 'ISO-8859-10',
+				'international' => g_l('charset', '[titles][nordic]'),
+			),
+			'thai' => array(
+				'national' => 'Thai',
+				'charset' => 'ISO-8859-11',
+				'international' => g_l('charset', '[titles][thai]'),
+			),
+			'baltic' => array(
+				'national' => 'baltic',
+				'charset' => 'ISO-8859-13',
+				'international' => g_l('charset', '[titles][baltic]'),
+			),
+			'keltic' => array(
+				'national' => 'keltic',
+				'charset' => 'ISO-8859-14',
+				'international' => g_l('charset', '[titles][keltic]'),
+			),
+			'extended_european' => array(
+				'national' => 'ISO-8859-15',
+				'charset' => 'ISO-8859-15',
+				'international' => g_l('charset', '[titles][extended_european]'),
+			),
+			'unicode' => array(
+				'national' => 'Unicode',
+				'charset' => 'UTF-8',
+				'international' => g_l('charset', '[titles][unicode]'),
+			),
+			'windows_1251' => array(
+				'national' => 'Windows-1251',
+				'charset' => 'Windows-1251',
+				'international' => g_l('charset', '[titles][windows_1251]'),
+			),
+			'windows_1252' => array(
+				'national' => 'Windows-1252',
+				'charset' => 'Windows-1252',
+				'international' => g_l('charset', '[titles][windows_1252]'),
+			),
+		);
 	}
 
 	/**
@@ -112,7 +129,7 @@ class charsetHandler{
 		$retArr = array();
 		foreach($this->charsets as $val){
 
-			$retArr[$val["charset"]] = $val["charset"] . " - " . $val["international"] . " (" . $val["national"] . ")";
+			$retArr[$val['charset']] = $val['charset'] . ' - ' . $val['international'] . ' (' . $val['national'] . ')';
 		}
 		return $retArr;
 	}
@@ -125,7 +142,7 @@ class charsetHandler{
 	function getCharsetArrByCharset($charset){
 		foreach($this->charsets as $key => $val){
 
-			if(strtolower($val["charset"]) == strtolower($charset)){
+			if(strtolower($val['charset']) == strtolower($charset)){
 				return $this->charsets[$key];
 			}
 		}
@@ -142,22 +159,12 @@ class charsetHandler{
 		$retArray = array();
 
 		foreach($availableChars as $char){
-
-			if(($charset = $this->getCharsetArrByCharset($char))){
-				$tmpCharArray[] = $charset;
-			} else{
-				$tmpCharArray[] = array("charset" => $char);
-			}
+			$tmpCharArray[] = (($charset = $this->getCharsetArrByCharset($char)) ? $charset : array('charset' => $char));
 		}
-		reset($tmpCharArray);
 
 		foreach($tmpCharArray as $val){
-
-			if(isset($val["international"])){
-				$retArr[$val["charset"]] = $val["charset"] . " - " . $val["international"] . " (" . $val["national"] . ")";
-			} else{
-				$retArr[$val["charset"]] = $val["charset"];
-			}
+			$retArr[$val['charset']] = $val['charset'] .
+				(isset($val['international']) ? ' - ' . $val['international'] . ' (' . $val['national'] . ')' : '');
 		}
 
 		return $retArr;
