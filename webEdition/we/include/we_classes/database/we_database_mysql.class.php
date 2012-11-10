@@ -55,13 +55,13 @@ class DB_WE extends we_database_base{
 					$this->halt('Error in DB connect');
 					exit('Error in DB connect');
 			}
-			if(!@mysql_select_db($Database, $this->Link_ID))
-				if(!@mysql_select_db($Database, $this->Link_ID))
-					if(!@mysql_select_db($Database, $this->Link_ID))
-						if(!@mysql_select_db($Database, $this->Link_ID)){
-							$this->halt('cannot use database ' . $this->Database);
-							return false;
-						}
+			if(!@mysql_select_db($Database, $this->Link_ID) &&
+				!@mysql_select_db($Database, $this->Link_ID) &&
+				!@mysql_select_db($Database, $this->Link_ID) &&
+				!@mysql_select_db($Database, $this->Link_ID)){
+				$this->halt('cannot use database ' . $this->Database);
+				return false;
+			}
 			if($this->Link_ID){
 				$this->_setup();
 			}
@@ -132,12 +132,11 @@ class DB_WE extends we_database_base{
 		//fix faulty lenght on text-types with connection in utf-8
 		$len = intval(@mysql_field_len($this->Query_ID, $no));
 		$type = $this->field_type($no);
-		if(DB_SET_CHARSET == 'utf8' && strtolower($type)=='string'){
+		if(DB_SET_CHARSET == 'utf8' && strtolower($type) == 'string'){
 			$len/=3;
 		}
 		return $len;
 	}
-
 
 	public function field_flags($no){
 		return @mysql_field_flags($this->Query_ID, $no);
