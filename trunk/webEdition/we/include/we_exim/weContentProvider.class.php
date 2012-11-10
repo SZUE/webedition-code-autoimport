@@ -256,8 +256,9 @@ class weContentProvider{
 		$attribs = '';
 		foreach($object->persistent_slots as $k => $v){
 			if($v != "Data" && $v != "SeqN"){
-				if(isset($object->$v))
+				if(isset($object->$v)){
 					$content = $object->$v;
+				}
 				if(self::needCoding($object->ClassName, $v)){
 					$content = self::getCDATA(self::encode($content));
 				} else if(self::needCdata($object->ClassName, $v, $content)){

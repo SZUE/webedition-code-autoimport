@@ -313,12 +313,6 @@ if((($_REQUEST['we_cmd'][0] != 'save_document' && $_REQUEST['we_cmd'][0] != 'pub
 	//FIXME: php temporary file?
 	$tempName = str_replace('\\', '/', dirname($we_doc->getSitePath()) . '/' . session_id() . $we_ext);
 	we_util_File::insertIntoCleanUp($tempName, time());
-	/*
-	  $str = session_encode(); //serialize($arr);
-	  $fp = fopen(TEMP_PATH."/$we_transaction.tmp","wb");
-	  fwrite($fp,$str);
-	  fclose($fp);
-	 */
 	$cf = array();
 
 	$parent = str_replace('\\', '/', dirname($tempName));

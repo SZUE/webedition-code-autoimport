@@ -115,19 +115,30 @@ class we_backup{
 		$this->mysql_max_packet = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this->backup_db);
 
 		//$this->table_map=array_merge($this->table_map,array("tbluser"=>USER_TABLE,"tbllock"=>LOCK_TABLE)); //Wahrscheinlich Ursache, dass tbllock ins Backup aufgenommen wird Bug 5096
-		$this->table_map = array_merge($this->table_map, array('tbluser' => USER_TABLE));
+		$this->table_map['tbluser'] = USER_TABLE;
 
-		if(defined('SCHEDULE_TABLE'))
-			$this->table_map = array_merge($this->table_map, array('tblschedule' => SCHEDULE_TABLE));
+		if(defined('SCHEDULE_TABLE')){
+			$this->table_map['tblschedule'] = SCHEDULE_TABLE;
+		}
 
-		if(defined('CUSTOMER_TABLE'))
-			$this->table_map = array_merge($this->table_map, array('tblwebuser' => CUSTOMER_TABLE, 'tblwebadmin' => CUSTOMER_ADMIN_TABLE));
+		if(defined('CUSTOMER_TABLE')){
+			$this->table_map = array_merge($this->table_map, array(
+				'tblwebuser' => CUSTOMER_TABLE,
+				'tblwebadmin' => CUSTOMER_ADMIN_TABLE));
+		}
 
-		if(defined('OBJECT_TABLE'))
-			$this->table_map = array_merge($this->table_map, array('tblobject' => OBJECT_TABLE, 'tblobjectfiles' => OBJECT_FILES_TABLE, 'tblobject_' => OBJECT_X_TABLE));
+		if(defined('OBJECT_TABLE')){
+			$this->table_map = array_merge($this->table_map, array(
+				'tblobject' => OBJECT_TABLE,
+				'tblobjectfiles' => OBJECT_FILES_TABLE,
+				'tblobject_' => OBJECT_X_TABLE));
+		}
 
-		if(defined('SHOP_TABLE'))
-			$this->table_map = array_merge($this->table_map, array('tblanzeigeprefs' => ANZEIGE_PREFS_TABLE, 'tblorders' => SHOP_TABLE));
+		if(defined('SHOP_TABLE')){
+			$this->table_map = array_merge($this->table_map, array(
+				'tblanzeigeprefs' => ANZEIGE_PREFS_TABLE,
+				'tblorders' => SHOP_TABLE));
+		}
 
 		if(defined('WORKFLOW_TABLE'))
 			$this->table_map = array_merge($this->table_map, array(
@@ -179,18 +190,14 @@ class we_backup{
 				)
 			);
 
-		if(defined('VOTING_TABLE'))
-			$this->table_map = array_merge($this->table_map, array(
-				'tblvoting' => VOTING_TABLE
-				)
-			);
+		if(defined('VOTING_TABLE')){
+			$this->table_map['tblvoting'] = VOTING_TABLE;
+		}
 
 		$this->tables['settings'] = array('tblprefs', 'tblrecipients', 'tblvalidationservices');
 		$this->tables['configuration'] = array();
 
-		$this->tables['users'] = array(
-			'tbluser'
-		);
+		$this->tables['users'] = array('tbluser');
 		$this->tables['customers'] = array('tblwebuser', 'tblwebadmin');
 		$this->tables['shop'] = array('tblanzeigeprefs', 'tblorders');
 		$this->tables['workflow'] = array(
@@ -229,14 +236,18 @@ class we_backup{
 		$this->description['import'][strtolower(CONTENT_TABLE)] = g_l('backup', '[import_content]');
 		$this->description['import'][strtolower(FILE_TABLE)] = g_l('backup', '[import_files]');
 		$this->description['import'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[import_doctypes]');
-		if(isset($this->handle_options['users']) && $this->handle_options['users'])
+		if(isset($this->handle_options['users']) && $this->handle_options['users']){
 			$this->description['import'][strtolower(USER_TABLE)] = g_l('backup', '[import_user_data]');
-		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers'])
+		}
+		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers']){
 			$this->description['import'][strtolower(CUSTOMER_TABLE)] = g_l('backup', '[import_customers_data]');
-		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+		}
+		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop']){
 			$this->description['import'][strtolower(SHOP_TABLE)] = g_l('backup', '[import_shop_data]');
-		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+		}
+		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop']){
 			$this->description['import'][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', '[import_prefs]');
+		}
 		$this->description['import'][strtolower(TEMPLATES_TABLE)] = g_l('backup', '[import_templates]');
 		$this->description['import'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[import_temporary_data]');
 		$this->description['import'][strtolower(BACKUP_TABLE)] = g_l('backup', '[external_backup]');
@@ -246,14 +257,18 @@ class we_backup{
 		$this->description['export'][strtolower(CONTENT_TABLE)] = g_l('backup', '[export_content]');
 		$this->description['export'][strtolower(FILE_TABLE)] = g_l('backup', '[export_files]');
 		$this->description['export'][strtolower(DOC_TYPES_TABLE)] = g_l('backup', '[export_doctypes]');
-		if(isset($this->handle_options['users']) && $this->handle_options['users'])
+		if(isset($this->handle_options['users']) && $this->handle_options['users']){
 			$this->description['export'][strtolower(USER_TABLE)] = g_l('backup', '[export_user_data]');
-		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers'])
+		}
+		if(defined('CUSTOMER_TABLE') && isset($this->handle_options['customers']) && $this->handle_options['customers']){
 			$this->description['export'][strtolower(CUSTOMER_TABLE)] = g_l('backup', '[export_customers_data]');
-		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+		}
+		if(defined('SHOP_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop']){
 			$this->description['export'][strtolower(SHOP_TABLE)] = g_l('backup', '[export_shop_data]');
-		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop'])
+		}
+		if(defined('ANZEIGE_PREFS_TABLE') && isset($this->handle_options['shop']) && $this->handle_options['shop']){
 			$this->description['export'][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', '[export_prefs]');
+		}
 		$this->description['export'][strtolower(TEMPLATES_TABLE)] = g_l('backup', '[export_templates]');
 		$this->description['export'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[export_temporary_data]');
 		$this->description['export'][strtolower(BACKUP_TABLE)] = g_l('backup', '[external_backup]');
@@ -278,8 +293,8 @@ class we_backup{
 	 * @return     bool
 	 */
 	function isPathExist($path){
-		$ret = f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $tmp_db->escape($path) . "'", 'a', $this->backup_db) == '1';
-		$ret|=f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $tmp_db->escape($path) . "'", 'a', $this->backup_db) == '1';
+		$ret = f('SELECT 1 AS a FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", 'a', $this->backup_db) == '1';
+		$ret|=f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'", 'a', $this->backup_db) == '1';
 		return $ret;
 	}
 
@@ -295,10 +310,7 @@ class we_backup{
 	function putFileInDB($file){
 		@set_time_limit(80);
 		$nl = "\n";
-		$rootdir = $_SERVER['DOCUMENT_ROOT'];
-		$rootdir = str_replace("\\", "/", $rootdir);
-		if(substr($rootdir, -1) == "/")
-			$rootdir = substr($rootdir, 0, strlen($rootdir) - 1);
+		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($file, strlen($rootdir), strlen($file) - strlen($rootdir));
 		$ok = true;
 		if(!$this->isPathExist($path)){
@@ -338,11 +350,7 @@ class we_backup{
 	function putDirInDB($dir){
 		@set_time_limit(80);
 		$nl = "\n";
-		$rootdir = $_SERVER['DOCUMENT_ROOT'];
-		$rootdir = str_replace("\\", "/", $rootdir);
-		if(substr($rootdir, -1) == "/"){
-			$rootdir = substr($rootdir, 0, strlen($rootdir) - 1);
-		}
+		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($dir, strlen($rootdir), strlen($dir) - strlen($rootdir));
 		if(!$this->isPathExist($path)){
 			$q = 'INSERT INTO ' . BACKUP_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -414,7 +422,7 @@ class we_backup{
 			}
 			$index[$key][] = $row['Column_name'];
 		}
-		while(list($k, $v) = @each($index)) {
+		while((list($k, $v) = @each($index))) {
 			$foo .= ",$nl";
 			if($k == "PRIMARY"){
 				$foo .= "   PRIMARY KEY (" . implode($v, ", ") . ")";
@@ -433,54 +441,54 @@ class we_backup{
 	 *
 	 * Description: This function initializes the creation of a backup.
 	 */
-	function makeBackup(){
-		$nl = "\n";
-		$phase_start = false;
-		$ret = 0;
-		if(!$this->tempfilename){
-			$this->tempfilename = weFile::getUniqueId() . '.php'; // #6590, changed from: uniqid(time())
-			$this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
-			$this->backup_step = 0;
-			$this->backup_steps = $this->default_backup_steps;
-			if(!weFile::save($this->dumpfilename, "#<?php exit();?>$nl" .
-					"# webEdition MySQL-Dump$nl" .
-					"# http://www.webedition.org$nl" .
-					"#$nl" .
-					"# Host: " . SERVER_NAME . "   Datenbank: " . $this->backup_db->Database . ";$nl" .
-					"# webEdition version: " . WE_VERSION . $nl .
-					"# Date: " . date("d.M.Y H:i:s") . $nl
-					, 'ab')){
-				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
-				return -1;
-			}
-		}
-		if($this->backup_extern == 1){
-			if($this->backup_phase == 0){
-				$this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
-				$this->backup_db->query("CREATE TABLE " . BACKUP_TABLE . " (ID bigint(20) NOT NULL auto_increment,Path varchar(255) NOT NULL,Data longblob NOT NULL,IsFolder tinyint(1) DEFAULT '0' NOT NULL,PRIMARY KEY (ID),UNIQUE ID (ID),KEY ID_2 (ID)) ENGINE = MYISAM;");
-				weFile::save($this->dumpfilename, $nl . "#############################################################$nl" .
-					"#$nl" . "# Tablestructure '" . BACKUP_TABLE . "'$nl" .
-					"#$nl" . $nl .
-					$this->tableDefinition(BACKUP_TABLE, $nl, BACKUP_TABLE) . ";$nl$nl" .
-					"#$nl" .
-					"# dumping Data '" . BACKUP_TABLE . "'$nl" .
-					"#$nl"
-					, 'ab');
-			}
-			$phase_start = true;
-			$this->backup_phase = 1;
-			$ret = $this->buildBackupTable();
-			if($ret == 0){
-				$this->backup_extern = 0;
-				$ret = 1;
-			}
-		}
-		if((!$phase_start)){
-			$this->backup_phase = 2;
-			$ret = $this->exportTables();
-		}
-		return $ret;
-	}
+	abstract function makeBackup(); /* {
+	  $nl = "\n";
+	  $phase_start = false;
+	  $ret = 0;
+	  if(!$this->tempfilename){
+	  $this->tempfilename = weFile::getUniqueId() . '.php'; // #6590, changed from: uniqid(time())
+	  $this->dumpfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $this->tempfilename;
+	  $this->backup_step = 0;
+	  $this->backup_steps = $this->default_backup_steps;
+	  if(!weFile::save($this->dumpfilename, "#<?php exit();?>$nl" .
+	  "# webEdition MySQL-Dump$nl" .
+	  "# http://www.webedition.org$nl" .
+	  "#$nl" .
+	  "# Host: " . SERVER_NAME . "   Datenbank: " . $this->backup_db->Database . ";$nl" .
+	  "# webEdition version: " . WE_VERSION . $nl .
+	  "# Date: " . date("d.M.Y H:i:s") . $nl
+	  , 'ab')){
+	  $this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
+	  return -1;
+	  }
+	  }
+	  if($this->backup_extern == 1){
+	  if($this->backup_phase == 0){
+	  $this->backup_db->query("DROP TABLE IF EXISTS " . BACKUP_TABLE);
+	  $this->backup_db->query("CREATE TABLE " . BACKUP_TABLE . " (ID bigint(20) NOT NULL auto_increment,Path varchar(255) NOT NULL,Data longblob NOT NULL,IsFolder tinyint(1) DEFAULT '0' NOT NULL,PRIMARY KEY (ID),UNIQUE ID (ID),KEY ID_2 (ID)) ENGINE = MYISAM;");
+	  weFile::save($this->dumpfilename, $nl . "#############################################################$nl" .
+	  "#$nl" . "# Tablestructure '" . BACKUP_TABLE . "'$nl" .
+	  "#$nl" . $nl .
+	  $this->tableDefinition(BACKUP_TABLE, $nl, BACKUP_TABLE) . ";$nl$nl" .
+	  "#$nl" .
+	  "# dumping Data '" . BACKUP_TABLE . "'$nl" .
+	  "#$nl"
+	  , 'ab');
+	  }
+	  $phase_start = true;
+	  $this->backup_phase = 1;
+	  $ret = $this->buildBackupTable();
+	  if($ret == 0){
+	  $this->backup_extern = 0;
+	  $ret = 1;
+	  }
+	  }
+	  if((!$phase_start)){
+	  $this->backup_phase = 2;
+	  $ret = $this->exportTables();
+	  }
+	  return $ret;
+	  } */
 
 	/**
 	 * Function: buildBackupTable
@@ -490,10 +498,7 @@ class we_backup{
 	 */
 	function buildBackupTable(){
 		$this->current_description = g_l('backup', "[external_backup]");
-		$rootdir = $_SERVER['DOCUMENT_ROOT'];
-		$rootdir = str_replace("\\", "/", $rootdir);
-		if(substr($rootdir, -1) != "/")
-			$rootdir .= "/";
+		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/') . '/';
 		$count = 0;
 		$done = 0;
 		$len = 0;
@@ -505,10 +510,8 @@ class we_backup{
 				if(is_dir($rootdir . $entry)){
 					if(!$this->putDirInDB($rootdir . $entry))
 						return -1;
-				}
-				else{
-					if(!$this->putFileInDB($rootdir . $entry))
-						return -1;
+				}elseif(!$this->putFileInDB($rootdir . $entry)){
+					return -1;
 				}
 				$len = $len + filesize($rootdir . $entry);
 				$done++;
@@ -529,146 +532,135 @@ class we_backup{
 	 * Description: This function saves the files in the previously builded
 	 * table if the users chose to backup external files.
 	 */
-	function exportTables(){
-		$nl = "\n";
-		$len = 0;
-		$tab = array();
-		$tabtmp = array();
-		$tables = array();
-		$tab = $this->backup_db->table_names();
-		$insert = "";
-		foreach($tab as $k => $v){
-			if($v["table_name"] && $this->isWeTable($v["table_name"]))
-				array_push($tabtmp, $v["table_name"]);
-		}
-		$tables = $this->arraydiff($tabtmp, $this->extables);
-		$num_tables = sizeof($tables);
-		if($num_tables){
-			$i = 0;
-			$fh = @fopen($this->dumpfilename, "ab");
-			if($fh){
-				while($i < $num_tables) {
-					$exp = 0;
-					$table = $tables[$i];
-					//$noprefix = stripTblPrefix($table);
-					$noprefix = $this->getDefaultTableName($table);
-					if(!$this->isFixed($noprefix)){
-						$metadata = $this->backup_db->metadata($table);
-						if(!$this->partial){
-							@fwrite($fh, $nl);
-							@fwrite($fh, "#############################################################$nl");
-							@fwrite($fh, "#$nl");
-							@fwrite($fh, "# Tablestructure '$noprefix'$nl");
-							@fwrite($fh, "#$nl");
-							@fwrite($fh, $nl);
-							@fwrite($fh, $this->tableDefinition($table, $nl, $noprefix) . ";$nl$nl");
-							@fwrite($fh, "#$nl");
-							@fwrite($fh, "# dumping Data '$noprefix'$nl");
-							@fwrite($fh, "#$nl");
-							@fwrite($fh, $nl);
-							$this->backup_step = 0;
-							$this->table_end = intval(f('SELECT COUNT(1) AS Count FROM ' . $this->backup_db->escape($table), 'Count', $this->backup_db));
-							$fieldnames = '(';
-							foreach($metadata as $m){
-								$fieldnames .= $m["name"] . ", ";
-							}
-							$fieldnames = substr($fieldnames, 0, -2);
-							$fieldnames .= ')';
-							$this->current_insert = "INSERT INTO $noprefix $fieldnames VALUES (";
-							if(isset($this->description["export"][strtolower($noprefix)])){
-								$this->current_description = $this->description["export"][strtolower($noprefix)];
-							} else{
-								$this->current_description = g_l('backup', "[working]");
-							}
-						}
-						$this->partial = false;
-						$limit = $this->backup_steps;
-						$this->backup_db->query('SELECT * FROM ' . $this->backup_db->escape($table) . ' LIMIT ' . abs($this->backup_step) . ',' . abs($limit));
-						while($this->backup_db->next_record()) {
-							if(strtolower($table) == strtolower(CONTENT_TABLE)){
-								$db = new DB_WE;
-								$siz = f('SELECT LENGTH(Dat) as Dat FROM ' . CONTENT_TABLE . ' WHERE ID=' . intval($this->backup_db->f('ID')), 'Dat', $db);
-							} else{
-								$siz = 0;
-							}
-							@set_time_limit(80);
-							if(!$this->offset){
-								$insert = $this->current_insert;
-							}
-							for($j = 0; $j < sizeof($metadata); $j++){
-								if(strtolower($table) == strtolower(CONTENT_TABLE) && $metadata[$j]["name"] == "Dat"){
-									if($siz > ($this->offset + $this->default_offset) || $this->offset){
-										if(!$this->offset){
-											$insert .= " '";
-										}
-										$new = substr($this->backup_db->f($metadata[$j]["name"]), $this->offset, $this->default_offset);
-										$new = addslashes($new);
-										if($siz < ($this->offset + $this->default_offset)){
-											$this->offset = 0;
-										} else{
-											$this->offset = $this->offset + $this->default_offset;
-										}
-										$insert .= $new;
-										if($this->offset){
-											break;
-										} else{
-											$insert .="',";
-										}
-									} else{
-										$new = addslashes($this->backup_db->f($metadata[$j]["name"]));
-										$insert .= " '" . $new . "',";
-									}
-								} else if(!$this->offset){
-									$new = addslashes($this->backup_db->f($metadata[$j]["name"]));
-									$insert .= " '" . $new . "',";
-								}
-							}
-							$insert = rtrim(str_replace(array("\n", "\r"), array("\\n", "\\r"), $insert), ',');
-							if(!$this->offset)
-								$insert .= ");$nl";
-							@fwrite($fh, $insert);
-							$len = $len + strlen($insert);
-							if(!$this->offset)
-								++$exp;
-							$insert = '';
-							if($len > $this->default_backup_len || $this->offset){
-								$this->partial = true;
-								break;
-							}
-						}
-					}
-					$i++;
-					$this->backup_step = $this->backup_step + $exp;
-					if($this->backup_step < $this->table_end){
-						$this->partial = true;
-						break;
-					} else{
-						$this->partial = false;
-					}
-					if(!$this->partial){
-						if(!in_array($table, $this->extables))
-							array_push($this->extables, $table);
-						@fwrite($fh, $nl);
-					}
-				}
-				@fclose($fh);
-			}
-			else{
-				$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
-				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
-				return -1;
-			}
-		}
-		if($this->partial){
-			return 1;
-		}
-		$res = array();
-		$res = $this->arraydiff($tab, $this->extables);
-		if(sizeof($res) == 0){
-			$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
-		}
-		return 0;
-	}
+	abstract function exportTables(); /* {
+	  $nl = "\n";
+	  $len = 0;
+	  $tabtmp = array();
+	  $tab = $this->backup_db->table_names();
+	  $insert = "";
+	  foreach($tab as $k => $v){
+	  if($v["table_name"] && $this->isWeTable($v["table_name"]))
+	  array_push($tabtmp, $v["table_name"]);
+	  }
+	  $tables = $this->arraydiff($tabtmp, $this->extables);
+	  $num_tables = count($tables);
+	  if($num_tables){
+	  $i = 0;
+	  $fh = @fopen($this->dumpfilename, "ab");
+	  if($fh){
+	  while($i < $num_tables) {
+	  $exp = 0;
+	  $table = $tables[$i];
+	  //$noprefix = stripTblPrefix($table);
+	  $noprefix = $this->getDefaultTableName($table);
+	  if(!$this->isFixed($noprefix)){
+	  $metadata = $this->backup_db->metadata($table);
+	  if(!$this->partial){
+	  @fwrite($fh, $nl);
+	  @fwrite($fh, "#############################################################$nl");
+	  @fwrite($fh, "#$nl");
+	  @fwrite($fh, "# Tablestructure '$noprefix'$nl");
+	  @fwrite($fh, "#$nl");
+	  @fwrite($fh, $nl);
+	  @fwrite($fh, $this->tableDefinition($table, $nl, $noprefix) . ";$nl$nl");
+	  @fwrite($fh, "#$nl");
+	  @fwrite($fh, "# dumping Data '$noprefix'$nl");
+	  @fwrite($fh, "#$nl");
+	  @fwrite($fh, $nl);
+	  $this->backup_step = 0;
+	  $this->table_end = intval(f('SELECT COUNT(1) AS Count FROM ' . $this->backup_db->escape($table), 'Count', $this->backup_db));
+	  $fieldnames = array();
+	  foreach($metadata as $m){
+	  $fieldnames[] = $m["name"];
+	  }
+	  $this->current_insert = "INSERT INTO $noprefix (" . implode(',', $fieldnames) . ") VALUES (";
+	  $this->current_description = (isset($this->description["export"][strtolower($noprefix)]) ?
+	  $this->description["export"][strtolower($noprefix)] :
+	  g_l('backup', "[working]"));
+	  }
+	  $this->partial = false;
+	  $limit = $this->backup_steps;
+	  $this->backup_db->query('SELECT * FROM ' . $this->backup_db->escape($table) . ' LIMIT ' . abs($this->backup_step) . ',' . abs($limit));
+	  while($this->backup_db->next_record()) {
+	  $siz = (strtolower($table) == strtolower(CONTENT_TABLE) ?
+	  f('SELECT LENGTH(Dat) as Dat FROM ' . CONTENT_TABLE . ' WHERE ID=' . intval($this->backup_db->f('ID')), 'Dat', new DB_WE()) : 0);
+	  @set_time_limit(80);
+	  if(!$this->offset){
+	  $insert = $this->current_insert;
+	  }
+	  for($j = 0; $j < sizeof($metadata); $j++){
+	  if(strtolower($table) == strtolower(CONTENT_TABLE) && $metadata[$j]["name"] == "Dat"){
+	  if($siz > ($this->offset + $this->default_offset) || $this->offset){
+	  if(!$this->offset){
+	  $insert .= " '";
+	  }
+	  $new = addslashes(substr($this->backup_db->f($metadata[$j]["name"]), $this->offset, $this->default_offset));
+	  $this->offset = ($siz < ($this->offset + $this->default_offset) ?
+	  0 :
+	  $this->offset + $this->default_offset);
+
+	  $insert .= $new;
+	  if($this->offset){
+	  break;
+	  } else{
+	  $insert .="',";
+	  }
+	  } else{
+	  $new = addslashes($this->backup_db->f($metadata[$j]["name"]));
+	  $insert .= " '" . $new . "',";
+	  }
+	  } else if(!$this->offset){
+	  $new = addslashes($this->backup_db->f($metadata[$j]["name"]));
+	  $insert .= " '" . $new . "',";
+	  }
+	  }
+	  $insert = rtrim(str_replace(array("\n", "\r"), array("\\n", "\\r"), $insert), ',');
+	  if(!$this->offset){
+	  $insert .= ");$nl";
+	  }
+	  @fwrite($fh, $insert);
+	  $len = $len + strlen($insert);
+	  if(!$this->offset){
+	  ++$exp;
+	  }
+	  $insert = '';
+	  if($len > $this->default_backup_len || $this->offset){
+	  $this->partial = true;
+	  break;
+	  }
+	  }
+	  }
+	  $i++;
+	  $this->backup_step = $this->backup_step + $exp;
+	  if($this->backup_step < $this->table_end){
+	  $this->partial = true;
+	  break;
+	  } else{
+	  $this->partial = false;
+	  }
+	  if(!$this->partial){
+	  if(!in_array($table, $this->extables))
+	  array_push($this->extables, $table);
+	  @fwrite($fh, $nl);
+	  }
+	  }
+	  @fclose($fh);
+	  }
+	  else{
+	  $this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
+	  $this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
+	  return -1;
+	  }
+	  }
+	  if($this->partial){
+	  return 1;
+	  }
+	  $res = $this->arraydiff($tab, $this->extables);
+	  if(count($res) == 0){
+	  $this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
+	  }
+	  return 0;
+	  } */
 
 	/**
 	 * Function: printDump
@@ -772,9 +764,8 @@ class we_backup{
 	 * Description: This function initializes the import of a backup.
 	 */
 	function restoreFiles(){
-		$exist = false;
 		$tab = $this->backup_db->table_names(BACKUP_TABLE);
-		$exist = count($tab) > 0;
+		$exist = !empty($tab);
 		/* while (list($tname)=@mysql_fetch_array($tab)) {
 		  if(strtolower($tname)==strtolower(BACKUP_TABLE))
 		  $exist=true;
@@ -790,19 +781,16 @@ class we_backup{
 				@set_time_limit(80);
 				if($line["IsFolder"]){
 					$dir = $_SERVER['DOCUMENT_ROOT'] . $line["Path"];
-					$sdir = dirname($dir);
-					$sdir = str_replace("\\", "/", $sdir);
+					$sdir = str_replace("\\", "/", dirname($dir));
 					while((!file_exists($sdir)) && ($sdir != "/")) {
 						we_util_File::createLocalFolder($sdir);
-						$sdir = dirname($sdir);
-						$sdir = str_replace("\\", "/", $sdir);
+						$sdir = str_replace("\\", "/", dirname($sdir));
 					}
 					if(!file_exists($dir)){
 						we_util_File::createLocalFolder($dir);
 					}
 				} else{
-					$sdir = dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]);
-					$sdir = str_replace("\\", "/", $sdir);
+					$sdir = str_replace("\\", "/", dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]));
 					if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
 						$this->setError(g_l('backup', "[can_not_open_file]"), $line["Path"]);
 						return false;
@@ -977,10 +965,9 @@ class we_backup{
 			$this->current_description = g_l('backup', "[working]");
 		}
 
-		if($restore_extra)
-			if(!$this->restoreFiles()){
-				return false;
-			}
+		if($restore_extra && !$this->restoreFiles()){
+			return false;
+		}
 		return true;
 	}
 
@@ -1070,11 +1057,8 @@ class we_backup{
 	 */
 	function isCreateQuery($q){
 		$m = array();
-		if(preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m)){
-			return $m[1];
-		}
-		else
-			return "";
+		return (preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ?
+				$m[1] : '');
 	}
 
 	/**
@@ -1105,8 +1089,9 @@ class we_backup{
 		}
 
 		foreach($this->table_map as $k => $v){
-			if($tabname == strtolower($k))
+			if($tabname == strtolower($k)){
 				return $v;
+			}
 		}
 
 		return $tabname;
@@ -1125,8 +1110,9 @@ class we_backup{
 		}
 
 		foreach($this->table_map as $k => $v){
-			if($tabname == strtolower($v))
+			if($tabname == strtolower($v)){
 				return $k;
+			}
 		}
 
 		return $tabname;
@@ -1246,40 +1232,16 @@ class we_backup{
 
 	protected function _saveState(){
 		// Initialize variable
-		$save = '';
-
-		foreach($this->errors as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->errors[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		foreach($this->warnings as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->warnings[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		foreach($this->extables as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->extables[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		$tmp = addslashes($this->dumpfilename);
-		$save.='$this->dumpfilename=\'' . $tmp . '\'' . ";\n";
-
-		$tmp = addslashes($this->tempfilename);
-		$save.='$this->tempfilename=\'' . $tmp . '\'' . ";\n";
-
-		foreach($this->handle_options as $k => $v){
-			$save.='$this->handle_options["' . $k . '"]=\'' . $v . '\'' . ";\n";
-		}
-
-		foreach($this->properties as $prop){
-			$tmp = addslashes($this->$prop);
-			$save.='$this->' . $prop . '=\'' . $tmp . '\'' . ";\n";
-		}
-
-		foreach($this->dummy as $k => $v){
-			$tmp = addslashes($v);
-			$save.='$this->dummy[' . $k . ']=\'' . $tmp . '\'' . ";\n";
-		}
-		return $save;
+		return '
+$this->errors=' . var_export($this->errors, true) . ';
+$this->warnings=' . var_export($this->warnings, true) . ';
+$this->extables=' . var_export($this->extables, true) . ';
+$this->dumpfilename=' . var_export($this->dumpfilename, true) . ';
+$this->tempfilename=' . var_export($this->tempfilename, true) . ';
+$this->handle_options=' . var_export($this->handle_options, true) . ';
+$this->properties=' . var_export($this->properties, true) . ';
+$this->dummy=' . var_export($this->dummy, true) . ';
+';
 	}
 
 	/**
@@ -1288,11 +1250,8 @@ class we_backup{
 	 * Description:
 	 */
 	function saveState($of = ""){
-		$save = $this->_saveState();
-		if($of == ""){
-			$of = weFile::getUniqueId(); // #6590, changed from: uniqid(time())
-		}
-		weFile::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $save, 'wb');
+		$of = ($of ? $of : weFile::getUniqueId()); // #6590, changed from: uniqid(time())
+		weFile::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
 		return $of;
 	}
 

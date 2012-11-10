@@ -39,7 +39,7 @@ class weCustomerFrames extends weModuleFrames{
 		$this->View->customer->clearSessionVars();
 		//$this->View->settings->clearSessionVars();
 		$this->View->settings->load(false);
-		return weModuleFrames::getHTMLFrameset();
+		return parent::getHTMLFrameset();
 	}
 
 	function getHTMLResize(){
@@ -83,7 +83,6 @@ class weCustomerFrames extends weModuleFrames{
 	function getHTMLFieldsSelect($branch){
 		$select = new we_html_select(array("name" => "branch"));
 
-		$fields_names = array();
 		$fields_names = $this->View->customer->getFieldsNames($branch, $this->View->settings->getEditSort());
 		$this->jsOut_fieldTypesByName = "var fieldTypesByName = new Array();";
 		foreach($fields_names as $val){
@@ -150,9 +149,8 @@ class weCustomerFrames extends weModuleFrames{
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 				$countryselect = new we_html_select(array('name' => $field, 'size' => '1', 'style' => 'width:240px;', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
-				$topCountries = explode(',', WE_COUNTRIES_TOP);
+				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
-				$topCountries = array_flip($topCountries);
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
