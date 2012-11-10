@@ -164,8 +164,9 @@ class weSuggest{
 		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
-		if(is_array($this->inputfields) && !count($this->inputfields))
+		if(is_array($this->inputfields) && !count($this->inputfields)){
 			return;
+		}
 
 		$safariEventListener = "";
 		$initVars = '	var ajaxMaxResponseTime = 1500;
@@ -173,12 +174,12 @@ class weSuggest{
 			var ajaxResponseCT = 0;
 			var countMark = 0;
 			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
-		$weFieldWS = "	/* WORKSPACES */
-			var weWorkspacePathArray = new Array();";
-		$fildsById = "\n	/* AC-FIEDS BY ID */
-			var yuiAcFieldsById = new Array();";
-		$fildsObj = "\n	/* AC-FIEDS */
-			var yuiAcFields = {";
+		// WORKSPACES
+		$weFieldWS = "var weWorkspacePathArray = new Array();";
+		// AC-FIEDS BY ID
+		$fildsById = "var yuiAcFieldsById = new Array();";
+		// AC-FIEDS
+		$fildsObj = 'var yuiAcFields = {';
 		$invalidFields = <<<HTS
 		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
 
@@ -206,10 +207,10 @@ HTS;
 		$postData = "protocol=text&cmd=SelectorGetSelectedId";
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
-			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);\n";
+			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
 			$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
 			$weWorkspacePathArray = makeArrayFromCSV(id_to_path(get_ws($this->tables[$i]), $this->tables[$i]));
-			$weWorkspacePathArrayJS = "";
+			$weWorkspacePathArrayJS = '';
 			if(is_array($weWorkspacePathArray)){
 				$ix = 0;
 				foreach($weWorkspacePathArray as $val){
@@ -220,7 +221,7 @@ HTS;
 					$ix++;
 				}
 			}
-			$weFieldWS .= "\tweWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);\n";
+			$weFieldWS .= "weWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);";
 
 			$weAcFields .= <<<HTS
 if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) {
@@ -233,10 +234,10 @@ if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) 
 
 HTS;
 
-			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};\n";
+			$fildsById .= "	yuiAcFieldsById['" . $this->inputfields[$i] . "']={'index':'$i','set':'set_$i'};";
 
 			$fildsObj .=
-				($i > 0 ? ",\n\t\t" : "\t\t") . "'set_$i': {
+				($i > 0 ? ',' : '') . "'set_$i': {
 			'id' : '" . $this->inputfields[$i] . "',
 			'old': document.getElementById('" . $this->inputfields[$i] . "').value,
 			'selector': '" . $this->selectors[$i] . "',
@@ -254,15 +255,15 @@ HTS;
 			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
 			$oACDSInit .= ($i > 0 ? ", " : "") . 'oACDS_' . $i;
 			$oAutoCompInit .= ($i > 0 ? ", " : "") . 'oAutoComp_' . $i;
-			$oAutoCompRes .= "	var oAutoCompRes_$i = new Array();\n";
+			$oAutoCompRes .= "	var oAutoCompRes_$i = new Array();";
 
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-				$initVars .= "	var selInputVal_" . $i . ";\n";
+				$initVars .= "	var selInputVal_" . $i . ";";
 				$onSelectInit = "";
 				$onSelectDecl = "";
 				if(count($this->setOnSelectFields[$i])){
-					$fildsObjId = ",\n			'fields_id': new Array(";
-					$fildsObjVal = ",\n			'fields_val': new Array(";
+					$fildsObjId = ",			'fields_id': new Array(";
+					$fildsObjVal = ",			'fields_val': new Array(";
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						if($j > 0){
 							$fildsObjId .= ",";
@@ -270,7 +271,7 @@ HTS;
 						}
 						$fildsObjId .= "'" . $this->setOnSelectFields[$i][$j] . "'";
 						$fildsObjVal .= "document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value";
-						$onSelectInit .= "var yuiAcOnSelectField_" . $j . ";\n";
+						$onSelectInit .= "var yuiAcOnSelectField_" . $j . ";";
 						$onSelectDecl .=
 							"if ((yuiAcOnSelectField_" . $j . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "')) && (typeof(params[" . (3) . "])!=undefined)) {
 										yuiAcOnSelectField_" . $j . ".value = params[" . (3) . "];
@@ -443,24 +444,21 @@ HTS;
 		doOnContainerCollapse_$i: function(){
 			//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i()',100);
 		},
-
-
 HTS;
 
 				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {
 							ajaxResponseCT=0;
-							oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;\n";
+							oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-						$onFocus .= "			old_" . $this->setOnSelectFields[$i][$j] . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value;\n";
+						$onFocus .= "			old_" . $this->setOnSelectFields[$i][$j] . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value;";
 					}
 				}
 
 				//$onFocus .= "			YAHOO.autocoml.unmarkNotValid($i);";
-				$onFocus .= "			if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[yuiAcFields.set_{$i}.id] = false;\n";
-				$onFocus .= "			yuiAcFields.set_$i.set = '';\n";
-
-				$onFocus .= "		},\n";
+				$onFocus .= "			if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[yuiAcFields.set_{$i}.id] = false;" .
+					"			yuiAcFields.set_$i.set = '';" .
+					"		},";
 				$doAjax .= <<<HTS
 
 		doAjax: function(callback, postdata) {
@@ -471,8 +469,6 @@ HTS;
 HTS;
 
 				$initVars .= <<<HTS
-
-
 	var ajaxCallback_$i = {
 		success: function(o) {
 			if(o.responseText != undefined && o.responseText != ''){
@@ -530,17 +526,17 @@ HTS;
 			oAutoComp_' . $i . '.maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
 			oAutoComp_' . $i . '.queryDelay = 0;';
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
+				$declare .= 'oAutoComp_' . $i . '.itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent_' . $i . ');' .
+					'oAutoComp_' . $i . '.dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent_' . $i . ');';
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');';
-				$declare .= "\n\t\t\t" . 'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
+				$declare .= 'oAutoComp_' . $i . '.textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ');' .
+					'oAutoComp_' . $i . '.textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus_' . $i . ');' .
+					'oAutoComp_' . $i . '.containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse_' . $i . ');';
 			}
 			$declare .= '
 			oAutoComp_' . $i . '.formatResult = function(oResultItem, sQuery) {
@@ -557,25 +553,19 @@ HTS;
 					sKeyRemainder,
 					"</div>"];
 				return (aMarkup.join(""));
-			};
-
-			';
+			};';
 		}
 
-		$declare .= <<<HTS
-/*
-		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
-			for(arrayIndex in parent.weAutoCompetionFields) {
-				if(parent.weAutoCompetionFields[arrayIndex] ) YAHOO.autocoml.markNotValid(i);
-			}
-		}
-		*/
-HTS;
+		/* $declare .= <<<HTS
+		  if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
+		  for(arrayIndex in parent.weAutoCompetionFields) {
+		  if(parent.weAutoCompetionFields[arrayIndex] ) YAHOO.autocoml.markNotValid(i);
+		  }
+		  }
+		  HTS; */
 
-		$fildsObj .= "\n	};\n";
-		$out = "
-<script type=\"text/javascript\"><!--
-
+		$fildsObj .= "	};";
+		return we_html_element::jsElement("
 YAHOO.autocoml = function(){
 $weFieldWS
 $fildsById
@@ -804,15 +794,12 @@ function doDebugResizeH(){
 		document.getElementById('DebugResizeH').innerHTML='V';
 	}
 	document.getElementById('damd').style.height=debugsizeH;
-}
-//-->
-</script>
+}") . "
 <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
 	<div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
 	<div id='debug'></div>
 </div>
 	";
-		return $out;
 	}
 
 	/**
@@ -834,7 +821,7 @@ function doDebugResizeH(){
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
-			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}\n";
+			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
 			$ysearchquery .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .ysearchquery";
 			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
 			$ul .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " ul";
@@ -843,15 +830,12 @@ function doDebugResizeH(){
 		}
 		for($i = 0; $i < count($this->layer); $i++){
 			$layer .= ($i > 0 ? ", " : "") . "#" . $this->layer[$i];
-			$layerZ .= "#" . $this->layer[$i] . " {z-index:" . (9010 - $i) . ";}\n";
+			$layerZ .= "#" . $this->layer[$i] . " {z-index:" . (9010 - $i) . ";}";
 		}
 		$out = "
 <style type=\"text/css\">\n";
 		if(we_base_browserDetect::isIE()){
-			if(!empty($layer)){
-				$out .= "	$layerZ";
-			}
-			$out .= "
+			$out .= (!empty($layer) ? "	$layerZ" : '') . "
 	$inputfields { width:100%; }
 	$containerfields {position:relative; top:0px !important;margin-top:8px; width:100%; z-index:10000 }
 	$yuiAcContent
@@ -865,11 +849,10 @@ function doDebugResizeH(){
 	div.yuiAcLayer { margin:0px; padding:0px;}
 ";
 		} else{
-			if(!empty($layer)){
-				$out .= "	$layer {position:relative;margin-bottom:1.5em;width:100%;}/* set width of widget here*/
-	$layerZ";
-			}
-			$out .= "
+			$out .= (!empty($layer) ?
+					"	$layer {position:relative;margin-bottom:1.5em;width:100%;}/* set width of widget here*/" .
+					$layerZ :
+					'') . "
 	$inputfields {position:absolute;width:100%; margin-top:1px} /* abs for ie quirks */
 	$containerfields {position:absolute;top:30px !important;}
 	$yuiAcContent

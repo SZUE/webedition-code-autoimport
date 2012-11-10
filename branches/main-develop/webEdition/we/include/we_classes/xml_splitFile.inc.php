@@ -207,8 +207,9 @@ class XML_SplitFile extends we_xml_parser{
 			flock($hFile, LOCK_EX);
 
 			// Write the xml data to the file.
-			if(!fwrite($hFile, $data))
+			if(!fwrite($hFile, $data)){
 				return FALSE;
+			}
 
 			// Flush the output to the file.
 			fflush($hFile);
@@ -216,8 +217,9 @@ class XML_SplitFile extends we_xml_parser{
 			flock($hFile, LOCK_UN);
 
 			// Close the file.
-			if(!fclose($hFile))
+			if(!fclose($hFile)){
 				return FALSE;
+			}
 		}
 		// Increase the number of exported xml files.
 		$this->fileId++;

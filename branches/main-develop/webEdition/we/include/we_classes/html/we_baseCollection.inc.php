@@ -44,7 +44,7 @@ class we_baseCollection extends we_baseElement{
 	 *
 	 * @return		we_baseCollection
 	 */
-	function __construct($tagname="", $need_end_tag=true, $attribs=array(), $childs_num=0){
+	function __construct($tagname = "", $need_end_tag = true, $attribs = array(), $childs_num = 0){
 		parent::__construct($tagname, $need_end_tag, $attribs);
 
 		for($i = 0; $i < $childs_num; $i++){
@@ -110,8 +110,8 @@ class we_baseCollection extends we_baseElement{
 	}
 
 	function getHtml(){
-		$childs_content = "";
-		foreach($this->childs as $kc => $vc){
+		$childs_content = '';
+		foreach($this->childs as $vc){
 			$childs_content.=$vc->getHtml();
 		}
 		$this->setContent($childs_content);

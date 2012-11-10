@@ -788,6 +788,9 @@ class we_updater{
 				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName = "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
 			}
 		}
+		//FIXME: clean customerfilter
+		//FIXME: clean history
+
 	}
 
 	static function updateGlossar(){

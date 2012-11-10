@@ -119,39 +119,31 @@ class we_baseElement{
 	 * @return		void
 	 */
 	function setAttribute($attrib_name, $attrib_value){
-		if($attrib_name == 'style'){
-			$attrib_value = rtrim($attrib_value, '; ');
-			if(strpos($attrib_value, ';') !== FALSE){
+		switch($attrib_name){
+			case 'style':
+				$attrib_value = rtrim($attrib_value, '; ');
 				$vals = explode(';', $attrib_value);
 				foreach($vals as $val){
 					list($k, $v) = explode(':', $val);
 					$this->setStyle($k, $v);
 				}
-			} else{
-				if(trim($attrib_value)){
-					list($k, $v) = explode(':', $attrib_value);
-					$this->setStyle($k, $v);
-				}
-			}
-		} else{
-			switch($attrib_name){
-				case 'valign':
-					$this->setStyle('vertical-align', $attrib_value);
-					break;
-				case 'width':
-					$this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
-					break;
-				case 'height':
-					$this->setStyle('height', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
-					break;
-				case 'border':
-					$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
-					break;
-				case 'bgcolor':
-					$this->setStyle('background-color', $attrib_value);
-				default:
-					$this->attribs[$attrib_name] = $attrib_value;
-			}
+				break;
+			case 'valign':
+				$this->setStyle('vertical-align', $attrib_value);
+				break;
+			case 'width':
+				$this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
+				break;
+			case 'height':
+				$this->setStyle('height', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
+				break;
+			case 'border':
+				$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
+				break;
+			case 'bgcolor':
+				$this->setStyle('background-color', $attrib_value);
+			default:
+				$this->attribs[$attrib_name] = $attrib_value;
 		}
 	}
 
@@ -207,16 +199,16 @@ class we_baseElement{
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
 			if($k == 'style'){
-				if(count($v)){
+				if(!empty($v)){
 					$out.=' ' . $k . '="';
 					foreach($v as $kk => $vv){
 						$out.=$kk . ':' . $vv . ';';
 					}
 					$out.='"';
 				}
-			} else if($v !== '' || $k == 'value'){ //wg. Bug #5971 neu || $k == 'value'
+			} else if($v !== ''){
 				$out.=' ' . $k . '="' . $v . '"';
-			} else{
+			} else{//empty attribs
 				switch($k){
 					case 'disabled':
 					case 'multiple':
@@ -229,6 +221,7 @@ class we_baseElement{
 						break;
 					default:
 						$out.=$k . '=""';
+						break;
 				}
 			}
 		}

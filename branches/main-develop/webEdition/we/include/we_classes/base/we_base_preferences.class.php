@@ -115,14 +115,14 @@ class we_base_preferences{
 		}
 	}
 
-	static function saveConfigs($oldPrefs){
+	static function saveConfigs(){
 		if(!isset($GLOBALS['configs'])){
 			t_e('no config set');
 			return;
 		}
 
-		foreach($GLOBALS['config_files'] as $key => $file){
-			if($file['content'] != $file['contentBak']){ //only save if anything changed
+		foreach($GLOBALS['config_files'] as $file){
+			if(isset($file['content']) && $file['content'] != $file['contentBak']){ //only save if anything changed
 				weFile::save($file['filename'] . '.bak', $file['contentBak']);
 				weFile::save($file['filename'], trim($file['content'], "\n "));
 			}

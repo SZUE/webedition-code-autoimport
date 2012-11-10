@@ -75,7 +75,12 @@ class we_objectEx extends we_object{
 				}
 			}
 
-			$q .= implode(',', $qarr);
+			if(empty($qarr)){// bug #7000
+				$q=rtrim($q);
+				$q=rtrim($q,',');
+			} else {
+				$q .= implode(',', $qarr);
+			} 
 
 			// Charset and Collation
 			$charset_collation = "";
@@ -326,14 +331,17 @@ class we_objectEx extends we_object{
 	}
 	
 	function addField($name, $type = '', $default = ''){
-
 		$defaultArr = $this->getDefaultArray($name, $type, $default);
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		$this->DefaultValues = serialize($this->SerializedArray);
-		$arrOrder = explode(',', $this->strOrder);
-		$arrOrder[] = max($arrOrder) + 1;
-		$this->strOrder = implode(',', $arrOrder);
+		if(isset($this->strOrder)){
+			$arrOrder = explode(',', $this->strOrder);
+			$arrOrder[] = max($arrOrder) + 1;
+			$this->strOrder = implode(',', $arrOrder);
+		} else {
+			$this->strOrder='';
+		}
 		return $this->saveToDB(true);
 	}
 
