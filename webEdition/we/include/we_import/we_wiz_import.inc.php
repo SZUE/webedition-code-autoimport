@@ -598,8 +598,9 @@ class we_wizard_import extends we_wizard{
 			$attribs = array("cellpadding" => 2, "cellspacing" => 2, "border" => 0, "id" => "doc_table");
 
 			$dir_table = new we_html_table($attribs, 3, 2);
-			if((isset($v["import_docs"]) && !$v["import_docs"]))
+			if((isset($v["import_docs"]) && !$v["import_docs"])){
 				$dir_table->setStyle('display', 'none');
+			}
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[documents_desc]"), 1, "390", true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);

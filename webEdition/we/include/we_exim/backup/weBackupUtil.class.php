@@ -194,11 +194,13 @@ class weBackupUtil{
 		}
 	}
 
-	function getNextTable(){
-		$_db = new DB_WE();
+	static function getNextTable(){
+		if(!isset($_SESSION['weS']['weBackupVars']['allTables'])){
+			$_db = new DB_WE();
+			$_SESSION['weS']['weBackupVars']['allTables'] = $_db->table_names();
+		}
 // get all table names from database
-		$_tables = $_db->table_names();
-
+		$_tables = $_SESSION['weS']['weBackupVars']['allTables'];
 		$_do = true;
 
 		do{
@@ -343,14 +345,15 @@ class weBackupUtil{
 		$_current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
 		$_current_id++;
 
-		$_db = new DB_WE();
-		$_tables = $_db->table_names();
-		unset($_db);
+		if(!isset($_SESSION['weS']['weBackupVars']['allTables'])){
+			$_db = new DB_WE();
+			$_SESSION['weS']['weBackupVars']['allTables'] = $_db->table_names();
+		}
+// get all table names from database
+		$_tables = $_SESSION['weS']['weBackupVars']['allTables'];
 
 		if($_current_id < count($_tables)){
-
 			$_table = $_tables[$_current_id]['table_name'];
-
 			if(weBackupUtil::getDefaultTableName($_table) === false){
 				return false;
 			}

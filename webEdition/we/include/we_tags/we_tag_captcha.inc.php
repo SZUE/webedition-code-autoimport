@@ -66,24 +66,17 @@ function we_parse_tag_captcha($attribs){
 
 
 	$php = '<?php
-		require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WE_INCLUDES_DIR . 'we.inc.php");
-		$image = new CaptchaImage(' . $width . ", " . $height . ", " . $maxlength . ');' .
-		($fontpath != '' ?
-			'$image->setFontPath(\'' . $fontpath . '\');' :
-			'') .
-		'$image->setFont(\'' . $font . "', '" . $fontsize . "', '" . $fontcolor . "');
-	\$image->setCharacterSubset('" . $subset . "', '" . $case . "', '" . $skip . "');
-	\$image->setAlign('" . $align . "');
-	\$image->setVerticalAlign('" . $valign . "');";
-	if(isset($bgcolor) && $transparent){
-		$php .= "\$image->setBackground('" . $bgcolor . "', true);";
-		$type = "gif";
-	} else{
-		$php .= "\$image->setBackground('" . $bgcolor . "');";
-	}
-	$php .= '$image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber . '\');
-		$image->setAngleRange(\'' . $angle . '\');
-		Captcha::display($image, \'' . $type . '\');';
+require_once($_SERVER[\'DOCUMENT_ROOT\'].\'' . WE_INCLUDES_DIR . 'we.inc.php\');
+$image = new CaptchaImage(' . $width . ', ' . $height . ', ' . $maxlength . ');' .
+		($fontpath != '' ? '$image->setFontPath(\'' . $fontpath . '\');' : '') . '
+$image->setFont(\'' . $font . '\', \'' . $fontsize . '\', \'' . $fontcolor . '\');
+$image->setCharacterSubset(\'' . $subset . '\', \'' . $case . '\', \'' . $skip . '\');
+$image->setAlign(\'' . $align . '\');
+$image->setVerticalAlign(\'' . $valign . '\');
+$image->setBackground(\'' . $bgcolor . '\'' . (isset($bgcolor) && $transparent ? ', true' : '') . ');' . '
+$image->setStyle(\'' . $style . '\', \'' . $stylecolor . '\', \'' . $stylenumber . '\');
+$image->setAngleRange(\'' . $angle . '\');
+Captcha::display($image, \'' . ((isset($bgcolor) && $transparent) ? 'gif' : $type) . '\');';
 
 	weFile::save($realPath, $php, 'w+');
 

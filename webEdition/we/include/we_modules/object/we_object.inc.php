@@ -827,11 +827,8 @@ class we_object extends we_document{
 
 			$vals = array();
 			$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
-			if(!sizeof($all)){
-				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
-			}
 			$count = 0;
-			while($count < sizeof($all)) {
+			while($count < count($all)) {
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]){
@@ -905,9 +902,6 @@ class we_object extends we_document{
 					'<td  width="170" class="defaultfont" valign="top">';
 				$vals = array();
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
-				if(empty($all)){
-					$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
-				}
 				$count = 0;
 				while($count < count($all)) {
 					if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
