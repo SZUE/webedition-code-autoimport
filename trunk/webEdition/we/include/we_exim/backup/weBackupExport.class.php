@@ -51,15 +51,17 @@ abstract class weBackupExport{
 				fwrite($_fh, '<!-- webackup -->' . "\n");
 			}
 
+
 			$_table = weBackupUtil::getCurrentTable();
 
 			//sppedup for some tables
 			if(isset($_table)){
 				switch($_table){
+					case LANGLINK_TABLE:
+					case RECIPIENTS_TABLE:
+					case HISTORY_TABLE:
 					case LINK_TABLE:
 					case CONTENT_TABLE:
-						$lines = intval($lines) * 5;
-						break;
 					case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
 						$lines = intval($lines) * 5;
 						break;
@@ -84,7 +86,6 @@ abstract class weBackupExport{
 			);
 
 			while($_db->next_record()) {
-
 				$_keyvalue = array();
 				foreach($_keys as $_key){
 					$_keyvalue[$_key] = $_db->f($_key);
@@ -103,30 +104,31 @@ abstract class weBackupExport{
 				fwrite($_fh, we_html_element::htmlComment("webackup") . "\n");
 
 
-				if(($_def_table == 'tblfile' && $export_binarys) &&
-					($_object->ContentType == "image/*" || stripos($_object->ContentType, "application/") !== false)
-				){
-					if($log){
-						weBackupUtil::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
+				if($export_binarys || $export_version_binarys){
+					switch($_def_table){
+						case 'tblfile':
+							if(($_object->ContentType == "image/*" || stripos($_object->ContentType, "application/") !== false)){
+								if($log){
+									weBackupUtil::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
+								}
+
+								$bin = weContentProvider::getInstance('weBinary', $_object->ID);
+
+								weContentProvider::binary2file($bin, $_fh);
+							}
+							break;
+
+						case 'tblversions':
+							if($log){
+								weBackupUtil::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
+							}
+
+							$bin = weContentProvider::getInstance('weVersion', $_object->ID);
+
+							weContentProvider::version2file($bin, $_fh);
+							break;
 					}
-
-					$bin = weContentProvider::getInstance('weBinary', $_object->ID);
-
-					weContentProvider::binary2file($bin, $_fh);
 				}
-
-				if(($_def_table == 'tblversions' && $export_version_binarys)
-				//&& ($_object->ContentType=="image/*" || stripos($_object->ContentType,"application/")!==false)
-				){
-					if($log){
-						weBackupUtil::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
-					}
-
-					$bin = weContentProvider::getInstance('weVersion', $_object->ID);
-
-					weContentProvider::version2file($bin, $_fh);
-				}
-
 				$offset++;
 				$row_count++;
 			}

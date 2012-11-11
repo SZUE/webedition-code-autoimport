@@ -124,8 +124,11 @@ class we_baseElement{
 				$attrib_value = rtrim($attrib_value, '; ');
 				$vals = explode(';', $attrib_value);
 				foreach($vals as $val){
-					list($k, $v) = explode(':', $val);
-					$this->setStyle($k, $v);
+					$val = trim($val);
+					if(!empty($val)){
+						list($k, $v) = explode(':', $val);
+						$this->setStyle($k, $v);
+					}
 				}
 				break;
 			case 'valign':
