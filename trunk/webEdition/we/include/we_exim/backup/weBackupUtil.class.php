@@ -138,7 +138,7 @@ class weBackupUtil{
 			$done += ((int) $_SESSION['weS']['weBackupVars']['extern_files_count'] - count($_SESSION['weS']['weBackupVars']['extern_files']));
 		}
 
-		$percent = round(($done / $all) * 100, ($all>50000?2:1));
+		$percent = round(($done / $all) * 100, ($all > 50000 ? 2 : 1));
 		return (intval($percent) < 0 ? 0 : (intval($percent) > 100 ? 100 : $percent));
 	}
 
@@ -234,7 +234,9 @@ class weBackupUtil{
 		if($_SESSION['weS']['weBackupVars']['backup_log_data'] == ''){
 			return;
 		}
-		weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], $_SESSION['weS']['weBackupVars']['backup_log_data'], 'ab');
+		if($_SESSION['weS']['weBackupVars']['backup_log']){
+			weFile::save($_SESSION['weS']['weBackupVars']['backup_log_file'], $_SESSION['weS']['weBackupVars']['backup_log_data'], 'ab');
+		}
 		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
 
