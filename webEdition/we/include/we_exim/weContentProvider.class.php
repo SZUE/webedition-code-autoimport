@@ -245,11 +245,10 @@ class weContentProvider{
 			return (!$this->IsBinary);
 		}
 
-		$noexport = array();
-		if(isset($noexport[$classname]))
-			return !in_array($prop, $noexport[$classname]);
-		else
-			return true;
+		$noexport = array(); //future use
+		return (isset($noexport[$classname]) ?
+				!in_array($prop, $noexport[$classname]) :
+				true);
 	}
 
 	static function binary2file(&$object, &$file, $isWe = true){
@@ -272,7 +271,14 @@ class weContentProvider{
 			$offset = 0;
 			$rsize = 1048576;
 			do{
-				$path = $_SERVER['DOCUMENT_ROOT'] . ($isWe ? SITE_DIR : '') . $object->Path;
+				if($isWe){
+					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
+					if(!file_exists($path)){
+						$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
+					}
+				} else{
+					$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
+				}
 				$data = weFile::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
 					fwrite($file, '<we:binary>' . $attribs);
