@@ -59,7 +59,7 @@ class weBackupPreparer{
 
 		$_SESSION['weS']['weBackupVars']['backup_steps'] = getPref('BACKUP_STEPS');
 		if($_SESSION['weS']['weBackupVars']['backup_steps'] == 0){
-			$_SESSION['weS']['weBackupVars']['backup_steps'] = weBackupPreparer::getAutoSteps();
+			$_SESSION['weS']['weBackupVars']['backup_steps'] = weBackupWizard::getAutoSteps();
 		}
 
 		$_SESSION['weS']['weBackupVars']['backup_log'] = (isset($_REQUEST['backup_log']) && $_REQUEST['backup_log']) ? $_REQUEST['backup_log'] : 0;
@@ -84,7 +84,7 @@ class weBackupPreparer{
 
 		$_SESSION['weS']['weBackupVars']['filename'] = ((isset($_REQUEST['filename']) && $_REQUEST['filename']) ? ($_REQUEST['filename']) : '');
 		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress']) ? $_REQUEST['compress'] : 0;
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = (isset($_REQUEST['compress']) && $_REQUEST['compress'] && weFile::hasCompression($_REQUEST['compress'])) ? $_REQUEST['compress'] : 0;
 
 		$_SESSION['weS']['weBackupVars']['current_table_id'] = -1;
 
@@ -92,25 +92,28 @@ class weBackupPreparer{
 			weBackupPreparer::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
+		$_SESSION['weS']['weBackupVars']['limits'] = array(
+			'mem' => we_convertIniSizes(ini_get('memory_limit')),
+			'exec' => ini_get('max_execution_time'),
+		);
+
 
 		$_SESSION['weS']['weBackupVars']['row_counter'] = 0;
 		$_SESSION['weS']['weBackupVars']['row_count'] = 0;
+
 		$db = new DB_WE();
 		$db->query('SHOW TABLE STATUS');
 		while($db->next_record()) {
 			// fix for object tables
 			//if(in_array($db->f('Name'),$_SESSION['weS']['weBackupVars']['tables'])) {
-			if(weBackupUtil::getDefaultTableName($db->f('Name')) !== false){
+			if(($name = weBackupUtil::getDefaultTableName($db->f('Name'))) !== false){
 				$_SESSION['weS']['weBackupVars']['row_count'] += $db->f('Rows');
+				$_SESSION['weS']['weBackupVars']['avgLen'][$name] = $db->f('Avg_row_length');
 			}
 		}
 
 		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
-		if($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress']){
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], $GLOBALS['weXmlExImProtectCode'] . $GLOBALS['weXmlExImHeader']);
-		} else{
-			weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], $GLOBALS['weXmlExImHeader']);
-		}
+		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? $GLOBALS['weXmlExImProtectCode'] : '') . $GLOBALS['weXmlExImHeader']);
 
 		return true;
 	}
@@ -390,23 +393,6 @@ class weBackupPreparer{
 		}
 
 		return $encoding;
-	}
-
-	function getAutoSteps(){
-		$i = 0;
-		$time = explode(' ', microtime());
-		$time = $time[1] + $time[0];
-		$start = $time;
-		while($i < 100000) {
-			$i++;
-		}
-		$time = explode(' ', microtime());
-		$time = $time[1] + $time[0];
-		$end = $time;
-		$total = $end - $start;
-		$cpu = (100 / ($total * 1000));
-		$met = ini_get('max_execution_time');
-		return floor($cpu * $met);
 	}
 
 	function isOtherXMLImport($format){

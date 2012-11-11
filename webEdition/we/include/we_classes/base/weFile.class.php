@@ -28,7 +28,7 @@ abstract class weFile{
 		if($filename == ''){
 			return false;
 		}
-		if(!weFile::hasURL($filename)){
+		if(!self::hasURL($filename)){
 			$filename = realpath($filename);
 			/* if(strpos($filename, $_SERVER['DOCUMENT_ROOT']) === FALSE){
 			  t_e('warning', 'Acess outside document_root forbidden!', $filename);
@@ -71,7 +71,7 @@ abstract class weFile{
 
 	static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
 
-		if($filename == '' || weFile::hasURL($filename) || !is_readable($filename)){
+		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
 		$filename = realpath($filename);
@@ -111,7 +111,7 @@ abstract class weFile{
 	}
 
 	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-		if($filename == '' || weFile::hasURL($filename) || !is_readable($filename)){
+		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
 		$filename = realpath($filename);
@@ -152,7 +152,7 @@ abstract class weFile{
 
 	static function save($filename, $content, $flags = 'wb', $create_path = false){
 		$oldFile = $filename;
-		if($filename == '' || weFile::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
+		if($filename == '' || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
 		} else{
@@ -160,7 +160,7 @@ abstract class weFile{
 			  t_e('warning', 'Acess outside document_root forbidden!', $filename, $oldFile,$_SERVER['DOCUMENT_ROOT']);
 			  return;
 			  } */
-			if(($create_path && !weFile::mkpath(dirname($filename))) && (!is_writable(dirname($filename)))){
+			if(($create_path && !self::mkpath(dirname($filename))) && (!is_writable(dirname($filename)))){
 				t_e('failed to create file', $filename);
 				return false;
 			}
@@ -179,17 +179,17 @@ abstract class weFile{
 
 	static function saveTemp($content, $filename = '', $flags = 'wb'){
 		if($filename == ''){
-			$filename = weFile::getUniqueId();
+			$filename = self::getUniqueId();
 		}
 		$filename = TEMP_PATH . '/' . $filename;
-		return (weFile::save($filename, $content) ? $filename : false);
+		return (self::save($filename, $content) ? $filename : false);
 	}
 
 	static function delete($filename){
 		if($filename == ''){
 			return false;
 		}
-		if(!weFile::hasURL($filename)){
+		if(!self::hasURL($filename)){
 			if(is_writable($filename)){
 				if(is_dir($filename)){
 					return rmdir($filename);
@@ -295,7 +295,7 @@ abstract class weFile{
 
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
-		if(weFile::hasURL($path))
+		if(self::hasURL($path))
 			return false;
 		if($path != ''){
 			return we_util_File::createLocalFolderByPath($path);
@@ -318,11 +318,11 @@ abstract class weFile{
 	static function hasCompression($comp){
 		switch($comp){
 			case 'gzip':
-				return weFile::hasGzip();
+				return self::hasGzip();
 			case 'zip':
-				return weFile::hasZip();
+				return self::hasZip();
 			case 'bzip':
-				return weFile::hasBzip();
+				return self::hasBzip();
 			default:
 				return false;
 		}
@@ -357,7 +357,7 @@ abstract class weFile{
 	static function getCompression($filename){
 		$compressions = array('gzip', 'zip', 'bzip');
 		foreach($compressions as $val){
-			$ext = '.' . weFile::getZExtension($val);
+			$ext = '.' . self::getZExtension($val);
 			$extlen = strlen($ext);
 			if(substr_compare(basename($filename), $ext, -1 * $extlen, $extlen, true) === 0){
 				return $val;
@@ -368,18 +368,30 @@ abstract class weFile{
 
 	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
 
-		if(!weFile::hasCompression($compression))
+		if(!self::hasCompression($compression)){
 			return false;
-		if($destination == '')
+		}
+		if($destination == ''){
 			$destination = $file;
-		$prefix = weFile::getComPrefix($compression);
+		}
+		$zfile = $destination . self::getZExtension($compression);
+
+		if(self::isCompressed($file)){
+			if($remove){
+				rename($file, $zfile);
+			} else{
+				copy($file, $zfile);
+			}
+			return $zfile;
+		}
+
+		$prefix = self::getComPrefix($compression);
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
 		$close = $prefix . 'close';
 
 		$fp = @fopen($file, 'rb');
 		if($fp){
-			$zfile = $destination . '.gz';
 			$gzfp = $open($zfile, $writemode);
 			if($gzfp){
 				do{
@@ -401,8 +413,9 @@ abstract class weFile{
 		} else{
 			return false;
 		}
-		if($remove)
-			@unlink($file);
+		if($remove){
+			self::delete($file);
+		}
 		return $zfile;
 	}
 
@@ -430,8 +443,9 @@ abstract class weFile{
 		} else{
 			return false;
 		}
-		if($remove)
-			@unlink($gzfile);
+		if($remove){
+			self::delete($gzfile);
+		}
 		return $file;
 	}
 
