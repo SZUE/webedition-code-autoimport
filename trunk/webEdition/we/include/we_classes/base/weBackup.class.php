@@ -201,12 +201,10 @@ class weBackup extends we_backup{
 		//check if at least 10 avg rows
 		$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower($table)];
 		if(memory_get_usage() + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
-			t_e('mem reached', $table, memory_get_usage(), $execTime, time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime, time() - $_SERVER['REQUEST_TIME'], $_SESSION['weS']['weBackupVars']['avgLen'], $_SESSION['weS']['weBackupVars']['limits']);
 			return false;
 		}
 		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 30 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
 		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
-			t_e('time reached', $table, memory_get_usage(), $execTime, time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime, time() - $_SERVER['REQUEST_TIME'], $_SESSION['weS']['weBackupVars']['avgLen'], $_SESSION['weS']['weBackupVars']['limits']);
 			return false;
 		}
 
