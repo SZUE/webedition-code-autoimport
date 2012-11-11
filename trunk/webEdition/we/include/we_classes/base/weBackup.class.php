@@ -198,12 +198,15 @@ class weBackup extends we_backup{
 	}
 
 	public static function limitsReached($table, $execTime){
+		if(!isset($_SERVER['REQUEST_TIME'])){
+			$_SERVER['REQUEST_TIME']=time();
+		}
 		//check if at least 10 avg rows
 		$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower($table)];
 		if(memory_get_usage() + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 			return false;
 		}
-		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 30 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 32 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
 		if(time() - intval($_SERVER['REQUEST_TIME']) + 2 * $execTime > $maxTime){
 			return false;
 		}

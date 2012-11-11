@@ -767,8 +767,8 @@ class weBackupWizard{
 			function stopBusy() {
 				top.busy.location="' . $this->frameset . '?pnt=busy&step=5";
 				/*if(top.opener.top.header)
-					top.opener.top.header.document.location.reload();
- 			}*/
+					top.opener.top.header.document.location.reload();*/
+ 			}
 			self.focus();
 		');
 
