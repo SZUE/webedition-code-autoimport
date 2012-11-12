@@ -251,11 +251,15 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		}
 		if(!empty($outClasses)){
 			$ClassesStr = trim(implode(' ', $outClasses,' '));
+		} else {
+			$ClassesStr ='';
 		}
 
 		$doOnClick = "alert(&quot;Pub:-" . $Published . "- Status:-" . $Status . "- classes:" . $ClassesStr . "-&quot;);";
 		if(!empty($ClassesStr)){
 			$outClass = 'class=\"' . $ClassesStr . '\"';
+		} else {
+			$outClass ='';
 		}
 
 		return 'var myobj = { ' .
