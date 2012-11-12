@@ -35,24 +35,24 @@ class we_objectEx extends we_object{
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 		if(!$this->wasUpdate){
-			$q = " ID BIGINT NOT NULL AUTO_INCREMENT, ";
-			$q .= " OF_ID BIGINT NOT NULL, ";
-			$q .= " OF_ParentID BIGINT NOT NULL, ";
-			$q .= " OF_Text VARCHAR(255) NOT NULL, ";
-			$q .= " OF_Path VARCHAR(255) NOT NULL, ";
-			$q .= " OF_Url VARCHAR(255) NOT NULL, ";
-			$q .= " OF_TriggerID  BIGINT NOT NULL  default '0', ";
-			$q .= " OF_Workspaces VARCHAR(255) NOT NULL, ";
-			$q .= " OF_ExtraWorkspaces VARCHAR(255) NOT NULL, ";
-			$q .= " OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL, ";
-			$q .= " OF_Templates VARCHAR(255) NOT NULL, ";
-			$q .= " OF_ExtraTemplates VARCHAR(255) NOT NULL, ";
-			$q .= " OF_Category VARCHAR(255) NOT NULL,";
-			$q .= " OF_Published int(11) NOT NULL,";
-			$q .= " OF_IsSearchable tinyint(1) NOT NULL default '1',";
-			$q .= " OF_Charset VARCHAR(64) NOT NULL, ";
-			$q .= " OF_WebUserID BIGINT NOT NULL, ";
-			$q .= " OF_Language VARCHAR(5) default 'NULL', ";
+			$q = ' ID BIGINT NOT NULL AUTO_INCREMENT,
+				OF_ID BIGINT NOT NULL,
+				OF_ParentID BIGINT NOT NULL,
+				OF_Text VARCHAR(255) NOT NULL,
+				OF_Path VARCHAR(255) NOT NULL,
+				OF_Url VARCHAR(255) NOT NULL,
+				OF_TriggerID  BIGINT NOT NULL  default "0",
+				OF_Workspaces VARCHAR(255) NOT NULL,
+				OF_ExtraWorkspaces VARCHAR(255) NOT NULL,
+				OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL,
+				OF_Templates VARCHAR(255) NOT NULL,
+				OF_ExtraTemplates VARCHAR(255) NOT NULL,
+				OF_Category VARCHAR(255) NOT NULL,
+				OF_Published int(11) NOT NULL,
+				OF_IsSearchable tinyint(1) NOT NULL default "1",
+				OF_Charset VARCHAR(64) NOT NULL,
+				OF_WebUserID BIGINT NOT NULL,
+				OF_Language VARCHAR(5) default "NULL", ';
 
 			$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
 
@@ -76,25 +76,24 @@ class we_objectEx extends we_object{
 			}
 
 			if(empty($qarr)){// bug #7000
-				$q=rtrim($q);
-				$q=rtrim($q,',');
-			} else {
+				$q = rtrim($q, ', ');
+			} else{
 				$q .= implode(',', $qarr);
-			} 
-
-			// Charset and Collation
-			$charset_collation = "";
-			if(defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != ""){
-				$Charset = DB_CHARSET;
-				$Collation = DB_COLLATION;
-				$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
 			}
 
-			$this->DB_WE->query("DROP TABLE IF EXISTS $ctable");
-			$this->DB_WE->query("CREATE TABLE $ctable ($q, PRIMARY KEY (ID)$indexe) ENGINE = MYISAM $charset_collation");
+			// Charset and Collation
+			$charset_collation = '';
+			if(defined("DB_CHARSET") && DB_CHARSET != '' && defined("DB_COLLATION") && DB_COLLATION != ''){
+				$Charset = DB_CHARSET;
+				$Collation = DB_COLLATION;
+				$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
+			}
+
+			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
+			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', PRIMARY KEY (ID)' . $indexe . ') ENGINE = MYISAM ' . $charset_collation);
 
 			//dummy eintrag schreiben
-			$this->DB_WE->query("INSERT INTO $ctable (OF_ID) VALUES (0)");
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
 
 
 			// folder in object schreiben
@@ -104,15 +103,14 @@ class we_objectEx extends we_object{
 			}
 
 			////// resave the line O to O.....
-			$this->DB_WE->query("DELETE FROM $ctable where OF_ID=0 OR ID=0");
-			$this->DB_WE->query("INSERT INTO $ctable (OF_ID) VALUES(0)");
+			$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 			////// resave the line O to O.....
 		} else{
 			$this->SerializedArray = unserialize($this->DefaultValues);
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			$tableInfo = $this->DB_WE->metadata($ctable, true);
-			$size = count($tableInfo);
 
 			$add = array();
 			$drop = array();
@@ -125,11 +123,7 @@ class we_objectEx extends we_object{
 					continue;
 
 				$fieldtype = $this->getFieldType($arr[0]);
-				if(isset($value['length'])){
-					$len = ($fieldtype == 'string') ? ($value['length'] > 1023 ? 1023 : $value['length']) : $value['length'];
-				} else{
-					$len = 0;
-				}
+				$len = (isset($value['length']) ? ($fieldtype == 'string' ? ($value['length'] > 1023 ? 1023 : $value['length']) : $value['length']) : 0);
 				$type = $this->switchtypes2($arr[0], $len);
 				$isObject = ($arr[0] == 'object');
 
@@ -161,15 +155,15 @@ class we_objectEx extends we_object{
 			}
 
 			foreach($drop as $key => $value){
-				$this->DB_WE->query("ALTER TABLE $ctable DROP $value;");
+				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
 			}
 
 			foreach($alter as $key => $value){
-				$this->DB_WE->query("ALTER TABLE $ctable CHANGE $key $value;");
+				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);
 			}
 
 			foreach($add as $key => $value){
-				$this->DB_WE->query("ALTER TABLE $ctable ADD $value;");
+				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD ' . $value);
 			}
 		}
 
@@ -255,10 +249,8 @@ class we_objectEx extends we_object{
 				if($fieldname == $name){
 					return true;
 				}
-			} else{
-				if($fieldname == $name && $fieldtype == $type){
-					return true;
-				}
+			} elseif($fieldname == $name && $fieldtype == $type){
+				return true;
 			}
 		}
 		return false;
@@ -280,37 +272,38 @@ class we_objectEx extends we_object{
 		}
 		return false;
 	}
-	
-	function getDefaultArray($name,$type = '', $default = ''){
-		$defaultArr = array();
-		$defaultArr['default'] = '';
-		$defaultArr['defaultThumb'] = '';
-		$defaultArr['defaultdir'] = '';
-		$defaultArr['rootdir'] = '';
-		$defaultArr['autobr'] = '';
-		$defaultArr['dhtmledit'] = '';
-		$defaultArr['commands'] = '';
-		$defaultArr['height'] = '200';
-		$defaultArr['width'] = '618';
-		$defaultArr['class'] = '';
-		$defaultArr['max'] = '';
-		$defaultArr['cssClasses'] = '';
-		$defaultArr['xml'] = '';
-		$defaultArr['removefirstparagraph'] = '';
-		$defaultArr['showmenus'] = '';
-		$defaultArr['forbidhtml'] = '';
-		$defaultArr['forbidphp'] = '';
-		$defaultArr['inlineedit'] = '';
-		$defaultArr['users'] = '';
-		$defaultArr['required'] = '';
-		$defaultArr['editdescription'] = '';
-		$defaultArr['int'] = '';
-		$defaultArr['intID'] = '';
-		$defaultArr['intPath'] = '';
-		$defaultArr['hreftype'] = '';
-		$defaultArr['hrefdirectory'] = '';
-		$defaultArr['hreffile'] = '';
-		$defaultArr['uniqueID'] = md5(uniqid(__FUNCTION__, true));
+
+	function getDefaultArray($name, $type = '', $default = ''){
+		$defaultArr = array(
+			'default' => '',
+			'defaultThumb' => '',
+			'defaultdir' => '',
+			'rootdir' => '',
+			'autobr' => '',
+			'dhtmledit' => '',
+			'commands' => '',
+			'height' => '200',
+			'width' => '618',
+			'class' => '',
+			'max' => '',
+			'cssClasses' => '',
+			'xml' => '',
+			'removefirstparagraph' => '',
+			'showmenus' => '',
+			'forbidhtml' => '',
+			'forbidphp' => '',
+			'inlineedit' => '',
+			'users' => '',
+			'required' => '',
+			'editdescription' => '',
+			'int' => '',
+			'intID' => '',
+			'intPath' => '',
+			'hreftype' => '',
+			'hrefdirectory' => '',
+			'hreffile' => '',
+			'uniqueID' => md5(uniqid(__FUNCTION__, true)),
+		);
 		switch($type){
 			case 'text':
 			case 'input':
@@ -329,7 +322,7 @@ class we_objectEx extends we_object{
 		}
 		return $defaultArr;
 	}
-	
+
 	function addField($name, $type = '', $default = ''){
 		$defaultArr = $this->getDefaultArray($name, $type, $default);
 		$this->SerializedArray = unserialize($this->DefaultValues);
@@ -339,8 +332,8 @@ class we_objectEx extends we_object{
 			$arrOrder = explode(',', $this->strOrder);
 			$arrOrder[] = max($arrOrder) + 1;
 			$this->strOrder = implode(',', $arrOrder);
-		} else {
-			$this->strOrder='';
+		} else{
+			$this->strOrder = '';
 		}
 		return $this->saveToDB(true);
 	}
@@ -350,8 +343,9 @@ class we_objectEx extends we_object{
 		$isfound = false;
 		foreach($this->SerializedArray as $field => $value){
 			$arr = explode('_', $field);
-			if(!isset($arr[0]))
+			if(!isset($arr[0])){
 				continue;
+			}
 			$fieldtype = $arr[0];
 			unset($arr[0]);
 			$fieldname = implode('_', $arr);
@@ -361,12 +355,10 @@ class we_objectEx extends we_object{
 					$isfound = true;
 					break;
 				}
-			} else{
-				if($fieldname == $name && $fieldtype == $type){
-					unset($this->SerializedArray[$field]);
-					$isfound = true;
-					break;
-				}
+			} elseif($fieldname == $name && $fieldtype == $type){
+				unset($this->SerializedArray[$field]);
+				$isfound = true;
+				break;
 			}
 		}
 		if($isfound){
@@ -395,9 +387,8 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-				
-			} else {
-				$defaultArr=  $this->getDefaultArray($name,$newtype,$default);
+			} else{
+				$defaultArr = $this->getDefaultArray($name, $newtype, $default);
 			}
 			$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		} else{
@@ -411,8 +402,8 @@ class we_objectEx extends we_object{
 						unset($defaultArr[$delkey]);
 					}
 				}
-			} else {
-				$defaultArr=  $this->getDefaultArray($newtype,$default);
+			} else{
+				$defaultArr = $this->getDefaultArray($newtype, $default);
 			}
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
@@ -427,27 +418,29 @@ class we_objectEx extends we_object{
 		$this->strOrder = implode(',', $we_sort);
 		$this->we_save();
 	}
-	
+
 	function setOrder($order){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata= $this->DB_WE->metadata($ctable,true);
+		$metadata = $this->DB_WE->metadata($ctable, true);
 		if(is_array($order)){
-			$last='';
+			$last = '';
 			foreach($order as $oval){
-				if($last==''){$last='OF_Language';}
-				$ovalname=$this->getFieldPrefix($oval).'_'.$oval;
-				if(array_key_exists($ovalname,$metadata['meta'])){
-					$nummer=$metadata['meta'][$ovalname];
-					$type=$metadata[$nummer]['type'];
-					if($type=='string'){
-						$len=$metadata[$nummer]['len'];
-						$type='VARCHAR('.$len.')';
+				if($last == ''){
+					$last = 'OF_Language';
+				}
+				$ovalname = $this->getFieldPrefix($oval) . '_' . $oval;
+				if(array_key_exists($ovalname, $metadata['meta'])){
+					$nummer = $metadata['meta'][$ovalname];
+					$type = $metadata[$nummer]['type'];
+					if($type == 'string'){
+						$len = $metadata[$nummer]['len'];
+						$type = 'VARCHAR(' . $len . ')';
 					}
-					$q="ALTER TABLE ".$ctable." MODIFY COLUMN ".$ovalname.' '.$type." AFTER ".$last.";";
-					$this->DB_WE->query($q);
-					$last=$ovalname;
-				}		
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
+					$last = $ovalname;
+				}
 			}
 		}
 	}
+
 }

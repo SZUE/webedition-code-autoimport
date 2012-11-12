@@ -298,6 +298,7 @@ class weBackupPreparer{
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}
+		$thumbDir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 
 		$d = dir($dir);
 		while(false !== ($entry = $d->read())) {
@@ -310,6 +311,7 @@ class weBackupPreparer{
 				case '.project':
 				case '.trustudio.dbg.php':
 				case 'LanguageChanges.csv':
+				case $thumbDir:
 					continue;
 				default:
 					$file = $dir . '/' . $entry;
@@ -345,12 +347,13 @@ class weBackupPreparer{
 		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		foreach($list as $file){
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '";', 'ContentType', $DB_WE);
-			if($ct){
-				if($ct != 'image/*' && $ct != 'application/*' && $ct != 'application/x-shockwave-flash'){
+			switch($ct){
+				case 'image/*':
+				case 'application/*':
+				case 'application/x-shockwave-flash':
+					continue;
+				default:
 					$out[] = $file;
-				}
-			} else{
-				$out[] = $file;
 			}
 		}
 	}

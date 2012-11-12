@@ -121,8 +121,7 @@ class weBackup extends we_backup{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)) {
-
-					$line .= ($this->compress != "none" ?
+					$line .= ($this->compress != 'none' ?
 							@gzgets($fh, 4096) :
 							@fgets($fh, 4096));
 
@@ -539,7 +538,7 @@ class weBackup extends we_backup{
 			return false;
 		}
 
-		return ($this->mode == "sql" ?
+		return ($this->mode == 'sql' ?
 				parent::restoreFromBackup($filename, $this->backup_extern) :
 				$this->recover($filename));
 	}
