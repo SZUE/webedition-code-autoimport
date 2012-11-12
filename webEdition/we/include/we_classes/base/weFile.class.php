@@ -357,9 +357,7 @@ abstract class weFile{
 	static function getCompression($filename){
 		$compressions = array('gzip', 'zip', 'bzip');
 		foreach($compressions as $val){
-			$ext = '.' . self::getZExtension($val);
-			$extlen = strlen($ext);
-			if(substr_compare(basename($filename), $ext, -1 * $extlen, $extlen, true) === 0){
+			if(stripos(basename($filename), '.' . weFile::getZExtension($val)) !== false){
 				return $val;
 			}
 		}
@@ -450,8 +448,7 @@ abstract class weFile{
 	}
 
 	static function isCompressed($file, $offset = 0){
-		$fh = @fopen($file, 'rb');
-		if($fh){
+		if(($fh = @fopen($file, 'rb'))){
 			if(fseek($fh, $offset, SEEK_SET) == 0){
 				// according to rfc1952 the first two bytes identify the format
 				$_id1 = fgets($fh, 2);

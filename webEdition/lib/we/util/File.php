@@ -168,10 +168,7 @@ abstract class we_util_File{
 	}
 
 	public static function getUniqueId($md5 = true){
-		// md5 encrypted hash with the start value microtime(). The function
-		// uniqid() prevents from simultanious access, within a microsecond.
-		return ($md5 ? md5(uniqid(__FILE__, true)) : str_replace('.', '', uniqid('',true)));
-		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid("",true))"
+		return weFile::getUniqueId($md5);
 	}
 
 	/**
@@ -265,60 +262,31 @@ abstract class we_util_File{
 	}
 
 	public static function hasGzip(){
-		return function_exists("gzopen");
+		return weFile::hasGzip();
 	}
 
 	public static function hasZip(){
-		return function_exists("zip_open");
+		return weFile::hasZip();
 	}
 
 	public static function hasBzip(){
-		return function_exists("bzopen");
+		return weFile::hasBzip();
 	}
 
 	public static function hasCompression($comp){
-		if($comp == "gzip")
-			return self::hasGzip();
-		if($comp == "zip")
-			return self::hasZip();
-		if($comp == "bzip")
-			return self::hasBzip();
-		return false;
+		return weFile::hasCompression($comp);
 	}
 
 	public static function getComPrefix($compression){
-		switch($compression){
-			case "gzip":
-				return "gz";
-			case "zip":
-				return "zip_";
-			case "bzip":
-				return "bz";
-			default:
-				return "f";
-		}
+		return weFile::getComPrefix($compression);
 	}
 
 	public static function getZExtension($compression){
-		switch($compression){
-			case "gzip":
-				return "gz";
-			case "zip":
-				return "zip";
-			case "bzip":
-				return "bz";
-			default:
-				return '';
-		}
+		return weFile::getZExtension($compression);
 	}
 
 	public static function getCompression($filename){
-		$compressions = array("gzip", "zip", "bzip");
-		foreach($compressions as $val){
-			if(stripos(basename($filename), "." . self::getZExtension($val)) !== false)
-				return $val;
-		}
-		return "none";
+		return weFile::getCompression($filename);
 	}
 
 	public static function compress($file, $compression = "gzip", $destination = "", $remove = true, $writemode = "wb"){
@@ -327,7 +295,7 @@ abstract class we_util_File{
 			return false;
 		if($destination == "")
 			$destination = $file;
-		$prefix = self::getComPrefix($compression);
+		$prefix = weFile::getComPrefix($compression);
 		$open = $prefix . "open";
 		$write = $prefix . "write";
 		$close = $prefix . "close";
@@ -390,19 +358,7 @@ abstract class we_util_File{
 	}
 
 	public static function isCompressed($file, $offset = 0){
-		$fh = @fopen($file, 'rb');
-		if($fh){
-			if(fseek($fh, $offset, SEEK_SET) == 0){
-				// according to rfc1952 the first two bytes identify the format
-				$_id1 = fgets($fh, 2);
-				$_id2 = fgets($fh, 2);
-				if((ord($_id1) == 31) && (ord($_id2) == 139)){
-					return 1;
-				}
-			}
-			fclose($fh);
-		}
-		return 0;
+		return weFile::isCompressed($file, $offset);
 	}
 
 	public static function saveFile($file_name, $sourceCode = ''){
@@ -432,11 +388,10 @@ abstract class we_util_File{
 
 		$cf = array($completeDirPath);
 
-		$parent = dirname($completeDirPath);
-		$parent = str_replace("\\", "/", $parent);
+		$parent = str_replace("\\", "/", dirname($completeDirPath));
 
 		while(!self::checkAndMakeFolder($parent)) {
-			$cf[]= $parent;
+			$cf[] = $parent;
 			$parent = str_replace("\\", "/", dirname($parent));
 		}
 
@@ -646,11 +601,7 @@ abstract class we_util_File{
 	}
 
 	public static function addTrailingSlash($value){
-		if(substr($value, -1) != "/"){
-			return $value . "/";
-		} else{
-			return $value;
-		}
+		return self::removeTrailingSlash($value) . '/';
 	}
 
 	public static function removeTrailingSlash($value){
