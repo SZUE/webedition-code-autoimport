@@ -56,7 +56,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
 		$aDat = $aDat ? $aDat : $aCfgProps;
 		$aTrf = array_pop($aDat);
-		if(sount($aDat) > $iLayoutCols){
+		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols) {
 				$aDelCol = array_pop($aDat);
 				foreach($aDelCol as $aShiftWidget){
