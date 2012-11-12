@@ -77,7 +77,6 @@ class weXMLExIm{
 	var $xmlBrowser;
 
 	function __construct($file = ""){
-
 		$this->RefTable = new RefTable();
 		if($file != ""){
 			$this->loadPerserves($file);
@@ -86,10 +85,12 @@ class weXMLExIm{
 		$this->destination[strtolower(FILE_TABLE)] = 0;
 		$this->destination[strtolower(TEMPLATES_TABLE)] = 0;
 		$this->destination[strtolower(DOC_TYPES_TABLE)] = 0;
-		if(defined("OBJECT_TABLE"))
+		if(defined("OBJECT_TABLE")){
 			$this->destination[strtolower(OBJECT_TABLE)] = 0;
-		if(defined("OBJECT_FILES_TABLE"))
+		}
+		if(defined("OBJECT_FILES_TABLE")){
 			$this->destination[strtolower(OBJECT_FILES_TABLE)] = 0;
+		}
 	}
 
 	function setOptions($options){

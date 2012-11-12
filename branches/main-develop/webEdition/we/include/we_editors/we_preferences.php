@@ -3239,13 +3239,13 @@ else {
 				$_settings[] = array('html' => $_xhtml_show_wrong, 'space' => 200, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
-				$_xhtml_show_wrong_text = we_forms::checkbox(1, get_value("xhtml_show_wrong_text"), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong'));
-				$_xhtml_show_wrong_text .= we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value("xhtml_show_wrong_text"));
+				$_xhtml_show_wrong_text = we_forms::checkbox(1, get_value("xhtml_show_wrong_text"), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong')) .
+					we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value("xhtml_show_wrong_text"));
 				$_settings[] = array('html' => $_xhtml_show_wrong_text, 'space' => 220, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
-				$_xhtml_show_wrong_js = we_forms::checkbox(1, get_value("xhtml_show_wrong_js"), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong'));
-				$_xhtml_show_wrong_js .= we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value("xhtml_show_wrong_js"));
+				$_xhtml_show_wrong_js = we_forms::checkbox(1, get_value("xhtml_show_wrong_js"), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong')) .
+					we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value("xhtml_show_wrong_js"));
 				$_settings[] = array('html' => $_xhtml_show_wrong_js, 'space' => 220, 'noline' => 1);
 
 				//  activate xhtml_show_wrong_text
@@ -3274,7 +3274,7 @@ else {
 
 
 
-			$steps = array(1, 5, 7, 10, 15, 20, 30, 40, 50, 80, 100, 500, 1000);
+			$steps = explode(',', weBackup::backupSteps);
 			$backup_steps = get_value("BACKUP_STEPS");
 			$steps_code = '<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:10px;"><tr>';
 			foreach($steps as $step){
@@ -3291,11 +3291,13 @@ else {
 				g_l('prefs', '[backup_auto]');
 			$perf->setCol(2, 0, array("class" => "header_small", "colspan" => 3), $steps_code);
 
+			$tmp = we_forms::checkbox(1, get_value('FAST_BACKUP'), 'setXhtml_show_wrong_js', 'new fast Backup', false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[FAST_BACKUP]\');') .
+				we_html_tools::hidden('newconf[FAST_BACKUP]', get_value('FAST_BACKUP'));
 
-			if(we_hasPerm("ADMINISTRATOR")){
-				$_settings[] = array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200);
-				$_settings[] = array("headline" => "", "html" => $perf->getHtml(), "space" => 15);
-			}
+
+			$_settings[] = array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200);
+			$_settings[] = array("headline" => '', "html" => $perf->getHtml(), "space" => 15);
+			$_settings[] = array("headline" => 'Fast Backup (testing)', 'html' => $tmp, 'space' => 50, 'noline' => 1);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
@@ -3303,19 +3305,15 @@ else {
 
 			break;
 
-		/*		 * *******************************************************************
-		 * EMAIL
-		 * ******************************************************************* */
 		case "email":
-
-			$_settings = array();
-
 			/**
 			 * Information
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false);
 
-			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
+			$_settings = array(
+				array("headline" => "", "html" => $_information, "space" => 0)
+			);
 
 			if(we_hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');

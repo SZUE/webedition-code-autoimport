@@ -29,7 +29,7 @@ class weXMLExport extends weXMLExIm{
 	var $db;
 	var $prepare = true;
 
-	function weXMLExport(){
+	function __construct(){
 		$this->RefTable = new RefTable();
 	}
 
@@ -45,27 +45,24 @@ class weXMLExport extends weXMLExIm{
 			$doc->setElement("data", weFile::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
-		$fh = fopen($fname, "ab");
+		$fh = fopen($fname, 'ab');
 		if(!$fh){
 			return -1;
 		}
 
 		$params = array();
-		if(isset($doc->ID))
+		if(isset($doc->ID)){
 			$params["ID"] = $doc->ID;
+		}
 		if(isset($doc->ContentType)){
 			$params["ContentType"] = $doc->ContentType;
-		} else{
-			if(isset($doc->Table) && $doc->Table == DOC_TYPES_TABLE)
-				$params["ContentType"] = "doctype";
+		} elseif(isset($doc->Table) && $doc->Table == DOC_TYPES_TABLE){
+			$params["ContentType"] = "doctype";
 		}
 
 		$this->RefTable->setProp($params, "Eximed", 1);
 
-		if(isset($doc->Pseudo))
-			$classname = $doc->Pseudo;
-		else
-			$classname = $doc->ClassName;
+		$classname = (isset($doc->Pseudo) ? $doc->Pseudo : $doc->ClassName);
 
 		if($classname == "weBinary" && !is_numeric($id)){
 			$doc->Path = $doc->ID;
@@ -73,17 +70,16 @@ class weXMLExport extends weXMLExIm{
 		}
 
 		if($classname == "weTable"){
-			if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE)))
+			if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))){
 				$doc->getColumns();
-			if(defined("CUSTOMER_TABLE"))
+			}
+			if(defined("CUSTOMER_TABLE")){
 				$doc->getColumns();
+			}
 		}
 
-		if(isset($doc->attribute_slots)){
-			$attribute = $doc->attribute_slots;
-		} else{
-			$attribute = array();
-		}
+		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
+
 
 		if($classname == "weBinary"){
 			weContentProvider::binary2file($doc, $fh);
@@ -97,10 +93,7 @@ class weXMLExport extends weXMLExIm{
 			if(strtolower($doc->table) == strtolower(FILE_TABLE)){
 				if($doc->ContentType == "image/*" || stripos($doc->ContentType, "application/") !== false){
 					$bin = weContentProvider::getInstance("weBinary", $doc->ID);
-					if(isset($bin->attribute_slots))
-						$attribute = $bin->attribute_slots;
-					else
-						$attribute = array();
+					$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
 					weContentProvider::binary2file($bin, $fh);
 				}
 			}
@@ -124,44 +117,35 @@ class weXMLExport extends weXMLExIm{
 				else if($art == "objects")
 					$selObjs = defined("OBJECT_FILES_TABLE") ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 			}
-		}
-		else{
+		} else{
 			if($type == "doctype"){
-				$catss = "";
 				if($categories){
 					$catids = makeCSVFromArray(makeArrayFromCSV($categories));
-					$this->db->query("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID IN (" . $catids . ");");
+					$this->db->query('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN (' . $catids . ')');
 					while($this->db->next_record()) {
 						$cats[] = $this->db->f("Path");
 					}
 					$catss = makeCSVFromArray($cats);
+				} else{
+					$catss = '';
 				}
 
 				$cat_sql = ($this->cats ? we_category::getCatSQLTail($catss, FILE_TABLE, true, $this->db) : '');
-				$ws_where = "";
+				$ws_where = '';
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = " AND (" . FILE_TABLE . ".Path like '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "') ";
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
 				}
 
-				$query = 'SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql;
-
-				$this->db->query($query);
+				$this->db->query('SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.DocType="' . $this->db->escape($doctype) . '"' . $cat_sql);
 				while($this->db->next_record()) {
 					$selDocs[] = $this->db->f("ID");
 				}
 			} else{
 				if(defined("OBJECT_FILES_TABLE")){
-					$catss = "";
-
-					if($categories){
-						$catss = $categories;
-					}
-
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
-					$q = "SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($catss != "" ? " AND Category IN (" . $catss . ");" : '') . $where . ';';
-					$this->db->query($q);
+					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE IsFolder=0 AND TableID='" . $this->db->escape($classname) . "'" . ($categories != '' ? ' AND Category IN (' . $categories . ')' : '') . $where);
 					$selObjs = array();
 					while($this->db->next_record()) {
 						$selObjs[] = $this->db->f("ID");
@@ -170,19 +154,16 @@ class weXMLExport extends weXMLExIm{
 			}
 		}
 
-		$ids = array();
 		foreach($selDocs as $k => $v){
-			$ct = f("Select ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($v) . ";", "ContentType", $this->db);
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => $ct,
+				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "ContentType", $this->db),
 				"level" => 0
 				)
 			);
 		}
 
 		foreach($selTempl as $k => $v){
-
 			$this->RefTable->add2(array(
 				"ID" => $v,
 				"ContentType" => "text/weTmpl",
@@ -206,26 +187,24 @@ class weXMLExport extends weXMLExIm{
 					"ID" => $v,
 					"ContentType" => "object",
 					"level" => 0
-					)
-				);
+				));
 			}
 		}
-
-		//return $ids;
 	}
 
 	function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = array();
 		$wsQuery = '';
-		if($ws = get_ws($table)){
+		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				if($wsQuery != '')
+				if($wsQuery != ''){
 					$wsQuery .=' OR ';
-				$wsQuery .= " Path like '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
+				}
+				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . weXMLExIm::getQueryParents($path);
 				while($path != "/" && $path) {
-					array_push($parentpaths, $path);
+					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
@@ -249,22 +228,25 @@ class weXMLExport extends weXMLExIm{
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $db);
+				$isfolder = f('SELECT IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($v), "IsFolder", $db);
 				if($isfolder){
 					we_readChilds($v, $tmp, $table, false, $allow);
-					if($with_dirs)
+					if($with_dirs){
 						$tmp[] = $v;
-				}
-				else
+					}
+				} else{
 					$tmp[] = $v;
+				}
 			}
 		}
-		if($with_dirs)
+		if($with_dirs){
 			return $tmp;
+		}
 		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", new DB_WE());
-			if(!$isfolder)
+			$isfolder = f('SELECT IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($v), 'IsFolder', new DB_WE());
+			if(!$isfolder){
 				$ret[] = $v;
+			}
 		}
 		return $ret;
 	}
@@ -292,33 +274,35 @@ class weXMLExport extends weXMLExIm{
 			}
 			$out.="></we:map>";
 		}
-		$out.="</we:info>";
-		$out.=we_html_element::htmlComment("webackup") . "\n";
+		$out.="</we:info>" .
+			we_html_element::htmlComment("webackup") . "\n";
 		return $out;
 	}
 
 	function loadPerserves(){
 		parent::loadPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			$this->options = $_SESSION['weS']['ExImOptions'];
+		}
 	}
 
-	//---------------------
 	function savePerserves(){
 		parent::savePerserves();
 		$_SESSION['weS']['ExImPrepare'] = $this->prepare;
 		$_SESSION['weS']['ExImOptions'] = $this->options;
 	}
 
-	//---------------------
 	function unsetPerserves(){
 		parent::unsetPerserves();
-		if(isset($_SESSION['weS']['ExImPrepare']))
+		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);
-		if(isset($_SESSION['weS']['ExImOptions']))
+		}
+		if(isset($_SESSION['weS']['ExImOptions'])){
 			unset($_SESSION['weS']['ExImOptions']);
+		}
 	}
 
 }

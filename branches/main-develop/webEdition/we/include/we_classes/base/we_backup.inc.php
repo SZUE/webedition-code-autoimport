@@ -29,10 +29,8 @@
  */
 define('BACKUP_TABLE', TBL_PREFIX . 'tblbackup');
 
-class we_backup{
-	/*	 * ***********************************************************************
-	 * VARIABLES
-	 * *********************************************************************** */
+//FIXME: try to remove this class
+abstract class we_backup{
 
 	var $backup_db;
 	var $errors = array();
@@ -932,9 +930,9 @@ class we_backup{
 												} else{
 													$this->backup_db->query($buff);
 												}
-											}
-											else
+											}else{
 												$this->backup_db->query($buff);
+											}
 										}
 
 										foreach($upd as $k => $v){
@@ -959,11 +957,10 @@ class we_backup{
 		unlink($filename);
 		$tn = strtolower($ctbl . $itbl);
 
-		if(isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"]){
-			$this->current_description = $this->description["import"]["$tn"];
-		} else{
-			$this->current_description = g_l('backup', "[working]");
-		}
+		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"]?
+			$this->description["import"][$tn]:
+			g_l('backup', "[working]"));
+
 
 		if($restore_extra && !$this->restoreFiles()){
 			return false;

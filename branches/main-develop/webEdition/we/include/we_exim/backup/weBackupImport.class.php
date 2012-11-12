@@ -61,6 +61,9 @@ class weBackupImport{
 		}
 		if($parser === false){
 			p_r($parser->parseError);
+			if($log){
+				weBackupUtil::addLog(print_r($parser->parseError, true));
+			}
 		}
 
 		// free some memory
@@ -80,13 +83,9 @@ class weBackupImport{
 			$object = '';
 
 			if(weBackupImport::getObject($entity, $attributes, $object, $classname)){
-
-
 				$parser->addMark('first');
 				$parser->next();
 				do{
-
-
 					$name = $parser->getNodeName();
 
 					//import elements
@@ -112,19 +111,10 @@ class weBackupImport{
 						$parser->gotoMark('second');
 					} else{
 						// import field
-						if(weContentProvider::needCoding($classname, $name)){
-							$object->$name = weContentProvider::decode($parser->getNodeData());
-						} else{
-							$object->$name = $parser->getNodeData(); //original mit Bug #3412 aber diese Version l�st 4092
-							// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben f�r 4092
-							/*
-							  if($charset=="UTF-8"){
-							  $object->$name = utf8_encode($parser->getNodeData());
-							  } else {
-							  $object->$name = $parser->getNodeData();
-							  }
-							 */
-						}
+						$object->$name = (weContentProvider::needCoding($classname, $name) ?
+								weContentProvider::decode($parser->getNodeData()) :
+								$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
+
 						if(isset($object->persistent_slots) && !in_array($name, $object->persistent_slots)){
 							$object->persistent_slots[] = $name;
 						}
@@ -143,27 +133,29 @@ class weBackupImport{
 					}
 				} while($parser->nextSibling());
 
-
 				if($log){
 					$addtext = '';
 					if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
-						if(method_exists($object, 'convertCharsetEncoding')){
-							$addtext = " - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET;
-						} else{
-							$addtext = " - Converting Charset: NO ";
-						}
+						$addtext = (method_exists($object, 'convertCharsetEncoding') ?
+								" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
+								" - Converting Charset: NO ");
 					}
 					$_prefix = 'Saving object ';
-					if($classname == 'weTable' || $classname == 'weTableAdv'){
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
-					} else if($classname == 'weTableItem'){
-						$_id_val = '';
-						foreach($object->keys as $_key){
-							$_id_val .= ':' . $object->$_key;
-						}
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
-					} else if($classname == 'weBinary'){
-						weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
+					switch($classname){
+						case 'weTable':
+						case 'weTableAdv':
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
+							break;
+						case 'weTableItem':
+							$_id_val = '';
+							foreach($object->keys as $_key){
+								$_id_val .= ':' . $object->$_key;
+							}
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
+							break;
+						case 'weBinary':
+							weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
+							break;
 					}
 				}
 				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
@@ -179,16 +171,13 @@ class weBackupImport{
 				}
 
 				//speedup for some tables
-				if(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE)){
-					$_SESSION['weS']['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
-				} else{
-					$_SESSION['weS']['weBackupVars']['backup_steps'] = BACKUP_STEPS;
-				}
+				$_SESSION['weS']['weBackupVars']['backup_steps'] =
+					(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE) ?
+						BACKUP_STEPS * $nFactor :
+						BACKUP_STEPS);
 
 				$parser->gotoMark('first');
 			}
-
-
 
 			if(isset($object)){
 				unset($object);

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
 
 $GLOBALS['configs'] = array(
@@ -35,7 +34,7 @@ $GLOBALS['configs'] = array(
 		'WE_LOGIN_HIDEWESTATUS' => array('Hide if webEdition is Nightly or Alpha or.. Release Version', 1),
 		'WE_LOGIN_WEWINDOW' => array('Decide how WE opens: 0 allow both, 1 POPUP only, 2 same Window only', 0),
 // Variables for thumbnails
-		'WE_THUMBNAIL_DIRECTORY' => array('Directory in which to save thumbnails', "/__we_thumbs__"),
+		'WE_THUMBNAIL_DIRECTORY' => array('Directory in which to save thumbnails', '/__we_thumbs__'),
 // Variables for error handling
 		'WE_ERROR_HANDLER' => array('Show errors that occur in webEdition', true),
 		'WE_ERROR_NOTICES' => array('Handle notices', false),
@@ -49,7 +48,8 @@ $GLOBALS['configs'] = array(
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', 0),
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', 0),
 // Backup variable
-		'BACKUP_STEPS' => array('Number of entries per batch', 50),
+		'BACKUP_STEPS' => array('Number of entries per batch', 100),
+		'FAST_BACKUP' => array('New Test for a faster Backup', 0),
 // inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', true),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', false),
@@ -66,7 +66,7 @@ $GLOBALS['configs'] = array(
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', false),
 		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', 0),
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour', 0),
-		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1),//postdoc
+		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', 1), //postdoc
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', true),
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', "755"),
