@@ -147,7 +147,7 @@ function we_tag_input($attribs, $content){
 					}
 					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .
 						(!empty($vals) ? '<option>' . implode("</option>\n<option>", $vals) . "</option>\n" : '') .
-						"</select>\n";
+						'</select>';
 				}
 				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
 

@@ -303,7 +303,7 @@ function we_tag_field($attribs){
 						$hrefArr = array();
 					}
 				}
-				$out = count($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
+				$out = !empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
