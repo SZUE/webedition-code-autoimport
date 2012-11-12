@@ -34,7 +34,7 @@ function we_tag_formfield($attribs){
 	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype');
 	$ffname = $GLOBALS['we_doc']->getElement($name, 'ffname');
 
-	$type_sel = $type_sel ? $type_sel : (sizeof($types) ? $types[0] : "textinput");
+	$type_sel = $type_sel ? $type_sel : (!empty($types) ? $types[0] : "textinput");
 
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
@@ -64,7 +64,7 @@ function we_tag_formfield($attribs){
 				$ff[$m[2]]['default'] = $attribs[$k];
 			}
 			if(in_array($m[0], $mandatoryFields)){
-				for($i = (sizeof($mandatoryFields) - 1); $i >= 0; $i--){
+				for($i = (count($mandatoryFields) - 1); $i >= 0; $i--){
 					if($mandatoryFields[$i] == $m[0]){
 						unset($mandatoryFields[$i]);
 					}
@@ -107,7 +107,7 @@ function we_tag_formfield($attribs){
 	</tr>
 ';
 
-		if(sizeof($ff)){
+		if(!empty($ff)){
 			$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', "[attributes]") . ':&nbsp;</nobr></td>
 		<td class=\"weEditmodeStyle\" width="161">
@@ -123,7 +123,7 @@ function we_tag_formfield($attribs){
 
 				if($m['change'] == 1){
 					$valselect = "";
-					if(sizeof($default) > 1){
+					if(count($default) > 1){
 						$valselect = '<select name="' . $name . 'tmp" size="1" onchange="this.form.elements[\'' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']\'].value=this.options[this.selectedIndex].value;">' . "\n";
 						$valselect .= '<option value=""></option>' . "\n";
 						foreach($default as $v){
@@ -131,15 +131,15 @@ function we_tag_formfield($attribs){
 						}
 						$valselect .= '</select>' . "\n";
 					}
-					if((!isset($m['value'])) && sizeof($default) == 1){
+					if((!isset($m['value'])) && count($default) == 1){
 						$val = $default[0];
 					}
 					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
 				} else{
-					if(sizeof($default) > 1){
+					if(count($default) > 1){
 						$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 						$valselect = "";
-						if(sizeof($default) > 1){
+						if(count($default) > 1){
 							$valselect = '<select name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="1">' . "\n";
 							foreach($default as $v){
 								$valselect .= '<option value="' . $v . '"' . (($v == $val) ? " selected" : "") . '>' . $v . '</option>' . "\n";
@@ -148,7 +148,7 @@ function we_tag_formfield($attribs){
 						}
 						$tbl .= $valselect;
 					} else{
-						$foo = sizeof($default) ? $default[0] : "";
+						$foo = !empty($default) ? $default[0] : "";
 						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '" />';
 					}
 				}

@@ -74,9 +74,9 @@ function we_isFieldNotEmpty($attribs){
 			} else{
 				$data = unserialize($GLOBALS['we_doc']->getElement($orig_match));
 			}
-			if(isset($data['objects']) && is_array($data['objects']) && sizeof($data['objects']) > 0){
+			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
 				$test = array_count_values($data['objects']);
-				return (sizeof($test) > 1 || (sizeof($test) == 1 && !isset($test[''])));
+				return (count($test) > 1 || (count($test) == 1 && !isset($test[''])));
 			}
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
@@ -105,11 +105,11 @@ function we_isFieldNotEmpty($attribs){
 				}
 				return (bool) $hreftmp;
 			}
-			
+
 			// we must check $match . '_we_jkhdsf_int' for block-Postfix instead of $match (which exists only for href type = ext): #6422
 			$isInBlock = ( $GLOBALS['lv']->f($orig_match . '_we_jkhdsf_int') || $GLOBALS['lv']->f($orig_match) )? false : true;
-			$match = $isInBlock ? we_tag_getPostName($orig_match) : $orig_match; 
-			
+			$match = $isInBlock ? we_tag_getPostName($orig_match) : $orig_match;
+
 			$int = ($GLOBALS['lv']->f($match . '_we_jkhdsf_int') == '') ? 0 : $GLOBALS['lv']->f($match . '_we_jkhdsf_int');
 			if($int){ // for type = href int
 				$intID = $GLOBALS['lv']->f($match . '_we_jkhdsf_intID');

@@ -28,7 +28,7 @@ function we_tag_icon($attribs){
 	$xml = weTag_getAttribute('xml', $attribs);
 	$id = weTag_getAttribute('id', $attribs);
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), new DB_WE());
-	if(count($row)){
+	if(!empty($row)){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 		return getHtmlTag('link', array('rel' => 'shortcut icon', 'href' => $url, 'xml' => $xml));
 	}

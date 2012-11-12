@@ -60,7 +60,7 @@ function we_tag_sendMail($attribs, $content){
 			$to = explode(",", $recipient);
 
 			$we_recipient = array();
-			for($l = 0; $l < sizeof($to); $l++){
+			for($l = 0; $l < count($to); $l++){
 
 				if(strpos($to[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$to[$l]]) && strpos($_SESSION["webuser"][$to[$l]], '@') !== false){ //wenn man registireten Usern was senden moechte
@@ -75,7 +75,7 @@ function we_tag_sendMail($attribs, $content){
 
 			$toCC = explode(",", $recipientCC);
 			$we_recipientCC = array();
-			for($l = 0; $l < sizeof($toCC); $l++){
+			for($l = 0; $l < count($toCC); $l++){
 
 				if(strpos($toCC[$l],'@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toCC[$l]]) && strpos($_SESSION["webuser"][$toCC[$l]],'@') !== false){ //wenn man registrierten Usern was senden moechte
@@ -89,7 +89,7 @@ function we_tag_sendMail($attribs, $content){
 			}
 			$toBCC = explode(",", $recipientBCC);
 			$we_recipientBCC = array();
-			for($l = 0; $l < sizeof($toBCC); $l++){
+			for($l = 0; $l < count($toBCC); $l++){
 
 				if(strpos($toBCC[$l], '@') === false){
 					if(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"] && isset($_SESSION["webuser"][$toBCC[$l]]) && strpos($_SESSION["webuser"][$toBCC[$l]], '@') !== false){ //wenn man registrierte Usern was senden moechte

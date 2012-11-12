@@ -44,7 +44,7 @@ function we_tag_ifShopNotEmpty($attribs){
 
 	if($basket){
 		$shoppingItems = $basket->getShoppingItems();
-		$basket_count = sizeof($shoppingItems);
+		$basket_count = count($shoppingItems);
 
 		return abs($basket_count) > 0;
 	} else{

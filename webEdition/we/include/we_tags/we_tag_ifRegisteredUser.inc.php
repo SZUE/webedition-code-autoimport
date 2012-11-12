@@ -41,7 +41,7 @@ function we_tag_ifRegisteredUser($attribs){
 	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){
 		$ret = true;
 
-		if($ret && sizeof($userid) > 0){
+		if($ret && !empty($userid)){
 			if(!isset($_SESSION['webuser']['ID'])){
 				return false;
 			} else{

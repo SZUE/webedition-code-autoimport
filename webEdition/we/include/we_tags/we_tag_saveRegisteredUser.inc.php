@@ -52,7 +52,7 @@ function we_tag_saveRegisteredUser($attribs){
 					$ret = $hook->executeHook();
 
 					// skip protected Fields
-					if(sizeof($protected) > 0){
+					if(!empty($protected)){
 						foreach($_REQUEST['s'] as $name => $val){
 							if(in_array($name, $protected)){
 								unset($_REQUEST['s'][$name]);
@@ -62,7 +62,7 @@ function we_tag_saveRegisteredUser($attribs){
 					we_saveCustomerImages();
 					$set = we_tag_saveRegisteredUser_processRequest();
 
-					if(count($set)){
+					if(!empty($set)){
 						// User in DB speichern
 						$set['ModifyDate'] = 'UNIX_TIMESTAMP()';
 						$set['ModifiedBy'] = 'frontend';
@@ -124,7 +124,7 @@ function we_tag_saveRegisteredUser($attribs){
 					$ret = $hook->executeHook();
 
 					// skip protected Fields
-					if(sizeof($protected) > 0){
+					if(!empty($protected)){
 						foreach($_REQUEST['s'] as $name => $val){
 							if(in_array($name, $protected)){
 								unset($_REQUEST['s'][$name]);
@@ -138,7 +138,7 @@ function we_tag_saveRegisteredUser($attribs){
 					if(isset($_REQUEST['s']['Password']) && $_REQUEST['s']['Password'] != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_REQUEST['s']['ID']));
 					}
-					if(sizeof($set_a)){
+					if(!empty($set_a)){
 						$set_a['ModifyDate'] = 'UNIX_TIMESTAMP()';
 						$set_a['ModifiedBy'] = 'frontend';
 						$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_REQUEST['s']['ID']));
@@ -199,7 +199,7 @@ function we_saveCustomerImages(){
 
 					$we_size = we_thumbnail::getimagesize($_serverPath);
 
-					if(count($we_size) > 0){
+					if(!empty($we_size)){
 
 						$tmp_Filename = $imgName . '_' . weFile::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
 						$tmp = explode('.', $tmp_Filename);

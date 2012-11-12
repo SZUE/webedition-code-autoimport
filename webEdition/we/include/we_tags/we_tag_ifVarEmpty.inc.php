@@ -86,7 +86,7 @@ function we_isVarNotEmpty($attribs){
 								$data['objects'] = array();
 							}
 							$temp = new we_listview_multiobject($match);
-							return (sizeof($temp->Record) > 0);
+							return (!empty($temp->Record));
 						default :
 							$foo = $doc->getElement($match);
 							if(!$foo){

@@ -212,7 +212,7 @@ function we_tag_form($attribs){
 				}
 
 				$_recipientIdString = '';
-				if(count($_ids)){
+				if(!empty($_ids)){
 					$_recipientIdString = implode(',', $_ids);
 				}
 

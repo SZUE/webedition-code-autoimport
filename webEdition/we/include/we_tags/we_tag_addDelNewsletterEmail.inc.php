@@ -51,17 +51,17 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if(!$useListsArray){
 		if($customer){
 			$tmpAbos = makeArrayFromCSV(weTag_getAttribute("mailingList", $attribs));
-			if(!sizeof($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
+			if(empty($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
 				$abos[0] = $fieldGroup . "_Ok";
 			} else{// #6100
 				foreach($tmpAbos as $abo){
-					array_push($abos, $fieldGroup . "_" . $abo);
+					$abos[]= $fieldGroup . "_" . $abo;
 				}
 			}
 		} else{
 			if(!$emailonly){
 				$paths = makeArrayFromCSV(weTag_getAttribute("path", $attribs));
-				if(!count($paths) || (strlen($paths[0]) == 0)){
+				if(empty($paths) || (strlen($paths[0]) == 0)){
 					$paths[0] = "newsletter.txt";
 				}
 			}
@@ -79,7 +79,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					$paths[] = $tmpPaths[$nr];
 				}
 			}
-			if(count($abos) == 0 && count($paths) == 0){
+			if(empty($abos)&& empty($paths)){
 				$GLOBALS["WE_MAILING_LIST_EMPTY"] = 1;
 				$GLOBALS[($isSubscribe ? 'WE_WRITENEWSLETTER_STATUS' : 'WE_REMOVENEWSLETTER_STATUS')] = weNewsletterBase::STATUS_ERROR;
 				return;
@@ -119,7 +119,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 			$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = $err;
 			return;
 		}
-		if(count($f) == 0){
+		if(empty($f)){
 			$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_ERROR;
 			return;
 		}
@@ -130,7 +130,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 			$emailExistsInOneOfTheLists = false;
 			if($customer){
 				$__query = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f["subscribe_mail"]) . "'", $db);
-				if(count($__query)){
+				if(!empty($__query)){
 					$emailExistsInOneOfTheLists = true;
 				}
 				foreach($abos as $cAbo){

@@ -239,7 +239,7 @@ function we_tag_field($attribs){
 
 		case 'multiobject' :
 			$temp = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
-			if(isset($temp['objects']) && sizeof($temp['objects']) > 0){
+			if(isset($temp['objects']) && !empty($temp['objects'])){
 				$out = implode(',', $temp['objects']);
 			} else{
 				$out = '';
@@ -303,7 +303,7 @@ function we_tag_field($attribs){
 						$hrefArr = array();
 					}
 				}
-				$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
+				$out = !empty($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 				break;
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
