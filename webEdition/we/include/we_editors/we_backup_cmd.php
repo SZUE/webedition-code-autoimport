@@ -192,7 +192,7 @@ if(isset($_REQUEST['cmd'])){
 					$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php';
 				}
 
-				if(count($_files)){
+				if(!empty($_files)){
 					weBackupUtil::exportFiles($_SESSION['weS']['weBackupVars']['backup_file'], $_files);
 				}
 
@@ -350,14 +350,14 @@ if(isset($_REQUEST['cmd'])){
 				// reload user prefs
 				$_SESSION['prefs'] = getHash('SELECT * FROM ' . PREFS_TABLE, $DB_WE);
 				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID = ' . intval($_SESSION['user']['ID']), $DB_WE);
-				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && sizeof($exprefs) > 0){
+				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && !empty($exprefs)){
 					$_SESSION['prefs'] = $exprefs;
 				}
 
 				print we_html_element::jsElement('
 						top.checker.location = "' . HTML_DIR . 'white.html";
-						var op = top . opener . top . makeFoldersOpenString();
-						top . opener . top . we_cmd("load", top . opener . top . treeData . table);
+						var op = top.opener.top.makeFoldersOpenString();
+						top.opener.top.we_cmd("load", top . opener . top . treeData . table);
 						' . we_main_headermenu::getMenuReloadCode() . '
 						top.busy.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 						' . ( $_SESSION['weS']['weBackupVars']['options']['rebuild'] ?
