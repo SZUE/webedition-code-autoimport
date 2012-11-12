@@ -289,18 +289,29 @@ class weBackupPreparer{
 		$list = array();
 		weBackupPreparer::getFileList($list, TEMPLATES_PATH, true, false);
 		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . weNavigationCache::CACHEDIR, true, false);
-		return array_merge($list, weBackupPreparer::getSiteFiles());
+		self::getSiteFiles($list);
+		return $list;
 	}
 
-	function getFileList(&$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
+	function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
 		$dir = ($dir == '' ? $_SERVER['DOCUMENT_ROOT'] : $dir);
-		if(!is_readable($dir)){
+		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}
-		if(is_dir($dir)){
-			$d = dir($dir);
-			while(false !== ($entry = $d->read())) {
-				if($entry != '.' && $entry != '..' && $entry != 'CVS' && $entry != 'webEdition' && $entry != 'sql_dumps' && $entry != '.project' && $entry != '.trustudio.dbg.php' && $entry != 'LanguageChanges.csv'){
+
+		$d = dir($dir);
+		while(false !== ($entry = $d->read())) {
+			switch($entry){
+				case '.':
+				case '..':
+				case 'CVS':
+				case 'webEdition':
+				case 'sql_dumps':
+				case '.project':
+				case '.trustudio.dbg.php':
+				case 'LanguageChanges.csv':
+					continue;
+				default:
 					$file = $dir . '/' . $entry;
 					if(!weBackupPreparer::isPathExist(str_replace($_SERVER['DOCUMENT_ROOT'], '', $file))){
 						if(is_dir($file)){
@@ -314,10 +325,9 @@ class weBackupPreparer{
 					} elseif(is_dir($file)){
 						weBackupPreparer::getFileList($list, $file, $with_dirs, $rem_doc_root);
 					}
-				}
 			}
-			$d->close();
 		}
+		$d->close();
 	}
 
 	function addToFileList(&$list, $file, $rem_doc_root = true){
@@ -328,11 +338,10 @@ class weBackupPreparer{
 		}
 	}
 
-	function getSiteFiles(){
+	function getSiteFiles(array &$out){
 		global $DB_WE;
 
 		$list = array();
-		$out = array();
 		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		foreach($list as $file){
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '";', 'ContentType', $DB_WE);
@@ -344,7 +353,6 @@ class weBackupPreparer{
 				$out[] = $file;
 			}
 		}
-		return $out;
 	}
 
 	function clearTemporaryData($docTable){

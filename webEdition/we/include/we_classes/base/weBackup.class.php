@@ -578,25 +578,42 @@ class weBackup extends we_backup{
 		return parent::isFixed($tab) || !$this->isWeTable($tab);
 	}
 
-	function getFileList($dir = "", $with_dirs = false, $rem_doc_root = true){
+	function getFileList($dir = '', $with_dirs = false, $rem_doc_root = true){
 		$dir = ($dir ? $dir : $_SERVER['DOCUMENT_ROOT']);
-
+		if(!is_readable($dir) || !is_dir($dir)){
+			$this->file_list_count = 0;
+			return false;
+		}
+		$thumbDir = trim(WE_THUMBNAIL_DIRECTORY, '/');
 		$d = dir($dir);
 		while(false !== ($entry = $d->read())) {
-			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $entry != "sql_dumps" && $entry != ".project" && $entry != ".trustudio.dbg.php" && $entry != "LanguageChanges.csv"){
-				$file = $dir . '/' . $entry;
-				if(!$this->isPathExist(str_replace($_SERVER['DOCUMENT_ROOT'], "", $file))){
-					if(is_dir($file)){
-						if($with_dirs){
+			switch($entry){
+				case '.':
+				case '..':
+				case 'CVS':
+				case 'sql_dumps':
+				case '.project':
+				case '.trustudio.dbg.php':
+				case 'LanguageChanges.csv':
+					continue;
+				case 'webEdition':
+				case $thumbDir:
+					//FIXME: check if dir==doc_root
+					continue;
+				default:
+					$file = $dir . '/' . $entry;
+					if(!$this->isPathExist(str_replace($_SERVER['DOCUMENT_ROOT'], '', $file))){
+						if(is_dir($file)){
+							if($with_dirs){
+								$this->addToFileList($file, $rem_doc_root);
+							}
+							$this->getFileList($file, $with_dirs, $rem_doc_root);
+						} else{
 							$this->addToFileList($file, $rem_doc_root);
 						}
+					} elseif(is_dir($file)){
 						$this->getFileList($file, $with_dirs, $rem_doc_root);
-					} else{
-						$this->addToFileList($file, $rem_doc_root);
 					}
-				} elseif(is_dir($file)){
-					$this->getFileList($file, $with_dirs, $rem_doc_root);
-				}
 			}
 		}
 		$d->close();
@@ -605,7 +622,7 @@ class weBackup extends we_backup{
 
 	function addToFileList($file, $rem_doc_root = true){
 		$this->file_list[] = ($rem_doc_root ?
-				str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) :
+				str_replace($_SERVER['DOCUMENT_ROOT'], '', $file) :
 				$file);
 	}
 
@@ -614,12 +631,13 @@ class weBackup extends we_backup{
 		$out = array();
 		foreach($this->file_list as $file){
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '"', 'ContentType', $this->backup_db);
-			if($ct){
-				if($ct != 'image/*' && $ct != 'application/*' && $ct != 'application/x-shockwave-flash'){
+			switch($ct){
+				case'image/*':
+				case 'application/*':
+				case 'application/x-shockwave-flash':
+					continue;
+				default:
 					$out[] = $file;
-				}
-			} else{
-				$out[] = $file;
 			}
 		}
 		$this->file_list = $out;

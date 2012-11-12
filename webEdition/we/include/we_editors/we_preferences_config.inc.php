@@ -34,7 +34,7 @@ $GLOBALS['configs'] = array(
 		'WE_LOGIN_HIDEWESTATUS' => array('Hide if webEdition is Nightly or Alpha or.. Release Version', 1),
 		'WE_LOGIN_WEWINDOW' => array('Decide how WE opens: 0 allow both, 1 POPUP only, 2 same Window only', 0),
 // Variables for thumbnails
-		'WE_THUMBNAIL_DIRECTORY' => array('Directory in which to save thumbnails', "/__we_thumbs__"),
+		'WE_THUMBNAIL_DIRECTORY' => array('Directory in which to save thumbnails', '/__we_thumbs__'),
 // Variables for error handling
 		'WE_ERROR_HANDLER' => array('Show errors that occur in webEdition', true),
 		'WE_ERROR_NOTICES' => array('Handle notices', false),

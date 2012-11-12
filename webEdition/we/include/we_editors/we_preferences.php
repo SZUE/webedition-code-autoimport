@@ -3297,7 +3297,7 @@ else {
 
 			$_settings[] = array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200);
 			$_settings[] = array("headline" => '', "html" => $perf->getHtml(), "space" => 15);
-			$_settings[] = array("headline" => 'Fast Backup (testing)','html' => $tmp, 'space' => 50, 'noline' => 1);
+			$_settings[] = array("headline" => 'Fast Backup (testing)', 'html' => $tmp, 'space' => 50, 'noline' => 1);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
@@ -3305,19 +3305,15 @@ else {
 
 			break;
 
-		/*		 * *******************************************************************
-		 * EMAIL
-		 * ******************************************************************* */
 		case "email":
-
-			$_settings = array();
-
 			/**
 			 * Information
 			 */
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false);
 
-			$_settings[] = array("headline" => "", "html" => $_information, "space" => 0);
+			$_settings = array(
+				array("headline" => "", "html" => $_information, "space" => 0)
+			);
 
 			if(we_hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');

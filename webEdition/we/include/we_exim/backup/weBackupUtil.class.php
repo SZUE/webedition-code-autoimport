@@ -22,9 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupUtil{
+abstract class weBackupUtil{
 
-	function getRealTableName($table){
+	static function getRealTableName($table){
 		$table = strtolower($table);
 		$match = array();
 		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
@@ -68,11 +68,11 @@ class weBackupUtil{
 		return false;
 	}
 
-	function setBackupVar($name, $value){
+	static function setBackupVar($name, $value){
 		$_SESSION['weS']['weBackupVars'][$name] = $value;
 	}
 
-	function getDescription($table, $prefix){
+	static function getDescription($table, $prefix){
 		switch($table){
 			case CONTENT_TABLE:
 				return g_l('backup', "[" . $prefix . '_content]');
@@ -105,7 +105,7 @@ class weBackupUtil{
 		}
 	}
 
-	function getImportPercent(){
+	static function getImportPercent(){
 		if(isset($_SESSION['weS']['weBackupVars']['files_to_delete_count'])){
 			$rest1 = ((int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'] - count($_SESSION['weS']['weBackupVars']['files_to_delete']));
 			$rest2 = (int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'];
@@ -129,7 +129,7 @@ class weBackupUtil{
 							}';
 	}
 
-	function getExportPercent(){
+	static function getExportPercent(){
 		$all = (int) $_SESSION['weS']['weBackupVars']['row_count'];
 		$done = (int) $_SESSION['weS']['weBackupVars']['row_counter'];
 
@@ -142,7 +142,7 @@ class weBackupUtil{
 		return (intval($percent) < 0 ? 0 : (intval($percent) > 100 ? 100 : $percent));
 	}
 
-	function canImportBinary($id, $path){
+	static function canImportBinary($id, $path){
 
 		if(!empty($id) && $_SESSION['weS']['weBackupVars']['options']['backup_binary']){
 			return true;
@@ -163,19 +163,18 @@ class weBackupUtil{
 		return false;
 	}
 
-	function canImportVersion($id, $path){
+	static function canImportVersion($id, $path){
 		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']);
 	}
 
-	function exportFile($file, $fh){
-
+	static function exportFile($file, $fh){
 		$bin = weContentProvider::getInstance('weBinary', 0);
 		$bin->Path = $file;
 
 		weContentProvider::binary2file($bin, $fh, false);
 	}
 
-	function exportFiles($to, $files){
+	static function exportFiles($to, $files){
 
 		$fh = fopen($to, 'ab');
 		$count = count($files);
@@ -220,17 +219,17 @@ class weBackupUtil{
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
 
-	function getCurrentTable(){
+	static function getCurrentTable(){
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
 
-	function addLog($log){
+	static function addLog($log){
 		if(isset($_SESSION['weS']['weBackupVars']['backup_log_data'])){
 			$_SESSION['weS']['weBackupVars']['backup_log_data'] .= '[' . date('d-M-Y H:i:s', time()) . '] ' . $log . "\r\n";
 		}
 	}
 
-	function writeLog(){
+	static function writeLog(){
 		if($_SESSION['weS']['weBackupVars']['backup_log_data'] == ''){
 			return;
 		}
@@ -240,11 +239,11 @@ class weBackupUtil{
 		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
 
-	function getHttpLink($server, $url, $port = '', $username = '', $password = ''){
+	static function getHttpLink($server, $url, $port = '', $username = '', $password = ''){
 		return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ($port != '' ? ':' . $port : '') . $url;
 	}
 
-	function getFormat($file, $iscompr = 0){
+	static function getFormat($file, $iscompr = 0){
 		$_part = weFile::loadPart($file, 0, 512, $iscompr);
 
 		if(preg_match('|<\?xml |i', $_part)){
@@ -256,7 +255,7 @@ class weBackupUtil{
 		return 'unknown';
 	}
 
-	function getXMLImportType($file, $iscompr = 0, $end_off = 0){
+	static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
 
 		$_found = 'unknown';
 		$_try = 0;
@@ -307,7 +306,7 @@ class weBackupUtil{
 		return $_found;
 	}
 
-	function getEndOffset($filename, $iscompressed){
+	static function getEndOffset($filename, $iscompressed){
 
 		$end = 0;
 
@@ -331,7 +330,7 @@ class weBackupUtil{
 		return $end;
 	}
 
-	function hasNextTable(){
+	static function hasNextTable(){
 
 		$_current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
 		$_current_id++;
