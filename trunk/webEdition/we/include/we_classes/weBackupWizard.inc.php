@@ -1662,11 +1662,11 @@ class weBackupWizard{
 			$_execute = 30;
 		}
 		$_execute *= 1000;
-		$_execute+=5000; //wait extra 5 secs
+		$_execute += 5000; //wait extra 5 secs
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = 5;
+		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP ? 5 : 1);
 
 		return we_html_element::jsElement(
 				'function setLocation(loc){

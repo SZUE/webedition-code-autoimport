@@ -3296,8 +3296,8 @@ else {
 
 
 			$_settings[] = array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200);
-			$_settings[] = array("headline" => "", "html" => $perf->getHtml(), "space" => 15);
-			$_settings[] = array('html' => $tmp, 'space' => 220, 'noline' => 1);
+			$_settings[] = array("headline" => '', "html" => $perf->getHtml(), "space" => 15);
+			$_settings[] = array("headline" => 'Fast Backup (testing)','html' => $tmp, 'space' => 50, 'noline' => 1);
 
 			$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
