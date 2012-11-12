@@ -374,7 +374,7 @@ abstract class weFile{
 		if($destination == ''){
 			$destination = $file;
 		}
-		$zfile = $destination . self::getZExtension($compression);
+		$zfile = $destination . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){
