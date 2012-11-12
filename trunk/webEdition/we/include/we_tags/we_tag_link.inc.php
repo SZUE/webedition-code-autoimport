@@ -57,7 +57,7 @@ function we_tag_link($attribs, $content){
 	}
 
 	if(is_array($link)){
-		if(!sizeof($link)){
+		if(empty($link)){
 			$link = array(
 				"id" => (isset($id) ? $id : ""),
 				'width' => '',

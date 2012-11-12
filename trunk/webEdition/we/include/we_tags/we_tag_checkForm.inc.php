@@ -106,7 +106,7 @@ function we_tag_checkForm($attribs, $content){
 
 	if($password){
 		$_pwFields = explode(',', $password);
-		if(sizeof($_pwFields) != 3){
+		if(count($_pwFields) != 3){
 			$jsPasword = '';
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}

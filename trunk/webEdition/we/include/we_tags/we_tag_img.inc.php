@@ -103,7 +103,7 @@ function we_tag_img($attribs){
 	if($GLOBALS['we_editmode'] && !$showimage){
 		$out = '';
 	} elseif(!$id){
-		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition == 1){
+		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
 			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
 			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
 			$attribs['alt'] = 'no-img';

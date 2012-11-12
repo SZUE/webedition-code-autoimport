@@ -39,7 +39,7 @@ function we_tag_ifShopEmpty($attribs){
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : "";
 	if($basket){
 		$shoppingItems = $basket->getShoppingItems();
-		$basket_count = sizeof($shoppingItems);
+		$basket_count = count($shoppingItems);
 
 		return abs($basket_count) == 0;
 	}
