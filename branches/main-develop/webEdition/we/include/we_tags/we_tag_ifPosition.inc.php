@@ -113,7 +113,7 @@ function we_tag_ifPosition($attribs){
 	$type = weTag_getAttribute("type", $attribs);
 	$position = weTag_getAttribute("position", $attribs);
 	$positionArray = explode(',', $position);
-	$_size = sizeof($positionArray);
+	$_size = count($positionArray);
 	$operator = weTag_getAttribute("operator", $attribs);
 
 	switch($type){

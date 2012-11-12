@@ -413,7 +413,7 @@ class we_objectFile extends we_document{
 		$this->restoreWorkspaces();
 		$this->elements = array();
 		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		if(count($hash)){
+		if(!empty($hash)){
 // fix - the class access permissions should not be applied
 			/* if($this->DB_WE->f("Users")){
 			  $this->Owners = $this->DB_WE->f("Users");
@@ -533,7 +533,7 @@ class we_objectFile extends we_document{
 		if(defined('SHOP_TABLE')){
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
-			if(count($variationFields)){
+			if(!empty($variationFields)){
 				$i = 0;
 				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
 					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
@@ -1199,7 +1199,7 @@ class we_objectFile extends we_document{
 		$out = '';
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(is_array($link)){
-			if(!count($link)){
+			if(empty($link)){
 				$link = array("ctype" => "text", "type" => "ext", "href" => "#", "text" => g_l('global', "[new_link]"));
 			}
 			$img = new we_imageDocument();
@@ -1570,7 +1570,7 @@ class we_objectFile extends we_document{
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
 //$foo = makeArrayFromCSV($ClassWs);
 			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, false, true);
-			if(count($paths) > 0){
+			if(!empty($paths)){
 				$where = array();
 				if(is_array($paths)){
 					foreach($paths as $path){
@@ -1601,7 +1601,7 @@ class we_objectFile extends we_document{
 				}
 			}
 			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, false, true);
-			if(count($paths) > 0){
+			if(!empty($paths)){
 				$ClassWs = '';
 				$where = array();
 				foreach($paths as $path){
@@ -1861,13 +1861,13 @@ class we_objectFile extends we_document{
 			$tid = $this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 0);
 		}
 		if(!$tid){
-			if(count($tmplArr)){
+			if(!empty($tmplArr)){
 				$tid = $tmplArr[0];
 			}
 		}
 		if(!$tid){
 			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, 'Templates', new DB_WE()));
-			if(count($foo)){
+			if(!empty($foo)){
 				$tid = $foo[0];
 			}
 		}
@@ -2761,7 +2761,7 @@ class we_objectFile extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(count($_REQUEST)){
+		if(!empty($_REQUEST)){
 
 			$hrefFields = false;
 

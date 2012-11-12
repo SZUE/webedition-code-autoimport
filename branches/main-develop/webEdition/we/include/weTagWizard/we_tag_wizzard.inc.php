@@ -43,7 +43,7 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-if(sizeof($_attributes)){
+if(!empty($_attributes)){
 	$jsAllAttributes = 'var allAttributes = new Array("' .
 		implode('", "', $_attributes) .
 		'");';
@@ -75,7 +75,7 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 
 			$_allowedAttribs = $option->getAllowedAttributes();
 
-			if(count($_allowedAttribs)){
+			if(!empty($_allowedAttribs)){
 
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("';
 
@@ -92,7 +92,7 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 		foreach($_typeOptions as $option){
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if(sizeof($_reqAttribs)){
+			if(!empty($_reqAttribs)){
 				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"";
 
 				$typeAttributeJs .= implode('","', $_reqAttribs);

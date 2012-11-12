@@ -132,7 +132,7 @@ switch($_REQUEST['we_cmd'][0]){
 			}
 		}
 		if($we_doc->TemplateID == $_REQUEST['we_cmd'][1]){
-			if(count($foo)){
+			if(!empty($foo)){
 				$we_doc->TemplateID = $foo[0];
 			} else{
 				$we_doc->TemplateID = 0;

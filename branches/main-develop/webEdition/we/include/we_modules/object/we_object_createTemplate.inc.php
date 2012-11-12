@@ -50,7 +50,7 @@ function getObjectTags($id, $isField = false){
 	$content = '		<table cellpadding="2" cellspacing="0" border="1" width="400">
 ';
 
-	for($i = 0; $i < sizeof($tableInfo); $i++){
+	for($i = 0; $i < count($tableInfo); $i++){
 		if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
 		}
@@ -175,7 +175,7 @@ array_push($usedIDs, $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"
 
 $sort = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
 
-$count = (count($sort)) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
+$count = (!empty($sort)) ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content = '<html>
 	<head>

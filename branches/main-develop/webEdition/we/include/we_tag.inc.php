@@ -307,7 +307,7 @@ function cutText($text, $max = 0){
 	}
 
 //close open tags
-	while(count($tags)) {
+	while(!empty($tags)) {
 		$ret.='</' . array_pop($tags) . '>';
 	}
 
@@ -751,7 +751,7 @@ function we_tag_ifvotingexists(){
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
 		array_pop($GLOBALS['we_lv_array']);
-		if(count($GLOBALS['we_lv_array'])){
+		if(!empty($GLOBALS['we_lv_array'])){
 			$GLOBALS['lv'] = clone($GLOBALS['we_lv_array'][count($GLOBALS['we_lv_array']) - 1]);
 		} else{
 			unset($GLOBALS['lv']);

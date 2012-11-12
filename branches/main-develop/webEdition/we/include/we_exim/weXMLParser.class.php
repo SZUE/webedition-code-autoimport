@@ -261,7 +261,7 @@ class weXMLParser{
 		$this->gotoMark('getChildren');
 		$this->deleteMark('getChildren');
 
-		if(count($children)){
+		if(!empty($children)){
 			return true;
 		}
 		return false;

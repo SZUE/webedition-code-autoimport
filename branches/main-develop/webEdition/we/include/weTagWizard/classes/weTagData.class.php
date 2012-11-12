@@ -60,7 +60,7 @@ class weTagData{
 	private $Groups = array();
 	private $Deprecated = false;
 	private $noDocuLink = false;
-	
+
 	private function __construct($tagName){
 		$this->Name = $tagName;
 		// include the selected tag, its either normal, or custom tag
@@ -244,7 +244,7 @@ class weTagData{
 
 		$typeAttrib = $this->getTypeAttribute();
 
-		if(sizeof($this->UsedAttributes) > 1 || (sizeof($this->UsedAttributes) && !$typeAttrib)){
+		if(count($this->UsedAttributes) > 1 || (count($this->UsedAttributes) && !$typeAttrib)){
 
 			$ret = '<ul>';
 			foreach($this->UsedAttributes as $attribute){

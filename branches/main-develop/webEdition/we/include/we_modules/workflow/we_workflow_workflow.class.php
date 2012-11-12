@@ -197,7 +197,7 @@ class we_workflow_workflow extends we_workflow_base{
 
 
 		// !!! here we have to delete all other steps in database except this in array
-		if(count($stepsList) > 0){
+		if(!empty($stepsList)){
 			$deletequery = 'DELETE FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID=' . intval($this->ID) . ' AND ID NOT IN (' . join(',', $stepsList) . ')';
 			$afectedRows = $this->db->query($deletequery);
 		}

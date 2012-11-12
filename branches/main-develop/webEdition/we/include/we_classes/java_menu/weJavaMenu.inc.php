@@ -170,11 +170,11 @@ class weJavaMenu{
 			<table cellpadding="2" cellspacing="0" border="0">
 				<tr>
 					<td><form></td>';
-		for($i = 0; $i < sizeof($menus); $i++){
+		for($i = 0; $i < count($menus); $i++){
 			$foo = $menus[$i]["code"];
 			$this->h_pOption($this->entries, $foo, $menus[$i]["id"], "");
 			$foo .= "</select>\n";
-			$out .= '<td>' . ((we_html_tools::getPixel(2, 3) . '<br>')) . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
+			$out .= '<td>' . ((we_html_tools::getPixel(2, 3) . '<br>')) . $foo . '</td>' . (($i < (count($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
 					</tr>
@@ -211,7 +211,7 @@ class weJavaMenu{
 
 	function h_pOption($men, &$opt, $p, $zweig){
 		$nf = $this->h_search($men, $p);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
 				$e["enabled"] = 1;
@@ -255,7 +255,7 @@ class weJavaMenu{
 
 	function h_pCODE($men, &$opt, $p, $zweig){
 		$nf = $this->h_search($men, $p);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
 				$e["enabled"] = 1;

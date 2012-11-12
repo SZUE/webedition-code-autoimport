@@ -500,7 +500,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$parent = dirname($parent);
 			$parent = str_replace("\\", "/", $parent);
 		}
-		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
+		for($i = (count($cf) - 1); $i >= 0; $i--){
 			we_util_File::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();

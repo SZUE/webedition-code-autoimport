@@ -103,7 +103,7 @@ class weSelectorQuery{
 			$where .= (empty($where) ? "WHERE " : " ") . $userExtraSQL;
 		}
 
-		if(count($this->condition) > 0){
+		if(!empty($this->condition)){
 			foreach($this->condition as $val){
 				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
 			}
@@ -169,7 +169,7 @@ class weSelectorQuery{
 			$where .= (empty($where) ? "WHERE " : " ") . $userExtraSQL;
 		}
 
-		if(count($this->condition) > 0){
+		if(!empty($this->condition)){
 			foreach($this->condition as $val){
 				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
 			}
@@ -205,7 +205,7 @@ class weSelectorQuery{
 		}
 		if($types){
 
-			for($i = 0; $i < sizeof($types); $i++){
+			for($i = 0; $i < count($types); $i++){
 				$ctntQuery .= " OR ContentType = \"" . $types[$i] . "\"";
 			}
 		}

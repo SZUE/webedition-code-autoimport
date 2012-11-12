@@ -2034,7 +2034,7 @@ class weNewsletterView{
 					}
 				}
 
-				if(count($new)){
+				if(!empty($new)){
 					$gval->aFilter[] = $new;
 				}
 			}
@@ -2741,7 +2741,7 @@ class weNewsletterView{
 
 			while($go) {
 				$tmp = array_slice($buffer, $offset, $this->settings["send_step"]);
-				if(count($tmp)){
+				if(!empty($tmp)){
 					$offset+=$this->settings["send_step"];
 					$groups++;
 					$this->saveToCache(serialize($tmp), $emailcache . "_$groups");

@@ -193,7 +193,7 @@ class we_listview_object extends listviewBase{
 						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}
-				if(count($_idListArray) > 0){
+				if(!empty($_idListArray)){
 					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');

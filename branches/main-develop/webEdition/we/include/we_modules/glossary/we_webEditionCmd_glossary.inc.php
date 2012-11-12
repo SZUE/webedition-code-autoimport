@@ -76,10 +76,10 @@
 
 
 <?php
-	if(sizeof($GLOBALS['weFrontendLanguages'])>0) {
+	if(!empty($GLOBALS['weFrontendLanguages'])) {
 
-		echo '	case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' . "\n";
-		echo "		tempargs = arguments[0].split(\"\XYZ\");
+		echo '	case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' . "\n".
+		"		tempargs = arguments[0].split(\"\XYZ\");
 				var fo=false;
 				for(var k=jsWindow_count-1;k>-1;k--) {
 					eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");

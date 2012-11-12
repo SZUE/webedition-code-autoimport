@@ -60,7 +60,7 @@ class we_wizard_import extends we_wizard{
 			$dv = array();
 		$tableInfo_sorted = we_objectFile::getSortedTableInfo($classID, true, $db);
 		$fields = array();
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		for($i = 0; $i < count($tableInfo_sorted); $i++){
 			// bugfix 8141
 			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
 				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
@@ -138,7 +138,7 @@ class we_wizard_import extends we_wizard{
 	function parseAttributes($attr){
 		$attribs = "";
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
+		for($i = 0; $i < count($foo); $i++){
 			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 		}
 		$arrstr = "array(" . rtrim($attribs, ',') . ")";
@@ -1269,8 +1269,8 @@ HTS;
 						$recs[$key] = $value;
 					}
 				}
-				$isSingleNode = (count($recs) == 1) ? true : false;
-				$hasChildNode = (count($recs) > 0) ? true : false;
+				$isSingleNode = (count($recs) == 1);
+				$hasChildNode = (!empty($recs));
 			}
 			if($xmlWellFormed && $hasChildNode){
 				$rcdSelect = new we_html_select(array(
@@ -1490,7 +1490,7 @@ HTS;
 				}
 			}
 		}
-		if(count($val_attrs) == 0)
+		if(empty($val_attrs))
 			$val_attrs = array("@n:" => g_l('import', "[none]"));
 
 		$th = array(array("dat" => g_l('import', "[we_flds]")), array("dat" => g_l('import', "[rcd_flds]")), array("dat" => g_l('import', "[attributes]")));
@@ -1580,7 +1580,7 @@ HTS;
 				"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
 				"space" => 0)
 		);
-		if(count($dateFields) > 0){
+		if(!empty($dateFields)){
 			// Timestamp
 			$tStamp = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 2);
 			$tStamp->setCol(0, 0, array("colspan" => 2), we_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] == "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[uts]"), true, "defaultfont", "", 0, g_l('import', "[unix_timestamp]"), 0, 384));
@@ -2420,7 +2420,7 @@ HTS;
 		);
 
 
-		if(count($dateFields) > 0){
+		if(!empty($dateFields)){
 			// Timestamp
 			$tStamp = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 2);
 			$tStamp->setCol(0, 0, array("colspan" => 2), we_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] == "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', "[uts]"), true, "defaultfont", "", 0, g_l('import', "[unix_timestamp]"), 0, 384));

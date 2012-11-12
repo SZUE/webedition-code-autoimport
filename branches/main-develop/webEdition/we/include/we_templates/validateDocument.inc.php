@@ -48,7 +48,7 @@ foreach($validationService AS $_service){
 //  get custom services from database ..
 $customServices = validation::getValidationServices('use');
 
-if(sizeof($customServices) > 0){
+if(!empty($customServices)){
 	foreach($customServices as $_cService){
 		$services['custom'][$_cService->category][] = $_cService;
 	}
@@ -62,7 +62,7 @@ $_lastArt = '';
 $_lastCat = '';
 $_hiddens = '';
 $_js = '';
-if(count($services)){
+if(!empty($services)){
 	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
@@ -203,7 +203,7 @@ $parts = array(
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
 		we_button::create_button('edit', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (!sizeof($services) > 0))
+		we_button::create_button('ok', 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services) > 0))
 		. '</td></tr></table>'
 		, 'space' => 95),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),

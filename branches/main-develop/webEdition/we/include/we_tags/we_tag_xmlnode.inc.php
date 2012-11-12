@@ -147,10 +147,10 @@ function we_tag_xmlnode($attribs){
 		if(isset($GLOBALS["xsuperparent"])){
 			$nodes_name = $feed_name->evaluate($GLOBALS["xsuperparent"] . "/" . $GLOBALS["xpaths"][$ind_name]["xpath"]);
 		}
-		if(count($nodes_name) == 0){
+		if(empty($nodes_name)){
 			$nodes_name = $feed_name->evaluate($GLOBALS["xpaths"][$ind_name]["xpath"]);
 		}
-		if(count($nodes_name) == 0){
+		if(empty($nodes_name)){
 			if(!empty($parent_name)){
 				for($c_name = $pind_name; $c_name > -1; $c_name--){
 					$otac_name = $GLOBALS["xstack"][$c_name];
@@ -163,7 +163,7 @@ function we_tag_xmlnode($attribs){
 				}
 			}
 		}
-		if(count($nodes_name) != 0){
+		if(!empty($nodes_name)){
 			$got_name = true;
 		} else{
 			$got_name = true;

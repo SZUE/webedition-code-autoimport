@@ -507,7 +507,7 @@ abstract class we_class{
 			|| ($_REQUEST['we_cmd'][0] == 'save_document' && isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 'save_document')){
 			return true;
 		}
-		if(sizeof($_REQUEST)){
+		if(!empty($_REQUEST)){
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs)){
 					if(in_array($regs[1], $this->persistent_slots)){
@@ -520,7 +520,7 @@ abstract class we_class{
 
 	function i_getPersistentSlotsFromDB($felder = '*'){
 		$fields = getHash('SELECT ' . $felder . ' FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
-		if(count($fields)){
+		if(!empty($fields)){
 			foreach($fields as $k => $v){
 				if($k && in_array($k, $this->persistent_slots)){
 					$this->{$k} = $v;
@@ -560,7 +560,7 @@ abstract class we_class{
 					$fields[$fieldName] = $val;
 			}
 		}
-		if(count($fields)){
+		if(!empty($fields)){
 			$where = ($this->wasUpdate) ? ' WHERE ID=' . intval($this->ID) : '';
 			$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
 			$this->ID = ($this->wasUpdate) ? $this->ID : $this->DB_WE->getInsertId();
@@ -771,7 +771,6 @@ abstract class we_class{
 							}
 
 							if(count($actualLangs) > 1 || count($targetLangs) > 0){
-								$intersect = array();
 								$intersect = array_intersect($actualLangs, $targetLangs);
 								$setThisLink = count($intersect) > 0 ? false : true;
 							}
@@ -919,7 +918,7 @@ abstract class we_class{
 								while($this->DB_WE->next_record()) {
 									$ids[] = $this->DB_WE->Record['ID'];
 								}
-								if(count($ids)){
+								if(!empty($ids)){
 									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $type . '"');
 								}
 							}
@@ -929,7 +928,7 @@ abstract class we_class{
 								while($this->DB_WE->next_record()) {
 									$ids[] = $this->DB_WE->Record['ID'];
 								}
-								if(count($ids)){
+								if(!empty($ids)){
 									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $type . '"');
 								}
 							}

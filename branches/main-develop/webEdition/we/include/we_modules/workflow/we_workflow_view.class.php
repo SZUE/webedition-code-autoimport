@@ -1565,7 +1565,7 @@ class we_workflow_view extends we_workflow_base{
 		$buttonsTable = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>' . $nextprev . '</td><td align="right">' . we_button::create_button("close", "javascript:self.close();") . '</td></tr></table>';
 
 
-		if(count($logs)){
+		if(!empty($logs)){
 			return we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable);
 		} else{
 			return we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_button::create_button("close", "javascript:self.close();"));

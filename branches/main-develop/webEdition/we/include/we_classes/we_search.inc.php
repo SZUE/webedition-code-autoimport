@@ -44,7 +44,7 @@ class we_search{
 	}
 
 	function init($sessDat = ""){
-		for($i = 0; $i <= sizeof($sessDat); $i++){
+		for($i = 0; $i <= count($sessDat); $i++){
 			if(isset($GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]])){
 				$v = $GLOBALS["we_" . $this->Name . "_" . $sessDat[$i]];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;

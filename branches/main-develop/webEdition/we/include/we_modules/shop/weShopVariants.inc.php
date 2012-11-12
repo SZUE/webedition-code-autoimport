@@ -148,7 +148,7 @@ class weShopVariants{
 
 			$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			for($i = 0; $i < sizeof($variations); $i++){
+			for($i = 0; $i < count($variations); $i++){
 
 				$variation = $variations[$i];
 
@@ -463,7 +463,7 @@ class weShopVariants{
 
 		$model->Variant = $name;
 
-		for($i = 0; $i < sizeof($variantDatArray); $i++){
+		for($i = 0; $i < count($variantDatArray); $i++){
 
 			$variant = $variantDatArray[$i];
 			if(is_array($variant)){
@@ -490,7 +490,7 @@ class weShopVariants{
 		if(isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
 
-			for($i = 0; $i < sizeof($variantDatArray); $i++){
+			for($i = 0; $i < count($variantDatArray); $i++){
 				$variant = $variantDatArray[$i];
 
 				foreach($variant as $variantName => $variantData){
@@ -516,7 +516,7 @@ class weShopVariants{
 		if(isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 
-			for($i = 0; $i < sizeof($variantDatArray); $i++){
+			for($i = 0; $i < count($variantDatArray); $i++){
 				$variant = $variantDatArray[$i];
 
 				foreach($variant as $variantName => $variantData){

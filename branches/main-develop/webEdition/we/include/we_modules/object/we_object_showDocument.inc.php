@@ -82,9 +82,9 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		if(isset($_lastDoc['Path'])){
 
-			if(sizeof($workspaces) > 0){ // get the correct template
+			if(!empty($workspaces)){ // get the correct template
 				//	Select a matching workspace.
-				for($i = 0; $i < sizeof($workspaces); $i++){
+				for($i = 0; $i < count($workspaces); $i++){
 
 					$workspace = id_to_path($workspaces[$i], FILE_TABLE, $tmpDB);
 
@@ -215,7 +215,7 @@ if(!isset($tid) || !($tid)){
 
 if(!$tid){
 	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID), 'Templates', $DB_WE));
-	if(count($tids)){
+	if(!empty($tids)){
 		$tid = $tids[0];
 	}
 }

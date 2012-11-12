@@ -56,7 +56,7 @@ function we_tag_var($attribs){
 			return $htmlspecialchars ? htmlspecialchars($return) : $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
-			if(isset($data['objects']) && sizeof($data['objects']) > 0){
+			if(isset($data['objects']) && !empty($data['objects'])){
 				return implode(",", $data['objects']);
 			} else{
 				return '';

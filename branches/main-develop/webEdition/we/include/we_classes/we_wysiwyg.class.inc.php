@@ -864,8 +864,8 @@ function tinyMCEchanged(inst){
 				$lastSep = ($elem->classname == "we_wysiwygToolbarSeparator");
 			}
 		}
-		if(sizeof($this->filteredElements)){
-			if($this->filteredElements[sizeof($this->filteredElements) - 1]->classname == "we_wysiwygToolbarSeparator"){
+		if(!empty($this->filteredElements)){
+			if($this->filteredElements[count($this->filteredElements) - 1]->classname == "we_wysiwygToolbarSeparator"){
 				array_pop($this->filteredElements);
 			}
 		}
@@ -899,13 +899,13 @@ function tinyMCEchanged(inst){
 		$rownr = 0;
 		$rows[$rownr] = array();
 		$rowwidth = 0;
-		while(sizeof($tmpElements)) {
+		while(!empty($tmpElements)) {
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($this->width, $this->maxGroupWidth)){
 				array_push($rows[$rownr], array_shift($tmpElements));
-				$rowwidth += $rows[$rownr][sizeof($rows[$rownr]) - 1]->width;
+				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else{
-				if(sizeof($rows[$rownr])){
-					if($rows[$rownr][sizeof($rows[$rownr]) - 1]->classname == "we_wysiwygToolbarSeparator"){
+				if(!empty($rows[$rownr])){
+					if($rows[$rownr][count($rows[$rownr]) - 1]->classname == "we_wysiwygToolbarSeparator"){
 						array_pop($rows[$rownr]);
 						$rownr++;
 						$rowwidth = 0;
@@ -931,9 +931,9 @@ function tinyMCEchanged(inst){
 		$toolbarheight = 0;
 		$min_w = 0;
 		$row_w = 0;
-		for($r = 0; $r < sizeof($rows); $r++){
+		for($r = 0; $r < count($rows); $r++){
 			$rowheight = 0;
-			for($s = 0; $s < sizeof($rows[$r]); $s++){
+			for($s = 0; $s < count($rows[$r]); $s++){
 				$rowheight = max($rowheight, $rows[$r][$s]->height);
 				$row_w += $rows[$r][$s]->width;
 			}
@@ -1149,15 +1149,15 @@ tinyMCE.init({
 				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
 				$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
 				$out = we_html_element::jsElement('var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();') . '<table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
-				for($r = 0; $r < sizeof($rows); $r++){
+				for($r = 0; $r < count($rows); $r++){
 					$out .= '<table border="0" cellpadding="0" cellspacing="0" class="tbButtonWysiwygDefaultStyle"><tr>';
-					for($s = 0; $s < sizeof($rows[$r]); $s++){
+					for($s = 0; $s < count($rows[$r]); $s++){
 						$out .= '<td class="tbButtonWysiwygDefaultStyle">' . $rows[$r][$s]->getHTML() . '</td>';
 						$row_w += $rows[$r][$s]->width;
 					}
 					$min_w = max($min_w, $row_w);
 					$row_w = 0;
-					$out .= '</tr></table></td></tr>' . (($r < sizeof($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (sizeof($rows) - 1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (sizeof($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
+					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
 				}
 
 				$realWidth = max($min_w, $this->width);

@@ -75,14 +75,14 @@ class treePopup{
 		$spaces = "";
 		for($i=0;$i<$nbsp;$i++){$spaces .= "&nbsp;";}
 		$nf = $this->search($startEntry,$filter);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 
 			$flag=false;
-			for($ai = 0; $ai < sizeof($nf); $ai++){
+			for($ai = 0; $ai < count($nf); $ai++){
 				$newAst = $zweigEintrag;
-				if(sizeof($this->selected)){
+				if(!empty($this->selected)){
 					$flag=false;
-					for($i=0;$i<sizeof($this->selected);$i++){
+					for($i=0;$i<count($this->selected);$i++){
 						if($nf[$ai]["name"] == $this->selected[$i]){
 							$flag=true;
 							break;

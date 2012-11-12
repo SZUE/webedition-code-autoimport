@@ -113,7 +113,7 @@ class weShopVatRule{
 
 		$retArr = array();
 
-		for($i = 0; $i < sizeof($req['conditionalStates']); $i++){
+		for($i = 0; $i < count($req['conditionalStates']); $i++){
 
 			$retArr[] = array(
 				'states' => weShopVatRule::makeArrayFromReq($req['conditionalStates'][$i]),

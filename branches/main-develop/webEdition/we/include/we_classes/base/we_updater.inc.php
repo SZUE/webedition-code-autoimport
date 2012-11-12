@@ -165,7 +165,7 @@ class we_updater{
 			$pstr = $DB_WE->f("Permissions");
 			$perms_slot["ADMINISTRATOR"] = $pstr["0"];
 			$perms_slot["PUBLISH"] = $pstr["1"];
-			if(count($perms_slot) > 0){
+			if(!empty($perms_slot)){
 				$db_tmp->query("UPDATE " . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
 			}
 		}
@@ -222,7 +222,7 @@ class we_updater{
 				$query[] = 'ADD INDEX (' . $DB_WE->f('Field') . ')';
 			}
 		}
-		if(count($query) > 0){
+		if(!empty($query)){
 			$DB_WE->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' ' . implode(', ', $query));
 		}
 	}

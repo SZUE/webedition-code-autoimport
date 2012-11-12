@@ -214,7 +214,7 @@ class we_import_files{
 
 		$parts = array();
 		$wsA = makeArrayFromCSV(get_def_ws());
-		$ws = sizeof($wsA) ? $wsA[0] : 0;
+		$ws = !empty($wsA) ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;
 
 		$path = id_to_path($store_id);

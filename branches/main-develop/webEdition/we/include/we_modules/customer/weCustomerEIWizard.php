@@ -720,8 +720,8 @@ class weCustomerEIWizard{
 						if($flag)
 							$recs[$key] = $value;
 					}
-					$isSingleNode = (count($recs) == 1) ? true : false;
-					$hasChildNode = (count($recs) > 0) ? true : false;
+					$isSingleNode = (count($recs) == 1);
+					$hasChildNode = (!empty($recs));
 				}
 				if($xmlWellFormed && $hasChildNode){
 					$rcdSelect = new we_html_select(array(
@@ -1250,7 +1250,7 @@ class weCustomerEIWizard{
 					}
 
 
-					if(count($customers)){
+					if(!empty($customers)){
 						$options = array();
 						$options["customers"] = array();
 						$options["filename"] = $_SERVER['DOCUMENT_ROOT'] . $path . "/" . $filename;
@@ -1272,7 +1272,7 @@ class weCustomerEIWizard{
 					}
 
 					$hiddens.=we_html_element::htmlHidden(array("name" => "art", "value" => "export")) .
-						(count($customers) ?
+						(!empty($customers) ?
 							(
 							we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
 							we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .

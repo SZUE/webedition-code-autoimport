@@ -168,7 +168,7 @@ class weNavigationItems{
 				);
 
 				if($rules){
-					$_items[(sizeof($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
+					$_items[(count($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
 							'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 				}
 			}
@@ -311,8 +311,8 @@ class weNavigationItems{
 
 		$idsRule = makeArrayFromCSV($idRule);
 
-		if(sizeof($idsRule)){
-			for($i = 0; $i < sizeof($idsRule); $i++){
+		if(!empty($idsRule)){
+			for($i = 0; $i < count($idsRule); $i++){
 				if(strpos($idDoc, ",$idsRule[$i],") !== false){
 					return true;
 				}
@@ -342,7 +342,7 @@ class weNavigationItems{
 
 		if(isset($GLOBALS['WE_MAIN_DOC'])){
 
-			for($i = 0; $i < sizeof($this->currentRules); $i++){
+			for($i = 0; $i < count($this->currentRules); $i++){
 
 				$_rule = $this->currentRules[$i];
 
@@ -482,7 +482,7 @@ class weNavigationItems{
 		if(isset($useTemplate['last'])){
 
 			// check if item is last
-			if((sizeof($this->items['id' . $item->parentid]->items)) == $item->position){
+			if((count($this->items['id' . $item->parentid]->items)) == $item->position){
 				return $useTemplate['last'];
 			}
 		}
@@ -589,7 +589,7 @@ class weNavigationItems{
 			}
 		}
 
-		if(count($_ids)){
+		if(!empty($_ids)){
 			array_unique($_ids);
 
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');

@@ -106,7 +106,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$this->nr = 0;
 		$idArr = makeArrayFromCSV($this->ids);
 
-		if(sizeof($idArr)){
+		if(!empty($idArr)){
 			foreach($idArr as $id){
 				$this->db->query("SELECT ID," . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE ID =" . intval($id));
 				if($this->db->next_record()){
@@ -121,7 +121,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 				$this->nr++;
 			}
 		}
-		$out .= '	<tr><td width="20">' . we_html_tools::getPixel(20, sizeof($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+		$out .= '	<tr><td width="20">' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		return $out;
 	}
 

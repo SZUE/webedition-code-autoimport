@@ -159,7 +159,7 @@ GROUP  BY Page
 				usort($this->docs, "we_sort_banners_rate");
 			}
 		}
-		$this->anz_all = sizeof($this->docs);
+		$this->anz_all = count($this->docs);
 		$this->anz = min($this->rows, $this->anz_all - $this->start);
 	}
 

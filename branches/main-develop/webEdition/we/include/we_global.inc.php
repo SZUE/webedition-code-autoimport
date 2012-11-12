@@ -658,7 +658,7 @@ function makeArrayFromCSV($csv){
 }
 
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
-	if(!sizeof($arr))
+	if(empty($arr))
 		return '';
 
 	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
@@ -728,7 +728,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(!sizeof($wsIDs) || !sizeof($IDs) || (in_array(0, $wsIDs))){
+	if(empty($wsIDs) || empty($IDs) || (in_array(0, $wsIDs))){
 		return true;
 	}
 	if((!$objcheck) && in_array(0, $IDs)){
@@ -999,7 +999,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 
 	if($ws == ''){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
-		return (sizeof($wsA) ? $wsA[0] : '');
+		return (!empty($wsA) ? $wsA[0] : '');
 	} else
 		return $ws;
 }
@@ -1458,7 +1458,7 @@ function getRequestVar($name, $default, $yescode = '', $nocode = ''){
  */
 function number2System($value, $chars = array(), $str = ''){
 
-	if(!(is_array($chars) && sizeof($chars) > 1)){ //	in case of error take default-array
+	if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
 		$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
 	}
 	$base = count($chars);

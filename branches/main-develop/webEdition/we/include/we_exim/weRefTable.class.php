@@ -203,8 +203,9 @@ class RefTable{
 	}
 
 	function getLast(){
-		if(count($this->Storage))
+		if(!empty($this->Storage)){
 			return $this->Storage[count($this->Storage) - 1];
+		}
 		return null;
 	}
 

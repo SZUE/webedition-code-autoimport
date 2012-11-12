@@ -383,7 +383,7 @@ class weCustomerAdd{
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = array();
-		if(count($search_arr) && $_REQUEST["search"])
+		if(!empty($search_arr) && $_REQUEST["search"])
 			$result = weCustomerAdd::getAdvSearchResults($search_arr, $count, $max_res);
 		foreach($result as $id => $text)
 			$select->addOption($id, $text);

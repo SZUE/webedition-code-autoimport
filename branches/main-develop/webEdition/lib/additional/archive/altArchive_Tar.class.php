@@ -905,7 +905,7 @@ class altArchive_Tar {
       return false;
     }
 
-    if (sizeof($p_list) == 0) {
+    if (empty($p_list)) {
       return true;
     }
 
@@ -1547,7 +1547,7 @@ class altArchive_Tar {
         // ----- By default no unzip if the file is not found
         $v_extract_file = false;
 
-        for ($i = 0; $i < sizeof($p_file_list); $i++) {
+        for ($i = 0; $i < count($p_file_list); $i++) {
           // ----- Look if it is a directory
           if (substr($p_file_list[$i], -1) == '/') {
             // ----- Look if the directory is in the filename path
@@ -1891,7 +1891,7 @@ class altArchive_Tar {
       $v_list = explode('/', $p_dir);
 
       // ----- Study directories from last to first
-      for ($i = sizeof($v_list) -1; $i >= 0; $i--) {
+      for ($i = count($v_list) -1; $i >= 0; $i--) {
         // ----- Look for current path
         if ($v_list[$i] == ".") {
           // ----- Ignore this directory
@@ -1902,13 +1902,13 @@ class altArchive_Tar {
           $i--;
         }
         else if (   ($v_list[$i] == '')
-				          && ($i != (sizeof($v_list) -1))
+				          && ($i != (count($v_list) -1))
 						  && ($i != 0)) {
           // ----- Ignore only the double '//' in path,
           // but not the first and last /
         }
         else {
-          $v_result = $v_list[$i] . ($i != (sizeof($v_list) -1) ? '/'
+          $v_result = $v_list[$i] . ($i != (count($v_list) -1) ? '/'
 					            . $v_result : '');
         }
       }

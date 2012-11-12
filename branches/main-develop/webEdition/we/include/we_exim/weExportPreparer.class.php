@@ -405,7 +405,7 @@ class weExportPreparer extends weXMLExIm{
 					$uids = array($doc->CreatorID);
 				if(isset($doc->Owners))
 					$uids = array_merge($uids, makeArrayFromCSV($doc->Owners));
-				if(count($uids))
+				if(!empty($uids))
 					$this->RefTable->addToUsers($uids);
 			}
 

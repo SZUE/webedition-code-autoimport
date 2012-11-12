@@ -63,7 +63,7 @@ class weNewsletterBase{
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='" . $this->ID . "'");
 		if($this->db->next_record())
-			for($i = 0; $i < sizeof($tableInfo); $i++){
+			for($i = 0; $i < count($tableInfo); $i++){
 				$fieldName = $tableInfo[$i]["name"];
 				if(in_array($fieldName, $this->persistents)){
 					$this->$fieldName = $this->db->f($fieldName);
@@ -175,13 +175,11 @@ class weNewsletterBase{
 
 	function getEmailsFromList($emails, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
-		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = explode("\n", $emails);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $row){
 				if($row != ""){
-					$arr2 = array();
 					$arr2 = explode(",", $row);
 					if(count($arr2)){
 						if($emails_only)
@@ -198,10 +196,9 @@ class weNewsletterBase{
 
 	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, $blocks = array()){
 		$ret = array();
-		$arr = array();
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
 					$data = weFile::load($_SERVER['DOCUMENT_ROOT'] . $file);
@@ -245,7 +242,7 @@ class weNewsletterBase{
 		$countEMails = 0;
 		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
 		$arr = makeArrayFromCSV($files);
-		if(count($arr)){
+		if(!empty($arr)){
 			foreach($arr as $file){
 				if(strpos($file, '..') === false){
 					$data = weFile::load($_SERVER['DOCUMENT_ROOT'] . $file);

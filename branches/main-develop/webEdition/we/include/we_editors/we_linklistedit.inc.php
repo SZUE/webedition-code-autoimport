@@ -273,7 +273,7 @@ if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && 
 		$ctype = $ll->getCType($nr);
 	} else{
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
-		if(!sizeof($ln)){
+		if(empty($ln)){
 			$ln = array("ctype" => "text", "type" => "int", "href" => "http://", "text" => g_l('global', "[new_link]"));
 		}
 		$href = isset($ln["href"]) ? $ln["href"] : "";

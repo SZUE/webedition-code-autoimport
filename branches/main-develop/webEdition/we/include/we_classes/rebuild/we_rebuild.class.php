@@ -358,7 +358,7 @@ abstract class we_rebuild{
 
 			$arr = getTemplAndDocIDsOfTemplate($templateID);
 
-			if(count($arr['templateIDs'])){
+			if(!empty($arr['templateIDs'])){
 				$where = array();
 				foreach($arr['templateIDs'] as $tid){
 					$where[] = ' ID=' . intval($tid);

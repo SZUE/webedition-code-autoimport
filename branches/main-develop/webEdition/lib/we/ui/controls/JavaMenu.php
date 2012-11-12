@@ -147,11 +147,11 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 			<table cellpadding="2" cellspacing="0" border="0" style="margin-top:5px;">
 				<tr>
 					<td><form></td>';
-		for($i = 0; $i < sizeof($menus); $i++){
+		for($i = 0; $i < count($menus); $i++){
 			$foo = $menus[$i]["code"];
 			self::_computeOption($this->_entries, $foo, $menus[$i]["id"], "");
 			$foo .= "</select>\n";
-			$out .= '<td>' . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
+			$out .= '<td>' . $foo . '</td>' . (($i < (count($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
 					</tr>
@@ -186,7 +186,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 	protected static function _computeOption($men, &$opt, $p, $zweig){
 		$lang = we_core_Local::getComputedUILang();
 		$nf = self::_search($men, $p);
-		if(sizeof($nf)){
+		if(!empty($nf)){
 			foreach($nf as $id => $e){
 				$newAst = $zweig;
 				$e["enabled"] = 1;

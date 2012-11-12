@@ -157,7 +157,7 @@ class weShippingControl{
 
 			$shippingId = 0;
 
-			for($i = 0; $i < sizeof($shipping->cartValue); $i++){
+			for($i = 0; $i < count($shipping->cartValue); $i++){
 
 				if($shipping->cartValue[$i] > $orderValue){
 					continue;

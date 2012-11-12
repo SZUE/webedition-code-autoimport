@@ -46,7 +46,7 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
 		sort($tableInfo); // #3490
 
-		for($i = 0; $i < sizeof($tableInfo); $i++){
+		for($i = 0; $i < count($tableInfo); $i++){
 
 			if(!in_array($tableInfo[$i]['name'], $filter)){
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);

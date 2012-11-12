@@ -117,7 +117,7 @@ class we_workflow_step extends we_workflow_base{
 		}
 
 		// !!! here we have to delete all other tasks in database except this in array
-		if(count($tasksList) > 0){
+		if(!empty($tasksList)){
 			$deletequery = 'DELETE FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",", $tasksList) . ')';
 			$afectedRows = $db->query($deletequery);
 		}

@@ -215,7 +215,7 @@ class weNavigationRuleControl{
 
 			$categoryIds = array();
 
-			for($i = 0; $i < sizeof($_categories); $i++){
+			for($i = 0; $i < count($_categories); $i++){
 				if(($path = path_to_id($_categories[$i], CATEGORY_TABLE))){
 					$categoryIds[] = path_to_id($_categories[$i], CATEGORY_TABLE);
 				}
@@ -223,7 +223,7 @@ class weNavigationRuleControl{
 			$categoryIds = array_unique($categoryIds);
 			$_catString = '';
 
-			if(sizeof($categoryIds)){
+			if(!empty($categoryIds)){
 				$_catString = ',';
 
 				foreach($categoryIds as $catId){

@@ -386,7 +386,7 @@ abstract class we_rebuild_wizard{
 					$data = we_rebuild::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
 			}
-			if(count($data)){
+			if(!empty($data)){
 				$fr = new rebuildFragment($taskname, 1, 0, array(), $data);
 
 				return array();
@@ -476,7 +476,7 @@ abstract class we_rebuild_wizard{
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
-		$_html = we_html_element::jsElement('document._errorMessage=' . (count($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
+		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', "[noFieldsChecked]")) . '"'));
 		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild', "[expl_rebuild_metadata]"), 2, 520);
 		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', "[metadata]") . ':</div>' . "\n";
 
@@ -565,7 +565,7 @@ abstract class we_rebuild_wizard{
 
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
+		for($i = 0; $i < count($thumbsArray); $i++){
 			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 		$metaFieldsHidden = "";
@@ -641,7 +641,7 @@ abstract class we_rebuild_wizard{
 
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < sizeof($doctypesArray); $i++){
+		for($i = 0; $i < count($doctypesArray); $i++){
 			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
 		}
 		$metaFieldsHidden = "";
@@ -714,12 +714,12 @@ abstract class we_rebuild_wizard{
 
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		for($i = 0; $i < sizeof($doctypesArray); $i++){
+		for($i = 0; $i < count($doctypesArray); $i++){
 			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
 		}
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		for($i = 0; $i < sizeof($thumbsArray); $i++){
+		for($i = 0; $i < count($thumbsArray); $i++){
 			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 		return array(we_rebuild_wizard::getPage2Js("metaFolders"), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_metadata]")) .
@@ -968,8 +968,8 @@ abstract class we_rebuild_wizard{
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
 	static function getPage($contents){
-		if(!sizeof($contents)){
-			return "";
+		if(empty($contents)){
+			return '';
 		}
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(

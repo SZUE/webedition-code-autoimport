@@ -621,9 +621,9 @@ class we_object extends we_document{
 
 		$t = array();
 		$i = 0;
-		$position = sizeof($sort);
+		$position = count($sort);
 		foreach($sort as $ident => $identpos){
-			if($ident == $identifier && $i < sizeof($sort) - 1){
+			if($ident == $identifier && $i < count($sort) - 1){
 				$position = $i;
 			}
 			if($i == $position + 1){
@@ -747,10 +747,10 @@ class we_object extends we_document{
 				$sort[$ident]--;
 			}
 		}
-		$this->elements["Sortgesamt"]["dat"] = sizeof($sort);
+		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", (count($sort) > 0 ? $sort : array()));
+		$this->setElement("we_sort", (!empty($sort) ? $sort : array()));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -1418,8 +1418,8 @@ class we_object extends we_document{
 		$users = $this->getElement($name . "users", "dat") ? explode(",", $this->getElement($name . "users", "dat")) : array();
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
-		if(sizeof($users)){
-			for($i = 1; $i < (sizeof($users) - 1); $i++){
+		if(!empty($users)){
+			for($i = 1; $i < (count($users) - 1); $i++){
 				$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID='" . $users[$i] . "'", $this->DB_WE);
 				$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>' . "\n";
 			}
@@ -1430,7 +1430,7 @@ class we_object extends we_document{
 
 		$textname = "we_" . $this->Name . "_input[" . $name . "usertext]";
 		$idname = "we_" . $this->Name . "_input[" . $name . "userid]";
-		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", sizeof($users) ? false : true);
+		$delallbut = we_button::create_button("delete_all", "javascript:we_cmd('del_all_users','" . $GLOBALS['we_transaction'] . "','$nr','$name')", true, -1, -1, "", "", count($users) ? false : true);
 		$addbut = $this->htmlHidden($idname, "0") . $this->htmlHidden($textname, "") . we_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
@@ -1444,8 +1444,8 @@ class we_object extends we_document{
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
-		if(sizeof($users)){
-			for($i = 0; $i < sizeof($users); $i++){
+		if(!empty($users)){
+			for($i = 0; $i < count($users); $i++){
 				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='" . $users[$i] . "'", $this->DB_WE);
 				$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' .
 					($canChange ?
@@ -1552,7 +1552,7 @@ class we_object extends we_document{
 		$thumbdb = new DB_WE();
 		$thumbdb->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
 		$thumbList = $thumbdb->getAll();
-		if(count($thumbList)){
+		if(!empty($thumbList)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
 			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
@@ -1801,7 +1801,7 @@ class we_object extends we_document{
 		$_newTmplArr = array();
 
 		//    check if workspace exists - correct templates if neccessary !!
-		for($i = 0; $i < sizeof($arr); $i++){
+		for($i = 0; $i < count($arr); $i++){
 			if(weFileExists($arr[$i])){
 				array_push($newArr, $arr[$i]);
 				if(in_array($arr[$i], $_defaultArr)){
@@ -1862,7 +1862,7 @@ class we_object extends we_document{
 			$doc = new we_object();
 			$doc->InitByID($id, $this->Table, we_class::LOAD_TEMP_DB);
 			if($this->ID == 0){
-				for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+				for($i = 0; $i < count($this->persistent_slots); $i++){
 					$this->{$this->persistent_slots[$i]} = isset($doc->{$this->persistent_slots[$i]}) ? $doc->{$this->persistent_slots[$i]} : '';
 				}
 				$this->ObjectID = 0;
@@ -1920,7 +1920,7 @@ class we_object extends we_document{
 		$workspaces = makeArrayFromCSV($this->Workspaces);
 		$defaultWorkspaces = makeArrayFromCSV($this->DefaultWorkspaces);
 		$Templates = makeArrayFromCSV($this->Templates);
-		for($i = 0; $i < sizeof($workspaces); $i++){
+		for($i = 0; $i < count($workspaces); $i++){
 			if($workspaces[$i] == $id){
 				unset($workspaces[$i]);
 				if(in_array($id, $defaultWorkspaces)){
@@ -1981,11 +1981,11 @@ class we_object extends we_document{
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
-					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && sizeof($vals[$name]["meta"]) > 0 ) ? (sizeof($vals[$name]["meta"]) - 1) : "0");
+					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && !empty($vals[$name]["meta"])) ? (count($vals[$name]["meta"]) - 1) : "0");
 					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 						$keynames = array_keys($vals[$name]["meta"]);
 
-						for($ll = 0; $ll <= sizeof($vals[$name]["meta"]); $ll++){
+						for($ll = 0; $ll <= count($vals[$name]["meta"]); $ll++){
 							$this->elements[$name . "defaultkey" . $ll]["dat"] = isset($keynames[$ll]) ? $keynames[$ll] : "";
 							$this->elements[$name . "defaultvalue" . $ll]["dat"] = isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : "";
 						}
@@ -2074,7 +2074,7 @@ class we_object extends we_document{
 			$this->$name = $value;
 		} elseif($name == "Templates_0"){
 			$this->Templates = "";
-			for($i = 0; $i < sizeof(makeArrayFromCSV($this->Workspaces)); $i++){
+			for($i = 0; $i < count(makeArrayFromCSV($this->Workspaces)); $i++){
 				$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
 			}
 			if($this->Templates){
@@ -2082,7 +2082,7 @@ class we_object extends we_document{
 			}
 			$this->DefaultWorkspaces = '';
 			$wsp = makeArrayFromCSV($this->Workspaces);
-			for($i = 0; $i < sizeof($wsp); $i++){
+			for($i = 0; $i < count($wsp); $i++){
 				if(isset($_REQUEST["we_" . $this->Name . "_DefaultWorkspaces_" . $i])){
 					$this->DefaultWorkspaces .= $wsp[$i] . ',';
 				}

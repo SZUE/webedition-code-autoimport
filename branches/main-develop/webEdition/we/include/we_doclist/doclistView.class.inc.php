@@ -1224,7 +1224,7 @@ class doclistView{
 
 				$_defined_fields = weMetaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = sizeof($_defined_fields);
+				$_fieldcount = count($_defined_fields);
 				if($_fieldcount > 6)
 					$_fieldcount = 6;
 				for($i = 0; $i < $_fieldcount; $i++){

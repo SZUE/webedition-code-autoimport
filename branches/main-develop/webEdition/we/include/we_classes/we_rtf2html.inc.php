@@ -403,7 +403,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 
 	function popGroup(){
-		while(count($this->stack[$this->group]) != 0) {
+		while(!empty($this->stack[$this->group])) {
 			$key = $this->popStack();
 			if($key == -1)
 				break;

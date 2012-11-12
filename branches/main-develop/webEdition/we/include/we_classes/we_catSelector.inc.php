@@ -778,7 +778,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					$finalDelete[] = array("id" => $id, "IsDir" => $IsDir);
 				}
 			}
-			if(sizeof($finalDelete)){
+			if(!empty($finalDelete)){
 				foreach($finalDelete as $foo){
 					if($foo["IsDir"]){
 						$this->delDir($foo["id"]);

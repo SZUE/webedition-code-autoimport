@@ -620,7 +620,7 @@ class weNavigation extends weModelBase{
 						);
 
 						if($rules){
-							$_items[(sizeof($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
+							$_items[(count($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
 									'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}

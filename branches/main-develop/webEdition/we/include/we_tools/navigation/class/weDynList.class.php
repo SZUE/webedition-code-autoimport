@@ -180,7 +180,7 @@ abstract class weDynList{
 
 		$_where = array();
 
-		if(count($_cats)){
+		if(!empty($_cats)){
 			$_where[] = implode(" $catlogic ", $_cats);
 		}
 		if($condition){

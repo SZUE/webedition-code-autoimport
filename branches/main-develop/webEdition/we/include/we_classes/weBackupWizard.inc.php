@@ -1233,11 +1233,9 @@ class weBackupWizard{
 					break;
 				case 3:
 					if(defined("WORKFLOW_TABLE")){
-						if(count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE))) > 0){
-							$nextbut = we_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();");
-						} else{
-							$nextbut = we_button::create_button("restore_backup", "javascript:top.body.startImport();");
-						}
+						$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE))>0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE))>0) ?
+								we_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
+								we_button::create_button("restore_backup", "javascript:top.body.startImport();"));
 					} else{
 						$nextbut = we_button::create_button("restore_backup", "javascript:top.body.startImport();");
 					}
@@ -1466,9 +1464,9 @@ class weBackupWizard{
 						$we_backup_obj->setDescriptions();
 					}
 
-					if(count($we_backup_obj->file_list)){
+					if(!empty($we_backup_obj->file_list)){
 						for($i = 0; $i < $we_backup_obj->backup_steps; $i++){
-							if(!count($we_backup_obj->file_list)){
+							if(empty($we_backup_obj->file_list)){
 								break;
 							}
 							weFile::delete(array_pop($we_backup_obj->file_list));
@@ -1509,13 +1507,13 @@ class weBackupWizard{
 						}
 					} else{
 						$we_backup_obj->doUpdate();
-						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename) && $we_backup_obj->rebuild && !count($we_backup_obj->errors))
+						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors))
 							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
 						print we_html_element::jsElement('
 							top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
 							top.opener.top.we_cmd("exit_delete");
 							top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', "[finished]") . '&percent=100";
-							' . ($we_backup_obj->rebuild && !count($we_backup_obj->errors) ? ('
+							' . ($we_backup_obj->rebuild && empty($we_backup_obj->errors) ? ('
 							top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";
 							') : ('
 							top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";
@@ -1580,7 +1578,7 @@ class weBackupWizard{
 		$errors = $we_backup_obj->getErrors();
 
 		$text = "";
-		if(count($errors) > 0){
+		if(!empty($errors)){
 			foreach($errors as $k => $v){
 				$text .= g_l('backup', "[error]") . ' [' . ++$k . ']: ' . $v . "\n";
 			}
@@ -1604,7 +1602,7 @@ class weBackupWizard{
 	function printWarnings(&$we_backup_obj){
 		$warnings = $we_backup_obj->getWarnings();
 
-		if(count($warnings) > 0){
+		if(!empty($warnings)){
 
 			foreach($warnings as $k => $v){
 				$text .= g_l('backup', "[warning]") . ' [' . ++$k . ']: ' . $v . "\n";
@@ -1661,14 +1659,14 @@ class weBackupWizard{
 	function getHTMLChecker(){
 		$_execute = ini_get('max_execution_time');
 		if(!$_execute){
-			$_execute = 30;
+			$_execute = 32;
 		}
 		$_execute *= 1000;
 		$_execute += 5000; //wait extra 5 secs
 
 		$cmd = ($this->mode == self::RECOVER ? 'import' : 'export');
 
-		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP ? 5 : 1);
+		$_retry = ($this->mode == self::RECOVER || !FAST_BACKUP ? 5 : 2);
 
 		return we_html_element::jsElement(
 				'function setLocation(loc){

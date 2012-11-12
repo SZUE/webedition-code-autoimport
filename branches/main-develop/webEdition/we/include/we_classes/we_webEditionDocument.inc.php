@@ -610,7 +610,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$tagname = $regs[1];
 				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
 					$name = str_replace(array('[', ']'), array('\[', '\]'), $regs[1]);
-					$size = sizeof($blocks);
+					$size = count($blocks);
 					if($size){
 						$foo = $blocks[$size - 1];
 						$blockname = $foo["name"];
@@ -646,7 +646,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					case "block":
 					case "list":
 					case "linklist":
-						if(sizeof($blocks))
+						if(!empty($blocks))
 							array_pop($blocks);
 						break;
 				}
@@ -804,7 +804,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(defined('SHOP_TABLE')){
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
-			if(sizeof($variationFields)){
+			if(!empty($variationFields)){
 				$i = 0;
 				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])) {
 					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
@@ -936,7 +936,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 			//	we need all given tags ...
 
-			$_size = sizeof($_tags[0]);
+			$_size = count($_tags[0]);
 
 			if($_size > 0){
 

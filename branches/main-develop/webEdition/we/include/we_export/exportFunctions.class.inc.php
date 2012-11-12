@@ -690,7 +690,7 @@ abstract class exportFunctions{
 
 		$fields = array();
 
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		for($i = 0; $i < count($tableInfo_sorted); $i++){
 			// bugfix 8141
 			$regs = array();
 			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
@@ -708,7 +708,7 @@ abstract class exportFunctions{
 		$_file_name = $_file_values["filename"];
 		$_tableid = $_file_values["tableid"];
 
-		for($i = 0; $i < sizeof($fields); $i++){
+		for($i = 0; $i < count($fields); $i++){
 			if(($fields[$i]["type"] != "object") &&
 				($fields[$i]["type"] != "img") &&
 				($fields[$i]["type"] != "binary")){
@@ -788,7 +788,7 @@ abstract class exportFunctions{
 
 		$fields = array();
 
-		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
+		for($i = 0; $i < count($tableInfo_sorted); $i++){
 			// bugfix 8141
 			if(preg_match('/(.+?)_(.*)/', $tableInfo_sorted[$i]["name"], $regs)){
 				array_push($fields, array("name" => $regs[2], "type" => $regs[1]));
@@ -805,7 +805,7 @@ abstract class exportFunctions{
 		$_file_name = $_file_values["filename"];
 		$_tableid = $_file_values["tableid"];
 
-		for($i = 0; $i < sizeof($fields); $i++){
+		for($i = 0; $i < count($fields); $i++){
 			if(($fields[$i]["type"] != "object") &&
 				($fields[$i]["type"] != "img") &&
 				($fields[$i]["type"] != "binary")){

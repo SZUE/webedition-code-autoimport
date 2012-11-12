@@ -697,14 +697,14 @@ abstract class we_database_base{
 	}
 
 	function addTable($tab, $cols, $keys = array()){
-		if(!is_array($cols) || !count($cols)){
+		if(!is_array($cols) || empty($cols)){
 			return;
 		}
 		$cols_sql = array();
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
 		}
-		if(count($keys)){
+		if(!empty($keys)){
 			foreach($keys as $key){
 				$cols_sql[] = $key;
 			}

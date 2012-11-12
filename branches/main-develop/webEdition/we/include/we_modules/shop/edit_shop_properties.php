@@ -159,7 +159,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 							$fieldData = explode('=', $field);
 
-							if(is_array($fieldData) && sizeof($fieldData) == 2){
+							if(is_array($fieldData) && count($fieldData) == 2){
 								$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
 							}
 							unset($fieldData);
@@ -1170,7 +1170,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	</tr>';
 		}
 		// add custom fields
-		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && sizeof($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
+		if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && count($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
 
 			$caField = '';
 			foreach($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $value){
@@ -1350,7 +1350,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 				<td height="10"></td>
 			</tr>';
 
-	if(sizeof($customCartFields)){
+	if(!empty($customCartFields)){
 
 		foreach($customCartFields as $key => $value){
 			$customCartFieldsTable .= '<tr>

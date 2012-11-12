@@ -342,7 +342,7 @@ class we_xml_parser{
 	function hasChildNodes($absoluteXPath){
 		if(!isset($this->nodes[$absoluteXPath]['children']))
 			return FALSE;
-		return (count($this->nodes[$absoluteXPath]['children']) > 0);
+		return (!empty($this->nodes[$absoluteXPath]['children']));
 	}
 
 	/**
@@ -355,7 +355,7 @@ class we_xml_parser{
 	function hasAttributes($absoluteXPath){
 		if(!isset($this->nodes[$absoluteXPath]['attributes']))
 			return FALSE;
-		return (count($this->nodes[$absoluteXPath]['attributes']) > 0);
+		return (!empty($this->nodes[$absoluteXPath]['attributes']));
 	}
 
 	/**
@@ -654,7 +654,7 @@ class we_xml_parser{
 	 */
 	function getAttributeString($element){
 		$attrString = '';
-		if(count($element['attributes']) > 0){
+		if(!empty($element['attributes'])){
 			// Add each attribute name and value.
 			while(list($name, $value) = each($element['attributes'])) {
 				$attrString .= ' ' . $name . '="' . $value . '"';
@@ -1047,14 +1047,14 @@ class we_xml_parser{
 				$contexts = call_user_func(array(&$this, $method), $axis, $context);
 
 				// Check if there are predicates.
-				if(count($axis['predicate']) > 0){
+				if(!empty($axis['predicate'])){
 					// Check if each node fits the predicates.
 					$contexts = $this->checkPredicates($contexts, $axis['predicate']);
 				}
 			}
 
 			// Check if there are more steps left.
-			if(count($steps) > 0){
+			if(!empty($steps)){
 				// Continue the evaluation with the next steps.
 				$nodes = $this->evaluateStep($contexts, $steps);
 			} else{
@@ -1296,7 +1296,7 @@ class we_xml_parser{
 
 		// Examine if it is an XPath expression.
 		$result = $this->evaluate($predicate, $node);
-		if(count($result) > 0){
+		if(!empty($result)){
 			// Convert the array.
 			$result = explode('|', implode('|', $result));
 
@@ -1551,7 +1551,7 @@ class we_xml_parser{
 		// Check if all nodes should be selected.
 		if($axis['node-test'] == '*'){
 			// Check if there are attributes.
-			if(count($this->nodes[$contextNode]['attributes']) > 0){
+			if(!empty($this->nodes[$contextNode]['attributes'])){
 				// Run through the attributes.
 				foreach($this->nodes[$contextNode]['attributes'] as
 				$key => $value){
@@ -1996,7 +1996,7 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Evaluate each argument.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim each argument.
 			$args[$i] = trim($args[$i]);
 
@@ -2124,7 +2124,7 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim the string.
 			$args[$i] = trim($args[$i]);
 
@@ -2212,7 +2212,7 @@ class we_xml_parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim the argument.
 			$args[$i] = trim($args[$i]);
 
@@ -2353,7 +2353,7 @@ class we_xml_parser{
 			// Evaluate the argument as XPath expression.
 			$result = $this->evaluate($args, $node);
 
-			return (count($result) > 0);
+			return (!empty($result));
 		}
 	}
 
@@ -2497,7 +2497,7 @@ class we_xml_parser{
 			$str = "\$errtxt = sprintf(\$errtxt";
 
 			// run through the array of arguments
-			for($i = 1; $i < sizeof($args); $i++){
+			for($i = 1; $i < count($args); $i++){
 				// add arguments to the format string
 				$str .= ", \$args[" . $i . "]";
 			}

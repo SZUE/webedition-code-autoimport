@@ -34,7 +34,7 @@ $messaging->init($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 $messaging->get_mv_data($_REQUEST["id"]);
 $messaging->saveInSession($_SESSION['weS']['we_data'][$_REQUEST['we_transaction']]);
 
-if(sizeof($messaging->selected_message) == 0){
+if(empty($messaging->selected_message)){
 	exit;
 }
 

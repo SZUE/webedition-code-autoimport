@@ -230,7 +230,7 @@ function getError($reason, $cookie = false){
  * CHECK FOR PROBLEMS
  * *************************************************************************** */
 
-if(isset($_POST['checkLogin']) && !count($_COOKIE)){
+if(isset($_POST['checkLogin']) && empty($_COOKIE)){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login);

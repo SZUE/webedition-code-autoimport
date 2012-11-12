@@ -62,7 +62,7 @@ class rpcCmd{
 
 		$this->checkParameters();
 
-		if(sizeof($this->Permissions)){
+		if(!empty($this->Permissions)){
 
 			foreach($this->Permissions as $perm){
 				if(!we_hasPerm($perm)){
@@ -116,7 +116,7 @@ class rpcCmd{
 
 	function checkParameters(){
 
-		$_count = sizeof($this->Parameters);
+		$_count = count($this->Parameters);
 
 		for($i = 0; $i < $_count; $i++){
 

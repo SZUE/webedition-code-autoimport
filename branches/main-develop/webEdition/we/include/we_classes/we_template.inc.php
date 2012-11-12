@@ -62,7 +62,7 @@ class we_template extends we_document{
 		$temp->InitByID($id, TEMPLATES_TABLE);
 		$parentIDMerk = $this->ParentID;
 		if($this->ID == 0){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			for($i = 0; $i < count($this->persistent_slots); $i++){
 				if($this->persistent_slots[$i] != "elements")
 					$this->{$this->persistent_slots[$i]} = $temp->{$this->persistent_slots[$i]};
 			}
@@ -162,7 +162,7 @@ class we_template extends we_document{
 				if($regs[1] == '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
 				} else{
-					if(sizeof($foo) == 0){
+					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
@@ -176,17 +176,17 @@ class we_template extends we_document{
 	}
 
 	function findIfEnd($tags, $nr){
-		if($nr == sizeof($tags)){
+		if($nr == count($tags)){
 			return -1;
 		}
 		$foo = array();
 		$regs = array();
-		for($i = $nr; $i < sizeof($tags); $i++){
+		for($i = $nr; $i < count($tags); $i++){
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] != '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
 				} else{
-					if(sizeof($foo) == 0){
+					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
@@ -200,7 +200,7 @@ class we_template extends we_document{
 	}
 
 	function checkElsetags($tags){
-		for($i = 0; $i < sizeof($tags); $i++){
+		for($i = 0; $i < count($tags); $i++){
 			if(strpos($tags[$i], '<we:else') !== false){
 				$ifStart = $this->findIfStart($tags, $i);
 				if($ifStart == -1){
@@ -451,7 +451,7 @@ class we_template extends we_document{
 				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
 					$name = $regs[1];
 
-					$size = sizeof($blocks);
+					$size = count($blocks);
 					if($size){
 						$foo = $blocks[$size - 1];
 						$blockname = $foo["name"];
@@ -475,7 +475,7 @@ class we_template extends we_document{
 					$foo = array();
 					$attribs = '';
 					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-					for($i = 0; $i < sizeof($foo); $i++){
+					for($i = 0; $i < count($foo); $i++){
 						$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 					}
 					$att = array();
@@ -518,7 +518,7 @@ class we_template extends we_document{
 					case "block":
 					case "list":
 					case "linklist":
-						if(sizeof($blocks))
+						if(!empty($blocks))
 							array_pop($blocks);
 						break;
 				}
@@ -580,7 +580,7 @@ class we_template extends we_document{
 
 		$path = $this->isUsedByDocuments();
 
-		if(sizeof($path) == 0){
+		if(empty($path)){
 			return g_l('weClass', "[no_documents]");
 		}
 
@@ -716,7 +716,7 @@ class we_template extends we_document{
 				$foo = array();
 				$attribs = '';
 				preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-				for($i = 0; $i < sizeof($foo); $i++){
+				for($i = 0; $i < count($foo); $i++){
 					$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 				}
 				$att = array();

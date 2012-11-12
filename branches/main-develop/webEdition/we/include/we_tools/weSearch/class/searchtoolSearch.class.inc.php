@@ -609,7 +609,7 @@ class searchtoolsearch extends we_search{
 							}
 						}
 					}
-					if(count($fields) == 0){
+					if(empty($fields)){
 						continue;
 					}
 					$field = array();

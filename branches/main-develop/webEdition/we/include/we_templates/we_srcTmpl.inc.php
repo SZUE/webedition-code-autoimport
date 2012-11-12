@@ -475,7 +475,7 @@ function we_getCodeMirrorCode($code){
 			return '';
 	}
 	$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
-	if(count($parser_js) > 0){ // CodeMirror will be used
+	if(!empty($parser_js)){ // CodeMirror will be used
 		$maineditor = we_get_CM_css() . we_html_element::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
 		if($useCSCC && $_SESSION['prefs']['editorCodecompletion']){ //if we use tag completion we need additional files
 			$maineditor.=
@@ -752,7 +752,7 @@ function we_getCodeMirror2Code($code){
 
 	$parser_css[] = 'mode/webEdition/webEdition.css';
 
-	if(count($parser_js) > 0){ // CodeMirror will be used
+	if(!empty($parser_js)){ // CodeMirror will be used
 		$parser_js[] = 'lib/util/searchcursor.js';
 		$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css') .
 			we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
@@ -1003,7 +1003,7 @@ if($GLOBALS['we_editmode']){
 
 		$tagselect = '<select onkeydown="evt=event?event:window.event; return openTagWizWithReturn(evt)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onChange="weButton.enable(\'btn_direction_right_applyCode\')">';
 
-		for($i = 0; $i < sizeof($allWeTags); $i++){
+		for($i = 0; $i < count($allWeTags); $i++){
 			$tagselect .= '
 	<option value="' . $allWeTags[$i] . '">' . $allWeTags[$i] . '</option>';
 		}

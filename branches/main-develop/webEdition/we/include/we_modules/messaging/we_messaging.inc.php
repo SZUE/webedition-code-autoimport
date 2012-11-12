@@ -447,7 +447,7 @@ class we_messaging extends we_class{
 
 	function initSessionDat($sessDat){
 		if($sessDat){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			for($i = 0; $i < count($this->persistent_slots); $i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
 					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
 				}
@@ -463,7 +463,7 @@ class we_messaging extends we_class{
 		$save = array('we_messaging' => array());
 		$save['we_messaging'][0] = array();
 
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+		for($i = 0; $i < count($this->persistent_slots); $i++){
 			$save["we_messaging"][0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
 		}
 

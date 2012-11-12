@@ -281,7 +281,7 @@ class we_listview extends listviewBase{
 			}
 		}
 		if($this->customers === '*'){
-			if(count($_idListArray) > 0){
+			if(!empty($_idListArray)){
 				$_idListArray = array_unique($_idListArray);
 				$_idlist = implode(',', $_idListArray);
 				$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');

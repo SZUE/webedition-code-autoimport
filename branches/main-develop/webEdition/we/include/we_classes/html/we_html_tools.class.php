@@ -260,7 +260,7 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$anz = sizeof($headline);
+		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
 		<tr>
 		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(
@@ -273,7 +273,7 @@ abstract class we_html_tools{
 				</tr>';
 
 		//CONTENT
-		$zn1 = sizeof($content);
+		$zn1 = count($content);
 		for($i = 0; $i < $zn1; $i++){
 			$out .= '<tr>' . self::htmlDialogBorder4Row($content[$i], $class, $bgColor) . '</tr>';
 		}
@@ -299,7 +299,7 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = ""){
-		$anz = sizeof($content);
+		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' . we_html_tools::getPixel(
 				8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
@@ -419,7 +419,7 @@ abstract class we_html_tools{
 			$disabled .= ' disabled="disabled "';
 			$attribs .= $disabled;
 		}
-		if((isset($extensions)) && (sizeof($extensions) > 1)){
+		if((isset($extensions)) && (count($extensions) > 1)){
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlTextInput(
 					$name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") . '</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onChange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){

@@ -249,7 +249,7 @@ class we_version{
 
 				$arr = getTemplAndDocIDsOfTemplate($templateID);
 
-				if(count($arr["templateIDs"])){
+				if(!empty($arr["templateIDs"])){
 					$where = "";
 					foreach($arr["templateIDs"] as $tid){
 						$where .= " ID=" . intval($tid) . " OR ";

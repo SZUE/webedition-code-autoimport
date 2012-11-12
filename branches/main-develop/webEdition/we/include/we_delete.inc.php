@@ -62,7 +62,7 @@ if(!$wfchk){
 	if(isset($_REQUEST["sel"])){
 		$found = false;
 		$selectedItems = explode(",", $_REQUEST["sel"]);
-		for($i = 0; $i < sizeof($selectedItems); $i++){
+		for($i = 0; $i < count($selectedItems); $i++){
 			if(we_workflow_utility::inWorkflow($selectedItems[$i], $table)){
 				$found = true;
 				break;
@@ -88,7 +88,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 		$idInfos = array(
 			'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 		);
-		if(sizeof($selectedItems) > 0 && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
+		if(!empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash("SELECT IsFolder, Path FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($selectedItems[0]), $DB_WE);
 			if($idInfos['IsFolder']){
 				$idInfos['hasFiles'] = f("SELECT ID FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'", "ID", $DB_WE) > 0 ? 1 : 0;
@@ -131,7 +131,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 			$retVal = -1;
 		} else{
 
-			for($i = 0; $i < sizeof($selectedItems); $i++){
+			for($i = 0; $i < count($selectedItems); $i++){
 				if(!checkIfRestrictUserIsAllowed($selectedItems[$i], $table)){
 					$retVal = -1;
 					break;
@@ -149,7 +149,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 				if($table == FILE_TABLE && defined('USER_TABLE')){
 					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i]);
-					if(count($users) > 0){
+					if(!empty($users)){
 						$retVal = -2;
 						break;
 					}
@@ -164,7 +164,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					}
 					$users = array_unique($users);
 
-					if(count($users)){
+					if(!empty($users)){
 						$retVal = -4;
 						break;
 					}
@@ -172,7 +172,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 				if($table == TEMPLATES_TABLE && defined('USER_TABLE')){
 					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceTmp");
-					if(count($users) > 0){
+					if(!empty($users)){
 						$retVal = -2;
 						break;
 					}
@@ -187,7 +187,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					}
 					$users = array_unique($users);
 
-					if(count($users)){
+					if(!empty($users)){
 						$retVal = -4;
 						break;
 					}
@@ -196,7 +196,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')){
 
 					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceObj");
-					if(count($users) > 0){
+					if(!empty($users)){
 						$retVal = -2;
 						break;
 					}
@@ -206,14 +206,14 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					pushChilds($childs, $selectedItems[$i], $table, true);
 					$users = we_users_util::getUsersForDocWorkspace($childs, "workSpaceObj");
 
-					if(count($users)){
+					if(!empty($users)){
 						$retVal = -4;
 						break;
 					}
 				}
 				if(defined("OBJECT_FILES_TABLE") && $table == FILE_TABLE){
 					$objects = getObjectsForDocWorkspace($selectedItems[$i]);
-					if(count($objects) > 0){
+					if(!empty($objects)){
 						$retVal = -3;
 						break;
 					}
@@ -223,7 +223,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					pushChilds($childs, $selectedItems[$i], $table, true);
 					$objects = getObjectsForDocWorkspace($childs);
 
-					if(count($objects)){
+					if(!empty($objects)){
 						$retVal = -5;
 						break;
 					}
@@ -278,7 +278,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
 			}
 
-			if(count($deletedItems)){
+			if(!empty($deletedItems)){
 
 				$class_condition = '';
 				$deleted_objects = array();
@@ -287,7 +287,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					$_deletedItems = array();
 
 					// if its deleted and not selected, it must be an object
-					for($i = 0; $i < sizeof($deletedItems); $i++){
+					for($i = 0; $i < count($deletedItems); $i++){
 						if(in_array($deletedItems[$i], $selectedItems)){
 							$_deletedItems[] = $deletedItems[$i];
 						} else{
@@ -302,7 +302,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					weDocumentCustomerFilter::deleteModel(
 						$deletedItems, $table);
 					if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-						if(sizeof($deleted_objects)){
+						if(!empty($deleted_objects)){
 							weDocumentCustomerFilter::deleteModel(
 								$deleted_objects, OBJECT_FILES_TABLE);
 						}
@@ -312,7 +312,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				we_history::deleteFromHistory(
 					$deletedItems, $table);
 				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-					if(sizeof($deleted_objects)){
+					if(!empty($deleted_objects)){
 						we_history::deleteFromHistory(
 							$deleted_objects, OBJECT_FILES_TABLE);
 					}
@@ -343,7 +343,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 			$script .= 'top.toggleBusy(0);';
 
 			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
-				if(sizeof($GLOBALS["we_folder_not_del"])){
+				if(!empty($GLOBALS["we_folder_not_del"])){
 					$_SESSION['weS']['delete_files_nok'] = array();
 					$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
 					foreach($GLOBALS["we_folder_not_del"] as $datafile){

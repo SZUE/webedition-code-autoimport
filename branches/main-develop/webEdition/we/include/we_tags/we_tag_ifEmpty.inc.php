@@ -70,7 +70,7 @@ function we_isNotEmpty($attribs){
 					// remark holeg: when it is a serialized array, the function looks if it is not empty
 					if(is_array(
 							$arr = @unserialize($doc->getElement($match)))){
-						return sizeof($arr) ? true : false;
+						return !empty($arr);
 					}
 				}
 				//   end of #3938

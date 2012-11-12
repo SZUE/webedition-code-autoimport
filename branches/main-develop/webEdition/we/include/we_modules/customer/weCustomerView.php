@@ -1102,7 +1102,7 @@ class weCustomerView{
 			}
 		}
 
-		if(count($h)){
+		if(!empty($h)){
 			$this->settings->removeFieldAdd($field);
 		}
 		$this->settings->storeFieldAdd($new_field_name, 'default', $field_default);
@@ -1117,7 +1117,7 @@ class weCustomerView{
 	function deleteField($field){
 		$h = $this->customer->getFieldDbProperties($field);
 
-		if(count($h)){
+		if(!empty($h)){
 			$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP ' . $field);
 		}
 

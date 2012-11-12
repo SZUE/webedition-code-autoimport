@@ -47,7 +47,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single
 		// list of the selected items
 		$selectedItems = explode(",", $_REQUEST["sel"]);
 		$retVal = 1;
-		for($i = 0; $i < sizeof($selectedItems); $i++){
+		for($i = 0; $i < count($selectedItems); $i++){
 
 			// check if user is allowed to move this item
 			if(!checkIfRestrictUserIsAllowed($selectedItems[$i], $table)){
@@ -87,7 +87,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single
 		} else
 		if($retVal){ //	move files !
 			$notMovedItems = array();
-			for($i = 0; $i < sizeof($selectedItems); $i++){
+			for($i = 0; $i < count($selectedItems); $i++){
 				moveItem($targetDirectroy, $selectedItems[$i], $table, $notMovedItems);
 			}
 
@@ -97,7 +97,7 @@ if($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single
 
 			$script .= "\ntop.toggleBusy(0);\n";
 			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
-				if(sizeof($notMovedItems)){
+				if(!empty($notMovedItems)){
 					$_SESSION['weS']['move_files_nok'] = array();
 					$_SESSION["move_files_info"] = str_replace(
 						"\\n", "", sprintf(g_l('alert', "[move_of_files_failed]"), ""));

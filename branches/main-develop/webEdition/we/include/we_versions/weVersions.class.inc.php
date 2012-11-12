@@ -1674,7 +1674,7 @@ class weVersions{
 			}
 
 
-			for($i = 0; $i < sizeof($tableInfo); $i++){
+			for($i = 0; $i < count($tableInfo); $i++){
 				$tblFields[] = $tableInfo[$i]["name"];
 			}
 
@@ -2188,7 +2188,7 @@ class weVersions{
 		$db = new DB_WE();
 
 		$tableInfo = $db->metadata($table);
-		for($i = 0; $i < sizeof($tableInfo); $i++){
+		for($i = 0; $i < count($tableInfo); $i++){
 			$fieldNames[] = $tableInfo[$i]["name"];
 		}
 

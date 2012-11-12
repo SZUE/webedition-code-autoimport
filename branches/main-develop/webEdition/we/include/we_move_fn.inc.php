@@ -63,13 +63,13 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
 	$DB_WE = new DB_WE();
 	// check if entry is a folder
 	$row = getHash("SELECT Path, Text, IsFolder FROM " . $DB_WE->escape($table) . " WHERE  ID=" . intval($id), $DB_WE);
-	if(sizeof($row) == 0 || $row["IsFolder"]){
+	if(empty($row) || $row["IsFolder"]){
 		return -1;
 	}
 
 	$text = $row["Text"];
 	$temp = explode("/", $row["Path"]);
-	if(sizeof($temp) < 2){
+	if(count($temp) < 2){
 		$rootdir = "/";
 	} else{
 		$rootdir = "/" . $temp[1];
@@ -110,7 +110,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		return false;
 	} elseif($targetDirectoryID){
 		$row = getHash("SELECT IsFolder,Path,ID FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($targetDirectoryID), $DB_WE);
-		if(sizeof($row) == 0 || !$row["IsFolder"]){
+		if(empty($row) || !$row["IsFolder"]){
 			return false;
 		}
 		$newPath = $row['Path'];
@@ -191,7 +191,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$isFolder = ($row["IsFolder"] == 1 ? true : false);
 			$icon = $row['Icon'];
 			$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon);
-			if(count($row) == 0 || $isFolder){
+			if(empty($row)|| $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}
@@ -266,7 +266,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$item = array(
 				'ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon
 			);
-			if(sizeof($row) == 0 || $isFolder){
+			if(empty($row) || $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}

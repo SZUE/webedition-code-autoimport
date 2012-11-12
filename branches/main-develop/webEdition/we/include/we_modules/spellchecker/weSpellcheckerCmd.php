@@ -149,7 +149,7 @@ if(isset($_REQUEST['cmd'][0])){
 				$_messType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 				if($GLOBALS['spellcheckerConf']['default'] == $_REQUEST['cmd'][1]){ // if the default dict has been deleted
-					if(count($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])){
+					if(!empty($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])){
 						// take the firts active dictionary
 						$_new_ac = array();
 						foreach($GLOBALS['spellcheckerConf']['active'] as $ac){

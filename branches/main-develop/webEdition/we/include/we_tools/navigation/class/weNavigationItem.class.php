@@ -134,7 +134,7 @@ class weNavigationItem{
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
-		$item->position = sizeof($this->items);
+		$item->position = count($this->items);
 	}
 
 	function setCurrent(&$weNavigationItems, $self = true){
@@ -363,7 +363,7 @@ class weNavigationItem{
 							$_js = str_replace(array("\r\n", "\n"), '', $_js);
 
 							$_arr = $_imgObj->getRollOverAttribsArr();
-							if(count($_arr)){
+							if(!empty($_arr)){
 								$_arr['onmouseover'] = $_js . $_arr['onmouseover'];
 								$_arr['onmouseout'] = $_js . $_arr['onmouseout'];
 								$_arr['name'] = $_imgObj->getElement('name');

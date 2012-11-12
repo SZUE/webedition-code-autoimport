@@ -33,11 +33,10 @@ class CaptchaMemory {
 	 * @return void
 	 */
 	function save($captcha, $file) {
-		$items = array();
 		$items = CaptchaMemory::readData($file);
 
 		// delete old items
-		if(sizeof($items) > 0) {
+		if(!empty($items)) {
 			foreach($items as $code => $item) {
 				if(		time() > $item['time']
 					||	($_SERVER['REMOTE_ADDR'] == $item['ip']
@@ -81,7 +80,7 @@ class CaptchaMemory {
 		}
 
 		// delete old items
-		if(sizeof($items) > 0) {
+		if(!empty($items)) {
 			foreach($items as $code => $item) {
 				if(		time() > $item['time']
 					||	($_SERVER['REMOTE_ADDR'] == $item['ip']
@@ -121,7 +120,7 @@ class CaptchaMemory {
 	 * @return void
 	 */
 	static function writeData($file, $data) {
-		if(sizeof($data) < 1) {
+		if(count($data) < 1) {
 			if(file_exists($file.".php")) {
 				unlink($file.".php");
 			}

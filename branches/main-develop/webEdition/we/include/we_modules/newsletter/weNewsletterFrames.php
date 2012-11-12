@@ -932,7 +932,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, FILE_TABLE);
 
-						$content.=(count($values) ?
+						$content.=(!empty($values) ?
 								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", "style='width:440' OnKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[block_document_field]')) :
 								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
@@ -950,7 +950,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);
 
-						$content.=(count($values) ?
+						$content.=(!empty($values) ?
 								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, 'OnChange="top.content.hot=1;"'), g_l('modules_newsletter', '[block_object_field]')) :
 								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
@@ -1000,7 +1000,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$plus = we_button::create_button("image:btn_function_plus", "javascript:we_cmd('addBlock','" . $counter . "')");
 			$trash = we_button::create_button("image:btn_function_trash", "javascript:we_cmd('delBlock','" . $counter . "')");
 
-			$buttons.=(sizeof($this->View->newsletter->blocks) > 1 ?
+			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
 					we_button::position_yes_no_cancel($plus, $trash) :
 					we_button::position_yes_no_cancel($plus)
 				);
@@ -2036,7 +2036,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$nextprev->setCol(0, 4, array(), $colcontent);
 
-		if(count($emails)){
+		if(!empty($emails)){
 			$add = we_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 			$end = $nextprev->getHtml();
 

@@ -339,7 +339,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			return self::__createStepFromHash($WorkflowStep);
 
 		$tmp = getHash('SELECT * FROM ' . WORKFLOW_STEP_TABLE . ' WHERE ID=' . intval($WorkflowStep) . ' ORDER BY ID', new DB_WE());
-		if(count($tmp) == 0){
+		if(empty($tmp)){
 			return false;
 		}
 		return self::__createStepFromHash($tmp);

@@ -236,7 +236,7 @@ EOF;
 
 
 			$Steps = $_wizard->WizardSteps;
-			if(sizeof($Steps)){
+			if(!empty($Steps)){
 
 				if($Step != null){
 					$NextStepStyle = "FinishedStep";

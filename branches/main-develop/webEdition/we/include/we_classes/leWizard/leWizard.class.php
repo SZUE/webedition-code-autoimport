@@ -73,7 +73,7 @@ class leWizard{
 	 * @return leWizardStep
 	 */
 	function getWizardStepIndexByName($Name){
-		for($i = 0; $i < sizeof($this->WizardSteps); $i++){
+		for($i = 0; $i < count($this->WizardSteps); $i++){
 			if($this->WizardSteps[$i]->Name == $Name){
 				return $i;
 			}

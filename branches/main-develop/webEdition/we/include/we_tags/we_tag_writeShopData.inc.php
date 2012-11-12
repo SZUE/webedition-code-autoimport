@@ -68,7 +68,7 @@ function we_tag_writeShopData($attribs){
 		$shoppingItems = $basket->getShoppingItems();
 		$cartFields = $basket->getCartFields();
 
-		if(sizeof($shoppingItems) == 0){
+		if(empty($shoppingItems)){
 			return;
 		}
 

@@ -190,7 +190,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	static function getFilterByIdAndTable($id, $table){
 		$db = new DB_WE();
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
-		if(count($hash)){
+		if(!empty($hash)){
 			return self::getFilterByDbHash($hash);
 		}
 		return ''; // important do NOT return null
@@ -218,12 +218,9 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 
 				if(in_array($ct, $_allowedCTs)){
 
-					if($ct == "text/webedition"){
-						$_idField = "DID";
-					} else{
-						$_idField = "OID";
-					}
-					if(sizeof($_fileArray)){
+					$_idField = ($ct == "text/webedition" ? "DID" : "OID");
+
+					if(!empty($_fileArray)){
 						$_queryTail .= " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
 					}
 				}
@@ -243,7 +240,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 					}
 				}
 			}
-			if(sizeof($_fileArray)){
+			if(!empty($_fileArray)){
 				$_queryTail = " AND $_idField NOT IN(" . implode(", ", $_fileArray) . ")";
 			}
 		}
@@ -282,7 +279,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 			array_push($checkFields, "modelId");
 			array_push($checkFields, "modelType");
 		}
-		$_length = sizeof($checkFields);
+		$_length = count($checkFields);
 
 		for($i = 0; $i < $_length; $i++){
 
@@ -423,9 +420,9 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 	 * call this, when several models are deleted
 	 */
 	function deleteModel($modelIds = array(), $table){
-		if(sizeof($modelIds)){
+		if(!empty($modelIds)){
 			$_db = new DB_WE();
-			$_query = "DELETE FROM " . CUSTOMER_FILTER_TABLE . " WHERE
+			$_query = 'DELETE FROM ' . CUSTOMER_FILTER_TABLE . " WHERE
 				modelId IN (" . implode(", ", $modelIds) . ")
 				AND modelTable = \"" . $table . "\"
 			";

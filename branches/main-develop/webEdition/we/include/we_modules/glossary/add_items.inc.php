@@ -305,8 +305,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 
 			<?php
-			if(sizeof($_REQUEST['we_cmd']) > 3){
-				for($i = 3; $i < sizeof($_REQUEST['we_cmd']); $i++){
+			if(count($_REQUEST['we_cmd']) > 3){
+				for($i = 3; $i < count($_REQUEST['we_cmd']); $i++){
 					?>
 					<input type="hidden" name="we_cmd[<?php echo ($i - 3); ?>]" value="<?php echo $_REQUEST['we_cmd'][$i]; ?>">
 					<?php
@@ -851,7 +851,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 				//
 
 	$AddJs = "";
-				if(isset($_REQUEST['item']) && sizeof($_REQUEST['item']) > 0){
+				if(isset($_REQUEST['item']) && !empty($_REQUEST['item'])){
 
 					foreach($_REQUEST['item'] as $Key => $Entry){
 

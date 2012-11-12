@@ -66,7 +66,7 @@ class we_docTypes extends we_class{
 	function we_save($resave = 0){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
-		if(sizeof($idArr)){
+		if(!empty($idArr)){
 			foreach($idArr as $id){
 				$path = id_to_path($id, TEMPLATES_TABLE);
 				if($id && $path){
@@ -95,7 +95,7 @@ class we_docTypes extends we_class{
 	function saveInSession(&$save){
 		$save = array();
 		$save[0] = array();
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+		for($i = 0; $i < count($this->persistent_slots); $i++){
 			$save[0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
 		}
 	}
@@ -103,7 +103,7 @@ class we_docTypes extends we_class{
 	function we_initSessDat($sessDat){
 		we_class::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			for($i = 0; $i < count($this->persistent_slots); $i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
 					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
 				}
@@ -404,7 +404,7 @@ class we_docTypes extends we_class{
 
 	function formSubDir($width = 100){
 		$vals = array();
-		for($i = 0; $i < sizeof(g_l('weClass', "[subdir]")); $i++){
+		for($i = 0; $i < count(g_l('weClass', "[subdir]")); $i++){
 			$vals[(string) $i] = g_l('weClass', "[subdir][" . $i . ']');
 		}
 		return $this->htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));

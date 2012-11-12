@@ -53,7 +53,7 @@ if(isset($wasSaved) && $wasSaved){
 			$_reload[TEMPLATES_TABLE] = $_reloadDocsTempls['templateIDs'];
 
 			// reload all documents based on this template
-			if(sizeof($_reload[FILE_TABLE]) || sizeof($_reload[TEMPLATES_TABLE])){
+			if(!empty($_reload[FILE_TABLE]) || !empty($_reload[TEMPLATES_TABLE])){
 
 				$_reloadJs .= "
 var _reloadTabs = new Object();

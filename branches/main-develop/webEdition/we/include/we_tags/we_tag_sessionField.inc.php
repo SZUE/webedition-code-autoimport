@@ -168,7 +168,7 @@ function we_tag_sessionField($attribs, $content){
 				$optionsAr = makeArrayFromCSV(weTag_getAttribute('options', $attribs));
 				$isin = 0;
 				$options = '';
-				for($i = 0; $i < sizeof($optionsAr); $i++){
+				for($i = 0; $i < count($optionsAr); $i++){
 					if($optionsAr[$i] == $orgVal){
 						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i]) . "\n";
 						$isin = 1;

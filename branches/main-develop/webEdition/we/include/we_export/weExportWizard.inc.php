@@ -1202,10 +1202,10 @@ top.close();');
 
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load"));
 
-					if(count($finalDocs) > 0){
+					if(!empty($finalDocs)){
 						$start_export = true;
 						$hiddens .= we_html_element::htmlHidden(array("name" => "all", "value" => count($finalDocs)));
-					} else if(count($finalObjs) > 0){
+					} else if(!empty($finalObjs)){
 						$start_export = true;
 						$hiddens .= we_html_element::htmlHidden(array("name" => "all", "value" => count($finalObjs)));
 
@@ -1294,10 +1294,10 @@ top.close();');
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 						');
 
-					if(count($remaining_docs) > 0){
+					if(!empty($remaining_docs)){
 						$cut = array_shift($remaining_docs);
 						$_SESSION['weS']['exportVars']["finalDocs"] = $remaining_docs;
-					} else if(count($remaining_objs) > 0){
+					} else if(!empty($remaining_objs)){
 						$cut = array_shift($remaining_objs);
 						$_SESSION['weS']['exportVars']["finalObjs"] = $remaining_objs;
 					}
@@ -1305,7 +1305,7 @@ top.close();');
 					$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
-					if((count($remaining_docs) > 0) || (count($remaining_objs) > 0)){
+					if((!empty($remaining_docs)) || (!empty($remaining_objs))){
 						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 						$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(

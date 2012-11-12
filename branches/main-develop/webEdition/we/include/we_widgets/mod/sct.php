@@ -61,7 +61,7 @@ if(we_hasPerm("NEW_WEBEDITIONSITE")){
 $_disableObjects = false;
 if(defined("OBJECT_TABLE")){
 	$allClasses = getAllowedClasses();
-	if(sizeof($allClasses) == 0){
+	if(empty($allClasses)){
 		$_disableObjects = true;
 	}
 }

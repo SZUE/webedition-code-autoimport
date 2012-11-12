@@ -361,7 +361,7 @@ class we_user{
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case 'cockpit':
-					$save_javascript .= 
+					$save_javascript .=
 						$this->rememberPreference(0, 'seem_start_file') .
 						$this->rememberPreference("cockpit", 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
@@ -587,7 +587,7 @@ class we_user{
 		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
 		$this->DB_WE->query('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID));
 		$this->DB_WE->next_record();
-		for($i = 0; $i < sizeof($tableInfo); $i++){
+		for($i = 0; $i < count($tableInfo); $i++){
 			$fieldName = $tableInfo[$i]['name'];
 			if(in_array($fieldName, $this->preference_slots)){
 				$this->Preferences[$fieldName] = $this->DB_WE->f($fieldName);

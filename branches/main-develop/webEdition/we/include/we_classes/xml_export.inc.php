@@ -103,7 +103,7 @@ class XML_Export{
 		$foo = array();
 
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
+		for($i = 0; $i < count($foo); $i++){
 			if(substr($foo[$i][1], -1) == "<"){
 				$foo[$i][1] = substr($foo[$i][1], 0, strlen($foo[$i][1]) - 1);
 			}

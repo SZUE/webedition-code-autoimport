@@ -83,7 +83,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 					'onchange' => $js,
 					'class' => 'defaultfont selectinput'
 			));
-		$select->addOptions(sizeof($values), $keys, $values);
+		$select->addOptions(count($values), $keys, $values);
 
 		return '
 					<table class="attribute">

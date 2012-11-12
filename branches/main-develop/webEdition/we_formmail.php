@@ -158,7 +158,7 @@ function print_error($errortext){
 function check_required($required){
 	if($required){
 		$we_requiredarray = explode(',', $required);
-		for($i = 0; $i < sizeof($we_requiredarray); $i++){
+		for($i = 0; $i < count($we_requiredarray); $i++){
 			if(!$_REQUEST[$we_requiredarray[$i]]){
 				return false;
 			}
@@ -251,7 +251,7 @@ $_order = isset($_REQUEST['order']) ? $_REQUEST['order'] : '';
 $we_orderarray = array();
 if($_order){
 	$we_orderarray = explode(',', $_order);
-	for($i = 0; $i < sizeof($we_orderarray); $i++){
+	for($i = 0; $i < count($we_orderarray); $i++){
 		if(!in_array($we_orderarray[$i], $we_reserved)){
 			$output[$we_orderarray[$i]] = $_REQUEST[$we_orderarray[$i]];
 		}
@@ -412,8 +412,8 @@ if($recipient){
 		}
 	}
 
-	if(count($recipientsList) > 0){
-		if(sizeof($_FILES)){
+	if(!empty($recipientsList)){
+		if(!empty($_FILES)){
 			foreach($_FILES as $name => $file){
 				if(isset($file['tmp_name']) && $file['tmp_name']){
 					$tempName = TEMP_PATH . '/' . $file['name'];

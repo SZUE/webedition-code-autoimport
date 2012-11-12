@@ -2441,7 +2441,7 @@ class searchtoolView extends weToolView{
 
 				$_defined_fields = weMetaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = sizeof($_defined_fields);
+				$_fieldcount = count($_defined_fields);
 				if($_fieldcount > 6)
 					$_fieldcount = 6;
 				for($i = 0; $i < $_fieldcount; $i++){
@@ -3048,9 +3048,9 @@ class searchtoolView extends weToolView{
 	}
 
 	function tblListRow($content, $class = "middlefont", $bgColor = ""){
-		$anz = sizeof($content);
+		$anz = count($content);
 		if(isset($content[0]["version"])){
-			$anz = sizeof($content) - 1;
+			$anz = count($content) - 1;
 		}
 
 		$out = '';
@@ -3060,7 +3060,7 @@ class searchtoolView extends weToolView{
 		}
 
 		if(isset($content[0]["version"])){
-			$anzahlVersions = sizeof($content[0]["version"]);
+			$anzahlVersions = count($content[0]["version"]);
 
 			foreach($content[0]["version"] as $k => $v){
 				$out .= '</tr><tr>';

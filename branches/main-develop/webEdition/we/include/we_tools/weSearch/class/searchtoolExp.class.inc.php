@@ -288,7 +288,7 @@ class searchtoolExp extends we_search{
 				$_conditions[] = implode(" $_log ", $_word);
 			}
 
-			if(count($_conditions)){
+			if(!empty($_conditions)){
 				if(empty($_condition)){
 					$_condition .= implode(" $_log ", $_conditions);
 				} else{

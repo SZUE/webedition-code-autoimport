@@ -68,7 +68,7 @@ function checkDeleteFile($id, $table, $path = ""){
 			return !(ObjectUsedByObjectFile($id, false));
 		case TEMPLATES_TABLE:
 			$arr = getTemplAndDocIDsOfTemplate($id, false, false, true);
-			return (count($arr["documentIDs"]) == 0);
+			return (empty($arr["documentIDs"]));
 	}
 	return true;
 }
@@ -315,7 +315,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0){
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
 		@set_time_limit(30);
-		if(sizeof($row)){
+		if(!empty($row)){
 			if($row["IsFolder"]){
 				deleteFolder($id, $table, $row["Path"], $delR);
 			} else{

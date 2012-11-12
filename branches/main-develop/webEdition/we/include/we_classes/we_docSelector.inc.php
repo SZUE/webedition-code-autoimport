@@ -903,7 +903,7 @@ class we_docSelector extends we_dirSelector{
 					}
 
 					foreach($_previewFields as $_part){
-						if(count($_part["data"]) > 0){
+						if(!empty($_part["data"])){
 							$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
 							foreach($_part["data"] as $z => $_row){
 								$_class = (($z % 2) == 0) ? "odd" : "even";

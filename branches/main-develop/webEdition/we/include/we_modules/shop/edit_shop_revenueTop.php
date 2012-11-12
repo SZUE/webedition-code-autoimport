@@ -387,7 +387,7 @@ if($DB_WE->num_rows()){
 		usort($orderRows, 'orderBy');
 	}
 
-	for($nr = 0, $i = ($actPage * $nrOfPage); $i < sizeof($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
+	for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 
 		$orderData = $orderRows[$i]['orderArray'];
 		$articleData = $orderRows[$i]['articleArray'];

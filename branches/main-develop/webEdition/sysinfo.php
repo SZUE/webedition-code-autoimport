@@ -133,11 +133,11 @@ function getConnectionTypes(){
 	}
 	if(is_callable("curl_exec")){
 		$_connectionTypes[] = "curl";
-		if(sizeof($_connectionTypes) == "1"){
+		if(count($_connectionTypes) == "1"){
 			$_connectionTypeUsed = "curl";
 		}
 	}
-	for($i = 0; $i < sizeof($_connectionTypes); $i++){
+	for($i = 0; $i < count($_connectionTypes); $i++){
 		if($_connectionTypes[$i] == $_connectionTypeUsed){
 			$_connectionTypes[$i] = "<u>" . $_connectionTypes[$i] . "</u>";
 		}

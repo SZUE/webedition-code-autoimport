@@ -62,7 +62,7 @@ class delFragment extends taskFragment{
 		we_readParents($currentID, $currentParents, $this->table);
 
 		deleteEntry($this->data, $this->table, false);
-		if(count($GLOBALS["we_folder_not_del"]) > 0){
+		if(!empty($GLOBALS["we_folder_not_del"])){
 			array_push($_SESSION['weS']['we_not_deleted_entries'], $GLOBALS["we_folder_not_del"][0]);
 		}
 		if($this->data == $currentID){
@@ -74,7 +74,7 @@ class delFragment extends taskFragment{
 
 	function finish(){
 		unset($_SESSION['weS']['todel']);
-		if(count($_SESSION['weS']['we_not_deleted_entries'])){
+		if(!empty($_SESSION['weS']['we_not_deleted_entries'])){
 			$alert = we_message_reporting::getShowMessageCall(makeAlertDelFolderNotEmpty($_SESSION['weS']['we_not_deleted_entries']), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
 			$alert = we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
