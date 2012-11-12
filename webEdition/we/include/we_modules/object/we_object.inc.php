@@ -233,7 +233,7 @@ class we_object extends we_document{
 					}
 				}
 			}
-			$q = rtrim($q, ',');
+			$q = rtrim($q, ', ');
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = serialize($arrt);
@@ -486,7 +486,7 @@ class we_object extends we_document{
 
 		////// resave the line O to O.....
 		$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-		$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES(0)');
+		$this->DB_WE->query('INSERT INTO ' . $ctable . ' OF_ID=0');
 		////// resave the line O to O.....
 
 		unset($this->elements);
@@ -568,10 +568,9 @@ class we_object extends we_document{
 	function editor(){
 		global $we_responseText, $we_JavaScript, $we_responseTextType;
 		if($_REQUEST['we_cmd'][0] == "save_document"){
-			$we_responseText = g_l('weClass', "[response_save_ok]");
 			$we_JavaScript = "";
 			$this->save();
-			$we_responseText = sprintf($we_responseText, $this->Path);
+			$we_responseText = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
 			$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 			return "we_templates/we_editor_save.inc.php";
 		}
@@ -700,14 +699,14 @@ class we_object extends we_document{
 					$t[$ident] = $identpos;
 				} elseif($pos == $identpos){
 					$t[$ident] = $identpos;
-					$t[$identifier] = sizeof($sort);
+					$t[$identifier] = count($sort);
 				} elseif($pos < $identpos){
 					$t[$ident] = $identpos;
 				}
 			}
 			$sort = $t;
 		} else{
-			$sort[$identifier] = sizeof($sort);
+			$sort[$identifier] = count($sort);
 		}
 		$this->setElement("we_sort", $sort);
 	}
@@ -758,7 +757,7 @@ class we_object extends we_document{
 		$temp = $this->elements[$name . "defaultkey" . ($i + 1)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i + 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
-		unset($temp);
+
 		$temp = $this->elements[$name . "defaultvalue" . ($i + 1)]["dat"];
 		$this->elements[$name . "defaultvalue" . ($i + 1)]["dat"] = $this->elements[$name . "defaultvalue" . ($i)]["dat"];
 		$this->elements[$name . "defaultvalue" . ($i)]["dat"] = $temp;
@@ -768,7 +767,7 @@ class we_object extends we_document{
 		$temp = $this->elements[$name . "defaultkey" . ($i - 1)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i - 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
-		unset($temp);
+
 		$temp = $this->elements[$name . "defaultvalue" . ($i - 1)]["dat"];
 		$this->elements[$name . "defaultvalue" . ($i - 1)]["dat"] = $this->elements[$name . "defaultvalue" . ($i)]["dat"];
 		$this->elements[$name . "defaultvalue" . ($i)]["dat"] = $temp;
@@ -1254,9 +1253,10 @@ class we_object extends we_document{
 		$n = $n . "default";
 		$attribs["name"] = $n;
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
-		if(!is_array($link))
+		if(!is_array($link)){
 			$link = array();
-		if(!sizeof($link)){
+		}
+		if(empty($link)){
 			$link = array("ctype" => "text", "type" => "ext", "href" => "#", "text" => g_l('global', "[new_link]"));
 		}
 		$img = new we_imageDocument();
@@ -1416,8 +1416,8 @@ class we_object extends we_document{
 
 	function formUsers1($name, $nr = 0){
 		$users = $this->getElement($name . "users", "dat") ? explode(",", $this->getElement($name . "users", "dat")) : array();
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
-		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
+		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
+			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 		if(sizeof($users)){
 			for($i = 1; $i < (sizeof($users) - 1); $i++){
 				$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID='" . $users[$i] . "'", $this->DB_WE);
@@ -2072,25 +2072,23 @@ class we_object extends we_document{
 	protected function i_set_PersistentSlot($name, $value){
 		if(in_array($name, $this->persistent_slots)){
 			$this->$name = $value;
-		} else{
-			if($name == "Templates_0"){
-				$this->Templates = "";
-				for($i = 0; $i < sizeof(makeArrayFromCSV($this->Workspaces)); $i++){
-					$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
-				}
-				if($this->Templates){
-					$this->Templates = ',' . $this->Templates;
-				}
-				$this->DefaultWorkspaces = '';
-				$wsp = makeArrayFromCSV($this->Workspaces);
-				for($i = 0; $i < sizeof($wsp); $i++){
-					if(isset($_REQUEST["we_" . $this->Name . "_DefaultWorkspaces_" . $i])){
-						$this->DefaultWorkspaces .= $wsp[$i] . ',';
-					}
-				}
-				if($this->DefaultWorkspaces)
-					$this->DefaultWorkspaces = ',' . $this->DefaultWorkspaces;
+		} elseif($name == "Templates_0"){
+			$this->Templates = "";
+			for($i = 0; $i < sizeof(makeArrayFromCSV($this->Workspaces)); $i++){
+				$this->Templates .= $_REQUEST["we_" . $this->Name . "_Templates_" . $i] . ",";
 			}
+			if($this->Templates){
+				$this->Templates = ',' . $this->Templates;
+			}
+			$this->DefaultWorkspaces = '';
+			$wsp = makeArrayFromCSV($this->Workspaces);
+			for($i = 0; $i < sizeof($wsp); $i++){
+				if(isset($_REQUEST["we_" . $this->Name . "_DefaultWorkspaces_" . $i])){
+					$this->DefaultWorkspaces .= $wsp[$i] . ',';
+				}
+			}
+			if($this->DefaultWorkspaces)
+				$this->DefaultWorkspaces = ',' . $this->DefaultWorkspaces;
 		}
 	}
 
@@ -2107,13 +2105,9 @@ class we_object extends we_document{
 		foreach($this->elements as $k => $v){
 			if(is_string($k) && substr($k, 0, 12) == 'DefaultText_'){
 				$end = substr($k, 12, strlen($k));
-				if(isset($_REQUEST['textwert_' . $end])){
-					if(isset($v['dat']) && $v['dat'] != ''){
-						if(preg_match('/[^\w\-.]/', $v['dat'])){
-							$defTextValid = true;
-							break;
-						}
-					}
+				if(isset($_REQUEST['textwert_' . $end]) && isset($v['dat']) && $v['dat'] != '' && preg_match('/[^\w\-.]/', $v['dat'])){
+					$defTextValid = true;
+					break;
 				}
 			}
 		}
@@ -2140,7 +2134,7 @@ class we_object extends we_document{
 			for($i = 0; $i <= $count && !empty($sort); $i++){
 				$foo = $this->getElement($this->getElement("wholename" . $this->getSortIndex($i)), "dat");
 				if(!in_array($foo, $usedNames)){
-					array_push($usedNames, $foo);
+					$usedNames[] = $foo;
 				} else{
 					return $foo;
 				}

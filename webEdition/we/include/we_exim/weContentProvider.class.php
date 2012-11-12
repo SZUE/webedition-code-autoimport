@@ -27,10 +27,9 @@ class weContentProvider{
 	static function getInstance($we_ContentType, $ID = "", $table = ""){
 		$we_doc = "";
 
-		$DB_WE = new DB_WE();
-
-		if($ID != "")
+		if($ID != ""){
 			$we_ID = $ID;
+		}
 		switch($we_ContentType){
 			case "doctype":
 				$we_doc = new we_docTypes();
@@ -113,14 +112,7 @@ class weContentProvider{
 	}
 
 	static function getTagName(&$object){
-
-		if(isset($object->Pseudo)){
-			$classname = $object->Pseudo;
-		} else{
-			$classname = $object->ClassName;
-		}
-
-		switch($classname){
+		switch((isset($object->Pseudo) ? $object->Pseudo : $object->ClassName)){
 			case "we_template":
 				return "we:template";
 			case "we_element":
@@ -171,11 +163,7 @@ class weContentProvider{
 			"weNavigation" => array("Sort", "Attributes")
 		);
 
-		if(isset($encoded[$classname])){
-			return in_array($prop, $encoded[$classname]);
-		} else{
-			return false;
-		}
+		return (isset($encoded[$classname]) ? in_array($prop, $encoded[$classname]) : false);
 	}
 
 	static function noEncodingChange($classname, $prop, $wedocClass, $objectname){
@@ -271,13 +259,11 @@ class weContentProvider{
 			$offset = 0;
 			$rsize = 1048576;
 			do{
-				if($isWe){
+				//prefer doc_root over site.
+				//FIXME: this must be changed, if parking of documents is implemented
+				$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
+				if(!file_exists($path)){
 					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
-					if(!file_exists($path)){
-						$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
-					}
-				} else{
-					$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
 				}
 				$data = weFile::loadPart($path, $offset, $rsize);
 				if(!empty($data)){
