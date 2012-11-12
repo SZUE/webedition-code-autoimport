@@ -68,16 +68,16 @@ class weBinary{
 	}
 
 	function loadFile($file){
-		$path = str_replace($_SERVER['DOCUMENT_ROOT'], "", $file);
-		$path = str_replace(SITE_DIR, "", $path);
+		$path = str_replace(array($_SERVER['DOCUMENT_ROOT'], SITE_DIR), '', $file);
 		$this->Path = $path;
 		return ($this->linkData ? $this->Data = weFile::load($file) : true);
 	}
 
 	function save($force = true){
 		$path = $_SERVER['DOCUMENT_ROOT'] . ($this->ID ? SITE_DIR : '') . $this->Path;
-		if(file_exists($path) && !$force)
+		if(file_exists($path) && !$force){
 			return false;
+		}
 		if(!is_dir(dirname($path))){
 			we_util_File::createLocalFolderByPath(dirname($path));
 		}

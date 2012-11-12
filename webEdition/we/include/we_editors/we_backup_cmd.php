@@ -34,6 +34,10 @@ if(isset($_REQUEST['cmd'])){
 		$_steps = explode(',', weBackup::backupSteps);
 
 		if(isset($_REQUEST['reload']) && $_REQUEST['reload']){
+			if(FAST_BACKUP && $_REQUEST['cmd'] == 'export'){
+				t_e('Backup forces reload - this is not intended! Pls report this issue.');
+			}
+
 			$_key = array_search($_SESSION['weS']['weBackupVars']['backup_steps'], $_steps);
 
 			if($_key > 0){

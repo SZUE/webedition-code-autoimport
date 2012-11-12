@@ -349,10 +349,10 @@ class weBackupPreparer{
 
 	function clearTemporaryData($docTable){
 		global $DB_WE;
-		$DB_WE->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="' . stripTblPrefix($docTable) . '";');
-		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_TABLE . ';');
-		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_RULE_TABLE . ';');
-		$DB_WE->query('TRUNCATE TABLE ' . HISTORY_TABLE . ';');
+		$DB_WE->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="' . stripTblPrefix($docTable) . '"');
+		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_TABLE);
+		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_RULE_TABLE);
+		$DB_WE->query('TRUNCATE TABLE ' . HISTORY_TABLE);
 	}
 
 	function clearVersionData(){
@@ -443,7 +443,6 @@ class weBackupPreparer{
 
 			$_mess = g_l('backup', '[cannot_split_file_ziped]');
 		} else{
-
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
