@@ -65,7 +65,7 @@ if(isset($_REQUEST['cmd'])){
 					exit();
 				}
 			}
-		} else{
+		} elseif(!FAST_BACKUP){
 			$_pref = getPref('BACKUP_STEPS');
 			if($_SESSION['weS']['weBackupVars']['backup_steps'] < $_pref){
 				$_key = array_search($_SESSION['weS']['weBackupVars']['backup_steps'], $_steps);
@@ -384,3 +384,4 @@ if(isset($_REQUEST['cmd'])){
 		default:
 	}
 }
+
