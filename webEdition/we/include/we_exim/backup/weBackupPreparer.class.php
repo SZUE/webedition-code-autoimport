@@ -89,6 +89,7 @@ class weBackupPreparer{
 		$_SESSION['weS']['weBackupVars']['current_table_id'] = -1;
 
 		if($_SESSION['weS']['weBackupVars']['options']['backup_extern']){
+			$_SESSION['weS']['weBackupVars']['extern_files'] = array();
 			weBackupPreparer::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
@@ -332,7 +333,7 @@ class weBackupPreparer{
 		$d->close();
 	}
 
-	function addToFileList(&$list, $file, $rem_doc_root = true){
+	function addToFileList(array &$list, $file, $rem_doc_root = true){
 		if($rem_doc_root){
 			$list[] = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
 		} else{
