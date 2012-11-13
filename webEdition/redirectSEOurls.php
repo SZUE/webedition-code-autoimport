@@ -131,20 +131,13 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		$_REQUEST['we_oid'] = $objectid;
 		$_GET = array_merge($_GET, $myRequest);
 		$_SERVER['SCRIPT_NAME'] = $display;
+		we_html_tools::setHttpCode(200);
 
-		header('HTTP/1.0 200 OK', true, 200);
-		header('Status: 200 OK', true, 200);
 		@include($_SERVER['DOCUMENT_ROOT'] . $display);
 
 		exit;
 	} elseif($error404doc){
-		if(SUPPRESS404CODE){
-			header('HTTP/1.0 200 OK', true, 200);
-			header('Status: 200 OK', true, 200);
-		} else{
-			header('HTTP/1.0 404 Not Found', true, 404);
-			header('Status: 404 Not Found', true, 404);
-		}
+		we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 		@include($_SERVER['DOCUMENT_ROOT'] . id_to_path($error404doc, FILE_TABLE));
 		exit;
 	}

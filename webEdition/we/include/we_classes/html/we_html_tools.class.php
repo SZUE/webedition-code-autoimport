@@ -37,28 +37,9 @@ abstract class we_html_tools{
 			$allow = true;
 		}
 		if(!$allow || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
-			print self::htmlTop();
-			print
-				we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(
-						g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
-			print '</body></html>';
-			exit();
-		}
-	}
-
-###### login ###################################################################
-### login()
-### the same as protect but with an othe error message. It is used after the login
-
-	static function login(){
-		if($_SESSION['user']['Username'] == ''){
-
-			print self::htmlTop();
-			print
-				we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
-			print '</body></html>';
+			print self::htmlTop() .
+				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();') .
+				'</body></html>';
 			exit();
 		}
 	}
@@ -79,89 +60,29 @@ abstract class we_html_tools{
 	 *
 	 * @return         string
 	 */
-	static function htmlFormElementTable($element, $text, $textalign = "left", $textclass = "defaultfont", $col2 = "", $col3 = "", $col4 = "", $col5 = "", $col6 = "", $abstand = 1){
-		$colspan = 1;
-		$elemOut = "<td";
-		if(is_array($element)){
-			foreach($element as $key => $val){
-				$key == "text" ? $colText = $val : $elemOut .= " $key='$val'";
-			}
-		} else{
-			$colText = $element;
-		}
-		$elemOut .= ">" . $colText . "</td>";
+	static function htmlFormElementTable($col1, $text, $textalign = "left", $textclass = "defaultfont", $col2 = "", $col3 = "", $col4 = "", $col5 = "", $col6 = "", $abstand = 1){
+		$colspan = 0;
+		$elemOut = '';
 
-		if($col2){
-			$col2out = "<td";
-			if(is_array($col2)){
-				foreach($col2 as $key => $val){
-					$key == "text" ? $colText = $val : $col2out .= " $key='$val'";
+		for($i = 1; $i < 7; ++$i){
+			$var = ${'col' . $i};
+			if($var){
+				$tmp = '<td';
+				if(is_array($var)){
+					foreach($var as $key => $val){
+						$key == 'text' ? $colText = $val : $tmp .= ' ' . $key . '=\'' . $val . '\'';
+					}
+				} else{
+					$colText = $var;
 				}
-			} else{
-				$colText = $col2;
+				$tmp .= '>' . $colText . '</td>';
+				$elemOut.=$tmp;
+				$colspan++;
 			}
-			$col2out .= ">" . $colText . "</td>";
-			$colspan++;
-		}
-
-		if($col3){
-			$col3out = "<td";
-			if(is_array($col3)){
-				foreach($col3 as $key => $val){
-					$key == "text" ? $colText = $val : $col3out .= " $key='$val'";
-					;
-				}
-			} else{
-				$colText = $col3;
-			}
-			$col3out .= ">" . $colText . "</td>";
-			$colspan++;
-		}
-
-		if($col4){
-			$col4out = "<td";
-			if(is_array($col4)){
-				foreach($col4 as $key => $val){
-					$key == "text" ? $colText = $val : $col4out .= " $key='$val'";
-					;
-				}
-			} else{
-				$colText = $col4;
-			}
-			$col4out .= ">" . $colText . "</td>";
-			$colspan++;
-		}
-
-		if($col5){
-			$col5out = "<td";
-			if(is_array($col5)){
-				foreach($col5 as $key => $val){
-					$key == "text" ? $colText = $val : $col5out .= " $key='$val'";
-					;
-				}
-			} else{
-				$colText = $col5;
-			}
-			$col5out .= ">" . $colText . "</td>";
-			$colspan++;
-		}
-
-		if($col6){
-			$col6out = "<td";
-			if(is_array($col6)){
-				foreach($col6 as $key => $val){
-					$key == "text" ? $colText = $val : $col6out .= " $key='$val'";
-					;
-				}
-			} else{
-				$colText = $col6;
-			}
-			$col6out .= ">" . $colText . "</td>";
-			$colspan++;
 		}
 		return '<table cellpadding="0" cellspacing="0" border="0">' . ($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim(
 					$textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') . ($abstand ? ('<tr><td colspan="' . $colspan . '">' . we_html_tools::getPixel(
-					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . ($col2 ? $col2out : "") . ($col3 ? $col3out : "") . ($col4 ? $col4out : "") . ($col5 ? $col5out : "") . ($col6 ? $col6out : "") . '</tr></table>';
+					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . '</tr></table>';
 	}
 
 	static function targetBox($name, $size, $width = "", $id = "", $value = "", $onChange = "", $abstand = 8, $selectboxWidth = "", $disabled = false){
@@ -195,7 +116,7 @@ abstract class we_html_tools{
 		);
 
 		if($width){
-			$_inputs ["style"] = "width: " . $width . "px;";
+			$_inputs ["style"] = 'width: ' . $width . 'px;';
 		}
 
 		if($id){
@@ -233,16 +154,9 @@ abstract class we_html_tools{
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
-
-		$_out = '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">';
-
-		if($headline){
-			$_out .= '<h1 class="header">' . $headline . '</h1>';
-		}
-
-		$_out .= '<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
-
-		return $_out;
+		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
+			($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
+			'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = "30", $height = "", $overflow = "auto"){
@@ -255,16 +169,14 @@ abstract class we_html_tools{
 		if($buttons){
 			$buttons = '<div align="right" style="margin-left:10px;">' . $buttons . '</div>';
 		}
-		return we_multiIconBox::getHTML(
-				"", $width, $parts, $marginLeft, $buttons, -1, "", "", false, $headline, "", $height, $overflow);
+		return we_multiIconBox::getHTML('', $width, $parts, $marginLeft, $buttons, -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$anz = sizeof($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ' border="0" cellpadding="0" cellspacing="0" width="' . $w . '">
 		<tr>
-		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(
-				8, 21) . '</td>';
+		<td width="8" style="background-image:url(' . IMAGE_DIR . 'box/box_header_ol2.gif);">' . we_html_tools::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td class="' . $class . '" style="padding:1px 5px 1px 5px;background-image:url(' . IMAGE_DIR . 'box/box_header_bg2.gif);">' . $headline[$f]["dat"] . '</td>';
@@ -299,22 +211,20 @@ abstract class we_html_tools{
 	}
 
 	static function htmlDialogBorder4Row($content, $class = "middlefont", $bgColor = ""){
-		$anz = sizeof($content);
-		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' . we_html_tools::getPixel(
-				8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+		$anz = count($content);
+		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
+			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
-			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' . ((isset(
-					$content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' . ((isset(
-					$content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' . ((isset(
-					$content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
+				((isset($content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
+				((isset($content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
+				((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
+				'</td>';
 		}
-		$out .= '
-					<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' . we_html_tools::getPixel(
-				8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>
-
-				';
+		$out .= '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_r.gif);">' .
+			we_html_tools::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 		return $out;
 	}
 
@@ -339,9 +249,7 @@ abstract class we_html_tools{
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 			);
 			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array(
-				"colspan" => "2"
-				), $out);
+			$_table->setCol(0, 0, array("colspan" => "2"), $out);
 			$_table->setCol(1, 0, null, we_html_tools::getPixel($w, 5)); // row for gap between buttons and dialogborder
 			$_table->setCol(2, 0, array("align" => "right"), $buttons);
 			return $_table->getHtml();
@@ -356,7 +264,7 @@ abstract class we_html_tools{
 		foreach($vals as $v => $t){
 			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
 		}
-		return "$out</select>";
+		return $out . '</select>';
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
@@ -401,36 +309,35 @@ abstract class we_html_tools{
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
-
 		$img = '<img src="' . IMAGE_DIR . 'buttons/' . $name . ($disabled ? "_d" : "") . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' border="0" alt="' . $alt . '">';
 
-		if($disabled)
-			return $img;
-		if($href){
-			return '<a href="' . $href . '" onMouseOver="window.status=\'' . $alt . '\';return true;" onMouseOut="window.status=\'\';return true;"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>';
-		} else{
-			return '<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />';
-		}
+		return ($disabled ?
+				$img : ($href ?
+					'<a href="' . $href . '" onMouseOver="window.status=\'' . $alt . '\';return true;" onMouseOut="window.status=\'\';return true;"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
+					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onClick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
+				));
 	}
 
 	static function getExtensionPopup($name, $selected, $extensions, $width = "", $attribs = "", $permission = true){
-		$disabled = '';
-		if(!$permission){
-			$disabled .= ' disabled="disabled "';
-			$attribs .= $disabled;
-		}
-		if((isset($extensions)) && (sizeof($extensions) > 1)){
-			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlTextInput(
-					$name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") . '</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onChange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+		if((isset($extensions)) && (count($extensions) > 1)){
+			if(!$permission){
+				$disabled = ' disabled="disabled "';
+				$attribs .= $disabled;
+			} else{
+				$disabled = '';
+			}
+			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+				we_html_tools::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") .
+				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
 			}
-			$out .= "</select></td></tr></table>\n";
+			$out .= '</select></td></tr></table>';
+			return $out;
 		} else{
 			$_ext = $extensions[0];
-			$out = we_html_tools::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
+			return we_html_tools::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
-		return $out;
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
@@ -444,9 +351,9 @@ abstract class we_html_tools{
 		if($h == ''){
 			$h = 0;
 		}
-/*		if(!is_numeric($w) && $h == 1){
-			t_e('x');
-		}*/
+		/* 		if(!is_numeric($w) && $h == 1){
+		  t_e('x');
+		  } */
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}
 
@@ -505,7 +412,7 @@ abstract class we_html_tools{
 		$_attsOption = array();
 		$_attsHidden = array();
 
-		if($xml != ""){
+		if($xml != ''){
 			$_attsSelect['xml'] = $xml;
 			$_attsOption['xml'] = $xml;
 			$_attsHidden['xml'] = $xml;
@@ -773,40 +680,29 @@ abstract class we_html_tools{
 		$noButton = ($no != "" ? we_button::create_button("no", "javascript:$noHandler") : "");
 		$yesButton = ($yes != "" ? we_button::create_button("yes", "javascript:$yesHandler") : "");
 
-		$out = "";
-
-		if($script != ""){
-			$out .= we_html_element::jsElement($script);
-		}
 
 		$content = new we_html_table(array(
 				"cellpadding" => 10, "cellspacing" => 0, "border" => 0
 				), 1, ($img != "" ? 2 : 1));
 
-		if($img != ""){
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
-				$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-				$content->setCol(
-					0, 0, array(
-					"valign" => "top"
-					), we_html_element::htmlImg(
-						array(
-							"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
-					)));
-			}
+		if($img != "" && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
+			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
+			$content->setCol(
+				0, 0, array(
+				"valign" => "top"
+				), we_html_element::htmlImg(
+					array(
+						"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
+				)));
 		}
 
 		$content->setCol(0, ($img != "" ? 1 : 0), array(
 			"class" => "defaultfont"
 			), $text);
 
-
-		$out .= $content->getHtml();
-
 		return we_html_tools::htmlDialogLayout(
-				$out, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
-
-		return $out;
+				(empty($script) ? '' : we_html_element::jsElement($script)) . $content->getHtml()
+				, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
 	}
 
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont", $htmlspecialchars = true){
@@ -825,10 +721,7 @@ abstract class we_html_tools{
 						(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . '</option>';
 			}
 		}
-		if($optgroup){
-			$ret .= '</optgroup>';
-		}
-		$ret .= '</select>';
+		$ret .= ($optgroup ? '</optgroup>' : '') . '</select>';
 		return $ret;
 	}
 
@@ -879,19 +772,50 @@ abstract class we_html_tools{
 						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . BUTTONS_DIR . 'btn_direction_right.gif\' alt=\'right\' border=\'0\'></a>";
 						state_' . $unique . '=0;
 					}
-			}
-		');
+			}');
 			$text = $smalltext;
 		}
 
 		if(strpos($width, "%") === false){
 			$width = intval($width);
-			if(!we_base_browserDetect::isIE()&& $width>10){
+			if(!we_base_browserDetect::isIE() && $width > 10){
 				$width -= 10;
 			}
 		}
 
 		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><a href="javascript:clip_' . $unique . '();"><img src="' . BUTTONS_DIR . 'btn_direction_right.gif" alt="right" border="0" /></a><td>' : '') . '</tr></table></div>';
+	}
+
+	public static function setHttpCode($status){
+		switch($status){
+			case 200:
+				header('HTTP/1.0 200 OK', false, 200);
+				header('Status: 200 OK', false, 200);
+				break;
+			case 303:
+				header('HTTP/1.1 ' . $status . ' See Other', true, $status);
+				header('Status: ' . $status . ' See Other', true, $status);
+			case 400:
+				header('HTTP/1.1 ' . $status . ' Bad Request', true, $status);
+				header('Status: ' . $status . ' Bad Request', true, $status);
+				break;
+			case 401:
+				header('HTTP/1.1 ' . $status . ' Unauthorized', true, $status);
+				header('Status: ' . $status . ' Unauthorized', true, $status);
+				break;
+			case 403:
+				header('HTTP/1.1 ' . $status . ' Forbidden', true, $status);
+				header('Status: ' . $status . ' Forbidden', true, $status);
+				break;
+			case 408:
+				header('HTTP/1.1 ' . $status . ' Request Time-out', true, $status);
+				header('Status: ' . $status . ' Request Time-out', true, $status);
+				break;
+			case 503:
+				header('HTTP/1.1 ' . $status . ' Service Unavailable', true, $status);
+				header('Status: ' . $status . ' Service Unavailable', true, $status);
+				break;
+		}
 	}
 
 }

@@ -138,9 +138,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 	$GLOBALS['we_obj']->setTitleAndDescription();
 
 	if(!$GLOBALS['we_obj']->Published){
-
-		header('HTTP/1.1 404 Not Found');
-
+		we_html_tools::setHttpCode(404);
 
 		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
 		if($path){
@@ -186,14 +184,14 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 		}
 	}
 
-	if($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj'])){
+	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']))){
 
 		if(!($_visitorHasAccess == weDocumentCustomerFilter::ACCESS || $_visitorHasAccess == weDocumentCustomerFilter::CONTROLONTEMPLATE)){
 
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 
-			if($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE)){ // use given document instead !
+			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
 				@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 				unset($_errorDocPath);
 				unset($_errorDocId);
@@ -221,8 +219,7 @@ if(!$tid){
 }
 
 if(!$tid){
-
-	header('HTTP/1.1 404 Not Found');
+	we_html_tools::setHttpCode(404);
 
 	$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
 	if($path){
@@ -239,13 +236,6 @@ if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $G
 	@we_html_tools::headerCtCharset('text/html', $GLOBALS['we_doc']->Charset);
 }
 
-// Caching
-
-/* $h = getHash('Select CacheType, CacheLifeTime FROM '.OBJECT_TABLE.' WHERE ID=''.$we_doc->TableID.''',$DB_WE);
-
-  $we_doc->CacheType = isset($h['CacheType']) ? $h['CacheType'] : 'none';
-  $we_doc->CacheLifeTime = isset($h['CacheLifeTime']) ? $h['CacheLifeTime'] : 0;
- */
 //	If in webEdition, parse the document !!!!
 if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
 	$contentOrig = implode('', file(TEMPLATES_PATH . $tmplPath));
