@@ -29,11 +29,11 @@
  */
 
 $ischecked=0;
-/*//FIXME: Funktioniert so nicht, und verwirrt mehr als es hilft!
- *
- * if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
+//FIXME: Funktioniert so nicht, und verwirrt mehr als es hilft!
+
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
 	$ischecked=1;
-}*/
+}
 if (isset($_REQUEST["setTestUpdate"])){
 	 $ischecked = $_REQUEST["setTestUpdate"];
 }
