@@ -63,7 +63,7 @@ function getValueLoginMode($val){
 	}
 }
 
-function printHeader($login){
+function printHeader($login, $status = 200){
 	/*	 * ***************************************************************************
 	 * CREATE HEADER
 	 * *************************************************************************** */
@@ -71,6 +71,7 @@ function printHeader($login){
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: public');
 	header('Pragma: no-cache');
+	we_html_tools::setHttpCode($status);
 
 	we_html_tools::htmlTop('webEdition');
 	print STYLESHEET .
@@ -233,17 +234,17 @@ function getError($reason, $cookie = false){
 if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout = getError(g_l('start', '[cookies_disabled]'));
 
-	printHeader($login);
+	printHeader($login, 400);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
 	$_layout = getError(g_l('start', '[no_db_connection]'));
 
-	printHeader($login);
+	printHeader($login, 503);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
 	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr());
 
-	printHeader($login);
+	printHeader($login, 408);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
@@ -307,7 +308,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
 
-	printHeader($login);
+	printHeader($login, 400);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else{
 
@@ -397,6 +398,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	switch($login){
 		case LOGIN_OK:
+			$httpCode = 200;
 			$_body_javascript = '';
 
 			//	Here the mode - SEEM or normal is saved in the SESSION!!!
@@ -413,8 +415,8 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 				$_SESSION['weS']['we_mode'] = $_REQUEST['mode'];
 			}
 
-			if(defined('WE_LOGIN_WEWINDOW') && (WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
-				header('HTTP/1.1 303 See Other');
+			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
+				$httpCode = 303;
 				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
 				$_body_javascript.='alert("automatic redirect disabled");';
 			} else{
@@ -427,9 +429,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		case LOGIN_CREDENTIALS_INVALID:
 			we_log_loginFailed('tblUser', $_POST['username']);
 
-			/*			 * ***************************************************************************
-			 * CHECK FOR FAILED LOGIN ATTEMPTS
-			 * *************************************************************************** */
+			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $GLOBALS['DB_WE']);
 
 			$_body_javascript = ($cnt >= LOGIN_FAILED_NR ?
@@ -443,11 +443,13 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_denied_for_user]"), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		default:
+			$httpCode = 200;
+			break;
 	}
 
 
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
-	printHeader($login);
+	printHeader($login, (isset($httpCode) ? $httpCode : 401));
 	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }

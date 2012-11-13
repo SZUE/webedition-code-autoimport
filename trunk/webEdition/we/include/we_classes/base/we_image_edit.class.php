@@ -270,9 +270,6 @@ class we_image_edit{
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
 
-		$_outsize["width"] = 0;
-		$_outsize["height"] = 0;
-
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		if($newwidth){
 			$_outsize["width"] = $newwidth;
@@ -280,11 +277,7 @@ class we_image_edit{
 		} else{
 			// bugfix #2482: preserve aspect ratio for thumbnails with width=0 and height != 0
 			$_outsize["width"] = round(($origwidth / $origheight) * $newheight);
-			if($newheight){
-				$_outsize["height"] = $newheight;
-			} else{
-				$_outsize["height"] = round($origheight * $newwidth / $origwidth);
-			}
+			$_outsize["height"] = ($newheight ? $newheight : round($origheight * $newwidth / $origwidth));
 		}
 
 		// If height has been specified set it.
@@ -316,9 +309,6 @@ class we_image_edit{
 		if(we_image_edit::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
-
-		$_outsize["width"] = 0;
-		$_outsize["height"] = 0;
 
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		// here it is set
@@ -464,20 +454,22 @@ class we_image_edit{
 				} else{
 
 					// preserve transparency of png and gif images:
-					if($output_format == "gif"){
-						$colorTransparent = imagecolortransparent($_gdimg);
-						imagepalettecopy($_gdimg, $_output_gdimg);
-						imagefill($_output_gdimg, 0, 0, $colorTransparent);
-						imagecolortransparent($_output_gdimg, $colorTransparent);
-						imagetruecolortopalette($_output_gdimg, true, 256);
-					} else if($output_format == "png"){
-						imagealphablending($_output_gdimg, false);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
-						imagefill($_output_gdimg, 0, 0, $transparent);
-						imagesavealpha($_output_gdimg, true);
-					} else{
-
+					switch($output_format){
+						case "gif":
+							$colorTransparent = imagecolortransparent($_gdimg);
+							imagepalettecopy($_gdimg, $_output_gdimg);
+							imagefill($_output_gdimg, 0, 0, $colorTransparent);
+							imagecolortransparent($_output_gdimg, $colorTransparent);
+							imagetruecolortopalette($_output_gdimg, true, 256);
+							break;
+						case "png":
+							imagealphablending($_output_gdimg, false);
+							$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
+							$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
+							imagefill($_output_gdimg, 0, 0, $transparent);
+							imagesavealpha($_output_gdimg, true);
+							break;
+						default:
 					}
 				}
 				// Resize image
@@ -506,11 +498,7 @@ class we_image_edit{
 					touch($output_filename);
 				}
 
-				if($interlace){
-					ImageInterlace($_output_gdimg, 1);
-				} else{
-					ImageInterlace($_output_gdimg, 0);
-				}
+				ImageInterlace($_output_gdimg, ($interlace ? 1 : 0));
 
 				switch($output_format){
 					case 'jpg':
@@ -522,7 +510,7 @@ class we_image_edit{
 								$_gdimg = basename($output_filename);
 							}
 						} else{
-							if($_tempfilename = tempnam(TEMP_PATH, "")){
+							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
 								$_gdimg = weFile::load($_tempfilename);
 
@@ -544,7 +532,7 @@ class we_image_edit{
 								$_gdimg = basename($output_filename);
 							}
 						} else{
-							if($_tempfilename = tempnam(TEMP_PATH, "")){
+							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@$_image_out_function($_output_gdimg, $_tempfilename);
 								$_gdimg = weFile::load($_tempfilename);
 
