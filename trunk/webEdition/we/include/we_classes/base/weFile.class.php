@@ -39,19 +39,11 @@ abstract class weFile{
 				return false;
 			}
 		}
-		if($iscompressed == 0){
-			$open = 'fopen';
-			$seek = 'fseek';
-			$tell = 'ftell';
-			$read = 'fgets';
-			$close = 'fclose';
-		} else{
-			$open = 'gzopen';
-			$seek = 'gzseek';
-			$tell = 'gztell';
-			$read = 'gzgets';
-			$close = 'gzclose';
-		}
+
+		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$open = $prefix . 'open';
+		$read = $prefix . 'read';
+		$close = $prefix . 'close';
 
 		$buffer = '';
 		$fp = @$open($filename, $flags);
@@ -70,7 +62,6 @@ abstract class weFile{
 	}
 
 	static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-
 		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
@@ -80,19 +71,11 @@ abstract class weFile{
 		  return;
 		  } */
 
-		if($iscompressed == 0){
-			$open = 'fopen';
-			$seek = 'fseek';
-			$tell = 'ftell';
-			$read = 'fgets';
-			$close = 'fclose';
-		} else{
-			$open = 'gzopen';
-			$seek = 'gzseek';
-			$tell = 'gztell';
-			$read = 'gzgets';
-			$close = 'gzclose';
-		}
+		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$open = $prefix . 'open';
+		$seek = $prefix . 'seek';
+		$read = $prefix . 'read';
+		$close = $prefix . 'close';
 
 		$buffer = '';
 		$fp = $open($filename, 'rb');
@@ -120,38 +103,26 @@ abstract class weFile{
 		  return;
 		  } */
 
-		if($iscompressed == 0){
-			$open = 'fopen';
-			$seek = 'fseek';
-			$tell = 'ftell';
-			$read = 'fread';
-			$close = 'fclose';
-		} else{
-			$open = 'gzopen';
-			$seek = 'gzseek';
-			$tell = 'gztell';
-			$read = 'gzread';
-			$close = 'gzclose';
-		}
+		$prefix = $iscompressed == 0 ? 'f' : self::getComPrefix('gzip');
+		$open = $prefix . 'open';
+		$seek = $prefix . 'seek';
+		$read = $prefix . 'read';
+		$close = $prefix . 'close';
 
 		$buffer = '';
-		$fp = @$open($filename, 'rb');
-		if($fp){
+		if(($fp = @$open($filename, 'rb'))){
 			if($seek($fp, $offset, SEEK_SET) == 0){
 				$buffer = $read($fp, $rsize);
 				$close($fp);
 				return $buffer;
 			} else{
 				$close($fp);
-				return false;
 			}
 		}
-		else
-			return false;
+		return false;
 	}
 
 	static function save($filename, $content, $flags = 'wb', $create_path = false){
-		$oldFile = $filename;
 		if($filename == '' || self::hasURL($filename) || (file_exists($filename) && !is_writable($filename))){
 			t_e('error writing file', $filename);
 			return false;
@@ -165,11 +136,10 @@ abstract class weFile{
 				return false;
 			}
 		}
-		$written = 0;
 
 		$fp = @fopen($filename, $flags);
 		if($fp){
-			$written = fwrite($fp, $content);
+			$written = fwrite($fp, $content, strlen($content));
 			@fclose($fp);
 			return $written;
 		}
@@ -182,7 +152,7 @@ abstract class weFile{
 			$filename = self::getUniqueId();
 		}
 		$filename = TEMP_PATH . '/' . $filename;
-		return (self::save($filename, $content) ? $filename : false);
+		return (self::save($filename, $content, $flags) ? $filename : false);
 	}
 
 	static function delete($filename){
@@ -191,11 +161,7 @@ abstract class weFile{
 		}
 		if(!self::hasURL($filename)){
 			if(is_writable($filename)){
-				if(is_dir($filename)){
-					return rmdir($filename);
-				} else{
-					return unlink($filename);
-				}
+				return (is_dir($filename) ? rmdir($filename) : unlink($filename));
 			} else{
 				return false;
 			}
@@ -284,8 +250,9 @@ abstract class weFile{
 			return -1;
 		}
 		if($fh_temp){
-			if($buff)
+			if($buff){
 				fwrite($fh_temp, $buff);
+			}
 			@fclose($fh_temp);
 		}
 		@fclose($fh);
@@ -365,7 +332,6 @@ abstract class weFile{
 	}
 
 	static function compress($file, $compression = 'gzip', $destination = '', $remove = true, $writemode = 'wb'){
-
 		if(!self::hasCompression($compression)){
 			return false;
 		}
@@ -382,7 +348,6 @@ abstract class weFile{
 			}
 			return $zfile;
 		}
-
 		$prefix = self::getComPrefix($compression);
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
@@ -395,9 +360,10 @@ abstract class weFile{
 				do{
 					$data = fread($fp, 8192);
 					$_data_size = strlen($data);
-					if($_data_size == 0)
+					if($_data_size == 0){
 						break;
-					$_written = $write($gzfp, $data);
+					}
+					$_written = $write($gzfp, $data, $_data_size);
 					if($_data_size != $_written){
 						return false;
 					}
@@ -454,13 +420,12 @@ abstract class weFile{
 				$_id1 = fgets($fh, 2);
 				$_id2 = fgets($fh, 2);
 				if((ord($_id1) == 31) && (ord($_id2) == 139)){
-					return 1;
+					return true;
 				}
 			}
 			fclose($fh);
 		}
-		return 0;
+		return false;
 	}
 
 }
-

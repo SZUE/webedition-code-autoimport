@@ -175,11 +175,9 @@ abstract class weBackupUtil{
 	}
 
 	static function exportFiles($to, $files){
-
-		$fh = fopen($to, 'ab');
 		$count = count($files);
 
-		if($fh){
+		if(($fh = fopen($to, 'ab'))){
 			for($i = 0; $i < $count; $i++){
 				$file_to_export = $files[$i];
 				self::exportFile($file_to_export, $fh);

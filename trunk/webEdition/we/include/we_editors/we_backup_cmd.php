@@ -30,11 +30,9 @@ we_html_tools::protect();
 if(isset($_REQUEST['cmd'])){
 
 	if(($_REQUEST['cmd'] == 'export' || $_REQUEST['cmd'] == 'import') && isset($_SESSION['weS']['weBackupVars'])){
-
 		$_steps = explode(',', weBackup::backupSteps);
 
 		if(isset($_REQUEST['reload']) && $_REQUEST['reload']){
-
 			$_key = array_search($_SESSION['weS']['weBackupVars']['backup_steps'], $_steps);
 
 			if($_key > 0){
@@ -59,9 +57,7 @@ if(isset($_REQUEST['cmd'])){
 
 				if($_SESSION['weS']['weBackupVars']['retry'] > 10){
 					$_SESSION['weS']['weBackupVars']['retry'] = 1;
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR));
 					exit();
 				}
 			}
@@ -100,8 +96,7 @@ if(isset($_REQUEST['cmd'])){
 
 				$description = g_l('backup', '[working]');
 			} else if(isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0){
-				$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
-				if($fh){
+				if(($fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab'))){
 					if(FAST_BACKUP){
 						$_SESSION['weS']['weBackupVars']['backup_steps'] = 5;
 					}
@@ -152,15 +147,11 @@ if(isset($_REQUEST['cmd'])){
 				$percent = weBackupUtil::getExportPercent();
 
 				print we_html_element::jsElement('
-
 						function run(){' . weBackupUtil::getProgressJS($percent, $description) . '
-
 							top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
 							top.checker.location = "' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=checker";
 						}
-
-						run();
-						');
+						run();');
 			} else{
 
 				include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
@@ -185,9 +176,7 @@ if(isset($_REQUEST['cmd'])){
 
 				// export settings from the file
 				if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
-					if($_SESSION['weS']['weBackupVars']['backup_log']){
-						weBackupUtil::addLog('Exporting settings');
-					}
+					weBackupUtil::addLog('Exporting settings');
 					$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
 					$_files[] = WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php';
 				}
@@ -252,7 +241,7 @@ if(isset($_REQUEST['cmd'])){
 				print we_html_element::jsElement(weBackupUtil::getProgressJS(100, g_l('backup', "[finished]")) .
 						'top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
 						if(top.checker != "undefined"){
-							top.checker.setLocation("' . HTML_DIR . 'white.html");
+							top.checker.location("' . HTML_DIR . 'white.html");
 						}');
 
 				if($_SESSION['weS']['weBackupVars']['backup_log']){
