@@ -56,7 +56,9 @@ $LU_Variables = array(
 	'clientSessionName' => session_name(),
 	'clientSessionID' => session_id()
 );
-
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){
+	$LU_Variables['testUpdate']=1;
+}
 
 // These request variables listed here are NOT submitted to the server - fill it
 // to keep requests small
