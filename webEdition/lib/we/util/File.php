@@ -144,23 +144,11 @@ abstract class we_util_File{
 	}
 
 	public static function saveTemp($content, $filename = "", $flags = "wb"){
-		$filename = TEMP_PATH . "/" . ($filename == "" ? self::getUniqueId() : $filename);
-		return (self::save($filename, $content)) ? $filename : false;
+		return weFile::saveTemp($content, $filename, $flags);
 	}
 
 	public static function delete($filename){
-		if($filename == "")
-			return false;
-		if(!self::hasURL($filename)){
-			if(is_writable($filename)){
-				if(is_dir($filename)){
-					return @rmdir($filename);
-				} else{
-					return @unlink($filename);
-				}
-			}
-		}
-		return false;
+		return weFile::delete($filename);
 	}
 
 	public static function hasURL($filename){
@@ -310,7 +298,7 @@ abstract class we_util_File{
 					$_data_size = strlen($data);
 					if($_data_size == 0)
 						break;
-					$_written = $write($gzfp, $data);
+					$_written = $write($gzfp, $data, $_data_size);
 					if($_data_size != $_written){
 						return false;
 					}

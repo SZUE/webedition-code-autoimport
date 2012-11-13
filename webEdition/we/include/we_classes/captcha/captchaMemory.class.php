@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class CaptchaMemory {
-
+class CaptchaMemory{
 
 	/**
 	 * Save the Captcha Code to the Memory
@@ -32,29 +31,29 @@ class CaptchaMemory {
 	 * @param string $captcha
 	 * @return void
 	 */
-	function save($captcha, $file) {
-		$items = array();
-		$items = CaptchaMemory::readData($file);
+	function save($captcha, $file){
+		$items = self::readData($file);
 
 		// delete old items
-		if(sizeof($items) > 0) {
-			foreach($items as $code => $item) {
-				if(		time() > $item['time']
-					||	($_SERVER['REMOTE_ADDR'] == $item['ip']
-						&&	$_SERVER['HTTP_USER_AGENT'] == $item['agent'])) {
+		if(sizeof($items) > 0){
+			foreach($items as $code => $item){
+				if(time() > $item['time']
+					|| ($_SERVER['REMOTE_ADDR'] == $item['ip']
+					&& $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
 					unset($items[$code]);
 				}
 			}
 		}
 
 		$items[$captcha] = array(
-			'time'	=> time()+30*60,
-			'ip'	=> $_SERVER['REMOTE_ADDR'],
-			'agent'	=> $_SERVER['HTTP_USER_AGENT'],
+			'time' => time() + 30 * 60,
+			'ip' => $_SERVER['REMOTE_ADDR'],
+			'agent' => $_SERVER['HTTP_USER_AGENT'],
 		);
-		CaptchaMemory::writeData($file, $items);
-	} /* end: save */
+		self::writeData($file, $items);
+	}
 
+	/* end: save */
 
 	/**
 	 * checks if the Captcha Code is a valid Code
@@ -63,39 +62,39 @@ class CaptchaMemory {
 	 * @param string $captcha
 	 * @return boolean
 	 */
-	function isValid($captcha, $file) {
+	function isValid($captcha, $file){
 
 		$returnValue = false;
 
-		$items = array();
-		$items = CaptchaMemory::readData($file);
+		$items = self::readData($file);
 
 		// check if code is valid
-		if(		isset($items[$captcha])
-			&&	is_array($items[$captcha])
-			&&	time() < $items[$captcha]['time']
-			&&	$_SERVER['REMOTE_ADDR'] == $items[$captcha]['ip']
-			&&	$_SERVER['HTTP_USER_AGENT'] == $items[$captcha]['agent']) {
+		if(isset($items[$captcha])
+			&& is_array($items[$captcha])
+			&& time() < $items[$captcha]['time']
+			&& $_SERVER['REMOTE_ADDR'] == $items[$captcha]['ip']
+			&& $_SERVER['HTTP_USER_AGENT'] == $items[$captcha]['agent']){
 			unset($items[$captcha]);
 			$returnValue = true;
 		}
 
 		// delete old items
-		if(sizeof($items) > 0) {
-			foreach($items as $code => $item) {
-				if(		time() > $item['time']
-					||	($_SERVER['REMOTE_ADDR'] == $item['ip']
-						&&	$_SERVER['HTTP_USER_AGENT'] == $item['agent'])) {
+		if(sizeof($items) > 0){
+			foreach($items as $code => $item){
+				if(time() > $item['time']
+					|| ($_SERVER['REMOTE_ADDR'] == $item['ip']
+					&& $_SERVER['HTTP_USER_AGENT'] == $item['agent'])){
 					unset($items[$code]);
 				}
 			}
 		}
 
-		CaptchaMemory::writeData($file, $items);
+		self::writeData($file, $items);
 
 		return $returnValue;
-	} /* end: isValid */
+	}
 
+	/* end: isValid */
 
 	/**
 	 * read the data file
@@ -103,16 +102,15 @@ class CaptchaMemory {
 	 * @param string $file
 	 * @return void
 	 */
-	static function readData($file) {
-		if(file_exists($file.".php")) {
-			include($file.".php");
-			if(isset($data)) {
+	static function readData($file){
+		if(file_exists($file . ".php")){
+			include($file . ".php");
+			if(isset($data)){
 				return unserialize($data);
 			}
 		}
 		return array();
-	} /* end: readData */
-
+	}
 
 	/**
 	 * write the data file
@@ -120,17 +118,14 @@ class CaptchaMemory {
 	 * @param string $file
 	 * @return void
 	 */
-	static function writeData($file, $data) {
-		if(sizeof($data) < 1) {
-			if(file_exists($file.".php")) {
-				unlink($file.".php");
+	static function writeData($file, $data){
+		if(count($data) < 1){
+			if(file_exists($file . '.php')){
+				weFile::delete($file . '.php');
 			}
-		} else {
-			$serialized = serialize($data);
-			weFile::save($file.".php",
-				"<?php\n\$data='".$serialized."';",
-				'w+');
+		} else{
+			weFile::save($file . '.php', '<?php $data=\'' . serialize($data) . '\';', 'w+');
 		}
-	} /* end: writeData */
+	}
 
-} /* end: Class */
+}
