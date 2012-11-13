@@ -160,12 +160,13 @@ class we_wysiwyg{
 				<style type="text/css">
 					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
-					    background-image: url(' . IMAGE_DIR . 'pixel.gif);
+					  background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						margin: 0px;
 						padding:4px;
 						text-align: left;
 						text-decoration: none;
 						position: relative;
+						overflow: auto;
 					}
 				</style>
 				'
@@ -253,15 +254,15 @@ function tinyMCEchanged(inst){
 						text-decoration: none;
 						position: relative;
 					}
-					.tbButtonWysiwygBorder
-					{
+					.tbButtonWysiwygBorder {
 						border: 1px solid #006DB8;
-					    background-image: url(' . IMAGE_DIR . 'pixel.gif);
+					  background-image: url(' . IMAGE_DIR . 'pixel.gif);
 						margin: 0px;
 						padding:4px;
 						text-align: left;
 						text-decoration: none;
 						position: relative;
+						overflow: auto;
 					}
 					.tbButtonWysiwygBackground{
 						background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif) ! important;
