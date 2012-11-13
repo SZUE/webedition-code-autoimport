@@ -46,8 +46,7 @@ abstract class weFile{
 		$close = $prefix . 'close';
 
 		$buffer = '';
-		$fp = @$open($filename, $flags);
-		if($fp){
+		if(($fp = @$open($filename, $flags))){
 			do{
 				$data = $read($fp, $rsize);
 				if(strlen($data) == 0){
@@ -78,19 +77,16 @@ abstract class weFile{
 		$close = $prefix . 'close';
 
 		$buffer = '';
-		$fp = $open($filename, 'rb');
-		if($fp){
+		if(($fp = $open($filename, 'rb'))){
 			if($seek($fp, $offset, SEEK_SET) == 0){
 				$buffer = $read($fp, $rsize);
 				$close($fp);
 				return $buffer;
 			} else{
 				$close($fp);
-				return false;
 			}
 		}
-		else
-			return false;
+		return false;
 	}
 
 	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
@@ -137,8 +133,7 @@ abstract class weFile{
 			}
 		}
 
-		$fp = @fopen($filename, $flags);
-		if($fp){
+		if(($fp = @fopen($filename, $flags))){
 			$written = fwrite($fp, $content, strlen($content));
 			@fclose($fp);
 			return $written;
