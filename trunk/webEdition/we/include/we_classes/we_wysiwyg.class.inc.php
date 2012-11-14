@@ -1220,10 +1220,14 @@ function tinyMCEchanged(inst){
 				$tinyRows = '';
 				$i = 0;
 				$k = 1;
+				$pastetext = 0;
 				foreach($rows as $outer){
 					$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
 					$j = 0;
 					foreach($outer as $inner){
+						if($cmdMapping[$rows[$i][$j]->cmd] == 'pastetext'){ // TODO: implement pastetext-toggle in we:textarea and throw this out again
+							$pastetext = 1;
+						}
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
 					}
@@ -1286,8 +1290,8 @@ tinyMCE.init({
 
 	setup : function(ed){
 		ed.onInit.add(function(ed){
-			ed.pasteAsPlainText = true;
-			ed.controlManager.setActive("pastetext", true);
+			ed.pasteAsPlainText = ' . $pastetext . ';
+			ed.controlManager.setActive("pastetext", ' . $pastetext . ');
 		});
 	}
 
