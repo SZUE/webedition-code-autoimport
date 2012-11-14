@@ -31,6 +31,7 @@
 class weBackup extends we_backup{
 
 	const backupSteps = "1,5,7,10,15,20,30,40,50,80,100,500,1000";
+	const backupMarker='<!-- webackup -->';
 
 	var $header;
 	var $footer;
@@ -89,7 +90,7 @@ class weBackup extends we_backup{
 
 		$path = $this->backup_dir_tmp;
 		//FIXME: use RegEx
-		$marker = '<!-- webackup -->';
+		$marker = weBackup::backupMarker;
 		$marker2 = '<!--webackup -->'; //Backup 5089
 		$pattern = basename($this->filename) . "_%s";
 
@@ -487,7 +488,7 @@ class weBackup extends we_backup{
 			}
 			$out.='>';
 		}
-		$out.='</we:info>' . we_html_element::htmlComment('webackup') . "\n";
+		$out.='</we:info>' . weBackup::backupMarker . "\n";
 		weFile::save($filename, $out, "ab");
 	}
 
