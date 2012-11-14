@@ -87,8 +87,9 @@ var WeacronymDialog = { // TODO: clean code by using more vars
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
-			
-				var content = '<acronym lang="' + langValue + '" title="' + titleValue + '" class="mceItemWeAcronym">' + sel + '</acronym>' + blank;
+
+				var visual = inst.hasVisual ? ' class="mceItemWeAcronym"' : '';
+				var content = '<acronym lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + sel + '</acronym>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
 			}
 		}

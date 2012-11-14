@@ -84,7 +84,15 @@
 									dom.removeClass(e, 'mceItemWeAcronym');
 								}
 							return;
-						
+
+						case 'ABBR':
+								if (ed.hasVisual){
+									dom.addClass(e, 'mceItemWeAbbr');
+								} else{
+									dom.removeClass(e, 'mceItemWeAbbr');
+								}
+							return;
+
 						case 'SPAN':
 								v = dom.getAttrib(e, 'lang');
 								if(v){

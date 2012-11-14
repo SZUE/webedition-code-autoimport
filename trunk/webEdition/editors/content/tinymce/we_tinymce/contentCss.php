@@ -21,6 +21,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 header("Content-type: text/css");
 
@@ -44,11 +45,11 @@ body.mceContentBody {
 }
 
 acronym.mceItemWeAcronym{
-	border: 1px dotted green;
+	border: 1px dotted gray;
 }
 
-abbr.mceItemWeAbbr{ // not yet implemented in wevisualaid
-	border: 1px dotted green;
+abbr.mceItemWeAbbr{
+	border: 1px dotted gray;
 }
 
 abbr.mceItemWeLink{ // not yet implemented in wevisualaid
@@ -56,5 +57,5 @@ abbr.mceItemWeLink{ // not yet implemented in wevisualaid
 }
 
 span.mceItemWeLang{
-	border: 1px dotted red;
+	border: 1px dotted gray;
 }

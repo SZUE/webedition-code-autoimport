@@ -86,7 +86,8 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
 			
-				var content = '<abbr lang="' + langValue + '" title="' + titleValue + '">' + sel + '</abbr>' + blank;
+				var visual = inst.hasVisual ? ' class="mceItemWeAbbr"' : '';
+				var content = '<abbr lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + sel + '</abbr>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
 			}
 		}
