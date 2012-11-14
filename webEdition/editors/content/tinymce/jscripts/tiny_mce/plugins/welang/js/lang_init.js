@@ -87,8 +87,9 @@ var WelangDialog = { // TODO: clean code by using more vars
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
-			
-				var content = '<span lang="' + document.forms["we_form"].elements['we_dialog_args[lang]'].value + '" class="mceItemWeAcronym">' + sel + '</span>' + blank;
+				
+				var visual = inst.hasVisual ? ' class="mceItemWeLang"' : '';
+				var content = '<span lang="' + document.forms["we_form"].elements['we_dialog_args[lang]'].value + '"' + visual + '>' + sel + '</span>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
 			}
 		}
