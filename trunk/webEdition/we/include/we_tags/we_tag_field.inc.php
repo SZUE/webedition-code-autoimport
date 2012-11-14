@@ -239,11 +239,7 @@ function we_tag_field($attribs){
 
 		case 'multiobject' :
 			$temp = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
-			if(isset($temp['objects']) && !empty($temp['objects'])){
-				$out = implode(',', $temp['objects']);
-			} else{
-				$out = '';
-			}
+			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;
 		case 'country' :
 			$lang = weTag_getAttribute('outputlanguage', $attribs);
