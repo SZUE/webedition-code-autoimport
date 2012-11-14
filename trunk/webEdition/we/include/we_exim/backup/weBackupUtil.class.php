@@ -123,7 +123,7 @@ abstract class weBackupUtil{
 
 	static function getProgressJS($percent, $description){
 		return
-			'if(top.busy.setProgressText && top.busy.setProgress){
+			'if(top.busy && top.busy.setProgressText && top.busy.setProgress){
 								top.busy.setProgressText("current_description", "' . $description . '");
 								top.busy.setProgress(' . $percent . ');
 							}';

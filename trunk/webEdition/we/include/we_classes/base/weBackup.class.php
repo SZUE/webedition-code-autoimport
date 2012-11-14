@@ -203,7 +203,7 @@ class weBackup extends we_backup{
 		}
 		if($table){
 			//check if at least 10 avg rows
-			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower($table)];
+			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
 			if(memory_get_usage() + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
 				return false;
 			}
