@@ -79,19 +79,28 @@ class weContentProvider{
 				break;
 			// fix ends ------------------------------------------------
 			default:
-				if($we_ContentType == "folder" && !empty($table)){
-					$we_Table = $table;
-				} else if($we_ContentType == "text/weTmpl")
-					$we_Table = TEMPLATES_TABLE;
-				else if($we_ContentType == "object" && defined("OBJECT_TABLE"))
-					$we_Table = OBJECT_TABLE;
-				else if($we_ContentType == "objectFile" && defined("OBJECT_FILES_TABLE"))
-					$we_Table = OBJECT_FILES_TABLE;
-				else
-					$we_Table = FILE_TABLE;
-
-				if(($we_ContentType == "object" && !defined("OBJECT_TABLE")) || ($we_ContentType == "objectFile" && !defined("OBJECT_FILES_TABLE")))
-					return $we_doc;
+				switch($we_ContentType){
+					case 'folder':
+						$we_Table = empty($table) ? FILE_TABLE : $table;
+						break;
+					case 'text/weTmpl':
+						$we_Table = TEMPLATES_TABLE;
+						break;
+					case 'object':
+						if(!defined('OBJECT_TABLE')){
+							return $we_doc;
+						}
+						$we_Table = OBJECT_TABLE;
+						break;
+					case 'objectFile':
+						if(!defined('OBJECT_FILES_TABLE')){
+							return $we_doc;
+						}
+						$we_Table = OBJECT_FILES_TABLE;
+						break;
+					default:
+						$we_Table = FILE_TABLE;
+				}
 
 				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 		}
@@ -267,7 +276,7 @@ class weContentProvider{
 					fwrite($file, '<we:binary>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data)) .
-						'</we:binary><!-- webackup -->' . "\n");
+						'</we:binary>' . weBackup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -309,7 +318,7 @@ class weContentProvider{
 					fwrite($file, '<we:version>' . $attribs .
 						weXMLComposer::we_xmlElement('SeqN', $object->SeqN) .
 						weXMLComposer::we_xmlElement('Data', self::encode($data)) .
-						'</we:version><!-- webackup -->' . "\n");
+						'</we:version>' . weBackup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -399,7 +408,7 @@ class weContentProvider{
 
 			foreach($elements_ids as $ck){
 				if($object->ClassName == "weTable" || $object->ClassName == "weTableAdv"){
-					if($object->ClassName == "weTablea"){
+					if($object->ClassName == "weTable"){
 						$contentObj = new we_element(false, $object->elements[$ck]);
 					} else{
 						array_unshift($object->elements[$ck], ' ');
@@ -460,7 +469,7 @@ class weContentProvider{
 	}
 
 	static function isBinary($id){
-		return f("SELECT 1 AS a FROM " . FILE_TABLE . " WHERE ID=" . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%';", "a", new DB_WE());
+		return f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%'", 'a', new DB_WE());
 	}
 
 	static function getCDATA($data){
