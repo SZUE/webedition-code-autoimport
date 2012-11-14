@@ -81,7 +81,7 @@ function we_tag_categorySelect($attribs, $content){
 			$content .= getHtmlTag('option', array('value' => ''), $firstentry);
 		}
 		$db = new DB_WE();
-		$dbfield = $showpath ? 'Path' : 'Category';
+		$dbfield = $showpath || $indent ? 'Path' : 'Category';
 		$db->query('SELECT Path,Category FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($rootdir) . '%" ORDER BY ' . $dbfield);
 		while($db->next_record()) {
 			$deep = count(explode('/', $db->f('Path'))) - 2;
@@ -91,8 +91,7 @@ function we_tag_categorySelect($attribs, $content){
 			}
 			if($field){
 				if(in_array($db->f('Path'), $valuesArray)){
-					$content .= getHtmlTag(
-						'option', array(
+					$content .= getHtmlTag('option', array(
 						'value' => $db->f('Path'), 'selected' => 'selected'
 						), str_repeat($indent, $deep) . $field);
 				} else{
