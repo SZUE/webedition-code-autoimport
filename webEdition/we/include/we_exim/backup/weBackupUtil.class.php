@@ -107,18 +107,18 @@ abstract class weBackupUtil{
 
 	static function getImportPercent(){
 		if(isset($_SESSION['weS']['weBackupVars']['files_to_delete_count'])){
-			$rest1 = ((int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'] - count($_SESSION['weS']['weBackupVars']['files_to_delete']));
-			$rest2 = (int) $_SESSION['weS']['weBackupVars']['files_to_delete_count'];
+			$rest1 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']) - count($_SESSION['weS']['weBackupVars']['files_to_delete']);
+			$rest2 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']);
 		} else{
 			$rest1 = 0;
 			$rest2 = 0;
 		}
 
-		$percent = (int) (((float)
-			((int) ($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
-			((int) $_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100);
+		$percent = round(((float)
+			(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
+			intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
 
-		return ($percent > 100 ? 100 : ($percent < 0 ? 0 : $percent));
+		return (intval($percent) > 100 ? 100 : (intval($percent) < 0 ? 0 : $percent));
 	}
 
 	static function getProgressJS($percent, $description){
@@ -130,12 +130,12 @@ abstract class weBackupUtil{
 	}
 
 	static function getExportPercent(){
-		$all = (int) $_SESSION['weS']['weBackupVars']['row_count'];
-		$done = (int) $_SESSION['weS']['weBackupVars']['row_counter'];
+		$all = intval($_SESSION['weS']['weBackupVars']['row_count']);
+		$done = intval($_SESSION['weS']['weBackupVars']['row_counter']);
 
 		if(isset($_SESSION['weS']['weBackupVars']['extern_files'])){
-			$all += (int) $_SESSION['weS']['weBackupVars']['extern_files_count'];
-			$done += ((int) $_SESSION['weS']['weBackupVars']['extern_files_count'] - count($_SESSION['weS']['weBackupVars']['extern_files']));
+			$all += intval($_SESSION['weS']['weBackupVars']['extern_files_count']);
+			$done += intval($_SESSION['weS']['weBackupVars']['extern_files_count']) - count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
 
 		$percent = round(($done / $all) * 100, ($all > 50000 ? 2 : 1));

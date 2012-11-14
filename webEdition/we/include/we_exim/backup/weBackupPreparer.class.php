@@ -347,8 +347,10 @@ class weBackupPreparer{
 		$list = array();
 		weBackupPreparer::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		foreach($list as $file){
-			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '";', 'ContentType', $DB_WE);
-			switch($ct){
+			//don't use f/getHash since RAM usage
+			$DB_WE->query('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '"', false, true);
+			$DB_WE->next_record();
+			switch($DB_WE->f('ContentType')){
 				case 'image/*':
 				case 'application/*':
 				case 'application/x-shockwave-flash':

@@ -547,7 +547,7 @@ class weXMLImport extends weXMLExIm{
 			return -1;
 
 		$path = $tmppath;
-		$marker = "<!-- webackup -->";
+		$marker = weBackup::backupMarker;
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 

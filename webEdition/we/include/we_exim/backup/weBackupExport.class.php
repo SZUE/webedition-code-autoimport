@@ -48,7 +48,7 @@ abstract class weBackupExport{
 
 				weContentProvider::object2xml($_object, $_fh, $_attributes);
 
-				fwrite($_fh, '<!-- webackup -->' . "\n");
+				fwrite($_fh, weBackup::backupMarker . "\n");
 			}
 
 
@@ -77,7 +77,7 @@ abstract class weBackupExport{
 			$_keys_str = implode(',', $_keys);
 			$_db = new DB_WE();
 
-			$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines));
+			$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), false, true);
 
 			$_def_table = weBackupUtil::getDefaultTableName($_table);
 
@@ -101,7 +101,7 @@ abstract class weBackupExport{
 
 
 				weContentProvider::object2xml($_object, $_fh, $_attributes);
-				fwrite($_fh, we_html_element::htmlComment("webackup") . "\n");
+				fwrite($_fh, weBackup::backupMarker . "\n");
 
 
 				if($export_binarys || $export_version_binarys){
