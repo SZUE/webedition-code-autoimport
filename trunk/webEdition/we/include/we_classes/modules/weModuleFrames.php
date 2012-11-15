@@ -94,7 +94,7 @@ class weModuleFrames{
 		$lang_arr = "we_menu_" . $this->module;
 		$jmenu = new weJavaMenu($$lang_arr, "top.opener.top.load", 350, 30);
 
-		$menu = $jmenu->getCode(old, 'cmd');
+		$menu = $jmenu->getCode(false, 'cmd');
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
