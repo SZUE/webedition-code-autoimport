@@ -84,7 +84,7 @@ class we_html_select extends we_baseCollection{
 	 */
 	function addOptions($opt_num = 1, $values = array(), $texts = array()){
 		for($i = 0; $i < $opt_num; $i++)
-			$this->childs[] = new we_baseElement("option", false, array("value" => $values[$i]), $texts[$i]);
+			$this->childs[] = new we_baseElement("option", true, array("value" => $values[$i]), $texts[$i]);
 	}
 
 	/**
