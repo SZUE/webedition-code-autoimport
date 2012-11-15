@@ -173,23 +173,23 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 
 		case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . intval($id));
-			$tableID = f("SELECT TableID FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), "TableID", $DB_WE);
+			$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id), "TableID", $DB_WE);
 			if(!empty($tableID)){
-				$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . $tableID . " WHERE OF_ID=" . intval($id));
+				$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $tableID . " WHERE OF_ID=" . intval($id));
 				//Bug 2892
-				$DB_WE->query("SELECT ID FROM " . OBJECT_TABLE);
-				$foo = $DB_WE->getAll();
-				foreach($foo as $testclass){
-					if(isColExistForDelete(OBJECT_X_TABLE . $testclass['ID'], "object_" . $tableID)){
+				$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
+				$foo = $DB_WE->getAll(true);
+				foreach($foo as $testclassID){
+					if(isColExistForDelete(OBJECT_X_TABLE . $testclassID, "object_" . $tableID)){
 
 						//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-						$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE . $testclass['ID'] . " WHERE object_" . $tableID . "= " . intval($id));
-						$foos = $DB_WE->getAll();
-						foreach($foos as $affectedobjects){
+						$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . $testclassID . ' WHERE object_' . $tableID . '= ' . intval($id));
+						$foos = $DB_WE->getAll(true);
+						foreach($foos as $affectedobjectsID){
 							$obj = new we_objectFile();
-							$obj->initByID($affectedobjects['OF_ID'], OBJECT_FILES_TABLE);
+							$obj->initByID($affectedobjectsID, OBJECT_FILES_TABLE);
 
-							$obj->getContentDataFromTemporaryDocs($affectedobjects['OF_ID']);
+							$obj->getContentDataFromTemporaryDocs($affectedobjectsID);
 							$oldModDate = $obj->ModDate;
 							$obj->setElement("we_object_" . $tableID, "0");
 							$obj->we_save(0, 1);
@@ -197,12 +197,12 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 								$obj->we_publish(0, 1, 1);
 							}
 						}
-						$DB_WE->query("UPDATE " . OBJECT_X_TABLE . $testclass['ID'] . " SET object_" . $tableID . "='0' WHERE object_" . $tableID . "= " . intval($id));
+						$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET object_' . $tableID . '=0 WHERE object_' . $tableID . '= ' . intval($id));
 					}
 				}
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblObjectFile' AND DID = '" . intval($id) . "'");
-				$DB_WE->query("DELETE FROM " . LANGLINK_TABLE . " WHERE DocumentTable = 'tblObjectFile' AND LDID = '" . abs($id) . "'");
+				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND DID = ' . intval($id));
+				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable = "tblObjectFile" AND LDID = ' . intval($id));
 			}
 			if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
 				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
@@ -212,11 +212,11 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 
 	$DB_WE->query('DELETE FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id));
 	if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE){
-		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "ID", $DB_WE);
+		$ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "ID", $DB_WE);
 		if($ofID){
 			deleteEntry($ofID, OBJECT_FILES_TABLE);
 		}
-		$DB_WE->query("DROP TABLE IF EXISTS " . OBJECT_X_TABLE . $id);
+		$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
 	}
 	if($contentType == "image/*"){
 		we_thumbnail::deleteByImageID($id);

@@ -435,7 +435,6 @@ abstract class we_database_base{
 	 * @return bool true, if rows was successfully fetched
 	 */
 	public function next_record($resultType = MYSQL_BOTH){
-
 		if(!($this->Query_ID)){
 			$this->halt("next_record called with no query pending.");
 			return false;
