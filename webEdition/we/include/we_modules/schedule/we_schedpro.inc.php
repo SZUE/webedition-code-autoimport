@@ -399,11 +399,10 @@ class we_schedpro{
 		}
 
 		if(!$deleted){
-			if($GLOBALS['we_doc']->Published){
-				$pub = $GLOBALS['we_doc']->we_publish();
-			} else{
-				$pub = $GLOBALS['we_doc']->we_unpublish();
-			}
+			$pub = ($GLOBALS['we_doc']->Published ?
+					$GLOBALS['we_doc']->we_publish() :
+					$GLOBALS['we_doc']->we_unpublish());
+
 			if(!$pub){
 				t_e('while scheduled publish/unpublish of document');
 			}
@@ -413,7 +412,7 @@ class we_schedpro{
 
 		$_SESSION['weS']['versions']['fromScheduler'] = false;
 
-		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
+//		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND Type="' . self::TYPE_ONCE . '"');
 	}
 
 	static function trigger_schedule(){
@@ -421,8 +420,8 @@ class we_schedpro{
 		$DB_WE = new DB_WE();
 		$now = time();
 
-		while(($DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE)) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=' . $now . ' AND lockedUntil<NOW() AND Schedpro != "" AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE)))) {
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
+		while(($DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE)) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE)))) {
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
 			$DB_WE->unlock();
 			$s = unserialize($rec["Schedpro"]);
 			if(is_array($s)){
@@ -436,7 +435,7 @@ class we_schedpro{
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else{
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,Schedpro="" WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0, Schedpro="' . serialize(array()) . '" WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
 			}
 		}
 		//make sure DB is unlocked!
