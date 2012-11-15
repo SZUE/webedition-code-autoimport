@@ -242,8 +242,13 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	printHeader($login, 503);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr());
-
+	$_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+		'Debug-Info:' . we_html_element::htmlBr() .
+		'submitted session id: ' . $_POST['checkLogin'] . we_html_element::htmlBr() .
+		'current session id:   ' . session_id() . we_html_element::htmlBr() .
+		'login-page date:      ' . $_POST['indexDate'].
+		we_html_element::htmlBr() . we_html_element::htmlBr()
+		);
 	printHeader($login, 408);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
@@ -316,7 +321,8 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id()));
+	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id())).
+		we_html_element::htmlHidden(array('name' => 'indexDate', 'value' => date('d.m.Y, H:i:s')));
 
 	if($ignore_browser){
 		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
