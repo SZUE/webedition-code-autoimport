@@ -103,12 +103,12 @@ HTS;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', "[title]")) .
-					we_html_element::jsScript(WEBEDITION_DIR . "js/windows.js") .
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-					we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-					we_html_element::jsScript(JS_DIR . "libs/yui/json-min.js") .
-					we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+					we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+					we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+					we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+					we_html_element::jsScript(JS_DIR . 'libs/yui/json-min.js') .
+					we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
 					we_html_element::jsElement("
 					function wiz_next(frm, url) {
 						eval('window.'+frm+'.location.href=\"'+url+'\"');
