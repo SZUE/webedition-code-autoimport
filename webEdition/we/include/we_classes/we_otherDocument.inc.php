@@ -109,7 +109,7 @@ class we_otherDocument extends we_binaryDocument{
 				if(class_exists('ZipArchive') && (isset($this->elements['data']['dat']) && file_exists($this->elements['data']['dat']))){
 					$zip = new ZipArchive;
 					if($zip->open($this->elements['data']['dat']) === TRUE){
-						$content = str_replace(array('&#x0d;','&#x0a;'),' ',strip_tags(preg_replace('|</text[^>]*>|', ' ', $zip->getFromName('content.xml'))));
+						$content = strip_tags(preg_replace(array('|</text[^>]*>|', '/ */'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml'))));
 						$zip->close();
 						break;
 					}
