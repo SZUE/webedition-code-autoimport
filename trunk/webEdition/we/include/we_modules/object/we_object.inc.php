@@ -1551,7 +1551,7 @@ class we_object extends we_document{
 		// gets thumbnails and shows a select field, if there are any:
 		$thumbdb = new DB_WE();
 		$thumbdb->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
-		$thumbList = $thumbdb->getAll();
+		$thumbList = $thumbdb->getAll(true);
 		if(count($thumbList)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
