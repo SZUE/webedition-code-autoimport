@@ -79,16 +79,18 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function insertAtIndex(){
+		t_e('index');
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))) {
 			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : '';
 			if(!is_array($foo)){
-				if(isset($v["type"]) && $v["type"] == "txt"){
-					$text .= ' ' . (isset($v["dat"]) ? trim($v["dat"]) : '');
+				if(isset($v["type"]) && $v["type"] == "txt" && isset($v["dat"])){
+					$text .= ' ' . trim($v["dat"]);
 				}
 			}
 		}
+		$text = preg_replace('/  +/', ' ', trim(strip_tags($text)));
 
 		switch($this->Extension){
 			case '.doc':
@@ -98,10 +100,12 @@ class we_otherDocument extends we_binaryDocument{
 			case '.rtf':
 				$content = $this->i_getDocument(1000000);
 				break;
+			case '.odt':
 			case '.ods':
 			case '.odf':
 			case '.odp':
 			case '.odg':
+			case '.ott':
 			case '.ots':
 			case '.otf':
 			case '.otp':
@@ -109,7 +113,7 @@ class we_otherDocument extends we_binaryDocument{
 				if(class_exists('ZipArchive') && (isset($this->elements['data']['dat']) && file_exists($this->elements['data']['dat']))){
 					$zip = new ZipArchive;
 					if($zip->open($this->elements['data']['dat']) === TRUE){
-						$content = strip_tags(preg_replace(array('|</text[^>]*>|', '/ */'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml'))));
+						$content = CheckAndConvertISOfrontend(strip_tags(preg_replace(array('|</text[^>]*>|', '|<text[^/>]*/>|', '/  +/'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml')))));
 						$zip->close();
 						break;
 					}
@@ -124,12 +128,8 @@ class we_otherDocument extends we_binaryDocument{
 		/* if($this->Extension == ".pdf" && function_exists("gzuncompress")){
 		  $content = $this->getPDFText($this->i_getDocument());
 		  } */
-
-		for($i = 0; $i < 48; $i++){
-			$content = str_replace(chr($i), '', $content);
-		}
-
-		$text = trim(strip_tags($text) . $content);
+		$content = preg_replace('/[\x00-\x1F]/', '', $content);
+		$text.= ' '.trim($content);
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		$text = substr($text, 0, $maxDB);
