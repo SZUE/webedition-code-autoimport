@@ -82,8 +82,7 @@ class we_binaryDocument extends we_document{
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){
-				we_util_File::copyFile($_realPath, $this->getSitePath());
-
+			we_util_File::copyFile($_realPath, $this->getSitePath());
 		}
 		if(file_exists($_sitePath)){
 			if(filesize($_sitePath)){
@@ -112,8 +111,8 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function i_getDocument(){
-		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
+	function i_getDocument($size = -1){
+		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? weFile::load($this->elements["data"]["dat"]) : weFile::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
 	}
 
 	protected function i_writeDocument(){
