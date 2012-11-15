@@ -530,8 +530,9 @@ class we_imageDocument extends we_binaryDocument{
 			}
 
 
+			// $attribs['Title'] changed to $attribs['title'] to fix bug #5814
 			if($this->getElement('useMetaTitle') && $this->getElement('Title') != ''){ //  set title if set in image
-				$attribs['Title'] = $this->getElement('Title');
+				$attribs['title'] = $this->getElement('Title');
 			}
 
 			if(($this->getElement('alt') == '')){ //  always use alt-Text -> can be empty
@@ -669,8 +670,8 @@ class we_imageDocument extends we_binaryDocument{
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
-		//	disable field 'title' when checked or not.
-		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = ''; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false');}_EditorFrame.setEditorIsHot(true);"));
+		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814                                                                               
+		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '".$this->getElement('Title')."'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
