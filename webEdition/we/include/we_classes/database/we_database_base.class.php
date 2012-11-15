@@ -52,7 +52,6 @@ abstract class we_database_base{
 
 	/** public: connection parameters */
 	public $Database = DB_DATABASE;
-
 	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor
@@ -492,10 +491,10 @@ abstract class we_database_base{
 	 * Get complete result as array
 	 * @return array
 	 */
-	public function getAll($resultType = MYSQL_ASSOC){
+	public function getAll($single = false, $resultType = MYSQL_ASSOC){
 		$ret = array();
 		while($this->next_record($resultType)) {
-			$ret[] = $this->Record;
+			$ret[] = ($single ? current($this->Record) : $this->Record);
 		}
 		return $ret;
 	}
