@@ -166,15 +166,14 @@ class we_binaryDocument extends we_document{
 	}
 
 	function insertAtIndex(){
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
-			while(list($k, $v) = $this->nextElement("")) {
+			while((list($k, $v) = $this->nextElement(""))) {
 				$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 				if(!is_array($foo)){
 					if(isset($v["type"]) && $v["type"] == "txt"){
-						$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
+						$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');
 					}
 				}
 			}
@@ -188,8 +187,9 @@ class we_binaryDocument extends we_document{
 				'Title' => $this->getElement('Title'),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		return true;
 	}
 
