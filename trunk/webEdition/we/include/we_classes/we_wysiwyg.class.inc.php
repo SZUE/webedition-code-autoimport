@@ -758,6 +758,7 @@ function tinyMCEchanged(inst){
 				"", // tinyMCE only: we do not need icon or tooltip
 				""
 			),
+			new we_wysiwygToolbarSeparator($this),
 			new we_wysiwygToolbarButton(
 				$this,
 				"hr",
@@ -828,6 +829,13 @@ function tinyMCEchanged(inst){
 			),
 			new we_wysiwygToolbarButton(
 				$this,
+				"editrow",
+				"", // tinyMCE only: we do not need icon or tooltip
+				""
+			),
+			//new we_wysiwygToolbarSeparator($this),
+			new we_wysiwygToolbarButton(
+				$this,
 				"insertcolumnleft",
 				$this->_imagePath . "insertcol_left.gif",
 				g_l('wysiwyg', "[insertcolumnleft]")
@@ -850,6 +858,7 @@ function tinyMCEchanged(inst){
 				$this->_imagePath . "insertrow_below.gif",
 				g_l('wysiwyg', "[insertrowbelow]")
 			),
+			//new we_wysiwygToolbarSeparator($this),
 			new we_wysiwygToolbarButton(
 				$this,
 				"deletecol",
@@ -862,6 +871,13 @@ function tinyMCEchanged(inst){
 				$this->_imagePath . "deleterows.gif",
 				g_l('wysiwyg', "[deleterow]")
 			),
+			new we_wysiwygToolbarButton(
+				$this,
+				"deletetable",
+				"", // tinyMCE only: we do not need icon or tooltip
+				""
+			),
+			//new we_wysiwygToolbarSeparator($this),
 			new we_wysiwygToolbarButton(
 				$this,
 				"increasecolspan",
@@ -893,10 +909,14 @@ function tinyMCEchanged(inst){
 				$this->_imagePath . "rtf.gif",
 				g_l('wysiwyg', "[rtf_import]")
 			),
-		);
-		array_push(
-			$this->elements, new we_wysiwygToolbarSeparator($this), 
-				new we_wysiwygToolbarButton(
+			new we_wysiwygToolbarSeparator($this),
+			new we_wysiwygToolbarButton(
+				$this,
+				"selectall",
+				"", // tinyMCE only: we do not need icon or tooltip
+				""
+			),
+			new we_wysiwygToolbarButton(
 				$this,
 				"cut",
 				$this->_imagePath . "cut.gif",
@@ -1140,17 +1160,17 @@ function tinyMCEchanged(inst){
 					'copy' => 'copy',
 					'createlink' => 'link',
 					'cut' => 'cut',
-					'decreasecolspan' => 'merge_cells',
-					'deletecol' => 'delete_col',
-					'deleterow' => 'delete_row',
-					'editcell' => 'cell_props',
+'decreasecolspan' => 'split_cells',
+'deletecol' => 'delete_col',
+'deleterow' => 'delete_row',
+'editcell' => 'cell_props',
 					'editsource' => 'code',
 					'fontname' => 'fontselect',
 					'fontsize' => 'fontsizeselect',
 					'forecolor' => 'forecolor',
 					'formatblock' => 'formatselect',
 					'fullscreen' => 'fullscreen',
-					'increasecolspan' => 'split_cells',
+					'increasecolspan' => 'merge_cells',
 					'indent' => 'indent',
 					'insertbreak' => 'weinsertbreak',
 					'insertcolumnleft' => 'col_before ',
@@ -1174,7 +1194,7 @@ function tinyMCEchanged(inst){
 					'redo' => 'redo',
 					'removeformat' => 'removeformat',
 					'removetags' => 'cleanup',
-					'spellcheck' => 'spellchecker',
+					'spellcheck' => 'wespellchecker',
 					'strikethrough' => 'strikethrough',
 					'subscript' => 'sub',
 					'superscript' => 'sup',
@@ -1188,6 +1208,8 @@ function tinyMCEchanged(inst){
 					'blockquote' => 'blockquote',
 					'cite' => 'cite',
 					'del' => 'del',
+					'deletetable' => 'delete_table',
+					'editrow' => 'row_props',
 					'emotions' => 'emotions',
 					'hr' => 'hr',
 					'ins' => 'ins',
@@ -1203,7 +1225,10 @@ function tinyMCEchanged(inst){
 					'replace' => 'replace',
 					'rtl' => 'rtl',
 					'search' => 'search',
+					'selectall' => 'selectall',
 					'styleprops' => 'styleprops',
+					
+					// table controlls are not mapped from wysiwyg to tinyMCE: 
 
 					//'notmapped1' => 'attribs',
 					//'notmapped2' => 'insertimage', // replaced by weimage
@@ -1225,9 +1250,9 @@ function tinyMCEchanged(inst){
 					$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
 					$j = 0;
 					foreach($outer as $inner){
-						if($cmdMapping[$rows[$i][$j]->cmd] == 'pastetext'){ // TODO: implement pastetext-toggle in we:textarea and throw this out again
-							$pastetext = 1;
-						}
+						//if($cmdMapping[$rows[$i][$j]->cmd] == 'pastetext'){ // TODO: implement pastetext-toggle in we:textarea and throw this out again
+							//$pastetext = 1;
+						//}
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
 					}
@@ -1252,6 +1277,8 @@ tinyMCE.init({
 	mode : "exact",
 	elements : "' . $this->name . '",
 	theme : "advanced",
+	//dialog_type : "modal",
+
 
 	accessibility_warnings : false,
 	relative_urls : false, //important!
@@ -1264,7 +1291,7 @@ tinyMCE.init({
 	//CallBacks
 	//file_browser_callback : "openWeFileBrowser",
 	onchange_callback : "tinyMCEchanged",
-	plugins : "spellchecker,style,table,advhr,weimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,layer",
+	plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,fullscreen,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink",
 
 	// Theme options
 	' . $tinyRows . '
@@ -1282,6 +1309,8 @@ tinyMCE.init({
 	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
+	//paste_text_use_dialog: true,
+	//fullscreen_new_window: true,
 	content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
 
 	// Skin options
@@ -1452,12 +1481,17 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "increasecolspan":
 			case "decreasecolspan":
 				return stripos($this->editor->propstring, ",table,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+			case "editrow":
+			case "deletetable":
+				return WYSIWYG_TYPE != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false || 
+					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "cut":
 			case "copy":
 			case "paste":
 				return stripos($this->editor->propstring, ",copypaste,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "pastetext":
 			case "pasteword":
+			case "selectall":
 				return WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",copypaste,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "forecolor":
@@ -1498,14 +1532,20 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 					(stripos($this->editor->propstring, ",layer,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
 			//TODO: we should combine the following command to "direction": ltr,rtl?
+			case "abbr":
+			case "acronym":
+			case "lang":
+					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));	
+			case "del":
+			case "ins":
+			case "cite" :
+				return WYSIWYG_TYPE == 'tinyMCE' &&
+					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));			
 			case "emotions":
 			case "insertdate":
 			case "inserttime":
 			case "nonbreaking":
 			case "hr":
-			case "del":
-			case "ins":
-			case "cite":
 			case "ltr":
 			case "rtl":
 			case "search":

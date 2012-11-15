@@ -6,6 +6,14 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
+if(isset($_REQUEST['we_dialog_args']['editname']) && $_REQUEST['we_dialog_args']['editname'] == 'tinyMce'){
+	print we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
+	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
+	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
+	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
+	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
+}
+
 print STYLESHEET;
 
 if(!isset($_SESSION['weS']['dictLang'])){
@@ -33,7 +41,7 @@ $_editname = '';
 $_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"></applet>';
 
 if(isset($_REQUEST['we_dialog_args']['editname'])){
-	$_mode = 'wysiwyg';
+	$_mode = $_REQUEST['we_dialog_args']['editname'] == 'tinyMce' ? 'tinyMce' : 'wysiwyg';
 	$_editname = $_REQUEST['we_dialog_args']['editname'];
 } else{
 	if(isset($_REQUEST['editname'])){
@@ -155,20 +163,19 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 	}
 
 	function setDialog() {
-<?php if($_mode == 'wysiwyg'){ ?>
+<?php if($_mode == 'tinyMce'){ ?>
+			editorObj = tinyMCEPopup.editor;
+			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format : "html"}) : editorObj.selection.getContent({format : "html"});
+<?php } else if($_mode == 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php print $_editname ?>;
 			var text = getTextFromWysiwyg();
-
 <?php } else{ ?>
-
 			var elements = top.opener.document.getElementsByName("<?php print $_editname ?>");
-
 			if(elements[0]) {
 				editorObj = elements[0];
 				var text = editorObj.value;
 			}
-
-<?php } ?>
+<?php }?>
 
 		orginal = text;
 		editPanel = document.getElementById('preview');
@@ -221,8 +228,14 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 		}
 	}
 
-	function apply() {
-<?php if($_mode == 'wysiwyg'){ ?>
+	function apply() { // imi
+<?php if($_mode == 'tinyMce'){ ?>
+			if(editorObj.selection.isCollapsed()) {
+				editorObj.execCommand('mceSetContent', false, orginal);
+			} else {
+				editorObj.execCommand('mceInsertContent', false, orginal);
+			}
+<?php } else if($_mode == 'wysiwyg'){ ?>
 			if(rangeSelection) {
 				editorObj.replaceText(orginal);
 			} else {
