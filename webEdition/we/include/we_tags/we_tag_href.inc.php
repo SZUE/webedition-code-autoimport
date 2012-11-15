@@ -69,12 +69,13 @@ function we_tag_href($attribs){
 	switch($type){
 		case 'int':
 		case 'all':
-			$int = ($type == 'int' || $GLOBALS['we_doc']->getElement($nint) == '') ? false : $GLOBALS['we_doc']->getElement($nint);
+			$int = ($type == 'int' || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
 			$intID = $GLOBALS['we_doc']->getElement($nintID);
 			if(!$intID && $rootdirid){
 				$intID = $rootdirid;
 			}
 			$intPath = $ct = '';
+
 			if($intID){
 				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), $GLOBALS['DB_WE']);
 				if(!empty($foo)){
