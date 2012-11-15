@@ -220,10 +220,10 @@ class we_baseElement{
 					case 'readonly':
 					case 'checked':
 					case 'selected':
-						$out.=$k . '="' . $k . '"';
+						$out.=' ' . $k . '="' . $k . '"';
 						break;
 					default:
-						$out.=$k . '=""';
+						$out.=' ' . $k . '=""';
 						break;
 				}
 			}
