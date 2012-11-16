@@ -79,7 +79,6 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function insertAtIndex(){
-		t_e('index');
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))) {
