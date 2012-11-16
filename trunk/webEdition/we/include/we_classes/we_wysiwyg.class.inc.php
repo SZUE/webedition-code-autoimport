@@ -59,7 +59,10 @@ class we_wysiwyg{
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->bgcol = $bgcol;
-		$this->xml = $xml;
+		$this->xml = $xml; 
+		if(WYSIWYG_TYPE == 'tinyMCE'){
+			$this->xml = $this->xml ? "xhtml" : "html";
+		}
 		$this->removeFirstParagraph = $removeFirstParagraph;
 		$this->inlineedit = $inlineedit;
 		$this->fullscreen = $fullscreen;
@@ -448,7 +451,7 @@ function tinyMCEchanged(inst){
 				'styleprops'
 			);
 		}
-		
+
 		if(defined('SPELLCHECKER')){
 			$arr[] = "spellcheck";
 		}
@@ -1160,10 +1163,10 @@ function tinyMCEchanged(inst){
 					'copy' => 'copy',
 					'createlink' => 'link',
 					'cut' => 'cut',
-'decreasecolspan' => 'split_cells',
-'deletecol' => 'delete_col',
-'deleterow' => 'delete_row',
-'editcell' => 'cell_props',
+					'decreasecolspan' => 'split_cells',
+					'deletecol' => 'delete_col',
+					'deleterow' => 'delete_row',
+					'editcell' => 'cell_props',
 					'editsource' => 'code',
 					'fontname' => 'fontselect',
 					'fontsize' => 'fontsizeselect',
@@ -1283,14 +1286,17 @@ tinyMCE.init({
 	accessibility_warnings : false,
 	relative_urls : false, //important!
 	convert_urls : false, //important!
-	//remove_linebreaks : 0,
-	//force_br_newlines : false,
+	//force_br_newlines : true,
 	force_p_newlines : 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
 	//forced_root_block : "",
+
+	entity_encoding : "raw",
+	element_format: "' . $this->xml . '",
 
 	//CallBacks
 	//file_browser_callback : "openWeFileBrowser",
 	onchange_callback : "tinyMCEchanged",
+
 	plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,fullscreen,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink",
 
 	// Theme options
@@ -1542,6 +1548,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				return WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));			
 			case "emotions":
+				return false; // problems with path to emoticons
 			case "insertdate":
 			case "inserttime":
 			case "nonbreaking":

@@ -38,9 +38,8 @@
 		init : function(ed, url) {
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceWeinsertbreak');
 			ed.addCommand('mceWeinsertbreak', function() {
-				var content = '<br />';
-				ed.execCommand('mceInsertContent', false, content);	//TODO: trim before and after br
-																	//Use tiny-methods to insert HTML			
+				//ed.execCommand('mceInsertContent', false, ed.dom.createHTML('br'));	//TODO: trim before and after br
+				ed.selection.setContent(ed.dom.createHTML('br'));
 			});
 
 			// Register weinsertbreak button
@@ -81,10 +80,10 @@
 		getInfo : function() {
 			return {
 				longname : 'Weinsertbreak plugin',
-				author : 'Some author',
-				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/weinsertbreak',
-				version : "1.0"
+				author : 'webEdition e.V',
+				authorurl : 'http://www.webedition.org',
+				infourl : 'http://www.webedition.org',
+				//version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}
 	});
