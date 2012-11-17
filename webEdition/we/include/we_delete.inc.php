@@ -62,8 +62,8 @@ if(!$wfchk){
 	if(isset($_REQUEST["sel"])){
 		$found = false;
 		$selectedItems = explode(",", $_REQUEST["sel"]);
-		for($i = 0; $i < sizeof($selectedItems); $i++){
-			if(we_workflow_utility::inWorkflow($selectedItems[$i], $table)){
+		foreach($selectedItems as $selectedItem){
+			if(we_workflow_utility::inWorkflow($selectedItem, $table)){
 				$found = true;
 				break;
 			}
@@ -88,7 +88,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 		$idInfos = array(
 			'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 		);
-		if(sizeof($selectedItems) > 0 && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
+		if(!empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash("SELECT IsFolder, Path FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($selectedItems[0]), $DB_WE);
 			if($idInfos['IsFolder']){
 				$idInfos['hasFiles'] = f("SELECT ID FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'", "ID", $DB_WE) > 0 ? 1 : 0;
@@ -131,13 +131,13 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 			$retVal = -1;
 		} else{
 
-			for($i = 0; $i < sizeof($selectedItems); $i++){
-				if(!checkIfRestrictUserIsAllowed($selectedItems[$i], $table)){
+			foreach($selectedItems as $selectedItem){
+				if(!checkIfRestrictUserIsAllowed($selectedItem, $table)){
 					$retVal = -1;
 					break;
 				}
 
-				if(!checkDeleteEntry($selectedItems[$i], $table)){
+				if(!checkDeleteEntry($selectedItem, $table)){
 					$retVal = 0;
 					break;
 				}
@@ -145,10 +145,10 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 		}
 
 		if($retVal == 1){ // only if no error occurs
-			for($i = 0; $i < count($selectedItems); $i++){
+			foreach($selectedItems as $selectedItem){
 
 				if($table == FILE_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i]);
+					$users = we_users_util::getUsersForDocWorkspace($selectedItem);
 					if(count($users) > 0){
 						$retVal = -2;
 						break;
@@ -157,7 +157,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItems[$i], $table, true);
+					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs));
@@ -171,7 +171,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 				}
 
 				if($table == TEMPLATES_TABLE && defined('USER_TABLE')){
-					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceTmp");
+					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceTmp");
 					if(count($users) > 0){
 						$retVal = -2;
 						break;
@@ -180,7 +180,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItems[$i], $table, true);
+					pushChilds($childs, $selectedItem, $table, true);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs, "workSpaceTmp"));
@@ -195,7 +195,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')){
 
-					$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceObj");
+					$users = we_users_util::getUsersForDocWorkspace($selectedItem, "workSpaceObj");
 					if(count($users) > 0){
 						$retVal = -2;
 						break;
@@ -203,7 +203,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItems[$i], $table, true);
+					pushChilds($childs, $selectedItem, $table, true);
 					$users = we_users_util::getUsersForDocWorkspace($childs, "workSpaceObj");
 
 					if(count($users)){
@@ -212,7 +212,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					}
 				}
 				if(defined("OBJECT_FILES_TABLE") && $table == FILE_TABLE){
-					$objects = getObjectsForDocWorkspace($selectedItems[$i]);
+					$objects = getObjectsForDocWorkspace($selectedItem);
 					if(count($objects) > 0){
 						$retVal = -3;
 						break;
@@ -220,7 +220,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItems[$i], $table, true);
+					pushChilds($childs, $selectedItem, $table, true);
 					$objects = getObjectsForDocWorkspace($childs);
 
 					if(count($objects)){
@@ -231,94 +231,102 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 			}
 		}
 
-		if($retVal == -6){
-			$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal == -5){ //	not allowed to delete workspace
-			$script .= 'top.toggleBusy(0);';
-			$objList = "";
-			foreach($objects as $val){
-				$objList .= "- " . $val . "\\n";
-			}
-			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItems[$i], $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal == -4){ //	not allowed to delete workspace
-			$script .= 'top.toggleBusy(0);';
-			$usrList = "";
-			foreach($users as $val){
-				$usrList .= "- " . $val . "\\n";
-			}
-			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItems[$i], $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal == -3){ //	not allowed to delete workspace
-			$script .= 'top.toggleBusy(0);';
-			$objList = '';
-			foreach($objects as $val){
-				$objList .= "- " . $val . "\\n";
-			}
-			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItems[$i], $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal == -2){ //	not allowed to delete workspace
-			$script .= 'top.toggleBusy(0);';
-			$usrList = "";
-			foreach($users as $val){
-				$usrList .= "- " . $val . "\\n";
-			}
-			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItems[$i], $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal == -1){ //	not allowed to delete document
-			$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[noRightsToDelete]"), id_to_path($selectedItems[$i], $table)), we_message_reporting::WE_MESSAGE_ERROR);
-		} else if($retVal){ //	user may delete -> delete files !
-			$GLOBALS["we_folder_not_del"] = array();
-
-			$deletedItems = array();
-
-			foreach($selectedItems as $sel){
-				deleteEntry($sel, $table);
-			}
-
-			if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
-				$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
-			}
-
-			if(count($deletedItems)){
-
-				$class_condition = '';
-				$deleted_objects = array();
-
-				if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
-					$_deletedItems = array();
-
-					// if its deleted and not selected, it must be an object
-					for($i = 0; $i < sizeof($deletedItems); $i++){
-						if(in_array($deletedItems[$i], $selectedItems)){
-							$_deletedItems[] = $deletedItems[$i];
-						} else{
-							$deleted_objects[] = $deletedItems[$i]; // deleted objects when classes are deleted
-						}
-					}
-					$deletedItems = $_deletedItems;
-					$class_condition = ' || (_usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" && (_delete_objects.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1) ) ';
+		switch($retVal){
+			case -6:
+				$script .= 'top.toggleBusy(0);' .
+					we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			case -5: //	not allowed to delete workspace
+				$script .= 'top.toggleBusy(0);';
+				$objList = "";
+				foreach($objects as $val){
+					$objList .= "- " . $val . "\\n";
 				}
+				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			case -4: //	not allowed to delete workspace
+				$script .= 'top.toggleBusy(0);';
+				$usrList = "";
+				foreach($users as $val){
+					$usrList .= "- " . $val . "\\n";
+				}
+				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			case -3: //	not allowed to delete workspace
+				$script .= 'top.toggleBusy(0);';
+				$objList = '';
+				foreach($objects as $val){
+					$objList .= "- " . $val . "\\n";
+				}
+				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			case -2: //	not allowed to delete workspace
+				$script .= 'top.toggleBusy(0);';
+				$usrList = "";
+				foreach($users as $val){
+					$usrList .= "- " . $val . "\\n";
+				}
+				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			case -1: //	not allowed to delete document
+				$script .= 'top.toggleBusy(0);' .
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[noRightsToDelete]"), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+				break;
+			default:
+				if($retVal){ //	user may delete -> delete files !
+					$GLOBALS["we_folder_not_del"] = array();
 
-				if(defined("CUSTOMER_TABLE")){ // delete the customerfilters
-					weDocumentCustomerFilter::deleteModel(
-						$deletedItems, $table);
-					if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-						if(sizeof($deleted_objects)){
+					$deletedItems = array();
+
+					foreach($selectedItems as $sel){
+						deleteEntry($sel, $table);
+					}
+
+					if($_SESSION['weS']['we_mode'] == "normal"){ //	only update tree when in normal mode
+						$script .= deleteTreeEntries(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE);
+					}
+
+					if(count($deletedItems)){
+
+						$class_condition = '';
+						$deleted_objects = array();
+
+						if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
+							$_deletedItems = array();
+
+							// if its deleted and not selected, it must be an object
+							for($i = 0; $i < sizeof($deletedItems); $i++){
+								if(in_array($deletedItems[$i], $selectedItems)){
+									$_deletedItems[] = $deletedItems[$i];
+								} else{
+									$deleted_objects[] = $deletedItems[$i]; // deleted objects when classes are deleted
+								}
+							}
+							$deletedItems = $_deletedItems;
+							$class_condition = ' || (_usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" && (_delete_objects.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1) ) ';
+						}
+
+						if(defined("CUSTOMER_TABLE")){ // delete the customerfilters
 							weDocumentCustomerFilter::deleteModel(
-								$deleted_objects, OBJECT_FILES_TABLE);
+								$deletedItems, $table);
+							if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
+								if(sizeof($deleted_objects)){
+									weDocumentCustomerFilter::deleteModel(
+										$deleted_objects, OBJECT_FILES_TABLE);
+								}
+							}
 						}
-					}
-				}
 
-				we_history::deleteFromHistory(
-					$deletedItems, $table);
-				if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
-					if(sizeof($deleted_objects)){
 						we_history::deleteFromHistory(
-							$deleted_objects, OBJECT_FILES_TABLE);
-					}
-				}
+							$deletedItems, $table);
+						if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE){
+							if(sizeof($deleted_objects)){
+								we_history::deleteFromHistory(
+									$deleted_objects, OBJECT_FILES_TABLE);
+							}
+						}
 
-				$script .= '
+						$script .= '
 						// close all Editors with deleted documents
 						var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
 
@@ -337,42 +345,43 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 							}
 						}
 					';
-			}
-
-
-			$script .= 'top.toggleBusy(0);';
-
-			if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
-				if(sizeof($GLOBALS["we_folder_not_del"])){
-					$_SESSION['weS']['delete_files_nok'] = array();
-					$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
-					foreach($GLOBALS["we_folder_not_del"] as $datafile){
-						$_SESSION['weS']['delete_files_nok'][] = array("icon" => "folder.gif", "path" => $datafile);
 					}
-					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
+
+
+					$script .= 'top.toggleBusy(0);';
+
+					if($_SESSION['weS']['we_mode'] == "normal"){ //	different messages in normal or seeMode
+						if(sizeof($GLOBALS["we_folder_not_del"])){
+							$_SESSION['weS']['delete_files_nok'] = array();
+							$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
+							foreach($GLOBALS["we_folder_not_del"] as $datafile){
+								$_SESSION['weS']['delete_files_nok'][] = array("icon" => "folder.gif", "path" => $datafile);
+							}
+							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
+						} else{
+
+							/* if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
+							  "FILE_TABLE") && $table == FILE_TABLE . "_cache") {
+							  $delete_ok = g_l('alert',"[delete_cache_ok]");
+
+							  } else */{
+								$delete_ok = g_l('alert', "[delete_ok]");
+							}
+
+							$script .= we_message_reporting::getShowMessageCall($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);
+						}
+					}
 				} else{
-
-					/* if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
-					  "FILE_TABLE") && $table == FILE_TABLE . "_cache") {
-					  $delete_ok = g_l('alert',"[delete_cache_ok]");
-
-					  } else */{
-						$delete_ok = g_l('alert', "[delete_ok]");
+					$script .= 'top.toggleBusy(0);';
+					if($table == TEMPLATES_TABLE){
+						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+					} else
+					if($table == OBJECT_TABLE){
+						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+					} else{
+						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
 					}
-
-					$script .= we_message_reporting::getShowMessageCall($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);
 				}
-			}
-		} else{
-			$script .= 'top.toggleBusy(0);';
-			if($table == TEMPLATES_TABLE){
-				$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
-			} else
-			if($table == OBJECT_TABLE){
-				$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
-				$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
-			}
 		}
 	} else{
 		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING) . "\n";
