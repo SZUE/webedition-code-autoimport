@@ -301,10 +301,10 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 	return false;
 }
 
-function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE){
+function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE, $DB_WE = ''){
 
-	$DB_WE = new DB_WE();
-	$row = getHash("SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id), $DB_WE);
+	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+	$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
 
 	if(($_SESSION["user"]["ID"] == $row["CreatorID"]) || $_SESSION["perms"]["ADMINISTRATOR"]){ //	Owner or admin
 		return true;
