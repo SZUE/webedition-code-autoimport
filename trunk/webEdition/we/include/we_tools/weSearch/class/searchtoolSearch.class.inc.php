@@ -391,7 +391,7 @@ class searchtoolsearch extends we_search{
 				break;
 		}
 
-		$query = "SELECT ID FROM " . $_db->escape($_table) . " WHERE " . $field . " ";
+		$query = 'SELECT ID FROM ' . $_db->escape($_table) . ' WHERE ' . $field . ' ';
 
 		if(isset($searchlocation)){
 			switch($searchlocation){
@@ -672,11 +672,11 @@ class searchtoolsearch extends we_search{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$this->db->query("INSERT INTO  SEARCH_TEMP_TABLE SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where);
+				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
 
 				$titles = array();
 				//first check published documents
-				$this->db->query("SELECT a.Name, b.Dat, a.DID FROM `" . LINK_TABLE . "` a LEFT JOIN `" . CONTENT_TABLE . "` b on (a.CID = b.ID) WHERE a.Name='Title' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'");
+				$this->db->query('SELECT a.Name, b.Dat, a.DID FROM `' . LINK_TABLE . '` a LEFT JOIN `' . CONTENT_TABLE . '` b on (a.CID = b.ID) WHERE a.Name="Title" AND NOT a.DocumentTable="' . TEMPLATES_TABLE . '"');
 				while($this->db->next_record()) {
 					$titles[$this->db->f('DID')] = $this->db->f('Dat');
 				}
@@ -691,7 +691,7 @@ class searchtoolsearch extends we_search{
 				if(is_array($titles) && !empty($titles)){
 					foreach($titles as $k => $v){
 						if($v != ""){
-							$this->db->query("UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = '" . $this->db->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ");
+							$this->db->query('UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = "' . $this->db->escape($v) . '" WHERE docID = ' . intval($k) . ' AND DocTable = "' . FILE_TABLE . '" LIMIT 1');
 						}
 					}
 				}
@@ -755,24 +755,24 @@ class searchtoolsearch extends we_search{
 
 		if(!(self::checkRightDropTable() == '1' && $tempTableTrue == '')){
 			$this->db->query('CREATE ' . $tempTableTrue . ' TABLE SEARCH_TEMP_TABLE (
-				`ID` BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-				`docID` BIGINT( 20 ) NOT NULL ,
-				`docTable` VARCHAR( 32 ) NOT NULL ,
-				`Text` VARCHAR( 255 ) NOT NULL ,
-				`Path` VARCHAR( 255 ) NOT NULL ,
-				`ParentID` BIGINT( 20 ) NOT NULL ,
-				`IsFolder` TINYINT( 1 ) NOT NULL ,
-				`temp_template_id` INT( 11 ) NOT NULL ,
-				`TemplateID` INT( 11 ) NOT NULL ,
-				`ContentType` VARCHAR( 32 ) NOT NULL ,
-				`SiteTitle` VARCHAR( 255 ) NOT NULL ,
-				`CreationDate` INT( 11 ) NOT NULL ,
-				`CreatorID` BIGINT( 20 ) NOT NULL ,
-				`ModDate` INT( 11 ) NOT NULL ,
-				`Published` INT( 11 ) NOT NULL ,
-				`Extension` VARCHAR( 16 ) NOT NULL ,
-				`TableID` INT( 11 ) NOT NULL,
-				`VersionID` BIGINT( 20 ) NOT NULL
+				ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+				docID BIGINT( 20 ) NOT NULL ,
+				docTable VARCHAR( 32 ) NOT NULL ,
+				Text VARCHAR( 255 ) NOT NULL ,
+				Path VARCHAR( 255 ) NOT NULL ,
+				ParentID BIGINT( 20 ) NOT NULL ,
+				IsFolder TINYINT( 1 ) NOT NULL ,
+				temp_template_id INT( 11 ) NOT NULL ,
+				TemplateID INT( 11 ) NOT NULL ,
+				ContentType VARCHAR( 32 ) NOT NULL ,
+				SiteTitle VARCHAR( 255 ) NOT NULL ,
+				CreationDate INT( 11 ) NOT NULL ,
+				CreatorID BIGINT( 20 ) NOT NULL ,
+				ModDate INT( 11 ) NOT NULL ,
+				Published INT( 11 ) NOT NULL ,
+				Extension VARCHAR( 16 ) NOT NULL ,
+				TableID INT( 11 ) NOT NULL,
+				VersionID BIGINT( 20 ) NOT NULL
 				) ENGINE = ' . $tableType . $charset_collation);
 		}
 	}

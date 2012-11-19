@@ -618,7 +618,7 @@ class searchtoolView extends weToolView{
      args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
     }
     ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-    YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
+		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
    }
 
    function makeAjaxRequestParametersTop() {
@@ -1873,7 +1873,7 @@ class searchtoolView extends weToolView{
 					$objectTable = defined("OBJECT_TABLE") ? OBJECT_TABLE : '--';
 
 					foreach($_REQUEST['we_cmd'] as $k => $v){
-						if($v == 1){
+						if(is_string($v) && $v == 1){
 							if(stristr($k, 'search_tables_advSearch[' . FILE_TABLE) && $k{0} != "_"){
 								$_tables[] = FILE_TABLE;
 							} elseif(stristr($k, 'search_tables_advSearch[' . VERSIONS_TABLE) && $k{0} != "_"){
