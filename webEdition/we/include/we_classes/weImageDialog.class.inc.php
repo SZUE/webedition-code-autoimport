@@ -225,7 +225,7 @@ class weImageDialog extends weDialog{
 		$this->args["type"] = "ext";
 		$this->args["ratio"] = "1";
 	}
-	
+
 	function getTinyMceJS(){
 		$out = parent::getTinyMceJS();
 		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js');
@@ -312,14 +312,13 @@ class weImageDialog extends weDialog{
 				}
 				$thumbnails .= '</select>';
 
-				$thumbnails = '<div id="selectThumbnail" style="display:true">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
+				$thumbnails = '<div id="selectThumbnail">' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', "[thumbnail]")) . '</div>';
 			} else{
-				$thumbnails = "";
+				$thumbnails = '';
 			}
 			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
-			$wecmdenc3 = '';
 
 			$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$but2 = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
@@ -502,12 +501,13 @@ function checkWidthHeight(field){
 					classNames = top.opener.we_classNames;') . '
 					document.writeln(\'<select class="defaul	qqtfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
-
-					for (var i = 0; i < classNames.length; i++) {
-						var foo = classNames[i].substring(0,1) == "." ?
-							classNames[i].substring(1,classNames[i].length) :
-							classNames[i];
-						document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+					if(typeof(classNames) != "undefined"){
+						for (var i = 0; i < classNames.length; i++) {
+							var foo = classNames[i].substring(0,1) == "." ?
+								classNames[i].substring(1,classNames[i].length) :
+								classNames[i];
+							document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+						}
 					}
 					document.writeln(\'</select>\');
 				}

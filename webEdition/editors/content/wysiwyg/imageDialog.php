@@ -49,10 +49,10 @@ top.close();
 ');
 
 	} else{
-		$out = weDialog::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js');
-		
-		$longdesc = intval($args["longdescid"]) ? $args["longdescsrc"] . '?id=' . intval($args["longdescid"]) : ''; 
+		$out = weDialog::getTinyMceJS().
+		we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js');
+
+		$longdesc = intval($args["longdescid"]) ? $args["longdescsrc"] . '?id=' . intval($args["longdescid"]) : '';
 		$out .= '<form name="tiny_form">
 					<input type="hidden" name="src" value="'. $args["src"] . '">
 					<input type="hidden" name="width" value="'. $args["width"] . '">
@@ -70,5 +70,5 @@ top.close();
 
 		return $out;
 	}
-	
+
 }
