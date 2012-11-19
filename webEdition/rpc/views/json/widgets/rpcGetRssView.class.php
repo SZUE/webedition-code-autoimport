@@ -29,22 +29,15 @@ class rpcGetRssView extends rpcJsonView{
 	 * @return string
 	 */
 	function getResponse($response){
-
-		if($response->Success){
-			$status = "response";
-		} else{
-			$status = "error";
-		}
-
+		t_e('rss');
 		return
 			'weResponse = {
-			"type":"' . $status . '",
+			"type":"' . ($response->Success ? "response" : "error") . '",
 			"data":"' . addslashes(str_replace(array("\n", "\r"), " ", $response->getData("data"))) . '",
 			"titel":"' . addslashes($response->getData("titel")) . '",
 			"widgetType":"' . addslashes($response->getData("widgetType")) . '",
 			"widgetId":"' . addslashes($response->getData("widgetId")) . '"
-		};'
-		;
+		};';
 	}
 
 }
