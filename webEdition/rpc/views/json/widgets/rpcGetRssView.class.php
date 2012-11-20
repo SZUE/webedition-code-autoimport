@@ -29,7 +29,6 @@ class rpcGetRssView extends rpcJsonView{
 	 * @return string
 	 */
 	function getResponse($response){
-		t_e('rss');
 		return
 			'weResponse = {
 			"type":"' . ($response->Success ? "response" : "error") . '",
