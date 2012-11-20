@@ -248,7 +248,7 @@ class we_template extends we_document{
 			return $foo;
 		}
 
-		if(DISABLE_TEMPLATE_CODE_CHECK){
+		if(!DISABLE_TEMPLATE_CODE_CHECK){
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
