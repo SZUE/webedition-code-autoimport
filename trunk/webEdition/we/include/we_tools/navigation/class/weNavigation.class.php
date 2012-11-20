@@ -31,6 +31,7 @@ class weNavigation extends weModelBase{
 
 	const SELECTION_STATIC = 'static';
 	const SELECTION_DYNAMIC = 'dynamic';
+	const SELECTION_NODYNAMIC = 'nodynamic';
 	const STYPE_URLLINK = 'urlLink';
 	const STPYE_DOCLINK = 'docLink';
 	const STPYE_DOCTYPE = 'doctype';
@@ -863,16 +864,31 @@ class weNavigation extends weModelBase{
 		$close = '!###@';
 		$amp = '!!##@';
 
-		$string = preg_replace("|<br(\/)?>|", $open . "br\\1" . $close, $string);
-		$string = preg_replace("|<(\/)?b>|", $open . "\\1b" . $close, $string);
-		$string = preg_replace("|<(\/)?i>|", $open . "\\1i" . $close, $string);
-		$string = preg_replace("|&([^;]+);|", $amp . "\\1;", $string);
+		$string = preg_replace(array(
+			'|<br(\/)?>|',
+			'|<(\/)?b>|',
+			'|<(\/)?i>|',
+			'|&([^;]+);|',
+			), array(
+			$open . 'br\\1' . $close,
+			$open . '\\1b' . $close,
+			$open . '\\1i' . $close,
+			$amp . '\\1;',
+			), $string);
 
-		return str_replace(array($open, $close, $amp,), array("<", ">", "&",), htmlspecialchars($string));
+		return str_replace(array(
+				$open,
+				$close,
+				$amp,
+				), array(
+				'<',
+				'>',
+				'&',
+				), htmlspecialchars($string));
 	}
 
 	function getNavCondition($id, $table){
-		$_linkType = ($table == OBJECT_FILES_TABLE) ? self::STPYE_OBJLINK : self::STPYE_DOCLINK;
+		$_linkType = ($table == OBJECT_FILES_TABLE ? self::STPYE_OBJLINK : self::STPYE_DOCLINK);
 		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval(
 				$id) . ' ';
 	}
