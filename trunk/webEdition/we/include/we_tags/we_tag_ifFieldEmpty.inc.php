@@ -77,7 +77,7 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
 			if($GLOBALS['lv']->ClassName == 'we_listview'){ // listview/document with objects included using we:object
-				return $GLOBALS['lv']->f($match);
+				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$objectdb = new DB_WE();
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
@@ -89,6 +89,10 @@ function we_isFieldNotEmpty($attribs){
 		case 'flashmovie' :
 		case 'quicktime' :
 			return (bool) $GLOBALS['lv']->f($match);
+		case 'float':
+			return floatval($GLOBALS['lv']->f($match)) !== floatval(0);
+		case 'int':
+			return intval($GLOBALS['lv']->f($match)) !== 0;
 		case 'href' :
 			if($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
 				$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
