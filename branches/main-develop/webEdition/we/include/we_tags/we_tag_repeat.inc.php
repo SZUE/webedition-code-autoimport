@@ -23,21 +23,20 @@ function we_parse_tag_repeat($attribs, $content){
 }
 
 function we_tag_repeat(){
-	if(isset($GLOBALS["_we_voting_list"])){
-		return $GLOBALS["_we_voting_list"]->getNext();
-	} else{
-		if(isset($GLOBALS["lv"])){
-			if($GLOBALS["lv"]->next_record()){
-				$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
-				if($GLOBALS["lv"]->ClassName == "we_listview_object"){
-					$GLOBALS["_we_listview_object_flag"] = true;
-				}
-				return true;
-			} else{ //last entry
-				unset($GLOBALS["_we_listview_object_flag"]);
-				return false;
+	if(isset($GLOBALS['_we_voting_list'])){
+		return $GLOBALS['_we_voting_list']->getNext();
+	} elseif(isset($GLOBALS['lv'])){
+		if($GLOBALS['lv']->next_record()){
+			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
+			if($GLOBALS['lv']->ClassName == 'we_listview_object'){
+				$GLOBALS['_we_listview_object_flag'] = true;
 			}
+			return true;
+		} else{ //last entry
+			unset($GLOBALS['_we_listview_object_flag']);
+			return false;
 		}
 	}
+
 	return false;
 }

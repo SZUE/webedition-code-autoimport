@@ -24,7 +24,7 @@
  */
 function we_tag_ifWorkspace($attribs){
 	$required_path = weTag_getAttribute('path', $attribs);
-	$docAttr = weTag_getAttribute("doc", $attribs, "self");
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 	$doc = we_getDocForTag($docAttr);
 	$id = explode(',', weTag_getAttribute('id', $attribs));
 

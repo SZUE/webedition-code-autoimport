@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopFieldEmpty($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
-		return $foo;
-	if(($foo = attributFehltError($attribs, "reference", __FUNCTION__)))
-		return $foo;
-	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
-		return $foo;
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'reference', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
+		print $foo;
+		return false;
+	}
 
-    $attribs['type'] = 'print'; //#6541
+	$attribs['type'] = 'print'; //#6541
 
 	return (we_tag('shopField', $attribs) == '');
 }

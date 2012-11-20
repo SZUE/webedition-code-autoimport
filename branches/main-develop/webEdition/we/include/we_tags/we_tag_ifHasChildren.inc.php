@@ -24,10 +24,8 @@
  */
 function we_tag_ifHasChildren(){
 
-	if(isset($GLOBALS["lv"])){
-		if(intval($GLOBALS["lv"]->f("ID")) > 0){
-			return intval(f("SELECT COUNT(ID) AS ID FROM " . CATEGORY_TABLE . " WHERE ParentID=" . intval($GLOBALS["lv"]->f("ID")), "ID", new DB_WE())) > 0;
-		}
+	if(isset($GLOBALS['lv']) && (intval($GLOBALS['lv']->f('ID')) > 0)){
+		return (f('SELECT 1 AS ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($GLOBALS['lv']->f('ID')), 'ID', new DB_WE())=='1');
 	}
 	return false;
 }

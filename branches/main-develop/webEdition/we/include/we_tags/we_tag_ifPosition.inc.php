@@ -34,14 +34,19 @@
  */
 function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 	switch($_position){
-		case "first" :
+		case 'first' :
 			if($_size == 1 && $operator != ''){
 				switch($operator){
-					case "equal": return $position == 1;
-					case "less": return $position < 1;
-					case "less|equal": return $position <= 1;
-					case "greater": return $position > 1;
-					case "greater|equal": return $position >= 1;
+					case 'equal':
+						return $position == 1;
+					case 'less':
+						return $position < 1;
+					case 'less|equal':
+						return $position <= 1;
+					case 'greater':
+						return $position > 1;
+					case 'greater|equal':
+						return $position >= 1;
 				}
 			} else{
 				if($position == 1){
@@ -49,13 +54,17 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 				}
 			}
 			break;
-		case "last" :
+		case 'last' :
 			if($_size == 1 && $operator != ''){
 				switch($operator){
-					case "equal": return $position == $size;
-					case "less": return $position < $size;
-					case "less|equal": return $position <= $size;
-					case "greater|equal": return $position >= $size;
+					case 'equal':
+						return $position == $size;
+					case 'less':
+						return $position < $size;
+					case 'less|equal':
+						return $position <= $size;
+					case 'greater|equal':
+						return $position >= $size;
 				}
 			} else{
 				if($position == $size){
@@ -63,12 +72,12 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 				}
 			}
 			break;
-		case "odd" :
+		case 'odd' :
 			if($position % 2 != 0){
 				return true;
 			}
 			break;
-		case "even" :
+		case 'even' :
 			if($position % 2 == 0){
 				return true;
 			}
@@ -78,12 +87,18 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 			$_position = intval($_position); // Umwandeln in integer
 			if($_size == 1 && $operator != ''){
 				switch($operator){
-					case "equal": return $position == $_position;
-					case "less": return $position < $_position;
-					case "less|equal": return $position <= $_position;
-					case "greater": return $position > $_position;
-					case "greater|equal": return $position >= $_position;
-					case "every": return ($position % $_position == 0);
+					case 'equal':
+						return $position == $_position;
+					case 'less':
+						return $position < $_position;
+					case 'less|equal':
+						return $position <= $_position;
+					case 'greater':
+						return $position > $_position;
+					case 'greater|equal':
+						return $position >= $_position;
+					case 'every':
+						return ($position % $_position == 0);
 				}
 			} else{
 				if($operator == 'every' && ($position % $_position == 0)){
@@ -104,20 +119,22 @@ function we_tag_ifPosition($attribs){
 	if(isset($GLOBALS['we']['ll'])){
 		$attribs['type'] = 'linklist';
 	}
-	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__) || attributFehltError($attribs, "position", __FUNCTION__))){
+	if(($missingAttrib = attributFehltError($attribs, 'type', __FUNCTION__)) ||
+		($missingAttrib = attributFehltError($attribs, 'position', __FUNCTION__))
+	){
 		print $missingAttrib;
 		return '';
 	}
 
 
-	$type = weTag_getAttribute("type", $attribs);
-	$position = weTag_getAttribute("position", $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$position = weTag_getAttribute('position', $attribs);
 	$positionArray = explode(',', $position);
 	$_size = count($positionArray);
-	$operator = weTag_getAttribute("operator", $attribs);
+	$operator = weTag_getAttribute('operator', $attribs);
 
 	switch($type){
-		case "listview" : //	inside a listview, we take direct global listview object
+		case 'listview' : //	inside a listview, we take direct global listview object
 			foreach($positionArray as $_position){
 				$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $GLOBALS['lv']->count, $GLOBALS['lv']->anz);
 				if($tmp !== -1){
@@ -126,7 +143,7 @@ function we_tag_ifPosition($attribs){
 			}
 			break;
 
-		case "linklist" :
+		case 'linklist' :
 			//	first we must get right array !!!
 			$_reference = $GLOBALS['we']['ll']->getName();
 
@@ -143,8 +160,8 @@ function we_tag_ifPosition($attribs){
 
 			break;
 
-		case "block" : //	look in function we_tag_block for details
-			$_reference=substr($GLOBALS['postTagName'],4,strrpos($GLOBALS['postTagName'],'__')-4);//strip leading blk_ and trailing __NO
+		case 'block' : //	look in function we_tag_block for details
+			$_reference = substr($GLOBALS['postTagName'], 4, strrpos($GLOBALS['postTagName'], '__') - 4); //strip leading blk_ and trailing __NO
 			$_reference = $GLOBALS['we_position']['block'][$_reference];
 
 			if(is_array($_reference) && isset($_reference['position'])){
@@ -157,7 +174,7 @@ function we_tag_ifPosition($attribs){
 			}
 			break;
 
-		case "listdir" : //	inside a listview
+		case 'listdir' : //	inside a listview
 			if(isset($GLOBALS['we_position']['listdir'])){
 				$_content = $GLOBALS['we_position']['listdir'];
 			}

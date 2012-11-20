@@ -23,16 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifHtmlMail(){
-	if((isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)){
+	if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition)){
 		return true;
 	}
 
-	if(isset($GLOBALS["WE_HTMLMAIL"])){
-		if($GLOBALS["WE_HTMLMAIL"]){
-			return true;
-		} else{
-			return false;
-		}
+	if(isset($GLOBALS['WE_HTMLMAIL'])){
+		return (bool)($GLOBALS['WE_HTMLMAIL']);
 	}
 	return true;
 }

@@ -72,17 +72,17 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 }
 
 function we_tag_ifVarSet($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		print($foo);
 		return false;
 	}
 
-	$type = weTag_getAttribute("var", $attribs, weTag_getAttribute("type", $attribs));
-	$doc = weTag_getAttribute("doc", $attribs);
-	$name = weTag_getAttribute("name", $attribs);
-	$name_orig = weTag_getAttribute("_name_orig", $attribs);
-	$formname = weTag_getAttribute("formname", $attribs, "we_global_form");
-	$property = weTag_getAttribute("property", $attribs, false, true);
+	$type = weTag_getAttribute('var', $attribs, weTag_getAttribute('type', $attribs));
+	$doc = weTag_getAttribute('doc', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs);
+	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
+	$property = weTag_getAttribute('property', $attribs, false, true);
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
 	return we_isVarSet($name, $name_orig, $type, $doc, $property, $formname, $shopname);

@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifLogout(){
-	return (isset($GLOBALS["WE_LOGOUT"]) && $GLOBALS["WE_LOGOUT"]);
+	return (isset($GLOBALS['WE_LOGOUT']) && $GLOBALS['WE_LOGOUT']);
 }

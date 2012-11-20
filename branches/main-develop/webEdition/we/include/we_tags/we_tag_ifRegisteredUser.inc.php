@@ -25,12 +25,10 @@
 function we_tag_ifRegisteredUser($attribs){
 
 	$permission = weTag_getAttribute('permission', $attribs);
-	$match = weTag_getAttribute('match', $attribs);
-	$match = makeArrayFromCSV($match);
+	$match = makeArrayFromCSV(weTag_getAttribute('match', $attribs));
 	$cfilter = weTag_getAttribute('cfilter', $attribs, false, true);
 	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, true);
-	$userid = weTag_getAttribute('userid', $attribs);
-	$userid = makeArrayFromCSV($userid);
+	$userid = makeArrayFromCSV(weTag_getAttribute('userid', $attribs));
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
 
 	if($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition){

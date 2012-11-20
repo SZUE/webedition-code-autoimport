@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifEmailNotExists(){
-	return (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) && ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == 1);
+	return (isset($GLOBALS['WE_REMOVENEWSLETTER_STATUS'])) && ($GLOBALS['WE_REMOVENEWSLETTER_STATUS'] == 1);
 }

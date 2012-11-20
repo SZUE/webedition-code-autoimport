@@ -23,19 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifPageLanguage($attribs){
-	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__, true))){
 		print($foo);
 		return false;
 	}
 
-	$match = weTag_getAttribute("match", $attribs);
-	$docAttr = weTag_getAttribute("doc", $attribs, "self");
+	$match = weTag_getAttribute('match', $attribs);
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 	$doc = we_getDocForTag($docAttr);
 	$matchArray = makeArrayFromCSV($match);
-	foreach($matchArray as $match){
-		if($doc->Language == $match){
-			return true;
-		}
-	}
-	return false;
+	return array_search($doc->Language, $matchArray) !== FALSE;
 }

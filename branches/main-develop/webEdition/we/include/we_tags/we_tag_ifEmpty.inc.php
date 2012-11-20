@@ -62,8 +62,6 @@ function we_isNotEmpty($attribs){
 
 			if(isset($doc)){
 				//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
-
-
 				if((substr($doc->getElement($match), 0, 2) == 'a:')){ //  only unserialize, when $match cluld be an array
 					// Added @-operator in front of the unserialze function because there
 					// were some PHP notices that had no effect on the output of the function

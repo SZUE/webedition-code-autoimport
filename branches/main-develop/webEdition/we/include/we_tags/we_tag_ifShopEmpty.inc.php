@@ -32,16 +32,12 @@ include_once(WE_MODULES_PATH . 'shop/we_conf_shop.inc.php');
  * @return         bool
  */
 function we_tag_ifShopEmpty($attribs){
-	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
-		return $foo;
-	$shopname = weTag_getAttribute("shopname", $attribs);
-
-	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : "";
-	if($basket){
-		$shoppingItems = $basket->getShoppingItems();
-		$basket_count = count($shoppingItems);
-
-		return abs($basket_count) == 0;
+	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
+		print $foo;
+		return false;
 	}
-	return true;
+	$shopname = weTag_getAttribute('shopname', $attribs);
+
+	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : '';
+	return ($basket ? empty(count($basket->getShoppingItems())) : true);
 }

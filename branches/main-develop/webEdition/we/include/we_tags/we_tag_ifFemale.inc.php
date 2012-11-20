@@ -23,15 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifFemale(){
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		return true;
 	}
-	if(isset($GLOBALS["WE_SALUTATION"]) && $GLOBALS["WE_SALUTATION"]){
-		$femaleSalutation = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='female_salutation'", "pref_value", $GLOBALS['DB_WE']);
-		if($femaleSalutation == ""){
+	if(isset($GLOBALS['WE_SALUTATION']) && $GLOBALS['WE_SALUTATION']){
+		$femaleSalutation = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . weNewsletterBase::FEMALE_SALUTATION_FIELD . '"', 'pref_value', $GLOBALS['DB_WE']);
+		if($femaleSalutation == ''){
 			$femaleSalutation = g_l('modules_newsletter', '[default][female]');
 		}
-		return ($GLOBALS["WE_SALUTATION"] == $femaleSalutation);
+		return ($GLOBALS['WE_SALUTATION'] == $femaleSalutation);
 	}
 	return false;
 }

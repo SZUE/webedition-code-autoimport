@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifDoubleOptIn(){
-	return isset($GLOBALS["WE_DOUBLEOPTIN"]) && $GLOBALS["WE_DOUBLEOPTIN"];
+	return isset($GLOBALS['WE_DOUBLEOPTIN']) && $GLOBALS['WE_DOUBLEOPTIN'];
 }

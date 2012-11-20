@@ -23,44 +23,39 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifField($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'match', __FUNCTION__, true)) ||
+		($foo = attributFehltError($attribs, 'type', __FUNCTION__, true))
+	){
 		print($foo);
-		return "";
-	}
-	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true))){
-		print($foo);
-		return "";
-	}
-	if(($foo = attributFehltError($attribs, "type", __FUNCTION__, true))){
-		print($foo);
-		return "";
+		return false;
 	}
 
-	$match = weTag_getAttribute("match", $attribs);
+	$match = weTag_getAttribute('match', $attribs);
 //	$matchArray = makeArrayFromCSV($match);
 
-	$operator = weTag_getAttribute("operator", $attribs);
+	$operator = weTag_getAttribute('operator', $attribs);
 
 	//Bug #4815
-	if($attribs["type"] == 'float' || $attribs["type"] == 'int'){
-		$attribs["type"] = 'text';
+	if($attribs['type'] == 'float' || $attribs['type'] == 'int'){
+		$attribs['type'] = 'text';
 	}
 
 	$realvalue = we_tag('field', $attribs);
 
 	switch($operator){
 		default:
-		case "equal":
+		case 'equal':
 			return $realvalue == $match;
-		case "less":
+		case 'less':
 			return intval($realvalue) < intval($match);
-		case "less|equal":
+		case 'less|equal':
 			return intval($realvalue) <= intval($match);
-		case "greater":
+		case 'greater':
 			return intval($realvalue) > intval($match);
-		case "greater|equal":
+		case 'greater|equal':
 			return intval($realvalue) >= intval($match);
-		case "contains":
+		case 'contains':
 			return (strpos($realvalue, $match) !== false);
 	}
 }

@@ -23,22 +23,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotVote($attribs){
-	if(($foo = attributFehltError($attribs, "type", __FUNCTION__)))
+	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__)))
 		return $foo;
-	$type = weTag_getAttribute("type", $attribs, "error");
+	$type = weTag_getAttribute('type', $attribs, 'error');
 
-	if(isset($GLOBALS["_we_voting_status"])){
+	if(isset($GLOBALS['_we_voting_status'])){
 		switch($type){
-			case "error":
-				return ($GLOBALS["_we_voting_status"] == weVoting::ERROR);
-			case "revote":
-				return ($GLOBALS["_we_voting_status"] == weVoting::ERROR_REVOTE);
-			case "active":
-				return ($GLOBALS["_we_voting_status"] == weVoting::ERROR_ACTIVE);
-			case "forbidden":
-				return ($GLOBALS["_we_voting_status"] == weVoting::ERROR_BLACKIP);
+			case 'error':
+				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR);
+			case 'revote':
+				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR_REVOTE);
+			case 'active':
+				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR_ACTIVE);
+			case 'forbidden':
+				return ($GLOBALS['_we_voting_status'] == weVoting::ERROR_BLACKIP);
 			default:
-				return ($GLOBALS["_we_voting_status"] > 0);
+				return ($GLOBALS['_we_voting_status'] > 0);
 		}
 	}
 	return false;

@@ -23,21 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopField($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__)))
-		return $foo;
-	if(($foo = attributFehltError($attribs, "reference", __FUNCTION__)))
-		return $foo;
-	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__)))
-		return $foo;
-	if(($foo = attributFehltError($attribs, "match", __FUNCTION__, true)))
-		return $foo;
-
-	$match = weTag_getAttribute("match", $attribs);
-
-	$name = weTag_getAttribute("name", $attribs);
-	$reference = weTag_getAttribute("reference", $attribs);
-	$shopname = weTag_getAttribute("shopname", $attribs);
-	$operator = weTag_getAttribute("operator", $attribs);
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'reference', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)) ||
+		($foo = attributFehltError($attribs, 'match', __FUNCTION__, true))){
+		print $foo;
+		return false;
+	}
+	$match = weTag_getAttribute('match', $attribs);
+	$operator = weTag_getAttribute('operator', $attribs);
 
 	$atts = removeAttribs($attribs, array('match', 'operator'));
 	$atts['type'] = 'print';
@@ -45,17 +39,17 @@ function we_tag_ifShopField($attribs){
 
 	switch($operator){
 		default:
-		case "equal":
+		case 'equal':
 			return $realvalue == $match;
-		case "less":
+		case 'less':
 			return intval($realvalue) < intval($match);
-		case "less|equal":
+		case 'less|equal':
 			return intval($realvalue) <= intval($match);
-		case "greater":
+		case 'greater':
 			return intval($realvalue) > intval($match);
-		case "greater|equal":
+		case 'greater|equal':
 			return intval($realvalue) >= intval($match);
-		case "contains":
+		case 'contains':
 			return (strpos($realvalue, $match) !== false);
 	}
 }

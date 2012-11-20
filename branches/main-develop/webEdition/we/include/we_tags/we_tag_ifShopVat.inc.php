@@ -23,17 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopVat($attribs){
-	if(($foo = attributFehltError($attribs, "id", __FUNCTION__)))
-		return $foo;
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
+		print $foo;
+		return false;
+	}
 	$id = weTag_getAttribute('id', $attribs, -1);
 
-	$vatId = 0;
+	$vatId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) ?
+			$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) :
+			$GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME));
 
-	if(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME)){
-		$vatId = $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME);
-	} else{
-		$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
-	}
 
 	if(!$vatId){
 		$shopVat = weShopVats::getStandardShopVat();

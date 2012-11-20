@@ -31,8 +31,7 @@ function we_tag_ifIsDomain($attribs){
 		return true;
 	}
 
-	$domain = strtolower(weTag_getAttribute('domain', $attribs));
-	$domain = makeArrayFromCSV($domain);
+	$domain = makeArrayFromCSV(strtolower(weTag_getAttribute('domain', $attribs)));
 	$matchType = weTag_getAttribute('matchType', $attribs, 'exact');
 	$servername = strtolower($_SERVER['SERVER_NAME']);
 	switch($matchType){
@@ -40,7 +39,7 @@ function we_tag_ifIsDomain($attribs){
 			return in_array($servername, $domain);
 		case 'contains':
 			foreach($domain as $d){
-				if(strpos($servername, $d) !== FALSE){
+				if(strstr($servername, $d) !== FALSE){
 					return true;
 				}
 			}
