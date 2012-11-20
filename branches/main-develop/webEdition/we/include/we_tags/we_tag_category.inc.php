@@ -25,15 +25,15 @@
 function we_tag_category($attribs){
 
 	// initialize possible Attributes
-	$delimiter = weTag_getAttribute("delimiter", $attribs,weTag_getAttribute("tokken", $attribs, ','));
+	$delimiter = weTag_getAttribute('delimiter', $attribs,weTag_getAttribute('tokken', $attribs, ','));
 
-	$rootdir = weTag_getAttribute("rootdir", $attribs);
-	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	$field = weTag_getAttribute("field", $attribs);
-	$id = intval(weTag_getAttribute("id", $attribs));
-	$separator = weTag_getAttribute("separator", $attribs, "/");
-	$onlyindir = weTag_getAttribute("onlyindir", $attribs);
+	$rootdir = weTag_getAttribute('rootdir', $attribs);
+	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
+	$docAttr = weTag_getAttribute('doc', $attribs);
+	$field = weTag_getAttribute('field', $attribs);
+	$id = intval(weTag_getAttribute('id', $attribs));
+	$separator = weTag_getAttribute('separator', $attribs, '/');
+	$onlyindir = weTag_getAttribute('onlyindir', $attribs);
 
 	// end initialize possible Attributes
 	if($id){

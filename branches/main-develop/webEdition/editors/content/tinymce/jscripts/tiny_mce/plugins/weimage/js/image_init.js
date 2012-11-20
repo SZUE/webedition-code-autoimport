@@ -20,7 +20,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 /**
  * This source is based on tinyMCE-plugin "advimage":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
@@ -31,7 +31,7 @@ var ImageDialog = {
 
 		var url;
 
-		tinyMCEPopup.requireLangPack();
+//		tinyMCEPopup.requireLangPack();
 
 		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
@@ -41,7 +41,7 @@ var ImageDialog = {
 	init : function(ed) {
 		var f = document.forms["we_form"];
 		var nl = f.elements;
-		var ed = tinyMCEPopup.editor;		
+		var ed = tinyMCEPopup.editor;
 		var dom = ed.dom;
 		var n = ed.selection.getNode();
 		var fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
@@ -70,7 +70,7 @@ var ImageDialog = {
 			nl["we_dialog_args[longdescid]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[1] : '';
 
 			// parse and insert src
-			src_arr = this.analyseSrc(dom.getAttrib(n, 'src'));	
+			src_arr = this.analyseSrc(dom.getAttrib(n, 'src'));
 
 			nl["we_dialog_args[type]"][0].checked = src_arr[0]; // type = ext
 			nl["we_dialog_args[extSrc]"].value = src_arr[1];
@@ -133,7 +133,7 @@ var ImageDialog = {
 			src_vars[3] = 0; // internal id
 			src_vars[4] = ''; // internal src
 			src_vars[5] = 0;
-			
+
 		}
 		return src_vars;
 	},

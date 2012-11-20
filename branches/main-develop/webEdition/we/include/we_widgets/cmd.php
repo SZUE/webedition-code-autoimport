@@ -67,17 +67,24 @@ function transmit(){
 		print we_html_element::htmlDocType() .
 			we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement(
-						$js)) . we_html_element::htmlBody(
-					array(
-					"onload" => "transmit();"
-					), we_html_element::htmlDiv(array(
-						"id" => "content"
-						), $oTblCont->getHtml()) . we_html_element::htmlSpan(array(
-						"id" => "prefix"
-						), $aLang[0]) . we_html_element::htmlSpan(array(
-						"id" => "postfix"
-						), $aLang[1]) . we_html_element::htmlSpan(array(
-						"id" => "csv"
-						), (isset($aProps[3]) ? $aProps[3] : ""))));
+					we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement($js)) .
+				we_html_element::htmlBody(
+					array("onload" => "transmit();"
+					), we_html_element::htmlDiv(array("id" => "content"), $oTblCont->getHtml()) .
+					we_html_element::htmlSpan(array("id" => "prefix"), $aLang[0]) .
+					we_html_element::htmlSpan(array("id" => "postfix"), $aLang[1]) .
+					we_html_element::htmlSpan(array("id" => "csv"), (isset($aProps[3]) ? $aProps[3] : ""))));
+
+
+	//added to fix bug #6538
+	case 'reset_home':
+
+		//delete user's cockpit preferences from db
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter(
+			array(
+				'cockpit_dat' => '',
+				'cockpit_amount_columns' => '',
+			)) . ' WHERE userID=' . intval($_SESSION['user']['ID']));
+		include(WE_INCLUDES_PATH . 'home.inc.php');
+		break;
 }

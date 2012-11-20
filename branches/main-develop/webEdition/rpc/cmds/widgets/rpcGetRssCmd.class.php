@@ -57,19 +57,19 @@ class rpcGetRssCmd extends rpcCmd{
 
 		//Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
 		//daher Umstellung den Inhalt des Feeds selbst zu holen
-		$parsedurl=parse_url($sRssUri);
-		$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');		
+		$parsedurl = parse_url($sRssUri);
+		$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
 		$http_request->executeHttpRequest();
 		$http_response = new HttpResponse($http_request->getHttpResponseStr());
 		if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
-			$parsedurl=parse_url($http_response->http_headers['Location']);	
-			$http_request= new HttpRequest($parsedurl['path'],$parsedurl['host'],'GET');	
+			$parsedurl = parse_url($http_response->http_headers['Location']);
+			$http_request = new HttpRequest($parsedurl['path'], $parsedurl['host'], 'GET');
 			$http_request->executeHttpRequest();
 			$http_response = new HttpResponse($http_request->getHttpResponseStr());
 		}
-		$feeddata=$http_response->http_body;
-		$oRssParser = new XML_RSS($feeddata, $GLOBALS['WE_BACKENDCHARSET']);// Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
-		$oRssParser->parse();
+		$feeddata = $http_response->http_body;
+		$oRssParser = new XML_RSS($feeddata, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+		$tmp = $oRssParser->parse();
 		$sRssOut = "";
 
 		$iCurrItem = 0;
@@ -82,15 +82,15 @@ class rpcGetRssCmd extends rpcCmd{
 			$bShowCategory = ($bCfgCategory && isset($item['category'])) ? true : false;
 			if($bShowTitle){
 				$sRssOut .= ($bShowLink) ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
-					we_html_element::htmlB($item['title']);
-				$sRssOut .= we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : "");
+					we_html_element::htmlB($item['title']) .
+					we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : '');
 			}
 			if($bShowPubdate){
-				$sRssOut .= g_l('cockpit', "[published]") . ": " . date(g_l('date', '[format][default]'), strtotime($item['pubdate']));
+				$sRssOut .= g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate']));
 			}
 			if($bShowCategory){
-				$sRssOut .= ($bShowPubdate) ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "";
-				$sRssOut .= g_l('cockpit', "[category]") . ": " . $item['category'];
+				$sRssOut .= ($bShowPubdate ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "") .
+					g_l('cockpit', "[category]") . ": " . $item['category'];
 			}
 			if($bShowPubdate || $bShowCategory){
 				$sRssOut .= we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr();
@@ -117,29 +117,34 @@ class rpcGetRssCmd extends rpcCmd{
 		$aTb = array();
 		if($bTbLabel)
 			$aTb[] = g_l('cockpit', '[rss_feed]');
-		if($bTbTitel)
-			$aTb[] = (isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != "") ? $_REQUEST['we_cmd'][4] :
+		if($bTbTitel){
+			$aTb[] = (isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != "") ?
+				$_REQUEST['we_cmd'][4] :
 				((isset($oRssParser->channel["title"])) ? $oRssParser->channel["title"] : "");
-		if($bTbDesc)
+		}
+		if($bTbDesc){
 			$aTb[] = (isset($oRssParser->channel["description"])) ? str_replace(array("\n", "\r"), '', $oRssParser->channel["description"]) : '';
-		if($bTbLink)
+		}
+		if($bTbLink){
 			$aTb[] = (isset($oRssParser->channel["link"])) ? $oRssParser->channel["link"] : '';
-		if($bTbPubDate)
+		}
+		if($bTbPubDate){
 			$aTb[] = (isset($oRssParser->channel["pubdate"])) ? (date(g_l('date', '[format][default]'), strtotime($oRssParser->channel["pubdate"]))) : "";
-		if($bTbCopyright)
+		}
+		if($bTbCopyright){
 			$aTb[] = (isset($oRssParser->channel["copyright"])) ? $oRssParser->channel["copyright"] : "";
-
+		}
 		$resp = new rpcResponse();
-		$resp->setData("data", $sRssOut);
+		$resp->setData('data', $sRssOut);
 
 		// title
-		$_title = implode(" - ", $aTb);
+		$_title = implode(' - ', $aTb);
 		if(strlen($_title) > 50){
-			$_title = substr($_title, 0, 50) . "...";
+			$_title = substr($_title, 0, 50) . '...';
 		}
-		$resp->setData("titel", $_title);
-		$resp->setData("widgetType", "rss");
-		$resp->setData("widgetId", $_REQUEST['we_cmd'][5]);
+		$resp->setData('titel', $_title);
+		$resp->setData('widgetType', "rss");
+		$resp->setData('widgetId', $_REQUEST['we_cmd'][5]);
 
 		return $resp;
 	}

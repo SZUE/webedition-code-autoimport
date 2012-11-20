@@ -738,8 +738,8 @@ class weNavigationFrames extends weToolFrames{
 				<div style="display:block;">
 				' . we_html_tools::htmlSelect(
 				'Selection', array(
-				'nodynamic' => g_l('navigation', '[no_dyn_content]'),
-				'dynamic' => g_l('navigation', '[dyn_content]')
+				weNavigation::SELECTION_NODYNAMIC => g_l('navigation', '[no_dyn_content]'),
+				weNavigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_content]')
 				), 1, $this->Model->Selection, false, 'style="width: ' . $this->_width_size . 'px;" onChange="toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"', 'value', $this->_width_size) . '
 				</div>
 				<div id="dynamic" style="' . ($this->Model->Selection == weNavigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:' . $this->_margin_top . '">

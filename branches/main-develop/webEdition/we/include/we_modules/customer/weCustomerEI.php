@@ -97,7 +97,7 @@ class weCustomerEI{
 							}
 						}
 					}
-					$xml_out.=$customer_xml->getHtml() . we_html_element::htmlComment("webackup") . "\n";
+					$xml_out.=$customer_xml->getHtml() . weBackup::backupMarker . "\n";
 				}
 			}
 			return $xml_out;

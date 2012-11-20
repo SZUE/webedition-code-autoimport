@@ -129,7 +129,7 @@ class searchtoolTreeDataSource extends weToolTreeDataSource{
 			}
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM `' . escape_sql_query($table) . "` $where;", 'total', $db);
+		$total = f('SELECT COUNT(1) as total FROM `' . $db->escape($table) . "` $where;", 'total', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(

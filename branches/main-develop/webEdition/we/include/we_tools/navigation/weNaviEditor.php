@@ -39,13 +39,15 @@ $_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_fo
 $_navi = new weNavigation($_id);
 
 $_wrkNavi = array();
+$_db = new DB_WE();
+
 if(!we_hasPerm('ADMINISTRATOR')){
-	if($_ws = get_ws(NAVIGATION_TABLE)){ // #5836: Use function get_ws()
+	if(($_ws = get_ws(NAVIGATION_TABLE))){ // #5836: Use function get_ws()
 		$_wrkNavi = makeArrayFromCSV($_ws);
 	}
 	$_condition = array();
-	foreach($_wrkNavi as $_key => $_value){
-		$_condition[] = 'Path LIKE "' . escape_sql_query(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
+	foreach($_wrkNavi as $_value){
+		$_condition[] = 'Path LIKE "' . $_db->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 	}
 	$_dirs = array();
 	$_def = null;
@@ -60,10 +62,7 @@ if($_id){
 	$_def = $_navi->ParentID;
 }
 
-$_db = new DB_WE();
-$_db->query(
-	'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(
-			',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
+$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
 while($_db->next_record()) {
 	if($_def === null){
 		$_def = $_db->f('ID');
@@ -71,40 +70,37 @@ while($_db->next_record()) {
 	$_dirs[$_db->f('ID')] = $_db->f('Path');
 }
 
-$_parts = array();
-
-$_parts[] = array(
-	'headline' => g_l('navigation', '[name]'),
-	'html' => we_html_tools::htmlTextInput(
-		'Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
-	'space' => $_space_size,
-	'noline' => 1
-);
-
-$_parts[] = array(
-	'headline' => g_l('navigation', '[group]'),
-	'html' => we_html_tools::htmlSelect(
-		'ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onChange="queryEntries(this.value)"'),
-	'space' => $_space_size,
-	'noline' => 1
-);
-
-$_parts[] = array(
-	'headline' => '',
-	'html' => '<div id="details" class="blockWrapper" style="width: ' . $_input_size . 'px;height: 100px;"></div>',
-	'space' => $_space_size,
-	'noline' => 1
-);
-
-$_parts[] = array(
-	'headline' => g_l('navigation', '[order]'),
-	'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) . we_html_tools::htmlTextInput(
-		'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) . we_html_tools::htmlSelect(
-		'OrdnSelect', array(
-		'begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')
-		), 1, '', false, 'onchange="document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"', "value", 317),
-	'space' => $_space_size,
-	'noline' => 1
+$_parts = array(
+	array(
+		'headline' => g_l('navigation', '[name]'),
+		'html' => we_html_tools::htmlTextInput(
+			'Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
+		'space' => $_space_size,
+		'noline' => 1
+	),
+	array(
+		'headline' => g_l('navigation', '[group]'),
+		'html' => we_html_tools::htmlSelect(
+			'ParentID', $_dirs, 1, $_navi->ParentID, false, (we_base_browserDetect::isIE() ? '' : 'style="width: ' . $_input_size . 'px;" ') . 'onChange="queryEntries(this.value)"'),
+		'space' => $_space_size,
+		'noline' => 1
+	),
+	array(
+		'headline' => '',
+		'html' => '<div id="details" class="blockWrapper" style="width: ' . $_input_size . 'px;height: 100px;"></div>',
+		'space' => $_space_size,
+		'noline' => 1
+	),
+	array(
+		'headline' => g_l('navigation', '[order]'),
+		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) . we_html_tools::htmlTextInput(
+			'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) . we_html_tools::htmlSelect(
+			'OrdnSelect', array(
+			'begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')
+			), 1, '', false, 'onchange="document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"', "value", 317),
+		'space' => $_space_size,
+		'noline' => 1
+	)
 );
 
 $_js = we_button::create_state_changer(false) . '
@@ -168,11 +164,7 @@ $_js = we_button::create_state_changer(false) . '
 				function queryEntries(id) {
 					ajaxObj.startRequest(id);
 
-				}
-
-
-
-		';
+				}';
 $buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel(
 		we_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_button::create_button('close', 'javascript:self.close();')) . '</div>';
 
@@ -183,9 +175,7 @@ $_body = we_html_element::htmlBody(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
 			), we_multiIconBox::getHTML(
-				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)))
-
-;
+				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
 $_head = //FIXME: missing title
 	we_html_tools::getHtmlInnerHead() . STYLESHEET .

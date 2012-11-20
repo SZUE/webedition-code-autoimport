@@ -29,109 +29,29 @@
 abstract class we_util_File{
 
 	public static function load($filename, $flags = "rb", $rsize = 8192){
-		if($filename == "" || ((!self::hasURL($filename)) && (!is_readable($filename)))){
-			return false;
-		}
-		$buffer = "";
-		$fp = @fopen($filename, $flags);
-		if($fp){
-			do{
-				$data = fread($fp, $rsize);
-				if(strlen($data) == 0)
-					break;
-				$buffer .= $data;
-			} while(true);
-			fclose($fp);
-			return $buffer;
-		}
-		return false;
+		return weFile::load($filename, $flags, $rsize);
 	}
 
 	public static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-
-		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
-			return false;
-		}
-
-		if($iscompressed == 0){
-			$open = 'fopen';
-			$seek = 'fseek';
-			$tell = 'ftell';
-			$read = 'fgets';
-			$close = 'fclose';
-		} else{
-			$open = 'gzopen';
-			$seek = 'gzseek';
-			$tell = 'gztell';
-			$read = 'gzgets';
-			$close = 'gzclose';
-		}
-
-		$buffer = '';
-		$fp = $open($filename, 'rb');
-		if($fp){
-			if($seek($fp, $offset, SEEK_SET) == 0){
-				$buffer = $read($fp, $rsize);
-				$close($fp);
-				return $buffer;
-			} else{
-				$close($fp);
-				return false;
-			}
-		} else
-			return false;
+		return weFile::loadLine($filename, $offset, $rsize, $iscompressed);
 	}
 
 	public static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0){
-
-		if($filename == '' || self::hasURL($filename) || !is_readable($filename))
-			return false;
-
-		if($iscompressed == 0){
-			$open = 'fopen';
-			$seek = 'fseek';
-			$tell = 'ftell';
-			$read = 'fread';
-			$close = 'fclose';
-		} else{
-			$open = 'gzopen';
-			$seek = 'gzseek';
-			$tell = 'gztell';
-			$read = 'gzread';
-			$close = 'gzclose';
-		}
-
-		$buffer = '';
-		$fp = $open($filename, 'rb');
-		if($fp){
-			if($seek($fp, $offset, SEEK_SET) == 0){
-				$buffer = $read($fp, $rsize);
-				$close($fp);
-				return $buffer;
-			} else{
-				$close($fp);
-			}
-		}
-		return false;
+		return weFile::loadPart($filename, $offset, $rsize, $iscompressed);
 	}
 
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
-		if($filename == "" || self::hasURL($filename))
+		if($filename == "" || self::hasURL($filename)){
 			return false;
+		}
 		if(file_exists($filename)){
 			if(!is_writable($filename)){
 				return false;
 			}
-		} else{
-			if($create_path){
-				if(!self::mkpath(dirname($filename))){
-					return false;
-				}
-			}
-			if(!is_writable(dirname($filename))){
-				return false;
-			}
+		} elseif(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
+			return false;
 		}
+
 		$written = 0;
 
 		$fp = @fopen($filename, $flags);
@@ -144,23 +64,11 @@ abstract class we_util_File{
 	}
 
 	public static function saveTemp($content, $filename = "", $flags = "wb"){
-		$filename = TEMP_PATH . "/" . ($filename == "" ? self::getUniqueId() : $filename);
-		return (self::save($filename, $content)) ? $filename : false;
+		return weFile::saveTemp($content, $filename, $flags);
 	}
 
 	public static function delete($filename){
-		if($filename == "")
-			return false;
-		if(!self::hasURL($filename)){
-			if(is_writable($filename)){
-				if(is_dir($filename)){
-					return @rmdir($filename);
-				} else{
-					return @unlink($filename);
-				}
-			}
-		}
-		return false;
+		return weFile::delete($filename);
 	}
 
 	public static function hasURL($filename){
@@ -210,18 +118,11 @@ abstract class we_util_File{
 
 				if($fh_temp){
 					$buff .= $line;
-					$write = false;
 
 					//print substr($buff,(0-($marker_size+1)))."<br>\n";
 
 
-					if($marker_size){
-						if((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"))
-							$write = true;
-						else
-							$write = false;
-					} else
-						$write = true;
+					$write = ($marker_size ? ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n")) : true);
 
 					if($write){
 						//print "WRITE<br>\n";
@@ -241,10 +142,8 @@ abstract class we_util_File{
 		} else{
 			return -1;
 		}
-		if($fh_temp){
-			if($buff)
-				fwrite($fh_temp, $buff);
-			@fclose($fh_temp);
+		if($fh_temp && $buff){
+			fwrite($fh_temp, $buff);
 		}
 		@fclose($fh);
 
@@ -253,8 +152,9 @@ abstract class we_util_File{
 
 	public static function mkpath($path){
 		$path = str_replace("\\", "/", $path);
-		if(self::hasURL($path))
+		if(self::hasURL($path)){
 			return false;
+		}
 		if($path != ""){
 			return self::createLocalFolderByPath($path);
 		}
@@ -308,9 +208,10 @@ abstract class we_util_File{
 				do{
 					$data = fread($fp, 8192);
 					$_data_size = strlen($data);
-					if($_data_size == 0)
+					if($_data_size == 0){
 						break;
-					$_written = $write($gzfp, $data);
+					}
+					$_written = $write($gzfp, $data, $_data_size);
 					if($_data_size != $_written){
 						return false;
 					}
@@ -333,14 +234,15 @@ abstract class we_util_File{
 		$gzfp = @gzopen($gzfile, "rb");
 		if($gzfp){
 			$file = str_replace(".gz", "", $gzfile);
-			if($file == $gzfile)
+			if($file == $gzfile){
 				$file = $gzfile . "xml";
-			$fp = @fopen($file, "wb");
-			if($fp){
+			}
+			if(($fp = @fopen($file, "wb"))){
 				do{
 					$data = gzread($gzfp, 8192);
-					if(strlen($data) == 0)
+					if(strlen($data) == 0){
 						break;
+					}
 					fwrite($fp, $data);
 				} while(true);
 				fclose($fp);
@@ -420,10 +322,9 @@ abstract class we_util_File{
 
 	public static function checkAndMakeFolder($path, $recursive = false){
 		/* if the directory exists, we have nothing to do and then we return true  */
-		if(file_exists($path) && is_dir($path))
+		if((file_exists($path) && is_dir($path)) || (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == strtolower(rtrim($path, '/')))){
 			return true;
-		if(strtolower(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == strtolower(rtrim($path, '/')))
-			return true;
+		}
 
 		// if instead of the directory a file exists, we delete the file and create the directory
 		if(file_exists($path) && (!is_dir($path))){

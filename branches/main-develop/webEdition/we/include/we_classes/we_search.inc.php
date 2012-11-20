@@ -132,11 +132,19 @@ class we_search{
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
 			foreach($foo as $f){
-				$q [] = '`' . $f . '` ' . $searchlocation;
+				$tmp = str_replace('.', '`.', $f);
+				if($tmp == $f){
+					$tmp.='`';
+				}
+				$q [] = '`' . $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else{
-			return ' ' . $concat . ' `' . $we_SearchField . '` ' . $searchlocation . ' ';
+			$tmp = str_replace('.', '`.', $we_SearchField);
+			if($tmp == $we_SearchField){
+				$tmp.='`';
+			}
+			return ' ' . $concat . ' `' . $tmp . ' ' . $searchlocation . ' ';
 		}
 	}
 

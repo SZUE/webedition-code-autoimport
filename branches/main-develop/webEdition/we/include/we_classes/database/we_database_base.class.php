@@ -52,9 +52,6 @@ abstract class we_database_base{
 
 	/** public: connection parameters */
 	public $Database = DB_DATABASE;
-
-	/** 1 to enable Debug messages - static to be enabled from outside for all next queries */
-	public static $Debug = 0;
 	private static $Trigger_cnt = 0;
 
 	/** Connects to the database, which this is done by the constructor
@@ -323,9 +320,6 @@ abstract class we_database_base{
 		if($this->Query_ID){
 			$this->free();
 		}
-		if(self::$Debug){
-			printf("Debug: query = %s<br/>\n", $Query_String);
-		}
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 
 		if(!$this->Query_ID && preg_match('/alter table|drop table/i', $Query_String)){
@@ -354,16 +348,10 @@ abstract class we_database_base{
 						return $tmp;
 					}
 				default:
-					/* 					if($this->Errno == 0){
-					  $this->_query('SHOW ERRORS;');
-
-					  list(, $this->Errno, $this->Error) = $this->fetch_array(MYSQL_ASSOC);
-					  } */
 					trigger_error('MYSQL-ERROR' . "\nFehler: " . $this->Errno . "\nDetail: " . $this->Error . "\nInfo:" . $this->info() . "\nQuery: " . $Query_String, E_USER_WARNING);
 					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
 						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
 					}
-				//$this->halt('Invalid SQL: ' . $Query_String);
 			}
 		}
 
@@ -447,7 +435,6 @@ abstract class we_database_base{
 	 * @return bool true, if rows was successfully fetched
 	 */
 	public function next_record($resultType = MYSQL_BOTH){
-
 		if(!($this->Query_ID)){
 			$this->halt("next_record called with no query pending.");
 			return false;
@@ -503,10 +490,10 @@ abstract class we_database_base{
 	 * Get complete result as array
 	 * @return array
 	 */
-	public function getAll($resultType = MYSQL_ASSOC){
+	public function getAll($single = false, $resultType = MYSQL_ASSOC){
 		$ret = array();
 		while($this->next_record($resultType)) {
-			$ret[] = $this->Record;
+			$ret[] = ($single ? current($this->Record) : $this->Record);
 		}
 		return $ret;
 	}

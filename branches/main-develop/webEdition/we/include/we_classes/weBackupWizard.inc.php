@@ -1684,8 +1684,7 @@ class weBackupWizard{
 								}
 							}
 
-							setTimeout("reloadFrame()", ' . $_execute . ');
-							');
+							setTimeout("reloadFrame()", ' . $_execute . ');');
 	}
 
 	static function getDownloadLinkText(){
@@ -1710,4 +1709,5 @@ class weBackupWizard{
 	}
 
 }
+
 

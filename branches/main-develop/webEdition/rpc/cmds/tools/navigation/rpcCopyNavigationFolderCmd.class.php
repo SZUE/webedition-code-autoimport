@@ -42,7 +42,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 			$folders = array($_REQUEST['we_cmd'][1]);
 			$mapedId = array($_REQUEST['we_cmd'][3] => $_REQUEST['we_cmd'][1]);
 			foreach($result as $row){
-				$querySet = "(";
+				$querySet = '(';
 				foreach($row as $key => $val){
 					switch($key){
 						case "ID" :
@@ -53,7 +53,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 							$querySet .= ", '" . $db->escape($path) . "'";
 							break;
 						case "ParentID" :
-							$querySet .= ", '" . abs($mapedId[$val]) . "'";
+							$querySet .= ', ' . intval($mapedId[$val]);
 							break;
 						default :
 							$querySet .= ", '$val'";
@@ -62,25 +62,22 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				$querySet .= ")";
 				if($row['IsFolder']){
 					if(!empty($query)){
-						$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query;
-						$db->query($query);
+						$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);
 					}
-					$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $querySet;
-					$db->query($query);
+					$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $querySet);
 					$mapedId[$row['ID']] = $db->getInsertId();
 					$folders[] = $mapedId[$row['ID']];
 					$query = "";
 				} else{
 					if(!empty($query)){
-						$query .= ", ";
+						$query .= ', ';
 					}
 					$query .= $querySet;
 				}
 				$lastInserted = $row['IsFolder'];
 			}
 			if(!$lastInserted){
-				$query = "INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query;
-				$db->query($query);
+				$db->query("INSERT INTO " . NAVIGATION_TABLE . " VALUES " . $query);
 			}
 			foreach($folders as $folder){
 				$newNavi = new weNavigation($folder);

@@ -467,7 +467,7 @@ class weNewsletterFrames extends weModuleFrames{
 			self.focus();
 		') . $this->View->getJSProperty();
 
-		$texts = array('send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', 'female_salutation', 'male_salutation');
+		$texts = array('send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', weNewsletter::FEMALE_SALUTATION_FIELD, weNewsletter::MALE_SALUTATION_FIELD);
 		$radios = array('reject_malformed', 'reject_not_verified', 'reject_save_malformed', 'log_sending', 'default_htmlmail', 'isEmbedImages', 'title_or_salutation', 'use_base_href', 'use_https_refer', 'use_port');
 		$extra_radio_text = array('use_port');
 		$defaults = array('reject_save_malformed' => '1', 'use_https_refer' => '0', 'send_wait' => '0', 'use_port' => '0', 'use_port_check' => '80', 'isEmbedImages' => '0', 'use_base_href' => '1');
@@ -488,7 +488,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$table->addRow();
 			$c++;
-			if($text == 'default_reply' || $text == 'male_salutation'){
+			if($text == 'default_reply' || $text == weNewsletter::MALE_SALUTATION_FIELD){
 				$table->setCol($c, 0, array('colspan' => '3'), we_html_tools::getPixel(5, 10));
 			} else{
 				$table->setCol($c, 0, array('colspan' => '3'), we_html_tools::getPixel(5, 3));
@@ -1326,11 +1326,11 @@ class weNewsletterFrames extends weModuleFrames{
 
 		$salut_select = new we_html_select(array("name" => "salutation", "style" => "width: 310px"));
 		$salut_select->addOption("", "");
-		if(!empty($this->View->settings["female_salutation"])){
-			$salut_select->addOption($this->View->settings["female_salutation"], $this->View->settings["female_salutation"]);
+		if(!empty($this->View->settings[weNewsletter::FEMALE_SALUTATION_FIELD])){
+			$salut_select->addOption($this->View->settings[weNewsletter::FEMALE_SALUTATION_FIELD], $this->View->settings[weNewsletter::FEMALE_SALUTATION_FIELD]);
 		}
-		if(!empty($this->View->settings["male_salutation"])){
-			$salut_select->addOption($this->View->settings["male_salutation"], $this->View->settings["male_salutation"]);
+		if(!empty($this->View->settings[weNewsletter::MALE_SALUTATION_FIELD])){
+			$salut_select->addOption($this->View->settings[weNewsletter::MALE_SALUTATION_FIELD], $this->View->settings[weNewsletter::MALE_SALUTATION_FIELD]);
 		}
 		$salut_select->selectOption($salutation);
 
@@ -2452,13 +2452,13 @@ class weNewsletterFrames extends weModuleFrames{
 						$inlines[$k] = $v;
 			}
 
-			if($salutation && $lastname && ($salutation == $this->View->settings["female_salutation"]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
+			if($salutation && $lastname && ($salutation == $this->View->settings[weNewsletter::FEMALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 				$content = ($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF) : $contentF);
 				$content = str_replace(array('###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###', '###TITLE###',), array($firstname, $lastname, $customerid, $title,), $content);
 
 				$content_plain = ($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF_plain) : $contentF_plain);
 				$content_plain = str_replace(array('###FIRSTNAME###', '###LASTNAME###', '###CUSTOMERID###', '###TITLE###'), array($firstname, $lastname, $customerid, $title), $content_plain);
-			} else if($salutation && $lastname && ($salutation == $this->View->settings["male_salutation"]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
+			} else if($salutation && $lastname && ($salutation == $this->View->settings[weNewsletter::MALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 
 				$content = str_replace('###FIRSTNAME###', $firstname, $contentM);
 				$content = str_replace('###LASTNAME###', $lastname, $content);

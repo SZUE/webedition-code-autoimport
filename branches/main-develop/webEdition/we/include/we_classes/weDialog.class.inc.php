@@ -183,11 +183,10 @@ class weDialog{
 	function getDialogHTML(){
 		$dc = $this->getDialogContentHTML();
 
-		if(is_array($dc)){
-			$dialogContent = we_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight());
-		} else{
-			$dialogContent = we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons());
-		}
+		$dialogContent = (is_array($dc) ?
+				we_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
+				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+
 		return $this->getFormHTML() . $dialogContent .
 			'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
 	}
@@ -212,13 +211,11 @@ class weDialog{
 		$hiddens = '';
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
 			foreach($_REQUEST['we_cmd'] as $k => $v){
-				$hiddens .= '<input type="hidden" name="we_cmd['.$k.']" value="' . rawurlencode($v) . '" />';
+				$hiddens .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . rawurlencode($v) . '" />';
 			}
 		}
-		$target = '';
-		if(!$this->JsOnly){
-			$target = ' target="we_' . $this->ClassName . '_cmd_frame"';
-		}
+		$target = (!$this->JsOnly ? ' target="we_' . $this->ClassName . '_cmd_frame"' : '');
+
 		return '<form name="we_form" action="' . $_SERVER["SCRIPT_NAME"] . '" method="post"' . $target . '>' . $hiddens;
 	}
 
@@ -238,28 +235,19 @@ class weDialog{
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		$out = we_html_tools::htmlTop($this->dialogTitle, $this->charset);
-
-		if(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce'){ 
-			$out .= $this->getTinyMceJS();
-		}
-
-		if($printJS_Style){
-			$out .= STYLESHEET;
-			$out .= $this->getJs();
-		}
-
-		$out .= '</head>';
-		return $out;
+		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
+			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') .
+			'</head>';
 	}
-	
+
 	function getTinyMceJS(){ //called as parent::getTinyMceJS() from subclasses
-			$out = we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
+		return
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
-			return $out;
 	}
 
 	function getJs(){
@@ -356,5 +344,5 @@ class weDialog{
 						</select>';
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
 	}
-	
+
 }

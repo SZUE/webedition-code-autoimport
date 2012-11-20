@@ -30,11 +30,7 @@ class we_otherDocument extends we_binaryDocument{
 	var $ClassName = __CLASS__;
 
 	/* ContentType of the Object  */
-	var $ContentType = "application/*";
-
-	/* buffer for pdf text creation */
-
-//	private $_buffer = "";
+	var $ContentType = 'application/*';
 
 	/* Constructor */
 
@@ -47,7 +43,7 @@ class we_otherDocument extends we_binaryDocument{
 		}
 		// End: Do we use this?
 		parent::__construct();
-		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
+		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -85,37 +81,61 @@ class we_otherDocument extends we_binaryDocument{
 	function insertAtIndex(){
 		$text = '';
 		$this->resetElements();
-		while(list($k, $v) = $this->nextElement('')) {
-			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
+		while((list($k, $v) = $this->nextElement(''))) {
+			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : '';
 			if(!is_array($foo)){
-				if(isset($v["type"]) && $v["type"] == "txt"){
-					$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
+				if(isset($v["type"]) && $v["type"] == "txt" && isset($v["dat"])){
+					$text .= ' ' . trim($v["dat"]);
 				}
 			}
 		}
+		$text = trim(strip_tags($text));
 
-		$content = ($this->Extension == ".doc" || $this->Extension == ".xls" || $this->Extension == ".pps" || $this->Extension == ".ppt" || $this->Extension == ".rtf") ? $this->i_getDocument() : "";
+		switch($this->Extension){
+			case '.doc':
+			case '.xls':
+			case '.pps':
+			case '.ppt':
+			case '.rtf':
+				$content = $this->i_getDocument(1000000);
+				break;
+			case '.odt':
+			case '.ods':
+			case '.odf':
+			case '.odp':
+			case '.odg':
+			case '.ott':
+			case '.ots':
+			case '.otf':
+			case '.otp':
+			case '.otg':
+				if(class_exists('ZipArchive') && (isset($this->elements['data']['dat']) && file_exists($this->elements['data']['dat']))){
+					$zip = new ZipArchive;
+					if($zip->open($this->elements['data']['dat']) === TRUE){
+						$content = CheckAndConvertISOfrontend(strip_tags(preg_replace(array('|</text[^>]*>|', '|<text[^/>]*/>|'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml')))));
+						$zip->close();
+						break;
+					}
+				}
+				$content = '';
+				break;
+			case '.pdf':
+			default:
+				$content = '';
+		}
 
 		/* if($this->Extension == ".pdf" && function_exists("gzuncompress")){
 		  $content = $this->getPDFText($this->i_getDocument());
 		  } */
+		$content = preg_replace('/[\x00-\x1F]/', '', $content);
+		$text.= ' '.trim($content);
 
-		for($i = 0; $i < 48; $i++){
-			$content = str_replace(chr($i), '', $content);
-		}
+		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
+		$text = substr(preg_replace('/  +/', ' ', $text), 0, $maxDB);
 
-		$text = trim(strip_tags($text) . $content);
-
-		$maxDB = getMaxAllowedPacket($this->DB_WE) - 1024;
-		$maxDB = min(1000000, $maxDB);
-		if(strlen($text) > $maxDB){
-			$text = substr($text, 0, $maxDB);
-		}
-
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-
-			$set = array('DID' => intval($this->ID),
+			$set = array(
+				'DID' => intval($this->ID),
 				'Text' => $text,
 				'BText' => $text,
 				'Workspace' => $this->ParentPath,
@@ -125,8 +145,9 @@ class we_otherDocument extends we_binaryDocument{
 				'Title' => $this->getElement("Title"),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		return true;
 	}
 
@@ -186,17 +207,14 @@ class we_otherDocument extends we_binaryDocument{
 
 			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 				foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
-
 					$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName] : false;
 
 					if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
-
 						$_SESSION[$_binaryDataId]['doDelete'] = false;
 
 						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1){
 							$_SESSION[$_binaryDataId]['doDelete'] = true;
-						} else
-						if($filename){
+						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if($ct == "application/*"){
@@ -231,3 +249,4 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 }
+

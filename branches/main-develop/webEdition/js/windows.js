@@ -79,4 +79,9 @@ function  jsWindowClose(){
 	if(!this.wind.closed) this.wind.close();
 }
 
+function weRegisterTinyMcePopup(win){
+	var winName = "jsWindow" + (jsWindow_count++) + "Object";
+	eval(winName + "=win")
+}
+
 jsWindow_count = 0;

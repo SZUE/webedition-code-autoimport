@@ -976,7 +976,7 @@ abstract class we_rebuild_wizard{
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
 					($contents[0] ?
-						we_html_element::jsScript(JS_DIR . 'js/windows.js') .
+						we_html_element::jsScript(JS_DIR . 'windows.js') .
 						we_html_element::jsElement($contents[0]) : '')) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody"

@@ -55,7 +55,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$abos[0] = $fieldGroup . "_Ok";
 			} else{// #6100
 				foreach($tmpAbos as $abo){
-					array_push($abos, $fieldGroup . "_" . $abo);
+					$abos[]= $fieldGroup . "_" . $abo;
 				}
 			}
 		} else{

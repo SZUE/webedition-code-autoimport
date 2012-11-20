@@ -82,8 +82,7 @@ class we_binaryDocument extends we_document{
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){
-				we_util_File::copyFile($_realPath, $this->getSitePath());
-
+			we_util_File::copyFile($_realPath, $this->getSitePath());
 		}
 		if(file_exists($_sitePath)){
 			if(filesize($_sitePath)){
@@ -112,8 +111,8 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function i_getDocument(){
-		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
+	function i_getDocument($size = -1){
+		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? weFile::load($this->elements["data"]["dat"]) : weFile::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
 	}
 
 	protected function i_writeDocument(){
@@ -167,15 +166,14 @@ class we_binaryDocument extends we_document{
 	}
 
 	function insertAtIndex(){
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
-			while(list($k, $v) = $this->nextElement("")) {
+			while((list($k, $v) = $this->nextElement(""))) {
 				$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 				if(!is_array($foo)){
 					if(isset($v["type"]) && $v["type"] == "txt"){
-						$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
+						$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');
 					}
 				}
 			}
@@ -189,8 +187,9 @@ class we_binaryDocument extends we_document{
 				'Title' => $this->getElement('Title'),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		return true;
 	}
 

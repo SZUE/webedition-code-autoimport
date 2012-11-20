@@ -34,6 +34,8 @@ class weNewsletterBase{
 	const STATUS_EMAIL_EXISTS = 1;
 	const STATUS_EMAIL_INVALID = 2;
 	const STATUS_CONFIRM_FAILED = 3;
+	const FEMALE_SALUTATION_FIELD='female_salutation';
+	const MALE_SALUTATION_FIELD='male_salutation';
 
 	var $db;
 	var $table;

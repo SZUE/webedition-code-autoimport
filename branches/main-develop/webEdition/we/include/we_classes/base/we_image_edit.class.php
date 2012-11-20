@@ -154,17 +154,14 @@ class we_image_edit{
 
 					// Detect capabilities of GIF support
 					if(function_exists("ImageCreateFromGIF")){
-						if($_tempfilename = tempnam(TEMP_PATH, "")){
-							if(weFile::save($_fp_tempfile, base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw=="))){
+						if(($_tempfilename = weFile::saveTemp(base64_decode("R0lGODlhAQABAIAAAH//AP///ywAAAAAAQABAAACAUQAOw==")))){
 
-								// GIF create support must be enabled if we're able to create a image
-								$_gif_test = @imagecreatefromgif($_tempfilename);
+							// GIF create support must be enabled if we're able to create a image
+							$_gif_test = @imagecreatefromgif($_tempfilename);
 
-								if($_gif_test){
-									$_gdinfo["GIF Read Support"] = true;
-								}
+							if($_gif_test){
+								$_gdinfo["GIF Read Support"] = true;
 							}
-
 							unlink($_tempfilename);
 						}
 					}
@@ -223,13 +220,11 @@ class we_image_edit{
 				return '';
 		}
 
-		if(($_tempfilename = tempnam(TEMP_PATH, ''))){
-			if(weFile::save($_tempfilename, $imagedata)){
-				$imagedata = "";
-				unset($imagedata);
-				if(function_exists($_image_create_from_string_replacement_function)){
-					$_gdimg = $_image_create_from_string_replacement_function($_tempfilename);
-				}
+		if(($_tempfilename = weFile::saveTemp($imagedata))){
+			$imagedata = "";
+			unset($imagedata);
+			if(function_exists($_image_create_from_string_replacement_function)){
+				$_gdimg = $_image_create_from_string_replacement_function($_tempfilename);
 			}
 			unlink($_tempfilename);
 		}
@@ -241,23 +236,15 @@ class we_image_edit{
 		switch(we_image_edit::detect_image_type($filename)){
 			case "gif":
 				$_image_create_from_string_replacement_function = "imagecreatefromgif";
-
 				break;
-
 			case "jpg":
 				$_image_create_from_string_replacement_function = "ImageCreateFromJPEG";
-
 				break;
-
 			case "png":
 				$_image_create_from_string_replacement_function = "ImageCreateFromPNG";
-
 				break;
-
 			default:
 				return false;
-
-				break;
 		}
 
 		if(function_exists($_image_create_from_string_replacement_function)){
@@ -270,9 +257,6 @@ class we_image_edit{
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
 
-		$_outsize["width"] = 0;
-		$_outsize["height"] = 0;
-
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		if($newwidth){
 			$_outsize["width"] = $newwidth;
@@ -280,11 +264,7 @@ class we_image_edit{
 		} else{
 			// bugfix #2482: preserve aspect ratio for thumbnails with width=0 and height != 0
 			$_outsize["width"] = round(($origwidth / $origheight) * $newheight);
-			if($newheight){
-				$_outsize["height"] = $newheight;
-			} else{
-				$_outsize["height"] = round($origheight * $newwidth / $origwidth);
-			}
+			$_outsize["height"] = ($newheight ? $newheight : round($origheight * $newwidth / $origwidth));
 		}
 
 		// If height has been specified set it.
@@ -316,9 +296,6 @@ class we_image_edit{
 		if(we_image_edit::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
 			return array("width" => $origwidth, "height" => $origheight, "useorig" => 1);
 		}
-
-		$_outsize["width"] = 0;
-		$_outsize["height"] = 0;
 
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		// here it is set
@@ -390,7 +367,7 @@ class we_image_edit{
 				}
 				if(function_exists($fn)){
 					if(@$fn($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . "foo." . $t[$i])){
-						array_push($sit, $t[$i]);
+						$sit[] = $t[$i];
 					}
 				}
 			}
@@ -464,20 +441,22 @@ class we_image_edit{
 				} else{
 
 					// preserve transparency of png and gif images:
-					if($output_format == "gif"){
-						$colorTransparent = imagecolortransparent($_gdimg);
-						imagepalettecopy($_gdimg, $_output_gdimg);
-						imagefill($_output_gdimg, 0, 0, $colorTransparent);
-						imagecolortransparent($_output_gdimg, $colorTransparent);
-						imagetruecolortopalette($_output_gdimg, true, 256);
-					} else if($output_format == "png"){
-						imagealphablending($_output_gdimg, false);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
-						imagefill($_output_gdimg, 0, 0, $transparent);
-						imagesavealpha($_output_gdimg, true);
-					} else{
-
+					switch($output_format){
+						case "gif":
+							$colorTransparent = imagecolortransparent($_gdimg);
+							imagepalettecopy($_gdimg, $_output_gdimg);
+							imagefill($_output_gdimg, 0, 0, $colorTransparent);
+							imagecolortransparent($_output_gdimg, $colorTransparent);
+							imagetruecolortopalette($_output_gdimg, true, 256);
+							break;
+						case "png":
+							imagealphablending($_output_gdimg, false);
+							$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
+							$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
+							imagefill($_output_gdimg, 0, 0, $transparent);
+							imagesavealpha($_output_gdimg, true);
+							break;
+						default:
 					}
 				}
 				// Resize image
@@ -506,11 +485,7 @@ class we_image_edit{
 					touch($output_filename);
 				}
 
-				if($interlace){
-					ImageInterlace($_output_gdimg, 1);
-				} else{
-					ImageInterlace($_output_gdimg, 0);
-				}
+				ImageInterlace($_output_gdimg, ($interlace ? 1 : 0));
 
 				switch($output_format){
 					case 'jpg':
@@ -522,7 +497,7 @@ class we_image_edit{
 								$_gdimg = basename($output_filename);
 							}
 						} else{
-							if($_tempfilename = tempnam(TEMP_PATH, "")){
+							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
 								$_gdimg = weFile::load($_tempfilename);
 
@@ -544,7 +519,7 @@ class we_image_edit{
 								$_gdimg = basename($output_filename);
 							}
 						} else{
-							if($_tempfilename = tempnam(TEMP_PATH, "")){
+							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
 								@$_image_out_function($_output_gdimg, $_tempfilename);
 								$_gdimg = weFile::load($_tempfilename);
 
@@ -580,14 +555,12 @@ class we_image_edit{
 
 	function createPreviewThumb($imgSrc, $imgID, $width, $height, $outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
 		if(we_image_edit::gd_version() == 0){
-			return IMAGE_DIR . "icons/doclist/image.gif";
+			return IMAGE_DIR . 'icons/doclist/image.gif';
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
 		}
-		if(substr($imgSrc, 0, 1) != "/"){
-			$imgSrc = "/" . $imgSrc;
-		}
+		$imgSrc = '/' . ltrim($imgSrc, '/');
 
 		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
 		if(!($imagesize = getimagesize($_imgPath))){
@@ -598,11 +571,9 @@ class we_image_edit{
 			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
 				we_util_File::createLocalFolder($_previewDir);
 			}
-			if($imgID){
-				$_thumbSrc = WE_THUMB_PREVIEW_DIR . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
-			} else{
-				$_thumbSrc = TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat);
-			}
+			$_thumbSrc = ($imgID ?
+					WE_THUMB_PREVIEW_DIR . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat) :
+					TEMP_DIR . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat));
 			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
@@ -639,8 +610,7 @@ class we_image_edit{
 <option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . g_l('weClass', '[quality_high]') . '</option>
 <option value="9"' . (($sel == 9) ? ' selected' : '') . '>9</option>
 <option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . g_l('weClass', '[quality_maximum]') . '</option>
-</select>
-';
+</select>';
 	}
 
 }

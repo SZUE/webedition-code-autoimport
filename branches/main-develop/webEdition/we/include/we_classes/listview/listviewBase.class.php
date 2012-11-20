@@ -223,8 +223,9 @@ abstract class listviewBase{
 	 *
 	 */
 	function hasPrevPage($parentStart = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != '')
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
+		}
 		if($parentStart && isset($_REQUEST['we_lv_pstart_' . $this->name])){
 			return (abs($this->start) != $_REQUEST['we_lv_pstart_' . $this->name]);
 		}
@@ -274,11 +275,8 @@ abstract class listviewBase{
 			$newdate = $year . '-' . $month . '-' . $day;
 
 			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-			if(strpos($attribs['href'], '?') === false){
-				$attribs['href'] = $attribs['href'] . '?';
-			} else{
-				$attribs['href'] = $attribs['href'] . '&';
-			}
+			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
+
 			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
 			$foo = $this->start - $this->maxItemsPerPage;
@@ -288,12 +286,7 @@ abstract class listviewBase{
 		}
 
 		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-		if(strpos($attribs['href'], '?') === false){
-			$attribs['href'] = $attribs['href'] . '?';
-		} else{
-			$attribs['href'] = $attribs['href'] . '&';
-		}
-		$attribs['href'] = $attribs['href'] . $tmp_href;
+		$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -442,9 +435,9 @@ abstract class listviewBase{
 				return date('m', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
 			case 'monthname':
 			case 'monthname_long':
-				return g_l('date', '[month][long][' . (int) (date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+				return g_l('date', '[month][long][' . intval(date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
 			case 'monthname_short':
-				return g_l('date', '[month][short][' . (int) (date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+				return g_l('date', '[month][short][' . intval(date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
 			case 'year':
 				return date('Y', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
 			case 'hour':

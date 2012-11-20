@@ -105,7 +105,7 @@ class we_class_folder extends we_folder{
 	}
 
 	function initByPath($path, $tblName = OBJECT_FILES_TABLE, $IsClassFolder = 0, $IsNotEditable = 0, $skipHook = 0){
-		$id = f("SELECT ID FROM " . $tblName . " WHERE Path='$path' AND IsFolder=1", "ID", $this->DB_WE);
+		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="'.$path.'" AND IsFolder=1', 'ID', $this->DB_WE);
 		if($id != ''){
 			$this->initByID($id, $tblName);
 		} else{
@@ -119,7 +119,7 @@ class we_class_folder extends we_folder{
 				$p[] = array_shift($spl);
 				$pa = $this->DB_WE->escape(implode('/', $p));
 				if($pa){
-					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', 'ID', new DB_WE());
+					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', 'ID', $this->DB_WE);
 					if(!$pid){
 						$folder = new self();
 						$folder->init();
@@ -272,12 +272,9 @@ class we_class_folder extends we_folder{
 		$this->WorkspacePath = ($this->WorkspacePath != '') ? $this->WorkspacePath : $userDefaultWsPath;
 		$this->WorkspaceID = ($this->WorkspaceID != '') ? $this->WorkspaceID : $userDefaultWsID;
 
-		if(isset($this->searchclass->searchname)){
-			$where = '1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $classArray["ID"], $rows = -1, $start = 0, $order = "", $desc = 0);
-			$where .= $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
-		} else{
-			$where = "1" . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]);
-		}
+		$where = (isset($this->searchclass->searchname) ?
+				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $classArray["ID"], $rows = -1, $start = 0, $order = "", $desc = 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]) :
+				"1" . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $classArray["ID"]));
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $classArray["ID"] . ", " . OBJECT_FILES_TABLE);
 		//$this->searchclass->setwhere($where.' AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID !=0 AND '.OBJECT_X_TABLE.$classArray["ID"].'.OF_ID = '.OBJECT_FILES_TABLE.'.ID'); #4076 orig
@@ -293,7 +290,7 @@ class we_class_folder extends we_folder{
 
 
 		$content = array();
-		$foo = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($classArray["ID"]), "DefaultValues", $DB_WE));
+		$foo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classArray["ID"]), "DefaultValues", $DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -307,24 +304,20 @@ class we_class_folder extends we_folder{
 				$content[$f][1]["height"] = 35;
 				$content[$f][0]["align"] = "center";
 
-				if((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE)){
-					$content[$f][0]["dat"] = '<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />';
-				} else{
-					$content[$f][0]["dat"] = '<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />';
-				}
+				$content[$f][0]["dat"] = ((we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE")) && checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE) ?
+						'<input type="checkbox" name="weg' . $this->searchclass->f("ID") . '" />' :
+						'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />');
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("ID") . "'].checked=true;";
 
-				if($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok))){
-					$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />';
-				} else{
-					$content[$f][1]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />';
-				}
-				if($this->searchclass->f("OF_IsSearchable")){
-					$content[$f][2]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />';
-				} else{
-					$content[$f][2]["dat"] = '<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />';
-				}
+				$content[$f][1]["dat"] = ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
+						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />');
+
+				$content[$f][2]["dat"] = ($this->searchclass->f("OF_IsSearchable") ?
+						'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
+						'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />');
+
 				$content[$f][3]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>';
 				$content[$f][4]["dat"] = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" style="text-decoration:none" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>';
 				$content[$f][5]["dat"] = $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength);
@@ -393,18 +386,18 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		// get Class
-		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
+		$classArray = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE Path="' . $DB_WE->escape($this->ClassPath) . '"', $DB_WE);
 
 		if(isset($_REQUEST["do"]) && $_REQUEST["do"] == "delete"){
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f, 0, 3) == "weg"){
 					//$this->query("");
-					$ofid = f("SELECT OF_ID FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3), 'OF_ID', $DB_WE));
+					$ofid = f('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3), 'OF_ID', $DB_WE));
 
 					if(checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE)){
-						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"]) . " where ID=" . intval(substr($f, 3)));
-						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=" . intval($ofid));
-						$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " where ID=" . intval($ofid));
+						$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($classArray["ID"]) . ' WHERE ID=' . intval(substr($f, 3)));
+						$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($ofid));
+						$DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($ofid));
 						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE);
 					}
 				}

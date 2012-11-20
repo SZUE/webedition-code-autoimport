@@ -2436,10 +2436,10 @@ class we_objectFile extends we_document{
 		}
 // Bug 2892, siehe auch we_delete_fn.inc.php
 		$this->DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
-		$foo = $this->DB_WE->getAll();
-		foreach($foo as $testclass){
-			if($this->DB_WE->isColExist(OBJECT_X_TABLE . $testclass['ID'], "object_" . $this->TableID)){
-				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclass['ID'] . ' SET object_' . $this->TableID . '="0" WHERE object_' . $this->TableID . '= ' . $this->ID);
+		$foo = $this->DB_WE->getAll(true);
+		foreach($foo as $testclassID){
+			if($this->DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, "object_" . $this->TableID)){
+				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $testclassID . ' SET object_' . $this->TableID . '="0" WHERE object_' . $this->TableID . '= ' . $this->ID);
 			}
 		}
 

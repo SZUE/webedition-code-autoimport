@@ -50,6 +50,7 @@ class weFullscreenEditDialog extends weDialog{
 					var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
+
 					switch (key) {
 						case 27:
 							top.close();
@@ -58,13 +59,13 @@ class weFullscreenEditDialog extends weDialog{
 				}
 
 				function weDoOk() {' .
-				($this->pageNr == $this->numPages && $this->JsOnly ?
-					'
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 							if (!textareaFocus) {
 								' . $this->getOkJs() . '
 							}' : '') . '
 				}
-				function IsDigit(e) {
+
+		function IsDigit(e) {
 					var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
@@ -80,7 +81,6 @@ class weFullscreenEditDialog extends weDialog{
 					var key;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-
 
 					return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
 				}

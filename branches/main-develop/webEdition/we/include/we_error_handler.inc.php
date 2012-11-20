@@ -198,7 +198,7 @@ function getBacktrace($skip){
 function display_error_message($type, $message, $file, $line, $skipBT = false){
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
+		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message')));
 	} else if(is_string($skipBT)){
 		$detailedError = $skipBT;
 	}
@@ -304,7 +304,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 	$_detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
+		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message')));
 	} else if(is_string($skipBT)){
 		$_detailedError = $skipBT;
 	}
@@ -360,7 +360,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 function mail_error_message($type, $message, $file, $line, $skipBT = false){
 	$detailedError = $_caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
+		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
 	} else if(is_array($skipBT)){
 		list($detailedError, $_caller, $file, $line) = $skipBT;
 	}

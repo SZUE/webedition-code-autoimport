@@ -170,11 +170,7 @@ class weShopVariants{
 	}
 
 	function getNrFromElemName($elemName){
-
-		$elemPos = substr($elemName, strlen(WE_SHOP_VARIANTS_PREFIX));
-		$elemPos = preg_replace('/_(.*)/', '', $elemPos);
-
-		return $elemPos;
+		return preg_replace('/_(.*)/', '', substr($elemName, strlen(WE_SHOP_VARIANTS_PREFIX)));
 	}
 
 	function getFieldNameFromElemName($elemName){

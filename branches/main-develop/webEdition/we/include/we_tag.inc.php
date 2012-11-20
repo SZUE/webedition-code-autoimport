@@ -719,32 +719,32 @@ function we_tag_listviewStart(){
 }
 
 function we_tag_makeMail(){
-	t_e('deprecated', 'makeMai');
+	t_e('deprecated', 'makeMail');
 	return '';
 }
 
 function we_tag_ifshopexists(){
-	return defined("SHOP_TABLE");
+	return defined('SHOP_TABLE');
 }
 
 function we_tag_ifobjektexists(){
-	return defined("OBJECT_TABLE");
+	return defined('OBJECT_TABLE');
 }
 
 function we_tag_ifnewsletterexists(){
-	return defined("NEWSLETTER_TABLE");
+	return defined('NEWSLETTER_TABLE');
 }
 
 function we_tag_ifcustomerexists(){
-	return defined("CUSTOMER_TABLE");
+	return defined('CUSTOMER_TABLE');
 }
 
 function we_tag_ifbannerexists(){
-	return defined("BANNER_TABLE");
+	return defined('BANNER_TABLE');
 }
 
 function we_tag_ifvotingexists(){
-	return defined("VOTING_TABLE");
+	return defined('VOTING_TABLE');
 }
 
 //this function is used by all tags adding elements to we_lv_array

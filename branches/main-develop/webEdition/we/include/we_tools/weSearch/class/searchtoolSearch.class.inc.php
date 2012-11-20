@@ -267,16 +267,12 @@ class searchtoolsearch extends we_search{
 		$titles = array();
 		$_db2 = new DB_WE();
 		//first check published documents
-		$query = "SELECT a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(
-				trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'";
-		$_db2->query($query);
+		$_db2->query('"SELECT a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'");
 		while($_db2->next_record()) {
 			$titles[] = $_db2->f('DID');
 		}
 		//check unpublished documents
-		$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(
-				trim($keyword)) . "%'";
-		$_db2->query($query2);
+		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(trim($keyword)) . "%'");
 		while($_db2->next_record()) {
 			$tempDoc = unserialize($_db2->f('DocumentObject'));
 			if(isset($tempDoc[0]['elements']['Title']) && $tempDoc[0]['elements']['Title']['dat'] != ""){
@@ -291,88 +287,87 @@ class searchtoolsearch extends we_search{
 	}
 
 	function searchCategory($keyword, $table){
-		if($table != TEMPLATES_TABLE){
-			$_db = new DB_WE();
-			switch($table){
-				case FILE_TABLE:
-					$field = "temp_category";
-					$field2 = "Category";
-					$query = "SELECT ID, " . $field . ", " . $field2 . "  FROM " . $table . " WHERE ((" . $field2 . " != NULL OR " . $field2 . " != '') AND Published >= ModDate AND Published !=0) OR (Published < ModDate AND (" . $field . " != NULL OR " . $field . " != '')) ";
-					break;
-				case VERSIONS_TABLE:
-					$field = "Category";
-					$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
-					break;
-				case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
-					$field = "DefaultCategory";
-					$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
-					break;
-				case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$field = "Category";
-					$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' AND Published >= ModDate AND Published !=0";
-					break;
-			}
-			$res = array();
-			$res2 = array();
+		if($table == TEMPLATES_TABLE){
+			return ' 0 ';
+		}
+		$_db = new DB_WE();
+		switch($table){
+			case FILE_TABLE:
+				$field = "temp_category";
+				$field2 = "Category";
+				$query = "SELECT ID, " . $field . ", " . $field2 . "  FROM " . $table . " WHERE ((" . $field2 . " != NULL OR " . $field2 . " != '') AND Published >= ModDate AND Published !=0) OR (Published < ModDate AND (" . $field . " != NULL OR " . $field . " != '')) ";
+				break;
+			case VERSIONS_TABLE:
+				$field = "Category";
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
+				break;
+			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$field = "DefaultCategory";
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' ";
+				break;
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$field = "Category";
+				$query = "SELECT ID," . $field . "  FROM " . $table . " WHERE " . $field . " != NULL OR " . $field . " != '' AND Published >= ModDate AND Published !=0";
+				break;
+		}
+		$res = array();
+		$res2 = array();
 
-			$_db->query($query);
+		$_db->query($query);
 
-			switch($table){
-				default:
-					while($_db->next_record()) {
-						$res[$_db->f('ID')] = $_db->f($field);
-					}
-					break;
-				case FILE_TABLE:
-					while($_db->next_record()) {
-						$res[$_db->f('ID')] = ($_db->f($field) == "" ? $_db->f($field2) : $_db->f($field));
-					}
-					break;
-				case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					//search in public objects first and write them in the array
-					while($_db->next_record()) {
-						$res[$_db->f('ID')] = $_db->f($field);
-					}
-					//search in unpublic objects and write them in the array
-					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblObjectFiles' AND Active = 1";
-					$_db->query($query2);
-					while($_db->next_record()) {
-						$tempObj = unserialize($_db->f('DocumentObject'));
-						if(isset($tempObj[0]["Category"]) && $tempObj[0]["Category"] != ""){
-							if(!array_key_exists($tempObj[0]["ID"], $res)){
-								$res[$tempObj[0]["ID"]] = $tempObj[0]["Category"];
-							}
-						}
-					}
-					break;
-			}
-
-			foreach($res as $k => $v){
-				$res2[$k] = makeArrayFromCSV($v);
-			}
-
-			$where = '';
-			$i = 0;
-
-			$keyword = path_to_id($keyword, CATEGORY_TABLE);
-
-			foreach($res2 as $k => $v){
-				foreach($v as $v2){
-					//look if the value is numeric
-					if(preg_match("=^[0-9]+$=i", $v2)){
-						if($v2 == $keyword){
-							$where .= ($i > 0 ? " OR " : " AND (") . ' ' . $_db->escape($table) . ".ID = " . intval($k);
-							$i++;
+		switch($table){
+			default:
+				while($_db->next_record()) {
+					$res[$_db->f('ID')] = $_db->f($field);
+				}
+				break;
+			case FILE_TABLE:
+				while($_db->next_record()) {
+					$res[$_db->f('ID')] = ($_db->f($field) == "" ? $_db->f($field2) : $_db->f($field));
+				}
+				break;
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				//search in public objects first and write them in the array
+				while($_db->next_record()) {
+					$res[$_db->f('ID')] = $_db->f($field);
+				}
+				//search in unpublic objects and write them in the array
+				$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblObjectFiles' AND Active = 1";
+				$_db->query($query2);
+				while($_db->next_record()) {
+					$tempObj = unserialize($_db->f('DocumentObject'));
+					if(isset($tempObj[0]["Category"]) && $tempObj[0]["Category"] != ""){
+						if(!array_key_exists($tempObj[0]["ID"], $res)){
+							$res[$tempObj[0]["ID"]] = $tempObj[0]["Category"];
 						}
 					}
 				}
-			}
-
-			$where .= ($where != "" ? " )" : ' 0 ');
-			return $where;
-		} else{
-			return ' 0 ';
+				break;
 		}
+
+		foreach($res as $k => $v){
+			$res2[$k] = makeArrayFromCSV($v);
+		}
+
+		$where = '';
+		$i = 0;
+
+		$keyword = path_to_id($keyword, CATEGORY_TABLE);
+
+		foreach($res2 as $k => $v){
+			foreach($v as $v2){
+				//look if the value is numeric
+				if(preg_match("=^[0-9]+$=i", $v2)){
+					if($v2 == $keyword){
+						$where .= ($i > 0 ? " OR " : " AND (") . ' ' . $_db->escape($table) . ".ID = " . intval($k);
+						$i++;
+					}
+				}
+			}
+		}
+
+		$where .= ($where != "" ? " )" : ' 0 ');
+		return $where;
 	}
 
 	function searchSpecial($keyword, $searchFields, $searchlocation){
@@ -390,8 +385,6 @@ class searchtoolsearch extends we_search{
 				$fieldFileTable = "WebUserID";
 				break;
 		}
-
-		$query = "SELECT ID FROM " . $_db->escape($_table) . " WHERE " . $field . " ";
 
 		if(isset($searchlocation)){
 			switch($searchlocation){
@@ -416,24 +409,22 @@ class searchtoolsearch extends we_search{
 			}
 		}
 
-		$query .= $searching;
-
-		$_db->query($query);
+		$_db->query('SELECT ID FROM ' . $_db->escape($_table) . ' WHERE ' . $field . ' ' . $searching);
 		while($_db->next_record()) {
 			$userIDs[] = ($_db->f('ID'));
 		}
 
 		$i = 0;
-		$where = "";
-		if(!empty($userIDs)){
-			foreach($userIDs as $id){
-				$where .= ($i > 0 ? " OR " : " (") . $fieldFileTable . " = " . intval($id) . ' ';
-				$i++;
-			}
-			$where .= ')';
-		} else{
-			$where .= '0';
+		if(empty($userIDs)){
+			return '0';
 		}
+
+		$where = "";
+		foreach($userIDs as $id){
+			$where .= ($i > 0 ? " OR " : " (") . $fieldFileTable . " = " . intval($id) . ' ';
+			$i++;
+		}
+		$where .= ')';
 
 		return $where;
 	}
@@ -477,7 +468,7 @@ class searchtoolsearch extends we_search{
 	}
 
 	function searchModifier($text, $table){
-		return ($text != "" ? " AND " . escape_sql_query($table) . ".modifierID = '" . abs($text) . "'" : '');
+		return ($text != '' ? ' AND ' . escape_sql_query($table) . '.modifierID = ' . intval($text) : '');
 	}
 
 	function searchModFields($text, $table){
@@ -527,21 +518,17 @@ class searchtoolsearch extends we_search{
 						}
 					}
 					if($mtof){
-						$where .= " AND " . $table . ".ID IN (" . makeCSVFromArray($arr) . ") ";
+						$where .= ' AND ' . $table . '.ID IN (' . makeCSVFromArray($arr) . ') ';
 					} elseif(!empty($_ids[0])){
-						$where .= " AND " . $table . ".ID IN (" . makeCSVFromArray($_ids[0]) . ") ";
+						$where .= ' AND ' . $table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ';
 					} else{
-						$where .= " AND 0";
+						$where .= ' AND 0';
 					}
 				}
 			}
 		}
 
 		return $where;
-	}
-
-	function getTblName($table){
-		return stripTblPrefix($table);
 	}
 
 	function searchContent($keyword, $table){
@@ -557,8 +544,7 @@ class searchtoolsearch extends we_search{
 				}
 
 				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
-							trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
+					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1");
 					while($_db->next_record()) {
 						$contents[] = $_db->f('DocumentID');
 					}
@@ -566,31 +552,27 @@ class searchtoolsearch extends we_search{
 
 				return (!empty($contents) ? "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")" : '');
 			case VERSIONS_TABLE:
-				$_db->query("SELECT ID, documentElements  FROM " . VERSIONS_TABLE);
+				$_db->query('SELECT ID, documentElements  FROM ' . VERSIONS_TABLE);
 				while($_db->next_record()) {
-					$tempDoc[0]['elements'] = unserialize(
-						html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES));
+					$tempDoc[0]['elements'] = unserialize(html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES));
 
-					if(isset($tempDoc[0]['elements'])){
-						foreach($tempDoc[0]['elements'] as $k => $v){
-							if($k != "Title" && $k != "Charset" && isset($tempDoc[0]['elements'][$k]['dat']) && stristr(
-									$tempDoc[0]['elements'][$k]['dat'], $keyword)){
-								$contents[] = $_db->f('ID');
-							}
+					foreach($tempDoc[0]['elements'] as $k => $v){
+						if($k != "Title" &&
+							$k != "Charset" &&
+							isset($tempDoc[0]['elements'][$k]['dat']) &&
+							stristr($tempDoc[0]['elements'][$k]['dat'], $keyword)){
+							$contents[] = $_db->f('ID');
 						}
 					}
 				}
 
-				return (!empty($contents) ? "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")" : '');
+				return (!empty($contents) ? "  " . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
 			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$_classes = array();
 				$Ids = array();
 				$regs = array();
 
 				$_db->query('SELECT ID FROM ' . OBJECT_TABLE);
-				while($_db->next_record()) {
-					$_classes[] = $_db->f('ID');
-				}
+				$_classes = $_db->getAll(true);
 
 				//published objects
 				for($i = 1; $i <= count($_classes); $i++){
@@ -619,7 +601,7 @@ class searchtoolsearch extends we_search{
 					$where = '';
 					foreach($field as $k => $v){
 						if($k != 0){
-							$where .= " OR ";
+							$where .= ' OR ';
 						}
 						$where .= $v . " LIKE '%" . escape_sql_query(trim($keyword)) . "%' ";
 					}
@@ -630,14 +612,12 @@ class searchtoolsearch extends we_search{
 					}
 				}
 				//only saved objects
-				$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
-						trim($keyword)) . "%' AND DocTable = 'tblObjectFiles' AND Active = 1";
-				$_db->query($query2);
+				$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(trim($keyword)) . "%' AND DocTable = 'tblObjectFiles' AND Active = 1");
 				while($_db->next_record()) {
 					$Ids[] = $_db->f('DocumentID');
 				}
 
-				return (!empty($Ids) ? "  " . OBJECT_FILES_TABLE . ".ID IN (" . makeCSVFromArray($Ids) . ")" : '');
+				return (!empty($Ids) ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . makeCSVFromArray($Ids) . ')' : '');
 		}
 
 		return '';
@@ -672,11 +652,11 @@ class searchtoolsearch extends we_search{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$this->db->query("INSERT INTO  SEARCH_TEMP_TABLE SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where);
+				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
 
 				$titles = array();
 				//first check published documents
-				$this->db->query("SELECT a.Name, b.Dat, a.DID FROM `" . LINK_TABLE . "` a LEFT JOIN `" . CONTENT_TABLE . "` b on (a.CID = b.ID) WHERE a.Name='Title' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'");
+				$this->db->query('SELECT a.Name, b.Dat, a.DID FROM `' . LINK_TABLE . '` a LEFT JOIN `' . CONTENT_TABLE . '` b on (a.CID = b.ID) WHERE a.Name="Title" AND NOT a.DocumentTable="' . TEMPLATES_TABLE . '"');
 				while($this->db->next_record()) {
 					$titles[$this->db->f('DID')] = $this->db->f('Dat');
 				}
@@ -691,7 +671,7 @@ class searchtoolsearch extends we_search{
 				if(is_array($titles) && !empty($titles)){
 					foreach($titles as $k => $v){
 						if($v != ""){
-							$this->db->query("UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = '" . $this->db->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ");
+							$this->db->query('UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = "' . $this->db->escape($v) . '" WHERE docID = ' . intval($k) . ' AND DocTable = "' . FILE_TABLE . '" LIMIT 1');
 						}
 					}
 				}
@@ -755,24 +735,24 @@ class searchtoolsearch extends we_search{
 
 		if(!(self::checkRightDropTable() == '1' && $tempTableTrue == '')){
 			$this->db->query('CREATE ' . $tempTableTrue . ' TABLE SEARCH_TEMP_TABLE (
-				`ID` BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-				`docID` BIGINT( 20 ) NOT NULL ,
-				`docTable` VARCHAR( 32 ) NOT NULL ,
-				`Text` VARCHAR( 255 ) NOT NULL ,
-				`Path` VARCHAR( 255 ) NOT NULL ,
-				`ParentID` BIGINT( 20 ) NOT NULL ,
-				`IsFolder` TINYINT( 1 ) NOT NULL ,
-				`temp_template_id` INT( 11 ) NOT NULL ,
-				`TemplateID` INT( 11 ) NOT NULL ,
-				`ContentType` VARCHAR( 32 ) NOT NULL ,
-				`SiteTitle` VARCHAR( 255 ) NOT NULL ,
-				`CreationDate` INT( 11 ) NOT NULL ,
-				`CreatorID` BIGINT( 20 ) NOT NULL ,
-				`ModDate` INT( 11 ) NOT NULL ,
-				`Published` INT( 11 ) NOT NULL ,
-				`Extension` VARCHAR( 16 ) NOT NULL ,
-				`TableID` INT( 11 ) NOT NULL,
-				`VersionID` BIGINT( 20 ) NOT NULL
+				ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+				docID BIGINT( 20 ) NOT NULL ,
+				docTable VARCHAR( 32 ) NOT NULL ,
+				Text VARCHAR( 255 ) NOT NULL ,
+				Path VARCHAR( 255 ) NOT NULL ,
+				ParentID BIGINT( 20 ) NOT NULL ,
+				IsFolder TINYINT( 1 ) NOT NULL ,
+				temp_template_id INT( 11 ) NOT NULL ,
+				TemplateID INT( 11 ) NOT NULL ,
+				ContentType VARCHAR( 32 ) NOT NULL ,
+				SiteTitle VARCHAR( 255 ) NOT NULL ,
+				CreationDate INT( 11 ) NOT NULL ,
+				CreatorID BIGINT( 20 ) NOT NULL ,
+				ModDate INT( 11 ) NOT NULL ,
+				Published INT( 11 ) NOT NULL ,
+				Extension VARCHAR( 16 ) NOT NULL ,
+				TableID INT( 11 ) NOT NULL,
+				VersionID BIGINT( 20 ) NOT NULL
 				) ENGINE = ' . $tableType . $charset_collation);
 		}
 	}

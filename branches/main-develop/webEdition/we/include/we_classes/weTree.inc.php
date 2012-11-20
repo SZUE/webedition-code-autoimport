@@ -623,7 +623,6 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSDraw(){
-		$custom_draw = array();
 		$draw_code = "";
 		$custom_draw = $this->getJSCustomDraw();
 		foreach($custom_draw as $ck => $cv){

@@ -170,7 +170,7 @@ class we_listview_object extends listviewBase{
 					}
 					$ws_tail = count($cond) ? ' AND (' . implode(' OR ', $cond) . ') ' : '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . ".ID as ID $calendar_select FROM " . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
+				$this->DB_WE->query('SELECT ' . $_obxTable . ".ID AS ID $calendar_select FROM " . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()) {
@@ -304,30 +304,30 @@ class we_listview_object extends listviewBase{
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Description,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Description,';
 						break;
 					case 'DefaultTitle':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Title,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Title,';
 						break;
 					case 'DefaultKeywords':
-						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' as we_Keywords,';
+						$_selFields .= OBJECT_X_TABLE . $classID . '.' . $_val . ' AS we_Keywords,';
 						break;
 				}
 			}
 		}
-		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' as we_wedoc_Published,';
-		$f = OBJECT_X_TABLE . $classID . '.ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
+		$_selFields .= OBJECT_X_TABLE . $classID . '.OF_Published' . ' AS we_wedoc_Published,';
+		$f = OBJECT_X_TABLE . $classID . '.ID AS ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates AS OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID AS OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category AS OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text AS OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url AS OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID AS OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID AS OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language AS OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(substr($n, 0, 10) == 'we_object_'){
 				$n = substr($n, 10);
 			}
-			$f .= $p['table'] . '.' . $p['type'] . '_' . $n . ' as we_' . $n2 . ',';
+			$f .= '`'.$p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p["table"];
 			$from[] = $p["table2"];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
-				$ordertmp[$pos] = $p["table"] . "." . $p["type"] . "_" . $n . ($descArr[$pos] ? ' DESC' : '');
+				$ordertmp[$pos] = '`'.$p["table"] . '`.`' . $p["type"] . '_' . $n .'`'. ($descArr[$pos] ? ' DESC' : '');
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . "." . $p["type"] . "_" . $n . "$2", $cond);
 		}
@@ -364,7 +364,7 @@ class we_listview_object extends listviewBase{
 
 		$out["fields"] = rtrim($f, ',');
 		if($order == ' ORDER BY RANDOM '){
-			$out['fields'] .= ', RAND() as RANDOM ';
+			$out['fields'] .= ', RAND() AS RANDOM ';
 		}
 		$out["order"] = $order;
 		$out["tables"] = makeCSVFromArray($tb);
