@@ -127,21 +127,22 @@ if(isset($_REQUEST['cmd'])){
 				$oldPercent = 0;
 				do{
 					$start = microtime(true);
+					for($i = 0; $i < $_SESSION['weS']['weBackupVars']['backup_steps']; $i++){
 
-					$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'export');
-					$percent = weBackupUtil::getExportPercent();
-					if($oldPercent != $percent){
-						print we_html_element::jsElement(weBackupUtil::getProgressJS($percent, $description));
-						flush();
-						$oldPercent = $percent;
+						$description = weBackupUtil::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'export');
+						$percent = weBackupUtil::getExportPercent();
+						if($oldPercent != $percent){
+							print we_html_element::jsElement(weBackupUtil::getProgressJS($percent, $description));
+							flush();
+							$oldPercent = $percent;
+						}
+
+						if(weBackupExport::export($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log'], $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']) === false){
+							// force end
+							$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
+							break 2;
+						}
 					}
-
-					if(weBackupExport::export($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log'], $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']) === false){
-						// force end
-						$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
-						break;
-					}
-
 					weBackupUtil::writeLog();
 				} while(FAST_BACKUP ? weBackup::limitsReached(weBackupUtil::getCurrentTable(), microtime(true) - $start) : false);
 			}
