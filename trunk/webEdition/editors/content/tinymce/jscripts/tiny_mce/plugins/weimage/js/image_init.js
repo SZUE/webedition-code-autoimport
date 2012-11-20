@@ -31,7 +31,7 @@ var ImageDialog = {
 
 		var url;
 
-		tinyMCEPopup.requireLangPack();
+//		tinyMCEPopup.requireLangPack();
 
 		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
@@ -39,7 +39,7 @@ var ImageDialog = {
 	},
 
 	init : function(ed) {
-		var f = top.opener.document.forms["we_form"];
+		var f = document.forms["we_form"];
 		var nl = f.elements;
 		var ed = tinyMCEPopup.editor;
 		var dom = ed.dom;

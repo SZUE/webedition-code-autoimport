@@ -137,11 +137,13 @@ class weCellDialog extends weDialog{
 				'
 	document.writeln(\'<select class="defaultfont"  name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\' style="width:380px">\');
 	document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
-	for(var i=0;i<classNames.length;i++){
-		var foo = classNames[i].substring(0,1) == "." ?
-							classNames[i].substring(1,classNames[i].length) :
-							classNames[i];
-		document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>\'+classNames[i]);
+	if(typeof(classNames) != "undefined"){
+		for(var i=0;i<classNames.length;i++){
+			var foo = classNames[i].substring(0,1) == "." ?
+								classNames[i].substring(1,classNames[i].length) :
+								classNames[i];
+			document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>\'+classNames[i]);
+		}
 	}
 	document.writeln(\'</select>\');
 }');
