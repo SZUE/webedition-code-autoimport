@@ -36,16 +36,12 @@ function we_isFieldNotEmpty($attribs){
 				}
 				switch($orig_match){
 					case 'day':
-						$sd = mktime(
-							0, 0, 0, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['day_human'], $GLOBALS['lv']->calendar_struct['year_human']);
-						$ed = mktime(
-							23, 59, 59, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['day_human'], $GLOBALS['lv']->calendar_struct['year_human']);
+						$sd = mktime(0, 0, 0, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['day_human'], $GLOBALS['lv']->calendar_struct['year_human']);
+						$ed = mktime(23, 59, 59, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['day_human'], $GLOBALS['lv']->calendar_struct['year_human']);
 						break;
 					case 'month':
-						$sd = mktime(
-							0, 0, 0, $GLOBALS['lv']->calendar_struct['month_human'], 1, $GLOBALS['lv']->calendar_struct['year_human']);
-						$ed = mktime(
-							23, 59, 59, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['numofentries'], $GLOBALS['lv']->calendar_struct['year_human']);
+						$sd = mktime(0, 0, 0, $GLOBALS['lv']->calendar_struct['month_human'], 1, $GLOBALS['lv']->calendar_struct['year_human']);
+						$ed = mktime(23, 59, 59, $GLOBALS['lv']->calendar_struct['month_human'], $GLOBALS['lv']->calendar_struct['numofentries'], $GLOBALS['lv']->calendar_struct['year_human']);
 						break;
 					case 'year':
 						$sd = mktime(0, 0, 0, 1, 1, $GLOBALS['lv']->calendar_struct['year_human']);
@@ -84,15 +80,15 @@ function we_isFieldNotEmpty($attribs){
 				return $GLOBALS['lv']->f($match);
 			}
 			$objectdb = new DB_WE();
-			$match = strpos($orig_match ,'/') === false ? $orig_match : substr(strrchr($orig_match,'/'),1);
+			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
 			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Text='" . $match . "'", 'ID', $objectdb);
-			return $GLOBALS['lv']->f('we_object_' . $objectid);
+			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :
 		case 'img' :
 		case 'flashmovie' :
 		case 'quicktime' :
-			return $GLOBALS['lv']->f($match);
+			return (bool) $GLOBALS['lv']->f($match);
 		case 'href' :
 			if($GLOBALS['lv']->ClassName == 'we_listview_object' || $GLOBALS['lv']->ClassName == 'we_objecttag'){
 				$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
@@ -107,7 +103,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 
 			// we must check $match . '_we_jkhdsf_int' for block-Postfix instead of $match (which exists only for href type = ext): #6422
-			$isInBlock = ( $GLOBALS['lv']->f($orig_match . '_we_jkhdsf_int') || $GLOBALS['lv']->f($orig_match) )? false : true;
+			$isInBlock = ( $GLOBALS['lv']->f($orig_match . '_we_jkhdsf_int') || $GLOBALS['lv']->f($orig_match) ) ? false : true;
 			$match = $isInBlock ? we_tag_getPostName($orig_match) : $orig_match;
 
 			$int = ($GLOBALS['lv']->f($match . '_we_jkhdsf_int') == '') ? 0 : $GLOBALS['lv']->f($match . '_we_jkhdsf_int');
@@ -120,14 +116,13 @@ function we_isFieldNotEmpty($attribs){
 					return false;
 				}
 			}
-			break;//see return of function
+			break; //see return of function
 		default :
-		return $GLOBALS['lv']->f($match) != '';
 			$_tmp = @unserialize($GLOBALS['lv']->f($match));
 			if(is_array($_tmp)){
 				return count($_tmp) > 0;
 			}
-			//no break;
+		//no break;
 	}
 	return $GLOBALS['lv']->f($match) != '';
 }
