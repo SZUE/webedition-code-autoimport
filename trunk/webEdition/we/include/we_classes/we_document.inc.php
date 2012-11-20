@@ -79,11 +79,7 @@ class we_document extends we_root{
 					$this->Category = $doc->Category;
 				}
 				$this->CreationDate = time();
-				if(isset($_SESSION['user'])){
-					$this->CreatorID = $_SESSION['user']['ID'];
-				} else{
-					$this->CreatorID = 0;
-				}
+				$this->CreatorID = (isset($_SESSION['user']) ? $_SESSION['user']['ID'] : 0);
 
 				$this->ID = 0;
 				$this->OldPath = '';
@@ -127,8 +123,7 @@ class we_document extends we_root{
 					$this->Language = 'de_DE';
 				}
 			} else{
-				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . intval($ParentID);
-				$this->DB_WE->query($Query);
+				$this->DB_WE->query('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID));
 
 				while($this->DB_WE->next_record()) {
 					$ParentID = $this->DB_WE->f('ParentID');
@@ -140,19 +135,11 @@ class we_document extends we_root{
 	}
 
 	function getDefaultLanguage(){
-		// get interface languae of user
-		$_userLanguage = isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '';
-		$_parts = explode('_', $_userLanguage);
-		$_userLanguage = $_parts[0];
+		// get interface language of user
+		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
 
-		// trying to get locale string out of interface languae
-		$_key = '';
-		foreach($GLOBALS['WE_LANGS'] as $_k => $_v){
-			if($_v == $_userLanguage){
-				$_key = $_k;
-				break;
-			}
-		}
+		// trying to get locale string out of interface language
+		$_key = array_search($_userLanguage, $GLOBALS['WE_LANGS']);
 
 		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
 
@@ -186,7 +173,7 @@ class we_document extends we_root{
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE);
 				if(!$LDID){
 					$LDID = 0;
 				}
@@ -213,23 +200,14 @@ class we_document extends we_root{
 		}
 	}
 
-	function formInGlossar($leftwidth = 100){
-		$n = 'we_' . $this->Name . '_InGlossar';
-
-		$glossarActivated = we_getModuleNameByContentType('glossary');
-
-		if($glossarActivated == 'glossary'){
-			$v = $this->InGlossar;
-			return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
-		} else{
-			return'';
-		}
+	function formInGlossar(){
+		return (we_getModuleNameByContentType('glossary') == 'glossary' ?
+				we_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+				'');
 	}
 
-	function formIsSearchable($leftwidth = 100){
-		$n = 'we_' . $this->Name . '_IsSearchable';
-		$v = $this->IsSearchable;
-		return we_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+	function formIsSearchable(){
+		return we_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	function formExtension2(){
@@ -261,7 +239,7 @@ class we_document extends we_root{
 		} else{
 			$filenameinput = '';
 		}
-		$content = $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
+		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 				<td>' . $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, $filenameinput . 'onChange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"') . '</td>
@@ -275,21 +253,17 @@ class we_document extends we_root{
 				</tr>
 				<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
 			</table>';
-		return $content;
 	}
 
 	function formMetaInfos(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">' .
+		return '<table border="0" cellpadding="0" cellspacing="0">' .
 			'<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
 			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
 			'<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
 			'<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>' .
 			'<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>' .
-			'</table>';
-		if($this->ContentType == 'image/*'){
-			$content .= $this->formCharset(true);
-		}
-		return $content;
+			'</table>' .
+			($this->ContentType == 'image/*' ? $this->formCharset(true) : '');
 	}
 
 	function formCategory(){
@@ -331,8 +305,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return we_html_element::jsElement(we_button::create_state_changer(false)) .
-			$navis->get();
+		return we_html_element::jsElement(we_button::create_state_changer(false)) .			$navis->get();
 	}
 
 	function addCat($id){
@@ -340,7 +313,7 @@ class we_document extends we_root{
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $cats))){
-				array_push($cats, $id);
+				$cats[] = $id;
 			}
 		}
 		$this->Category = makeCSVFromArray($cats, true);
@@ -369,7 +342,6 @@ class we_document extends we_root{
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = $_ppath == '/' ? $_ppath . $text : $_ppath . '/' . $text;
-			$_old_path = '';
 
 			$rename = false;
 			if(empty($id)){
@@ -380,9 +352,7 @@ class we_document extends we_root{
 			}
 
 			$_naviItem = new weNavigation($id);
-			if($id){
-				$_old_path = $_naviItem->Path;
-			}
+			$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
 			$_naviItem->ParentID = $parentid;
@@ -390,14 +360,14 @@ class we_document extends we_root{
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
-				$_naviItem->Selection = 'nodynamic';
-				$_naviItem->SelectionType = 'doctype';
+				$_naviItem->Selection = weNavigation::SELECTION_NODYNAMIC;
+				$_naviItem->SelectionType = weNavigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset != '' ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
 			} else{
-				$_naviItem->Selection = 'static';
-				$_naviItem->SelectionType = 'docLink';
+				$_naviItem->Selection = weNavigation::SELECTION_STATIC;
+				$_naviItem->SelectionType = weNavigation::STPYE_DOCLINK;
 			}
 
 			$_naviItem->save();
@@ -457,9 +427,7 @@ class we_document extends we_root{
 
 	function getParentIDFromParentPath(){
 		$f = new we_folder();
-		if(!$f->initByPath($this->ParentPath))
-			return -1;
-		return $f->ID;
+		return (!$f->initByPath($this->ParentPath) ? -1 : $f->ID);
 	}
 
 	function addEntryToList($name, $number = 1){
@@ -511,7 +479,7 @@ class we_document extends we_root{
 				$this->setElement($names[$i] . '_' . $new_nr, '');
 			}
 
-			for($i = sizeof($listarray); $i > $nr; $i--){
+			for($i = count($listarray); $i > $nr; $i--){
 				$listarray[$i] = $listarray[$i - 1];
 			}
 
@@ -1110,42 +1078,40 @@ class we_document extends we_root{
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
 					$chars = array(
-						128 => '&#8364;',
-						130 => '&#8218;',
-						131 => '&#402;',
-						132 => '&#8222;',
-						133 => '&#8230;',
-						134 => '&#8224;',
-						135 => '&#8225;',
-						136 => '&#710;',
-						137 => '&#8240;',
-						138 => '&#352;',
-						139 => '&#8249;',
-						140 => '&#338;',
-						142 => '&#381;',
-						145 => '&#8216;',
-						146 => '&#8217;',
-						147 => '&#8220;',
-						148 => '&#8221;',
-						149 => '&#8226;',
-						150 => '&#8211;',
-						151 => '&#8212;',
-						152 => '&#732;',
-						153 => '&#8482;',
-						154 => '&#353;',
-						155 => '&#8250;',
-						156 => '&#339;',
-						158 => '&#382;',
-						159 => '&#376;');
+						chr(128) => '&#8364;',
+						chr(130) => '&#8218;',
+						chr(131) => '&#402;',
+						chr(132) => '&#8222;',
+						chr(133) => '&#8230;',
+						chr(134) => '&#8224;',
+						chr(135) => '&#8225;',
+						chr(136) => '&#710;',
+						chr(137) => '&#8240;',
+						chr(138) => '&#352;',
+						chr(139) => '&#8249;',
+						chr(140) => '&#338;',
+						chr(142) => '&#381;',
+						chr(145) => '&#8216;',
+						chr(146) => '&#8217;',
+						chr(147) => '&#8220;',
+						chr(148) => '&#8221;',
+						chr(149) => '&#8226;',
+						chr(150) => '&#8211;',
+						chr(151) => '&#8212;',
+						chr(152) => '&#732;',
+						chr(153) => '&#8482;',
+						chr(154) => '&#353;',
+						chr(155) => '&#8250;',
+						chr(156) => '&#339;',
+						chr(158) => '&#382;',
+						chr(159) => '&#376;');
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
 					if(trim(strtolower(substr($charset, 0, 3))) == 'iso' || $charset == ''){
-						$retval = str_replace(array_map('chr', array_keys($chars)), $chars, $retval);
+						$retval = strtr($retval, $chars);
 					}
 				}
-				$retval = str_replace("##|n##", "\n", $retval);
-				$retval = str_replace("##|r##", "\r", $retval);
-				return $retval;
+				return str_replace(array("##|n##", "##|r##"), array("\n", "\r"), $retval);
 		}
 	}
 
@@ -1200,7 +1166,7 @@ class we_document extends we_root{
 		$int = ($int == '') ? 0 : $int;
 		if($int){
 			$intID = $this->getValFromSrc($fn, $n . '_we_jkhdsf_intID');
-			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $db);
 		} else{
 			return $this->getValFromSrc($fn, $n);
 		}
@@ -1217,9 +1183,7 @@ class we_document extends we_root{
 	}
 
 	function getLinkHref($link, $parentID, $path, $db = '', $hidedirindex = false, $objectseourls = false){
-		if(!$db){
-			$db = new DB_WE();
-		}
+		$db = ($db ? $db : new DB_WE());
 
 		// Bug Fix 8170&& 8166
 		if(isset($link['href']) && strlen($link['href']) >= 7 && substr($link['href'], 0, 7) == 'mailto:'){
@@ -1231,7 +1195,7 @@ class we_document extends we_root{
 			if($id == ''){
 				return '';
 			} else{
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Path', $db);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES != ''
 					&& in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
@@ -1240,7 +1204,7 @@ class we_document extends we_root{
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
 					return $path;
 				} else{
-					if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . '', 'Published', $db)){
+					if(f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Published', $db)){
 						return $path;
 					} else{
 						$GLOBALS['we_link_not_published'] = 1;
@@ -1333,9 +1297,7 @@ class we_document extends we_root{
 
 			$_linkAttribs = array();
 
-			/*			 * ******************************************************* */
-			/* define image-if necessary - handle with image-attribs
-			  /********************************************************* */
+			// define image-if necessary - handle with image-attribs
 			if(!$img){
 				$img = new we_imageDocument();
 			}
@@ -1359,9 +1321,7 @@ class we_document extends we_root{
 				$rollOverAttribsArr = $img->getRollOverAttribsArr();
 			}
 
-			/*			 * ****************************************** */
-			/* Link-Attribs
-			  /******************************************** */
+			// Link-Attribs
 			//   1st attribs-string from link dialog ! These are already used in content ...
 			if(isset($link['attribs'])){
 				$_linkAttribs = array_merge(makeArrayFromAttribs($link['attribs']), $_linkAttribs);
@@ -1393,9 +1353,7 @@ class we_document extends we_root{
 			}
 			$_linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
 
-			/*			 * *********************************************** */
-			/* The pop-up-window                              */
-			/*			 * *********************************************** */
+			// The pop-up-window                              */
 			$_popUpCtrl = array();
 			foreach($_popUpAtts AS $n){
 				if(isset($link[$n])){
@@ -1405,14 +1363,14 @@ class we_document extends we_root{
 
 
 			if(isset($_popUpCtrl['jswin']) && $_popUpCtrl['jswin']){ //  add attribs for popUp-window
-				$js = "var we_winOpts = '';";
+				$js = 'var we_winOpts = "";';
 				if(isset($_popUpCtrl["jscenter"]) && $_popUpCtrl["jscenter"] && isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] && isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"]){
 					$js .= 'if (window.screen) {var w = ' . $_popUpCtrl["jswidth"] . ';var h = ' . $_popUpCtrl["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
 				} else if((isset($_popUpCtrl["jsposx"]) && $_popUpCtrl["jsposx"] != "") || (isset($_popUpCtrl["jsposy"]) && $_popUpCtrl["jsposy"] != "")){
-					if($_popUpCtrl["jsposx"] != ""){
+					if($_popUpCtrl["jsposx"] != ''){
 						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $_popUpCtrl["jsposx"] . '\';';
 					}
-					if($_popUpCtrl["jsposy"] != ""){
+					if($_popUpCtrl["jsposy"] != ''){
 						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $_popUpCtrl["jsposy"] . '\';';
 					}
 				}
@@ -1446,23 +1404,23 @@ class we_document extends we_root{
 	 */
 
 	function createEmptySchedule(){
-		$s = array();
-		$s['task'] = 1;
-		$s['type'] = 0;
-		$s['months'] = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		$s['days'] = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		$s['weekdays'] = array(0, 0, 0, 0, 0, 0, 0);
-		$s['time'] = time();
-		$s['CategoryIDs'] = '';
-		$s['DoctypeID'] = 0;
-		$s['ParentID'] = 0;
-		$s['active'] = 1;
-		$s['doctypeAll'] = 0;
-		return $s;
+		return array(
+			'task' => 1,
+			'type' => 0,
+			'months' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+			'days' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+			'weekdays' => array(0, 0, 0, 0, 0, 0, 0),
+			'time' => time(),
+			'CategoryIDs' => '',
+			'DoctypeID' => 0,
+			'ParentID' => 0,
+			'active' => 1,
+			'doctypeAll' => 0,
+		);
 	}
 
 	function add_schedule(){
-		array_push($this->schedArr, $this->createEmptySchedule());
+		$this->schedArr[] = $this->createEmptySchedule();
 	}
 
 	function del_schedule($nr){
@@ -1471,7 +1429,7 @@ class we_document extends we_root{
 
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
-		if(sizeof($_REQUEST)){
+		if(!empty($_REQUEST)){
 			$dates = $regs = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){
@@ -1533,7 +1491,7 @@ class we_document extends we_root{
 	function add_schedcat($id, $nr){
 		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
 		if(!in_array($id, $cats)){
-			array_push($cats, $id);
+			$cats[] = $id;
 		}
 		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
 	}
@@ -1557,16 +1515,16 @@ class we_document extends we_root{
 				$times[] = we_schedpro::getNextTimestamp($s, time());
 			}
 		}
-		if(count($times)){
-			sort($times);
-			return $times[0];
+		if(empty($times)){
+			return 0;
 		}
-		return 0;
+		sort($times);
+		return $times[0];
 	}
 
 	function loadSchedule(){
 		if(defined('SCHEDULE_TABLE')){
-			$this->DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . " WHERE DID=" . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "'");
+			$this->DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '"');
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}
@@ -1574,7 +1532,7 @@ class we_document extends we_root{
 				$s = unserialize($this->DB_WE->f('Schedpro'));
 				if(is_array($s)){
 					$s['active'] = $this->DB_WE->f('Active');
-					array_push($this->schedArr, $s);
+					$this->schedArr[] = $s;
 				}
 			}
 		}
@@ -1600,9 +1558,9 @@ class we_document extends we_root{
 
 		$inputName = 'we_' . $this->Name . "_txt[$name]";
 
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
 
-		return '<table border="0" cellpadding="0" cellspacing="0">' . $_headline .
+		return '<table border="0" cellpadding="0" cellspacing="0">' .
+			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
 			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, "  onblur=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\" onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\"", "value", 330) . '</td></tr>' .
 			'</table>';
 	}

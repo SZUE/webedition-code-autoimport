@@ -59,7 +59,7 @@ class we_wysiwyg{
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->bgcol = $bgcol;
-		$this->xml = $xml; 
+		$this->xml = $xml;
 		if(WYSIWYG_TYPE == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
 		}
@@ -126,7 +126,7 @@ class we_wysiwyg{
 						array("\n" => '', "\r" => '') :
 						array("\\" => "\\\\", "\n" => '\n', "\r" => '\r')
 					);
-				$value = str_replace(array_keys($replace), $replace, $value);
+				$value = strtr($value, $replace);
 				$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
 				$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
 				$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
@@ -428,27 +428,7 @@ function tinyMCEchanged(inst){
 
 		// the following are tinyMCE only
 		if(WYSIWYG_TYPE == 'tinyMCE'){
-			array_push($arr, 
-				'absolute',
-				'blockquote',
-				'cite',
-				'del',
-				'emotions',
-				'hr',
-				'ins',
-				'insertdate',
-				'insertlayer',
-				'inserttime',
-				'ltr',
-				'movebackward',
-				'moveforward',
-				'nonbreaking',
-				'pastetext',
-				'pasteword',
-				'replace',
-				'rtl',
-				'search',
-				'styleprops'
+			array_push($arr, 'absolute', 'blockquote', 'cite', 'del', 'emotions', 'hr', 'ins', 'insertdate', 'insertlayer', 'inserttime', 'ltr', 'movebackward', 'moveforward', 'nonbreaking', 'pastetext', 'pasteword', 'replace', 'rtl', 'search', 'styleprops'
 			);
 		}
 
@@ -1205,8 +1185,7 @@ function tinyMCEchanged(inst){
 					'undo' => 'undo',
 					'unlink' => 'unlink',
 					'visibleborders' => 'wevisualaid',
-
-					// the following commands exist only in tinyMCE 
+					// the following commands exist only in tinyMCE
 					'absolute' => 'absolute',
 					'blockquote' => 'blockquote',
 					'cite' => 'cite',
@@ -1230,9 +1209,7 @@ function tinyMCEchanged(inst){
 					'search' => 'search',
 					'selectall' => 'selectall',
 					'styleprops' => 'styleprops',
-					
-					// table controlls are not mapped from wysiwyg to tinyMCE: 
-
+					// table controlls are not mapped from wysiwyg to tinyMCE:
 					//'notmapped1' => 'attribs',
 					//'notmapped2' => 'insertimage', // replaced by weimage
 					//'notmapped3' => 'insertfile',
@@ -1254,7 +1231,7 @@ function tinyMCEchanged(inst){
 					$j = 0;
 					foreach($outer as $inner){
 						//if($cmdMapping[$rows[$i][$j]->cmd] == 'pastetext'){ // TODO: implement pastetext-toggle in we:textarea and throw this out again
-							//$pastetext = 1;
+						//$pastetext = 1;
 						//}
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
@@ -1470,11 +1447,11 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 
 	function hasProp(){
 		switch($this->cmd){
-			
+
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false || 
+				return WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
 					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "inserttable":
 			case "editcell":
@@ -1489,7 +1466,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				return stripos($this->editor->propstring, ",table,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "editrow":
 			case "deletetable":
-				return WYSIWYG_TYPE != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false || 
+				return WYSIWYG_TYPE != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
 					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "cut":
 			case "copy":
@@ -1541,12 +1518,12 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "abbr":
 			case "acronym":
 			case "lang":
-					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));	
+				(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "del":
 			case "ins":
 			case "cite" :
 				return WYSIWYG_TYPE == 'tinyMCE' &&
-					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));			
+					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "emotions":
 				return false; // problems with path to emoticons
 			case "insertdate":

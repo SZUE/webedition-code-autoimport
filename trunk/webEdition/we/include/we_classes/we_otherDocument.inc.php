@@ -89,7 +89,7 @@ class we_otherDocument extends we_binaryDocument{
 				}
 			}
 		}
-		$text = preg_replace('/  +/', ' ', trim(strip_tags($text)));
+		$text = trim(strip_tags($text));
 
 		switch($this->Extension){
 			case '.doc':
@@ -112,7 +112,7 @@ class we_otherDocument extends we_binaryDocument{
 				if(class_exists('ZipArchive') && (isset($this->elements['data']['dat']) && file_exists($this->elements['data']['dat']))){
 					$zip = new ZipArchive;
 					if($zip->open($this->elements['data']['dat']) === TRUE){
-						$content = CheckAndConvertISOfrontend(strip_tags(preg_replace(array('|</text[^>]*>|', '|<text[^/>]*/>|', '/  +/'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml')))));
+						$content = CheckAndConvertISOfrontend(strip_tags(preg_replace(array('|</text[^>]*>|', '|<text[^/>]*/>|'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml')))));
 						$zip->close();
 						break;
 					}
@@ -131,7 +131,7 @@ class we_otherDocument extends we_binaryDocument{
 		$text.= ' '.trim($content);
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
-		$text = substr($text, 0, $maxDB);
+		$text = substr(preg_replace('/  +/', ' ', $text), 0, $maxDB);
 
 		if($this->IsSearchable && $this->Published){
 			$set = array(
@@ -199,9 +199,7 @@ class we_otherDocument extends we_binaryDocument{
 	  }
 	 */
 
-	static
-
-	function checkAndPrepare($formname, $key = 'we_document'){
+	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
 
@@ -209,17 +207,14 @@ class we_otherDocument extends we_binaryDocument{
 
 			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 				foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
-
 					$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName] : false;
 
 					if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
-
 						$_SESSION[$_binaryDataId]['doDelete'] = false;
 
 						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1){
 							$_SESSION[$_binaryDataId]['doDelete'] = true;
-						} else
-						if($filename){
+						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if($ct == "application/*"){
