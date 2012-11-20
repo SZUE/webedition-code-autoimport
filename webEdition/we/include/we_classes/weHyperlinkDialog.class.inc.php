@@ -188,16 +188,16 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function glue_url($parsed){
-		if(!is_array($parsed))
+		if(!is_array($parsed)){
 			return false;
-		$uri = $parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '';
-		$uri .= $parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '';
-		$uri .= $parsed['host'] ? $parsed['host'] : '';
-		$uri .= $parsed['port'] ? ':' . $parsed['port'] : '';
-		$uri .= $parsed['path'] ? $parsed['path'] : '';
-		$uri .= $parsed['query'] ? '?' . $parsed['query'] : '';
-		$uri .= $parsed['fragment'] ? '#' . $parsed['fragment'] : '';
-		return $uri;
+		}
+		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '') .
+			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
+			($parsed['host'] ? $parsed['host'] : '') .
+			($parsed['port'] ? ':' . $parsed['port'] : '') .
+			($parsed['path'] ? $parsed['path'] : '') .
+			($parsed['query'] ? '?' . $parsed['query'] : '') .
+			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
 
 	function initByHttp(){
@@ -307,10 +307,11 @@ class weHyperlinkDialog extends weDialog{
 			$_select_type = '<select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">
 <option value="ext"' . (($this->args["type"] == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="int"' . (($this->args["type"] == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
-<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
-' . ((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ? '
-<option value="obj"' . (($this->args["type"] == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' : '') . '
-</select>';
+<option value="mail"' . (($this->args["type"] == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
+				((defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))) ?
+					'<option value="obj"' . (($this->args["type"] == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
+					''
+				) . '</select>';
 
 			// EXTERNAL LINK
 			//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'we_dialog_args[extHref]\\'].value', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')
@@ -324,7 +325,6 @@ class weHyperlinkDialog extends weDialog{
 			//javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'we_dialog_args[fileID]\\'].value', 'document.we_form.elements[\\'we_dialog_args[fileHref]\\'].value', '', '', 0, '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_cmd_enc("document.we_form.elements['we_dialog_args[fileHref]'].value");
-			$wecmdenc3 = '';
 			$_internal_select_button = we_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
@@ -399,16 +399,12 @@ class weHyperlinkDialog extends weDialog{
 		// Create table output
 		$table = '<div style="position:relative; top:15px"><table cellpadding="0" cellspacing="0" border="0" height="65">
 				<tr>
-					<td class="defaultgray" valign="top" width="100" height="20">
-						' . g_l('weClass', "[linkType]") . '</td>
-					<td valign="top">
-						' . $_select_type . '</td>
+					<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', "[linkType]") . '</td>
+					<td valign="top">' . $_select_type . '</td>
 				</tr>
 				<tr id="ext_tr" style="display:' . (($this->args["type"] == "ext") ? "table-row" : "none") . ';">
-					<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >
-						' . $_external_link . '</td>
-				</tr>
-				';
+					<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >' . $_external_link . '</td>
+				</tr>';
 
 		if(isset($_internal_link)){
 			$autoSuggest = $_internal_link .
@@ -442,36 +438,31 @@ class weHyperlinkDialog extends weDialog{
 		}
 
 		$show_accessible_class = (we_hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
-		$table .= '</table></div>';
-		$table .= $yuiSuggest->getYuiCssFiles();
-		$table .= $yuiSuggest->getYuiCss();
-		$table .= $yuiSuggest->getYuiJsFiles();
-		$table .= $yuiSuggest->getYuiJs();
+		$table .= '</table></div>' .
+			$yuiSuggest->getYuiCssFiles() .
+			$yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJsFiles() .
+			$yuiSuggest->getYuiJs();
 
 		$parts[] = array("html" => $table);
 
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 				<tr>
-					<td class="defaultgray" valign="top" width="100">
-						' . g_l('wysiwyg', "[anchor]") . '</td>
-					<td>
-						' . $_anchor . '</td>
+					<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', "[anchor]") . '</td>
+					<td>' . $_anchor . '</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						' . we_html_tools::getPixel(110, 10) . '</td>
+					<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr>
-					<td class="defaultgray" valign="top">
-						' . g_l('linklistEdit', "[link_params]") . '</td>
+					<td class="defaultgray" valign="top">' . g_l('linklistEdit', "[link_params]") . '</td>
 					<td>' . $_param . '</td>
 				</tr>
 				<tr>
 					<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr>
-					<td class="defaultgray" valign="top">
-						' . g_l('wysiwyg', "[css_style]") . '</td>
+					<td class="defaultgray" valign="top">' . g_l('wysiwyg', "[css_style]") . '</td>
 					<td>' . $classSelect . '</td>
 				</tr>
 			 	<tr>
@@ -493,38 +484,28 @@ class weHyperlinkDialog extends weDialog{
 						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lang . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_hreflang . '</td></tr></table></td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td colspan="2">
-						' . we_html_tools::getPixel(110, 10) . '</td>
+					<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td class="defaultgray" valign="top">
-						' . g_l('wysiwyg', "[title]") . '</td>
-					<td>
-						' . $_title . '</td>
+					<td class="defaultgray" valign="top">' . g_l('wysiwyg', "[title]") . '</td>
+					<td>' . $_title . '</td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td colspan="2">
-						' . we_html_tools::getPixel(110, 5) . '</td>
+					<td colspan="2">' . we_html_tools::getPixel(110, 5) . '</td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td class="defaultgray" valign="top">
-						' . g_l('wysiwyg', "[keyboard]") . '</td>
-					<td>
-						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_tabindex . '</td></tr></table></td>
+					<td class="defaultgray" valign="top">' . g_l('wysiwyg', "[keyboard]") . '</td>
+					<td><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_tabindex . '</td></tr></table></td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td colspan="2">
-						' . we_html_tools::getPixel(110, 5) . '</td>
+					<td colspan="2">' . we_html_tools::getPixel(110, 5) . '</td>
 				</tr>
 				<tr' . $show_accessible_class . '>
-					<td class="defaultgray" valign="top">
-						' . g_l('wysiwyg', "[relation]") . '</td>
-					<td>
-						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_rev . '</td></tr></table></td>
+					<td class="defaultgray" valign="top">' . g_l('wysiwyg', "[relation]") . '</td>
+					<td><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_rev . '</td></tr></table></td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						' . we_html_tools::getPixel(110, 10) . '</td>
+					<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 			</table>';
 
@@ -553,18 +534,16 @@ class weHyperlinkDialog extends weDialog{
 <option>bookmark</option>
 <option>alternate</option>
 <option>nofollow</option>
-</select>
-';
+</select>';
 	}
-	
+
 	function getTinyMceJS(){
-		$out = parent::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_init.js');
-		return $out;
+		return parent::getTinyMceJS() .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/advlink/js/advlink_init.js');
 	}
 
 	function getJs(){
-		$out = weDialog::getJs() . we_html_element::jsElement('
+		return weDialog::getJs() . we_html_element::jsElement('
 				var weAcCheckLoop = 0;
 				var weFocusedField;
 				function setFocusedField(elem){
@@ -635,18 +614,17 @@ class weHyperlinkDialog extends weDialog{
 					'					classNames = top.opener.we_classNames;') . '
 					document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
-
-					for (var i = 0; i < classNames.length; i++) {
-						var foo = classNames[i].substring(0,1) == "." ?
-							classNames[i].substring(1,classNames[i].length) :
-							classNames[i];
-						document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+					if(typeof(classNames) != "undefined"){
+						for (var i = 0; i < classNames.length; i++) {
+							var foo = classNames[i].substring(0,1) == "." ?
+								classNames[i].substring(1,classNames[i].length) :
+								classNames[i];
+							document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+						}
 					}
 					document.writeln(\'</select>\');
-				}
-		');
-		if(isset($this->args["editname"])){
-			$out .= we_html_element::jsElement('
+				}' .
+				(isset($this->args["editname"]) ? '
 
 				function showanchors(name, val, onCh) {
 					var pageAnchors = top.opener.document.getElementsByTagName("A");
@@ -675,9 +653,8 @@ class weHyperlinkDialog extends weDialog{
 						document.writeln(\'</select>\');
 					}
 				}
-			');
-		}
-		return $out;
+			' : '')
+		);
 	}
 
 }

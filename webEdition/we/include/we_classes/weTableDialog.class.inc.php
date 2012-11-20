@@ -130,8 +130,7 @@ class weTableDialog extends weDialog{
 
 	function getJs(){
 		return parent::getJs() . we_html_element::jsElement('
-				function showclasss(name, val, onCh) {
-'.
+				function showclasss(name, val, onCh) {'.
 		(isset($this->args["cssClasses"]) && $this->args["cssClasses"]?
 			'					var classCSV = "' . $this->args["cssClasses"] . '";
 					classNames = classCSV.split(/,/);':
@@ -141,16 +140,16 @@ class weTableDialog extends weDialog{
 		'
 					document.writeln(\'<select class="defaultfont" style="width:380px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
-
-					for (var i = 0; i < classNames.length; i++) {
-						var foo = classNames[i].substring(0,1) == "." ?
-							classNames[i].substring(1,classNames[i].length) :
-							classNames[i];
-						document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+					if(typeof(classNames) != "undefined"){
+						for (var i = 0; i < classNames.length; i++) {
+							var foo = classNames[i].substring(0,1) == "." ?
+								classNames[i].substring(1,classNames[i].length) :
+								classNames[i];
+							document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
+						}
 					}
 					document.writeln(\'</select>\');
-				}
-');
+				}');
 	}
 
 }

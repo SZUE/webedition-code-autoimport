@@ -226,12 +226,6 @@ class weImageDialog extends weDialog{
 		$this->args["ratio"] = "1";
 	}
 
-	function getTinyMceJS(){
-		$out = parent::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js');
-		return $out;
-	}
-
 	function getFormHTML(){
 		$hiddens = "";
 		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
@@ -304,11 +298,11 @@ class weImageDialog extends weDialog{
 			unset($_p);
 
 			if((we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")) || (isset($this->args['editor']) && $this->args['editor'] == "tinyMce" && !isset($_REQUEST['isTinyMCEInitialization']))){
-				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' . "\n";
-				$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>' . "\n";
+				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
+					'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>';
 				$this->db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 				while($this->db->next_record()) {
-					$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>' . "\n";
+					$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
 				}
 				$thumbnails .= '</select>';
 
@@ -379,33 +373,17 @@ class weImageDialog extends weDialog{
 		$name = we_html_tools::htmlFormElementTable($foo, "Name");
 
 		$srctable = '<table cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<td class="defaultgray" valign="top">' . g_l('wysiwyg', "[image_url]") . '</td><td>' . $extSrc . '</td>
-	</tr>
-';
+	<tr><td class="defaultgray" valign="top">' . g_l('wysiwyg', "[image_url]") . '</td><td>' . $extSrc . '</td></tr>';
 		if($intSrc){
-			$srctable .= '	<tr>
-		<td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td>
-	</tr>
-	<tr>
-		<td></td><td>' . $intSrc . '</td>
-	</tr>
-';
-			if($thumbnails){
-				$srctable .= '	<tr>
-		<td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td>
-	</tr>
-	<tr>
-		<td></td><td>' . $thumbnails . '</td>
-	</tr>
-';
-			}
+			$srctable .= '	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+	<tr><td></td><td>' . $intSrc . '</td></tr>' .
+				($thumbnails ?
+					'	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+	<tr><td></td><td>' . $thumbnails . '</td></tr>' : '');
 		}
-		$srctable .= '	<tr>
-		<td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td>
-	</tr>
-	</table>
-';
+		$srctable .=
+			'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+	</table>';
 
 		$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
 		$classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[css_style]"));
@@ -414,35 +392,22 @@ class weImageDialog extends weDialog{
 
 		$ratio = we_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', "[ratio]"), false, "defaultfont", $onclick);
 
-		$parts = array();
-
-		$parts[] = array("html" => $srctable);
-
-		$table = '<table cellpadding="0" cellspacing="0" border="0" width="400">
-<tr><td>' . $width . '</td><td>' . $height . '</td><td>' . $ratio . '</td></tr>
-</table>';
-		$parts[] = array("html" => $table);
-
-		$table = '<table cellpadding="0" cellspacing="0" border="0" width="560">
-<tr><td>' . $hspace . '</td><td>' . $vspace . '</td><td>' . $border . '</td><td>' . $align . '</td></tr>
-</table><div></div>';
-		$parts[] = array("html" => $table);
-
-		$table = '<div style="height:240px"><table cellpadding="0" cellspacing="0" border="0" width="380">
+		return array(
+			array("html" => $srctable),
+			array("html" => '<table cellpadding="0" cellspacing="0" border="0" width="400"><tr><td>' . $width . '</td><td>' . $height . '</td><td>' . $ratio . '</td></tr></table>'),
+			array("html" => '<table cellpadding="0" cellspacing="0" border="0" width="560"><tr><td>' . $hspace . '</td><td>' . $vspace . '</td><td>' . $border . '</td><td>' . $align . '</td></tr></table><div></div>'),
+			array("html" =>
+				'<div style="height:240px"><table cellpadding="0" cellspacing="0" border="0" width="380">
 <tr><td colspan="2">' . $name . '</td><td colspan="2">' . $alt . '</td></tr>
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
 <tr><td colspan="2">' . $classSelect . '</td><td colspan="2">' . $title . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(160, 15) . '</td><td>' . we_html_tools::getPixel(160, 4) . '</td><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(100, 4) . '</td></tr>
 <tr><td colspan="4">' . $_longdesc . '</td></tr>
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
-
-</table></div>
-' . we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") . we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0");
-		$thisPart = $table;
-		$thisPart .= $yuiSuggest->getYuiCss();
-		$thisPart .= $yuiSuggest->getYuiJs();
-		$parts[] = array("html" => $thisPart);
-		return $parts;
+</table></div>' .
+				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") . we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
+				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
+		);
 	}
 
 	function getJs(){
@@ -517,8 +482,7 @@ var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this-
 
 function fsubmit(e) {
 	return false;
-}
-') .
+}') .
 			$yuiSuggest->getYuiJsFiles() .
 			$yuiSuggest->getYuiCssFiles();
 	}
