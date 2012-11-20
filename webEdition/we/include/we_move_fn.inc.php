@@ -62,23 +62,19 @@ function moveTreeEntries($dontMoveClassFolders = false){
 function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
 	$DB_WE = new DB_WE();
 	// check if entry is a folder
-	$row = getHash("SELECT Path, Text, IsFolder FROM " . $DB_WE->escape($table) . " WHERE  ID=" . intval($id), $DB_WE);
+	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
 	if(sizeof($row) == 0 || $row["IsFolder"]){
 		return -1;
 	}
 
 	$text = $row["Text"];
 	$temp = explode("/", $row["Path"]);
-	if(sizeof($temp) < 2){
-		$rootdir = "/";
-	} else{
-		$rootdir = "/" . $temp[1];
-	}
+	$rootdir = (count($temp) < 2 ? '/' : '/' . $temp[1]);
 
 	// add the item to the item names which could be moved
-	array_push($items2move, $text);
+	$items2move[] = $text;
 
-	$DB_WE->query("SELECT Text,Path FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . intval($targetDirectoryID));
+	$DB_WE->query('SELECT Text,Path FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($targetDirectoryID));
 	while($DB_WE->next_record()) {
 		// check if there is a item with the same name in the target directory
 		if(in_array($DB_WE->f('Text'), $items2move)){
@@ -87,7 +83,7 @@ function checkMoveItem($targetDirectoryID, $id, $table, &$items2move){
 
 		if(defined("OBJECT_TABLE") && $table == OBJECT_FILES_TABLE){
 			// check if class directory is the same
-			if(substr($DB_WE->f('Path'), 0, strlen($rootdir) + 1) != $rootdir . "/"){
+			if(substr($DB_WE->f('Path'), 0, strlen($rootdir) + 1) != $rootdir . '/'){
 				return -3;
 			}
 		}
@@ -109,8 +105,8 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 	if(defined("OBJECT_TABLE") && $table == OBJECT_TABLE && !$targetDirectoryID){
 		return false;
 	} elseif($targetDirectoryID){
-		$row = getHash("SELECT IsFolder,Path,ID FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($targetDirectoryID), $DB_WE);
-		if(sizeof($row) == 0 || !$row["IsFolder"]){
+		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
+		if(empty($row)|| !$row["IsFolder"]){
 			return false;
 		}
 		$newPath = $row['Path'];
@@ -184,7 +180,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		case FILE_TABLE:
 
 			// get information about the document which has to be moved
-			$row = getHash("SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id), $DB_WE);
+			$row = getHash('SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
 			$fileName = $row['Text'];
 			$oldPath = $row['Path'];
 			$isPublished = ($row['Published'] > 0 ? true : false);
@@ -203,7 +199,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			}
 			if(!copy(
 					$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . "/" . $fileName)){
-				array_push($notMovedItems, $item);
+				$notMovedItems[] = $item;
 				return false;
 			}
 			if(!unlink($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)){
@@ -248,7 +244,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			}
 
 			// update table
-			$DB_WE->query("UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
+			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
 
 			return true;
 
@@ -256,8 +252,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		case (defined("OBJECT_TABLE") ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 
 			// get information about the object which has to be moved
-			$row = getHash(
-				"SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($id), $DB_WE);
+			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
 			$tableID = $row['TableID'];
 			$oldPath = $row['Path'];
 			$fileName = $row['Text'];
@@ -266,7 +261,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			$item = array(
 				'ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon
 			);
-			if(sizeof($row) == 0 || $isFolder){
+			if(empty($row) || $isFolder){
 				$notMovedItems[] = $item;
 				return false;
 			}
@@ -278,7 +273,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				$tempOldParentID = $object->ParentID;
 				$tempNewParentID = $parentID;
 				$tempOldPath = $object->Path;
-				$tempNewPath = "" . $newPath . "/" . $fileName;
+				$tempNewPath = $newPath . '/' . $fileName;
 				$object->Path = $tempNewPath;
 				$object->ParentID = $tempNewParentID;
 				if(empty($version_exists)){
@@ -336,19 +331,16 @@ function checkIfRestrictUserIsAllowed($id, $table = FILE_TABLE, $DB_WE = ''){
 
 				if(isset($arr[$_SESSION["user"]["ID"]]) && $arr[$_SESSION["user"]["ID"]]){ //	if user is readonly user -> no delete
 					return false;
-				} else{ //	user NOT readonly and in restricted -> delete allowed
-					if(in_array($_SESSION["user"]["ID"], $userArray)){
-						return true;
-					}
+				} elseif(in_array($_SESSION["user"]["ID"], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
+					return true;
 				}
+
 				//	check if group has rights to delete
 				foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
 					if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
 						return false;
-					} else{
-						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
-							return true;
-						}
+					} elseif(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
+						return true;
 					}
 				}
 			}

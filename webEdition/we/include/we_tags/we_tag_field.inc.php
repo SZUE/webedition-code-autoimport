@@ -131,11 +131,15 @@ function we_tag_field($attribs){
 	if(!isset($GLOBALS['lv'])){
 		return parseError(g_l('parser', '[field_not_in_lv]'));
 	}
+
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
-
 	$alt = ($orgAlt == 'we_path' ? 'WE_PATH' : ($orgAlt == 'we_text' ? 'WE_TEXT' : $alt));
-
 	$name = ($orgName == 'we_path' ? 'WE_PATH' : ($orgName == 'we_text' ? 'WE_TEXT' : $name));
+
+	//listview of documents, document with a block. Try to access by blockname.
+	$name = ($GLOBALS['lv']->f($name) ? $name : $orgName);
+	$alt = ($GLOBALS['lv']->f($alt) ? $alt : $orgAlt);
+
 
 	if(isset($attribs['winprops'])){
 		unset($attribs['winprops']);
@@ -156,18 +160,12 @@ function we_tag_field($attribs){
 		$isImageDoc = true;
 	}
 
-	$isCalendar = false;
-	if(isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type)){
-		$isCalendar = true;
-	}
+	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
 	if(!$GLOBALS['lv']->f('WE_ID') && $GLOBALS['lv']->calendar_struct['calendar'] == ''){
 		return '';
 	}
 
-	//listview of documents, document with a block. Try to access by blockname.
-	$name = ($GLOBALS['lv']->f($name) ? $name : $orgName);
-	$alt = ($GLOBALS['lv']->f($alt) ? $alt : $orgAlt);
 
 	switch($type){
 		case 'binary' :
@@ -431,9 +429,8 @@ function we_tag_field($attribs){
 						$newWinProps .= $k . '=' . $v . ',';
 					}
 				}
-				$newWinProps = rtrim($newWinProps, ',');
 
-				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . $newWinProps . '\');';
+				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . rtrim($newWinProps, ',') . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;
 			} else{ // we are in webEdition
 				if($_SESSION['weS']['we_mode'] == 'seem'){ //	we are in seeMode -> open in edit_include ?....
@@ -535,19 +532,32 @@ function we_tag_field($attribs){
 						);
 				} else{
 
-					$showlink = (!isset($GLOBALS['lv']->ClassName) ||
-						$GLOBALS['lv']->ClassName == '' ||
-						$GLOBALS['lv']->ClassName == 'we_listview') ||
-						($GLOBALS['lv']->ClassName == 'we_search_listview') ||
-						($GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants') ||
-						($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart') ||
-						($GLOBALS['lv']->ClassName == 'we_objecttag' && $GLOBALS['lv']->triggerID != '0') ||
-						($GLOBALS['lv']->ClassName == 'we_customertag') ||
-						($GLOBALS['lv']->ClassName == 'we_listview_customer') ||
-						($GLOBALS['lv']->ClassName == 'we_listview_object' && $GLOBALS['lv']->triggerID != '0') ||
-						($tid && $GLOBALS['lv']->ClassName == 'we_listview_object') ||
-						($GLOBALS['lv']->ClassName == 'we_listview_object' && ($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID)) ||
-						($GLOBALS['lv']->ClassName == 'we_listview_multiobject' && ($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID));
+					switch(isset($GLOBALS['lv']->ClassName) ? $GLOBALS['lv']->ClassName : ''){
+						case '':
+						case 'we_listview':
+						case 'we_search_listview':
+						case 'we_shop_listviewShopVariants':
+						case 'we_listview_shoppingCart':
+						case 'we_customertag':
+						case 'we_listview_customer':
+							$showlink = true;
+							break;
+						case 'we_objecttag':
+							$showlink = $GLOBALS['lv']->triggerID != '0';
+							break;
+						case 'we_listview_object':
+							$showlink = (($GLOBALS['lv']->triggerID != '0') ||
+								$tid ||
+								($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID)
+								);
+							break;
+						case 'we_listview_multiobject':
+							$showlink = ($GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID);
+							break;
+						default:
+							$showlink = false;
+							break;
+					}
 
 					if($showlink){
 						$tail = ($tid && $GLOBALS['lv']->ClassName == 'we_listview_object' ?
@@ -587,12 +597,17 @@ function we_tag_field($attribs){
 	}
 
 	//	Add a anchor to tell seeMode that this is an object.
-	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' && (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') && isset(
-			$GLOBALS['_we_listview_object_flag']) && $GLOBALS['_we_listview_object_flag'] && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != 'text/weTmpl' && $GLOBALS['lv']->seeMode && $seeMode){
+	if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem' &&
+		(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_object') &&
+		isset($GLOBALS['_we_listview_object_flag']) &&
+		$GLOBALS['_we_listview_object_flag'] &&
+		$GLOBALS['we_doc']->InWebEdition &&
+		$GLOBALS['we_doc']->ContentType != 'text/weTmpl' &&
+		$GLOBALS['lv']->seeMode &&
+		$seeMode){
 
-		$out = '<a href="' . $GLOBALS['lv']->DB_WE->Record['OF_ID'] . '" seem="object"></a>
-		<?php $GLOBALS[\'_we_listview_object_flag\'] = false; ?>
-		' . $out;
+		$GLOBALS['_we_listview_object_flag'] = false;
+		$out = '<a href="' . $GLOBALS['lv']->DB_WE->Record['OF_ID'] . '" seem="object"></a>' . $out;
 	}
 	return $out;
 }
