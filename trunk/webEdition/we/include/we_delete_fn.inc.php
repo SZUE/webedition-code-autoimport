@@ -85,8 +85,13 @@ function deleteFolder($id, $table, $path = '', $delR = true, $DB_WE = ''){
 
 	if($delR){ // recursive delete
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
+		$toDeleteArray=array();
 		while($DB_WE->next_record()) {
-			deleteEntry($DB_WE->f('ID'), $table, true, 0, $DB_WE);
+			//	deleteEntry($DB_WE->f('ID'), $table, true, 0, $DB_WE);// aus 5172, das aber nicht, man ist in der schleife, nach dem ersten gelöschen ist schluss
+			$toDeleteArray[]=$DB_WE->f('ID');
+		}
+		foreach ($toDeleteArray as $toDelete){
+			deleteEntry($toDelete, $table, true, 0,$DB_WE);
 		}
 	}
 
