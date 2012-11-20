@@ -856,7 +856,7 @@ class weNavigationView{
 							$js .= $this->topFrame . '.makeNewEntry(\'link.gif\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 						}
 					}
-					if($this->Model->IsFolder && $this->Model->Selection == 'nodynamic'){
+					if($this->Model->IsFolder && $this->Model->Selection == weNavigation::SELECTION_NODYNAMIC){
 						$_old_items = array();
 						if($this->Model->hasDynChilds()){
 							$_old_items = $this->Model->depopulateGroup();
@@ -977,7 +977,7 @@ class weNavigationView{
 					}
 					$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					print we_html_element::jsElement($_js);
-					$this->Model->Selection = 'nodynamic';
+					$this->Model->Selection = weNavigation::SELECTION_NODYNAMIC;
 					$this->Model->saveField('Selection');
 					break;
 				case 'dyn_preview':
