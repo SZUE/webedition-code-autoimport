@@ -223,8 +223,9 @@ abstract class listviewBase{
 	 *
 	 */
 	function hasPrevPage($parentStart = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != '')
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 			return true;
+		}
 		if($parentStart && isset($_REQUEST['we_lv_pstart_' . $this->name])){
 			return (abs($this->start) != $_REQUEST['we_lv_pstart_' . $this->name]);
 		}
@@ -274,11 +275,8 @@ abstract class listviewBase{
 			$newdate = $year . '-' . $month . '-' . $day;
 
 			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-			if(strpos($attribs['href'], '?') === false){
-				$attribs['href'] = $attribs['href'] . '?';
-			} else{
-				$attribs['href'] = $attribs['href'] . '&';
-			}
+			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
+
 			$tmp_href = htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 		} else if($this->hasPrevPage()){
 			$foo = $this->start - $this->maxItemsPerPage;
@@ -288,12 +286,7 @@ abstract class listviewBase{
 		}
 
 		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
-		if(strpos($attribs['href'], '?') === false){
-			$attribs['href'] = $attribs['href'] . '?';
-		} else{
-			$attribs['href'] = $attribs['href'] . '&';
-		}
-		$attribs['href'] = $attribs['href'] . $tmp_href;
+		$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');

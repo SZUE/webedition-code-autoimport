@@ -148,9 +148,9 @@ abstract class we_html_tools{
 	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = "0", $height = "0", $markHot = "", $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
-		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') . (strstr(
-				$attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs(
-				$size) . '" value="' . htmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
+		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
+			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
+			'" size="' . abs($size) . '" value="' . htmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){

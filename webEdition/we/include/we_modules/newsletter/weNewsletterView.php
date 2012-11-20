@@ -2293,8 +2293,8 @@ class weNewsletterView{
 			$blockid = $kblock + 1;
 
 			$out["plain"]["defaultC"] = $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###");
-			$out["plain"]["femaleC"] = $this->getContent($blockid, 0, 0, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
-			$out["plain"]["maleC"] = $this->getContent($blockid, 0, 0, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$out["plain"]["femaleC"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$out["plain"]["maleC"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$out["plain"]["title_firstname_lastnameC"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$out["plain"]["title_lastnameC"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", "###CUSTOMERID###");
 			$out["plain"]["firstname_lastnameC"] = $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
@@ -2302,8 +2302,8 @@ class weNewsletterView{
 			$out["plain"]["lastnameC"] = $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", "###CUSTOMERID###");
 
 			$out["plain"]["default"] = $this->getContent($blockid, 0, 0, "", "", "", "", "");
-			$out["plain"]["female"] = $this->getContent($blockid, 0, 0, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
-			$out["plain"]["male"] = $this->getContent($blockid, 0, 0, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$out["plain"]["female"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$out["plain"]["male"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$out["plain"]["title_firstname_lastname"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$out["plain"]["title_lastname"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", "");
 			$out["plain"]["firstname_lastname"] = $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", "");
@@ -2311,8 +2311,8 @@ class weNewsletterView{
 			$out["plain"]["lastname"] = $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", "");
 
 			$out["html"]["defaultC"] = $this->getContent($blockid, 0, 1, "", "", "", "", "###CUSTOMERID###");
-			$out["html"]["femaleC"] = $this->getContent($blockid, 0, 1, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
-			$out["html"]["maleC"] = $this->getContent($blockid, 0, 1, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$out["html"]["femaleC"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$out["html"]["maleC"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$out["html"]["title_firstname_lastnameC"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "", "###LASTNAME###", "###CUSTOMERID###");
 			$out["html"]["title_lastnameC"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$out["html"]["firstname_lastnameC"] = $this->getContent($blockid, 0, 1, "", "", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
@@ -2320,8 +2320,8 @@ class weNewsletterView{
 			$out["html"]["lastnameC"] = $this->getContent($blockid, 0, 1, "", "", "", "###LASTNAME###", "###CUSTOMERID###");
 
 			$out["html"]["default"] = $this->getContent($blockid, 0, 1, "", "", "", "", "");
-			$out["html"]["female"] = $this->getContent($blockid, 0, 1, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
-			$out["html"]["male"] = $this->getContent($blockid, 0, 1, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$out["html"]["female"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$out["html"]["male"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$out["html"]["title_firstname_lastname"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "", "###LASTNAME###", "");
 			$out["html"]["title_lastname"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$out["html"]["firstname_lastname"] = $this->getContent($blockid, 0, 1, "", "", "###FIRSTNAME###", "###LASTNAME###", "");
@@ -2613,10 +2613,10 @@ class weNewsletterView{
 			'isEmbedImages' => '0',
 			'default_reply' => 'replay@' . $_domainName,
 			'default_sender' => 'mailer@' . $_domainName,
-			'female_salutation' => g_l('modules_newsletter', '[default][female]'),
+			weNewsletter::FEMALE_SALUTATION_FIELD => g_l('modules_newsletter', '[default][female]'),
 			'global_mailing_list' => '',
 			'log_sending' => '1',
-			'male_salutation' => g_l('modules_newsletter', '[default][male]'),
+			weNewsletter::MALE_SALUTATION_FIELD => g_l('modules_newsletter', '[default][male]'),
 			'reject_malformed' => '1',
 			'reject_not_verified' => '1',
 			'send_step' => '20',
@@ -2763,8 +2763,8 @@ class weNewsletterView{
 
 			$buffer = array();
 			$buffer["defaultC"] = $this->getContent($blockid, 0, 0, "", "", "", "", "###CUSTOMERID###");
-			$buffer["femaleC"] = $this->getContent($blockid, 0, 0, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
-			$buffer["maleC"] = $this->getContent($blockid, 0, 0, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$buffer["femaleC"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$buffer["maleC"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["title_firstname_lastnameC"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["title_lastnameC"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["firstname_lastnameC"] = $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
@@ -2772,8 +2772,8 @@ class weNewsletterView{
 			$buffer["lastnameC"] = $this->getContent($blockid, 0, 0, "", "", "", "###LASTNAME###", "###CUSTOMERID###");
 
 			$buffer["default"] = $this->getContent($blockid, 0, 0, "", "", "", "", "");
-			$buffer["female"] = $this->getContent($blockid, 0, 0, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
-			$buffer["male"] = $this->getContent($blockid, 0, 0, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$buffer["female"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$buffer["male"] = $this->getContent($blockid, 0, 0, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$buffer["title_firstname_lastname"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$buffer["title_lastname"] = $this->getContent($blockid, 0, 0, "", "###TITLE###", "", "###LASTNAME###", "");
 			$buffer["firstname_lastname"] = $this->getContent($blockid, 0, 0, "", "", "###FIRSTNAME###", "###LASTNAME###", "");
@@ -2784,8 +2784,8 @@ class weNewsletterView{
 
 			$buffer = array();
 			$buffer["defaultC"] = $this->getContent($blockid, 0, 1, "", "", "", "", "###CUSTOMERID###");
-			$buffer["femaleC"] = $this->getContent($blockid, 0, 1, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
-			$buffer["maleC"] = $this->getContent($blockid, 0, 1, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$buffer["femaleC"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
+			$buffer["maleC"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["title_firstname_lastnameC"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["title_lastnameC"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "", "###LASTNAME###", "###CUSTOMERID###");
 			$buffer["firstname_lastnameC"] = $this->getContent($blockid, 0, 1, "", "", "###FIRSTNAME###", "###LASTNAME###", "###CUSTOMERID###");
@@ -2793,8 +2793,8 @@ class weNewsletterView{
 			$buffer["lastnameC"] = $this->getContent($blockid, 0, 1, "", "", "", "###LASTNAME###", "###CUSTOMERID###");
 
 			$buffer["default"] = $this->getContent($blockid, 0, 1, "", "", "", "", "");
-			$buffer["female"] = $this->getContent($blockid, 0, 1, $this->settings["female_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
-			$buffer["male"] = $this->getContent($blockid, 0, 1, $this->settings["male_salutation"], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$buffer["female"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::FEMALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
+			$buffer["male"] = $this->getContent($blockid, 0, 1, $this->settings[weNewsletter::MALE_SALUTATION_FIELD], "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$buffer["title_firstname_lastname"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "###FIRSTNAME###", "###LASTNAME###", "");
 			$buffer["title_lastname"] = $this->getContent($blockid, 0, 1, "", "###TITLE###", "", "###LASTNAME###", "");
 			$buffer["firstname_lastname"] = $this->getContent($blockid, 0, 1, "", "", "###FIRSTNAME###", "###LASTNAME###", "");
