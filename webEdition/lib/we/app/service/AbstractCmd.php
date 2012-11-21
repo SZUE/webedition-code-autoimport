@@ -59,8 +59,13 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		if (!isset($session->model)) {
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
-		$model = $session->model;
+		$model = $session->model;t_e($formData,$model);
 		$model->setFields($formData);
+		
+		if(isset($formData['ParentPath']) && $model->pathExists($formData['ParentPath'])){
+			$model->ParentID = we_util_Path::path2Id($formData['ParentPath'], $model->getTable());
+			$model->setPath();
+		}
 		
 		$newBeforeSaving = $model->ID == 0;
 		// check if user has the permissions to create new entries
