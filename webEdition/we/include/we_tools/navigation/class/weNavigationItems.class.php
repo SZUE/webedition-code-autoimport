@@ -223,7 +223,7 @@ class weNavigationItems{
 				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
-
+		unset($_item);
 		$this->loopAllRules($parentid);
 		return true;
 	}

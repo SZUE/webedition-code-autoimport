@@ -573,6 +573,8 @@ class weShopVariants{
 						$fieldArr = array_merge($modelelemets, $fieldArr);
 					}
 				}
+				unset($varArr);
+				unset($fieldArr);
 			}
 			//
 			return $elements;

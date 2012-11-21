@@ -85,11 +85,13 @@ function we_tag_sessionField($attribs, $content){
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
+			unset($countryvalue);
 
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
+			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $lang . '.UTF-8');
 			asort($topCountries, SORT_LOCALE_STRING);
@@ -103,6 +105,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
+			unset($countryvalue);
 
 			if(!empty($topCountries) && !empty($shownCountries)){
 				$content.='<option value="-" disabled="disabled">----</option>';
@@ -110,6 +113,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
 				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
+			unset($countryvalue2);
 
 			return getHtmlTag('select', $newAtts, $content, true);
 
@@ -146,6 +150,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($frontendLL as $langkey => &$langvalue){
 				$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 			}
+			unset($langvalue);
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'select':
