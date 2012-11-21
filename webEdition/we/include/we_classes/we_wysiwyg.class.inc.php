@@ -60,17 +60,17 @@ class we_wysiwyg{
 		$this->name = $name;
 		$this->bgcol = $bgcol;
 		$this->xml = $xml;
-		if(WYSIWYG_TYPE == 'tinyMCE'){
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
 		}
 		$this->removeFirstParagraph = $removeFirstParagraph;
 		$this->inlineedit = $inlineedit;
 		$this->fullscreen = $fullscreen;
 		$this->className = $className;
-		$this->buttonpos = WYSIWYG_TYPE == 'tinyMCE' ? $buttonpos : 'top';
+		$this->buttonpos = ($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? $buttonpos : 'top');
 		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
 		$this->outsideWE = $outsideWE;
-		if(WYSIWYG_TYPE == 'tinyMCE'){
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE'){
 			if($fontnames){
 				$fn = explode(',', $fontnames);
 				$tf = '';
@@ -96,7 +96,7 @@ class we_wysiwyg{
 			}
 		}
 		$this->cssClasses = $cssClasses;
-		if($this->cssClasses != '' && WYSIWYG_TYPE == 'tinyMCE'){
+		if($this->cssClasses != '' && $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE'){
 			$cc = explode(',', $this->cssClasses);
 			$tf = '';
 			foreach($cc as $val){
@@ -115,14 +115,14 @@ class we_wysiwyg{
 		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
 		$this->charset = $charset;
 
-		$this->width = (WYSIWYG_TYPE == 'tinyMCE' ? $width - 20 : $width); //imi
+		$this->width = ($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? $width - 20 : $width); //imi
 		$this->height = $height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
 
 		if($inlineedit){
 			if($value){
-				$replace = (WYSIWYG_TYPE == 'tinyMCE' ?
+				$replace = ($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ?
 						array("\n" => '', "\r" => '') :
 						array("\\" => "\\\\", "\n" => '\n', "\r" => '\r')
 					);
@@ -158,7 +158,7 @@ class we_wysiwyg{
 		}
 
 		define('WE_WYSIWG_HEADER', 1);
-		switch(WYSIWYG_TYPE){
+		switch($GLOBALS['WE_MAIN_DOC']->InWebEdition ? WYSIWYG_TYPE : 'default'){
 			case 'tinyMCE':
 				//FIXME: remove onchange - bad practise
 				return '
@@ -427,7 +427,7 @@ function tinyMCEchanged(inst){
 		);
 
 		// the following are tinyMCE only
-		if(WYSIWYG_TYPE == 'tinyMCE'){
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE'){
 			array_push($arr, 'absolute', 'blockquote', 'cite', 'del', 'emotions', 'hr', 'ins', 'insertdate', 'insertlayer', 'inserttime', 'ltr', 'movebackward', 'moveforward', 'nonbreaking', 'pastetext', 'pasteword', 'replace', 'rtl', 'search', 'styleprops'
 			);
 		}
@@ -479,7 +479,7 @@ function tinyMCEchanged(inst){
 				"blockquote" => "blockquote"
 				));
 
-		if(WYSIWYG_TYPE == 'tinyMCE'){
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE'){
 			$this->tinyFormatblock = implode(',', array_keys($formatblockArr));
 		}
 
@@ -1128,7 +1128,7 @@ function tinyMCEchanged(inst){
 			}
 		}
 
-		switch(WYSIWYG_TYPE){
+		switch($GLOBALS['WE_MAIN_DOC']->InWebEdition ? WYSIWYG_TYPE : 'default'){
 			case 'tinyMCE':
 				$this->width = $this->width + 20; //imi
 				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
@@ -1397,7 +1397,7 @@ class we_wysiwygToolbarSeparator extends we_wysiwygToolbarElement{
 	var $classname = "we_wysiwygToolbarSeparator";
 
 	function we_wysiwygToolbarSeparator($editor, $width = 3, $height = 22){
-		$width = WYSIWYG_TYPE == 'tinyMCE' ? 6 : $width; // correct value: 5: imi
+		$width = $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? 6 : $width; // correct value: 5: imi
 		$this->we_wysiwygToolbarElement($editor, "", $width, $height);
 	}
 
@@ -1418,9 +1418,9 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 	var $imgSrc = "";
 
 	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 25, $height = 22){
-		$width = WYSIWYG_TYPE == 'tinyMCE' ? 21 : $width; // correct value: 20 : imi
+		$width = $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? 21 : $width; // correct value: 20 : imi
 		$this->we_wysiwygToolbarElement($editor, $cmd, $width, $height);
-		if(WYSIWYG_TYPE != 'tinyMCE'){
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition || WYSIWYG_TYPE != 'tinyMCE'){
 			$this->tooltiptext = $tooltiptext;
 			$this->imgSrc = $imgSrc;
 		}
@@ -1451,7 +1451,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
 					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "inserttable":
 			case "editcell":
@@ -1466,7 +1466,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				return stripos($this->editor->propstring, ",table,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "editrow":
 			case "deletetable":
-				return WYSIWYG_TYPE != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
 					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "cut":
 			case "copy":
@@ -1475,7 +1475,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "pastetext":
 			case "pasteword":
 			case "selectall":
-				return WYSIWYG_TYPE == 'tinyMCE' &&
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",copypaste,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "forecolor":
 			case "backcolor":
@@ -1489,7 +1489,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "outdent":
 				return stripos($this->editor->propstring, ",list,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "blockquote":
-				return WYSIWYG_TYPE == 'tinyMCE' &&
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",list,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "justifyleft":
 			case "justifycenter":
@@ -1506,12 +1506,12 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "removeformat":
 				return stripos($this->editor->propstring, ",prop,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "importrtf":
-				return WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' ? false : stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
 			case "absolute":
 			case "insertlayer":
 			case "movebackward":
 			case "moveforward":
-				return WYSIWYG_TYPE == 'tinyMCE' &&
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",layer,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
 			//TODO: we should combine the following command to "direction": ltr,rtl?
@@ -1522,7 +1522,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "del":
 			case "ins":
 			case "cite" :
-				return WYSIWYG_TYPE == 'tinyMCE' &&
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "emotions":
 				return false; // problems with path to emoticons
@@ -1536,7 +1536,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "replace":
 			case "fullscreen":
 			case "styleprops":
-				return WYSIWYG_TYPE == 'tinyMCE' &&
+				return $GLOBALS['WE_MAIN_DOC']->InWebEdition && WYSIWYG_TYPE == 'tinyMCE' &&
 					(stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			default:
 				return stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
