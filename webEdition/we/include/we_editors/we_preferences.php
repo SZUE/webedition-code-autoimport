@@ -616,25 +616,26 @@ function save_all_values(){
 			}
 		}
 	}
-
-	$_SESSION['weS']['versions']['logPrefsChanged'] = array();
-	foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
-		if(isset($_REQUEST['newconf'][$k])){
-			if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
-				$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
+	if(isset($_SESSION['weS']['versions'])){
+		$_SESSION['weS']['versions']['logPrefsChanged'] = array();
+		foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
+			if(isset($_REQUEST['newconf'][$k])){
+				if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
+					$_SESSION['weS']['versions']['logPrefsChanged'][$k] = $_REQUEST['newconf'][$k];
+				}
+			} elseif($_SESSION['weS']['versions']['logPrefs'][$k] != ""){
+				$_SESSION['weS']['versions']['logPrefsChanged'][$k] = "";
 			}
-		} elseif($_SESSION['weS']['versions']['logPrefs'][$k] != ""){
-			$_SESSION['weS']['versions']['logPrefsChanged'][$k] = "";
 		}
-	}
 
-	if(!empty($_SESSION['weS']['versions']['logPrefsChanged'])){
-		$versionslog = new versionsLog();
-		$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
+		if(!empty($_SESSION['weS']['versions']['logPrefsChanged'])){
+			$versionslog = new versionsLog();
+			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
+		}
+		unset($_SESSION['weS']['versions']['logPrefs']);
+		unset($_SESSION['weS']['versions']['logPrefsChanged']);
 	}
-	unset($_SESSION['weS']['versions']['logPrefs']);
-	unset($_SESSION['weS']['versions']['logPrefsChanged']);
-
+	
 	//SAVE CHANGES
 	// Third save all changes of the config files
 	we_base_preferences::saveConfigs();
