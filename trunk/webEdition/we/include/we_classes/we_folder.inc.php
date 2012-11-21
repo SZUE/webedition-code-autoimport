@@ -416,43 +416,22 @@ class we_folder extends we_root{
 		$language = $this->TriggerID;
 
 		// Change TriggerID of published documents first
-		$query = 'UPDATE ' . $DB_WE->escape($this->Table) . ' SET TriggerID = ' . intval($this->TriggerID) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))';
-
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET TriggerID = ' . intval($this->TriggerID) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published = 0 AND ContentType = "folder") OR (Published > 0 AND ContentType IN ("text/webEdition","text/html","objectFile")))')){
 			return false;
 		}
 		// Change Language of unpublished documents
-		$query = 'SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")';
 
-		if(!$DB_WE->query($query)){
+		if(!$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("text/webEdition","text/html","objectFile")')){
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			/* 			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
-			  $DocumentObject = f($query, 'DocumentObject', $DB_WE2);
-			  if ($DocumentObject!=''){
-			  $DocumentObject = unserialize($DocumentObject);
-
-			  $DocumentObject[0]['TriggerID'] = $this->TriggerID;
-			  $DocumentObject = serialize($DocumentObject);
-			  $DocumentObject = str_replace("'", "\'", $DocumentObject);
-
-			  $query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".intval($DB_WE->f("ID"))."' AND Active = 0";
-			  if(!$DB_WE2->query($query)) {
-			  return false;
-
-			  }
-			  } */
-			$query = 'SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
-			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
+			$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1', 'DocumentObject', $DB_WE2);
 			if($DocumentObject != ''){
 				$DocumentObject = unserialize($DocumentObject);
 				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
-				$DocumentObject = serialize($DocumentObject);
-				$DocumentObject = str_replace("'", "\'", $DocumentObject);
+				$DocumentObject = str_replace("'", "\'", serialize($DocumentObject));
 
-				$query = 'UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1';
-				if(!$DB_WE2->query($query)){
+				if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1')){
 					return false;
 				}
 			}
@@ -461,15 +440,11 @@ class we_folder extends we_root{
 		// TriggerID auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
-			$ClassPathArray = explode('/', $this->Path);
-			$ClassPath = '/' . $ClassPathArray[1];
-			$q = 'SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "' . $ClassPath . '"';
-			$cid = $pid = f($q, 'ID', $DB_WE);
+			list(,$ClassPath) = explode('/', $this->Path);
+			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "/' . $DB_WE->escape($ClassPath) . '"', 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 
-			$query = 'UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ';
-
-			if(!$DB_WE->query($query)){
+			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape($_obxTable) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
 				return false;
 			}
 		}
