@@ -63,6 +63,7 @@ class weShopStatusMails{
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
+		unset($lcvalue);
 		foreach($frontendL as $langkey){
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
@@ -163,39 +164,45 @@ class weShopStatusMails{
 			$zw2 = unserialize($DB_WE->f('strFelder'));
 			foreach($zw->FieldsHidden as $key => &$value){
 				if(isset($zw2->FieldsHidden[$key])){
-					$zw->FieldsHidden[$key] = $zw2->FieldsHidden[$key];
+					$value = $zw2->FieldsHidden[$key];
 				}
 			}
+			unset($value);
 			foreach($zw->FieldsHiddenCOV as $key => &$value){
 				if(isset($zw2->FieldsHiddenCOV[$key])){
-					$zw->FieldsHiddenCOV[$key] = $zw2->FieldsHiddenCOV[$key];
+					$value = $zw2->FieldsHiddenCOV[$key];
 				}
 			}
+			unset($value);
 			foreach($zw->FieldsText as $key => &$value){
 				if(isset($zw2->FieldsText[$key])){
-					$zw->FieldsText[$key] = $zw2->FieldsText[$key];
+					$value = $zw2->FieldsText[$key];
 				}
 			}
 			foreach($zw->FieldsMails as $key => &$value){
 				if(isset($zw2->FieldsMails[$key])){
-					$zw->FieldsMails[$key] = $zw2->FieldsMails[$key];
+					$value = $zw2->FieldsMails[$key];
 				}
 			}
+			unset($value);
 			foreach($zw->EMailData as $key => &$value){
 				if(isset($zw2->EMailData[$key])){
-					$zw->EMailData[$key] = $zw2->EMailData[$key];
+					$value = $zw2->EMailData[$key];
 				}
 			}
+			unset($value);
 			foreach($zw->LanguageData as $key => &$value){
 				if(isset($zw2->LanguageData[$key])){
-					$zw->LanguageData[$key] = $zw2->LanguageData[$key];
+					$value = $zw2->LanguageData[$key];
 				}
 			}
+			unset($value);
 			foreach($zw->FieldsDocuments as $key => &$value){
 				if(isset($zw2->FieldsDocuments[$key])){
-					$zw->FieldsDocuments[$key] = $zw2->FieldsDocuments[$key];
+					$value = $zw2->FieldsDocuments[$key];
 				}
 			}
+			unset($value);
 		}
 		return $zw;
 	}

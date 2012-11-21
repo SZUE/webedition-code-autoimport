@@ -1257,10 +1257,12 @@ class we_objectFile extends we_document{
 		foreach($topCountries as $countrykey => &$countryvalue){
 			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 		}
+		unset($countryvalue);
 		$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 		foreach($shownCountries as $countrykey => &$countryvalue){
 			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 		}
+		unset($countryvalue);
 		$oldLocale = setlocale(LC_ALL, NULL);
 		setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 		asort($topCountries, SORT_LOCALE_STRING);
@@ -1273,6 +1275,7 @@ class we_objectFile extends we_document{
 		foreach($topCountries as $countrykey => &$countryvalue){
 			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 		}
+		unset($countryvalue);
 		if(!empty($topCountries) && !empty($shownCountries)){
 			$countryselect->addOption('-', '----', array("disabled" => "disabled"));
 		}
@@ -1280,7 +1283,7 @@ class we_objectFile extends we_document{
 		foreach($shownCountries as $countrykey => &$countryvalue){
 			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 		}
-
+		unset($countryvalue);
 		$countryselect->selectOption($this->getElement($name));
 		$content = $countryselect->getHtml();
 
