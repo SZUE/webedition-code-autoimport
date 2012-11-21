@@ -59,7 +59,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		if (!isset($session->model)) {
 			throw new we_service_Exception('Model is not set in session!', we_service_ErrorCodes::kModelNotSetInSession);
 		}
-		$model = $session->model;t_e($formData,$model);
+		$model = $session->model;
 		$model->setFields($formData);
 		
 		if(isset($formData['ParentPath']) && $model->pathExists($formData['ParentPath'])){
