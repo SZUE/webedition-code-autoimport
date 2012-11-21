@@ -80,6 +80,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				if(defined('NEWSLETTER_TABLE')){
 					$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl');
 				}
+
 				$fields = array('ParentID');
 				foreach($workspaces as $cur){
 					$fields[] = $cur['key'];
@@ -104,7 +105,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 						}
 						$cur['parent'] = $DB_WE->f($cur['parentKey']);
 					}
-
+					unset($cur);
 					while($pid) { //	For each group
 						$_userGroups[] = $pid;
 
@@ -123,6 +124,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 								}
 								$cur['parent'] = $DB_WE->f($cur['parentKey']);
 							}
+							unset($cur);
 						} else{
 							$pid = 0;
 						}
@@ -130,6 +132,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				}
 				$_SESSION['user']['groups'] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
 				$_SESSION['user']['workSpace'] = array();
+
 				foreach($workspaces as $key => $cur){
 					$_SESSION['user']['workSpace'][$key] = $cur['value'];
 				}

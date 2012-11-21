@@ -52,38 +52,39 @@ function correctUml($in){
 function getAllowedClasses($db = ''){
 	$db = ($db ? $db : new DB_WE());
 	$out = array();
-	if(defined('OBJECT_TABLE')){
-		$ws = get_ws();
-		$ofWs = get_ws(OBJECT_FILES_TABLE);
-		$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
+	if(!defined('OBJECT_FILES_TABLE')){
+		return '';
+	}
+	$ws = get_ws();
+	$ofWs = get_ws(OBJECT_FILES_TABLE);
+	$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
+	if(intval($ofWs) == 0){
+		$ofWs = 0;
+	}
+	if(intval($ws) == 0){
+		$ws = 0;
+	}
+	$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
 
-		if(intval($ofWs) == 0){
-			$ofWs = 0;
-		}
-		if(intval($ws) == 0){
-			$ws = 0;
-		}
-		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
+	while($db->next_record()) {
+		$path = $db->f('Path');
+		if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
+			$path2 = $path . '/';
+			if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
+				$out[] = $db->f('ID');
+			} else{
 
-		while($db->next_record()) {
-			$path = $db->f('Path');
-			if(!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, '', true)){
-				$path2 = $path . '/';
-				if(!$ofWs || $_SESSION['perms']['ADMINISTRATOR']){
-					$out[] = $db->f('ID');
-				} else{
-
-					// object Workspace check (New since Version 4.x)
-					foreach($ofWsArray as $w){
-						if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
-							$out[] = $db->f('ID');
-							break;
-						}
+				// object Workspace check (New since Version 4.x)
+				foreach($ofWsArray as $w){
+					if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
+						$out[] = $db->f('ID');
+						break;
 					}
 				}
 			}
 		}
 	}
+
 	return $out;
 }
 
@@ -135,47 +136,28 @@ function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, $db = '', $ro
 
 function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', $rootdir = '/', $catfield = '', $onlyindir = ''){
 	$db = ($db ? $db : new DB_WE());
-	static $cache = array();
 	if(!$catIDs){
 		return '';
 	}
-	$foo = makeArrayFromCSV($catIDs);
+	//$foo = makeArrayFromCSV($catIDs);
 	$cats = array();
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 	$showpath &=!$catfield;
-	foreach($foo as $cur){
-		if(!isset($cache[$cur])){
-			$cache[$cur] = getHash('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID="' . $cur . '"', $db);
-		}
+	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . $catIDs . ')');
+	while($db->next_record()) {
+		$data = $db->getRecord();
 		if($field == 'Title' || $field == 'Description'){
-			if($cache[$cur]['Catfields']){
-				$_arr = unserialize($cache[$cur]['Catfields']);
-				if(empty($onlyindir)){
+			if($data['Catfields']){
+				$_arr = unserialize($data['Catfields']);
+				if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
 					$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
-				} else{
-					$pos = strpos($cache[$cur]['Path'], $onlyindir);
-					if(($pos !== false) && ($pos == 0)){
-						$cats[] = ($field == 'Description') ? parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
-					}
 				}
-			} else{
-				if(empty($onlyindir)){
-					$cats[] = '';
-				} else{
-					$pos = strpos($cache[$cur]['Path'], $onlyindir);
-					if(($pos !== false) && ($pos == 0)){
-						$cats[] = '';
-					}
-				}
+			} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+				$cats[] = '';
 			}
 		} else{
-			if(empty($onlyindir)){
-				$cats[] = $cache[$cur][$field];
-			} else{
-				$pos = strpos($cache[$cur]['Path'], $onlyindir);
-				if(($pos !== false) AND ($pos == 0)){
-					$cats[] = $cache[$cur][$field];
-				}
+			if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+				$cats[] = $data[$field];
 			}
 		}
 	}
@@ -190,16 +172,14 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true){
-	if(strlen($paths) == 0 || strlen($table) == 0)
+	if(strlen($paths) == 0 || strlen($table) == 0){
 		return "";
+	}
 	$foo = makeArrayFromCSV($paths);
 	$db = new DB_WE();
 	$outArray = array();
 	foreach($foo as $path){
-		$path = trim($path);
-		if(substr($path, 0, 1) != "/")
-			$path = "/" . $path;
-		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+		$id = f('SELECT ID FROM ' . $table . ' WHERE Path="' . $db->escape('/' . ltrim(trim($path), '/')) . '"', 'ID', $db);
 		if($id){
 			$outArray[] = $id;
 		}
@@ -625,7 +605,7 @@ function makeOwnersSql($useCreatorID = true){
 	foreach($groups as $id){
 		$q[] = "Owners like '%," . intval($id) . ",%'";
 	}
-	return ' AND ( RestrictOwners=0 OR (' . implode(' OR ', $q) . ')) ';
+	return ' AND ( RestrictOwners=1 AND (' . implode(' OR ', $q) . ')) ';
 }
 
 function we_getParentIDs($table, $id, &$ids, $db = ''){
@@ -1001,12 +981,11 @@ function getWsFileList($table, $childsOnly = false){
 	}
 	$db = new DB_WE();
 	$wsFileList = '';
-
 	$workspaces = makeArrayFromCSV(get_ws($table));
-	if(sizeof($workspaces)){
+	if(!empty($workspaces)){
 		$childList = array();
 		foreach($workspaces as $value){
-			array_push($childList, $value);
+			$childList[] = $value;
 			$myPath = id_to_path($value, $table);
 			$_query = 'SELECT ID FROM ' . $table . ' WHERE 0 ';
 			if(!$childsOnly){
@@ -1023,10 +1002,10 @@ function getWsFileList($table, $childsOnly = false){
 			$_query .= 'OR PATH LIKE "' . $db->escape($myPath) . '/%" OR PATH = "' . $db->escape($myPath) . '" ';
 			$db->query($_query);
 			while($db->next_record()) {
-				array_push($childList, $db->f('ID'));
+				$childList[] = $db->f('ID');
 			}
 		}
-		if(sizeof($wsFileList)){
+		if(!empty($childList)){
 			$wsFileList = implode(',', $childList);
 		}
 	}
@@ -1046,7 +1025,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 
 	if($ws == ''){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
-		return (sizeof($wsA) ? $wsA[0] : '');
+		return (!empty($wsA) ? $wsA[0] : '');
 	} else
 		return $ws;
 }
@@ -1284,8 +1263,7 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 					}
 				} else{
 					$text = preg_replace(array('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui',
-						'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui',),
-						array('\1'), $text);
+						'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
 				}
 			}
 		}

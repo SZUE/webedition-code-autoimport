@@ -96,7 +96,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 
 		$DB_WE = new DB_WE();
-		$where = " WHERE  ParentID=" . intval($ParentID) . " " . makeOwnersSql() . $wsQuery;
+		$where = ' WHERE  (ParentID=' . intval($ParentID) . ' ' . makeOwnersSql().') ' . $wsQuery;
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" . (($table == FILE_TABLE || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined(
@@ -111,7 +111,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 			$elem .= ",ContentType";
 
-		$DB_WE->query("SELECT $elem, LOWER(Text) AS lowtext, ABS(REPLACE(Text,'info','')) AS Nr, (Text REGEXP '^[0-9]') AS isNr FROM $table $where ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext" . ($segment != 0 ? " LIMIT $offset,$segment;" : ";"));
+		$DB_WE->query('SELECT '.$elem.', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM '.$table.' '.$where.' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT '.$offset.','.$segment : ''));
 
 		$ct = new we_base_ContentTypes();
 		while($DB_WE->next_record()) {
@@ -155,7 +155,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 			if($typ == "group" && $OpenCloseStatus == 1)
 				getItems($ID, 0, $segment);
 		}
-		$total = f("SELECT COUNT(1) as total FROM $table $where;", 'total', $DB_WE);
+		$total = f("SELECT COUNT(1) as total FROM $table $where", 'total', $DB_WE);
 		$nextoffset = $offset + $segment;
 		if($segment && $total > $nextoffset){
 			$treeItems[] = array(
@@ -180,15 +180,15 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 
 	if(($ws = get_ws($table))){
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
+
 		foreach($wsPathArray as $path){
-			$wsQuery .= " Path like '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . " OR ";
+			$wsQuery .= " Path LIKE '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . " OR ";
 			while($path != "/" && $path != "\\" && $path) {
 				$parentpaths[] = $path;
 				$path = dirname($path);
 			}
 		}
-	} else
-	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+	} elseif(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 		$ac = getAllowedClasses($DB_WE);
 		foreach($ac as $cid){
 			$path = id_to_path($cid, OBJECT_TABLE);
@@ -197,7 +197,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 	}
 
 	if($wsQuery){
-		$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ') ';
+		$wsQuery = ' OR (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ') ';
 	}
 
 	if(isset($_REQUEST['we_cmd'][3])){
