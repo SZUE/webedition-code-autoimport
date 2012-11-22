@@ -41,14 +41,13 @@ function init() {
 		
 		formObj.elements['we_dialog_args[title]'].value = inst.dom.getAttrib(elm, 'title');
 		formObj.elements['we_dialog_args[target]'].value = inst.dom.getAttrib(elm, 'target');
-		formObj.elements['we_dialog_args[class]'].value = inst.dom.getAttrib(elm, 'class');
+		//formObj.elements['we_dialog_args[class]'].value = inst.dom.getAttrib(elm, 'class');
 		formObj.elements['we_dialog_args[rel]'].value = inst.dom.getAttrib(elm, 'rel');
 		formObj.elements['we_dialog_args[lang]'].value = inst.dom.getAttrib(elm, 'lang');
 		formObj.elements['we_dialog_args[hreflang]'].value = inst.dom.getAttrib(elm, 'hreflang');
 		formObj.elements['we_dialog_args[rev]'].value = inst.dom.getAttrib(elm, 'rev');
 		formObj.elements['we_dialog_args[accesskey]'].value = inst.dom.getAttrib(elm, 'accesskey', typeof(elm.accesskey) != "undefined" ? elm.accesskey : "");
 		formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', typeof(elm.tabindex) != "undefined" ? elm.tabindex : "");
-		//this.selectOptionByValue(formObj, 'sel_we_dialog_args[target]', inst.dom.getAttrib(elm, 'target'));
 
 		// analyse linktype, enter link-data and reload
 		var linktype = this.getLinkType(urlParts[0]);
@@ -72,6 +71,14 @@ function init() {
 		}
 		this.doReload(formObj);
 	}
+	if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
+		var cl = '';
+		for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
+			cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
+			formObj.elements['we_dialog_args[class]'].options[formObj.elements['we_dialog_args[class]'].length] = new Option('.' + cl, cl);
+		}
+	}
+	this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
 }
 
 // we_functions
