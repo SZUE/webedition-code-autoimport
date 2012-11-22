@@ -67,8 +67,6 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	$ct = new we_base_ContentTypes();
-
 	function getItems($ParentID, $offset = 0, $segment = 0){
 		global $table, $openFolders, $parentpaths, $wsQuery, $treeItems;
 
@@ -97,9 +95,9 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 			);
 		}
 		$DB_WE = new DB_WE();
-		$tmp=array_filter($openFolders);
-		$tmp[]=$ParentID;
-		$where = ' WHERE  ID!='. intval($ParentID).' AND ParentID IN(' . implode(',',$tmp) . ') AND ((1' . makeOwnersSql() . ') ' . $wsQuery.')';
+		$tmp = array_filter($openFolders);
+		$tmp[] = $ParentID;
+		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . makeOwnersSql() . ') ' . $wsQuery . ')';
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" . (($table == FILE_TABLE || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined(
@@ -116,6 +114,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 
 		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$ct = new we_base_ContentTypes();
 
 		while($DB_WE->next_record()) {
 			$tree_count++;
@@ -125,7 +124,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 			$Path = $DB_WE->f("Path");
 			$IsFolder = $DB_WE->f("IsFolder");
 			$ContentType = $DB_WE->f("ContentType");
-			$Icon = $GLOBALS['ct']->getIcon($ContentType, 'link.gif', $DB_WE->f("Extension"));
+			$Icon = $ct->getIcon($ContentType, 'link.gif', $DB_WE->f("Extension"));
 			$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE))) ? ((($DB_WE->f(
 					"Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f(
 						"Published")) : 1;
@@ -155,9 +154,9 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				"offset" => $offset
 			);
 
-			/*if($typ == "group" && $OpenCloseStatus == 1){
-				getItems($ID, 0, $segment);
-			}*/
+			/* if($typ == "group" && $OpenCloseStatus == 1){
+			  getItems($ID, 0, $segment);
+			  } */
 		}
 		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $DB_WE);
 		$nextoffset = $offset + $segment;
@@ -200,9 +199,9 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 	}
 
-	if($wsQuery){
-		$wsQuery = ' OR (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ') ';
-	}
+	$wsQuery = ($wsQuery ?
+			' OR (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ') ' :
+			' OR RestrictOwners=0 ');
 
 	if(isset($_REQUEST['we_cmd'][3])){
 		$openFolders = explode(',', $_REQUEST['we_cmd'][3]);
