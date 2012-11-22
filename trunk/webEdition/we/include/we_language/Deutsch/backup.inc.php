@@ -3,8 +3,10 @@
 $l_backup=array(
 	''=>'Verlaufsdaten sichern',
 	''=>'Temporäre Dateien sichern',
+	''=>'Sichere die Daten der WE-App:',
 	''=>'Dei Daten des Widgets: zuletzt bearbeitet',
 	''=>'Daten des Widget -zuletzt bearbeitet- wiederherstellen',
+	''=>'Importiere diem Daten der WE-App',
 	''=>'Achtung! Nach dem Wiederherstellen eines Backups <strong>aus älteren webEdition-Installationen</strong> (vor 6.3.0) sollte dringend eine <strong>Update-Wiederholung</strong> durchgeführt werden!',
 	'backup_deleted'=>'Die Backup-Datei %s wurde gelöscht',
 	'backup_form'=>'Backup vom',
