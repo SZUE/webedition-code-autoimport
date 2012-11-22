@@ -1,6 +1,10 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Save data of the widget last worked on',
+	''=>'Save temporary data',
+	''=>'The data of the widget last worked on',
+	''=>'Import data for the widget last worked on',
 	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'The backup file %s has been deleted',
 	'backup_form'=>'Backup from',

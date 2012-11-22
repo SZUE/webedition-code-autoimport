@@ -1,6 +1,10 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
+	''=>'Verlaufsdaten sichern',
+	''=>'Temporäre Dateien sichern',
+	''=>'Dei Daten des Widgets: zuletzt bearbeitet',
+	''=>'Daten des Widget -zuletzt bearbeitet- wiederherstellen',
 	''=>'Achtung! Nach dem Wiederherstellen eines Backups <strong>aus älteren webEdition-Installationen</strong> (vor 6.3.0) sollte dringend eine <strong>Update-Wiederholung</strong> durchgeführt werden!',
 	'backup_deleted'=>'Die Backup-Datei %s wurde gelöscht',
 	'backup_form'=>'Backup vom',
@@ -195,8 +199,8 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'step4'=>'Schritt 4/4 - Wiederherstellung beendet',
 	'temporary_info'=>'Noch nicht veröffentlichte Dokumente und Objekte bzw. noch nicht veröffentlichte Änderungen.',
 	'todo_info'=>'Mitteilungen und Aufgaben des ToDo/Messaging Moduls.',
-	'tools_export_desc'=>'Hier können Sie die Daten der webEdition-Tools sichern. Wählen Sie bitte die gewünschte Tools aus.',
-	'tools_import_desc'=>'Hier können Sie die Daten der webEdition-Tools wiederhestellen. Wählen Sie bitte die gewünschte Tools aus.',
+	'tools_export_desc'=>'Hier können Sie die Daten der webEdition-Tools sichern. Wählen Sie bitte die gewünschten Tools aus.',
+	'tools_import_desc'=>'Hier können Sie die Daten der webEdition-Tools wiederherstellen. Wählen Sie bitte die gewünschte Tools aus.',
 	'too_big_file'=>'Die Datei `%s` kann nicht gespeichert werden, da die maximale Dateigröße überschritten wurde.',
 	'unselect_dep2'=>'Sie haben `%s` abgewählt. Folgende Optionen werden automatisch abgewählt:',
 	'unselect_dep3'=>'Sie können trotzdem die nicht selektierten Optionen auswählen.',
