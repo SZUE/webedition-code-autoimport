@@ -98,7 +98,7 @@ var ImageDialog = {
 			}
 
 			// no reload, so we need to set values for ratioh und ratiow
-			if(!(isNaN(imgWidth * imgHeight) || imgHeight === 0 || imgWidth === 0)){
+			if(!(isNaN(imgWidth * imgHeight) || imgHeight === 0 || imgWidth === 0)){
 				nl["tinyMCEInitRatioH"].value = imgWidth / imgHeight;
 				nl["tinyMCEInitRatioW"].value = imgHeight / imgWidth;
 			}
