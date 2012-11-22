@@ -201,6 +201,7 @@ class weBackupPreparer{
 		$handle_options['todo'] = (isset($_REQUEST['handle_todo']) && $_REQUEST['handle_todo']) ? 1 : 0;
 		$handle_options['newsletter'] = (isset($_REQUEST['handle_newsletter']) && $_REQUEST['handle_newsletter']) ? 1 : 0;
 		$handle_options['temporary'] = (isset($_REQUEST['handle_temporary']) && $_REQUEST['handle_temporary']) ? 1 : 0;
+		$handle_options['history'] = (isset($_REQUEST['handle_history']) && $_REQUEST['handle_history']) ? 1 : 0;
 		$handle_options['banner'] = (isset($_REQUEST['handle_banner']) && $_REQUEST['handle_banner']) ? 1 : 0;
 		$handle_options['core'] = (isset($_REQUEST['handle_core']) && $_REQUEST['handle_core']) ? 1 : 0;
 		$handle_options['object'] = (isset($_REQUEST['handle_object']) && $_REQUEST['handle_object']) ? 1 : 0;
