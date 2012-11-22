@@ -3,8 +3,10 @@
 $l_backup=array(
 	''=>'Save data of the widget last worked on',
 	''=>'Save temporary data',
+	''=>'Save the data of the WE-App',
 	''=>'The data of the widget last worked on',
 	''=>'Import data for the widget last worked on',
+	''=>'Import the data of the WE-App',
 	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'La copia de seguridad %s ha sido eliminada',
 	'backup_form'=>'Reserva desde',
