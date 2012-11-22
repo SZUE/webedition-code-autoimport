@@ -46,7 +46,6 @@ var ImageDialog = {
 		var n = ed.selection.getNode();
 		var fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
 		tinyMCEPopup.resizeToInnerSize();
-
 		TinyMCE_EditableSelects.init();
 
 		if(n.nodeName == 'IMG' && !ed.isWeDataInitialized){
@@ -64,7 +63,6 @@ var ImageDialog = {
 			nl["we_dialog_args[title]"].value = dom.getAttrib(n, 'title');
 			nl["we_dialog_args[name]"].value = dom.getAttrib(n, 'name');
 			this.selectOptionByValue(f, "we_dialog_args[align]", dom.getAttrib(n, 'align'));
-			//this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 			longdesc = dom.getAttrib(n, 'longdesc');
 			nl["we_dialog_args[longdescsrc]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[0] : '';
 			nl["we_dialog_args[longdescid]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[1] : '';
@@ -105,6 +103,16 @@ var ImageDialog = {
 				nl["tinyMCEInitRatioW"].value = imgHeight / imgWidth;
 			}
 		}
+
+		// add options to css-Pulldown
+		if(typeof(ed.settings.theme_advanced_styles) !== 'undefined' && ed.settings.theme_advanced_styles != ''){
+			var cl = '';
+			for(var i=0; i < ed.settings.theme_advanced_styles.split(/;/).length; i++){
+				cl = ed.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
+				nl["we_dialog_args[class]"].options[nl["we_dialog_args[class]"].length] = new Option('.' + cl, cl);
+			}
+		}
+		this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 	},
 
 	analyseSrc : function(src) {
