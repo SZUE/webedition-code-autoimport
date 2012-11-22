@@ -35,7 +35,7 @@ $tableMap = array(
 		'tblthumbnails' => THUMBNAILS_TABLE,
 		'tblnavigation' => NAVIGATION_TABLE,
 		'tblnavigationrules' => NAVIGATION_RULE_TABLE,
-		'tblhistory' => HISTORY_TABLE,
+		
 		'tblmetadata' => METADATA_TABLE
 	),
 	'versions' => array(
@@ -52,6 +52,9 @@ $tableMap = array(
 	),
 	'temporary' => array(
 		'tbltemporarydoc' => TEMPORARY_DOC_TABLE
+	),
+	'history' => array(
+		'tblhistory' => HISTORY_TABLE
 	),
 	'backup' => array(
 		'tblbackup' => TBL_PREFIX . 'tblbackup'
