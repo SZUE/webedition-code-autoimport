@@ -48,9 +48,7 @@ class weFullscreenEditDialog extends weDialog{
 				' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 				function doKeyDown(e) {
-					var key;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
+					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
 
 					switch (key) {
 						case 27:
@@ -67,10 +65,7 @@ class weFullscreenEditDialog extends weDialog{
 				}
 
 		function IsDigit(e) {
-					var key;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-
+					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 				}
 
@@ -79,9 +74,7 @@ class weFullscreenEditDialog extends weDialog{
 				}
 
 				function IsDigitPercent(e) {
-					var key;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
+					var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
 
 					return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
 				}

@@ -507,7 +507,12 @@ function we_tag_userInput($attribs, $content){
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
 					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
-					return we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
+					//FIXME: currently use old editor
+					$tmp = we_wysiwyg::$editorType;
+					we_wysiwyg::$editorType = 'default';
+					$ret = we_forms::weTextarea($fieldname, $content, $attribs, $autobr, "autobr", $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true);
+					we_wysiwyg::$editorType = $tmp;
+					return $ret;
 				}
 			case "checkbox" :
 				$atts = removeAttribs($attribs, array(
