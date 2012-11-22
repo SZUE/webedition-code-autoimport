@@ -33,7 +33,11 @@ we_core_Permissions::protect();
  */
 $type = "application/json";
 header("Content-Type: " . $type);
-
+$ZW = array();
+foreach($_GET as $gKey => $gValue ){
+	$ZW[strip_tags($gKey)]=$gValue;
+}
+$_GET=$ZW;
 
 if(isset($_GET["id"])){
 	$id = urlencode($_GET["id"]);

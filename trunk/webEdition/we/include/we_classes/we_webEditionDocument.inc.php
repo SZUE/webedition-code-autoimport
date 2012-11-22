@@ -336,7 +336,19 @@ class we_webEditionDocument extends we_textContentDocument{
 			} else{
 				$ueberschrift = g_l('weClass', '[template]');
 			}
-
+			if($this->DocType){
+				$sql = "SELECT Templates FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($this->DocType);
+				$this->DB_WE->query($sql);
+				$templateFromDoctype = false;
+				while($this->DB_WE->next_record()) {
+					$templateFromDoctype = $this->DB_WE->f("Templates");
+				}
+				if($templateFromDoctype){
+					return $this->xformTemplatePopup(388);
+				} else {
+					return $ueberschrift . '<br/>' . $path;
+				}
+			}
 			return $ueberschrift . '<br/>' . $path;
 		}
 
