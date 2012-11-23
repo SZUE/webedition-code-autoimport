@@ -326,7 +326,7 @@ if(isset($_REQUEST['cmd'])){
 			} else{
 
 				// perform update
-				$updater = new weBackupUpdater();
+				$updater = new we_updater();
 				$updater->doUpdate();
 
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'sql'){

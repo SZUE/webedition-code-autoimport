@@ -340,7 +340,6 @@ abstract class we_autoloader{
 			'weBackupImportSql' => 'backup/weBackupImportSql.class.php',
 			'weBackupPreparer' => 'backup/weBackupPreparer.class.php',
 			'weBackupSqlFileReader' => 'backup/weBackupSqlFileReader.class.php',
-			'weBackupUpdater' => 'backup/weBackupUpdater.class.php',
 			'weBackupUtil' => 'backup/weBackupUtil.class.php',
 			'weContentProvider' => 'weContentProvider.class.php',
 			'weExportPreparer' => 'weExportPreparer.class.php',
