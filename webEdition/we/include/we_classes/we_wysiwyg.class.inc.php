@@ -60,7 +60,7 @@ class we_wysiwyg{
 		$this->name = $name;
 		$this->bgcol = $bgcol;
 		$this->xml = $xml;
-		if(self::$editorType== 'tinyMCE'){
+		if(self::$editorType == 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
 		}
 		$this->removeFirstParagraph = $removeFirstParagraph;
@@ -1236,13 +1236,11 @@ function tinyMCEchanged(inst){
 						$tinyRows .= $rows[$i][$j]->cmd == '' ? 'separator,' : ($cmdMapping[$rows[$i][$j]->cmd] != '--' ? $cmdMapping[$rows[$i][$j]->cmd] . ',' : '');
 						$j++;
 					}
-					$tinyRows = substr($tinyRows, 0, -1) . '",
-';
+					$tinyRows = substr($tinyRows, 0, -1) . '",';
 					$i++;
 					$k++;
 				}
-				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",
-';
+				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
 				//function openWeFileBrowser(): not needed anymore: imi
 
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
@@ -1364,6 +1362,3 @@ function ' . $this->ref . 'editonblur(){
 	}
 
 }
-
-
-

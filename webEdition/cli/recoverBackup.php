@@ -335,8 +335,7 @@ if(weBackupPreparer::prepareImport() === true){
 		print "\nUpdate...\n";
 	}
 
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
-	$updater = new weBackupUpdater();
+	$updater = new we_updater();
 	$updater->doUpdate();
 } else{
 	print weBackupPreparer::getErrorMessage();
