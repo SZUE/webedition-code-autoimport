@@ -44,7 +44,7 @@
 
 			// Register buttons
 			ed.addButton('weimage', {
-				title : tinyMceGL.weinsertbreak.tooltip,
+				title : tinyMceGL.weimage.tooltip,
 				cmd : 'mceWeimage',
 				image: url + "/img/weimage.gif"
 			});
