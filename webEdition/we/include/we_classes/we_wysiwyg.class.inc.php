@@ -37,6 +37,7 @@ class we_wysiwyg{
 	var $bgcol = 'white';
 	var $fullscreen = '';
 	var $className = '';
+	var $fontnamesCSV = '';
 	var $fontnames = array();
 	var $tinyFonts = '';
 	var $tinyFormatblock = '';
@@ -70,6 +71,7 @@ class we_wysiwyg{
 		$this->buttonpos = (self::$editorType == 'tinyMCE' ? $buttonpos : 'top');
 		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
 		$this->outsideWE = $outsideWE;
+		$this->fontnamesCSV = $fontnames;
 		if(self::$editorType == 'tinyMCE'){
 			if($fontnames){
 				$fn = explode(',', $fontnames);
@@ -1152,7 +1154,7 @@ function tinyMCEchanged(inst){
 					'fontsize' => 'fontsizeselect',
 					'forecolor' => 'forecolor',
 					'formatblock' => 'formatselect',
-					'fullscreen' => 'fullscreen',
+					'fullscreen' => 'wefullscreen',
 					'increasecolspan' => 'merge_cells',
 					'indent' => 'indent',
 					'insertbreak' => 'weinsertbreak',
@@ -1249,7 +1251,27 @@ function tinyMCEchanged(inst){
 					$this->bgcol = 'white';
 				}
 
+				$wefullscreenVars = array();
+				$wefullscreenVars['outsideWE'] = $this->outsideWE ? "1" : "";
+				$wefullscreenVars['xml'] = $this->xml ? "1" : "";
+				$wefullscreenVars['removeFirstParagraph'] = $this->removeFirstParagraph ? "1" : "";
+
 				return we_html_element::jsElement('
+var wefullscreenVars = new Array();
+wefullscreenVars["outsideWE"] = "' . $wefullscreenVars['outsideWE'] . '";
+wefullscreenVars["xml"] = "' . $wefullscreenVars['xml'] . '";
+wefullscreenVars["removeFirstParagraph"] = "' . $wefullscreenVars['removeFirstParagraph'] . '";
+wefullscreenVars["baseHref"] = "' . urlencode($this->baseHref) . '";
+wefullscreenVars["charset"] = "' . $this->charset . '";
+wefullscreenVars["cssClasses"] = "' . urlencode($this->cssClassesOriginal) . '";
+wefullscreenVars["fontnames"] = "' . urlencode($this->fontnamesCSV) . '";
+wefullscreenVars["bgcolor"] = "' . $this->bgcol . '";
+wefullscreenVars["language"] = "' . $this->Language . '";
+wefullscreenVars["screenWidth"] = screen.availWidth-10;
+wefullscreenVars["screenHeight"] = screen.availHeight - 70;
+wefullscreenVars["className"] = "' . $this->className . '";
+wefullscreenVars["propString"] = "' . urlencode($this->propstring) . '";
+
 tinyMCE.init({
 	language : "' . $lang . '",
 	mode : "exact",
@@ -1272,7 +1294,7 @@ tinyMCE.init({
 	//file_browser_callback : "openWeFileBrowser",
 	onchange_callback : "tinyMCEchanged",
 
-	plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,fullscreen,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink",
+	plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen",
 
 	// Theme options
 	' . $tinyRows . '
@@ -1306,7 +1328,7 @@ tinyMCE.init({
 	}
 
 });') . '
-<textarea wrap="off" style="color:black;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
+<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
 
 			case 'default':
 
