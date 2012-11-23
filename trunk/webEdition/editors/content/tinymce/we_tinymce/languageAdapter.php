@@ -45,6 +45,9 @@ tinyMceGL = {
 	weacronym : {
 			tooltip : '<?php echo g_l('wysiwyg', "[acronym]"); ?>',
 			},
+	wefullscreen : {
+			tooltip : '<?php echo g_l('wysiwyg', "[fullscreen]"); ?>',
+			},
 	weinsertbreak : { 
 			tooltip : '<?php echo g_l('wysiwyg', "[insert_br]"); ?>'
 			},

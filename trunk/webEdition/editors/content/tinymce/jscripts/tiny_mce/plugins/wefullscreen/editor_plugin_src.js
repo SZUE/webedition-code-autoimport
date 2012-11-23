@@ -37,7 +37,7 @@
 
 			// Register wefullscreen button
 			ed.addButton('wefullscreen', {
-				title : 'wefullscreen',
+				title : tinyMceGL.wefullscreen.tooltip,
 				cmd : 'mceWefullscreen',
 				image : url + '/img/fullscreen.gif'
 			});
