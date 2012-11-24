@@ -613,7 +613,7 @@ abstract class we_database_base{
 						$value . ' ' . $mode :
 						$key . ' ' . $value);
 			}
-			$query = impode(',', $query);
+			$query = implode(',', $query);
 		} else{
 			$query = $table . ' ' . $mode;
 		}
