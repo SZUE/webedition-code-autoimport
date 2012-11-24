@@ -152,10 +152,12 @@ class weCustomerFrames extends weModuleFrames{
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
+				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
+				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);
 				setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 				asort($topCountries, SORT_LOCALE_STRING);
@@ -168,6 +170,7 @@ class weCustomerFrames extends weModuleFrames{
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 				}
+				unset($countryvalue);
 				if(!empty($topCountries) && !empty($shownCountries)){
 					$countryselect->addOption('-', '----', array("disabled" => "disabled"));
 				}
@@ -175,7 +178,7 @@ class weCustomerFrames extends weModuleFrames{
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 				}
-
+				unset($countryvalue);
 				$countryselect->selectOption($value);
 				return $countryselect->getHtml();
 
@@ -187,6 +190,7 @@ class weCustomerFrames extends weModuleFrames{
 						$lccode = explode('_', $lcvalue);
 						$lcvalue = $lccode[0];
 					}
+					unset($lcvalue);
 					$languageselect = new we_html_select(array("name" => $field, "size" => "1", "style" => "width:240px;", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
 					foreach(g_l('languages', '') as $languagekey => $languagevalue){
 						if(in_array($languagekey, $frontendL)){

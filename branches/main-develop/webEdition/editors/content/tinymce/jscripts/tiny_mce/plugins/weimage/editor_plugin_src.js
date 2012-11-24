@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5016 $
- * $Author: lukasimhof $
- * $Date: 2012-10-25 11:53:14 +0200 (Do, 25 Okt 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@
 
 			// Register buttons
 			ed.addButton('weimage', {
-				title : tinyMceGL.weinsertbreak.tooltip,
+				title : tinyMceGL.weimage.tooltip,
 				cmd : 'mceWeimage',
 				image: url + "/img/weimage.gif"
 			});

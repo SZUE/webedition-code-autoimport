@@ -2260,7 +2260,8 @@ class we_object extends we_document{
 	 * @return	the function returns the number of variant fields
 	 */
 	function hasVariantFields(){
-		return !empty($this->getVariantFields());
+		$tmp = $this->getVariantFields();
+		return !empty($tmp);
 	}
 
 	/**

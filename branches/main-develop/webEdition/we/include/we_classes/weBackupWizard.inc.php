@@ -206,6 +206,10 @@ class weBackupWizard{
 							document.forms["we_form"].elements["handle_versions"].checked=false;
 							mess+="\n-' . g_l('backup', "[" . $mode . "_versions_data]") . '";
 						}
+						if(document.forms["we_form"].elements["handle_history"].checked){
+							document.forms["we_form"].elements["handle_history"].checked=false;
+							mess+="\n-' . g_l('backup', "[" . $mode . "_history_data]") . '";
+						}
 						if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
 							document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
 							mess+="\n-' . g_l('backup', "[" . $mode . "_versions_binarys_data]") . '";
@@ -213,6 +217,10 @@ class weBackupWizard{
 						if(document.forms["we_form"].elements["handle_temporary"].checked){
 							document.forms["we_form"].elements["handle_temporary"].checked=false;
 							mess+="\n-' . g_l('backup', "[" . $mode . "_temporary_data]") . '";
+						}
+						if(document.forms["we_form"].elements["handle_history"].checked){
+							document.forms["we_form"].elements["handle_history"].checked=false;
+							mess+="\n-' . g_l('backup', "[" . $mode . "_history_data]") . '";
 						}
 						if(mess!="") {
 							tmpMess = "' . sprintf(g_l('backup', "[unselect_dep2]"), g_l('backup', "[" . $mode . "_core_data]")) . '"+mess+"\n' . g_l('backup', "[unselect_dep3]") . '";
@@ -535,6 +543,7 @@ class weBackupWizard{
 			14 => "handle_binary",
 			100 => "handle_settings",
 			101 => "handle_temporary",
+			102 => "handle_history",
 			300 => "handle_extern",
 			310 => "convert_charset",
 			320 => "backup_log"
@@ -611,15 +620,21 @@ class weBackupWizard{
 			}
 		}
 
-		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[import_temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[import][temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70, "noline" => 1);
+
+		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_history", g_l('backup', "[import][history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70, "noline" => 1);
 
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_import_desc]"), 2, 600, false), "space" => 70, "noline" => 1);
 		foreach($_tools as $_tool){
-			$text = g_l(($_tool == 'weSearch' ? 'searchtool' : $_tool . 'tool'), '[import_tool_' . $_tool . '_data]');
+			if($_tool == 'weSearch'){
+				$text = g_l('searchtool', '[import_tool_' . $_tool . '_data]');
+			} else{
+				$text = g_l('backup', "[import][weapp]");
+			}
+
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 		}
-
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[extern_exp]"), 1, 600, false), "space" => 70, "noline" => 1);
 		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, false, "handle_extern", g_l('backup', "[import_extern_data]"), false, "defaultfont", "doClick(300);"), "space" => 70, "noline" => 1);
@@ -797,6 +812,7 @@ class weBackupWizard{
 			14 => "handle_binary",
 			100 => "handle_settings",
 			101 => "handle_temporary",
+			102 => "handle_history",
 			300 => "handle_extern",
 			320 => "backup_log"
 		);
@@ -915,12 +931,17 @@ class weBackupWizard{
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_export_desc]"), 2, 600, false), "space" => 70, "noline" => 1);
 		$k = 700;
 		foreach($_tools as $_tool){
-			$text = g_l(($_tool == 'weSearch' ? 'searchtool' : $_tool . 'tool'), '[import_tool_' . $_tool . '_data]');
+			$text = ($_tool == 'weSearch' ?
+					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
+					g_l('backup', "[export][weapp]"));
+
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 			$k++;
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[temporary_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[export_temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[temporary_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[export][temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[history_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_history", g_l('backup', "[export][history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70);
+
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[extern_exp]"), 1, 600, false), "space" => 70, "noline" => 1);
 		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, false, "handle_extern", g_l('backup', "[export_extern_data]"), false, "defaultfont", "doClick(300);"), "space" => 70, "noline" => 1);
 
@@ -929,9 +950,9 @@ class weBackupWizard{
 
 
 		$mode = "export";
-		$js = we_html_element::jsScript(JS_DIR . "windows.js");
-		$js.=weBackupWizard::getJSDep("export", $docheck, $doclick);
-		$js.=we_html_element::jsElement('
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			weBackupWizard::getJSDep("export", $docheck, $doclick) .
+			we_html_element::jsElement('
 			function setLocation(loc){
 				location.href=loc;
 			}
@@ -1233,7 +1254,7 @@ class weBackupWizard{
 					break;
 				case 3:
 					if(defined("WORKFLOW_TABLE")){
-						$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE))>0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE))>0) ?
+						$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 								we_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
 								we_button::create_button("restore_backup", "javascript:top.body.startImport();"));
 					} else{
@@ -1291,6 +1312,7 @@ class weBackupWizard{
 						"todo" => (isset($_REQUEST["handle_todo"]) && $_REQUEST["handle_todo"]) ? 1 : 0,
 						"newsletter" => (isset($_REQUEST["handle_newsletter"]) && $_REQUEST["handle_newsletter"]) ? 1 : 0,
 						"temporary" => (isset($_REQUEST["handle_temporary"]) && $_REQUEST["handle_temporary"]) ? 1 : 0,
+						"history" => (isset($_REQUEST["handle_history"]) && $_REQUEST["handle_history"]) ? 1 : 0,
 						"banner" => (isset($_REQUEST["handle_banner"]) && $_REQUEST["handle_banner"]) ? 1 : 0,
 						"core" => (isset($_REQUEST["handle_core"]) && $_REQUEST["handle_core"]) ? 1 : 0,
 						"object" => (isset($_REQUEST["handle_object"]) && $_REQUEST["handle_object"]) ? 1 : 0,
@@ -1397,6 +1419,7 @@ class weBackupWizard{
 						"todo" => (isset($_REQUEST["handle_todo"]) && $_REQUEST["handle_todo"]) ? 1 : 0,
 						"newsletter" => (isset($_REQUEST["handle_newsletter"]) && $_REQUEST["handle_newsletter"]) ? 1 : 0,
 						"temporary" => (isset($_REQUEST["handle_temporary"]) && $_REQUEST["handle_temporary"]) ? 1 : 0,
+						"history" => (isset($_REQUEST["handle_history"]) && $_REQUEST["handle_history"]) ? 1 : 0,
 						"banner" => (isset($_REQUEST["handle_banner"]) && $_REQUEST["handle_banner"]) ? 1 : 0,
 						"core" => (isset($_REQUEST["handle_core"]) && $_REQUEST["handle_core"]) ? 1 : 0,
 						"object" => (isset($_REQUEST["handle_object"]) && $_REQUEST["handle_object"]) ? 1 : 0,
@@ -1709,5 +1732,4 @@ class weBackupWizard{
 	}
 
 }
-
 

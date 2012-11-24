@@ -72,10 +72,12 @@ function we_tag_input($attribs, $content){
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
+				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}
+				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);
 				setlocale(LC_ALL, $lang . '.UTF-8');
 				asort($topCountries, SORT_LOCALE_STRING);
@@ -89,10 +91,12 @@ function we_tag_input($attribs, $content){
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
 				}
+				unset($countryvalue);
 				$content.='<option value="-" disabled="disabled">----</option>' . "\n";
 				foreach($shownCountries as $countrykey2 => &$countryvalue2){
 					$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>' . "\n";
 				}
+				unset($countryvalue2);
 
 				return getHtmlTag('select', $newAtts, $content, true);
 			//return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
@@ -131,6 +135,7 @@ function we_tag_input($attribs, $content){
 				foreach($frontendLL as $langkey => &$langvalue){
 					$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 				}
+				unset($langvalue);
 				return getHtmlTag('select', $newAtts, $content, true);
 			case 'choice':
 				if($values){

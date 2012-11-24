@@ -84,6 +84,8 @@ abstract class weBackupUtil{
 				return g_l('backup', "[" . $prefix . '_templates]');
 			case TEMPORARY_DOC_TABLE:
 				return g_l('backup', "[" . $prefix . '_temporary_data]');
+			case HISTORY_TABLE:
+				return g_l('backup', "[" . $prefix . '_history_data]');	
 			case INDEX_TABLE:
 				return g_l('backup', "[" . $prefix . '_indexes]');
 			case DOC_TYPES_TABLE:

@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Achtung! Nach dem Wiederherstellen eines Backups <strong>aus älteren webEdition-Installationen</strong> (vor 6.3.0) sollte dringend eine <strong>Update-Wiederholung</strong> durchgeführt werden!',
 	'backup_deleted'=>'Die Backup-Datei %s wurde gelöscht',
 	'backup_form'=>'Backup vom',
 	'backup_log_exp'=>'Das Logbuch wird in /webEdition/we_backup/data/lastlog.php erstellt',
@@ -39,6 +38,12 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'error_compressing_backup'=>'Bei der Komprimierung ist ein Fehler aufgetreten, das Backup konnte nicht abgeschlossen werden!',
 	'error_delete'=>'Backup-Datei konnte nicht gelöscht werden. Bitte löschen Sie die Datei über Ihr FTP-Programm aus dem Ordner /webEdition/we_backup',
 	'error_timeout'=>'Bei der Erstellung des Backup ist ein timeout aufgetreten, das Backup konnte nicht abgeschlossen werden!',
+	
+	'export'=>array(
+		'history_data'=>'Verlaufsdaten sichern',
+		'temporary_data'=>'Temporäre Dateien sichern',
+		'weapp'=>'Sichere die Daten der WE-App:',
+	),
 	'export_backup_log'=>'Logbuch erstellen',
 	'export_banner_data'=>'Bannerdaten sichern',
 	'export_banner_dep'=>'Sie haben `Bannerdaten sichern` ausgewählt. Um richtig zu funktionieren, benötigen die Bannerdaten auch die Dokumente. Deswegen wird `Dokumente und Vorlage sichern` automatisch markiert.',
@@ -113,6 +118,12 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'ftp_hint'=>'Achtung! Benutzen Sie den Binary-Modus beim Download per FTP, wenn die Backup-Datei mit zip komprimiert ist! Ein Download im ASCII-Modus zerstört die Datei, so dass sie nicht wieder hergestellt werden kann!',
 	'glossary_info'=>'Daten des Glossars.',
 	'gzip'=>'gzip',
+	'history_info'=>'Dei Daten des Widgets: zuletzt bearbeitet',
+	
+	'import'=>array(
+		'history_data'=>'Daten des Widget -zuletzt bearbeitet- wiederherstellen',
+		'weapp'=>'Importiere diem Daten der WE-App',
+	),
 	'import_banner_data'=>'Bannerdaten wiederherstellen',
 	'import_banner_dep'=>'Sie haben `Bannerdaten wiederherstellen` ausgewählt. Um richtig zu funktionieren, benötigen die Bannerdaten auch die Dokumente. Deswegen wird `Dokumente und Vorlage wiederherstellen` automatisch markiert.',
 	'import_binary_data'=>'Binarydaten (Bilder, PDFs, ...) wiederherstellen',
@@ -195,8 +206,8 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'step4'=>'Schritt 4/4 - Wiederherstellung beendet',
 	'temporary_info'=>'Noch nicht veröffentlichte Dokumente und Objekte bzw. noch nicht veröffentlichte Änderungen.',
 	'todo_info'=>'Mitteilungen und Aufgaben des ToDo/Messaging Moduls.',
-	'tools_export_desc'=>'Hier können Sie die Daten der webEdition-Tools sichern. Wählen Sie bitte die gewünschte Tools aus.',
-	'tools_import_desc'=>'Hier können Sie die Daten der webEdition-Tools wiederhestellen. Wählen Sie bitte die gewünschte Tools aus.',
+	'tools_export_desc'=>'Hier können Sie die Daten der webEdition-Tools sichern. Wählen Sie bitte die gewünschten Tools aus.',
+	'tools_import_desc'=>'Hier können Sie die Daten der webEdition-Tools wiederherstellen. Wählen Sie bitte die gewünschte Tools aus.',
 	'too_big_file'=>'Die Datei `%s` kann nicht gespeichert werden, da die maximale Dateigröße überschritten wurde.',
 	'unselect_dep2'=>'Sie haben `%s` abgewählt. Folgende Optionen werden automatisch abgewählt:',
 	'unselect_dep3'=>'Sie können trotzdem die nicht selektierten Optionen auswählen.',

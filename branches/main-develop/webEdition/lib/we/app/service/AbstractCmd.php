@@ -62,6 +62,11 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		$model = $session->model;
 		$model->setFields($formData);
 		
+		if(isset($formData['ParentPath']) && $model->pathExists($formData['ParentPath'])){
+			$model->ParentID = we_util_Path::path2Id($formData['ParentPath'], $model->getTable());
+			$model->setPath();
+		}
+		
 		$newBeforeSaving = $model->ID == 0;
 		// check if user has the permissions to create new entries
 		if ($model->ID == 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))) {

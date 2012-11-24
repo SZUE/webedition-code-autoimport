@@ -698,10 +698,12 @@ if(isset($_REQUEST['we_cmd'][0])){
 						foreach($topCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 						}
+						unset($countryvalue);
 						$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 						foreach($shownCountries as $countrykey => &$countryvalue){
 							$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 						}
+						unset($countryvalue);
 						$oldLocale = setlocale(LC_ALL, NULL);
 						setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 						asort($topCountries, SORT_LOCALE_STRING);
@@ -715,12 +717,13 @@ if(isset($_REQUEST['we_cmd'][0])){
 						foreach($topCountries as $countrykey => &$countryvalue){
 							$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 						}
+						unset($countryvalue);
 						$countryselect->addOption('-', '----', array("disabled" => "disabled"));
 						//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 						foreach($shownCountries as $countrykey => &$countryvalue){
 							$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 						}
-
+						unset($countryvalue);
 						$countryselect->selectOption($v);
 
 						$parts[] = array(
@@ -735,6 +738,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 							$lccode = explode('_', $lcvalue);
 							$lcvalue = $lccode[0];
 						}
+						unset($countryvalue);
 						$languageselect = new we_html_select(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
 						foreach(g_l('languages', '') as $languagekey => $languagevalue){
 							if(in_array($languagekey, $frontendL)){

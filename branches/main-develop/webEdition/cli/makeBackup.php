@@ -363,22 +363,25 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 		if($_REQUEST['verbose']){
 			print "\nExporting repository\n";
 		}
+		$_fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
+
 		while(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || weBackupUtil::hasNextTable()) {
 			if($_REQUEST['verbose']){
 				print "-";
 			}
 			if(weBackupExport::export(
-					$_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']
+					$_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log']
 				) === false){
 				// force end
 				$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 			}
 		}
-
+		fclose($_fh);
+		
 		if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 			$fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 			if($fh){
-				$file_to_export = WE_INCLUDES_DIR .'conf/we_conf_global.inc.php';
+				$file_to_export = WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php';
 				weBackupUtil::exportFile($file_to_export, $fh);
 				fclose($fh);
 			}
@@ -407,7 +410,7 @@ if(isset($_SESSION['weS']['weBackupVars'])){
 	unset($_SESSION['weS']['weBackupVars']);
 }
 
-function _checkAll($flag=true){
+function _checkAll($flag = true){
 	$_REQUEST['handle_core'] = $flag;
 	$_REQUEST['handle_binary'] = $flag;
 	$_REQUEST['handle_versions'] = $flag;

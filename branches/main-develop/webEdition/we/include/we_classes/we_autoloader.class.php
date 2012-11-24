@@ -46,6 +46,7 @@ abstract class we_autoloader{
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
 		'workflow'=>'we_modules/workflow',
+		'wysiwyg'=>'we_classes/wysiwyg',
 		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
@@ -190,10 +191,6 @@ abstract class we_autoloader{
 			'weVersion' => 'base/weVersion.class.php',
 			'we_webEditionDocument' => 'we_webEditionDocument.inc.php',
 			'we_widget' => 'we_widget.inc.php',
-			'we_wysiwygToolbarButton' => 'we_wysiwyg.class.inc.php',
-			'we_wysiwygToolbarElement' => 'we_wysiwyg.class.inc.php',
-			'we_wysiwygToolbarSelect' => 'we_wysiwyg.class.inc.php',
-			'we_wysiwygToolbarSeparator' => 'we_wysiwyg.class.inc.php',
 			'we_wysiwyg' => 'we_wysiwyg.class.inc.php',
 			'we_xhtmlConverter' => 'helpers/we_xhtmlConverter.inc.php',
 			'weXMLComposer' => 'weXMLComposer.class.php',
@@ -343,7 +340,6 @@ abstract class we_autoloader{
 			'weBackupImportSql' => 'backup/weBackupImportSql.class.php',
 			'weBackupPreparer' => 'backup/weBackupPreparer.class.php',
 			'weBackupSqlFileReader' => 'backup/weBackupSqlFileReader.class.php',
-			'weBackupUpdater' => 'backup/weBackupUpdater.class.php',
 			'weBackupUtil' => 'backup/weBackupUtil.class.php',
 			'weContentProvider' => 'weContentProvider.class.php',
 			'weExportPreparer' => 'weExportPreparer.class.php',

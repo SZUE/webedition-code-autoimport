@@ -122,9 +122,10 @@ if(isset($_REQUEST['cmd'])){
 				}
 			} else{
 				if(FAST_BACKUP){
-					$_SESSION['weS']['weBackupVars']['backup_steps'] = 5;
+					$_SESSION['weS']['weBackupVars']['backup_steps'] = 10;
 				}
 				$oldPercent = 0;
+				$_fh = fopen($_SESSION['weS']['weBackupVars']['backup_file'], 'ab');
 				do{
 					$start = microtime(true);
 					for($i = 0; $i < $_SESSION['weS']['weBackupVars']['backup_steps']; $i++){
@@ -137,7 +138,7 @@ if(isset($_REQUEST['cmd'])){
 							$oldPercent = $percent;
 						}
 
-						if(weBackupExport::export($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log'], $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']) === false){
+						if(weBackupExport::export($_fh, $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['row_counter'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['backup_binary'], $_SESSION['weS']['weBackupVars']['backup_log'], $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']) === false){
 							// force end
 							$_SESSION['weS']['weBackupVars']['row_counter'] = $_SESSION['weS']['weBackupVars']['row_count'];
 							break 2;
@@ -145,6 +146,7 @@ if(isset($_REQUEST['cmd'])){
 					}
 					weBackupUtil::writeLog();
 				} while(FAST_BACKUP ? weBackup::limitsReached(weBackupUtil::getCurrentTable(), microtime(true) - $start) : false);
+				fclose($_fh);
 			}
 			if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || weBackupUtil::hasNextTable()){
 
@@ -324,7 +326,7 @@ if(isset($_REQUEST['cmd'])){
 			} else{
 
 				// perform update
-				$updater = new weBackupUpdater();
+				$updater = new we_updater();
 				$updater->doUpdate();
 
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'sql'){

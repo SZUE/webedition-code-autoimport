@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Резервный файл %s удален',
 	'backup_form'=>'Резервный файл',
 	'backup_log_exp'=>'Лог сохранен в /webEdition/we_backup/data/lastlog.php',
@@ -38,6 +37,12 @@ $l_backup=array(
 	'error_compressing_backup'=>'An error occured while compressing the backup, so the backup could not be finished!',
 	'error_delete'=>'Невозможно удалить резервный файл! Попробуйте его удалить с помощью FTP из директирии /webEdition/we_backup.',
 	'error_timeout'=>'An timeout occured while creating the backup, so the backup could not be finished!',
+	
+	'export'=>array(
+		'history_data'=>'Save data of the widget last worked on',
+		'temporary_data'=>'Save temporary data',
+		'weapp'=>'Save the data of the WE-App',
+	),
 	'export_backup_log'=>'Создать лог',
 	'export_banner_data'=>'Save banner data',
 	'export_banner_dep'=>'You have selected the option `Save banner data`. The banner data need the documents and because of that, `Save documents and templates` has been automatically selected.',
@@ -112,6 +117,12 @@ $l_backup=array(
 	'ftp_hint'=>'Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!',
 	'glossary_info'=>'Data from the glossary.',
 	'gzip'=>'gzip',
+	'history_info'=>'The data of the widget last worked on',
+	
+	'import'=>array(
+		'history_data'=>'Import data for the widget last worked on',
+		'weapp'=>'Import the data of the WE-App',
+	),
 	'import_banner_data'=>'Restore banner data',
 	'import_banner_dep'=>'You have selected the option `Restore banner data`. The banner data need the documents data and because of that, `Restore documents and templates` has been automatically selected.',
 	'import_binary_data'=>'Восстановить бинарные файлы (изображения, PDF, ...)',

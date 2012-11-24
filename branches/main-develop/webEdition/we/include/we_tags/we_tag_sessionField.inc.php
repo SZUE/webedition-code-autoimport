@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_sessionField($attribs, $content){
-	$foo = attributFehltError($attribs, 'name', __FUNCTION__);
-	if($foo){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 
@@ -43,11 +42,10 @@ function we_tag_sessionField($attribs, $content){
 
 	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
 	if($autofill){
-		if($name == 'Username'){
-			$condition = array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0);
-		} else{
-			$condition = array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2);
-		}
+		$condition = ($name == 'Username' ?
+				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
+				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
+
 		$pass = new rndConditionPass(7, $condition);
 		$orgVal = $pass->PassGen();
 		//echo $tmppass;
@@ -71,25 +69,26 @@ function we_tag_sessionField($attribs, $content){
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			if($lang != ''){
-				$langcode = substr($lang, 0, 2);
-			} else{
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-			}
+			$langcode = ($lang != '' ?
+					substr($lang, 0, 2) :
+					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
 			}
 
-			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
+			unset($countryvalue);
 
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
+			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $lang . '.UTF-8');
 			asort($topCountries, SORT_LOCALE_STRING);
@@ -103,6 +102,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
+			unset($countryvalue);
 
 			if(!empty($topCountries) && !empty($shownCountries)){
 				$content.='<option value="-" disabled="disabled">----</option>';
@@ -110,6 +110,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($shownCountries as $countrykey2 => &$countryvalue2){
 				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
+			unset($countryvalue2);
 
 			return getHtmlTag('select', $newAtts, $content, true);
 
@@ -146,6 +147,7 @@ function we_tag_sessionField($attribs, $content){
 			foreach($frontendLL as $langkey => &$langvalue){
 				$content.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>' . "\n";
 			}
+			unset($langvalue);
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'select':
@@ -170,14 +172,14 @@ function we_tag_sessionField($attribs, $content){
 				$options = '';
 				for($i = 0; $i < count($optionsAr); $i++){
 					if($optionsAr[$i] == $orgVal){
-						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i]) . "\n";
+						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
 						$isin = 1;
 					} else{
-						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i])), $optionsAr[$i]) . "\n";
+						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
 					}
 				}
 				if(!$isin){
-					$options .= getHtmlTag('option', array('value' => htmlspecialchars($orgVal), 'selected' => 'selected'), htmlspecialchars($orgVal)) . "\n";
+					$options .= getHtmlTag('option', array('value' => htmlspecialchars($orgVal), 'selected' => 'selected'), htmlspecialchars($orgVal), true);
 				}
 				return getHtmlTag('select', $newAtts, $options, true);
 			} else{

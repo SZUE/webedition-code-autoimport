@@ -237,8 +237,8 @@ while($yearshop <= date("Y")) {
 							fr.write("<a href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 
 <?php } ?>
-						fr.write("<font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font>");
-
+						//changed for #6786
+						fr.write("<span style='"+nf[ai].st+"'>"+ nf[ai].text+"</span>");
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</A>");
 
@@ -374,8 +374,8 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){
 
 			function dirEntry(icon,name,vorfahr,text,offen,contentType,table,published){this.icon=icon;this.name = name;this.vorfahr = vorfahr;this.text = text;this.typ = 'folder';this.offen = (offen ? 1 : 0);this.contentType = contentType;this.table = table;this.loaded = (offen ? 1 : 0);this.checked = false;this.published = published;return this;}
 
-			function urlEntry(icon,name,vorfahr,text,contentType,table,published){this.icon=icon;this.name = name;this.vorfahr = vorfahr;this.text = text;this.typ = 'shop';this.checked = false;this.contentType = contentType;this.table = table;this.published = published;return this;}
-
+			                  //changed for #6786
+			function urlEntry(icon,name,vorfahr,text,contentType,table,published,style){this.icon=icon;this.name = name;this.vorfahr = vorfahr; this.text = text;this.typ = 'shop';this.checked = false;this.contentType = contentType;this.table = table;this.published = published;this.st = style;return this;}
 
 			function loadData(){
 
@@ -388,7 +388,20 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){
 
 $DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
 while($DB_WE->next_record()) {
-	print "  menuDaten.add(new urlEntry('link.gif','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "'));\n";
+	//added for #6786
+    $style="color:black;font-weight:bold;";
+    
+    if($DB_WE->f("DateCustomA")!='' || $DB_WE->f("DateCustomB")!='' || $DB_WE->f("DateCustomC")!='' || $DB_WE->f("DateCustomD")!='' || $DB_WE->f("DateCustomE")!='' || $DB_WE->f("DateCustomF")!='' || $DB_WE->f("DateCustomG")!='' || $DB_WE->f("DateCustomH")!='' || $DB_WE->f("DateCustomI")!='' || $DB_WE->f("DateCustomJ")!='' || $DB_WE->f("DateConfirmation")!='' || $DB_WE->f("DateShipping")!='0000-00-00 00:00:00')
+        $style="color:red;";
+    
+    if($DB_WE->f("DatePayment")!='0000-00-00 00:00:00')
+        $style="color:#006699;";
+
+    if( $DB_WE->f("DateCancellation")!='' || $DB_WE->f("DateFinished")!='')
+        $style="color:black;";
+    
+    
+	print "  menuDaten.add(new urlEntry('link.gif','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "','".$style."'));\n";
 	if($DB_WE->f("DateShipping") <= 0){
 		//FIXME: remove eval
 		eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l' . $DB_WE->f("mdate") . '++;} else { $l' . $DB_WE->f("mdate") . ' = 1;}');

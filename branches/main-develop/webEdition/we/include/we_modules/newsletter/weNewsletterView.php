@@ -2039,7 +2039,7 @@ class weNewsletterView{
 				}
 			}
 		}
-
+		unset($gval);
 		$blocks = 0;
 
 		if(isset($_REQUEST["blocks"])){
@@ -2067,6 +2067,7 @@ class weNewsletterView{
 				}
 			}
 		}
+		unset($gval);
 	}
 
 	function getTime($seconds){

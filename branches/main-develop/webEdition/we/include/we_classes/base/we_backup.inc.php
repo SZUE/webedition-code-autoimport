@@ -268,7 +268,7 @@ abstract class we_backup{
 			$this->description['export'][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', '[export_prefs]');
 		}
 		$this->description['export'][strtolower(TEMPLATES_TABLE)] = g_l('backup', '[export_templates]');
-		$this->description['export'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[export_temporary_data]');
+		$this->description['export'][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', '[export][temporary_data]');
 		$this->description['export'][strtolower(BACKUP_TABLE)] = g_l('backup', '[external_backup]');
 		$this->description['export'][strtolower(LINK_TABLE)] = g_l('backup', '[export_links]');
 		$this->description['export'][strtolower(INDEX_TABLE)] = g_l('backup', '[export_indexes]');

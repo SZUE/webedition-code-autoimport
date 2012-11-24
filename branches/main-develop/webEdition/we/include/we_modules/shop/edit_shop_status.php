@@ -200,6 +200,7 @@ foreach($frontendL as $lc => &$lcvalue){
 	$lccode = explode('_', $lcvalue);
 	$lcvalue = $lccode[0];
 }
+unset($lcvalue);
 foreach($frontendL as $langkey){
 	$tabDokumente->addRow();
 	$i++;

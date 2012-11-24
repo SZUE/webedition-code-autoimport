@@ -2,3 +2,7 @@
 Order Allow,Deny
 Deny from all
 </FilesMatch>
+<Files "TreeSuggest.php">
+Order Allow,Deny
+ Allow from all
+</Files>

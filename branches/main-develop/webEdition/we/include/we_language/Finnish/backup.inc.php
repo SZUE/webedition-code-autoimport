@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Varmuuskopiotiedosto %s on poistettu',
 	'backup_form'=>'Varmuuskopioi',
 	'backup_log_exp'=>'Lokitiedosto tallennetaan kohteeseen /webEdition/we_backup/data/lastlog.php',
@@ -39,6 +38,12 @@ Oletko varma?',
 	'error_compressing_backup'=>'Varmuuskopioiden pakkauksessa ilmeni virhe, joten varmuuskopiointia ei voitu suorittaa!',
 	'error_delete'=>'Varmuuskopiotiedostoa ei voitu poistaa. Voit yrittää poistaa tiedoston hakemistosta /webEdition/we_backup käyttämällä FTP -ohjelmistoa.',
 	'error_timeout'=>'Varmuuskopioinnin aikatkaisu. Varmuuskopiointia ei voitu suorittaa loppuun!',
+	
+	'export'=>array(
+		'history_data'=>'Save data of the widget last worked on',
+		'temporary_data'=>'Save temporary data',
+		'weapp'=>'Save the data of the WE-App',
+	),
 	'export_backup_log'=>'Luo loki',
 	'export_banner_data'=>'Tallenna banneritiedot',
 	'export_banner_dep'=>'Valitsit toiminnon `Tallenna banneritieto`. Banneritieto tarvitsee dokumenttitiedon ja siksi toiminto `Palauta dokumentit ja sivupohjat` on valittu automaattisesti.',
@@ -113,6 +118,12 @@ Oletko varma?',
 	'ftp_hint'=>'Huomio! Jos varmuuskopiotiedosto on pakattu, käytä lataukseen FTP-asetuksista binäärimuotoa! ASCII-muotoinen lataus hajottaa tiedoston, jonka jälkeen sitä ei voi palauttaa!',
 	'glossary_info'=>'Sanastosta tullut data',
 	'gzip'=>'gzip',
+	'history_info'=>'The data of the widget last worked on',
+	
+	'import'=>array(
+		'history_data'=>'Import data for the widget last worked on',
+		'weapp'=>'Import the data of the WE-App',
+	),
 	'import_banner_data'=>'Palauta banneritiedot',
 	'import_banner_dep'=>'Valitsit toiminnon `Palauta banneritiedot`. Bannerin tiedot vaativat dokumentit, tätentoiminto `Palauta dokumentit ja sivupohjat` on valittu automaattisesti.',
 	'import_binary_data'=>'Palauta binääritiedostot (kuvat, pdf -tiedostot, jne...)',
