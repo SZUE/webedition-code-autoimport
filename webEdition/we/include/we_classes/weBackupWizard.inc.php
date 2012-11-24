@@ -623,9 +623,9 @@ class weBackupWizard{
 			}
 		}
 
-		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[import_temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[import][temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70, "noline" => 1);
 
-		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_history", g_l('backup', "[import_history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, "handle_history", g_l('backup', "[import][history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70, "noline" => 1);
 
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_import_desc]"), 2, 600, false), "space" => 70, "noline" => 1);
@@ -633,7 +633,7 @@ class weBackupWizard{
 			if($_tool == 'weSearch'){
 				$text = g_l('searchtool', '[import_tool_' . $_tool . '_data]');
 			} else{
-				$text = g_l('backup', "[import_weapp]");
+				$text = g_l('backup', "[import][weapp]");
 			}
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
@@ -936,14 +936,14 @@ class weBackupWizard{
 		foreach($_tools as $_tool){
 			$text = ($_tool == 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-					g_l('backup', "[export_weapp]"));
+					g_l('backup', "[export][weapp]"));
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 			$k++;
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[temporary_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[export_temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70);
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[history_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_history", g_l('backup', "[export_history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[temporary_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_temporary", g_l('backup', "[export][temporary_data]"), false, "defaultfont", "doClick(101);"), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[history_info]"), 2, 600, false) . we_forms::checkbox(1, true, "handle_history", g_l('backup', "[export][history_data]"), false, "defaultfont", "doClick(102);"), "space" => 70);
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[extern_exp]"), 1, 600, false), "space" => 70, "noline" => 1);
 		$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, false, "handle_extern", g_l('backup', "[export_extern_data]"), false, "defaultfont", "doClick(300);"), "space" => 70, "noline" => 1);
