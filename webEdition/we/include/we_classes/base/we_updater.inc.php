@@ -794,7 +794,7 @@ class we_updater{
 		}
 		//FIXME: clean customerfilter
 		//FIXME: clean history
-
+		//FIXME: clean inconsistent objects
 	}
 
 	static function updateGlossar(){

@@ -22,11 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weBackupFileReader extends weXMLFileReader{
+abstract class weBackupFileReader extends weXMLFileReader{
 
-	function preParse(&$content){
-
-
+	static function preParse(&$content){
 		$match = array();
 
 		if(preg_match('|<we:table(item)?([^>]*)|i', $content, $match)){
@@ -44,16 +42,9 @@ class weBackupFileReader extends weXMLFileReader{
 			}
 		}
 
-		if(preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
-			if(!weBackupUtil::canImportBinary($match[1], $match[3])){
-				return true;
-			}
-		}
-
-		if(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
-			if(!weBackupUtil::canImportVersion($match[1], $match[3])){
-				return true;
-			}
+		if((preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !weBackupUtil::canImportBinary($match[1], $match[3])) ||
+			(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match) && !weBackupUtil::canImportVersion($match[1], $match[3]))){
+			return true;
 		}
 
 		return false;
