@@ -169,8 +169,10 @@ $l_prefs=array(
 	'locale_information'=>'Lisää kaikki kielet joilla haluat tarjota web-sivuja.<br/><br/>Tätä asetusta käytetään sanastotarkastuksessa ja oikoluvussa.',
 	'locale_languages'=>'Kieli',
 	'logFormmailRequests'=>'Formmail pyynnöt lokiin',
-	'login'=>'LogIn',
+	
+	'login'=>array(
 		'deactivateWEstatus'=>'hide the webEdition version status',
+		'login'=>'LogIn',
 		'windowtypeboth'=>'both, as POPUP and in the same window',
 		'windowtypepopup'=>'only as POPUP',
 		'windowtypesame'=>'only in the same window',
