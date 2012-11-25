@@ -169,8 +169,10 @@ $l_prefs=array(
 	'locale_information'=>'Voeg alle talen toe die u wilt gebruiken.<br/><br/>Deze voorkeur wordt gebruikt voor de woordenlijst controle en de spellingscontrole.',
 	'locale_languages'=>'Taal',
 	'logFormmailRequests'=>'Log formmail aanvragen',
-	'login'=>'LogIn',
+	
+	'login'=>array(
 		'deactivateWEstatus'=>'hide the webEdition version status',
+		'login'=>'LogIn',
 		'windowtypeboth'=>'both, as POPUP and in the same window',
 		'windowtypepopup'=>'only as POPUP',
 		'windowtypesame'=>'only in the same window',

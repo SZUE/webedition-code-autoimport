@@ -169,8 +169,10 @@ $l_prefs=array(
 	'locale_information'=>'Add all languages for which you would provide a web page.<br/><br/>This preference will be used for the glossary check and the spellchecking.',
 	'locale_languages'=>'Language',
 	'logFormmailRequests'=>'Log formmail requests',
-	'login'=>'LogIn',
+	
+	'login'=>array(
 		'deactivateWEstatus'=>'hide the webEdition version status',
+		'login'=>'LogIn',
 		'windowtypeboth'=>'both, as POPUP and in the same window',
 		'windowtypepopup'=>'only as POPUP',
 		'windowtypesame'=>'only in the same window',
