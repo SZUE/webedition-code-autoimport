@@ -120,11 +120,7 @@ function getItems($ParentID){
 	}
 
 	$DB_WE = new DB_WE;
-	$where = " WHERE ";
-
-	$where .= " ParentID=$ParentID ";
-	$where .= makeOwnersSql();
-	$where .= $GLOBALS['wsQuery'];
+	$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . makeOwnersSql() .')'. $GLOBALS['wsQuery'].')';
 	//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 	$elem = "ID,ParentID,Path,Text,Icon,IsFolder,ModDate" . (($GLOBALS['table'] == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
 

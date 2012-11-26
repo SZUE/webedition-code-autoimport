@@ -26,12 +26,12 @@ class we_delSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function __construct($id, $table=FILE_TABLE){
+	function __construct($id, $table = FILE_TABLE){
 		parent::__construct($id, $table);
 		$this->title = g_l('fileselector', '[delSelector][title]');
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
@@ -66,7 +66,8 @@ function enableDelBut(){
 	}
 
 	function printFramesetJSFunctions(){
-		parent::printFramesetJSFunctions();?>
+		parent::printFramesetJSFunctions();
+		?>
 
 		function deleteEntry(){
 		if(confirm('<?php print g_l('fileselector', "[deleteQuestion]") ?>')){
@@ -316,14 +317,10 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function query(){
 
-		$wsQuery = getWsQueryForSelector($this->table, false);
-
-		$_query = "	SELECT " . $this->fields . "
-					FROM " . $this->db->escape($this->table) . "
-					WHERE ParentID=" . intval($this->dir) . ' ' . makeOwnersSql() .
-			$wsQuery . ($this->order ? (' ORDER BY ' . $this->order) : '');
-
-		$this->db->query($_query);
+		$this->db->query(
+			'SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . makeOwnersSql() . ')' .
+			getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : '')
+		);
 	}
 
 }

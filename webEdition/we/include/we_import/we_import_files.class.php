@@ -85,7 +85,7 @@ class we_import_files{
 	}
 
 	function _getJS($fileinput){
-		$js = "
+		return we_html_element::jsElement("
 				function makeArrayFromCSV(csv) {
 					if(csv.length && csv.substring(0,1)==\",\"){csv=csv.substring(1,csv.length);}
 					if(csv.length && csv.substring(csv.length-1,csv.length)==\",\"){csv=csv.substring(0,csv.length-1);}
@@ -115,9 +115,7 @@ class we_import_files{
 							new jsWindow(url,'we_catselector',-1,-1," . WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 						break;
 					}
-				}";
-
-		$js .= 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n", " ", str_replace("\r", " ", $this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
+				}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n", " ", str_replace("\r", " ", $this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
 				function checkFileinput(){
 					var prefix =  "trash_";
 					var imgs = document.getElementsByTagName("IMG");
@@ -192,10 +190,8 @@ class we_import_files{
 				function uploadFinished() {
 					refreshTree();
 					' . we_message_reporting::getShowMessageCall(
-				g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}';
-
-		return we_html_element::jsElement($js) . we_html_element::jsScript(JS_DIR . "windows.js");
+					g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				}') . we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getContent(){
@@ -212,7 +208,6 @@ class we_import_files{
 
 		// create Start Screen ##############################################################################
 
-		$parts = array();
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = sizeof($wsA) ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;
@@ -221,8 +216,6 @@ class we_import_files{
 		$wecmdenc1 = we_cmd_enc("document.we_startform.importToID.value");
 		$wecmdenc2 = we_cmd_enc("document.we_startform.egal.value");
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
-		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2'); // fix for categories require reload!
-		$content .= we_html_element::htmlHidden(array('name' => 'categories', 'value' => ''));
 
 		$yuiSuggest->setAcId("Dir");
 		$yuiSuggest->setContentType("folder");
@@ -235,14 +228,15 @@ class we_import_files{
 		$yuiSuggest->setWidth(260);
 		$yuiSuggest->setSelectButton($button);
 
-		$content .= $yuiSuggest->getHTML();
+		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . // fix for categories require reload!
+			we_html_element::htmlHidden(array('name' => 'categories', 'value' => '')) .
+			$yuiSuggest->getHTML();
 
-		array_push(
-			$parts, array(
-			"headline" => g_l('importFiles', "[destination_dir]"),
-			"html" => $content,
-			"space" => 150
-		));
+		$parts = array(array(
+				"headline" => g_l('importFiles', "[destination_dir]"),
+				"html" => $content,
+				"space" => 150
+			));
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, 380) .
 			we_html_tools::getPixel(200, 10) .
@@ -291,12 +285,11 @@ class we_import_files{
 				}
 				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
 
-				array_push(
-					$parts, array(
+				$parts[] = array(
 					"headline" => g_l('importFiles', "[make_thumbs]"),
 					"html" => $Thselect,
 					"space" => 150
-				));
+				);
 
 				$widthInput = we_html_tools::htmlTextInput("width", "10", $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", "10", $this->height, "", '', "text", 60);
@@ -323,10 +316,7 @@ class we_import_files{
 				</tr>
 			</table>';
 
-				array_push(
-					$parts, array(
-					"headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 150
-				));
+				$parts[] = array("headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 150);
 
 				$_radio0 = we_forms::radiobutton(
 						"0", $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
@@ -337,27 +327,24 @@ class we_import_files{
 				$_radio90r = we_forms::radiobutton(
 						"270", $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
 
-				array_push(
-					$parts, array(
+				$parts[] = array(
 					"headline" => g_l('weClass', "[rotate]"),
 					"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
 					"space" => 150
-				));
+				);
 
-				array_push(
-					$parts, array(
+				$parts[] = array(
 					"headline" => g_l('weClass', "[quality]"),
 					"html" => we_image_edit::qualitySelect("quality", $this->quality),
 					"space" => 150
-				));
+				);
 			} else{
-				array_push(
-					$parts, array(
+				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
 						g_l('importFiles', "[add_description_nogdlib]"), 2, ""),
 					"space" => 0
-				));
+				);
 			}
 			$foldAt = 3;
 		} else{
@@ -407,7 +394,6 @@ class we_import_files{
 			));
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
-		$parts = array();
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
 		$maxsize = round($maxsize / (1024 * 1024), 3) . 'MB';
 
@@ -416,7 +402,9 @@ class we_import_files{
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), 2, 520, false)) .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), 2, 520, false));
 
-		array_push($parts, array("headline" => "", "html" => $content, "space" => 0));
+		$parts = array(
+			array("headline" => "", "html" => $content, "space" => 0)
+		);
 
 		$fileinput = we_html_element::htmlInput(
 				array(
