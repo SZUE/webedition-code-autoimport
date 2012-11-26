@@ -28,7 +28,7 @@
 var ImageDialog = {
 	preInit : function() {
 		var url;
-		tinyMCEPopup.requireLangPack();
+		//tinyMCEPopup.requireLangPack();
 		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 		}
@@ -52,11 +52,11 @@ var ImageDialog = {
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
 			if(!f.alt.value){
-				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
-					if (s){
-						t.insertAndClose();
-					}
-				});
+				//tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
+					//if (s){
+						//t.insertAndClose();
+					//}
+				//});
 				return;
 			}
 		}
