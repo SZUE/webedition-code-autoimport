@@ -20,7 +20,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 /**
  * This source is based on tinyMCE-plugin "advimage":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
@@ -100,9 +100,9 @@ var ImageDialog = {
 			alt : nl.alt.value,
 			align : nl.align.value,
 			name : nl.name.value,
-			class : nl.class.value,
+			//class : nl.class.value,
 			title : nl.title.value,
-			longdesc : nl.longdesc.value,
+			longdesc : nl.longdesc.value
 			//style : nl.style.value,
 			//id : nl.id.value,
 			//dir : nl.dir.value,
@@ -126,7 +126,7 @@ var ImageDialog = {
 		tinyMCEPopup.editor.focus();
 		//tinyMCEPopup.close();
 		top.close();
-	},
+	}
 
 	// removed lots of original tinyMCE-functions
 };
