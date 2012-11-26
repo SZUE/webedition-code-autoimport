@@ -457,8 +457,8 @@ class we_import_files{
 		$body = we_html_element::htmlBody(
 				array(
 				"class" => "weDialogBody",
-				"onMouseMove" => "if(typeof(document.JUpload)=='undefined') checkFileinput(); else setApplet();",
-				"onload" => "if(typeof(document.JUpload)!='undefined') setApplet();"
+				"onMouseMove" => "if(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='undefined')||document.JUpload.isActive()==false) checkFileinput(); else setApplet();",
+				"onload" => "if(!(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='undefined')||document.JUpload.isActive()==false)) setApplet();"
 				), $content);
 
 		$js = $this->_getJS($fileinput) . we_multiIconBox::getDynJS("uploadFiles", "30");
