@@ -34,33 +34,41 @@ header("Content-Type: text/javascript");
 
 tinyMceGL = {
 	welink : { 
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[hyperlink]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[hyperlink]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[hyperlink]")); ?>'
 			},
 	weimage: {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_edit_image]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[insert_edit_image]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_edit_image]")); ?>'
 			},
-	weabbr : { 
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[abbr]")); ?>'
+	weabbr : {
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[abbr]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[abbr]")); ?>'
 			},
 	weacronym : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[acronym]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[acronym]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[acronym]")); ?>'
 			},
 	wefullscreen : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[fullscreen]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[fullscreen]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[fullscreen]")); ?>'
 			},
-	weinsertbreak : { 
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_br]")); ?>'
+	weinsertbreak : {
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[insert_br]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_br]")); ?>'
 			},
 	weinsertrtf : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[rtf_import]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[rtf_import]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[rtf_import]")); ?>'
 			},
 	welang : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[language]")); ?>'
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[language]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[language]")); ?>'
 			},
 	wespellchecker : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[spellcheck]")); ?>'
-			},
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[spellcheck]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[spellcheck]")); ?>'			},
 	wevisualaid : {
-			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[visible_borders]")); ?>',
-			}
+			tooltip : '<?php echo $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? g_l('wysiwyg', "[visible_borders]") :
+				convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[visible_borders]")); ?>'			}
 };
