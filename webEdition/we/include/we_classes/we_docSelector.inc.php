@@ -81,18 +81,17 @@ class we_docSelector extends we_dirSelector{
 				}
 
 				if($wsQuery){
-					$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-					$wsQuery = " AND ($wsQuery) ";
+					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 				}
 			}
 		}
 
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' .$this->db->escape($this->table) .' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-			makeOwnersSql() .')'.
-			$wsQuery .')'.
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
+			makeOwnersSql() . ')' .
+			$wsQuery . ')' .
 			$filterQuery . //$publ_q.
 			($this->order ? (' ORDER BY ' . $this->order) : '')
-			);
+		);
 		if($this->table == FILE_TABLE){
 			$titleQuery = new DB_WE();
 			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");
@@ -225,7 +224,7 @@ class we_docSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -772,7 +771,7 @@ class we_docSelector extends we_dirSelector{
 							$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
 						} else{
 							$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-							$_thumbpath = WEBEDITION_DIR. 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
+							$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->id . '&size=150&path=' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 							$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 						}
 					}

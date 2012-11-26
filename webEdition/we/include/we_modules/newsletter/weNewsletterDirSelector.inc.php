@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weNewsletterDirSelector extends we_dirSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function __construct($id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $we_editDirID="", $FolderText="", $rootDirID=0, $multiple=0){
+	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0){
 		$table = NEWSLETTER_TABLE;
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
 	}
@@ -95,7 +95,7 @@ top.selectFile(top.currentID);
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -145,22 +145,16 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
-</script>
-';
-		print '</head><body></body></html>';
+//-->
+</script>' .
+			'</head><body></body></html>';
 	}
 
 	function query(){
-
-		$ws_query = getWsQueryForSelector(NEWSLETTER_TABLE);
-
-		$_query = "	SELECT " . $this->db->escape($this->fields) . "
-					FROM " . $this->db->escape($this->table) . "
-					WHERE IsFolder=1 AND ParentID=" . intval($this->dir) .
-			$ws_query .
-			($this->order ? (' ORDER BY ' . $this->order) : '');
-
-		$this->db->query($_query);
+		$this->db->query('	SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
+			getWsQueryForSelector(NEWSLETTER_TABLE) .
+			($this->order ? (' ORDER BY ' . $this->order) : '')
+		);
 	}
 
 	function printFramesetJSFunctionAddEntries(){
@@ -214,7 +208,7 @@ top.selectFile(top.currentID);
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -270,13 +264,13 @@ top.selectFile(top.currentID);
 				d.writeln('}');
 		<?php if($this->multiple){ ?>
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-		<?php } else{ ?>
+				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
-		<?php } ?>
+				<?php } ?>
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
+			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 					if(top.we_editDirID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
@@ -319,15 +313,15 @@ top.selectFile(top.currentID);
 						d.writeln('</table></form>');
 				if(makeNewFolder || top.we_editDirID){
 				d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
-					}
-					d.writeln('</body>');
+			}
+			d.writeln('</body>');
 		d.close();
 		}
 
 		<?php
 	}
 
-	function userCanSeeDir($showAll=false){
+	function userCanSeeDir($showAll = false){
 		return true;
 	}
 

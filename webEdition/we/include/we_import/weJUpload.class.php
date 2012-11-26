@@ -23,9 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weJUpload{
-
 	var $Params = array();
-	var $Buttons = array();
 
 	/* avail langs
 	 * ar, 	  ar_SA, 	  bg, 	  cs, 	  da, 	  de, 	  en, 	  eo, 	  es,
@@ -90,10 +88,10 @@ class weJUpload{
 			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
 		}
 
-		return '<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
-				' . $_params . '
-				' . $content . '
-			</applet>';
+		return '<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>' .
+			$_params .
+			$content .
+			'</applet>';
 	}
 
 	function getJS(){
@@ -117,11 +115,10 @@ class weJUpload{
 			}
 		}
 
-		if($order == 'h'){
-			return we_button::create_button_table($_buttons, $space);
-		} else{
-			return '<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>';
-		}
+		return ($order == 'h' ?
+				we_button::create_button_table($_buttons, $space) :
+				'<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>'
+			);
 	}
 
 }

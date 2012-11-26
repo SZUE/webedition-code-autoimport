@@ -180,10 +180,11 @@ class we_import_files{
 						buttJUDiv.style.display="block";
 					}
 
-					setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
+					//setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
 				}
 
 				function refreshTree() {
+					//FIXME: this won\'t work in current version
 					top.opener.top.we_cmd("load","' . FILE_TABLE . '");
 				}
 
@@ -432,7 +433,6 @@ class we_import_files{
 
 
 		if(getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar')){
-
 			$_weju = new weJUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
 		}
@@ -445,13 +445,14 @@ class we_import_files{
 		$content = we_html_element::htmlDiv(
 				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
-						), "") : "") . we_html_element::htmlForm(
+						), '') : '') . we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
 					"method" => "post"
-					), $this->_getHiddens()) . we_multiIconBox::getHTML(
-					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]")));
+					), $this->_getHiddens()) .
+				we_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"))
+		);
 
 		$body = we_html_element::htmlBody(
 				array(
@@ -646,12 +647,12 @@ function next() {
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
 				), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
-		$table->setCol(
-			0, 1, array(
+		$table->setCol(0, 1, array(
 			"align" => "right"
 			), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
-				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) . we_html_element::htmlDiv(
+				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
+			we_html_element::htmlDiv(
 				array(
 				'id' => 'juButton', 'style' => 'display:none;'
 				), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
@@ -705,8 +706,7 @@ function next() {
 				if($this->sameName == "rename"){
 					$z = 0;
 					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-					while(f(
-						"SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . abs($this->importToID) . "'", "ID", $GLOBALS['DB_WE'])) {
+					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])) {
 						$z++;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 					}
@@ -881,9 +881,7 @@ function next() {
 
 		$variant_js = '
 			var categories_edit = new multi_edit("categoriesDiv",document.we_startform,0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
-			categories_edit.addVariant();
-
-		';
+			categories_edit.addVariant();';
 
 		$_cats = makeArrayFromCSV($this->categories);
 		if(is_array($_cats)){

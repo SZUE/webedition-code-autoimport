@@ -696,9 +696,8 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 		if(in_array($p, $found)){
 			return false;
 		}
-		array_push($found, $p);
-		$p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db);
-	} while($p);
+		$found[]= $p;
+	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
 	return false;
 }
 
@@ -711,7 +710,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 	if(!is_array($wsIDs)){
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
-	if(!sizeof($wsIDs) || !sizeof($IDs) || (in_array(0, $wsIDs))){
+	if(empty($wsIDs) || empty($IDs) || (in_array(0, $wsIDs))){
 		return true;
 	}
 	if((!$objcheck) && in_array(0, $IDs)){

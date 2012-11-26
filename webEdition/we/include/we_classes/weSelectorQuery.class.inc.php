@@ -337,25 +337,23 @@ class weSelectorQuery{
 	 * @param string $table
 	 * @return string
 	 */
-	function getUserExtraQuery($table, $useCreatorID = true){
-		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 '.makeOwnersSql(false) . ') ' : '( ');
+	function getUserExtraQuery($table){
+		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 ' . makeOwnersSql(false) . ') ' : '( ');
 
 		if(get_ws($table)){
-			$userExtraSQL .= getWsQueryForSelector($table).')';
+			$userExtraSQL .= getWsQueryForSelector($table);
 		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= " Path like '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
+				$wsQuery .= " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
 			}
 			if($wsQuery){
-				$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-				$wsQuery = " AND ($wsQuery) )";
+				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
-			$userExtraSQL .= $wsQuery;
 		}
-		return $userExtraSQL;
+		return $userExtraSQL . ')';
 	}
 
 }
