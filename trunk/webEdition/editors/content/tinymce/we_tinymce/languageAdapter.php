@@ -34,33 +34,33 @@ header("Content-Type: text/javascript");
 
 tinyMceGL = {
 	welink : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[hyperlink]"); ?>'
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[hyperlink]")); ?>'
 			},
 	weimage: {
-			tooltip : '<?php echo g_l('wysiwyg', "[insert_edit_image]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_edit_image]")); ?>'
 			},
 	weabbr : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[abbr]"); ?>'
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[abbr]")); ?>'
 			},
 	weacronym : {
-			tooltip : '<?php echo g_l('wysiwyg', "[acronym]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[acronym]")); ?>'
 			},
 	wefullscreen : {
-			tooltip : '<?php echo g_l('wysiwyg', "[fullscreen]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[fullscreen]")); ?>'
 			},
 	weinsertbreak : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[insert_br]"); ?>'
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[insert_br]")); ?>'
 			},
 	weinsertrtf : {
-			tooltip : '<?php echo g_l('wysiwyg', "[rtf_import]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[rtf_import]")); ?>'
 			},
 	welang : {
-			tooltip : '<?php echo g_l('wysiwyg', "[language]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[language]")); ?>'
 			},
 	wespellchecker : {
-			tooltip : '<?php echo g_l('wysiwyg', '[spellcheck]'); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[spellcheck]")); ?>'
 			},
 	wevisualaid : {
-			tooltip : '<?php echo g_l('wysiwyg', "[visible_borders]"); ?>',
+			tooltip : '<?php echo convertCharsetEncoding($GLOBALS['WE_BACKENDCHARSET'], 'UTF-8', g_l('wysiwyg', "[visible_borders]")); ?>',
 			}
 };
