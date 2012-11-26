@@ -338,10 +338,10 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table, $useCreatorID = true){
-		$userExtraSQL = ($table != NAVIGATION_TABLE ? makeOwnersSql(false) . " " : ' ');
+		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 '.makeOwnersSql(false) . ') ' : '( ');
 
 		if(get_ws($table)){
-			$userExtraSQL .= getWsQueryForSelector($table);
+			$userExtraSQL .= getWsQueryForSelector($table).')';
 		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
@@ -351,7 +351,7 @@ class weSelectorQuery{
 			}
 			if($wsQuery){
 				$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-				$wsQuery = " AND ($wsQuery) ";
+				$wsQuery = " AND ($wsQuery) )";
 			}
 			$userExtraSQL .= $wsQuery;
 		}

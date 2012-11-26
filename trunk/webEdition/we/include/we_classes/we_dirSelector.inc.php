@@ -93,24 +93,18 @@ top.clearEntries();';
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();';
-		} else{
-			print 'top.fsheader.enableRootDirButs();';
-		}
-		print 'top.currentPath = "' . $this->path . '";
+		print (intval($this->dir) == intval($this->rootDirID) ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-//--></script>
-';
+//-->
+</script>';
 	}
 
 	function query(){
-		$wsQuery = getWsQueryForSelector($this->table);
-
-		$_query = "	SELECT " . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . ' ' . makeOwnersSql() .
-			$wsQuery . ($this->order ? (' ORDER BY ' . $this->order) : '');
-
-		$this->db->query($_query);
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . makeOwnersSql() . ') ' .
+			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : ''));
 	}
 
 	function setDefaultDirAndID($setLastDir){

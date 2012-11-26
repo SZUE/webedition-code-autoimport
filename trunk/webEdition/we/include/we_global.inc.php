@@ -28,13 +28,12 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 
 function we_getModuleNameByContentType($ctype){
 	$_moduleDir = '';
-	for($i = 0; $i < sizeof($GLOBALS['_we_active_integrated_modules']); $i++){
-
-		if(strstr($ctype, $GLOBALS['_we_active_integrated_modules'][$i])){
-			$_moduleDir = $GLOBALS['_we_active_integrated_modules'][$i];
+	foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+		if(strstr($ctype, $mod)){
+			return $mod;
 		}
 	}
-	return $_moduleDir;
+	return '';
 }
 
 /* function we_getIndexFileIDs($db){
@@ -101,13 +100,12 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		return '1';
 	}
 
-	$pid_tail = '';
 	if(!$db){
 		$db = new DB_WE();
 	}
 	$parentIDs = array();
 	$pid = intval($pid);
-	array_push($parentIDs, $pid);
+	$parentIDs[] = $pid;
 	while($pid != 0) {
 		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
 		$parentIDs[] = $pid;
@@ -937,41 +935,41 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 }
 
 function getWsQueryForSelector($tab, $includingFolders = true){
-	$wsQuery = '';
-
 	if($_SESSION['perms']['ADMINISTRATOR']){
 		return '';
 	}
 
-	if(($ws = makeArrayFromCSV(get_ws($tab)))){
-		$paths = id_to_path($ws, $tab, '', false, true);
-		$wsQuery .= ' AND (';
-		foreach($paths as $path){
-			$parts = explode('/', $path);
-			array_shift($parts);
-			$last = array_pop($parts);
-			$path = '/';
-			foreach($parts as $part){
-
-				$path .= $part;
-				if($includingFolders){
-					$wsQuery .= ' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '") OR ';
-				} else{
-					$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
-				}
-				$path .= '/';
-			}
-			$path .= $last;
-			if($includingFolders){
-				$wsQuery .= ' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '" OR Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
-			} else{
-				$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
-			}
-			$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
-		}
-		$wsQuery .= ' 0 )'; // end with "OR 0"
+	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
+		return '';
 	}
-	return $wsQuery;
+	$paths = id_to_path($ws, $tab, '', false, true);
+	$wsQuery = array();
+	foreach($paths as $path){
+		$parts = explode('/', $path);
+		array_shift($parts);
+		$last = array_pop($parts);
+		$path = '/';
+		foreach($parts as $part){
+
+			$path .= $part;
+			if($includingFolders){
+				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+			} else{
+				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+			}
+			$path .= '/';
+		}
+		$path .= $last;
+		if($includingFolders){
+			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		} else{
+			$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		}
+		$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+	}
+
+	return ' OR (' . implode(' OR ', $wsQuery) . ')';
 }
 
 function getWsFileList($table, $childsOnly = false){

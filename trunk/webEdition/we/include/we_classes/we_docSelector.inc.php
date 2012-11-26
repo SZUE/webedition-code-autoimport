@@ -87,14 +87,12 @@ class we_docSelector extends we_dirSelector{
 			}
 		}
 
-
-		$q = "SELECT " . $this->fields . " FROM " .$this->db->escape($this->table) .' WHERE ParentID=' . intval($this->dir) . ' ' .
-			makeOwnersSql() .
-			$wsQuery .
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' .$this->db->escape($this->table) .' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
+			makeOwnersSql() .')'.
+			$wsQuery .')'.
 			$filterQuery . //$publ_q.
-			($this->order ? (' ORDER BY ' . $this->order) : '');
-
-		$this->db->query($q);
+			($this->order ? (' ORDER BY ' . $this->order) : '')
+			);
 		if($this->table == FILE_TABLE){
 			$titleQuery = new DB_WE();
 			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");

@@ -330,26 +330,26 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query("SELECT " . $this->db->escape($this->fields) . " FROM " .
+		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
 			$this->db->escape($this->table) .
-			" WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . " " . $this->getUserExtraQuery($this->table));
+			" WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . " " . self::getUserExtraQuery($this->table));
 	}
 
-	function getUserExtraQuery($table, $useCreatorID=true){
-		$userExtraSQL = makeOwnersSql(false) . " ";
+	static function getUserExtraQuery($table, $useCreatorID=true){
+		$userExtraSQL = ' AND ((1 '.makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
-			$userExtraSQL .= getWsQueryForSelector($table);
+			$userExtraSQL .= getWsQueryForSelector($table).')';
 		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= " Path like '$path/%' OR Path='$path' OR ";
+				$wsQuery .= " Path LIKE '$path/%' OR Path='$path' OR ";
 			}
 			if($wsQuery){
 				$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-				$wsQuery = " AND ($wsQuery) ";
+				$wsQuery = " AND ($wsQuery) )";
 			}
 			$userExtraSQL .= $wsQuery;
 		}

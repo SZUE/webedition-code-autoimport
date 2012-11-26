@@ -185,8 +185,8 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 
 		foreach($wsPathArray as $path){
-			$wsQuery .= " Path LIKE '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . " OR ";
-			while($path != "/" && $path != "\\" && $path) {
+			$wsQuery .= " Path LIKE '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path) . ' OR ';
+			while($path != '/' && $path != '\\' && $path) {
 				$parentpaths[] = $path;
 				$path = dirname($path);
 			}
