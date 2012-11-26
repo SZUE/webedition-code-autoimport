@@ -47,6 +47,8 @@ if($GLOBALS['we_editmode']){
 
 
 		function sizeEditor() { // to be fixed (on 12.12.11)
+		<?php
+		?>
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
@@ -82,6 +84,7 @@ if($GLOBALS['we_editmode']){
 
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
 
+		<?php if(we_base_browserDetect::isIE()){echo 'h=document.body.offsetHeight; h=Math.max(h,600);';} ?>
 
 
 				if (wizardTable != null) {
@@ -348,7 +351,9 @@ return;';
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'                 ?>
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
+	//FIXME: no resize for IE!
+	echo (we_base_browserDetect::isIE()?'':'onResize="sizeEditor();"');?>>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 	$we_doc->pHiddenTrans();
 }
@@ -356,7 +361,7 @@ return;';
 function we_getJavaEditorCode($code){
 	global $we_doc;
 	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
-    <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl(true) . WEBEDITION_DIR. 'editors/template/editor"/>
+    <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl(true) . WEBEDITION_DIR . 'editors/template/editor"/>
     <param name="phpext" value=".php"/>
 	<param name="serverUrl" value="' . getServerUrl(true) . '"/>
 	<param name="editorPath" value="webEdition/editors/template/editor"/>';

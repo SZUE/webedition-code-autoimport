@@ -32,7 +32,7 @@ $bgcol = preg_match('/^[a-f0-9]{6}$/i', $_REQUEST['tinyMceBackgroundColor']) ? '
 
 body {
 	font-size: <?php print (we_base_browserDetect::isMAC()) ? "12px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px"); ?>;
-	background-color: <?php echo $bgcol; ?> !important; /* FF requires a important here */
+	background-color: <?php echo $bgcol; ?> !important;
 }
 
 
@@ -47,7 +47,7 @@ abbr.mceItemWeAbbr{ // not yet implemented in wevisualaid
 }
 
 abbr.mceItemWeLink{ // not yet implemented in wevisualaid
-	//border: 1px dotted gray;
+
 }
 
 span.mceItemWeLang{
