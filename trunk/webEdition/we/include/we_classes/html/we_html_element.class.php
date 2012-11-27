@@ -331,7 +331,6 @@ abstract class we_html_element{
 	}
 
 	static function htmlMeta($attribs = array()){
-
 		return we_baseElement::getHtmlCode(new we_baseElement('meta', 'selfclose', $attribs));
 	}
 
