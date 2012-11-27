@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weJUpload{
+
 	var $Params = array();
 
 	/* avail langs
@@ -82,16 +83,21 @@ class weJUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-		$_params = '';
+		$_params='
+<param name="scriptable" value="true"/>
+<param name="mayscript" value="true"/>';
 
 		foreach($this->Params as $name => $value){
 			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
 		}
 
-		return '<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>' .
-			$_params .
-			$content .
-			'</applet>';
+		return we_html_element::htmlApplet(array(
+				'name' => "JUpload",
+				'code' => "wjhk.jupload2.JUploadApplet",
+				'archive' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
+				'width' => $w,
+				'height' => $h,
+				), $_params . $content);
 	}
 
 	function getJS(){

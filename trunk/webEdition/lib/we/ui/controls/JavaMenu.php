@@ -115,7 +115,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				if(!isset($m["cmd"])){
 					$m["cmd"] = "#";
 				}
-				$out .= "\n" . '				<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : "0") . '">' . "\n";
+				$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : "0") . '">' . "\n";
 				$i++;
 			}
 		}
@@ -150,7 +150,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 		for($i = 0; $i < sizeof($menus); $i++){
 			$foo = $menus[$i]["code"];
 			self::_computeOption($this->_entries, $foo, $menus[$i]["id"], "");
-			$foo .= "</select>\n";
+			$foo .= "</select>";
 			$out .= '<td>' . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
