@@ -122,6 +122,7 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	
 	'import'=>array(
 		'history_data'=>'Daten des Widget -zuletzt bearbeitet- wiederherstellen',
+		'temporary_data'=>'Temporäre Dateien wiederherstellen',
 		'weapp'=>'Importiere diem Daten der WE-App',
 	),
 	'import_banner_data'=>'Bannerdaten wiederherstellen',
@@ -156,7 +157,6 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'import_shop_dep'=>'Sie haben `Shopdaten wiederherstellen` ausgewählt. Der Shop braucht die Kundendaten um richtig zu funktionieren und deswegen wird `Kundendaten sichern` automatisch markiert.',
 	'import_spellchecker_data'=>'Daten der Rechtschreibprüfung wiederherstellen',
 	'import_templates'=>'Vorlagen wiederherstellen',
-	'import_temporary_data'=>'Temporäre Dateien wiederherstellen',
 	'import_temporary_dep'=>'Sie haben `Temporäre Dateien wiederherstellen` ausgewählt. Um richtig zu funktionieren, benötigen die `Temporäre Dateien auch die Dokumente. Deswegen wird `Dokumente und Vorlage wiederherstellen` automatisch markiert.',
 	'import_todo_data'=>'Todo/Messaging Daten wiederherstellen',
 	'import_todo_dep'=>'Sie haben `Todo/Messaging wiederherstellen` ausgewählt. Das Todo/Mess. braucht die Benutzerdaten um richtig zu funktionieren und deswegen wird `Benutzerdaten wiederherstellen` automatisch markiert.',

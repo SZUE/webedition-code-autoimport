@@ -121,6 +121,7 @@ $l_backup=array(
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Przywróć dane tymczasowe',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Przywróć dane Bannerów',
@@ -155,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'Wybrano `Przywróć dane sklepu`. Sklep potrzebuje danych klientów do prawidłowego funkcjonowania i dlatego automatycznie zaznaczono`Zabezpiecz dane klientów`.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Przywróć szablony',
-	'import_temporary_data'=>'Przywróć dane tymczasowe',
 	'import_temporary_dep'=>'Wybrano `Przywróć pliki tymczasowe`. Do prawidłowego funkcjonowania pliki tymczasowe potrzebują także dokumentów. Dlatego automatycznie zaznaczono `Przywróć dokumenty i szablony`.',
 	'import_todo_data'=>'Przywróć dane Zadania/Powiadamianie',
 	'import_todo_dep'=>'Wybrano `Przywróć Zadania/Powiadamianie `. Moduł Zadania/Powiadamianie potrzebuje danych użytkowników do prawidłowego funkcjonowania i dlatego automatycznie zaznaczono `Przywróć dane użytkownika`.',
