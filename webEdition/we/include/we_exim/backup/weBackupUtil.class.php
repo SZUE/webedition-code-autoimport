@@ -75,19 +75,19 @@ abstract class weBackupUtil{
 	static function getDescription($table, $prefix){
 		switch($table){
 			case CONTENT_TABLE:
-				return g_l('backup', "[" . $prefix . '_content]');
+				return g_l('backup', '[' . $prefix . '_content]');
 			case FILE_TABLE:
-				return g_l('backup', "[" . $prefix . '_files]');
+				return g_l('backup', '[' . $prefix . '_files]');
 			case LINK_TABLE:
-				return g_l('backup', "[" . $prefix . '_links]');
+				return g_l('backup', '[' . $prefix . '_links]');
 			case TEMPLATES_TABLE:
-				return g_l('backup', "[" . $prefix . '_templates]');
+				return g_l('backup', '[' . $prefix . '_templates]');
 			case TEMPORARY_DOC_TABLE:
-				return g_l('backup', "[" . $prefix . '_temporary_data]');
+				return g_l('backup', '[' . $prefix . '_temporary_data]');
 			case HISTORY_TABLE:
-				return g_l('backup', "[" . $prefix . '_history_data]');	
+				return g_l('backup', '[' . $prefix . '][history_data]');
 			case INDEX_TABLE:
-				return g_l('backup', "[" . $prefix . '_indexes]');
+				return g_l('backup', '[' . $prefix . '_indexes]');
 			case DOC_TYPES_TABLE:
 				return g_l('backup', "[" . $prefix . '_doctypes]');
 			case (defined('USER_TABLE') ? USER_TABLE : 'USER_TABLE'):
