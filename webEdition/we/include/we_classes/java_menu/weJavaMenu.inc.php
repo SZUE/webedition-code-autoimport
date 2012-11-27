@@ -98,11 +98,6 @@ class weJavaMenu{
 		}
 		$out = '';
 		if(!$showAltMenu){
-			$out .= '
-				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->width . '" height="' . $this->height . '" mayscript scriptable>
-					<param name="phpext" value=".php"/>' .
-				($cmdTarget ? '<param name="cmdTarget" value="' . $cmdTarget . '"/>' : '');
 			$i = 0;
 			foreach($this->entries as $id => $m){
 				if(we_hasPerm('ADMINISTRATOR')){
@@ -115,32 +110,30 @@ class weJavaMenu{
 						$and = explode("&&", $v);
 						$one = true;
 						foreach($and as $key => $val){
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($val) . '"])');
+							$set[] = 'isset($_SESSION["perms"]["' . trim($val) . '"])';
 							//$and[$key]='$_SESSION["perms"]["'.trim($val).'"]';
 							$and[$key] = '(isset($_SESSION["perms"]["' . trim($val) . '"]) && $_SESSION["perms"]["' . trim($val) . '"])';
 							$one = false;
 						}
 						$or[$k] = implode(" && ", $and);
 						if($one && !in_array('isset($_SESSION["perms"]["' . trim($v) . '"])', $set))
-							array_push($set, 'isset($_SESSION["perms"]["' . trim($v) . '"])');
+							$set[] = 'isset($_SESSION["perms"]["' . trim($v) . '"])';
 					}
 					$set_str = implode(" || ", $set);
 					$condition_str = implode(" || ", $or);
 					eval('if(' . $set_str . '){ if(' . $condition_str . ') $m["enabled"]=1; else $m["enabled"]=0;}');
 				}
-				if(isset($m["text"]) && is_array($m["text"])){
-					$mtext = ($m["text"][$GLOBALS["WE_LANGUAGE"]] ? $m["text"][$GLOBALS["WE_LANGUAGE"]] : "#");
-				} else{
-					$mtext = (isset($m["text"]) ? $m["text"] : "#");
-				}
+				$mtext = (isset($m["text"]) && is_array($m["text"]) ?
+						($m["text"][$GLOBALS["WE_LANGUAGE"]] ? $m["text"][$GLOBALS["WE_LANGUAGE"]] : "#") :
+						(isset($m["text"]) ? $m["text"] : "#"));
+
 				if(!isset($m["cmd"])){
 					$m["cmd"] = "#";
 				}
-				if(isset($m["enabled"]) && $m["enabled"]){
-					$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0") . '">';
-				} else{
-					$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>';
-				}
+				$out .= (isset($m["enabled"]) && $m["enabled"] ?
+						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0") . '">' :
+						'<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>');
+
 				$i++;
 			}
 		}
@@ -181,21 +174,31 @@ class weJavaMenu{
 					</tr>
 				</table>
 			</div>
-			' . (we_base_browserDetect::isGecko() ? '
-			<script type="text/javascript">
-
+			' . (we_base_browserDetect::isGecko() ? we_html_element::jsElement('
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
 			// Only script elements work: look at https://bugzilla.mozilla.org/show_bug.cgi?id=60724 for details
 
 			if ( !navigator.javaEnabled() ) {
 				//document.getElementById("divForSelectMenu").innerHTML = document.getElementById("divWithSelectMenu").innerHTML;
-			}
-			</script>' : '' ) . '
+			}') : '' ) . '
 			</form>';
 
 		if(!$showAltMenu){
-			$out .= '</applet>' . "\n";
+			return '<div id="divForSelectMenu"></div>' .
+				we_html_element::htmlApplet(array(
+					'name' => "weJavaMenuApplet",
+					'code' => "menuapplet",
+					'archive' => "JavaMenu.jar",
+					'codebase' => we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls'),
+					'align' => "baseline",
+					'width' => $this->width,
+					'height' => $this->height,), '
+<param name="scriptable" value="true"/>
+<param name="mayscript" value="true"/>
+<param name="phpext" value=".php"/>' . ($cmdTarget ? '
+<param name="cmdTarget" value="' . $cmdTarget . '"/>' : '') .
+					$out);
 		}
 		return $out;
 	}

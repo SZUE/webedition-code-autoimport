@@ -371,6 +371,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlApplet($attribs = array(), $content = ''){
+		$attribs['archive'] = self::getUnCache($attribs['archive']);
 		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
 	}
 
