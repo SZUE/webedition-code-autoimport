@@ -69,7 +69,7 @@ class we_docSelector extends we_dirSelector{
 
 		// deal with workspaces
 		$wsQuery = '';
-		if($this->open_doc && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+		if(/* $this->open_doc && */ (!$_SESSION["perms"]["ADMINISTRATOR"])){
 
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
@@ -79,11 +79,13 @@ class we_docSelector extends we_dirSelector{
 					$path = id_to_path($cid, OBJECT_TABLE);
 					$wsQuery .= " Path like '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
 				}
-
 				if($wsQuery){
 					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 				}
 			}
+		}
+		if(empty($wsQuery)){
+			$wsQuery = ' OR RestrictOwners=0 ';
 		}
 
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
@@ -92,6 +94,7 @@ class we_docSelector extends we_dirSelector{
 			$filterQuery . //$publ_q.
 			($this->order ? (' ORDER BY ' . $this->order) : '')
 		);
+
 		if($this->table == FILE_TABLE){
 			$titleQuery = new DB_WE();
 			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");

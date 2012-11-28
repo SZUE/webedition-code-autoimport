@@ -352,6 +352,8 @@ top.selectFile(top.currentID);
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
+		}else{
+			$userExtraSQL.=' OR RestrictOwners=0 ';
 		}
 		return $userExtraSQL . ')';
 	}
