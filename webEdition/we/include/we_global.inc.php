@@ -591,7 +591,7 @@ function makeOwnersSql($useCreatorID = true){
 		$q[] = 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\')';
 	}
 	foreach($aliases as $id){
-		$q [] = 'Owners like "%,' . intval($id) . ',%"';
+		$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
 	}
 	$groups = array($_SESSION['user']['ID']);
 	we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);

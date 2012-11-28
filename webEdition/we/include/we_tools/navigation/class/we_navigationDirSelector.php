@@ -354,7 +354,7 @@ top.selectFile(top.currentID);
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -401,6 +401,7 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
+//-->
 </script>
 ';
 		print '</head><body></body></html>';
