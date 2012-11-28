@@ -206,21 +206,18 @@ function doClick(opt) {
 				document.forms["we_form"].elements["handle_versions"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_versions_data]") . '";
 			}
-			if(document.forms["we_form"].elements["handle_history"].checked){
-				document.forms["we_form"].elements["handle_history"].checked=false;
-				mess+="\n-' . g_l('backup', "[" . $mode . "_history_data]") . '";
-			}
+			
 			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
 				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_versions_binarys_data]") . '";
 			}
 			if(document.forms["we_form"].elements["handle_temporary"].checked){
 				document.forms["we_form"].elements["handle_temporary"].checked=false;
-				mess+="\n-' . g_l('backup', "[" . $mode . "_temporary_data]") . '";
+				mess+="\n-' . g_l('backup', "[" . $mode . "][temporary_data]") . '";
 			}
 			if(document.forms["we_form"].elements["handle_history"].checked){
 				document.forms["we_form"].elements["handle_history"].checked=false;
-				mess+="\n-' . g_l('backup', "[" . $mode . "_history_data]") . '";
+				mess+="\n-' . g_l('backup', "[" . $mode . "][history_data]") . '";
 			}
 			if(mess!="") {
 				tmpMess = "' . sprintf(g_l('backup', "[unselect_dep2]"), g_l('backup', "[" . $mode . "_core_data]")) . '"+mess+"\n' . g_l('backup', "[unselect_dep3]") . '";
@@ -629,7 +626,7 @@ extra_files_desc=new Array();';
 		foreach($_tools as $_tool){
 			$text = ($_tool == 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-					g_l('backup', "[import][weapp]"));
+					g_l('backup', "[import][weapp]").' '.$_tool);
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 		}
@@ -929,7 +926,7 @@ self.focus();');
 		foreach($_tools as $_tool){
 			$text = ($_tool == 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-					g_l('backup', "[export][weapp]"));
+					g_l('backup', "[export][weapp]").' '.$_tool);
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 			$k++;
