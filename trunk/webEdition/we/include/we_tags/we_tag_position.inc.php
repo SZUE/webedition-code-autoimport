@@ -54,6 +54,24 @@ function we_tag_position($attribs){
 			break;
 
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
+			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);// seperate because of #6890
+			if($missingAttrib){
+				print $missingAttrib;
+				return "";
+			}
+			foreach($GLOBALS['we_position'][$type] as $name => $arr){
+
+				if(strpos($name, $_reference) === 0){
+					if(is_array($arr)){
+						$_content = $arr;
+					}
+				}
+			}
+			if(isset($_content) && isset($_content['position'])){
+				$_retPos = $_content['position'];  //  #6890
+			}
+			break;
+		
 		case "block" : //	look in function we_tag_block for details
 			//	first we must get right array !!!
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
@@ -68,7 +86,7 @@ function we_tag_position($attribs){
 						$_content = $arr;
 					}
 				}
-			}
+			}t_e($_content['position']);
 			if(isset($_content) && $_content['position']){
 				$_retPos = $_content['position'];
 			}
