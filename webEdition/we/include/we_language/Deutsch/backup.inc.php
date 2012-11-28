@@ -123,7 +123,7 @@ Es werden alle Dateien, die mit webEdition verwaltet werden gelöscht! Dokumente
 	'import'=>array(
 		'history_data'=>'Daten des Widget -zuletzt bearbeitet- wiederherstellen',
 		'temporary_data'=>'Temporäre Dateien wiederherstellen',
-		'weapp'=>'Importiere diem Daten der WE-App',
+		'weapp'=>'Importiere die Daten der WE-App',
 	),
 	'import_banner_data'=>'Bannerdaten wiederherstellen',
 	'import_banner_dep'=>'Sie haben `Bannerdaten wiederherstellen` ausgewählt. Um richtig zu funktionieren, benötigen die Bannerdaten auch die Dokumente. Deswegen wird `Dokumente und Vorlage wiederherstellen` automatisch markiert.',
