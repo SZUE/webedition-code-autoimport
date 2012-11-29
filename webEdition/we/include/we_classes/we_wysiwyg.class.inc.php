@@ -178,7 +178,21 @@ class we_wysiwyg{
 					}
 				</style>
 				'
-					. we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/languageAdapter.php') . we_html_element::jsElement('
+					.
+					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
+					tinyMceGL = {
+						welink : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[hyperlink]")) .'"},
+						weimage: {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_edit_image]")) .'"},
+						weabbr : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[abbr]")) .'"},
+						weacronym : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[acronym]")) .'"},
+						wefullscreen : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[fullscreen]")) .'"},
+						weinsertbreak : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_br]")) .'"},
+						weinsertrtf : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[rtf_import]")) .'"},
+						welang : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[language]")) .'"},
+						wespellchecker : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[spellcheck]")) .'"},
+						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"},
+					};
+				') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
 		_EditorFrame.setEditorIsHot(true);
