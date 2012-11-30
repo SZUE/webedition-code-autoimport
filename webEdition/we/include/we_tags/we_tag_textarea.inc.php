@@ -59,30 +59,6 @@ function we_tag_textarea($attribs, $content){
 		return we_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
 	} else{
 		$fieldVal = $GLOBALS['we_doc']->getField($attribs);
-		$fieldVal = $removeFirstParagraph ? removeFirstParagraph($fieldVal) : $fieldVal;
-		$fieldVal = weTag_getAttribute("htmlspecialchars", $attribs, false, true) ? $fieldVal : htmlspecialchars_decode($fieldVal);
 		return $fieldVal;
 	}
-}
-
-function DOMRemove(DOMNode $from) {;
-	$sibling = $from->firstChild;
-	do {
-		$next = $sibling->nextSibling;
-		$from->parentNode->insertBefore($sibling, $from);
-	} while ($sibling = $next);
-	$from->parentNode->removeChild($from);
-}
-
-function removeFirstParagraph($string){
-	$string = $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8' ? convertCharsetEncoding($GLOBALS['we_doc']->elements['Charset']['dat'], 'UTF-8', $string) : $string;
-	if(strpos(ltrim($string,' '),'<p>') === 0){
-		$dom = new DOMDocument;
-		$dom->loadHTML($string);
-		$nodes = $dom->getElementsByTagName('p');
-		DOMRemove($nodes->item(0));
-		$string = $dom->saveXML();
-		$string = preg_replace('/(<html>|<\/html>|<body>|<\/body>)/i', '', $string);
-		}
-	return $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8' ? convertCharsetEncoding('UTF-8', $GLOBALS['we_doc']->elements['Charset']['dat'], $string) : $string;;
 }

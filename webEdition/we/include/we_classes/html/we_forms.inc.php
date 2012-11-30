@@ -150,6 +150,7 @@ abstract class we_forms{
 		$id = weTag_getAttribute('id', $attribs);
 		$inlineedit = weTag_getAttribute('inlineedit', $attribs, defined('INLINEEDIT_DEFAULT') ? INLINEEDIT_DEFAULT : true, true);
 		$tabindex = weTag_getAttribute('tabindex', $attribs);
+		$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
 
 		$buttonpos = weTag_getAttribute('buttonpos', $attribs);
 
@@ -213,10 +214,10 @@ abstract class we_forms{
 
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
 			if($inlineedit){
-				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $htmlspecialchars);
 				$out .= $e->getHTML();
 			} else{
-				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos);
+				$e = new we_wysiwyg($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $htmlspecialchars);
 
 				//$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 				// Bugfix => Workarround Bug # 7445

@@ -54,9 +54,10 @@ class we_wysiwyg{
 	var $baseHref = '';
 	var $showSpell = true;
 	var $isFrontendEdit = false;
+	var $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	static $editorType = WYSIWYG_TYPE;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top'){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->bgcol = $bgcol;
@@ -109,6 +110,7 @@ class we_wysiwyg{
 
 		$this->Language = $Language;
 		$this->showSpell = $spell;
+		$this->htmlSpecialchars = $htmlspecialchars;
 		$this->isFrontendEdit = $isFrontendEdit;
 
 		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
@@ -1291,62 +1293,73 @@ function tinyMCEchanged(inst){
 					wefullscreenVars["className"] = "' . $this->className . '";
 					wefullscreenVars["propString"] = "' . urlencode($this->propstring) . '";
 
-tinyMCE.init({
-	language : "' . $lang . '",
-	mode : "exact",
-	elements : "' . $this->name . '",
-	theme : "advanced",
-	//dialog_type : "modal",
+					tinyMCE.init({
+						language : "' . $lang . '",
+						mode : "exact",
+						elements : "' . $this->name . '",
+						theme : "advanced",
+						//dialog_type : "modal",
 
 
-	accessibility_warnings : false,
-	relative_urls : false, //important!
-	convert_urls : false, //important!
-	//force_br_newlines : true,
-	force_p_newlines : 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
-	//forced_root_block : "",
+						accessibility_warnings : false,
+						relative_urls : false, //important!
+						convert_urls : false, //important!
+						//force_br_newlines : true,
+						force_p_newlines : 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
+						//forced_root_block : "",
 
-	entity_encoding : "raw",
-	element_format: "' . $this->xml . '",
+						entity_encoding : "raw",
+						element_format: "' . $this->xml . '",
 
-	//CallBacks
-	//file_browser_callback : "openWeFileBrowser",
-	onchange_callback : "tinyMCEchanged",
+						//CallBacks
+						//file_browser_callback : "openWeFileBrowser",
+						onchange_callback : "tinyMCEchanged",
 
-	plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen",
+						plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen",
 
-	// Theme options
-	' . $tinyRows . '
-	theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
-	theme_advanced_fonts: "' . $this->tinyFonts . '",
-	theme_advanced_styles: "' . $this->cssClasses . '",
-	theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
-	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "' . $this->statuspos . '",
-	theme_advanced_resizing : false,
-	theme_advanced_source_editor_height : "500",
-	theme_advanced_source_editor_width : "700",
-	theme_advanced_default_foreground_color : "#FF0000",
-	theme_advanced_default_background_color : "#FFFF99",
-	plugin_preview_height : "300",
-	plugin_preview_width : "500",
-	theme_advanced_disable : "",
-	//paste_text_use_dialog: true,
-	//fullscreen_new_window: true,
-	content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
+						// Theme options
+						' . $tinyRows . '
+						theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
+						theme_advanced_fonts: "' . $this->tinyFonts . '",
+						theme_advanced_styles: "' . $this->cssClasses . '",
+						theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
+						theme_advanced_toolbar_align : "left",
+						theme_advanced_statusbar_location : "' . $this->statuspos . '",
+						theme_advanced_resizing : false,
+						theme_advanced_source_editor_height : "500",
+						theme_advanced_source_editor_width : "700",
+						theme_advanced_default_foreground_color : "#FF0000",
+						theme_advanced_default_background_color : "#FFFF99",
+						plugin_preview_height : "300",
+						plugin_preview_width : "500",
+						theme_advanced_disable : "",
+						//paste_text_use_dialog: true,
+						//fullscreen_new_window: true,
+						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
 
-	// Skin options
-	skin : "o2k7",
-	skin_variant : "silver",
+						// Skin options
+						skin : "o2k7",
+						skin_variant : "silver",
 
-	setup : function(ed){
-		ed.onInit.add(function(ed){
-			ed.pasteAsPlainText = ' . $pastetext . ';
-			ed.controlManager.setActive("pastetext", ' . $pastetext . ');
-		});
-	}
+						setup : function(ed){
+						ed.onInit.add(function(ed){
+							ed.pasteAsPlainText = ' . $pastetext . ';
+							ed.controlManager.setActive("pastetext", ' . $pastetext . ');
+						});
+						'
+						. (!$this->removeFirstParagraph ? '' : '
+						ed.onPostProcess.add(function(ed, o) {
+							o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
+						});') . '
 
-});') . '
+						ed.onPostProcess.add(function(ed, o) { // FIXME: strange behaviour - condition does not work with boolean true!!?
+							o.content = o.content.' . (!$this->htmlSpecialchars ? 'replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"")' : 
+							'replace(/"/g, "&quot;")') . ';
+						});
+					}
+				});') .
+
+				'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
 
 			case 'default':
