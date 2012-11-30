@@ -47,6 +47,7 @@ if($GLOBALS['we_editmode']){
 
 
 		function sizeEditor() { // to be fixed (on 12.12.11)
+			//console.log('size called');
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
@@ -87,8 +88,6 @@ if($GLOBALS['we_editmode']){
 		echo 'h=document.body.offsetHeight; h=Math.max(h,600);';
 	}
 	?>
-
-
 				if (wizardTable != null) {
 
 					var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
@@ -106,7 +105,7 @@ if($GLOBALS['we_editmode']){
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
 						try{
 							document.weEditorApplet.height = editorHeight;
-							document.weEditorApplet.setSize(editorWidth,editorHeight);
+							//document.weEditorApplet.setSize(editorWidth,editorHeight);
 						}catch(err){/*nothing*/}
 
 					}
@@ -133,7 +132,7 @@ if($GLOBALS['we_editmode']){
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
 						try{
 							document.weEditorApplet.height = h - wizardHeight.closed;
-							document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
+							//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
 						}catch(err){/*nothing*/}
 					}
 				}
@@ -145,34 +144,44 @@ if($GLOBALS['we_editmode']){
 
 		function initEditor() {
 	<?php
-	if($_SESSION['prefs']['editorMode'] == 'codemirror2'){
-		echo 'document.getElementById("bodydiv").style.display="block";
-editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
-sizeEditor();
+	switch($_SESSION['prefs']['editorMode']){
+		case 'codemirror2':
+			?>
+							document.getElementById("bodydiv").style.display="block";
+							editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
+							sizeEditor();
 
-return;';
+							return;
+			<?php
+			return;
+		case 'java':
+			?>
+							if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager)!="undefined") {
+								try{
+							//console.log("init called");
+									document.getElementById("weEditorApplet").style.left="0";
+									sizeEditor();
+									document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+									document.weEditorApplet.initUndoManager();
+									checkAndSetHot();
+								}catch(err){
+									setTimeout(initEditor, 1000);
+								}
+							} else {
+							//console.log("init failed"+document.weEditorApplet );
+								setTimeout(initEditor, 500);
+							}
+			<?php
+			break;
+		default:
+			?>
+							sizeEditor();
+							window.setTimeout('scrollToPosition();',50);
+			<?php
+			break;
 	}
 	?>
 
-			if (document.weEditorApplet) {
-				if (top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
-					try{
-						document.getElementById("weEditorApplet").style.left="0";
-						document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-						document.weEditorApplet.initUndoManager();
-					}catch(err){
-						setTimeout(initEditor, 1000);
-					}
-
-					sizeEditor();
-					checkAndSetHot();
-				} else {
-					setTimeout(initEditor, 1000);
-				}
-			} else {
-				sizeEditor();
-				window.setTimeout('scrollToPosition();',50);
-			}
 			document.getElementById("bodydiv").style.display="block";
 		}
 
@@ -185,9 +194,13 @@ return;';
 			if (document.weEditorApplet) {
 				var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
 				document.weEditorApplet.height = editorHeight;
+				sizeEditor();
+			/*
 				try{
-					document.weEditorApplet.setSize(editorWidth,editorHeight);
-				}catch(err){/*nothing*/}
+					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
+						document.weEditorApplet.setSize(editorWidth,editorHeight);
+					}
+				}catch(err){}*/
 			} else {
 				var editarea = document.getElementById("editarea");
 				editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
