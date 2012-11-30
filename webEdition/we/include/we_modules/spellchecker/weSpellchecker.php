@@ -48,8 +48,8 @@ $_applet_code = we_html_element::htmlApplet(array(
 		), '
 <param name="scriptable" value="true"/>
 <param name="mayscript" value="true"/>
-<param name="CODE" value="LeSpellchecker.class"/>
-<param name="ARCHIVE" value="lespellchecker.jar"/>
+<param name="code" value="LeSpellchecker.class"/>
+<param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
 <param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
