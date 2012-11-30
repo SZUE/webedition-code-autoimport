@@ -414,10 +414,6 @@ function we_setEditorWasLoaded(flag) {
 	self.weEditorWasLoaded = flag;
 }
 
-function we_setEditorHot() {
-	self.weEditorWasLoaded = flag;
-}
-
 function we_cmd() {
 	var hasPerm = 0;
 	var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";

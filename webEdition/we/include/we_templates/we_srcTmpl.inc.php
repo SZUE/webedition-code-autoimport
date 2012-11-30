@@ -158,31 +158,30 @@ if($GLOBALS['we_editmode']){
 			?>
 							if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager)!="undefined") {
 								try{
-							//console.log("init called");
-									document.getElementById("weEditorApplet").style.left="0";
+									//console.log("init called");
+									//document.getElementById("weEditorApplet").style.left="0";
 									sizeEditor();
 									document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-									document.weEditorApplet.initUndoManager();
 									checkAndSetHot();
 								}catch(err){
 									setTimeout(initEditor, 1000);
 								}
 							} else {
-							//console.log("init failed"+document.weEditorApplet );
-								setTimeout(initEditor, 500);
+								//console.log("init failed"+top.weEditorWasLoaded +" "+document.weEditorApplet );
+								setTimeout(initEditor, 1000);
 							}
 			<?php
 			break;
 		default:
 			?>
 							sizeEditor();
+							document.getElementById("bodydiv").style.display="block";
 							window.setTimeout('scrollToPosition();',50);
 			<?php
 			break;
 	}
 	?>
 
-			document.getElementById("bodydiv").style.display="block";
 		}
 
 		function toggleTagWizard() {
@@ -195,7 +194,7 @@ if($GLOBALS['we_editmode']){
 				var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
 				document.weEditorApplet.height = editorHeight;
 				sizeEditor();
-			/*
+				/*
 				try{
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
 						document.weEditorApplet.setSize(editorWidth,editorHeight);
@@ -375,7 +374,7 @@ if($GLOBALS['we_editmode']){
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',<?php echo $_SESSION['prefs']['editorMode'] == 'java' ? 2000 : 200; ?>);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="top.we_setEditorWasLoaded(false);setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 	//FIXME: no resize for IE!
 	echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
 	?>>
@@ -420,13 +419,13 @@ if($GLOBALS['we_editmode']){
 			return
 				'<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />' .
 				we_html_element::htmlApplet(array(
-					'id' => "weEditorApplet",
-					'style' => "position:relative;right:-3000px;",
-					'name' => "weEditorApplet",
-					'code' => "Editor.class",
+					'id' => 'weEditorApplet',
+					'style' => 'position:relative;left:0px;',
+					'name' => 'weEditorApplet',
+					'code' => 'Editor.class',
 					'archive' => 'editor.jar',
-					/* 'width' => 3000,
-					  'height' => 3000, */
+					'width' => 300,
+					'height' => 300,
 					'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/template/editor',
 					), '', $params);
 		}
@@ -1234,7 +1233,7 @@ if($GLOBALS['we_editmode']){
 				$znr = 1;
 			}
 			print we_multiIconBox::getJS() .
-				'<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+				'<div id="bodydiv"'.($_SESSION['prefs']['editorMode']=='java'?'':'style="display:none;"').'>' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
 
 	<?php

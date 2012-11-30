@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,6 +25,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JApplet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -53,7 +56,9 @@ public class Editor extends JApplet {
 
 	@Override
 	public void init() {
-
+		super.init();
+		System.out.println("init");
+		System.out.flush();
 		String url;
 
 		serverUrl = getParameter("serverUrl");
@@ -62,8 +67,6 @@ public class Editor extends JApplet {
 			if (!serverUrl.endsWith("/")) {
 				serverUrl = serverUrl + "/";
 			}
-			url = serverUrl + editorPath + "/initEditor.html";
-			showUrl(url);
 		}
 
 
@@ -123,13 +126,68 @@ public class Editor extends JApplet {
 		if (php_ext == null) {
 			php_ext = ".php";
 		}
-		if (serverUrl != null) {
-			url = serverUrl + editorPath + "/getAllTags" + php_ext;
-			tags = getFromServer(url, "tag");
-		}
+		this.setVisible(false);
 		editor = new EditorPanel(this);
-		getContentPane().add(editor, BorderLayout.CENTER);
 		searchAndReplace = new SearchAndReplace(new javax.swing.JFrame(), false, this);
+	}
+
+	@Override
+	public void start() {
+		super.start();
+		System.out.println("start");
+		System.out.flush();
+		if (this.serverUrl != null && this.editorPath != null) {
+//			String vers = getParameter("cache_version");
+			showUrl(this.serverUrl + this.editorPath + "/initEditor.html?vers=" + System.currentTimeMillis());
+			tags = getFromServer(serverUrl + editorPath + "/getAllTags" + php_ext, "tag");
+		}
+		getContentPane().add(this.editor, BorderLayout.CENTER);
+		this.setVisible(true);
+		/*new Thread(new Runnable() {
+			public void run() {
+				while (true) {
+					Map<Thread, StackTraceElement[]> m = Thread.getAllStackTraces();
+					int i = 0;
+					for (Thread t : m.keySet()) {
+						System.out.println(++i);
+						for (StackTraceElement s : m.get(t)) {
+							System.out.println(s.toString());
+						}
+					}
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException ex) {
+					}
+				}
+			}
+		}).start();*/
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		System.out.println("stop");
+		System.out.flush();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		System.out.println("resize1");
+		System.out.flush();
+	}
+
+	@Override
+	public void resize(Dimension d) {
+		System.out.println("resize2");
+		System.out.flush();
+
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		System.out.println("destroy");
+		System.out.flush();
 	}
 
 	private ArrayList<String> getFromServer(String urlString, String nodeName) {
@@ -193,6 +251,8 @@ public class Editor extends JApplet {
 		editor.setCode(code);
 		cmpCode = code;
 		isCodeSet = true;
+		System.out.println("code set");
+		initUndoManager();
 	}
 
 	public void initUndoManager() {
@@ -204,9 +264,18 @@ public class Editor extends JApplet {
 	}
 
 	@Override
+	public void setSize(Dimension d) {
+		System.out.println("size set2");
+		System.out.flush();
+
+	}
+
+	@Override
 	public void setSize(int width, int height) {
 		super.setSize(width, height);
 		validate();
+		System.out.println("size set");
+		System.out.flush();
 	}
 
 	public void sendCtrlS() {
