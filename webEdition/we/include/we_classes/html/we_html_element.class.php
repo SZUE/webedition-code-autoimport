@@ -370,10 +370,20 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlApplet($attribs = array(), $content = ''){
-		$content = '<param name="cache_archive" value="' . $attribs['archive'] . '">
-<param name="cache_version" value="' . WE_VERSION . '">' .
-			$content;
+	static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
+		$params['cache_archive'] = $attribs['archive'];
+		$params['cache_version'] = WE_VERSION;
+		$params['type'] = 'application/x-java-applet;jpi-version=1.6.0';
+		$params['scriptable'] = 'true';
+		$params['mayscript'] = 'true';
+		$tmp = '';
+		foreach($params as $key => $value){
+			$tmp.='<param name="' . $key . '" value="' . $value . '"/>';
+		}
+		$content = $tmp . $content;
+		$attribs['SCRIPTABLE'] = '';
+		$attribs['MAYSCRIPT'] = '';
+
 		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
 	}
 

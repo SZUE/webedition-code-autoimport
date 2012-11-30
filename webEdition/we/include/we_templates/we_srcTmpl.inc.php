@@ -372,13 +372,11 @@ return;';
 
 		function we_getJavaEditorCode($code){
 			global $we_doc;
-			$params = '
-<param name="phpext" value=".php"/>
-<param name="serverUrl" value="' . getServerUrl(true) . '"/>
-<param name="editorPath" value="webEdition/editors/template/editor"/>
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>';
-
+			$params = array(
+				'phpext' => '.php',
+				'serverUrl' => getServerUrl(true),
+				'editorPath' => 'webEdition/editors/template/editor',
+			);
 			if($_SESSION["prefs"]["editorFont"] == 1){
 				// translate html font names into java font names
 				switch($_SESSION["prefs"]["editorFontname"]){
@@ -392,20 +390,18 @@ return;';
 						$fontname = $_SESSION['prefs']['editorFontname'];
 						break;
 				}
-				$params .= '
-<param name="fontName" value="' . $fontname . '"/>
-<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '"/>';
+				$params['fontName'] = $fontname;
+				$params['fontSize'] = $_SESSION["prefs"]["editorFontsize"];
 			}
 
 			if($_SESSION["prefs"]["specify_jeditor_colors"] == 1){
-				$params .= '
-<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">
-<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">
-<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">
-<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">
-<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">
-<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">
-<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
+				$params['normalColor'] = $_SESSION["prefs"]["editorFontcolor"];
+				$params['weTagColor'] = $_SESSION["prefs"]["editorWeTagFontcolor"];
+				$params['weAttributeColor'] = $_SESSION["prefs"]["editorWeAttributeFontcolor"];
+				$params['HTMLTagColor'] = $_SESSION["prefs"]["editorHTMLTagFontcolor"];
+				$params['HTMLAttributeColor'] = $_SESSION["prefs"]["editorHTMLAttributeFontcolor"];
+				$params['piColor'] = $_SESSION["prefs"]["editorPiTagFontcolor"];
+				$params['commentColor'] = $_SESSION["prefs"]["editorCommentFontcolor"];
 			}
 
 			return
@@ -419,7 +415,7 @@ return;';
 					/* 'width' => 3000,
 					  'height' => 3000, */
 					'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/template/editor',
-					), $params);
+					), '', $params);
 		}
 
 		function we_get_CM_css(){
