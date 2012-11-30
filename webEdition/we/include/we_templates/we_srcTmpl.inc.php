@@ -84,7 +84,7 @@ if($GLOBALS['we_editmode']){
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
 
 	<?php
-	if(we_base_browserDetect::isIE()){
+	if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 		echo 'h=document.body.offsetHeight; h=Math.max(h,600);';
 	}
 	?>
@@ -356,7 +356,7 @@ return;';
 	</head>
 	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 	//FIXME: no resize for IE!
-	echo (we_base_browserDetect::isIE() ? '' : 'onResize="sizeEditor();"');
+	echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
 	?>>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 			$we_doc->pHiddenTrans();
@@ -433,10 +433,10 @@ return;';
 			border: outset 1px;
 			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			border-radius: 3px;' .
-				(false && we_base_browserDetect::isFF() ? '
+					(false && we_base_browserDetect::isFF() ? '
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			-moz-border-radius: 3px;' :
-					(we_base_browserDetect::isSafari() ? '
+						(we_base_browserDetect::isSafari() ? '
 			-webkit-border-radius: 3px;
 			-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3);' : '')) . '
 		}');
