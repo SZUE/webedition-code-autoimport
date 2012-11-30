@@ -214,6 +214,10 @@ class we_baseElement{
 				$out.=' ' . $k . '="' . $v . '"';
 			} else{//empty attribs
 				switch($k){
+					case 'SCRIPTABLE':
+					case 'MAYSCRIPT':
+						$out.=' ' . $k;
+						break;
 					case 'disabled':
 					case 'multiple':
 					case 'noshade':

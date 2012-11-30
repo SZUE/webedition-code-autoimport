@@ -194,8 +194,6 @@ class weJavaMenu{
 					'align' => "baseline",
 					'width' => $this->width,
 					'height' => $this->height,), '
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>
 <param name="phpext" value=".php"/>' . ($cmdTarget ? '
 <param name="cmdTarget" value="' . $cmdTarget . '"/>' : '') .
 					$out);

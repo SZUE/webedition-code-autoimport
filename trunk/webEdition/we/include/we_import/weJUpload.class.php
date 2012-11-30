@@ -83,9 +83,7 @@ class weJUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-		$_params='
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>';
+		$_params='';
 
 		foreach($this->Params as $name => $value){
 			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
