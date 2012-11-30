@@ -76,10 +76,8 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 			'id' => "applet",
 			'style' => "visibility: hidden",
 			), '
-<param name="scriptable" value="true"/>
-<param name="mayscript" value="true"/>
-<param name="CODE" value="LeSpellchecker.class"/>
-<param name="ARCHIVE" value="lespellchecker.jar"/>
+<param name="code" value="LeSpellchecker.class"/>
+<param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
 <param name="dictBase" value="' . $DictBase . '"/>
 <param name="dictionary" value="' . $LanguageDict . '"/>
