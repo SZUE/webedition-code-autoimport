@@ -47,7 +47,6 @@ if($GLOBALS['we_editmode']){
 
 
 		function sizeEditor() { // to be fixed (on 12.12.11)
-	<?php ?>
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
@@ -68,7 +67,7 @@ if($GLOBALS['we_editmode']){
 					editarea.nextSibling.style.width=editorWidth + "px";
 			}
 
-			if (document.weEditorApplet) {
+			if (document.weEditorApplet && typeof(document.weEditorApplet.width) != "undefined") {
 				document.weEditorApplet.width = editorWidth;
 
 			}
@@ -105,8 +104,10 @@ if($GLOBALS['we_editmode']){
 					}
 
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
-						document.weEditorApplet.height = editorHeight;
-						document.weEditorApplet.setSize(editorWidth,editorHeight);
+						try{
+							document.weEditorApplet.height = editorHeight;
+							document.weEditorApplet.setSize(editorWidth,editorHeight);
+						}catch(err){/*nothing*/}
 
 					}
 
@@ -130,8 +131,10 @@ if($GLOBALS['we_editmode']){
 					}
 
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
-						document.weEditorApplet.height = h - wizardHeight.closed;
-						document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
+						try{
+							document.weEditorApplet.height = h - wizardHeight.closed;
+							document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
+						}catch(err){/*nothing*/}
 					}
 				}
 			}
@@ -153,9 +156,13 @@ return;';
 
 			if (document.weEditorApplet) {
 				if (top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
-					document.getElementById("weEditorApplet").style.left="0";
-					document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-					document.weEditorApplet.initUndoManager();
+					try{
+						document.getElementById("weEditorApplet").style.left="0";
+						document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+						document.weEditorApplet.initUndoManager();
+					}catch(err){
+						setTimeout(initEditor, 1000);
+					}
 
 					sizeEditor();
 					checkAndSetHot();
@@ -178,9 +185,10 @@ return;';
 			if (document.weEditorApplet) {
 				var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
 				document.weEditorApplet.height = editorHeight;
-				document.weEditorApplet.setSize(editorWidth,editorHeight);
+				try{
+					document.weEditorApplet.setSize(editorWidth,editorHeight);
+				}catch(err){/*nothing*/}
 			} else {
-
 				var editarea = document.getElementById("editarea");
 				editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
@@ -354,7 +362,7 @@ return;';
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',<?php echo $_SESSION['prefs']['editorMode'] == 'java' ? 2000 : 200; ?>);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 	//FIXME: no resize for IE!
 	echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
 	?>>
@@ -408,8 +416,8 @@ return;';
 					'name' => "weEditorApplet",
 					'code' => "Editor.class",
 					'archive' => 'editor.jar',
-					'width' => 3000,
-					'height' => 3000,
+					/* 'width' => 3000,
+					  'height' => 3000, */
 					'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/template/editor',
 					), $params);
 		}
