@@ -10,7 +10,7 @@ function preinit() {
 	}
 }
 
-function init() { 
+function init() {
 	tinyMCEPopup.resizeToInnerSize();
 
 	var formObj = document.forms["we_form"];
@@ -38,7 +38,7 @@ function init() {
 
 		formObj.elements['we_dialog_args[anchor]'].value = urlParts[1];
 		formObj.elements['we_dialog_args[param]'].value = urlParts[2];
-		
+
 		formObj.elements['we_dialog_args[title]'].value = inst.dom.getAttrib(elm, 'title');
 		formObj.elements['we_dialog_args[target]'].value = inst.dom.getAttrib(elm, 'target');
 		//formObj.elements['we_dialog_args[class]'].value = inst.dom.getAttrib(elm, 'class');
@@ -71,7 +71,7 @@ function init() {
 		}
 		this.doReload(formObj);
 	}
-	if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
+	/*if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
 		var cl = '';
 		for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
 			cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
@@ -79,6 +79,7 @@ function init() {
 		}
 	}
 	this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
+	*/
 }
 
 // we_functions
@@ -96,11 +97,11 @@ function getLinkType(href) {
 
 function getUrlParts(url) {
 	var u = '', anch = '', param = '';
-	
+
 	var anchArr = url.split('#');
 	u = anchArr.shift();
 	anch = (anchArr[0]) ? anchArr.join('#') : anch;
-	
+
 	var paramArr = u.split('?');
 	u = paramArr.shift();
 	param = (paramArr[0]) ? paramArr.join('?') : param;
