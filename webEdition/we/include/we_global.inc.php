@@ -100,9 +100,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		return '1';
 	}
 
-	if(!$db){
-		$db = new DB_WE();
-	}
+	$db = $db ? $db : new DB_WE();
 	$parentIDs = array();
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
@@ -116,7 +114,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ' : '');
 	foreach($parentIDs as $pid){
-		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces like "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%" OR ';
+		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%" OR ';
 	}
 	$pid_tail = trim(preg_replace('/^(.*)OR /', '\1', $pid_tail));
 	if($pid_tail == ''){
@@ -141,7 +139,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	$cats = array();
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 	$showpath &=!$catfield;
-	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . $catIDs . ')');
+	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
 	while($db->next_record()) {
 		$data = $db->getRecord();
 		if($field == 'Title' || $field == 'Description'){
@@ -383,13 +381,13 @@ function cleanTempFiles($cleanSessFiles = false){
 	}
 	if($cleanSessFiles){
 		$seesID = session_id();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		while($GLOBALS['DB_WE']->next_record()) {
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
 	}
 	$d = dir(TEMP_PATH);
@@ -588,7 +586,7 @@ function makeOwnersSql($useCreatorID = true){
 	$aliases[] = $_SESSION['user']['ID'];
 	$q = array();
 	if($useCreatorID){
-		$q[] = 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\')';
+		$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 	}
 	foreach($aliases as $id){
 		$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
@@ -696,7 +694,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 		if(in_array($p, $found)){
 			return false;
 		}
-		$found[]= $p;
+		$found[] = $p;
 	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
 	return false;
 }
@@ -963,9 +961,9 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
 			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 		} else{
-			$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 		}
-		$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 	}
 
 	return ' OR (' . implode(' OR ', $wsQuery) . ')';
@@ -1251,11 +1249,9 @@ function parseInternalLinks(&$text, $pid, $path = ''){
 					unset($GLOBALS['we_link_not_published']);
 				}
 				if($href){
-					if($reg[2] == '?'){
-						$text = str_replace('href="object:' . $reg[1] . '?', 'href="' . $href . '&amp;', $text);
-					} else{
-						$text = str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text);
-					}
+					$text = ($reg[2] == '?' ?
+							str_replace('href="object:' . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
+							str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 				} else{
 					$text = preg_replace(array('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui',
 						'|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
@@ -1371,7 +1367,7 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 }
 
 function getMaxAllowedPacket($db = ''){
-	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', new DB_WE());
+	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', ($db ? $db : new DB_WE()));
 }
 
 function we_convertIniSizes($in){
@@ -1386,9 +1382,7 @@ function we_convertIniSizes($in){
 }
 
 function we_getDocumentByID($id, $includepath = '', $we_getDocumentByIDdb = '', &$charset = ''){
-	if(!$we_getDocumentByIDdb){
-		$we_getDocumentByIDdb = new DB_WE();
-	}
+	$we_getDocumentByIDdb = $we_getDocumentByIDdb ? $we_getDocumentByIDdb : new DB_WE();
 	// look what document it is and get the className
 	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $we_getDocumentByIDdb);
 
@@ -1485,10 +1479,10 @@ function getRequestVar($name, $default, $yescode = '', $nocode = ''){
  */
 function number2System($value, $chars = array(), $str = ''){
 
-	if(!(is_array($chars) && sizeof($chars) > 1)){ //	in case of error take default-array
+	if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
 		$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
 	}
-	$base = sizeof($chars);
+	$base = count($chars);
 
 	//	get some information about the numbers:
 	$_rest = $value % $base;
@@ -1638,11 +1632,9 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$_tag = '<' . $element;
 
 	foreach($attribs as $k => $v){
-		if($k == 'link_attribute'){// Bug #3741
-			$_tag .= ' ' . $v;
-		} else{
-			$_tag .= ' ' . str_replace('pass_', '', $k) . "=\"$v\"";
-		}
+		$_tag .= ($k == 'link_attribute' ? // Bug #3741
+				' ' . $v :
+				' ' . str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	if($content != '' || $forceEndTag){ //	use endtag
 		$_tag .= '>' . $content . '</' . $element . '>';
@@ -1729,9 +1721,7 @@ function new_array_splice(&$a, $start, $len = 1){
  * @return         string
  */
 function getDoctypeQuery($db = ''){
-	if(!$db){
-		$db = new DB_WE();
-	}
+	$db = $db ? $db : new DB_WE();
 
 	$paths = array();
 	$ws = get_ws(FILE_TABLE);
@@ -1779,11 +1769,9 @@ function getWeFrontendLanguagesForBackend(){
 	}
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
-		if(count($temp) == 1){
-			$la[$Locale] = CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale);
-		} else{
-			$la[$Locale] = CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale);
-		}
+		$la[$Locale] = (count($temp) == 1 ?
+				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
+				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }
