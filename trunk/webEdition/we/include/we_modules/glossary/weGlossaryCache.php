@@ -134,9 +134,7 @@ class weGlossaryCache{
 				$Title = utf8_decode($Title);
 			}
 
-			$Text = htmlspecialchars($Text, ENT_NOQUOTES);
-
-			$Text = weGlossary::escapeChars($Text);
+			$Text = weGlossary::escapeChars(htmlspecialchars($Text, ENT_NOQUOTES));
 
 			$Title = htmlspecialchars($Title, ENT_QUOTES);
 
@@ -297,20 +295,21 @@ class weGlossaryCache{
 
 					// popup_center
 					if(isset($Attributes['popup_center']) && trim($Attributes['popup_center']) != ''){
-						$temp['onclick'] .= 'if (window.screen) {'
-							. 'var w=' . $width . ';'
-							. 'var h=' . $height . ';'
-							. 'var screen_height = screen.availHeight - 70;'
-							. 'var screen_width = screen.availWidth-10;'
-							. 'var w = Math.min(screen_width,w);'
-							. 'var h = Math.min(screen_height,h);'
-							. 'var h = Math.min(screen_height,h);'
-							. 'var x = (screen_width - w) / 2;'
-							. 'var y = (screen_height - h) / 2;'
-							. "we_winOpts = 'left='+x+',top='+y;"
-							. '} else {'
-							. 'we_winOpts="";'
-							. '}';
+						$temp['onclick'] .= '
+if (window.screen) {
+	var w=' . $width . ';
+	var h=' . $height . ';
+	var screen_height = screen.availHeight - 70;
+	var screen_width = screen.availWidth-10;
+	var w = Math.min(screen_width,w);
+	var h = Math.min(screen_height,h);
+	var h = Math.min(screen_height,h);
+	var x = (screen_width - w) / 2;
+	var y = (screen_height - h) / 2;
+	we_winOpts = "left="+x+",top="+y;
+} else {
+	we_winOpts="";
+}';
 					} else{
 
 						// popup_xposition
