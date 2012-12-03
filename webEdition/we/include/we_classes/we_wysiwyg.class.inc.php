@@ -48,6 +48,7 @@ class we_wysiwyg{
 	var $charset = '';
 	var $inlineedit = true;
 	var $cssClasses = '';
+	var $cssClassesJS = '';
 	var $Language = '';
 	var $_imagePath;
 	var $_image_languagePath;
@@ -102,10 +103,13 @@ class we_wysiwyg{
 		if($this->cssClasses != '' && self::$editorType == 'tinyMCE'){
 			$cc = explode(',', $this->cssClasses);
 			$tf = '';
+			$jsCl = '';
 			foreach($cc as $val){
 				$tf .= $val . '=' . $val . ';';
+				$jsCl .= '"' . $val . '"' . ',';
 			}
 			$this->cssClasses = rtrim($tf, ';');
+			$this->cssClassesJS = rtrim($jsCl, ',');
 		}
 
 		$this->Language = $Language;
@@ -1278,6 +1282,7 @@ function tinyMCEchanged(inst){
 				$wefullscreenVars['removeFirstParagraph'] = $this->removeFirstParagraph ? "1" : "";
 
 				return we_html_element::jsElement('
+					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 					var wefullscreenVars = new Array();
 					wefullscreenVars["outsideWE"] = "' . $wefullscreenVars['outsideWE'] . '";
 					wefullscreenVars["xml"] = "' . $wefullscreenVars['xml'] . '";

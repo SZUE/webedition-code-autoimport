@@ -78,8 +78,8 @@ function init() {
 			formObj.elements['we_dialog_args[class]'].options[formObj.elements['we_dialog_args[class]'].length] = new Option('.' + cl, cl);
 		}
 	}
-	this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
 	*/
+	this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
 }
 
 // we_functions
