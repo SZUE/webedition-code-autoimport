@@ -105,6 +105,7 @@ var ImageDialog = {
 		}
 
 		// add options to css-Pulldown
+		/*
 		if(typeof(ed.settings.theme_advanced_styles) !== 'undefined' && ed.settings.theme_advanced_styles != ''){
 			var cl = '';
 			for(var i=0; i < ed.settings.theme_advanced_styles.split(/;/).length; i++){
@@ -112,6 +113,7 @@ var ImageDialog = {
 				nl["we_dialog_args[class]"].options[nl["we_dialog_args[class]"].length] = new Option('.' + cl, cl);
 			}
 		}
+		*/
 		this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 	},
 
