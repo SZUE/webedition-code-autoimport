@@ -34,8 +34,7 @@ var _sTb='" . g_l('cockpit', '[last_modified]') . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-}
-";
+}";
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(

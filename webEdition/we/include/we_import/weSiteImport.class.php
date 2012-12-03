@@ -25,9 +25,9 @@
 class weSiteImport{
 
 	var $step = 0;
-	var $cmd = "";
-	var $from = "/";
-	var $to = "";
+	var $cmd = '';
+	var $from = '/';
+	var $to = '';
 	var $depth = -1;
 	var $images = 1;
 	var $htmlPages = 1;
@@ -39,16 +39,16 @@ class weSiteImport{
 	var $text = 1;
 	var $other = 1;
 	var $maxSize = 1; // in Mb
-	var $sameName = "overwrite";
+	var $sameName = 'overwrite';
 	var $importMetadata = true;
 	var $_files;
 	var $_depth = 0;
-	var $_slash = "/";
-	var $thumbs = "";
-	var $width = "";
-	var $height = "";
-	var $widthSelect = "pixel";
-	var $heightSelect = "pixel";
+	var $_slash = '/';
+	var $thumbs = '';
+	var $width = '';
+	var $height = '';
+	var $widthSelect = 'pixel';
+	var $heightSelect = 'pixel';
 	var $keepRatio = 1;
 	var $quality = 8;
 	var $degrees = 0;
@@ -64,45 +64,45 @@ class weSiteImport{
 	function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		$ws = (sizeof($wsa) ? $wsa[0] : 0);
-		$this->from = isset($_REQUEST["from"]) ? $_REQUEST["from"] : ((isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from);
+		$this->from = isset($_REQUEST['from']) ? $_REQUEST['from'] : ((isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from);
 		$_SESSION['prefs']['import_from'] = $this->from;
-		$this->to = isset($_REQUEST["to"]) ? $_REQUEST["to"] : (strlen($this->to) ? $this->to : $ws);
-		$this->depth = isset($_REQUEST["depth"]) ? $_REQUEST["depth"] : $this->depth;
-		$this->images = isset($_REQUEST["images"]) ? $_REQUEST["images"] : $this->images;
-		$this->htmlPages = isset($_REQUEST["htmlPages"]) ? $_REQUEST["htmlPages"] : $this->htmlPages;
-		$this->createWePages = isset($_REQUEST["createWePages"]) ? $_REQUEST["createWePages"] : $this->createWePages;
-		$this->flashmovies = isset($_REQUEST["flashmovies"]) ? $_REQUEST["flashmovies"] : $this->flashmovies;
-		$this->quicktime = isset($_REQUEST["quicktime"]) ? $_REQUEST["quicktime"] : $this->quicktime;
-		$this->js = isset($_REQUEST["js"]) ? $_REQUEST["js"] : $this->js;
-		$this->css = isset($_REQUEST["css"]) ? $_REQUEST["css"] : $this->css;
-		$this->text = isset($_REQUEST["text"]) ? $_REQUEST["text"] : $this->text;
-		$this->other = isset($_REQUEST["other"]) ? $_REQUEST["other"] : $this->other;
-		$this->maxSize = isset($_REQUEST["maxSize"]) ? $_REQUEST["maxSize"] : $this->maxSize;
-		$this->step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : $this->step;
-		$this->cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : $this->cmd;
-		if(isset($_REQUEST["we_cmd"][0])){
-			switch($_REQUEST["we_cmd"][0]){
-				case "siteImportSaveWePageSettings" :
-					$this->cmd = "saveWePageSettings";
+		$this->to = isset($_REQUEST['to']) ? $_REQUEST['to'] : (strlen($this->to) ? $this->to : $ws);
+		$this->depth = isset($_REQUEST['depth']) ? $_REQUEST['depth'] : $this->depth;
+		$this->images = isset($_REQUEST['images']) ? $_REQUEST['images'] : $this->images;
+		$this->htmlPages = isset($_REQUEST['htmlPages']) ? $_REQUEST['htmlPages'] : $this->htmlPages;
+		$this->createWePages = isset($_REQUEST['createWePages']) ? $_REQUEST['createWePages'] : $this->createWePages;
+		$this->flashmovies = isset($_REQUEST['flashmovies']) ? $_REQUEST['flashmovies'] : $this->flashmovies;
+		$this->quicktime = isset($_REQUEST['quicktime']) ? $_REQUEST['quicktime'] : $this->quicktime;
+		$this->js = isset($_REQUEST['js']) ? $_REQUEST['js'] : $this->js;
+		$this->css = isset($_REQUEST['css']) ? $_REQUEST['css'] : $this->css;
+		$this->text = isset($_REQUEST['text']) ? $_REQUEST['text'] : $this->text;
+		$this->other = isset($_REQUEST['other']) ? $_REQUEST['other'] : $this->other;
+		$this->maxSize = isset($_REQUEST['maxSize']) ? $_REQUEST['maxSize'] : $this->maxSize;
+		$this->step = isset($_REQUEST['step']) ? $_REQUEST['step'] : $this->step;
+		$this->cmd = isset($_REQUEST['cmd']) ? $_REQUEST['cmd'] : $this->cmd;
+		if(isset($_REQUEST['we_cmd'][0])){
+			switch($_REQUEST['we_cmd'][0]){
+				case 'siteImportSaveWePageSettings' :
+					$this->cmd = 'saveWePageSettings';
 					break;
-				case "siteImportCreateWePageSettings" :
-					$this->cmd = "createWePageSettings";
+				case 'siteImportCreateWePageSettings' :
+					$this->cmd = 'createWePageSettings';
 					break;
-				case "updateSiteImportTable" :
-					$this->cmd = "updateSiteImportTable";
+				case 'updateSiteImportTable' :
+					$this->cmd = 'updateSiteImportTable';
 					break;
 			}
 		}
-		$this->sameName = isset($_REQUEST["sameName"]) ? $_REQUEST["sameName"] : $this->sameName;
-		$this->importMetadata = isset($_REQUEST["importMetadata"]) ? $_REQUEST["importMetadata"] : $this->importMetadata;
-		$this->thumbs = isset($_REQUEST["thumbs"]) ? makeCSVFromArray($_REQUEST["thumbs"]) : $this->thumbs;
-		$this->width = isset($_REQUEST["width"]) ? $_REQUEST["width"] : $this->width;
-		$this->height = isset($_REQUEST["height"]) ? $_REQUEST["height"] : $this->height;
-		$this->widthSelect = isset($_REQUEST["widthSelect"]) ? $_REQUEST["widthSelect"] : $this->widthSelect;
-		$this->heightSelect = isset($_REQUEST["heightSelect"]) ? $_REQUEST["heightSelect"] : $this->heightSelect;
-		$this->keepRatio = isset($_REQUEST["keepRatio"]) ? $_REQUEST["keepRatio"] : $this->keepRatio;
-		$this->quality = isset($_REQUEST["quality"]) ? $_REQUEST["quality"] : $this->quality;
-		$this->degrees = isset($_REQUEST["degrees"]) ? $_REQUEST["degrees"] : $this->degrees;
+		$this->sameName = isset($_REQUEST['sameName']) ? $_REQUEST['sameName'] : $this->sameName;
+		$this->importMetadata = isset($_REQUEST['importMetadata']) ? $_REQUEST['importMetadata'] : $this->importMetadata;
+		$this->thumbs = isset($_REQUEST['thumbs']) ? makeCSVFromArray($_REQUEST['thumbs']) : $this->thumbs;
+		$this->width = isset($_REQUEST['width']) ? $_REQUEST['width'] : $this->width;
+		$this->height = isset($_REQUEST['height']) ? $_REQUEST['height'] : $this->height;
+		$this->widthSelect = isset($_REQUEST['widthSelect']) ? $_REQUEST['widthSelect'] : $this->widthSelect;
+		$this->heightSelect = isset($_REQUEST['heightSelect']) ? $_REQUEST['heightSelect'] : $this->heightSelect;
+		$this->keepRatio = isset($_REQUEST['keepRatio']) ? $_REQUEST['keepRatio'] : $this->keepRatio;
+		$this->quality = isset($_REQUEST['quality']) ? $_REQUEST['quality'] : $this->quality;
+		$this->degrees = isset($_REQUEST['degrees']) ? $_REQUEST['degrees'] : $this->degrees;
 
 		$this->_files = array();
 		if(runAtWin()){
@@ -117,15 +117,15 @@ class weSiteImport{
 	 */
 	function getHTML(){
 		switch($this->cmd){
-			case "updateSiteImportTable" :
+			case 'updateSiteImportTable' :
 				return $this->_updateSiteImportTable();
-			case "createWePageSettings" :
+			case 'createWePageSettings' :
 				return $this->_getCreateWePageSettingsHTML();
-			case "saveWePageSettings" :
+			case 'saveWePageSettings' :
 				return $this->_getSaveWePageSettingsHTML();
-			case "content" :
+			case 'content' :
 				return $this->_getContentHTML();
-			case "buttons" :
+			case 'buttons' :
 				return $this->_getButtonsHTML();
 			default :
 				return $this->_getFrameset();
@@ -173,7 +173,7 @@ class weSiteImport{
 					}
 				}
 				') .
-			we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsElement(
 				'function doUnload() {
 					if (jsWindow_count) {
@@ -192,43 +192,43 @@ class weSiteImport{
 	 * @return	array
 	 */
 	function _getFieldsFromTemplate($tid){
-		$sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . abs($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
+		$sql_select = 'SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . intval($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
-		$templateCode = f($sql_select, "Dat", $GLOBALS['DB_WE']);
+		$templateCode = f($sql_select, 'Dat', $GLOBALS['DB_WE']);
 		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$records = array();
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){
 				$tagname = $regs[1];
-				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){
+				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != 'var') && ($tagname != 'field')){
 					$name = $regs[1];
 					switch($tagname){
 						// tags with text content, images, links and hrefs
-						case "img" :
-							$records[$name] = "img";
+						case 'img' :
+							$records[$name] = 'img';
 							break;
-						case "href" :
-							$records[$name] = "href";
+						case 'href' :
+							$records[$name] = 'href';
 							break;
-						case "link" :
-							$records[$name] = "link";
+						case 'link' :
+							$records[$name] = 'link';
 							break;
-						case "textarea" :
-							$records[$name] = "text";
+						case 'textarea' :
+							$records[$name] = 'text';
 							break;
-						case "input" :
+						case 'input' :
 							$attribs = weSiteImport::_parseAttributes(preg_replace('/^<we:[^ ]+ /i', '', $tag));
-							$type = isset($attribs["type"]) ? $attribs["type"] : "text";
+							$type = isset($attribs['type']) ? $attribs['type'] : 'text';
 							switch($type){
-								case "text" :
-								case "choice" :
-								case "select" :
-									$records[$name] = "text";
+								case 'text' :
+								case 'choice' :
+								case 'select' :
+									$records[$name] = 'text';
 									break;
 
-								case "date" :
-									$records[$name] = "date";
+								case 'date' :
+									$records[$name] = 'date';
 									break;
 							}
 							break;
@@ -236,10 +236,10 @@ class weSiteImport{
 				}
 			}
 		}
-		$records["Title"] = "text";
-		$records["Description"] = "text";
-		$records["Keywords"] = "text";
-		$records["Charset"] = "text";
+		$records['Title'] = 'text';
+		$records['Description'] = 'text';
+		$records['Keywords'] = 'text';
+		$records['Charset'] = 'text';
 		return $records;
 	}
 
@@ -269,52 +269,52 @@ class weSiteImport{
 		$values = array();
 
 		foreach($_templateFields as $name => $type){
-			if($type == "date"){
+			if($type == 'date'){
 				$hasDateFields = true;
 			}
 			switch($name){
-				case "Title" :
+				case 'Title' :
 					$values[] = array(
-						"name" => $name,
-						"pre" => "<title>",
-						"post" => "</title>"
+						'name' => $name,
+						'pre' => '<title>',
+						'post' => '</title>'
 					);
 					break;
 
-				case "Keywords" :
+				case 'Keywords' :
 					$values[] = array(
-						"name" => $name,
-						"pre" => '<meta name="keywords" content="',
-						"post" => '">'
+						'name' => $name,
+						'pre' => '<meta name="keywords" content="',
+						'post' => '">'
 					);
 					break;
 
-				case "Description" :
+				case 'Description' :
 					$values[] = array(
-						"name" => $name,
-						"pre" => '<meta name="description" content="',
-						"post" => '">'
+						'name' => $name,
+						'pre' => '<meta name="description" content="',
+						'post' => '">'
 					);
 					break;
 
-				case "Charset" :
+				case 'Charset' :
 					$values[] = array(
-						"name" => $name,
-						"pre" => '<meta http-equiv="content-type" content="text/html;charset=',
-						"post" => '">'
+						'name' => $name,
+						'pre' => '<meta http-equiv="content-type" content="text/html;charset=',
+						'post' => '">'
 					);
 					break;
 
 				default :
 					$values[] = array(
-						"name" => $name,
-						"pre" => "",
-						"post" => ""
+						'name' => $name,
+						'pre' => '',
+						'post' => ''
 					);
 			}
 		}
 
-		return $this->_getHtmlPage("", we_html_element::jsElement(
+		return $this->_getHtmlPage('', we_html_element::jsElement(
 					'var tableDivObj = parent.document.getElementById("tablediv");
 		tableDivObj.innerHTML = "' .
 					str_replace(array("\r", "\n"), array("\\r", "\\n"), addslashes($this->_getSiteImportTableHTML($_templateFields, $values))) . '"
@@ -329,30 +329,30 @@ class weSiteImport{
 	 */
 	function _getSaveWePageSettingsHTML(){
 		$data = array(
-			"valueCreateType" => $_REQUEST["createType"]
+			'valueCreateType' => $_REQUEST['createType']
 		);
-		if($data["valueCreateType"] == "specify"){
-			$data["valueTemplateId"] = isset($_REQUEST["templateID"]) ? $_REQUEST["templateID"] : 0;
-			$data["valueUseRegex"] = isset($_REQUEST["useRegEx"]) ? $_REQUEST["useRegEx"] : 0;
-			$data["valueFieldValues"] = serialize(isset($_REQUEST["fields"]) ? $_REQUEST["fields"] : array());
-			$data["valueDateFormat"] = isset($_REQUEST["dateFormat"]) ? $_REQUEST["dateFormat"] : "unix";
-			$data["valueDateFormatField"] = isset($_REQUEST["dateformatField"]) ? $_REQUEST["dateformatField"] : "";
-			$data["valueTemplateName"] = "neueVorlage";
-			$data["valueTemplateParentID"] = "0";
+		if($data['valueCreateType'] == 'specify'){
+			$data['valueTemplateId'] = isset($_REQUEST['templateID']) ? $_REQUEST['templateID'] : 0;
+			$data['valueUseRegex'] = isset($_REQUEST['useRegEx']) ? $_REQUEST['useRegEx'] : 0;
+			$data['valueFieldValues'] = serialize(isset($_REQUEST['fields']) ? $_REQUEST['fields'] : array());
+			$data['valueDateFormat'] = isset($_REQUEST['dateFormat']) ? $_REQUEST['dateFormat'] : 'unix';
+			$data['valueDateFormatField'] = isset($_REQUEST['dateformatField']) ? $_REQUEST['dateformatField'] : '';
+			$data['valueTemplateName'] = 'neueVorlage';
+			$data['valueTemplateParentID'] = '0';
 		} else{
-			$data["valueTemplateId"] = "0";
-			$data["valueUseRegex"] = false;
-			$data["valueFieldValues"] = serialize(array());
-			$data["valueDateFormat"] = "unix";
-			$data["valueDateFormatField"] = "";
-			$data["valueTemplateName"] = isset($_REQUEST["templateName"]) ? $_REQUEST["templateName"] : "neueVorlage";
-			$data["valueTemplateParentID"] = isset($_REQUEST["templateParentID"]) ? $_REQUEST["templateParentID"] : "0";
+			$data['valueTemplateId'] = '0';
+			$data['valueUseRegex'] = false;
+			$data['valueFieldValues'] = serialize(array());
+			$data['valueDateFormat'] = 'unix';
+			$data['valueDateFormatField'] = '';
+			$data['valueTemplateName'] = isset($_REQUEST['templateName']) ? $_REQUEST['templateName'] : 'neueVorlage';
+			$data['valueTemplateParentID'] = isset($_REQUEST['templateParentID']) ? $_REQUEST['templateParentID'] : '0';
 		}
 		// update session
-		$_SESSION["prefs"]["siteImportPrefs"] = serialize($data);
+		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);
 		// update DB
-		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . " SET siteImportPrefs='" . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . "' WHERE userID=" . abs($_SESSION["user"]["ID"]));
-		return $this->_getHtmlPage("", we_html_element::jsElement('parent.close();'));
+		$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . " SET siteImportPrefs='" . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . "' WHERE userID=" . intval($_SESSION["user"]["ID"]));
+		return $this->_getHtmlPage('', we_html_element::jsElement('parent.close();'));
 	}
 
 	/**
@@ -367,11 +367,11 @@ class weSiteImport{
 
 		$headlines = array(
 			array(
-				"dat" => g_l('siteimport', "[fieldName]")
+				'dat' => g_l('siteimport', '[fieldName]')
 			), array(
-				"dat" => g_l('siteimport', "[startMark]")
+				'dat' => g_l('siteimport', '[startMark]')
 			), array(
-				"dat" => g_l('siteimport', "[endMark]")
+				'dat' => g_l('siteimport', '[endMark]')
 			)
 		);
 
@@ -380,7 +380,7 @@ class weSiteImport{
 			$i = 0;
 			foreach($fields as $name => $type){
 				$row = array();
-				$row[0]["dat"] = htmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . htmlspecialchars(
+				$row[0]['dat'] = htmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . htmlspecialchars(
 						$name) . '" />';
 				$index = $this->_getIndexOfValues($values, $name);
 				if($index > -1){
@@ -1409,10 +1409,10 @@ class weSiteImport{
 			$templateObject->setParentID($templateParentID);
 			$templateObject->Path = $templateObject->ParentPath . ($templateParentID ? "/" : "") . $templateObject->Text;
 			$templateObject->OldPath = $templateObject->Path;
-			$templateObject->setElement("data", $templateCode, "txt");
+			$templateObject->setElement('data', $templateCode, "txt");
 			$templateObject->we_save();
 			$templateObject->we_publish();
-			$templateObject->setElement("Charset", $charset);
+			$templateObject->setElement('Charset', $charset);
 			$newTemplateID = $templateObject->ID;
 		}
 
