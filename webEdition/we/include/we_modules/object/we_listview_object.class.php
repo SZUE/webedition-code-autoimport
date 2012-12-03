@@ -71,7 +71,6 @@ class we_listview_object extends listviewBase{
 
 		$this->classID = $classID;
 		$this->triggerID = $triggerID;
-		$this->condition = $condition;
 
 		$this->seeMode = $seeMode; //	edit objects in seeMode
 		$this->searchable = $searchable;
@@ -79,8 +78,8 @@ class we_listview_object extends listviewBase{
 		$this->customers = $customers;
 		$this->customerArray = array();
 
-		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
+		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
@@ -148,17 +147,15 @@ class we_listview_object extends listviewBase{
 			$webUserID_tail = ' AND (' . $_wsql . ') ';
 		}
 
-		if($sqlParts["tables"] || $we_predefinedSQL != ""){
+		if(!empty($sqlParts["tables"]) || $we_predefinedSQL != ''){
 
 			if($we_predefinedSQL != ""){
 				$q = $we_predefinedSQL;
 				$this->DB_WE->query($q);
 				$this->anz_all = $this->DB_WE->num_rows();
-				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
+				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			} else{
-				$_idTail = $this->getIdQuery($_obxTable . ".OF_ID");
-
-				$ws_tail = '';
+				$_idTail = $this->getIdQuery($_obxTable . '.OF_ID');
 
 				if($this->workspaceID != ''){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
@@ -168,9 +165,11 @@ class we_listview_object extends listviewBase{
 						$cond[] = $_obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
 						$cond[] = $_obxTable . '.OF_Path="' . $workspace . '"';
 					}
-					$ws_tail = count($cond) ? ' AND (' . implode(' OR ', $cond) . ') ' : '';
+					$ws_tail = empty($cond) ? '' : ' AND (' . implode(' OR ', $cond) . ') ';
+				} else{
+					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . ".ID AS ID $calendar_select FROM " . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
+				$this->DB_WE->query('SELECT ' . $_obxTable . '.ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()) {
@@ -180,7 +179,7 @@ class we_listview_object extends listviewBase{
 						}
 					}
 				}
-				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . " AND " . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (" limit " . $this->start . "," . $this->maxItemsPerPage) : "");
+				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . ".OF_ID != 0 " . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
@@ -192,8 +191,8 @@ class we_listview_object extends listviewBase{
 						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}
-				if(count($_idListArray) > 0){
-					$_idlist = implode(",", array_unique($_idListArray));
+				if(!empty($_idListArray)){
+					$_idlist = implode(',', array_unique($_idListArray));
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
 					while($db->next_record()) {
@@ -273,7 +272,6 @@ class we_listview_object extends listviewBase{
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
-		$out = array();
 		$from = array();
 		$orderArr = array();
 		$descArr = array();
@@ -281,13 +279,13 @@ class we_listview_object extends listviewBase{
 
 		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<',), $cond);
 
-		$cond = " " . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . " ";
+		$cond = ' ' . preg_replace("/'([^']*)'/e", "we_listview_object::encodeEregString('\\1')", $cond) . ' ';
 
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
 			foreach($foo as $f){
-				$g = explode(" ", trim($f));
+				$g = explode(' ', trim($f));
 				$orderArr[] = $g[0];
 				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) == 'desc');
 			}
@@ -321,12 +319,12 @@ class we_listview_object extends listviewBase{
 			if(substr($n, 0, 10) == 'we_object_'){
 				$n = substr($n, 10);
 			}
-			$f .= '`'.$p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
+			$f .= '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			$from[] = $p["table"];
 			$from[] = $p["table2"];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
-				$ordertmp[$pos] = '`'.$p["table"] . '`.`' . $p["type"] . '_' . $n .'`'. ($descArr[$pos] ? ' DESC' : '');
+				$ordertmp[$pos] = '`' . $p["table"] . '`.`' . $p["type"] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . "." . $p["type"] . "_" . $n . "$2", $cond);
 		}
@@ -339,9 +337,9 @@ class we_listview_object extends listviewBase{
 			case 'we_id':
 			case 'we_filename':
 			case 'we_published':
-				$_tmporder = str_replace('we_id', OBJECT_X_TABLE . $classID . '.OF_ID', $_tmporder);
-				$_tmporder = str_replace('we_filename', OBJECT_X_TABLE . $classID . '.OF_Text', $_tmporder);
-				$_tmporder = str_replace('we_published', OBJECT_X_TABLE . $classID . '.OF_Published', $_tmporder);
+				$_tmporder = str_replace(array(
+					'we_id', 'we_filename', 'we_published'), array(
+					OBJECT_X_TABLE . $classID . '.OF_ID', OBJECT_X_TABLE . $classID . '.OF_Text', OBJECT_X_TABLE . $classID . '.OF_Published'), $_tmporder);
 				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
 				break;
 			case 'random()':
@@ -361,23 +359,19 @@ class we_listview_object extends listviewBase{
 			$tb[] = $val;
 		}
 
-		$out["fields"] = rtrim($f, ',');
-		if($order == ' ORDER BY RANDOM '){
-			$out['fields'] .= ', RAND() AS RANDOM ';
-		}
-		$out["order"] = $order;
-		$out["tables"] = makeCSVFromArray($tb);
-		$out["groupBy"] = (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '';
-		$out["publ_cond"] = array();
+		$publ_cond = array();
 		foreach($tb as $t){
-			$out["publ_cond"] [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
+			$publ_cond [] = "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
 		}
-		$out["publ_cond"] = implode(' AND ', $out["publ_cond"]);
-		if($out["publ_cond"]){
-			$out["publ_cond"] = " ( " . $out["publ_cond"] . " ) ";
-		}
-		$out["cond"] = trim($cond);
-		return $out;
+
+		return array(
+			"fields" => rtrim($f, ',') . ($order == ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
+			"order" => $order,
+			"tables" => makeCSVFromArray($tb),
+			"groupBy" => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . ".ID " : '',
+			"publ_cond" => empty($publ_cond) ? '' : ' ( ' . implode(' AND ', $publ_cond) . ' ) ',
+			"cond" => trim($cond)
+		);
 	}
 
 	function next_record(){
@@ -447,9 +441,9 @@ class we_listview_object extends listviewBase{
 				$this->stop_next_row = $this->shouldPrintEndTR();
 				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 					$this->DB_WE->Record = array(
-						"WE_PATH" => '',
-						"WE_TEXT" => "",
-						"WE_ID" => "",
+						'WE_PATH' => '',
+						'WE_TEXT' => '',
+						'WE_ID' => '',
 					);
 					$this->count++;
 					return true;
