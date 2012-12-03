@@ -110,12 +110,14 @@ function getUrlParts(url) {
 }
 
 function selectOptionByValue(form, selName, val) {
-	for(var i=1; i < form.elements[selName].options.length; i++){
+	if(typeof(form.elements[selName]) !== 'undefined' && typeof(val) !== 'undefined'){
+		for(var i=1; i < form.elements[selName].options.length; i++){
 			if(form.elements[selName].options[i].value == val){
 				form.elements[selName].options[i].selected = true;
 			} else{
 				form.elements[selName].options[i].selected = false;
 			}
+		}
 	}
 }
 
