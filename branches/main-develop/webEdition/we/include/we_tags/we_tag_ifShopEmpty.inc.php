@@ -39,5 +39,5 @@ function we_tag_ifShopEmpty($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs);
 
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : '';
-	return ($basket ? empty(count($basket->getShoppingItems())) : true);
+	return ($basket ? count($basket->getShoppingItems()) == 0 : true);
 }

@@ -1147,7 +1147,7 @@ abstract class we_versions_wizard{
 			//maybe restore of a given version?
 			$body = we_html_element::htmlBody(array(
 					'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;',
-					'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?'.http_build_query(query). "';")
+					'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';")
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
@@ -1155,9 +1155,9 @@ abstract class we_versions_wizard{
 		} else{
 			$body = we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'body'), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
-						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy'), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;') .
-						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'cmd'), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'body'), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;')) .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy'), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')) .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'cmd'), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;'))
 					));
 		}
 

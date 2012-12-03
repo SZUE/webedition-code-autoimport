@@ -819,15 +819,16 @@ class weNavigationFrames extends weToolFrames{
 			'style' => 'font-weight: bold;'
 			), g_l('navigation', '[dir]') . ':');
 		switch($this->Model->SelectionType){
-		case weNavigation::STPYE_DOCTYPE:
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, FILE_TABLE));
-			break;
-		case weNavigation::STPYE_CATEGORY:
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, CATEGORY_TABLE));
-			break;
-		default:
-		if(defined('OBJECT_FILES_TABLE')){
-			$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, OBJECT_FILES_TABLE));
+			case weNavigation::STPYE_DOCTYPE:
+				$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, FILE_TABLE));
+				break;
+			case weNavigation::STPYE_CATEGORY:
+				$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, CATEGORY_TABLE));
+				break;
+			default:
+				if(defined('OBJECT_FILES_TABLE')){
+					$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, OBJECT_FILES_TABLE));
+				}
 		}
 		if($this->Model->SelectionType != weNavigation::STPYE_CATEGORY){
 			if(!empty($this->Model->Categories)){
@@ -1593,8 +1594,7 @@ function onFolderSelectionChangeJS(elem) {
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), 2, $this->_width_size),
 				'space' => $this->_space_size,
 				'noline' => 1
-			)
-		));
+			));
 
 		$_title = we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
@@ -1794,13 +1794,12 @@ function onFolderSelectionChangeJS(elem) {
 
 		return array(
 			array(
-			'headline' => '',
-			'html' => $_view->getFilterHTML(
-				$this->Model->IsFolder == 0 && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC),
-			'space' => $_space_size,
-			'noline' => 1
-		));
-
+				'headline' => '',
+				'html' => $_view->getFilterHTML(
+					$this->Model->IsFolder == 0 && $this->Model->Selection == weNavigation::SELECTION_DYNAMIC),
+				'space' => $_space_size,
+				'noline' => 1
+			));
 	}
 
 	function getHTMLEditorFooter(){

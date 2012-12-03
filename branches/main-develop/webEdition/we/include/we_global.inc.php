@@ -117,7 +117,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail [] = OBJECT_X_TABLE . $cid . '.OF_Workspaces like "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%"';
+		$pid_tail [] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%"';
 	}
 	return (count($pid_tail) == 0 ? 1 :
 			' (' . implode(' OR ', $pid_tail) . ') '
@@ -222,6 +222,7 @@ function getCurlHttp($server, $path, $files = array(), $header = false, $timeout
 	curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
+
 	if($timeout){
 		curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
 	}
@@ -947,7 +948,6 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		$path = '/';
 		foreach($parts as $part){
 
-
 			$path .= $part;
 			if($includingFolders){
 				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
@@ -967,14 +967,6 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	}
 
 	return ' OR (' . implode(' OR ', $wsQuery) . ')';
-}
-
-			$wsQuery[] = ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
-
-		}
-		return ' AND (' . (count($wsQuery) ? implode(' OR ', $wsQuery) : 0) . ')';
-	}
-	return '';
 }
 
 function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
@@ -1075,7 +1067,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = fa
 	if(!$path){
 		$path = $_SERVER['SCRIPT_NAME'];
 	}
-	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+	$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 
 
 	// check if object is published.
