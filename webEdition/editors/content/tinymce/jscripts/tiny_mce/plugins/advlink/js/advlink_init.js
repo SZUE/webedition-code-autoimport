@@ -110,15 +110,17 @@ function getUrlParts(url) {
 }
 
 function selectOptionByValue(form, selName, val) {
-	if(typeof(form.elements[selName]) !== 'undefined' && typeof(val) !== 'undefined'){
-		for(var i=1; i < form.elements[selName].options.length; i++){
-			if(form.elements[selName].options[i].value == val){
-				form.elements[selName].options[i].selected = true;
-			} else{
-				form.elements[selName].options[i].selected = false;
-			}
+	if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
+		return;
+	}
+	for(var i=1; i < form.elements[selName].options.length; i++){
+		if(form.elements[selName].options[i].value == val){
+			form.elements[selName].options[i].selected = true;
+		} else{
+			form.elements[selName].options[i].selected = false;
 		}
 	}
+	
 }
 
 // more functions from tinyMCE
@@ -136,11 +138,11 @@ function getAnchorListHTML(id, target) {
 	}
 
 	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"'
-		+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
-		+ '>'
-		+ '<option value=""></option>'
-		+ html
-		+ '</select>';
+	+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
+	+ '>'
+	+ '<option value=""></option>'
+	+ html
+	+ '</select>';
 
 	return html;
 }
