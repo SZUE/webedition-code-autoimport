@@ -1356,11 +1356,17 @@ function tinyMCEchanged(inst){
 						ed.onPostProcess.add(function(ed, o) {
 							o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
 						});') . '
-
+						
+						/*
 						ed.onPostProcess.add(function(ed, o) { // FIXME: strange behaviour - condition does not work with boolean true!!?
 							o.content = o.content.' . (!$this->htmlSpecialchars ? 'replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"")' : 
 							'replace(/"/g, "&quot;")') . ';
 						});
+						*/
+						'. ($this->htmlSpecialchars ? '' : '
+						ed.onPostProcess.add(function(ed, o) {
+							o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"");
+						});') . '
 					}
 				});') .
 
