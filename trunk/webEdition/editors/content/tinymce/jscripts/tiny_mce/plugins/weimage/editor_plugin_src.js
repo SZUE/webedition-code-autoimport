@@ -62,7 +62,7 @@
 				longname : 'webEdition Image-Dialog',
 				author : 'webEdition e.V',
 				authorurl : 'http://www.webedition.org',
-				infourl : 'http://www.webedition.org',
+				infourl : 'http://www.webedition.org'
 				//version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}

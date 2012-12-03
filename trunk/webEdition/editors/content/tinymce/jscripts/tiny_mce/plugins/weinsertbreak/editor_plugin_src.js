@@ -34,7 +34,7 @@
 		 * @param {tinymce.Editor} ed Editor instance that the plugin is initialized in.
 		 * @param {string} url Absolute URL to where the plugin is located.
 		 */
-			 
+
 		init : function(ed, url) {
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceWeinsertbreak');
 			ed.addCommand('mceWeinsertbreak', function() {
@@ -53,7 +53,7 @@
 			ed.onNodeChange.add(function(ed, cm, n) {
 				//cm.setActive('visualaid', n.nodeName == 'IMG');
 			});
-			
+
 		},
 
 
@@ -82,7 +82,7 @@
 				longname : 'Weinsertbreak plugin',
 				author : 'webEdition e.V',
 				authorurl : 'http://www.webedition.org',
-				infourl : 'http://www.webedition.org',
+				infourl : 'http://www.webedition.org'
 				//version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}
