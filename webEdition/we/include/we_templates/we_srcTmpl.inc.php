@@ -153,7 +153,7 @@ if($GLOBALS['we_editmode']){
 
 							return;
 			<?php
-			return;
+			break;
 		case 'java':
 			?>
 							if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager)!="undefined") {
