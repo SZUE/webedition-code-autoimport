@@ -15,7 +15,7 @@
  * @category   webEdition
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
+*/
 
 .weTag, .cm-weTag{ font-weight:bold;color:#ff8a00;}
 .weTagAttribute, .cm-weTagAttribute{color:grey;}
@@ -44,4 +44,33 @@
 
 .CodeMirror{
 	position: relative;
+}
+
+.activeline {
+	background: #dee4ec !important;
+}
+
+.searched {
+	background: yellow;
+}
+
+span.c-like-keyword {
+	color: #000;
+	font-weight: bold;
+}
+
+.CodeMirror{
+	color: black;
+	background: white;
+	padding: 5px 8px;
+	z-index: 1000;
+	border: outset 1px;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	border-radius: 3px;
+}
+
+.cm-tab {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+	background-position: right;
+	background-repeat: no-repeat;
 }
