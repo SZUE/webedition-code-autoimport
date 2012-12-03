@@ -20,7 +20,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 /**
  * This source is based on tinyMCE-plugin "advimage":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
@@ -28,7 +28,7 @@
 var ImageDialog = {
 	preInit : function() {
 		var url;
-		tinyMCEPopup.requireLangPack();
+		//tinyMCEPopup.requireLangPack();
 		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 		}
@@ -52,11 +52,11 @@ var ImageDialog = {
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
 			if(!f.alt.value){
-				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
-					if (s){
-						t.insertAndClose();
-					}
-				});
+				//tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
+					//if (s){
+						//t.insertAndClose();
+					//}
+				//});
 				return;
 			}
 		}
@@ -102,7 +102,7 @@ var ImageDialog = {
 			name : nl.name.value,
 			class : nl.class.value,
 			title : nl.title.value,
-			longdesc : nl.longdesc.value,
+			longdesc : nl.longdesc.value
 			//style : nl.style.value,
 			//id : nl.id.value,
 			//dir : nl.dir.value,
@@ -126,7 +126,7 @@ var ImageDialog = {
 		tinyMCEPopup.editor.focus();
 		//tinyMCEPopup.close();
 		top.close();
-	},
+	}
 
 	// removed lots of original tinyMCE-functions
 };

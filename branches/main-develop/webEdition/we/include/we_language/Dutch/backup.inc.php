@@ -121,6 +121,7 @@ $l_backup=array(
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Herstel tijdelijke data',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Herstel banner data',
@@ -155,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'U hebt de optie `Herstel winkel data` geselecteerd. De Winkel Module heeft de klanten data nodig, daarom is `Herstel klanten data` automatisch geselecteerd.',
 	'import_spellchecker_data'=>'Herstel gegevens spellingscontrole',
 	'import_templates'=>'Importeren sjablonen',
-	'import_temporary_data'=>'Herstel tijdelijke data',
 	'import_temporary_dep'=>'U hebt de optie `Herstel tijdelijke data` geselecteerd. De tijdelijke data heeft de documenten data nodig, daarom is `Herstel documenten en sjablonen` automatisch geselecteerd.',
 	'import_todo_data'=>'Herstel taak/berichten data',
 	'import_todo_dep'=>'U hebt de optie `Herstel taak/berichten data` geselecteerd. De Taak/Berichten Module heeft de gebruikersdata nodig, daarom is `Herstel gebruikersdata` automatisch geselecteerd.',

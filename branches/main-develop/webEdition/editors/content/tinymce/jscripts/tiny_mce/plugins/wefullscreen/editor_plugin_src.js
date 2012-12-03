@@ -7,14 +7,14 @@
 				var se = ed.selection;
 				ed.windowManager.open({
 
-					file : url + '/../../../../../wysiwyg/fullscreenEditDialog.php?we_dialog_args[editor]=tinyMce' + 
-						'&we_dialog_args[editname]=tinyMce' + 
-						'&we_dialog_args[outsideWE]='+ wefullscreenVars["outsideWE"] + 
-						'&we_dialog_args[xml]='+ wefullscreenVars["xml"] + 
-						'&we_dialog_args[removeFirstParagraph]='+ wefullscreenVars["removeFirstParagraph"] + 
-						'&we_dialog_args[baseHref]='+ wefullscreenVars["baseHref"] + 
-						'&we_dialog_args[charset]='+ wefullscreenVars["charset"] + 
-						'&we_dialog_args[cssClasses]='+ wefullscreenVars["cssClasses"] + 
+					file : url + '/../../../../../wysiwyg/fullscreenEditDialog.php?we_dialog_args[editor]=tinyMce' +
+						'&we_dialog_args[editname]=tinyMce' +
+						'&we_dialog_args[outsideWE]='+ wefullscreenVars["outsideWE"] +
+						'&we_dialog_args[xml]='+ wefullscreenVars["xml"] +
+						'&we_dialog_args[removeFirstParagraph]='+ wefullscreenVars["removeFirstParagraph"] +
+						'&we_dialog_args[baseHref]='+ wefullscreenVars["baseHref"] +
+						'&we_dialog_args[charset]='+ wefullscreenVars["charset"] +
+						'&we_dialog_args[cssClasses]='+ wefullscreenVars["cssClasses"] +
 						'&we_dialog_args[bgcolor]='+ wefullscreenVars["bgcolor"] +
 						'&we_dialog_args[language]='+ wefullscreenVars["language"] +
 						'&we_dialog_args[screenWidth]='+ wefullscreenVars["screenWidth"] +
@@ -22,7 +22,7 @@
 						'&we_dialog_args[className]='+ wefullscreenVars["className"] +
 						'&we_dialog_args[fontnames]='+ wefullscreenVars["fontnames"] +
 						'&we_dialog_args[propString]='+ wefullscreenVars["propString"],
-						
+
 					width : screen.availWidth-20,
 					height : screen.availHeight - 70,
 					inline : 1
@@ -30,7 +30,7 @@
 
 					plugin_url : url, // Plugin absolute URL
 				});
-				
+
 				//ed.execCommand("mceSetContent", false, "das ist der text");
 
 			});
@@ -62,7 +62,7 @@
 				longname : 'Wefullscreen plugin',
 				author : 'webEdition e.V',
 				authorurl : 'http://www.webedition.org',
-				infourl : 'http://www.webedition.org',
+				infourl : 'http://www.webedition.org'
 				//version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}

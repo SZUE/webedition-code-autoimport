@@ -109,7 +109,7 @@ class we_navigationDirSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition </title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition </title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -345,19 +345,16 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$ws_query = getWsQueryForSelector(NAVIGATION_TABLE);
-		$this->db->query("SELECT " . $this->fields . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM " .
-			$this->table .
-			" WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . ' ' .
-			$ws_query .
-			" ORDER BY Ordn, isNr DESC,Nr,Text;");
+		$this->db->query('SELECT ' . $this->fields . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM " .
+			$this->table . " WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . ' ' .
+			getWsQueryForSelector(NAVIGATION_TABLE) . ' ORDER BY Ordn, isNr DESC,Nr,Text');
 	}
 
 	function printDoRenameFolderHTML(){
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>
+		print '<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -404,6 +401,7 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
+//-->
 </script>
 ';
 		print '</head><body></body></html>';

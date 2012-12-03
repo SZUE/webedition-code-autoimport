@@ -99,12 +99,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 
 	function query(){
-		$wsQuery = getWsQueryForSelector($this->table);
-
-		$_query = "	SELECT " . $this->fields . " FROM " . $this->db->escape($this->table) . " WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . ' ' . makeOwnersSql() .
-			$wsQuery . ($this->order ? (' ORDER BY ' . $this->order) : '');
-
-		$this->db->query($_query);
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . makeOwnersSql() . ') ' .
+			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY ' . $this->order) : ''));
 	}
 
 	function setDefaultDirAndID($setLastDir){

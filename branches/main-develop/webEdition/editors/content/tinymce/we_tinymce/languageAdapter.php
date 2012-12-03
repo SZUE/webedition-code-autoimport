@@ -21,46 +21,5 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-header("Content-Type: text/javascript");
-
-?>
-
-//
-// ----> Translate Textoutput in webedition's custom tinyMCE-plugins
-//
-
-tinyMceGL = {
-	welink : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[hyperlink]"); ?>'
-			},
-	weimage: {
-			tooltip : '<?php echo g_l('wysiwyg', "[insert_edit_image]"); ?>',
-			},
-	weabbr : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[abbr]"); ?>'
-			},
-	weacronym : {
-			tooltip : '<?php echo g_l('wysiwyg', "[acronym]"); ?>',
-			},
-	wefullscreen : {
-			tooltip : '<?php echo g_l('wysiwyg', "[fullscreen]"); ?>',
-			},
-	weinsertbreak : { 
-			tooltip : '<?php echo g_l('wysiwyg', "[insert_br]"); ?>'
-			},
-	weinsertrtf : {
-			tooltip : '<?php echo g_l('wysiwyg', "[rtf_import]"); ?>',
-			},
-	welang : {
-			tooltip : '<?php echo g_l('wysiwyg', "[language]"); ?>',
-			},
-	wespellchecker : {
-			tooltip : '<?php echo g_l('wysiwyg', '[spellcheck]'); ?>',
-			},
-	wevisualaid : {
-			tooltip : '<?php echo g_l('wysiwyg', "[visible_borders]"); ?>',
-			}
-};
+ 
+ // this file's code was temporarily moved to we_wysiwyg.class.inc.php: static function getHeaderHTML()

@@ -121,6 +121,7 @@ $l_backup=array(
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Restaurar data temporal',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Restaurar data de la pancarta',
@@ -155,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'Ud ha seleccionado la opción `Restaurar data de compra`. El Módulo Compras necesita el data del cliente y por eso, `Restaurar data del cliente` ha sido automáticamente seleccionado.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Importando plantillas',
-	'import_temporary_data'=>'Restaurar data temporal',
 	'import_temporary_dep'=>'Ud ha seleccionado la opción `Restaurar data temporal`. El data temporal necesita el data de los documentos y por eso, `Restaurar documentos y plantillas` ha sido automáticamente seleccionado.',
 	'import_todo_data'=>'Restaurar data de tarea\mensaje',
 	'import_todo_dep'=>'Ud ha seleccionado la opción `Restaurar data de tarea\mensaje`. El Módulo Tarea\Mensaje necesita el data del usuario y por eso, `Restaurar data del usuario` ha sido automáticamente seleccionado.',

@@ -2,19 +2,19 @@
 /**
  * webEdition CMS
  *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
+ * This source is part of webEdition CMS. webEdition CMS is free software; you
+ * can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation; either version 3
+ * of the License, or any later version.
  *
  * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile license.txt
+ * http://www.gnu.org/copyleft/gpl.html. A copy is found in the textfile
+ * license.txt
  *
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @license http://www.gnu.org/copyleft/gpl.html GPL
  */
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -26,7 +26,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -36,8 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -77,7 +74,7 @@ public class EditorPanel extends JPanel {
 
 	public EditorPanel(final Editor applet) {
 		super();
-
+		System.out.println("editor init");
 		setLayout(new BorderLayout());
 		this.applet = applet;
 
@@ -93,7 +90,6 @@ public class EditorPanel extends JPanel {
 
 		// we need to override paint so that the line numbers stay in sync
 		pane = new JTextPane(doc) {
-
 			/**
 			 *
 			 */
@@ -127,7 +123,6 @@ public class EditorPanel extends JPanel {
 
 
 		EditorKit editorKit = new StyledEditorKit() {
-
 			/**
 			 *
 			 */
@@ -153,9 +148,6 @@ public class EditorPanel extends JPanel {
 		defaultDownAction = am.get(DefaultEditorKit.downAction);
 
 
-
-
-
 		add(lineNumbers, BorderLayout.WEST);
 
 		class MyAdjustmentListener implements AdjustmentListener {
@@ -174,12 +166,10 @@ public class EditorPanel extends JPanel {
 		add(aSuggestor);
 		add(scrollPane);
 
-
 		pane.setFont(new Font(parameter.getFontName(), Font.PLAIN, parameter.getFontSize()));
 		setTabs(pane, 4);
 
 		pane.addKeyListener(new KeyAdapter() {
-
 			@Override
 			public void keyReleased(KeyEvent e) {
 			}
@@ -190,7 +180,7 @@ public class EditorPanel extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if ((e.getModifiersEx()&KeyEvent.CTRL_DOWN_MASK)>0) {
+				if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) > 0) {
 					switch (e.getKeyCode()) {
 						case KeyEvent.VK_S:
 							applet.sendCtrlS();
@@ -205,7 +195,6 @@ public class EditorPanel extends JPanel {
 		});
 
 		pane.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
@@ -235,7 +224,7 @@ public class EditorPanel extends JPanel {
 
 
 
-
+		System.out.println("editor init finished");
 
 
 	}
@@ -338,6 +327,33 @@ public class EditorPanel extends JPanel {
 	public String getCode() {
 		return pane.getText();
 	}
+
+	@Override
+	public void setSize(int width, int height){
+		System.out.println("setSize3");
+		System.out.flush();
+
+}
+	@Override
+	public void setSize(Dimension d){
+		System.out.println("setSize4");
+		System.out.flush();
+
+}
+
+		@Override
+	public void resize(int width, int height) {
+		System.out.println("resize3");
+		System.out.flush();
+	}
+
+	@Override
+	public void resize(Dimension d) {
+		System.out.println("resize4");
+		System.out.flush();
+
+	}
+
 
 	public TagSuggestor getSuggestor() {
 		return tSuggestor;

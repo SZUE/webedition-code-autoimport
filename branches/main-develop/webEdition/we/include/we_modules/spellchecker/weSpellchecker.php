@@ -8,10 +8,10 @@ we_html_tools::htmlTop();
 
 if(isset($_REQUEST['we_dialog_args']['editname']) && $_REQUEST['we_dialog_args']['editname'] == 'tinyMce'){
 	print we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
+		we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
+		we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
+		we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
+		we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
 }
 
 print STYLESHEET;
@@ -38,7 +38,25 @@ $space = 5;
 $_mode = 'normal';
 $_editname = '';
 
-$_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"><param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"><param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"><param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"></applet>';
+$_applet_code = we_html_element::htmlApplet(array(
+		'name' => "spellchecker",
+		'code' => "LeSpellchecker.class",
+		'archive' => "lespellchecker.jar",
+		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
+		'width' => 20,
+		'height' => 20,
+		), '
+<param name="scriptable" value="true"/>
+<param name="mayscript" value="true"/>
+<param name="code" value="LeSpellchecker.class"/>
+<param name="archive" value="lespellchecker.jar"/>
+<param name="type" value="application/x-java-applet;version=1.1"/>
+<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
+<param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
+<param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
+<param name="udSize" value="' . (is_file($_user_dict) ? filesize($_user_dict) : '0') . '"/>	'
+);
+
 
 if(isset($_REQUEST['we_dialog_args']['editname'])){
 	$_mode = $_REQUEST['we_dialog_args']['editname'] == 'tinyMce' ? 'tinyMce' : 'wysiwyg';
@@ -51,8 +69,6 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 ?>
 
 <style type="text/css">
-
-
 	#mainPanel {
 		width: 100%;
 		height: 380px;
@@ -175,7 +191,7 @@ if(isset($_REQUEST['we_dialog_args']['editname'])){
 				editorObj = elements[0];
 				var text = editorObj.value;
 			}
-<?php }?>
+<?php } ?>
 
 		orginal = text;
 		editPanel = document.getElementById('preview');

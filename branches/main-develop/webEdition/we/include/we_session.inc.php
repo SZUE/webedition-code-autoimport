@@ -143,6 +143,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				} else{
 					$_SESSION['prefs']['userID'] = $_userdata['ID'];
 					doInsertQuery($DB_WE, PREFS_TABLE, $_SESSION['prefs']);
+					$_SESSION['prefs'] = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
 				}
 
 				if(isset($_SESSION['user']['Username']) && isset($_SESSION['user']['ID']) && $_SESSION['user']['Username'] && $_SESSION['user']['ID']){

@@ -616,7 +616,7 @@ function save_all_values(){
 			}
 		}
 	}
-	if(isset($_SESSION['weS']['versions'])){
+	if(isset($_SESSION['weS']['versions']) && isset($_SESSION['weS']['versions']['logPrefs'])){
 		$_SESSION['weS']['versions']['logPrefsChanged'] = array();
 		foreach($_SESSION['weS']['versions']['logPrefs'] as $k => $v){
 			if(isset($_REQUEST['newconf'][$k])){
@@ -635,7 +635,7 @@ function save_all_values(){
 		unset($_SESSION['weS']['versions']['logPrefs']);
 		unset($_SESSION['weS']['versions']['logPrefsChanged']);
 	}
-	
+
 	//SAVE CHANGES
 	// Third save all changes of the config files
 	we_base_preferences::saveConfigs();
@@ -774,9 +774,9 @@ function build_dialog($selected_setting = 'ui'){
 			 * Login
 			 * *************************************************************** */
 			if(we_hasPerm("ADMINISTRATOR")){
-				$_loginWEst_disabler = we_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login_deactivateWEstatus]'));
+				$_loginWEst_disabler = we_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login][deactivateWEstatus]'));
 
-				$_we_windowtypes = array('0' => g_l('prefs', '[login_windowtypeboth]'), '1' => g_l('prefs', '[login_windowtypepopup]'), '2' => g_l('prefs', '[login_windowtypesame]'));
+				$_we_windowtypes = array('0' => g_l('prefs', '[login][windowtypeboth]'), '1' => g_l('prefs', '[login][windowtypepopup]'), '2' => g_l('prefs', '[login][windowtypesame]'));
 				$_we_windowtypeselect = new we_html_select(array('name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect'));
 				foreach($_we_windowtypes as $key => $value){
 					$_we_windowtypeselect->addOption($key, $value);
@@ -787,7 +787,7 @@ function build_dialog($selected_setting = 'ui'){
 					}
 				}
 				// Build dialog if user has permission
-				$_settings[] = array('headline' => g_l('prefs', '[login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login_windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
+				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
 			}
 
 			/*			 * ***************************************************************

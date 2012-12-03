@@ -55,7 +55,7 @@ function we_isNotEmpty($attribs){
 			} else{
 				$hreftmp = $doc->getElement($match);
 				if(substr($hreftmp, 0, 1) == '/'){
-					return (bool) (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
+					return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 				}
 			}
 		default :

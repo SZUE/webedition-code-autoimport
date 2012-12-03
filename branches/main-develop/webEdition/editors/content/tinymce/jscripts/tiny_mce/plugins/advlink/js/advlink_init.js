@@ -10,7 +10,7 @@ function preinit() {
 	}
 }
 
-function init() { 
+function init() {
 	tinyMCEPopup.resizeToInnerSize();
 
 	var formObj = document.forms["we_form"];
@@ -38,7 +38,7 @@ function init() {
 
 		formObj.elements['we_dialog_args[anchor]'].value = urlParts[1];
 		formObj.elements['we_dialog_args[param]'].value = urlParts[2];
-		
+
 		formObj.elements['we_dialog_args[title]'].value = inst.dom.getAttrib(elm, 'title');
 		formObj.elements['we_dialog_args[target]'].value = inst.dom.getAttrib(elm, 'target');
 		//formObj.elements['we_dialog_args[class]'].value = inst.dom.getAttrib(elm, 'class');
@@ -71,13 +71,14 @@ function init() {
 		}
 		this.doReload(formObj);
 	}
-	if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
+	/*if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
 		var cl = '';
 		for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
 			cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
 			formObj.elements['we_dialog_args[class]'].options[formObj.elements['we_dialog_args[class]'].length] = new Option('.' + cl, cl);
 		}
 	}
+	*/
 	this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
 }
 
@@ -96,11 +97,11 @@ function getLinkType(href) {
 
 function getUrlParts(url) {
 	var u = '', anch = '', param = '';
-	
+
 	var anchArr = url.split('#');
 	u = anchArr.shift();
 	anch = (anchArr[0]) ? anchArr.join('#') : anch;
-	
+
 	var paramArr = u.split('?');
 	u = paramArr.shift();
 	param = (paramArr[0]) ? paramArr.join('?') : param;
@@ -109,13 +110,17 @@ function getUrlParts(url) {
 }
 
 function selectOptionByValue(form, selName, val) {
-	for(var i=1; i < form.elements[selName].options.length; i++){
-			if(form.elements[selName].options[i].value == val){
-				form.elements[selName].options[i].selected = true;
-			} else{
-				form.elements[selName].options[i].selected = false;
-			}
+	if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
+		return;
 	}
+	for(var i=1; i < form.elements[selName].options.length; i++){
+		if(form.elements[selName].options[i].value == val){
+			form.elements[selName].options[i].selected = true;
+		} else{
+			form.elements[selName].options[i].selected = false;
+		}
+	}
+	
 }
 
 // more functions from tinyMCE
@@ -133,11 +138,11 @@ function getAnchorListHTML(id, target) {
 	}
 
 	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"'
-		+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
-		+ '>'
-		+ '<option value=""></option>'
-		+ html
-		+ '</select>';
+	+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
+	+ '>'
+	+ '<option value=""></option>'
+	+ html
+	+ '</select>';
 
 	return html;
 }

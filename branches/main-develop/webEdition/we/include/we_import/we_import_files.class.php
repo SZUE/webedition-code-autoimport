@@ -85,7 +85,7 @@ class we_import_files{
 	}
 
 	function _getJS($fileinput){
-		$js = "
+		return we_html_element::jsElement("
 				function makeArrayFromCSV(csv) {
 					if(csv.length && csv.substring(0,1)==\",\"){csv=csv.substring(1,csv.length);}
 					if(csv.length && csv.substring(csv.length-1,csv.length)==\",\"){csv=csv.substring(0,csv.length-1);}
@@ -115,9 +115,7 @@ class we_import_files{
 							new jsWindow(url,'we_catselector',-1,-1," . WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 						break;
 					}
-				}";
-
-		$js .= 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n", " ", str_replace("\r", " ", $this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
+				}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace("\n", " ", str_replace("\r", " ", $this->_getHiddens("buttons", $this->step + 1))) . $fileinput . '</form>\';
 				function checkFileinput(){
 					var prefix =  "trash_";
 					var imgs = document.getElementsByTagName("IMG");
@@ -182,20 +180,19 @@ class we_import_files{
 						buttJUDiv.style.display="block";
 					}
 
-					setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
+					//setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
 				}
 
 				function refreshTree() {
+					//FIXME: this won\'t work in current version
 					top.opener.top.we_cmd("load","' . FILE_TABLE . '");
 				}
 
 				function uploadFinished() {
 					refreshTree();
 					' . we_message_reporting::getShowMessageCall(
-				g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}';
-
-		return we_html_element::jsElement($js) . we_html_element::jsScript(JS_DIR . "windows.js");
+					g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				}') . we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
 	function _getContent(){
@@ -212,7 +209,6 @@ class we_import_files{
 
 		// create Start Screen ##############################################################################
 
-		$parts = array();
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = !empty($wsA) ? $wsA[0] : 0;
 		$store_id = $this->importToID ? $this->importToID : $ws;
@@ -221,8 +217,6 @@ class we_import_files{
 		$wecmdenc1 = we_cmd_enc("document.we_startform.importToID.value");
 		$wecmdenc2 = we_cmd_enc("document.we_startform.egal.value");
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
-		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2'); // fix for categories require reload!
-		$content .= we_html_element::htmlHidden(array('name' => 'categories', 'value' => ''));
 
 		$yuiSuggest->setAcId("Dir");
 		$yuiSuggest->setContentType("folder");
@@ -235,13 +229,15 @@ class we_import_files{
 		$yuiSuggest->setWidth(260);
 		$yuiSuggest->setSelectButton($button);
 
-		$content .= $yuiSuggest->getHTML();
+		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . // fix for categories require reload!
+			we_html_element::htmlHidden(array('name' => 'categories', 'value' => '')) .
+			$yuiSuggest->getHTML();
 
-		$parts[] = array(
-			"headline" => g_l('importFiles', "[destination_dir]"),
-			"html" => $content,
-			"space" => 150
-		);
+		$parts = array(array(
+				"headline" => g_l('importFiles', "[destination_dir]"),
+				"html" => $content,
+				"space" => 150
+			));
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, 380) .
 			we_html_tools::getPixel(200, 10) .
@@ -396,7 +392,6 @@ class we_import_files{
 			));
 		$but = str_replace("\n", " ", str_replace("\r", " ", $but));
 
-		$parts = array();
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
 		$maxsize = round($maxsize / (1024 * 1024), 3) . 'MB';
 
@@ -405,7 +400,9 @@ class we_import_files{
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), 2, 520, false)) .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), 2, 520, false));
 
-		$parts[] = array("headline" => "", "html" => $content, "space" => 0);
+		$parts = array(
+			array("headline" => "", "html" => $content, "space" => 0)
+		);
 
 		$fileinput = we_html_element::htmlInput(
 				array(
@@ -433,7 +430,6 @@ class we_import_files{
 
 
 		if(getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar')){
-
 			$_weju = new weJUpload();
 			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
 		}
@@ -445,20 +441,20 @@ class we_import_files{
 		$content = we_html_element::htmlDiv(
 				array("id" => "forms", "style" => "display:block"), (getPref('use_jupload') && file_exists(WEBEDITION_PATH . 'jupload/jupload.jar') ? we_html_element::htmlForm(array(
 						"name" => "JUploadForm"
-						), "") : "") .
-				we_html_element::htmlForm(
+						), '') : '') . we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
 					"method" => "post"
-					), $this->_getHiddens()) . we_multiIconBox::getHTML(
-					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]")));
+					), $this->_getHiddens()) .
+				we_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"))
+		);
 
 		$body = we_html_element::htmlBody(
 				array(
 				"class" => "weDialogBody",
-				"onMouseMove" => "if(typeof(document.JUpload)=='undefined') checkFileinput(); else setApplet();",
-				"onload" => "if(typeof(document.JUpload)!='undefined') setApplet();"
+				"onMouseMove" => "if(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='function')||document.JUpload.isActive()==false) checkFileinput(); else setApplet();",
+				"onload" => "if(!(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='function')||document.JUpload.isActive()==false)) setApplet();"
 				), $content);
 
 		$js = $this->_getJS($fileinput) . we_multiIconBox::getDynJS("uploadFiles", "30");
@@ -647,12 +643,12 @@ function next() {
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
 				), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
-		$table->setCol(
-			0, 1, array(
+		$table->setCol(0, 1, array(
 			"align" => "right"
 			), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
-				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) . we_html_element::htmlDiv(
+				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
+			we_html_element::htmlDiv(
 				array(
 				'id' => 'juButton', 'style' => 'display:none;'
 				), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
@@ -706,8 +702,7 @@ function next() {
 				if($this->sameName == "rename"){
 					$z = 0;
 					$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
-					while(f(
-						"SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . abs($this->importToID) . "'", "ID", $GLOBALS['DB_WE'])) {
+					while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])) {
 						$z++;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 					}
@@ -869,9 +864,7 @@ function next() {
 
 		$variant_js = '
 			var categories_edit = new multi_edit("categoriesDiv",document.we_startform,0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
-			categories_edit.addVariant();
-
-		';
+			categories_edit.addVariant();';
 
 		$_cats = makeArrayFromCSV($this->categories);
 		if(is_array($_cats)){

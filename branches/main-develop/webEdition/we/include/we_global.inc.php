@@ -27,9 +27,10 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 }
 
 function we_getModuleNameByContentType($ctype){
-	foreach($GLOBALS['_we_active_integrated_modules'] as $cur){
-		if(strstr($ctype, $cur)){
-			return $cur;
+	$_moduleDir = '';
+	foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+		if(strstr($ctype, $mod)){
+			return $mod;
 		}
 	}
 	return '';
@@ -102,7 +103,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$db = $db ? $db : new DB_WE();
 	$parentIDs = array();
 	$pid = intval($pid);
-	array_push($parentIDs, $pid);
+	$parentIDs[] = $pid;
 	while($pid != 0) {
 		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
 		$parentIDs[] = $pid;
@@ -393,11 +394,11 @@ function cleanTempFiles($cleanSessFiles = false){
 		if($entry != '.' && $entry != '..'){
 			$foo = TEMP_PATH . '/' . $entry;
 			if(filemtime($foo) <= (time() - 300)){
-				if(is_dir($foo))
+				if(is_dir($foo)){
 					we_util_File::deleteLocalFolder($foo, 1);
-				else
-				if(file_exists($foo))
+				} elseif(file_exists($foo)){
 					we_util_File::deleteLocalFile($foo);
+				}
 			}
 		}
 	}
@@ -410,8 +411,7 @@ function cleanTempFiles($cleanSessFiles = false){
 			if(filemtime($foo) <= (time() - 300)){
 				if(is_dir($foo)){
 					we_util_File::deleteLocalFolder($foo, 1);
-				} else
-				if(file_exists($foo) && is_writable($foo)){
+				} elseif(file_exists($foo) && is_writable($foo)){
 					we_util_File::deleteLocalFile($foo);
 				}
 			}
@@ -425,11 +425,11 @@ function cleanTempFiles($cleanSessFiles = false){
 		if($entry != '.' && $entry != '..'){
 			$foo = WE_FRAGMENT_PATH . $entry;
 			if(filemtime($foo) <= (time() - 3600 * 24)){
-				if(is_dir($foo))
+				if(is_dir($foo)){
 					we_util_File::deleteLocalFolder($foo, 1);
-				else
-				if(file_exists($foo))
+				} elseif(file_exists($foo)){
 					we_util_File::deleteLocalFile($foo);
+				}
 			}
 		}
 	}
@@ -588,7 +588,7 @@ function makeOwnersSql($useCreatorID = true){
 		$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 	}
 	foreach($aliases as $id){
-		$q [] = 'Owners like "%,' . intval($id) . ',%"';
+		$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
 	}
 	$groups = array($_SESSION['user']['ID']);
 	we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
@@ -638,8 +638,9 @@ function makeArrayFromCSV($csv){
 }
 
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
-	if(empty($arr))
+	if(empty($arr)){
 		return '';
+	}
 
 	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
 
@@ -692,16 +693,14 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 		if(in_array($p, $found)){
 			return false;
 		}
-		array_push($found, $p);
-		$p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db);
-	} while($p);
+		$found[]= $p;
+	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
 	return false;
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = false){
-	if(!$db){
-		$db = new DB_WE();
-	}
+	$db = ($db ? $db : new DB_WE());
+
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
 	}
@@ -769,10 +768,10 @@ function weConvertToIds($paths, $table){
 }
 
 function path_to_id_ct($path, $table, &$contentType){
-	$db = new DB_WE();
 	if($path == '/'){
 		return 0;
 	}
+	$db = new DB_WE();
 	$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
 	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
 
@@ -936,27 +935,39 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		return '';
 	}
 
-	if(($ws = makeArrayFromCSV(get_ws($tab)))){
-		$paths = id_to_path($ws, $tab, '', false, true);
-		$wsQuery = array();
-		foreach($paths as $path){
-			$parts = explode('/', $path);
-			array_shift($parts);
-			$last = array_pop($parts);
-			$path = '/';
-			foreach($parts as $part){
+	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
+		return '';
+	}
+	$paths = id_to_path($ws, $tab, '', false, true);
+	$wsQuery = array();
+	foreach($paths as $path){
+		$parts = explode('/', $path);
+		array_shift($parts);
+		$last = array_pop($parts);
+		$path = '/';
+		foreach($parts as $part){
 
-				$path .= $part;
-				$wsQuery[] = ($includingFolders ?
-						' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '")' :
-						' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%")');
 
-				$path .= '/';
+			$path .= $part;
+			if($includingFolders){
+				$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+			} else{
+				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 			}
-			$path .= $last;
-			$wsQuery[] = ($includingFolders ?
-					' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '" OR Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%")' :
-					' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%")');
+			$path .= '/';
+		}
+		$path .= $last;
+		if($includingFolders){
+			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
+			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		} else{
+			$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		}
+		$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+	}
+
+	return ' OR (' . implode(' OR ', $wsQuery) . ')';
+}
 
 			$wsQuery[] = ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
 
@@ -1047,7 +1058,7 @@ function t_e($type = 'warning'){
 		if(is_array($value) || is_object($value)){
 			$data[] = @print_r($value, true);
 		} else{
-			$data[] = $value;
+			$data[] = (is_bool($value) ? var_export($value, true) : $value);
 		}
 	}
 
@@ -1057,18 +1068,20 @@ function t_e($type = 'warning'){
 }
 
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '', $hidedirindex = false, $objectseourls = false){
+	if(!$id){
+		return '';
+	}
+
 	if(!$path){
 		$path = $_SERVER['SCRIPT_NAME'];
 	}
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 
-	if(!$GLOBALS['we_doc']->InWebEdition){
-		// check if object is published.
-		if(!f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Published', $DB_WE)){
-			$GLOBALS['we_link_not_published'] = 1;
-			return '';
-		}
+	// check if object is published.
+	if(!$GLOBALS['we_doc']->InWebEdition && !f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), 'Published', $DB_WE)){
+		$GLOBALS['we_link_not_published'] = 1;
+		return '';
 	}
 
 	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);

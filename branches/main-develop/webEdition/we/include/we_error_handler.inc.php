@@ -379,8 +379,8 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false){
 		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . ",\n" .
 		// Line
 		'Line number: ' . $line . ",\n" .
-		' Caller: ' . $_caller . ",\n" .
-		' Backtrace: ' . $detailedError;
+		'Caller: ' . $_caller . ",\n" .
+		'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){

@@ -122,6 +122,7 @@ All files managed by webEdition are deleted! Documents and templates will be kep
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Restore temporary data',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Restore banner data',
@@ -156,7 +157,6 @@ All files managed by webEdition are deleted! Documents and templates will be kep
 	'import_shop_dep'=>'You have selected the option `Restore shop data`. The Shop Module needs the customers data and because of that, `Restore customers data` has been automatically selected.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Importing templates',
-	'import_temporary_data'=>'Restore temporary data',
 	'import_temporary_dep'=>'You have selected the option `Restore temporary data`. The temporary data need the documents data and because of that, `Restore documents and templates` has been automatically selected.',
 	'import_todo_data'=>'Restore task/messaging data',
 	'import_todo_dep'=>'You have selected the option `Restore task/messaging data`. The Task/Messaging Module needs the users data and because of that, `Restore user data` has been automatically selected.',

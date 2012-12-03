@@ -121,6 +121,7 @@ $l_backup=array(
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Restaurer les fichiers temporaires',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Restauer les données de bannière',
@@ -155,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'Vous avez choisi `Restaurer les données de boutique`. La Boutique nécessite les données de clients pour fonctionner correctement, c`est pourquoi `Restaurer les données de clients` a été marqué automatiquement.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Restaurer les modèles',
-	'import_temporary_data'=>'Restaurer les fichiers temporaires',
 	'import_temporary_dep'=>'Vous avez choisi `Restaurer les fichiers temporaires` ausgewählt. Pour fonctionner correctement, les fichiers temporaires nécessitent aussi les documents. Ce pourqoi `Restaurer les documents et modèles` a été marqué automatiquement.',
 	'import_todo_data'=>'Restaurer les données de Tâches/Messagerie',
 	'import_todo_dep'=>'Vous avez chois `Restaurer les données de Tâches/Messagerie`. Le module Tâche/Messagerie nécessite les données d`utilisateur pour fonctionner correctement, c`est pourqoi wird `Restaurer les données d`utilisateur` a été marqués automatiquement.',

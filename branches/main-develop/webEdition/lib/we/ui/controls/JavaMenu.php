@@ -66,21 +66,14 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 		$showAltMenu = (isset($_SESSION['weS']['weShowAltMenu']) && $_SESSION['weS']['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weS']['weShowAltMenu'] = $showAltMenu;
 
-		$out = we_html_element::jsElement('
-				function menuaction(cmd) {
-					weCmdController.fire({cmdName: cmd})
-				}');
+		$out = '';
 
 		if(!$showAltMenu){
-			$out .= '
-				<div id="divForSelectMenu"></div>
-				<applet name="weJavaMenuApplet" code="menuapplet"  archive="JavaMenu.jar"  codebase="' . we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls') . '" align="baseline" width="' . $this->_width . '" height="' . $this->_height . '" mayscript scriptable>
-					<param name="phpext" value=".php">';
 			if($this->_cmdTarget !== ''){
-				$out .= "\n" . '				<param name="cmdTarget" value="' . htmlspecialchars($this->_cmdTarget) . '">';
+				$out .= '<param name="cmdTarget" value="' . htmlspecialchars($this->_cmdTarget) . '">';
 			}
 			if($this->_cmdURL !== ''){
-				$out .= "\n" . '				<param name="cmdURL" value="' . htmlspecialchars($this->_cmdURL) . '">';
+				$out .= '<param name="cmdURL" value="' . htmlspecialchars($this->_cmdURL) . '">';
 			}
 			$i = 0;
 			foreach($this->_entries as $id => $m){
@@ -115,7 +108,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				if(!isset($m["cmd"])){
 					$m["cmd"] = "#";
 				}
-				$out .= "\n" . '				<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : "0") . '">' . "\n";
+				$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ((isset($m["enabled"]) && $m["enabled"]) ? $m["enabled"] : "0") . '">' . "\n";
 				$i++;
 			}
 		}
@@ -142,15 +135,14 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 			}
 		}
 
-		$out .= '
-			<div id="divWithSelectMenu">
+		$out .= '<div id="divWithSelectMenu">
 			<table cellpadding="2" cellspacing="0" border="0" style="margin-top:5px;">
 				<tr>
 					<td><form></td>';
 		for($i = 0; $i < count($menus); $i++){
 			$foo = $menus[$i]["code"];
 			self::_computeOption($this->_entries, $foo, $menus[$i]["id"], "");
-			$foo .= "</select>\n";
+			$foo .= "</select>";
 			$out .= '<td>' . $foo . '</td>' . (($i < (count($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
@@ -158,7 +150,6 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 				</table>
 			</div>
 			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? we_html_element::jsElement('
-
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
 			// Only script elements work: look at https://bugzilla.mozilla.org/show_bug.cgi?id=60724 for details
@@ -170,9 +161,23 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 			</form>';
 
 		if(!$showAltMenu){
-			$out .= '</applet>' . "\n";
+			$out = '<div id="divForSelectMenu"></div>' .
+				we_html_element::htmlApplet(array(
+					'name' => "weJavaMenuApplet",
+					'code' => "menuapplet",
+					'archive' => "JavaMenu.jar",
+					'codebase' => we_util_Sys_Server::getHostUri(LIB_DIR . 'we/ui/controls'),
+					'align' => "baseline",
+					'width' => $this->_width,
+					'height' => $this->_height), '
+<param name="scriptable" value="true"/>
+<param name="mayscript" value="true"/>
+<param name="phpext" value=".php"/>' . $out);
 		}
-		return $out;
+		return we_html_element::jsElement('
+				function menuaction(cmd) {
+					weCmdController.fire({cmdName: cmd})
+				}') . $out;
 	}
 
 	/**

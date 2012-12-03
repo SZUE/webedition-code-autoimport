@@ -169,8 +169,10 @@ $l_prefs=array(
 	'locale_information'=>'Fügen Sie hier alle Sprachen (Locales) hinzu, für welche Sie eine Webseite mit webEdition erstellen möchten.<br/>Sie können dann das Locale den einzelnen Dokumenten/Objekten und Verzeichnissen zuweisen.<br/>Diese Einstellung wird für das Glossar und die Rechtschreibprüfung einzelner Dokumente verwendet, steht aber auch z.B. für listviews als Selektionskriterium zur Verfügung',
 	'locale_languages'=>'Sprache',
 	'logFormmailRequests'=>'Formmail Anfragen protokollieren',
-	'login'=>'LogIn',
+	
+	'login'=>array(
 		'deactivateWEstatus'=>'verberge den webEdition Versions-Status',
+		'login'=>'LogIn',
 		'windowtypeboth'=>'sowohl als POPUP als auch im selben Fenster',
 		'windowtypepopup'=>'nur in einem POPUP',
 		'windowtypesame'=>'nur im selben Fenster',

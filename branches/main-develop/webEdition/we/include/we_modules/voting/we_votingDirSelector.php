@@ -26,7 +26,7 @@ class we_votingDirSelector extends we_dirSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function __construct($id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $we_editDirID="", $FolderText=""){
+	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $we_editDirID = "", $FolderText = ""){
 
 		$JSIDName = stripslashes($JSIDName);
 		$JSTextName = stripslashes($JSTextName);
@@ -108,12 +108,12 @@ class we_votingDirSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
 
-		<?php print $this->getJS_attachKeyListener(); ?>
+				<?php print $this->getJS_attachKeyListener(); ?>
 
 				//from we_showMessage.js
 				d.writeln('var WE_MESSAGE_INFO = -1;');
@@ -161,15 +161,15 @@ class we_votingDirSelector extends we_dirSelector{
 				d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 				d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 				d.writeln('}');
-		<?php if($this->multiple){ ?>
+				<?php if($this->multiple){ ?>
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-		<?php } else{ ?>
+				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
-		<?php } ?>
+				<?php } ?>
 				}
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
+			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" >');
 					if(top.we_editDirID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
@@ -212,8 +212,8 @@ class we_votingDirSelector extends we_dirSelector{
 						d.writeln('</table></form>');
 				if(makeNewFolder || top.we_editDirID){
 				d.writeln('<scr'+'ipt type="text/javascript">document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();</scr'+'ipt>');
-					}
-					d.writeln('</body>');
+			}
+			d.writeln('</body>');
 		d.close();
 		}
 
@@ -226,10 +226,12 @@ class we_votingDirSelector extends we_dirSelector{
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
-		return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID;
+		return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php
+		print $this->rootDirID;
 		if(isset($this->open_doc)){
 			print "&open_doc=" . $this->open_doc;
-		} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+		}
+		?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}
 
 		<?php
@@ -330,13 +332,13 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query("SELECT " . $this->db->escape($this->fields) . " FROM " .
+		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
 			$this->db->escape($this->table) .
-			" WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . " " . $this->getUserExtraQuery($this->table));
+			" WHERE IsFolder=1 AND ParentID=" . intval($this->dir) . " " . self::getUserExtraQuery($this->table));
 	}
 
-	function getUserExtraQuery($table, $useCreatorID=true){
-		$userExtraSQL = makeOwnersSql(false) . " ";
+	static function getUserExtraQuery($table, $useCreatorID = true){
+		$userExtraSQL = ' AND ((1 ' . makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
@@ -345,15 +347,15 @@ top.selectFile(top.currentID);
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= " Path like '$path/%' OR Path='$path' OR ";
+				$wsQuery .= " Path LIKE '$path/%' OR Path='$path' OR ";
 			}
 			if($wsQuery){
-				$wsQuery = substr($wsQuery, 0, strlen($wsQuery) - 3);
-				$wsQuery = " AND ($wsQuery) ";
+				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
-			$userExtraSQL .= $wsQuery;
+		}else{
+			$userExtraSQL.=' OR RestrictOwners=0 ';
 		}
-		return $userExtraSQL;
+		return $userExtraSQL . ')';
 	}
 
 	function printDoRenameFolderHTML(){

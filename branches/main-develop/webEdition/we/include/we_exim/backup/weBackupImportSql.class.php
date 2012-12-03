@@ -42,7 +42,7 @@ class weBackupImportSql{
 			$_fileReader = new weBackupSqlFileReader();
 			if($_fileReader->readLine($filename, $_data, $offset, 1, 0, $iscompressed, $_create, $_insert)){
 
-				weBackupImportSql::transfer($_data, $encoding, $log, $_create, $_insert);
+				self::transfer($_data, $encoding, $log, $_create, $_insert);
 
 				if($_insert == BACKUP_TABLE){
 					weBackupImportSql::flushBackupTable();
@@ -55,7 +55,7 @@ class weBackupImportSql{
 		//exit();
 	}
 
-	function transfer(&$data, $charset = 'ISO-8859-1', $log = 0, &$create, &$insert){
+	private static function transfer(&$data, $charset = 'ISO-8859-1', $log = 0, &$create, &$insert){
 		if($create != ''){
 
 			$_table = weBackupUtil::getRealTableName($create);

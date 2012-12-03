@@ -121,6 +121,7 @@ $l_backup=array(
 	
 	'import'=>array(
 		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Restore temporary data',
 		'weapp'=>'Import the data of the WE-App',
 	),
 	'import_banner_data'=>'Restore banner data',
@@ -155,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'You have selected the option `Restore shop data`. The Shop Module needs the customers data and because of that, `Restore customers data` has been automatically selected.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Восстановление шаблонов',
-	'import_temporary_data'=>'Restore temporary data',
 	'import_temporary_dep'=>'Вы выбрали опцию: «восстановить временные файлы». Для корректного функционирования временных файлов требуются соответствующие документы. Опция: «восстановить документы и шаблоны» выбирается автоматически.',
 	'import_todo_data'=>'Restore task/messaging data',
 	'import_todo_dep'=>'You have selected the option `Restore task/messaging data`. The Task/Messaging Module needs the users data and because of that, `Restore user data` has been automatically selected.',
