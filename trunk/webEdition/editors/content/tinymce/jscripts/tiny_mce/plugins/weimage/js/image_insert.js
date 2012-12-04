@@ -60,6 +60,9 @@ var ImageDialog = {
 				return;
 			}
 		}
+		if(typeof(nl.src.value) == 'undefined' || nl.src.value != ''){
+			return;
+		}
 		t.insertAndClose();
 	},
 
