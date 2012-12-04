@@ -28,13 +28,14 @@ class we_multiSelector extends we_fileselector{
 	const CREATEFOLDER = 8;
 	const DEL = 11;
 
-	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
+	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 	var $multiple = true;
 
 	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $multiple = true, $filter = ""){
-
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $filter);
-
+		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
+			$this->fields=  str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
+		}
 
 		$this->rootDirID = $rootDirID;
 		$this->multiple = $multiple;
@@ -107,7 +108,7 @@ class we_multiSelector extends we_fileselector{
 
 	function printFramesetJSFunctioWriteBody(){
 		$htmltop = preg_replace('/[[:cntrl:]]/', '', trim(str_replace("'", "\\'", we_html_tools::getHtmlTop())));
-		$htmltop = str_replace(array('script','Script'), array("scr' + 'ipt", "Scr' + 'ipt"), $htmltop);
+		$htmltop = str_replace(array('script', 'Script'), array("scr' + 'ipt", "Scr' + 'ipt"), $htmltop);
 		?>
 
 		function writeBody(d){
@@ -118,7 +119,7 @@ class we_multiSelector extends we_fileselector{
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
 
-		<?php print $this->getJS_attachKeyListener(); ?>
+				<?php print $this->getJS_attachKeyListener(); ?>
 
 				//from we_showMessage.js
 				d.writeln('var WE_MESSAGE_INFO = -1;');
@@ -162,7 +163,7 @@ class we_multiSelector extends we_fileselector{
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
 				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
-		<?php } ?>
+				<?php } ?>
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
 			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
@@ -200,7 +201,7 @@ class we_multiSelector extends we_fileselector{
 			setTimeout('wasdblclick=0;',400);
 			}
 			}else{
-		<?php if($this->multiple){ ?>
+			<?php if($this->multiple){ ?>
 				if(fsbody.shiftpressed){
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);
@@ -217,11 +218,11 @@ class we_multiSelector extends we_fileselector{
 
 				}else if(!fsbody.ctrlpressed){
 
-		<?php } ?>
+			<?php } ?>
 
 			selectFile(id);
 
-		<?php if($this->multiple){ ?>
+			<?php if($this->multiple){ ?>
 
 				}else{
 				if (isFileSelected(id)) {
@@ -231,7 +232,7 @@ class we_multiSelector extends we_fileselector{
 				}
 				}
 
-		<?php } ?>
+			<?php } ?>
 
 			}
 			if(fsbody.ctrlpressed){
