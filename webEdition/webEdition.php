@@ -70,6 +70,7 @@ $online_help = true;
 
 print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
 	we_html_element::jsScript(JS_DIR . 'md5.js') .
 	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.php') .
 	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
