@@ -203,7 +203,10 @@ class we_wysiwyg{
 				') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
-		_EditorFrame.setEditorIsHot(true);
+		var edFrame = typeof(_EditorFrame) != "undefined" ? _EditorFrame : (typeof(top.opener._EditorFrame) != "undefined" ? top.opener._EditorFrame : "");
+		if(edFrame !== ""){
+			edFrame.setEditorIsHot(true);
+		}
 	}
 }
 				') .
@@ -1067,7 +1070,7 @@ function tinyMCEchanged(inst){
 
 	function getEditButtonHTML(){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
-
+		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
 		$fns = '';
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
@@ -1266,7 +1269,7 @@ function tinyMCEchanged(inst){
 				}
 				
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = $k*24 - 10; 
+				$toolBarHeight = $k*24 - 10;
 				$this->height += $toolBarHeight;
 				
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
