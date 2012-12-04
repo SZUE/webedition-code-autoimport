@@ -57,7 +57,6 @@ class weCustomerFilterView{
 	 */
 	var $_ShowModeNone = 0;
 
-
 	/* ################### CONSTRUCTOR #################### */
 
 	/**
@@ -68,7 +67,7 @@ class weCustomerFilterView{
 	 * @param integer $width
 	 * @return weCustomerFilterView
 	 */
-	function weCustomerFilterView(&$filter, $hotScript="", $width=0){
+	function weCustomerFilterView(&$filter, $hotScript = "", $width = 0){
 		$this->setFilter($filter);
 		$this->setHotScript($hotScript);
 		$this->setWidth($width);
@@ -82,7 +81,7 @@ class weCustomerFilterView{
 	 * @param integer $width
 	 * @return weCustomerFilterView
 	 */
-	function __construct($filter, $hotScript="", $width=0){
+	function __construct($filter, $hotScript = "", $width = 0){
 		$this->weCustomerFilterView($filter, $hotScript, $width);
 	}
 
@@ -93,7 +92,7 @@ class weCustomerFilterView{
 	 *
 	 * @return string
 	 */
-	function getFilterHTML($ShowModeNone=0){
+	function getFilterHTML($ShowModeNone = 0){
 		$this->_ShowModeNone = $ShowModeNone;
 
 		$_script = <<<EO_SCRIPT
@@ -252,7 +251,7 @@ EOS;
 	 * @static
 	 * @return string
 	 */
-	function getDiv($content='', $divId='', $isVisible=true, $marginLeft=0){
+	function getDiv($content = '', $divId = '', $isVisible = true, $marginLeft = 0){
 		return '<div' . ($divId ? (' id="' . $divId . '"') : '') . ' style="display:' . ($isVisible ? 'block' : 'none') . ';margin-left:' . $marginLeft . 'px;margin-top:5px;margin-bottom:10px;">' . $content . '</div>';
 	}
 
@@ -265,7 +264,7 @@ EOS;
 	 * @param boolean $isVisible
 	 * @return string
 	 */
-	function getMultiEdit($name, $data, $headline="", $isVisible=true){
+	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
 
 
 		$_delBut = addslashes('<img src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
@@ -304,7 +303,7 @@ EO_SCRIPT;
 			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>'.we_html_element::jsElement($_script);
+			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
 		return weCustomerFilterView::getDiv($_select, $name . 'Div', $isVisible, 22);
 	}
 
@@ -313,11 +312,11 @@ EO_SCRIPT;
 
 		$_filter_args = array();
 
-		$GLOBALS['DB_WE']->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+		$GLOBALS['DB_WE']->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 		while($GLOBALS['DB_WE']->next_record()) {
 			$_filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
 		}
-		asort($_filter_args, SORT_STRING);
+		$_filter_args = we_html_tools::groupArray($_filter_args);
 
 		$_filter_op = array(
 			weAbstractCustomerFilter::OP_EQ => g_l('modules_customerFilter', '[equal]'),
@@ -365,36 +364,30 @@ EO_SCRIPT;
 			$_adv_row .= '
 				<tr id="filterRow_' . $_i . '">
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
-				(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, 'onchange="wecf_logic_changed(this);" class="defaultfont" style="' . $_styleLogic . '"'))
-				.
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
+				(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, 'onchange="wecf_logic_changed(this);" class="defaultfont" style="' . $_styleLogic . '"')) .
 				'</td>
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
-				we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleLeft . '"')
-				.
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
+				we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleLeft . '"') .
 				'</td>
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
-				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleMiddle . '"')
-				.
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
+				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, 'onchange="wecf_hot();" class="defaultfont" style="' . $_styleMiddle . '"') .
 				'</td>
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
 				'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont" style="' . $_styleRight . '"/>' .
 				'</td>
 					<td style="padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
-				we_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25)
-				.
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
+				we_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25) .
 				'</td>
 					<td style="padding-left:5px;padding-top: ' . ($_value['logic'] == "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0') . ';">' .
-				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25))
-				.
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] == 'OR') ? '10px' : '0px') . ';">' .
+				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25)) .
 				'</td>
-				</tr>
-				';
+				</tr>';
 			$_i++;
 			$_first = 1;
 		}

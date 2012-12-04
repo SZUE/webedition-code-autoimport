@@ -49,6 +49,7 @@ class we_wysiwyg{
 	var $inlineedit = true;
 	var $cssClasses = '';
 	var $cssClassesJS = '';
+	var $cssClassesCSV = '';
 	var $Language = '';
 	var $_imagePath;
 	var $_image_languagePath;
@@ -100,6 +101,7 @@ class we_wysiwyg{
 			}
 		}
 		$this->cssClasses = $cssClasses;
+		$this->cssClassesCSV = $cssClasses;
 		if($this->cssClasses != '' && self::$editorType == 'tinyMCE'){
 			$cc = explode(',', $this->cssClasses);
 			$tf = '';
@@ -201,7 +203,10 @@ class we_wysiwyg{
 				') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
-		_EditorFrame.setEditorIsHot(true);
+		var edFrame = typeof(_EditorFrame) != "undefined" ? _EditorFrame : (typeof(top.opener._EditorFrame) != "undefined" ? top.opener._EditorFrame : "");
+		if(edFrame !== ""){
+			edFrame.setEditorIsHot(true);
+		}
 	}
 }
 				') .
@@ -1065,12 +1070,12 @@ function tinyMCEchanged(inst){
 
 	function getEditButtonHTML(){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
-
+		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
 		$fns = '';
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
-		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "');", true, 25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "');", true, 25);
 	}
 
 	function getHTML(){
@@ -1264,7 +1269,7 @@ function tinyMCEchanged(inst){
 				}
 				
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = $k*24 - 10; 
+				$toolBarHeight = $k*24 - 10;
 				$this->height += $toolBarHeight;
 				
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
@@ -1280,9 +1285,10 @@ function tinyMCEchanged(inst){
 				$wefullscreenVars['outsideWE'] = $this->outsideWE ? "1" : "";
 				$wefullscreenVars['xml'] = $this->xml ? "1" : "";
 				$wefullscreenVars['removeFirstParagraph'] = $this->removeFirstParagraph ? "1" : "";
-
+t_e("csv",$this->cssClassesCSV);
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
+					var weclassNames_urlEncoded = "' . urlencode($this->cssClassesCSV) . '";
 					var wefullscreenVars = new Array();
 					wefullscreenVars["outsideWE"] = "' . $wefullscreenVars['outsideWE'] . '";
 					wefullscreenVars["xml"] = "' . $wefullscreenVars['xml'] . '";

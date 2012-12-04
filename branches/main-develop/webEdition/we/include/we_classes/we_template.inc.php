@@ -229,9 +229,7 @@ class we_template extends we_document{
 	}
 
 	function parseTemplate(){
-		$code = $this->getTemplateCode(true);
-
-		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $code);
+		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $this->getTemplateCode(true));
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();

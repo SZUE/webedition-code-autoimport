@@ -1,1 +1,61 @@
-(function(){tinymce.create("tinymce.plugins.AdvancedLinkPlugin",{init:function(a,b){this.editor=a;a.addCommand("mceAdvLink",function(){a.isWeLinkInitialized=false;var c=a.selection;if(c.isCollapsed()&&!a.dom.getParent(c.getNode(),"A")){return}a.windowManager.open({file:b+"/../../../../../wysiwyg/linkDialog.php?we_dialog_args[editor]=tinyMce",width:600+parseInt(a.getLang("advlink.delta_width",0)),height:600+parseInt(a.getLang("advlink.delta_height",0)),inline:1},{plugin_url:b})});a.addButton("link",{title:tinyMceGL.welink.tooltip,cmd:"mceAdvLink"});a.addShortcut("ctrl+k","advlink.advlink_desc","mceAdvLink");a.onNodeChange.add(function(d,c,f,e){c.setDisabled("link",e&&f.nodeName!="A");c.setActive("link",f.nodeName=="A"&&!f.name)})},getInfo:function(){return{longname:"Advanced link",author:"Moxiecode Systems AB",authorurl:"http://tinymce.moxiecode.com",infourl:"http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advlink",version:tinymce.majorVersion+"."+tinymce.minorVersion}}});tinymce.PluginManager.add("advlink",tinymce.plugins.AdvancedLinkPlugin)})();
+/**
+ * editor_plugin_src.js
+ *
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
+ */
+
+(function() {
+	tinymce.create('tinymce.plugins.AdvancedLinkPlugin', {
+		init : function(ed, url) {
+			this.editor = ed;
+
+			// Register commands
+			ed.addCommand('mceAdvLink', function() {
+				var se = ed.selection;
+
+				// No selection and not in link
+				if (se.isCollapsed() && !ed.dom.getParent(se.getNode(), 'A'))
+					return;
+
+				ed.windowManager.open({
+					file : url + "/../../../../../wysiwyg/linkDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[cssclasses]="+weclassNames_urlEncoded,
+					width : 600 + parseInt(ed.getLang('advlink.delta_width', 0)),
+					height : 600 + parseInt(ed.getLang('advlink.delta_height', 0)),
+					inline : 1
+				}, {
+					plugin_url : url
+				});
+			});
+
+			// Register buttons
+			ed.addButton('link', {
+				title : tinyMceGL.welink.tooltip,
+				cmd : 'mceAdvLink'
+			});
+
+			ed.addShortcut('ctrl+k', 'advlink.advlink_desc', 'mceAdvLink');
+
+			ed.onNodeChange.add(function(ed, cm, n, co) {
+				cm.setDisabled('link', co && n.nodeName != 'A');
+				cm.setActive('link', n.nodeName == 'A' && !n.name);
+			});
+		},
+
+		getInfo : function() {
+			return {
+				longname : 'Advanced link',
+				author : 'Moxiecode Systems AB',
+				authorurl : 'http://tinymce.moxiecode.com',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advlink',
+				version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		}
+	});
+
+	// Register plugin
+	tinymce.PluginManager.add('advlink', tinymce.plugins.AdvancedLinkPlugin);
+})();

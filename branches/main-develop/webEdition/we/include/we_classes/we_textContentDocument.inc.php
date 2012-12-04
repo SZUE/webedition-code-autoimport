@@ -143,8 +143,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		} else{
 			$title = '';
 		}
-		$tempname = TEMP_PATH . "/" . weFile::getUniqueId(); // FIXME: #6590: str_replace('.', '', uniqid("",true))
-		weFile::save($tempname, $code);
+		$tempname = weFile::saveTemp($code);
 		$metas = get_meta_tags($tempname);
 		unlink($tempname);
 		$metas["title"] = $title;

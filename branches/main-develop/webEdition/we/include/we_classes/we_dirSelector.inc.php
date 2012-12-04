@@ -802,7 +802,7 @@ top.selectFile(top.currentID);
 	}
 
 	function getFramesetJavaScriptDef(){
-		return we_fileselector::getFramesetJavaScriptDef() .
+		return parent::getFramesetJavaScriptDef() .
 			'var makeNewFolder=0;
 var we_editDirID="";
 var old=0;';

@@ -54,16 +54,21 @@ function pWebEdition_JSFunctions(){
 	var regular_logout = false;
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
-	try{
-	if(jsWindow_count){
-	for(i = 0;i < jsWindow_count;i++){
-	eval("jsWindow"+i+"Object.close()");
-	}
-	}
-	if(browserwind){
-	browserwind.close();
-	}
-	} catch(e){}
+		if(typeof(top.tinyMceDialog) !== 'undefined'){
+			try{
+				top.tinyMceDialog.close();
+			} catch(e){}
+		}
+		try{
+			if(jsWindow_count){
+				for(i = 0;i < jsWindow_count;i++){
+					eval("jsWindow"+i+"Object.close()");
+				}
+			}
+			if(browserwind){
+				browserwind.close();
+			}
+		} catch(e){}
 
 	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
 	// FIXME: closing-actions for SEEM

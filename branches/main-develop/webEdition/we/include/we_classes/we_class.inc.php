@@ -326,9 +326,19 @@ abstract class we_class{
 		} else{
 			$values = array();
 		}
+		$optgroup = false;
 		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : '') . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = explode(',', $selectedIndex);
 		foreach($values as $value => $text){
+			if($text == we_html_tools::OPTGROUP){
+				if($optgroup){
+					$ret .= '</optgroup>';
+				}
+				$optgroup = true;
+				$ret .= '<optgroup label="' . htmlspecialchars($value) . '">';
+				continue;
+			}
+
 			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
@@ -380,12 +390,13 @@ abstract class we_class{
 		$vals = array();
 		if($firstEntry)
 			$vals[$firstEntry[0]] = $firstEntry[1];
-		$this->DB_WE->query('SELECT * FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
+		$this->DB_WE->query('SELECT ' . $val . ',' . $txt . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
 			$vals[$v] = $t;
 		}
+		$vals = we_html_tools::groupArray($vals, false, 1);
 		$myname = $elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name);
 
 
@@ -401,8 +412,9 @@ abstract class we_class{
 
 			return $this->htmlHidden($myname, $selectedIndex) . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
 		} else{
-			if(!$elementtype)
+			if(!$elementtype){
 				$ps = $this->$name;
+			}
 			$pop = $this->htmlSelect($myname, $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 			if($precode || $postcode){
 				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';

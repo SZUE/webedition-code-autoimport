@@ -387,8 +387,8 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter{
 			$_db = new DB_WE();
 			$_db2 = new DB_WE();
 
-			$_db->query("SELECT id, specificCustomers, whiteList, blackList FROM " . CUSTOMER_FILTER_TABLE . " WHERE " .
-				" specificCustomers like '%," . $webUser->ID . ",%' OR whiteList like '%," . $webUser->ID . ",%' OR blackList like '%," . $webUser->ID . ",%'");
+			$_db->query("SELECT id, specificCustomers, whiteList, blackList FROM " . CUSTOMER_FILTER_TABLE . ' WHERE ' .
+				" specificCustomers LIKE '%," . $webUser->ID . ",%' OR whiteList LIKE '%," . $webUser->ID . ",%' OR blackList LIKE '%," . $webUser->ID . ",%'");
 
 			while($_db->next_record()) {
 				$_sc = $_db->f('specificCustomers');

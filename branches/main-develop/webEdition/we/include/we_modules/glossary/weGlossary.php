@@ -431,7 +431,6 @@ class weGlossary extends weModelBase{
 		$fileName = weGlossary::getExceptionFilename($language);
 
 		$content = '';
-		$items = array();
 		$items = explode("\n", $entries);
 		sort($items);
 		foreach($items as $item){

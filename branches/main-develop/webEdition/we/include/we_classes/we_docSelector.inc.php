@@ -73,7 +73,7 @@ class we_docSelector extends we_dirSelector{
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
-					$wsQuery .= " Path like '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
+					$wsQuery .= " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
 				}
 				if($wsQuery){
 					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
@@ -427,10 +427,10 @@ class we_docSelector extends we_dirSelector{
 
 		function printHeaderHeadlines(){
 			print '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>' . $this->tableHeadlines . '</tr>
-				<tr>' . $this->tableSizer . '</tr>
-			</table>';
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>' . $this->tableHeadlines . '</tr>
+	<tr>' . $this->tableSizer . '</tr>
+</table>';
 		}
 
 		function printHeaderTableExtraCols(){

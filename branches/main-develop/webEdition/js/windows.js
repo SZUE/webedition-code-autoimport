@@ -52,7 +52,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 	}
 }
 
-function  jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
+function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,")+(this.resizable ? "resizable=yes," : "resizable=no,")+((this.scroll) ? "scrollbars=yes," : "scrollbars=no,")+"width="+this.w+",height="+this.h;
 	properties += ",left="+this.x+",top="+this.y;
 	try{
@@ -75,13 +75,8 @@ function  jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 
 }
 
-function  jsWindowClose(){
+function jsWindowClose(){
 	if(!this.wind.closed) this.wind.close();
-}
-
-function weRegisterTinyMcePopup(win){
-	var winName = "jsWindow" + (jsWindow_count++) + "Object";
-	eval(winName + "=win")
 }
 
 jsWindow_count = 0;

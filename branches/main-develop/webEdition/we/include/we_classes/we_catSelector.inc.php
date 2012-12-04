@@ -371,8 +371,8 @@ function enableDelBut(){
 	}
 
 	function getFramesetJavaScriptDef(){
-		return we_fileselector::getFramesetJavaScriptDef() .
-			'var makeNewFolder=0;
+		return parent::getFramesetJavaScriptDef().
+		'var makeNewFolder=0;
 var hot=0; // this is hot for category edit!!
 var makeNewCat=0;
 var we_editCatID="";

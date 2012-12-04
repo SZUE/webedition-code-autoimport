@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_tools{
+
+	const OPTGROUP = '<!--we_optgroup-->';
+
 	###### protect #################################################################
 ### we_html_tools::protect()
 ### protects a page. Guests can not see this page
@@ -705,21 +708,38 @@ abstract class we_html_tools{
 				, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");
 	}
 
+	static function groupArray(array $arr, $sort = true, $len = 1){
+		$tmp = array();
+		if($sort){
+			asort($arr, SORT_STRING);
+		}
+		$pre = '';
+		foreach($arr as $key => $value){
+			$newPre = strtoupper(substr($value, 0, $len));
+			if($pre != $newPre){
+				$tmp[$newPre] = self::OPTGROUP;
+				$pre = $newPre;
+			}
+			$tmp[$key] = $value;
+		}
+		return $tmp;
+	}
+
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = "", $multiple = false, $attribs = "", $compare = "value", $width = "", $cls = "defaultfont", $htmlspecialchars = true){
 		$ret = '<select class="weSelect ' . $cls . '" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? ' multiple="multiple"' : '') . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
-			if($text == '<!--we_optgroup-->'){
+			if($text == self::OPTGROUP){
 				if($optgroup){
 					$ret .= '</optgroup>';
 				}
 				$optgroup = true;
 				$ret .= '<optgroup label="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '">';
-			} else{
-				$ret .= '<option value="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '"' . (in_array(
-						(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . '</option>';
+				continue;
 			}
+			$ret .= '<option value="' . ($htmlspecialchars ? htmlspecialchars($value) : $value) . '"' . (in_array(
+					(($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . '>' . ($htmlspecialchars ? htmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '') . '</select>';
 		return $ret;

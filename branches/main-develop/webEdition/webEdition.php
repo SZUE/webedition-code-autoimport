@@ -69,6 +69,7 @@ $online_help = true;
 
 print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
 	we_html_element::jsScript(JS_DIR . 'md5.js') .
 	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.php') .
 	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -970,7 +971,11 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								// if we switch from WE_EDITPAGE_CONTENT to another page
 								if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
 									// clean body to avoid flickering
-									_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+									try{
+										_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+									}catch(e){
+										//can be caused by not loaded content
+									}
 									// switch to normal frame
 									top.weEditorFrameController.switchToNonContentEditor();
 									// set var to new active editor frame

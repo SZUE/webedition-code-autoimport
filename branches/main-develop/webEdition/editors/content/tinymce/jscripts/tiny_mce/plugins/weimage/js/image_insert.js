@@ -41,7 +41,7 @@ var ImageDialog = {
 	insert : function(file, title) {
 		var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
 		// remove <img> if src=""
-		if(f.src.value === ''){
+		if(f.src.value === '' || f.src.value === 'http://'){
 			if (ed.selection.getNode().nodeName == 'IMG') {
 				ed.dom.remove(ed.selection.getNode());
 				ed.execCommand('mceRepaint');

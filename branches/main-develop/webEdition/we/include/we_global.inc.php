@@ -117,9 +117,9 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 		$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail [] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%"';
+		$pid_tail [] = OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%"';
 	}
-	return (count($pid_tail) == 0 ? 1 :
+	return (empty($pid_tail) ? 1 :
 			' (' . implode(' OR ', $pid_tail) . ') '
 		);
 }
@@ -139,7 +139,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	$cats = array();
 	$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 	$showpath &=!$catfield;
-	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . $catIDs . ')');
+	$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
 	while($db->next_record()) {
 		$data = $db->getRecord();
 		if($field == 'Title' || $field == 'Description'){
@@ -381,13 +381,13 @@ function cleanTempFiles($cleanSessFiles = false){
 	}
 	if($cleanSessFiles){
 		$seesID = session_id();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		while($GLOBALS['DB_WE']->next_record()) {
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
 	}
 	$d = dir(TEMP_PATH);
@@ -694,7 +694,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = ''){
 		if(in_array($p, $found)){
 			return false;
 		}
-		$found[]= $p;
+		$found[] = $p;
 	} while(($p = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($p), 'ParentID', $db)));
 	return false;
 }
@@ -961,9 +961,9 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 			$wsQuery[] = 'Path = "' . $GLOBALS['DB_WE']->escape($path) . '"';
 			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 		} else{
-			$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+			$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 		}
-		$wsQuery[]= 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+		$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
 	}
 
 	return ' OR (' . implode(' OR ', $wsQuery) . ')';

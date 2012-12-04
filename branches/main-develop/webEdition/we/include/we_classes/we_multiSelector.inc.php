@@ -23,15 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_multiSelector extends we_fileselector{
-	const SETDIR=5;
-	const CREATEFOLDER=8;
-	const DEL=11;
 
-	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
+	const SETDIR = 5;
+	const CREATEFOLDER = 8;
+	const DEL = 11;
+
+	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 	var $multiple = true;
 
-	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $multiple=true, $filter=""){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $multiple = true, $filter = ""){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $filter);
+		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
+			$this->fields=  str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
+		}
+
 		$this->rootDirID = $rootDirID;
 		$this->multiple = $multiple;
 	}
@@ -102,15 +107,14 @@ class we_multiSelector extends we_fileselector{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/", "", trim(str_replace("'", "\\'", we_html_tools::getHtmlTop())));
-		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
-		$htmltop = str_replace('Script', "Scr' + 'ipt", $htmltop);
+		$htmltop = preg_replace('/[[:cntrl:]]/', '', trim(str_replace("'", "\\'", we_html_tools::getHtmlTop())));
+		$htmltop = str_replace(array('script', 'Script'), array("scr' + 'ipt", "Scr' + 'ipt"), $htmltop);
 		?>
 
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']); ?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -162,7 +166,7 @@ class we_multiSelector extends we_fileselector{
 				<?php } ?>
 				d.writeln('}');
 				d.writeln('</scr'+'ipt>');
-					d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
+			d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 					for(i=0;i < entries.length; i++){
 					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
