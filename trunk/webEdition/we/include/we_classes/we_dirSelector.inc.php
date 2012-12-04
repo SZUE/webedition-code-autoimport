@@ -820,12 +820,11 @@ top.selectFile(top.currentID);
 	}
 
 	function getFramesetJavaScriptDef(){
-		$def = we_fileselector::getFramesetJavaScriptDef();
-		$def .= 'var makeNewFolder=0;
+		return parent::getFramesetJavaScriptDef() .
+			'var makeNewFolder=0;
 var we_editDirID="";
 var old=0;
 ';
-		return $def;
 	}
 
 	function printRenameFolderHTML(){
