@@ -26,7 +26,7 @@ class weCustomerAdd{
 
 	var $db;
 
-	function weCustomerAdd(){
+	function __construct(){
 
 	}
 
@@ -49,12 +49,11 @@ class weCustomerAdd{
 		foreach($pob->View->settings->SortView as $k => $sorts){
 			$fcounter = 0;
 			$row_num = 0;
-			$sort_field_code = '';
 
 			$sort_table = new we_html_table(array('border' => '0', 'cellpadding' => '2', 'cellspacing' => '1', 'width' => '400', 'height' => '50'), 1, 5);
 			$sort_table->setCol(0, 0, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
 			$sort_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
-			$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
+			//$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
 			$sort_table->setCol(0, 3, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_order]')));
 
 
@@ -62,10 +61,9 @@ class weCustomerAdd{
 
 				if(!$sort["branch"]){
 					$branches_names = $pob->View->customer->getBranchesNames();
-					if(isset($branches_names[0]))
-						$sort["branch"] = $branches_names[0];
-					else
-						$sort["branch"] = g_l('modules_customer', '[common]');
+					$sort["branch"] = (isset($branches_names[0]) ?
+							$branches_names[0] :
+							g_l('modules_customer', '[common]'));
 				}
 
 				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onChange" => "we_cmd('selectBranch')", "style" => "width:180"));
@@ -74,35 +72,41 @@ class weCustomerAdd{
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
 				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180", "class" => "weSelect", "onChange" => "we_cmd('selectBranch')"));
 
-				$fields_names = array();
 				$fields_names = array_keys($this->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
 					foreach($fields_names as $fnk => $fnv)
 						$fields_names[$fnk] = str_replace($sort["branch"] . "_", "", $fields_names[$fnk]);
 				}
 
-				if(!isset($sort["field"]))
+				if(!isset($sort["field"])){
 					$sort["field"] = "";
+				}
 
-				if(is_array($fields_names))
-					if(!in_array($sort["field"], $fields_names))
+				if(is_array($fields_names)){
+					if(!in_array($sort["field"], $fields_names)){
 						$sort["field"] = array_shift($fields_names);
+					}
+				}
 
-				if($sort["branch"] == g_l('modules_customer', '[common]') && isset($sort["field"]))
+				if($sort["branch"] == g_l('modules_customer', '[common]') && isset($sort["field"])){
 					$field->selectOption(g_l('modules_customer', '[common]') . "_" . $sort["field"]);
-				else if(isset($sort["field"]))
+				} else if(isset($sort["field"])){
 					$field->selectOption($sort["field"]);
+				}
 
 				$function->setAttributes(array("name" => "function_" . $counter . "_" . $fcounter, "class" => "weSelect",));
 
 				$function->delAllOptions();
 				$function->addOption("", "");
-				foreach($pob->View->settings->FunctionTable as $ftk => $ftv)
-					if(isset($sort["field"]) && $pob->View->settings->isFunctionForField($ftk, $sort["field"]))
+				foreach($pob->View->settings->FunctionTable as $ftk => $ftv){
+					if(isset($sort["field"]) && $pob->View->settings->isFunctionForField($ftk, $sort["field"])){
 						$function->addOption($ftk, $ftk);
+					}
+				}
 
-				if(isset($sort["function"]))
+				if(isset($sort["function"])){
 					$function->selectOption($sort["function"]);
+				}
 
 				$order->setAttributes(array("name" => "order_" . $counter . "_" . $fcounter, "class" => "weSelect",));
 				$order->selectOption($sort["order"]);
@@ -111,7 +115,7 @@ class weCustomerAdd{
 				$sort_table->addRow();
 				$sort_table->setCol($row_num, 0, array("class" => "defaultfont"), $branch->getHtml());
 				$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), $field->getHtml());
-				$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
+				//$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
 				$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), $order->getHtml());
 				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)", true, 30));
 
@@ -122,7 +126,7 @@ class weCustomerAdd{
 			$row_num++;
 			$sort_table->setCol($row_num, 0, array("class" => "defaultfont"), we_html_tools::getPixel(180, 5));
 			$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), we_html_tools::getPixel(180, 5));
-			$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), we_html_tools::getPixel(130, 5));
+			//$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), we_html_tools::getPixel(130, 5));
 			$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), we_html_tools::getPixel(90, 5));
 			$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_tools::getPixel(22, 5));
 
@@ -152,14 +156,14 @@ class weCustomerAdd{
 
 		$sort_code = we_multiIconBox::getHTML("", "100%", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459);
 
-		$hiddens = "\n" . we_html_element::htmlComment("hiddens start") . "\n" .
+		$hiddens = we_html_element::htmlComment("hiddens start") .
 			we_html_element::htmlHidden(array("name" => "pnt", "value" => "sort_admin")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "counter", "value" => "$counter")) .
 			we_html_element::htmlHidden(array("name" => "sortindex", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "fieldindex", "value" => "")) .
 			$fhidden .
-			"\n" . we_html_element::htmlComment("hiddens ends") . "\n";
+			we_html_element::htmlComment("hiddens ends");
 
 
 		$sort_code .= $hiddens;
@@ -176,7 +180,6 @@ class weCustomerAdd{
 	function getJSSortAdmin(&$pob){
 		return
 			'
-
 			function doUnload() {
 				if (!!jsWindow_count) {
 					for (i = 0; i < jsWindow_count; i++) {
@@ -390,7 +393,8 @@ class weCustomerAdd{
 	}
 
 	function getAdvSearchResults($keywords, $count, $res_num){
-		$operators = array("0" => "=",
+		$operators = array(
+			"0" => "=",
 			"1" => "<>",
 			"2" => "<",
 			"3" => "<=",
@@ -401,7 +405,6 @@ class weCustomerAdd{
 
 		$select = ' ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user';
 		$where = "";
-		$condition = "";
 
 		for($i = 0; $i < $count; $i++){
 			if(isset($keywords["field_" . $i])){
@@ -412,10 +415,11 @@ class weCustomerAdd{
 				$where.=(isset($keywords["logic_" . $i]) ? " " . $keywords["logic_" . $i] . " " : "") . $keywords["field_" . $i] . " " . $operators[$keywords["operator_" . $i]] . " '" . (is_numeric($keywords["value_" . $i]) ? $keywords["value_" . $i] : $this->db->escape($keywords["value_" . $i])) . "'";
 		}
 
-		if($where == "")
+		if($where == ""){
 			$where = 0;
+		}
 
-		$this->db->query('SELECT '.$select.' FROM ' . CUSTOMER_TABLE . ' WHERE '.$where.' ORDER BY Text LIMIT 0,'.$res_num);
+		$this->db->query('SELECT ' . $select . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' . $where . ' ORDER BY Text LIMIT 0,' . $res_num);
 
 		$result = array();
 		while($this->db->next_record()) {
@@ -445,7 +449,7 @@ class weCustomerAdd{
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 
-		$body = we_html_element::htmlBody(array('style'=>'overflow:hidden',"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
+		$body = we_html_element::htmlBody(array('style' => 'overflow:hidden', "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5"), we_html_element::jsElement($pob->View->getJSTreeHeader()) .
 				we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 					$table1->getHtml() .
 					$table->getHtml()
