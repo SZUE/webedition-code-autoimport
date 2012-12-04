@@ -375,14 +375,13 @@ function enableDelBut(){
 	}
 
 	function getFramesetJavaScriptDef(){
-		$def = we_fileselector::getFramesetJavaScriptDef();
-		$def .= 'var makeNewFolder=0;
+		return parent::getFramesetJavaScriptDef().
+		'var makeNewFolder=0;
 var hot=0; // this is hot for category edit!!
 var makeNewCat=0;
 var we_editCatID="";
 var old=0;
 ';
-		return $def;
 	}
 
 	function printCreateEntryHTML($what = 0){
@@ -753,7 +752,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		if($IsDir){
 			return $this->DirInUse($id);
 		} else{
-			$ret = f("SELECT ID FROM " . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%'", "ID", $db);
+			$ret = f("SELECT ID FROM " . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category LIKE '%," . intval($id) . ",%'", "ID", $db);
 			if($ret)
 				return true;
 			if(defined("OBJECT_TABLE")){
