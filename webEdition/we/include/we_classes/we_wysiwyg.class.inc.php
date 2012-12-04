@@ -1075,7 +1075,7 @@ function tinyMCEchanged(inst){
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
 		}
-		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "');", true, 25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '" . $this->name . "', '" . max(220, $this->width) . "', '" . $this->height . "','" . $GLOBALS["we_transaction"] . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "','" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . $this->baseHref . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "');", true, 25);
 	}
 
 	function getHTML(){
@@ -1285,7 +1285,7 @@ function tinyMCEchanged(inst){
 				$wefullscreenVars['outsideWE'] = $this->outsideWE ? "1" : "";
 				$wefullscreenVars['xml'] = $this->xml ? "1" : "";
 				$wefullscreenVars['removeFirstParagraph'] = $this->removeFirstParagraph ? "1" : "";
-
+t_e("csv",$this->cssClassesCSV);
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 					var weclassNames_urlEncoded = "' . urlencode($this->cssClassesCSV) . '";
