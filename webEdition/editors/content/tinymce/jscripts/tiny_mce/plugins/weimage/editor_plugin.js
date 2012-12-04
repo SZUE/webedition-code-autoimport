@@ -1,1 +1,73 @@
-(function(){tinymce.create('tinymce.plugins.WeimagePlugin',{init:function(e,f){e.addCommand('mceWeimage',function(){e.isWeDataInitialized=false;if(e.dom.getAttrib(e.selection.getNode(),'class','').indexOf('mceItem')!=-1){return}e.windowManager.open({file:f+'/../../../../../wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[cssclasses]='+weclassNames_urlEncoded,width:600+parseInt(e.getLang('weimage.delta_width',0)),height:610+parseInt(e.getLang('weimage.delta_height',0)),inline:1},{plugin_url:f})});e.addButton('weimage',{title:tinyMceGL.weimage.tooltip,cmd:'mceWeimage',image:f+"/img/weimage.gif"});e.onNodeChange.add(function(a,b,n,c){var d=n.nodeName=='IMG';b.setActive('weimage',d)})},getInfo:function(){return{longname:'webEdition Image-Dialog',author:'webEdition e.V',authorurl:'http://www.webedition.org',infourl:'http://www.webedition.org'}}});tinymce.PluginManager.add('weimage',tinymce.plugins.WeimagePlugin)})();
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_tinymce
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+(function() {
+	tinymce.create('tinymce.plugins.WeimagePlugin', {
+		init : function(ed, url) {
+			// Register commands
+			ed.addCommand('mceWeimage', function() {
+				ed.isWeDataInitialized=false;
+				// Internal image object like a flash placeholder
+				if (ed.dom.getAttrib(ed.selection.getNode(), 'class', '').indexOf('mceItem') != -1){
+					return;
+				}
+
+				ed.windowManager.open({
+					file : url + '/../../../../../wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[cssclasses]='+weclassNames_urlEncoded,
+					width : 600 + parseInt(ed.getLang('advimage.delta_width', 0)),
+					height : 610 + parseInt(ed.getLang('advimage.delta_height', 0)),
+					inline : 1
+				}, {
+					plugin_url : url
+				});
+			});
+
+			// Register buttons
+			ed.addButton('weimage', {
+				title : tinyMceGL.weimage.tooltip,
+				cmd : 'mceWeimage',
+				image: url + "/img/weimage.gif"
+			});
+
+			// Add a node change handler, selects the button in the UI when a image is selected
+			ed.onNodeChange.add(function(ed, cm, n, co) {
+				//cm.setDisabled('weabbr', co && !(n.nodeName == 'SPAN' && n.getAttribute('lang')));
+				var active = n.nodeName == 'IMG';
+				cm.setActive('weimage', active);
+			});
+		},
+
+		getInfo : function() {
+			return {
+				longname : 'webEdition Image-Dialog',
+				author : 'webEdition e.V',
+				authorurl : 'http://www.webedition.org',
+				infourl : 'http://www.webedition.org'
+				//version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		}
+	});
+
+	// Register plugin
+	tinymce.PluginManager.add('weimage', tinymce.plugins.WeimagePlugin);
+})();
