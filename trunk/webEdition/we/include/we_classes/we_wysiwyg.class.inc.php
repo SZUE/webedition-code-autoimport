@@ -49,6 +49,7 @@ class we_wysiwyg{
 	var $inlineedit = true;
 	var $cssClasses = '';
 	var $cssClassesJS = '';
+	var $cssClassesCSV = '';
 	var $Language = '';
 	var $_imagePath;
 	var $_image_languagePath;
@@ -100,6 +101,7 @@ class we_wysiwyg{
 			}
 		}
 		$this->cssClasses = $cssClasses;
+		$this->cssClassesCSV = $cssClasses;
 		if($this->cssClasses != '' && self::$editorType == 'tinyMCE'){
 			$cc = explode(',', $this->cssClasses);
 			$tf = '';
@@ -1283,6 +1285,7 @@ function tinyMCEchanged(inst){
 
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
+					var weclassNames_urlEncoded = "' . urlencode($this->cssClassesCSV) . '";
 					var wefullscreenVars = new Array();
 					wefullscreenVars["outsideWE"] = "' . $wefullscreenVars['outsideWE'] . '";
 					wefullscreenVars["xml"] = "' . $wefullscreenVars['xml'] . '";

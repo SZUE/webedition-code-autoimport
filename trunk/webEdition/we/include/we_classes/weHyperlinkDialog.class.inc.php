@@ -377,7 +377,8 @@ class weHyperlinkDialog extends weDialog{
 		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, utf8_decode($this->args["param"]), "", "", "text", 300);
 
 		// CSS STYLE
-		$classSelect = we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
+		$classSelect = $this->args["editor"] == 'tinyMce' ? $this->getClassSelect() : 
+			$classSelect = we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
 
 
 		// lang
