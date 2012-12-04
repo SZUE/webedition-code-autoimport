@@ -201,24 +201,22 @@ class we_search_listview extends listviewBase{
 			$cond = array();
 			foreach($workspaces as $id){
 				$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
-				array_push($cond, "(" . INDEX_TABLE . ".Workspace like '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')");
+				array_push($cond, "(" . INDEX_TABLE . ".Workspace LIKE '" . $this->DB_WE->escape($workspace) . "/%' OR " . INDEX_TABLE . ".Workspace='" . $this->DB_WE->escape($workspace) . "')");
 			}
-			$ws_where = " AND (" . implode(" OR ", $cond) . ")";
+			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 		} else{
-			$ws_where = "";
+			$ws_where = '';
 		}
 
-		$weDocumentCustomerFilter_tail = "";
+		$weDocumentCustomerFilter_tail = '';
 		if($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")){
 			$weDocumentCustomerFilter_tail = weDocumentCustomerFilter::getConditionForListviewQuery($this);
 		}
 
-		$q = "SELECT ID FROM " . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail";
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT ID FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail");
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		$q = "SELECT " . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" limit " . abs($this->start) . "," . abs($this->maxItemsPerPage)) : "");
-		$this->DB_WE->query($q);
+		$this->DB_WE->query('SELECT ' . INDEX_TABLE . ".Category as Category, " . INDEX_TABLE . ".DID as DID," . INDEX_TABLE . ".OID as OID," . INDEX_TABLE . ".ClassID as ClassID," . INDEX_TABLE . ".Text as Text," . INDEX_TABLE . ".Workspace as Workspace," . INDEX_TABLE . ".WorkspaceID as WorkspaceID," . INDEX_TABLE . ".Title as Title," . INDEX_TABLE . ".Description as Description," . INDEX_TABLE . ".Path as Path," . INDEX_TABLE . '.Language as Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" LIMIT " . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ""));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
