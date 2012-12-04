@@ -33,7 +33,7 @@
 				}
 
 				ed.windowManager.open({
-					file : url + '/../../../../../wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce',
+					file : url + '/../../../../../wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[cssclasses]='+weclassNames_urlEncoded,
 					width : 600 + parseInt(ed.getLang('advimage.delta_width', 0)),
 					height : 610 + parseInt(ed.getLang('advimage.delta_height', 0)),
 					inline : 1
