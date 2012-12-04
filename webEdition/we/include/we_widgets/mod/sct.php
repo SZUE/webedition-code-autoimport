@@ -40,13 +40,13 @@ if(we_hasPerm("NEW_WEBEDITIONSITE")){
 			foreach($b as $k => $v){
 				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID=" . intval($v));
 				while($DB_WE->next_record())
-					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath like '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
+					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath LIKE '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
 			}
 		}
-		if(is_array($paths) && count($paths) > 0){
-			$q = "WHERE (" . implode(" OR ", $paths) . ") OR ParentPath='' ORDER BY DocType";
+		if(!empty($paths)){
+			$q = 'WHERE (' . implode(' OR ', $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
-		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
 		if($DB_WE->next_record()){
 			$_disableNew = false;
 			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','" . $DB_WE->f("ID") . "')";
@@ -61,7 +61,7 @@ if(we_hasPerm("NEW_WEBEDITIONSITE")){
 $_disableObjects = false;
 if(defined("OBJECT_TABLE")){
 	$allClasses = getAllowedClasses();
-	if(sizeof($allClasses) == 0){
+	if(empty($allClasses)){
 		$_disableObjects = true;
 	}
 }
