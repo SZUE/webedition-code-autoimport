@@ -66,6 +66,7 @@ var ImageDialog = {
 			longdesc = dom.getAttrib(n, 'longdesc');
 			nl["we_dialog_args[longdescsrc]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[0] : '';
 			nl["we_dialog_args[longdescid]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[1] : '';
+			this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 
 			// parse and insert src
 			src_arr = this.analyseSrc(dom.getAttrib(n, 'src'));
@@ -114,7 +115,6 @@ var ImageDialog = {
 			}
 		}
 		*/
-		this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 	},
 
 	analyseSrc : function(src) {
