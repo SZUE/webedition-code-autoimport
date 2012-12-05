@@ -360,7 +360,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 							$_SESSION['weS']['delete_files_nok'] = array();
 							$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = array("icon" => "folder.gif", "path" => $datafile);
+								$_SESSION['weS']['delete_files_nok'][] = array("icon" => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
 							}
 							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
 						} else{

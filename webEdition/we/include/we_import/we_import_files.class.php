@@ -671,8 +671,7 @@ function next() {
 
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
-			$ct = new we_base_ContentTypes();
-			if(!we_hasPerm($ct->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
+			if(!we_hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
 				return array(
 					"filename" => $_FILES['we_File']["name"], "error" => "no_perms"
 				);

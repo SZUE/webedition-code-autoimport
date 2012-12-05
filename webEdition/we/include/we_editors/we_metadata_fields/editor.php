@@ -148,13 +148,13 @@ function build_dialog($selected_setting = "ui"){
 				"date" => "date"
 			);
 
-			$_metadata_fields = array('' => '-- ' . g_l('metadata', '[add]') . ' --', 'Exif' => '<!--we_optgroup-->');
+			$_metadata_fields = array('' => '-- ' . g_l('metadata', '[add]') . ' --', 'Exif' => we_html_tools::OPTGROUP);
 			$_tmp = weMetaData_Exif::getUsedFields();
 			foreach($_tmp as $key){
 				$_metadata_fields[$key] = $key;
 			}
 			$_tmp = weMetaData_IPTC::getUsedFields();
-			$_metadata_fields['IPTC'] = '<!--we_optgroup-->';
+			$_metadata_fields['IPTC'] = we_html_tools::OPTGROUP;
 			foreach($_tmp as $key){
 				$_metadata_fields[$key] = $key;
 			}

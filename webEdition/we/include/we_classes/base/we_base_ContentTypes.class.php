@@ -24,6 +24,11 @@
  */
 class we_base_ContentTypes{
 
+	const CLASS_FOLDER_ICON = 'class_folder.gif';
+	const FOLDER_ICON = 'folder.gif';
+	const IMAGE_ICON = 'image.gif';
+	const LINK_ICON = 'link.gif';
+
 	private $ct;
 
 	public function __construct(){
@@ -36,7 +41,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => 'image.gif',
+				'Icon' => self::IMAGE_ICON,
 			),
 			'text/html' => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
@@ -104,7 +109,7 @@ class we_base_ContentTypes{
 				'Icon' => 'javascript.gif',
 			),
 			'text/css' => array(
-				'Extension' => array('.css','.less','.scss','.sass'),
+				'Extension' => array('.css', '.less', '.scss', '.sass'),
 				'Permission' => 'NEW_CSS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -125,7 +130,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => 'link.gif',
+				'Icon' => self::LINK_ICON,
 			),
 			'folder' => array(
 				'Extension' => '',
@@ -133,7 +138,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Icon' => 'folder.gif',
+				'Icon' => self::FOLDER_ICON,
 			),
 			'class_folder' => array(
 				'Extension' => '',
@@ -141,7 +146,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Icon' => 'class_folder.gif',
+				'Icon' => self::CLASS_FOLDER_ICON,
 			),
 			'application/x-shockwave-flash' => array(
 				'Extension' => '.swf',
@@ -165,7 +170,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => 'link.gif',
+				'Icon' => self::LINK_ICON,
 			),
 			'text/xml' => array(
 				'Extension' => '.xml',
@@ -173,7 +178,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => 'link.gif',
+				'Icon' => self::LINK_ICON,
 			),
 			'object' => array(
 				'Extension' => '',
@@ -192,6 +197,12 @@ class we_base_ContentTypes{
 				'Icon' => 'objectFile.gif',
 			),
 		);
+	}
+
+	public static function inst(){
+		static $inst = 0;
+		$inst = ($inst ? $inst : new self());
+		return $inst;
 	}
 
 	public function hasContentType($name){

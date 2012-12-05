@@ -42,7 +42,7 @@ class weVotingView{
 		$this->setTopFrame($topframe);
 		$this->voting = new weVoting();
 		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . 'user.gif" />&nbsp;');
-		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . 'folder.gif" />&nbsp;');
+		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 	}
 
 	//----------- Utility functions ------------------

@@ -1576,8 +1576,7 @@ function build_dialog($selected_setting = 'ui'){
 				 * webEdition extensions
 				 */
 				// Get webEdition extensions
-				$ct = new we_base_ContentTypes();
-				$_we_extensions = $ct->getExtension('text/webedition');
+				$_we_extensions = we_base_ContentTypes::inst()->getExtension('text/webedition');
 
 				// Build static webEdition extensions select box
 				$_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
@@ -1612,8 +1611,7 @@ function build_dialog($selected_setting = 'ui'){
 				 * HTML extensions
 				 */
 				// Get extensions
-				$ct = new we_base_ContentTypes();
-				$_html_extensions = $ct->getExtension('text/html');
+				$_html_extensions = we_base_ContentTypes::inst()->getExtension('text/html');
 
 				// Build static webEdition extensions select box
 				$_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));

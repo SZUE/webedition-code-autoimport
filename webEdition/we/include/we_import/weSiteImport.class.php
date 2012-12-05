@@ -1386,7 +1386,7 @@ class weSiteImport{
 
 
 			$newTemplateFilename = $templateFilename;
-			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename like '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
+			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename LIKE '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
 			$result = array();
 			if($GLOBALS['DB_WE']->num_rows()){
 				while($GLOBALS['DB_WE']->next_record()) {

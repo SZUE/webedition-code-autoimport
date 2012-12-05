@@ -195,7 +195,7 @@ class weNavigation extends weModelBase{
 		}
 
 		$this->Text = $this->encodeSpecChars($this->Text);
-		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'link.gif');
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 
 		$_paths = $this->Categories;
 		$this->Categories = makeCSVFromArray(weConvertToIds($this->Categories, CATEGORY_TABLE), true);

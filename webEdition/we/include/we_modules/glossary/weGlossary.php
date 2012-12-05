@@ -256,7 +256,7 @@ class weGlossary extends weModelBase{
 	 *
 	 */
 	function save(){
-		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'prog.gif');
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : 'prog.gif');
 
 		$this->setPath();
 

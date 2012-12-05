@@ -405,8 +405,7 @@ class we_flashDocument extends we_binaryDocument{
 			$this->setElement("height", $this->getElement("origheight"));
 		}
 		if($this->Icon == ''){
-			$ct = new we_base_ContentTypes();
-			$this->Icon = $ct->getIcon($this->ContentType);
+			$this->Icon = we_base_ContentTypes::inst()>getIcon($this->ContentType);
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()

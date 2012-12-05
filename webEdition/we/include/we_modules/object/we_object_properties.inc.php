@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
 	$parts = array(
 		array(
@@ -72,5 +71,5 @@ if($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE){
 		)
 	);
 }
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+print we_multiIconBox::getJS() .
+	we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);

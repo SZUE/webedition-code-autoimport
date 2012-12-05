@@ -64,7 +64,6 @@ class MultiDirChooser2 extends MultiDirChooser{
 	}
 
 	function getLine($lineNr){
-		$out = "";
 		$_catFieldJS = "";
 		if($this->catField){
 			$_ids = str_replace("," . $this->db->f("ID") . ",", ",", $this->ids);
@@ -72,7 +71,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 		$_catFieldJS .= "deleteCategory('" . $this->rowPrefix . "'," . $this->db->f("ID") . "); ";
 		switch($lineNr){
 			case 0:
-				$out .= '<tr id="' . $this->rowPrefix . 'Cat' . $this->db->f("ID") . '">
+				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->db->f("ID") . '">
 	<td><img src="' . ICON_DIR . $this->db->f($this->fieldsArr[0]) . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->db->f($this->fieldsArr[1]) . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
@@ -81,24 +80,21 @@ class MultiDirChooser2 extends MultiDirChooser{
 </tr>
 ';
 		}
-		return $out;
+		return '';
 	}
 
 	function getRootLine($lineNr){
-
-		$out = "";
 		switch($lineNr){
 			case 0:
-				$out .= '<tr>
-	<td><img src="' . ICON_DIR . 'folder.gif" width="16" height="18" /></td>
+				return '<tr>
+	<td><img src="' . ICON_DIR .we_base_ContentTypes::FOLDER_ICON. '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
 						"") . '</td>
-</tr>
-';
+</tr>';
 		}
-		return $out;
+		return '';
 	}
 
 	function getTableRows(){
@@ -126,13 +122,9 @@ class MultiDirChooser2 extends MultiDirChooser{
 	}
 
 	function get(){
-
-		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">
-';
-		$out .= $this->getTableRows();
-
-		$out .= '</table>
-';
+		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">'.
+		$this->getTableRows().
+			'</table>';
 
 		return '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">
 <tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>

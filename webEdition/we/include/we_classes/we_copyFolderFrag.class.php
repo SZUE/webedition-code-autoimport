@@ -63,7 +63,7 @@ class copyFolderFrag extends taskFragment{
 			$this->alldata = array();
 
 			// make it twice to be sure that all linked IDs are correct
-			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path like'" . $db->escape($fromPath) . "/%') AND ContentType != 'text/webedition' ORDER BY IsFolder DESC,Path");
+			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType != 'text/webedition' ORDER BY IsFolder DESC,Path");
 			while($db->next_record()) {
 				$db->Record["CopyToId"] = $toID;
 				$db->Record["CopyFromId"] = $fromID;
@@ -78,7 +78,7 @@ class copyFolderFrag extends taskFragment{
 			}
 
 			for($num = 0; $num < 2; $num++){
-				$db->query("SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path like'" . $db->escape($fromPath) . "/%') AND ContentType = 'text/webedition' ORDER BY IsFolder DESC,Path");
+				$db->query("SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType = 'text/webedition' ORDER BY IsFolder DESC,Path");
 				while($db->next_record()) {
 
 					// check if the template exists
@@ -109,9 +109,8 @@ class copyFolderFrag extends taskFragment{
 
 				$db = new DB_WE();
 				$this->alldata = array();
-				$q = "SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE " . $qfolders . " (Path like'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path";
 
-				$db->query($q);
+				$db->query("SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE " . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
 				while($db->next_record()) {
 					$db->Record["CopyToId"] = $toID;
 					$db->Record["CopyFromId"] = $fromID;
@@ -638,10 +637,8 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function parseTextDocument(&$we_doc){
-		$doc = $we_doc->i_getDocument();
 		//:TODO: check for ='/Path ='Path and =Path
-		$doc = str_replace(
-			$this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->i_getDocument());
+		$doc = str_replace($this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->i_getDocument());
 		$we_doc->i_setDocument($doc);
 	}
 
