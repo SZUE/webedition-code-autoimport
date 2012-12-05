@@ -242,9 +242,8 @@ class weImageDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if($this->args["outsideWE"] == "1"){
-			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "src", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0
-			);
+		if(isset($this->args["outsideWE"]) && $this->args["outsideWE"] == "1"){
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", "", "text", 410), "src", "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 			$intSrc = "";
 			$thumbnails = "";
 
@@ -467,7 +466,7 @@ function checkWidthHeight(field){
 				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
 					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' : ($this->args["editor"] == "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
-					'					classNames = top.opener.we_classNames;')) . '
+						'					classNames = top.opener.we_classNames;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onChange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
 					if(typeof(classNames) != "undefined"){
