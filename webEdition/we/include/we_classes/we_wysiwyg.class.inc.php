@@ -198,7 +198,7 @@ class we_wysiwyg{
 						weinsertrtf : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[rtf_import]")) .'"},
 						welang : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[language]")) .'"},
 						wespellchecker : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[spellcheck]")) .'"},
-						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"},
+						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"}
 					};
 				') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
