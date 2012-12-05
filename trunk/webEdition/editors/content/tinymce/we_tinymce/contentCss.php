@@ -42,12 +42,8 @@ acronym.mceItemWeAcronym{
 border: 1px dotted gray;
 }
 
-abbr.mceItemWeAbbr{ /* not yet implemented in wevisualaid */
+abbr.mceItemWeAbbr{
 border: 1px dotted gray;
-}
-
-abbr.mceItemWeLink{ /* not yet implemented in wevisualaid */
-
 }
 
 span.mceItemWeLang{
