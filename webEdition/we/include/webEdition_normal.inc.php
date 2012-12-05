@@ -54,11 +54,14 @@ function pWebEdition_JSFunctions(){
 	var regular_logout = false;
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
-		if(typeof(top.tinyMceDialog) !== 'undefined'){
+
+		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== -1){
+			var tinyDialog = tinyMceDialog;
 			try{
-				top.tinyMceDialog.close();
-			} catch(e){}
+				tinyDialog.close();
+			}catch(err){}
 		}
+
 		try{
 			if(jsWindow_count){
 				for(i = 0;i < jsWindow_count;i++){
