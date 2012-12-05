@@ -69,6 +69,7 @@ var ImageDialog = {
 			this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 
 			// parse and insert src
+			/*
 			src_arr = this.analyseSrc(dom.getAttrib(n, 'src'));
 
 			nl["we_dialog_args[type]"][0].checked = src_arr[0]; // type = ext
@@ -76,12 +77,14 @@ var ImageDialog = {
 			nl["we_dialog_args[type]"][1].checked = src_arr[2];
 			nl["we_dialog_args[fileID]"].value = src_arr[3];
 			nl["we_dialog_args[fileSrc]"].value = src_arr[4];
+			*/
 
 			// set some flags
 			ed.isWeDataInitialized = true;
 			f.isTinyMCEInitialization.value="0";
 
 			// reload when image is thumbnail to get path and filename of original image
+			/*
 			if(src_arr[5] !== 0){
 				var thSelect = nl['we_dialog_args[thumbnail]'];
 				for (var i=0; i < thSelect.options.length; i++){
@@ -97,6 +100,7 @@ var ImageDialog = {
 				f.isTinyMCEInitialization.value="1";
 				f.submit();
 			}
+			*/
 
 			// no reload, so we need to set values for ratioh und ratiow
 			if(!(isNaN(imgWidth * imgHeight) || imgHeight === 0 || imgWidth === 0)){
