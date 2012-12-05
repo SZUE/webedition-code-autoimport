@@ -1312,7 +1312,6 @@ function tinyMCEchanged(inst){
 						theme : "advanced",
 						//dialog_type : "modal",
 
-
 						accessibility_warnings : false,
 						relative_urls : false, //important!
 						convert_urls : false, //important!
@@ -1320,7 +1319,8 @@ function tinyMCEchanged(inst){
 						force_p_newlines : 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
 						//forced_root_block : "",
 
-						entity_encoding : "raw",
+						entity_encoding : "named",
+						entities : "160,nbsp",
 						element_format: "' . $this->xml . '",
 
 						//CallBacks
@@ -1372,7 +1372,7 @@ function tinyMCEchanged(inst){
 						*/
 						'. ($this->htmlSpecialchars ? '' : '
 						ed.onPostProcess.add(function(ed, o) {
-							o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"");
+							o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 						});') . '
 					}
 				});') .
