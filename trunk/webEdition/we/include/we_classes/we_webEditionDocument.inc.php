@@ -26,7 +26,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_CONTENT, WE_EDITPAGE_INFO, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VALIDATION);
 	// ID of the templates that is used from the document
 	var $TemplateID = 0;
 	// ID of the template that is used from the parked document (Bug Fix #6615)
@@ -52,15 +51,15 @@ class we_webEditionDocument extends we_textContentDocument{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
 	function __construct(){
+		parent::__construct();
 		if(defined('SHOP_TABLE')){
-			array_push($this->EditPageNrs, WE_EDITPAGE_VARIANTS);
+			$this->EditPageNrs[] = WE_EDITPAGE_VARIANTS;
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
+			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
 
-		parent::__construct();
 		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
@@ -345,7 +344,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 				if($templateFromDoctype){
 					return $this->xformTemplatePopup(388);
-				} else {
+				} else{
 					return $ueberschrift . '<br/>' . $path;
 				}
 			}
@@ -749,7 +748,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM , 'SerializedData', $this->DB_WE);
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
 					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');

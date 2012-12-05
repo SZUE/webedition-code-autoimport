@@ -50,13 +50,13 @@ class we_folder extends we_root{
 	 * @var weDocumentCustomerFilter
 	 */
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
 
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
 	}
 
 	public function we_new(){
@@ -440,7 +440,7 @@ class we_folder extends we_root{
 		// TriggerID auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
-			list(,$ClassPath) = explode('/', $this->Path);
+			list(, $ClassPath) = explode('/', $this->Path);
 			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "/' . $DB_WE->escape($ClassPath) . '"', 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 

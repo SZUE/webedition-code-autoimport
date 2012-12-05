@@ -46,7 +46,7 @@ abstract class we_class{
 
 	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
-	var $persistent_slots = array();
+	var $persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
 	/* Name of the Object that was createt from this class */
 	var $Name = "";
 
@@ -82,7 +82,6 @@ abstract class we_class{
 
 	function __construct(){
 		$this->Name = md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
 		$this->DB_WE = new DB_WE;
 	}
 
@@ -595,10 +594,9 @@ abstract class we_class{
 
 	function isValidEditPage($editPageNr){
 
-		if(is_array($this->EditPageNrs)){
-			return in_array($editPageNr, $this->EditPageNrs);
-		}
-		return false;
+		return (is_array($this->EditPageNrs) ?
+				in_array($editPageNr, $this->EditPageNrs) :
+				false);
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
