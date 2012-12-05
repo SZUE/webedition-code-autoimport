@@ -1152,9 +1152,7 @@ class doclistView{
 				}
 			}
 			$ext = isset($_result [$f] ["Extension"]) ? $_result [$f] ["Extension"] : "";
-			$ct = new we_base_ContentTypes();
-			$Icon = $ct->getIcon($_result [$f] ["ContentType"], 'link.gif', $ext);
-			unset($ct);
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f] ["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && we_hasPerm('PUBLISH')) ? we_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10)  : '';
@@ -1190,7 +1188,7 @@ class doclistView{
 						}
 					} else{
 						$imagesize = array(0, 0);
-						$thumbpath = IMAGE_DIR . 'icons/doclist/image.gif';
+						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}

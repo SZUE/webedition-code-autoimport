@@ -44,7 +44,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * Icon Name for the icon which will be used for the class
 	 * @var string
 	 */
-	var $Icon = 'image.gif';
+	var $Icon = we_base_ContentTypes::IMAGE_ICON;
 
 	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
@@ -670,7 +670,7 @@ class we_imageDocument extends we_binaryDocument{
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
-		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814                                                                               
+		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
 		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '".$this->getElement('Title')."'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.

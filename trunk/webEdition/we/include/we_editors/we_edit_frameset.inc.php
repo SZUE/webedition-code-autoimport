@@ -267,8 +267,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 	if(isset($_REQUEST['we_cmd'][10]) && $we_doc->ContentType == 'text/weTmpl'){
 		$we_doc->elements['data']['dat'] = base64_decode($_REQUEST['we_cmd'][10]);
 	} else{
-		$ct = new we_base_ContentTypes();
-		$we_doc->elements['data']['dat'] = $ct->getDefaultCode($we_doc->ContentType);
+		$we_doc->elements['data']['dat'] = we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType);
 	}
 }
 we_html_tools::htmlTop();

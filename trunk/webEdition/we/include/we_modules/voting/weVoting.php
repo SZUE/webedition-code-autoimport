@@ -149,7 +149,7 @@ class weVoting extends weModelBase{
 
 	function save($with_scores = true){
 
-		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'link.gif');
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 
 		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;

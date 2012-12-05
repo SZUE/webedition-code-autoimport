@@ -757,8 +757,7 @@ class we_template extends we_document{
 	}
 
 	function we_save($resave = 0, $updateCode = 1){
-		$ct = new we_base_ContentTypes();
-		$this->Extension = $ct->getExtension('text/weTmpl');
+		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
 		if($updateCode){
 			$this->_updateCompleteCode();
 			if(defined('SHOP_TABLE')){
@@ -792,8 +791,7 @@ class we_template extends we_document{
 
 	function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
-		$ct = new we_base_ContentTypes();
-		$this->Extension = $ct->getExtension("text/weTmpl");
+		$this->Extension = we_base_ContentTypes::inst()->getExtension("text/weTmpl");
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE') && isset($this->elements['allVariants'])){
 			$this->elements['allVariants']['dat'] = @unserialize($this->elements['allVariants']['dat']);

@@ -57,13 +57,12 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="' . ICON_DIR . 'folder.gif" width="16" height="18" /></td>
+	<td><img src="' . ICON_DIR .we_base_ContentTypes::FOLDER_ICON. '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						"") . '</td>
-</tr>
-';
+</tr>';
 			case 1:
 				return $this->getLine($lineNr);
 		}

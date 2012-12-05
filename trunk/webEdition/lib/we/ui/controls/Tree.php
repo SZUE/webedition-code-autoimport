@@ -151,9 +151,9 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$db = we_io_DB::sharedAdapter();
 
 		$table = $_table;
-		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'limit ' . abs($start) . ',' . abs($anzahl) . '' : '';
+		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) . '' : '';
 
-		$nodes = $db->fetchAll("SELECT " . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
+		$nodes = $db->fetchAll('SELECT ' . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
 
 		if(!empty($nodes)){
 			if(!array_key_exists('Published', $nodes[0])){

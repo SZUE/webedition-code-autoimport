@@ -30,7 +30,7 @@ class we_class_folder extends we_folder{
 	/* Name of the class => important for reconstructing the class from outside the class */
 
 	var $ClassName = __CLASS__;
-	var $Icon = 'class_folder.gif';
+	var $Icon = we_base_ContentTypes::CLASS_FOLDER_ICON;
 	var $IsClassFolder = '1';
 	var $InWebEdition = false;
 	var $ClassPath = ''; //#4076
@@ -134,7 +134,7 @@ class we_class_folder extends we_folder{
 						$folder->IsNotEditable = 0;
 						//$folder->ClassName = 'we_class_folder';
 						$folder->IsClassFolder = $IsClassFolder;
-						$folder->Icon = ($IsClassFolder) ? 'we_class_folder.gif' : 'we_folder.gif';
+						$folder->Icon = ($IsClassFolder) ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 
 						$folder->Path = $pa;
 						$folder->save($skipHook);
@@ -152,7 +152,7 @@ class we_class_folder extends we_folder{
 			 */
 			$this->ClassName = 'we_class_folder';
 			$this->IsClassFolder = $IsClassFolder;
-			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
+			$this->Icon = $IsClassFolder ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 
 			$this->ParentID = $last_pid;
 			$this->Text = $folderName;

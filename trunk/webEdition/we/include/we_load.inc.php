@@ -114,7 +114,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		}
 
 		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
-		$ct = new we_base_ContentTypes();
+		$ct = we_base_ContentTypes::inst();
 
 		while($DB_WE->next_record()) {
 			$tree_count++;
@@ -124,7 +124,7 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 			$Path = $DB_WE->f("Path");
 			$IsFolder = $DB_WE->f("IsFolder");
 			$ContentType = $DB_WE->f("ContentType");
-			$Icon = $ct->getIcon($ContentType, 'link.gif', $DB_WE->f("Extension"));
+			$Icon = $ct->getIcon($ContentType, we_base_ContentTypes::LINK_ICON, $DB_WE->f("Extension"));
 			$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE))) ? ((($DB_WE->f(
 					"Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f(
 						"Published")) : 1;

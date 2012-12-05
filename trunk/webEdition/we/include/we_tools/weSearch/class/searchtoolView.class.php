@@ -33,8 +33,8 @@ class searchtoolView extends weToolView{
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new searchtool();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'link.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'folder.gif\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::LINK_ICON . '\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new searchtoolsearch();
 		$this->searchclassExp = new searchtoolExp();
@@ -2299,8 +2299,7 @@ class searchtoolView extends weToolView{
 				}
 			}
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$ct = new we_base_ContentTypes();
-			$Icon = $ct->getIcon($_result[$f]["ContentType"], 'link.gif', $ext);
+			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV(
 					$_result[$f]["foundInVersions"]) : "";
@@ -2405,7 +2404,7 @@ class searchtoolView extends weToolView{
 						$imagesize = array(
 							0, 0
 						);
-						$thumbpath = IMAGE_DIR . 'icons/doclist/image.gif';
+						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}

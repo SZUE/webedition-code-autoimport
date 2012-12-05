@@ -627,8 +627,7 @@ class we_document extends we_root{
 
 	function i_setExtensions(){
 		if($this->ContentType){
-			$ct = new we_base_ContentTypes();
-			$exts = $ct->getExtension($this->ContentType);
+			$exts = we_base_ContentTypes::inst()->getExtension($this->ContentType);
 			$this->Extensions = is_array($exts) ? $exts : array($exts);
 		}
 	}

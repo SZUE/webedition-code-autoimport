@@ -242,7 +242,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 					if(makeNewFolder){
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-						d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0" /></td>');
+						d.writeln('<td align="center"><img src="<?php print ICON_DIR.we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
 						d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 						d.writeln('<td class="selector"><?php print date(g_l('date', '[format][default]')) ?></td>');
 						d.writeln('</tr>');

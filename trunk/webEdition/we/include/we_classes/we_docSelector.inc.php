@@ -190,7 +190,7 @@ class we_docSelector extends we_dirSelector{
 
 
 		<?php
-		$ct = new we_base_ContentTypes();
+		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $ctypes){
 			if(g_l('contentTypes', '[' . $ctypes . ']') !== false){
 				print 'contentTypes["' . $ctypes . '"]  = "' . g_l('contentTypes', '[' . $ctypes . ']') . '";' . "\n";
@@ -308,7 +308,7 @@ class we_docSelector extends we_dirSelector{
 					d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 						if(makeNewFolder){
 						d.writeln('<tr>');
-							d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>');
+							d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>');
 							d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 							d.writeln('<td class="selector"><?php print g_l('contentTypes', "[folder]"); ?></td>');
 							d.writeln('<td class="selector"><?php print date(g_l('date', '[format][default]')) ?></td>');
@@ -574,7 +574,7 @@ class we_docSelector extends we_dirSelector{
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 							<option value="">' . g_l('fileselector', "[all_Types]") . '</option>';
-				$ct = new we_base_ContentTypes();
+				$ct = we_base_ContentTypes::inst();
 				foreach($ct->getWETypes() as $ctype){
 					print '<option value="' . htmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>' . "\n";
 				}

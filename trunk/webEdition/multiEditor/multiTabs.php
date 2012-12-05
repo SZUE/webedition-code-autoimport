@@ -28,12 +28,11 @@ we_html_tools::protect();
 // generate ContentType JS-String
 $_contentTypes = 'var _Contentypes = new Object();
 	_Contentypes["cockpit"] = "icon_cockpit.gif";';
-$ct = new we_base_ContentTypes();
+$ct = we_base_ContentTypes::inst();
 foreach($ct->getContentTypes() as $ctype){
 
 	$_contentTypes .= '_Contentypes["' . $ctype . '"] = "' . $ct->getIcon($ctype) . '";';
 }
-unset($ct);
 
 /*
  * Browser dependences
