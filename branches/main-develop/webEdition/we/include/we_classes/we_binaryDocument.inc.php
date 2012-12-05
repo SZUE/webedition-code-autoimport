@@ -32,7 +32,6 @@ class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
 	var $html = '';
 	var $IsBinary = true;
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
 	var $LoadBinaryContent = true;
 
 	/**
@@ -49,7 +48,7 @@ class we_binaryDocument extends we_document{
 		parent::__construct();
 		array_push($this->persistent_slots, "html", "DocChanged");
 		if(defined("CUSTOMER_TABLE")){
-			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
+			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER,WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
 		}
 	}
 

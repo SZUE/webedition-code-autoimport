@@ -29,7 +29,9 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
-if($GLOBALS['we_editmode']){
+if(!$GLOBALS['we_editmode']){
+	exit();
+}
 	we_html_tools::htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 	echo we_html_element::jsScript(JS_DIR . 'windows.js');
 	include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
@@ -382,7 +384,7 @@ if($GLOBALS['we_editmode']){
 	?>>
 		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 			$we_doc->pHiddenTrans();
-		}
+
 
 		function we_getJavaEditorCode($code){
 			global $we_doc;
@@ -670,7 +672,6 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			return $maineditor;
 		}
 
-		if($GLOBALS['we_editmode']){
 			$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
 
 			$code = $we_doc->getElement("data");
@@ -711,11 +712,8 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$znr = -1;
 			$wepos = "";
 			$parts[] = array("headline" => "", "html" => $maineditor, "space" => 0);
-		} else{
-			print $maineditor;
-		}
 
-		if($GLOBALS['we_editmode']){
+
 			if($we_doc->ContentType == "text/weTmpl"){
 				// Code Wizard
 				$CodeWizard = new weCodeWizard();
@@ -959,5 +957,3 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 	}
 	?>
 	</html>
-	<?php
-}

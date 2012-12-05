@@ -64,10 +64,16 @@ class weSelectorQuery{
 	 */
 	function queryTable($search, $table, $types = null, $limit = null){
 		$search = strtr($search, array('[' => '\\[', ']' => '\\]'));
+		$userExtraSQL = $this->getUserExtraQuery($table);
+
 		switch($table){
 			case USER_TABLE:
 				$this->addQueryField("IsFolder");
 				$typeField = "Type";
+				break;
+			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
+				$typeField = "ContentType";
+				$userExtraSQL='';
 				break;
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
@@ -76,7 +82,6 @@ class weSelectorQuery{
 				$typeField = "ContentType";
 		}
 
-		$userExtraSQL = $this->getUserExtraQuery($table);
 		$where = "WHERE Path = '" . $this->db->escape($search) . "'";
 		$isFolder = 1;
 		$addCT = 0;
@@ -100,7 +105,7 @@ class weSelectorQuery{
 			$this->addQueryField($typeField);
 		}
 		if(!empty($userExtraSQL)){
-			$where .= (empty($where) ? "WHERE " : " ") . $userExtraSQL;
+			$where .= (empty($where) ? 'WHERE ' : ' ') . $userExtraSQL;
 		}
 
 		if(!empty($this->condition)){
@@ -109,10 +114,9 @@ class weSelectorQuery{
 			}
 		}
 
-		$order = "ORDER BY " . ($isFolder ? "Path" : "isFolder  ASC, Path") . " ASC ";
-		$fields = implode(", ", $this->fields);
-		$query = "SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : "");
-		$this->db->query($query);
+		$order = 'ORDER BY ' . ($isFolder ? "Path" : "isFolder  ASC, Path") . ' ASC ';
+		$fields = implode(', ', $this->fields);
+		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : ""));
 	}
 
 	/**
@@ -129,10 +133,15 @@ class weSelectorQuery{
 	 */
 	function search($search, $table, $types = null, $limit = null, $rootDir = ""){
 		$search = strtr($search, array("[" => "\\\[", "]" => "\\\]"));
+		$userExtraSQL = $this->getUserExtraQuery($table);
 		switch($table){
 			case USER_TABLE:
 				$this->addQueryField("IsFolder");
 				$typeField = "Type";
+				break;
+			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
+				$typeField = "ContentType";
+				$userExtraSQL='';
 				break;
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
@@ -141,7 +150,6 @@ class weSelectorQuery{
 				$typeField = "ContentType";
 		}
 
-		$userExtraSQL = $this->getUserExtraQuery($table);
 		$where = "WHERE Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
 		$isFolder = 1;
 		$addCT = 0;
@@ -166,19 +174,18 @@ class weSelectorQuery{
 			$this->addQueryField($typeField);
 		}
 		if(!empty($userExtraSQL)){
-			$where .= (empty($where) ? "WHERE " : " ") . $userExtraSQL;
+			$where .= (empty($where) ? 'WHERE ' : ' ') . $userExtraSQL;
 		}
 
 		if(!empty($this->condition)){
 			foreach($this->condition as $val){
-				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
+				$where .= (empty($where) ? 'WHERE ' : ' ' . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
 			}
 		}
 
 		$order = "ORDER BY " . ($isFolder ? "Path" : "isFolder  ASC, Path") . " ASC ";
 		$fields = implode(", ", $this->fields);
-		$query = "SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : "");
-		$this->db->query($query);
+		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : ""));
 	}
 
 	/**
@@ -352,7 +359,7 @@ class weSelectorQuery{
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
-		}else{
+		} else{
 			$userExtraSQL.=' OR RestrictOwners=0 ';
 		}
 		return $userExtraSQL . ')';

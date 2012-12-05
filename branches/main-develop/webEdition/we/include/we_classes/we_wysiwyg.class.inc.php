@@ -34,7 +34,7 @@ class we_wysiwyg{
 	var $elements = array();
 	var $value = '';
 	var $filteredElements = array();
-	var $bgcol = 'white';
+	var $bgcol = '';
 	var $fullscreen = '';
 	var $className = '';
 	var $fontnamesCSV = '';
@@ -59,7 +59,7 @@ class we_wysiwyg{
 	var $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	static $editorType = WYSIWYG_TYPE;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->bgcol = $bgcol;
@@ -198,7 +198,7 @@ class we_wysiwyg{
 						weinsertrtf : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[rtf_import]")) .'"},
 						welang : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[language]")) .'"},
 						wespellchecker : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[spellcheck]")) .'"},
-						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"},
+						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"}
 					};
 				') . we_html_element::jsElement('
 function tinyMCEchanged(inst){
@@ -1267,11 +1267,11 @@ function tinyMCEchanged(inst){
 					$i++;
 					$k++;
 				}
-				
+
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
 				$toolBarHeight = $k*24 - 10;
 				$this->height += $toolBarHeight;
-				
+
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
 				//function openWeFileBrowser(): not needed anymore: imi
 
@@ -1281,11 +1281,12 @@ function tinyMCEchanged(inst){
 					$this->bgcol = 'white';
 				}
 
-				$wefullscreenVars = array();
-				$wefullscreenVars['outsideWE'] = $this->outsideWE ? "1" : "";
-				$wefullscreenVars['xml'] = $this->xml ? "1" : "";
-				$wefullscreenVars['removeFirstParagraph'] = $this->removeFirstParagraph ? "1" : "";
-t_e("csv",$this->cssClassesCSV);
+				$wefullscreenVars = array(
+					'outsideWE' => $this->outsideWE ? "1" : "",
+					'xml' => $this->xml ? "1" : "",
+					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "",
+				);
+
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 					var weclassNames_urlEncoded = "' . urlencode($this->cssClassesCSV) . '";
@@ -1362,10 +1363,10 @@ t_e("csv",$this->cssClassesCSV);
 						ed.onPostProcess.add(function(ed, o) {
 							o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
 						});') . '
-						
+
 						/*
 						ed.onPostProcess.add(function(ed, o) { // FIXME: strange behaviour - condition does not work with boolean true!!?
-							o.content = o.content.' . (!$this->htmlSpecialchars ? 'replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"")' : 
+							o.content = o.content.' . (!$this->htmlSpecialchars ? 'replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"")' :
 							'replace(/"/g, "&quot;")') . ';
 						});
 						*/

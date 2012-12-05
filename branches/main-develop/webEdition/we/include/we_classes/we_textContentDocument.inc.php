@@ -26,8 +26,6 @@ abstract class we_textContentDocument extends we_textDocument{
 	/* Name of the class => important for reconstructing the class from outside the class */
 
 	var $ClassName = __CLASS__;
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VALIDATION);
-
 
 	/* Doc-Type of the document */
 	var $DocType = "";
@@ -38,11 +36,12 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "DocType");
+
+		$this->persistent_slots[] = "DocType";
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots, "FromOk", "ToOk", "From", "To");
 		}
-		$this->EditPageNrs[] = WE_EDITPAGE_SCHEDULER;
+		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_SCHEDULER);
 	}
 
 	function editor($baseHref = true){
@@ -250,7 +249,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				$this->we_load(we_class::LOAD_TEMP_DB);
 				break;
 			case we_class::LOAD_SCHEDULE_DB :
-				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM , 'SerializedData', $this->DB_WE);
+				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");

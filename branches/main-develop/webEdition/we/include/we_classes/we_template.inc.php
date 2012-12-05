@@ -32,7 +32,6 @@ class we_template extends we_document{
 	/* Icon which is shown at the tree-menue  */
 	var $Icon = "we_template.gif";
 	var $Published = "1";
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS);
 	var $DocTypes;
 	var $InWebEdition = true;
 	var $Table = TEMPLATES_TABLE;
@@ -51,7 +50,7 @@ class we_template extends we_document{
 		  $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0; */
 		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", /* "CacheType","CacheLifeTime", */ "TagWizardCode", "TagWizardSelection");
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
-		$this->EditPageNrs[] = WE_EDITPAGE_VERSIONS;
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
 	}
 
 	function copyDoc($id){

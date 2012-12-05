@@ -43,7 +43,6 @@ class we_object extends we_document{
 	var $WorkspaceFlag = 1;
 	var $Templates = '';
 	var $SerializedArray = array(); // #3931
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
 	var $InWebEdition = false;
 	var $CSS = '';
 
@@ -52,6 +51,7 @@ class we_object extends we_document{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
 		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
 	}
 

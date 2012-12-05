@@ -33,11 +33,11 @@ function init() {
 	if(action == "update" && inst.isWeLinkInitialized === false && formObj){
 		inst.isWeLinkInitialized = true;
 
-		var href = inst.dom.getAttrib(elm, 'href');
-		var urlParts = this.getUrlParts(href);
+		//var href = inst.dom.getAttrib(elm, 'href');
+		//var urlParts = this.getUrlParts(href);
 
-		formObj.elements['we_dialog_args[anchor]'].value = urlParts[1];
-		formObj.elements['we_dialog_args[param]'].value = urlParts[2];
+		//formObj.elements['we_dialog_args[anchor]'].value = urlParts[1];
+		//formObj.elements['we_dialog_args[param]'].value = urlParts[2];
 
 		formObj.elements['we_dialog_args[title]'].value = inst.dom.getAttrib(elm, 'title');
 		formObj.elements['we_dialog_args[target]'].value = inst.dom.getAttrib(elm, 'target');
@@ -50,27 +50,29 @@ function init() {
 		formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', typeof(elm.tabindex) != "undefined" ? elm.tabindex : "");
 		this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
 
+		/*
 		// analyse linktype, enter link-data and reload
-		var linktype = this.getLinkType(urlParts[0]);
-		this.selectOptionByValue(formObj, 'we_dialog_args[type]', linktype);
+		//var linktype = this.getLinkType(urlParts[0]);
+		//this.selectOptionByValue(formObj, 'we_dialog_args[type]', linktype);
 
 		switch(linktype){
 			case "int":
-				formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
+				//formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
 				break;
 			case "obj":
-				formObj.elements['we_dialog_args[objID]'].value = urlParts[0].split('object:')[1];
+				//formObj.elements['we_dialog_args[objID]'].value = urlParts[0].split('object:')[1];
 				break;
 			case "ext":
-				formObj.elements['we_dialog_args[extHref]'].value = urlParts[0];
+				//formObj.elements['we_dialog_args[extHref]'].value = urlParts[0];
 				break;
 			case "mail":
-				formObj.elements['we_dialog_args[mailHref]'].value = urlParts[0].split(':')[1];
+				//formObj.elements['we_dialog_args[mailHref]'].value = urlParts[0].split(':')[1];
 				break;
 			default:
 				break;
 		}
-		this.doReload(formObj);
+		//this.doReload(formObj);
+		*/
 	}
 	/*
 	if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
