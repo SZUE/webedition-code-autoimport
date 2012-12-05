@@ -45,7 +45,6 @@ class we_objectFile extends we_document{
 	var $IsSearchable = '';
 	var $Charset = '';
 	var $Language = '';
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS);
 	var $InWebEdition = false;
 	var $Templates = '';
 	var $ExtraTemplates = '';
@@ -65,7 +64,6 @@ class we_objectFile extends we_document{
 		if(defined('SCHEDULE_TABLE')){
 			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
 		}
-		$this->EditPageNrs[] = WE_EDITPAGE_SCHEDULER;
 		if(!isset($GLOBALS['WE_IS_DYN'])){
 			$ac = $this->getAllowedClasses();
 			$this->AllowedClasses = makeCSVFromArray($ac);
@@ -73,7 +71,7 @@ class we_objectFile extends we_document{
 		if(defined('CUSTOMER_TABLE')){
 			$this->EditPageNrs[] = WE_EDITPAGE_WEBUSER;
 		}
-		$this->EditPageNrs[] = WE_EDITPAGE_VERSIONS;
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS, WE_EDITPAGE_SCHEDULER);
 	}
 
 	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0){
