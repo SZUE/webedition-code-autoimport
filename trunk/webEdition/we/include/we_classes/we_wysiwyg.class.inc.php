@@ -1286,7 +1286,7 @@ function tinyMCEchanged(inst){
 					'xml' => $this->xml ? "1" : "",
 					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "",
 				);
-t_e("csv",$this->cssClassesCSV);
+
 				return we_html_element::jsElement('
 					var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 					var weclassNames_urlEncoded = "' . urlencode($this->cssClassesCSV) . '";
