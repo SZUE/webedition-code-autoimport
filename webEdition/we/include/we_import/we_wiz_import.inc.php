@@ -1196,11 +1196,10 @@ HTS;
 		$objects->setCol(2, 1, array(), $objClass->getHTML());
 		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
-		$ct = new we_base_ContentTypes();
 		$specifyDoc = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
-		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), $ct->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
+		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
 
 		$parts = array();
 		array_push($parts, array(
@@ -2157,11 +2156,10 @@ HTS;
 		$objects->setCol(2, 1, array(), $objClass->getHTML());
 		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
-		$ct = new we_base_ContentTypes();
 		$specifyDoc = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', "[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20, 1));
-		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), $ct->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
+		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension("text/webedition"), "100"), g_l('import', "[extension]")));
 
 		$parts = array();
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){

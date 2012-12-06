@@ -28,32 +28,24 @@ class weToolTree extends weMainTree{
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-		$styles = array();
-		$styles[] = '.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? '11px' : '9px')) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.item a { text-decoration:none;}';
-
-		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? '11px' : '9px')) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.group a { text-decoration:none;}';
-
-		$styles[] = '.notpublished {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.notpublished a { text-decoration:none;}';
-
-		$styles[] = '.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_notpublished_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_notpublished_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_changed_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_changed_item a { text-decoration:none;}';
-
-		$styles[] = '.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_group a { text-decoration:none;}';
-
-		$styles[] = '.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}';
-		$styles[] = '.selected_open_group a { text-decoration:none;}';
-
-		$this->setStyles($styles);
+		$this->setStyles(array(
+			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? '11px' : '9px')) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item a { text-decoration:none;}',
+			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? '11px' : '9px')) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group a { text-decoration:none;}',
+			'.notpublished {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.notpublished a { text-decoration:none;}',
+			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_item a { text-decoration:none;}',
+			'.selected_notpublished_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_notpublished_item a { text-decoration:none;}',
+			'.selected_changed_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_changed_item a { text-decoration:none;}',
+			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_group a { text-decoration:none;}',
+			'.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_open_group a { text-decoration:none;}',
+		));
 	}
 
 	function getJSOpenClose(){
@@ -127,11 +119,9 @@ class weToolTree extends weMainTree{
 
 	function getJSIncludeFunctions(){
 
-		$out = weTree::getJSIncludeFunctions() . "\n" .
-			$this->getJSStartTree() . "\n" .
-			$this->getJSReloadGroup() . "\n";
-
-		return $out;
+		return weTree::getJSIncludeFunctions() .
+			$this->getJSStartTree() .
+			$this->getJSReloadGroup();
 	}
 
 	function getJSMakeNewEntry(){
@@ -279,15 +269,11 @@ class weToolTree extends weMainTree{
 
 	function getJSTreeFunctions(){
 		// must override
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
+		return weTree::getJSTreeFunctions() .
+			'
 			function doClick(id,typ){
-
 			}
-			' . $this->topFrame . '.loaded=1;
-		';
-		return $out;
+			' . $this->topFrame . '.loaded=1;';
 	}
 
 	function getJSTreeCode($withTag = true){

@@ -29,7 +29,7 @@ class we_textDocument extends we_document{
 	var $ClassName = __CLASS__;
 
 	/* Icon which is shown at the tree-menue  */
-	var $Icon = "link.gif";
+	var $Icon = we_base_content_types::LINK_ICON;
 
 	/* Constructor */
 
