@@ -153,8 +153,8 @@ $l_navigation=array(
 	'txt_stat_selection'=>'Texte d`explication pour la sélection statique. Lié au document ou objet sélectionné.',
 	'urlLink'=>'Document externe',
 	'useDocumentFilter'=>'Utiliser les configurations de filtre des documents/objets',
-	'we_filename_notValid'=>'Le nom d\`utilisateur n`est pas correct !\nCaractères alphanumériques, majuscules et minuscules, traits bas, traits d`union, points et espaces (a-z, A-Z, 0-9, _,-.,) sont valides.',
+	'we_filename_notValid'=>'Le nom d`utilisateur n`est pas correct !\nCaractères alphanumériques, majuscules et minuscules, traits bas, traits d`union, points et espaces (a-z, A-Z, 0-9, _,-.,) sont valides.',
 	'workspace'=>'Espace de travil',
-	'wrongtext'=>'Le nom n\`est pas valide !\nLes caractères valides sont les lettres de a à z (majuscules et minuscules), traits bas (_), tirets (-), points (.), espaces ( ) et arrobase (@).',
+	'wrongtext'=>'Le nom n`est pas valide !\nLes caractères valides sont les lettres de a à z (majuscules et minuscules), traits bas (_), tirets (-), points (.), espaces ( ) et arrobase (@).',
 	'wrongTitleField'=>'Le dossier de navigation ne peut pas être sauvé, car le champs titre donné n`existe pas. Corrigez le champ titre dans l`onglet "contenu" et réenregistrez.',
 );
