@@ -38,57 +38,57 @@ class we_navigationDirSelector extends we_dirSelector{
 	}
 
 	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
-				<tr>
-					<td>' . we_html_tools::getPixel(25, 14) . '</td>
-					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('navigation', '[name]') . '</a></b></td>
-				</tr>
-				<tr>
-					<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
-					<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
-					<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
-				</tr>
-			</table>
-';
+		print '
+<table border="0" cellpadding="0" cellspacing="0" width="550">
+	<tr>
+		<td>' . we_html_tools::getPixel(25, 14) . '</td>
+		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('navigation', '[name]') . '</a></b></td>
+	</tr>
+	<tr>
+		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
+		<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
+		<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
+	</tr>
+</table>';
 	}
 
 	function printFooterTable(){
 		print '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
+	</tr>
+	<tr>
+		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
+	</tr>';
 		$cancel_button = we_button::create_button('cancel', 'javascript:top.exit_close();');
 		$yes_button = we_button::create_button('ok', "javascript:press_ok_button();");
 		$buttons = we_button::position_yes_no_cancel(
 				$yes_button, null, $cancel_button);
 		print '
-				<tr>
-					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('navigation', '[name]') . '</b>
-					</td>
-					<td></td>
-					<td class="defaultfont" align="left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-					<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-					<td>' . we_html_tools::getPixel(5, 5) . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-				</tr>
-			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td align="right">' . $buttons . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-				</tr>
-			</table>';
+	<tr>
+		<td></td>
+		<td class="defaultfont">
+			<b>' . g_l('navigation', '[name]') . '</b>
+		</td>
+		<td></td>
+		<td class="defaultfont" align="left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+		<td>' . we_html_tools::getPixel(5, 5) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+	</tr>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td align="right">' . $buttons . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+	</tr>
+</table>';
 	}
 
 	function printHeaderTableExtraCols(){
@@ -186,7 +186,7 @@ class we_navigationDirSelector extends we_dirSelector{
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 					if(makeNewFolder){
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-						d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0" /></td>');
+						d.writeln('<td align="center"><img src="<?php print ICON_DIR.we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
 						d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l("navigation", "[newFolder]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l("navigation", "[newFolder]") ?>"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 						d.writeln('</tr>');
 					}
@@ -291,14 +291,13 @@ class we_navigationDirSelector extends we_dirSelector{
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>
-top.clearEntries();
-';
+		print '<script><!--
+top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = '';
-		if(isset($_REQUEST['we_FolderText_tmp'])){
-			$txt = rawurldecode($_REQUEST['we_FolderText_tmp']);
-		}
+		$txt = (isset($_REQUEST['we_FolderText_tmp']) ?
+				rawurldecode($_REQUEST['we_FolderText_tmp']) :
+				'');
+
 		if($txt == ''){
 			print we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else{
@@ -306,7 +305,7 @@ top.clearEntries();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
 			$folder->Table = $this->table;
-			$folder->Icon = 'folder.gif';
+			$folder->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$folder->Text = $txt;
 			$folder->Path = $folder->getPath();
 			$this->db->query("SELECT ID FROM " . $this->table . " WHERE Path='" . $folder->Path . "'");
@@ -320,7 +319,7 @@ top.clearEntries();
 					print 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
-	ref.makeNewEntry("folder.gif",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
+	ref.makeNewEntry("'.we_base_ContentTypes::FOLDER_ICON.'",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
 }
 ';
 					if($this->canSelectDir){
@@ -339,9 +338,9 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 		print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
+//-->
 </script>
-';
-		print '</head><body></body></html>';
+</head><body></body></html>';
 	}
 
 	function query(){
@@ -367,7 +366,7 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
+			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('navigation', "[folder_exists]"), $folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -376,7 +375,7 @@ top.clearEntries();
 					$we_responseText = g_l('navigation', "[wrongtext]");
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else{
-					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
+					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.updateEntry){
@@ -403,8 +402,7 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 top.selectFile(top.currentID);
 //-->
 </script>
-';
-		print '</head><body></body></html>';
+</head><body></body></html>';
 	}
 
 	function printFramesetSelectFileHTML(){

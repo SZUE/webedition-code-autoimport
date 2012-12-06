@@ -114,7 +114,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE){
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ' : '');
 	foreach($parentIDs as $pid){
-		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%" OR ';
+		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces LIKE "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected LIKE "%,' . $pid . ',%" OR ';
 	}
 	$pid_tail = trim(preg_replace('/^(.*)OR /', '\1', $pid_tail));
 	if($pid_tail == ''){
@@ -1204,7 +1204,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	}
 	foreach($arr2 as $i => $ws)
 		if(in_workspace($pid, $arr4[$i])){
-			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path like "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
 		}
 	return '';
 }
@@ -1344,8 +1344,7 @@ function getContentTypeFromFile($dat){
 	} else{
 		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 		if($ext){
-			$ct = new we_base_ContentTypes();
-			$type = $ct->getTypeForExtension($ext);
+			$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
 			if($type){
 				return $type;
 			}

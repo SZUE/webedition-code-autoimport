@@ -391,10 +391,11 @@ class we_todo extends we_msg_proto{
 	}
 
 	function &send(&$rcpts, &$data){
-		$results = array();
-		$results['err'] = array();
-		$results['ok'] = array();
-		$results['failed'] = array();
+		$results = array(
+			'err' => array(),
+			'ok' => array(),
+			'failed' => array(),
+		);
 		$db = new DB_WE();
 
 		foreach($rcpts as $rcpt){
@@ -409,7 +410,7 @@ class we_todo extends we_msg_proto{
 			$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB);
 			if($in_folder == ''){
 				/* Create default Folders for target user */
-				include_once(WE_MESSAGING_MODULE_PATH . "messaging_interfaces.inc.php");
+				include_once(WE_MESSAGING_MODULE_PATH . 'messaging_interfaces.inc.php');
 				if(msg_create_folders($userid) == 1){
 					$in_folder = f('SELECT ID FROM ' . $this->folder_tbl . ' WHERE obj_type=' . we_msg_proto::FOLDER_INBOX . ' AND msg_type=' . $this->sql_class_nr . ' AND UserID=' . intval($userid), 'ID', $this->DB);
 					if($in_folder == ''){

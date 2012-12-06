@@ -27,7 +27,7 @@ class weMainTree extends weTree{
 	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-		$node_layouts = array(
+		$this->setNodeLayouts(array(
 			'item' => 'item',
 			'group' => 'group',
 			'threedots' => 'changed',
@@ -47,11 +47,9 @@ class weMainTree extends weTree{
 			'item-selected-changed' => 'selected_changed_item',
 			'group-selected' => 'selected_group',
 			'group-selected-open' => 'selected_open_group'
-		);
+		));
 
-		$this->setNodeLayouts($node_layouts);
-
-		$styles = array(
+		$this->setStyles(array(
 			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
 			'.item a { text-decoration:none;}',
 			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
@@ -80,10 +78,8 @@ class weMainTree extends weTree{
 			'.selected_group a { text-decoration:none;}',
 			'.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_open_group a { text-decoration:none;}',
+			)
 		);
-
-
-		$this->setStyles($styles);
 	}
 
 	function getJSOpenClose(){
@@ -151,18 +147,11 @@ while(1){
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;
-	var isIn = false;';
-
-		if($select){
-			$s .= '
+	var isIn = false;' .
+			($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
-	weWindow.treeData.selection="' . $doc->ID . '";';
-		} else{
-
-			$s .= 'weWindow.treeData.unselectnode();';
-		}
-
-		$s .= '
+	weWindow.treeData.selection="' . $doc->ID . '";' :
+				'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry("' . $doc->ParentID . '")]){
 				var attribs=new Array();
@@ -189,11 +178,7 @@ if(weWindow.treeData){
 								' . $this->topFrame . '.treeData[ai].published=attribs["published"];
 							}
 							++ai;
-						}';
-
-		//$s .= '				'.$this->topFrame.'.updateEntry("'.$doc->ID.'","'.$doc->Text.'","'.$doc->ParentID.'","'.$doc->Table.'");'."\n";
-
-		$s .= '
+						}
 			}else{
 				attribs["icon"]=\'' . $doc->Icon . '\';
 				attribs["contenttype"]=\'' . $doc->ContentType . '\';
@@ -327,22 +312,18 @@ if(weWindow.treeData){
 	function getJSLoadTree($treeItems){
 		$js = 'var attribs=new Array();';
 
-		$nextCode = "";
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$buff = "		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";
-				foreach($item as $k => $v)
-					$buff.='
-								attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
+				$buff = 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";
+				foreach($item as $k => $v){
+					$buff.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
+				}
 
-				$js.=$buff . '
-						' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
-					}
-					';
+				$js.=$buff . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
+					}';
 			}
 		}
-		$js.=$nextCode .
-			$this->topFrame . '.drawTree();';
+		$js.=$this->topFrame . '.drawTree();';
 
 		return $js;
 	}

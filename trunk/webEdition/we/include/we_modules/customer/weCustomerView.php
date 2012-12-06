@@ -661,19 +661,19 @@ class weCustomerView{
 					$saveret = $this->saveField($field, $branch, $field_name, $field_type, $field_default);
 
 					switch($saveret){
-						case ERR_SAVE_BRANCH:
+						case self::ERR_SAVE_BRANCH:
 							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
-						case ERR_SAVE_FIELD_INVALID:
+						case self::ERR_SAVE_FIELD_INVALID:
 							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
-						case ERR_SAVE_PROPERTY:
+						case self::ERR_SAVE_PROPERTY:
 							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
-						case ERR_SAVE_FIELD_EXISTS:
+						case self::ERR_SAVE_FIELD_EXISTS:
 							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
-						case ERR_SAVE_FIELD_NOT_EMPTY:
+						case self::ERR_SAVE_FIELD_NOT_EMPTY:
 							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						default:
@@ -1071,14 +1071,14 @@ class weCustomerView{
 
 	function saveField($field, $branch, $field_name, $field_type, $field_default){
 		if($branch == g_l('modules_customer', '[common]')){
-			return ERR_SAVE_BRANCH;
+			return self::ERR_SAVE_BRANCH;
 		}
 
 		if($branch == g_l('modules_customer', '[other]')){
 			$field = str_replace(g_l('modules_customer', '[other]') . '_', '', $field);
 		}
 		if($field_name == ''){
-			return ERR_SAVE_FIELD_NOT_EMPTY;
+			return self::ERR_SAVE_FIELD_NOT_EMPTY;
 		}
 
 		$h = $this->customer->getFieldDbProperties($field);
@@ -1086,19 +1086,19 @@ class weCustomerView{
 		$new_field_name = (($branch && $branch != g_l('modules_customer', '[other]')) ? $branch . '_' : '') . $field_name;
 
 		if(preg_match('|[^a-z0-9\_]|i', $new_field_name)){
-			return ERR_SAVE_FIELD_INVALID;
+			return self::ERR_SAVE_FIELD_INVALID;
 		}
 
 		if($field != $new_field_name && count($this->customer->getFieldDbProperties($new_field_name))){
-			return ERR_SAVE_FIELD_EXISTS;
+			return self::ERR_SAVE_FIELD_EXISTS;
 		}
 
 		if($this->customer->isProperty($field) || $this->customer->isProtected($field) || $this->customer->isProperty($new_field_name) || $this->customer->isProtected($new_field_name)){
-			return ERR_SAVE_PROPERTY;
+			return self::ERR_SAVE_PROPERTY;
 		}
 		if($branch == g_l('modules_customer', '[other]')){
 			if($this->settings->isReserved($new_field_name)){
-				return ERR_SAVE_PROPERTY;
+				return self::ERR_SAVE_PROPERTY;
 			}
 		}
 
