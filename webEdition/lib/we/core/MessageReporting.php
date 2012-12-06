@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -23,7 +23,7 @@
 /**
  * class for error_reporting, uses the javascript function showmessage in
  * webEdition.php
- * 
+ *
  * @category   we
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -54,25 +54,25 @@ class we_core_MessageReporting
 	 */
 	static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false)
 	{
-		
+
 		if ($priority == self::kMessageInfo || $priority == self::kMessageFrontend) {
-			
+
 			if ($isJsMsg) { // message is build from scripts, just print it!
 				return "alert( $message );";
-			
+
 			} else {
 				return 'alert("' . str_replace("'", "\'", $message) . '");';
-			
+
 			}
-		
+
 		} else {
-			
+
 			if ($isJsMsg) { // message is build from scripts, just print it!
 				return ($isOpener ? "top.opener." : "") . "top.we_showMessage($message, $priority, window);";
-			
+
 			} else {
-				return ($isOpener ? "top.opener." : "") . "top.we_showMessage(\"" . str_replace("\"", "\\\"", $message) . "\", $priority, window);";
-			
+				return ($isOpener ? "top.opener." : "") . "top.we_showMessage(\"" . str_replace(array("\n",'\n','\\', '"','###NL###'), array('###NL###','###NL###','\\\\', '\\"','\n'), $message) . "\", $priority, window);";
+
 			}
 		}
 	}
