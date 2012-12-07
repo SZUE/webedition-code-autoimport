@@ -371,7 +371,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
-		//$params['cache_archive'] = $attribs['archive']; TODO: check for the correct syntax: If different browsers need different syntax, make switch
+		$params['cache_archive'] = $attribs['archive']; //TODO: check for the correct syntax: If different browsers need different syntax, make switch
 		$params['cache_version'] = WE_VERSION;
 		$params['type'] = 'application/x-java-applet;jpi-version=1.6.0';
 		$params['scriptable'] = 'true';
