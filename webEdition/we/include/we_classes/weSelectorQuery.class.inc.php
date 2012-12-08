@@ -73,7 +73,7 @@ class weSelectorQuery{
 				break;
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				$typeField = "ContentType";
-				$userExtraSQL='';
+				$userExtraSQL = '';
 				break;
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
@@ -82,7 +82,7 @@ class weSelectorQuery{
 				$typeField = "ContentType";
 		}
 
-		$where = "WHERE Path = '" . $this->db->escape($search) . "'";
+		$where = "Path = '" . $this->db->escape($search) . "'";
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -91,9 +91,9 @@ class weSelectorQuery{
 				if($types[$i] != ""){
 					$types[$i] = str_replace(" ", "", $types[$i]);
 					if($types[$i] == "folder"){
-						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i < 1 ? " AND (" : " OR ") . "IsFolder=1";
+						$where .= ($i < 1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != ""){
-						$where .= empty($where) ? "WHERE ($typeField='" . $this->db->escape($types[$i]) . "'" : ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
+						$where .= ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
@@ -105,18 +105,18 @@ class weSelectorQuery{
 			$this->addQueryField($typeField);
 		}
 		if(!empty($userExtraSQL)){
-			$where .= (empty($where) ? 'WHERE ' : ' ') . $userExtraSQL;
+			$where .= $userExtraSQL;
 		}
 
 		if(count($this->condition) > 0){
 			foreach($this->condition as $val){
-				$where .= (empty($where) ? "WHERE " : " " . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
+				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
 			}
 		}
 
 		$order = 'ORDER BY ' . ($isFolder ? "Path" : "isFolder  ASC, Path") . ' ASC ';
 		$fields = implode(', ', $this->fields);
-		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : ""));
+		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " WHERE $where $order" . ($limit ? " LIMIT $limit" : ""));
 	}
 
 	/**
@@ -141,7 +141,7 @@ class weSelectorQuery{
 				break;
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				$typeField = "ContentType";
-				$userExtraSQL='';
+				$userExtraSQL = '';
 				break;
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
@@ -150,7 +150,7 @@ class weSelectorQuery{
 				$typeField = "ContentType";
 		}
 
-		$where = "WHERE Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
+		$where = "Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -160,32 +160,28 @@ class weSelectorQuery{
 				if($types[$i] != ""){
 					$types[$i] = str_replace(" ", "", $types[$i]);
 					if($types[$i] == "folder"){
-						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i < 1 ? " AND (" : " OR ") . "IsFolder=1";
+						$where .= ($i < 1 ? ' AND (' : ' OR ') . 'IsFolder=1';
 					} elseif(isset($typeField) && $typeField != ""){
-						$where .= empty($where) ? "WHERE ($typeField='" . $this->db->escape($types[$i]) . "'" : ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
+						$where .= ($i < 1 ? " AND (" : " OR ") . "$typeField='" . $this->db->escape($types[$i]) . "'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
-					$where .= $i == (count($types) - 1) ? ")" : "";
+					$where .= $i == (count($types) - 1) ? ')' : '';
 				}
 			}
 		}
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
-		if(!empty($userExtraSQL)){
-			$where .= (empty($where) ? 'WHERE ' : ' ') . $userExtraSQL;
-		}
+		$where .= $userExtraSQL;
 
 		if(count($this->condition) > 0){
 			foreach($this->condition as $val){
-				$where .= (empty($where) ? 'WHERE ' : ' ' . $val['queryOperator']) . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
+				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $this->db->escape($val['value']) . "'";
 			}
 		}
 
-		$order = "ORDER BY " . ($isFolder ? "Path" : "isFolder  ASC, Path") . " ASC ";
-		$fields = implode(", ", $this->fields);
-		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " $where $order" . ($limit ? " LIMIT $limit" : ""));
+		$this->db->query('SELECT ' . implode(", ", $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'Path' : 'isFolder  ASC, Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 
 	/**
@@ -206,22 +202,19 @@ class weSelectorQuery{
 		$this->addQueryField("ParentID");
 
 		// deal with contenttypes
-		$ctntQuery = " OR ( 0 ";
-		if($table == CATEGORY_TABLE){
-			$ctntQuery .= " OR 1 ";
-		}
+		$ctntQuery = ' OR ( 0 ';
 		if($types){
-
-			for($i = 0; $i < sizeof($types); $i++){
-				$ctntQuery .= " OR ContentType = \"" . $types[$i] . "\"";
+			foreach($types as $type){
+				$ctntQuery .= ' OR ContentType = "' . $type . '"';
 			}
 		}
-		$ctntQuery .= " ) ";
+		$ctntQuery .= ' ) ';
+		if($table == CATEGORY_TABLE){
+			$ctntQuery = '';
+		}
 
-		$query = "SELECT " . implode(", ", $this->fields) . " FROM " . $this->db->escape($table) . " WHERE ParentID = " . intval($id) . "
-				AND ( IsFolder = 1 $ctntQuery ) " .
-			(empty($userExtraSQL) ? "" : " " . $userExtraSQL) . " ORDER BY IsFolder DESC, Path ";
-		$this->db->query($query);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID = ' . intval($id) . ' AND ( IsFolder = 1 ' . $ctntQuery . ' ) ' .
+			 $userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
 	/**
@@ -239,9 +232,11 @@ class weSelectorQuery{
 			default:
 				$useCreatorID = true;
 		}
-		$userExtraSQL = "";
+
 		if(!defined('BANNER_TABLE') || $table != BANNER_TABLE){
-			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : "";
+			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '';
+		}else{
+			$userExtraSQL = '';
 		}
 
 		$this->addQueryField("Text");
@@ -251,13 +246,7 @@ class weSelectorQuery{
 				$this->addQueryField($val);
 			}
 		}
-		$query = "
-			SELECT " . implode(", ", $this->fields) . "
-			FROM " . $this->db->escape($table) . "
-			WHERE
-				ID = " . intval($id) . "
-				" . (empty($userExtraSQL) ? "" : " " . $userExtraSQL);
-		$this->db->query($query);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . " WHERE ID = " . intval($id) . ' ' . $userExtraSQL);
 		return $this->getResult();
 	}
 
@@ -277,9 +266,7 @@ class weSelectorQuery{
 				$this->addQueryField($val);
 			}
 		}
-		$query = "SELECT " . implode(", ", $this->fields) . " FROM " . $this->db->escape($table) . " WHERE
-				Path = '" . $this->db->escape($path) . "' " . (empty($userExtraSQL) ? "" : " " . $userExtraSQL);
-		$this->db->query($query);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path = "' . $this->db->escape($path) . '" ' .  $userExtraSQL);
 		return $this->getResult();
 	}
 
@@ -307,7 +294,7 @@ class weSelectorQuery{
 	 * @return void
 	 */
 	function addQueryField($field){
-		array_push($this->fields, $field);
+		$this->fields[] = $field;
 	}
 
 	/**
@@ -345,16 +332,16 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table){
-		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 ' . makeOwnersSql(false) . ') ' : '( ');
+		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 ' . makeOwnersSql(false) . ') ' : ' AND ( 1 ');
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
-		} else if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
 			$wsQuery = "";
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery .= " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
+				$wsQuery .= ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '" OR ';
 			}
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
