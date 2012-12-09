@@ -214,7 +214,7 @@ class weSelectorQuery{
 		}
 
 		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID = ' . intval($id) . ' AND ( IsFolder = 1 ' . $ctntQuery . ' ) ' .
-			 $userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
+			$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
 	/**
@@ -235,7 +235,7 @@ class weSelectorQuery{
 
 		if(!defined('BANNER_TABLE') || $table != BANNER_TABLE){
 			$userExtraSQL = $useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '';
-		}else{
+		} else{
 			$userExtraSQL = '';
 		}
 
@@ -266,7 +266,7 @@ class weSelectorQuery{
 				$this->addQueryField($val);
 			}
 		}
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path = "' . $this->db->escape($path) . '" ' .  $userExtraSQL);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path = "' . $this->db->escape($path) . '" ' . $userExtraSQL);
 		return $this->getResult();
 	}
 
@@ -332,7 +332,10 @@ class weSelectorQuery{
 	 * @return string
 	 */
 	function getUserExtraQuery($table){
-		$userExtraSQL = ($table != NAVIGATION_TABLE ? ' AND((1 ' . makeOwnersSql(false) . ') ' : ' AND ( 1 ');
+		if($table == NAVIGATION_TABLE){
+			return '';
+		}
+		$userExtraSQL = ' AND((1 ' . makeOwnersSql(false) . ') ';
 
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
