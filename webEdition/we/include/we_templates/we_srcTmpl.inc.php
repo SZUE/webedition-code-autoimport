@@ -42,14 +42,14 @@ if(!$GLOBALS['we_editmode']){
 	<script  type="text/javascript">
 		<!--
 		var weIsTextEditor = true;
+		top.we_setEditorWasLoaded(false);
+		var countJEditorInitAttempts = 0;
 		var wizardHeight={
 			"open" : 305,
 			"closed" : 140
 		}
 
-
 		function sizeEditor() { // to be fixed (on 12.12.11)
-			//console.log('size called');
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
@@ -72,7 +72,6 @@ if(!$GLOBALS['we_editmode']){
 
 			if (document.weEditorApplet && typeof(document.weEditorApplet.width) != "undefined") {
 				document.weEditorApplet.width = editorWidth;
-
 			}
 
 			if(window.editor && window.editor.frame) {
@@ -91,7 +90,6 @@ if(!$GLOBALS['we_editmode']){
 	}
 	?>
 				if (wizardTable != null) {
-
 					var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
 
 					if (editarea) {
@@ -143,6 +141,19 @@ if(!$GLOBALS['we_editmode']){
 
 		}
 		var editor=null;
+		
+		function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
+			if (document.weEditorApplet.height != 3000) {
+				try {
+					document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+					countJEditorInitAttempts = 0;
+				}catch(err){
+					setTimeout(javaEditorSetCode, 1000);
+				}
+			} else { // change size not yet finished
+				setTimeout(javaEditorSetCode, 1000);
+			}
+		}
 
 		function initEditor() {
 	<?php
@@ -158,19 +169,23 @@ if(!$GLOBALS['we_editmode']){
 			break;
 		case 'java':
 			?>
-							if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager)!="undefined") {
-								try{
-									//console.log("init called");
-									//document.getElementById("weEditorApplet").style.left="0";
-									sizeEditor();
-									document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-									checkAndSetHot();
-								}catch(err){
-									setTimeout(initEditor, 1000);
+							countJEditorInitAttempts++;
+							// imi: console.log("init: " + countJEditorInitAttempts);
+							if(countJEditorInitAttempts < 10){
+								if (document.weEditorApplet && top.weEditorWasLoaded && typeof(document.weEditorApplet.setCode) != "undefined" && typeof(document.weEditorApplet.initUndoManager)!="undefined") {
+									try{
+										sizeEditor();
+										document.getElementById("weEditorApplet").style.left="0";
+										javaEditorSetCode();
+										checkAndSetHot();
+									}catch(err){
+										setTimeout(initEditor, 500);
+									}
+								} else {// imi: console.log("weEditorWasLoaded == false");
+									setTimeout(initEditor, 500);
 								}
 							} else {
-								//console.log("init failed"+top.weEditorWasLoaded +" "+document.weEditorApplet );
-								setTimeout(initEditor, 1000);
+								alert("JavaEditor could not be loaded. Please close this Template and try again."); // TODO: make regular we-Alaert
 							}
 			<?php
 			break;
@@ -193,9 +208,9 @@ if(!$GLOBALS['we_editmode']){
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
 			if (document.weEditorApplet) {
-				var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
-				document.weEditorApplet.height = editorHeight;
-				sizeEditor();
+				var editorHeight = h - (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+				document.weEditorApplet.height=editorHeight;
+				//sizeEditor();
 				/*
 				try{
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
@@ -376,7 +391,7 @@ if(!$GLOBALS['we_editmode']){
 		//-->
 	</script>
 	</head>
-	<body class="weEditorBody" style="overflow:hidden;" onLoad="top.we_setEditorWasLoaded(false);setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
+	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
 	//FIXME: no resize for IE!
 	echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9 ? '' : 'onResize="sizeEditor();"');
 	?>>
@@ -422,12 +437,12 @@ if(!$GLOBALS['we_editmode']){
 				'<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />' .
 				we_html_element::htmlApplet(array(
 					'id' => 'weEditorApplet',
-					'style' => 'position:relative;left:0px;',
+					'style' => 'position:relative;left:-4000px;',
 					'name' => 'weEditorApplet',
 					'code' => 'Editor.class',
 					'archive' => 'editor.jar',
-					'width' => 300,
-					'height' => 300,
+					'width' => 3000,
+					'height' => 3000, // important! function javaEditorSetCode() uses this value as condition
 					'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/template/editor',
 					), '', $params);
 		}

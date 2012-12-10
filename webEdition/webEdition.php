@@ -412,6 +412,8 @@ function we_sbmtFrmC(target,url) {
 }
 
 function we_setEditorWasLoaded(flag) {
+	// imi: console.log("we_setEditorWasLoaded: " + flag);
+	//flag = true; //uncomment to keep first weEditorWasLoaded=true for the rest of the session
 	self.weEditorWasLoaded = flag;
 }
 
