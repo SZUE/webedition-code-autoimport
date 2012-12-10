@@ -245,12 +245,13 @@ class weDialog{
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/dialogCss.css') . 
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') . 
 			'</head>';
 	}
 
 	function getTinyMceJS(){ //called as parent::getTinyMceJS() from subclasses
 		return
+			we_html_element::jsElement('isWeDialog = true;') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .

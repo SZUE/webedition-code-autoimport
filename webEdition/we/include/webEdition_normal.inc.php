@@ -55,8 +55,15 @@ function pWebEdition_JSFunctions(){
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
 
-		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== -1){
+		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== null){
 			var tinyDialog = tinyMceDialog;
+			try{
+				tinyDialog.close();
+			}catch(err){}
+		}
+
+		if(typeof(tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null){
+			var tinyDialog = tinyMceSecondaryDialog;
 			try{
 				tinyDialog.close();
 			}catch(err){}
