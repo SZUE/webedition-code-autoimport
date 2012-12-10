@@ -216,6 +216,10 @@ class we_langlink_listview extends listviewBase{
 			$Locale = explode('_', $this->foundlinks[$count]["Locale"]);
 			$this->Record["WE_TARGETCOUNTRY"] = isset($Locale[1])?$Locale[1]:'';
 			$this->Record["WE_TARGETLANGUAGE"] = isset($Locale[0])?$Locale[0]:'';
+                        
+                        //added for #7084
+                        $this->Record['WE_LANGNAME']=Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language',$this->Record["WE_TARGETLANGUAGE"]);
+                        
 			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
 			} else{
