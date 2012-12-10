@@ -72,8 +72,15 @@ echo we_html_element::jsElement('
 		}catch(err){}
 	}
 
-	if(typeof(top.tinyMceDialog) !== "undefinded" && top.tinyMceDialog !== -1){
+	if(typeof(top.tinyMceDialog) !== "undefinded" && top.tinyMceDialog !== null){
 		var tinyDialog = top.tinyMceDialog;
+		try{
+			tinyDialog.close();
+		}catch(err){}
+	}
+	
+	if(typeof(top.tinyMceSecondaryDialog) !== "undefinded" && top.tinyMceSecondaryDialog !== null){
+		var tinyDialog = top.tinyMceSecondaryDialog;
 		try{
 			tinyDialog.close();
 		}catch(err){}

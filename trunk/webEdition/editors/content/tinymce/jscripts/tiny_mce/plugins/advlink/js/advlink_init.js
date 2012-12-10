@@ -104,11 +104,11 @@ function getUrlParts(url) {
 	var anchArr = url.split('#');
 	u = anchArr.shift();
 	anch = (anchArr[0]) ? anchArr.join('#') : anch;
-
+/*
 	var paramArr = u.split('?');
 	u = paramArr.shift();
 	param = (paramArr[0]) ? paramArr.join('?') : param;
-
+*/
 	return new Array(u, anch, param);
 }
 

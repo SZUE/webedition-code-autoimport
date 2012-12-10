@@ -20,14 +20,39 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 var tinyMceDialog = null;
+var tinyMceSecondaryDialog = null;
 
 function weRegisterTinyMcePopup(win){
-	if(tinyMceDialog !== null){
+	var id = (typeof(win.document.body.id) == "undefined") ? "" : win.document.body.id;
+	
+	if(id != "colorpicker"){
+		if(tinyMceDialog !== null){
+			try{
+				tinyMceDialog.close();
+			}catch(err){}
+		}
+		if(tinyMceSecondaryDialog !== null){
+			try{
+				tinyMceSecondaryDialog.close();
+			}catch(err){}
+		}
+		tinyMceDialog = win;
+		
+	} else { // secondary dialog
+		if(tinyMceSecondaryDialog !== null){
+			try{
+				tinyMceSecondaryDialog.close();
+			}catch(err){}
+		} 
+		tinyMceSecondaryDialog = win;
+	}
+}
+
+function weCloseSecondaryDialog(){
+	if(tinyMceSecondaryDialog !== null){
 		try{
-			tinyMceDialog.close();
+			tinyMceSecondaryDialog.close();
 		}catch(err){}
-	} 
-	tinyMceDialog = win;
+	}
 }

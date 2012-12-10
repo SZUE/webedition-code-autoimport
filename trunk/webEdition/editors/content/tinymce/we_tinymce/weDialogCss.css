@@ -17,6 +17,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
-
-input[type="radio"] {border:0; background:transparent;}
-input[type="checkbox"] {border:0; background:transparent;}
+/* CSS for weDialogs */
+.weDialogBody input[type="radio"] {
+border:0; background:transparent;
+}
+.weDialogBody input[type="checkbox"] {
+border:0; background:transparent;
+}
