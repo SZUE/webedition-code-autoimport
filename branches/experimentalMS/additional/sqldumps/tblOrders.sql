@@ -1,8 +1,8 @@
-CREATE TABLE ###TBLPREFIX###tblOrders (
-  IntID int(11) unsigned NOT NULL auto_increment,
-  IntOrderID int(11) unsigned default NULL,
-  IntCustomerID int(11) unsigned default NULL,
-  IntArticleID int(11) unsigned default NULL,
+CREATE TABLE tblOrders (
+  IntID int  NOT NULL IDENTITY(1,1),
+  IntOrderID int  default NULL,
+  IntCustomerID int  default NULL,
+  IntArticleID int  default NULL,
   IntQuantity float default NULL,
   DateOrder datetime default NULL,
   DateConfirmation datetime default NULL,
@@ -37,8 +37,8 @@ CREATE TABLE ###TBLPREFIX###tblOrders (
   MailCustomJ DATETIME NULL,
   MailFinished DATETIME NULL,
   Price varchar(20) default NULL,
-  IntPayment_Type tinyint(4) unsigned default NULL,
-  strSerial longtext NOT NULL,
-  strSerialOrder longtext NOT NULL,
+  IntPayment_Type tinyint  default NULL,
+  strSerial text NOT NULL,
+  strSerialOrder text NOT NULL,
   PRIMARY KEY  (IntID)
-) ENGINE=MyISAM;
+) 

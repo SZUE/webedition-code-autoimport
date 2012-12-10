@@ -293,7 +293,7 @@ EOF;
 		$d = dir($dirname);
 		while (false !== ($entry = $d->read())) {
 			//ignore Tempfiles
-			if($entry != '.' && $entry != '..' && substr($entry,-1)!='~' ) {
+			if($entry != '.' && $entry != '..'  && $entry != '.svn' && substr($entry,-1)!='~' ) {
 				if(is_dir($dirname.$entry)) {
 					$tmpfiles = self::readFiles($dirname.$entry.'/', $prefix.'/'.$entry,$version);
 					$files = array_merge($files, $tmpfiles);

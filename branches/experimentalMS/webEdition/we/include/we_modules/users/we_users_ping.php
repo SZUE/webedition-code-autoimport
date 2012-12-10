@@ -25,8 +25,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop('ping');
 if($_SESSION["user"]["ID"]){
-	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
-	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+	if(DB_CONNECT=='msconnect'){
+		$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=".time()." WHERE ID=" . $_SESSION["user"]["ID"]);
+		$zeit=time()+intval(PING_TIME + PING_TOLERANZ);
+		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=\''.date('Y-m-d H:i:s').'\' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+		
+	} else {
+		$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
+		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+	}
 }
 
 echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -82,6 +89,6 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 	//-->
 </script>
 </head>
-<body bgcolor="white" onload="YUIdoAjax();">
+<body bgcolor="white" onLoad="YUIdoAjax();">
 </body>
 </html>

@@ -38,7 +38,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "DocType");
+		
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots, "FromOk", "ToOk", "From", "To");
 		}
@@ -314,15 +314,17 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		/* version */
-		$version = new weVersions();
+		//msconnect
+		//$version = new weVersions();
 
 		// allways store in temp-table
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
-			$version->save($this);
-		}
+		//msconnect
+		//if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
+		//	$version->save($this);
+		//}
 
 		/* hook */
 		if($skipHook == 0){
@@ -373,10 +375,13 @@ abstract class we_textContentDocument extends we_textDocument{
 		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
 		$this->rewriteNavigation();
 //		}
+		//msconnect
+		/*
 		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
 			$version = new weVersions();
 			$version->save($this, 'published');
 		}
+		*/
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('publish', '', array($this));
@@ -413,10 +418,13 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->rewriteNavigation();
 
 		/* version */
+		//msconnect
+		/*
 		if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
+		*/
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('unpublish', '', array($this));
@@ -475,7 +483,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->saveInSession($saveArr);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE))
 			return false;
-		if(!$this->i_savePersistentSlotsToDB("Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID"))
+		if(!$this->i_savePersistentSlotsToDB("Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,WebUserID"))
 			return false;
 		if($write){
 			return $this->i_writeDocument();

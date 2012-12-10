@@ -1,30 +1,30 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/"
-/* query separator */
 
-CREATE TABLE ###TBLPREFIX###tblWebUser (
-  ID bigint(20) unsigned NOT NULL auto_increment,
+CREATE TABLE tblWebUser (
+  ID bigint  NOT NULL IDENTITY(1,1),
   Username varchar(255) NOT NULL default '',
-  `Password` varchar(255) NOT NULL default '',
-  `Anrede_Anrede` enum('','Herr','Frau') NOT NULL,
+  "Password" varchar(255) NOT NULL default '',
+  Anrede_Anrede varchar(25) CHECK(Anrede_Anrede IN ('','Herr','Frau')) NOT NULL,
   Anrede_Titel varchar(200) NOT NULL default '',
   Forename varchar(128) NOT NULL default '',
   Surname varchar(128) NOT NULL default '',
-  LoginDenied tinyint(1) unsigned NOT NULL default '0',
-  MemberSince int(10) unsigned NOT NULL default '0',
-  LastLogin int(10) unsigned NOT NULL default '0',
-  LastAccess int(10) unsigned NOT NULL default '0',
-  AutoLoginDenied tinyint(1) unsigned NOT NULL default '0',
-  AutoLogin tinyint(1) unsigned NOT NULL default '0',
-  ModifyDate bigint(20) unsigned NOT NULL default '0',
-  `ModifiedBy` enum('','backend','frontend','external') NOT NULL default'',
-  ParentID bigint(20) unsigned NOT NULL default '0',
-  Path varchar(255) default NULL,
-  IsFolder tinyint(1) unsigned default NULL,
+  LoginDenied tinyint  NOT NULL default '0',
+  MemberSince int  NOT NULL default '0',
+  LastLogin int  NOT NULL default '0',
+  LastAccess int  NOT NULL default '0',
+  AutoLoginDenied tinyint  NOT NULL default '0',
+  AutoLogin tinyint  NOT NULL default '0',
+  ModifyDate bigint  NOT NULL default '0',
+  ModifiedBy varchar(25) CHECK(ModifiedBy IN('','backend','frontend','external')) NOT NULL default'',
+  ParentID bigint  NOT NULL default '0',
+  "Path" varchar(255) default NULL,
+  IsFolder tinyint  default NULL,
   Icon varchar(255) default NULL,
-  `Text` varchar(255) default NULL,
-  `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
-  `Newsletter_HTMLNewsletter` enum('','ja','0','1','2') NOT NULL,
+  "Text" varchar(255) default NULL,
+  Newsletter_Ok varchar(25) CHECK(Newsletter_Ok IN ('','ja','0','1','2')) NOT NULL,
+  Newsletter_HTMLNewsletter varchar(25) CHECK(Newsletter_HTMLNewsletter  IN('','ja','0','1','2')) NOT NULL,
   PRIMARY KEY  (ID),
-  UNIQUE KEY `Username` (`Username`),
-  KEY Surname (Surname(3))
-) ENGINE=MyISAM;
+  CONSTRAINT Username UNIQUE(Username)
+  
+) 
+CREATE INDEX idx_tblWebUser_Surname ON tblWebUser(Surname);
+CREATE INDEX idx_tblWebUser_Username ON tblWebUser(Username);

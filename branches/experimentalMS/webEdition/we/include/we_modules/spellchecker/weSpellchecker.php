@@ -506,7 +506,7 @@ print we_button::create_state_changer(false);
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;
 	while(false !== ($entry = $_dir->read())) {
-		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
+		if($entry != '.' && $entry != '..' && $entry != '.svn' && strpos($entry, '.zip') !== false){
 			$_name = str_replace('.zip', '', $entry);
 			if(in_array($_name, $spellcheckerConf['active'])){
 				$_selectCode .= '<option value="' . $_name . '" ' . ((isset($_SESSION['weS']['dictLang']) && $_SESSION['weS']['dictLang'] == $_name) ? 'selected' : '') . '>' . $_name . '</option>';

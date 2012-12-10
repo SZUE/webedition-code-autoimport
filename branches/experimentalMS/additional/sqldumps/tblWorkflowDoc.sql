@@ -1,8 +1,8 @@
-CREATE TABLE ###TBLPREFIX###tblWorkflowDoc (
-  ID int(11) unsigned NOT NULL auto_increment,
-  workflowID int(11) unsigned NOT NULL default '0',
-  documentID int(11) unsigned NOT NULL default '0',
-  userID int(11) unsigned NOT NULL default '0',
-  `Status` tinyint(4) unsigned NOT NULL default '0',
+CREATE TABLE tblWorkflowDoc (
+  ID int  NOT NULL IDENTITY(1,1),
+  workflowID int  NOT NULL default '0',
+  documentID int  NOT NULL default '0',
+  userID int  NOT NULL default '0',
+  "Status" tinyint  NOT NULL default '0',
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+)

@@ -1,11 +1,15 @@
-CREATE TABLE ###TBLPREFIX###tblNewsletterGroup (
-  ID bigint(20) unsigned NOT NULL auto_increment,
-  NewsletterID bigint(20) NOT NULL default '0',
-  Emails longtext NOT NULL,
-  Customers longtext NOT NULL,
-  SendAll tinyint(1) unsigned NOT NULL default '0',
-  Filter blob NOT NULL,
-  Extern longtext,
-  PRIMARY KEY (ID),
-  KEY NewsletterID (NewsletterID)
-) ENGINE=MyISAM;
+CREATE TABLE tblNewsletterGroup (
+  ID bigint  NOT NULL IDENTITY(1,1),
+  NewsletterID bigint NOT NULL default '0',
+  Emails text NOT NULL,
+  Customers text NOT NULL,
+  SendAll tinyint  NOT NULL default '0',
+  Filter varbinary(max) NOT NULL,
+  Extern text,
+  PRIMARY KEY (ID)
+ 
+) 
+/*
+ KEY NewsletterID (NewsletterID)
+
+*/

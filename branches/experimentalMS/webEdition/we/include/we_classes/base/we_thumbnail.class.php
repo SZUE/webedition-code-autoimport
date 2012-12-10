@@ -606,7 +606,7 @@ class we_thumbnail{
 		$filestodelete = array();
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())) {
-				if($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . intval($id) . '_(.+)|', $entry)){
+				if($entry != '.' && $entry != '..'  && $entry != '.svn' && preg_match('|^[0-9]+_' . intval($id) . '_(.+)|', $entry)){
 					$filestodelete[] = $thumbsdir . "/" . $entry;
 				}
 			}
@@ -622,7 +622,7 @@ class we_thumbnail{
 		$filestodelete = array();
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())) {
-				if($entry != '.' && $entry != '..' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
+				if($entry != '.' && $entry != '..'  && $entry != '.svn' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
 					$filestodelete[] = $thumbsdir . '/' . $entry;
 				}
 			}
@@ -631,7 +631,7 @@ class we_thumbnail{
 		$dir_obj = @dir($previewDir);
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())) {
-				if($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . ".")){
+				if($entry != '.' && $entry != '..' && $entry != '.svn' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . ".")){
 					$filestodelete[] = $previewDir . '/' . $entry;
 				}
 			}

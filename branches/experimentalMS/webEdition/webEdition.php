@@ -40,7 +40,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 	if(defined("SCHEDULE_TABLE")){
 		// convert old schedule data to new format
-		we_schedpro::check_and_convert_to_sched_pro();
+		//we_schedpro::check_and_convert_to_sched_pro();
 		we_schedpro::trigger_schedule();
 	}
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
@@ -60,9 +60,14 @@ cleanTempFiles();
  */
 //	unlock everything old, when a new window is opened.
 if(!isset($_REQUEST['we_cmd'][0]) || $_REQUEST['we_cmd'][0] != "edit_include_document"){
-	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<NOW()');
+	$DB_WE->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<Getdate()');
 }
-$DB_WE->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');
+if(DB_CONNECT=='msconnect'){
+	$DB_WE->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<'. (string) ((int)time()- (int)(PING_TIME + PING_TOLERANZ)));
+} else {
+	$DB_WE->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (PING_TIME + PING_TOLERANZ) . ')');	
+}
+
 
 we_html_tools::htmlTop('webEdition - ' . $_SESSION["user"]["Username"]);
 

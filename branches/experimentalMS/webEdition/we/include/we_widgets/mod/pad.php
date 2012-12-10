@@ -85,9 +85,7 @@ switch($_REQUEST['we_cmd'][2]){
 			ValidUntil
 		) VALUES (
 			'" . ($_title) . "',
-			" . intval($_SESSION['user']['ID']) . ",
-			CURDATE(),
-			'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
+			" . intval($_SESSION['user']['ID']) . ",". (DB_CONNECT=='msconnect' ? date('Y-m-d H:i:s',time()):'CURDATE()').",'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
 			'" . $GLOBALS['DB_WE']->escape($entText) . "',
 			'" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
 			'" . $GLOBALS['DB_WE']->escape($q_Valid) . "',

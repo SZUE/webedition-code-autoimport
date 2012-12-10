@@ -29,8 +29,14 @@ class rpcPingCmd extends rpcCmd{
 		$resp = new rpcResponse();
 
 		if($_SESSION["user"]["ID"]){
-			$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=' . intval($_SESSION["user"]["ID"]));
-			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+			if(DB_CONNECT=='msconnect'){
+				$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=\''.time().'\' WHERE ID=' . intval($_SESSION["user"]["ID"]));
+				$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=\''.date('Y-m-d H:i',time()+PING_TIME + PING_TOLERANZ).'\' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+				
+			} else {
+				$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=' . intval($_SESSION["user"]["ID"]));
+				$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+			}
 		}
 
 		if(defined("MESSAGING_SYSTEM")){

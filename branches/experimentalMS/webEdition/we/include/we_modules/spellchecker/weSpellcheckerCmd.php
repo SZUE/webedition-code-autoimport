@@ -195,7 +195,7 @@ if(isset($_REQUEST['cmd'][0])){
 
 			$_i = 0;
 			while(false !== ($entry = $_dir->read())) {
-				if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
+				if($entry != '.' && $entry != '..' && $entry != '.svn' && strpos($entry, '.zip') !== false){
 					$_i++;
 					$table->addRow();
 

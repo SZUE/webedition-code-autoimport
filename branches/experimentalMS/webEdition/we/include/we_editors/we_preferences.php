@@ -688,7 +688,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_language_directory = dir(WE_INCLUDES_PATH . 'we_language');
 
 			while(false !== ($entry = $_language_directory->read())) {
-				if($entry != '.' && $entry != '..'){
+				if($entry != '.' && $entry != '..' && $entry != '.svn'){
 					if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $entry)){
 						$_language[$entry] = $entry;
 					}
@@ -2661,6 +2661,7 @@ else {
 				$_db_connect->addOption('mysqli_connect', "mysqli_connect");
 				$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
 			}
+			addOption('msconnect', "msconnect");
 			/* $_db_connect->addOption(4, "pdo_connect");
 			  $_db_connect->addOption(5, "pdo_pconnect"); */
 			$_db_connect->selectOption(DB_CONNECT);

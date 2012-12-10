@@ -105,6 +105,7 @@ $GLOBALS['we_doc'] = clone($we_doc);
 
 //if document opens get initial object for versioning if no versions exist
 if(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == 'load_edit_footer' || $_REQUEST['we_cmd'][0] == 'switch_edit_page')){
-	$version = new weVersions();
-	$version->setInitialDocObject($GLOBALS['we_doc']);
+	//msconnect unnötig, aber auch in der normalen version
+	//$version = new weVersions();
+	//$version->setInitialDocObject($GLOBALS['we_doc']);
 }

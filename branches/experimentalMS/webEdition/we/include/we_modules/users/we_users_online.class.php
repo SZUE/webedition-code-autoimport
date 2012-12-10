@@ -39,9 +39,12 @@ class we_users_online{
 		$_u = '';
 		$_color = array('red', 'blue', 'green', 'orange');
 		$_i = $_k = 0;
-
-		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping > UNIX_TIMESTAMP(DATE_SUB( NOW(), INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' second ) ) ORDER BY Ping DESC');
-
+		$zeit=time()-intval(PING_TIME + PING_TOLERANZ);
+		if(DB_CONNECT=='msconnect'){
+			$DB_WE->query("SELECT ID,username,Ping  FROM " . USER_TABLE . " WHERE Ping > '".$zeit ."' ORDER BY Ping DESC;");
+		} else {
+			$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping > UNIX_TIMESTAMP(DATE_SUB( NOW(), INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' second ) ) ORDER BY Ping DESC');
+		}
 		while($DB_WE->next_record()) {
 			$this->num_uo++;
 			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f("ID")) ? 'bold' : 'bold';

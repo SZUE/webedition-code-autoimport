@@ -79,6 +79,7 @@ abstract class listviewBase{
 		$this->DB_WE = new DB_WE;
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
+		$this->maxItemsPerPage=0;//msconnect
 		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
 		$this->start = (isset($_REQUEST['we_lv_start_' . $this->name]) && $_REQUEST['we_lv_start_' . $this->name]) ? abs($_REQUEST['we_lv_start_' . $this->name]) : 0;

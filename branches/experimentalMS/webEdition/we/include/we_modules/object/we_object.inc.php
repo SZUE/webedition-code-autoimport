@@ -138,6 +138,32 @@ class we_object extends we_document{
 		}
 
 		if(!$this->wasUpdate){
+			if(DB_CONNECT=='msconnect'){
+			$q = " ID BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY (ID),
+				OF_ID BIGINT NOT NULL,
+				OF_ParentID BIGINT NOT NULL default '0',
+				OF_Text VARCHAR(255) NOT NULL default '',
+				OF_Path VARCHAR(255) NOT NULL default '',
+				OF_Url VARCHAR(255) NOT NULL default '',
+				OF_TriggerID  BIGINT NOT NULL  default '0',
+				OF_Workspaces VARCHAR(255) NOT NULL default '',
+				OF_ExtraWorkspaces VARCHAR(255) NOT NULL default '',
+				OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL default '',
+				OF_Templates VARCHAR(255) NOT NULL default '',
+				OF_ExtraTemplates VARCHAR(255) NOT NULL default '',
+				OF_Category VARCHAR(255) NOT NULL default '',
+				OF_Published int NOT NULL default '',
+				OF_IsSearchable tinyint NOT NULL default '1',
+				OF_Charset VARCHAR(64) NOT NULL default '',
+				OF_WebUserID BIGINT NOT NULL default '0',
+				OF_Language VARCHAR(5) default 'NULL',";
+			$indexe = array(
+				"CREATE INDEX idx_TABELLE_OF_WebUserID ON TABELLE(OF_WebUserID);",
+				"CREATE INDEX idx_TABELLE_published ON TABELLE(OF_ID,OF_Published,OF_IsSearchable);",
+				"CREATE INDEX idx_TABELLE_OF_IsSearchable ON TABELLE(OF_IsSearchable);",
+			);
+					
+			} else {
 			$q = ' ID BIGINT NOT NULL AUTO_INCREMENT,
 				OF_ID BIGINT NOT NULL,
 				OF_ParentID BIGINT NOT NULL,
@@ -164,7 +190,7 @@ class we_object extends we_document{
 				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
 				'KEY (`OF_IsSearchable`)',
 			);
-
+			}
 			if(isset($this->elements['neuefelder']['dat'])){
 
 				$neu = explode(',', $this->elements['neuefelder']['dat']);
@@ -227,7 +253,11 @@ class we_object extends we_document{
 						$q .= $this->switchtypes($cur) . ',';
 						//add index for complex queries
 						if($this->getElement($cur . 'dtype', 'dat') == 'object'){
-							$indexe[] = 'KEY (' . $name . ')';
+							if(DB_CONNECT=='msconnect'){//msconnectfixme index setzen
+								$indexe[] = "CREATE INDEX idx_TABELLE_".$name." ON TABELLE(". $name .");";
+							} else {
+								$indexe[] = 'KEY (' . $name . ')';
+							}
 						}
 					}
 				}
@@ -266,8 +296,14 @@ class we_object extends we_document{
 			}
 
 			$this->DB_WE->delTable($ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
-
+			if(DB_CONNECT=='msconnect'){
+				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q .  ')');
+				$indexeimplodes=implode(' ', $indexe);
+				$indexeimplodes=str_replace('TABELLE',$ctable,$indexeimplodes);
+				$this->DB_WE->query($indexeimplodes);
+			} else {
+				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
+			}
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
 
@@ -291,15 +327,31 @@ class we_object extends we_document{
 						if(!in_array($info['name'], $fieldsToDelete)){
 
 							$nam = $this->getElement($info['name'] . 'dtype', 'dat') . '_' . $this->getElement($info['name'], 'dat');
-							$q .= ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .
-								$this->switchtypes($info['name']);
+							if(DB_CONNECT=='msconnect'){
+								$told=explode('_',$info['name'],2);
+								$tnew=explode('_',$nam,2);
+								if(($told[1] != $tnew[1]) && ($told[0] == $tnew[0])){//nur der Name ändert sich
+									//$q .= " ALTER COLUMN ". $info['name'];
+									$q .= "sp_rename '".$ctable.'.'.$info['name']."','".$nam."' , 'COLUMN'; ";
+									
+								}
+								if(($told[1] == $tnew[1]) && ($told[0] != $tnew[0])){
+									$q .= "ALTER TABLE " . $ctable . ' ALTER COLUMN '.$info['name'].' '. $this->switchtypes($info['name']).';';
+									$q .= "sp_rename '".$ctable.'.'.$info['name']."','".$nam."' , 'COLUMN'; ";
+								}
+								
+							} else {
+								$q .= ' CHANGE `' . $info['name'] . '` `' . $nam . '` ' .$this->switchtypes($info['name']);
+							}
 							//change from object is indexed to unindexed
+							//msconnect
+							/*
 							if((strpos($info['name'], 'object_') === 0) && (strpos($nam, 'object_') !== 0) && (strpos($info['flags'], 'multiple_key') !== false)){
 								$q.=', DROP KEY `' . $info['name'] . '` ';
 							} else if((strpos($info['name'], 'object_') !== 0) && (strpos($nam, 'object_') === 0) && (strpos($info['flags'], 'multiple_key') === false)){
 								$q.=', ADD INDEX (`' . $info['name'] . '`) ';
 							}
-
+							*/
 							$arrt[$nam] = array(
 								'default' => (strpos($info['name'], 'date_') === 0 ?
 									($this->elements[$info['name'] . 'defaultThumb']['dat'] ? '' : $this->elements[$info['name'] . 'default']['dat']) :
@@ -358,9 +410,13 @@ class we_object extends we_document{
 								}
 							}
 						} else{
-							$q .= ' DROP `' . $info['name'] . '` ';
+							if(DB_CONNECT=='msconnect'){
+								$q .= 'ALTER TABLE ' . $ctable . '   DROP COLUMN ' . $info['name'] . ' ';
+							} else {
+								$q .= ' DROP `' . $info['name'] . '` ';
+							}
 						}
-						$q .= ',';
+						$q .= '|';
 					}
 				}
 			}
@@ -370,7 +426,11 @@ class we_object extends we_document{
 			foreach($neu as $cur){
 				if(isset($cur) && $cur != ''){
 					$nam = $this->getElement($cur . 'dtype', 'dat') . '_' . $this->getElement($cur, 'dat');
-					$q .= ' ADD `' . $nam . '` ';
+					if(DB_CONNECT=='msconnect'){
+						$q .= 'ALTER TABLE ' . $ctable . ' ADD ' . $nam . ' ';
+					} else {
+						$q .= ' ADD `' . $nam . '` ';
+					}
 					$arrt[$nam] = array(
 						'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
 						'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
@@ -427,12 +487,12 @@ class we_object extends we_document{
 					$q .= $this->switchtypes($cur);
 					//add index for complex queries
 					if($this->getElement($cur . 'dtype', 'dat') == 'object'){
-						$q .= ', ADD INDEX (`' . $nam . '`)';
+						// $q .= ', ADD INDEX (`' . $nam . '`)'; msconnectfixme add index
 					}
-					$q .= ',';
+					$q .= '|';
 				}
 			}
-			$q = rtrim($q, ',');
+			$q = rtrim($q, '|');
 
 			$this->DefaultCategory = $this->Category;
 
@@ -470,10 +530,14 @@ class we_object extends we_document{
 				}
 			}
 
-			$qa = explode(',', $q);
+			$qa = explode('|', $q);
 			foreach($qa as $v){
 				if($v != ''){
-					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ' . $v);
+					if(DB_CONNECT=='msconnect'){
+						$this->DB_WE->query($v);
+					} else {
+						$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ' . $v);
+					}
 				}
 			}
 
@@ -485,7 +549,11 @@ class we_object extends we_document{
 
 		////// resave the line O to O.....
 		$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-		$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+		if(DB_CONNECT=='msconnect'){
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
+		} else {
+			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+		}
 		////// resave the line O to O.....
 
 		unset($this->elements);
@@ -496,37 +564,37 @@ class we_object extends we_document{
 	function switchtypes($name){
 		switch($this->getElement($name . 'dtype', 'dat')){
 			case 'meta':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 255)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
+				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 255)) ? $this->getElement($name . "length", "dat") : 255) . ") ";
 			case 'date':
-				return ' INT(11) NOT NULL ';
+				return " INT ";//msconnect INT(12)
 			case 'input':
-				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 4096)) ? $this->getElement($name . "length", "dat") : 255) . ") NOT NULL ";
+				return ' VARCHAR(' . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 4096)) ? $this->getElement($name . "length", "dat") : 255) . ") ";
 			case "country":
 			case "language":
-				return " VARCHAR(2) NOT NULL ";
+				return " VARCHAR(2) ";
 			case "link":
 			case "href":
-				return " TEXT NOT NULL ";
+				return " TEXT  ";
 			case "text":
-				return " LONGTEXT NOT NULL ";
+				return " TEXT  ";//msconnect LONGTEXT
 				break;
 			case "img":
 			case "flashmovie":
 			case "quicktime":
 			case "binary":
-				return " INT(11) DEFAULT '0' NOT NULL ";
+				return " INT DEFAULT '0' NOT NULL ";//msconnect INT(12)
 			case "checkbox":
-				return " INT(1) DEFAULT '" . ($this->getElement($name . "default", "dat") == "1" ? "1" : "0") . "' NOT NULL ";
+				return " TINYINT DEFAULT '" . ($this->getElement($name . "default", "dat") == "1" ? "1" : "0") . "' NOT NULL ";//msconnect INT(1)
 			case "int":
-				return " INT(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 256)) ? $this->getElement($name . "length", "dat") : "11") . ") DEFAULT NULL ";
+				return " INT DEFAULT NULL ";// msconnect " INT(" . (($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < 256)) ? $this->getElement($name . "length", "dat") : "11") . ") DEFAULT NULL ";
 			case "float":
-				return " DOUBLE DEFAULT NULL ";
+				return " float(53) DEFAULT NULL ";//msconnect double
 			case "object":
-				return " BIGINT(20) DEFAULT '0' NOT NULL ";
+				return " BIGINT DEFAULT '0' NOT NULL ";//msconnect INT(12)
 			case "multiobject":
-				return " TEXT NOT NULL ";
+				return " TEXT  ";
 			case 'shopVat':
-				return ' TEXT NOT NULL';
+				return " TEXT   ";
 			default:
 				return '';
 		}

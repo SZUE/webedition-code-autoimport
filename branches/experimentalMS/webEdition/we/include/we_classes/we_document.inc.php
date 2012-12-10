@@ -647,7 +647,8 @@ class we_document extends we_root{
 			}
 		}
 		/* version */
-		$version = new weVersions();
+		//msconnect
+		//$version = new weVersions();
 
 		if(!parent::we_save($resave)){
 			return false;
@@ -662,14 +663,15 @@ class we_document extends we_root{
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
-
+		//msconnect
+		/*
 		if($this->ContentType == 'application/x-shockwave-flash' || $this->ContentType == 'image/*' || $this->ContentType == 'text/weTmpl' //#4120 hinzugef�gt
 			|| $this->ContentType == 'video/quicktime' || $this->ContentType == 'text/js' || $this->ContentType == 'text/css'
 			|| $this->ContentType == 'text/plain' || $this->ContentType == 'text/xml' || $this->ContentType == 'application/*'){
 
 			$version->save($this);
 		}
-
+		*/
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));

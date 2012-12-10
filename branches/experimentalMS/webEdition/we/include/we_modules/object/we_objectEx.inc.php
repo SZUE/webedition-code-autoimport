@@ -35,7 +35,32 @@ class we_objectEx extends we_object{
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 		if(!$this->wasUpdate){
-			$q = ' ID BIGINT NOT NULL AUTO_INCREMENT,
+			if(DB_CONNECT=='msconnect'){
+				$q = " ID BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY (ID),
+				OF_ID BIGINT NOT NULL,
+				OF_ParentID BIGINT NOT NULL default '0',
+				OF_Text VARCHAR(255) NOT NULL default '',
+				OF_Path VARCHAR(255) NOT NULL default '',
+				OF_Url VARCHAR(255) NOT NULL default '',
+				OF_TriggerID  BIGINT NOT NULL  default '0',
+				OF_Workspaces VARCHAR(255) NOT NULL default '',
+				OF_ExtraWorkspaces VARCHAR(255) NOT NULL default '',
+				OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL default '',
+				OF_Templates VARCHAR(255) NOT NULL default '',
+				OF_ExtraTemplates VARCHAR(255) NOT NULL default '',
+				OF_Category VARCHAR(255) NOT NULL default '',
+				OF_Published int NOT NULL default '',
+				OF_IsSearchable tinyint NOT NULL default '1',
+				OF_Charset VARCHAR(64) NOT NULL default '',
+				OF_WebUserID BIGINT NOT NULL default '0',
+				OF_Language VARCHAR(5) default 'NULL',";
+				$indexe = array(
+				"CREATE INDEX idx_TABELLE_OF_WebUserID ON TABELLE(OF_WebUserID);",
+				"CREATE INDEX idx_TABELLE_published ON TABELLE(OF_ID,OF_Published,OF_IsSearchable);",
+				"CREATE INDEX idx_TABELLE_OF_IsSearchable ON TABELLE(OF_IsSearchable);",
+				);
+			} else {
+				$q = ' ID BIGINT NOT NULL AUTO_INCREMENT,
 				OF_ID BIGINT NOT NULL,
 				OF_ParentID BIGINT NOT NULL,
 				OF_Text VARCHAR(255) NOT NULL,
@@ -54,8 +79,8 @@ class we_objectEx extends we_object{
 				OF_WebUserID BIGINT NOT NULL,
 				OF_Language VARCHAR(5) default "NULL", ';
 
-			$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
-
+				$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
+			}
 			$this->SerializedArray = unserialize($this->DefaultValues);
 
 			$qarr = array();
@@ -69,7 +94,11 @@ class we_objectEx extends we_object{
 						$qarr[] = $key . $type;
 						//add index for complex queries
 						if($arr[0] == 'object'){
-							$indexe .= ', KEY ' . $key . ' (' . $key . ')';
+							if(DB_CONNECT=='msconnect'){//msconnectfixme index setzen
+								$indexe[] = "CREATE INDEX idx_TABELLE_".$name." ON TABELLE(". $name .");";
+							} else {
+								$indexe .= ', KEY ' . $key . ' (' . $key . ')';
+							}
 						}
 					}
 				}
@@ -88,9 +117,18 @@ class we_objectEx extends we_object{
 				$Collation = DB_COLLATION;
 				$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
 			}
+			if(DB_CONNECT=='msconnect'){
+				$DB_WE->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '". $ctable."') DROP TABLE ".OBJECT_X_TABLE . $ctable);
 
-			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', PRIMARY KEY (ID)' . $indexe . ') ENGINE = MYISAM ' . $charset_collation);
+				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q .  ')');
+				$indexeimplodes=implode(' ', $indexe);
+				$indexeimplodes=str_replace('TABELLE',$ctable,$indexeimplodes);
+				$this->DB_WE->query($indexeimplodes);
+			} else {
+				$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
+				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', PRIMARY KEY (ID)' . $indexe . ') ENGINE = MYISAM ' . $charset_collation);
+			}
+			
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
@@ -104,7 +142,11 @@ class we_objectEx extends we_object{
 
 			////// resave the line O to O.....
 			$this->DB_WE->query('DELETE FROM ' . $ctable . ' WHERE OF_ID=0 OR ID=0');
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+			if(DB_CONNECT=='msconnect'){
+				$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
+			} else {
+				$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
+			}
 			////// resave the line O to O.....
 		} else{
 			$this->SerializedArray = unserialize($this->DefaultValues);
@@ -139,7 +181,7 @@ class we_objectEx extends we_object{
 					if(!empty($type)){
 						$add[$fieldname] = $fieldname . $type;
 						if($isObject){
-							$add[$fieldname . '_key'] = ' INDEX (' . $fieldname . ')';
+							//$add[$fieldname . '_key'] = ' INDEX (' . $fieldname . ')'; //nsconnectfixme key
 						}
 					}
 				}
@@ -155,11 +197,19 @@ class we_objectEx extends we_object{
 			}
 
 			foreach($drop as $key => $value){
-				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
+				if(DB_CONNECT=='msconnect'){
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP COLUMN ' . $value);
+				} else {
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
+				}
 			}
 
 			foreach($alter as $key => $value){
-				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);
+				if(DB_CONNECT=='msconnect'){
+					
+				} else {
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);
+				}
 			}
 
 			foreach($add as $key => $value){
@@ -201,36 +251,36 @@ class we_objectEx extends we_object{
 	function switchtypes2($type, $len){
 		switch($type){
 			case "meta":
-				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ")  ";
 			case "date":
-				return " INT(11) NOT NULL ";
+				return " INT  ";//msconnect int(11)
 			case "input":
-				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "255") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "255") . ")  ";
 			case "country":
 			case "language":
-				return " VARCHAR(2) NOT NULL ";
+				return " VARCHAR(2)  ";
 			case "link":
 			case "href":
-				return " TEXT NOT NULL ";
+				return " TEXT  ";
 			case "text":
-				return " LONGTEXT NOT NULL ";
+				return " TEXT  ";// msconnect longtext
 			case "img":
 			case "flashmovie":
 			case "quicktime":
 			case "binary":
-				return " INT(11) DEFAULT '0' NOT NULL ";
+				return " INT DEFAULT '0' NOT NULL ";
 			case "checkbox":
-				return " INT(1) DEFAULT '0' NOT NULL";
+				return " TINYINT DEFAULT '0' NOT NULL";
 			case "int":
-				return " INT(" . (($len > 0 && ($len < 256)) ? $len : "11") . ") DEFAULT NULL ";
+				return " INT DEFAULT NULL ";
 			case "float":
-				return " DOUBLE DEFAULT NULL ";
+				return " float(53) DEFAULT NULL ";
 			case "object":
-				return " BIGINT(20) DEFAULT '0' NOT NULL ";
+				return " BIGINT DEFAULT '0' NOT NULL ";
 			case "multiobject":
-				return " TEXT NOT NULL ";
+				return " TEXT  ";
 			case 'shopVat':
-				return ' TEXT NOT NULL';
+				return ' TEXT ';
 		}
 		return '';
 	}
@@ -420,6 +470,9 @@ class we_objectEx extends we_object{
 	}
 
 	function setOrder($order){
+		if(DB_CONNECT=='msconnect'){
+			
+		} else {
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
 		if(is_array($order)){
@@ -441,6 +494,7 @@ class we_objectEx extends we_object{
 				}
 			}
 		}
+	}
 	}
 
 }

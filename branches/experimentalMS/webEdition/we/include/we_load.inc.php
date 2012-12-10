@@ -97,7 +97,13 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 		$DB_WE = new DB_WE();
 		$tmp = array_filter($openFolders);
 		$tmp[] = $ParentID;
-		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . makeOwnersSql() . ') ' . $wsQuery . ')';
+		if(DB_CONNECT=='msconnect'){
+			$imptmp= trim(trim(implode(',', $tmp)),',');
+			$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . $imptmp . ') AND ((1=1' . makeOwnersSql() . ') ' . $wsQuery . ')';
+			
+		} else {
+			$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1=1' . makeOwnersSql() . ') ' . $wsQuery . ')';	
+		}
 
 		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" . (($table == FILE_TABLE || (defined(
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined(
@@ -112,8 +118,11 @@ if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder"){
 				"OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)){
 			$elem .= ",ContentType";
 		}
-
-		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		if(DB_CONNECT=='msconnect'){
+			$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, REPLACE(Text,\'info\',\'\') AS Nr, ISNUMERIC(Text) AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		} else {
+			$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));	
+		}
 		$ct = new we_base_ContentTypes();
 
 		while($DB_WE->next_record()) {

@@ -1,14 +1,17 @@
-CREATE TABLE ###TBLPREFIX###tblLangLink (
-  ID int(11) unsigned NOT NULL AUTO_INCREMENT,
-  DID int(11) unsigned NOT NULL default '0',
+CREATE TABLE tblLangLink (
+  ID int  NOT NULL IDENTITY(1,1),
+  DID int  NOT NULL default '0',
   DLocale varchar(5) NOT NULL default '',
-  IsFolder tinyint(1) unsigned NOT NULL default '0',
-  IsObject tinyint(1) unsigned NOT NULL default '0',
-  LDID int(11) unsigned NOT NULL default '0',
+  IsFolder tinyint  NOT NULL default '0',
+  IsObject tinyint  NOT NULL default '0',
+  LDID int  NOT NULL default '0',
   Locale varchar(5) NOT NULL default '',
-  DocumentTable enum('tblFile','tblObjectFile','tblDocTypes') NOT NULL,
+  
+  DocumentTable varchar(25) CHECK(DocumentTable IN ('tblFile','tblObjectFile','tblDocTypes')) NOT NULL,
   PRIMARY KEY (ID),
-  UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable),
-  UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable),
-  KEY LDID (LDID,DocumentTable,Locale)
-) ENGINE=MyISAM;
+
+  CONSTRAINT DID UNIQUE(DID,DLocale,IsObject,IsFolder,Locale,DocumentTable),
+  CONSTRAINT DLocale UNIQUE(DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)
+) 
+
+CREATE INDEX idx_tblLangLink_LDID ON tblLangLink(LDID,DocumentTable,Locale);

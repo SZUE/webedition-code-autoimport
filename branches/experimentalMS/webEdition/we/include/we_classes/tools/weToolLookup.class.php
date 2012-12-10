@@ -408,7 +408,7 @@ abstract class weToolLookup{
 			$dh = opendir($baseDir);
 			while($entry = readdir($dh)) {
 
-				if($entry != '' && $entry != '.' && $entry != '..'){
+				if($entry != '' && $entry != '.' && $entry != '..' && $entry != '.svn'){
 
 					$_entry = $baseDir . '/' . $entry;
 
@@ -432,7 +432,7 @@ abstract class weToolLookup{
 			$dh = opendir($baseDir);
 			while($entry = readdir($dh)) {
 
-				if($entry != '' && $entry != '.' && $entry != '..' && strtolower($entry != 'cvs')){
+				if($entry != '' && $entry != '.' && $entry != '..'  && $entry != '.svn' && strtolower($entry != 'cvs')){
 
 					$_entry = $baseDir . '/' . $entry;
 

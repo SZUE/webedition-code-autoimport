@@ -69,6 +69,9 @@ class we_listview_object extends listviewBase{
 	function __construct($name = "0", $rows = 9999999, $offset = 0, $order = "", $desc = false, $classID = 0, $cats = "", $catOr = "", $condition = "", $triggerID = "", $cols = "", $seeMode = true, $searchable = true, $calendar = "", $datefield = "", $date = "", $weekstart = "", $categoryids = '', $workspaceID = '', $customerFilterType = 'off', $docID = 0, $customers = "", $id = "", $we_predefinedSQL = "", $languages = '', $hidedirindex = false, $objectseourls = false){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
 
+
+		
+		
 		$this->classID = $classID;
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
@@ -127,7 +130,9 @@ class we_listview_object extends listviewBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition);
 
-		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
+		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1=1');//msconnect 
+//msconnect
+if($pid_tail=='1'){$pid_tail='1=1';}
 
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
@@ -321,12 +326,20 @@ class we_listview_object extends listviewBase{
 			if(substr($n, 0, 10) == 'we_object_'){
 				$n = substr($n, 10);
 			}
-			$f .= '`'.$p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
+			if(DB_CONNECT=='msconnect'){
+				$f .= ''.$p['table'] . '.' . $p['type'] . '_' . $n . ' AS we_' . $n2 . ',';
+			} else {
+				$f .= '`'.$p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
+			}
 			$from[] = $p["table"];
 			$from[] = $p["table2"];
 			if(in_array($n, $orderArr)){
 				$pos = getArrayKey($n, $orderArr);
-				$ordertmp[$pos] = '`'.$p["table"] . '`.`' . $p["type"] . '_' . $n .'`'. ($descArr[$pos] ? ' DESC' : '');
+				if(DB_CONNECT=='msconnect'){
+					$ordertmp[$pos] = ''.$p["table"] . '.' . $p["type"] . '_' . $n .''. ($descArr[$pos] ? ' DESC' : '');
+				} else {
+					$ordertmp[$pos] = '`'.$p["table"] . '`.`' . $p["type"] . '_' . $n .'`'. ($descArr[$pos] ? ' DESC' : '');
+				}
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", "$1" . $p["table"] . "." . $p["type"] . "_" . $n . "$2", $cond);
 		}

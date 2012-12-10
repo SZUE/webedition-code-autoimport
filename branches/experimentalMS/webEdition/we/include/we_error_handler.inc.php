@@ -297,7 +297,7 @@ function getVariableMax($var, $db = ''){
 	if(strlen($ret) > $max){
 		$ret = substr($ret, 0, $max) . "\n[...]";
 	}
-	return $var . '="' . escape_sql_query($ret) . '"';
+	return "".$var . '="' . escape_sql_query($ret) . '"';
 }
 
 function log_error_message($type, $message, $file, $_line, $skipBT = false){
@@ -322,12 +322,18 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
 		$logVars = array('Request', 'Session', 'Server');
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
-		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
+		if(DB_CONNECT=='msconnect'){
+			//$_query='INSERT INTO ' . $tbl . ' ("Type","Function","File","Line","Text","Backtrace","Request","Session","Global","Server") VALUES ' . "('".escape_sql_query($_type)."','".escape_sql_query($_caller)."','".escape_sql_query($_file)."',".intval($_line).",'".escape_sql_query($_text)."','".escape_sql_query($_detailedError)."','','','','' );";
+			$_query='INSERT INTO dbo.' . $tbl . '   VALUES ' . "('".escape_sql_query($_type)."','".escape_sql_query($_caller)."','".escape_sql_query($_file)."',".intval($_line).",'".escape_sql_query($_text)."','".escape_sql_query($_detailedError)."','','','','',Getdate() );";
+		} else {
+		
+		  $_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
 			File="' . escape_sql_query($_file) . '",
 			Line=' . intval($_line) . ',
 			Text="' . escape_sql_query($_text) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';
+		}
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
 			if(!$db->query($_query)){
@@ -336,6 +342,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
 					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
+		
 				}
 			}
 		} else{

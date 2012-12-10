@@ -1,10 +1,9 @@
-CREATE TABLE ###TBLPREFIX###tblbannerclicks (
-  clickid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  ID bigint(20) unsigned NOT NULL default '0',
-  `Timestamp` int(10) unsigned default NULL,
+CREATE TABLE tblbannerclicks (
+  clickid bigint NOT NULL IDENTITY(1,1) PRIMARY KEY,
+  ID bigint  NOT NULL default '0',
+  Timestamp int  default NULL,
   IP varchar(30) NOT NULL default '',
   Referer varchar(255) NOT NULL default '',
-  DID bigint(20) unsigned NOT NULL default '0',
-  Page varchar(255) NOT NULL default '',
-  PRIMARY KEY (`clickid`)
-) ENGINE=MyISAM;
+  DID bigint  NOT NULL default '0',
+  Page varchar(255) NOT NULL default ''
+) 

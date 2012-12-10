@@ -99,19 +99,45 @@ class weModelBase{
 			}
 		}
 		$where = $this->getKeyWhere();
-		$set = we_database_base::arraySetter($sets);
+		
 
 		if($this->isKeyDefined()){
 			if($this->isnew){
-				$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set, false, true);
-				# get ID #
-				if($ret){
-					$this->ID = $this->db->getInsertId();
-					$this->isnew = false;
+				if(DB_CONNECT=='msconnect'){//aus 6.1.x abgewandelt
+					$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
+					if ($this->db->next_record()){
+						$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
+					}
+					$newset=$sets;
+					unset($newset['ID']);
+					$setIn = we_database_base::arraySetterINSERT($newset);
+					$query = 'INSERT INTO ' . $this->db->escape($this->table) .  $setIn;
+
+					$ret=$this->db->query($query);
+					if($ret){
+						$this->ID = $this->db->getInsertId();
+						$this->isnew = false;
+					}
+				} else {
+					$set = we_database_base::arraySetter($sets);
+					$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set, false, true);
+					# get ID #
+					if($ret){
+						$this->ID = $this->db->getInsertId();
+						$this->isnew = false;
+					}
 				}
 				return $ret;
 			}
-			return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
+			if(DB_CONNECT=='msconnect'){
+				$newset=$sets;
+				unset($newset['ID']);
+				$setIn = we_database_base::arraySetter($newset);
+				return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $setIn . ' WHERE ' . $where);
+			} else {
+				$set = we_database_base::arraySetter($sets);
+				return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
+			}
 		}
 
 		return false;
@@ -131,7 +157,11 @@ class weModelBase{
 	function getKeyWhere(){
 		$wheres = array();
 		foreach($this->keys as $f){
-			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->$f) . '"';
+			if(DB_CONNECT=='msconnect'){
+				$wheres[] = '' . $f . "='" . escape_sql_query($this->$f) . "'";
+			} else {
+				$wheres[] = '`' . $f . '`="' . escape_sql_query($this->$f) . '"';
+			}
 		}
 		return implode(' AND ', $wheres);
 	}

@@ -1,21 +1,20 @@
-###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblcustomerfilter WHERE modelTable="";
-/* query separator */
 
-CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
-  `modelId` bigint(20) unsigned NOT NULL,
-  `modelType` enum('folder','objectFile','text/webedition')  NOT NULL,
-  `modelTable` enum('tblFile','tblObjectFiles') NOT NULL,
-  `accessControlOnTemplate` tinyint(1) unsigned NOT NULL default '0',
-  `errorDocNoLogin` bigint(20) unsigned NOT NULL default '0',
-  `errorDocNoAccess` bigint(20) unsigned NOT NULL default '0',
-  `mode` tinyint(4) unsigned NOT NULL default '0',
-  `specificCustomers` text NOT NULL,
-  `filter` text NOT NULL,
-  `whiteList` text NOT NULL,
-  `blackList` text NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `mode` (`mode`),
-  UNIQUE KEY `modelIdN` (`modelId`,`modelType`,`modelTable`),
-  KEY modelType (modelType,accessControlOnTemplate)
-) ENGINE=MyISAM;
+CREATE TABLE tblcustomerfilter (
+  id bigint  NOT NULL IDENTITY(1,1),
+  modelId bigint  NOT NULL,
+  modelType varchar(15) CHECK(modelType IN('folder','objectFile','text/webedition'))  NOT NULL,
+  modelTable varchar(15)  CHECK(modelTable IN ('tblFile','tblObjectFiles')) NOT NULL,
+  accessControlOnTemplate tinyint  NOT NULL default '0',
+  errorDocNoLogin bigint  NOT NULL default '0',
+  errorDocNoAccess bigint  NOT NULL default '0',
+  mode tinyint  NOT NULL default '0',
+  specificCustomers text NOT NULL,
+  filter text NOT NULL,
+  whiteList text NOT NULL,
+  blackList text NOT NULL,
+  PRIMARY KEY  (id),
+  CONSTRAINT modelIdN UNIQUE(modelId,modelType,modelTable)
+) 
+
+CREATE INDEX idx_tblcustomerfilter_mode ON tblcustomerfilter(mode);
+CREATE INDEX idx_tblcustomerfilter_modelType ON tblcustomerfilter(modelType,accessControlOnTemplate);

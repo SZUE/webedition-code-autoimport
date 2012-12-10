@@ -47,6 +47,8 @@ abstract class we_history{
 	}
 
 	static function insertIntoHistory(&$object, $action = 'save'){
+		//msconnect 
+		/*
 		$_db = $object->DB_WE;
 		$table = $_db->escape(stripTblPrefix($object->Table));
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
@@ -54,13 +56,25 @@ abstract class we_history{
 		if($cnt > self::MAX){
 			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
-		$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		if(DB_CONNECT=='msconnect'){
+			$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE .  we_database_base::arraySetterINSERT(array(
 				'DID' => intval($object->ID),
 				'DocumentTable' => $table,
 				'ContentType' => $object->ContentType,
 				'Act' => $action,
 				'UserName' => $_username,
 			)));
+			
+		} else {
+			$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'DID' => intval($object->ID),
+				'DocumentTable' => $table,
+				'ContentType' => $object->ContentType,
+				'Act' => $action,
+				'UserName' => $_username,
+			)));
+		}
+		*/
 	}
 
 	/**

@@ -1,13 +1,13 @@
-CREATE TABLE ###TBLPREFIX###tblSchedule (
-  DID bigint(20) unsigned NOT NULL default '0',
-  Wann int(11) unsigned NOT NULL default '0',
-  `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  Was tinyint(1) unsigned NOT NULL default '0',
-  ClassName enum('we_htmlDocument','we_webEditionDocument','we_objectFile') NOT NULL,
-  SerializedData longblob,
-  Schedpro longtext,
-  `Type` tinyint(3) unsigned NOT NULL default '0',
-  Active tinyint(1) unsigned default NULL,
-  PRIMARY KEY (DID,ClassName,Active,Wann,Was,`Type`),
-  KEY Wann (Wann,`lockedUntil`,Active)
-) ENGINE=MyISAM;
+CREATE TABLE tblSchedule (
+  DID bigint  NOT NULL default '0',
+  Wann int  NOT NULL default '0',
+  lockedUntil datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  Was tinyint  NOT NULL default '0',
+  ClassName varchar(25) CHECK(ClassName IN ('we_htmlDocument','we_webEditionDocument','we_objectFile')) NOT NULL,
+  SerializedData varbinary(max),
+  Schedpro text,
+  "Type" tinyint  NOT NULL default '0',
+  Active tinyint  default NULL,
+  PRIMARY KEY (DID,ClassName,Active,Wann,Was,Type)
+) 
+CREATE INDEX idx_tblSchedule_Wann ON tblSchedule(Wann,lockedUntil,Active);

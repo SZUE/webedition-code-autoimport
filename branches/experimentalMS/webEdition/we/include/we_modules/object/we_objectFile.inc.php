@@ -383,7 +383,15 @@ class we_objectFile extends we_document{
 
 	function setRootDirID($doit = false){
 		if($this->InWebEdition || $doit){
-			list($this->RootDirPath, $this->rootDirID) = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE);
+			if(DB_CONNECT=='msconnect'){
+				$foo = f('SELECT Path FROM ' .OBJECT_TABLE . ' WHERE ID='.(int)$this->TableID,'Path',$this->DB_WE);
+				$folder = new we_folder();
+				$folderID = f('SELECT ID FROM ' .OBJECT_FILES_TABLE . ' WHERE Path="'.$foo.'"','ID',$this->DB_WE);
+				$this->RootDirPath = $foo;
+				$this->rootDirID = $folderID;
+			} else {
+				list($this->RootDirPath, $this->rootDirID) = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of, ' . OBJECT_TABLE . ' o WHERE o.Path=of.Path AND o.ID=' . intval($this->TableID), $this->DB_WE);
+			}
 		}
 	}
 
@@ -1994,6 +2002,7 @@ class we_objectFile extends we_document{
 		} else{
 			$this->Url = '';
 		}
+		$this->Url = '';//msconnect
 	}
 
 	function insertAtIndex(){
@@ -2020,7 +2029,8 @@ class we_objectFile extends we_document{
 		$ws = array_unique($ws);
 		$wsPath = '';
 		$w = '';
-		$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		if(DB_CONNECT=='msconnect'){
+			$q = 'INSERT INTO ' . INDEX_TABLE . we_database_base::arraySetterINSERT(array(
 				'OID' => $this->ID,
 				'Text' => $text,
 				'BText' => $text,
@@ -2034,6 +2044,21 @@ class we_objectFile extends we_document{
 				'Language' => $this->Language
 			));
 
+		} else {
+			$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'OID' => $this->ID,
+				'Text' => $text,
+				'BText' => $text,
+				'Workspace' => $wsPath,
+				'WorkspaceID' => $w,
+				'Category' => $this->Category,
+				'ClassID' => $this->TableID,
+				'Title' => $this->getElement("Title"),
+				'Description' => $this->getElement("Description"),
+				'Path' => $this->Text,
+				'Language' => $this->Language
+			));
+		}
 		if(empty($ws) && ($this->DB_WE->query($q))){
 			return true;
 		}
@@ -2231,10 +2256,13 @@ class we_objectFile extends we_document{
 		$a = $this->i_saveTmp();
 
 // version
+		//msconnect
+		/*
 		if($this->ContentType == "objectFile"){
 			$version = new weVersions();
 			$version->save($this);
 		}
+		*/
 		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
 		} else{
@@ -2413,10 +2441,13 @@ class we_objectFile extends we_document{
 		}
 
 		/* version */
+		//msconnect
+		/*
 		if($this->ContentType == 'objectFile'){
 			$version = new weVersions();
 			$version->save($this, 'unpublished');
 		}
+		*/
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('unpublish', '', array($this));
@@ -2642,7 +2673,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_urlDouble(){
-		$this->setUrl();
+		$this->setUrl();t_e('-'.$this->Url.'-');
 		return ($this->Url != '' ? f('SELECT ID FROM ' . $this->Table . " WHERE Url='" . escape_sql_query($this->Url) . "' AND ID!=" . intval($this->ID), "ID", new DB_WE()) : false);
 	}
 
@@ -2711,7 +2742,16 @@ class we_objectFile extends we_document{
 			}
 		}
 		$where = ($this->wasUpdate) ? ' WHERE OF_ID=' . intval($this->ID) : '';
-		$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
+		
+		if(DB_CONNECT=='msconnect'){
+			if($this->wasUpdate){
+				$ret = (bool) ($this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
+			} else {
+				$ret = (bool) ($this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($ctable) . we_database_base::arraySetterINSERT($data) . $where));
+			}
+		} else {
+			$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
+		}
 		$this->ObjectID = ($this->wasUpdate ? $this->ObjectID : $this->DB_WE->getInsertId());
 		return $ret;
 	}
@@ -2725,7 +2765,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if($this->ID){
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . " SET OF_TEXT='" . $this->Text . "',OF_PATH='" . $this->Path . "' WHERE OF_ID=" . $this->ID);
+			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . " SET OF_Text='" . $this->Text . "',OF_Path='" . $this->Path . "' WHERE OF_ID=" . $this->ID);
 		}
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID');
 	}

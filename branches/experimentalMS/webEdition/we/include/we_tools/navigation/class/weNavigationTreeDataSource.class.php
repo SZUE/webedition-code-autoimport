@@ -70,9 +70,12 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 		}
 
 		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		if(DB_CONNECT=='msconnect'){//msconnt limit muss bearbeteit werden + Text -> int Nr
+			$db->query("SELECT $elem, Text as Nr, ISNUMERIC(Text) as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
 
-		$db->query(
-			"SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
+		} else {
+			$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
+		}
 		$now = time();
 
 		while($db->next_record()) {

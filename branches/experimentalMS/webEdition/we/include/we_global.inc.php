@@ -350,6 +350,28 @@ function std_numberformat($content){
  */
 function deleteContentFromDB($id, $table, $DB_WE = ''){
 	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+if(DB_CONNECT=='msconnect'){
+	$dbc = new DB_WE();
+	if (!$DB_WE->query(
+									"
+		SELECT *
+		FROM " . LINK_TABLE . "
+		WHERE DID=" . abs($id) . " AND DocumentTable='" . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . "'")) {
+		return false;
+	}
+	while ($DB_WE->next_record())
+		$dbc->query("
+			DELETE
+			FROM " . CONTENT_TABLE . "
+			WHERE ID=" . abs($DB_WE->f("CID")));
+	return $DB_WE->query(
+					"
+		DELETE
+		FROM " . LINK_TABLE . "
+		WHERE DID=" . abs($id) . " AND DocumentTable='" . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . "'");	
+		
+} else {
+	
 
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
 		return true;
@@ -358,6 +380,7 @@ function deleteContentFromDB($id, $table, $DB_WE = ''){
 	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
 		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
 	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+}
 }
 
 /**
@@ -381,7 +404,11 @@ function cleanTempFiles($cleanSessFiles = false){
 		if(file_exists($p)){
 			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 		}
-		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		if(DB_CONNECT=='msconnect'){
+			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Date=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		} else {
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+		}
 	}
 	if($cleanSessFiles){
 		$seesID = session_id();
@@ -391,12 +418,16 @@ function cleanTempFiles($cleanSessFiles = false){
 			if(file_exists($p)){
 				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			if(DB_CONNECT=='msconnect'){
+				$db2->query('DELETE  FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");	
+			} else {
+				$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+			}
 		}
 	}
 	$d = dir(TEMP_PATH);
 	while(false !== ($entry = $d->read())) {
-		if($entry != '.' && $entry != '..'){
+		if($entry != '.' && $entry != '..' && $entry != '.svn'){ /* msconnect */
 			$foo = TEMP_PATH . '/' . $entry;
 			if(filemtime($foo) <= (time() - 300)){
 				if(is_dir($foo))
@@ -411,7 +442,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
 	$d = dir($dstr);
 	while(false !== ($entry = $d->read())) {
-		if($entry != '.' && $entry != '..'){
+		if($entry != '.' && $entry != '..' && $entry != '.svn'){ /* msconnect */
 			$foo = $dstr . $entry;
 			if(filemtime($foo) <= (time() - 300)){
 				if(is_dir($foo)){
@@ -428,7 +459,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 	while(false !== ($entry = $d->read())) {
-		if($entry != '.' && $entry != '..'){
+		if($entry != '.' && $entry != '..' && $entry != '.svn'){ /* msconnect */
 			$foo = WE_FRAGMENT_PATH . $entry;
 			if(filemtime($foo) <= (time() - 3600 * 24)){
 				if(is_dir($foo))
@@ -443,8 +474,16 @@ function cleanTempFiles($cleanSessFiles = false){
 }
 
 function getTemplatesOfTemplate($id, &$arr){
-	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%'", 'IDS', $GLOBALS['DB_WE']);
-
+	if(DB_CONNECT=='msconnect'){//wie in der 6.2.x
+		$GLOBALS['DB_WE']->query("SELECT ID FROM " . TEMPLATES_TABLE . " WHERE MasterTemplateID=" . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'");
+		$arrr=array();
+		while ($GLOBALS['DB_WE']->next_record()) {
+			array_push($arrr, $DB_WE->f("ID"));
+		}
+		$foo = $arrr;
+	} else {
+		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%'", 'IDS', $GLOBALS['DB_WE']);
+	}
 	if(!$foo){
 		return;
 	}
@@ -504,7 +543,11 @@ function ObjectUsedByObjectFile($id){
 	if(!$id){
 		return false;
 	}
-	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1;
+	if(DB_CONNECT=='msconnect'){
+		return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) , 'cnt', $GLOBALS['DB_WE']) == 1;
+	} else {
+		return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1;
+	}
 }
 
 function we_makeHiddenFields($filter = ''){
@@ -1376,7 +1419,8 @@ function getUploadMaxFilesize($mysql = false, $db = ''){
 }
 
 function getMaxAllowedPacket($db = ''){
-	return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', new DB_WE());
+	//return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', new DB_WE());
+	return DB_MAX_ALLOWED_PACKET;
 }
 
 function we_convertIniSizes($in){
@@ -2078,7 +2122,8 @@ function cleanWEZendCache(){
 
 function we_log_loginFailed($table, $user){
 	$db = $GLOBALS['DB_WE'];
-	$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+	if(DB_CONNECT=='msconnect'){
+		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE. we_database_base::arraySetterINSERT(array(
 			'UserTable' => $table,
 			'Username' => $user,
 			'IP' => $_SERVER['REMOTE_ADDR'],
@@ -2086,4 +2131,14 @@ function we_log_loginFailed($table, $user){
 			'Port' => $_SERVER['SERVER_PORT'],
 			'Script' => $_SERVER['SCRIPT_NAME']
 		)));
+	} else {
+		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'UserTable' => $table,
+			'Username' => $user,
+			'IP' => $_SERVER['REMOTE_ADDR'],
+			'Servername' => $_SERVER['SERVER_NAME'],
+			'Port' => $_SERVER['SERVER_PORT'],
+			'Script' => $_SERVER['SCRIPT_NAME']
+		)));
+	}
 }

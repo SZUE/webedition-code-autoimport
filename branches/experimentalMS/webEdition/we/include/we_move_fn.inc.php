@@ -223,6 +223,8 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				}
 			}
 
+			//msconnect
+			/*
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
@@ -242,7 +244,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				}
 				$version->saveVersion($object);
 			}
-
+			*/
 			// update table
 			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
 
@@ -265,7 +267,8 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				$notMovedItems[] = $item;
 				return false;
 			}
-
+			//msconnect
+			/*
 			$version = new weVersions();
 			if(in_array($row['ContentType'], $version->contentTypes)){
 				$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
@@ -285,7 +288,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 				}
 				$version->saveVersion($object);
 			}
-
+			*/
 			// update table
 			$DB_WE->query("UPDATE " . $DB_WE->escape($table) . " SET ParentID=" . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
 			$DB_WE->query("UPDATE " . OBJECT_X_TABLE . $tableID . " SET OF_ParentID=" . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE OF_ID=" . intval($id));

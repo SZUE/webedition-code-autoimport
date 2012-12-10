@@ -1,8 +1,8 @@
-CREATE TABLE ###TBLPREFIX###tblWorkflowTask (
-  ID int(11) unsigned NOT NULL auto_increment,
-  userID int(11) unsigned NOT NULL default '0',
-  Edit int(11) unsigned NOT NULL default '0',
-  Mail int(11) unsigned NOT NULL default '0',
-  stepID int(11) unsigned NOT NULL default '0',
+CREATE TABLE tblWorkflowTask (
+  ID int  NOT NULL IDENTITY(1,1),
+  userID int  NOT NULL default '0',
+  Edit int  NOT NULL default '0',
+  Mail int  NOT NULL default '0',
+  stepID int  NOT NULL default '0',
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+) 

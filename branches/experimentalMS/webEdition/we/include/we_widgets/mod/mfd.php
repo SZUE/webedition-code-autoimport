@@ -79,25 +79,47 @@ $aUsers = makeArrayFromCSV($aCols[4]);
 $_where = array();
 $_ws = array();
 $_users_where = array();
-foreach($aUsers as $uid){
-	$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
+if(DB_CONNECT=='msconnect'){
+	foreach($aUsers as $uid){
+		$_users_where[] = "'" . basename(id_to_path($uid, USER_TABLE)) . "'";
+	}
+	
+	if($bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS') && defined("FILE_TABLE")){
+		$_where[] = "'" . stripTblPrefix(FILE_TABLE) . "'";
+		$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
+	}
+	if($bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+		$_where[] = "'" . stripTblPrefix(OBJECT_FILES_TABLE) . "'";
+		$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
+	}
+	if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+		$_where[] = "'" . stripTblPrefix(TEMPLATES_TABLE) . "'";
+	}
+	if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+		$_where[] = "'" . stripTblPrefix(OBJECT_TABLE) . "'";
+	}
+	
+	
+} else {
+	foreach($aUsers as $uid){
+		$_users_where[] = '"' . basename(id_to_path($uid, USER_TABLE)) . '"';
+	}
+	
+	if($bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS') && defined("FILE_TABLE")){
+		$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
+		$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
+	}
+	if($bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
+		$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
+		$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
+	}
+	if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+		$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
+	}
+	if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
+		$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
+	}
 }
-
-if($bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS') && defined("FILE_TABLE")){
-	$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
-	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
-}
-if($bTypeObj && we_hasPerm('CAN_SEE_OBJECTFILES') && defined("OBJECT_FILES_TABLE")){
-	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
-	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
-}
-if($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && defined("TEMPLATES_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
-	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
-}
-if($bTypeCls && we_hasPerm('CAN_SEE_OBJECTS') && defined("OBJECT_TABLE") && $_SESSION['weS']['we_mode'] != "seem"){
-	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
-}
-
 $_whereSeem =($_SESSION['weS']['we_mode'] == "seem")? " AND ContentType!='folder' ":'';
 
 $lastModified = '<table cellspacing="0" cellpadding="0" border="0">';
@@ -105,7 +127,12 @@ $_count = 10;
 $i = $j = $k = 0;
 $_db = new DB_WE();
 while($j < $iMaxItems) {
-	$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
+	if(DB_CONNECT=='msconnect'){
+		//msconnectFixme limit fehlt noch + Username war nicht in der gruppe
+		$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable,UserName  ORDER BY m DESC ;');
+	} else {
+		$DB_WE->query('SELECT DID,UserName,DocumentTable,MAX(ModDate) AS m FROM ' . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (isset($timestamp) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' GROUP BY DID,DocumentTable  ORDER BY m DESC LIMIT ' . ($k++ * $_count) . ' , ' . ($_count));
+	}
 	$num_rows = $DB_WE->num_rows();
 	if($num_rows == 0){
 		break;
@@ -122,7 +149,11 @@ while($j < $iMaxItems) {
 				}
 			}
 		}
-		$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $DB_WE->escape($_table) . ' WHERE ID = ' . $DB_WE->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
+		if(DB_CONNECT=='msconnect'){
+			$_hash = getHash('SELECT TOP 1 ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $DB_WE->escape($_table) . ' WHERE ID = ' . $DB_WE->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate ', $_db);			
+		} else {
+			$_hash = getHash('SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners FROM ' . $DB_WE->escape($_table) . ' WHERE ID = ' . $DB_WE->f('DID') . (!empty($_paths) ? (' AND (' . implode(' OR ', $_paths) . ')') : '') . ' ORDER BY ModDate LIMIT 1', $_db);
+		}
 		if(!empty($_hash)){
 			$_show = true;
 			$_bool_oft = (defined('OBJECT_FILES_TABLE')) ? (($_table == OBJECT_FILES_TABLE) ? true : false) : true;

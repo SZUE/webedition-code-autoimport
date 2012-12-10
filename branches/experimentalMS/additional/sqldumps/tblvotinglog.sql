@@ -1,17 +1,17 @@
-CREATE TABLE ###TBLPREFIX###tblvotinglog (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
-  `votingsession` varchar(255) NOT NULL,
-  `voting` bigint(20) unsigned NOT NULL,
-  `time` int(11) unsigned NOT NULL,
-  `ip` varchar(255) NOT NULL,
-  `agent` varchar(255) NOT NULL,
-  `userid` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `cookie` tinyint(1) unsigned NOT NULL,
-  `fallback` tinyint(1) unsigned NOT NULL,
-  `status` tinyint(2) unsigned NOT NULL,
-  `answer` varchar(255) NOT NULL,
-  `answertext` text NOT NULL,
-  `successor` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `additionalfields` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM ;
+CREATE TABLE tblvotinglog (
+  id bigint  NOT NULL IDENTITY(1,1),
+  votingsession varchar(255) NOT NULL,
+  voting bigint  NOT NULL,
+  "time" int  NOT NULL,
+  ip varchar(255) NOT NULL,
+  agent varchar(255) NOT NULL,
+  userid bigint  NOT NULL DEFAULT '0',
+  cookie tinyint  NOT NULL,
+  fallback tinyint  NOT NULL,
+  "status" tinyint  NOT NULL,
+  answer varchar(255) NOT NULL,
+  answertext text NOT NULL,
+  successor bigint  NOT NULL DEFAULT '0',
+  additionalfields text NOT NULL,
+  PRIMARY KEY  (id)
+)

@@ -42,21 +42,21 @@ class weCustomerSettings{
 		'select' => 'varchar(200)',
 	);
 	public $field_types = array(
-		'input' => 'varchar(255)',
-		'number' => 'int(11)',
-		'select' => 'enum',
-		'multiselect' => 'set',
-		'textarea' => 'text',
-		'dateTime' => 'datetime',
-		'date' => 'date',
-		'password' => 'varchar(32)',
-		'img' => 'bigint(20)',
-		'country' => "enum('AF','AX','AL','DZ','AS','AD','AO','AI','AQ','AG','AR','AM','AW','AU','AT','AZ','BS','BH','BD','BB','BY','BE','BZ','BJ','BM','BT','BO','BQ','BA','BW','BV','BR','IO','BN','BG','BF','BI','KH','CM','CA','CV','KY','CF','TD','CL','CN','CX','CC','CO','KM','CG','CD','CK','CR','CI','HR','CU','CW','CY','CZ','DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','ET','FK','FO','FJ','FI','FR','GF','PF','TF','GA','GM','GE','DE','GH','GI','GR','GL','GD','GP','GU','GT','GG','GN','GW','GY','HT','HM','VA','HN','HK','HU','IS','IN','ID','IR','IQ','IE','IM','IL','IT','JM','JP','JE','JO','KZ','KE','KI','KP','KR','KW','KG','LA','LV','LB','LS','LR','LY','LI','LT','LU','MO','MK','MG','MW','MY','MV','ML','MT','MH','MQ','MR','MU','YT','MX','FM','MD','MC','MN','ME','MS','MA','MZ','MM','NA','NR','NP','NL','NC','NZ','NI','NE','NG','NU','NF','MP','NO','OM','PK','PW','PS','PA','PG','PY','PE','PH','PN','PL','PT','PR','QA','RE','RO','RU','RW','BL','SH','KN','LC','MT','PM','VC','WS','SM','ST','SA','SN','RS','SC','SL','SG','SX','SK','SI','SB','SO','ZA','GS','ES','LK','SD','SR','SJ','SZ','SE','CH','SY','TW','TJ','TZ','TH','TL','TG','TK','TO','TT','TN','TR','TM','TC','TV','UG','UA','AE','GB','US','UM','UY','UZ','VU','VA','VE','VN','VG','VI','WF','EH','YE','YU','ZM','ZW')",
-		'language' => "enum('ab','af','an','ar','as','az','be','bg','bn','bo','br','bs','ca','ce','co','cs','cu','cy','da','de','el','en','eo','es','et','eu','fa','fi','fj','fo','fr','fy','ga','gd','gl','gv','he','hi','hr','ht','hu','hy','id','is','it','ja','jv','ka','kg','ko','ku','kw','ky','la','lb','li','ln','lt','lv','mg','mk','mn','mo','ms','mt','my','nb','ne','nl','nn','no','oc','pl','pt','rm','ro','ru','sc','se','sk','sl','so','sq','sr','sv','sw','tk','tr','ty','uk','ur','uz','vi','vo','yi','zh')",
+		'input' => "varchar(255) NOT NULL DEFAULT ''",
+		'number' => "int NOT NULL DEFAULT '0'",//msconnect 
+		'select' => "varchar(254)",//msconnect 
+		'multiselect' => "varchar(253) NOT NULL DEFAULT ''",//msconnect 
+		'textarea' => "text NOT NULL DEFAULT ''",
+		'dateTime' => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+		'date' => "date NOT NULL DEFAULT '0000-00-00'",
+		'password' => "varchar(32) NOT NULL DEFAULT ''",
+		'img' => "bigint NOT NULL DEFAULT '0'",//msconnect 
+		'country' => "varchar(2) NOT NULL DEFAULT ''",//msconnect 
+		'language' => "varchar(3) NOT NULL DEFAULT ''",//msconnect 
 	);
 	private $special_field_types = array(
-		'select' => 'enum',
-		'multiselect' => 'set',
+		'select' => "varchar(252) NOT NULL DEFAULT ''",//msconnect 
+		'multiselect' => "varchar(251) NOT NULL DEFAULT ''",//msconnect 
 	);
 	public $FieldAdds = array();
 	public $SortView = array();
@@ -221,7 +221,15 @@ class weCustomerSettings{
 		$this->properties['Prefs'] = serialize($this->Prefs);
 
 		foreach($this->properties as $key => $value){
-			$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="' . $this->db->escape($value) . '",Name="' . $key . '"');
+			if(DB_CONNECT=='msconnect'){//aus 6.1.x
+				if (f('SELECT Name FROM ' . $this->table . " WHERE Name='" . $key . "';", "Name", $this->db) == $key) {
+					$this->db->query('UPDATE ' . $this->table . " SET Value='".$this->db->escape($value)."' WHERE Name='$key';");
+				} else {
+					$this->db->query('INSERT INTO ' . $this->table . " (Name,Value) VALUES ('$key','".$this->db->escape($value)."');");
+				}
+			} else {
+				$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="' . $this->db->escape($value) . '",Name="' . $key . '"');
+			}
 		}
 		return true;
 	}

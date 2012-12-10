@@ -64,14 +64,35 @@ function doUpdateQuery($DB_WE, $table, $hash, $where){
 }
 
 function escape_sql_query($inp){
-	if(is_array($inp)){
-		return array_map(__METHOD__, $inp);
-	}
+	if(DB_CONNECT=='msconnect'){
+		if(is_array($inp)){
+			return array_map(__METHOD__, $inp);
+		}
+		if(is_numeric($inp)){
+        	return $inp;
+		}
+		if(!empty($inp) && is_string($inp)){
+			//$unpacked = unpack('H*hex', $inp);
+    		//return '0x' . $unpacked['hex'];
+			//$in = array("'",'"');
+			//$out=array("''",'\'"');
+			$in = array("'");
+			$out=array("''");
+			$output=str_replace($in, $out, $inp);
+			return $output;
 
-	if(!empty($inp) && is_string($inp)){
-		return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+		}
+		return $inp;
+	} else {
+		if(is_array($inp)){
+			return array_map(__METHOD__, $inp);
+		}
+
+		if(!empty($inp) && is_string($inp)){
+			return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+		}
+		return $inp;
 	}
-	return $inp;
 }
 
 function doInsertQuery($DB_WE, $table, $hash){
@@ -81,6 +102,9 @@ function doInsertQuery($DB_WE, $table, $hash){
 		$fieldName = $t['name'];
 		$fn[$fieldName] = isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
 	}
-
-	return $DB_WE->query('INSERT INTO `' . $table . '` SET ' . we_database_base::arraySetter($fn));
+	if(DB_CONNECT=='msconnect'){
+		return $DB_WE->query('INSERT INTO ' . $table .  we_database_base::arraySetterINSERT($fn));
+	} else {
+		return $DB_WE->query('INSERT INTO `' . $table . '` SET ' . we_database_base::arraySetter($fn));
+	}
 }

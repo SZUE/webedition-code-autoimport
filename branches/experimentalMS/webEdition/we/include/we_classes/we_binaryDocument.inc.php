@@ -47,7 +47,7 @@ class we_binaryDocument extends we_document{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "html", "DocChanged");
+		array_push($this->persistent_slots, "html", "DocChanged","DocType",'temp_doc_type');
 		if(defined("CUSTOMER_TABLE")){
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}

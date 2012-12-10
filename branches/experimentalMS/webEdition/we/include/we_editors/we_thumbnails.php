@@ -50,8 +50,12 @@ if(isset($_GET["deletethumbnail"]) && $_GET["deletethumbnail"] != ""){
 
 // Check which thumbnail to work with
 if(!isset($_GET["id"]) || $_GET["id"] == ""){
-
-	$tmpid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " ORDER BY Name LIMIT 1", "ID", $DB_WE);
+	if(DB_CONNECT=='msconnect'){
+		$tmpid = f("SELECT TOP 1 ID FROM " . THUMBNAILS_TABLE . " ORDER BY Name", "ID", $DB_WE);
+	} else {
+		$tmpid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " ORDER BY Name LIMIT 1", "ID", $DB_WE);	
+	}
+	
 
 	$_GET["id"] = $tmpid ? $tmpid : -1;
 }
@@ -202,7 +206,11 @@ function save_all_values(){
 		$_update_prefs = remember_value(isset($_REQUEST["Format"]) ? $_REQUEST["Format"] : null, '$_REQUEST["Format"]');
 
 		// Update saving timestamp
-		$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Date = UNIX_TIMESTAMP()  WHERE ID = " . intval($_REQUEST["edited_id"]));
+		if(DB_CONNECT=='msconnect'){
+			$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Date = ".time()." WHERE ID = " . intval($_REQUEST["edited_id"]));
+		} else {
+			$DB_WE->query("UPDATE " . THUMBNAILS_TABLE . " SET Date = UNIX_TIMESTAMP()  WHERE ID = " . intval($_REQUEST["edited_id"]));
+		}
 	}
 }
 

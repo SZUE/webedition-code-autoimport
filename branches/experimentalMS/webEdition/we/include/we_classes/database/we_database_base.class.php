@@ -232,6 +232,8 @@ abstract class we_database_base{
 	protected function _setup(){
 // deactivate MySQL strict mode; don't use query function (error logging)
 		$this->_query('SET SESSION sql_mode=""');
+		$this->_query('SET DATEFORMAT ymd;');
+		
 		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 			$this->_setCharset(DB_SET_CHARSET);
 		}
@@ -268,7 +270,7 @@ abstract class we_database_base{
 			$this->Row = 0;
 			if(self::$Trigger_cnt){
 				--self::$Trigger_cnt;
-				t_e($Query_String);
+				
 			}
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
@@ -525,9 +527,46 @@ abstract class we_database_base{
 						$escape = false;
 				}
 			}
-			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
+			if(DB_CONNECT=='msconnect'){
+				$ret[] = '' . $key . ' =' . ($escape ? "'" . escape_sql_query($val) . "'" : $val);
+			} else {
+				$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
+			}
 		}
 		return implode(',', $ret);
+	}
+	static function arraySetterINSERT(array $arr){
+		$ret = array();
+		$dieK=array();
+		$dieV=array();
+		foreach($arr as $key => $val){
+			if(is_object($val) || is_array($val)){
+				t_e('warning', 'data error: db-field cannot contain objects / arrays', 'Key: ' . $key, $arr);
+			}
+			//current hack: don't escape some used mysql functions
+			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
+			$escape = !(is_int($val) || is_float($val));
+			if($escape){
+				switch(strtoupper($val)){
+					case 'Getdate()': //msconnect
+					case 'NOW()':
+					case 'UNIX_TIMESTAMP()':
+					case 'UNIX_TIMESTAMP(NOW())':
+					case 'CURDATE()':
+					case 'CURRENT_DATE()':
+					case 'CURRENT_TIME()':
+					case 'CURRENT_TIMESTAMP()':
+					case 'CURTIME()':
+					case 'NULL':
+						$escape = false;
+				}
+			}
+			$dieK[]=$key;
+			$dieV[]=($escape ? '\'' . escape_sql_query($val) . '\'' : $val);
+			//$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
+		}
+		$myret=' ('.implode(',',$dieK).') VALUES ('.implode(',',$dieV).') ';
+		return $myret;
 	}
 
 	/* public: return table metadata */
@@ -564,8 +603,14 @@ abstract class we_database_base{
 // if no $table specified, assume that we are working with a query
 // result
 		if($table){
-			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
-				$this->halt("Metadata query failed.");
+			if(DB_CONNECT=='msconnect'){
+				if(!$this->getInfos( $table )){
+					$this->halt("Metadata query failed.");
+				}
+			} else {
+				if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
+					$this->halt("Metadata query failed.");
+				}
 			}
 		} else{
 			if(!($this->Query_ID))
@@ -578,7 +623,7 @@ abstract class we_database_base{
 
 		for($i = 0; $i < $count; $i++){
 			$res[$i] = array(
-				"table" => $this->field_table($i),
+				"table" => $table,
 				"name" => $this->field_name($i),
 				"type" => $this->field_type($i),
 				"len" => $this->field_len($i),
@@ -671,14 +716,22 @@ abstract class we_database_base{
 			return false;
 		}
 		$col = trim($col, '`');
-		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
+		if(DB_CONNECT=='msconnect'){
+			return f("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".$tab."' AND COLUMN_Name='".$col."';");
+		} else {
+			return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
+		}
 	}
 
 	function isTabExist($tab){
 		if($tab == ''){
 			return false;
 		}
-		$this->query('SHOW TABLES LIKE "' . $this->escape($tab) . '"');
+		if(DB_CONNECT=='msconnect'){
+			$this->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '".$tab."'");
+		} else {
+			$this->query('SHOW TABLES LIKE "' . $this->escape($tab) . '"');
+		}
 		return ($this->next_record());
 	}
 
@@ -692,7 +745,11 @@ abstract class we_database_base{
 		}
 		if(count($keys)){
 			foreach($keys as $key){
-				$cols_sql[] = $key;
+				if(DB_CONNECT=='msconnect'){
+					$keys_sql[]=$key;
+				} else {
+					$cols_sql[] = $key;
+				}
 			}
 		}
 
@@ -703,12 +760,20 @@ abstract class we_database_base{
 			$Collation = DB_COLLATION;
 			$charset_collation = ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation;
 		}
-
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . $charset_collation . ';');
+		if(DB_CONNECT=='msconnect'){
+			return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ');');	
+			t_e('msconnect: fehlende Key-Generierung');		
+		} else {
+			return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . $charset_collation . ';');
+		}
 	}
 
 	function delTable($tab){
-		$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
+		if(DB_CONNECT=='msconnect'){
+			$this->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '".$tab."') DROP TABLE ".$tab);
+		} else {
+			$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
+		}
 	}
 
 	function addCol($tab, $col, $typ, $pos = ''){
@@ -716,7 +781,11 @@ abstract class we_database_base{
 		if($this->isColExist($tab, $col)){
 			return false;
 		}
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		if(DB_CONNECT=='msconnect'){ //msconnectfixme position
+			return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $col . ' ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		} else {
+			return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		}
 	}
 
 	function changeColType($tab, $col, $newtyp){
@@ -724,8 +793,12 @@ abstract class we_database_base{
 		if(!$this->isColExist($tab, $col)){
 			return false;
 		}
-
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
+		if(DB_CONNECT=='msconnect'){
+			$q = "ALTER TABLE " . $tab . ' ALTER COLUMN '.$col.' '. $newtyp.';';
+			return $this->query($q);
+		} else {
+			return $this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
+		}
 	}
 
 	function getColTyp($tab, $col){
@@ -736,7 +809,11 @@ abstract class we_database_base{
 		if(!$this->isColExist($tab, $col)){
 			return;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP `' . trim($col, '`') . '`');
+		if(DB_CONNECT=='msconnect'){
+			$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . trim($col, '`') . ';');
+		} else {
+			$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP `' . trim($col, '`') . '`');
+		}
 	}
 
 	function getTableCreateArray($tab){
@@ -746,7 +823,7 @@ abstract class we_database_base{
 			false;
 	}
 
-	function getTableKeyArray($tab){
+	function getTableKeyArray($tab){t_e('msconnect: getTableKeyArray fehlt');
 		$myarray = array();
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){
@@ -828,7 +905,11 @@ abstract class we_database_base{
 	 * @param string $newcol new col-name
 	 */
 	function renameCol($tab, $oldcol, $newcol){
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
+		if(DB_CONNECT=='msconnect'){
+			$this->query("sp_rename '".$tab.'.'.$oldcol."','".$newcol."' , 'COLUMN'; ");
+		} else {
+			$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
+		}
 	}
 
 	/**

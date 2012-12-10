@@ -137,7 +137,12 @@ function we_tag_sessionStart($attribs){
 		}
 	}
 	if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < DATE_SUB(NOW(), INTERVAL 1 HOUR)');
+		if(DB_CONNECT=='msconnect'){
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < '.time()-86400 .';');
+		} else {
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < DATE_SUB(NOW(), INTERVAL 1 HOUR)');
+		}
+		
 		$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs);
 		$docAttr = weTag_getAttribute('monitordoc', $attribs);
 		$doc = we_getDocForTag($docAttr, false);
@@ -157,10 +162,31 @@ function we_tag_sessionStart($attribs){
 			$WebUserGroup = 'we_guest';
 			$WebUserDescription = '';
 		}
+		if(DB_CONNECT=='msconnect'){
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_SESSION_TABLE . ' SET PageID="' . $PageID . '",LastAccess=Getdate(),WebUserID=' . intval($WebUserID) . ',WebUserGroup="' . $WebUserGroup . '",WebUserDescription="' . $WebUserDescription . '"  WHERE SessionID="' . $SessionID . '"');
+		} else {
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_SESSION_TABLE . ' SET PageID="' . $PageID . '",LastAccess=NOW(),WebUserID=' . intval($WebUserID) . ',WebUserGroup="' . $WebUserGroup . '",WebUserDescription="' . $WebUserDescription . '"  WHERE SessionID="' . $SessionID . '"');
 
-		$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_SESSION_TABLE . ' SET PageID="' . $PageID . '",LastAccess=NOW(),WebUserID=' . intval($WebUserID) . ',WebUserGroup="' . $WebUserGroup . '",WebUserDescription="' . $WebUserDescription . '"  WHERE SessionID="' . $SessionID . '"');
+		}
 		if($GLOBALS['DB_WE']->affected_rows() == 0){
-			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
+			if(DB_CONNECT=='msconnect'){
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . 
+				we_database_base::arraySetterINSERT(array(
+					'SessionID' => $SessionID,
+					'SessionIp' => $SessionIp,
+					'WebUserID' => $WebUserID,
+					'WebUserGroup' => $WebUserGroup,
+					'WebUserDescription' => $WebUserDescription,
+					'Browser' => $Browser,
+					'Referrer' => $Referrer,
+					'LastLogin' => 'NOW()',
+					'LastAccess' => 'NOW()',
+					'PageID' => $PageID,
+					'ObjectID' => $ObjectID,
+					'SessionAutologin' => $SessionAutologin
+				)));
+			} else {
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'SessionID' => $SessionID,
 					'SessionIp' => $SessionIp,
@@ -175,6 +201,7 @@ function we_tag_sessionStart($attribs){
 					'ObjectID' => $ObjectID,
 					'SessionAutologin' => $SessionAutologin
 				)));
+			}
 		}
 	}
 	return '';

@@ -1,10 +1,10 @@
-CREATE TABLE ###TBLPREFIX###tblbannerviews (
-  viewid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  ID bigint(20) unsigned NOT NULL default '0',
-  `Timestamp` int(10) unsigned default NULL,
-  IP varchar(30) NOT NULL default '',
+CREATE TABLE tblbannerviews (
+  viewid bigint NOT NULL IDENTITY(1,1),
+  ID bigint NOT NULL default '0',
+  "Timestamp" int default NULL,
+  IP varchar NOT NULL default '',
   Referer varchar(255) NOT NULL default '',
-  DID bigint(20) unsigned NOT NULL default '0',
+  DID bigint NOT NULL default '0',
   Page varchar(255) NOT NULL default '',
-  PRIMARY KEY (`viewid`)
-) ENGINE=MyISAM;
+  PRIMARY KEY (viewid)
+)

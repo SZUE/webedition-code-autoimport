@@ -759,7 +759,7 @@ class we_template extends we_document{
 		$this->setElement("completeData", $code);
 	}
 
-	function we_save($resave = 0, $updateCode = 1){
+	function we_save($resave = 0, $updateCode = 1){t_e($this);
 		$ct = new we_base_ContentTypes();
 		$this->Extension = $ct->getExtension('text/weTmpl');
 		if($updateCode){

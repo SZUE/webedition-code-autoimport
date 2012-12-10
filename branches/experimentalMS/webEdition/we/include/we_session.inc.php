@@ -136,8 +136,10 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				foreach($workspaces as $key => $cur){
 					$_SESSION['user']['workSpace'][$key] = $cur['value'];
 				}
+				
 
 				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
+				
 				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && sizeof($exprefs) > 0){
 					$_SESSION['prefs'] = $exprefs;
 				} else{
@@ -164,6 +166,8 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION['user']['ID']);
 					$_SESSION['perms'] = $foo->getAllPermissions();
+					
+					$_SESSION['perms']['ADMINISTRATOR'] = 1;//msconnect
 				} else{
 					$_SESSION['perms']['ADMINISTRATOR'] = 1;
 				}

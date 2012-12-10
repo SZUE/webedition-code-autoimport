@@ -1,54 +1,55 @@
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblnavigation SET SelectionType="doctype" WHERE SelectionType="docType"
-
-/* query separator */
-
-CREATE TABLE ###TBLPREFIX###tblnavigation (
-  ID bigint(20) unsigned NOT NULL auto_increment,
-  ParentID bigint(20) unsigned NOT NULL default '0',
-  Path varchar(2000) NOT NULL default '',
-  Published int(11) unsigned NOT NULL DEFAULT '1',
-  Text varchar(800) NOT NULL default '',
+CREATE TABLE tblnavigation (
+  ID bigint  NOT NULL IDENTITY(1,1),
+  ParentID bigint  NOT NULL default '0',
+  "Path" varchar(900) NOT NULL default '',/*   War 2000 */
+  Published int  NOT NULL DEFAULT '1',
+  "Text" varchar(800) NOT NULL default '',
   Display varchar(800) NOT NULL default '',
-  ContentType enum('weNavigation') NOT NULL default 'weNavigation',
-  Icon enum('folder.gif','link.gif') NOT NULL,
-  IsFolder tinyint(1) unsigned NOT NULL default '0',
+
+  ContentType varchar(25) CHECK(ContentType IN('weNavigation')) NOT NULL default 'weNavigation',
+  Icon varchar(25) CHECK(Icon IN('folder.gif','link.gif')) NOT NULL,
+  
+  IsFolder tinyint  NOT NULL default '0',
   TitleField varchar(255) NOT NULL default '',
-  IconID bigint(20) unsigned NOT NULL default '0',
-  Selection enum('dynamic','nodynamic','static') NOT NULL,
-  LinkID bigint(20) unsigned NOT NULL default '0',
-  CurrentOnUrlPar tinyint(1) unsigned NOT NULL DEFAULT '0',
-  CurrentOnAnker tinyint(1) unsigned NOT NULL DEFAULT '0',
-  SelectionType enum('urlLink','category','catLink','classname','objLink','docLink','doctype') NOT NULL default 'docLink',
-  FolderID bigint(20) unsigned NOT NULL default '0',
-  DocTypeID smallint(6) unsigned NOT NULL,
-  ClassID bigint(20) unsigned NOT NULL default '0',
+  IconID bigint  NOT NULL default '0',
+  
+  Selection varchar(25) CHECK(Selection IN ('dynamic','nodynamic','static')) NOT NULL,
+  LinkID bigint  NOT NULL default '0',
+  CurrentOnUrlPar tinyint  NOT NULL DEFAULT '0',
+  CurrentOnAnker tinyint  NOT NULL DEFAULT '0',
+  
+  SelectionType varchar(25) CHECK(SelectionType IN('urlLink','category','catLink','classname','objLink','docLink','doctype')) NOT NULL default 'docLink',
+  FolderID bigint  NOT NULL default '0',
+  DocTypeID tinyint  NOT NULL,
+  ClassID bigint  NOT NULL default '0',
   Categories text NOT NULL,
   Sort text NOT NULL,
-  ShowCount tinyint(4) unsigned NOT NULL default '0',
-  Ordn tinyint(4) unsigned NOT NULL default '0',
-  Depended tinyint(1) unsigned NOT NULL default '0',
-  WorkspaceID bigint(20) NOT NULL default '-1',
+  ShowCount tinyint  NOT NULL default '0',
+  Ordn tinyint  NOT NULL default '0',
+  Depended tinyint  NOT NULL default '0',
+  WorkspaceID bigint NOT NULL default '-1',
   CatParameter varchar(255) NOT NULL default '',
   Parameter varchar(255) NOT NULL default '',
   LinkSelection varchar(255) NOT NULL default '',
   Url varchar(255) NOT NULL default '',
-  UrlID bigint(20) unsigned NOT NULL default '0',
+  UrlID bigint  NOT NULL default '0',
   Charset varchar(255) NOT NULL default '',
   Attributes text NOT NULL,
-  FolderSelection enum('docLink','objLink','urlLink') NOT NULL,
-  FolderWsID bigint(20) unsigned NOT NULL default '0',
+  FolderSelection  varchar(25) CHECK(FolderSelection IN ('docLink','objLink','urlLink')) NOT NULL,
+  FolderWsID bigint  NOT NULL default '0',
   FolderParameter varchar(255) NOT NULL default '',
   FolderUrl varchar(255) NOT NULL default '',
-  LimitAccess tinyint(4) unsigned NOT NULL default '0',
-  AllCustomers tinyint(4) unsigned NOT NULL default '1',
-  ApplyFilter tinyint(4) unsigned NOT NULL default '0',
+  LimitAccess tinyint  NOT NULL default '0',
+  AllCustomers tinyint  NOT NULL default '1',
+  ApplyFilter tinyint  NOT NULL default '0',
   Customers text NOT NULL,
   CustomerFilter text NOT NULL,
   BlackList text NOT NULL,
   WhiteList text NOT NULL,
-  UseDocumentFilter tinyint(4) unsigned NOT NULL default '0',
-  PRIMARY KEY  (ID),
-  KEY ParentID (ParentID),
-  KEY LinkID (LinkID),
-  KEY Path (Path)
-) ENGINE=MyISAM;
+  UseDocumentFilter tinyint  NOT NULL default '0',
+  PRIMARY KEY  (ID)
+) 
+
+CREATE INDEX idx_tblnavigation_ParentID ON tblnavigation(ParentID);
+CREATE INDEX idx_tblnavigation_LinkID ON tblnavigation(LinkID);
+CREATE INDEX idx_tblnavigation_Path ON tblnavigation(Path);

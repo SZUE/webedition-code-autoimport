@@ -628,7 +628,11 @@ abstract class we_SEEM{
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
-		$id = f('SELECT ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
+		if(DB_CONNECT=='msconnect'){
+			$id = f('SELECT TOP 1 ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") ;', 'ID', $db);
+		} else {
+			$id = f('SELECT ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
+		}
 		return $id ? $id : -1;
 	}
 

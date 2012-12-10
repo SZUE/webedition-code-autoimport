@@ -130,14 +130,32 @@ $_parts = array();
 
 $db = new DB_WE();
 if(isset($_REQUEST['delete'])){
-	$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
+	if(DB_CONNECT=='msconnect'){;
+		$db->query("TRUNCATE TABLE " . ERROR_LOG_TABLE . "");
+	} else {
+		$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');
+	}
 }
-$size = f('SELECT COUNT(1) as cnt FROM `' . ERROR_LOG_TABLE . '`', 'cnt', $db);
+if(DB_CONNECT=='msconnect'){
+	$size = f('SELECT COUNT(1) as cnt FROM ' . ERROR_LOG_TABLE . '', 'cnt', $db);
+} else {
+	$size = f('SELECT COUNT(1) as cnt FROM `' . ERROR_LOG_TABLE . '`', 'cnt', $db);
+}
 $start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
 $start = $start > $size ? $size : $start;
 
 if($size){
-	$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db);
+	if(DB_CONNECT=='msconnect'){
+		//if($start==0){$mystart=$size;}else {$mystart=$start;}
+		//$record = getHash("SELECT t1.* FROM ( SELECT ROW_NUMBER OVER(ORDER BY ID ) AS row, t1.* FROM ( SELECT * FROM " . ERROR_LOG_TABLE . "   ) t1 ) t2 WHERE t2.row BETWEEN @offset+1 AND @offset+@count;", $db);
+		$mystart=$start+1;
+		$myend=$start+1;
+		$startAndEnd=$start+1;
+		$record = getHash("SELECT * FROM ( SELECT TOP ".$startAndEnd." *, ROW_NUMBER() OVER(ORDER BY ID DESC) AS row FROM ".ERROR_LOG_TABLE." ) a  WHERE row > ".$start.";", $db);
+		//$record = getHash('SELECT * FROM ' . ERROR_LOG_TABLE . ' WHERE ID = '.intval($mystart)  .' ORDER By ID DESC', $db);
+	} else {	
+		$record = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . intval($start) . ',1', $db);
+	}
 	$_parts[] = array(
 		'html' => getInfoTable($record),
 		'space' => 10,

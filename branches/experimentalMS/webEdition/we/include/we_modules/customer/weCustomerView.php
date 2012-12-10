@@ -1108,9 +1108,22 @@ class weCustomerView{
 		$this->settings->storeFieldAdd($new_field_name, 'default', $field_default);
 		$this->settings->storeFieldAdd($new_field_name, 'type', $field_type);
 
+		if(DB_CONNECT=='msconnect'){
+			if(count($h)){
+				if($field== $new_field_name){
+					$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . " ALTER COLUMN '" . $new_field_name . "' " . $this->settings->getDbType($field_type, $new_field_name) . ';');
+				} else {
+					$this->db->query("sp_rename '". CUSTOMER_TABLE.'.'.$field."','".$new_field_name ."' , 'COLUMN'; ");
+				}
 
-		$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . $this->settings->getDbType($field_type, $new_field_name) . ' NOT NULL;');
+			} else {
+				$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ADD ' . $new_field_name . ' ' . $this->settings->getDbType($field_type, $new_field_name) . " ;");
 
+			}
+			
+		} else {
+			$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . $this->settings->getDbType($field_type, $new_field_name) . ' NOT NULL;');
+		}
 		$this->settings->save();
 	}
 
@@ -1118,7 +1131,11 @@ class weCustomerView{
 		$h = $this->customer->getFieldDbProperties($field);
 
 		if(count($h)){
-			$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP ' . $field);
+			if(DB_CONNECT=='msconnect'){
+				$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP COLUMN ' . $field);
+			} else {
+				$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP ' . $field);
+			}
 		}
 
 		$this->settings->removeFieldAdd($field);

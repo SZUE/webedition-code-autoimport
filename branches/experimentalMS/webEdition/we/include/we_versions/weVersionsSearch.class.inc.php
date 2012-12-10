@@ -54,6 +54,7 @@ class weVersionsSearch {
 	function __construct() {
 
 	  $this->db = new DB_WE();
+	  
 	  $this->version=new weVersions();
 
 	}

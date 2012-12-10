@@ -164,8 +164,9 @@ class we_listview_multiobject extends listviewBase{
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ?
 				makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) :
-				'1');
-
+				'1=1');//msconnect
+//msconnect
+if($pid_tail=='1'){$pid_tail='1=1';}
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = ($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE") ?

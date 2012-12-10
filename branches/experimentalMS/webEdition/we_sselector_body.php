@@ -154,7 +154,7 @@ function _cutText($text, $l){
 
 			if($dir_obj){
 				while(false !== ($entry = $dir_obj->read())) {
-					if($entry != '.' && $entry != '..'){
+					if($entry != '.' && $entry != '..' && $entry != '.svn'){
 						if(is_dir($dir . "/" . $entry)){
 							array_push($arDir, $entry);
 							switch($_REQUEST["ord"]){

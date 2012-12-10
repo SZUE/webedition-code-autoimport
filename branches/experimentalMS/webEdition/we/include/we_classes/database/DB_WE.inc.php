@@ -40,6 +40,13 @@ switch(DB_CONNECT){
 		if(!defined('MYSQL_ASSOC')) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 		if(!defined('MYSQL_NUM')) define('MYSQL_NUM',MYSQLI_NUM);
 		break;
+	case 'msconnect':
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mssql.class.php');
+		if(!defined('MYSQL_BOTH')) define('MYSQL_BOTH',MSSQL_BOTH);
+		if(!defined('MYSQL_ASSOC')) define('MYSQL_ASSOC',MSSQL_ASSOC);
+		if(!defined('MYSQL_NUM')) define('MYSQL_NUM',MSSQL_NUM);
+		break;
+	
 	default:
 		echo 'unknown DB connection type "'.DB_CONNECT."\"\n";
 		die('unknown DB connection type');

@@ -98,7 +98,7 @@ $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
 $_i = 0;
 while(false !== ($entry = $_dir->read())) {
-	if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
+	if($entry != '.' && $entry != '..' && $entry != '.svn' && strpos($entry, '.zip') !== false){
 		$_i++;
 		$table->addRow();
 

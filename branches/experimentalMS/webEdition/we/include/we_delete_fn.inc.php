@@ -216,7 +216,11 @@ function deleteFile($id, $table, $path = '', $contentType = '', $DB_WE = ''){
 		if($ofID){
 			deleteEntry($ofID, OBJECT_FILES_TABLE, true, 0, $DB_WE);
 		}
-		$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
+		if(DB_CONNECT=='msconnect'){
+			$DB_WE->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '".OBJECT_X_TABLE . intval($id)."') DROP TABLE ".OBJECT_X_TABLE . intval($id));
+		} else {
+			$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
+		}
 	}
 	if($contentType == 'image/*'){
 		we_thumbnail::deleteByImageID($id);
@@ -294,11 +298,16 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 	}
 	if($id){
 		$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+		//msconnect
+		/*
 		$ct = weVersions::getContentTypesVersioning();
 		//no need to init doc, if no version is needed or hook is executed
 		if(in_array($row['ContentType'], $ct) || $skipHook == 0){
 			$object = weContentProvider::getInstance($row['ContentType'], $id, $table);
 		}
+		*/
+		//msconnect
+		/*
 		if(in_array($row['ContentType'], $ct)){
 			$version = new weVersions();
 			$version_exists = $version->getLastEntry($id, $table);
@@ -308,6 +317,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook = 0, $DB_WE = ''){
 
 			$version->setVersionOnDelete($id, $table, $row['ContentType'], $DB_WE);
 		}
+		*/
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('delete', '', array($object));

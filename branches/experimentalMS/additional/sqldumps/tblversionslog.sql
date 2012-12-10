@@ -1,8 +1,8 @@
-CREATE TABLE ###TBLPREFIX###tblversionslog (
-  `ID` bigint(20) unsigned NOT NULL auto_increment,
-  `timestamp` int(11) unsigned NOT NULL,
-  `action` int(11) unsigned NOT NULL,
-  `userID` int(11) unsigned NOT NULL,
-  `data` longtext NOT NULL,
-  PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM ;
+CREATE TABLE tblversionslog (
+  ID bigint  NOT NULL IDENTITY(1,1),
+  "timestamp" int  NOT NULL,
+  "action" int  NOT NULL,
+  userID int  NOT NULL,
+  data text NOT NULL,
+  PRIMARY KEY  (ID)
+)

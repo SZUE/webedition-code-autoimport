@@ -314,10 +314,19 @@ abstract class we_util_File{
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
-		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		if(DB_CONNECT=='msconnect'){
+			$myID=f('SELECT ID FROM '.CLEAN_UP_TABLE." WHERE Path='".$DB_WE->escape($path)."'",'ID',$DB_WE);
+			if($myID){
+				$DB_WE->query('UPDATE '.CLEAN_UP_TABLE." SET Date='".intval($date)."'");		
+			} else {
+				$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE .  we_database_base::arraySetterINSERT(array('Path' => $DB_WE->escape($path),'Date' => intval($date))));
+			}
+		} else {	
+			$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Path' => $DB_WE->escape($path),
 				'Date' => intval($date)
 			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
+		}
 	}
 
 	public static function checkAndMakeFolder($path, $recursive = false){

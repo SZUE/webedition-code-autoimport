@@ -1,19 +1,19 @@
-CREATE TABLE ###TBLPREFIX###tblMessages (
-  ID int(11) unsigned NOT NULL auto_increment,
-  ParentID int(11) unsigned default NULL,
-  UserID int(11) unsigned default NULL,
-  msg_type tinyint(4) unsigned NOT NULL default '0',
-  obj_type tinyint(4) unsigned NOT NULL default '0',
-  headerDate int(11) unsigned default NULL,
+CREATE TABLE tblMessages (
+  ID int  NOT NULL IDENTITY(1,1),
+  ParentID int  default NULL,
+  UserID int  default NULL,
+  msg_type tinyint  NOT NULL default '0',
+  obj_type tinyint  NOT NULL default '0',
+  headerDate int  default NULL,
   headerSubject varchar(255) default NULL,
-  headerUserID int(11) unsigned default NULL,
+  headerUserID int  default NULL,
   headerFrom varchar(255) default NULL,
   headerTo varchar(255) default NULL,
-  Priority tinyint(4) unsigned default NULL,
-  seenStatus tinyint(4) unsigned NOT NULL default '0',
+  Priority tinyint  default NULL,
+  seenStatus tinyint  NOT NULL default '0',
   MessageText text,
-  tag tinyint(4) unsigned NOT NULL default '0',
-  PRIMARY KEY  (ID),
-  KEY UserID (UserID),
-  KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
-) ENGINE=MyISAM;
+  tag tinyint  NOT NULL default '0',
+  PRIMARY KEY  (ID)
+) 
+CREATE INDEX idx_tblMessages_UserID ON tblMessages(UserID);
+CREATE INDEX idx_tblMessages_query ON tblMessages(obj_type,msg_type,ParentID,UserID);

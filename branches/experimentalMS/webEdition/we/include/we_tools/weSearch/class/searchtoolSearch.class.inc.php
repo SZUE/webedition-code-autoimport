@@ -115,13 +115,15 @@ class searchtoolsearch extends we_search{
 
 	function getModFields(){
 		$modFields = array();
+		//msconnect
+		/*
 		$versions = new weVersions();
 		foreach($versions->modFields as $k => $v){
 			if($k != "status"){
 				$modFields[$k] = $k;
 			}
 		}
-
+		*/
 		return $modFields;
 	}
 
@@ -473,6 +475,9 @@ class searchtoolsearch extends we_search{
 
 	function searchModFields($text, $table){
 		$where = "";
+		
+		//msconnect
+		/*
 		$db = new DB_WE();
 		$versions = new weVersions();
 
@@ -529,6 +534,8 @@ class searchtoolsearch extends we_search{
 		}
 
 		return $where;
+		*/
+		return '';
 	}
 
 	function searchContent($keyword, $table){

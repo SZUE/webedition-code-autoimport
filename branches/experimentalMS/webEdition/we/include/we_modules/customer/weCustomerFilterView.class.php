@@ -312,10 +312,16 @@ EO_SCRIPT;
 
 
 		$_filter_args = array();
-
-		$GLOBALS['DB_WE']->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
-		while($GLOBALS['DB_WE']->next_record()) {
-			$_filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
+		if(DB_CONNECT=='msconnect'){
+			$GLOBALS['DB_WE']->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".CUSTOMER_TABLE."';");
+			while($GLOBALS['DB_WE']->next_record()) {
+				$_filter_args[$GLOBALS['DB_WE']->f("COLUMN_NAME")] = $GLOBALS['DB_WE']->f("COLUMN_NAME");
+			}
+		} else {
+			$GLOBALS['DB_WE']->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+			while($GLOBALS['DB_WE']->next_record()) {
+				$_filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
+			}
 		}
 		asort($_filter_args, SORT_STRING);
 

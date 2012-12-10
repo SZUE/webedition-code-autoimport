@@ -251,7 +251,17 @@ class we_user{
 				}
 			}
 		}
-		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+		if(DB_CONNECT=='msconnect'){
+			if($this->ID){
+				$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+
+			} else {
+				$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->Table) .  we_database_base::arraySetterINSERT($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+
+			}
+		} else {
+			$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
+		}
 		if(!$this->ID){
 			$this->ID = $this->DB_WE->getInsertId();
 		}
@@ -615,7 +625,7 @@ class we_user{
 			$fieldName = $ti['name'];
 			if(in_array($fieldName, $this->preference_slots) && $fieldName != 'userID'){
 				if($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] != '1'){
-					$this->Preferences[$fieldName] = '-1';
+					$this->Preferences[$fieldName] = '1';//msconnect war -1
 				} elseif($fieldName == 'editorFontname' && $this->Preferences['editorFont'] != '1'){
 					$this->Preferences[$fieldName] = 'none';
 				}
@@ -631,7 +641,11 @@ class we_user{
 			$updt['openFolders_tblFile'] = '';
 			$updt['openFolders_tblTemplates'] = '';
 			$updt['DefaultTemplateID'] = '0';
-			$this->DB_WE->query('INSERT INTO ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter($updt));
+			if(DB_CONNECT=='msconnect'){
+				$this->DB_WE->query('INSERT INTO ' . PREFS_TABLE .  we_database_base::arraySetterINSERT($updt));
+			} else {
+				$this->DB_WE->query('INSERT INTO ' . PREFS_TABLE . ' SET ' . we_database_base::arraySetter($updt));
+			}
 		}
 	}
 
@@ -1446,7 +1460,7 @@ class we_user{
 		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(280, 10));
 		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(280, 5));
 		if($this->CreatorID){
-			$this->DB_WE->query('SELECT username,first,second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID));
+			$this->DB_WE->query('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID));
 			$CreatorIDtext = ($this->DB_WE->next_record() ?
 					$this->DB_WE->f('username') . ' (' . $this->DB_WE->f('first') . ' ' . $this->DB_WE->f('second') . ')' :
 					g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]'));
@@ -1881,7 +1895,7 @@ class we_user{
 		$_language_directory = dir(WE_INCLUDES_PATH . 'we_language');
 
 		while(false !== ($entry = $_language_directory->read())) {
-			if($entry != '.' && $entry != '..'){
+			if($entry != '.' && $entry != '..' && $entry != '.svn'){
 				if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $entry)){
 					$_language[$entry] = $entry;
 				}

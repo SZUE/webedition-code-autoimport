@@ -242,11 +242,27 @@ class weCustomer extends weModelBase{
 
 	function getFieldsDbProperties(){
 		$ret = array();
-		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
-		while($this->db->next_record()) {
-			$ret[$this->db->f("Field")] = $this->db->Record;
+		if(DB_CONNECT=='msconnect'){
+			$this->db->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".$this->db->escape($this->table)."';");
+			$myrow=array(); 
+			while($this->db->next_record()) {
+				$myrow['Field']=$this->db->f("COLUMN_NAME");
+				$myrow['Null']=$this->db->f("IS_NULLABLE");
+				if($this->db->f("DATA_TYPE")=='varchar'){
+					$myrow['Type']=$this->db->f("DATA_TYPE").'('.$this->db->f("CHARACTER_MAXIMUM_LENGTH").')';
+				} else {
+					$myrow['Type']=$this->db->f("DATA_TYPE");
+				}
+				$myrow['Default']=str_replace(array("('","')",'(NULL)'),'',$this->db->f("COLUMN_DEFAULT"));
+				//$ret[$this->db->f("COLUMN_NAME")] = $this->db->Record;
+				$ret[$this->db->f("COLUMN_NAME")] = $myrow;
+			}
+		} else {
+			$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
+			while($this->db->next_record()) {
+				$ret[$this->db->f("Field")] = $this->db->Record;
+			}
 		}
-
 		return $ret;
 	}
 

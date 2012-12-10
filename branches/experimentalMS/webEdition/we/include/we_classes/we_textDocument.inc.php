@@ -38,6 +38,7 @@ class we_textDocument extends we_document{
 
 	function __construct(){
 		parent::__construct();
+		array_push($this->persistent_slots, "DocType",'temp_doc_type');
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 	}
 

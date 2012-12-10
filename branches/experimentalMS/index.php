@@ -11,13 +11,13 @@
 
 
 //chemin jusqu'au fichier de conf de WampServer
-$wampConfFile = '../wampmanager.conf';
+$wampConfFile = '../../wampmanager.conf';
 
 //chemin jusqu'aux fichiers alias
-$aliasDir = '../alias/';
+$aliasDir = '../../alias/';
 
 //chemin jusqu'aux fichiers vhosts
-$vhostsDir = '../vhosts/';
+$vhostsDir = '../../vhosts/';
 
 // on charge le fichier de conf locale
 if (!is_file($wampConfFile))

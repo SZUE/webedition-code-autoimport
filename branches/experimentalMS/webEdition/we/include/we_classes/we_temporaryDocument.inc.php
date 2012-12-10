@@ -69,13 +69,23 @@ abstract class we_temporaryDocument{
 		$db = $db ? $db : new DB_WE();
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
-		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
+		if(DB_CONNECT=='msconnect'){
+			$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . 
+			we_database_base::arraySetterINSERT(array(
+				'DocumentID' => $documentID,
+				'DocumentObject' => serialize($document),
+				'Active' => 1,
+				'UnixTimestamp' => time(),
+				'DocTable' => stripTblPrefix($table))));
+		} else {
+			$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
 			we_database_base::arraySetter(array(
 				'DocumentID' => $documentID,
 				'DocumentObject' => serialize($document),
 				'Active' => 1,
 				'UnixTimestamp' => 'UNIX_TIMESTAMP()',
 				'DocTable' => stripTblPrefix($table))));
+		}
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		} else{

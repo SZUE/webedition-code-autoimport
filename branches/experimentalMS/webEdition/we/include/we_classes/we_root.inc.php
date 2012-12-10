@@ -933,17 +933,162 @@ abstract class we_root extends we_class{
 
 	private function getLinkReplaceArray(){
 		$ret = array();
-		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
-		while($this->DB_WE->next_record()) {
-			$ret[$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
+		if(DB_CONNECT=='msconnect'){
+			$this->DB_WE->query('SELECT Type,Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+			while($this->DB_WE->next_record()) {
+				$ret[$this->DB_WE->f('Name').'_'.$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
+			}
+		} else {
+			$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+			while($this->DB_WE->next_record()) {
+				$ret[$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
+			}
 		}
 		return $ret;
 	}
 
 	function i_saveContentDataInDB(){
+	if(DB_CONNECT=='mmsconnect'){ //6.2.7
+		if(!deleteContentFromDB($this->ID,$this->Table)) return false;
+		if(!is_array($this->elements)){
+			return true;
+		}
+
+		foreach($this->elements as $k=>$v){
+			if($this->i_isElement($k)){
+				if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
+
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);t_e('$tableInfo',$tableInfo);
+					$keys = array();
+					$vals = '';
+					for($i=0;$i<sizeof($tableInfo);$i++){
+						$fieldName = $tableInfo[$i]["name"];
+						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						if($k=="data" && $this->IsBinary){
+							break;
+						}
+						if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
+							$v["type"] = "formfield";
+							$val = serialize($v);
+							// Artjom garbage fix
+						}
+
+						if(!isset($v["type"]) || $v["type"] == ""){
+							$v["type"] = "txt";
+						}
+						if($v["type"] == "date"){
+							$val = sprintf("%016d",$val);
+						}
+						if($fieldName != "ID"){
+							$keys[] = $fieldName;
+							
+							//$vals .= "'".addslashes($val)."',";//msconnect
+							$vals .= "'".$val."',";
+						}
+					}
+					if(count($keys)){
+						$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
+						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).')'.' '.$vals);
+						$cid=$this->DB_WE->getInsertId();
+						$this->elements[$k]['id']=$cid; // update Object itself
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
+						if(!$this->DB_WE->query($q)){
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	} else {
+		
+		if(DB_CONNECT=='msconnect'){
+			
+			
+		
+		
+		if(!deleteContentFromDB($this->ID,$this->Table)) return false;
 		if(!is_array($this->elements)){
 			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
+		
+		//don't stress index:
+		$replace = $this->getLinkReplaceArray();
+		$replace = array();
+		foreach($this->elements as $k => $v){
+			if($this->i_isElement($k)){
+				if((!isset($v['type']) || $v['type'] != 'vars') && (( isset($v['dat']) && $v['dat'] != '' ) || (isset($v['bdid']) && $v['bdid']) || (isset($v['ffname']) && $v['ffname']))){
+
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
+					$data = array();
+					foreach($tableInfo as $t){
+						$fieldName = $t['name'];
+						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						if($k == 'data' && $this->IsBinary){
+							break;
+						}
+						if($fieldName == 'Dat' && (isset($v['ffname']) && $v['ffname'])){
+							$v['type'] = 'formfield';
+							$val = serialize($v);
+							// Artjom garbage fix
+						}
+
+						if(!isset($v['type']) || $v['type'] == ''){
+							$v['type'] = 'txt';
+						}
+						if($v['type'] == 'date'){
+							$val = sprintf('%016d', $val);
+						}
+						if($fieldName != 'ID'){
+							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
+						}
+					}
+					if(count($data)){
+						$data = we_database_base::arraySetterINSERT($data);
+						$key = $v['type'] . '_' . $k;
+						$cid = 0;
+						if(isset($replace[$key])){
+							$cid = $replace[$key];
+							$data.=',ID=' . $cid;
+							unset($replace[$key]);
+						}
+						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE .  $data);
+						$cid = $this->DB_WE->getInsertId();
+						$this->elements[$k]['id'] = $cid; // update Object itself
+						
+						
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
+						if(!$cid || !$this->DB_WE->query($q)){
+							//this should never happen
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		$replace = implode(',', $replace);
+		if($replace){
+			/* 			t_e($replace,$this);
+			  exit(); */
+			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
+			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
+		}
+		return true;
+		
+			
+			
+			
+			
+			
+			
+		} else {
+		
+		if(!is_array($this->elements)){
+			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
+		}
+		
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
@@ -986,6 +1131,8 @@ abstract class we_root extends we_class{
 						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
 						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
+						
+						
 						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
 						if(!$cid || !$this->DB_WE->query($q)){
 							//this should never happen
@@ -1005,7 +1152,8 @@ abstract class we_root extends we_class{
 		}
 		return true;
 	}
-
+	}
+	}
 	function i_getPersistentSlotsFromDB($felder = '*'){
 		we_class::i_getPersistentSlotsFromDB($felder);
 		$this->ParentPath = $this->getParentPath();
@@ -1222,14 +1370,29 @@ abstract class we_root extends we_class{
 	 */
 	function isLockedByUser(){
 		//select only own ID if not in same session
-		return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()', 'UserID', $this->DB_WE));
+		if(DB_CONNECT=='msconnect'){
+			return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>Getdate()', 'UserID', $this->DB_WE));
+		} else {
+			return intval(f('SELECT UserID FROM ' . LOCK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND sessionID!="' . session_id() . '" AND lockTime>NOW()', 'UserID', $this->DB_WE));
+		}
 	}
 
 	function lockDocument(){
 		if($_SESSION['user']['ID']){ // only if user->id != 0
 			//if lock is used by other user and time is up, update table
-			$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
+			if(DB_CONNECT=='msconnect'){
+				if($this->ID){
+					$testID=f('SELECT ID FROM '.LOCK_TABLE.' WHERE ID='. intval($this->ID) .' AND tbl="'. $this->DB_WE->escape(stripTblPrefix($this->Table)).'"','ID',$this->DB_WE);
+					if($testID){
+						$this->DB_WE->query('UPDATE '.LOCK_TABLE.' SET UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime='. date('Y-m-d H:i',time()+PING_TIME + PING_TOLERANZ) . ' WHERE ID='. intval($this->ID) .' AND tbl="'. $this->DB_WE->escape(stripTblPrefix($this->Table)).'";');
+					} else {
+						$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' (ID,UserID,sessionID,lockTime,tbl) VALUES ("'.intval($this->ID).'","'. intval($_SESSION['user']['ID']).'","'. session_id().'","'. date('Y-m-d H:i',time()+PING_TIME + PING_TOLERANZ).'","'. $this->DB_WE->escape(stripTblPrefix($this->Table)). '");' );
+					}
+				}
+			} else {
+				$this->DB_WE->query('INSERT INTO ' . LOCK_TABLE . ' SET ID=' . intval($this->ID) . ',UserID=' . intval($_SESSION['user']['ID']) . ',tbl="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '",sessionID="' . session_id() . '",lockTime=NOW()+INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND
 				ON DUPLICATE KEY UPDATE UserID=' . intval($_SESSION['user']['ID']) . ',sessionID="' . session_id() . '",lockTime= NOW() + INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND');
+			}
 		}
 	}
 
