@@ -158,7 +158,16 @@ color: black !important;
 float: none;
 margin-left: 0px;
 margin-right:10px;
-font-weight:normal;
+font-weight:normal; 
+}
+
+.mceActionPanel div {
+display: inline;
+margin-right:20px;
+}
+
+#previewblock{
+margin-right:0;
 }
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
