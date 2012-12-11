@@ -156,9 +156,9 @@ function pWebEdition_JSwe_cmds(){
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 420) {
-	top.setTreeWidth(420);
-	top.storeTreeWidth(420);
+	if (width < <?php echo weTree::DeleteWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::DeleteWidth; ?>);
+	top.storeTreeWidth(<?php echo weTree::DeleteWidth; ?>);
 	}
 
 	var widthSidebar = top.getSidebarWidth();
@@ -182,9 +182,9 @@ function pWebEdition_JSwe_cmds(){
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 500) {
-	top.setTreeWidth(500);
-	top.storeTreeWidth(500);
+	if (width < <?php echo weTree::MoveWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::MoveWidth; ?>);
+	top.storeTreeWidth(<?php echo weTree::MoveWidth; ?>);
 	}
 
 	var widthSidebar = top.getSidebarWidth();

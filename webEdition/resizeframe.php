@@ -46,7 +46,7 @@ function getSidebarWidth(){
 
 function startNormalMode(){
 	$_sidebarwidth = getSidebarWidth();
-	$_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"] : WE_TREE_DEFAULT_WIDTH;
+	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php print $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
@@ -72,7 +72,7 @@ function startEditIncludeMode(){
 
 	$we_cmds = "we_cmd[0]=edit_document&";
 
-	for($i = 1; $i < sizeof($_REQUEST['we_cmd']); $i++){
+	for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
 		$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 	}
 }
