@@ -289,13 +289,13 @@ function treeResized() {
 	}
 }
 
-var oldTreeWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
 function toggleTree(){
 	var tfd= self.rframe.bframe.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if(tfd.style.display=="none"){
-		oldTreeWidth=(oldTreeWidth<100?<?php print WE_TREE_DEFAULT_WIDTH; ?>:oldTreeWidth);
+		oldTreeWidth=(oldTreeWidth<<?php echo weTree::MinWidth; ?>?<?php print weTree::DefaultWidth; ?>:oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display="block";
 		setTreeArrow("left");
@@ -303,8 +303,8 @@ function toggleTree(){
 	}else{
 		tfd.style.display="none";
 		oldTreeWidth = w;
-		setTreeWidth(24);
-		storeTreeWidth(24);
+		setTreeWidth(<?php echo weTree::HiddenWidth; ?>);
+		//storeTreeWidth(24);
 		setTreeArrow("right");
 	}
 }
