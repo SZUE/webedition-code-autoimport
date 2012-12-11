@@ -35,17 +35,26 @@ function up6310_updateLang(){
 	return false;
 	}*/
 	return true;
-
 }
+
 function up6310_updateActiveModules(){
 	$dir=$_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/';
 	$file='we_active_integrated_modules.inc.php';
-	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file) ){
-		return rename($dir.$file,$dir.'conf/'.$file);
-	} else {
+	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file)){
+		include($dir.$file);
+		$modules = "";
+		foreach($_we_active_integrated_modules as $modul){
+			$modules .= "'" . $modul ."',\n";
+		}
+		$content = "<?php
+\$GLOBALS['_we_active_integrated_modules'] = array(\n";
+$content .= substr($modules, 0, -2) . "\n);";
+		return file_put_contents($dir.'conf/'.$file, $content) == false ? false : true;
+	} else{
 		return true;
 	}
 }
+
 function up6310_updateConf(){
 	$filename= $_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/conf/we_conf.inc.php';
 	$conf=file_get_contents($filename);
