@@ -1,8 +1,8 @@
-.cm-s-twilight { background: #141414; color: #f7f7f7; } /**/
+.cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/
 .cm-s-twilight .CodeMirror-selected { background: #323232 !important; } /**/
 
-.cm-s-twilight .CodeMirror-gutter { background: #222; border-right: 1px solid #aaa; }
-.cm-s-twilight .CodeMirror-gutter-text { color: #aaa; }
+.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }
+.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }
 .cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white !important; }
 
 .cm-s-twilight .cm-keyword {  color: #f9ee98; } /**/
