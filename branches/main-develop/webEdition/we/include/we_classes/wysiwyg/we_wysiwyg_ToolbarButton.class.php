@@ -126,7 +126,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "abbr":
 			case "acronym":
 			case "lang":
-				(stripos($this->editor->propstring, ",xhtmlxtras,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return (stripos($this->editor->propstring, ",xhtmlxtras,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
 			case "del":
 			case "ins":
 			case "cite" :

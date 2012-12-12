@@ -126,7 +126,6 @@ define('WE_EDITPAGE_IMAGEEDIT', 15);
 define('WE_EDITPAGE_DOCLIST', 16);
 define('WE_EDITPAGE_VERSIONS', 17);
 
-define('WE_TREE_DEFAULT_WIDTH', 300);
 define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
 

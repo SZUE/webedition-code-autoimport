@@ -24,21 +24,18 @@
  */
 class weVotingTree extends weMainTree{
 
-	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-		$styles = array();
-		$styles[] = '.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.item a { text-decoration:none;}';
-
-		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
-		$styles[] = '.group a { text-decoration:none;}';
-
-		$styles[] = '.notpublished {color: green; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}';
-		$styles[] = '.notpublished a { text-decoration:none;}';
-
-		$this->setStyles($styles);
+		$this->setStyles(array(
+			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item a { text-decoration:none;}',
+			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group a { text-decoration:none;}',
+			'.notpublished {color: green; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.notpublished a { text-decoration:none;}',
+		));
 	}
 
 	function getJSOpenClose(){
@@ -86,9 +83,7 @@ class weVotingTree extends weMainTree{
 	}
 
 	function getJSTreeFunctions(){
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
+		return weTree::getJSTreeFunctions() . '
 				function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
@@ -107,9 +102,7 @@ class weVotingTree extends weMainTree{
 						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+				' . $this->topFrame . '.loaded=1;';
 	}
 
 	function getJSStartTree(){
@@ -121,11 +114,7 @@ class weVotingTree extends weMainTree{
 	}
 
 	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
+		return weTree::getJSIncludeFunctions() . $this->getJSStartTree();
 	}
 
 	function getJSMakeNewEntry(){
@@ -165,10 +154,7 @@ class weVotingTree extends weMainTree{
 	}
 
 	function getJSInfo(){
-		return '
-				function info(text) {
-				}
-			';
+		return 'function info(text) {}';
 	}
 
 	function getJSShowSegment(){
@@ -183,5 +169,3 @@ class weVotingTree extends weMainTree{
 	}
 
 }
-
-?>

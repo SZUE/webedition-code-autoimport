@@ -22,9 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(defined('WE_TAG_GLOBALS') && !we_isLocalRequest()){
-	exit(g_l('alert', '[we_localhost_invalid_request]'));
-}
 
 /* the parent class of storagable webEdition classes */
 
@@ -82,6 +79,7 @@ abstract class we_class{
 
 	function __construct(){
 		$this->Name = md5(uniqid(__FILE__, true));
+		$this->ClassName = get_class($this); //$this is different from self!
 		$this->DB_WE = new DB_WE;
 	}
 
@@ -122,65 +120,43 @@ abstract class we_class{
 	}
 
 	function hrefRow($intID_elem_Name, $intID, $Path_elem_Name, $path, $attr, $int_elem_Name, $showRadio = false, $int = true, $extraCmd = '', $file = true, $directory = false){
+		$checked = ($intID_elem_Name && $int) || ((!$intID_elem_Name) && (!$int));
+		$out = '<tr>' .
+			($showRadio ?
+				'<td>' . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags', '[ext_href]') : g_l('tags', '[int_href]')) . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
+				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
+			) . '<td>' .
+			($intID_elem_Name ?
+				'<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '"><input type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' readonly="readonly" />' :
+				'<input' . ($showRadio ? ' onChange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
+			);
 
-		$out = '<tr>';
-		if($showRadio){
-			$checked = ($intID_elem_Name && $int) || ((!$intID_elem_Name) && (!$int));
-
-			$out = '<td>' . we_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, ((!$intID_elem_Name) ? g_l('tags', '[ext_href]') : g_l('tags', '[int_href]')) . ':&nbsp;', true, 'defaultfont', '') .
-				'</td>';
-		} else{
-			$out .= '<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />';
-		}
-		$out .= '<td>';
-		if($intID_elem_Name){
-			$out .= '<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '"><input type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' readonly="readonly" />';
-		} else{
-			$out .= '<input' . ($showRadio ? ' onChange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />';
-		}
 		if($intID_elem_Name){
 			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			if(($directory && $file) || $file){
-				//javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).",'',".($directory ? 0 : 1).");
-				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
-				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
-
-				$but = we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");");
-			} else{
-				//javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0);
-				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
-				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
-				$but = we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0);");
-			}
+			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
+			$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
+			$but = (($directory && $file) || $file ?
+					we_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
+					we_button::create_button('select', "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "',0);")
+				);
 		} else{
 			$trashbut = we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			if(($directory && $file) || $file){
-
-				//javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')
-				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
-				$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
-				$but = we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-					we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? "filefolder" : "") . "',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')") :
-					'';
-			} else{
-				//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
-				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
-				$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
-				$but = we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-					we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','folder',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')") :
-					'';
-			}
+			$wecmdenc1 = we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
+			$wecmdenc4 = we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : ""));
+			$but = (!we_hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (($directory && $file) || $file ?
+						we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? "filefolder" : "") . "',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')") :
+						we_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','folder',document.forms[0].elements['$Path_elem_Name'].value,'" . $wecmdenc4 . "')")
+					));
 		}
 
-		$out .='</td>
-			<td>' . we_html_tools::getPixel(6, 4) . '</td>
-			<td>' . $but . '</td>
-			<td>' . we_html_tools::getPixel(5, 2) . '</td>
-			<td>' . $trashbut . '</td>
-		</tr>
-';
+		$out .='
+	</td>
+	<td>' . we_html_tools::getPixel(6, 4) . '</td>
+	<td>' . $but . '</td>
+	<td>' . we_html_tools::getPixel(5, 2) . '</td>
+	<td>' . $trashbut . '</td>
+</tr>';
 		return $out;
 	}
 
@@ -250,16 +226,17 @@ abstract class we_class{
 			$vals[$v] = $t;
 		}
 
-		if(!$elementtype)
+		if(!$elementtype){
 			$ps = $this->$name;
+		}
 		$pop = $this->htmlSelect(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
 		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
 	}
 
 	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
-
-		if(!$elementtype)
+		if(!$elementtype){
 			$ps = $this->$name;
+		}
 		$pop = $this->htmlSelect2(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
 		return $this->htmlFormElementTable(($precode ? $precode : '') . $pop . ($postcode ? $postcode : ''), $text, $textalign, $textclass);
 	}
@@ -387,8 +364,9 @@ abstract class we_class{
 
 	function formSelect2($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = array();
-		if($firstEntry)
+		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
+		}
 		$this->DB_WE->query('SELECT ' . $val . ',' . $txt . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
@@ -424,8 +402,9 @@ abstract class we_class{
 
 	function formSelect4($elementtype, $width, $name, $table, $val, $txt, $text, $sqlTail = "", $size = 1, $selectedIndex = "", $multiple = false, $onChange = "", $attribs = "", $textalign = "left", $textclass = "defaultfont", $precode = "", $postcode = "", $firstEntry = ""){
 		$vals = array();
-		if($firstEntry)
+		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
+		}
 		$this->DB_WE->query('SELECT * FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
@@ -520,10 +499,8 @@ abstract class we_class{
 		}
 		if(!empty($_REQUEST)){
 			foreach($_REQUEST as $n => $v){
-				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs)){
-					if(in_array($regs[1], $this->persistent_slots)){
-						$this->$regs[1] = $v;
-					}
+				if(preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
+					$this->$regs[1] = $v;
 				}
 			}
 		}
@@ -610,14 +587,12 @@ abstract class we_class{
 	function checkRemoteLanguage($table, $isfolder = false){
 		if(isset($_REQUEST['we_' . $this->Name . '_Language']) && $_REQUEST['we_' . $this->Name . '_Language'] != ''){
 			$type = stripTblPrefix($table);
-			$type = ($type == 'tblObjectFiles') ? 'tblObjectFile' : $type;
-			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
 			$isobject = ($type == 'tblObjectFile') ? 1 : 0;
-			$type = ($isfolder && $isobject) ? 'tblFile' : $type;
+			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
+			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
 
-			$q = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID);
-			$this->DB_WE->query($q);
-			$langChange = false;
+			$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID));
+			//$langChange = false;
 			$delete = false;
 			while($this->DB_WE->next_record()) {
 				$delete = ($this->DB_WE->Record['DLocale'] != $newLang) ? true : false;
@@ -639,9 +614,7 @@ abstract class we_class{
 		if(!(LANGLINK_SUPPORT)){
 			return true;
 		}
-		//global $l_we_class;
-		$newLang = '';
-		$oldLang = '';
+		$newLang = $oldLang = '';
 		if(isset($_REQUEST['we_' . $this->Name . '_Language']) && $_REQUEST['we_' . $this->Name . '_Language'] != ''){
 			$newLang = $_REQUEST['we_' . $this->Name . '_Language'];
 			$db = new DB_WE;
@@ -668,11 +641,9 @@ abstract class we_class{
 					$DB_WE2 = new DB_WE;
 					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . intval($this->ID) . ' AND IsFolder = 1');
 					while($this->DB_WE->next_record()) {
-						$deleteIt = false;
-						$deleteIt = ($this->DB_WE->Record['DLocale'] == $newLang) ? true : $deleteIt;
+						$deleteIt = ($this->DB_WE->Record['DLocale'] == $newLang);
 						if(!$deleteIt){
-							$qr = 'SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1;';
-							$DB_WE2->query($qr);
+							$DB_WE2->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1;');
 							while($DB_WE2->next_record()) {
 								$deleteIt = ($DB_WE2->Record['Locale'] == $newLang) ? true : $deleteIt;
 							}
@@ -727,7 +698,7 @@ abstract class we_class{
 
 				if(!($LDID == '' || $LDID == 0 || $LDID == -1)){
 					$tmpLangLinkArray[$locale] = $LDID;
-				} else if(array_key_exists($locale, $origLinks)){
+				} elseif(array_key_exists($locale, $origLinks)){
 					$tmpLangLinkArray[$locale] = -1;
 				}
 			}
@@ -747,24 +718,19 @@ abstract class we_class{
 			}
 			if(($newOrChanged || $langChange) && !($LDID == -1)){
 
-				$fileTable = '';
-				$fileLang = '';
-				$fileTable = $isobject ? OBJECT_FILES_TABLE : FILE_TABLE;
 				// from Folders, links lead only to documents, never to objects
-				$fileTable = $isfolder ? FILE_TABLE : $fileTable;
+				//$fileTable = $isfolder ? FILE_TABLE : ($isobject ? OBJECT_FILES_TABLE : FILE_TABLE);
 
-				if($fileLang = f('SELECT Language FROM ' . TBL_PREFIX . $documentTable . ' WHERE ID = ' . intval($LDID), 'Language', $this->DB_WE)){
+				if(($fileLang = f('SELECT Language FROM ' . TBL_PREFIX . $documentTable . ' WHERE ID = ' . intval($LDID), 'Language', $this->DB_WE))){
 					if($fileLang != $locale){
-						$we_responseText = g_l('weClass', '[languageLinksLangNotok]');
-						$we_responseText = sprintf($we_responseText, $locale, $fileLang, $locale);
+						$we_responseText = sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale);
 						$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 						print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 						return true;
 					} else{
 						if(!$isfolder){
 							$setThisLink = true;
-							$actualLangs = array();
-							$actualLinks = array();
+							$actualLangs = $actualLinks = array();
 							$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 							while($this->DB_WE->next_record()) {
 								$actualLangs[] = $this->DB_WE->Record['Locale'];
@@ -772,8 +738,7 @@ abstract class we_class{
 							}
 							$actualLangs[] = $ownLocale;
 
-							$targetLangs = array();
-							$targetLinks = array();
+							$targetLangs = $targetLinks = array();
 							$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $type . '" AND DID=' . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 							while($this->DB_WE->next_record()) {
 								$targetLangs[] = $this->DB_WE->Record['Locale'];
@@ -792,7 +757,6 @@ abstract class we_class{
 							if($setThisLink){
 								// instead of modifying db-Enries, we delete them and create new ones
 								if(isset($actualLinks[$locale]) && $actualLinks[$locale] > 0){
-									$deleteObsoleteArray = array();
 									$deleteObsoleteArray = $actualLinks;
 									$deleteObsoleteArray[$locale] = -1;
 									$this->executeSetLanguageLink($deleteObsoleteArray, $type, $isfolder, $isobject);
@@ -805,15 +769,13 @@ abstract class we_class{
 								}
 								$this->executeSetLanguageLink($preparedLinkArray, $type, $isfolder, $isobject);
 							} else{
-								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
-								$we_responseText = sprintf($we_responseText, $locale);
+								$we_responseText = sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 								print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
 							}
 						}//!isfolder
 						else{
-							$double = 0;
 							$double = f('SELECT DID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable = '" . $type . "' AND DLocale = '" . $ownLocale . "' AND Locale = '" . $locale . "' AND LDID = " . intval($LDID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = 1", 'DID', $this->DB_WE);
 
 							if($double == 0){
@@ -825,8 +787,7 @@ abstract class we_class{
 								$actualLinks[$locale] = $LDID;
 								$this->executeSetLanguageLink($actualLinks, $type, $isfolder, $isobject);
 							} else{
-								$we_responseText = g_l('weClass', '[languageLinksConflicts]');
-								$we_responseText = sprintf($we_responseText, $locale);
+								$we_responseText = sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale);
 								$_js = we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 								print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 								return true;
@@ -871,12 +832,8 @@ abstract class we_class{
 			foreach($LangLinkArray as $locale => $LDID){ //obsolete if we call executeSetLanguageLink with only the link to bechanged (instead of whole $LangLinkArray)
 				if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($this->ID) . " AND Locale='" . $locale . "' AND isFolder='" . intval($isfolder) . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 					$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=' . intval($LDID) . ",DLocale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
-				} else{
-					if($locale != $this->Language){
-						if($LDID > 0){
-							$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($this->ID) . ",DLocale='" . $this->Language . "',IsFolder=" . intval($isfolder) . ", IsObject=" . intval($isobject) . ", LDID=" . intval($LDID) . ", Locale='" . $locale . "', DocumentTable='" . $type . "'");
-						}
-					}
+				} elseif($locale != $this->Language && $LDID > 0){
+					$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($this->ID) . ",DLocale='" . $this->Language . "',IsFolder=" . intval($isfolder) . ", IsObject=" . intval($isobject) . ", LDID=" . intval($LDID) . ", Locale='" . $locale . "', DocumentTable='" . $type . "'");
 				}
 
 				if(!$isfolder && $LDID && $LDID != $this->ID){
@@ -884,14 +841,11 @@ abstract class we_class{
 					if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $type . "' AND DID=" . intval($LDID) . " AND Locale='" . $this->Language . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 						if($LDID > 0){
 							$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ",Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
-						}
-						if($LDID < 0){// here we could delete istead of update (and then delete later...)
+						} elseif($LDID < 0){// here we could delete istead of update (and then delete later...)
 							$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $locale . "', LDID='0',Locale='" . $this->Language . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $type . '"');
 						}
-					} else{
-						if($LDID > 0){
-							$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ", Locale='" . $this->Language . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
-						}
+					} elseif($LDID > 0){
+						$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $locale . "', LDID=" . intval($this->ID) . ", Locale='" . $this->Language . "', IsObject=" . intval($isobject) . ", DocumentTable='" . $type . "'");
 					}
 				}
 

@@ -275,7 +275,7 @@ function enableDelBut(){
 					d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 						if(makeNewFolder){
 						d.writeln('<tr style="background-color:#DFE9F5;">');
-							d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0" /></td>');
+							d.writeln('<td align="center"><img src="<?php print ICON_DIR.we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
 							d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>');
 							d.writeln('</tr>');
 						}else if(makeNewCat){
@@ -420,7 +420,7 @@ top.clearEntries();
 						'Text' => $txt,
 						'Path' => $Path,
 						'IsFolder' => intval($what),
-						'Icon' => (($what == 1) ? 'folder.gif' : 'cat.gif'),
+						'Icon' => (($what == 1) ? we_base_ContentTypes::FOLDER_ICON : 'cat.gif'),
 					);
 					$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($set));
 					$folderID = $this->db->getInsertId();

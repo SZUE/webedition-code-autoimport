@@ -68,6 +68,7 @@ if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 		echo '- ' . $err['filename'] . ' => ' . $err['error'] . '\n';
 	}
 	echo "\n";
+	t_e('import error', $_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 	unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 } else{
 	echo "SUCCESS\n";

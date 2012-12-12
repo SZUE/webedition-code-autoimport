@@ -722,8 +722,7 @@ abstract class we_root extends we_class{
 		parent::we_new();
 		$this->CreatorID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
-			$ct = new we_base_ContentTypes();
-			$this->Icon = $ct->getIcon($this->ContentType);
+			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
 		}
 		$this->ParentPath = $this->getParentPath();
 	}

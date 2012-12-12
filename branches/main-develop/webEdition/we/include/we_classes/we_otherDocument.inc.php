@@ -73,8 +73,7 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function we_save($resave = 0){
-		$ct = new we_base_ContentTypes();
-		$this->Icon = $ct->getIcon($this->ContentType, '', $this->Extension);
+		$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType, '', $this->Extension);
 		return parent::we_save($resave);
 	}
 

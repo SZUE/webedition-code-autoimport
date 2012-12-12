@@ -48,9 +48,7 @@ $dbTitlename = "shoptitle";
 
 
 // wether the resultset ist empty?
-$DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape($dbTitlename) . "'");
-$DB_WE->next_record();
-$resultD = $DB_WE->f("Anzahl");
+$resultD = f('SELECT count(Name) as Anzahl FROM ' . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape($dbTitlename) . "'",'Anzahl',$DB_WE);
 we_html_tools::htmlTop();
 ?>
 </head>

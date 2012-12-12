@@ -206,7 +206,7 @@ function doClick(opt) {
 				document.forms["we_form"].elements["handle_versions"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_versions_data]") . '";
 			}
-			
+
 			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
 				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
 				mess+="\n-' . g_l('backup', "[" . $mode . "_versions_binarys_data]") . '";

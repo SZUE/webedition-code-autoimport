@@ -47,8 +47,7 @@ switch($we_ContentType){
 $we_alerttext = "";
 
 if(isset($_FILES['we_uploadedFile'])){
-	$ct = new we_base_ContentTypes();
-	if(!we_hasPerm($ct->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']["name"])))){
+	if(!we_hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']["name"])))){
 		$we_alerttext = g_l('alert', "[upload_notallowed]");
 	}
 }

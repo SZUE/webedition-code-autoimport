@@ -24,6 +24,12 @@
  */
 class weTree{
 
+	const DefaultWidth = 300;
+	const MinWidth = 100;
+	const DeleteWidth = 420;
+	const MoveWidth = 500;
+	const HiddenWidth = 24;
+
 	var $db;
 	var $topFrame;
 	var $treeFrame;

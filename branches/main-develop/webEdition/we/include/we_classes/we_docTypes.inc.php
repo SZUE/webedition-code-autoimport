@@ -82,7 +82,7 @@ class we_docTypes extends we_class{
 			}
 		} else{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
-			$this->checkRemoteLanguage($this->Table,false);
+			$this->checkRemoteLanguage($this->Table, false);
 		}
 
 		return we_class::we_save($resave);
@@ -203,20 +203,14 @@ class we_docTypes extends we_class{
 	 */
 
 	function formDocTypeHeader(){
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr valign="top">
-					<td>
-						' . $this->formDocTypes2() . '</td>
-					<td>
-						' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>
-						' . $this->formNewDocType() . '
-						' . we_html_tools::getPixel(2, 10) . '
-						' . $this->formDeleteDocType() . '</td>
-				</tr>
-			</table>';
-		return $content;
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td>' . $this->formDocTypes2() . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . $this->formNewDocType() . we_html_tools::getPixel(2, 10) . $this->formDeleteDocType() . '</td>
+	</tr>
+</table>';
 	}
 
 	function formName(){
@@ -224,8 +218,6 @@ class we_docTypes extends we_class{
 	}
 
 	function formDocTypeTemplates(){
-		$wecmdenc1 = '';
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
 
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', 'text/weTmpl', 1,1)");
@@ -235,33 +227,31 @@ class we_docTypes extends we_class{
 	}
 
 	function formDocTypeDefaults(){
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
-					<td>' . we_html_tools::getPixel(20, 5) . '</td>
-					<td>' . we_html_tools::getPixel(200, 5) . '</td>
-				</tr>
-				<tr>
-					<td>' . $this->formSubDir(300) . '</td>
-					<td>' . we_html_tools::getPixel(20, 2) . '</td>
-					<td>' . $this->formExtension(200) . '</td>
-				</tr>
-				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-				<tr><td colspan="3">' . $this->formTemplatePopup(521) . '</td></tr>
-				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-				<tr>
-					<td>' . $this->formIsDynamic() . '</td>
-					<td></td>
-					<td>' . $this->formIsSearchable() . '</td>
-				</tr>
-				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-				<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
-				<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-				<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
-			</table>';
-
-		return $content;
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
+		<td>' . we_html_tools::getPixel(20, 5) . '</td>
+		<td>' . we_html_tools::getPixel(200, 5) . '</td>
+	</tr>
+	<tr>
+		<td>' . $this->formSubDir(300) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . $this->formExtension(200) . '</td>
+	</tr>
+	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3">' . $this->formTemplatePopup(521) . '</td></tr>
+	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr>
+		<td>' . $this->formIsDynamic() . '</td>
+		<td></td>
+		<td>' . $this->formIsSearchable() . '</td>
+	</tr>
+	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
+	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
+</table>';
 	}
 
 	/**
@@ -308,7 +298,6 @@ class we_docTypes extends we_class{
 		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['" . $textname . "'].value");
-		$wecmdenc3 = '';
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
@@ -324,25 +313,21 @@ class we_docTypes extends we_class{
 	}
 
 	function formExtension($width = 100){
-		$ct = new we_base_ContentTypes();
-		$exts = $ct->getExtension('text/webedition');
+		$exts = we_base_ContentTypes::inst()->getExtension('text/webedition');
 		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
 	}
 
 	/* creates the Template PopupMenue */
 
 	function formTemplatePopup($width = 100){
-		$tlist = "";
-		if($this->TemplateID != "")
-			$tlist = $this->TemplateID;
-		if($this->Templates != "")
-			$tlist.="," . $this->Templates;
-		$tlist = implode(",", array_unique(explode(",", $tlist)));
-		$sqlTeil = "";
-		if($tlist != "")
-			$sqlTeil = "WHERE IsFolder=0 AND ID IN($tlist)";
-		else
-			$sqlTeil = "WHERE IsFolder=0";
+		$tlist = ($this->TemplateID != "" ? $this->TemplateID : '');
+		if($this->Templates != ""){
+			$tlist.=',' . $this->Templates;
+		}
+		$tlist = implode(',', array_unique(explode(',', $tlist)));
+		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist != '' ?
+				"AND ID IN($tlist)" :
+				'');
 		return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", g_l('weClass', "[standard_template]"), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
 	}
 
@@ -375,21 +360,18 @@ class we_docTypes extends we_class{
 		$isDyn = $this->IsDynamic ? 1 : 0;
 		$n = "we_" . $this->Name . "_IsDynamic";
 		$v = $this->IsDynamic;
-
-		$out = "\nfunction switchExt(){\n";
-		$out.='var a=document.we_form.elements;' . "\n";
-		if($this->ID){
-			$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
-		}
 		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
 		$DefaultStaticExt = DEFAULT_STATIC_EXT;
-		$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}' . "\n";
-		$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;' . "\n";
-		if($this->ID){
-			$out.="}\n";
-		}
-		$out.="}\n";
-		$out = we_html_element::jsElement($out);
+
+		$out = we_html_element::jsElement('
+function switchExt(){
+	var a=document.we_form.elements;' .
+			($this->ID ?
+				'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') .
+			'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}
+	a["we_' . $this->Name . '_Extension"].value=changeto;' .
+			($this->ID ? '}' : '') .'
+}');
 
 		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}

@@ -1167,7 +1167,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = ''){
 	}
 	foreach($arr2 as $i => $ws)
 		if(in_workspace($pid, $arr4[$i])){
-			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path like "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', 'Path', $DB_WE);
 		}
 	return '';
 }
@@ -1307,8 +1307,7 @@ function getContentTypeFromFile($dat){
 	} else{
 		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 		if($ext){
-			$ct = new we_base_ContentTypes();
-			$type = $ct->getTypeForExtension($ext);
+			$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
 			if($type){
 				return $type;
 			}

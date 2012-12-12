@@ -58,9 +58,9 @@ class we_fileselector{
 			$_SESSION['weS']['we_fs_lastDir'] = array();
 			$_SESSION['weS']['we_fs_lastDir'][$table] = 0;
 		}
-		if($order){
-			$this->order = $order;
-		}
+
+		$this->order = ($order ? $order : $this->order);
+		
 		$this->db = new DB_WE();
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
@@ -267,7 +267,9 @@ class we_fileselector{
 			<?php
 			print $this->printFramesetJSFunctions() .
 				'    self.focus();
-</script></head>' .
+//-->
+</script>
+</head>'.
 				$this->getFrameset();
 		}
 
@@ -313,7 +315,7 @@ class we_fileselector{
 			$startPath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
 			$startPath = $startPath ? $startPath : '/';
 
-			return '<script  type="text/javascript">
+			return '<script  type="text/javascript"><!--
 	var currentID="' . $this->id . '";
 	var currentDir="' . $this->dir . '";
 	var currentPath="' . $this->path . '";
@@ -351,10 +353,10 @@ class we_fileselector{
 		}
 
 		function getExitOpen(){
-			$out = '	function exit_open(){' .
-				($this->JSIDName ?
-					'		opener.' . $this->JSIDName . '=currentID;' : ''
-				);
+			$out = '
+function exit_open(){' . ($this->JSIDName ? '
+	opener.' . $this->JSIDName . '=currentID;' : '');
+
 			if($this->JSTextName){
 				$frameRef = strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
 				$out .= 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
@@ -605,32 +607,38 @@ class we_fileselector{
 			}
 
 			function printHeaderTable(){
-				print '<table border="0" cellpadding="0" cellspacing="0" width="100%">';
+				print '
+<table border="0" cellpadding="0" cellspacing="0" width="100%">';
 				$this->printHeaderTableSpaceRow();
-				print '<tr valign="middle">
-					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-					<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
-					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-					<td>
-					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">';
+				print '
+	<tr valign="middle">
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
+		<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
+		<td>
+		<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
+';
 				$this->printHeaderOptions();
 
-				print '</select>
-					</td>
-					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-					<td width="40">
-						' . we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '
-					</td>
-					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-					<td width="40">
-						' . we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '
-					</td>';
+				print '
+		</select>
+		</td>
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
+		<td width="40">
+			' . we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '
+		</td>
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
+		<td width="40">
+			' . we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '
+		</td>';
 				$this->printHeaderTableExtraCols();
 
-				print '<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>';
+				print '
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>';
 				$this->printHeaderTableSpaceRow();
 
-				print '</table>';
+				print '
+</table>';
 			}
 
 			function printHeaderHeadlines(){
@@ -647,16 +655,16 @@ class we_fileselector{
 			}
 
 			function printHeaderLine(){
-				print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-			</table>';
+				print '
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
+	</tr>
+</table>';
 			}
 
 			function printHeaderJS(){
 				print we_button::create_state_changer(false) . '
-
 function disableRootDirButs(){
 
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
@@ -725,12 +733,13 @@ top.fsheader.clearOptions();';
 
 				$this->printFooterJSIncluddes();
 				print '<script  type="text/javascript"><!--
-					';
+';
 				$this->printFooterJSDef();
 				$this->printFooterJS();
 
 				print '//-->
-					</script></head>
+					</script>
+</head>
 	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 	<form name="we_form" target="fscmd">';
 				$this->printFooterTable();

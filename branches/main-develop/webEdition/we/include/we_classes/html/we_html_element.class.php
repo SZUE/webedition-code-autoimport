@@ -371,7 +371,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
-		$params['cache_archive'] = $attribs['archive'];
+		//$params['cache_archive'] = $attribs['archive']; // Applet seams not to like this param
 		$params['cache_version'] = WE_VERSION;
 		$params['type'] = 'application/x-java-applet;jpi-version=1.6.0';
 		$params['scriptable'] = 'true';
@@ -381,8 +381,9 @@ abstract class we_html_element{
 			$tmp.='<param name="' . $key . '" value="' . $value . '"/>';
 		}
 		$content = $tmp . $content;
-		$attribs['SCRIPTABLE'] = '';
 		$attribs['MAYSCRIPT'] = '';
+		$attribs['SCRIPTABLE'] = '';
+		
 
 		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
 	}

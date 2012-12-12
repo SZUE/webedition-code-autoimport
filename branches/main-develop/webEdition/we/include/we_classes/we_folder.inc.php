@@ -41,7 +41,7 @@ class we_folder extends we_root{
 	var $WorkspacePath = '';
 	var $WorkspaceID = '';
 	var $Language = '';
-	var $Icon = 'folder.gif';
+	var $Icon = we_base_ContentTypes::FOLDER_ICON;
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	var $searchclassFolder_class;
@@ -185,7 +185,7 @@ class we_folder extends we_root{
 				}
 			}
 			$this->we_new();
-			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
+			$this->Icon = $IsClassFolder ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 			$this->Table = $tblName;
 			$this->IsClassFolder = $IsClassFolder;
 			$this->ParentID = $last_pid;
@@ -204,7 +204,7 @@ class we_folder extends we_root{
 				return false;
 			} else{
 				if($this->ParentID != 0){
-					$this->Icon = 'folder.gif';
+					$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 					$this->IsClassFolder = 0;
 				}
 			}

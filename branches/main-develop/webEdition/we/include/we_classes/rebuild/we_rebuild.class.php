@@ -333,7 +333,7 @@ abstract class we_rebuild{
 			$_foo = makeArrayFromCSV($categories);
 			$tmp = array();
 			foreach($_foo as $catID){
-				$tmp [] = ' Category like "%,' . intval($catID) . ',%"';
+				$tmp [] = ' Category LIKE "%,' . intval($catID) . ',%"';
 			}
 			$_cat_query = '(' . implode(' ' . ($catAnd ? 'AND' : 'OR') . ' ', $tmp) . ')';
 		}

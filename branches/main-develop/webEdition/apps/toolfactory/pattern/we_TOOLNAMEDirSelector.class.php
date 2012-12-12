@@ -254,7 +254,7 @@ function addEntry(ID,icon,text,isFolder,path){
 			$folder->we_new();
 			$folder->setParentID($this->dir);
 			$folder->Table=$this->table;
-			$folder->Icon='folder.gif';
+			$folder->Icon=we_base_ContentTypes::FOLDER_ICON;
 			$folder->Text=$txt;
 			$folder->Path=$folder->getPath();
 			$this->db->query("SELECT ID FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."'");
@@ -267,7 +267,7 @@ function addEntry(ID,icon,text,isFolder,path){
 					$folder->we_save();
 		         	print 'var ref = top.opener.top.content;
 if(ref.makeNewEntry){
-	ref.makeNewEntry("folder.gif",'.$folder->ID.',"'.$folder->ParentID.'","'.$txt.'",1,"folder","'.$this->table.'",0,0);
+	ref.makeNewEntry("'.we_base_ContentTypes::FOLDER_ICON.'",'.$folder->ID.',"'.$folder->ParentID.'","'.$txt.'",1,"folder","'.$this->table.'",0,0);
 }
 ';
 if($this->canSelectDir){

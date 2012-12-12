@@ -241,7 +241,7 @@ var i = 0;
 			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td align="center" width="25"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>
+					<td align="center" width="25"><img src="<?php print ICON_DIR.we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector" width="150"><?php print g_l('fileselector', "[folder]") ?></td>
 					<td class="selector"><?php print date("d-m-Y H:i:s") ?></td>
@@ -286,7 +286,7 @@ var i = 0;
 					}
 				}
 
-				$icon = $isfolder ? "folder.gif" : "link.gif";
+				$icon = $isfolder ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON;
 				$filesize = filesize($dir . "/" . $entry);
 				$_size = "";
 				if(!$isfolder){

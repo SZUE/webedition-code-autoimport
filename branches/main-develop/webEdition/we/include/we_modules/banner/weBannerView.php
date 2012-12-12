@@ -781,7 +781,7 @@ class weBannerView extends weBannerBase{
 	function formTagName(){
 
 		$tagnames = array();
-		$query = 'SELECT ' . CONTENT_TABLE . '.Dat AS templateCode, ' . LINK_TABLE . '.DID AS DID FROM ' . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat like '%<we:banner %'  ";
+		$query = 'SELECT ' . CONTENT_TABLE . '.Dat AS templateCode, ' . LINK_TABLE . '.DID AS DID FROM ' . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat LIKE '%<we:banner %'  ";
 		$this->db->query($query);
 		$foo = array();
 		while($this->db->next_record()) {

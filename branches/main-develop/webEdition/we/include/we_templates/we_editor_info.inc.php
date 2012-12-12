@@ -51,12 +51,10 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 </head>
 <body class="weEditorBody">
 	<?php
-	$parts = array();
 
 	$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
-		'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>';
-
-	$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
+		'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>'.
+		'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
 		'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
@@ -67,11 +65,11 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[file_size]") . '</div>' .
 			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
-	$ct = new we_base_ContentTypes();
-	array_push($parts, array("headline" => "",
+	$parts=array( 
+		array("headline" => "",
 		"html" => $_html,
 		"space" => 140,
-		"icon" => "doclist/" . $ct->getIcon($GLOBALS['we_doc']->ContentType, '', (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")),
+		"icon" => "doclist/" . we_base_ContentTypes::inst()->getIcon($GLOBALS['we_doc']->ContentType, '', (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")),
 		)
 	);
 
@@ -112,12 +110,11 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			}
 		}
 
-		array_push($parts, array("headline" => "",
+		$parts[]= array("headline" => "",
 			"html" => $_html,
 			"space" => 140,
 			"icon" => "cal.gif"
-			)
-		);
+			);
 		if($GLOBALS['we_doc']->Table != TEMPLATES_TABLE){
 
 			$rp = $GLOBALS['we_doc']->getRealPath();
@@ -138,11 +135,11 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>' .
 				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . htmlspecialchars($http) . '">' : '') . shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
-			array_push($parts, array("headline" => "",
+			$parts[]= array("headline" => "",
 				"html" => $_html,
 				"space" => 140,
 				"icon" => "path.gif"
-				)
+				
 			);
 		}
 		if(defined("WORKFLOW_TABLE") && $GLOBALS['we_doc']->ContentType == "text/webedition"){
@@ -151,12 +148,12 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			} else{
 				$anzeige = we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table);
 			}
-			array_push($parts, array("headline" => g_l('modules_workflow', '[workflow]'),
+			$parts[]= array("headline" => g_l('modules_workflow', '[workflow]'),
 				"html" => $anzeige,
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "workflow.gif"
-				)
+				
 			);
 		}
 
@@ -194,26 +191,26 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ';
 			}
 			$_metaDataTable .= '</table>';
-			array_push($parts, array("headline" => "",
+			$parts[]= array("headline" => "",
 				"html" => $_metaDataTable,
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "meta.gif"
-				)
+				
 			);
 		} else if($GLOBALS['we_doc']->IsBinary){
-			array_push($parts, array("headline" => "Metadaten",
+			$parts[]= array("headline" => "Metadaten",
 				"html" => g_l('metadata', '[no_metadata_supported]'),
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "meta.gif"
-				)
+				
 			);
 		}
 	}
 
-	print we_multiIconBox::getJS();
-	print we_multiIconBox::getHTML("", "100%", $parts, 20, "", -1, "", "", false);
+	print we_multiIconBox::getJS().
+		we_multiIconBox::getHTML("", "100%", $parts, 20, "", -1, "", "", false);
 	?>
 </body>
 </html>

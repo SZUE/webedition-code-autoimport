@@ -133,7 +133,7 @@ class weNewsletter extends weNewsletterBase{
 		}
 
 		if($this->IsFolder){
-			$this->Icon = "folder.gif";
+			$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$this->fixChildsPaths();
 		}
 

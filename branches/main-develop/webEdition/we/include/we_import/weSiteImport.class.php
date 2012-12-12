@@ -1349,7 +1349,7 @@ class weSiteImport{
 
 
 			$newTemplateFilename = $templateFilename;
-			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename like '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
+			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename LIKE '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
 			$result = array();
 			if($GLOBALS['DB_WE']->num_rows()){
 				while($GLOBALS['DB_WE']->next_record()) {
@@ -1464,7 +1464,7 @@ class weSiteImport{
 	 * @return string
 	 * @static
 	 */
-	function _makeInternalLink($href){
+	private static function _makeInternalLink($href){
 		$id = path_to_id_ct($href, FILE_TABLE, $ct);
 		if(substr($ct, 0, 5) == "text/"){
 			$href = 'document:' . $id;
@@ -1485,11 +1485,12 @@ class weSiteImport{
 	 */
 	function _external_to_internal($content){
 		// replace hrefs
+		$regs=array();
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
 				$orig_href = $regs[2][$i];
-				$new_href = weSiteImport::_makeInternalLink($orig_href);
+				$new_href = self::_makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1501,7 +1502,7 @@ class weSiteImport{
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
 				$orig_href = $regs[2][$i];
-				$new_href = weSiteImport::_makeInternalLink($orig_href);
+				$new_href = self::_makeInternalLink($orig_href);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1518,7 +1519,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeInternalLink($orig_url);
+						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1541,7 +1542,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeInternalLink($orig_url);
+						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1565,7 +1566,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeInternalLink($orig_url);
+						$new_url = self::_makeInternalLink($orig_url);
 						if($orig_url != $new_url){
 							$newStyle = str_replace(
 								$regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
@@ -1615,7 +1616,7 @@ class weSiteImport{
 			if($fieldname != "Title" && $fieldname != "Description" && $fieldname != "Keywords" && $fieldname != "Charset"){
 				switch($element["type"]){
 					case "txt" :
-						$GLOBALS['we_doc']->elements[$fieldname]["dat"] = weSiteImport::_external_to_internal($element["dat"]);
+						$GLOBALS['we_doc']->elements[$fieldname]["dat"] = self::_external_to_internal($element["dat"]);
 						break;
 				}
 			}
@@ -1673,16 +1674,11 @@ class weSiteImport{
 		if($destinationDir == "/"){
 			$destinationDir = "";
 		}
-		$destinationPath = $destinationDir . substr($path, $sizeofdocroot + $sizeofsourcePath);
+		$destinationPath = $destinationDir . importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath));
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
 		$data = "";
-		// get Data of File
-		//if (!is_dir($path) && filesize($path) > 0) {
-		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-flash' && $contentType != 'movie/quicktime'){// #5295
-			$data = weFile::load($path);
-		}
 
 		$we_ContentType = $contentType;
 
@@ -1692,7 +1688,14 @@ class weSiteImport{
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();
 		$GLOBALS["we_doc"]->ContentType = $contentType;
-		$GLOBALS["we_doc"]->Text = basename($path);
+		$GLOBALS["we_doc"]->Text = importFunctions::correctFilename(basename($path));
+		$GLOBALS["we_doc"]->Path = $destinationDir.$GLOBALS["we_doc"]->Text ;
+		// get Data of File
+		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-flash' && $contentType != 'movie/quicktime'){
+//		if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
+			$data = weFile::load($path);
+		}
+
 		if($contentType == "folder"){
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 		} else{
@@ -1700,15 +1703,14 @@ class weSiteImport{
 				$GLOBALS["we_doc"]->Extension = $regs[2];
 				$GLOBALS["we_doc"]->Filename = $regs[1];
 			} else{
-				$GLOBALS["we_doc"]->Extension = "";
+				$GLOBALS["we_doc"]->Extension = '';
 				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 			}
 		}
-		$GLOBALS["we_doc"]->Path = $destinationPath;
 		$GLOBALS["we_doc"]->ParentID = $parentID;
 		$GLOBALS["we_doc"]->ParentPath = $GLOBALS["we_doc"]->getParentPath();
 
-		$id = path_to_id($destinationPath);
+		$id = path_to_id($GLOBALS["we_doc"]->Path);
 		if($id){
 			if($sameName == "overwrite" || $contentType == "folder"){ // folders we dont have to rename => we can use the existing folder
 				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
@@ -1795,7 +1797,7 @@ class weSiteImport{
 		if(!$GLOBALS["we_doc"]->we_save()){
 			$GLOBALS["we_doc"] = $we_docSave;
 			return array(
-				"filename" => $_FILES['we_File']["name"],
+				"filename" => $path,
 				"error" => "save_error"
 			);
 		}
@@ -1806,7 +1808,7 @@ class weSiteImport{
 		if(!$GLOBALS["we_doc"]->we_publish()){
 			$GLOBALS["we_doc"] = $we_docSave;
 			return array(
-				"filename" => $_FILES['we_File']["name"],
+				"filename" => $path,
 				"error" => "publish_error"
 			);
 		}

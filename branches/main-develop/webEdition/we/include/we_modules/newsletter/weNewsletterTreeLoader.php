@@ -54,7 +54,7 @@ class weNewsletterTreeLoader{
 		if($ws = get_ws($table)){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path like '$path/%' OR " . weNewsletterTreeLoader::getQueryParents($path);
+				$_aWsQuery[] = " Path LIKE '$path/%' OR " . weNewsletterTreeLoader::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path) {
 					array_push($parentpaths, $path);
 					$path = dirname($path);

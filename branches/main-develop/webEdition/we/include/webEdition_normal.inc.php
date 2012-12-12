@@ -55,8 +55,15 @@ function pWebEdition_JSFunctions(){
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
 
-		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== -1){
+		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== null){
 			var tinyDialog = tinyMceDialog;
+			try{
+				tinyDialog.close();
+			}catch(err){}
+		}
+
+		if(typeof(tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null){
+			var tinyDialog = tinyMceSecondaryDialog;
 			try{
 				tinyDialog.close();
 			}catch(err){}
@@ -149,9 +156,9 @@ function pWebEdition_JSwe_cmds(){
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 420) {
-	top.setTreeWidth(420);
-	top.storeTreeWidth(420);
+	if (width < <?php echo weTree::DeleteWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::DeleteWidth; ?>);
+	top.storeTreeWidth(<?php echo weTree::DeleteWidth; ?>);
 	}
 
 	var widthSidebar = top.getSidebarWidth();
@@ -175,9 +182,9 @@ function pWebEdition_JSwe_cmds(){
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 500) {
-	top.setTreeWidth(500);
-	top.storeTreeWidth(500);
+	if (width < <?php echo weTree::MoveWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::MoveWidth; ?>);
+	top.storeTreeWidth(<?php echo weTree::MoveWidth; ?>);
 	}
 
 	var widthSidebar = top.getSidebarWidth();

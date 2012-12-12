@@ -94,5 +94,4 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 		//tinyMCEPopup.close();
 	}
 };
-
 tinyMCEPopup.onInit.add(WeabbrDialog.init, WeabbrDialog);
