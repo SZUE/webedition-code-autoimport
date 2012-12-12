@@ -49,7 +49,10 @@ function up6310_updateActiveModules(){
 		$content = "<?php
 \$GLOBALS['_we_active_integrated_modules'] = array(\n";
 $content .= substr($modules, 0, -2) . "\n);";
-		return file_put_contents($dir.'conf/'.$file, $content) == false ? false : true;
+		if(file_put_contents($dir.'conf/'.$file, $content)){
+			return unlink($dir.$file);
+		}
+		return false;
 	} else{
 		return true;
 	}
