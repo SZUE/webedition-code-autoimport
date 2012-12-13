@@ -266,14 +266,12 @@ class we_import_files{
 		}
 
 		if(we_hasPerm("NEW_GRAFIK")){
-
-			array_push(
-				$parts, array(
+			$parts[] = array(
 				'headline' => g_l('importFiles', "[metadata]") . '',
 				'html' => we_forms::checkboxWithHidden(
 					$this->importMetadata == true, 'importMetadata', g_l('importFiles', "[import_metadata]")),
 				'space' => 150
-			));
+			);
 
 			if(we_image_edit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
@@ -749,9 +747,8 @@ function next() {
 			} else{
 				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
-
-			$foo = explode("/", $_FILES["we_File"]["type"]);
-			if(isset($we_doc->IsBinary) && $we_doc->IsBinary){
+			$foo = explode('/', $_FILES["we_File"]["type"]);
+			if($we_doc->isBinary()){
 				$we_doc->setElement("data", $tempName);
 			} else{
 				$we_doc->setElement("data", $we_fileData, $foo[0]);
