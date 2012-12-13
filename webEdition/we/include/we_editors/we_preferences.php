@@ -1697,6 +1697,7 @@ function displayEditorOptions(editor) {
 
 			break;
 
+case "codemirror":
 case "codemirror2":
 			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
 			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
@@ -1780,6 +1781,7 @@ else {
 			 */
 			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'size' => '1', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
 			$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
+			$_template_editor_mode->addOption('codemirror', g_l('prefs', '[editor_javascript]'));
 			$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 			$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
 			$_template_editor_mode->selectOption(get_value('editorMode'));

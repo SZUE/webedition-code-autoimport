@@ -53,7 +53,7 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   editorPiTagFontcolor varchar(255) NOT NULL,
   editorCommentFontcolor varchar(255) NOT NULL,
   specify_jeditor_colors tinyint(1) unsigned NOT NULL,
-  editorMode varchar(64) NOT NULL DEFAULT 'textarea',
+  editorMode enum('textarea','codemirror','codemirror2','java')  NOT NULL DEFAULT 'textarea',
   editorLinenumbers tinyint(1) unsigned NOT NULL default '1',
   editorCodecompletion tinyint(1) unsigned NOT NULL default '0',
   editorTooltips tinyint(1) unsigned NOT NULL default '1',
