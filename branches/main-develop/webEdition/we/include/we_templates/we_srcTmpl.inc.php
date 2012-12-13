@@ -88,85 +88,104 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 	echo 'h=document.body.offsetHeight; h=Math.max(h,600);';
 }
 ?>
-		if (wizardTable != null) {
-			var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
+			if (wizardTable != null) {
+				var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
 
-			if (editarea) {
-				editarea.style.height= (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-					editarea.nextSibling.style.height= (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-			}
+				if (editarea) {
+					editarea.style.height= (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+					if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
+						editarea.nextSibling.style.height= (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+				}
 
-			if(window.editor && window.editor.frame) {
-				window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-			}
+				if(window.editor && window.editor.frame) {
+					window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+				}
 
-			if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
-				try{
-					document.weEditorApplet.height = editorHeight;
-					//document.weEditorApplet.setSize(editorWidth,editorHeight);
-				}catch(err){/*nothing*/}
+				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
+					try{
+						document.weEditorApplet.height = editorHeight;
+						//document.weEditorApplet.setSize(editorWidth,editorHeight);
+					}catch(err){/*nothing*/}
 
-			}
+				}
 
 
-			wizardTable.style.width=editorWidth+"px";
-			//wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2
-			tagAreaCol.style.width=(editorWidth-300)+"px";
-			tag_edit_area.style.width=(editorWidth-300)+"px";
-			tagSelectCol.style.width = "250px";
-			spacerCol.style.width = "50px";
+				wizardTable.style.width=editorWidth+"px";
+				//wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2
+				tagAreaCol.style.width=(editorWidth-300)+"px";
+				tag_edit_area.style.width=(editorWidth-300)+"px";
+				tagSelectCol.style.width = "250px";
+				spacerCol.style.width = "50px";
 
-		} else {
-			if (editarea) {
-				editarea.style.height = (h - wizardHeight.closed) + "px";
-				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-					editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
-			}
+			} else {
+				if (editarea) {
+					editarea.style.height = (h - wizardHeight.closed) + "px";
+					if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
+						editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
+				}
 
-			if(window.editor && window.editor.frame) {
-				window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
-			}
+				if(window.editor && window.editor.frame) {
+					window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
+				}
 
-			if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
-				try{
-					document.weEditorApplet.height = h - wizardHeight.closed;
-					//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
-				}catch(err){/*nothing*/}
+				if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
+					try{
+						document.weEditorApplet.height = h - wizardHeight.closed;
+						//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
+					}catch(err){/*nothing*/}
+				}
 			}
 		}
+		window.scroll(0,0);
 	}
-	window.scroll(0,0);
-}
 
-function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
-	if (document.weEditorApplet.height != 3000) {
-		try {
-			document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-			countJEditorInitAttempts = 0;
-		}catch(err){
+	function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
+		if (document.weEditorApplet.height != 3000) {
+			try {
+				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+				countJEditorInitAttempts = 0;
+			}catch(err){
+				setTimeout(javaEditorSetCode, 1000);
+			}
+		} else { // change size not yet finished
 			setTimeout(javaEditorSetCode, 1000);
 		}
-	} else { // change size not yet finished
-		setTimeout(javaEditorSetCode, 1000);
 	}
-}
 
 
-var editor=null;
-var hlLine = null;
-function initEditor() {
+	var editor=null;
+	var hlLine = null;
+	function initEditor() {
 <?php
 switch($_SESSION['prefs']['editorMode']){
 	case 'codemirror2':
 		?>
-					document.getElementById("bodydiv").style.display="block";
-					editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
-					sizeEditor();
-					//highlight current line
-					hlLine = editor.setLineClass(0, "activeline");
-
-					return;
+						try{
+							document.getElementById("bodydiv").style.display="block";
+							editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
+							sizeEditor();
+							//highlight current line
+							hlLine = editor.addLineClass(0, "background", "activeline");
+							editor.on("cursorActivity", function() {
+								var cur = editor.getLineHandle(editor.getCursor().line);
+								if (cur != hlLine) {
+									editor.removeLineClass(hlLine, "background", "activeline");
+									hlLine = editor.addLineClass(cur, "background", "activeline");
+								}
+							});
+							editor.on("change", function() {
+								//this wil save content from CodeMirror2 to our original <textarea>.
+								var currentTemplateCode=editor.getValue().replace(/\r/g,"\n");
+								if(window.orignalTemplateContent!=currentTemplateCode) {
+									window.orignalTemplateContent=currentTemplateCode;
+									document.getElementById("editarea").value=currentTemplateCode;
+									_EditorFrame.setEditorIsHot(true);
+								}
+							});
+						}catch(e){
+							console.log("CM init error");
+						}
+						return;
 		<?php
 		break;
 	case 'java':
@@ -193,190 +212,190 @@ switch($_SESSION['prefs']['editorMode']){
 		break;
 	default:
 		?>
-					sizeEditor();
-					document.getElementById("bodydiv").style.display="block";
-					window.setTimeout('scrollToPosition();',50);
+						sizeEditor();
+						document.getElementById("bodydiv").style.display="block";
+						window.setTimeout('scrollToPosition();',50);
 		<?php
 		break;
 }
 ?>
 
-}
-
-function toggleTagWizard() {
-	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-	w = Math.max(w,350);
-	var editorWidth = w - 37;
-	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
-	if (document.weEditorApplet) {
-		var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
-		document.weEditorApplet.height = editorHeight;
-	} else {
-		var editarea = document.getElementById("editarea");
-		editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-		if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-			editarea.nextSibling.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-
-		if(window.editor && window.editor.frame) {
-			window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-		}
-
 	}
 
-}
-
-// ################ Java Editor specific Functions
-
-function weEditorSetHiddenText() {
-	if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
-		if (document.weEditorApplet.isHot()) {
-			_EditorFrame.setEditorIsHot(true);
-			document.weEditorApplet.setHot(false);
-		}
-		document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
-	}
-}
-
-
-function checkAndSetHot() {
-	if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != "undefined") {
-		if (document.weEditorApplet.isHot()) {
-			_EditorFrame.setEditorIsHot(true);
+	function toggleTagWizard() {
+		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+		w = Math.max(w,350);
+		var editorWidth = w - 37;
+		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
+		if (document.weEditorApplet) {
+			var editorHeight = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+			document.weEditorApplet.height = editorHeight;
 		} else {
-			setTimeout("checkAndSetHot()", 1000);
+			var editarea = document.getElementById("editarea");
+			editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+			if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
+				editarea.nextSibling.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+
+			if(window.editor && window.editor.frame) {
+				window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
+			}
+
 		}
+
 	}
-}
 
-function setCode() {
-	if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
-		document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-	}
-}
+	// ################ Java Editor specific Functions
 
-// ################## Textarea specific functions #############
-
-function getScrollPosTop () {
-	var elem = document.getElementById("editarea");
-	if (elem) {
-		return elem.scrollTop;
-	}
-	return 0;
-
-}
-
-function getScrollPosLeft () {
-	var elem = document.getElementById("editarea");
-	if (elem) {
-		return elem.scrollLeft;
-	}
-	return 0;
-}
-
-function scrollToPosition () {
-	var elem = document.getElementById("editarea");
-	if (elem) {
-		elem.scrollTop=parent.editorScrollPosTop;
-		elem.scrollLeft=parent.editorScrollPosLeft;
-	}
-}
-
-function wedoKeyDown(ta,keycode){
-
-	if (keycode == 9) { // TAB
-		if (ta.setSelectionRange) {
-			var selectionStart = ta.selectionStart;
-			var selectionEnd = ta.selectionEnd;
-			ta.value = ta.value.substring(0, selectionStart)
-				+ "\t"
-				+ ta.value.substring(selectionEnd);
-			ta.focus();
-			ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
-			ta.focus();
-			return false;
-
-		} else if (document.selection) {
-			var selection = document.selection;
-			var range = selection.createRange();
-			range.text = "\t";
-			return false;
+	function weEditorSetHiddenText() {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+			if (document.weEditorApplet.isHot()) {
+				_EditorFrame.setEditorIsHot(true);
+				document.weEditorApplet.setHot(false);
+			}
+			document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
 		}
 	}
 
-	return true;
-}
-// ############ EDITOR PLUGIN ################
 
-function setSource(source){
-	document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value=source;
-	//Codemirror
-	if(editor!="undefined" && editor !=null && typeof editor =='object'){
-		editor.setValue(source);
+	function checkAndSetHot() {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.isHot) != "undefined") {
+			if (document.weEditorApplet.isHot()) {
+				_EditorFrame.setEditorIsHot(true);
+			} else {
+				setTimeout("checkAndSetHot()", 1000);
+			}
+		}
 	}
-	// for Applet
-	setCode(source);
-}
 
-function getSource(){
-	if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
-		return document.weEditorApplet.getCode();
-	} else {
-		return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
+	function setCode() {
+		if (document.weEditorApplet && typeof(document.weEditorApplet.setCode) != "undefined") {
+			document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+		}
 	}
-}
 
-function getCharset(){
-	return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
-}
+	// ################## Textarea specific functions #############
 
-// ############ CodeMirror Functions ################
+	function getScrollPosTop () {
+		var elem = document.getElementById("editarea");
+		if (elem) {
+			return elem.scrollTop;
+		}
+		return 0;
 
-function reindent() { // reindents code of CodeMirror2
-	if(editor.somethingSelected()){
-		start=editor.getCursor(true).line;
-		end=editor.getCursor(false).line;
-	}else{
-		start=0;
-		end=editor.lineCount();
 	}
-	for(i=start;i<end;++i){
-		editor.indentLine(i,'smart');
-	}
-}
-var lastPos = null, lastQuery = null, marked = [];
-function unmark() {
-	for (var i = 0; i < marked.length; ++i) marked[i].clear();
-	marked.length = 0;
-}
-function search(text) {
-	unmark();
-	if (!text) return;
-	for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
-		marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
 
-	if (lastQuery != text) lastPos = null;
-	var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
-	if (!cursor.findNext()) {
-		cursor = editor.getSearchCursor(text);
-		if (!cursor.findNext()) return;
+	function getScrollPosLeft () {
+		var elem = document.getElementById("editarea");
+		if (elem) {
+			return elem.scrollLeft;
+		}
+		return 0;
 	}
-	editor.setSelection(cursor.from(), cursor.to());
-	lastQuery = text; lastPos = cursor.to();
-}
 
-function myReplace(text, replaceby) {
-	if(!text|| !replaceby) return;
-	if(editor.getSelection()!=text){
+	function scrollToPosition () {
+		var elem = document.getElementById("editarea");
+		if (elem) {
+			elem.scrollTop=parent.editorScrollPosTop;
+			elem.scrollLeft=parent.editorScrollPosLeft;
+		}
+	}
+
+	function wedoKeyDown(ta,keycode){
+
+		if (keycode == 9) { // TAB
+			if (ta.setSelectionRange) {
+				var selectionStart = ta.selectionStart;
+				var selectionEnd = ta.selectionEnd;
+				ta.value = ta.value.substring(0, selectionStart)
+					+ "\t"
+					+ ta.value.substring(selectionEnd);
+				ta.focus();
+				ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
+				ta.focus();
+				return false;
+
+			} else if (document.selection) {
+				var selection = document.selection;
+				var range = selection.createRange();
+				range.text = "\t";
+				return false;
+			}
+		}
+
+		return true;
+	}
+	// ############ EDITOR PLUGIN ################
+
+	function setSource(source){
+		document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value=source;
+		//Codemirror
+		if(editor!="undefined" && editor !=null && typeof editor =='object'){
+			editor.setValue(source);
+		}
+		// for Applet
+		setCode(source);
+	}
+
+	function getSource(){
+		if (document.weEditorApplet && typeof(document.weEditorApplet.getCode) != "undefined") {
+			return document.weEditorApplet.getCode();
+		} else {
+			return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
+		}
+	}
+
+	function getCharset(){
+		return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
+	}
+
+	// ############ CodeMirror Functions ################
+
+	function reindent() { // reindents code of CodeMirror2
+		if(editor.somethingSelected()){
+			start=editor.getCursor(true).line;
+			end=editor.getCursor(false).line;
+		}else{
+			start=0;
+			end=editor.lineCount();
+		}
+		for(i=start;i<end;++i){
+			editor.indentLine(i,'smart');
+		}
+	}
+	var lastPos = null, lastQuery = null, marked = [];
+	function unmark() {
+		for (var i = 0; i < marked.length; ++i) marked[i].clear();
+		marked.length = 0;
+	}
+	function search(text) {
+		unmark();
+		if (!text) return;
+		for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
+			marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+
+		if (lastQuery != text) lastPos = null;
+		var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor());
+		if (!cursor.findNext()) {
+			cursor = editor.getSearchCursor(text);
+			if (!cursor.findNext()) return;
+		}
+		editor.setSelection(cursor.from(), cursor.to());
+		lastQuery = text; lastPos = cursor.to();
+	}
+
+	function myReplace(text, replaceby) {
+		if(!text|| !replaceby) return;
+		if(editor.getSelection()!=text){
+			search(text);
+		}
+		if(editor.getSelection()!=text){
+			return;
+		}
+		editor.replaceSelection(replaceby);
 		search(text);
 	}
-	if(editor.getSelection()!=text){
-		return;
-	}
-	editor.replaceSelection(replaceby);
-	search(text);
-}
-//-->
+	//-->
 </script>
 </head>
 <body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" <?php
@@ -443,7 +462,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						unset($weTag);
 					}
 					$weTag = weTagData::getTagData($tagName);
-					$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}' . "\n";
+					$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
 				}
 				return $ret;
 			}
@@ -474,6 +493,9 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_js[] = 'lib/util/closetag.js';
 						$parser_js[] = 'lib/util/foldcode.js';
 						$parser_js[] = 'lib/util/matchbrackets.js';
+						if($_SESSION['prefs']['editorCodecompletion']){
+							$parser_js[] = 'lib/util/simple-hint.js';
+						}
 						$parser_css[] = 'lib/util/simple-hint.css';
 						$toolTip = $_SESSION['prefs']['editorTooltips'];
 						$mode = 'text/weTmpl';
@@ -528,40 +550,6 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 	line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
 }') .
 						we_html_element::jsElement('
-var getDescriptionDiv=function() {
-	var ed=window.editor;
-	var wrap = ed.wrapping;
-	var doc = wrap.ownerDocument;
-	var tagDescriptionDiv = doc.getElementById("tagDescriptionDiv");
-	if(!tagDescriptionDiv) { //if our div is not yet in the DOM, we create it
-		var tagDescriptionDiv = doc.createElement("div");
-		tagDescriptionDiv.setAttribute("id", "tagDescriptionDiv");
-		if(tagDescriptionDiv.addEventListener) {
-			tagDescriptionDiv.addEventListener("mouseover", hideDescription, false);
-		} else {
-			tagDescriptionDiv.attachEvent("onmouseover", hideDescription);
-		}
-		wrap.appendChild(tagDescriptionDiv);
-	}
-	return tagDescriptionDiv;
-};
-var hideDescription=function(){
-	var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
-	var wrap = ed.wrapping;
-	var doc = wrap.ownerDocument;
-	var tagDescriptionDiv = getDescriptionDiv();
-	tagDescriptionDiv.style.display="none";
-};
-var XgetComputedStyle = function(el, s) { // cross browser getComputedStyle()
-	var computedStyle;
-	if(typeof el.currentStyle!="undefined") {
-		computedStyle = el.currentStyle;
-	}else {
-		computedStyle = document.defaultView.getComputedStyle(el, null);
-	}
-	return computedStyle[s];
-};
-
 var foldFunc_html = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
 var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 
@@ -592,86 +580,9 @@ var CMoptions = { //these are the CodeMirror options
 							  "\'<\'": function(cm) { CodeMirror.xmlHint(cm, \'<\'); },
 							  "Ctrl-Space": function(cm) { CodeMirror.xmlHint(cm, \'\'); } */
 							'
-	},
-	initCallback: function() {
-		window.setTimeout(function(){ //without timeout this will raise an exception in firefox
-			if (document.addEventListener) {
-				editor.frame.contentWindow.document.addEventListener( "keydown", top.dealWithKeyboardShortCut, true );
-			} else if(document.attachEvent) {
-				editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
-			}
-			editor.focus();
-			editor.frame.style.border="1px solid gray";
-
-			var editorFrame=editor.frame.contentWindow.document.getElementsByTagName("body")[0];
-			var originalTextArea=document.getElementById("editarea");
-			var lineNumbers=editor.frame.nextSibling
-
-			//we adapt font styles from original <textarea> to CodeMirror
-			editorFrame.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
-			editorFrame.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
-			editorFrame.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
-			editorFrame.style.marginTop="5px";
-
-			//we adapt font styles from orignal <textarea> to the line numbers of CodeMirror.
-			if(lineNumbers!=undefined) { //line numbers might be disabled
-				lineNumbers.style.fontSize=XgetComputedStyle(originalTextArea,"fontSize");
-				lineNumbers.style.fontFamily=XgetComputedStyle(originalTextArea,"fontFamily");
-				lineNumbers.style.lineHeight=XgetComputedStyle(originalTextArea,"lineHeight");
-			}
-
-			sizeEditor();
-			var showDescription=function(e) { //this function will display a tooltip with the tags description. will be called by onmousemove
-				var ed=(typeof cscc!="undefined"?cscc.editor:window.editor); //depending on the use of CSCC the editor object will be different locations
-				if(typeof ed=="undefined" || !ed)
-					return
-				var wrap = ed.wrapping;
-				var doc = wrap.ownerDocument;
-				var tagDescriptionDiv = getDescriptionDiv();
-				if(top.currentHoveredTag===undefined) { //no tag is currently hoverd -> hide description
-					hideDescription();
-					return;
-				}
-				var tag=top.currentHoveredTag.innerHTML.replace(/\s/,"").replace(/&nbsp;/,"");
-				if((top.we_tags === undefined) || (top.we_tags[tag]===undefined)) { //unkown tag -> hide description
-					hideDescription();
-					return;
-				}
-				//at this point we have a a description for our currently hovered tag. so we calculate of the mouse and display it
-				tagDescriptionDiv.innerHTML=top.we_tags[tag].desc;
-				x = (e.pageX ? e.pageX : window.event.x) + tagDescriptionDiv.scrollLeft - editor.frame.contentWindow.document.body.scrollLeft;
-				y = (e.pageY ? e.pageY : window.event.y) + tagDescriptionDiv.scrollTop - editor.frame.contentWindow.document.body.scrollTop;
-				if(x>0 && y>0) {
-					if(window.innerWidth-x<468) {
-						x+=(window.innerWidth-(e.pageX ? e.pageX : window.event.x)-468);
-					}
-					tagDescriptionDiv.style.left = (x + 25) + "px";
-					tagDescriptionDiv.style.top   = (y + 15) + "px";
-				}
-				tagDescriptionDiv.style.display="block";
-			};
-
-
-		},500);
-	},
-	onChange: function(){
-		updateEditor();
-	},
-	onCursorActivity: function() {
-		editor.setLineClass(hlLine, null, null);
-		hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
 	}
 };
-var updateEditor=function(){ //this wil save content from CodeMirror2 to our original <textarea>.
-	var currentTemplateCode=editor.getValue().replace(/\r/g,"\n");
-	if(window.orignalTemplateContent!=currentTemplateCode) {
-		window.orignalTemplateContent=currentTemplateCode;
-		document.getElementById("editarea").value=currentTemplateCode;
-		_EditorFrame.setEditorIsHot(true);
-	}
-}
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
-
 ');
 				}
 				return $maineditor;
@@ -687,15 +598,13 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 			$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
 
-			$vers = '';
 			if($_useJavaEditor){
 				$maineditor .= we_getJavaEditorCode($code);
 			} else{
-				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 					. htmlspecialchars($code) . '</textarea>';
-				if($_SESSION['prefs']['editorMode'] == 'codemirror' || $_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
-					$vers = ($_SESSION['prefs']['editorMode'] == 'codemirror' ? '' : 2);
-					$maineditor .= ($vers == 2 ? we_getCodeMirror2Code($code) : we_getCodeMirrorCode($code));
+				if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
+					$maineditor .= we_getCodeMirror2Code($code);
 				}
 			}
 			$maineditor .= '</td>

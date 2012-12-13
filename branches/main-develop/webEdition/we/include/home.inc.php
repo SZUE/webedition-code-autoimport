@@ -102,9 +102,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 		_EditorFrame.initEditorFrameData(
 		{
 			"EditorType":"cockpit",
-			"EditorDocumentText":"<?php
-	echo g_l('cockpit', '[cockpit]');
-	?>",
+			"EditorDocumentText":"<?php echo g_l('cockpit', '[cockpit]'); ?>",
 			"EditorDocumentPath":"Cockpit",
 			"EditorContentType":"cockpit",
 			"EditorEditCmd":"open_cockpit"
@@ -112,9 +110,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	);
 
 		var quickstart=true;
-		var _iInitCols=_iLayoutCols=<?php
-	echo $iLayoutCols;
-	?>;
+		var _iInitCols=_iLayoutCols=<?php echo intval($iLayoutCols); ?>;
 		var _bDgSave=false;
 		var bInitDrag=false;
 		var oTblWidgets=null;
@@ -195,20 +191,24 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 	}
 	?>
 			];
-			if(_iInitCols!=_iLayoutCols)return true;
-			for(var i=0;i<_iLayoutCols;i++){
-				var asoc=getColumnAsoc('c_'+(i+1));
-				var asoc_len=asoc.length;
-				if((typeof(dat[i])=='undefined'&&!!asoc_len)||(typeof(dat[i])!='undefined'&&asoc_len!=dat[i].length)){
-					return true;
-				}
-				for(var k=0;k<asoc_len;k++){
-					for(var j=0;j<ix_len;j++){
-						if(typeof(dat[i][k][ix[j]])=='undefined'||asoc[k][ix[j]]!=dat[i][k][ix[j]]){
-							return true;
+			try{
+				if(_iInitCols!=_iLayoutCols)return true;
+				for(var i=0;i<_iLayoutCols;i++){
+					var asoc=getColumnAsoc('c_'+(i+1));
+					var asoc_len=asoc.length;
+					if((typeof(dat[i])=='undefined'&&!!asoc_len)||(typeof(dat[i])!='undefined'&&asoc_len!=dat[i].length)){
+						return true;
+					}
+					for(var k=0;k<asoc_len;k++){
+						for(var j=0;j<ix_len;j++){
+							if(typeof(dat[i][k][ix[j]])=='undefined'||asoc[k][ix[j]]!=dat[i][k][ix[j]]){
+								return true;
+							}
 						}
 					}
 				}
+			}catch(e){
+				console.log("err init1");
 			}
 			if(_isHotTrf){
 				return true;

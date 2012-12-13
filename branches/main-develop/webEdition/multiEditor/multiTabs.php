@@ -239,20 +239,32 @@ print we_html_element::jsElement($content = $_contentTypes);
 		 * sets the tab label
 		 */
 		setText: function(frameId, val) {
-			this.myDoc.getElementById('text_' + frameId).innerHTML = val;
+			try{
+				this.myDoc.getElementById('text_' + frameId).innerHTML = val;
+			}catch(e){
+				console.log("err setText");
+			}
 			setTimeout("setFrameSize()",50);
 		},
 		/**
 		 * sets the tab title
 		 */
 		setTitle: function(frameId, val) {
-			this.myDoc.getElementById('tab_' + frameId).title = val;
+			try{
+				this.myDoc.getElementById('tab_' + frameId).title = val;
+			}catch(e){
+				console.log("err setTitle");
+			}
 		},
 		/**
 		 * sets the id to the icon
 		 */
 		setId: function(frameId, val) {
-			this.myDoc.getElementById('load_' + frameId).title = val;
+			try{
+				this.myDoc.getElementById('load_' + frameId).title = val;
+			}catch(e){
+				console.log("err setId");
+			}
 		},
 		/**
 		 * marks a tab as modified an not safed
