@@ -1035,7 +1035,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 				top.weMultiTabs.setLoading(this.FrameId, this.EditorIsLoading);
 				top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
 			}catch(e){
-				console.log("err updateEditorTab");
+				//console.log("err updateEditorTab");
 			}
 		}
 

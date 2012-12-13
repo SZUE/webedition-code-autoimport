@@ -242,7 +242,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 			try{
 				this.myDoc.getElementById('text_' + frameId).innerHTML = val;
 			}catch(e){
-				console.log("err setText");
+				//console.log("err setText");
 			}
 			setTimeout("setFrameSize()",50);
 		},
@@ -253,7 +253,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 			try{
 				this.myDoc.getElementById('tab_' + frameId).title = val;
 			}catch(e){
-				console.log("err setTitle");
+				//console.log("err setTitle");
 			}
 		},
 		/**
@@ -263,7 +263,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 			try{
 				this.myDoc.getElementById('load_' + frameId).title = val;
 			}catch(e){
-				console.log("err setId");
+				//console.log("err setId");
 			}
 		},
 		/**

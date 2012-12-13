@@ -183,7 +183,7 @@ switch($_SESSION['prefs']['editorMode']){
 								}
 							});
 						}catch(e){
-							console.log("CM init error");
+							//console.log("CM init error");
 						}
 						return;
 		<?php
@@ -567,7 +567,7 @@ var CMoptions = { //these are the CodeMirror options
 	matchBrackets: true,
 	workTime: 300,
 	workDelay: 800,
-	height: "' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . '",
+	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
 	lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
 	closeTagEnabled: true,
 	closeTagIndent: true,

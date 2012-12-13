@@ -208,7 +208,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					}
 				}
 			}catch(e){
-				console.log("err init1");
+				//console.log("err init1");
 			}
 			if(_isHotTrf){
 				return true;

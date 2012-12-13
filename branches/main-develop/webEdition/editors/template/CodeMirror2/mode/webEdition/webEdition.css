@@ -44,14 +44,14 @@
 	border-radius: 3px;
 }
 
-.CodeMirror-scroll{
+/*.CodeMirror-scroll{
 	position: absolute;
 	height: auto;
 	top: 0px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-}
+}*/
 
 .activeline {
 	background: #dee4ec !important;
