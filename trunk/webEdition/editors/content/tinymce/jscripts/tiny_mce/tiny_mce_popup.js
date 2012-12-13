@@ -10,8 +10,6 @@ var tinymce=null,tinyMCEPopup,tinyMCE;tinyMCEPopup={init:function(){var b=this,a
 // overwrite function resizeToInnerSize to add some width and height to original tinyMce-Dialogs
 // The call for resizeToInnerSize is a good moment for other actions to take place too
 
-var weTop = (typeof(top.opener.top) !== "undefined" && top.opener.top.isRegisterDialogHere) ? top.opener.top : ((typeof(top.opener.top.opener.top) !== "undefined" && top.opener.top.opener.top.isRegisterDialogHere) ? top.opener.top.opener.top : false);
-
 tinyMCEPopup.resizeToInnerSize = function(){
 	var a = this;
 	var ratio_h = a.dom.getAttrib(document.body,"role") == "application" ? 4/5 : 1;
@@ -28,24 +26,48 @@ tinyMCEPopup.resizeToInnerSize = function(){
 	}
 
 	//tinyMCEPopup.onclose does not work, so we set attribute onbeforeunload (does not work in Opera)
-	if((a.dom.getAttrib(document.body,"id") == "table" || a.dom.getAttrib(document.body,"id") == "styleprops") && weTop){
-		a.dom.setAttrib(document.body,"onbeforeunload",weTop+".weCloseSecondaryDialog()"); 
+	if((a.dom.getAttrib(document.body,"id") == "table" || a.dom.getAttrib(document.body,"id") == "styleprops") && top.opener != "undefined"){
+		a.dom.setAttrib(document.body,"onbeforeunload","top.opener.tinyMCECallRegisterDialog({},'unregisterSecondaryDialog')"); 
 	}
 }
 
 // tinyMCEPopup.onclose does not work and onbeforeunload does not work on Opera, so we overwrite tinyMCEPopup.close
 tinyMCEPopup.tmpClose = tinyMCEPopup.close;
 tinyMCEPopup.close = function(){
-	if(weTop){
-		weTop.weCloseSecondaryDialog();
-	}
+	var action = "unregisterSecondaryDialog";
+	try{
+		var action = t.document.body.id == "weFullscreenDialog" ? "unregisterDialog" : action;
+	} catch(err){}
+	try{
+		top.opener.tinyMCECallRegisterDialog({},action);
+	} catch(err){}
 	tinyMCEPopup.tmpClose();
 }
 
-// onInit registr Dialog we-popup-managment
+// onInit register Dialog we-popup-managment
 tinyMCEPopup.onInit.add(function(){
 	var t = this;
-	if(weTop){
-		weTop.weRegisterTinyMcePopup(t); 
+	var id = "";
+	try{
+		id = t.document.body.id ? t.document.body.id : id;
+	} catch(err){}
+		
+	var action = "registerDialog";
+	switch(id){
+		case("colorpicker"): 
+			action = "registerSecondaryDialog";
+			break;
+		case("weFullscreenDialog"):
+			action = "registerFullscreenDialog"
+			break;
+		case("weDialogInnerFrame"):
+			action = "skip";
+			break;
+		default:
+			action = "registerDialog";
 	}
+	
+	try{
+		top.opener.tinyMCECallRegisterDialog(t,action); 
+	} catch(err){}
 });

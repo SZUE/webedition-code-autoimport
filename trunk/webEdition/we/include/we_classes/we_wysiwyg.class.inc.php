@@ -209,6 +209,26 @@ function tinyMCEchanged(inst){
 		}
 	}
 }
+				') . we_html_element::jsElement('
+function tinyMCECallRegisterDialog(win,action){
+	if(typeof(top.isRegisterDialogHere) != "undefined"){
+		try{
+			top.weRegisterTinyMcePopup(win,action);
+		} catch(err) {
+			console.log("could not register dialog");
+		}
+	} else {
+		if(typeof(top.opener.isRegisterDialogHere) != "undefined"){
+			try{
+				top.opener.weRegisterTinyMcePopup(win,action);
+			} catch(err){}
+		} else {
+			try{
+				top.opener.tinyMCECallRegisterDialog(win,action);
+			} catch(err){}
+		}
+	}
+}
 				') .
 					we_html_element::jsElement('
 					function weWysiwygSetHiddenTextSync(){
