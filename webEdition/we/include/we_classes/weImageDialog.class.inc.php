@@ -408,7 +408,8 @@ class weImageDialog extends weDialog{
 <tr><td colspan="4">' . $_longdesc . '</td></tr>
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
 </table></div>' .
-				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") . we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
+				we_html_tools::hidden("imgChangedCmd", "0") . we_html_tools::hidden("wasThumbnailChange", "0") . we_html_tools::hidden("isTinyMCEInitialization", "0") .
+				we_html_tools::hidden("tinyMCEInitRatioH", "0") . we_html_tools::hidden("tinyMCEInitRatioW", "0") .
 				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
 		);
 	}
@@ -433,11 +434,11 @@ function imageChanged(wasThumbnailChange){
 	if(wasThumbnailChange != null && wasThumbnailChange){
 		document.we_form.wasThumbnailChange.value="1";
 	}
+	top.opener.tinyMCECallRegisterDialog(null,"block");
 	document.we_form.target="we_weImageDialog_edit_area";
 	document.we_form.we_what.value="dialog";
 	document.we_form.imgChangedCmd.value="1";
 	document.we_form.submit();
-
 }
 
 function checkWidthHeight(field){
