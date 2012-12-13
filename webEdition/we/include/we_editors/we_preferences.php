@@ -2522,7 +2522,7 @@ else {
 
 				// Build select box
 				$_php_setting = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
-				$_options = array('tinyMCE' => 'tinyMCE (beta)', 'default' => 'webEdition Editor (deprecated))');
+				$_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 				foreach($_options as $key => $val){
 					$_php_setting->addOption($key, $val);
 
