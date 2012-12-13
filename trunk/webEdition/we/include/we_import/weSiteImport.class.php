@@ -1705,10 +1705,10 @@ class weSiteImport{
 		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'], '/')); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(rtrim($sourcePath, '/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
-		if($destinationDir == "/"){
-			$destinationDir = "";
+		if($destinationDir == '/'){
+			$destinationDir = '';
 		}
-		$destinationPath = $destinationDir . importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath));
+		$destinationPath = $destinationDir .'/'. importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath));
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
@@ -1723,7 +1723,7 @@ class weSiteImport{
 		$GLOBALS["we_doc"]->we_new();
 		$GLOBALS["we_doc"]->ContentType = $contentType;
 		$GLOBALS["we_doc"]->Text = importFunctions::correctFilename(basename($path));
-		$GLOBALS["we_doc"]->Path = $destinationDir.$GLOBALS["we_doc"]->Text ;
+		$GLOBALS["we_doc"]->Path = $destinationPath;
 		// get Data of File
 		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-flash' && $contentType != 'movie/quicktime'){
 //		if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
@@ -1743,7 +1743,6 @@ class weSiteImport{
 		}
 		$GLOBALS["we_doc"]->ParentID = $parentID;
 		$GLOBALS["we_doc"]->ParentPath = $GLOBALS["we_doc"]->getParentPath();
-
 		$id = path_to_id($GLOBALS["we_doc"]->Path);
 		if($id){
 			if($sameName == "overwrite" || $contentType == "folder"){ // folders we dont have to rename => we can use the existing folder
