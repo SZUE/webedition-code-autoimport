@@ -139,17 +139,19 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 		window.scroll(0,0);
 	}
 
-	function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
-		if (document.weEditorApplet.height != 3000) {
-			try {
-				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-				countJEditorInitAttempts = 0;
-			}catch(err){
+		var editor=null;
+
+		function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
+			if (document.weEditorApplet.height != 3000) {
+				try {
+					document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+					countJEditorInitAttempts = 0;
+				}catch(err){
+					setTimeout(javaEditorSetCode, 1000);
+				}
+			} else { // change size not yet finished
 				setTimeout(javaEditorSetCode, 1000);
 			}
-		} else { // change size not yet finished
-			setTimeout(javaEditorSetCode, 1000);
-		}
 	}
 
 
@@ -302,18 +304,18 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function wedoKeyDown(ta,keycode){
-
-		if (keycode == 9) { // TAB
-			if (ta.setSelectionRange) {
-				var selectionStart = ta.selectionStart;
-				var selectionEnd = ta.selectionEnd;
-				ta.value = ta.value.substring(0, selectionStart)
-					+ "\t"
-					+ ta.value.substring(selectionEnd);
-				ta.focus();
-				ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
-				ta.focus();
-				return false;
+			modifiers = (event.altKey || event.ctrlKey || event.shiftKey);
+			if (!modifiers && keycode == 9) { // TAB
+				if (ta.setSelectionRange) {
+					var selectionStart = ta.selectionStart;
+					var selectionEnd = ta.selectionEnd;
+					ta.value = ta.value.substring(0, selectionStart)
+						+ "\t"
+						+ ta.value.substring(selectionEnd);
+					ta.focus();
+					ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
+					ta.focus();
+					return false;
 
 			} else if (document.selection) {
 				var selection = document.selection;
@@ -601,7 +603,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			if($_useJavaEditor){
 				$maineditor .= we_getJavaEditorCode($code);
 			} else{
-				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE()||we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 					. htmlspecialchars($code) . '</textarea>';
 				if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 					$maineditor .= we_getCodeMirror2Code($code);

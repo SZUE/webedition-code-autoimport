@@ -1741,7 +1741,7 @@ class searchtoolView extends weToolView{
 
 				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset(
-							$this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "text", 380);
+							$this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
 
 				break;
 			case "TmplSearch" :
@@ -1778,7 +1778,7 @@ class searchtoolView extends weToolView{
 
 				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset(
-							$this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "text", 380);
+							$this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
 
 				break;
 		}
@@ -2441,14 +2441,14 @@ class searchtoolView extends weToolView{
 				$_defined_fields = weMetaData::getDefinedMetaDataFields();
 				$metafields = array();
 				$_fieldcount = count($_defined_fields);
-				if($_fieldcount > 6)
+				if($_fieldcount > 6){
 					$_fieldcount = 6;
+				}
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields[$i]["tag"];
 
-					if(weContentProvider::IsBinary($_result[$f]["docID"])){
-						$DB_WE->query(
-							"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+					if(weContentProvider::isBinary($_result[$f]["docID"])){
+						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()) {
 							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);
@@ -2717,7 +2717,7 @@ class searchtoolView extends weToolView{
 
 			$searchInput = we_html_tools::htmlTextInput(
 					"searchAdvSearch[" . $i . "]", 30, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-						$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch['.$i.']\" ", "text", 170);
+						$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch['.$i.']\" ", "search", 170);
 
 			if(isset($this->Model->searchFieldsAdvSearch[$i])){
 				if($this->Model->searchFieldsAdvSearch[$i] == "ParentIDDoc" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDObj" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDTmpl" || $this->Model->searchFieldsAdvSearch[$i] == "Content" || $this->Model->searchFieldsAdvSearch[$i] == "Status" || $this->Model->searchFieldsAdvSearch[$i] == "Speicherart" || $this->Model->searchFieldsAdvSearch[$i] == "MasterTemplateID" || $this->Model->searchFieldsAdvSearch[$i] == "temp_template_id" || $this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type" || $this->Model->searchFieldsAdvSearch[$i] == "temp_category"){

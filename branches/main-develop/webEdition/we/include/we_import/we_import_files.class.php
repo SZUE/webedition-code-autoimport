@@ -745,9 +745,8 @@ function next() {
 			} else{
 				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
-
-			$foo = explode("/", $_FILES["we_File"]["type"]);
-			if(isset($we_doc->IsBinary) && $we_doc->IsBinary){
+			$foo = explode('/', $_FILES["we_File"]["type"]);
+			if($we_doc->isBinary()){
 				$we_doc->setElement("data", $tempName);
 			} else{
 				$we_doc->setElement("data", $we_fileData, $foo[0]);

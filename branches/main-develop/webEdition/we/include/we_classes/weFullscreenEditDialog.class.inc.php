@@ -98,5 +98,17 @@ class weFullscreenEditDialog extends weDialog{
 
 				self.focus();');
 	}
+	
+	function getOkBut(){
+		return we_button::create_button("ok", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');weDoOk();");
+	}
+	
+	function getCancelBut(){
+		return we_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
+	}
+	
+	function getBodyTagHTML(){
+		return '<body id="weFullscreenDialog" class="weDialogBody" onUnload="doUnload()" onbeforeunload="top.opener.tinyMCECallRegisterDialog({},\'unregisterDialog\')" >';
+	}
 
 }

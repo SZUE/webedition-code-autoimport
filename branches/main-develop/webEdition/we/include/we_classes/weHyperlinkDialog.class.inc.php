@@ -291,15 +291,14 @@ class weHyperlinkDialog extends weDialog{
 </select>';
 
 
-			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, "", '', "text", 300);
+			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, "", '', "url", 300);
 
 
 			// INTERNAL LINK
 			$_internal_link = "";
 
 			// E-MAIL LINK
-
-			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "text", 300);
+			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 
 			// OBJECT LINK
 			$_object_link = "";
@@ -318,7 +317,7 @@ class weHyperlinkDialog extends weDialog{
 			$wecmdenc1 = we_cmd_enc("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){this.value=\'http://\'}"', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, "", "", "", 0) . "</div>";
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : "http://", "", 'onchange="if(this.value==\'\'){this.value=\'http://\'}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, "", "", "", 0) . "</div>";
 
 
 			// INTERNAL LINK
@@ -340,7 +339,7 @@ class weHyperlinkDialog extends weDialog{
 			$_internal_link = $yuiSuggest->getHTML();
 			// E-MAIL LINK
 
-			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "text", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
+			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined("OBJECT_TABLE") && ($_SESSION['weS']['we_mode'] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
@@ -377,7 +376,7 @@ class weHyperlinkDialog extends weDialog{
 		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, utf8_decode($this->args["param"]), "", "", "text", 300);
 
 		// CSS STYLE
-		$classSelect = $this->args["editor"] == 'tinyMce' ? $this->getClassSelect() : 
+		$classSelect = $this->args["editor"] == 'tinyMce' ? $this->getClassSelect() :
 			$classSelect = we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
 
 

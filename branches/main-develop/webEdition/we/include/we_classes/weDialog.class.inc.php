@@ -40,6 +40,7 @@ class weDialog{
 	var $JsOnly = false;
 	var $dialogWidth = 350;
 	var $charset = '';
+	var $tinyMCEPopupManagment = true;
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -71,6 +72,7 @@ class weDialog{
 	}
 
 	function initByHttp(){
+		$this->tinyMCEPopupManagment = (isset($_REQUEST["tinyMCEPopupManagment"]) && $_REQUEST["tinyMCEPopupManagment"] == "n") ? false : $this->tinyMCEPopupManagment;
 		$this->what = isset($_REQUEST['we_what']) ? $_REQUEST['we_what'] : '';
 
 		if(isset($_REQUEST['we_dialog_args']) && is_array($_REQUEST['we_dialog_args'])){
@@ -93,7 +95,6 @@ class weDialog{
 		switch($this->what){
 			case 'cmd':
 				return $this->getCmdHTML();
-
 			default:
 				return $this->getHeaderHTML() .
 					$this->getFramesetHTML() . '</html>';
@@ -166,6 +167,7 @@ class weDialog{
 					, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', HTML_DIR . 'white.html', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 				));
+
 	}
 
 	function getNextBut(){
@@ -174,6 +176,10 @@ class weDialog{
 
 	function getOkBut(){
 		return we_button::create_button('ok', 'javascript:weDoOk();');
+	}
+
+	function getCancelBut(){
+		return we_button::create_button("cancel", "javascript:top.close();");
 	}
 
 	function getbackBut(){
@@ -203,8 +209,7 @@ class weDialog{
 		} else{
 			$okBut = (($this->getBackBut() != '') && ($this->getOkBut()) != '') ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == '') ? $this->getOkBut() : $this->getBackBut());
 		}
-
-		return we_button::position_yes_no_cancel($okBut, '', we_button::create_button('cancel', 'javascript:top.close();'));
+		return we_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
 
 	function getFormHTML(){
@@ -237,13 +242,13 @@ class weDialog{
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') . 
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
 			'</head>';
 	}
 
-	function getTinyMceJS(){ //called as parent::getTinyMceJS() from subclasses
+	function getTinyMceJS(){
 		return
-			we_html_element::jsElement('isWeDialog = true;') .
+			we_html_element::jsElement('var isWeDialog = true;') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
@@ -325,6 +330,15 @@ class weDialog{
 	function formColor($size, $name, $value, $width = ""){
 		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onClick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
 	}
+
+	function getBodyTagHTML(){
+		return '<body ' . (!$this->tinyMCEPopupManagment ? 'id="weDialogInnerFrame" ' : '') . 'class="weDialogBody" onUnload="doUnload()">';
+	}
+
+	function getFooterHTML(){
+		return '</body></html>';
+	}
+
 
 	function getHttpVar($name, $alt = ""){
 		return isset($_REQUEST["we_dialog_args"][$name]) ? $_REQUEST["we_dialog_args"][$name] : $alt;

@@ -61,7 +61,7 @@ class weSiteImport{
 	 *
 	 * @return weSiteImport
 	 */
-	function __construct(){
+	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		$ws = (count($wsa) ? $wsa[0] : 0);
 		$this->from = isset($_REQUEST['from']) ? $_REQUEST['from'] : ((isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from);
@@ -115,7 +115,7 @@ class weSiteImport{
 	 *
 	 * @return         string
 	 */
-	function getHTML(){
+	public function getHTML(){
 		switch($this->cmd){
 			case 'updateSiteImportTable' :
 				return $this->_updateSiteImportTable();
@@ -137,7 +137,7 @@ class weSiteImport{
 	 *
 	 *  @return         string
 	 */
-	function _getJS(){
+	private static function _getJS(){
 		return we_html_element::jsElement('function we_cmd() {
 					var args = "";
 					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -191,7 +191,7 @@ class weSiteImport{
 	 *
 	 * @return	array
 	 */
-	function _getFieldsFromTemplate($tid){
+	private static function _getFieldsFromTemplate($tid){
 		$sql_select = 'SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . intval($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
 		$templateCode = f($sql_select, 'Dat', $GLOBALS['DB_WE']);
@@ -218,7 +218,7 @@ class weSiteImport{
 							$records[$name] = 'text';
 							break;
 						case 'input' :
-							$attribs = weSiteImport::_parseAttributes(preg_replace('/^<we:[^ ]+ /i', '', $tag));
+							$attribs = self::_parseAttributes(preg_replace('/^<we:[^ ]+ /i', '', $tag));
 							$type = isset($attribs['type']) ? $attribs['type'] : 'text';
 							switch($type){
 								case 'text' :
@@ -250,7 +250,7 @@ class weSiteImport{
 	 *
 	 * @return	array
 	 */
-	function _parseAttributes($attr){
+	private static function _parseAttributes($attr){
 		$arr = array();
 		@eval('$arr = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
 		return $arr;
@@ -261,9 +261,9 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _updateSiteImportTable(){
+	private function _updateSiteImportTable(){
 
-		$_templateFields = weSiteImport::_getFieldsFromTemplate($_REQUEST["tid"]);
+		$_templateFields = self::_getFieldsFromTemplate($_REQUEST["tid"]);
 		$hasDateFields = false;
 
 		$values = array();
@@ -324,7 +324,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getSaveWePageSettingsHTML(){
+	private function _getSaveWePageSettingsHTML(){
 		$data = array(
 			'valueCreateType' => $_REQUEST['createType']
 		);
@@ -360,7 +360,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getSiteImportTableHTML($fields, $values = array()){
+	private function _getSiteImportTableHTML($fields, $values = array()){
 
 		$headlines = array(
 			array('dat' => g_l('siteimport', '[fieldName]')),
@@ -399,7 +399,7 @@ class weSiteImport{
 	 *
 	 * @return	int
 	 */
-	function _getIndexOfValues($values, $name){
+	private function _getIndexOfValues($values, $name){
 		for($i = 0; $i < count($values); $i++){
 			if($values[$i]["name"] == $name){
 				return $i;
@@ -413,7 +413,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getCreateWePageSettingsHTML(){
+	private function _getCreateWePageSettingsHTML(){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]) && $_SESSION["prefs"]["siteImportPrefs"]) ? unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
 
 		$_valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
@@ -425,7 +425,7 @@ class weSiteImport{
 		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', "[newTemplate]"));
 		$_valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "0";
 
-		$_templateFields = weSiteImport::_getFieldsFromTemplate($_valueTemplateId);
+		$_templateFields = self::_getFieldsFromTemplate($_valueTemplateId);
 		$hasDateFields = false;
 		foreach($_templateFields as $type){
 			if($type == "date"){
@@ -457,7 +457,7 @@ class weSiteImport{
 		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
 				g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 				"createType", $vals, 1, $_valueCreateType, false, 'onchange="createTypeChanged(this);"') . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
-				g_l('siteimport', "[autoExpl]"), 2, 450) . weSiteImport::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+				g_l('siteimport', "[autoExpl]"), 2, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$_html = '<div style="height:480px">' . $_html . '</div>';
 
@@ -575,7 +575,7 @@ class weSiteImport{
 					g_l('import', '[format_timestamp]'), we_message_reporting::WE_MESSAGE_INFO) . '
 	}');
 
-		return $this->_getHtmlPage($bodyhtml, $this->_getJS() . $js);
+		return $this->_getHtmlPage($bodyhtml, self::_getJS() . $js);
 	}
 
 	/**
@@ -585,7 +585,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getTemplateSelectHTML($tid){
+	private function _getTemplateSelectHTML($tid){
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDummy';
 		$idname = 'templateID';
@@ -608,7 +608,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getContentHTML(){
+	private function _getContentHTML(){
 		// Suorce Directory
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['from'].value");
 		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
@@ -622,7 +622,6 @@ class weSiteImport{
 		// Destination Directory
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['to'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['toPath'].value");
-		$wecmdenc3 = '';
 		$_to_button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		//$_hidden = we_html_tools::hidden("to",$this->to);
@@ -884,7 +883,7 @@ class weSiteImport{
 				"class" => "weDialogBody", "onunload" => "doUnload();"
 				), $content);
 
-		$js = $this->_getJS();
+		$js = self::_getJS();
 
 		return $this->_getHtmlPage($body, $js);
 	}
@@ -894,7 +893,7 @@ class weSiteImport{
 	 *
 	 * @return	string
 	 */
-	function _getButtonsHTML(){
+	private function _getButtonsHTML(){
 
 		if($this->step == 1){
 			$this->_fillFiles();
@@ -987,7 +986,7 @@ class weSiteImport{
 	 * @param $sourcePath string
 	 * @static
 	 */
-	function _importWebEditionPage($content, &$we_doc, $sourcePath){
+	private static function _importWebEditionPage($content, &$we_doc, $sourcePath){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]) && $_SESSION["prefs"]["siteImportPrefs"]) ? unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
 
 		$_valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
@@ -999,12 +998,12 @@ class weSiteImport{
 		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : "neueVorlage";
 		$_valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "";
 
-		$content = weSiteImport::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
+		$content = self::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
 
 		if($_valueCreateType == "auto"){
-			weSiteImport::_importAuto($content, $we_doc, $_valueTemplateName, $_valueTemplateParentID);
+			self::_importAuto($content, $we_doc, $_valueTemplateName, $_valueTemplateParentID);
 		} else{
-			weSiteImport::_importSpecify($content, $we_doc, $_valueTemplateId, $_valueUseRegex, $_valueFieldValues, $_valueDateFormat, $_valueDateFormatField);
+			self::_importSpecify($content, $we_doc, $_valueTemplateId, $_valueUseRegex, $_valueFieldValues, $_valueDateFormat, $_valueDateFormatField);
 		}
 	}
 
@@ -1016,7 +1015,7 @@ class weSiteImport{
 	 *
 	 * @return         string
 	 */
-	static function makeRelativePath($docpath, $linkpath){
+	public static function makeRelativePath($docpath, $linkpath){
 		$parentPath = $docpath;
 		$newLinkPath = '';
 
@@ -1040,7 +1039,7 @@ class weSiteImport{
 	 * @return string
 	 * @static
 	 */
-	function _makeAbsolutePath($path, $sourcePath, $parentPath){
+	private static function _makeAbsolutePath($path, $sourcePath, $parentPath){
 		if(!preg_match('|^[a-z]+://|i', $path)){
 			if(substr($path, 0, 1) == "/"){
 				// if href is an absolute URL convert it into a relative URL
@@ -1071,7 +1070,7 @@ class weSiteImport{
 	 * @return string
 	 * @static
 	 */
-	function _formPathHTML($templateName = "neueVorlage", $myid = 0){
+	private static function _formPathHTML($templateName = "neueVorlage", $myid = 0){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDirName';
@@ -1135,7 +1134,7 @@ class weSiteImport{
 	 * @return string
 	 * @static
 	 */
-	function _makeAbsolutPathOfContent($content, $sourcePath, $parentPath){
+	private static function _makeAbsolutPathOfContent($content, $sourcePath, $parentPath){
 		$sourcePath = substr($sourcePath, strlen($_SERVER['DOCUMENT_ROOT']));
 		if(substr($sourcePath, 0, 1) != "/"){
 			$sourcePath = "/" . $sourcePath;
@@ -1146,7 +1145,7 @@ class weSiteImport{
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
 				$orig_href = $regs[2][$i];
-				$new_href = weSiteImport::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
+				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1158,7 +1157,7 @@ class weSiteImport{
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
 				$orig_href = $regs[2][$i];
-				$new_href = weSiteImport::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
+				$new_href = self::_makeAbsolutePath($orig_href, $sourcePath, $parentPath);
 				if($new_href != $orig_href){
 					$newTag = $regs[1][$i] . $new_href . $regs[3][$i];
 					$content = str_replace($regs[0][$i], $newTag, $content);
@@ -1175,7 +1174,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1198,7 +1197,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace($orig_url, $new_url, $newStyle);
 						}
@@ -1223,7 +1222,7 @@ class weSiteImport{
 				if($regs2 != null){
 					for($z = 0; $z < count($regs2[2]); $z++){
 						$orig_url = $regs2[2][$z];
-						$new_url = weSiteImport::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
+						$new_url = self::_makeAbsolutePath($orig_url, $sourcePath, $parentPath);
 						if($orig_url != $new_url){
 							$newStyle = str_replace(
 								$regs2[0][$z], $regs2[1][$z] . $new_url . $regs2[3][$z], $newStyle);
@@ -1247,7 +1246,7 @@ class weSiteImport{
 	 * @param $templateParentID int
 	 * @static
 	 */
-	function _importAuto($content, &$we_doc, $templateFilename, $templateParentID){
+	private static function _importAuto($content, &$we_doc, $templateFilename, $templateParentID){
 
 		$textareaCode = '<we:textarea name="content" wysiwyg="true" width="800" height="600" xml="true" inlineedit="true"/>';
 		$titleCode = "<we:title />";
@@ -1398,11 +1397,11 @@ class weSiteImport{
 	 * @param $dateFormatValue string
 	 * @static
 	 */
-	function _importSpecify($content, &$we_doc, $templateId, $useRegex, $fieldValues, $dateFormat, $dateFormatValue){
+	private static function _importSpecify($content, &$we_doc, $templateId, $useRegex, $fieldValues, $dateFormat, $dateFormatValue){
 
 		// TODO width & height of image
 		// get field infos of template
-		$_templateFields = weSiteImport::_getFieldsFromTemplate($templateId);
+		$_templateFields = self::_getFieldsFromTemplate($templateId);
 
 		foreach($fieldValues as $field){
 			if(isset($field["pre"]) && $field["pre"] && isset($field["post"]) && $field["post"] && isset($field["name"]) && $field["name"]){
@@ -1483,7 +1482,7 @@ class weSiteImport{
 	 * @return string
 	 * @static
 	 */
-	function _external_to_internal($content){
+	private static function _external_to_internal($content){
 		// replace hrefs
 		$regs=array();
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
@@ -1592,7 +1591,7 @@ class weSiteImport{
 	 * @return array
 	 * @static
 	 */
-	function postprocessFile($path, $sourcePath, $destinationDirID){
+	public static function postprocessFile($path, $sourcePath, $destinationDirID){
 		$we_docSave = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : null;
 
 		$doc = null;
@@ -1660,7 +1659,7 @@ class weSiteImport{
 	 * @return array
 	 * @static
 	 */
-	function importFile($path, $contentType, $sourcePath, $destinationDirID, $sameName, $thumbs, $width, $height, $widthSelect, $heightSelect, $keepRatio, $quality, $degrees, $importMetadata = true){
+	public function importFile($path, $contentType, $sourcePath, $destinationDirID, $sameName, $thumbs, $width, $height, $widthSelect, $heightSelect, $keepRatio, $quality, $degrees, $importMetadata = true){
 		$we_docSave = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : null;
 
 		$doc = null;
@@ -1671,10 +1670,10 @@ class weSiteImport{
 		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'], '/')); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(rtrim($sourcePath, '/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
-		if($destinationDir == "/"){
-			$destinationDir = "";
+		if($destinationDir == '/'){
+			$destinationDir = '';
 		}
-		$destinationPath = $destinationDir . importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath));
+		$destinationPath = $destinationDir .'/'. importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath),true);
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
@@ -1689,10 +1688,11 @@ class weSiteImport{
 		$GLOBALS["we_doc"]->we_new();
 		$GLOBALS["we_doc"]->ContentType = $contentType;
 		$GLOBALS["we_doc"]->Text = importFunctions::correctFilename(basename($path));
-		$GLOBALS["we_doc"]->Path = $destinationDir.$GLOBALS["we_doc"]->Text ;
+		$GLOBALS["we_doc"]->Path = $destinationPath;
 		// get Data of File
-		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-flash' && $contentType != 'movie/quicktime'){
-//		if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
+		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-fla
+sh' && $contentType != 'movie/quicktime'){
+		//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
 			$data = weFile::load($path);
 		}
 
@@ -1709,7 +1709,6 @@ class weSiteImport{
 		}
 		$GLOBALS["we_doc"]->ParentID = $parentID;
 		$GLOBALS["we_doc"]->ParentPath = $GLOBALS["we_doc"]->getParentPath();
-
 		$id = path_to_id($GLOBALS["we_doc"]->Path);
 		if($id){
 			if($sameName == "overwrite" || $contentType == "folder"){ // folders we dont have to rename => we can use the existing folder
@@ -1738,7 +1737,7 @@ class weSiteImport{
 		// initialize Content
 		switch($contentType){
 			case "text/webedition" :
-				weSiteImport::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
+				self::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
 				$GLOBALS["we_doc"]->IsSearchable = 1;
 				break;
 			case "folder" :
@@ -1820,7 +1819,7 @@ class weSiteImport{
 	 * this function is called right before starting to import the files
 	 *
 	 */
-	function _fillFiles(){
+	private function _fillFiles(){
 		// directory from which we import (real path)
 		$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 
@@ -1863,7 +1862,7 @@ class weSiteImport{
 	 * this function fills the $this->files and $this->_postProcess arrays
 	 * @param $importDirectory string
 	 */
-	function _fillDirectories($importDirectory){
+	private function _fillDirectories($importDirectory){
 
 		@set_time_limit(60);
 
@@ -1994,14 +1993,14 @@ class weSiteImport{
 	 * returns hidden fields
 	 * @return string
 	 */
-	function _getHiddensHTML(){
+	private function _getHiddensHTML(){
 		return
 			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "siteImport")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "buttons")) .
 			we_html_element::htmlHidden(array("name" => "step", "value" => "1"));
 	}
 
-	function _getFrameset(){
+	private function _getFrameset(){
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('siteimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport&cmd=content", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
@@ -2012,7 +2011,7 @@ class weSiteImport{
 		return $this->_getHtmlPage($body);
 	}
 
-	function _getHtmlPage($body, $js = ""){
+	private function _getHtmlPage($body, $js = ""){
 		$head = //FIXME: missing title
 			we_html_tools::getHtmlInnerHead() . STYLESHEET . $js;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);

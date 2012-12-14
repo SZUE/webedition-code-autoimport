@@ -167,9 +167,9 @@ abstract class importFunctions{
 	 * @param string $filename
 	 * @desc corrects the filename if it contains invalid chars
 	 */
-	static function correctFilename($filename){
+	static function correctFilename($filename,$allowPath=false){
 		$filename = str_replace(array(' ', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('-', 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $filename);
-		$filename = preg_replace('%[^a-z0-9\._+-]%i', '', $filename);
+		$filename = preg_replace('%[^a-z0-9\._+-'.($allowPath?'/':'').']%i', '', $filename);
 		if(strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}

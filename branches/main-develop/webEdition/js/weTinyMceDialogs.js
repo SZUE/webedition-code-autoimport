@@ -23,37 +23,68 @@
 var isRegisterDialogHere = true;
 var tinyMceDialog = null;
 var tinyMceSecondaryDialog = null;
+var tinyMceFullscreenDialog = null;
+var blocked = false;
 
-function weRegisterTinyMcePopup(win){
-	var id = (typeof(win.document.body.id) == "undefined") ? "" : win.document.body.id;
-	
-	if(id != "colorpicker"){
-		if(tinyMceDialog !== null){
-			try{
-				tinyMceDialog.close();
-			}catch(err){}
+function weRegisterTinyMcePopup(win,action){
+		win = typeof(win) != "undefined" ? win : null;
+		switch (action) {
+			case "registerDialog":
+				if(!blocked){
+					try{
+						tinyMceDialog.close();
+					} catch(err){}
+					tinyMceDialog = win;
+				} else {
+					blocked = false;
+				}
+				if(tinyMceSecondaryDialog !== null){
+					try{
+						tinyMceSecondaryDialog.close();
+					}catch(err){}
+				}
+				break;
+			case "registerSecondaryDialog":
+				if(tinyMceSecondaryDialog !== null){
+					try{
+						tinyMceSecondaryDialog.close();
+					}catch(err){}
+				}
+				tinyMceSecondaryDialog = win;
+				break;
+			case "registerFullscreenDialog":
+				if(tinyMceDialog !== null){
+					try{
+						tinyMceDialog.close();
+					}catch(err){}
+				}
+				if(tinyMceSecondaryDialog !== null){
+					try{
+						tinyMceSecondaryDialog.close();
+					}catch(err){}
+				}
+				if(tinyMceFullscreenDialog !== null){
+					try{
+						tinyMceFullscreenDialog.close();
+					}catch(err){}
+				}
+				tinyMceFullscreenDialog = win;
+				break;
+			case "block":
+				blocked = true;
+				break;
+			case "skip":
+				// do nothing!
+				break;
+			case "unregisterDialog":
+				try{
+					tinyMceDialog.close();
+				}catch(err){}
+			case "unregisterSecondaryDialog":
+				try{
+					tinyMceSecondaryDialog.close();
+				}catch(err){}
+				break;
 		}
-		if(tinyMceSecondaryDialog !== null){
-			try{
-				tinyMceSecondaryDialog.close();
-			}catch(err){}
-		}
-		tinyMceDialog = win;
-		
-	} else { // secondary dialog
-		if(tinyMceSecondaryDialog !== null){
-			try{
-				tinyMceSecondaryDialog.close();
-			}catch(err){}
-		} 
-		tinyMceSecondaryDialog = win;
-	}
-}
 
-function weCloseSecondaryDialog(){
-	if(tinyMceSecondaryDialog !== null){
-		try{
-			tinyMceSecondaryDialog.close();
-		}catch(err){}
-	}
 }

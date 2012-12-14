@@ -154,8 +154,7 @@ function we_tag_sendMail($attribs, $content){
 					'</html>';
 
 				exit;
-			}
-			if(!$_blocked){
+			}else{
 				if(!isset($_SESSION)){
 					@session_start();
 				}
