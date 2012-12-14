@@ -28,8 +28,6 @@ var blocked = false;
 
 function weRegisterTinyMcePopup(win,action){
 		win = typeof(win) != "undefined" ? win : null;
-		//console.log("called: " + action);
-
 		switch (action) {
 			case "registerDialog":
 				if(!blocked){
@@ -39,7 +37,6 @@ function weRegisterTinyMcePopup(win,action){
 					tinyMceDialog = win;
 				} else {
 					blocked = false;
-					//console.log("block released");
 				}
 				if(tinyMceSecondaryDialog !== null){
 					try{
@@ -64,6 +61,11 @@ function weRegisterTinyMcePopup(win,action){
 				if(tinyMceSecondaryDialog !== null){
 					try{
 						tinyMceSecondaryDialog.close();
+					}catch(err){}
+				}
+				if(tinyMceFullscreenDialog !== null){
+					try{
+						tinyMceFullscreenDialog.close();
 					}catch(err){}
 				}
 				tinyMceFullscreenDialog = win;

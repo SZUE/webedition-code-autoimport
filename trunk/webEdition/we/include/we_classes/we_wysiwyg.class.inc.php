@@ -201,22 +201,17 @@ class we_wysiwyg{
 						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"}
 					};
 				') . we_html_element::jsElement('
+
 function tinyMCEchanged(inst){
-	if(inst.isDirty()){
-		var edFrame = typeof(_EditorFrame) != "undefined" ? _EditorFrame : (typeof(top.opener._EditorFrame) != "undefined" ? top.opener._EditorFrame : "");
-		if(edFrame !== ""){
-			edFrame.setEditorIsHot(true);
-		}
-	}
+	// moved to tinymce init.setup()
 }
+
 				') . we_html_element::jsElement('
 function tinyMCECallRegisterDialog(win,action){
 	if(typeof(top.isRegisterDialogHere) != "undefined"){
 		try{
 			top.weRegisterTinyMcePopup(win,action);
-		} catch(err) {
-			console.log("could not register dialog");
-		}
+		} catch(err) {}
 	} else {
 		if(typeof(top.opener.isRegisterDialogHere) != "undefined"){
 			try{
@@ -1345,7 +1340,7 @@ function tinyMCECallRegisterDialog(win,action){
 
 						//CallBacks
 						//file_browser_callback : "openWeFileBrowser",
-						onchange_callback : "tinyMCEchanged",
+						//onchange_callback : "tinyMCEchanged",
 
 						plugins : "style,table,advhr,weimage,advlink,emotions,insertdatetime,preview,searchreplace,contextmenu,paste,directionality,nonbreaking,xhtmlxtras,weabbr,weacronym,welang,wevisualaid,weinsertbreak,wespellchecker,layer,autolink,wefullscreen",
 
@@ -1375,30 +1370,90 @@ function tinyMCECallRegisterDialog(win,action){
 						skin_variant : "silver",
 
 						setup : function(ed){
-						ed.onInit.add(function(ed){
-							ed.pasteAsPlainText = ' . $pastetext . ';
-							ed.controlManager.setActive("pastetext", ' . $pastetext . ');
-						});
-						'
-						. (!$this->removeFirstParagraph ? '' : '
-						ed.onPostProcess.add(function(ed, o) {
-							o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
-						});') . '
+							ed.onInit.add(function(ed){
+								ed.pasteAsPlainText = ' . $pastetext . ';
+								ed.controlManager.setActive("pastetext", ' . $pastetext . ');
+							});
+						
+							'
+							. (!$this->removeFirstParagraph ? '' : '
+							ed.onPostProcess.add(function(ed, o) {
+								o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
+							});') . '
 
-						/*
-						ed.onPostProcess.add(function(ed, o) { // FIXME: strange behaviour - condition does not work with boolean true!!?
-							o.content = o.content.' . (!$this->htmlSpecialchars ? 'replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"")' :
-							'replace(/"/g, "&quot;")') . ';
-						});
-						*/
-						'. ($this->htmlSpecialchars ? '' : '
-						ed.onPostProcess.add(function(ed, o) {
-							o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-						});') . '
-					}
-				});') .
+							'. ($this->htmlSpecialchars ? '' : '
+							ed.onPostProcess.add(function(ed, o) {
+								o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+							});') . '
 
-				'
+
+							/* set EditorFrame.setEditorIsHot(true) */
+
+							// we look for editorLevel and weEditorFrameController just once at editor init
+							var editorLevel = "";
+							var weEditorFrame = null;
+							
+							if(typeof(_EditorFrame) != "undefined"){
+								editorLevel = "inline";
+								weEditorFrame = _EditorFrame;
+							} else {
+								if(typeof(top.opener.top.weEditorFrameController) != "undefined" && typeof(top.isWeDialog) == "undefined"){
+									editorLevel = "popup";
+									weEditorFrame = top.opener.top.weEditorFrameController;
+								} else {
+									editorLevel = "fullscreen";
+									weEditorFrame = null;
+								}
+							}
+
+							// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
+							var weEditorFrameIsHot = editorLevel == "inline" ? weEditorFrame.EditorIsHot : false;
+
+							// listeners for editorLevel = "inline"
+							//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
+							/*
+							ed.onKeyDown.add(function(ed) {
+								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+									weEditorFrame.setEditorIsHot(true);
+									weEditorFrameIsHot = true;
+								}
+							});
+							*/
+
+							ed.onChange.add(function(ed) {
+								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+									weEditorFrame.setEditorIsHot(true);
+									weEditorFrameIsHot = true;
+								}
+							});
+							
+							ed.onClick.add(function(ed) {
+								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+									weEditorFrame.setEditorIsHot(true);
+									weEditorFrameIsHot = true;
+								}
+							});
+
+							ed.onPaste.add(function(ed) {
+								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+									weEditorFrame.setEditorIsHot(true);
+									weEditorFrameIsHot = true;
+								}
+							});
+
+							// onSave (= we_save and we_publish) we reset the (tiny-internal) flag weEditorFrameIsHot to false
+							ed.onSaveContent.add(function(ed) {
+								weEditorFrameIsHot = false;
+								// if is popup and we click on ok
+								if(editorLevel == "popup" && ed.isDirty()){ 
+									weEditorFrame.setEditorIsHot(true);
+								}
+								
+							});
+						}
+					});') .
+
+					'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
 
 			case 'default':

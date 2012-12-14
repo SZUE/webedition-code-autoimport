@@ -26,7 +26,9 @@ tinyMCEPopup.resizeToInnerSize = function(){
 	}
 
 	//tinyMCEPopup.onclose does not work, so we set attribute onbeforeunload (does not work in Opera)
-	if((a.dom.getAttrib(document.body,"id") == "table" || a.dom.getAttrib(document.body,"id") == "styleprops") && top.opener != "undefined"){
+	if((a.dom.getAttrib(document.body,"id") == "table" || a.dom.getAttrib(document.body,"id") == "styleprops"
+			|| a.dom.getAttrib(document.body,"id") == "tablecell" || a.dom.getAttrib(document.body,"id") == "tablerow") 
+			&& top.opener != "undefined"){
 		a.dom.setAttrib(document.body,"onbeforeunload","top.opener.tinyMCECallRegisterDialog({},'unregisterSecondaryDialog')"); 
 	}
 }
@@ -48,12 +50,15 @@ tinyMCEPopup.close = function(){
 tinyMCEPopup.onInit.add(function(){
 	var t = this;
 	var id = "";
+
 	try{
 		id = t.document.body.id ? t.document.body.id : id;
 	} catch(err){}
-		
+
 	var action = "registerDialog";
 	switch(id){
+		case("weDocSelecterInt"):
+			// no break
 		case("colorpicker"): 
 			action = "registerSecondaryDialog";
 			break;
@@ -66,8 +71,22 @@ tinyMCEPopup.onInit.add(function(){
 		default:
 			action = "registerDialog";
 	}
-	
+	/*
 	try{
-		top.opener.tinyMCECallRegisterDialog(t,action); 
+		action = t.weSelectorWindow ? "registerFileSelector" : action;
 	} catch(err){}
+	
+	if(action == "registerFileSelector" && typeof(top.opener.isWeDialog) != "undefined"){
+		try{
+			top.opener.top.opener.tinyMCECallRegisterDialog(t,"registerSecondaryDialog");
+		} catch(err){}
+		return
+	}
+	*/
+	try{
+		top.opener.tinyMCECallRegisterDialog(t,action);
+		return; 
+	} catch(err){}
+
+	return;
 });
