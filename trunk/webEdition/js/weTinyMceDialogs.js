@@ -28,7 +28,7 @@ var blocked = false;
 
 function weRegisterTinyMcePopup(win,action){
 		win = typeof(win) != "undefined" ? win : null;
-		console.log("called: " + action);
+		//console.log("called: " + action);
 
 		switch (action) {
 			case "registerDialog":
@@ -39,7 +39,7 @@ function weRegisterTinyMcePopup(win,action){
 					tinyMceDialog = win;
 				} else {
 					blocked = false;
-					console.log("block released");
+					//console.log("block released");
 				}
 				if(tinyMceSecondaryDialog !== null){
 					try{
