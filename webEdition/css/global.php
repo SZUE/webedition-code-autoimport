@@ -49,7 +49,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 background-color: #EEEEEE;
 }
 
-.weMarkInputError {background-color: #ff8888 ! important;}
+.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}
 
 .wetextinputselected {
 color: black;
