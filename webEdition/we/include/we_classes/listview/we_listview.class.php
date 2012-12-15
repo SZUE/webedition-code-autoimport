@@ -118,11 +118,12 @@ class we_listview extends listviewBase{
 
 		$this->numorder = $numorder;
 		$this->hidedirindex = $hidedirindex;
-		$this->order = explode(',', trim($this->order));
+		$this->order = trim($this->order);
 		$random = false;
 
 		$order = array();
-		foreach($this->order as $ord){
+		$tmpOrder=explode(',', $this->order);
+		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
 				case 'we_id':
 					$order[] = FILE_TABLE . '.ID' . ($this->desc ? ' DESC' : '');

@@ -456,32 +456,35 @@ function we_tag_field($attribs){
 						$show = ($GLOBALS['lv']->calendar_struct['calendar'] == 'year' ? 'month' : 'day');
 						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname);
 
-						$_linkAttribs['href'] = id_to_path($id) . '?' . (isset($GLOBALS['lv']->contentTypes) && $GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->contentTypes) . '&amp;') : '') . ($GLOBALS['lv']->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->order) . '&amp;') : '') . ($GLOBALS['lv']->desc ? ('we_lv_desc_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->desc) . '&amp;') : '') . ($GLOBALS['lv']->cats ? ('we_lv_cats_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->cats) . '&amp;') : '') . ($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->catOr) . '&amp;') : '') . ($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->workspaceID) . '&amp;') : '') . ((isset(
-								$GLOBALS['lv']->searchable) && !$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $listviewname . '=0&amp;') : '') . ('we_lv_calendar_' . $listviewname . '=' . rawurlencode(
-								$show) . '&amp;') . ($GLOBALS['lv']->calendar_struct['datefield'] != '' ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode(
-									$GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') . ($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(
-									date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
+						$_linkAttribs['href'] = id_to_path($id) . '?' .
+							(isset($GLOBALS['lv']->contentTypes) && $GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
+							($GLOBALS['lv']->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
+							($GLOBALS['lv']->desc ? ('we_lv_desc_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
+							($GLOBALS['lv']->cats ? ('we_lv_cats_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
+							($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
+							($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
+							((isset($GLOBALS['lv']->searchable) && !$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $listviewname . '=0&amp;') : '') .
+							('we_lv_calendar_' . $listviewname . '=' . rawurlencode($show) . '&amp;') .
+							($GLOBALS['lv']->calendar_struct['datefield'] != '' ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
+							($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
 
 						$out = getHtmlTag('a', $_linkAttribs, $out, true);
 					}
 				}
 			} else
 			if($id && $isImageDoc){
-				$_linkAttribs['href'] = id_to_path($id) . '?' . ($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->contentTypes) . '&amp;') : '') . ($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->order) . '&amp;') : '') . ($GLOBALS['lv']->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->desc) . '&amp;') : '') . ($GLOBALS['lv']->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->cats) . '&amp;') : '') . ($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->catOr) . '&amp;') : '') . ($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->workspaceID) . '&amp;') : '') . ((!$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') . (isset(
-						$GLOBALS['lv']->condition) && $GLOBALS['lv']->condition != '' ? ('we_lv_condition_' . $lvname . '=' . rawurlencode(
-							$GLOBALS['lv']->condition) . '&amp;') : '') . 'we_lv_start_' . $lvname . '=' . (($GLOBALS['lv']->count + $GLOBALS['lv']->start) - 1) . '&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) . '&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
+				$_linkAttribs['href'] = id_to_path($id) . '?' .
+					($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
+					($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
+					($GLOBALS['lv']->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
+					($GLOBALS['lv']->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
+					($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
+					($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
+					((!$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
+					(isset($GLOBALS['lv']->condition) && $GLOBALS['lv']->condition != '' ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->condition) . '&amp;') : '') .
+					'we_lv_start_' . $lvname . '=' . (($GLOBALS['lv']->count + $GLOBALS['lv']->start) - 1) .
+					'&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) .
+					'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
 
 				$out = getHtmlTag('a', $_linkAttribs, $out, true);
 			} else{
