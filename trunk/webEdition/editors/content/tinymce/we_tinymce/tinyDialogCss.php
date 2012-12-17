@@ -25,7 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
 ?>
 
-
 /* TODO: clean up this messy css! */
 
 /* CSS for all tiny Dialogs */
@@ -151,10 +150,6 @@ padding:0;
 padding-bottom:10px;
 }
 
-.mceActionPanel #preview{
-padding-right:10px;
-}
-
 .mceActionPanel #insert, .mceActionPanel #cancel, .mceActionPanel #apply, body .mceActionPanel #replaceBtn, .mceActionPanel #replaceAllBtn {
 background-image: url("/webEdition/images/button/btn_normal_middle.gif");
 background-position: left top;
@@ -191,13 +186,8 @@ right: 115px;
 position:absolute;
 right: 230px;
 }
-" : "/* no special position for buttons */" ?>
+" : "/* no special position for buttons on WIN/Linux */" ?>
 
-
-.mceActionPanel div {
-display: inline;
-margin-right:20px;
-}
 
 .mceActionPanel #preview{
 padding-right:10px;
@@ -213,6 +203,11 @@ margin-right:0;
 position:absolute;
 right: 205px;
 " : "" ?>
+}
+
+.mceActionPanel div {
+display: inline;
+margin-right:20px;
 }
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
