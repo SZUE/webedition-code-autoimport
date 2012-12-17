@@ -453,6 +453,8 @@ class we_objectEx extends we_object{
 					}
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
+				} else {
+					t_e('Field not found: Table '.$this->Text.' Field: '.$ovalname);
 				}
 			}
 		}
