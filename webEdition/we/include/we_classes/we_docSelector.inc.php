@@ -443,8 +443,6 @@ class we_docSelector extends we_dirSelector{
 
 		function printFramesetJavaScriptIncludes(){
 			print we_html_element::jsScript(JS_DIR . 'windows.js');
-			//we_html_element::jsElement('var isWeDialog = true;') .
-			//we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js');
 		}
 
 		function printHeaderHeadlines(){
@@ -635,7 +633,7 @@ class we_docSelector extends we_dirSelector{
 				<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
 				<frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 			</frameset>
-			<body id="weDocSelecterInt">
+			<body>
 			</body>
 			</html>';
 			return $out;
