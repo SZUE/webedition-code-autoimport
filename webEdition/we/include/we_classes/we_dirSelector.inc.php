@@ -812,7 +812,7 @@ top.selectFile(top.currentID);
 	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
     <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
-<body>
+<body id="reto">
 </body>
 </html>
 ';

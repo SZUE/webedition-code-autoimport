@@ -1363,7 +1363,7 @@ function tinyMCECallRegisterDialog(win,action){
 						//paste_text_use_dialog: true,
 						//fullscreen_new_window: true,
 						content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCss.php?tinyMceBackgroundColor=' . $this->bgcol . '",
-						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.css",
+						popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
 
 						// Skin options
 						skin : "o2k7",
