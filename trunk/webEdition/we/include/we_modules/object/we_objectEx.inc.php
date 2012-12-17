@@ -372,7 +372,12 @@ class we_objectEx extends we_object{
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
 
 			$this->strOrder = implode(',', $arrOrder);
-			return $this->saveToDB(true);
+			if (isset($this->isDropFieldNoSave) && $this->isDropFieldNoSave){
+				return true;
+			} else {
+				return $this->saveToDB(true);
+			}
+
 		}
 
 		return false;
@@ -412,7 +417,13 @@ class we_objectEx extends we_object{
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
-		return $this->saveToDB(true);
+
+		if (isset($this->isModifyFieldNoSave) && $this->isModifyFieldNoSave){
+			return true;
+		} else {
+			return $this->saveToDB(true);
+		}
+
 	}
 
 	function resetOrder(){
