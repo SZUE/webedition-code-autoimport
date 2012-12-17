@@ -22,7 +22,7 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//make sure we know which browser is used 
+//make sure we know which browser is used
 
 class we_wysiwyg{
 
