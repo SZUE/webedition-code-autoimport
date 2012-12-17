@@ -335,7 +335,11 @@ class we_objectEx extends we_object{
 		} else{
 			$this->strOrder = '';
 		}
-		return $this->saveToDB(true);
+		if (isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
+			return true;
+		} else {
+			return $this->saveToDB(true);
+		}
 	}
 
 	function dropField($name, $type = ''){
