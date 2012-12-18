@@ -312,32 +312,6 @@ function cutText($text, $max = 0){
 	}
 
 	return $ret;
-
-	/*
-	  $text = we_util::html2uml(strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>'));
-	  $htmlfree = strip_tags($text);
-	  $left = substr($htmlfree, 0, $max);
-	  //FIXME: ereg
-	  $left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
-	  $lastword = ereg_replace('^.+[ \.,;\r\n](.+)$', '\1', $left);
-	  $orgpos = @strpos($text, $lastword);
-	  $foo = ($orgpos ? strip_tags(substr($text, 0, $orgpos + strlen($lastword))) : $text);
-	  $cutpos = $max;
-	  while($orgpos && (strlen($foo) < $max)) {
-	  $cutpos = $orgpos + strlen($lastword);
-	  $orgpos = @strpos($text, $lastword, $orgpos + 1);
-	  $foo = strip_tags(substr($text, 0, $orgpos + strlen($lastword)));
-	  }
-	  $text = substr($text, 0, $cutpos);
-	  $regs = array();
-	  if(preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)){
-	  $text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
-	  } else if(preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)){
-	  $text = $regs[1];
-	  }
-	  return $text . '...';
-
-	 */
 }
 
 function we_getDocForTag($docAttr, $maindefault = false){
