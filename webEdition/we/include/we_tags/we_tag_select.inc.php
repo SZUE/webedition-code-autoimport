@@ -32,13 +32,12 @@ function we_tag_select($attribs, $content){
 	if($GLOBALS['we_editmode']){
 		$val = $GLOBALS['we_doc']->getElement($name);
 		$attr = we_make_attribs($attribs, "name,value,onchange,_name_orig");
-		if($val){
-			$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', "<\\1\\3>", $content);
-			if(stripos($content, '<option>') !== false){
-				$content = preg_replace('|<option>' . preg_quote($val) . "( ?[<\n\r\t])|i", '<option selected="selected">' . $val . '\\1', $content);
-			}
-			if(preg_match('|<option[^>]*value=[\'"]?.*[\'"]?>|i', $content))
-				$content = preg_replace('|<option([^>]*)value *= *"' . preg_quote($val) . '"([^>]*)>|i', '<option value="' . $val . '" selected="selected">', $content);
+		$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', "<\\1\\3>", $content);
+		if(stripos($content, '<option>') !== false){
+			$content = preg_replace('|<option>' . preg_quote($val) . "( ?[<\n\r\t])|i", '<option selected="selected">' . $val . '\\1', $content);
+		}
+		if(preg_match('|<option[^>]*value=[\'"]?.*[\'"]?>|i', $content)){
+			$content = preg_replace('|<option([^>]*)value *= *"' . preg_quote($val) . '"([^>]*)>|i', '<option value="' . $val . '" selected="selected">', $content);
 		}
 		return '<select onchange="_EditorFrame.setEditorIsHot(true);' . ($onchange ? $onchange : "") . ';' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" class="defaultfont" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" ' . ($attr ? " $attr" : "") . '>' . $content . '</select>';
 	} else{
