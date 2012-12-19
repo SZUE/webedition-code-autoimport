@@ -55,9 +55,11 @@ top.close();
 	} else{
 		if(strpos($href, 'mailto:') === 0){
 			$href = $args["href"];
+			$tmpClass = $args["class"];
 			foreach($args as &$val){
 				$val = '';
 			}
+			$args["class"] = $tmpClass;
 		}
 
 		return weDialog::getTinyMceJS() .
