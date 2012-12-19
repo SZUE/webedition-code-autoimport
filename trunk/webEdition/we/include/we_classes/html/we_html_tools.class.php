@@ -631,7 +631,7 @@ abstract class we_html_tools{
 	static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "Expires", "content" => date('r')
+				"http-equiv" => "Expires", "content" => gmdate("D, d M Y H:i:s") . " GMT"
 			)) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "Cache-Control", "content" => 'no-cache'
