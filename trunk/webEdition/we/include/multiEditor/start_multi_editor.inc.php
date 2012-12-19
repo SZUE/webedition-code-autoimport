@@ -106,7 +106,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 				}
 				break;
 			case '0':
-				$_SESSION["prefs"]["seem_start_type"] = 0;
+				$_SESSION["prefs"]["seem_start_type"] = '0';
 				break;
 			case 'document':
 				if($_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){ //	if a stardocument is already selected - show this
@@ -133,7 +133,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 	}
 // :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
-if($_SESSION["prefs"]["seem_start_type"] !== 0){
+if($_SESSION["prefs"]["seem_start_type"] !== '0'){
 	print we_html_element::jsElement($jsCommand);
 } else{
 	print we_html_element::jsElement("top.weEditorFrameController.toggleFrames();");
