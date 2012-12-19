@@ -29,7 +29,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT
 header("Cache-Control: max-age=86400, must-revalidate", true);
 header("Pragma: ", true);
 ?>
-
 .weSelect {
 border: #AAAAAA solid 1px;
 color: black;

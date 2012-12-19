@@ -64,9 +64,6 @@ function getValueLoginMode($val){
 }
 
 function printHeader($login, $status = 200){
-	/*	 * ***************************************************************************
-	 * CREATE HEADER
-	 * *************************************************************************** */
 	header('Expires: ' . gmdate('D, d.m.Y H:i:s') . ' GMT');
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: public');
