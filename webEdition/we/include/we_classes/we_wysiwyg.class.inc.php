@@ -1386,16 +1386,11 @@ function tinyMCECallRegisterDialog(win,action){
 							});') . '
 
 							' . ($this->htmlSpecialchars ? '' : '
-							ed.onPostProcess.add(function(ed, o) {
+							ed.onPostProcess.add(function(ed, o) { // TODO: find a real solution for php code in tiny
+								o.content = o.content.replace(/&lt;\?/g, "\#\|\#\?\#").replace(/\?&gt;/g, "\#\?\#\|\#");
 								o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-								//if no replacemnent of htmlSpecialchars throw out all PHP code between <?, <?php and ?>!
-								o.content = o.content.replace(/<?[^>]+>/, "");
+								o.content = o.content.replace(/\#\|\#\?\#/g, "&lt;?").replace(/\#\?\#\|\#/g, "?&gt;");
 							});') . '
-
-							ed.onPostProcess.add(function(ed, o) {
-								//o.content = o.content.replace(/<?[^>]+>/, "");
-							})
-
 
 							/* set EditorFrame.setEditorIsHot(true) */
 
