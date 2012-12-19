@@ -1388,7 +1388,13 @@ function tinyMCECallRegisterDialog(win,action){
 							' . ($this->htmlSpecialchars ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
 								o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+								//if no replacemnent of htmlSpecialchars throw out all PHP code between <?, <?php and ?>!
+								o.content = o.content.replace(/<?[^>]+>/, "");
 							});') . '
+
+							ed.onPostProcess.add(function(ed, o) {
+								//o.content = o.content.replace(/<?[^>]+>/, "");
+							})
 
 
 							/* set EditorFrame.setEditorIsHot(true) */
