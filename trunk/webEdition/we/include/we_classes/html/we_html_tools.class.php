@@ -815,6 +815,7 @@ abstract class we_html_tools{
 			case 303:
 				header('HTTP/1.1 ' . $status . ' See Other', true, $status);
 				header('Status: ' . $status . ' See Other', true, $status);
+				break;
 			case 400:
 				header('HTTP/1.1 ' . $status . ' Bad Request', true, $status);
 				header('Status: ' . $status . ' Bad Request', true, $status);

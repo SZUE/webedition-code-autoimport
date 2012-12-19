@@ -596,7 +596,7 @@ margin-bottom:3px;
 }
 
 .weSidebarBody {
-background	: #ffffff url(<?php echo IMAGE_DIR;?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
+background	: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
 margin		: 5px;
 padding		: 0px;
 }
