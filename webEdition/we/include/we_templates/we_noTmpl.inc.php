@@ -55,7 +55,7 @@ echo we_html_element::htmlDocType();
 <?php if(isset($we_editmode) && $we_editmode){ ?>
 		<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15">
 			<form name="we_form" method="post"><?php
-	$we_doc->pHiddenTrans();
+	echo we_class::hiddenTrans();
 	$foo = '<html><head>' .
 		($we_doc->getElement("Keywords") ?
 			we_html_element::htmlMeta(array('name' => 'keywords', 'content' => $we_doc->getElement("Keywords"))) . "\n" : '') .

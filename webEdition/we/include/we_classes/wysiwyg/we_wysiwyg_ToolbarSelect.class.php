@@ -35,9 +35,9 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 			case "fontname":
 			case "fontsize":
 			case "formatblock":
-				return stripos($this->editor->propstring, ",font,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('font');
 			default:
-				return stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp();
 		}
 	}
 

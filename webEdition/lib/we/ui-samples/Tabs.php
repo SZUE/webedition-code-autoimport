@@ -158,88 +158,74 @@ $htmlPage->setTitle('Hallo webEdition');
 $htmlPage->addElement($tabs);
 
 $htmlPage->addInlineJS("
-			function submitForm(target, action, method) {
-				var f = self.document.we_form;
-				if (target) {
-					f.target = target;
-				}
+function submitForm(target, action, method) {
+	var f = self.document.we_form;
+	if (target) {
+		f.target = target;
+	}
 
-				if (action) {
-					f.action = action;
-				}
+	if (action) {
+		f.action = action;
+	}
 
-				if (method) {
-					f.method = method;
-				}
+	if (method) {
+		f.method = method;
+	}
 
-				f.submit();
-			}
+	f.submit();
+}
 
-			function mark() {
-					var elem = document.getElementById('mark');
-					elem.style.display = 'inline';
+function mark() {
+		var elem = document.getElementById('mark');
+		elem.style.display = 'inline';
 
-				}
+	}
 
-				function unmark() {
-					var elem = document.getElementById('mark');
-					elem.style.display = 'none';
-				}
+	function unmark() {
+		var elem = document.getElementById('mark');
+		elem.style.display = 'none';
+	}
 
-			function setFrameSize(){
-				if(document.getElementById('we_ui_controls_Tabs_Container').offsetWidth > 0) {
-					var fs = parent.document.getElementsByTagName(\"FRAMESET\")[0];
-					var tabsHeight = document.getElementById('main').offsetHeight;
-					var fsRows = fs.rows.split(',');
-					fsRows[0] = tabsHeight;
-					fs.rows =  fsRows.join(\",\");
-				} else {
-					setTimeout(\"setFrameSize()\",100);
-				}
-			}
+function setFrameSize(){
+	if(document.getElementById('we_ui_controls_Tabs_Container').offsetWidth > 0) {
+		var fs = parent.document.getElementsByTagName(\"FRAMESET\")[0];
+		var tabsHeight = document.getElementById('main').offsetHeight;
+		var fsRows = fs.rows.split(',');
+		fsRows[0] = tabsHeight;
+		fs.rows =  fsRows.join(\",\");
+	} else {
+		setTimeout(\"setFrameSize()\",100);
+	}
+}");
 
-		");
-
-$htmlPage->addHTML('<form name="we_form">');
-$htmlPage->addHTML('<input type="hidden" name="activTab" value="" />');
-$htmlPage->addHTML('<div id="tab1" style="display: none">tab1</div>');
-
-$htmlPage->addHTML('<div id="tab2" style="display: block">tab2</div>');
-
-$htmlPage->addHTML('<div id="tab3" style="display: none">tab3</div>');
-$htmlPage->addHTML('<div id="tab4" style="display: none">tab4</div>');
-$htmlPage->addHTML('<div id="tab5" style="display: none">tab5</div>');
-$htmlPage->addHTML('<div id="tab6" style="display: none">tab6</div>');
-$htmlPage->addHTML('<div id="tab7" style="display: none">tab7</div>');
-$htmlPage->addHTML('<div id="tab8" style="display: none">tab8</div>');
-$htmlPage->addHTML('<div id="tab9" style="display: none">tab9</div>');
-$htmlPage->addHTML('<div id="tab10" style="display: none">tab10</div>');
-$htmlPage->addHTML('<div id="tab11" style="display: none">tab11</div>');
-$htmlPage->addHTML('<div id="tab12" style="display: none">');
-$htmlPage->addHTML('<br><br><br>');
+$htmlPage->addHTML('<form name="we_form">
+<input type="hidden" name="activTab" value="" />
+<div id="tab1" style="display: none">tab1</div>
+<div id="tab2" style="display: block">tab2</div>
+<div id="tab3" style="display: none">tab3</div>
+<div id="tab4" style="display: none">tab4</div>
+<div id="tab5" style="display: none">tab5</div>
+<div id="tab6" style="display: none">tab6</div>
+<div id="tab7" style="display: none">tab7</div>
+<div id="tab8" style="display: none">tab8</div>
+<div id="tab9" style="display: none">tab9</div>
+<div id="tab10" style="display: none">tab10</div>
+<div id="tab11" style="display: none">tab11</div>
+<div id="tab12" style="display: none">
+<br><br><br>');
 $htmlPage->addElement($tabs2);
-$htmlPage->addHTML('<div id="tabx" style="display: none">tabx</div>');
-
-$htmlPage->addHTML('<div id="tabxx" style="display: block">tabxx</div>');
-
-$htmlPage->addHTML('<div id="tabxxx" style="display: none">tabxxx</div>');
-
-$htmlPage->addHTML('</div>');
-
-$htmlPage->addHTML('<br><br><br>');
-
-$htmlPage->addHTML('<div><a href="javascript:we_ui_controls_Tabs.setTabClass(\'' . $tabs->getId() . '\',\'tab12\'); we_ui_controls_Tabs.setTab(\'' . $tabs->getId() . '\',\'tab12\',\'\');">show tab 12</a></div>');
-
-
-$htmlPage->addHTML('<br><br><br>');
+$htmlPage->addHTML('<div id="tabx" style="display: none">tabx</div>
+<div id="tabxx" style="display: block">tabxx</div>
+<div id="tabxxx" style="display: none">tabxxx</div>
+</div>
+<br><br><br>
+<div><a href="javascript:we_ui_controls_Tabs.setTabClass(\'' . $tabs->getId() . '\',\'tab12\'); we_ui_controls_Tabs.setTab(\'' . $tabs->getId() . '\',\'tab12\',\'\');">show tab 12</a></div>
+<br><br><br>');
 $htmlPage->addElement($tabs3);
 
-$htmlPage->addHTML('<div id="tabr" style="display: none">tabr</div>');
-
-$htmlPage->addHTML('<div id="tabrr" style="display: block">tabrr</div>');
-
-$htmlPage->addHTML('<div id="tabrrr" style="display: none">tabrrr</div>');
-$htmlPage->addHTML('</form>');
+$htmlPage->addHTML('<div id="tabr" style="display: none">tabr</div>
+<div id="tabrr" style="display: block">tabrr</div>
+<div id="tabrrr" style="display: none">tabrrr</div>
+</form>');
 
 print $htmlPage->getHTML();
-?>

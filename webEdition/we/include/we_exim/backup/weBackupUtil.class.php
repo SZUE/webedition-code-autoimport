@@ -276,19 +276,15 @@ abstract class weBackupUtil{
 			$_hasbinary = false;
 			while($_found == 'unknown' && $_try < $_count) {
 				if(preg_match('/.*<webEdition.*type="backup".*>/', $_part)){
-					$_found = 'backup';
-				} else
-				if(preg_match('/<webEdition.*type="backup".*>/', $_part)){
-					$_found = 'backup';
-				} else
-				if(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
-					$_found = 'weimport';
-				} else if(stripos($_part, '<we:table') !== false){
-					$_found = 'backup';
-				} else if(stripos($_part, '<we:binary') !== false){
+					return 'backup';
+				} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
+					return  'weimport';
+				} elseif(stripos($_part, '<we:table') !== false){
+					return 'backup';
+				} elseif(stripos($_part, '<we:binary') !== false){
 					$_hasbinary = true;
-				} else if(stripos($_part, '<customer') !== false){
-					$_found = 'customer';
+				} elseif(stripos($_part, '<customer') !== false){
+					return 'customer';
 				}
 
 				$_part = weFile::loadPart($file, $_start, $_part_len, $iscompr);
@@ -300,7 +296,7 @@ abstract class weBackupUtil{
 		}
 
 		if($_found == 'unknown' && $_hasbinary){
-			$_found = 'weimport';
+			return 'weimport';
 		}
 
 		return $_found;

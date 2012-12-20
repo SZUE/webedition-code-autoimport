@@ -571,7 +571,7 @@ function we_userCanEditModule($modName){
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
 			//FIXME: remove eval
-			eval('if (' . $set_str . '){ if (' . $condition_str . ') { $enable=1; } else { $enable=0; } }');
+			eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
 			return $enable;
 		}
 	}
@@ -1451,20 +1451,6 @@ function we_check_email($email){ // Zend validates only the pure address
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
-function getRequestVar($name, $default, $yescode = '', $nocode = ''){
-	if(isset($_REQUEST[$name])){
-		if($yescode != ''){
-			eval($yescode);
-		}
-		return $_REQUEST[$name];
-	} else{
-		if($nocode != ''){
-			eval($nocode);
-		}
-		return $default;
-	}
-}
-
 /**
  * Converts a given number in a via array specified system.
  * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
@@ -1983,8 +1969,8 @@ function we_templateHead(){
 
 function we_templatePreContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && !isset($GLOBALS['we_templatePreContent'])){
-		print '<form name="we_form" method="post" onsubmit="return false;">';
-		print $GLOBALS['we_doc']->pHiddenTrans();
+		print '<form name="we_form" method="post" onsubmit="return false;">' .
+			we_class::hiddenTrans();
 		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : 1);
 	}
 }
@@ -2068,4 +2054,14 @@ function we_log_loginFailed($table, $user){
 			'Port' => $_SERVER['SERVER_PORT'],
 			'Script' => $_SERVER['SCRIPT_NAME']
 		)));
+}
+
+/**
+ * removes unneded js-open/close tags
+ * @param string $js
+ * @return string given param without duplicate js-open/close tags
+ */
+function implodeJS($js){
+	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
+	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -38,8 +39,9 @@ class we_wysiwyg_ToolbarElement{
 		return '';
 	}
 
-	function hasProp(){
-		return preg_match('%,' . $this->cmd . ',%i', $this->editor->propstring) || ($this->editor->propstring == '');
+	function hasProp($cmd = ''){
+		$cmd = ($cmd ? $cmd : $this->cmd);
+		return stripos($this->editor->propstring, ',' . $cmd . ',') !== false || ($this->editor->propstring == '');
 	}
 
 }

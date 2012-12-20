@@ -26,20 +26,20 @@
 /**
  * Document Definition base class
  */
-class weBannerBase{
+abstract class weBannerBase{
 
 	var $uid;
 	var $db;
 	var $persistents = array();
 	var $table = "";
-	var $ClassName = "weBannerBase";
+	var $ClassName = __CLASS__;
 
-	function __construct(){
+	private function __construct(){
 		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 	}
 
-	function load(){
+	public function load(){
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record())
@@ -52,7 +52,7 @@ class weBannerBase{
 			}
 	}
 
-	function save(){
+	public function save(){
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistents as $key => $val){
@@ -64,9 +64,7 @@ class weBannerBase{
 		$where = implode(",", $wheres);
 		$set = implode(",", $sets);
 		if($this->ID == 0){
-
-			$query = 'INSERT INTO ' . $this->table . ' SET ' . $set;
-			$this->db->query($query);
+			$this->db->query('INSERT INTO ' . $this->table . ' SET ' . $set);
 			# get ID #
 			$this->db->query("SELECT LAST_INSERT_ID()");
 			$this->db->next_record();
@@ -77,13 +75,12 @@ class weBannerBase{
 		}
 	}
 
-	function delete(){
-		if($this->ID){
-			$this->db->query('DELETE FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
-			return true;
-		}
-		else
+	public function delete(){
+		if(!$this->ID){
 			return false;
+		}
+		$this->db->query('DELETE FROM ' . $this->table . ' WHERE ID=' . intval($this->ID));
+		return true;
 	}
 
 }

@@ -63,20 +63,27 @@ switch($type){
 		break;
 	default:
 		if(!$id){
-			$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername);
+			$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
 			$id = $bannerData["ID"];
 			$bid = $bannerData["bannerID"];
 		}
 		if(!$bid){
-			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $DB_WE);
-			$bid = f("SELECT bannerID FROM " . BANNER_TABLE . " WHERE ID=" . intval($id), "bannerID", $DB_WE);
+			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'", "pref_value", $GLOBALS['DB_WE']);
+			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "bannerID", $GLOBALS['DB_WE']);
 		}
 
-		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid), "Path", $DB_WE);
+		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid), "Path", $GLOBALS['DB_WE']);
 
-		if(($type == "pixel" || (!$nocount) && $id && $c)){
-			$DB_WE->query("INSERT INTO " . BANNER_VIEWS_TABLE . " (ID,Timestamp,IP,Referer,DID,Page) VALUES(" . intval($id) . "," . time() . ",'" . $DB_WE->escape($_SERVER["REMOTE_ADDR"]) . "','" . $DB_WE->escape($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "")) . "'," . intval($did) . ",'" . $DB_WE->escape($page) . "')");
-			$DB_WE->query("UPDATE " . BANNER_TABLE . " SET views=views+1 WHERE ID=" . intval($id));
+		if(($type == 'pixel' || (!$nocount) && $id && $c)){
+			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => intval($id),
+					'Timestamp' => 'UNIX_TIMESTAMP()',
+					'IP' => $_SERVER["REMOTE_ADDR"],
+					'Referer' => ($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "")),
+					'DID' => intval($did),
+					'Page' => $page)));
+
+			$GLOBALS['DB_WE']->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 			setcookie("webid_$bannername", intval($id));
 		}
 

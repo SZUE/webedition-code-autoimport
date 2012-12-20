@@ -57,42 +57,15 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
-		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
-?>
-
-function writeBody(d){
-	d.open();
-	//d.writeln('<?php print '<?php print $htmltop; ?>';?>'); Geht nicht im IE
-	d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><?php echo we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);?><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
-	d.writeln('<?php print '<?php print STYLESHEET_SCRIPT;?>';?>');
+		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT;
+		?>
+		function writeBody(d){
+		d.open();
+		<?php
+			self::makeWriteDoc($html);
+		?>
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
-
-	//from we_showMessage.js
-	d.writeln('var WE_MESSAGE_INFO = -1;');
-	d.writeln('var WE_MESSAGE_FRONTEND = -2;');
-	d.writeln('var WE_MESSAGE_NOTICE = 1;');
-	d.writeln('var WE_MESSAGE_WARNING = 2;');
-	d.writeln('var WE_MESSAGE_ERROR = 4;');
-	d.writeln('function we_showMessage (message, prio, win) {');
-	d.writeln('if (win.top.showMessage != null) {');
-	d.writeln('win.top.showMessage(message, prio, win);');
-	d.writeln('} else if (win.top.opener) {');
-	d.writeln('if (win.top.opener.top.showMessage != null) {');
-	d.writeln('win.top.opener.top.showMessage(message, prio, win);');
-	d.writeln('} else if (win.top.opener.top.opener.top.showMessage != null) {');
-	d.writeln('win.top.opener.top.opener.top.showMessage(message, prio, win);');
-	d.writeln('} else if (win.top.opener.top.opener.top.opener.top.showMessage != null) {');
-	d.writeln('win.top.opener.top.opener.top.showMessage(message, prio, win);');
-	d.writeln('}');
-	d.writeln('} else { // there is no webEdition window open, just show the alert');
-	d.writeln('if (!win) {');
-	d.writeln('win = window;');
-	d.writeln('}');
-	d.writeln('win.alert(message);');
-	d.writeln('}');
-	d.writeln('}');
 
 	d.writeln('var ctrlpressed=false');
 	d.writeln('var shiftpressed=false');
@@ -239,7 +212,7 @@ function addEntry(ID,icon,text,isFolder,path){
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>top.clearEntries();';
+		print '<script type="text/javascript"><!-- top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = '';
 		if(isset($_REQUEST['we_FolderText_tmp'])){
@@ -287,6 +260,7 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 
 print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
+//-->
 </script>
 ';
 		print '</head><body></body></html>';
@@ -305,7 +279,7 @@ top.selectFile(top.currentID);
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
 
-		print '<script>
+		print '<script type="text/javascript"><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -346,12 +320,13 @@ top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 			}
 		}
 
+print
+		$this->printCmdAddEntriesHTML().
+		$this->printCMDWriteAndFillSelectorHTML().
 
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
-
-		print 'top.makeNewFolder = 0;
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
+//-->
 </script>
 ';
 		print '</head><body></body></html>';

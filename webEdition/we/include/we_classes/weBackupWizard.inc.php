@@ -626,7 +626,7 @@ extra_files_desc=new Array();';
 		foreach($_tools as $_tool){
 			$text = ($_tool == 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-					g_l('backup', "[import][weapp]").' '.$_tool);
+					g_l('backup', "[import][weapp]") . ' ' . $_tool);
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 		}
@@ -926,7 +926,7 @@ self.focus();');
 		foreach($_tools as $_tool){
 			$text = ($_tool == 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-					g_l('backup', "[export][weapp]").' '.$_tool);
+					g_l('backup', "[export][weapp]") . ' ' . $_tool);
 
 			$parts[] = array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
 			$k++;
@@ -1311,7 +1311,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$we_backup_obj->convert_charset = (isset($_REQUEST["convert_charset"]) && $_REQUEST["convert_charset"]) ? 1 : 0;
 						$we_backup_obj->export2server = (isset($_REQUEST["export_server"]) && $_REQUEST["export_server"]) ? 1 : 0;
 						$we_backup_obj->export2send = (isset($_REQUEST["export_send"]) && $_REQUEST["export_send"]) ? 1 : 0;
-						$we_backup_obj->filename = getRequestVar("filename", "weBackup_" . time() . ".xml");
+						$we_backup_obj->filename = isset($_REQUEST["filename"]) ? $_REQUEST["filename"] : "weBackup_" . time() . ".xml";
 						$we_backup_obj->compress = (isset($_REQUEST["compress"]) && $_REQUEST["compress"]) ? $_REQUEST["compress"] : "none";
 						$we_backup_obj->backup_steps = getPref("BACKUP_STEPS");
 						if($we_backup_obj->backup_steps == 0){
@@ -1518,9 +1518,9 @@ top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $
 top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
 top.opener.top.we_cmd("exit_delete");
 top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', "[finished]") . '&percent=100";' .
-	($we_backup_obj->rebuild && empty($we_backup_obj->errors) ?
-		'top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";' :
-		'top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";')
+								($we_backup_obj->rebuild && empty($we_backup_obj->errors) ?
+									'top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";' :
+									'top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";')
 							);
 					}
 					break;

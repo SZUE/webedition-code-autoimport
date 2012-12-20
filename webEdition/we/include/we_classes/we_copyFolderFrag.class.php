@@ -459,7 +459,7 @@ class copyFolderFrag extends taskFragment{
 		return $templVars;
 	}
 
-	function ParseTemplate(&$we_doc){
+	private function ParseTemplate(&$we_doc){
 		// parse hard  coded  links in template  :TODO: check for ="/Path ='Path and =Path
 		$we_doc->elements['data']['dat'] = str_replace(
 			$this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->elements['data']['dat']);
@@ -520,7 +520,7 @@ class copyFolderFrag extends taskFragment{
 		}
 	}
 
-	function parseWeDocument(&$we_doc){
+	private function parseWeDocument(&$we_doc){
 		$DB_WE = new DB_WE();
 
 		$hrefs = array();
@@ -607,9 +607,8 @@ class copyFolderFrag extends taskFragment{
 	}
 
 	function getHref($name, $db = '', $fn = '$this->getElement'){
-		if(!$db){
-			$db = new_DB_WE();
-		}
+		$db = ($db ? $db : new_DB_WE());
+
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
 		$int = $fn($nint);
@@ -712,15 +711,11 @@ class copyFolderFrag extends taskFragment{
 	function printHeader(){
 		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: missing title
-		$out = we_html_tools::getHtmlInnerHead() . STYLESHEET . $yuiSuggest->getYuiJsFiles() . $yuiSuggest->getYuiCssFiles();
-		$js = <<<HTS
+		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . $yuiSuggest->getYuiJsFiles() . $yuiSuggest->getYuiCssFiles() .
+				we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
-}
-
-HTS;
-		$out .= we_html_element::jsElement($js);
-		print we_html_element::htmlHead($out);
+}'));
 	}
 
 	function formCreateTemplateDirChooser(){

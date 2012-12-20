@@ -34,17 +34,17 @@ class weBanner extends weBannerBase{
 	const PAGE_STATISTICS = 2;
 
 //properties
-	var $ID;
+	var $ID = 0;
 	var $Text;
-	var $ParentID;
-	var $bannerID;
-	var $bannerUrl;
-	var $bannerIntID;
-	var $maxShow;
-	var $maxClicks;
-	var $IsDefault;
-	var $clickPrice;
-	var $showPrice;
+	var $ParentID = 0;
+	var $bannerID = 0;
+	var $bannerUrl = '';
+	var $bannerIntID = 0;
+	var $maxShow = 10000;
+	var $maxClicks = 1000;
+	var $IsDefault = 0;
+	var $clickPrice = 0;
+	var $showPrice = 0;
 	var $IsFolder = 0;
 	var $Icon = "banner.gif";
 	var $Path = "";
@@ -60,8 +60,8 @@ class weBanner extends weBannerBase{
 	var $EndOk = 0;
 	var $clicks = 0;
 	var $views = 0;
-	var $Customers = 0;
-	var $TagName = "";
+	var $Customers = '';
+	var $TagName = '';
 	var $weight = 4;
 
 	/**
@@ -79,7 +79,7 @@ class weBanner extends weBannerBase{
 	 * Default Constructor
 	 * Can load or create new Banner Definition depends of parameter
 	 */
-	function __construct($bannerID = 0, $IsFolder = 0){
+	public function __construct($bannerID = 0, $IsFolder = 0){
 		parent::__construct();
 		$this->table = BANNER_TABLE;
 
@@ -106,7 +106,7 @@ class weBanner extends weBannerBase{
 			"EndDate",
 			"StartOk",
 			"EndOk",
-			"IsActive", #
+			"IsActive",
 			"clicks",
 			"views",
 			"Customers",
@@ -114,29 +114,12 @@ class weBanner extends weBannerBase{
 			"weight"
 		);
 
-		$this->ID = 0;
-		$this->ParentID = 0;
-		$this->bannerID = 0;
-		$this->bannerUrl = "";
-		$this->bannerIntID = 0;
-		$this->maxShow = 10000;
-		$this->weight = 4;
-		$this->maxClicks = 1000;
-		$this->IsDefault = 0;
-		$this->clickPrice = 0;
-		$this->showPrice = 0;
-		$this->IsActive = 1;
 		$this->IsFolder = $IsFolder;
-		$this->TagName = "";
-		$this->Customers = "";
+		$this->Text = g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
+		$this->Path = '/' . g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
 
 		if($this->IsFolder){
 			$this->Icon = "banner_folder.gif";
-			$this->Text = g_l('modules_banner', '[newbannergroup]');
-			$this->Path = "/" . g_l('modules_banner', '[newbannergroup]');
-		} else{
-			$this->Text = g_l('modules_banner', '[newbanner]');
-			$this->Path = "/" . g_l('modules_banner', '[newbanner]');
 		}
 
 		if($bannerID){
@@ -148,29 +131,29 @@ class weBanner extends weBannerBase{
 	/**
 	 * Load banner definition from database
 	 */
-	function load($id = 0){
+	public function load($id = 0){
 		if($id){
 			$this->ID = $id;
 		}
-		if($this->ID){
-			parent::load();
-			$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-			$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
-			return true;
+		if(!$this->ID){
+			return false;
 		}
-		return false;
+		parent::load();
+		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
+		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
+		return true;
 	}
 
 	/**
 	 * get all banners from database (STATIC)
 	 */
 	function getAllBanners(){
-
+		//FIXME: check for e.g. group by, having, ..
 		$this->db->query("SELECT ID,abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM " . $this->table . " ORDER BY isNr DESC,Nr,Text");
 
 		$out = array();
 		while($this->db->next_record()) {
-			array_push($out, new weBanner($this->db->f("ID")));
+			$out[] = new weBanner($this->db->f("ID"));
 		}
 		return $out;
 	}
@@ -178,36 +161,35 @@ class weBanner extends weBannerBase{
 	/**
 	 * save complete banner definition in database
 	 */
-	function save(){
+	public function save(){
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . "/" . $this->Text;
+		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . '/' . $this->Text;
 		parent::save();
 	}
 
 	/**
 	 * delete banner from database
 	 */
-	function delete(){
+	public function delete(){
 		if(!$this->ID){
 			return false;
 		}
 
 		parent::delete();
-		$this->db->query("DELETE FROM " . BANNER_VIEWS_TABLE . " WHERE ID=" . intval($this->ID));
-		$this->db->query("DELETE FROM " . BANNER_CLICKS_TABLE . " WHERE ID=" . intval($this->ID));
+		$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->ID));
+		$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->ID));
 		if($this->IsFolder){
-			$db2 = new DB_WE();
 			$path = (substr($this->Path, -1) == "/") ? $this->Path : $this->Path . "/";
-			$this->db->query("SELECT ID FROM " . BANNER_TABLE . " WHERE Path LIKE '" . $this->db->escape($path) . "%'");
+			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . " WHERE Path LIKE '" . $this->db->escape($path) . "%'");
 			$ids = array();
 			while($this->db->next_record()) {
-				array_push($ids, $this->db->f("ID"));
+				$ids[] = $this->db->f("ID");
 			}
 			foreach($ids as $id){
 				if($id){
-					$db2->query("DELETE FROM " . BANNER_VIEWS_TABLE . " WHERE ID=" . intval($id));
-					$db2->query("DELETE FROM " . BANNER_CLICKS_TABLE . " WHERE ID=" . intval($id));
-					$db2->query("DELETE FROM " . BANNER_TABLE . " WHERE ID=" . intval($id));
+					$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($id));
+					$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($id));
+					$this->db->query('DELETE FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 				}
 			}
 		}
@@ -215,15 +197,13 @@ class weBanner extends weBannerBase{
 		return true;
 	}
 
-	function getBannerData($did, $paths, $dt, $cats, $bannername){
-		$db = new DB_WE();
-
+	static function getBannerData($did, $paths, $dt, $cats, $bannername, $db){
 		$parents = array();
 
 		we_readParents($did, $parents, FILE_TABLE);
 
 		$where = "IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE '%," . intval($did) . ",%' OR FileIDs='' )";
-		$foo = "";
+		$foo = '';
 		foreach($parents as $p){
 			$foo .= " FolderIDs LIKE '%," . intval($p) . ",%' OR ";
 		}
@@ -240,9 +220,8 @@ class weBanner extends weBannerBase{
 		$catArr = makeArrayFromCSV($cats);
 
 		$foo = "";
-		$filter = new Zend_Filter_Digits();
 		foreach($catArr as $c){
-			$foo .= " CategoryIDs LIKE '%," . $db->escape($filter->filter($c)) . ",%' OR ";
+			$foo .= " CategoryIDs LIKE '%," . intval($c) . ",%' OR ";
 		}
 		$where .= " AND (  $foo  CategoryIDs='' ) ";
 
@@ -255,21 +234,19 @@ class weBanner extends weBannerBase{
 			$where .= " AND ( $foo ) ";
 		}
 
-		$where .= ' AND ( (StartOk=0 OR StartDate <= ' . time() . ') AND (EndOk=0 OR EndDate > ' . time() . ') ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
+		$where .= ' AND ( (StartOk=0 OR StartDate <= UNIX_TIMESTAMP() ) AND (EndOk=0 OR EndDate > UNIX_TIMESTAMP()) ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
 
-		$bannerID = 0;
-
-		$maxweight = f("SELECT MAX(weight) as maxweight FROM " . BANNER_TABLE, "maxweight", $db);
+		$maxweight = f('SELECT MAX(weight) as maxweight FROM ' . BANNER_TABLE, 'maxweight', $db);
 
 		srand((double) microtime() * 1000000);
-		$weight = rand(0, abs($maxweight));
+		$weight = rand(0, intval($maxweight));
 		$anz = 0;
 
 		while($anz == 0 && $weight <= $maxweight) {
-			$db->query("SELECT ID, bannerID FROM " . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
+			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
 			$anz = $db->num_rows();
 			if($anz == 0){
-				$weight++;
+				++$weight;
 			}
 		}
 
@@ -280,32 +257,29 @@ class weBanner extends weBannerBase{
 				$db->seek($offset);
 			}
 			if($db->next_record()){
-				return $db->Record;
+				return $db->getRecord();
 			}
 		}
 
 		return array("ID" => 0, "bannerID" => 0);
 	}
 
-	function getImageInfos($fileID){
+	private static function getImageInfos($fileID){
 		$imgAttr = array();
 		$db = new DB_WE();
-		$db2 = new DB_WE();
-		$db->query("SELECT CID, Name FROM " . LINK_TABLE . " WHERE Type='attrib' AND DID=" . intval($fileID));
+		$db->query("SELECT l.Name AS Name, c.Dat AS Dat FROM " . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . "AS c ON l.CID=c.ID WHERE l.Type='attrib' AND l.DID=" . intval($fileID));
 		while($db->next_record(MYSQL_ASSOC)) {
-			$imgAttr[$db->f('Name')] = f("SELECT Dat FROM " . CONTENT_TABLE . " WHERE ID=" . intval($db->f("CID")), "Dat", $db2);
+			$imgAttr[$db->f('Name')] = $db->f("Dat");
 		}
 		$db->free();
-		$db2->free();
 		return ($imgAttr);
 	}
 
-	function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
-		$bannerData = weBanner::getBannerData($did, $paths, $dt, $cats, $bannername);
-		$uniq = md5(uniqid(__FUNCTION__,true));
-		$showlink = true;
+	public static function getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link = true, $referer = "", $bannerclick = "/webEdition/bannerclick.php", $getbanner = "/webEdition/getBanner.php", $type = "", $page = "", $nocount = false, $xml = false){
 		$db = new DB_WE();
-		$prot = getServerProtocol();
+		$bannerData = self::getBannerData($did, $paths, $dt, $cats, $bannername, $db);
+		$uniq = md5(uniqid(__FUNCTION__, true));
+		$showlink = true;
 		$attsImage['border'] = 0;
 		$attsImage['alt'] = '';
 
@@ -313,11 +287,11 @@ class weBanner extends weBannerBase{
 			$id = $bannerData["ID"];
 			if($bannerData["bannerID"]){
 				$bannersrc = getServerUrl() . id_to_path($bannerData["bannerID"]);
-				$attsImage = array_merge($attsImage, weBanner::getImageInfos($bannerData["bannerID"]));
+				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData["bannerID"]));
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
-			}else{
+			} else{
 				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;bid=" . $bannerData["bannerID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
 			}
 			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
@@ -327,7 +301,7 @@ class weBanner extends weBannerBase{
 			$bannerID = f("SELECT bannerID FROM " . BANNER_TABLE . " WHERE ID=" . intval($id), "bannerID", $db);
 			if($bannerID){
 				$bannersrc = getServerUrl() . id_to_path($bannerID);
-				$attsImage = array_merge($attsImage, weBanner::getImageInfos($bannerID));
+				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));
 				if(isset($attsImage['longdescid']))
 					unset($attsImage['longdescid']);
 			}else{
@@ -380,26 +354,19 @@ class weBanner extends weBannerBase{
 		}
 	}
 
-	function getBannerURL($bid){
+	public static function getBannerURL($bid){
 		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM " . BANNER_TABLE . " WHERE ID=" . intval($bid), $GLOBALS['DB_WE']);
-		$prot = getServerProtocol(true);
-		$url = $h["IntHref"] ? getServerUrl() . id_to_path($h["bannerIntID"], FILE_TABLE) : $h["bannerURL"];
-		return $url;
+		return $h["IntHref"] ? getServerUrl() . id_to_path($h["bannerIntID"], FILE_TABLE) : $h["bannerURL"];
 	}
 
-	//static function
-	function customerOwnsBanner($customerID, $bannerID){
-		$db = new DB_WE;
-		$res = getHash("SELECT Customers,ParentID FROM " . BANNER_TABLE . " WHERE ID=" . intval($bannerID), $db);
+	public static function customerOwnsBanner($customerID, $bannerID){
+		$res = getHash("SELECT Customers,ParentID FROM " . BANNER_TABLE . " WHERE ID=" . intval($bannerID), new DB_WE());
 		if(strstr($res["Customers"], "," . $customerID . ",") != false){
 			return true;
-		} else{
-			if($res["ParentID"] != 0){
-				return weBanner::customerOwnsBanner($customerID, $res["ParentID"]);
-			} else{
-				return false;
-			}
+		} elseif($res["ParentID"] != 0){
+			return self::customerOwnsBanner($customerID, $res["ParentID"]);
 		}
+		return false;
 	}
 
 }

@@ -65,7 +65,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[file_size]") . '</div>' .
 			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
-	$parts=array( 
+	$parts=array(
 		array("headline" => "",
 		"html" => $_html,
 		"space" => 140,
@@ -139,7 +139,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				"html" => $_html,
 				"space" => 140,
 				"icon" => "path.gif"
-				
+
 			);
 		}
 		if(defined("WORKFLOW_TABLE") && $GLOBALS['we_doc']->ContentType == "text/webedition"){
@@ -153,7 +153,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "workflow.gif"
-				
+
 			);
 		}
 
@@ -196,15 +196,15 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "meta.gif"
-				
+
 			);
-		} else if($GLOBALS['we_doc']->IsBinary){
+		} else if($GLOBALS['we_doc']->isBinary()){
 			$parts[]= array("headline" => "Metadaten",
 				"html" => g_l('metadata', '[no_metadata_supported]'),
 				"space" => 140,
 				"forceRightHeadline" => 1,
 				"icon" => "meta.gif"
-				
+
 			);
 		}
 	}

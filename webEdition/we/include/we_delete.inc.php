@@ -409,7 +409,7 @@ if($_SESSION['weS']['we_mode'] == "seem"){
 	exit();
 }
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 <?php
 if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){

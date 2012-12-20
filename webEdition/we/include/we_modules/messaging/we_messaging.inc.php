@@ -28,27 +28,8 @@ include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 /* messaging object class */
 
 class we_messaging extends we_class{
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
-
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-	/* In this array are all storagable class variables */
-	var $persistent_slots = array();
-	/* Name of the Object that was createt from this class */
-	var $Name = '';
-
-	/* ID from the database record */
-	var $ID = 0;
-
-	/* Database Object */
-	var $DB_WE;
-
 	/* Flag which is set when the file is not new */
-	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -60,7 +41,8 @@ class we_messaging extends we_class{
 	var $selected_message = array();
 	var $selected_set = array();
 	var $last_id = -1;
-	var $search_fields = array(array('hdrs', 'Subject'),
+	var $search_fields = array(
+		array('hdrs', 'Subject'),
 		array('hdrs', 'From'),
 		array('body', 'MessageText'));
 	var $search_folder_ids = array();
@@ -99,17 +81,11 @@ class we_messaging extends we_class{
 		'Priority' => array('hdrs', 'Priority'),
 		'headerStatus' => array('hdrs', 'Status'));
 
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
-	/* Constructor */
-
 	function __construct(&$transact){
+		parent::__construct();
 		$this->Name = 'messaging_' . md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected', 'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached');
+		$this->persistent_slots = array('Name', 'ID', 'Folder_ID', 'selected_message', 'selected_set', 'last_id', 'sortorder', 'last_sortfield', 'available_folders', 'ids_selected', 'search_folder_ids', 'search_fields', 'used_msgobjs_names', 'clipboard_action', 'clipboard', 'cached');
 		$this->we_transact = &$transact;
-		$this->DB = new DB_WE();
 
 		$this->sf_names['subject'] = g_l('modules_messaging', '[subject]');
 		$this->sf_names['sender'] = g_l('modules_messaging', '[sender]');
@@ -142,14 +118,14 @@ class we_messaging extends we_class{
 		} else{
 			$this->used_msgobjs_names[] = $objname;
 
-			if(!isset($c->msgclass_type) || $c->msgclass_type == 0){
+			if(!isset($c->msgclass_type) || $c->msgclass_type == we_msg_email::TYPE_SEND_RECEIVE){
 				$this->available_folders = array_merge($this->available_folders, $c->get_available_folders());
 			}
 		}
 
 		$this->send_msgobjs[$objname] = &$c;
 
-		if(!isset($c->msgclass_type) || $c->msgclass_type == 0){
+		if(!isset($c->msgclass_type) || $c->msgclass_type == we_msg_email::TYPE_SEND_RECEIVE){
 			$this->used_msgobjs[$objname] = &$c;
 			$this->active_msgobj = &$c;
 		}

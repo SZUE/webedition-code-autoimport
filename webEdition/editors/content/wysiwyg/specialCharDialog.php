@@ -51,5 +51,3 @@ if (isSafari) {
 top.close();
 ';
 }
-
-?>

@@ -43,7 +43,7 @@ class weToolView{
 	var $group_pattern = '';
 	var $page = 1;
 
-	function __construct($frameset='', $topframe='top'){
+	function __construct($frameset = '', $topframe = 'top'){
 
 	}
 
@@ -70,16 +70,14 @@ class weToolView{
 	//------------------------------------------------
 
 
-	function getCommonHiddens($cmds=array()){
-		$out = $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : ''));
-		$out.=$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''));
-		$out.=$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : ''));
-		$out.=$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
-		$out.=$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0));
-		$out.=$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''));
-		$out.=$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
-
-		return $out;
+	function getCommonHiddens($cmds = array()){
+		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
+			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
+			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
+			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
+			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
+			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
+			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
 	}
 
 	function getJSTop(){
@@ -260,7 +258,7 @@ class weToolView{
 		' . $this->getJSSubmitFunction('cmd');
 	}
 
-	function getJSSubmitFunction($def_target="edbody", $def_method="post"){
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 
 				function submitForm() {
@@ -309,7 +307,7 @@ class weToolView{
 		}
 	}
 
-	function new_array_splice(&$a, $start, $len=1){
+	function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if($k !== false){

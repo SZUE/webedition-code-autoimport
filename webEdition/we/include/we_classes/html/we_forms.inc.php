@@ -136,7 +136,7 @@ abstract class we_forms{
 		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, true); //4614
 		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, true);
 
-		$wysiwyg &= (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined('SAFARI_WYSIWYG') && we_base_browserDetect::isSafari()));
+		//$wysiwyg &= (we_base_browserDetect::isIE() || we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() || (defined('SAFARI_WYSIWYG') && we_base_browserDetect::isSafari()));
 		$cols = weTag_getAttribute('cols', $attribs);
 		$rows = weTag_getAttribute('rows', $attribs);
 		$width = weTag_getAttribute('width', $attribs);
@@ -291,5 +291,5 @@ abstract class we_forms{
 		return $text;
 	}
 
-	
+
 }

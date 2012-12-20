@@ -81,7 +81,7 @@ print STYLESHEET .
 include(JS_PATH . 'weJsStrings.inc.php');
 ?>
 
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 
 	self.focus();
 

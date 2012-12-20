@@ -328,7 +328,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-			we_html_element::jsElement(we_button::create_state_changer(false)) . we_html_element::jsElement(
+			we_button::create_state_changer() . we_html_element::jsElement(
 				(($_REQUEST['we_cmd'][6] == "pad/pad") ? "
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;

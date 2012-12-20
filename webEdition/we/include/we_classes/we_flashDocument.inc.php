@@ -25,15 +25,15 @@
 /*  a class for handling flashDocuments. */
 
 class we_flashDocument extends we_binaryDocument{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* ContentType of the Object  */
-	var $ContentType = "application/x-shockwave-flash";
-
 	/* Parameternames which are placed within the object-Tag */
+
 	var $ObjectParamNames = array("align", "border", "id", "height", "hspace", "name", "width", "vspace", "only", "style");
+
+	function __construct(){
+		parent::__construct();
+		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		$this->ContentType = 'application/x-shockwave-flash';
+	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
@@ -46,45 +46,22 @@ class we_flashDocument extends we_binaryDocument{
 		}
 	}
 
-	/* Constructor */
-
-	function __construct(){
-		parent::__construct();
-		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
-	}
-
 	// is not written yet
 	function initByAttribs($attribs){
 		if(isset($attribs["sizingrel"])){
-			if(isset($attribs["width"])){
-				$orig_w = $attribs["width"];
-			} else{
-				$orig_w = $this->elements["width"]["dat"];
-			}
-			if(isset($attribs["height"])){
-				$orig_h = $attribs["height"];
-			} else{
-				$orig_h = $this->elements["height"]["dat"];
-			}
+			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->elements["width"]["dat"]);
+			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->elements["height"]["dat"]);
 			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
 			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
 			unset($attribs["sizingrel"]);
 		}
-		if(isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16){
-			$sizingbase = $attribs['sizingbase'];
-		} else{
-			$sizingbase = 16;
-		}
+		$sizingbase = (isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16 ? $attribs['sizingbase'] : 16);
 		if(isset($attribs['sizingbase'])){
 			unset($attribs['sizingbase']);
 		}
 
 		if(isset($attribs['sizingstyle'])){
-			if($attribs['sizingstyle'] == "none"){
-				$sizingstyle = false;
-			} else{
-				$sizingstyle = $attribs['sizingstyle'];
-			}
+			$sizingstyle = ($attribs['sizingstyle'] == "none" ? false : $attribs['sizingstyle']);
 			unset($attribs['sizingstyle']);
 		} else{
 			$sizingstyle = false;
@@ -93,11 +70,7 @@ class we_flashDocument extends we_binaryDocument{
 		if($sizingstyle){
 			$style_width = round($attribs["width"] / $sizingbase, 6);
 			$style_height = round($attribs["height"] / $sizingbase, 6);
-			if(isset($attribs["style"])){
-				$newstyle = $attribs["style"];
-			} else{
-				$newstyle = "";
-			}
+			$newstyle = (isset($attribs["style"]) ? $attribs["style"] : '');
 
 			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 			$attribs["style"] = $newstyle;
@@ -106,11 +79,7 @@ class we_flashDocument extends we_binaryDocument{
 		}
 		foreach($attribs as $a => $b){
 			if($b != ""){
-				if($a == "Pluginspage" || $a == "Codebase"){
-					$this->setElement($a, $b, "txt");
-				} else{
-					$this->setElement($a, $b, "attrib");
-				}
+				$this->setElement($a, $b, ($a == "Pluginspage" || $a == "Codebase" ? "txt" : "attrib"));
 			}
 		}
 	}
@@ -157,7 +126,7 @@ class we_flashDocument extends we_binaryDocument{
 				$allowedAtts = $this->ObjectParamNames;
 				$filter = array("alt", 'parentid', 'startid');
 
-				while(list($k, $v) = $this->nextElement("attrib")) {
+				foreach($this->nextElement("attrib") as $k => $v){
 
 					if(in_array($k, $allowedAtts)){ //  use as name="value"
 						$attribs[$k] = $v["dat"];
@@ -169,7 +138,7 @@ class we_flashDocument extends we_binaryDocument{
 				//   needed attribs
 				$attribs["type"] = "application/x-shockwave-flash";
 				$attribs["data"] = $src;
-			} else{	 //  Normal-Version - with embed-tag
+			} else{ //  Normal-Version - with embed-tag
 				$filter = array("type", "alt", 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
@@ -239,7 +208,7 @@ class we_flashDocument extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -290,22 +259,18 @@ class we_flashDocument extends we_binaryDocument{
 
 </table>
 ';
-		return $content;
 	}
 
 	function formOther(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
-		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388) . '</td>
+		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388) . '</td>
+		<td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 </table>
 ';
-
-
-		return $content;
 	}
 
 	function getThumbnail(){
@@ -391,7 +356,7 @@ class we_flashDocument extends we_binaryDocument{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement("origwidth");
@@ -405,7 +370,7 @@ class we_flashDocument extends we_binaryDocument{
 			$this->setElement("height", $this->getElement("origheight"));
 		}
 		if($this->Icon == ''){
-			$this->Icon = we_base_ContentTypes::inst()>getIcon($this->ContentType);
+			$this->Icon = we_base_ContentTypes::inst() > getIcon($this->ContentType);
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
@@ -451,51 +416,52 @@ class we_flashDocument extends we_binaryDocument{
 
 	static function checkAndPrepare($formname, $key = "we_document"){
 		// check to see if there is an image to create or to change
-		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
+		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]))){
+			return;
+		}
 
-			$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
-				foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
+		if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
+			foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
 
-					$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
+				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
 
-					if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
+				if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
 
-						$_SESSION[$_flashmovieDataId]['doDelete'] = false;
+					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
 
-						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
-							$_SESSION[$_flashmovieDataId]['doDelete'] = true;
-						} else
-						if($filename){
-							// file is selected, check to see if it is an image
-							$ct = getContentTypeFromFile($filename);
-							if($ct == "application/x-shockwave-flash"){
-								$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
+					if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
+						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
+					} else
+					if($filename){
+						// file is selected, check to see if it is an image
+						$ct = getContentTypeFromFile($filename);
+						if($ct == $this->ContentType){
+							$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
-								// move document from upload location to tmp dir
-								$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . weFile::getUniqueId();
-								move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
+							// move document from upload location to tmp dir
+							$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . '/' . weFile::getUniqueId();
+							move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
 
-								$tmp_Filename = $flashName . "_" . weFile::getUniqueId() . "_" . preg_replace(
-										'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
+							$tmp_Filename = $flashName . "_" . weFile::getUniqueId() . "_" . preg_replace(
+									'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
 
-								if($flashId){
-									$_SESSION[$_flashmovieDataId]["id"] = $flashId;
-								}
-
-								$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
-									'#^(.+)\..+$#', '\\1', $tmp_Filename);
-								$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-										'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
-								$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
-
-								$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
-								$_SESSION[$_flashmovieDataId]["imgwidth"] = $we_size[0];
-								$_SESSION[$_flashmovieDataId]["imgheight"] = $we_size[1];
-								$_SESSION[$_flashmovieDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$flashName];
-								$_SESSION[$_flashmovieDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$flashName];
+							if($flashId){
+								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
 							}
+
+							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
+								'#^(.+)\..+$#', '\\1', $tmp_Filename);
+							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
+									'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+							$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
+
+							$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
+							$_SESSION[$_flashmovieDataId]["imgwidth"] = $we_size[0];
+							$_SESSION[$_flashmovieDataId]["imgheight"] = $we_size[1];
+							$_SESSION[$_flashmovieDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$flashName];
+							$_SESSION[$_flashmovieDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$flashName];
 						}
 					}
 				}

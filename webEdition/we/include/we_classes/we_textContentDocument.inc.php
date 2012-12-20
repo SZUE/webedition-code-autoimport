@@ -23,21 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_textContentDocument extends we_textDocument{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
 	/* Doc-Type of the document */
+
 	var $DocType = "";
-	var $PublWhenSave = 0;
-	var $Table = FILE_TABLE;
-	var $IsTextContentDoc = true;
-	var $schedArr = array();
 
 	function __construct(){
 		parent::__construct();
 
-		$this->persistent_slots[] = "DocType";
+		$this->persistent_slots[] = 'DocType';
+		$this->PublWhenSave = 0;
+		$this->IsTextContentDoc = true;
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots, "FromOk", "ToOk", "From", "To");
 		}
@@ -229,7 +224,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->Filename = $this->i_getDefaultFilename();
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_MAID_DB:
 				parent::we_load($from);
@@ -286,7 +281,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		parent::we_save();
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
 		if($skipHook == 0){
@@ -336,7 +331,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		return $ret;
 	}
 
-	function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		if($skipHook == 0){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
@@ -391,7 +386,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish($skipHook = 0){
+	public function we_unpublish($skipHook = 0){
 		if(!$this->ID)
 			return false;
 		if($this->i_isMoved()){
@@ -435,7 +430,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		return true;
 	}
 
-	function we_republish($rebuildMain = true){
+	public function we_republish($rebuildMain = true){
 		if($this->Published){
 			return $this->we_publish(true, $rebuildMain);
 		} else{

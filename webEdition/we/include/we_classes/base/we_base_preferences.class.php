@@ -136,6 +136,9 @@ class we_base_preferences{
 	}
 
 	static function userIsAllowed($setting){
+		if(we_hasPerm('ADMINISTRATOR')){
+			return true;
+		}
 		$configs = $GLOBALS['configs'];
 		foreach($configs as $name => $config){
 			if(isset($config[$setting])){

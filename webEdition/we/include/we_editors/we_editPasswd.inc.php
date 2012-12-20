@@ -99,7 +99,7 @@ if(isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")){
 		$newpasswd = isset($_REQUEST["newpasswd"]) ? $_REQUEST["newpasswd"] : "";
 		$newpasswd2 = isset($_REQUEST["newpasswd2"]) ? $_REQUEST["newpasswd2"] : "";
 		?>
-		<script  type="text/javascript"><!--
+		<script type="text/javascript"><!--
 	<?php
 	if(isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ok")){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"', $DB_WE);

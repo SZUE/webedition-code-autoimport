@@ -183,7 +183,7 @@ if($we_ContentType == "image/*"){
 	array_push($parts, array("headline" => "", "html" => g_l('weClass', "[alt]") . "<br>" . we_html_tools::htmlTextInput("img_alt", 24, "", "", "", "text", 330), "space" => 0));
 }
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 <?php
 if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);

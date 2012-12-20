@@ -27,30 +27,8 @@ include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 /* message object class */
 
 class we_format extends we_class{
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
-
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-	/* In this array are all storagable class variables */
-	var $persistent_slots = array();
-	/* Name of the Object that was createt from this class */
-	var $Name = '';
-
-	/* ID from the database record */
-	var $ID = 0;
-
-	/* database table in which the object is stored */
-	var $Table = MESSAGES_TABLE;
-
-	/* Database Object */
-	var $DB_WE;
-
 	/* Flag which is set when the file is not new */
-	var $wasUpdate = 0;
-	var $InWebEdition = 0;
+
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -66,16 +44,11 @@ class we_format extends we_class{
 	var $quoting_prefix = '> ';
 	var $selected_cc = array();
 
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
-	/* Constructor */
-
 	function __construct($mode, $sel_msg = NULL){
+		parent::__construct();
 		$this->Name = 'messageformat_' . md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'mode', 'userid', 'username');
-		$this->DB = new DB_WE();
+		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'mode', 'userid', 'username');
+		$this->Table = MESSAGES_TABLE;
 		$this->mode = $mode;
 		$this->sel_msg = $sel_msg;
 		$this->msg_obj = isset($sel_msg['hdrs']['ClassName']) ? $sel_msg['hdrs']['ClassName'] : "";

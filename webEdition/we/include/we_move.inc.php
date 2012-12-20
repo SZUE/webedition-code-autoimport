@@ -143,7 +143,7 @@ we_html_tools::htmlTop();
 print STYLESHEET .
 	$yuiSuggest->getYuiJsFiles();
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	top.treeData.setstate(top.treeData.tree_states["selectitem"]);
 	if(top.treeData.table != "<?php
 print $table;

@@ -30,7 +30,7 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function addOption(txt,id){
 		var a=document.forms["we_form"].elements["filter"];
 		a.options[a.options.length]=new Option(txt,id);

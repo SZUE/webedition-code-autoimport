@@ -33,31 +33,31 @@ class we_wysiwyg{
 	var $propstring = '';
 	var $elements = array();
 	var $value = '';
-	var $filteredElements = array();
-	var $bgcol = '';
-	var $fullscreen = '';
-	var $className = '';
-	var $fontnamesCSV = '';
-	var $fontnames = array();
-	var $tinyFonts = '';
-	var $tinyFormatblock = '';
-	var $maxGroupWidth = 0;
-	var $outsideWE = false;
-	var $xml = false;
-	var $removeFirstParagraph = true;
+	private $filteredElements = array();
+	private $bgcol = '';
+	private $fullscreen = '';
+	private $className = '';
+	private $fontnamesCSV = '';
+	private $fontnames = array();
+	private $tinyFonts = '';
+	private $tinyFormatblock = '';
+	private $maxGroupWidth = 0;
+	private $outsideWE = false;
+	private $xml = false;
+	private $removeFirstParagraph = true;
 	var $charset = '';
-	var $inlineedit = true;
-	var $cssClasses = '';
-	var $cssClassesJS = '';
-	var $cssClassesCSV = '';
+	private $inlineedit = true;
+	private $cssClasses = '';
+	private $cssClassesJS = '';
+	private $cssClassesCSV = '';
 	var $Language = '';
-	var $_imagePath;
-	var $_image_languagePath;
-	var $baseHref = '';
-	var $showSpell = true;
-	var $isFrontendEdit = false;
-	var $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
-	static $editorType = WYSIWYG_TYPE;
+	private $_imagePath;
+	private $_image_languagePath;
+	private $baseHref = '';
+	private $showSpell = true;
+	private $isFrontendEdit = false;
+	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
+	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';

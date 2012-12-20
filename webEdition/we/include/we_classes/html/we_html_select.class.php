@@ -174,15 +174,16 @@ class we_html_select extends we_baseCollection{
 	 * @return		void
 	 */
 	function selectOption($value){
-
-		if(!in_array("multiple", array_keys($this->attribs)))
+		if(!in_array("multiple", array_keys($this->attribs))){
 			$this->unselectAllOptions();
+		}
 		foreach($this->childs as $k => $v){
 			if($v->attribs["value"] == $value){
 				$this->setOption($k, array("selected" => 'selected'));
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**

@@ -48,27 +48,8 @@ class we_msg_proto extends we_class{
 	const TODO_PROP_NONE = 0;
 	const TODO_PROP_IMMOVABLE = 1;
 
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
-
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-	/* In this array are all storagable class variables */
-	var $persistent_slots = array();
-	/* Name of the Object that was createt from this class */
-	var $Name = '';
-
-	/* ID from the database record */
-	var $ID = 0;
-
-	/* Database Object */
-	var $DB_WE;
 
 	/* Flag which is set when the file is not new */
-	var $wasUpdate = 0;
-	var $InWebEdition = 0;
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -82,28 +63,24 @@ class we_msg_proto extends we_class{
 	var $sortorder = 'desc';
 	var $ids_selected = array();
 	var $available_folders = array();
-	var $cached = array('sortorder' => 0,
+	var $cached = array(
+		'sortorder' => 0,
 		'sortfield' => 0);
 //    var $got_sortstuff_from_db = 0;
 	var $update_interval = 10;
-	var $default_folders = array(13 => -1, /* done - Folder */
-		11 => -1, /* rejected - Folder */
-		9 => -1, /* trash - Folder */
-		5 => -1, /* sent - Folder */
-		3 => -1); /* inbox - Folder */
+	var $default_folders = array(
+		self::FOLDER_DONE => -1,
+		self::FOLDER_REJECT => -1,
+		self::FOLDER_TRASH => -1,
+		self::FOLDER_SENT => -1,
+		self::FOLDER_INBOX => -1);
 	var $table = MESSAGES_TABLE;
 	var $folder_tbl = MSG_FOLDERS_TABLE;
 
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
-	/* Constructor */
-
 	function __construct(){
+		parent::__construct();
 		$this->Name = 'msg_proto_' . md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached');
-		$this->DB = new DB_WE();
+		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached');
 	}
 
 	/* Getters And Setters */
@@ -168,10 +145,10 @@ class we_msg_proto extends we_class{
 	}
 
 	function get_subfolder_count($id){
-		$this->DB->query('SELECT count(ID) as c FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
+		$this->DB_WE->query('SELECT count(ID) as c FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 
-		if($this->DB->next_record() && $this->DB->f('c') > 0){
-			return $this->DB->f('c');
+		if($this->DB_WE->next_record() && $this->DB_WE->f('c') > 0){
+			return $this->DB_WE->f('c');
 		}
 
 		return -1;
@@ -237,27 +214,27 @@ class we_msg_proto extends we_class{
 	function get_available_folders(){
 		$this->available_folders = array();
 
-		$this->DB->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->DB->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
-		//$this->DB->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->folder_tbl . ' WHERE msg_type=' . $this->sql_class_nr  . ' AND UserID=' . $this->userid);
-		while($this->DB->next_record()) {
-			$this->available_folders[] = array('ID' => $this->DB->f('ID'),
-				'ParentID' => $this->DB->f('ParentID'),
+		$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
+		//$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->folder_tbl . ' WHERE msg_type=' . $this->sql_class_nr  . ' AND UserID=' . $this->userid);
+		while($this->DB_WE->next_record()) {
+			$this->available_folders[] = array('ID' => $this->DB_WE->f('ID'),
+				'ParentID' => $this->DB_WE->f('ParentID'),
 				'ClassName' => $this->ClassName,
-				'account_id' => $this->DB->f('account_id'),
-				'obj_type' => $this->DB->f('obj_type'),
+				'account_id' => $this->DB_WE->f('account_id'),
+				'obj_type' => $this->DB_WE->f('obj_type'),
 				'view_class' => $this->view_class,
-				'Name' => $this->DB->f('Name'));
+				'Name' => $this->DB_WE->f('Name'));
 		}
 
 		return $this->available_folders;
 	}
 
 	function create_folder($name, $parent){
-		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_msg_proto::FOLDER_NR . ', "' . $this->DB->escape($name) . '")');
-		$this->DB->query('SELECT LAST_INSERT_ID() as l');
-		$this->DB->next_record();
+		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_msg_proto::FOLDER_NR . ', "' . $this->DB_WE->escape($name) . '")');
+		$this->DB_WE->query('SELECT LAST_INSERT_ID() as l');
+		$this->DB_WE->next_record();
 
-		return $this->DB->f('l');
+		return $this->DB_WE->f('l');
 	}
 
 	function modify_folder($fid, $folder_name, $parent_folder){
@@ -265,8 +242,8 @@ class we_msg_proto extends we_class{
 			return -1;
 		}
 
-		$query = 'UPDATE ' . $this->DB->escape($this->folder_tbl) . ' SET Name="' . $this->DB->escape($folder_name) . '", ParentID=' . intval($parent_folder) . ' WHERE ID=' . intval($fid) . ' AND UserID=' . intval($this->userid);
-		$this->DB->query($query);
+		$query = 'UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET Name="' . $this->DB_WE->escape($folder_name) . '", ParentID=' . intval($parent_folder) . ' WHERE ID=' . intval($fid) . ' AND UserID=' . intval($this->userid);
+		$this->DB_WE->query($query);
 		return 1;
 	}
 
@@ -275,9 +252,9 @@ class we_msg_proto extends we_class{
 	function &get_f_children($id){
 		$fids = array();
 
-		$this->DB->query('SELECT ID FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
-		while($this->DB->next_record())
-			$fids[] = $this->DB->f('ID');
+		$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
+		while($this->DB_WE->next_record())
+			$fids[] = $this->DB_WE->f('ID');
 
 		foreach($fids as $fid)
 			$fids = array_merge($fids, $this->get_f_children($fid));
@@ -309,21 +286,21 @@ class we_msg_proto extends we_class{
 		}
 		$cond = substr($cond, 0, -4);
 
-		$query = 'SELECT ID, Name, (Properties & ' . we_msg_proto::FOLDER_NR . ') as norm FROM ' . $this->DB->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
-		$this->DB->query($query);
-		while($this->DB->next_record()) {
-			if($this->DB->f('norm') == 1){
-				$norm_folders[] = $this->DB->f('Name') . ' (ID=' . $this->DB->f('ID') . ')';
+		$query = 'SELECT ID, Name, (Properties & ' . we_msg_proto::FOLDER_NR . ') as norm FROM ' . $this->DB_WE->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
+		$this->DB_WE->query($query);
+		while($this->DB_WE->next_record()) {
+			if($this->DB_WE->f('norm') == 1){
+				$norm_folders[] = $this->DB_WE->f('Name') . ' (ID=' . $this->DB_WE->f('ID') . ')';
 			} else{
-				$rm_folders[] = $this->DB->f('ID');
+				$rm_folders[] = $this->DB_WE->f('ID');
 			}
 		}
 
 		if(empty($rm_folders)){
 			return $ret;
 		} else{
-			$query = 'DELETE FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
-			$this->DB->query($query);
+			$query = 'DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . join(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
+			$this->DB_WE->query($query);
 		}
 
 		$ret["res"] = 1;
@@ -365,19 +342,19 @@ class we_msg_proto extends we_class{
 	function save_sortstuff($id, $sortfield, $sortorder){
 		$sortorder = $sortorder == 'asc' ? 'desc' : 'asc';
 
-		$this->DB->query('UPDATE ' . $this->DB->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB->escape($sortfield) . '", sortOrder="' . $this->DB->escape($sortorder) . '" WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
+		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB_WE->escape($sortfield) . '", sortOrder="' . $this->DB_WE->escape($sortorder) . '" WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
 
 	function init_sortstuff($id){
-		$this->DB->query('SELECT sortItem, sortOrder FROM ' . $this->DB->escape($this->folder_tbl) . ' WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
-		$this->DB->next_record();
+		$this->DB_WE->query('SELECT sortItem, sortOrder FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
+		$this->DB_WE->next_record();
 
-		if(($this->DB->f('sortItem'))){
-			$this->sortfield = $this->DB->f('sortItem');
+		if(($this->DB_WE->f('sortItem'))){
+			$this->sortfield = $this->DB_WE->f('sortItem');
 		}
 
-		if(($this->DB->f('sortOrder'))){
-			$this->sortorder = ($this->DB->f('sortOrder') == 'asc') ? 'desc' : 'asc';
+		if(($this->DB_WE->f('sortOrder'))){
+			$this->sortorder = ($this->DB_WE->f('sortOrder') == 'asc') ? 'desc' : 'asc';
 		}
 
 		$this->cached[] = 'sortfield';
