@@ -37,7 +37,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		'we_transaction' => $_REQUEST['we_cmd'][1],
 		'we_cmd[5]' => $_REQUEST['we_cmd'][5],
 		'we_cmd[6]' => (isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '')
-	)) .
+		), null, '&') .
 	'";
 new jsWindow(url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
 ');

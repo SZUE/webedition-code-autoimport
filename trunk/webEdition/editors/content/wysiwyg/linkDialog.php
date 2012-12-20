@@ -40,12 +40,12 @@ function weDoLinkCmd($args){
 	if(!empty($param)){
 		$tmp = array();
 		parse_str($param, $tmp);
-		$param = '?' . http_build_query($tmp);
+		$param = '?' . http_build_query($tmp, null, '&');
 	}
-	
+
 	// TODO: $args["href"] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
-	$href = (strpos($args["href"],'?') !== false ? substr($args["href"], 0, strpos($args["href"],'?')) : 
-		(strpos($args["href"],'#') === false ? $args["href"] : substr($args["href"], 0, strpos($args["href"],'#')))) . $param . ($anchor ? '#' . $anchor : '');
+	$href = (strpos($args["href"], '?') !== false ? substr($args["href"], 0, strpos($args["href"], '?')) :
+			(strpos($args["href"], '#') === false ? $args["href"] : substr($args["href"], 0, strpos($args["href"], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
 	if(!(isset($_REQUEST['we_dialog_args']['editor']) && $_REQUEST['we_dialog_args']['editor'] == "tinyMce")){
 		return we_html_element::jsElement(
