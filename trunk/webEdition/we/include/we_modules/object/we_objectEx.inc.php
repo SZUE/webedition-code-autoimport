@@ -24,10 +24,6 @@
  */
 class we_objectEx extends we_object{
 
-	function __construct(){
-		parent::__construct();
-	}
-
 	function saveToDB(){
 		$this->wasUpdate = $this->ID ? true : false;
 

@@ -126,7 +126,6 @@ class weGlossaryTreeLoader{
 	function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
 
 		$Db = new DB_WE();
-		$Table = GLOSSARY_TABLE;
 
 		$Items = array();
 
@@ -152,7 +151,7 @@ class weGlossaryTreeLoader{
 			$Items[] = $Item;
 		}
 
-		$Query = 'SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . $Table . ' ' .
+		$Query = 'SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . GLOSSARY_TABLE . ' ' .
 			$Where . ' ORDER BY isNr DESC, Nr, Text ' .
 			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : '');
 
@@ -200,7 +199,7 @@ class weGlossaryTreeLoader{
 			$Items[] = $Item;
 		}
 
-		$Total = f('SELECT COUNT(1) as total FROM ' . $Db->escape($Table) . ' ' . $Where, 'total', $Db);
+		$Total = f('SELECT COUNT(1) as total FROM ' . $Db->escape(GLOSSARY_TABLE) . ' ' . $Where, 'total', $Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){

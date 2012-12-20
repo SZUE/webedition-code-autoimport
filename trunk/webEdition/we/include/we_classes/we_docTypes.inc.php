@@ -23,18 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_docTypes extends we_class{
-	/*
-	 * Variables
-	 */
-
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
 	/* The Text that will be shown in the tree-menue */
-	var $DocType = "New DocType";
-	var $Table = DOC_TYPES_TABLE;
-	var $Extension = ".html";
+	var $DocType = 'New DocType';
+	var $Extension = DEFAULT_STATIC_EXT;
 	var $ParentID = "0";
 	var $ParentPath = "";
 	var $TemplateID = 0;
@@ -47,23 +38,18 @@ class we_docTypes extends we_class{
 	var $NotifySubject = "";
 	var $NotifyOnChange = "";
 	var $Templates = "";
-	var $SubDir = we_class::SUB_DIR_NO;
+	var $SubDir = self::SUB_DIR_NO;
 	var $Category = "";
 	var $Language = "";
 
-	/*
-	 * Functions
-	 */
-
-	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, "Category", "DocType", "Extension", "ParentID", "ParentPath", "TemplateID", "ContentTable", "IsDynamic", "IsSearchable", "Notify", "NotifyTemplateID", "NotifySubject", "NotifyOnChange", "SubDir", "Templates", "Language");
-		$this->Extension = DEFAULT_STATIC_EXT;
+		$this->Table = DOC_TYPES_TABLE;
 	}
 
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
 		if(sizeof($idArr)){
@@ -93,8 +79,7 @@ class we_docTypes extends we_class{
 	}
 
 	function saveInSession(&$save){
-		$save = array();
-		$save[0] = array();
+		$save = array(array());
 		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
 			$save[0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
 		}
@@ -366,11 +351,11 @@ class we_docTypes extends we_class{
 		$out = we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .
-			($this->ID ?
-				'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') .
-			'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}
+				($this->ID ?
+					'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') .
+				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}
 	a["we_' . $this->Name . '_Extension"].value=changeto;' .
-			($this->ID ? '}' : '') .'
+				($this->ID ? '}' : '') . '
 }');
 
 		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;

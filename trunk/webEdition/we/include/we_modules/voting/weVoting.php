@@ -85,8 +85,6 @@ class weVoting extends weModelBase{
 	 * Can load or create new Newsletter depends of parameter
 	 */
 	function __construct($votingID = 0){
-		$this->table = VOTING_TABLE;
-
 		parent::__construct(VOTING_TABLE);
 
 		if($votingID){

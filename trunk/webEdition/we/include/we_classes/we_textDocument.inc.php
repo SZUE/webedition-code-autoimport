@@ -24,19 +24,13 @@
  */
 /*  a class for handling text-documents */
 class we_textDocument extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* Icon which is shown at the tree-menue  */
-	var $Icon = we_base_ContentTypes::LINK_ICON;
-
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION, WE_EDITPAGE_VERSIONS);
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->Icon = we_base_ContentTypes::LINK_ICON;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */

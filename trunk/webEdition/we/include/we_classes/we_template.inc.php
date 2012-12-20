@@ -25,32 +25,30 @@
 /* a class for handling templates */
 
 class we_template extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
 
-	var $ClassName = __CLASS__;
-
-	/* Icon which is shown at the tree-menue  */
-	var $Icon = "we_template.gif";
-	var $Published = "1";
-	var $DocTypes;
-	var $InWebEdition = true;
-	var $Table = TEMPLATES_TABLE;
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
 	var $IncludedTemplates = "";
-	var $ContentType = "text/weTmpl";
 	private $doUpdateCode = true;
+
+	const TemplateHead = '<?php we_templateHead();?>';
+	const TemplatePreContent = '<?php we_templatePreContent();?>';
+	const TemplatePostContent = '<?php we_templatePostContent();?>';
 
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
-		/* $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
-		  $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0; */
-		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", /* "CacheType","CacheLifeTime", */ "TagWizardCode", "TagWizardSelection");
+		$this->Icon = "we_template.gif";
+		$this->Table = TEMPLATES_TABLE;
+
+		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", "TagWizardCode", "TagWizardSelection");
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_PREVIEW_TEMPLATE, WE_EDITPAGE_VARIANTS, WE_EDITPAGE_VERSIONS);
+		$this->Published = 1;
+		$this->InWebEdition = true;
+		$this->ContentType = "text/weTmpl";
 	}
 
 	function copyDoc($id){
@@ -116,41 +114,40 @@ class we_template extends we_document{
 		}
 	}
 
-	//##################################################################### PARSE FUNCTIONS ######################################################################
-	function checkEndtags($tagname, $eq, $tags){
-		$start = 0;
-		$end = 0;
-		foreach($tags as $tag){
-			if(strpos($tag, 'ifNoJavaScript') === false){
-				if($eq){
-					if(preg_match('|<we:' . $tagname . '[> ]|', $tag))
-						$start++;
-					if(preg_match('|</we:' . $tagname . '[> ]|', $tag))
-						$end++;
-				}else{
-					if(strpos($tag, '<we:' . $tagname) !== false)
-						$start++;
-					if(strpos($tag, '</we:' . $tagname) !== false)
-						$end++;
-				}
-			}
-		}
-		if($start != $end){
-			return parseError(sprintf($this->Text . ': ' . g_l('parser', '[start_endtag_missing]'), $tagname . ((!$eq) ? "..." : "")));
-		}
-		return '';
-	}
+	/* 	private static function checkEndtags($tagname, $eq, $tags){
+	  $start = 0;
+	  $end = 0;
+	  foreach($tags as $tag){
+	  if(strpos($tag, 'ifNoJavaScript') === false){
+	  if($eq){
+	  if(preg_match('|<we:' . $tagname . '[> ]|', $tag))
+	  $start++;
+	  if(preg_match('|</we:' . $tagname . '[> ]|', $tag))
+	  $end++;
+	  }else{
+	  if(strpos($tag, '<we:' . $tagname) !== false)
+	  $start++;
+	  if(strpos($tag, '</we:' . $tagname) !== false)
+	  $end++;
+	  }
+	  }
+	  }
+	  if($start != $end){
+	  return parseError(sprintf($this->Text . ': ' . g_l('parser', '[start_endtag_missing]'), $tagname . ((!$eq) ? "..." : "")));
+	  }
+	  return '';
+	  }
 
-	function removeDoppel($tags){
-		$out = array();
-		foreach($tags as $tag){
-			if(!in_array($tag, $out))
-				array_push($out, $tag);
-		}
-		return $out;
-	}
+	  private static function removeDoppel($tags){
+	  $out = array();
+	  foreach($tags as $tag){
+	  if(!in_array($tag, $out))
+	  $out[] = $tag;
+	  }
+	  return $out;
+	  } */
 
-	function findIfStart($tags, $nr){
+	private static function findIfStart($tags, $nr){
 		if($nr == 0){
 			return -1;
 		}
@@ -174,7 +171,7 @@ class we_template extends we_document{
 		return -1;
 	}
 
-	function findIfEnd($tags, $nr){
+	private static function findIfEnd($tags, $nr){
 		if($nr == sizeof($tags)){
 			return -1;
 		}
@@ -185,7 +182,7 @@ class we_template extends we_document{
 				if($regs[1] != '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
 				} else{
-					if(sizeof($foo) == 0){
+					if(empty($foo)){
 						return $i;
 					} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
 						$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
@@ -198,14 +195,14 @@ class we_template extends we_document{
 		return -1;
 	}
 
-	function checkElsetags($tags){
+	private static function checkElsetags($tags){
 		for($i = 0; $i < sizeof($tags); $i++){
 			if(strpos($tags[$i], '<we:else') !== false){
-				$ifStart = $this->findIfStart($tags, $i);
+				$ifStart = self::findIfStart($tags, $i);
 				if($ifStart == -1){
 					return parseError(g_l('parser', '[else_start]'));
 				}
-				if($this->findIfEnd($tags, $i) == -1){
+				if(self::findIfEnd($tags, $i) == -1){
 					return parseError(g_l('parser', '[else_end]'));
 				}
 			}
@@ -213,7 +210,7 @@ class we_template extends we_document{
 		return '';
 	}
 
-	function handleShutdown($code){
+	public function handleShutdown($code){
 		if($GLOBALS['we']['errorhandler']['shutdown'] == 'template'){
 			$error = error_get_last();
 			$tmp = explode("\n", $code);
@@ -227,16 +224,16 @@ class we_template extends we_document{
 		}
 	}
 
-	function parseTemplate(){
+	private function parseTemplate(){
 		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $this->getTemplateCode(true));
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
-		if(($foo = $this->checkElsetags($tags))){
+		if(($foo = self::checkElsetags($tags))){
 			$this->errMsg = $foo;
 			return $foo;
 		}
-		/* if(($foo = $this->checkEndtags('if',0,$tags))){
+		/* if(($foo = self::checkEndtags('if',0,$tags))){
 		  return $foo;
 		  } */
 
@@ -266,7 +263,7 @@ class we_template extends we_document{
 			}
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'we';
 		}
-		/* $tags = $this->removeDoppel($tags);
+		/* $tags = self::removeDoppel($tags);
 		  for($i=0;$i<sizeof($tags);$i++){
 		  $tp->parseTag($tags[$i],$code);
 		  } */
@@ -287,26 +284,20 @@ class we_template extends we_document{
 	we_templateInit();?>';
 
 
-		$head = '<?php we_templateHead();?>';
-
-		$preContent = '<?php we_templatePreContent();?>';
-
-		$postContent = '<?php we_templatePostContent();?>';
-
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
 			$pre_code = '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>' . $pre_code;
 
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)(>)%i', '\\1<?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>\\2' . $preContent, $code);
+			$code = preg_replace('%(<body[^>]*)(>)%i', '\\1<?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onunload="doUnload()"\'; ?>\\2' . self::TemplatePreContent, $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
-			$code = str_ireplace(array('</head>', '</body>'), array($head . '</head>', $postContent . '</body>'), $code);
+			$code = str_ireplace(array('</head>', '</body>'), array(self::TemplateHead . '</head>', self::TemplatePostContent . '</body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
-			$code = '<?php if( (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title>' . $head . '</head>
+			$code = '<?php if( (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title>' . self::TemplateHead . '</head>
 <body <?php if(isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']) print \' onUnload="doUnload()"\'; ?>>
-' . $preContent . '<?php } ?>' . $code . '<?php if((!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){ ?>' . $postContent . '
+' . self::TemplatePreContent . '<?php } ?>' . $code . '<?php if((!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){ ?>' . self::TemplatePostContent . '
 </body></html><?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; } ?>';
 		} else{
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
@@ -315,7 +306,7 @@ class we_template extends we_document{
 		return $pre_code . $code . '<?php we_templatePost();';
 	}
 
-	function hasStartAndEndTag($tagname, $code){
+	private function hasStartAndEndTag($tagname, $code){
 		return preg_match('%< ?/ ?' . $tagname . '[^>]*>%i', $code) && preg_match('%< ?' . $tagname . '[^>]*>%i', $code) && preg_match('%< ?' . $tagname . '[ >]%i', $code) && preg_match('%< ?/ ?' . $tagname . '[ >]%i', $code);
 	}
 
@@ -756,7 +747,7 @@ class we_template extends we_document{
 		$this->setElement("completeData", $code);
 	}
 
-	function we_save($resave = 0, $updateCode = 1){
+	public function we_save($resave = 0, $updateCode = 1){
 		$this->Extension = we_base_ContentTypes::inst()->getExtension('text/weTmpl');
 		if($updateCode){
 			$this->_updateCompleteCode();
@@ -781,7 +772,7 @@ class we_template extends we_document{
 		return $_ret;
 	}
 
-	function we_publish(){
+	public function we_publish(){
 		if(defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL){
 			$version = new weVersions();
 			$version->save($this, "published");
@@ -789,7 +780,7 @@ class we_template extends we_document{
 		return true;
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		$this->Extension = we_base_ContentTypes::inst()->getExtension("text/weTmpl");
 		$this->_updateCompleteCode();

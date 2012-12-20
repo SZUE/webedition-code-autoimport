@@ -188,9 +188,8 @@ abstract class we_html_tools{
 				</tr>';
 
 		//CONTENT
-		$zn1 = sizeof($content);
-		for($i = 0; $i < $zn1; $i++){
-			$out .= '<tr>' . self::htmlDialogBorder4Row($content[$i], $class, $bgColor) . '</tr>';
+		foreach($content as $c){
+			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
 
 		$out .= '</table>';
@@ -399,13 +398,12 @@ abstract class we_html_tools{
 	}
 
 	static function findChar($in, $searchChar){
-		$backslash = false;
-		for($i = 0; $i < strlen($in); $i++){
-			$char = substr($in, $i, 1);
-			if($backslash == false && $char == $searchChar){
-				return $i;
+		$pos = 0;
+		while(($pos = strpos($in, $searchChar, $pos)) !== FALSE) {
+			if(substr($in, $pos - 1, 1) != '\\'){
+				return $pos;
 			}
-			$backslash = ($char == "\\") ? true : false;
+			++$pos;
 		}
 		return -1;
 	}
@@ -415,15 +413,15 @@ abstract class we_html_tools{
 		$_attsOption = array();
 		$_attsHidden = array();
 
-		if($xml != ''){
+		if(!empty($xml)){
 			$_attsSelect['xml'] = $xml;
 			$_attsOption['xml'] = $xml;
 			$_attsHidden['xml'] = $xml;
 		}
-		if($class != ''){
+		if(!empty($class)){
 			$_attsSelect['class'] = $class;
 		}
-		if($style != ''){
+		if(!empty($style)){
 			$_attsSelect['style'] = $style;
 		}
 		$_attsSelect['size'] = '1';
@@ -616,19 +614,19 @@ abstract class we_html_tools{
 		return $retVal;
 	}
 
-	static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
+	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
 		self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans', $expand = false){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset), false)
+					self::getHtmlInnerHead($title, $charset, $expand), false)
 				, false);
 	}
 
-	static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
+	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "Expires", "content" => gmdate("D, d M Y H:i:s") . " GMT"
@@ -647,8 +645,12 @@ abstract class we_html_tools{
 				"name" => "generator", "content" => 'webEdition'
 			)) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+			($expand ?
+				we_html_element::jsElement(weFile::load(JS_PATH . "we_showMessage.js")) .
+				we_html_element::jsElement(weFile::load(JS_PATH . "attachKeyListener.js")) :
+				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsScript(JS_DIR . "attachKeyListener.js")
+			);
 	}
 
 	static function htmlMetaCtCharset($content, $charset){

@@ -27,12 +27,8 @@ $yuiSuggest = & weSuggest::getInstance();
 /* a class for handling templates */
 
 class we_class_folder extends we_folder{
-	/* Name of the class => important for reconstructing the class from outside the class */
 
-	var $ClassName = __CLASS__;
-	var $Icon = we_base_ContentTypes::CLASS_FOLDER_ICON;
 	var $IsClassFolder = '1';
-	var $InWebEdition = false;
 	var $ClassPath = ''; //#4076
 	var $ClassID = ''; //#4076
 	var $RootfolderID = ''; //#4076
@@ -45,12 +41,11 @@ class we_class_folder extends we_folder{
 	var $SearchStart = 0;
 	var $TriggerID = 0;
 
-	/* Constructor */
-
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_CFWORKSPACE, WE_EDITPAGE_FIELDS, WE_EDITPAGE_INFO);
+		$this->Icon = we_base_ContentTypes::CLASS_FOLDER_ICON;
 		$this->ContentType = 'folder';
 	}
 
@@ -94,7 +89,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$sp = explode('/', $this->Path);
 		if(isset($sp[2]) && $sp[2] != ''){
 			$this->IsClassFolder = 0;
@@ -591,7 +586,7 @@ class we_class_folder extends we_folder{
 		$out = '
 				<table cellpadding="2" cellspacing="0" border="0" width="510">
 				<form name="we_form_search"  onSubmit="sub();return false;" methode="GET">
-				' . $this->HiddenTrans() . '
+				' . we_class::hiddenTrans() . '
 				<input type="hidden" name="todo" />
 				<input type="hidden" name="position" />';
 
@@ -708,7 +703,7 @@ class we_class_folder extends we_folder{
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 		<form name="we_form" method="post">
-		' . $this->hiddenTrans() . '
+		' . we_class::hiddenTrans() . '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>

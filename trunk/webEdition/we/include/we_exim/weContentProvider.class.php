@@ -230,7 +230,7 @@ class weContentProvider{
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
 		if(isset($object->table) && $object->table == CONTENT_TABLE){
-			return (!$this->IsBinary);
+			return (!$this->isBinary());
 		}
 
 		$noexport = array(); //future use

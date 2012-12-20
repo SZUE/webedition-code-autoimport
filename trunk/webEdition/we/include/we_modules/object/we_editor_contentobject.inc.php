@@ -109,7 +109,7 @@ include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 <body onUnload="doUnload()" class="weEditorBody">
 	<form name="we_form" method="post"><?php
-$we_doc->pHiddenTrans();
+echo we_class::hiddenTrans();
 
 if($we_doc->ID){
 	$ctable = OBJECT_X_TABLE . $we_doc->ID;
@@ -126,20 +126,20 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction']
 
 echo we_multiIconBox::_getBoxStart("100%", $uniquename) .
  $jsGUI->getContainer(array()) .
- '<div id="' . $uniquename . '_div">'
- . '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
- . '<tr>'
- . '<td valign="top"></td>'
- . '<td class="defaultfont">'
- . we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');")
- . '</td>'
- . '</tr>'
- . '<tr>'
- . '<td>' . we_html_tools::getPixel(0, 15) . '</td>'
- . '<td></td>'
- . '</tr>'
- . '</table>'
- . '</div>';
+ '<div id="' . $uniquename . '_div">
+ <table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+ <tr>
+ <td valign="top"></td>
+ <td class="defaultfont">' .
+ we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $_REQUEST['we_transaction'] . "');") .
+ '</td>
+ </tr>
+ <tr>
+ <td>' . we_html_tools::getPixel(0, 15) . '</td>
+ <td></td>
+ </tr>
+ </table>
+ </div>';
 
 echo we_multiIconBox::_getBoxEnd("100%");
 
@@ -152,35 +152,25 @@ for($i = 0; $i <= $count && !empty($sort); $i++){
 	$plusbut = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 	$trashbut = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');");
 
-	$content = '<div id="' . $uniqid . '">'
-		. '<a name="f' . $uniqid . '"></a>'
-		. '<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">'
-		. '<tr>'
-		. '<td class="defaultfont" width="600">'
-		. '<table cellpadding="6" cellspacing="0" border="0">'
-		. $we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid)
-		. '</table>'
-		. '</td>'
-		. '<td width="150" class = "defaultfont" valign="top">';
-
-	$content .= we_button::create_button_table(
-			array(
-			$plusbut,
-			$upbut,
-			$downbut,
-			$trashbut
-			), 5);
-
-	$content .= '</td>'
-		. '</tr>'
-		. '</table>'
-		. '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10)
-		. '</div>'
-		. we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);');
-
-	echo $content;
-
-	echo $jsGUI->getDisableButtonJS();
+	echo '
+<div id="' . $uniqid . '">
+<a name="f' . $uniqid . '"></a>
+<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td class="defaultfont" width="600">
+<table cellpadding="6" cellspacing="0" border="0">' .
+	$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
+	'</table>
+		</td>
+		<td width="150" class = "defaultfont" valign="top">' .
+	we_button::create_button_table(array($plusbut, $upbut, $downbut, $trashbut), 5) .
+	'</td>
+		</tr>
+		</table>
+		<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">' . we_html_tools::getPixel(1, 1) . '</div>' . we_html_tools::getPixel(2, 10) .
+	'</div>' .
+	we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);') .
+	$jsGUI->getDisableButtonJS();
 }
 ?>
 	</form>

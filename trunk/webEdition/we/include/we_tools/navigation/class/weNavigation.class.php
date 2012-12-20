@@ -99,7 +99,6 @@ class weNavigation extends weModelBase{
 	 * Can load or create new navigation depends of parameter
 	 */
 	function __construct($navigationID = 0){
-
 		parent::__construct(NAVIGATION_TABLE);
 
 		if(($_ws = get_ws(NAVIGATION_TABLE))){
@@ -194,7 +193,7 @@ class weNavigation extends weModelBase{
 			$this->_getFilterOfDocument();
 		}
 
-		$this->Text = $this->encodeSpecChars($this->Text);
+		$this->Text = self::encodeSpecChars($this->Text);
 		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 
 		$_paths = $this->Categories;
@@ -316,10 +315,12 @@ class weNavigation extends weModelBase{
 		}
 		include ($configFile);
 
-		if(!$this->ID)
+		if(!$this->ID){
 			return false;
-		if($this->IsFolder)
+		}
+		if($this->IsFolder){
 			$this->deleteChilds();
+		}
 		parent::delete();
 
 		weNavigationCache::cacheNavigationTree($this->ParentID);
@@ -358,16 +359,12 @@ class weNavigation extends weModelBase{
 	}
 
 	function alnumNotValid($text){
-		if(ctype_alnum($text)){
-			return false;
-		} else{
-			return true;
-		}
+		return !(ctype_alnum($text));
 	}
 
 	function setPath(){
 		$ppath = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->db);
-		$this->Path = $ppath . "/" . $this->Text;
+		$this->Path = $ppath . '/' . $this->Text;
 	}
 
 	function pathExists($path){
@@ -379,10 +376,10 @@ class weNavigation extends weModelBase{
 			$_count = 0;
 			$_parentid = $this->ParentID;
 			while($_parentid != 0) {
-				if($_parentid == $this->ID)
+				if($_parentid == $this->ID){
 					return true;
-				$_parentid = f(
-					'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
+				}
+				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
 				$_count++;
 				if($_count == 9999){
 					return false;
@@ -408,7 +405,7 @@ class weNavigation extends weModelBase{
 			$path = $this->Text;
 		}
 
-		$foo = getHash("SELECT Text,ParentID FROM " . NAVIGATION_TABLE . " WHERE ID=" . intval($id), $db_tmp);
+		$foo = getHash('SELECT Text,ParentID FROM ' . NAVIGATION_TABLE . " WHERE ID=" . intval($id), $db_tmp);
 		$path = '/' . (isset($foo['Text']) ? $foo['Text'] : '') . $path;
 
 		$pid = isset($foo['ParentID']) ? $foo['ParentID'] : '';
@@ -423,13 +420,9 @@ class weNavigation extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		if($serialize)
-			$field = serialize($this->$name);
-		else
-			$field = $this->$name;
+		$field = ($serialize ? serialize($this->$name) : $this->$name);
 
-		$this->db->query(
-			'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $name . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 
@@ -450,8 +443,7 @@ class weNavigation extends weModelBase{
 	function getChilds(){
 		$_items = array();
 
-		$this->db->query(
-			'SELECT ID,Path,Text,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' ORDER BY Ordn;');
+		$this->db->query('SELECT ID,Path,Text,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' ORDER BY Ordn;');
 
 		while($this->db->next_record()) {
 			$_items[] = array(
@@ -468,12 +460,12 @@ class weNavigation extends weModelBase{
 	function getDynamicChilds(){
 		$_items = array();
 
-		$this->db->query(
-			'SELECT ID,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND IsFolder=0 AND Depended=1 ORDER BY Ordn;');
+		$this->db->query('SELECT ID,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND IsFolder=0 AND Depended=1 ORDER BY Ordn;');
 
 		while($this->db->next_record()) {
 			$_items[] = array(
-				'id' => $this->db->f('ID'), 'ordn' => $this->db->f('Ordn')
+				'id' => $this->db->f('ID'),
+				'ordn' => $this->db->f('Ordn')
 			);
 		}
 
@@ -510,7 +502,8 @@ class weNavigation extends weModelBase{
 			$_navigation->save(false);
 
 			$_new_items[] = array(
-				'id' => $_navigation->ID, 'text' => $_navigation->Text
+				'id' => $_navigation->ID,
+				'text' => $_navigation->Text
 			);
 		}
 
@@ -525,37 +518,32 @@ class weNavigation extends weModelBase{
 		$_items = $this->getDynamicChilds();
 		foreach($_items as $_id){
 			$_navigation = new weNavigation($_id['id']);
-			if($_navigation->delete())
-				;
+			if($_navigation->delete()){
+
+			}
 		}
 		return $_items;
 	}
 
 	function hasDynChilds(){
-		if($this->ID){
-			$_dep = f(
-				'SELECT COUNT(ID) as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1;', 'Navi', $this->db);
-			return $_dep ? true : false;
+		if(!$this->ID){
+			return false;
 		}
-		return false;
+		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', 'Navi', $this->db) === '1';
 	}
 
 	function hasAnyChilds(){
-		if($this->ID){
-			$_dep = f(
-				'SELECT COUNT(ID) as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID), 'Navi', $this->db);
-			return $_dep ? true : false;
+		if(!$this->ID){
+			return false;
 		}
-		return false;
+		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', 'Navi', $this->db) === '1';
 	}
 
 	function hasIndependentChilds(){
-		if($this->ID){
-			$_dep = f(
-				'SELECT COUNT(ID) as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0;', 'Navi', $this->db);
-			return $_dep ? true : false;
+		if(!$this->ID){
+			return false;
 		}
-		return false;
+		return f('SELECT 1 as Navi FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', 'Navi', $this->db) === '1';
 	}
 
 	function getDynamicPreview(&$storage, $rules = false){
@@ -643,7 +631,7 @@ class weNavigation extends weModelBase{
 	function reorder($pid){
 		$_count = 0;
 		$_db = new DB_WE();
-		$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn;');
+		$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
 		while($_db->next_record()) {
 			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_count) . ' WHERE ID=' . intval($_db->f('ID')));
 			$_count++;
@@ -654,10 +642,8 @@ class weNavigation extends weModelBase{
 		if($this->ID){
 			if($this->Ordn > 0){
 				$_db = new DB_WE();
-				$_parentid = f(
-					'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $_db);
-				$_db->query(
-					'UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1) . ';');
+				$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $_db);
+				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
 				$this->Ordn--;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);
@@ -669,14 +655,11 @@ class weNavigation extends weModelBase{
 
 	function reorderDown(){
 		if($this->ID){
-			$_parentid = f(
-				'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
-			$_num = f(
-				'SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
+			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
 			if($this->Ordn < ($_num - 1)){
 				$_db = new DB_WE();
-				$_db->query(
-					'UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1) . ';');
+				$_db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
 				$this->Ordn++;
 				$this->saveField('Ordn');
 				$this->reorder($this->ParentID);
@@ -859,7 +842,7 @@ class weNavigation extends weModelBase{
 		}
 	}
 
-	function encodeSpecChars($string){
+	public static function encodeSpecChars($string){
 		$open = '!@###';
 		$close = '!###@';
 		$amp = '!!##@';
@@ -887,10 +870,9 @@ class weNavigation extends weModelBase{
 				), htmlspecialchars($string));
 	}
 
-	function getNavCondition($id, $table){
+	static public function getNavCondition($id, $table){
 		$_linkType = ($table == OBJECT_FILES_TABLE ? self::STPYE_OBJLINK : self::STPYE_DOCLINK);
-		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval(
-				$id) . ' ';
+		return ' ((IsFolder=1 AND FolderSelection="' . escape_sql_query($_linkType) . '") OR (IsFolder=0 AND SelectionType="' . escape_sql_query($_linkType) . '")) AND LinkID=' . intval($id) . ' ';
 	}
 
 }

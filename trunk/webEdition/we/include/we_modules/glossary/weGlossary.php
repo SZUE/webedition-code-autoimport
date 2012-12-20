@@ -157,12 +157,8 @@ class weGlossary extends weModelBase{
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
 	function __construct($GlossaryId = 0){
-
-		$this->table = GLOSSARY_TABLE;
-
-		$this->_Serialized = array('Attributes');
-
 		parent::__construct(GLOSSARY_TABLE);
+		$this->_Serialized = array('Attributes');
 
 		if($GlossaryId){
 			$this->ID = $GlossaryId;

@@ -22,8 +22,7 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-/* the parent class of storagable webEdition classes */
+/** the parent class of storagable webEdition classes */
 
 abstract class we_class{
 	//constants for retrieving data from DB
@@ -45,7 +44,7 @@ abstract class we_class{
 	/* In this array are all storagable class variables */
 	var $persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
 	/* Name of the Object that was createt from this class */
-	var $Name = "";
+	var $Name = '';
 
 	/* ID from the database record */
 	var $ID = 0;
@@ -54,14 +53,14 @@ abstract class we_class{
 	var $Table = '';
 
 	/* Database Object */
-	var $DB_WE;
+	protected $DB_WE;
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
 	var $InWebEdition = 0;
 	var $PublWhenSave = 1;
 	var $IsTextContentDoc = false;
-	var $LoadBinaryContent = false;
+	public $LoadBinaryContent = false;
 	var $fileExists = 1;
 	protected $errMsg = '';
 
@@ -91,31 +90,19 @@ abstract class we_class{
 
 	/* returns the url $in with $we_transaction appended */
 
-	function url($in){
+	public static function url($in){
 		return $in . ( strpos($in, '?') !== FALSE ? '&' : '?') . 'we_transaction=' . $GLOBALS['we_transaction'];
-	}
-
-	/* shortcut for print $this->url() */
-
-	function pUrl($in){
-		print $this->url($in);
 	}
 
 	/* returns the code for a hidden " we_transaction-field" */
 
-	function hiddenTrans(){
+	public static function hiddenTrans(){
 		return '<input type="hidden" name="we_transaction" value="' . $GLOBALS['we_transaction'] . '" />';
-	}
-
-	/* shortcut for print $this->hiddenTrans() */
-
-	function pHiddenTrans(){
-		print $this->hiddenTrans();
 	}
 
 	/* must be overwritten by child */
 
-	function saveInSession(&$save){
+	function saveInSession(/*&$save*/){
 
 	}
 
@@ -217,8 +204,9 @@ abstract class we_class{
 
 	function formSelect($elementtype, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $attribs = '', $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = ''){
 		$vals = array();
-		if($firstEntry)
+		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
+		}
 		$this->DB_WE->query('SELECT * FROM ' . $table . ' ' . $sqlTail);
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f($val);
@@ -246,6 +234,7 @@ abstract class we_class{
 	}
 
 	function htmlHidden($name, $value = '', $params = null){
+		//we_html_element::htmlHidden(array('name'=>trim($name),value=>htmlspecialchars($value)));
 		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" ' . $params . ' />';
 	}
 
@@ -379,8 +368,9 @@ abstract class we_class{
 
 		if($multiple){
 			$onChange.= ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;";
-			if(!$elementtype)
+			if(!$elementtype){
 				$ps = $this->$name;
+			}
 			$pop = $this->htmlSelect($myname . 'Tmp', $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 
 			if($precode || $postcode){
@@ -423,7 +413,7 @@ abstract class we_class{
 ##### NEWSTUFF ####
 # public ##################
 
-	function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
+	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
 		if($Table == ''){
 			$Table = FILE_TABLE;
 		}
@@ -447,28 +437,28 @@ abstract class we_class{
 		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
 	}
 
-	function we_load(/* $from = we_class::LOAD_MAID_DB */){
+	public function we_load(/* $from = we_class::LOAD_MAID_DB */){
 		$this->i_getPersistentSlotsFromDB();
 	}
 
-	function we_save(/* $resave = 0 */){
+	public function we_save(/* $resave = 0 */){
 		$this->wasUpdate = $this->ID ? 1 : 0;
 		return $this->i_savePersistentSlotsToDB();
 	}
 
-	function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){
+	public function we_publish(/* $DoNotMark = false, $saveinMainDB = true */){
 		return true; // overwrite
 	}
 
-	function we_unpublish(/* $DoNotMark = false */){
+	public function we_unpublish(/* $DoNotMark = false */){
 		return true; // overwrite
 	}
 
-	function we_republish(){
+	public function we_republish(){
 		return true;
 	}
 
-	function we_delete(){
+	public function we_delete(){
 		if(LANGLINK_SUPPORT){
 			switch($this->ClassName){
 				case 'we_objectFile':
@@ -488,8 +478,6 @@ abstract class we_class{
 		return $this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID));
 	}
 
-# private ###################
-
 	protected function i_setElementsFromHTTP(){
 
 		// do not set REQUEST VARS into the document
@@ -506,7 +494,7 @@ abstract class we_class{
 		}
 	}
 
-	function i_getPersistentSlotsFromDB($felder = '*'){
+	protected function i_getPersistentSlotsFromDB($felder = '*'){
 		$fields = getHash('SELECT ' . $felder . ' FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
 		if(count($fields)){
 			foreach($fields as $k => $v){
@@ -519,14 +507,9 @@ abstract class we_class{
 		}
 	}
 
-	function i_fixCSVPrePost($in){
+	protected function i_fixCSVPrePost($in){
 		if($in){
-			if(substr($in, 0, 1) != ','){
-				$in = ',' . $in;
-			}
-			if(substr($in, -1) != ','){
-				$in .= ',';
-			}
+			return ',' . trim($in, ',') . ',';
 		}
 		return $in;
 	}
@@ -557,7 +540,7 @@ abstract class we_class{
 		return false;
 	}
 
-	function i_descriptionMissing(){
+	public function i_descriptionMissing(){
 		return false;
 	}
 
@@ -584,7 +567,7 @@ abstract class we_class{
 	 * If documents, objects, folders and docTypes are saved and there is no LANGLINK_SUPPORT we must check, whether there is a change of language:
 	 * if so, we must delete eventual netries in tblLangLink (entered before LANGLINK_SUPPORT wa stopped. <= TODO: Merge this with next method!
 	 */
-	function checkRemoteLanguage($table, $isfolder = false){
+	protected function checkRemoteLanguage($table, $isfolder = false){
 		if(isset($_REQUEST['we_' . $this->Name . '_Language']) && $_REQUEST['we_' . $this->Name . '_Language'] != ''){
 			$type = stripTblPrefix($table);
 			$isobject = ($type == 'tblObjectFile') ? 1 : 0;
@@ -610,7 +593,7 @@ abstract class we_class{
 	 * Before writing LangLinks to the db, we must check the Document-Locale: if it has changed, we must update or clear
 	 * existing LangLinks from and to this document.
 	 */
-	function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
+	protected function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
 		if(!(LANGLINK_SUPPORT)){
 			return true;
 		}
@@ -681,7 +664,7 @@ abstract class we_class{
 	 * 1) We only write new or changed LangLinks to db, if LangLink-Locale and Locale of the targe-document/object fit together.
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
 	 */
-	function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange = false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
+	private function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange = false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
 		$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type; // we could take these  from setLanguageLink()...
 		$ownDocumentTable = ($isfolder && $isobject) ? TBL_PREFIX . 'tblFile' : TBL_PREFIX . $documentTable;
 
@@ -811,7 +794,7 @@ abstract class we_class{
 	}
 
 	// in this method tblLangLink.ID is used and a lot of things are obsolete => to be cleaned in 6.3.1
-	function executeSetLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
+	private function executeSetLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
 		$db = new DB_WE;
 		if(is_array($LangLinkArray)){
 			$orig = array();
@@ -906,7 +889,7 @@ abstract class we_class{
 
 	/*	 * returns error-messages recorded during an operation, currently only save is used */
 
-	function getErrMsg(){
+	public function getErrMsg(){
 		return ($this->errMsg != '' ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
 	}
 

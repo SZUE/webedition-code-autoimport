@@ -30,12 +30,11 @@ class weToolModel extends weModelBase{
 	var $Path;
 	var $Icon;
 	var $IsFolder;
-	var $ModelClassName = 'weToolModel';
+	var $ModelClassName = __CLASS__;
 	var $toolName = '';
 	var $requiredFields = array();
 
 	function __construct($table){
-
 		parent::__construct($table);
 	}
 

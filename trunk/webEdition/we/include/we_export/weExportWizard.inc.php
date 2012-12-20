@@ -116,7 +116,7 @@ class weExportWizard{
 		if(isset($_SESSION['weS']['exportVars']))
 			$this->exportVars = $_SESSION['weS']['exportVars'];
 		foreach($this->exportVars as $k => $v){
-			$var = getRequestVar($k, null);
+			$var = isset($_REQUEST[$k]) ? $_REQUEST[$k] : null;
 			if($var !== null){
 				$this->exportVars[$k] = $var;
 			}
@@ -197,8 +197,6 @@ class weExportWizard{
 	}
 
 	function getHTMLStep0(){
-		global $_we_active_integrated_modules;
-
 		$wexpotEnabled = (we_hasPerm('NEW_EXPORT') || we_hasPerm('DELETE_EXPORT') || we_hasPerm('EDIT_EXPORT') || we_hasPerm('MAKE_EXPORT') || we_hasPerm('ADMINISTRATOR'));
 
 		$extype = $this->exportVars["extype"];

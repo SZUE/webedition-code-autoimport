@@ -23,13 +23,13 @@ var TAB_ACTIVE = 2;
 var we_name_z = 0;
 
 function we_tab_write(){
-	document.write(((this.state != TAB_DISABLED) ? '<a href="'+this.href+'" onClick="we_tabs['+this.z+'].setState(TAB_ACTIVE,false,we_tabs);'+this.js+';this.blur();">' : '') + '<img src="'+this.src+'" width="'+this.width+'" height="'+this.height+'" border="0" name="'+this.name+'">' + ((this.state != TAB_DISABLED) ? '</a>' : ''));
+	document.write(((this.state != TAB_DISABLED) ? '<a href="'+this.href+'" onclick="we_tabs['+this.z+'].setState(TAB_ACTIVE,false,we_tabs);'+this.js+';this.blur();">' : '') + '<img src="'+this.src+'" width="'+this.width+'" height="'+this.height+'" border="0" name="'+this.name+'">' + ((this.state != TAB_DISABLED) ? '</a>' : ''));
 }
 
 function we_tab_setState(state,init,objects){
 
 	this.state = state;
-	
+
 	if(this.state == TAB_DISABLED){
 		this.src = this.disabledSrc;
 		imgObj = this.nameDisabled;
@@ -40,7 +40,7 @@ function we_tab_setState(state,init,objects){
 		this.src = this.normSrc;
 		imgObj = this.nameNorm;
 	}
-	
+
 	if(!init){
 		changeImage(null,this.name,imgObj);
 	}
@@ -73,11 +73,11 @@ function we_tab(href,normSrc,activeSrc,disabledSrc,width,height,state,js){
 	we_name_z++;
 	this.setState = we_tab_setState;
 	this.setState(state,true);
-	
+
 	preload(this.nameNorm,this.normSrc);
 	preload(this.nameActive,this.activeSrc);
 	preload(this.nameDisabled,this.disabledSrc);
-	
-	
+
+
 	this.write = we_tab_write;
 }

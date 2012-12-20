@@ -698,7 +698,7 @@ class weVersionsView{
 				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 				<tbody id="filterTable">
 				<tr>
-					<td>' . $GLOBALS['we_doc']->HiddenTrans() . '</td>
+					<td>' . we_class::hiddenTrans() . '</td>
 				</tr>';
 
 		$r = $r2 = $r3 = array();

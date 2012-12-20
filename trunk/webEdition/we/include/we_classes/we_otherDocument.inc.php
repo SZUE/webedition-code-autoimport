@@ -25,25 +25,16 @@
 /*  a class for handling flashDocuments. */
 
 class we_otherDocument extends we_binaryDocument{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* ContentType of the Object  */
-	var $ContentType = 'application/*';
-
-	/* Constructor */
 
 	function __construct(){
-		//Begin: Do we use this?
+		parent::__construct();
 		switch($this->Extension){
 			case ".pdf":
 				$this->Icon = "pdf.gif";
 				break;
 		}
-		// End: Do we use this?
-		parent::__construct();
 		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		$this->ContentType = 'application/*';
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -72,7 +63,7 @@ class we_otherDocument extends we_binaryDocument{
 		return $this->htmlFormElementTable($this->htmlTextInput("we_" . $this->Name . "_Extension", 5, $this->Extension, "", 'onChange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', "[extension]"));
 	}
 
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType, '', $this->Extension);
 		return parent::we_save($resave);
 	}
@@ -127,7 +118,7 @@ class we_otherDocument extends we_binaryDocument{
 		  $content = $this->getPDFText($this->i_getDocument());
 		  } */
 		$content = preg_replace('/[\x00-\x1F]/', '', $content);
-		$text.= ' '.trim($content);
+		$text.= ' ' . trim($content);
 
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		$text = substr(preg_replace('/  +/', ' ', $text), 0, $maxDB);

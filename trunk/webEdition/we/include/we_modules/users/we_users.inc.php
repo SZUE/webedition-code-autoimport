@@ -31,7 +31,7 @@ class we_user{
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 	// In this array are all storagable class variables
-	var $persistent_slots = array();
+	var $persistent_slots = array('ID', 'Type', 'ParentID', 'Salutation', 'First', 'Second', 'Address', 'HouseNo', 'City', 'PLZ', 'State', 'Country', 'Tel_preselection', 'Telephone', 'Fax', 'Fax_preselection', 'Handy', 'Email', 'username', 'passwd', 'clearpasswd', 'Text', 'Path', 'Permissions', 'ParentPerms', 'Description', 'Alias', 'Icon', 'IsFolder', 'CreatorID', 'CreateDate', 'ModifierID', 'ModifyDate', 'Ping', 'workSpace', 'workSpaceDef', 'workSpaceTmp', 'workSpaceNav', 'workSpaceNwl', 'workSpaceObj', 'ParentWs', 'ParentWst', 'ParentWsn', 'ParentWso', 'ParentWsnl', 'altID', 'LoginDenied', 'UseSalt');
 	// Name of the Object that was createt from this class
 	var $Name = '';
 	// ID from the database record
@@ -142,16 +142,13 @@ class we_user{
 	// Extensions array
 	var $extensions_slots = array();
 	// Preferences array
-	var $preference_slots = array();
+	var $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
 	var $UseSalt = 1;
 
 	// Constructor
 	function __construct(){
 		$this->ClassName = 'we_user';
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'ID', 'Type', 'ParentID', 'Salutation', 'First', 'Second', 'Address', 'HouseNo', 'City', 'PLZ', 'State', 'Country', 'Tel_preselection', 'Telephone', 'Fax', 'Fax_preselection', 'Handy', 'Email', 'username', 'passwd', 'clearpasswd', 'Text', 'Path', 'Permissions', 'ParentPerms', 'Description', 'Alias', 'Icon', 'IsFolder', 'CreatorID', 'CreateDate', 'ModifierID', 'ModifyDate', 'Ping', 'workSpace', 'workSpaceDef', 'workSpaceTmp', 'workSpaceNav', 'workSpaceNwl', 'workSpaceObj', 'ParentWs', 'ParentWst', 'ParentWsn', 'ParentWso', 'ParentWsnl', 'altID', 'LoginDenied', 'UseSalt');
-
-		array_push($this->preference_slots, 'sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
 
 		$this->DB_WE = new DB_WE;
 
@@ -177,9 +174,8 @@ class we_user{
 
 		$this->Preferences['use_jupload'] = 0;
 
-		foreach($this->preference_slots as $key => $val){
-			$value = null;
-			$this->Preferences[$val] = $value;
+		foreach($this->preference_slots as $val){
+			$this->Preferences[$val] = null;
 		}
 
 		$this->initType(self::TYPE_USER);
@@ -408,7 +404,6 @@ class we_user{
 		$this->permissions_titles = array();
 		$permissions = unserialize($this->Permissions);
 
-		$entries = array();
 		$entries = weToolLookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_PATH . 'perms');
@@ -473,8 +468,9 @@ class we_user{
 	function setPermission($perm_name, $perm_value){
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $k => $v){
-				if($perm_name == $k)
+				if($perm_name == $k){
 					$this->permissions_slots[$key][$k] = $perm_value;
+				}
 			}
 		}
 	}
@@ -515,8 +511,9 @@ class we_user{
 		foreach($this->workspaces as $k => $v){
 			$new_array = array();
 			foreach($v as $key => $val)
-				if($val != 0)
-					array_push($new_array, $this->workspaces[$k][$key]);
+				if($val != 0){
+					$new_array[] = $this->workspaces[$k][$key];
+				}
 			$this->workspaces[$k] = $new_array;
 		}
 
@@ -538,11 +535,9 @@ class we_user{
 			}
 			$this->workspaces_defaults[$k] = $new_array;
 		}
-		if(count($this->workspaces[FILE_TABLE]) != 0){
-			$this->workSpaceDef = makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',');
-		} else{
-			$this->workSpaceDef = '';
-		}
+		$this->workSpaceDef = (empty($this->workspaces[FILE_TABLE]) ?
+				'' :
+				makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ','));
 
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
@@ -584,22 +579,12 @@ class we_user{
 	}
 
 	function getPreferenceSlotsFromDB(){
-		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
-		$this->DB_WE->query('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID));
-		$this->DB_WE->next_record();
-		for($i = 0; $i < sizeof($tableInfo); $i++){
-			$fieldName = $tableInfo[$i]['name'];
-			if(in_array($fieldName, $this->preference_slots)){
-				$this->Preferences[$fieldName] = $this->DB_WE->f($fieldName);
-			}
-		}
+		$this->Preferences = getHash('SELECT ' . implode(',', $this->preference_slots) . ' FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID), $this->DB_WE);
 	}
 
 	function setPreference($name, $value){
-		foreach($this->preference_slots as $key => $val){
-			if($name == $val){
-				$this->Preferences[$name] = $value;
-			}
+		if(in_array($name, $this->preference_slots)){
+			$this->Preferences[$name] = $value;
 		}
 	}
 
@@ -755,18 +740,23 @@ class we_user{
 					break;
 
 				case 'seem_start_type':
-					if($settingvalue == 'cockpit'){
-						$_SESSION['prefs']['seem_start_file'] = 0;
-						$_SESSION['prefs']['seem_start_type'] = 'cockpit';
-					} elseif($settingvalue == 'object'){
-						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
-						$_SESSION['prefs']['seem_start_type'] = 'object';
-					} elseif($settingvalue == 'weapp'){
-						$_SESSION['prefs']['seem_start_weapp'] = $_REQUEST['seem_start_weapp'];
-						$_SESSION['prefs']['seem_start_type'] = 'weapp';
-					} else{
-						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
-						$_SESSION['prefs']['seem_start_type'] = 'document';
+					switch($settingvalue){
+						case 'cockpit':
+							$_SESSION['prefs']['seem_start_file'] = 0;
+							$_SESSION['prefs']['seem_start_type'] = 'cockpit';
+							break;
+						case 'object':
+							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+							$_SESSION['prefs']['seem_start_type'] = 'object';
+							break;
+						case 'weapp':
+							$_SESSION['prefs']['seem_start_weapp'] = $_REQUEST['seem_start_weapp'];
+							$_SESSION['prefs']['seem_start_type'] = 'weapp';
+							break;
+						default:
+							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+							$_SESSION['prefs']['seem_start_type'] = 'document';
+							break;
 					}
 					break;
 
@@ -1217,35 +1207,21 @@ class we_user{
 	}
 
 	function getState(){
-		$state = '$this->Name="' . $this->Name . '";
-			$this->Table=\'' . $this->Table . '\';';
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		$state = '
+$this->Name="' . $this->Name . '";
+$this->Table=\'' . $this->Table . '\';
+$this->permissions_slots=' . var_export($this->permissions_slots, true) . ';
+$this->workspaces=' . var_export($this->workspaces, true) . ';
+$this->workspaces_defaults=' . var_export($this->workspaces_defaults, true) . ';
+$this->Preferences=' - var_export($this->Preferences, true) . ';
+';
 
 		foreach($this->persistent_slots as $k => $v){
 			$attrib = isset($this->$v) ? $this->$v : null;
-			$state.='$this->' . $v . '=\'' . addslashes($attrib) . '\';';
+			$state.='$this->' . $v . '=' . var_export($attrib, true) . ';';
 		}
 
-		foreach($this->permissions_slots as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->permissions_slots[\'' . $key . '\'][\'' . $k . '\']=\'' . addslashes($v) . '\';';
-			}
-		}
-
-		foreach($this->workspaces as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->workspaces[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
-			}
-		}
-
-		foreach($this->workspaces_defaults as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->workspaces_defaults[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
-			}
-		}
-
-		foreach($this->preference_slots as $key => $val){
-			$state.='$this->Preferences[\'' . $val . '\'] = \'' . $this->Preferences[$val] . '\';';
-		}
 
 		foreach($this->extensions_slots as $k => $v){
 			$state.='$this->extensions_slots[\'' . $k . '\']=new ' . $v->ClassName . '();
@@ -1257,6 +1233,7 @@ class we_user{
 	}
 
 	function setState($state){
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		$code = unserialize($state);
 		eval($code);
 	}
@@ -1268,21 +1245,19 @@ class we_user{
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case 0:
-				$out = $yuiSuggest->getYuiJsFiles();
-				$out .= $this->formGeneralData();
-				$out .= $yuiSuggest->getYuiCss();
-				//$out .= $yuiSuggest->getYuiJs();
-				return $out;
+				return $yuiSuggest->getYuiJsFiles() .
+					$this->formGeneralData() .
+					$yuiSuggest->getYuiCss();
+				//.$yuiSuggest->getYuiJs();
 				break;
 			case 1:
 				return $this->formPermissions($perm_branch);
 				break;
 			case 2:
-				$out = $yuiSuggest->getYuiJsFiles();
-				$out .= $this->formWorkspace();
-				$out .= $yuiSuggest->getYuiCss();
-				//$out .= $yuiSuggest->getYuiJs();
-				return $out;
+				return $yuiSuggest->getYuiJsFiles() .
+					$this->formWorkspace() .
+					$yuiSuggest->getYuiCss();
+				//.$yuiSuggest->getYuiJs();
 				break;
 			case 3:
 				return $this->formPreferences($perm_branch);
@@ -1353,7 +1328,7 @@ class we_user{
 			}
 		}
 
-		$content.='</select><br>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
 
 		$parts[] = array(
 			'headline' => g_l('modules_users', '[user]'),
@@ -1838,12 +1813,11 @@ class we_user{
 			'editor' => $this->formPreferencesEditor(),
 		);
 
-		$content = $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch);
 
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => $content,
+				'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
 				'space' => 0
 			)
 		);
@@ -2181,9 +2155,7 @@ class we_user{
 
 		if($this->Preferences['sizeOpt'] == 0){
 			$_window_max = true;
-		}
-
-		if($this->Preferences['sizeOpt'] == 1){
+		}elseif($this->Preferences['sizeOpt'] == 1){
 			$_window_specify = true;
 		}
 

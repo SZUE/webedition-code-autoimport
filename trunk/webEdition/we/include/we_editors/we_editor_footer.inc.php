@@ -113,7 +113,7 @@ $_js_we_save_document = "
     var _showGlossaryCheck = $showGlossaryCheck;
 	var countSaveLoop = 0;
 	function saveReload(){
-		self.location='" . $we_doc->url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
+		self.location='" . we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
 	}
 
 	function we_save_document(){

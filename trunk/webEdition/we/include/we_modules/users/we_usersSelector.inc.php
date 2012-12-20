@@ -24,15 +24,11 @@
  */
 class we_usersSelector extends we_multiSelector{
 
-	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
-	var $filter = "";
+	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $filter = "", $multiple = true){
 
-	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $filter="", $multiple=true){
-
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple);
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
 
-		$this->filter = $filter;
 		//FIXME: fix userSelector String
 		//$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? g_l('fileselector',"[groupname]") : g_l('fileselector',"[username]");
 	}
@@ -49,7 +45,8 @@ class we_usersSelector extends we_multiSelector{
 			$this->id = $this->dir;
 		} else{
 			$this->dir = 0;
-			$this->values = array("ParentID" => 0,
+			$this->values = array(
+				"ParentID" => 0,
 				"Text" => "",
 				"Path" => "",
 				"IsFolder" => 1);
@@ -58,7 +55,7 @@ class we_usersSelector extends we_multiSelector{
 		}
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
@@ -105,166 +102,132 @@ class we_usersSelector extends we_multiSelector{
 		//}
 		$this->db->query("SELECT " . $this->db->escape($this->fields) . " FROM " .
 			$this->db->escape($this->table) .
-			" WHERE ParentID='" . $this->dir . "'" .
-			($upath ? " AND Path LIKE '" . $upath . "%' " : "") .
-			$q . ($this->order ? (' ORDER BY ' . $this->order) : ''));
+			" WHERE ParentID='" . $this->db->escape($this->dir) . "'" .
+			($upath ? " AND Path LIKE '" . $this->db->escape($upath) . "%' " : "") .
+			$q . ($this->order ? (' ORDER BY ' . $this->db->escape($this->order)) : ''));
 	}
 
 	function printFramesetJSFunctionQueryString(){
-		?>
+		return we_html_element::jsElement('
+function queryString(what,id,o){
+	if(!o) o=top.order;
+	return \''.$_SERVER["SCRIPT_NAME"].'?what=\'+what+\'&table='.$this->table.'&id=\'+id+"&order="+o+"&filter='.$this->filter.'";
+}');
 
-		function queryString(what,id,o){
-		if(!o) o=top.order;
-		return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&table=<?php print $this->table; ?>&id='+id+"&order="+o+"&filter=<?php print $this->filter; ?>";
-		}
-
-		<?php
 	}
 
 	function printFramesetJSsetDir(){
-
-		if($this->filter == "user"){
-			?>
-			function setDir(id){
-			currentDir = id;
-			top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,id));
-			}
-			<?php
-		} else{
-			?>
-
-			function setDir(id){
-			top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
-			}
-
-			<?php
-		}
+		return we_html_element::jsElement('
+function setDir(id){' .
+($this->filter == "user" ? '
+	currentDir = id;
+	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));' : '
+	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));'
+) . '
+}');
 	}
 
 	function printSetDirHTML(){
-		print '<script>
+		print '<script type="text/javascript"><!--
 top.clearEntries();
-';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+' .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
-		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();
-';
-		} else{
-			print 'top.fsheader.enableRootDirButs();
-';
-		}
-
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			$go = true;
-		else{
+		} else{
 			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);
 			$rootPath = f("SELECT Path FROM " . USER_TABLE . " WHERE ID='" . $rootID . "'", "Path", $this->db);
 			$this->db->query("SELECT ID FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'");
-			if($this->db->next_record())
-				$go = true; else
-				$go = false;
+			$go = ($this->db->next_record());
 		}
 		if($go){
-			if($this->id == 0)
-				$this->path = "/";
+			if($this->id == 0){
+				$this->path = '/';
+			}
 			print 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
-top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";
-';
+top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-';
-		print '</script>';
+//-->
+</script>';
 	}
 
 	function printFramesetSelectFileHTML(){
-		?>
+		return we_html_element::jsElement('
+function selectFile(id){
+	if(id){
+		e=top.getEntry(id);' .
+	($this->filter == "user" ? '
+			if(!e.isFolder){' : ''
+	) . '
+				if( top.fsfooter.document.we_form.fname.value != e.text &&
+					top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
+					top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
+					top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
 
-		function selectFile(id){
-		if(id){
-		e=top.getEntry(id);
-		<?php if($this->filter == "user"){ ?>
+					top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
+						(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+						e.text;
+				}
+				top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
+				currentPath = e.path;
+				currentID = id;' .
+	($this->filter == "user" ? '
+			}' : ''
+	) . '
 
-			if(!e.isFolder){
-
-		<?php } ?>
-
-
-
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-		top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-		top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-		top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-		top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-		(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-		e.text;
-		}
-		top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-
-		<?php if($this->filter == "user"){ ?>
-
-			}
-
-		<?php } ?>
-
-		}else{
+	}else{
 		top.fsfooter.document.we_form.fname.value = "";
 		currentPath = "";
-		}
-		}
-
-
-		<?php
+	}
+}');
 	}
 
 	function printFooterTable(){
-		print '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-				</tr>
-				<tr>
-					<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-				</tr>';
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_button::position_yes_no_cancel(
-				$yes_button, null, $cancel_button);
-		print '
-				<tr>
-					<td></td>
-					<td class="defaultfont">
-						<b>' . g_l('fileselector', "[name]") . '</b>
-					</td>
-					<td></td>
-					<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-					<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-					<td>' . we_html_tools::getPixel(5, 5) . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-				</tr>
-			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td align="right">' . $buttons . '</td>
-					<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-				</tr>
-			</table>';
+		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
+		return '
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
+	</tr>
+	<tr>
+		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="defaultfont">
+			<b>' . g_l('fileselector', "[name]") . '</b>
+		</td>
+		<td></td>
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+		<td>' . we_html_tools::getPixel(5, 5) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+	</tr>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td align="right">' . $buttons . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
+	</tr>
+</table>';
 	}
 
 	function printFooterJSDef(){
-		print "
+		return we_html_element::jsElement("
 		function press_ok_button() {
 			if(document.we_form.fname.value==''&&top.currentType!='group'){
 				top.exit_close();
@@ -272,8 +235,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				top.exit_open();
 			};
 		}
-		";
+		");
 	}
 
 }
-?>

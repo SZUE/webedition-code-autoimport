@@ -25,23 +25,16 @@
 /*  a class for handling quicktimeDocuments. */
 
 class we_quicktimeDocument extends we_binaryDocument{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* ContentType of the Object  */
-	var $ContentType = "video/quicktime";
-
 	/* Parameternames which are placed within the object-Tag */
+
 	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
-
-
 
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
+		$this->EditPageNrs[] = WE_EDITPAGE_PREVIEW;
+		$this->ContentType = "video/quicktime";
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -58,35 +51,20 @@ class we_quicktimeDocument extends we_binaryDocument{
 	// is not written yet
 	function initByAttribs($attribs){
 		if(isset($attribs["sizingrel"])){
-			if(isset($attribs["width"])){
-				$orig_w = $attribs["width"];
-			} else{
-				$orig_w = $this->elements["width"]["dat"];
-			}
-			if(isset($attribs["height"])){
-				$orig_h = $attribs["height"];
-			} else{
-				$orig_h = $this->elements["height"]["dat"];
-			}
+			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->elements["width"]["dat"]);
+			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->elements["height"]["dat"]);
+
 			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
 			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
 			unset($attribs["sizingrel"]);
 		}
-		if(isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16){
-			$sizingbase = $attribs['sizingbase'];
-		} else{
-			$sizingbase = 16;
-		}
+		$sizingbase = (isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16 ? $attribs['sizingbase'] : 16);
 		if(isset($attribs['sizingbase'])){
 			unset($attribs['sizingbase']);
 		}
 
 		if(isset($attribs['sizingstyle'])){
-			if($attribs['sizingstyle'] == "none"){
-				$sizingstyle = false;
-			} else{
-				$sizingstyle = $attribs['sizingstyle'];
-			}
+			$sizingstyle = ($attribs['sizingstyle'] == "none" ? false : $attribs['sizingstyle']);
 			unset($attribs['sizingstyle']);
 		} else{
 			$sizingstyle = false;
@@ -95,11 +73,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 		if($sizingstyle){
 			$style_width = round($attribs["width"] / $sizingbase, 6);
 			$style_height = round($attribs["height"] / $sizingbase, 6);
-			if(isset($attribs["style"])){
-				$newstyle = $attribs["style"];
-			} else{
-				$newstyle = "";
-			}
+			$newstyle = (isset($attribs["style"]) ? $attribs["style"] : '');
 
 			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
 			$attribs["style"] = $newstyle;
@@ -109,20 +83,14 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 		foreach($attribs as $a => $b){
 			if($b != ""){
-				if($a == "Pluginspage" || $a == "Codebase"){
-					$this->setElement($a, $b, "txt");
-				} else{
-					$this->setElement($a, $b, "attrib");
-				}
+				$this->setElement($a, $b, ($a == "Pluginspage" || $a == "Codebase" ? "txt" : "attrib"));
 			}
 		}
 	}
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn=false){
-		global $we_transaction;
-
+	function getHtml($dyn = false){
 		//    At the moment it is not possible to make this tag xhtml valid, so the output is only posible
 		//    non xhtml valid
 
@@ -131,17 +99,15 @@ class we_quicktimeDocument extends we_binaryDocument{
 			$pluginspage = $this->getElement("Pluginspage") ? $this->getElement("Pluginspage") : "http://www.apple.com/quicktime/download/";
 			$codebase = $this->getElement("Codebase") ? $this->getElement("Codebase") : "http://www.apple.com/qtactivex/qtplugin.cab";
 
-			/*			 * *********************************************
-			  first we make valid object-tag
-			 * ********************************************** */
+			 // first we make valid object-tag
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $we_transaction . "&rand=" . $randval :
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . "&rand=" . $randval :
 				$this->Path;
 
 			$filter = array("filesize", "type", "xml");
-			$noAtts = array("scale", "volume");	//  no atts for xml
+			$noAtts = array("scale", "volume"); //  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
 			if(isset($this->elements["bgcolor"])){
 				$this->elements["bgcolor"]["type"] = "attrib";
@@ -182,7 +148,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						}
 					}
 				}
-			} else{				 //  object tag and embed
+			} else{ //  object tag and embed
 				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
 				$_objectAtts['codebase'] = $codebase;
 				//   we need embed as well
@@ -232,7 +198,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>' . $this->formInput2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -281,11 +247,10 @@ class we_quicktimeDocument extends we_binaryDocument{
 	</tr>
 </table>
 ';
-		return $content;
 	}
 
 	function formOther(){
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
@@ -294,9 +259,6 @@ class we_quicktimeDocument extends we_binaryDocument{
 	</tr>
 </table>
 ';
-
-
-		return $content;
 	}
 
 	function getThumbnail(){
@@ -361,13 +323,12 @@ class we_quicktimeDocument extends we_binaryDocument{
 				if($filename){
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
-					if($ct == "video/quicktime"){
+					if($ct == $this->ContentType){
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
 						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . "/" . weFile::getUniqueId();
 						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
-
 
 
 						$tmp_Filename = $quicktimeName . "_" . weFile::getUniqueId() . "_" . preg_replace(

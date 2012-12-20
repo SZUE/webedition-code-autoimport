@@ -578,12 +578,12 @@ class doclistView{
           row.removeChild(searchTD);
 
           var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />\n"
+              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" onblur=\"this.className=\'wetextinput\';\" onfocus=\"this.className=\'wetextinputselected\'\" type=\"text\" />"
               + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
               + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
               + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
-              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />\n"
-              + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>\n";
+              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" />"
+              + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
 
 
           cell = document.createElement("TD");
@@ -793,7 +793,7 @@ class doclistView{
 				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tbody id="filterTable">
         <tr>
-          <td>' . $GLOBALS ['we_doc']->HiddenTrans() . '</td>
+          <td>' . we_class::hiddenTrans() . '</td>
         </tr>';
 
 		$r = array();
@@ -1228,7 +1228,7 @@ class doclistView{
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields [$i] ["tag"];
 
-					if(weContentProvider::IsBinary($_result [$f] ["docID"])){
+					if(weContentProvider::isBinary($_result [$f] ["docID"])){
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f] ["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields [$_tagName] = "";
 						while($DB_WE->next_record()) {

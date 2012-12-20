@@ -64,7 +64,7 @@ print STYLESHEET;
 <body class="weEditorBody">
 	<form name="we_form" method="post">
 		<?php
-		$we_doc->pHiddenTrans();
+		echo we_class::hiddenTrans();
 
 		switch(strtolower($we_doc->Extension)){
 			case ".pdf":

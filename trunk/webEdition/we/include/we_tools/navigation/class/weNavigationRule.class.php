@@ -55,7 +55,7 @@ class weNavigationRule extends weModelBase{
 		if($useDB){
 			$this->db = new DB_WE();
 		}
-		if(count($persData)){
+		if(!empty($persData)){
 			foreach($this->persistent_slots as $val){
 				if(isset($persData[$val])){
 					$this->$val = $persData[$val];

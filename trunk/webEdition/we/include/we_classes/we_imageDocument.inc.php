@@ -29,24 +29,6 @@
 class we_imageDocument extends we_binaryDocument{
 
 	/**
-	 * Name of the class => important for reconstructing the class from outside the class
-	 * @var string
-	 */
-	var $ClassName = __CLASS__;
-
-	/**
-	 * Content type for the icon which will be used for the class
-	 * @var string
-	 */
-	var $ContentType = 'image/*';
-
-	/**
-	 * Icon Name for the icon which will be used for the class
-	 * @var string
-	 */
-	var $Icon = we_base_ContentTypes::IMAGE_ICON;
-
-	/**
 	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
 	 * @var string
 	 */
@@ -74,7 +56,9 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Thumbs');
+		$this->persistent_slots[] = 'Thumbs';
+		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
+		$this->ContentType = 'image/*';
 		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT, WE_EDITPAGE_THUMBNAILS);
 		/* 		if(defined("CUSTOMER_TABLE")){
 		  array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
@@ -87,7 +71,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
@@ -242,27 +226,26 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param string $src_over
 	 */
 	function getRollOverScript($src = '', $src_over = '', $useScript = true){
-		if($this->getElement('RollOverFlag')){
-			if(!$src){
-				$src = $this->Path;
-			}
+		if(!$this->getElement('RollOverFlag')){
+			return '';
+		}
+		if(!$src){
+			$src = $this->Path;
+		}
 
-			if(!$src_over){
-				$src_over = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
-			}
+		if(!$src_over){
+			$src_over = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+		}
 
-			if(!$this->getElement('name')){
-				$this->setElement('name', 'ro_' . $this->Name, 'attrib');
-			}
+		if(!$this->getElement('name')){
+			$this->setElement('name', 'ro_' . $this->Name, 'attrib');
+		}
 
-			$js = 'we' . $this->getElement('name') . 'Over = new Image();
+		$js = 'we' . $this->getElement('name') . 'Over = new Image();
     we' . $this->getElement('name') . 'Out = new Image();
     we' . $this->getElement('name') . "Over.src = '" . $src_over . "';
     we" . $this->getElement('name') . "Out.src = '" . $src . "';";
-			return ($useScript ? we_html_element::jsElement($js) : $js);
-		} else{
-			return '';
-		}
+		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
 	/**
@@ -289,10 +272,10 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function getRollOverAttribsArr(){
 		if($this->getElement('RollOverFlag')){
-
-			$attr['onmouseover'] = 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Over.src; }';
-			$attr['onmouseout'] = 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Out.src; }';
-			return $attr;
+			return array(
+				'onmouseover' => 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Over.src; }',
+				'onmouseout' => 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Out.src; }',
+			);
 		} else{
 			return array();
 		}
@@ -311,13 +294,7 @@ class we_imageDocument extends we_binaryDocument{
 		if(!is_numeric($quality)){
 			return false;
 		} else{
-			if($quality > 10){
-				$quality = 10;
-			} else if($quality < 0){
-				$quality = 0;
-			}
-
-			$quality = $quality * 10;
+			$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
 			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
 			if($_resized_image[0]){
@@ -349,13 +326,7 @@ class we_imageDocument extends we_binaryDocument{
 		if(!is_numeric($quality)){
 			return false;
 		} else{
-			if($quality > 10){
-				$quality = 10;
-			} else if($quality < 0){
-				$quality = 0;
-			}
-
-			$quality = $quality * 10;
+			$quality = ($quality > 10 ? 10 : ($quality < 0 ? 0 : $quality)) * 10;
 
 			$dataPath = TEMP_PATH . '/' . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
@@ -404,11 +375,7 @@ class we_imageDocument extends we_binaryDocument{
 						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
 
-						if(sizeof($foo)){
-							$pid = $foo[0];
-						} else{
-							$pid = 0;
-						}
+						$pid = (empty($foo) ? 0 : $foo[0]);
 					}
 
 					$path = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : '';
@@ -432,14 +399,10 @@ class we_imageDocument extends we_binaryDocument{
 
 					if($thumbObj->isOriginal()){
 						$create = false;
-					} else{
-
-						if((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path)){
-							// open a file
-							if(intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->date)){
-								$create = false;
-							}
-						}
+					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path) &&
+						// open a file
+						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->date)){
+						$create = false;
 					}
 
 					if($create){
@@ -470,21 +433,14 @@ class we_imageDocument extends we_binaryDocument{
 				unset($this->elements['sizingrel']);
 			}
 
-			if(isset($this->elements['sizingbase']) && $this->elements['sizingbase']['dat'] != 16){
-				$sizingbase = $this->elements['sizingbase']['dat'];
-			} else{
-				$sizingbase = 16;
-			}
+			$sizingbase = (isset($this->elements['sizingbase']) && $this->elements['sizingbase']['dat'] != 16 ? $this->elements['sizingbase']['dat'] : 16);
+
 			if(isset($this->elements['sizingbase'])){
 				unset($this->elements['sizingbase']);
 			}
 
 			if(isset($this->elements['sizingstyle'])){
-				if($this->elements['sizingstyle']['dat'] == 'none'){
-					$sizingstyle = false;
-				} else{
-					$sizingstyle = $this->elements['sizingstyle']['dat'];
-				}
+				$sizingstyle = ($this->elements['sizingstyle']['dat'] == 'none' ? false : $this->elements['sizingstyle']['dat']);
 				unset($this->elements['sizingstyle']);
 			} else{
 				$sizingstyle = false;
@@ -493,11 +449,7 @@ class we_imageDocument extends we_binaryDocument{
 			if($sizingstyle){
 				$style_width = round($this->elements['width']['dat'] / $sizingbase, 6);
 				$style_height = round($this->elements['height']['dat'] / $sizingbase, 6);
-				if(isset($this->elements['style'])){
-					$newstyle = $this->elements['style']['dat'];
-				} else{
-					$newstyle = '';
-				}
+				$newstyle = (isset($this->elements['style']) ? $this->elements['style']['dat'] : '');
 
 				$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
 				$this->setElement('style', $newstyle, 'attrib');
@@ -511,9 +463,7 @@ class we_imageDocument extends we_binaryDocument{
 
 
 
-			/*			 * ***************************************************** */
-			/*   Here we generate the image-tag
-			  /******************************************************* */
+			//  Here we generate the image-tag
 			//   attribs for the image tag
 			$attribs['src'] = $src;
 
@@ -539,23 +489,17 @@ class we_imageDocument extends we_binaryDocument{
 				$attribs['alt'] = '';
 			}
 
-			while(list($k, $v) = $this->nextElement('attrib')) {
+			foreach($this->nextElement('attrib') as $k => $v){
 				if(!in_array($k, $filter)){
 					if($v['dat'] != ''){
 						$attribs[$k] = $v['dat'];
 					}
 				}
 			}
-			/*			 * ***************************************************** */
-			/*   If needed - js output for rollover.
-			  /******************************************************* */
+			//  If needed - js output for rollover.
 
 			if(isset($attribs['only'])){
-				if(array_key_exists($attribs['only'], $attribs)){
-					$this->html = $attribs[$attribs['only']];
-				} else{
-					$this->html = '';
-				}
+				$this->html = (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
 				return $this->html;
 			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
 				$this->html = $attribs['src'];
@@ -671,7 +615,7 @@ class we_imageDocument extends we_binaryDocument{
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '".$this->getElement('Title')."'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol(6, 4, array('valign' => 'bottom'), we_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['$_titleField'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['$_titleField'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['$_titleField'].removeAttribute('readonly', 'false'); document.forms[0]['$_titleField'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path

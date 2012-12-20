@@ -1228,7 +1228,8 @@ abstract class we_backup{
 	}
 
 	protected function _saveState(){
-		// Initialize variable
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		//		// Initialize variable
 		return '
 $this->errors=' . var_export($this->errors, true) . ';
 $this->warnings=' . var_export($this->warnings, true) . ';
@@ -1258,6 +1259,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 * Description:
 	 */
 	function restoreState($temp_filename){
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		if(($save = weFile::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
 			eval($save);
 			return $temp_filename;

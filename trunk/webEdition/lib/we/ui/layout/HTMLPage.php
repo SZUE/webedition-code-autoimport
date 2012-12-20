@@ -34,12 +34,6 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
-	/*
-	 * Static variable to hold singleton instance
-	 */
-
-	private static $__instance = NULL;
-
 	/**
 	 * title tag
 	 *
@@ -134,11 +128,11 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 
 	public static function getInstance(){
-
-		if(self::$__instance === NULL){
-			self::$__instance = new self();
+		static $__instance=NULL;
+		if($__instance === NULL){
+			$__instance = new static();
 		}
-		return self::$__instance;
+		return $__instance;
 	}
 
 	/*
