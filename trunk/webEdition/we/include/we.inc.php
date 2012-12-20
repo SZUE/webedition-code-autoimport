@@ -48,7 +48,7 @@ if($_memlimit < 32){
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
-//ini_set("arg_separator.output","&amp;");
+@ini_set("arg_separator.output","&");
 
 //prepare space for we-variables; $_SESSION['weS'] is set in we_session
 if(!isset($GLOBALS['we'])){
