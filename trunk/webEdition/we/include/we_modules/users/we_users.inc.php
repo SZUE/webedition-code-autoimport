@@ -671,13 +671,13 @@ class we_user{
 							if (top.opener.top.header) {
 								top.opener.top.header.location.reload();
 							}
-							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
+							if (top.opener.top.rframe && top.opener.top.rframe && top.opener.top.rframe.bm_vtabs) {
 								if (top.opener.top.table) {
 									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
 								}
 							}
-							if (top.opener.top.rframe.bframe.bm_vtabs) {
-								top.opener.top.rframe.bframe.bm_vtabs.location.reload();
+							if (top.opener.top.rframe.bm_vtabs) {
+								top.opener.top.rframe.bm_vtabs.location.reload();
 							}
 
 							// reload all frames of an editor
@@ -727,13 +727,13 @@ class we_user{
 							if (top.opener.top.header) {
 								top.opener.top.header.location.reload();
 							}
-							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
+							if (top.opener.top.rframe && top.opener.top.rframe && top.opener.top.rframe.bm_vtabs) {
 								if (top.opener.top.table) {
 									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
 								}
 							}
-							if (top.opener.top.rframe.bframe.bm_vtabs) {
-								top.opener.top.rframe.bframe.bm_vtabs.location.reload();
+							if (top.opener.top.rframe.bm_vtabs) {
+								top.opener.top.rframe.bm_vtabs.location.reload();
 							}
 
 							// reload all frames of an editor

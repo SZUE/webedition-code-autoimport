@@ -136,8 +136,8 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "1px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "1px";
 	top.setTreeWidth(widthBeforeDeleteMode);
 	top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 	break;
@@ -149,8 +149,8 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "150px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "150px";
 
 	var width = top.getTreeWidth();
 
@@ -165,7 +165,7 @@ function pWebEdition_JSwe_cmds(){
 
 	widthBeforeDeleteModeSidebar = widthSidebar;
 
-	if(arguments[2] != 1) we_repl(self.rframe.bframe.treeheader,url,arguments[0]);
+	if(arguments[2] != 1) we_repl(self.rframe.treeheader,url,arguments[0]);
 	break;
 	case "move":
 	if(top.deleteMode != arguments[1]){
@@ -175,8 +175,8 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "160px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "160px";
 
 	var width = top.getTreeWidth();
 
@@ -192,7 +192,7 @@ function pWebEdition_JSwe_cmds(){
 	widthBeforeDeleteModeSidebar = widthSidebar;
 
 	if(arguments[2] != 1) {
-	we_repl(self.rframe.bframe.treeheader,url,arguments[0]);
+	we_repl(self.rframe.treeheader,url,arguments[0]);
 	}
 	break;
 
