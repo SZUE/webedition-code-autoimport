@@ -42,7 +42,7 @@ function we_tag_href($attribs){
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}
 	// Bug Fix #7045
-	if(strlen($rootdir) == 1 && $rootdir == '/'){
+	if($rootdir == '/'){
 		$rootdir = '';
 	}
 
@@ -71,9 +71,9 @@ function we_tag_href($attribs){
 		case 'all':
 			$int = ($type == 'int' || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
 			$intID = $GLOBALS['we_doc']->getElement($nintID);
-			if(!$intID && $rootdirid){
+/*			if(!isset($GLOBALS['we_doc']->elements[$nintID]['dat']) && $rootdirid){
 				$intID = $rootdirid;
-			}
+			}*/
 			$intPath = $ct = '';
 
 			if($intID){

@@ -26,13 +26,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop();
 echo we_html_element::jsElement(<<<EOF
-			function we_cmd(){
-				var args = "";
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-				}
-				eval('parent.we_cmd('+args+')');
-			}
+function we_cmd(){
+	var args = "";
+	for(var i = 0; i < arguments.length; i++){
+		args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+	}
+	eval('parent.we_cmd('+args+')');
+}
 EOF
 	);
 ?>

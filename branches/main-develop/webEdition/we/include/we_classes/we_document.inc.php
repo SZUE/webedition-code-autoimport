@@ -26,11 +26,8 @@ include_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
-
-	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName = __CLASS__;
-
 	/* Extension of the document */
+
 	var $Extension = '';
 
 	/* Array of possible filename extensions for the document */
@@ -40,7 +37,6 @@ class we_document extends we_root{
 
 	/* If the file should only be saved in the db */
 	var $IsDynamic = 0;
-	var $Table = FILE_TABLE;
 	var $schedArr = array();
 
 	/* Categories of the document */
@@ -48,6 +44,7 @@ class we_document extends we_root{
 	var $IsSearchable = '';
 	var $InGlossar = 0;
 	var $NavigationItems = '';
+	private $DocStream = '';
 
 	/*
 	 * Functions
@@ -57,6 +54,7 @@ class we_document extends we_root{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
+		$this->Table = FILE_TABLE;
 	}
 
 	function copyDoc($id){
@@ -100,8 +98,7 @@ class we_document extends we_root{
 		}
 	}
 
-	/* gets the filesize of the document */
-
+	/** gets the filesize of the document */
 	function getFilesize(){
 		return strlen($this->elements['data']['dat']);
 	}
@@ -304,7 +301,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return we_html_element::jsElement(we_button::create_state_changer(false)) .			$navis->get();
+		return we_button::create_state_changer() . $navis->get();
 	}
 
 	function addCat($id){
@@ -631,7 +628,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 		$this->i_setText();
 
@@ -688,7 +685,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		// Navigation items
 		$this->i_setExtensions();
@@ -753,7 +750,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function we_delete(){
+	public function we_delete(){
 		return parent::we_delete() && $this->i_deleteSiteDir() && $this->i_deleteMainDir() && $this->i_deleteNavigation();
 	}
 

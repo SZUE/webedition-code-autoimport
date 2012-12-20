@@ -24,8 +24,6 @@
  */
 class we_webEditionDocument extends we_textContentDocument{
 
-	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName = __CLASS__;
 	// ID of the templates that is used from the document
 	var $TemplateID = 0;
 	// ID of the template that is used from the parked document (Bug Fix #6615)
@@ -36,13 +34,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	var $temp_doc_type = '';
 	// Path from the template
 	var $TemplatePath = '';
-	var $Icon = 'we_dokument.gif';
-	var $Table = FILE_TABLE;
-	var $ContentType = 'text/webedition';
-	// Only needed for output
-	/* 	var $CacheType = "none";
-	  var $CacheLifeTime = 0;
-	 */
 	var $hasVariants = null;
 
 	/**
@@ -64,6 +55,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
 		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category');
+		$this->Icon = 'we_dokument.gif';
+		$this->ContentType = 'text/webedition';
 	}
 
 	public static function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = ''){
@@ -695,7 +688,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		// First off correct corupted fields
 		$this->correctFields();
 
@@ -727,25 +720,25 @@ class we_webEditionDocument extends we_textContentDocument{
 		return parent::i_writeDocument();
 	}
 
-	function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 
-	function we_unpublish($skipHook = 0){
+	public function we_unpublish($skipHook = 0){
 		if(!$this->ID){
 			return false;
 		}
 		return parent::we_unpublish($skipHook);
 	}
 
-	function we_delete(){
+	public function we_delete(){
 		if(!$this->ID){
 			return false;
 		}
 		return we_document::we_delete();
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
@@ -885,12 +878,10 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
 		} else{
-			if(isset($GLOBALS['DocStream']) && isset($GLOBALS['DocStream'][$this->ID])){
-				$doc = $GLOBALS['DocStream'][$this->ID];
+			static $cache = array();
+			if(isset($cache[$this->ID])){
+				$doc = $cache[$this->ID];
 			} else{
-				if(!isset($GLOBALS['DocStream'])){
-					$GLOBALS['DocStream'] = array();
-				}
 				$doc = $this->i_getDocument();
 
 				// --> Glossary Replacement
@@ -899,7 +890,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 						$doc = weGlossaryReplace::replace($doc, $this->Language);
 					}
 				}
-				$GLOBALS['DocStream'][$this->ID] = $doc;
+				$cache[$this->ID] = $doc;
 			}
 		}
 		return $doc;
@@ -1078,7 +1069,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * called when document is initialized from outside webEdition
 	 * @param mixed $loadBinary
 	 */
-	function i_getContentData($loadBinary = 0){
+	protected function i_getContentData($loadBinary = 0){
 		parent::i_getContentData($loadBinary);
 		if(defined('SHOP_TABLE')){
 			if($this->canHaveVariants()){ // article variants

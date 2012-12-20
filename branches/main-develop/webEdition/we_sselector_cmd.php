@@ -34,7 +34,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save_last"){
 }
 if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "save_last")){
 	?>
-	<script  type="text/javascript"><!--
+	<script type="text/javascript"><!--
 
 		function drawNewFolder() {
 			for(var i=0; i<top.allentries.length;i++){
@@ -256,8 +256,7 @@ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] != "
 		}
 	} else if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "delete_file"){
 		if(isset($_REQUEST["fid"])){
-			$foo = 0;
-			$foo = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($_REQUEST["fid"]) . "';", 0, $DB_WE);
+			$foo = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($_REQUEST["fid"]) . "'", 'ID', $DB_WE);
 			if(preg_match('|' . WEBEDITION_PATH . '|', $_REQUEST["fid"]) || ($_REQUEST["fid"] == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $_REQUEST["fid"]) || $foo || $_REQUEST["fid"] == $_SERVER['DOCUMENT_ROOT'] || $_REQUEST["fid"] . "/" == $_SERVER['DOCUMENT_ROOT']){
 				print we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR);
 			} else{

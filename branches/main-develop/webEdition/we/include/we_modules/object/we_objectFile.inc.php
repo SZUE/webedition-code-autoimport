@@ -23,17 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_objectFile extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
 
-	var $ClassName = __CLASS__;
-
-	/* Icon which is shown at the tree-menue  */
-	var $Icon = 'objectFile.gif';
-	var $Published = 0;
 	var $TableID = 0;
 	var $ObjectID = 0;
-	var $Category = '';
-	var $Table = OBJECT_FILES_TABLE;
 	var $rootDirID = 0;
 	var $RootDirPath = '/';
 	var $Workspaces = '';
@@ -42,17 +34,12 @@ class we_objectFile extends we_document{
 	var $AllowedWorkspaces = array();
 	var $AllowedClasses = '';
 	var $CSS = '';
-	var $IsSearchable = '';
 	var $Charset = '';
 	var $Language = '';
-	var $InWebEdition = false;
 	var $Templates = '';
 	var $ExtraTemplates = '';
 	var $DefArray = array();
-	var $PublWhenSave = 0;
-	var $ContentType = 'objectFile';
-	var $IsTextContentDoc = true;
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+		var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
 
@@ -60,6 +47,11 @@ class we_objectFile extends we_document{
 
 	function __construct(){
 		parent::__construct();
+		$this->Icon = 'objectFile.gif';
+		$this->Table = OBJECT_FILES_TABLE;
+		$this->ContentType = 'objectFile';
+		$this->PublWhenSave = 0;
+		$this->IsTextContentDoc = true;
 		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'ObjectID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID');
 		if(defined('SCHEDULE_TABLE')){
 			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
@@ -2157,7 +2149,7 @@ class we_objectFile extends we_document{
 		return parent::i_pathNotValid() || ($this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0);
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 
 		if($this->i_pathNotValid()){
@@ -2285,7 +2277,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
@@ -2366,7 +2358,7 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		if($skipHook == 0){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
@@ -2405,7 +2397,7 @@ class we_objectFile extends we_document{
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish($skipHook = 0){
+	public function we_unpublish($skipHook = 0){
 		if(!$this->ID || !$this->markAsUnPublished()){
 			return false;
 		}
@@ -2431,7 +2423,7 @@ class we_objectFile extends we_document{
 		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID);
 	}
 
-	function we_delete(){
+	public function we_delete(){
 		if(!$this->ID){
 			return false;
 		}
@@ -2447,7 +2439,7 @@ class we_objectFile extends we_document{
 		return parent::we_delete();
 	}
 
-	function we_republish($rebuildMain = true){
+	public function we_republish($rebuildMain = true){
 		return ($this->Published ?
 				$this->we_publish(true, $rebuildMain) :
 				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $this->ID)
@@ -2572,7 +2564,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_getContentData(/* $loadBinary = 0 */){
+	protected function i_getContentData(/* $loadBinary = 0 */){
 		if(!$this->TableID){
 			return;
 		}
@@ -2884,7 +2876,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
+	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
 		parent::initByID($we_ID, $we_Table, $from);
 		if(isset($this->elements['Charset'])){
 			$this->Charset = $this->elements['Charset']['dat'];

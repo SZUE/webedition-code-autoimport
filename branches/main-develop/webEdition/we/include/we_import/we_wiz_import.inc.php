@@ -849,11 +849,11 @@ class we_wizard_import extends we_wizard{
 			we_html_element::htmlHidden(array("name" => "v[import_from]", "value" => (isset($v["import_from"]) ? $v["import_from"] : ""))) .
 			we_html_element::htmlHidden(array("name" => "v[docCategories]", "value" => (isset($v["docCategories"]) ? $v["docCategories"] : ""))) .
 			we_html_element::htmlHidden(array("name" => "v[objCategories]", "value" => (isset($v["objCategories"]) ? $v["objCategories"] : ""))) .
-			//we_html_element::htmlHidden(array("name" => "v[store_to_id]", "value" => (isset($v["store_to_id"]) ? $v["store_to_id"] : 0)))."\n".
+			//we_html_element::htmlHidden(array("name" => "v[store_to_id]", "value" => (isset($v["store_to_id"]) ? $v["store_to_id"] : 0))).
 			we_html_element::htmlHidden(array("name" => "v[collision]", "value" => (isset($v["collision"]) ? $v["collision"] : 'rename'))) .
 			we_html_element::htmlHidden(array("name" => "doctypeChanged", "value" => 0)) .
 			we_html_element::htmlHidden(array("name" => "v[we_TemplateID]", "value" => 0)) .
-			//we_html_element::htmlHidden(array("name" => "v[we_TemplateName]", "value" => "/"))."\n".
+			//we_html_element::htmlHidden(array("name" => "v[we_TemplateName]", "value" => "/")).
 			we_html_element::htmlHidden(array("name" => "v[is_dynamic]", "value" => (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0)));
 
 		if(!defined("OBJECT_TABLE"))
@@ -861,6 +861,7 @@ class we_wizard_import extends we_wizard{
 
 		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
 		$DefaultStaticExt = DEFAULT_STATIC_EXT;
+
 
 		$functions = we_button::create_state_changer(false) . "
 			function we_cmd() {
@@ -915,28 +916,26 @@ class we_wizard_import extends we_wizard{
 							if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }
 							ext = fs.substr(fs.length-4,4);
 							f.elements['v[import_from]'].value = fs;
-						}
-						else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+						}else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
 							ext = fl.substr(fl.length-4,4);
 							f.elements['v[import_from]'].value = fl;
-						}
-						 else if (fs=='/' || fl=='') {
+						}else if (fs=='/' || fl=='') {
 							" . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "break;
 						}
 						if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;" .
 			(defined("OBJECT_TABLE") ?
-				"			if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {" :
-				"			if(f.elements['v[we_TemplateID]'].value!=0) {"
-			) .
-			"				f.step.value = 2;
+				"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
+				"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
+			) . "
+							f.step.value = 2;
 							we_submit_form(f, 'wizbody', '" . $this->path . "');
 						} else {" .
 			(defined("OBJECT_TABLE") ?
-				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR):
 				we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
-			) .
-			"			}
-			break;
+			) . "
+					}
+						break;
 					case 'cancel':
 						top.close();
 						break;
@@ -1637,6 +1636,7 @@ HTS;
 		global $DB_WE;
 		$v = $_REQUEST["v"];
 
+
 		$functions = we_button::create_state_changer(false) . "
 			function we_cmd() {
 				var args = '';
@@ -1830,98 +1830,98 @@ HTS;
 			$v["is_dynamic"] = $values["IsDynamic"];
 			$v["docCategories"] = $values["Category"];
 		}
-		$hdns = "\n" .
-			we_html_element::htmlHidden(array("name" => "v[mode]", "value" => (isset($v["mode"]) ? $v["mode"] : ""))) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[import_from]", "value" => $v["import_from"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[collision]", "value" => $v["collision"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[rdofloc]", "value" => $v["rdofloc"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[fserver]", "value" => $v["fserver"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[csv_fieldnames]", "value" => $v["csv_fieldnames"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[csv_seperator]", "value" => trim($v["csv_seperator"]))) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[csv_enclosed]", "value" => $v["csv_enclosed"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[csv_escaped]", "value" => $v["csv_escaped"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[csv_terminated]", "value" => $v["csv_terminated"])) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[docCategories]", "value" => (isset($v["docCategories"]) ? $v["docCategories"] : ""))) . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[objCategories]", "value" => (isset($v["objCategories"]) ? $v["objCategories"] : ""))) . "\n" .
-			//we_html_element::htmlHidden(array("name" => "v[store_to_id]", "value" => (isset($v["store_to_id"]) ? $v["store_to_id"] : 0)))."\n".
-			we_html_element::htmlHidden(array("name" => "v[is_dynamic]", "value" => (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0))) . "\n" .
-			we_html_element::htmlHidden(array("name" => "doctypeChanged", "value" => 0)) . "\n" . "\n" .
-			we_html_element::htmlHidden(array("name" => "v[file_format]", "value" => $v["file_format"]));
-		if(!defined("OBJECT_TABLE"))
-			$hdns .= we_html_element::htmlHidden(array("name" => "v[import_type]", "value" => "documents")) . "\n";
+		$hdns =
+			we_html_element::htmlHidden(array("name" => "v[mode]", "value" => (isset($v["mode"]) ? $v["mode"] : ""))) .
+			we_html_element::htmlHidden(array("name" => "v[import_from]", "value" => $v["import_from"])) .
+			we_html_element::htmlHidden(array("name" => "v[collision]", "value" => $v["collision"])) .
+			we_html_element::htmlHidden(array("name" => "v[rdofloc]", "value" => $v["rdofloc"])) .
+			we_html_element::htmlHidden(array("name" => "v[fserver]", "value" => $v["fserver"])) .
+			we_html_element::htmlHidden(array("name" => "v[csv_fieldnames]", "value" => $v["csv_fieldnames"])) .
+			we_html_element::htmlHidden(array("name" => "v[csv_seperator]", "value" => trim($v["csv_seperator"]))) .
+			we_html_element::htmlHidden(array("name" => "v[csv_enclosed]", "value" => $v["csv_enclosed"])) .
+			we_html_element::htmlHidden(array("name" => "v[csv_escaped]", "value" => $v["csv_escaped"])) .
+			we_html_element::htmlHidden(array("name" => "v[csv_terminated]", "value" => $v["csv_terminated"])) .
+			we_html_element::htmlHidden(array("name" => "v[docCategories]", "value" => (isset($v["docCategories"]) ? $v["docCategories"] : ""))) .
+			we_html_element::htmlHidden(array("name" => "v[objCategories]", "value" => (isset($v["objCategories"]) ? $v["objCategories"] : ""))) .
+			//we_html_element::htmlHidden(array("name" => "v[store_to_id]", "value" => (isset($v["store_to_id"]) ? $v["store_to_id"] : 0))).
+			we_html_element::htmlHidden(array("name" => "v[is_dynamic]", "value" => (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0))) .
+			we_html_element::htmlHidden(array("name" => "doctypeChanged", "value" => 0)) .
+			we_html_element::htmlHidden(array("name" => "v[file_format]", "value" => $v["file_format"])) .
+			(defined("OBJECT_TABLE") ? '' :
+				$hdns .= we_html_element::htmlHidden(array("name" => "v[import_type]", "value" => "documents"))
+			);
 
 		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
 		$DefaultStaticExt = DEFAULT_STATIC_EXT;
 
+
 		$functions = we_button::create_state_changer(false) . "
-			function we_cmd() {
-				var args = '';
-				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-				for(var i = 0; i < arguments.length; i++) {
-					url += 'we_cmd['+i+']='+escape(arguments[i]);
-					if(i < (arguments.length - 1)) {
-						url += '&';
-					}
-				}
-				switch (arguments[0]) {
-					default:
-						for (var i=0; i < arguments.length; i++) {
-							args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
-						}
-						eval('parent.we_cmd('+args+')');
-				}
+	function we_cmd() {
+		var args = '';
+		var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+		for(var i = 0; i < arguments.length; i++) {
+			url += 'we_cmd['+i+']='+escape(arguments[i]);
+			if(i < (arguments.length - 1)) {
+				url += '&';
 			}
-			function set_button_state() {
+		}
+		switch (arguments[0]) {
+			default:
+				for (var i=0; i < arguments.length; i++) {
+					args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+				}
+				eval('parent.we_cmd('+args+')');
+		}
+	}
+	function set_button_state() {
 				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
 				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
-			}
-			function we_submit_form(f, target, url) {
-				f.target = target;
-				f.action = url;
-				f.method = 'post';
-				f.submit();
-			}
-			function switchExt() {
-				var a = self.document.forms['we_form'].elements;
-				if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
-				a['v[we_Extension]'].value=changeto;
-			}
-			function handle_event(evt) {
-				var f = self.document.forms['we_form'];
-				if(f.elements['v[import_type]']== 'documents'){
-			if(f.elements['v[docType]'].value == -1) {
-					f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
-				} else {
-					f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
-				}}
-				switch(evt) {
-					case 'previous':
-						f.step.value = 1;
-						we_submit_form(f, 'wizbody', '" . $this->path . "');
-						break;
-					case 'next':
-						if(f.elements['v[import_type]']== 'documents'){
-						if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
-						}" .
-			(defined("OBJECT_TABLE") ?
-				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {" :
-				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {"
-			) .
-			"				f.step.value = 3;
-							we_submit_form(f, 'wizbody', '" . $this->path . "');
-						}else {
-							if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
+	}
+	function we_submit_form(f, target, url) {
+		f.target = target;
+		f.action = url;
+		f.method = 'post';
+		f.submit();
+	}
+	function switchExt() {
+		var a = self.document.forms['we_form'].elements;
+		if (a['v[is_dynamic]'].value==1) var changeto='" . $DefaultDynamicExt . "'; else var changeto='" . $DefaultStaticExt . "';
+		a['v[we_Extension]'].value=changeto;
+	}
+	function handle_event(evt) {
+		var f = self.document.forms['we_form'];
+		if(f.elements['v[import_type]']== 'documents'){
+		if(f.elements['v[docType]'].value == -1) {
+			f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;
+		} else {
+			f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;
+	}}
+	switch(evt) {
+		case 'previous':
+			f.step.value = 1;
+			we_submit_form(f, 'wizbody', '" . $this->path . "');
+			break;
+		case 'next':
+			if(f.elements['v[import_type]']== 'documents'){
+					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;
+					}" . (defined("OBJECT_TABLE") ?
+				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
+				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
+				{
+					f.step.value = 3;
+					we_submit_form(f, 'wizbody', '" . $this->path . "');
+				}else {
+					if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', "[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) .
 			(defined("OBJECT_TABLE") ?
 				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) :
-				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)
-			) .
-			"			}
-						break;
-					case 'cancel':
-						top.close();
-						break;
+				"				else " . we_message_reporting::getShowMessageCall(g_l('import', "[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR)) . "
 				}
-			}";
+				break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}";
 
 		$weSessionId = session_id();
 		$functions .= <<<HTS
@@ -2198,6 +2198,7 @@ HTS;
 		$we_flds = (isset($_REQUEST["we_flds"])) ? $_REQUEST["we_flds"] : array();
 		$attrs = (isset($_REQUEST["attrs"])) ? $_REQUEST["attrs"] : array();
 
+
 		$hdns =
 			$this->getHdns("v", $v) .
 			(isset($_REQUEST["records"]) ? $this->getHdns("records", $_REQUEST["records"]) : "") .
@@ -2208,37 +2209,38 @@ HTS;
 			we_html_element::htmlHidden(array("name" => "v[pfx_fn]", "value" => ((!isset($v["pfx_fn"])) ? 0 : $v["pfx_fn"]))) .
 			(isset($v["rdo_timestamp"]) ? we_html_element::htmlHidden(array("name" => "v[sTimeStamp]", "value" => $v["rdo_timestamp"])) : '');
 
+
 		$functions = "
-			function set_button_state() {
+function set_button_state() {
 				top.wizbusy.back_enabled = top.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
 				top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', " . (($_REQUEST["mode"] != 1) ? "'enabled'" : "'disabled'") . ");
-			}
-			function we_submit_form(f, target, url) {
-				f.target = target;
-				f.action = url;
-				f.method = 'post';
-				f.submit();
-			}
-			function handle_event(evt) {
-				var f = self.document.forms['we_form'];
-				switch(evt) {
-					case 'previous':
-						f.step.value = 2;
-						we_submit_form(f, 'wizbody', '" . $this->path . "');
-						break;
-					case 'next':
-						f.step.value=3;
-						f.mode.value=1;
-						f.elements['v[mode]'].value=1;
-						f.elements['v[startCSVImport]'].value=1;
+}
+function we_submit_form(f, target, url) {
+	f.target = target;
+	f.action = url;
+	f.method = 'post';
+	f.submit();
+}
+function handle_event(evt) {
+	var f = self.document.forms['we_form'];
+	switch(evt) {
+	case 'previous':
+		f.step.value = 2;
+		we_submit_form(f, 'wizbody', '" . $this->path . "');
+		break;
+	case 'next':
+		f.step.value=3;
+		f.mode.value=1;
+		f.elements['v[mode]'].value=1;
+		f.elements['v[startCSVImport]'].value=1;
 						top.wizbusy.next_enabled = top.wizbusy.switch_button_state('next', 'next_enabled', 'disabled');
-						we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
-						break;
-					case 'cancel':
-						top.close();
-						break;
-				}
-			}";
+		we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
+		break;
+	case 'cancel':
+		top.close();
+		break;
+	}
+}";
 
 		$db = new DB_WE();
 
@@ -2411,10 +2413,10 @@ HTS;
 		$fn->setCol(4, 0, array("width" => 25), we_html_tools::getPixel(25, 0));
 		$fn->setCol(4, 1, array(), $asgndFld->getHTML());
 
-		$parts = array();
-		array_push($parts, array(
-			"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
-			"space" => 0)
+		$parts = array(
+			array(
+				"html" => we_html_tools::getPixel(1, 8) . "<br>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
+				"space" => 0)
 		);
 
 

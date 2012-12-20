@@ -184,7 +184,7 @@ class we_workflow_frames extends we_workflow_moduleFrames{
 	}
 
 	function getHTMLLog($docID, $type = 0){
-		print '<script>self.focus();</script>
+		print we_html_element::jsElement('self.focus();').'
 		</head>
 		<body class="weDialogBody">'.
 		we_workflow_view::getLogForDocument($docID, $type).

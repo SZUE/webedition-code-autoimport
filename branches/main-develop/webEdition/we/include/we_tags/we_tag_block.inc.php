@@ -26,7 +26,7 @@
  * due to parser limits this does not work now
   function we_parse_tag_blockControls($attribs,$content){
   eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
-  if (($foo = attributFehltError($arr, 'name', 'blockControls')))	return $foo;
+  if (($foo = attributFehltError($arr, 'name', __FUNCTION__)))	return $foo;
   $name = weTag_getParserAttribute("name", $arr);
   return '<?php if(we_tag(\'ifEditmode\')){echo we_tag_blockControls('.$name.'));}?>';
   }

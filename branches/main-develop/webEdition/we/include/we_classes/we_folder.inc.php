@@ -24,24 +24,14 @@
  */
 /* a class for handling directories */
 class we_folder extends we_root{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* database table in which the object is stored */
-	var $Table = FILE_TABLE;
-
 	/* Flag which is set, when the file is a folder  */
-	var $IsFolder = 1;
 
-	/* ContentType of the Object  */
-	var $ContentType = 'folder';
+	var $IsFolder = 1;
 	var $IsClassFolder = 0;
 	var $IsNotEditable = 0;
 	var $WorkspacePath = '';
 	var $WorkspaceID = '';
 	var $Language = '';
-	var $Icon = we_base_ContentTypes::FOLDER_ICON;
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	var $searchclassFolder_class;
@@ -57,6 +47,9 @@ class we_folder extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
+		$this->Table = FILE_TABLE;
+		$this->ContentType = 'folder';
+		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 	}
 
 	public function we_new(){
@@ -237,7 +230,7 @@ class we_folder extends we_root{
 
 	/* saves the folder */
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->i_setText();
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){

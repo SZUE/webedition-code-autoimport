@@ -273,7 +273,7 @@ HTS;
 		print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
-					we_html_element::jsElement(we_button::create_state_changer(false))) .
+					we_button::create_state_changer()) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogButtonsBody",
 					"onload" => "top.wizbody.set_button_state();",

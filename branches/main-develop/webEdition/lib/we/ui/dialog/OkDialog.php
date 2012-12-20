@@ -59,7 +59,6 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 	/*
 	 * Static variable to hold singleton instance
 	 */
-	private static $__instance = NULL;
 	protected $_topClose = true;
 
 	/**
@@ -75,23 +74,6 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-
-		// add needed JS Files
-		//$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-	}
-
-	/*
-	 * gets a singleton instance.
-	 *
-	 * @return we_ui_layout_HTMLPage
-	 */
-
-	public static function getInstance(){
-
-		if(self::$__instance === NULL){
-			self::$__instance = new self();
-		}
-		return self::$__instance;
 	}
 
 	/**
@@ -123,7 +105,7 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 		$buttonTable->setYesOkButton($buttonOk);
 		$buttonTable->setStyle('margin-top:10px;margin-right:10px;margin-left:auto;');
 
-		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url('.IMAGE_DIR.'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
+		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
 		$this->addCSSFiles($buttonTable->getCSSFiles());
 		$this->addJSFiles($buttonTable->getJSFiles());
 		$this->addHTML($buttonsHTML);
@@ -195,5 +177,3 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 	}
 
 }
-
-?>

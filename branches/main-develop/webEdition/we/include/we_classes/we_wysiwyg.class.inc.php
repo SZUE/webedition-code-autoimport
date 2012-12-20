@@ -33,31 +33,31 @@ class we_wysiwyg{
 	var $propstring = '';
 	var $elements = array();
 	var $value = '';
-	var $filteredElements = array();
-	var $bgcol = '';
-	var $fullscreen = '';
-	var $className = '';
-	var $fontnamesCSV = '';
-	var $fontnames = array();
-	var $tinyFonts = '';
-	var $tinyFormatblock = '';
-	var $maxGroupWidth = 0;
-	var $outsideWE = false;
-	var $xml = false;
-	var $removeFirstParagraph = true;
+	private $filteredElements = array();
+	private $bgcol = '';
+	private $fullscreen = '';
+	private $className = '';
+	private $fontnamesCSV = '';
+	private $fontnames = array();
+	private $tinyFonts = '';
+	private $tinyFormatblock = '';
+	private $maxGroupWidth = 0;
+	private $outsideWE = false;
+	private $xml = false;
+	private $removeFirstParagraph = true;
 	var $charset = '';
-	var $inlineedit = true;
-	var $cssClasses = '';
-	var $cssClassesJS = '';
-	var $cssClassesCSV = '';
+	private $inlineedit = true;
+	private $cssClasses = '';
+	private $cssClassesJS = '';
+	private $cssClassesCSV = '';
 	var $Language = '';
-	var $_imagePath;
-	var $_image_languagePath;
-	var $baseHref = '';
-	var $showSpell = true;
-	var $isFrontendEdit = false;
-	var $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
-	static $editorType = WYSIWYG_TYPE;
+	private $_imagePath;
+	private $_image_languagePath;
+	private $baseHref = '';
+	private $showSpell = true;
+	private $isFrontendEdit = false;
+	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
+	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
@@ -137,9 +137,13 @@ class we_wysiwyg{
 						array("\\" => "\\\\", "\n" => '\n', "\r" => '\r')
 					);
 				$value = strtr($value, $replace);
-				$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
-				$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
-				$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
+				if(self::$editorType == 'tinyMCE'){
+					//FIXME: what to do with scripts??
+				}else{
+					$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
+					$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
+					$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
+				}
 			}
 		}
 
@@ -189,16 +193,16 @@ class we_wysiwyg{
 					.
 					we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') . we_html_element::jsElement('
 					tinyMceGL = {
-						welink : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[hyperlink]")) .'"},
-						weimage: {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_edit_image]")) .'"},
-						weabbr : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[abbr]")) .'"},
-						weacronym : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[acronym]")) .'"},
-						wefullscreen : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[fullscreen]")) .'"},
-						weinsertbreak : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_br]")) .'"},
-						weinsertrtf : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[rtf_import]")) .'"},
-						welang : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[language]")) .'"},
-						wespellchecker : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[spellcheck]")) .'"},
-						wevisualaid : {tooltip : "'. CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) .'"}
+						welink : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[hyperlink]")) . '"},
+						weimage: {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_edit_image]")) . '"},
+						weabbr : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[abbr]")) . '"},
+						weacronym : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[acronym]")) . '"},
+						wefullscreen : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[fullscreen]")) . '"},
+						weinsertbreak : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[insert_br]")) . '"},
+						weinsertrtf : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[rtf_import]")) . '"},
+						welang : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[language]")) . '"},
+						wespellchecker : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[spellcheck]")) . '"},
+						wevisualaid : {tooltip : "' . CheckAndConvertISOfrontend(g_l('wysiwyg', "[visible_borders]")) . '"}
 					};
 				') . we_html_element::jsElement('
 
@@ -1284,7 +1288,7 @@ function tinyMCECallRegisterDialog(win,action){
 				}
 
 				//very fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = $k*24 - 10;
+				$toolBarHeight = $k * 24 - 10;
 				$this->height += $toolBarHeight;
 
 				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
@@ -1374,25 +1378,26 @@ function tinyMCECallRegisterDialog(win,action){
 								ed.pasteAsPlainText = ' . $pastetext . ';
 								ed.controlManager.setActive("pastetext", ' . $pastetext . ');
 							});
-						
+
 							'
-							. (!$this->removeFirstParagraph ? '' : '
+						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
 								o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
 							});') . '
 
-							'. ($this->htmlSpecialchars ? '' : '
-							ed.onPostProcess.add(function(ed, o) {
+							' . ($this->htmlSpecialchars ? '' : '
+							ed.onPostProcess.add(function(ed, o) { // TODO: find a real solution for php code in tiny
+								o.content = o.content.replace(/&lt;\?/g, "\#\|\#\?\#").replace(/\?&gt;/g, "\#\?\#\|\#");
 								o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+								o.content = o.content.replace(/\#\|\#\?\#/g, "&lt;?").replace(/\#\?\#\|\#/g, "?&gt;");
 							});') . '
-
 
 							/* set EditorFrame.setEditorIsHot(true) */
 
 							// we look for editorLevel and weEditorFrameController just once at editor init
 							var editorLevel = "";
 							var weEditorFrame = null;
-							
+
 							if(typeof(_EditorFrame) != "undefined"){
 								editorLevel = "inline";
 								weEditorFrame = _EditorFrame;
@@ -1426,7 +1431,7 @@ function tinyMCECallRegisterDialog(win,action){
 									weEditorFrameIsHot = true;
 								}
 							});
-							
+
 							ed.onClick.add(function(ed) {
 								if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 									weEditorFrame.setEditorIsHot(true);
@@ -1445,14 +1450,13 @@ function tinyMCECallRegisterDialog(win,action){
 							ed.onSaveContent.add(function(ed) {
 								weEditorFrameIsHot = false;
 								// if is popup and we click on ok
-								if(editorLevel == "popup" && ed.isDirty()){ 
+								if(editorLevel == "popup" && ed.isDirty()){
 									weEditorFrame.setEditorIsHot(true);
 								}
-								
+
 							});
 						}
 					});') .
-
 					'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
 

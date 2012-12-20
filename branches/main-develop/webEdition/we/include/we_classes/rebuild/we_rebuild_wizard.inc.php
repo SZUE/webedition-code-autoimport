@@ -100,8 +100,8 @@ abstract class we_rebuild_wizard{
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('rebuild', "[rebuild]")) .
 					STYLESHEET .
-					($dc ? '' : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) .
-				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'height:100%;overflow:hidden;'), ($dc ? $pb : $content->getHtml())
+					($dc ? '' : we_button::create_state_changer()) . $js) .
+				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}

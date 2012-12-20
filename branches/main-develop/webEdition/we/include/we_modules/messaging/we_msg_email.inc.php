@@ -28,35 +28,18 @@ include_once(WE_MESSAGING_MODULE_PATH . "messaging_std.inc.php");
 /* messaging email send class */
 
 class we_msg_email extends we_msg_proto{
-	/*	 * ************************************************************** */
-	/* Class Properties ********************************************* */
-	/*	 * ************************************************************** */
+	const TYPE_SEND_RECEIVE=0;
+	const TYPE_SEND_ONLY=1;
 
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* 0: send/receive */
-	/* 1: send only    */
-	var $msgclass_type = 1;
-
-	/*	 * ************************************************************** */
-	/* Class Methods ************************************************ */
-	/*	 * ************************************************************** */
-
-	/* Constructor */
+	var $msgclass_type = self::TYPE_SEND_ONLY;
 
 	function __construct(){
+		parent::__construct();
 		$this->Name = 'msg_email_' . md5(uniqid(__FILE__, true));
-		$this->DB = new DB_WE();
 	}
 
 	function get_email_addr($userid){
-		$DB2 = new DB_WE();
-		$DB2->query('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid) . ' LIMIT 1');
-		$DB2->next_record();
-
-		return $DB2->f('Email');
+		return f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'Email', new DB_WE());
 	}
 
 //FIXME: is this ever called???

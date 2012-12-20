@@ -339,7 +339,7 @@ echo $yuiSuggest->getYuiJsFiles();
 print we_html_element::jsScript(JS_DIR . "keyListener.js");
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 
 	function closeOnEscape() {
 		return true;

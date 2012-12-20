@@ -89,7 +89,7 @@ print STYLESHEET;
 
 <body class="weEditorBody" onUnload="doUnload()">
 	<form name="we_form" method="post"><?php
-$GLOBALS['we_doc']->pHiddenTrans();
+echo we_class::hiddenTrans();
 
 if($_editMode){
 

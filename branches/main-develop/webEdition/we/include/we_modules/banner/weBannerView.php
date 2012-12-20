@@ -38,7 +38,7 @@ class weBannerView extends weBannerBase{
 	var $Order = "views";
 	var $pageFields = array();
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		$this->banner = new weBanner();
 		$this->page = 0;
@@ -100,14 +100,15 @@ class weBannerView extends weBannerBase{
 			$itsname = "";
 			switch($this->page){
 				case weBanner::PAGE_PROPERTY:
-					$out .= $this->htmlHidden("UseFilter", $this->UseFilter);
-					$out .= $this->htmlHidden("FilterDate", $this->FilterDate);
-					$out .= $this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
-					$parts[] = array(
-						"headline" => g_l('modules_banner', '[path]'),
-						"html" => $this->formPath(),
-						"space" => 120
-					);
+					$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
+						$this->htmlHidden("FilterDate", $this->FilterDate) .
+						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+					$parts = array(
+						array(
+							"headline" => g_l('modules_banner', '[path]'),
+							"html" => $this->formPath(),
+							"space" => 120
+						));
 					$znr = -1;
 					if(!$this->banner->IsFolder){
 						$parts[] = array(
@@ -136,37 +137,33 @@ class weBannerView extends weBannerBase{
 					$wepos = weGetCookieVariable("but_weBannerProp");
 					break;
 				case weBanner::PAGE_PLACEMENT:
-					$out .= $this->htmlHidden("UseFilter", $this->UseFilter);
-					$out .= $this->htmlHidden("FilterDate", $this->FilterDate);
-					$out .= $this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
-					array_push($parts, array(
-						"headline" => g_l('modules_banner', '[tagname]'),
-						"html" => $this->formTagName(),
-						"space" => 120)
-					);
-
-					array_push($parts, array(
-						"headline" => g_l('modules_banner', '[pages]'),
-						"html" => $this->formFiles(),
-						"space" => 120)
-					);
-
-					array_push($parts, array(
-						"headline" => g_l('modules_banner', '[dirs]'),
-						"html" => $this->formFolders(),
-						"space" => 120)
-					);
-
-					array_push($parts, array(
-						"headline" => g_l('modules_banner', '[categories]'),
-						"html" => $this->formCategories(),
-						"space" => 120)
-					);
-
-					array_push($parts, array(
-						"headline" => g_l('modules_banner', '[doctypes]'),
-						"html" => $this->formDoctypes(),
-						"space" => 120)
+					$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
+						$this->htmlHidden("FilterDate", $this->FilterDate) .
+						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+					$parts = array(array(
+							"headline" => g_l('modules_banner', '[tagname]'),
+							"html" => $this->formTagName(),
+							"space" => 120
+						),
+						array(
+							"headline" => g_l('modules_banner', '[pages]'),
+							"html" => $this->formFiles(),
+							"space" => 120
+						),
+						array(
+							"headline" => g_l('modules_banner', '[dirs]'),
+							"html" => $this->formFolders(),
+							"space" => 120
+						),
+						array(
+							"headline" => g_l('modules_banner', '[categories]'),
+							"html" => $this->formCategories(),
+							"space" => 120
+						),
+						array(
+							"headline" => g_l('modules_banner', '[doctypes]'),
+							"html" => $this->formDoctypes(),
+							"space" => 120)
 					);
 					$headline = g_l('tabs', "[module][placement]");
 					$znr = 3;
@@ -177,41 +174,39 @@ class weBannerView extends weBannerBase{
 					break;
 				case weBanner::PAGE_STATISTICS:
 					$headline = g_l('tabs', "[module][statistics]");
-					array_push($parts, array(
-						"headline" => "",
-						"html" => $this->formStat(),
-						"space" => 0)
+					$parts = array(
+						array(
+							"headline" => "",
+							"html" => $this->formStat(),
+							"space" => 0)
 					);
 					break;
 			}
 
-			$out.= we_multiIconBox::getJS();
-			$out.= we_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos == "down"));
-
-			$out .= "\n</form>\n";
-			$out .= $yuiSuggest->getYuiCss();
-			$out .= $yuiSuggest->getYuiJs();
-			$out .= '</body></html>';
+			$out.= we_multiIconBox::getJS() .
+				we_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos == "down")) .
+				'</form>' .
+				$yuiSuggest->getYuiCss() .
+				$yuiSuggest->getYuiJs() .
+				'</body></html>';
 		}
 		return $out;
 	}
 
 	function previewBanner(){
-		$content = "";
 		$ID = $this->banner->bannerID;
 		if($ID){
-			$ct = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID='" . $ID . "'", "ContentType", $this->db);
+			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . " WHERE ID=" . intval($ID), "ContentType", $this->db);
 			switch($ct){
 				case "image/*";
 					$img = new we_imageDocument();
 					$img->initByID($ID, FILE_TABLE);
-					$content = $img->getHTML();
-					break;
+					return $img->getHTML();
 			}
 		}
 
 
-		return $content;
+		return '';
 	}
 
 	function getJSTopCode(){
@@ -516,7 +511,6 @@ class weBannerView extends weBannerBase{
 					}
 					break;
 				case "del_cat":
-					$arr = array();
 					$arr = makeArrayFromCSV($this->banner->CategoryIDs);
 					if(isset($_REQUEST["ncmdvalue"])){
 						foreach($arr as $k => $v){
@@ -542,7 +536,6 @@ class weBannerView extends weBannerBase{
 					}
 					break;
 				case "del_file":
-					$arr = array();
 					$arr = makeArrayFromCSV($this->banner->FileIDs);
 					if(isset($_REQUEST["ncmdvalue"])){
 						foreach($arr as $k => $v){
@@ -580,7 +573,6 @@ class weBannerView extends weBannerBase{
 					}
 					break;
 				case "del_customer":
-					$arr = array();
 					$arr = makeArrayFromCSV($this->banner->Customers);
 					if(isset($_REQUEST["ncmdvalue"])){
 						foreach($arr as $k => $v){
@@ -594,7 +586,6 @@ class weBannerView extends weBannerBase{
 					$this->banner->Customers = "";
 					break;
 				case "del_folder":
-					$arr = array();
 					$arr = makeArrayFromCSV($this->banner->FolderIDs);
 					if(isset($_REQUEST["ncmdvalue"])){
 						foreach($arr as $k => $v){
@@ -614,10 +605,7 @@ class weBannerView extends weBannerBase{
 					break;
 				case "save_banner":
 					if(isset($_REQUEST["bid"])){
-						$newone = false;
-						if(!$this->banner->ID){
-							$newone = true;
-						}
+						$newone (!$this->banner->ID);
 						$exist = false;
 						$double = f('SELECT COUNT(1) AS Count FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) . ($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), 'Count', $this->db);
 						$acQuery = new weSelectorQuery();
@@ -811,9 +799,6 @@ class weBannerView extends weBannerBase{
 
 	function formFiles(){
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_files')");
-		//javascript:top.content.setHot(); we_cmd('openDocselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_file\\',top.allIDs);','','','text/webedition','',1)
-		$wecmdenc1 = '';
-		$wecmdenc2 = '';
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
 		$addbut = we_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','text/webedition','',1)");
 
@@ -824,7 +809,6 @@ class weBannerView extends weBannerBase{
 
 	function formFolders(){
 		$delallbut = we_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_folders')");
-		//javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',1)
 		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
@@ -862,7 +846,8 @@ class weBannerView extends weBannerBase{
 		$datefilter = we_html_tools::getDateInput2("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		$content = '
+<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="2">' . $datefilterCheck . '</td>
 	</tr>
@@ -916,7 +901,8 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formBanner($leftsize = 120){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '
+<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td>
 	</tr>
@@ -1008,7 +994,6 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
-		//javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','',0,'image/*')"
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));
@@ -1032,7 +1017,6 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
-		//javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'document.we_form.elements[\'$idname\'].value','document.we_form.elements[\'$textname\'].value','".$cmd."')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3 = we_cmd_enc(str_replace('\\', '', $cmd));

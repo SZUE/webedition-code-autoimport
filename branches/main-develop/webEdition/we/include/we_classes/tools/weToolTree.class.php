@@ -199,8 +199,7 @@ class weToolTree extends weMainTree{
 						break;
 					}
 				}
-			}
-			';
+			}';
 	}
 
 	function getJSClearItems(){
@@ -263,8 +262,7 @@ class weToolTree extends weMainTree{
 		return '
  				function showSegment(){
 					' . $this->topFrame . '.reloadGroup(this.parentid,this.offset);
-				}
-			';
+				}';
 	}
 
 	function getJSTreeFunctions(){

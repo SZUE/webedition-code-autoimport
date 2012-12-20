@@ -24,26 +24,16 @@
  */
 /* a class for handling templates */
 class we_object extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
 
-	var $ClassName = __CLASS__;
-
-	/* Icon which is shown at the tree-menue  */
-	var $Icon = 'object.gif';
-	var $Published = '1';
-	var $ID = 0;
 	var $ObjectID = 0;
 	var $Users = ''; // Default Owners
 	var $UsersReadOnly = ''; // For DefaultOwners
 	var $RestrictUsers = '';
-	var $Category = '';
 	var $Workspaces = '';
 	var $DefaultWorkspaces = '';
-	var $Table = OBJECT_TABLE;
 	var $WorkspaceFlag = 1;
 	var $Templates = '';
 	var $SerializedArray = array(); // #3931
-	var $InWebEdition = false;
 	var $CSS = '';
 
 	/* Constructor */
@@ -53,6 +43,9 @@ class we_object extends we_document{
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
 		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_WORKSPACE, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
 		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
+		$this->Icon = 'object.gif';
+		$this->Table = OBJECT_TABLE;
+		$this->Published = 1;
 	}
 
 	function save(){
@@ -1958,7 +1951,7 @@ class we_object extends we_document{
 		$this->setSort();
 	}
 
-	function i_getContentData($loadBinary = 0){
+	protected function i_getContentData($loadBinary = 0){
 		$f = 0;
 
 		if($this->ID){
@@ -2228,7 +2221,7 @@ class we_object extends we_document{
 		}
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->save();
 		if(resave == 0){
 			we_history::insertIntoHistory($this);

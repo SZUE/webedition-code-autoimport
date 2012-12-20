@@ -1265,7 +1265,7 @@ class weNewsletterView{
 
 
 		');
-		//$js.=we_html_element::jsElement(we_button::create_state_changer(false));
+		//$js.=we_button::create_state_changer();
 
 		return $js;
 	}

@@ -472,7 +472,7 @@ class we_workflow_view extends we_workflow_base{
 			}
 		}
 		?>
-		<script  type="text/javascript"><!--
+		<script type="text/javascript"><!--
 
 			function doUnload() {
 				if (!!jsWindow_count) {
@@ -568,7 +568,7 @@ class we_workflow_view extends we_workflow_base{
 
 	function getCmdJS(){
 		?>
-		<script  type="text/javascript"><!--
+		<script type="text/javascript"><!--
 				function submitForm(){
 					var f = self.document.we_form;
 					f.target = "cmd";
@@ -583,7 +583,7 @@ class we_workflow_view extends we_workflow_base{
 	function getPropertyJS(){
 		echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
-		<script  type="text/javascript"><!--
+		<script type="text/javascript"><!--
 				var loaded;
 
 				function doUnload() {
@@ -1004,7 +1004,7 @@ class we_workflow_view extends we_workflow_base{
 							}
 
 							$this->workflowDef->save();
-							print '<script  type="text/javascript"><!--';
+							print '<script type="text/javascript"><!--';
 							if($newone){
 								print 'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");';
 							} else{
@@ -1362,7 +1362,7 @@ class we_workflow_view extends we_workflow_base{
 	}') .
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
-				<form name="we_form">' . $this->documentDef->document->hiddenTrans() . '<table cellpadding="6" cellspacing="0" border="0">' .
+				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6" cellspacing="0" border="0">' .
 			we_multiIconBox::getHTML('', '100%', $_parts, 30) .
 			'</form></body></html>';
 	}

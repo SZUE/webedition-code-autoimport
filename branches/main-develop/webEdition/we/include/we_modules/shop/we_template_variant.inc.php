@@ -35,7 +35,7 @@ print STYLESHEET;
 </head>
 <body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onUnload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
-$we_doc->pHiddenTrans();
+echo we_class::hiddenTrans();
 
 
 $fields = $we_doc->getVariantFieldNames();

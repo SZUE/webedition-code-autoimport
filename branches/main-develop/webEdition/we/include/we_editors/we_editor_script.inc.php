@@ -66,7 +66,7 @@ if(isset($GLOBALS['we_doc'])){
 	echo we_html_element::jsScript(JS_DIR . 'seeMode.php?EditPage=' . $GLOBALS['we_doc']->EditPageNr . '&amp;ContentType=' . $GLOBALS['we_doc']->ContentType);
 }
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;
 
 

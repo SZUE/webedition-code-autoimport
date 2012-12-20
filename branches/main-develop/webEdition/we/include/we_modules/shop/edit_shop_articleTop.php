@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,42 +23,4 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::protect();
-
-we_html_tools::htmlTop();
-
-print STYLESHEET;
-
-$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
-if(isset($_REQUEST["cid"])){
-	$foo = getHash("SELECT Forename,Surname FROM " . CUSTOMER_TABLE . " WHERE ID='" . $_REQUEST["cid"] . "'", $DB_WE);
-	$Kundenname = $foo["Forename"] . " " . $foo["Surname"];
-
-//$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ".SHOP_TABLE." WHERE IntCustomerID=$cid GROUP BY IntOrderID ORDER BY IntOrderID");
-
-	$Bestelldaten = '<table border="0" cellpadding="2" cellspacing="6" width="300">
-				<tr><td class="defaultfont" colspan="2"><b>' . g_l('modules_shop', '[bestellung]') . '</b></td>
-				<td class="defaultfont"><b>' . g_l('modules_shop', '[datum]') . '</b></td>
-				</tr>
-				<tr><td colspan=3></tr>';
-
-	$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . $da . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " WHERE IntCustomerID=" . intval($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
-	while($DB_WE->next_record()) {
-//echo "<br>".$DB_WE->f("Price");
-		$Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_properties.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\"><b>" . $DB_WE->f("IntOrderID") . ".</b></a></td>";
-
-
-		$Bestelldaten .= "<td class='defaultgray'>" . g_l('modules_shop', '[bestellungvom]') . "</td>";
-		$Bestelldaten .= "<td class='defaultfont'><a href='" . WE_SHOP_MODULE_DIR . "edit_shop_editorFrameset.php?bid=" . $DB_WE->f("IntOrderID") . "' class=\"defaultfont\" target=\"shop_properties\"><b>" . $DB_WE->f("orddate") . "</b></a></td></tr>";
-	}
-	$Bestelldaten .= "</table>";
-} else{
-
-	$Bestelldaten = g_l('modules_shop', '[keinedaten]');
-}
-?>
-</head>
-<body class="weEditorBody" onUnload="doUnload()">
-	<?php print we_html_tools::htmlDialogLayout($Bestelldaten, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
-</body></html>
+include (WE_MODULES_DIR . 'shop/edit_shop_optionsTop.php');

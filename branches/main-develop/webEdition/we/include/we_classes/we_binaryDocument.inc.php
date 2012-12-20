@@ -25,20 +25,15 @@
 /*  a class for handling binary-documents like images. */
 
 class we_binaryDocument extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
 	/* The HTML-Code which can be included in a HTML Document */
-	var $html = '';
-	var $IsBinary = true;
-	var $LoadBinaryContent = true;
+
+	protected $html = '';
 
 	/**
 	 * Flag which indicates that the doc has changed!
 	 * @var boolean
 	 */
-	var $DocChanged = false;
+	public $DocChanged = false;
 
 	/** Constructor
 	 * @return we_binaryDocument
@@ -46,10 +41,12 @@ class we_binaryDocument extends we_document{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "html", "DocChanged");
+		array_push($this->persistent_slots, 'html', 'DocChanged');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
 		if(defined("CUSTOMER_TABLE")){
-			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER,WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VERSIONS);
+			$this->EditPageNrs[]= WE_EDITPAGE_WEBUSER;
 		}
+		$this->LoadBinaryContent = true;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -76,28 +73,24 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	function i_getContentData(){
+	protected function i_getContentData(){
 		parent::i_getContentData(true);
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){
 			we_util_File::copyFile($_realPath, $this->getSitePath());
 		}
-		if(file_exists($_sitePath)){
-			if(filesize($_sitePath)){
-				$this->setElement('data', $_sitePath, 'image');
-			}
+		if(file_exists($_sitePath) && filesize($_sitePath)){
+			$this->setElement('data', $_sitePath, 'image');
 		}
 	}
 
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		if(!isset($this->elements['data']['dat'])){
 			$this->i_getContentData();
 		}
 		if($this->getFilesize() == 0){
-			print we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR)
-				);
+			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return false;
 		} else{
 			if(parent::we_save($resave)){
@@ -155,13 +148,9 @@ class we_binaryDocument extends we_document{
 		return $this->writeFile($this->getRealPath(), $this->getRealPath(true));
 	}
 
-	/* gets the filesize of the document */
-
+	/** gets the filesize of the document */
 	function getFilesize(){
-		return filesize($this->elements['data']['dat']);
-		/* 		if(!$size){
-		  t_e('filesize 0 in ' . $this->elements["data"]["dat"], $this->getSitePath());
-		  } */
+		return (file_exists($this->elements['data']['dat']) ? filesize($this->elements['data']['dat']) : 0);
 	}
 
 	function insertAtIndex(){
@@ -334,6 +323,10 @@ class we_binaryDocument extends we_document{
 			$_path = weFile::saveTemp($_data);
 			$this->setElement('data', $_path);
 		}
+	}
+
+	public function isBinary(){
+		return true;
 	}
 
 }

@@ -32,13 +32,9 @@ we_html_tools::protect();
 function checkIfValidStartdocument($id, $type = "document"){
 
 	if($type == 'object'){
-		$ctype = f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']);
-
-		return ($ctype == 'objectFile');
+		return (f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']) == 'objectFile');
 	} else{
-		$ctype = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']);
-
-		return ($ctype == 'text/webedition');
+		return (f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), "ContentType", $GLOBALS['DB_WE']) == 'text/webedition');
 	}
 }
 
@@ -106,7 +102,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 				}
 				break;
 			case '0':
-				$_SESSION["prefs"]["seem_start_type"] = 0;
+				$_SESSION["prefs"]["seem_start_type"] = '0';
 				break;
 			case 'document':
 				if($_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"])){ //	if a stardocument is already selected - show this
@@ -116,7 +112,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 						'text/webedition',
 					);
 					$jsCommand = _buildJsCommand($directCmd);
-					} else{
+				} else{
 					t_e('start doc not valid', $_SESSION["prefs"]["seem_start_file"]);
 				}
 				break;
@@ -131,9 +127,8 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 				break;
 		}
 	}
-// :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
-if($_SESSION["prefs"]["seem_start_type"] !== 0){
+if($_SESSION["prefs"]["seem_start_type"] !== '0'){
 	print we_html_element::jsElement($jsCommand);
 } else{
 	print we_html_element::jsElement("top.weEditorFrameController.toggleFrames();");

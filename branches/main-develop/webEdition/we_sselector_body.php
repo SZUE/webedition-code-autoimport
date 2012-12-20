@@ -48,7 +48,7 @@ function _cutText($text, $l){
 	}
 }
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	var clickCount=0;
 	var wasdblclick=0;
 	var tout=null;

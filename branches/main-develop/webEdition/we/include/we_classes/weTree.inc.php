@@ -218,8 +218,7 @@ class weTree{
 		function setSegment(id){
 			var node=' . $this->topFrame . '.get(id);
 			node.showsegment();
-		}
-	';
+		}';
 	}
 
 	function getJSOpenClose(){
@@ -281,16 +280,14 @@ class weTree{
 		if(!document.images) {
 			drawTree();
 		}
-	}
-	';
+	}';
 	}
 
 	function getJSGetTreeLayout(){
 		return '
 				function getTreeLayout(){
 						return this.tree_layouts[this.state];
-				}
-		';
+				}';
 	}
 
 	function getJSGetLayout(){
@@ -559,16 +556,14 @@ class weTree{
 				}
 				op = op.substring(0,op.length-1);
 				return op;
-		}
-		';
+		}';
 	}
 
 	function getJSClearTree(){
 		return '
 		function clearTree(){
 			treeData.clear();
-		}
-		';
+		}';
 	}
 
 	// Function which control how tree contenet will be displayed
@@ -624,7 +619,6 @@ function setUnCheckNode(imgName){
 			out+="</nobr></td></tr></table>";
 			' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
    		}
-
  		' . $this->getJSDraw();
 	}
 
@@ -666,9 +660,8 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSCustomDraw($click_handler = ""){
-		$out = array();
 
-		if($click_handler == '')
+		if($click_handler == ''){
 			$click_handler = '
 
 				if(treeData.selection_table==treeData.table && nf[ai].id==treeData.selection) nf[ai].selected=1;
@@ -737,12 +730,13 @@ function setUnCheckNode(imgName){
 					if(nf[ai].disabled!=1) row+="</a>";
 				}
 				row+="&nbsp;&nbsp;<br/>";';
+		}
 
-		$out["item"] = '
+		return array(
+			"item" => '
 			row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";' .
-			$click_handler;
-
-		$out["group"] = '
+			$click_handler,
+			"group" => '
 					var newAst = zweigEintrag;
 
 					var zusatz = (ai == nf.len) ? "end" : "";
@@ -769,24 +763,20 @@ function setUnCheckNode(imgName){
 						newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
 						row+=draw(nf[ai].id,newAst);
 					}
-		';
-
-		$out["threedots"] = '
+		',
+			"threedots" => '
 					row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
 						row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onClick=\"' . $this->topFrame . '.setSegment(\'"+nf[ai].id+"\');return true;\">";
 					row+="<img src=\"' . $this->tree_image_dir . '/"+nf[ai].icon+"\" width=\"100\" height=\"7\" align=\"absmiddle\" border=\"0\" alt=\"\">";
 						row+="</a>";
 						row+="&nbsp;&nbsp;<br/>";
-		';
-
-		return $out;
+		');
 	}
 
 	function getJSLoadTree($treeItems){
-		$js = '';
 		$js = 'var attribs=new Array();';
 		foreach($treeItems as $item){
-			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){\n";
 			foreach($item as $k => $v){
 				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes($v) . '\';';
 			}
@@ -800,7 +790,7 @@ function setUnCheckNode(imgName){
 	}
 
 	function getJSInfo(){
-		return 'function info(text) {}';
+		return 'function info(text){}';
 	}
 
 	function setItemsCount($count){

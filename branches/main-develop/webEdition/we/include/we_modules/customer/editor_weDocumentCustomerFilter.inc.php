@@ -69,7 +69,7 @@ print we_html_element::jsScript(JS_DIR . "windows.js") .
 	(isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
 		$yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() : '') .
 	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
-	$we_doc->hiddenTrans() .
+	we_class::hiddenTrans() .
 	($we_doc->ClassName != "we_imageDocument" ?
 		we_html_tools::hidden("we_edit_weDocumentCustomerFilter", 1) .
 		we_html_tools::hidden("weDocumentCustomerFilter_id", $_filter->getId()) : '') .

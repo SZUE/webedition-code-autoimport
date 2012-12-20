@@ -58,7 +58,7 @@ class weModelBase{
 	/**
 	 * Load entry from database
 	 */
-	function load($id=0){
+	function load($id = 0){
 		if($id){
 			$this->ID = $id;
 		}
@@ -87,11 +87,12 @@ class weModelBase{
 	/**
 	 * save entry in database
 	 */
-	function save($force_new=false){
+	function save($force_new = false){
 		$sets = array();
 		$wheres = array();
-		if($force_new)
+		if($force_new){
 			$this->isnew = true;
+		}
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){

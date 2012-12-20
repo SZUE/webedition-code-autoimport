@@ -23,13 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_htmlDocument extends we_textContentDocument{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-	var $ContentType = 'text/html';
 
 	function __construct(){
 		parent::__construct();
+		$this->ContentType = 'text/html';
 	}
 
 	function i_saveContentDataInDB(){

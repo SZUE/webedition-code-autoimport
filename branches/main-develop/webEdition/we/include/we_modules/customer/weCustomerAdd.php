@@ -26,10 +26,6 @@ class weCustomerAdd{
 
 	var $db;
 
-	function __construct(){
-
-	}
-
 	function getHTMLSortEditor(&$pob){
 		$branch = $pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
@@ -43,7 +39,6 @@ class weCustomerAdd{
 
 		$counter = 0;
 		$fhidden = '';
-		$sort_code = '';
 
 		$_parts = array();
 		foreach($pob->View->settings->SortView as $k => $sorts){
@@ -154,9 +149,8 @@ class weCustomerAdd{
 		$add_button = we_button::create_button_table(array(we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"), we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[add_sort_group]'))));
 		$_parts[] = array('html' => $add_button);
 
-		$sort_code = we_multiIconBox::getHTML("", "100%", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459);
-
-		$hiddens = we_html_element::htmlComment("hiddens start") .
+		$sort_code = we_multiIconBox::getHTML("", "100%", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459) .
+			we_html_element::htmlComment("hiddens start") .
 			we_html_element::htmlHidden(array("name" => "pnt", "value" => "sort_admin")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "counter", "value" => "$counter")) .
@@ -166,7 +160,6 @@ class weCustomerAdd{
 			we_html_element::htmlComment("hiddens ends");
 
 
-		$sort_code .= $hiddens;
 
 
 		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doScrollTo()"), we_html_element::jsElement($pob->View->getJSSortAdmin()) .
@@ -178,68 +171,67 @@ class weCustomerAdd{
 	}
 
 	function getJSSortAdmin(&$pob){
-		return
-			'
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+		return '
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+function we_cmd(){
+	var args = "";
+	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+
+	switch (arguments[0]) {
+
+		case "add_sort_field":
+			if(arguments[1]==""){
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sortname_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				break;
 			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-				switch (arguments[0]) {
-
-					case "add_sort_field":
-						if(arguments[1]==""){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sortname_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							break;
-						}
-						document.we_form.sortindex.value=arguments[1];
-					case "add_sort":
-						document.we_form.cmd.value=arguments[0];
-						submitForm();
-					break;
-					case "del_sort_field":
-						document.we_form.fieldindex.value=arguments[2];
-					case "del_sort":
-						if(arguments[1]=="' . $pob->settings->getSettings('default_sort_view') . '"){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[default_soting_no_del]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-						else{
-							document.we_form.cmd.value=arguments[0];
-							document.we_form.sortindex.value=arguments[1];
-							submitForm();
-						}
-					break;
-					case "save_sort":
-					case "selectBranch":
-						document.we_form.cmd.value=arguments[0];
-						submitForm();
-					break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-						}
-						eval(\'top.content.we_cmd(\'+args+\')\');
-				}
-				setScrollTo();
+			document.we_form.sortindex.value=arguments[1];
+		case "add_sort":
+			document.we_form.cmd.value=arguments[0];
+			submitForm();
+		break;
+		case "del_sort_field":
+			document.we_form.fieldindex.value=arguments[2];
+		case "del_sort":
+			if(arguments[1]=="' . $pob->settings->getSettings('default_sort_view') . '"){
+				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[default_soting_no_del]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
-
-			function doScrollTo(){
-				if(opener.' . $this->topFrame . '.scrollToVal){
-					window.scrollTo(0,opener.' . $this->topFrame . '.scrollToVal);
-					opener.' . $this->topFrame . '.scrollToVal=0;
-				}
+			else{
+				document.we_form.cmd.value=arguments[0];
+				document.we_form.sortindex.value=arguments[1];
+				submitForm();
 			}
-
-			function setScrollTo(){
-   				opener.' . $this->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
+		break;
+		case "save_sort":
+		case "selectBranch":
+			document.we_form.cmd.value=arguments[0];
+			submitForm();
+		break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 			}
+			eval(\'top.content.we_cmd(\'+args+\')\');
+	}
+	setScrollTo();
+}
+
+function doScrollTo(){
+	if(opener.' . $this->topFrame . '.scrollToVal){
+		window.scrollTo(0,opener.' . $this->topFrame . '.scrollToVal);
+		opener.' . $this->topFrame . '.scrollToVal=0;
+	}
+}
+
+function setScrollTo(){
+		opener.' . $this->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
+}
 
 			' . $pob->getJSSubmitFunction("sort_admin");
 	}
@@ -247,51 +239,50 @@ class weCustomerAdd{
 	function getJSSearch(&$pob){
 
 		return '
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+function we_cmd(){
+	var args = "";
+	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	if(document.we_form.mode.value=="1") transferDateFields();
+	switch (arguments[0]) {
+		case "selectBranch":
+			document.we_form.cmd.value=arguments[0];
+			submitForm();
+		break;
+		case "add_search":
+			document.we_form.count.value++;
+			submitForm();
+		break;
+		case "del_search":
+			if(document.we_form.count.value>0) document.we_form.count.value--;
+			submitForm();
+		break;
+		case "search":
+			document.we_form.search.value=1;
+			submitForm();
+		break;
+		case "switchToAdvance":
+			document.we_form.mode.value="1";
+			submitForm();
+		break;
+		case "switchToSimple":
+			document.we_form.mode.value="0";
+			submitForm();
+		break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				if(document.we_form.mode.value=="1") transferDateFields();
-				switch (arguments[0]) {
-					case "selectBranch":
-						document.we_form.cmd.value=arguments[0];
-						submitForm();
-					break;
-					case "add_search":
-						document.we_form.count.value++;
-						submitForm();
-					break;
-					case "del_search":
-						if(document.we_form.count.value>0) document.we_form.count.value--;
-						submitForm();
-					break;
-					case "search":
-						document.we_form.search.value=1;
-						submitForm();
-					break;
-					case "switchToAdvance":
-						document.we_form.mode.value="1";
-						submitForm();
-					break;
-					case "switchToSimple":
-						document.we_form.mode.value="0";
-						submitForm();
-					break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-						}
-						eval(\'top.content.we_cmd(\'+args+\')\');
-				}
-			}
+			eval(\'top.content.we_cmd(\'+args+\')\');
+	}
+}
 		' . $pob->getJSSubmitFunction("search");
 	}
 
@@ -332,10 +323,9 @@ class weCustomerAdd{
 
 			if(isset($search_arr["branch_" . $i])){
 				$branch->selectOption($search_arr["branch_" . $i]);
-				if($search_arr["branch_" . $i] == "")
-					$field = $pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]'));
-				else
-					$field = $pob->getHTMLFieldsSelect($search_arr["branch_" . $i]);
+				$field = ($search_arr["branch_" . $i] == "" ?
+						$pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]')) :
+						$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
 			}
 
 			if(isset($search_arr["field_" . $i]))
@@ -347,9 +337,9 @@ class weCustomerAdd{
 			if($i != 0){
 				$advsearch->addRow();
 				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, '', "value", "70"));
-				$c++;
+				++$c;
 			}
-			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", "185");
+			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
 			$value_date_i = we_html_tools::htmlTextInput("value_date_$i", 20, "", "", "id='value_date_$i' style='display:none; width:150' readonly", "text", ""); // empty field to display the timestemp in date formate - handeld on the client in js
 			$btnDatePicker = we_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, "_$i");
 			$advsearch->addRow();
@@ -357,15 +347,14 @@ class weCustomerAdd{
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
 			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, $operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, '', "value", "60"));
 			$advsearch->setCol($c, 3, array("width" => "190"), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
-			$c++;
+			++$c;
 		}
 
 		$advsearch->addRow();
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
-		$c++;
 		$advsearch->addRow();
-		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_button::create_button_table(array(
+		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_button::create_button_table(array(
 				we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
 				we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
 				)
@@ -382,7 +371,7 @@ class weCustomerAdd{
 					we_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
 					$search_but
 				)
-			) . "</td><td>&nbsp;</td></tr></table>"
+			) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = array();

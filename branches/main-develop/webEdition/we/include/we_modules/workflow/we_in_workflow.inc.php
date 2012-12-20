@@ -139,7 +139,7 @@ if($cmd == "ok"){
 					?>
 				</form>
 			<?php }else{ ?>
-				<script  type="text/javascript"><!--
+				<script type="text/javascript"><!--
 					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					top.close();
 				//-->

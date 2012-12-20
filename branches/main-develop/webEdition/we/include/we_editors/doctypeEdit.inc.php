@@ -358,7 +358,7 @@ echo we_main_headermenu::getMenuReloadCode();
 <body class="weDialogBody" style="overflow:hidden;" onUnload="doUnload()" onLoad="self.focus();">
 	<form name="we_form" method="post" onSubmit="return false">
 		<?php
-		$we_doc->pHiddenTrans();
+		echo we_class::hiddenTrans();
 
 		if($we_doc->ID){
 
@@ -396,17 +396,15 @@ echo we_main_headermenu::getMenuReloadCode();
 		$cancelbut = we_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		if($we_doc->ID){
-			$buttons = we_button::position_yes_no_cancel(
-					we_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut
-			);
+			$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"), "", $cancelbut);
 		} else{
 			$buttons = '<div align="right">' . $cancelbut . '</div>';
 		}
 
-		print we_multiIconBox::getJS();
-		print we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630);
-		print $yuiSuggest->getYuiCss();
-		print $yuiSuggest->getYuiJs();
+		print we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
+			$yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJs();
 		?>
 	</form>
 </body>

@@ -40,7 +40,7 @@ print STYLESHEET;
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
 	<form name="we_form" method="post" onSubmit="return false;"><?php
-$we_doc->pHiddenTrans();
+echo we_class::hiddenTrans();
 $implementYuiAC = false;
 switch($we_doc->ContentType){
 	case "folder":
