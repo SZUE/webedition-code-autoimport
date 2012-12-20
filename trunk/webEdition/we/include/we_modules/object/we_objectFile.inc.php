@@ -1504,7 +1504,7 @@ class we_objectFile extends we_document{
 
 	function getDefaultValueArray(){
 		if($this->TableID){
-			$foo = f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . $this->TableID, "DefaultValues", $this->DB_WE);
+			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE);
 			return $foo ? unserialize($foo) : array();
 		}
 		t_e('error no tableID!', $this);

@@ -61,12 +61,11 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		$wsQuery = '';
-		if(/* $this->open_doc && */ (!$_SESSION["perms"]["ADMINISTRATOR"])){
-
+		if(!$_SESSION["perms"]["ADMINISTRATOR"]){
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
+				$wsQuery = '';
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -74,10 +73,15 @@ class we_docSelector extends we_dirSelector{
 				}
 				if($wsQuery){
 					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
+				}else{
+					$wsQuery = ' OR RestrictOwners=0 ';
 				}
+			}else{
+					$wsQuery = ' OR RestrictOwners=0 ';
 			}
+		}else{
+				$wsQuery = '';
 		}
-
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
 			makeOwnersSql() . ')' .
 			$wsQuery . ')' .
@@ -606,9 +610,7 @@ top.unselectAllFiles();') . '
 		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
-	}
-	//-->
-</script>
+	}').'
 </head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
 					';
