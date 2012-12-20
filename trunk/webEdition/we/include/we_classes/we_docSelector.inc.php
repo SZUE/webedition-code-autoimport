@@ -61,11 +61,13 @@ class we_docSelector extends we_dirSelector{
 		}
 
 		// deal with workspaces
-		if(!$_SESSION["perms"]["ADMINISTRATOR"]){
+		if($_SESSION["perms"]["ADMINISTRATOR"]){
+			$wsQuery = '';
+		}else{
+				$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
-				$wsQuery = '';
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -73,15 +75,13 @@ class we_docSelector extends we_dirSelector{
 				}
 				if($wsQuery){
 					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
-				}else{
-					$wsQuery = ' OR RestrictOwners=0 ';
 				}
-			}else{
-					$wsQuery = ' OR RestrictOwners=0 ';
 			}
-		}else{
-				$wsQuery = '';
+			if(empty($wsQuery)){
+				$wsQuery = ' OR RestrictOwners=0 ';
+			}
 		}
+
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
 			makeOwnersSql() . ')' .
 			$wsQuery . ')' .
@@ -294,7 +294,7 @@ top.unselectAllFiles();') . '
 		function queryString(what,id,o,we_editDirID,filter){
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
-		if(!filter) filter="'.$this->filter.'";
+		if(!filter) filter="' . $this->filter . '";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
 				$this->rootDirID . (isset($this->open_doc) ?
 					"&open_doc=" . $this->open_doc : '') .
@@ -376,12 +376,12 @@ top.unselectAllFiles();') . '
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTableExtraCols() .
 			($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition" ?
-				 '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-					($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash" ?
-						we_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false) :
-						we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
-					'</td>'  : '');
+				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
+				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+				($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash" ?
+					we_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false) :
+					we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false)) .
+				'</td>' : '');
 	}
 
 	function printHeaderJSDef(){
@@ -556,7 +556,7 @@ top.unselectAllFiles();') . '
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
-			STYLESHEET .  we_html_element::cssElement('
+			STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -610,7 +610,7 @@ top.unselectAllFiles();') . '
 		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
-	}').'
+	}') . '
 </head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
 					';
