@@ -140,8 +140,7 @@ top.clearEntries();
 		} else{
 			$rootID = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID='" . $_SESSION["user"]["ID"] . "'", "ParentID", $this->db);
 			$rootPath = f("SELECT Path FROM " . USER_TABLE . " WHERE ID='" . $rootID . "'", "Path", $this->db);
-			$this->db->query("SELECT ID FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'");
-			$go = ($this->db->next_record());
+			$go = (f("SELECT 1 AS a FROM " . USER_TABLE . " WHERE ID='" . $this->dir . "' AND Path LIKE '" . $rootPath . "%'", 'a', $this->db) == '1');
 		}
 		if($go){
 			if($this->id == 0){

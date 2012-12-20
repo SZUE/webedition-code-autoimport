@@ -552,8 +552,7 @@ top.unselectAllFiles();') . '
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
-			STYLESHEET . '
-<style type="text/css">
+			STYLESHEET .  we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -585,9 +584,7 @@ top.unselectAllFiles();') . '
 	.even {
 		padding:3px 6px;
 		background-color:#F2F2F1;
-	}
-</style>
-<script tyle="text/javascript"><!--
+	}') . we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
