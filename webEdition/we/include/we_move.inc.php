@@ -316,8 +316,8 @@ $yuiSuggest->setSelector("Dirselector");
 $yuiSuggest->setTable($table);
 $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
-$wecmdenc1 = we_cmd_enc("top.rframe.bframe.treeheader.document.we_form.elements." . $idname . ".value");
-$wecmdenc2 = we_cmd_enc("top.rframe.bframe.treeheader.document.we_form.elements." . $textname . ".value");
+$wecmdenc1 = we_cmd_enc("top.rframe.treeheader.document.we_form.elements." . $idname . ".value");
+$wecmdenc2 = we_cmd_enc("top.rframe.treeheader.document.we_form.elements." . $textname . ".value");
 $yuiSuggest->setSelectButton(
 	we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0)"), 10);
 

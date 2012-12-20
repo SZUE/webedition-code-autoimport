@@ -291,7 +291,7 @@ function treeResized() {
 
 var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
 function toggleTree(){
-	var tfd= self.rframe.bframe.document.getElementById("treeFrameDiv");
+	var tfd= self.rframe.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if(tfd.style.display=="none"){
@@ -311,13 +311,13 @@ function toggleTree(){
 
 function setTreeArrow(direction) {
 	try{
-		self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
+		self.rframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
 		if(direction=="right"){
-			self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
-			self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+			self.rframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
+			self.rframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
 		}else{
-			self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
-			self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+			self.rframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
+			self.rframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
 		}
 	}	catch(e) {
 		// Nothing
@@ -649,7 +649,7 @@ if(!empty($_jsincludes)){
 								break;
 							case "do_delete":
 								toggleBusy(1);
-								submit_we_form(self.rframe.bframe.treeheader, self.load,url)
+								submit_we_form(self.rframe.treeheader, self.load,url)
 								//we_sbmtFrmC(self.load,url);
 								break;
 							case "move_single_document":
@@ -658,7 +658,7 @@ if(!empty($_jsincludes)){
 								break;
 							case "do_move":
 								toggleBusy(1);
-								submit_we_form(self.rframe.bframe.treeheader, self.load,url)
+								submit_we_form(self.rframe.treeheader, self.load,url)
 								//we_sbmtFrmC(self.load,url);
 								break;
 							case "open_document":
@@ -1422,9 +1422,9 @@ pWebEdition_JSwe_cmds();
 							}
 
 							function start() {
-								self.Tree = self.rframe.bframe.bm_main;
-								self.Vtabs = self.rframe.bframe.bm_vtabs;
-								self.TreeInfo = self.rframe.bframe;
+								self.Tree = self.rframe.bm_main;
+								self.Vtabs = self.rframe.bm_vtabs;
+								self.TreeInfo = self.rframe;
 <?php
 $_table_to_load = "";
 if(we_hasPerm("CAN_SEE_DOCUMENTS")){

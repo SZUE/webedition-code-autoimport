@@ -306,12 +306,12 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 				/*
 				  $save_javascript .= "
-				  if (parent.opener.top.rframe.bframe.bm_vtabs) {
-				  parent.opener.top.rframe.bframe.bm_vtabs.location.reload();
+				  if (parent.opener.top.rframe.bm_vtabs) {
+				  parent.opener.top.rframe.bm_vtabs.location.reload();
 				  }
 
-				  if (parent.opener.top.rframe.bframe.infoFrame) {
-				  parent.opener.top.rframe.bframe.infoFrame.location.reload();
+				  if (parent.opener.top.rframe.infoFrame) {
+				  parent.opener.top.rframe.infoFrame.location.reload();
 				  }
 
 				  if(top.opener.top.weSidebar && top.opener.top.weSidebar.reloadHeader) {

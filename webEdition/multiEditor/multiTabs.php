@@ -30,7 +30,6 @@ $_contentTypes = 'var _Contentypes = new Object();
 	_Contentypes["cockpit"] = "icon_cockpit.gif";';
 $ct = we_base_ContentTypes::inst();
 foreach($ct->getContentTypes() as $ctype){
-
 	$_contentTypes .= '_Contentypes["' . $ctype . '"] = "' . $ct->getIcon($ctype) . '";';
 }
 
