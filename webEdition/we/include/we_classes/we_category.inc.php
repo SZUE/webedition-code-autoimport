@@ -48,11 +48,13 @@ class we_category extends weModelBase{
 	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = '', $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
 		$db = $db ? $db : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
+		$pre = ' FIND_IN_SET("';
+		$post = '",' . $table . '.' . $fieldName . ') ';
+
 		$idarray = array();
+		$folders = array();
 		if($categoryids){
-			$idarray2 = array_map('trim', explode(',', trim($categoryids, ',')));
-			sort($idarray2);
-			$idarray2 = array_unique($idarray2);
+			$idarray2 = array_unique(array_map('trim', explode(',', trim($categoryids, ','))));
 			$db->query('SELECT ID,IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
 			while($db->next_record()) {
 				if($db->f('IsFolder')){
@@ -65,30 +67,38 @@ class we_category extends weModelBase{
 		}
 
 		if($catCSV){
-			$idarray1 = array_map('trim', explode(',', trim($catCSV, ',')));
-			sort($idarray1);
-			$idarray1 = array_unique($idarray1);
+			$idarray1 = array_unique(array_map('trim', explode(',', trim($catCSV, ','))));
 			foreach($idarray1 as $cat){
 				$cat = '/' . trim($cat, '/ ');
-
-				$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+				$isFolder = 0;
+				$tmp = array();
+				$db->query('SELECT ID, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
 				while($db->next_record()) {
-					$idarray[] = $db->f('ID');
+					$tmp[] = $db->f('ID');
+					$isFolder|=$db->f('IsFolder');
+				}
+				if($isFolder){
+					$folders = array_merge($folders, $tmp);
+				} else{
+					$idarray = array_merge($idarray, $tmp);
 				}
 			}
 		}
-		if(empty($idarray)){
+		if(empty($idarray) && empty($folders)){
 			return '';
 		}
-		sort($idarray);
-		$idarray = array_unique($idarray);
 
-		$pre = ' FIND_IN_SET("';
-		$post = '",' . $table . '.' . $fieldName . ') ';
+		$where = array();
+		if(!empty($idarray)){
+			$where[] = $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, array_unique($idarray)) . $post;
+		}
+		if(!empty($folders)){
+			$where[] = $pre . implode($post . 'OR' . $pre, array_unique($folders)) . $post;
+		}
 
-		return (empty($idarray) ?
-				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :
-				' AND (' . $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, $idarray) . $post . ' )');
+		return /*(empty($where) ?
+				' AND ' . $table . '.' . $fieldName . ' = "-1" ' :*/
+				' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
 }
