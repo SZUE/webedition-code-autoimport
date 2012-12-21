@@ -33,9 +33,9 @@ switch($_REQUEST['we_cmd'][0]){
 
 		$aProps = array(
 			$_REQUEST['we_cmd'][1],
-			$aPrefs[$aProps[0]]["cls"],
-			$aPrefs[$aProps[0]]["res"],
-			$aPrefs[$aProps[0]]["csv"],
+			$aPrefs[$_REQUEST['we_cmd'][1]]["cls"],
+			$aPrefs[$_REQUEST['we_cmd'][1]]["res"],
+			$aPrefs[$_REQUEST['we_cmd'][1]]["csv"],
 		);
 		foreach($aCfgProps as $a){
 			foreach($a as $arr){

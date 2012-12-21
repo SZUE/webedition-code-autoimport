@@ -204,7 +204,7 @@ function weConf(){
 foreach($aPrefs as $type => $_prefs){
 	$jsPrefs .= "this." . $type . "_props_={'width':" . $_prefs["width"] . ",'height':" . $_prefs["height"] . ",'res':" . $_prefs["res"] . ",'cls':'" . $_prefs["cls"] . "','iDlgHeight':" . $_prefs["dlgHeight"] . "};\n";
 }
-$jsPrefs .= "\tthis.blend_={'fadeIn':1,'fadeOut':1,'v':400};
+$jsPrefs .= "this.blend_={'fadeIn':1,'fadeOut':1,'v':400};
 };
 var _noResizeTypes=['pad'];
 var oCfg=new weConf();
