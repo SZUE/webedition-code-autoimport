@@ -78,7 +78,7 @@ class we_category extends weModelBase{
 					$isFolder|=$db->f('IsFolder');
 				}
 				if($isFolder){
-					$folders = array_merge($folders, $tmp);
+					$folders[] = $tmp;
 				} else{
 					$idarray = array_merge($idarray, $tmp);
 				}
@@ -93,7 +93,10 @@ class we_category extends weModelBase{
 			$where[] = $pre . implode($post . ($catOr ? 'OR' : 'AND') . $pre, array_unique($idarray)) . $post;
 		}
 		if(!empty($folders)){
-			$where[] = $pre . implode($post . 'OR' . $pre, array_unique($folders)) . $post;
+			foreach($folders as &$cur){
+			$where[] = '('.$pre . implode($post . 'OR' . $pre, $cur) . $post.')';
+			}
+			unset($cur);
 		}
 
 		return /*(empty($where) ?

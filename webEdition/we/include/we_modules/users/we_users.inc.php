@@ -969,21 +969,12 @@ class we_user{
 				}
 
 				if($this->Type == self::TYPE_ALIAS){
-					$obj = $this->Name . '_ParentPerms';
-					$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
-					$obj = $this->Name . '_ParentWs';
-					$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
-					$obj = $this->Name . '_ParentWst';
-					$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWso';
-					$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWsn';
-					$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWsnl';
-					$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
+					$this->ParentPerms = (isset($_POST[$this->Name . '_ParentPerms'])) ? 1 : 0;
+					$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
+					$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
+					$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
+					$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
+					$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				}
 				break;
 			case 1:
@@ -1008,20 +999,11 @@ class we_user{
 						$this->workspaces_defaults[$k] = ($_POST[$obj] != '' ? explode(',', $_POST[$obj]) : array());
 					}
 				}
-				$obj = $this->Name . '_ParentWs';
-				$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWst';
-				$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWso';
-				$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWsn';
-				$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWsnl';
-				$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
+				$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
+				$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
+				$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
+				$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
+				$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				break;
 			case 3:
 				foreach($this->preference_slots as $val){
@@ -1060,11 +1042,7 @@ class we_user{
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $key => $val){
 				if($key == $perm){
-					if($val){
-						return true;
-					} else{
-						return false;
-					}
+					return ($val ? true : false);
 				}
 			}
 		}
@@ -1210,8 +1188,8 @@ class we_user{
 	function getState(){
 		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		$state = '
-$this->Name=' . var_export($this->Name,true) . ';
-$this->Table=' . var_export($this->Table,true) . ';
+$this->Name=' . var_export($this->Name, true) . ';
+$this->Table=' . var_export($this->Table, true) . ';
 $this->permissions_slots=' . var_export($this->permissions_slots, true) . ';
 $this->workspaces=' . var_export($this->workspaces, true) . ';
 $this->workspaces_defaults=' . var_export($this->workspaces_defaults, true) . ';
@@ -1248,20 +1226,16 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 				return $yuiSuggest->getYuiJsFiles() .
 					$this->formGeneralData() .
 					$yuiSuggest->getYuiCss();
-				//.$yuiSuggest->getYuiJs();
-				break;
+			//.$yuiSuggest->getYuiJs();
 			case 1:
 				return $this->formPermissions($perm_branch);
-				break;
 			case 2:
 				return $yuiSuggest->getYuiJsFiles() .
 					$this->formWorkspace() .
 					$yuiSuggest->getYuiCss();
-				//.$yuiSuggest->getYuiJs();
-				break;
+			//.$yuiSuggest->getYuiJs();
 			case 3:
 				return $this->formPreferences($perm_branch);
-				break;
 		}
 		foreach($this->extensions_slots as $k => $v){
 			return $this->extensions_slots[$k]->formDefinition($tab, $perm_branch);
