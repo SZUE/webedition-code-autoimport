@@ -54,17 +54,17 @@
 			$this->Link->setKeys(array("DID","CID"));
 			$this->Content=new weModelBase(CONTENT_TABLE);
 			if(is_array($options)){
-				if($link_props)
+				if($link_props){
 					$this->fetchLinkedOptions($options);
-				else
+				}else{
 					$this->fetchOptions($options);
+				}
 			}
 
 			if($link_props){
 				$this->linked=true;
 				$this->linkProps();
-			}
-			else{
+			}else{
 				$this->persistent_slots=array_keys($options);
 			}
 		}

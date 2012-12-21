@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+
 /**
  * Class weTableItem
  *
@@ -50,7 +51,7 @@ class weTableItem extends weModelBase{
 		}
 		parent::load();
 		// remove binary content
-		if($this->table == CONTENT_TABLE && $this->isBinary()){
+		if($this->table == CONTENT_TABLE && weContentProvider::isBinary($id)){
 			$this->Dat = '';
 		}
 	}
