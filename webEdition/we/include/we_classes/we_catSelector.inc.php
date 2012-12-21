@@ -673,7 +673,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				currentPath = e.path;
 				top.fsfooter.document.we_form.fname.value = e.text;
 				if(id) top.fsheader.enableDelBut();
-				top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,id));
+				top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));
 			}');
 	}
 

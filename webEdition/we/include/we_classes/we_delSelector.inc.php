@@ -75,7 +75,7 @@ function deleteEntry(){
 		for	(var i=0;i < entries.length; i++){
 			if(isFileSelected(entries[i].ID)){
 				todel += entries[i].ID + ",";' .
-	($tmp ? '
+				($tmp ? '
 						if(entries[i].ID=="' . $_SESSION['weS']['seemForOpenDelSelector']['ID'] . '") {
 							docIsOpen = true;
 						}' : '') . '
@@ -145,11 +145,11 @@ function doClick(id,ct){
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				(intval($this->dir) == 0 ?'
+				(intval($this->dir) == 0 ? '
 top.fsheader.disableRootDirButs();
-top.fsfooter.disableDelBut();' :'
+top.fsfooter.disableDelBut();' : '
 top.fsheader.enableRootDirButs();
-top.fsfooter.enableDelBut();') .'
+top.fsfooter.enableDelBut();') . '
 top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 	}
@@ -203,7 +203,7 @@ function setDir(id){
 	currentPath = e.path;
 	top.fsfooter.document.we_form.fname.value = e.text;
 	if(id) top.fsfooter.enableDelBut();
-	top.fscmd.location.replace(top.queryString('.we_fileselector::CMD.',id));
+	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',id));
 }');
 	}
 
