@@ -172,7 +172,7 @@ function keyEditorListener( _successor ) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
-		console.log('key found');
+		//console.log('key found');
 		_editor = false;
 
 		// check if an editor is open
