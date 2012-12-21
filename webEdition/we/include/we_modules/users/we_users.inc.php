@@ -43,7 +43,7 @@ class we_user{
 	// Parent identificator
 	var $ParentID = 0;
 	// Flag which indicates which kind of user is 0-user;1-group;2-owner group;3 - alias
-	var $Type = 0;
+	var $Type = self::TYPE_USER;
 	// Flag which indicates if user is group
 	var $IsFolder = 0;
 	// Salutation
@@ -87,7 +87,9 @@ class we_user{
 	// Description
 	var $Description = '';
 	// User Prefrences
-	var $Preferences = array();
+	var $Preferences = array(
+		'use_jupload' => 0,
+	);
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
@@ -128,9 +130,17 @@ class we_user{
 	 * ADDITIONAL
 	 */
 	// Workspace array
-	var $workspaces = array();
+	var $workspaces = array(
+		FILE_TABLE => array(),
+		TEMPLATES_TABLE => array(),
+		NAVIGATION_TABLE => array(),
+	);
 	// Workspace array
-	var $workspaces_defaults = array();
+	var $workspaces_defaults = array(
+		FILE_TABLE => array(),
+		TEMPLATES_TABLE => array(),
+		NAVIGATION_TABLE => array(),
+	);
 	// Aliases array
 	var $aliases = array();
 	// Permissions headers array
@@ -147,14 +157,10 @@ class we_user{
 
 	// Constructor
 	function __construct(){
-		$this->ClassName = 'we_user';
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 
 		$this->DB_WE = new DB_WE;
 
-		$this->workspaces[FILE_TABLE] = array();
-		$this->workspaces[TEMPLATES_TABLE] = array();
-		$this->workspaces[NAVIGATION_TABLE] = array();
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces[OBJECT_FILES_TABLE] = array();
 		}
@@ -162,17 +168,12 @@ class we_user{
 			$this->workspaces[NEWSLETTER_TABLE] = array();
 		}
 
-		$this->workspaces_defaults[FILE_TABLE] = array();
-		$this->workspaces_defaults[TEMPLATES_TABLE] = array();
-		$this->workspaces_defaults[NAVIGATION_TABLE] = array();
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
 		if(defined('NEWSLETTER_TABLE')){
 			$this->workspaces_defaults[NEWSLETTER_TABLE] = array();
 		}
-
-		$this->Preferences['use_jupload'] = 0;
 
 		foreach($this->preference_slots as $val){
 			$this->Preferences[$val] = null;
@@ -1209,12 +1210,12 @@ class we_user{
 	function getState(){
 		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		$state = '
-$this->Name="' . $this->Name . '";
-$this->Table=\'' . $this->Table . '\';
+$this->Name=' . var_export($this->Name,true) . ';
+$this->Table=' . var_export($this->Table,true) . ';
 $this->permissions_slots=' . var_export($this->permissions_slots, true) . ';
 $this->workspaces=' . var_export($this->workspaces, true) . ';
 $this->workspaces_defaults=' . var_export($this->workspaces_defaults, true) . ';
-$this->Preferences=' - var_export($this->Preferences, true) . ';
+$this->Preferences=' . var_export($this->Preferences, true) . ';
 ';
 
 		foreach($this->persistent_slots as $k => $v){
@@ -1228,7 +1229,6 @@ $this->Preferences=' - var_export($this->Preferences, true) . ';
 			$this->extensions_slots[\'' . $k . '\']->init($this);' .
 				$this->extensions_slots[$k]->getState('$this->extensions_slots[\'' . $k . '\']');
 		}
-
 		return serialize($state);
 	}
 
@@ -1547,7 +1547,7 @@ $this->Preferences=' - var_export($this->Preferences, true) . ';
 		);
 
 		// Check if user has right to decide to give administrative rights
-		if(is_array($this->permissions_slots['administrator']) && we_hasPerm('ADMINISTRATOR') && $this->Type == 0){
+		if(is_array($this->permissions_slots['administrator']) && we_hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
 					<table cellpadding="0" cellspacing="0" border="0" width="500">
@@ -2155,7 +2155,7 @@ $this->Preferences=' - var_export($this->Preferences, true) . ';
 
 		if($this->Preferences['sizeOpt'] == 0){
 			$_window_max = true;
-		}elseif($this->Preferences['sizeOpt'] == 1){
+		} elseif($this->Preferences['sizeOpt'] == 1){
 			$_window_specify = true;
 		}
 
