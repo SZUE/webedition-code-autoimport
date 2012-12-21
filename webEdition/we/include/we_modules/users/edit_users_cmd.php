@@ -379,7 +379,7 @@ top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_US
 				}
 				print we_html_element::jsElement('
 if(confirm("' . $question . '")){
-	top.content.user_cmd.location="' . WE_USERS_MODULE_PATH . basename(__FILE__) . '?ucmd=do_delete";
+	top.content.user_cmd.location="' . WE_USERS_MODULE_DIR . basename(__FILE__) . '?ucmd=do_delete";
 }');
 			}
 			break;
