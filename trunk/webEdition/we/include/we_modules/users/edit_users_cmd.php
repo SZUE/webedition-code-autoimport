@@ -48,10 +48,9 @@ if(isset($_REQUEST["ucmd"])){
 			$_SESSION["user_session_data"] = $user_object->getState();
 
 			print we_html_element::jsElement('
-                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
-                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
-                ');
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";');
 			break;
 
 		case "new_alias":
@@ -73,10 +72,9 @@ if(isset($_REQUEST["ucmd"])){
 
 			$_SESSION["user_session_data"] = $user_object->getState();
 			print we_html_element::jsElement('
-                    top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                    top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
-                    top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
-                ');
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php";
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";');
 			break;
 
 		case "search":
@@ -88,11 +86,10 @@ if(isset($_REQUEST["ucmd"])){
 		case "display_alias":
 			if($uid && $ctype && $ctable){
 				print we_html_element::jsElement('
-                        top.content.usetHot();
-                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
-                    ');
+top.content.usetHot();
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;');
 			}
 			break;
 
@@ -113,10 +110,9 @@ if(isset($_REQUEST["ucmd"])){
 
 			$_SESSION["user_session_data"] = $user_object->getState();
 			print we_html_element::jsElement('
-                        top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                        top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=0";
-                        top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
-                    ');
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=0";
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";');
 			break;
 		case "display_user":
 			if($_REQUEST["uid"]){
@@ -134,12 +130,11 @@ if(isset($_REQUEST["ucmd"])){
 					$setgroup = 'top.content.cgroup=' . $user_object->ID . ";\n";
 				}
 				print we_html_element::jsElement('
-                           top.content.usetHot();
-                           ' . $setgroup . '
-                           top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
-                           top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=0";
-                           top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";
-                        ');
+top.content.usetHot();
+' . $setgroup . '
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_DIR . 'edit_users_edheader.php";
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_DIR . 'edit_users_properties.php?oldtab=0";
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_DIR . 'edit_users_edfooter.php";');
 			}
 			break;
 		case "save_user":
@@ -382,11 +377,10 @@ if(isset($_REQUEST["ucmd"])){
 						$question = sprintf(g_l('modules_users', "[delete_alert_user]"), $user_object->Text);
 						break;
 				}
-				print we_html_element::jsElement(
-						'if(confirm("' . $question . '")){
-                                top.content.user_cmd.location="' . WE_USERS_MODULE_DIR . __FILE__ . '?ucmd=do_delete";
-                            }
-                        ');
+				print we_html_element::jsElement('
+if(confirm("' . $question . '")){
+	top.content.user_cmd.location="' . WE_USERS_MODULE_PATH . __FILE__ . '?ucmd=do_delete";
+}');
 			}
 			break;
 		case "do_delete":
@@ -403,11 +397,10 @@ if(isset($_REQUEST["ucmd"])){
 				}
 				if($user_object->deleteMe()){
 					print we_html_element::jsElement('
-							top.content.deleteEntry(' . $user_object->ID . ');
-							top.content.user_resize.user_right.user_editor.user_edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
-    						top.content.user_resize.user_right.user_editor.user_properties.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
-    						top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";
-                        ');
+top.content.deleteEntry(' . $user_object->ID . ');
+top.content.user_resize.user_right.user_editor.user_edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
+top.content.user_resize.user_right.user_editor.user_properties.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
+top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";');
 					unset($_SESSION["user_session_data"]);
 				}
 			}
@@ -415,13 +408,9 @@ if(isset($_REQUEST["ucmd"])){
 
 		case "check_user_display":
 			if($_REQUEST["uid"]){
-				$foo = getHash("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), $DB_WE);
+				$mpid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]), 'ParentID', $DB_WE);
+				$pid = f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_REQUEST["uid"]), 'ParentID', $DB_WE);
 
-				$mpid = $foo["ParentID"];
-
-				$foo = getHash("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($_REQUEST["uid"]), $DB_WE);
-
-				$pid = $foo["ParentID"];
 				$search = true;
 				$found = false;
 				$first = true;
@@ -437,18 +426,14 @@ if(isset($_REQUEST["ucmd"])){
 					if($pid == 0){
 						$search = false;
 					}
-					$foo = getHash("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($pid), $DB_WE);
-					if(empty($foo)){
-						$foo["ParentID"] = 0;
-					}
-					$pid = $foo["ParentID"];
+					$pid = intval(f("SELECT ParentID FROM " . USER_TABLE . " WHERE ID=" . intval($pid), 'ParentID', $DB_WE));
 				}
 
-				if($found || we_hasPerm("ADMINISTRATOR")){
-					print we_html_element::jsElement('top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')');
-				} else{
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
-				}
+				print we_html_element::jsElement(
+						($found || we_hasPerm("ADMINISTRATOR") ?
+							'top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')' :
+							we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
+					));
 			}
 			break;
 	}
