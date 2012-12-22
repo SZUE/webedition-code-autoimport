@@ -50,7 +50,7 @@ class weTableItem extends weModelBase{
 		}
 		parent::load();
 		// remove binary content
-		if($this->table == CONTENT_TABLE && $this->IsBinary){
+		if($this->table == CONTENT_TABLE && weContentProvider::isBinary($id)){
 			$this->Dat = '';
 		}
 	}
