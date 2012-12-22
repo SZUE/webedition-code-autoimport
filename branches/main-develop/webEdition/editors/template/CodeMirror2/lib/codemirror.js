@@ -27,7 +27,7 @@ window.CodeMirror = (function() {
   var windows = /windows/i.test(navigator.platform);
 
   var opera_version = opera && navigator.userAgent.match(/Version\/(\d*\.\d*)/);
-  if (opera_version) opera_version = Number(opera_version);
+  if (opera_version) opera_version = Number(opera_version[1]);
   // Some browsers use the wrong event properties to signal cmd/ctrl on OS X
   var flipCtrlCmd = mac && (qtwebkit || opera && (opera_version == null || opera_version < 12.11));
 
@@ -188,7 +188,9 @@ window.CodeMirror = (function() {
       suppressEdits: false,
       goalColumn: null,
       cantEdit: false,
-      keyMaps: []
+      keyMaps: [],
+      overlays: [],
+      modeGen: 0
     };
   }
 
@@ -199,9 +201,10 @@ window.CodeMirror = (function() {
   function loadMode(cm) {
     var doc = cm.view.doc;
     cm.view.mode = CodeMirror.getMode(cm.options, cm.options.mode);
-    doc.iter(0, doc.size, function(line) { line.stateAfter = null; });
+    doc.iter(0, doc.size, function(line) { if (line.stateAfter) line.stateAfter = null; });
     cm.view.frontier = 0;
     startWorker(cm, 100);
+    cm.view.modeGen++;
   }
 
   function wrappingChanged(cm) {
@@ -463,9 +466,11 @@ window.CodeMirror = (function() {
       return;
     intact.sort(function(a, b) {return a.from - b.from;});
 
+    var focused = document.activeElement;
     if (intactLines < (to - from) * .7) display.lineDiv.style.display = "none";
     patchDisplay(cm, from, to, intact, positionsChangedFrom);
     display.lineDiv.style.display = "";
+    if (document.activeElement != focused && focused.offsetHeight) focused.focus();
 
     var different = from != display.showingFrom || to != display.showingTo ||
       display.lastSizeC != display.wrapper.clientHeight;
@@ -770,7 +775,7 @@ window.CodeMirror = (function() {
   // HIGHLIGHT WORKER
 
   function startWorker(cm, time) {
-    if (cm.view.frontier < cm.display.showingTo)
+    if (cm.view.mode.startState && cm.view.frontier < cm.display.showingTo)
       cm.view.highlight.set(time, bind(highlightWorker, cm));
   }
 
@@ -782,7 +787,12 @@ window.CodeMirror = (function() {
     var changed = [], prevChange;
     doc.iter(view.frontier, Math.min(doc.size, cm.display.showingTo + 500), function(line) {
       if (view.frontier >= cm.display.showingFrom) { // Visible
-        if (highlightLine(cm, line, state) && view.frontier >= cm.display.showingFrom) {
+        var oldStyles = line.styles;
+        line.styles = highlightLine(cm, line, state);
+        var ischange = !oldStyles || oldStyles.length != line.styles.length;
+        for (var i = 0; !ischange && i < oldStyles.length; ++i)
+          ischange = oldStyles[i] != line.styles[i];
+        if (ischange) {
           if (prevChange && prevChange.end == view.frontier) prevChange.end++;
           else changed.push(prevChange = {start: view.frontier, end: view.frontier + 1});
         }
@@ -826,6 +836,7 @@ window.CodeMirror = (function() {
 
   function getStateBefore(cm, n) {
     var view = cm.view;
+    if (!view.mode.startState) return true;
     var pos = findStartLine(cm, n), state = pos && getLine(view.doc, pos-1).stateAfter;
     if (!state) state = startState(view.mode);
     else state = copyState(view.mode, state);
@@ -847,7 +858,9 @@ window.CodeMirror = (function() {
   }
 
   function measureChar(cm, line, ch, data) {
-    var data = data || measureLine(cm, line), dir = -1;
+    var dir = -1;
+    data = data || measureLine(cm, line);
+    
     for (var pos = ch;; pos += dir) {
       var r = data[pos];
       if (r) break;
@@ -1245,7 +1258,7 @@ window.CodeMirror = (function() {
     on(d.scroller, "mousedown", operation(cm, onMouseDown));
     on(d.scroller, "dblclick", operation(cm, e_preventDefault));
     on(d.lineSpace, "selectstart", function(e) {
-      if (!mouseEventInWidget(d, e)) e_preventDefault(e);
+      if (!eventInWidget(d, e)) e_preventDefault(e);
     });
     // Gecko browsers fire contextmenu *after* opening the menu, at
     // which point we can't mess with it anymore. Context menu is
@@ -1300,7 +1313,11 @@ window.CodeMirror = (function() {
       on(d.scroller, "dragover", drag_);
       on(d.scroller, "drop", operation(cm, onDrop));
     }
-    on(d.scroller, "paste", function(){focusInput(cm); fastPoll(cm);});
+    on(d.scroller, "paste", function(){
+      if (eventInWidget(d, e)) return;
+      focusInput(cm); 
+      fastPoll(cm);
+    });
     on(d.input, "paste", function() {
       d.pasteIncoming = true;
       fastPoll(cm);
@@ -1324,7 +1341,7 @@ window.CodeMirror = (function() {
     });
   }
 
-  function mouseEventInWidget(display, e) {
+  function eventInWidget(display, e) {
     for (var n = e_target(e); n != display.wrapper; n = n.parentNode)
       if (/\bCodeMirror-(?:line)?widget\b/.test(n.className) ||
           n.parentNode == display.sizer && n != display.mover) return true;
@@ -1349,7 +1366,7 @@ window.CodeMirror = (function() {
     var cm = this, display = cm.display, view = cm.view, sel = view.sel, doc = view.doc;
     sel.shift = e_prop(e, "shiftKey");
 
-    if (mouseEventInWidget(display, e)) {
+    if (eventInWidget(display, e)) {
       if (!webkit) {
         display.scroller.draggable = false;
         setTimeout(function(){display.scroller.draggable = true;}, 100);
@@ -1485,7 +1502,8 @@ window.CodeMirror = (function() {
 
   function onDrop(e) {
     var cm = this;
-    if (cm.options.onDragEvent && cm.options.onDragEvent(cm, addStop(e))) return;
+    if (eventInWidget(cm.display, e) || (cm.options.onDragEvent && cm.options.onDragEvent(cm, addStop(e))))
+      return;
     e_preventDefault(e);
     var pos = posFromMouse(cm, e, true), files = e.dataTransfer.files;
     if (!pos || isReadOnly(cm)) return;
@@ -1554,6 +1572,8 @@ window.CodeMirror = (function() {
   }
 
   function onDragStart(cm, e) {
+    if (eventInWidget(cm.display, e)) return;
+    
     var txt = cm.getSelection();
     e.dataTransfer.setData("Text", txt);
 
@@ -1802,7 +1822,10 @@ window.CodeMirror = (function() {
 
   var detectingSelectAll;
   function onContextMenu(cm, e) {
-    var display = cm.display, sel = cm.view.sel;
+    var display = cm.display;
+    if (eventInWidget(display, e)) return;
+    
+    var sel = cm.view.sel;
     var pos = posFromMouse(cm, e), scrollPos = display.scroller.scrollTop;
     if (!pos || opera) return; // Opera is difficult.
     if (posEq(sel.from, sel.to) || posLess(pos, sel.from) || !posLess(pos, sel.to))
@@ -2359,6 +2382,25 @@ window.CodeMirror = (function() {
         }
     },
 
+    addOverlay: operation(null, function(spec, options) {
+      var mode = spec.token ? spec : CodeMirror.getMode(this.options, spec);
+      if (mode.startState) throw new Error("Overlays may not be stateful.");
+      this.view.overlays.push({mode: mode, modeSpec: spec, opaque: options && options.opaque});
+      this.view.modeGen++;
+      regChange(this, 0, this.view.doc.size);
+    }),
+    removeOverlay: operation(null, function(spec) {
+      var overlays = this.view.overlays;
+      for (var i = 0; i < overlays.length; ++i) {
+        if (overlays[i].modeSpec == spec) {
+          overlays.splice(i, 1);
+          this.view.modeGen++;
+          regChange(this, 0, this.view.doc.size);
+          return;
+        }
+      }
+    }),
+
     undo: operation(null, function() {unredoHelper(this, "undo");}),
     redo: operation(null, function() {unredoHelper(this, "redo");}),
 
@@ -2543,8 +2585,10 @@ window.CodeMirror = (function() {
 
     removeLineWidget: operation(null, function(widget) {
       var ws = widget.line.widgets, no = lineNo(widget.line);
-      if (no == null) return;
+      if (no == null || !ws) return;
       for (var i = 0; i < ws.length; ++i) if (ws[i] == widget) ws.splice(i--, 1);
+      var newHeight = widget.node.offsetHeight ? widget.line.height - widget.node.offsetHeight : textHeight(this.display);
+      updateLineHeight(widget.line, newHeight);
       regChange(this, no, no + 1);
     }),
 
@@ -2722,7 +2766,7 @@ window.CodeMirror = (function() {
       return clipPos(doc, {line: lineNo, ch: ch});
     },
     indexFromPos: function (coords) {
-      if (coords.line < 0 || coords.ch < 0) return 0;
+      coords = clipPos(this.view.doc, coords);
       var index = coords.ch;
       this.view.doc.iter(0, coords.line, function (line) {
         index += line.text.length + 1;
@@ -2744,8 +2788,12 @@ window.CodeMirror = (function() {
 
     scrollIntoView: function(pos) {
       if (typeof pos == "number") pos = {line: pos, ch: 0};
-      pos = pos ? clipPos(this.view.doc, pos) : this.view.sel.head;
-      scrollPosIntoView(this, pos);
+      if (!pos || pos.line != null) {
+        pos = pos ? clipPos(this.view.doc, pos) : this.view.sel.head;
+        scrollPosIntoView(this, pos);
+      } else {
+        scrollIntoView(this, pos.left, pos.top, pos.right, pos.bottom);
+      }
     },
 
     setSize: function(width, height) {
@@ -2877,7 +2925,7 @@ window.CodeMirror = (function() {
   };
 
   CodeMirror.getMode = function(options, spec) {
-    var spec = CodeMirror.resolveMode(spec);
+    spec = CodeMirror.resolveMode(spec);
     var mfactory = modes[spec.name];
     if (!mfactory) return CodeMirror.getMode(options, "text/plain");
     var modeObj = mfactory(options, spec);
@@ -3514,7 +3562,8 @@ window.CodeMirror = (function() {
 
   function updateLine(cm, line, text, markedSpans) {
     line.text = text;
-    line.stateAfter = line.styles = null;
+    if (line.stateAfter) line.stateAfter = null;
+    if (line.styles) line.styles = null;
     if (line.order != null) line.order = null;
     detachMarkedSpans(line);
     attachMarkedSpans(line, markedSpans);
@@ -3531,39 +3580,71 @@ window.CodeMirror = (function() {
   // Run the given mode's parser over a line, update the styles
   // array, which contains alternating fragments of text and CSS
   // classes.
-  function highlightLine(cm, line, state) {
-    var mode = cm.view.mode, flattenSpans = cm.options.flattenSpans;
-    var changed = !line.styles, pos = 0, curText = "", curStyle = null;
-    var stream = new StringStream(line.text, cm.options.tabSize), st = line.styles || (line.styles = []);
-    if (line.text == "" && mode.blankLine) mode.blankLine(state);
+  function runMode(cm, text, mode, state, f) {
+    var flattenSpans = cm.options.flattenSpans;
+    var curText = "", curStyle = null;
+    var stream = new StringStream(text, cm.options.tabSize);
+    if (text == "" && mode.blankLine) mode.blankLine(state);
     while (!stream.eol()) {
-      var style = mode.token(stream, state), substr = stream.current();
+      var style = mode.token(stream, state);
+      if (stream.pos > 5000) {
+        // Webkit seems to refuse to render text nodes longer than 57444 characters
+        stream.pos = Math.min(text.length, stream.pos + 50000);
+        style = null;
+      }
+      var substr = stream.current();
       stream.start = stream.pos;
       if (!flattenSpans || curStyle != style) {
-        if (curText) {
-          changed = changed || pos >= st.length || curText != st[pos] || curStyle != st[pos+1];
-          st[pos++] = curText; st[pos++] = curStyle;
-        }
+        if (curText) f(curText, curStyle);
         curText = substr; curStyle = style;
       } else curText = curText + substr;
-      // Give up when line is ridiculously long
-      if (stream.pos > 5000) break;
     }
-    if (curText) {
-      changed = changed || pos >= st.length || curText != st[pos] || curStyle != st[pos+1];
-      st[pos++] = curText; st[pos++] = curStyle;
-    }
-    if (stream.pos > 5000) { st[pos++] = line.text.slice(stream.pos); st[pos++] = null; }
-    // Webkit seems to refuse to render text nodes longer than 57444 characters
-    if (webkit) for (var i = 0; i < st.length; i += 2) {
-      if (st[i].length < 50000) continue;
-      st.splice(i + 2, 0, st[i].slice(1000), st[i+1]);
-      st[i] = st[i].slice(0, 1000);
-      pos += 2;
+    if (curText) f(curText, curStyle);
+  }
+
+  function highlightLine(cm, line, state) {
+    // A styles array always starts with a number identifying the
+    // mode/overlays that it is based on (for easy invalidation).
+    var st = [cm.view.modeGen];
+    // Compute the base array of styles
+    runMode(cm, line.text, cm.view.mode, state, function(txt, style) {st.push(txt, style);});
+
+    // Run overlays, adjust style array.
+    for (var o = 0; o < cm.view.overlays.length; ++o) {
+      var overlay = cm.view.overlays[o], i = 1;
+      runMode(cm, line.text, overlay.mode, true, function(txt, style) {
+        var start = i, len = txt.length;
+        // Ensure there's a token end at the current position, and that i points at it
+        while (len) {
+          var cur = st[i], len_ = cur.length;
+          if (len_ <= len) {
+            len -= len_;
+          } else {
+            st.splice(i, 1, cur.slice(0, len), st[i+1], cur.slice(len));
+            len = 0;
+          }
+          i += 2;
+        }
+        if (!style) return;
+        if (overlay.opaque) {
+          st.splice(start, i - start, txt, style);
+          i = start + 2;
+        } else {
+          for (; start < i; start += 2) {
+            var cur = st[start+1];
+            st[start+1] = cur ? cur + " " + style : style;
+          }
+        }
+      });
     }
 
-    if (pos != st.length) { st.length = pos; changed = true; }
-    return changed;
+    return st;
+  }
+
+  function getLineStyles(cm, line) {
+    if (!line.styles || line.styles[0] != cm.view.modeGen)
+      line.styles = highlightLine(cm, line, line.stateAfter = getStateBefore(cm, lineNo(line)));
+    return line.styles;
   }
 
   // Lightweight form of highlight -- proceed over this line and
@@ -3598,8 +3679,6 @@ window.CodeMirror = (function() {
     if (line.textClass) builder.pre.className = line.textClass;
 
     do {
-      if (!line.styles)
-        highlightLine(cm, line, line.stateAfter = getStateBefore(cm, lineNo(line)));
       builder.measure = line == realLine && measure;
       builder.pos = 0;
       builder.addToken = builder.measure ? buildTokenMeasure : buildToken;
@@ -3607,7 +3686,7 @@ window.CodeMirror = (function() {
         measure[0] = builder.pre.appendChild(zeroWidthElement(cm.display.measure));
         builder.addedOne = true;
       }
-      var next = insertLineContent(line, builder);
+      var next = insertLineContent(line, builder, getLineStyles(cm, line));
       sawBefore = line == lineBefore;
       if (next) {
         line = getLine(cm.view.doc, next.to.line);
@@ -3689,16 +3768,16 @@ window.CodeMirror = (function() {
 
   // Outputs a number of spans to make up a line, taking highlighting
   // and marked text into account.
-  function insertLineContent(line, builder) {
-    var st = line.styles, spans = line.markedSpans;
+  function insertLineContent(line, builder, styles) {
+    var spans = line.markedSpans;
     if (!spans) {
-      for (var i = 0; i < st.length; i+=2)
-        builder.addToken(builder, st[i], styleToClass(st[i+1]));
+      for (var i = 1; i < styles.length; i+=2)
+        builder.addToken(builder, styles[i], styleToClass(styles[i+1]));
       return;
     }
 
     var allText = line.text, len = allText.length;
-    var pos = 0, i = 0, text = "", style;
+    var pos = 0, i = 1, text = "", style;
     var nextChange = 0, spanStyle, spanEndStyle, spanStartStyle, collapsed;
     for (;;) {
       if (nextChange == pos) { // Update current marker set
@@ -3742,7 +3821,7 @@ window.CodeMirror = (function() {
           pos = end;
           spanStartStyle = "";
         }
-        text = st[i++]; style = styleToClass(st[i++]);
+        text = styles[i++]; style = styleToClass(styles[i++]);
       }
     }
   }

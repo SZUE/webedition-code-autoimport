@@ -223,13 +223,13 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 .CodeMirror-selected { background: #d9d9d9; }
 .CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
 
-.CodeMirror-searching {
+.cm-searching {
   background: #ffa;
   background: rgba(255, 255, 0, .4);
 }
 
 /* IE7 hack to prevent it from returning funny offsetTops on the spans */
-/*.CodeMirror span { *vertical-align: text-bottom; }*/
+.CodeMirror span { *vertical-align: text-bottom; }
 
 @media print {
   /* Hide the cursor when printing */
