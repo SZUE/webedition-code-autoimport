@@ -175,7 +175,7 @@ function keyEditorListener( _successor ) {
 
 		if ( _editor && ( evt["ctrlKey"] ) ) { // || evt["metaKey"] when target bug is solved by Safari
 			switch(evt["keyCode"]){
-				case 83:
+				case 83: //S
 					if(evt["shiftKey"] ) { // SHIFT + S (Publish)
 						self.focus(); // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
@@ -183,15 +183,13 @@ function keyEditorListener( _successor ) {
 						if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
 							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
 						}
-						return true;
-					}
-					break;
-				case 83: // S (Save)
-					self.focus();  // focus, to avoid a too late onchange of editor
-					this.cancelEvent(evt);
-					_activeEditorFrame.setEditorPublishWhenSave(false);
-					if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
-						_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
+					}else{// S (Save)
+						self.focus();  // focus, to avoid a too late onchange of editor
+						this.cancelEvent(evt);
+						_activeEditorFrame.setEditorPublishWhenSave(false);
+						if (typeof(_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) == "function") {
+							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
+						}
 					}
 					return true;
 
@@ -387,11 +385,11 @@ function dealWithKeyboardShortCut(evt) {
 				)
 			)
 		) {
-//		console.log('deal'+evt['keyCode'])
+		//		console.log('deal'+evt['keyCode'])
 		return keyListener.dealEvent( evt );
 
 	} else {
-//		console.log('for'+evt['keyCode']);
+		//		console.log('for'+evt['keyCode']);
 		return false;
 	// event is NOT forwarded
 	}
