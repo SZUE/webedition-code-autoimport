@@ -159,7 +159,6 @@ function keyEditorListener( _successor ) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function(evt) {
-		//console.log('key found');
 		_editor = false;
 		_editorType="";
 
@@ -388,11 +387,11 @@ function dealWithKeyboardShortCut(evt) {
 				)
 			)
 		) {
-		console.log('deal'+evt['keyCode'])
+//		console.log('deal'+evt['keyCode'])
 		return keyListener.dealEvent( evt );
 
 	} else {
-		console.log('for'+evt['keyCode']);
+//		console.log('for'+evt['keyCode']);
 		return false;
 	// event is NOT forwarded
 	}
