@@ -68,7 +68,7 @@ function doClick(id,ct){
 	function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
-	top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
+	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
 }');
 	}
 

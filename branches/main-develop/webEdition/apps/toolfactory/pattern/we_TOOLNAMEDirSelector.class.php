@@ -57,7 +57,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT;
+		$html = we_html_tools::getHtmlTop('', '', '', true) . STYLESHEET_SCRIPT;
 		?>
 		function writeBody(d){
 		d.open();

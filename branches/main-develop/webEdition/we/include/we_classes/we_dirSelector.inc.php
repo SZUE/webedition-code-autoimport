@@ -572,7 +572,7 @@ top.fsheader.selectIt();';
 			function setDir(id){
 				showPreview(id);
 				top.fspreview.document.body.innerHTML = "";
-				top.fscmd.location.replace(top.queryString('.we_multiSelector::SETDIR.',id));
+				top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
 				e = getEntry(id);
 				fspath.document.body.innerHTML = e.path;
 			}');

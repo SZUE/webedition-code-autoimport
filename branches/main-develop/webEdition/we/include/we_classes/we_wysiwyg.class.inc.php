@@ -1385,13 +1385,6 @@ function tinyMCECallRegisterDialog(win,action){
 								o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
 							});') . '
 
-							' . ($this->htmlSpecialchars ? '' : '
-							ed.onPostProcess.add(function(ed, o) { // TODO: find a real solution for php code in tiny
-								o.content = o.content.replace(/&lt;\?/g, "\#\|\#\?\#").replace(/\?&gt;/g, "\#\?\#\|\#");
-								o.content = o.content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-								o.content = o.content.replace(/\#\|\#\?\#/g, "&lt;?").replace(/\#\?\#\|\#/g, "?&gt;");
-							});') . '
-
 							/* set EditorFrame.setEditorIsHot(true) */
 
 							// we look for editorLevel and weEditorFrameController just once at editor init
@@ -1458,7 +1451,7 @@ function tinyMCECallRegisterDialog(win,action){
 						}
 					});') .
 					'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace('\n', '', $editValue) . '</textarea>';
+<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . $this->width . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 
 			case 'default':
 

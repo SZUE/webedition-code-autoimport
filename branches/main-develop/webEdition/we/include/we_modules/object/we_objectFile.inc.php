@@ -39,7 +39,7 @@ class we_objectFile extends we_document{
 	var $Templates = '';
 	var $ExtraTemplates = '';
 	var $DefArray = array();
-		var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
 
@@ -1046,11 +1046,9 @@ class we_objectFile extends we_document{
 				}
 			}
 
-			if(count($objects) < $max || $max == "" || $max == 0){
-				$content .= we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f - 1) . "')");
-			} else{
-				$content .= we_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true);
-			}
+			$content .= (count($objects) < $max || $max == "" || $max == 0 ?
+					we_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','multiobject_" . $name . "','" . ($f - 1) . "')") :
+					we_button::create_button("image:btn_add_listelement", "#", true, 21, 22, "", "", true));
 
 			$new = array(
 				'class' => $classid,
@@ -1084,8 +1082,6 @@ class we_objectFile extends we_document{
 						$content .= "<div id=\"table_" . $uniq . "\" style=\"display:none; padding: 10px 0px 20px 30px;\">" .
 							$ob->getFieldsHTML(0, true) .
 							'</div>';
-					} else{
-						$content .= "";
 					}
 				}
 
@@ -1124,18 +1120,13 @@ class we_objectFile extends we_document{
 				<tr><td>' . we_class::htmlSelect('we_' . $this->Name . '_shopVat[' . $name . ']', $values, 1, $val) . '</td></tr>
 			</table>';
 		} else{
-
 			$val = $this->getElement($name);
-			$vat = '';
 
 			$weShopVat = weShopVats::getShopVATById($val);
-
-			if($weShopVat){
-				$vat = $weShopVat->vat;
-			} else{
+			if(!$weShopVat){
 				$weShopVat = weShopVats::getStandardShopVat();
-				$vat = $weShopVat->vat;
 			}
+			$vat = $weShopVat->vat;
 			return $this->getPreviewView($name, $vat);
 		}
 	}
@@ -1219,11 +1210,11 @@ class we_objectFile extends we_document{
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
-		$content = $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 		return ($variant ?
-				$content :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (isset($this->DefArray["input_" . $name]['editdescription']) && $this->DefArray["input_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["input_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
-			);
+				'' :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (isset($this->DefArray["input_" . $name]['editdescription']) && $this->DefArray["input_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["input_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
+			) .
+			$this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	function getCountryFieldHTML($name, $attribs, $editable = true, $variant = false){
@@ -1275,13 +1266,12 @@ class we_objectFile extends we_document{
 		}
 		unset($countryvalue);
 		$countryselect->selectOption($this->getElement($name));
-		$content = $countryselect->getHtml();
 
-//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
 		return ($variant ?
-				$content :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["country_" . $name]['editdescription']) && $this->DefArray["country_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["country_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
-			);
+				'' :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["country_" . $name]['editdescription']) && $this->DefArray["country_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["country_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
+			) .
+			$countryselect->getHtml();
 	}
 
 	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
@@ -1306,41 +1296,39 @@ class we_objectFile extends we_document{
 			}
 		}
 		$languageselect->selectOption($this->getElement($name));
-		$content = $languageselect->getHtml();
-//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
 		return ($variant ?
-				$content :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["language_" . $name]['editdescription']) && $this->DefArray["language_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["language_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() ) . $content
-			);
+				'' :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (isset($this->DefArray["language_" . $name]['editdescription']) && $this->DefArray["language_" . $name]['editdescription'] ? we_html_element::htmlBr() . '<div class="objectDescription">' . $this->DefArray["language_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
+			) . $languageselect->getHtml();
 	}
 
 	function getCheckboxFieldHTML($name, $attribs, $editable = true){
 		if(!$editable){
 			return $this->getPreviewView($name, ($this->getElement($name) ? g_l('global', "[yes]") : g_l('global', "[no]")));
 		}
-		$content = we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
-		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content;
+		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) .
+			we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 
 	function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, (strlen($this->getElement($name)) ? $this->getElement($name) : ''));
 		}
-		$content = $this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 		return ($variant ? '' : '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["int_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["int_" . $name]['editdescription']) && $this->DefArray["int_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["int_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr() )
-			) . $content;
+			) .
+			$this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	function getFloatFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
-		$content = $this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 
 		return ($variant ?
-				$content :
-				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["float_" . $name]['editdescription']) && $this->DefArray["float_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["float_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr()) . $content
-			);
+				'' :
+				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["float_" . $name]['editdescription']) && $this->DefArray["float_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["float_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr())
+			) .
+			$this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	function getDateFieldHTML($name, $attribs, $editable = true, $variant = false){
@@ -1348,11 +1336,11 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, date(g_l('date', '[format][default]'), abs($this->getElement($name))));
 		}
 		$d = abs($this->getElement($name));
-		$content = we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
 		return ($variant ?
-				$content :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr() . $content
-			);
+				'' :
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr()
+			) .
+			we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? $d : time()), true);
 	}
 
 	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
@@ -1381,8 +1369,7 @@ class we_objectFile extends we_document{
 					'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["text_" . $name]['editdescription'] . '</div>' : we_html_element::htmlBr())
 				) . $textarea;
 		} else{
-			$content = $this->getFieldByVal($this->getElement($name), "txt", $attribs);
-			return $this->getPreviewView($name, $content);
+			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
 		}
 	}
 
@@ -1504,7 +1491,7 @@ class we_objectFile extends we_document{
 
 	function getDefaultValueArray(){
 		if($this->TableID){
-			$foo = f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . $this->TableID, "DefaultValues", $this->DB_WE);
+			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE);
 			return $foo ? unserialize($foo) : array();
 		}
 		t_e('error no tableID!', $this);

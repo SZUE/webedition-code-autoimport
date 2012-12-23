@@ -614,12 +614,12 @@ abstract class we_html_tools{
 		return $retVal;
 	}
 
-	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans'){
+	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
 		self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
 		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '4Trans', $expand = false){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(we_html_element::htmlHead(
 					self::getHtmlInnerHead($title, $charset, $expand), false)

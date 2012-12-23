@@ -44,7 +44,7 @@ function pWebEdition_JSFunctions(){
 	function info(text){
 	}
 
-	function toggleBusy(w) {
+	function toggleBusy(w) {/* => removed since no header animation anymore
 	if(w == busy)
 	return;
 	if(self.header) {
@@ -54,7 +54,7 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	setTimeout("toggleBusy("+w+");",300);
+	setTimeout("toggleBusy("+w+");",300);*/
 	}
 
 	function doUnload(whichWindow) {

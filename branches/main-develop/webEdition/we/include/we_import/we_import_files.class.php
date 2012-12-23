@@ -166,6 +166,21 @@ class we_import_files{
 					}
 				}
 
+function checkButtons(){
+	try{
+		if(typeof(document.JUpload)=="undefined"||(typeof(document.JUpload.isActive)!="function")||document.JUpload.isActive()==false){
+			checkFileinput();
+			window.setTimeout("checkButtons()",1000);
+			//recheck
+		}else{
+			setApplet();
+		}
+	}catch(e){
+		checkFileinput();
+		window.setTimeout("checkButtons()",1000);
+	}
+}
+
 				function setApplet() {
 
 					var descDiv = document.getElementById("desc");
@@ -453,8 +468,8 @@ class we_import_files{
 		$body = we_html_element::htmlBody(
 				array(
 				"class" => "weDialogBody",
-				"onMouseMove" => "if(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='function')||document.JUpload.isActive()==false) checkFileinput(); else setApplet();",
-				"onload" => "if(!(typeof(document.JUpload)=='undefined'||(typeof(document.JUpload.isActive)=='function')||document.JUpload.isActive()==false)) setApplet();"
+				//"onMouseMove" => "checkButtons();",
+				"onload" => "checkButtons();"
 				), $content);
 
 		$js = $this->_getJS($fileinput) . we_multiIconBox::getDynJS("uploadFiles", "30");
@@ -746,7 +761,7 @@ function next() {
 				return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[read_file_error]'));
 			}
 			$foo = explode('/', $_FILES["we_File"]["type"]);
-			if(!$we_doc->isBinary()){
+			if($we_doc->isBinary()){
 				$we_doc->setElement("data", $tempName);
 			} else{
 				$we_doc->setElement("data", $we_fileData, $foo[0]);

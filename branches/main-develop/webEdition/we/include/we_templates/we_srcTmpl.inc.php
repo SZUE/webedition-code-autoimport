@@ -139,19 +139,19 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 		window.scroll(0,0);
 	}
 
-		var editor=null;
+	var editor=null;
 
-		function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
-			if (document.weEditorApplet.height != 3000) {
-				try {
-					document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
-					countJEditorInitAttempts = 0;
-				}catch(err){
-					setTimeout(javaEditorSetCode, 1000);
-				}
-			} else { // change size not yet finished
+	function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
+		if (document.weEditorApplet.height != 3000) {
+			try {
+				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+				countJEditorInitAttempts = 0;
+			}catch(err){
 				setTimeout(javaEditorSetCode, 1000);
 			}
+		} else { // change size not yet finished
+			setTimeout(javaEditorSetCode, 1000);
+		}
 	}
 
 
@@ -184,6 +184,13 @@ switch($_SESSION['prefs']['editorMode']){
 									_EditorFrame.setEditorIsHot(true);
 								}
 							});
+							var foldHtml=CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
+							var foldOther=CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+							editor.on("gutterClick", function(cm,n) {
+								foldHtml(cm,n);
+								foldOther(cm,n);
+							});
+
 						}catch(e){
 							//console.log("CM init error");
 						}
@@ -242,9 +249,7 @@ switch($_SESSION['prefs']['editorMode']){
 			if(window.editor && window.editor.frame) {
 				window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 			}
-
 		}
-
 	}
 
 	// ################ Java Editor specific Functions
@@ -304,18 +309,18 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function wedoKeyDown(ta,keycode){
-			modifiers = (event.altKey || event.ctrlKey || event.shiftKey);
-			if (!modifiers && keycode == 9) { // TAB
-				if (ta.setSelectionRange) {
-					var selectionStart = ta.selectionStart;
-					var selectionEnd = ta.selectionEnd;
-					ta.value = ta.value.substring(0, selectionStart)
-						+ "\t"
-						+ ta.value.substring(selectionEnd);
-					ta.focus();
-					ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
-					ta.focus();
-					return false;
+		modifiers = (event.altKey || event.ctrlKey || event.shiftKey);
+		if (!modifiers && keycode == 9) { // TAB
+			if (ta.setSelectionRange) {
+				var selectionStart = ta.selectionStart;
+				var selectionEnd = ta.selectionEnd;
+				ta.value = ta.value.substring(0, selectionStart)
+					+ "\t"
+					+ ta.value.substring(selectionEnd);
+				ta.focus();
+				ta.setSelectionRange(selectionEnd+1, selectionEnd+1);
+				ta.focus();
+				return false;
 
 			} else if (document.selection) {
 				var selection = document.selection;
@@ -480,14 +485,12 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_js[] = 'lib/util/foldcode.js';
 						$parser_js[] = 'lib/util/matchbrackets.js';
 						$mode = 'text/css';
-						$foldFunc = 'foldFunc';
 						break;
 					case 'text/js':
 						$parser_js[] = 'mode/javascript/javascript.js';
 						$parser_js[] = 'lib/util/foldcode.js';
 						$parser_js[] = 'lib/util/matchbrackets.js';
 						$mode = 'text/javascript';
-						$foldFunc = 'foldFunc';
 						break;
 					case 'text/weTmpl':
 						$parser_js[] = 'lib/util/overlay.js';
@@ -501,7 +504,6 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_css[] = 'lib/util/simple-hint.css';
 						$toolTip = $_SESSION['prefs']['editorTooltips'];
 						$mode = 'text/weTmpl';
-						$foldFunc = 'foldFunc_html';
 					case 'text/html':
 						$parser_js[] = 'mode/xml/xml.js';
 						$parser_js[] = 'mode/javascript/javascript.js';
@@ -513,13 +515,11 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_js[] = 'lib/util/foldcode.js';
 						$parser_js[] = 'lib/util/matchbrackets.js';
 						$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
-						$foldFunc = 'foldFunc_html';
 						break;
 					case 'text/xml':
 						$parser_js[] = 'mode/xml/xml.js';
 						$mode = 'application/xml';
 						$parser_js[] = 'lib/util/matchbrackets.js';
-						$foldFunc = 'foldFunc_html';
 						break;
 					default:
 						//don't use CodeMirror
@@ -552,9 +552,6 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 	line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] * 1.5 : '18') . 'px;
 }') .
 						we_html_element::jsElement('
-var foldFunc_html = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
-var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-
 var CMoptions = { //these are the CodeMirror options
 	mode: "' . $mode . '",
 	enterMode: "indent",
@@ -562,7 +559,6 @@ var CMoptions = { //these are the CodeMirror options
 	theme: "elegant",
 	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 	gutter: true,
-	onGutterClick: ' . $foldFunc . ',
 	indentWithTabs: true,
 	tabSize: 2,
 	indentUnit: 2,
@@ -571,11 +567,9 @@ var CMoptions = { //these are the CodeMirror options
 	workDelay: 800,
 	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
 	lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
-	closeTagEnabled: true,
-	closeTagIndent: true,
+	autoCloseTags: true,
 	extraKeys: {
-		"\'>\'": function(cm) { cm.closeTag(cm, \'>\'); },
-		"\'/\'": function(cm) { cm.closeTag(cm, \'/\'); }' .
+' .
 							//code for completion
 							/*
 							  "\' \'": function(cm) { CodeMirror.xmlHint(cm, \' \'); },
@@ -603,7 +597,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			if($_useJavaEditor){
 				$maineditor .= we_getJavaEditorCode($code);
 			} else{
-				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (we_base_browserDetect::isIE()||we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+				$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . ((!we_base_browserDetect::isGecko() && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onhange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 					. htmlspecialchars($code) . '</textarea>';
 				if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
 					$maineditor .= we_getCodeMirror2Code($code);

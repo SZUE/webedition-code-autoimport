@@ -78,22 +78,14 @@ class we_base_ContentTypes{
 	<we:charset defined="UTF-8">UTF-8</we:charset>
 </head>
 <body>
-	<table cellpadding="0" cellspacing="0"  width="400">
-		<tr><td>
-				<p><b><we:input type="date" name="Date" format="d.m.Y"/></b></p>
-				<h2><we:input type="text" name="Headline" size="60"/></h2>
-				<p>
-					<we:ifNotEmpty match="Image">
-						<we:img name="Image" showthumbcontrol="true"/>
-						<we:ifEditmode>
-							<br/><br/>
-						</we:ifEditmode>
-					</we:ifNotEmpty></p>
-
-					<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
-
-		</td></tr>
-	</table>
+	<article>
+		<h1><we:input type="text" name="Headline" size="60"/></h1>
+		<p><b><we:input type="date" name="Date" format="d.m.Y"/></b></p>
+		<we:ifNotEmpty match="Image">
+			<we:img name="Image" showthumbcontrol="true"/>
+		</we:ifNotEmpty>
+		<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
+	</article>
 </body>
 </html>',
 				'IsRealFile' => false,
