@@ -157,6 +157,9 @@
 		<tu tuid="The application is deletable.">
 			<tuv xml:lang="de"><seg>Die Anwendung ist deinstallierbar.</seg></tuv>
 		</tu>
+		<tu tuid="The application was succesfully deleted!">
+			<tuv xml:lang="de"><seg>Die Anwendung wurde gelöscht.</seg></tuv>
+		</tu>
 		<tu tuid="The application will be deactivated.">
 			<tuv xml:lang="de"><seg>Die Anwendung wird deaktiviert!</seg></tuv>
 		</tu>
