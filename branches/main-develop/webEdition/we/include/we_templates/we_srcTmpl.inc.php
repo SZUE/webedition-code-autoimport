@@ -460,7 +460,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						), '', $params);
 			}
 
-			function we_getCodeMirror2Tags(){
+			function we_getCodeMirror2Tags($css){
 				$ret = '';
 				$allWeTags = weTagWizard::getExistingWeTags();
 				foreach($allWeTags as $tagName){
@@ -469,7 +469,111 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						unset($weTag);
 					}
 					$weTag = weTagData::getTagData($tagName);
-					$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
+					if($css){
+						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
+					} else{
+						$allTags[] = 'we:' . $tagName;
+						$attr = $weTag->getAttributesForCM();
+						$ret.='CodeMirror.weHints["<we:' . $tagName . ' "] = [' . $attr . '];' . "\n";
+					}
+				}
+				if(!$css){
+					$allTags = array_merge($allTags, array(
+						'a',
+						'abbr',
+						'acronym',
+						'address',
+						'applet',
+						'area',
+						'b',
+						'base',
+						'basefont',
+						'bdo',
+						'big 	 ',
+						'blockquote',
+						'body',
+						'br',
+						'button',
+						'caption',
+						'center',
+						'cite',
+						'code',
+						'col',
+						'colgroup',
+						'dd 	 ',
+						'del',
+						'dfn',
+						'dir',
+						'div',
+						'dl',
+						'dt',
+						'em',
+						'fieldset',
+						'font',
+						'form',
+						'frame',
+						'frameset',
+						'h1',
+						'h2',
+						'h3',
+						'h4',
+						'h5',
+						'h6',
+						'head',
+						'hr',
+						'html',
+						'i',
+						'iframe',
+						'img',
+						'input',
+						'ins',
+						'isindex',
+						'kbd',
+						'label',
+						'legend',
+						'li',
+						'link',
+						'map',
+						'menu',
+						'meta',
+						'noframes',
+						'noscript',
+						'object',
+						'ol',
+						'optgroup',
+						'option',
+						'p',
+						'param',
+						'pre',
+						'q',
+						's',
+						'samp',
+						'script',
+						'select',
+						'small',
+						'span',
+						'strike',
+						'strong',
+						'style',
+						'sub',
+						'sup',
+						'table',
+						'tbody',
+						'td',
+						'textarea',
+						'tfoot',
+						'th',
+						'thead',
+						'title',
+						'tr',
+						'tt',
+						'u',
+						'ul',
+						'var',
+						'!doctype',
+						'?php',
+						));
+					$ret.='CodeMirror.weHints["<"] = ["' . implode('","', $allTags) . '"];' . "\n";
 				}
 				return $ret;
 			}
@@ -498,8 +602,9 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$parser_js[] = 'lib/util/closetag.js';
 						$parser_js[] = 'lib/util/foldcode.js';
 						$parser_js[] = 'lib/util/matchbrackets.js';
-						if($_SESSION['prefs']['editorCodecompletion']){
+						if(true || $_SESSION['prefs']['editorCodecompletion']){
 							$parser_js[] = 'lib/util/simple-hint.js';
+							$parser_js[] = 'lib/util/we-hint.js';
 						}
 						$parser_css[] = 'lib/util/simple-hint.css';
 						$toolTip = $_SESSION['prefs']['editorTooltips'];
@@ -539,7 +644,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						$maineditor.=we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/' . $js);
 					}
 
-					$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags() : '') . '
+					$maineditor.=we_html_element::cssElement(($toolTip ? we_getCodeMirror2Tags(true) : '') . '
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
@@ -568,16 +673,14 @@ var CMoptions = { //these are the CodeMirror options
 	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
 	lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
 	autoCloseTags: true,
-	extraKeys: {
-' .
-							//code for completion
-							/*
-							  "\' \'": function(cm) { CodeMirror.xmlHint(cm, \' \'); },
-							  "\'<\'": function(cm) { CodeMirror.xmlHint(cm, \'<\'); },
-							  "Ctrl-Space": function(cm) { CodeMirror.xmlHint(cm, \'\'); } */
-							'
+	autofocus: true,
+	extraKeys: {' . (true || $_SESSION['prefs']['editorCodecompletion'] ? '
+							  "\' \'": function(cm) { CodeMirror.weHint(cm, \' \'); },
+							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
+							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); }' : ''
+							) . '
 	}
-};
+};' . we_getCodeMirror2Tags(false) . '
 window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 				}
