@@ -37,7 +37,7 @@ function pWebEdition_Tree(){
  */
 function pWebEdition_JSFunctions(){
 	?>
-	function toggleBusy(w) {
+	function toggleBusy(w) {/* => removed since no header animation anymore
 	if(w == busy || firstLoad==false){
 	return;
 	}
@@ -48,7 +48,7 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	setTimeout("toggleBusy("+w+");",300);
+	setTimeout("toggleBusy("+w+");",300);*/
 	}
 
 	var regular_logout = false;
@@ -208,13 +208,6 @@ function pWebEdition_Frameset(){
 	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
 		<?php we_main_header::pbody(); ?>
 	</div>
-	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
-		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
-	</div>
-	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: <?php echo (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? '100' : '0'; ?>px;border: 1px solid;">
-		<div style="height:100%;float:left;width:25%;border:0px;">
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
-		</div>
 		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0;">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 		</div>
@@ -228,21 +221,6 @@ function pWebEdition_Frameset(){
 			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
 			<div style="height:100%;float:left;width:10%;border:0px;">
 				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
-			</div>
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
-			</div>
-=======
-		<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
->>>>>>> .merge-rechts.r5062
 		</div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
 			<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
