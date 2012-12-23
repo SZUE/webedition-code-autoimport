@@ -24,7 +24,6 @@
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
-
 if(we_app_Common::isDeinstallable($this->model->classname)){
 	$dialog = new we_ui_dialog_YesNoCancelDialog();
 	$dialog->setMessage($translate->_('The application will be deleted.') . "\n" . $translate->_('Are you sure?'));
@@ -32,10 +31,17 @@ if(we_app_Common::isDeinstallable($this->model->classname)){
 	$dialog->setNoAction("weCmdController.fire(dialog.args.noCmd);");
 	echo $dialog->getHTML();
 } else {
-	$dialog = new we_ui_dialog_OkDialog();
-	$dialog->setMessage($translate->_('The application can not be deleted!'));
-	$dialog->setOkAction("weCmdController.fire(dialog.args.noCmd);");
-	echo $dialog->getHTML();
+	if(we_app_Common::isInstalled($this->model->classname)){
+		$dialog = new we_ui_dialog_OkDialog();
+		$dialog->setMessage($translate->_('The application can not be deleted!'));
+		$dialog->setOkAction("weCmdController.fire(dialog.args.noCmd);");
+		echo $dialog->getHTML();
+	} else {
+		$dialog = new we_ui_dialog_OkDialog();
+		$dialog->setMessage($translate->_('The application was succesfully deleted!'));
+		$dialog->setOkAction("weCmdController.fire(dialog.args.noCmd);");
+		echo $dialog->getHTML();
+	}
 }
 
 

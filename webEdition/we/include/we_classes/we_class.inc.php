@@ -515,7 +515,7 @@ abstract class we_class{
 	}
 
 	protected function i_savePersistentSlotsToDB($felder = ''){
-		$tableInfo = $this->DB_WE->metadata($this->Table);
+		$tableInfo = $this->DB_WE->metadata($this->Table);t_e($tableInfo);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
 		foreach($tableInfo as $info){
@@ -532,7 +532,7 @@ abstract class we_class{
 			}
 		}
 		if(count($fields)){
-			$where = ($this->wasUpdate) ? ' WHERE ID=' . intval($this->ID) : '';
+			$where = ($this->wasUpdate) ? ' WHERE ID=' . intval($this->ID) : '';t_e($fields);
 			$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
 			$this->ID = ($this->wasUpdate) ? $this->ID : $this->DB_WE->getInsertId();
 			return $ret;
