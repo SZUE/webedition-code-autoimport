@@ -26,9 +26,9 @@ $appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
 $frameset = new we_ui_layout_Frameset(array('rows' => '1,*'));
 $frameset->addFrame(array(
-	'src' => '/webEdition/html/frameheader.html', 
-	'name' => 'treeheader', 
-	'noresize' => 'noresize', 
+	'src' => '/webEdition/html/white.html',
+	'name' => 'treeheader',
+	'noresize' => 'noresize',
 	'scrolling' => 'no'
 ));
 
@@ -37,8 +37,8 @@ $frameset->addFrame(array(
 		($this->modelId ?
 			'/modelId/' . $this->modelId :
 			''),
-	'name' => 'tree', 
-	'noresize' => 'noresize', 
+	'name' => 'tree',
+	'noresize' => 'noresize',
 	'scrolling' => 'auto'
 ));
 

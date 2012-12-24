@@ -418,7 +418,7 @@ class weToolFrames extends weModuleFrames{
 		$noframeset = new we_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "1,*,40"));
-		$frameset->addFrame(array("src" => HTML_DIR . "frameheader.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
+		$frameset->addFrame(array("src" => HTML_DIR . "white.html", "name" => "treeheader", "noresize" => null, "scrolling" => "no"));
 
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treeconst" . (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''), "name" => "tree", "noresize" => null, "scrolling" => "auto"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
