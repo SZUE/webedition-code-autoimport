@@ -55,10 +55,10 @@ we_html_tools::htmlTop();
 include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 ?>
 </head>
-<body>
+<body onresize="setFrameSize()">
 	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
 		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver;" id="multiEditorDocumentTabsFrameDiv">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0px;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
+			<?php include(WEBEDITION_PATH.'multiEditor/multiTabs.php');?>
 		</div>
 		<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" onload="startMultiEditor()" name="multiEditorEditorFramesets" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>

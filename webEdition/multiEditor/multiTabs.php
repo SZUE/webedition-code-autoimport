@@ -92,7 +92,6 @@ switch($browser->getBrowser()){
 }
 $frameDefaultHeight = 22;
 
-we_html_tools::htmlTop();
 print we_html_element::jsElement($content = $_contentTypes);
 ?>
 <script type="text/javascript"><!--
@@ -139,8 +138,8 @@ print we_html_element::jsElement($content = $_contentTypes);
 	function setFrameSize() {
 		tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight <?php echo $heightPlus; ?>) : (document.body.clientHeight <?php echo $heightPlus; ?> ) );
 		tabsHeight = tabsHeight < <?php echo $frameDefaultHeight; ?> ? <?php echo $frameDefaultHeight; ?> : tabsHeight;
-		parent.document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight+"px";
-		parent.document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight+"px";
+		document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight+"px";
+		document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight+"px";
 	}
 
 	/**
@@ -394,10 +393,9 @@ print we_html_element::jsElement($content = $_contentTypes);
 		display: inline;
 	}
 </style>
-</head>
-<body style="background-color: Silver;" onresize="setFrameSize()" onload="init()">
+<div id="weMultiTabs">
 	<div id="tabContainer" name="tabContainer">
 	</div>
 	<?php echo $tabDummy; ?>
-</body>
-</html>
+</div>
+<?php echo we_html_element::jsElement('init();');?>
