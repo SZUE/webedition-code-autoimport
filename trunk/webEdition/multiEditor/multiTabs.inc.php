@@ -317,6 +317,9 @@ print we_html_element::jsElement($content = $_contentTypes);
 </script>
 <style type="text/css">
 	#tabContainer{
+		font-family: Verdana, Arial, sans-serif;
+		font-size: 10px;
+		color: #000000;
 		width: 100%;
 		margin: <?php echo $tabContainerMargin; ?>; padding: 0px;
 		border: 0px;
@@ -329,7 +332,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 		background-image:url(<?php echo IMAGE_DIR; ?>multiTabs/tabsBG_normal.gif);
 		background-repeat: repeat-x;
 		line-height:21px;
-		font-size:17px;
 		cursor:pointer;
 	}
 	div.tabOver{
@@ -351,7 +353,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 		background-repeat: repeat-x;
 		<?php echo $tabBG; ?>
 		line-height:21px;
-		font-size:17px;
 		cursor:pointer;
 	}
 	span.text{
@@ -389,4 +390,4 @@ print we_html_element::jsElement($content = $_contentTypes);
 	</div>
 	<?php echo $tabDummy; ?>
 </div>
-<?php echo we_html_element::jsElement('init();');?>
+<?php echo we_html_element::jsElement('init();'); ?>
