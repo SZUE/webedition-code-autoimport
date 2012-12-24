@@ -106,10 +106,18 @@ function startSEEMMode(){
 <script type="text/javascript"><!--
 	function we_cmd(){
 		var args = "";
-		for(var i = 0; i < arguments.length; i++){
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+		switch(arguments[0]){
+			case "loadVTab":
+				var op = top.makeFoldersOpenString();
+				parent.we_cmd("load",arguments[1],0,op,top.treeData.table);
+				break;
+			default:
+
+				for(var i = 0; i < arguments.length; i++){
+					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+				}
+				eval('parent.we_cmd('+args+')');
 		}
-		eval('parent.we_cmd('+args+')');
 	}
 
 

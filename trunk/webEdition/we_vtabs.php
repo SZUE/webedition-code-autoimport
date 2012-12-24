@@ -21,10 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-we_html_tools::htmlTop();
-
 $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 
 /**
@@ -67,21 +63,6 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'we_tabs.js');
 ?>
 <script type="text/javascript"><!--
-	function we_cmd(){
-		var args = "";
-		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-		switch(arguments[0]){
-			case "load":
-				var op = top.makeFoldersOpenString();
-				parent.we_cmd("load",arguments[1],0,op,top.treeData.table);
-				break;
-			default:
-				for(var i = 0; i < arguments.length; i++){
-					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-				}
-				eval('parent.we_cmd('+args+')');
-		}
-	}
 
 	function setTab(table){
 		if(we_tabs == null){
@@ -107,7 +88,7 @@ foreach($vtab as $tab => $val){
 $tmp = array();
 foreach($vtab as $tab => $val){
 	$file = WE_INCLUDES_DIR . $val['file'];
-	$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'load\', \'' . constant($tab) . '\' ,0);")';
+	$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
 }
 print implode(',', $tmp);
 ?>
@@ -151,14 +132,13 @@ print implode(',', $tmp);
 	}
 	//-->
 </script>
-</head>
-<body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;">
-	<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
-		<script type="text/javascript"><!--
-			for (var i=0; i<we_tabs.length;i++) {
-				we_tabs[i].write();
-				document.writeln('<br/>');
-			}
+
+<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
+	<script type="text/javascript"><!--
+		for (var i=0; i<we_tabs.length;i++) {
+			we_tabs[i].write();
+			document.writeln('<br/>');
+		}
 <?php
 if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
 	print "var defTab = '" . $_REQUEST["table"] . "';";
@@ -178,10 +158,8 @@ if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
 ?>
 	setTab(defTab);
 	//-->
-		</script>
-	</div>
-	<img id="incBaum" src="<?php print BUTTONS_DIR ?>icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="incTree();">
-	<img id="decBaum" src="<?php print BUTTONS_DIR ?>icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="decTree();">
-	<img id="arrowImg" src="<?php print BUTTONS_DIR ?>icons/direction_<?php print ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
-</body>
-</html>
+	</script>
+</div>
+<img id="incBaum" src="<?php print BUTTONS_DIR ?>icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="incTree();">
+<img id="decBaum" src="<?php print BUTTONS_DIR ?>icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="decTree();">
+<img id="arrowImg" src="<?php print BUTTONS_DIR ?>icons/direction_<?php print ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
