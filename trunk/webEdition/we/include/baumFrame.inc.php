@@ -23,16 +23,6 @@
  */
 $table = isset($table) ? $table : FILE_TABLE;
 ?>
-<script type="text/javascript"><!--
-	function we_cmd(){
-		var args = "";
-		for(var i = 0; i < arguments.length; i++){
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-		}
-		eval('parent.we_cmd('+args+')');
-	}
-	//-->
-</script>
 <div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;">
 		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>we_vtabs.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bm_vtabs"></iframe>
@@ -49,6 +39,5 @@ $table = isset($table) ? $table : FILE_TABLE;
 			include(WE_INCLUDES_PATH . 'treeInfo.inc.php');
 			?>
 		</div>
-
 	</div>
 </div>
