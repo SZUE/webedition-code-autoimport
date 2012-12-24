@@ -316,15 +316,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 	//-->
 </script>
 <style type="text/css">
-	body {
-		margin:0px; padding:0px;
-		border: 0px; border-top: 1px solid #000000;
-		font-family: Verdana, Arial, sans-serif;
-		font-size: 10px;
-		color: #000000;
-		background-color: silver;
-		background-image: url(<?php echo IMAGE_DIR; ?>backgrounds/multitabBG.gif);
-	}
 	#tabContainer{
 		width: 100%;
 		margin: <?php echo $tabContainerMargin; ?>; padding: 0px;
