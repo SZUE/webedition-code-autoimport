@@ -124,7 +124,7 @@ top.unselectAllFiles();') . '
 }
 ') . '</head>';
 
-		self::makeWriteDoc($html);
+		echo self::makeWriteDoc($html);
 		?>
 				d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');

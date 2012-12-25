@@ -152,11 +152,10 @@ function RenameFolder(id){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		?><script type="text/javascript"><!--
-					function writeBody(d){
-						d.open();
-		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo we_html_element::jsElement('
+function writeBody(d){
+	d.open();' .
+			self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -167,84 +166,71 @@ function submitFolderMods(){
 }
 document.onclick = weonclick;
 function weonclick(e){
-top.fspreview.document.body.innerHTML = "";
+	top.fspreview.document.body.innerHTML = "";
 #	if(makeNewFolder ||  we_editDirID){
-if(!inputklick){
-document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
-}else{
-inputklick=false;
-}
+		if(!inputklick){
+			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
+		}else{
+			inputklick=false;
+		}
 #	}else{
-inputklick=false;
-if(document.all){
-if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
-if(event.shiftKey){ shiftpressed=true;}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
+		inputklick=false;
+		if(document.all){
+			if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
+			if(event.shiftKey){ shiftpressed=true;}
+		}else{
+			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
+			if(e.shiftKey){ shiftpressed=true;}
+		}' . ($this->multiple ? '
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
+		top.unselectAllFiles();') . '
 #	}
 }') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"#\'+((makeNewFolder || top.we_editDirID) ? #\'  onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
 #if(we_editDirID){
-<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
-<input type="hidden" name="we_editDirID" value="#\' + top.we_editDirID + #\'" />
+	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
+	<input type="hidden" name="we_editDirID" value="#\' + top.we_editDirID + #\'" />
 #}else{
-<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
+	<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
 #}
-<input type="hidden" name="order" value="#\'+top.order+#\'" />
-<input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
-<input type="hidden" name="table" value="' . $this->table . '" />
-<input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<input type="hidden" name="order" value="#\'+top.order+#\'" />
+	<input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
+	<input type="hidden" name="table" value="' . $this->table . '" />
+	<input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 #if(makeNewFolder){
-<tr style="background-color:#DFE9F5;">
-	<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
-	<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
-	<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
+	<tr style="background-color:#DFE9F5;">
+		<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
+		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
+		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
 	</tr>
 #}
-';
-		self::makeWriteDoc($html);
-		?>
-				for(i=0;i < entries.length; i++){
-					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-					d.writeln('<tr id="line_'+entries[i].ID+'" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? 'background-color:#DFE9F5;' : '')+'cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + '>');
-					d.writeln('<td class="selector" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
-					d.writeln('</td>');
-					if(we_editDirID == entries[i].ID){
-						d.writeln('<td class="selector">');
-						d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
-					}else{
-						d.writeln('<td class="selector" style="" title="'+entries[i].text+'">');
-						d.writeln(cutText(entries[i].text,30));
-					}
-					d.writeln('</td>');
-					d.writeln('<td class="selector">');
-					d.writeln(entries[i].modDate);
-					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
-				}
-		<?php
-		self::makeWriteDoc('
-<tr>
-<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
-<td width="200">' . we_html_tools::getPixel(200, 2) . '</td>
-<td>' . we_html_tools::getPixel(300, 2) . '</td>
-</tr>
+#for(i=0;i < entries.length; i++){
+#	var onclick = #\' onClick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
+#	var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
+	<tr id="line_#\'+entries[i].ID+#\'" style="#\' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? "background-color:#DFE9F5;" : "")+#\'cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
+		<td class="selector" align="center"><img src="' . ICON_DIR . '.#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
+#if(we_editDirID == entries[i].ID){
+		<td class="selector"><input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" onBlur="submitFolderMods(); this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />
+#}else{
+		<td class="selector" style="" title="#\'+entries[i].text+#\'">
+			#\'+cutText(entries[i].text,30)+#\'
+#}
+		</td>
+		<td class="selector">#\'+entries[i].modDate+#\'</td>
+	</tr>
+	<tr><td colspan="3">' . we_html_tools::getPixel(2, 1) . '</td></tr>
+#}
+	<tr>
+		<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
+		<td width="200">' . we_html_tools::getPixel(200, 2) . '</td>
+		<td>' . we_html_tools::getPixel(300, 2) . '</td>
+	</tr>
 </table></form>
-</body>');
-		?>
-						d.close();
-					}
-					//-->
-		</script>
-		<?php
+</body>') . '
+d.close();
+}');
 	}
 
 	function printFramesetJSFunctionQueryString(){
