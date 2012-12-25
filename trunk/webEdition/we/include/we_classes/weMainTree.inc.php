@@ -107,7 +107,7 @@ function openClose(id) {
 
 	function getJSTreeFunctions(){
 
-		return weTree::getJSTreeFunctions() .			'
+		return weTree::getJSTreeFunctions() . '
 function doClick(id){
 	var node=' . $this->topFrame . '.get(id);
 	var ct=node.contenttype;
@@ -286,16 +286,15 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 	}
 
 	function getJSIncludeFunctions(){
-		return weTree::getJSIncludeFunctions() .			'
+		return weTree::getJSIncludeFunctions() . '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-(defined("OBJECT_TABLE") ? '
+			(defined("OBJECT_TABLE") ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-	'')
-. '
-	treeData.table="' . FILE_TABLE . '";' .
-$this->getJSMakeNewEntry() ;
+				'') . '
+treeData.table="' . FILE_TABLE . '";' .
+			$this->getJSMakeNewEntry();
 	}
 
 	function getJSLoadTree($treeItems){

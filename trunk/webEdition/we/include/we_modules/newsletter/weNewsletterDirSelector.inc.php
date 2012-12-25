@@ -203,7 +203,7 @@ top.selectFile(top.currentID);
 					function writeBody(d){
 						d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -250,8 +250,7 @@ top.unselectAllFiles();') . '
 	<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
 	</tr>
 #				}
-';
-		echo self::makeWriteDoc($html);
+');
 		?>
 
 				for(i=0;i < entries.length; i++){

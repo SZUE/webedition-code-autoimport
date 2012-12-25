@@ -505,43 +505,41 @@ class weTree{
 
 	function getJSUpdateItem(){
 		return '
- 		function updateEntry(attribs){
-        	var ai = 1;
-        	while (ai <= treeData.len) {
-            	if (treeData[ai].id==attribs["id"]) {
-					for(aname in attribs){
-						treeData[ai][aname] = attribs[aname];
-					}
-             	}
-             	ai++;
-        	}
- 		}
-	';
+function updateEntry(attribs){
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id==attribs["id"]) {
+			for(aname in attribs){
+				treeData[ai][aname] = attribs[aname];
+			}
+		}
+		ai++;
+	}
+}';
 	}
 
 	function getJSDeleteItem(){
 		return '
 function deleteEntry(id){
-			var ai = 1;
-			var ind=0;
-			while (ai <= treeData.len) {
-
-					 if (treeData[ai].id==id) {
-							 ind=ai;
-							 break;
-					 }
-					 ai++;
-			}
-			if(ind!=0){
-							ai = ind;
-							while (ai <= treeData.len-1) {
-											treeData[ai]=treeData[ai+1];
-											ai++;
-							}
-							treeData.len[treeData.len]=null;
-							treeData.len--;
-							drawTree();
-			}
+	var ai = 1;
+	var ind=0;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id==id) {
+				ind=ai;
+				break;
+		}
+		ai++;
+	}
+	if(ind!=0){
+		ai = ind;
+		while (ai <= treeData.len-1) {
+						treeData[ai]=treeData[ai+1];
+						ai++;
+		}
+		treeData.len[treeData.len]=null;
+		treeData.len--;
+		drawTree();
+	}
 }';
 	}
 
@@ -567,12 +565,7 @@ function makeFoldersOpenString() {
 
 	// Function which control how tree contenet will be displayed
 
-	function getHTMLContruct($onresize = ""){
-
-		$style_code = "";
-		foreach($this->styles as $st)
-			$style_code.=$st . "\n";
-
+	function getHTMLContruct($onresize = ''){
 		$js = we_html_element::jsElement('
 function setCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check0.gif";}
@@ -584,7 +577,7 @@ function setUnCheckNode(imgName){
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
-					we_html_element::cssElement($style_code) . $js
+					we_html_element::cssElement(implode("\n", $this->styles)) . $js
 				) .
 				we_html_element::htmlBody(array(
 					'bgcolor' => '#F3F7FF',
@@ -602,21 +595,41 @@ function setUnCheckNode(imgName){
 		);
 	}
 
+	function getHTMLContructX($onresize = ''){
+		$js = we_html_element::jsElement('
+function setCheckNode(imgName){
+	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check0.gif";}
+}
+function setUnCheckNode(imgName){
+	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check1.gif";}
+}');
+		return
+			we_html_element::cssElement(implode("\n", $this->styles)) . $js.
+			we_html_element::htmlDiv(array(
+				'link' => '#000000',
+				'alink' => '#000000',
+				'vlink' => '#000000',
+				'marginwidth' => '0',
+				'marginheight' => '4',
+				'leftmargin' => '0',
+				'topmargin' => '4',
+				'id' => 'treetable',
+				'onresize' => $onresize
+				), ''
+		);
+	}
+
 	function getJSDrawTree(){
 
 		return '
 function drawTree(){
-
 	if (typeof(' . $this->treeFrame . ') != "undefined") {
-
 	} else {
 		window.setTimeout("drawTree()", 500);
 		return;
 	}
-	var out="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\">\n<nobr>\n";
-	out+=draw(treeData.startloc,"");
-	out+="</nobr>\n</td></tr></table>\n";
-	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
+	var out="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
+			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
 			$this->getJSDraw();
 	}

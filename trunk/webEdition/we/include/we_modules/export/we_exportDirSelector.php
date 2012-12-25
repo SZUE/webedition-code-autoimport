@@ -95,7 +95,7 @@ class we_exportDirSelector extends we_dirSelector{
 			function writeBody(d){
 				d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -124,9 +124,8 @@ top.unselectAllFiles();') . '
 ') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '">
-';
+');
 
-		echo self::makeWriteDoc($html);
 		?>
 				if(top.we_editDirID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');

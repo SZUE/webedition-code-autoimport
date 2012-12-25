@@ -278,7 +278,7 @@ function weSetCookie(name, value, expires, path, domain){
 }
 
 function treeResized() {
-	if (navigator.appVersion.indexOf("Safari") == -1) {
+	//if (navigator.appVersion.indexOf("Safari") == -1) {
 		var treeWidth = getTreeWidth();
 		if (treeWidth <= 22) {
 			setTreeArrow("right");
@@ -286,7 +286,7 @@ function treeResized() {
 			setTreeArrow("left");
 		}
 		storeTreeWidth(treeWidth);
-	}
+	//}
 }
 
 var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
@@ -349,6 +349,7 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
 	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
+	storeTreeWidth(w);
 }
 
 function storeTreeWidth(w) {
@@ -1429,7 +1430,7 @@ pWebEdition_JSwe_cmds();
 							}
 
 							function start() {
-								self.Tree = self.rframe.bm_main;
+								self.Tree = self.rframe;
 								self.Vtabs = self.rframe;
 								self.TreeInfo = self.rframe;
 <?php

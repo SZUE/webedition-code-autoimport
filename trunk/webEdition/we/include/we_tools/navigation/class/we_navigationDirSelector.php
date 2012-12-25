@@ -96,7 +96,7 @@ class we_navigationDirSelector extends we_dirSelector{
 			function writeBody(d){
 				d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -136,9 +136,7 @@ top.unselectAllFiles();') . '
 <input type="hidden" name="table" value="' . $this->table . '" />
 <input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-';
-
-		echo self::makeWriteDoc($html);
+');
 		?>
 
 				if(makeNewFolder){
