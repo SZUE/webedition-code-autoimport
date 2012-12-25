@@ -1983,8 +1983,8 @@ function we_templateHead(){
 
 function we_templatePreContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && !isset($GLOBALS['we_templatePreContent'])){
-		print '<form name="we_form" method="post" onsubmit="return false;">';
-		print $GLOBALS['we_doc']->pHiddenTrans();
+		print '<form name="we_form" method="post" onsubmit="return false;">' .
+			we_class::hiddenTrans();
 		$GLOBALS['we_templatePreContent'] = (isset($GLOBALS['we_templatePreContent']) ? $GLOBALS['we_templatePreContent'] + 1 : 1);
 	}
 }
