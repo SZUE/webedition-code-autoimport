@@ -278,15 +278,14 @@ function weSetCookie(name, value, expires, path, domain){
 }
 
 function treeResized() {
-	//if (navigator.appVersion.indexOf("Safari") == -1) {
-		var treeWidth = getTreeWidth();
-		if (treeWidth <= 22) {
+//FIXME: remove - it is obsolete
+	var treeWidth = getTreeWidth();
+		if (treeWidth <= <?php echo weTree::HiddenWidth;?>) {
 			setTreeArrow("right");
 		} else {
 			setTreeArrow("left");
+			storeTreeWidth(treeWidth);
 		}
-		storeTreeWidth(treeWidth);
-	//}
 }
 
 var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
@@ -304,7 +303,6 @@ function toggleTree(){
 		tfd.style.display="none";
 		oldTreeWidth = w;
 		setTreeWidth(<?php echo weTree::HiddenWidth; ?>);
-		//storeTreeWidth(24);
 		setTreeArrow("right");
 	}
 }
@@ -349,7 +347,9 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
 	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
-	storeTreeWidth(w);
+	if(w><?php echo weTree::HiddenWidth;?>){
+		storeTreeWidth(w);
+	}
 }
 
 function storeTreeWidth(w) {

@@ -159,6 +159,7 @@ function pWebEdition_JSwe_cmds(){
 	if (width < <?php echo weTree::DeleteWidth; ?>) {
 	top.setTreeWidth(<?php echo weTree::DeleteWidth; ?>);
 	}
+	top.storeTreeWidth(widthBeforeDeleteMode);
 
 	var widthSidebar = top.getSidebarWidth();
 
@@ -184,6 +185,7 @@ function pWebEdition_JSwe_cmds(){
 	if (width < <?php echo weTree::MoveWidth; ?>) {
 	top.setTreeWidth(<?php echo weTree::MoveWidth; ?>);
 	}
+	top.storeTreeWidth(widthBeforeDeleteMode);
 
 	var widthSidebar = top.getSidebarWidth();
 
