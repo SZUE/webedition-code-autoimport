@@ -25,14 +25,17 @@ $table = isset($table) ? $table : FILE_TABLE;
 ?>
 <div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
-		<?php include(WEBEDITION_PATH.'we_vtabs.php');?>
+		<?php include(WEBEDITION_PATH . 'we_vtabs.php'); ?>
 	</div>
 	<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
 		<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_treeheaderDiv">
 			<iframe frameBorder="0" src="<?php print HTML_DIR ?>white.html" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-		<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: hidden;" id="bm_mainDiv">
-			<iframe frameBorder="0" src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
+		<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: auto;background-color:#F3F7FF" id="bm_mainDiv">
+			<?php
+			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
+			print $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
+			?>
 		</div>
 		<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php print EDIT_IMAGE_DIR ?>editfooterback.gif);">
 			<?php
@@ -41,3 +44,8 @@ $table = isset($table) ? $table : FILE_TABLE;
 		</div>
 	</div>
 </div>
+<?php
+echo we_html_element::jsElement(
+	we_base_browserDetect::isIE() ? 'window.setTimeout("top.start()", 1000);' :
+		'top.start();'
+);
