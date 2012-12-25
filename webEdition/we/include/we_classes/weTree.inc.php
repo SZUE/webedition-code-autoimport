@@ -25,7 +25,9 @@
 class weTree{
 
 	const DefaultWidth = 300;
-	const MinWidth = 100;
+	const MinWidth = 200;
+	const MaxWidth = 1000;
+	const StepWidth = 20;
 	const DeleteWidth = 420;
 	const MoveWidth = 500;
 	const HiddenWidth = 24;
@@ -604,7 +606,7 @@ function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check1.gif";}
 }');
 		return
-			we_html_element::cssElement(implode("\n", $this->styles)) . $js.
+			we_html_element::cssElement(implode("\n", $this->styles)) . $js .
 			we_html_element::htmlDiv(array(
 				'link' => '#000000',
 				'alink' => '#000000',

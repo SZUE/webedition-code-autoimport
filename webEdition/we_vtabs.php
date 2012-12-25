@@ -102,31 +102,31 @@ print implode(',', $tmp);
 
 	function incTree(){
 		var w = parseInt(top.getTreeWidth());
-		if((100<w) && (w<1000)){
-			w+=20;
+		if((w><?php echo weTree::MinWidth;?>) && (w<<?php echo weTree::MaxWidth;?>)){
+			w+=<?php echo weTree::StepWidth;?>;
 			top.setTreeWidth(w);
 		}
-		if(w>=1000){
-			w=1000;
+		if(w>=<?php echo weTree::MaxWidth;?>){
+			w=<?php echo weTree::MaxWidth;?>;
 			self.document.getElementById("incBaum").style.backgroundColor="grey";
 		}
 	}
 
 	function decTree(){
 		var w = parseInt(top.getTreeWidth());
-		w-=20;
-		if(w>200){
+		w-=<?php echo weTree::StepWidth;?>;
+		if(w><?php echo weTree::MinWidth;?>){
 			top.setTreeWidth(w);
 			self.document.getElementById("incBaum").style.backgroundColor="";
 		}
-		if(w<=200 && ((w+20)>=200)){
+		if(w<=<?php echo weTree::MinWidth;?> && ((w+<?php echo weTree::StepWidth;?>)>=<?php echo weTree::MinWidth;?>)){
 			toggleTree();
 		}
 	}
 
 
 	function treeOut() {
-		if (top.getTreeWidth() <= 30) {
+		if (top.getTreeWidth() <= <?php echo weTree::MinWidth;?>) {
 			toggleTree();
 		}
 	}
