@@ -381,7 +381,11 @@ function we_repl(target,url) {
 		}catch(e) {
 			// Nothing
 		}
-		target.location.replace(url);
+		if(target.location==undefined){
+			target.src=url;
+		}else{
+			target.location.replace(url);
+		}
 	}
 }
 
@@ -390,6 +394,9 @@ function submit_we_form(formlocation, target, url){
 		if(formlocation){
 			if(formlocation.we_submitForm){
 				formlocation.we_submitForm(target.name, url);
+				return true;
+			}else if(formlocation.contentWindow.we_submitForm){
+				formlocation.contentWindow.we_submitForm(target.name, url);
 				return true;
 			}
 		}
@@ -972,7 +979,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								var _sendFromFrame = _visibleEditorFrame;
 
 								// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
+								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
 								// if we switch from WE_EDITPAGE_CONTENT to another page
 								if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
@@ -985,7 +992,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// switch to normal frame
 									top.weEditorFrameController.switchToNonContentEditor();
 									// set var to new active editor frame
-									_visibleEditorFrame = _currentEditorRootFrame.frames[1];
+									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
 
 									// set flag to false
 									_isEditpageContent = false;
@@ -995,7 +1002,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// switch to content editor frame
 									top.weEditorFrameController.switchToContentEditor();
 									// set var to new active editor frame
-									_visibleEditorFrame = _currentEditorRootFrame.frames[2];
+									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 									// set flag to false
 									_isEditpageContent = true;
 								}
@@ -1012,8 +1019,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								}
 
 								// focus the frame
-								if(_visibleEditorFrame){
-									_visibleEditorFrame.focus();
+								if(_sendToFrame){
+									_sendToFrame.focus();
 								}
 								// if visible frame equals to editpage content and there is already content loaded
 								if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) != "undefined" && _currentEditorRootFrame.frames[2].location != "about:blank") {
@@ -1465,9 +1472,11 @@ we_main_header::pCSS();
 </head>
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
 	<?php
+	flush();
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
+	flush();
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	?>
