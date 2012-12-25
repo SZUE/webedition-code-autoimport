@@ -571,7 +571,7 @@ function we_userCanEditModule($modName){
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
 			//FIXME: remove eval
-			eval('if (' . $set_str . '){ if (' . $condition_str . ') { $enable=1; } else { $enable=0; } }');
+			eval('if ((' . $set_str . ')&&(' . $condition_str . ')) { $enable=1; } else { $enable=0; }');
 			return $enable;
 		}
 	}
@@ -2068,4 +2068,14 @@ function we_log_loginFailed($table, $user){
 			'Port' => $_SERVER['SERVER_PORT'],
 			'Script' => $_SERVER['SCRIPT_NAME']
 		)));
+}
+
+/**
+ * removes unneded js-open/close tags
+ * @param string $js
+ * @return string given param without duplicate js-open/close tags
+ */
+function implodeJS($js){
+	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
+	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }
