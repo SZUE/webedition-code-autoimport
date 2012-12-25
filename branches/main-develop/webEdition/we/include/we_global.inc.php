@@ -1414,6 +1414,20 @@ function we_check_email($email){ // Zend validates only the pure address
 	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
 }
 
+function getRequestVar($name, $default, $yescode = '', $nocode = ''){
+	if(isset($_REQUEST[$name])){
+		if($yescode != ''){
+			eval($yescode);
+		}
+		return $_REQUEST[$name];
+	} else{
+		if($nocode != ''){
+			eval($nocode);
+		}
+		return $default;
+	}
+}
+
 /**
  * Converts a given number in a via array specified system.
  * as default a number is converted in the matching chars 0->^,1->a,2->b, ...

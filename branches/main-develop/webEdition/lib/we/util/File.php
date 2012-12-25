@@ -303,7 +303,7 @@ abstract class we_util_File{
 			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 			if(!@mkdir($cf[$i], $mod)){
-				t_e('warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
+				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
 				$returnValue = false;
 			}
 			@umask($oldumask);
@@ -329,7 +329,7 @@ abstract class we_util_File{
 		// if instead of the directory a file exists, we delete the file and create the directory
 		if(file_exists($path) && (!is_dir($path))){
 			if(!we_util_File::deleteLocalFile($path)){
-				t_e('warning', "Could not delete File '" . $path . "'");
+				t_e('Warning', "Could not delete File '" . $path . "'");
 			}
 		}
 
@@ -352,7 +352,7 @@ abstract class we_util_File{
 	 */
 	public static function checkWritePermissions($path, $mod = 0755, $nocreate = false){
 		if(!is_file($path) && !is_dir($path)){
-			t_e("we_util_File/checkWritePermissions() - target " . $path . " does not exist");
+			t_e('warning',"we_util_File/checkWritePermissions() - target " . $path . " does not exist");
 			return false;
 		}
 		if(is_writable($path)){
@@ -426,11 +426,11 @@ abstract class we_util_File{
 		$target = self::addTrailingSlash($target);
 		$dirname = substr(strrchr($dir, "/"), 1);
 		if(self::removeTrailingSlash($dir) == self::removeTrailingSlash($target)){
-			t_e("source and destination are the same.");
+			t_e('notice',"source and destination are the same.");
 			return true;
 		}
 		if(!@rename($dir, self::addTrailingSlash($target))){
-			t_e("could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
+			t_e('warning',"could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
 			return false;
 		} else{
 			return true;
@@ -469,22 +469,25 @@ abstract class we_util_File{
 	 * @param bool $nofiles does not delete any files but only empty subdirectories
 	 */
 	public static function rmdirr($path, $nofiles = false){
-		t_e("trying to recursively delete " . $path);
+		//t_e("trying to recursively delete " . $path);
 		if($nofiles && !is_dir($path)){
-			t_e("ERROR: $path is no directory");
+			t_e('warning',"ERROR: $path is no directory");
 			return false;
 		}
 		if(!file_exists($path)){
-			t_e("ERROR: could not find $path");
+			t_e('warning',"ERROR: could not find $path");
 			return false;
 		}
 		// check if it is a file or a symbolic link;
 		if(is_file($path) || is_link($path)){
 			if($nofiles === false){
-				t_e(" -- trying to delete file " . $path);
-				return @unlink($path);
+				if(@unlink($path)){
+					return true;	
+				} else {
+					t_e('warning'," unable to delete file " . $path);
+				}
 			} else{
-				t_e(" -- skipping file " . $path);
+				//t_e(" -- skipping file " . $path);
 			}
 		}
 		// loop through the folder
@@ -494,7 +497,7 @@ abstract class we_util_File{
 				continue;
 			}
 			// Recurse
-			t_e(" -- trying to delete folder " . $path);
+			//t_e(" -- trying to delete folder " . $path);
 			self::rmdirr($path . DIRECTORY_SEPARATOR . $entry);
 		}
 		$dir->close();

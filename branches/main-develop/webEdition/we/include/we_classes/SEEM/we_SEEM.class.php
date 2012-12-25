@@ -37,10 +37,10 @@ abstract class we_SEEM{
 		return '';
 		//	here are all variables.
 		if($_SESSION['weS']['we_mode'] == "normal"){
-			$vtabSrcDocs = "top.Vtabs.we_cmd('load','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
+			$vtabSrcDocs = "top.Vtabs.we_cmd('loadVTab','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
 			if(defined("OBJECT_FILES_TABLE")){
 				$vtabSrcObjs = (we_hasPerm("CAN_SEE_OBJECTFILES") ?
-						"top.Vtabs.we_cmd('load','" . OBJECT_FILES_TABLE . "',0);top.we_cmd('exit_delete');" :
+						"top.Vtabs.we_cmd('loadVTab','" . OBJECT_FILES_TABLE . "',0);top.we_cmd('exit_delete');" :
 						"top.we_cmd('exit_delete');");
 			}
 		} else{

@@ -55,30 +55,30 @@ function pWebEdition_JSFunctions(){
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
 
-		if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== null){
-			var tinyDialog = tinyMceDialog;
-			try{
-				tinyDialog.close();
-			}catch(err){}
-		}
+	if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== null){
+	var tinyDialog = tinyMceDialog;
+	try{
+	tinyDialog.close();
+	}catch(err){}
+	}
 
-		if(typeof(tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null){
-			var tinyDialog = tinyMceSecondaryDialog;
-			try{
-				tinyDialog.close();
-			}catch(err){}
-		}
+	if(typeof(tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null){
+	var tinyDialog = tinyMceSecondaryDialog;
+	try{
+	tinyDialog.close();
+	}catch(err){}
+	}
 
-		try{
-			if(jsWindow_count){
-				for(i = 0;i < jsWindow_count;i++){
-					eval("jsWindow"+i+"Object.close()");
-				}
-			}
-			if(browserwind){
-				browserwind.close();
-			}
-		} catch(e){}
+	try{
+	if(jsWindow_count){
+	for(i = 0;i < jsWindow_count;i++){
+	eval("jsWindow"+i+"Object.close()");
+	}
+	}
+	if(browserwind){
+	browserwind.close();
+	}
+	} catch(e){}
 
 	if(whichWindow != "include"){ 	// only when no SEEM-edit-include window is closed
 	// FIXME: closing-actions for SEEM
@@ -219,12 +219,10 @@ function pWebEdition_Frameset(){
 				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
 			</div>
 			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-			<div style="height:100%;float:left;width:10%;border:0px;">
-				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-		</div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		</div>
+		<div style="height:100%;float:left;width:10%;border:0px;"><?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?></div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
 		</div>

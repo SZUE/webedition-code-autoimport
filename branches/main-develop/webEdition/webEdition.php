@@ -307,13 +307,13 @@ function toggleTree(){
 
 function setTreeArrow(direction) {
 	try{
-		self.rframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
+		self.rframe.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
 		if(direction=="right"){
-			self.rframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
-			self.rframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+			self.rframe.document.getElementById("incBaum").style.backgroundColor="gray";
+			self.rframe.document.getElementById("decBaum").style.backgroundColor="gray";
 		}else{
-			self.rframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
-			self.rframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+			self.rframe.document.getElementById("incBaum").style.backgroundColor="";
+			self.rframe.document.getElementById("decBaum").style.backgroundColor="";
 		}
 	}	catch(e) {
 		// Nothing
@@ -1399,10 +1399,10 @@ pWebEdition_JSwe_cmds();
 							new jsWindow(url,ref,x,y,w,h,true,scrollbars,menues);
 						}
 
-						function start() {
-							self.Tree = self.rframe.bm_main;
-							self.Vtabs = self.rframe.bm_vtabs;
-							self.TreeInfo = self.rframe;
+							function start() {
+								self.Tree = self.rframe.bm_main;
+								self.Vtabs = self.rframe;
+								self.TreeInfo = self.rframe;
 <?php
 $_table_to_load = "";
 if(we_hasPerm("CAN_SEE_DOCUMENTS")){

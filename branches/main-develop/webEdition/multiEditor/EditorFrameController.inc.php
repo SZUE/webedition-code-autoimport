@@ -86,7 +86,7 @@
 		this.init = function() {
 
 			// init references to FramesetWindow and Frameset
-			this.MultiEditorFramesetWindow = top.rframe.bm_content_frame.multiEditorEditorFramesets;
+			this.MultiEditorFramesetWindow = top.rframe.bm_content_frame;
 			this.MultiEditorFrameset = this.MultiEditorFramesetWindow.document.getElementById("multiEditorFrameset");
 
 			var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("iframe");
@@ -916,7 +916,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.FrameId = elementId;
 
-		this.EditorFrameWindow = top.rframe.bm_content_frame.multiEditorEditorFramesets.window.frames[elementId];
+		this.EditorFrameWindow = top.rframe.bm_content_frame.window.frames[elementId];
 		this.EditorFrameReference = ref; // not needed yet !!!
 
 		this.EditorType = null;	// model|cockpit|none_webedition, etc
@@ -1019,24 +1019,21 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			}
 		}
 
+
 		this.updateEditorTab = function() {
-			try{
-				this.EditorDocumentText = this.EditorDocumentText.replace(/</g,"&lt;");
-				this.EditorDocumentText = this.EditorDocumentText.replace(/>/g,"&gt;");
-				top.weMultiTabs.setText(this.FrameId, this.EditorDocumentText);
-				top.weMultiTabs.setTitle(this.FrameId, this.EditorDocumentPath);
-				if (this.EditorType == "model") {
-					top.weMultiTabs.setId(this.FrameId, "ID: " + this.EditorDocumentId);
-				} else {
-					top.weMultiTabs.setId(this.FrameId, this.EditorDocumentText);
-				}
-				top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
-				top.weMultiTabs.setContentType(this.FrameId, this.EditorContentType);
-				top.weMultiTabs.setLoading(this.FrameId, this.EditorIsLoading);
-				top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
-			}catch(e){
-				//console.log("err updateEditorTab");
+			this.EditorDocumentText = this.EditorDocumentText.replace(/</g,"&lt;");
+			this.EditorDocumentText = this.EditorDocumentText.replace(/>/g,"&gt;");
+			top.weMultiTabs.setText(this.FrameId, this.EditorDocumentText);
+			top.weMultiTabs.setTitle(this.FrameId, this.EditorDocumentPath);
+			if (this.EditorType == "model") {
+				top.weMultiTabs.setId(this.FrameId, "ID: " + this.EditorDocumentId);
+			} else {
+				top.weMultiTabs.setId(this.FrameId, this.EditorDocumentText);
 			}
+			top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
+			top.weMultiTabs.setContentType(this.FrameId, this.EditorContentType);
+			top.weMultiTabs.setLoading(this.FrameId, this.EditorIsLoading);
+			top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
 		}
 
 		//--------------------------------------------------------------------
@@ -1054,16 +1051,10 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		//--------------------------------------------------------------------
 		this.setEmptyEditor = function() {
 			this.EditorFrameWindow.location = "<?php print HTML_DIR ?>/blank_editor.html";
-
 		}
-
-		//----------------------------------------
-		// getters
-		//----------------------------------------
 
 		this.getEditorFrameWindow = function () {
 			return this.EditorFrameWindow;
-
 		}
 
 		this.getDocumentReference = function() {
@@ -1076,34 +1067,27 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.getEditorType = function() {
 			return this.EditorType;
-
 		}
 
 		this.getEditorTransaction = function(){
 			return this.EditorTransaction;
-
 		}
 
 		this.getEditorDocumentId = function(){
 			return this.EditorDocumentId;
-
 		}
 
 		this.getEditorEditorTable = function(){
 			return this.EditorEditorTable;
-
 		}
 
 		this.getEditorIsHot = function(){
 			return this.EditorIsHot;
-
 		}
 
 		this.getEditorEditCmd = function() {
 			return this.EditorEditCmd;
-
 		}
-
 		this.getEditorUrl = function() {
 			return this.EditorUrl;
 		}
@@ -1114,32 +1098,26 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.getEditorMakeNewDoc = function() {
 			return this.EditorMakeNewDoc;
-
 		}
 
 		this.getEditorPublishWhenSave = function() {
 			return this.EditorPublishWhenSave;
-
 		}
 
 		this.getEditorAutoRebuild = function() {
 			return this.EditorAutoRebuild;
-
 		}
 
 		this.getEditorMakeSameDoc = function() {
 			return this.EditorMakeSameDoc;
-
 		}
 
 		this.getEditorDidSetHiddenText = function() {
 			return this.EditorDidSetHiddenText;
-
 		}
 
 		this.getEditorDocumentPath = function(){
 			return this.EditorDocumentPath;
-
 		}
 
 		this.getEditorDocumentText = function(){
@@ -1148,7 +1126,6 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.getEditorEditPageNr = function(){
 			return this.EditorEditPageNr;
-
 		}
 
 		this.getEditorContentType = function() {
@@ -1157,18 +1134,15 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.getEditorTable = function(){
 			return this.EditorTable;
-
 		}
 
 		this.getEditorIsActive = function(){
 			return this.EditorIsActive;
-
 		}
 
 		this.getEditorIsInUse = function() {
 			return this.EditorIsInUse;
 		}
-
 		this.getEditorReloadNeeded = function() {
 			return this.EditorReloadNeeded;
 		}
@@ -1180,51 +1154,38 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		// setters
 		this.setEditorMakeNewDoc = function(newVal) {
 			this.EditorMakeNewDoc = newVal;
-
 		}
 
 		this.setEditorPublishWhenSave = function(newVal) {
 			this.EditorPublishWhenSave = newVal;
-
 		}
 
 		this.setEditorAutoRebuild = function(newVal) {
 			this.EditorAutoRebuild = newVal;
-
 		}
 
 		this.setEditorMakeSameDoc = function(newVal) {
 			this.EditorMakeSameDoc = newVal;
-
 		}
 
 		this.setEditorDidSetHiddenText = function(newVal) {
 			this.EditorDidSetHiddenText = newVal;
-
 		}
 
 		this.setEditorIsActive = function(newVal){
-
 			this.EditorIsActive = newVal;
-
 			if (newVal) {
-
 				var _theEditorFrame = this.getEditorFrameWindow();
-
 				if ( this.getEditorReloadAllNeeded() ) {
-
 					if (this.getEditorType() == "cockpit") {
 						_theEditorFrame.saveSettings();
 						var _href = _theEditorFrame.location.href;
 						if(_href.charAt(_href.length-1) == "#") _href = _href.substr(0,_href.length-1);
 						_theEditorFrame.location.href=_href;
 						//_theEditorFrame.location.reload();
-
 					} else {
-
 						if ( _theEditorFrame.frames[0] ) {
 							_theEditorFrame.frames[0].location.reload();
-
 						}
 						var contentEditor = editorFrame.getContentEditor();
 						if ( contentEditor ) {
@@ -1237,15 +1198,11 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 					// reload all 3 frames
 					this.setEditorReloadAllNeeded(false);
 					this.setEditorReloadNeeded(false);
-
 				} else if ( this.getEditorReloadNeeded() ) {
-
 					if (this.getEditorType() == "cockpit") {
 						_theEditorFrame.location.reload();
-
 					} else {
 						top.we_cmd("reload_editpage");
-
 					}
 					this.setEditorReloadNeeded(false);
 				}
@@ -1254,12 +1211,10 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 		this.setEditorEditPageNr = function(newVal){
 			this.EditorEditPageNr = newVal;
-
 		}
 
 		this.setEditorDocumentId = function(newVal){
 			this.EditorDocumentId = newVal;
-
 		}
 
 		this.setEditorIsHot = function(newVal) {
@@ -1278,7 +1233,6 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		}
 
 		this.setEditorIsLoading = function(newVal) {
-
 			var _update = this.EditorIsLoading != newVal;
 			this.EditorIsLoading = newVal;
 			if (_update) {
@@ -1295,8 +1249,6 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 		}
 
 		this.switchToContentEditor = function(nr) {
-
-
 			var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
 
 			var frameset = framesets[0]; //this.getEditorFrameWindow().document.getElementById("_editorFrameset");
@@ -1319,9 +1271,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 			}
 
 			frameset.rows = parts.join(",");
-
 		}
-
 		this.getContentEditorHeightForFrameNr = function(nr) {
 			var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
 			var frameset = framesets[0];

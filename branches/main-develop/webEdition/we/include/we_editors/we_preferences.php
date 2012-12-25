@@ -303,35 +303,6 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 							}
 						}
 						_multiEditorreload = true;";
-
-				/*
-				  $save_javascript .= "
-				  if (parent.opener.top.rframe.bm_vtabs) {
-				  parent.opener.top.rframe.bm_vtabs.location.reload();
-				  }
-
-				  if (parent.opener.top.rframe.infoFrame) {
-				  parent.opener.top.rframe.infoFrame.location.reload();
-				  }
-
-				  if(top.opener.top.weSidebar && top.opener.top.weSidebar.reloadHeader) {
-
-				  top.opener.top.weSidebar.reloadHeader();
-				  top.opener.top.weSidebar.reload();
-				  top.opener.top.weSidebar.reloadFooter();
-
-				  }
-
-				  if (parent.opener.top.header) {
-				  parent.opener.top.header.location.reload();
-				  }
-
-				  if (parent.opener.top.reload_weJsStrings) {
-				  parent.opener.top.reload_weJsStrings(\"$settingvalue\");
-				  }
-
-				  ";
-				 */
 			}
 
 		case 'locale_locales':

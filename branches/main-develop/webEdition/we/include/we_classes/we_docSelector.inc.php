@@ -63,8 +63,8 @@ class we_docSelector extends we_dirSelector{
 		// deal with workspaces
 		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			$wsQuery = '';
-		}else{
-				$wsQuery = '';
+		} else{
+			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && (!$_SESSION["perms"]["ADMINISTRATOR"])){
@@ -125,18 +125,18 @@ class we_docSelector extends we_dirSelector{
 	function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : '';
 		return we_html_element::jsElement('
-			function exit_open() {
-				if(currentID) {' . ($this->JSIDName ?
+function exit_open() {
+	if(currentID) {' . ($this->JSIDName ?
 					'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
 				($this->JSTextName ?
 					'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
-					if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
-					' : '') .
+		if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+		' : '') .
 				($this->JSCommand ?
 					$this->JSCommand . ';' : '') . '
-				}
-				self.close();
-			}');
+	}
+	self.close();
+}');
 	}
 
 	function setDefaultDirAndID($setLastDir){
@@ -174,31 +174,30 @@ class we_docSelector extends we_dirSelector{
 			}
 		}
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement($out . '
+function setFilter(ct) {
+	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir,"","",ct));
+}
 
-		function setFilter(ct) {
-		top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir,"","",ct));
-		}
-
-		function showPreview(id) {
-		if(top.fspreview) {
+function showPreview(id) {
+	if(top.fspreview) {
 		top.fspreview.location.replace(top.queryString(' . self::PREVIEW . ',id));
-		}
-		}
+	}
+}
 
-		function newFile() {
-		url="we_fs_uploadFile.php?dir="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
-		new jsWindow(url,"we_fsuploadFile",-1,-1,450,590,true,false,true);
-		}
+function newFile() {
+	url="we_fs_uploadFile.php?dir="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
+	new jsWindow(url,"we_fsuploadFile",-1,-1,450,590,true,false,true);
+}
 
-		function reloadDir() {
-		top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir));
-		}');
+function reloadDir() {
+	top.fscmd.location.replace(top.queryString(' . we_fileselector::CMD . ',top.currentDir));
+}');
 	}
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-			function writeBody(d){
-				d.open();
+					function writeBody(d){
+						d.open();
 		<?php
 		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
@@ -211,22 +210,22 @@ document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.v
 document.onclick = weonclick;
 function weonclick(e){
 #	if(top.makeNewFolder ||  top.we_editDirID){
-if(!inputklick){
-document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
-}else{
-inputklick=false;
-}
+		if(!inputklick){
+			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
+		}else{
+			inputklick=false;
+		}
 #	}else{
-inputklick=false;
-if(document.all){
-if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
-if(event.shiftKey){ shiftpressed=true;}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
+		inputklick=false;
+		if(document.all){
+			if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
+			if(event.shiftKey){ shiftpressed=true;}
+		}else{
+			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
+			if(e.shiftKey){ shiftpressed=true;}
+		}' . ($this->multiple ? '
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
+		top.unselectAllFiles();') . '
 #	}
 }') . '</head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"#\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
@@ -250,38 +249,32 @@ top.unselectAllFiles();') . '
 <td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
 </tr>
 #}
-';
 
+
+#	for(i=0;i < entries.length; i++){
+#		var onclick = #\' onClick="weonclick('.(we_base_browserDetect::isIE() ? "this" : "event").');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
+#		var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
+<tr#\' + ((entries[i].ID == top.currentID)  ? #\' style="background-color:#DFE9F5;cursor:pointer;"#\' : "") + #\' id="line_#\'+entries[i].ID+#\'" style="cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
+	<td class="selector" align="center"><img src="'.ICON_DIR.'#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
+	<td class="selector"#\'+(entries[i].published==0 && entries[i].isFolder==0 ? #\' style="color: red;"#\' : "")+#\' title="#\'+entries[i].text+#\'">
+
+#	if(we_editDirID == entries[i].ID){
+		<input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />
+#	}else{
+		#\'+cutText(entries[i].text,25)+#\'
+#	}
+	</td>
+	<td class="selector" title="#\'+'.$this->col2js.'+#\'">#\'+cutText('.$this->col2js.',30)+#\'</td>
+	<td class="selector">
+	#\'+entries[i].modDate+#\'
+	</td>
+	</tr><tr><td colspan="4">'.we_html_tools::getPixel(2, 1).'</td></tr>
+#	}
+	<tr>'.str_replace("'", "\\'", $this->tableSizer).'</tr>
+</table></form>
+</body></html>';
 		self::makeWriteDoc($html);
 		?>
-
-
-
-				for(i=0;i < entries.length; i++){
-					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-					d.writeln('<tr' + ((entries[i].ID == top.currentID)  ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editDirID != entries[i].ID) ? '' : '' )+'"'+((we_editDirID || makeNewFolder) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + '>');
-					d.writeln('<td class="selector" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
-					d.writeln('</td>');
-					d.writeln('<td class="selector"'+(entries[i].published==0 && entries[i].isFolder==0 ? ' style="color: red;"' : '')+' title="'+entries[i].text+'">');
-					if(we_editDirID == entries[i].ID){
-						d.writeln('<input type="hidden" name="we_FolderText" value="'+entries[i].text+'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="'+entries[i].text+'" class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" />');
-					}else{
-						d.writeln(cutText(entries[i].text,25));
-					}
-					d.writeln('</td>');
-					d.writeln('<td class="selector" title="'+<?php echo $this->col2js; ?>+'">'+cutText(<?php echo $this->col2js; ?>,30)+'</td>');
-					d.writeln('<td class="selector">');
-					d.writeln(entries[i].modDate);
-					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="4"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
-				}
-				d.writeln('<tr>');
-				d.writeln('<?php echo str_replace("'", "\\'", $this->tableSizer); ?>');
-				d.writeln('</tr>');
-				d.writeln('</table></form>');
-				d.writeln('</body></html>');
 				d.close();
 			}
 			//-->
@@ -291,30 +284,30 @@ top.unselectAllFiles();') . '
 
 	function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
-		function queryString(what,id,o,we_editDirID,filter){
-		if(!o) o=top.order;
-		if(!we_editDirID) we_editDirID="";
-		if(!filter) filter="' . $this->filter . '";
-		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
+function queryString(what,id,o,we_editDirID,filter){
+	if(!o) o=top.order;
+	if(!we_editDirID) we_editDirID="";
+	if(!filter) filter="' . $this->filter . '";
+	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
 				$this->rootDirID . (isset($this->open_doc) ?
 					"&open_doc=" . $this->open_doc : '') .
 				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
-		}');
+}');
 	}
 
 	function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
-		function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
-		this.ID=ID;
-		this.icon=icon;
-		this.text=text;
-		this.isFolder=isFolder;
-		this.path=path;
-		this.modDate=modDate;
-		this.contentType=contentType;
-		this.published=published;
-		this.title=title;
-		}');
+function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
+	this.ID=ID;
+	this.icon=icon;
+	this.text=text;
+	this.isFolder=isFolder;
+	this.path=path;
+	this.modDate=modDate;
+	this.contentType=contentType;
+	this.published=published;
+	this.title=title;
+}');
 	}
 
 	function printFramesetJSFunctionAddEntry(){
@@ -367,7 +360,7 @@ top.unselectAllFiles();') . '
 
 
 	function printHeaderHeadlines(){
-		print '
+		return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>' . $this->tableHeadlines . '</tr>
 	<tr>' . $this->tableSizer . '</tr>
@@ -391,29 +384,30 @@ top.unselectAllFiles();') . '
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
-			$ret.= 'var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
+			$ret.= '
+var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			if($this->filter == "image/*" || $this->filter == "video/quicktime" || $this->filter == "application/x-shockwave-flash"){
 				return $ret . '
-				function disableNewFileBut() {
-					' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "disabled", "image");
-					newFileState = 0;
-				}
+function disableNewFileBut() {
+	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "disabled", "image");
+	newFileState = 0;
+}
 
-				function enableNewFileBut() {
-					' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "enabled", "image");
-					newFileState = 1;
-				}';
+function enableNewFileBut() {
+	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "enabled", "image");
+	newFileState = 1;
+}';
 			} else{
 				return $ret . '
-				function disableNewFileBut() {
-					btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
-					newFileState = 0;
-				}
+function disableNewFileBut() {
+	btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
+	newFileState = 0;
+}
 
-				function enableNewFileBut() {
-					btn_add_file_enabled = switch_button_state("btn_add_file", "", "enabled", "image");
-					newFileState = 1;
-				}';
+function enableNewFileBut() {
+	btn_add_file_enabled = switch_button_state("btn_add_file", "", "enabled", "image");
+	newFileState = 1;
+}';
 			}
 		}
 	}
@@ -429,26 +423,23 @@ top.unselectAllFiles();') . '
 			if(!we_hasPerm($this->ctp[$this->filter])){
 				return false;
 			}
-		} else{
-			if(!
-				(
-				we_hasPerm("NEW_GRAFIK") ||
-				we_hasPerm("NEW_QUICKTIME") ||
-				we_hasPerm("NEW_HTML") ||
-				we_hasPerm("NEW_JS") ||
-				we_hasPerm("NEW_CSS") ||
-				we_hasPerm("NEW_TEXT") ||
-				we_hasPerm("NEW_HTACCESS") ||
-				we_hasPerm("NEW_FLASH") ||
-				we_hasPerm("NEW_SONSTIGE")
-				)
-			){
-				return false;
-			}
-		}
-		if(!we_hasPerm('FILE_IMPORT')){
+		} elseif(!
+			(
+			we_hasPerm("NEW_GRAFIK") ||
+			we_hasPerm("NEW_QUICKTIME") ||
+			we_hasPerm("NEW_HTML") ||
+			we_hasPerm("NEW_JS") ||
+			we_hasPerm("NEW_CSS") ||
+			we_hasPerm("NEW_TEXT") ||
+			we_hasPerm("NEW_HTACCESS") ||
+			we_hasPerm("NEW_FLASH") ||
+			we_hasPerm("NEW_SONSTIGE") ||
+			we_hasPerm('FILE_IMPORT')
+			)
+		){
 			return false;
 		}
+
 		return true;
 	}
 
@@ -458,40 +449,39 @@ top.unselectAllFiles();') . '
 
 	function printSetDirHTML(){
 		print '<script type="text/javascript"><!--
-				top.clearEntries();' .
+top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
-				top.currentDir = "' . $this->dir . '";
-				top.parentID = "' . $this->values["ParentID"] . '";
-			//-->
-			</script>';
+			$this->printCMDWriteAndFillSelectorHTML() . '
+top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.currentDir = "' . $this->dir . '";
+top.parentID = "' . $this->values["ParentID"] . '";
+//-->
+</script>';
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function printFooterTable(){
 		$ret = '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
-				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
+	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		if($this->filter == ""){
 			$ret.= '
-				<tr>
-					<td></td>
-					<td class="defaultfont"><b>' . g_l('fileselector', "[type]") . '</b></td>
-					<td></td>
-					<td class="defaultfont">
-						<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
-							<option value="">' . g_l('fileselector', "[all_Types]") . '</option>';
+	<tr>
+		<td></td>
+		<td class="defaultfont"><b>' . g_l('fileselector', "[type]") . '</b></td>
+		<td></td>
+		<td class="defaultfont">
+			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
+				<option value="">' . g_l('fileselector', "[all_Types]") . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
 				$ret.= '<option value="' . htmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
 			}
 			$ret.= '
-						</select></td>
-					<td></td>
-				</tr>
-				<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
-
+			</select></td>
+		<td></td>
+	</tr>
+	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
 		}
 		$buttons = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:press_ok_button();"), null, we_button::create_button("cancel", "javascript:top.exit_close();"));
 
@@ -524,26 +514,20 @@ top.unselectAllFiles();') . '
 	}
 
 	function getFrameset(){
-		$out = '
-			<frameset rows="' . (((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
-				<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">';
-		// task *1: set preview for all selectors
-		//if($this->filter == "image/*") {
-		$out .= '
-				<frameset cols="605,*" border="1">
-					<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
-					<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
-				</frameset>';
-
-		$out .= '
-				<frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-				<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
-				<frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
-			</frameset>
-			<body>
-			</body>
-			</html>';
-		return $out;
+		return '
+<frameset rows="' . (((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
+	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
+	<frameset cols="605,*" border="1">
+		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
+		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
+	</frameset>
+	<frame src="' . $this->getFsQueryString(we_fileselector::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
+	<frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
+</frameset>
+<body>
+</body>
+</html>';
 	}
 
 	function printPreviewHTML(){
@@ -863,100 +847,100 @@ top.unselectAllFiles();') . '
 
 	function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
-			function setDir(id) {
-				showPreview(id);
-				top.fspreview.document.body.innerHTML = "";
-				top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
-				e = getEntry(id);
-				fspath.document.body.innerHTML = e.path;
-			}');
+function setDir(id) {
+	showPreview(id);
+	top.fspreview.document.body.innerHTML = "";
+	top.fscmd.location.replace(top.queryString(' . we_multiSelector::SETDIR . ',id));
+	e = getEntry(id);
+	fspath.document.body.innerHTML = e.path;
+}');
 	}
 
 	function printFramesetSelectFileHTML(){
 		return we_html_element::jsElement('
-			function selectFile(id){
+function selectFile(id){
 
-				if(id){
-					e = getEntry(id);
-					fspath.document.body.innerHTML = e.path;
+	if(id){
+		e = getEntry(id);
+		fspath.document.body.innerHTML = e.path;
 
-					if( top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
+		if( top.fsfooter.document.we_form.fname.value != e.text &&
+			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
+			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
+			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
 
-						top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-							e.text;
-					}
+			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
+				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+				e.text;
+		}
 
-					if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-					currentPath = e.path;
-					currentID = id;
-					we_editDirID = 0;
-					currentType = e.contentType;
+		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
+		currentPath = e.path;
+		currentID = id;
+		we_editDirID = 0;
+		currentType = e.contentType;
 
-					showPreview(id);
+		showPreview(id);
 
-				}else{
-					top.fsfooter.document.we_form.fname.value = "";
-					currentPath = "";
-					we_editDirID = 0;
-				}
+	}else{
+		top.fsfooter.document.we_form.fname.value = "";
+		currentPath = "";
+		we_editDirID = 0;
+	}
 
-			}');
+}');
 	}
 
 	function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
-			function doClick(id,ct){
-				top.fspreview.document.body.innerHTML = "";
-				if(ct==1){
-					if(wasdblclick){
-						setDir(id);
-						setTimeout("wasdblclick=0;",400);
-					}
-				} else {
-					if(getEntry(id).contentType != "folder" || ' . ($this->canSelectDir ? "true" : "false") . '){' .
-				($this->multiple ? '
-							if(fsbody.shiftpressed){
-								var oldid = currentID;
-								var currendPos = getPositionByID(id);
-								var firstSelected = getFirstSelected();
+function doClick(id,ct){
+	top.fspreview.document.body.innerHTML = "";
+	if(ct==1){
+		if(wasdblclick){
+			setDir(id);
+			setTimeout("wasdblclick=0;",400);
+		}
+	} else {
+		if(getEntry(id).contentType != "folder" || ' . ($this->canSelectDir ? "true" : "false") . '){' .
+	($this->multiple ? '
+			if(fsbody.shiftpressed){
+				var oldid = currentID;
+				var currendPos = getPositionByID(id);
+				var firstSelected = getFirstSelected();
 
-								if(currendPos > firstSelected){
-									selectFilesFrom(firstSelected,currendPos);
-								}else if(currendPos < firstSelected){
-									selectFilesFrom(currendPos,firstSelected);
-								}else{
-									selectFile(id);
-								}
-								currentID = oldid;
+				if(currendPos > firstSelected){
+					selectFilesFrom(firstSelected,currendPos);
+				}else if(currendPos < firstSelected){
+					selectFilesFrom(currendPos,firstSelected);
+				}else{
+					selectFile(id);
+				}
+				currentID = oldid;
 
-							}else if(!fsbody.ctrlpressed){
-								selectFile(id);
-							}else{
-								if (isFileSelected(id)) {
-									unselectFile(id);
-								}else{' : '') . '
-									selectFile(id);' .
-				($this->multiple ? '
-								}
-							}' : '') . '
-					} else {
-						showPreview(id);
-					}
+			}else if(!fsbody.ctrlpressed){
+				selectFile(id);
+			}else{
+				if (isFileSelected(id)) {
+					unselectFile(id);
+				}else{' : '') . '
+					selectFile(id);' .
+($this->multiple ? '
 				}
-				if(fsbody.ctrlpressed){
-					fsbody.ctrlpressed = 0;
-				}
-				if(fsbody.shiftpressed){
-					fsbody.shiftpressed = 0;
-				}
-			}
+			}' : '') . '
+		} else {
+			showPreview(id);
+		}
+	}
+	if(fsbody.ctrlpressed){
+		fsbody.ctrlpressed = 0;
+	}
+	if(fsbody.shiftpressed){
+		fsbody.shiftpressed = 0;
+	}
+}
 
-			function previewFolder(id) {
-				alert(id);
-			}');
+function previewFolder(id) {
+	alert(id);
+}');
 	}
 }
