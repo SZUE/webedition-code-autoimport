@@ -86,7 +86,7 @@
 		this.init = function() {
 
 			// init references to FramesetWindow and Frameset
-			this.MultiEditorFramesetWindow = top.rframe.bm_content_frame.multiEditorEditorFramesets;
+			this.MultiEditorFramesetWindow = top.rframe.bm_content_frame;
 			this.MultiEditorFrameset = this.MultiEditorFramesetWindow.document.getElementById("multiEditorFrameset");
 
 			var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("iframe");
@@ -916,7 +916,7 @@ print we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_le
 
 							this.FrameId = elementId;
 
-							this.EditorFrameWindow = top.rframe.bm_content_frame.multiEditorEditorFramesets.window.frames[elementId];
+							this.EditorFrameWindow = top.rframe.bm_content_frame.window.frames[elementId];
 							this.EditorFrameReference = ref; // not needed yet !!!
 
 							this.EditorType = null;	// model|cockpit|none_webedition, etc
