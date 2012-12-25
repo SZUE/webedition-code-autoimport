@@ -41,71 +41,68 @@ class we_multiSelector extends we_fileselector{
 
 	function printFramesetJSFunctions(){
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
-			var allIDs ="";
-			var allPaths ="";
-			var allTexts ="";
-			var allIsFolder ="";
+var allIDs ="";
+var allPaths ="";
+var allTexts ="";
+var allIsFolder ="";
 
-			function fillIDs() {
-				allIDs =",";
-				allPaths =",";
-				allTexts =",";
-				allIsFolder =",";
+function fillIDs() {
+	allIDs =",";
+	allPaths =",";
+	allTexts =",";
+	allIsFolder =",";
 
-				for	(var i=0;i < entries.length; i++) {
-					if (isFileSelected(entries[i].ID)) {
-						allIDs += (entries[i].ID + ",");
-						allPaths += (entries[i].path + ",");
-						allTexts += (entries[i].text + ",");
-						allIsFolder += (entries[i].isFolder + ",");
-					}
-				}
-				if(currentID != ""){
-					if(allIDs.indexOf(","+currentID+",") == -1){
-						allIDs += (currentID + ",");
-					}
-				}
-				if(currentPath != ""){
-					if(allPaths.indexOf(","+currentPath+",") == -1){
-						allPaths += (currentPath + ",");
-						allTexts += (we_makeTextFromPath(currentPath) + ",");
-					}
-				}
+	for	(var i=0;i < entries.length; i++) {
+		if (isFileSelected(entries[i].ID)) {
+			allIDs += (entries[i].ID + ",");
+			allPaths += (entries[i].path + ",");
+			allTexts += (entries[i].text + ",");
+			allIsFolder += (entries[i].isFolder + ",");
+		}
+	}
+	if(currentID != ""){
+		if(allIDs.indexOf(","+currentID+",") == -1){
+			allIDs += (currentID + ",");
+		}
+	}
+	if(currentPath != ""){
+		if(allPaths.indexOf(","+currentPath+",") == -1){
+			allPaths += (currentPath + ",");
+			allTexts += (we_makeTextFromPath(currentPath) + ",");
+		}
+	}
 
-				if (allIDs == ",") {
-					allIDs = "";
-				}
-				if (allPaths == ",") {
-					allPaths = "";
-				}
-				if (allTexts == ",") {
-					allTexts = "";
-				}
+	if (allIDs == ",") {
+		allIDs = "";
+	}
+	if (allPaths == ",") {
+		allPaths = "";
+	}
+	if (allTexts == ",") {
+		allTexts = "";
+	}
 
-				if (allIsFolder == ",") {
-					allIsFolder = "";
-				}
+	if (allIsFolder == ",") {
+		allIsFolder = "";
+	}
+}
 
-
-
-			}
-
-			function we_makeTextFromPath(path){
-				position =  path.lastIndexOf("/");
-				if(position > -1 &&  position < path.length){
-					return path.substring(position+1);
-				}else{
-					return "";
-				}
-			}');
+function we_makeTextFromPath(path){
+	position =  path.lastIndexOf("/");
+	if(position > -1 &&  position < path.length){
+		return path.substring(position+1);
+	}else{
+		return "";
+	}
+}');
 	}
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-			function writeBody(d){
-				d.open();
+					function writeBody(d){
+						d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var wasdblclick=false
@@ -122,12 +119,10 @@ if(e.shiftKey){ shiftpressed=true;}
 if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 top.unselectAllFiles();') . '
 }
-') . '</head>';
-
-		echo self::makeWriteDoc($html);
+') . '</head>
+<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 		?>
-				d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
-				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 				for(i=0;i < entries.length; i++){
 					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
@@ -139,16 +134,13 @@ top.unselectAllFiles();') . '
 					d.writeln(cutText(entries[i].text,80));
 					d.writeln('</td>');
 					d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
-				}
-				d.writeln('<tr>');
-				d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-				d.writeln('<td><?php print we_html_tools::getPixel(150, 2) ?></td>');
-				d.writeln('</tr>');
-				d.writeln('</table>');
-				d.writeln('</body>');
-				d.close();
-			}
-			//->
+				}<?php echo self::makeWriteDoc('
+		<tr><td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
+		<td>' . we_html_tools::getPixel(150, 2) . '</td>
+		</tr></table></body>'); ?>
+						d.close();
+					}
+					//->
 		</script>
 		<?php
 	}
@@ -279,28 +271,28 @@ function isFileSelected(id){
 
 	function printFramesetSelectFileHTML(){
 		return we_html_element::jsElement('
-			function selectFile(id){
-				if(id){
-					e = getEntry(id);
+function selectFile(id){
+	if(id){
+		e = getEntry(id);
 
-					if(
-					top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
+		if(
+		top.fsfooter.document.we_form.fname.value != e.text &&
+			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
+			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
+			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
 
-						top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-							e.text;
-					}
-					top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-					currentPath = e.path;
-					currentID = id;
-				}else{
-					top.fsfooter.document.we_form.fname.value = "";
-					currentPath = "";
-				}
-			}');
+			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
+				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+				e.text;
+		}
+		top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
+		currentPath = e.path;
+		currentID = id;
+	}else{
+		top.fsfooter.document.we_form.fname.value = "";
+		currentPath = "";
+	}
+}');
 	}
 
 }

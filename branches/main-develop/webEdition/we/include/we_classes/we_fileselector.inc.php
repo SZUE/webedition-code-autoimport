@@ -423,12 +423,11 @@ function queryString(what,id,o){
 					function writeBody(d){
 						d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
-<table border="0" cellpadding="0" cellspacing="0">';
+<table border="0" cellpadding="0" cellspacing="0">');
 
-		echo self::makeWriteDoc($html);
 		?>
 				for(i=0;i < entries.length; i++){
 					d.writeln('<tr>');

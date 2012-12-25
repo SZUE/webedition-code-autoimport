@@ -97,7 +97,7 @@ class we_bannerDirSelector extends we_dirSelector{
 					function writeBody(d){
 						d.open();
 		<?php
-		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -141,9 +141,8 @@ top.unselectAllFiles();') . '
 	<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
 	<td><input type="hidden" name="we_FolderText" value="' . g_l('modules_banner', '[newbannergroup]') . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('modules_banner', '[newbannergroup]') . '"  class="wetextinput" onBlur="this.className=\'wetextinput\';" onFocus="this.className=\'wetextinputselected\'" style="width:100%" /></td>
 	</tr>
-#				}';
+#				}');
 
-		echo self::makeWriteDoc($html);
 		?>
 				for(i=0;i < entries.length; i++){
 					var onclick = ' onClick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true"';

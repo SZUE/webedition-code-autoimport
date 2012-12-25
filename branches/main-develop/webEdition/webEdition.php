@@ -274,7 +274,7 @@ function weSetCookie(name, value, expires, path, domain){
 }
 
 function treeResized() {
-	if (navigator.appVersion.indexOf("Safari") == -1) {
+	//if (navigator.appVersion.indexOf("Safari") == -1) {
 		var treeWidth = getTreeWidth();
 		if (treeWidth <= 22) {
 			setTreeArrow("right");
@@ -282,7 +282,7 @@ function treeResized() {
 			setTreeArrow("left");
 		}
 		storeTreeWidth(treeWidth);
-	}
+	//}
 }
 
 var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
@@ -345,6 +345,7 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
 	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
+	storeTreeWidth(w);
 }
 
 function storeTreeWidth(w) {
@@ -377,7 +378,11 @@ function we_repl(target,url) {
 		}catch(e) {
 			// Nothing
 		}
-		target.location.replace(url);
+		if(target.location==undefined){
+			target.src=url;
+		}else{
+			target.location.replace(url);
+		}
 	}
 }
 
@@ -386,6 +391,9 @@ function submit_we_form(formlocation, target, url){
 		if(formlocation){
 			if(formlocation.we_submitForm){
 				formlocation.we_submitForm(target.name, url);
+				return true;
+			}else if(formlocation.contentWindow.we_submitForm){
+				formlocation.contentWindow.we_submitForm(target.name, url);
 				return true;
 			}
 		}
@@ -828,77 +836,74 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
   echo 'new jsWindow("http://documentation.webedition.org/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
   } */
 ?>
-							break;
-						case "openSelector":
-							new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openDirselector":
-							new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openDocselector":
-							new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "setTab":
-							if(self.Vtabs)
-								if(self.Vtabs.setTab){
-									self.Vtabs.setTab(arguments[1]);
-									treeData.table=arguments[1];
-								}
-							else
-								setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
-							else
-								setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
-							break;
-						case "showLoadInfo":
-							we_repl(self.Tree,url,arguments[0]);
-							break;
-						case "update_image":
-						case "update_file":
-						case "copyDocument":
-						case "insert_entry_at_list":
-						case "edit_list":
-						case "delete_list":
-						case "down_entry_at_list":
-						case "up_entry_at_list":
-						case "down_link_at_list":
-						case "up_link_at_list":
-						case "add_entry_to_list":
-						case "add_link_to_linklist":
-						case "change_link":
-						case "change_linklist":
-						case "delete_linklist":
-						case "insert_link_at_linklist":
-						case "change_doc_type":
-						case "doctype_changed":
-						case "remove_image":
-						case "delete_link":
-						case "delete_cat":
-						case "add_cat":
-						case "delete_all_cats":
-						case "add_schedule":
-						case "del_schedule":
-						case "add_schedcat":
-						case "delete_all_schedcats":
-						case "delete_schedcat":
-						case "template_changed":
-						case "add_navi":
-						case "delete_navi":
-						case "delete_all_navi":
-							// set Editor hot
-							_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-							_EditorFrame.setEditorIsHot(true);
-						case "reload_editpage":
-						case "wrap_on_off":
-						case "restore_defaults":
-						case "do_add_thumbnails":
-						case "del_thumb":
-						case "resizeImage":
-						case "rotateImage":
-						case "doImage_convertGIF":
-						case "doImage_convertPNG":
-						case "doImage_convertJPEG":
-						case "doImage_crop":
-						case "revert_published":
+								break;
+							case "openSelector":
+								new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . ',' . WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
+								break;
+							case "openDirselector":
+								new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . ',' . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
+								break;
+							case "openDocselector":
+								new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
+								break;
+							case "setTab":
+								if(self.Vtabs && self.Vtabs.setTab && typeof(treeData!="undefined")){
+										self.Vtabs.setTab(arguments[1]);
+										treeData.table=arguments[1];
+									}else{
+										setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
+									}
+								break;
+							case "showLoadInfo":
+								we_repl(self.Tree,url,arguments[0]);
+								break;
+							case "update_image":
+							case "update_file":
+							case "copyDocument":
+							case "insert_entry_at_list":
+							case "edit_list":
+							case "delete_list":
+							case "down_entry_at_list":
+							case "up_entry_at_list":
+							case "down_link_at_list":
+							case "up_link_at_list":
+							case "add_entry_to_list":
+							case "add_link_to_linklist":
+							case "change_link":
+							case "change_linklist":
+							case "delete_linklist":
+							case "insert_link_at_linklist":
+							case "change_doc_type":
+							case "doctype_changed":
+							case "remove_image":
+							case "delete_link":
+							case "delete_cat":
+							case "add_cat":
+							case "delete_all_cats":
+							case "add_schedule":
+							case "del_schedule":
+							case "add_schedcat":
+							case "delete_all_schedcats":
+							case "delete_schedcat":
+							case "template_changed":
+							case "add_navi":
+							case "delete_navi":
+							case "delete_all_navi":
+								// set Editor hot
+								_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+								_EditorFrame.setEditorIsHot(true);
+							case "reload_editpage":
+							case "wrap_on_off":
+							case "restore_defaults":
+							case "do_add_thumbnails":
+							case "del_thumb":
+							case "resizeImage":
+							case "rotateImage":
+							case "doImage_convertGIF":
+							case "doImage_convertPNG":
+							case "doImage_convertJPEG":
+							case "doImage_crop":
+							case "revert_published":
 
 							// get editor root frame of active tab
 							var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
@@ -949,9 +954,15 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							// frame where the form should be sent from
 							var _sendFromFrame = _visibleEditorFrame;
 
+<<<<<<< .working
 							// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
 							var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
+=======
+								// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
+								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+>>>>>>> .merge-rechts.r5445
 
+<<<<<<< .working
 							// if we switch from WE_EDITPAGE_CONTENT to another page
 							if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
 								// clean body to avoid flickering
@@ -964,10 +975,25 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								top.weEditorFrameController.switchToNonContentEditor();
 								// set var to new active editor frame
 								_visibleEditorFrame = _currentEditorRootFrame.frames[1];
+=======
+								// if we switch from WE_EDITPAGE_CONTENT to another page
+								if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
+									// clean body to avoid flickering
+									try{
+										_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+									}catch(e){
+										//can be caused by not loaded content
+									}
+									// switch to normal frame
+									top.weEditorFrameController.switchToNonContentEditor();
+									// set var to new active editor frame
+									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
+>>>>>>> .merge-rechts.r5445
 
 								// set flag to false
 								_isEditpageContent = false;
 
+<<<<<<< .working
 								// if we switch to WE_EDITPAGE_CONTENT from another page
 							} else if (!_isEditpageContent && arguments[1] == <?php print WE_EDITPAGE_CONTENT; ?>) {
 								// switch to content editor frame
@@ -977,6 +1003,17 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								// set flag to false
 								_isEditpageContent = true;
 							}
+=======
+									// if we switch to WE_EDITPAGE_CONTENT from another page
+								} else if (!_isEditpageContent && arguments[1] == <?php print WE_EDITPAGE_CONTENT; ?>) {
+									// switch to content editor frame
+									top.weEditorFrameController.switchToContentEditor();
+									// set var to new active editor frame
+									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+									// set flag to false
+									_isEditpageContent = true;
+								}
+>>>>>>> .merge-rechts.r5445
 
 							// frame where the form should be sent to
 							var _sendToFrame = _visibleEditorFrame;
@@ -989,6 +1026,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								url += _currentEditorRootFrame.parameters;
 							}
 
+<<<<<<< .working
 							// focus the frame
 							if(_visibleEditorFrame){
 								_visibleEditorFrame.focus();
@@ -1000,6 +1038,19 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
 								break;
 							}
+=======
+								// focus the frame
+								if(_sendToFrame){
+									_sendToFrame.focus();
+								}
+								// if visible frame equals to editpage content and there is already content loaded
+								if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) != "undefined" && _currentEditorRootFrame.frames[2].location != "about:blank") {
+									// tell the backend the right edit page nr and break (don't send the form)
+									//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
+									YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
+									break;
+								}
+>>>>>>> .merge-rechts.r5445
 
 
 							if (_currentEditorRootFrame) {
@@ -1400,7 +1451,7 @@ pWebEdition_JSwe_cmds();
 						}
 
 							function start() {
-								self.Tree = self.rframe.bm_main;
+								self.Tree = self.rframe;
 								self.Vtabs = self.rframe;
 								self.TreeInfo = self.rframe;
 <?php
@@ -1443,9 +1494,11 @@ we_main_header::pCSS();
 </head>
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
 	<?php
+	flush();
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
+	flush();
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	?>
