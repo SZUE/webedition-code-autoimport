@@ -21,23 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
-we_html_tools::htmlTop();
-echo we_html_element::jsElement(<<<EOF
-function we_cmd(){
-	var args = "";
-	for(var i = 0; i < arguments.length; i++){
-		args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-	}
-	eval('parent.we_cmd('+args+')');
-}
-EOF
-	);
-?>
-	</head>
-	<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;"><?php
+/*	<body style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;">*/
 $MULTIEDITOR_AMOUNT = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == 'seem') ? 1 : 16;
 
 for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
@@ -45,5 +30,3 @@ for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
 	echo '	<iframe frameBorder="0" style="' . ($i == 0 ? '' : 'display:none;') . 'margin:0px;border:0px;width:100%;height:100%;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
 }
 ?>
-	</body>
-</html>
