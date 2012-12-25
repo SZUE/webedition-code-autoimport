@@ -126,7 +126,7 @@ top.unselectAllFiles();') . '
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '">
 ';
 
-		self::makeWriteDoc($html);
+		echo self::makeWriteDoc($html);
 		?>
 				if(top.we_editDirID){
 					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');

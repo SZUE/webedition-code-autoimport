@@ -251,7 +251,7 @@ top.unselectAllFiles();') . '
 	</tr>
 #				}
 ';
-		self::makeWriteDoc($html);
+		echo self::makeWriteDoc($html);
 		?>
 
 				for(i=0;i < entries.length; i++){
@@ -271,7 +271,7 @@ top.unselectAllFiles();') . '
 					d.writeln('</td>');
 					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}
-		<?php self::makeWriteDoc('
+		<?php echo self::makeWriteDoc('
 		<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
 		<td>' . we_html_tools::getPixel(200, 2) . '</td>

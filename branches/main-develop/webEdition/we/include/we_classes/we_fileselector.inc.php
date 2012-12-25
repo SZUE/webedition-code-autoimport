@@ -411,23 +411,24 @@ function queryString(what,id,o){
 
 	protected static function makeWriteDoc($html){
 		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
-
+		$ret = '';
 		foreach($html as $cur){
-			echo (substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');") . "\n";
+			$ret.=(substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');") . "\n";
 		}
+		return $ret;
 	}
 
 	function printFramesetJSFunctioWriteBody(){
 		?><script type="text/javascript"><!--
-			function writeBody(d){
-				d.open();
+					function writeBody(d){
+						d.open();
 		<?php
 		$html = we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
 </head>
 <body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0">';
 
-		self::makeWriteDoc($html);
+		echo self::makeWriteDoc($html);
 		?>
 				for(i=0;i < entries.length; i++){
 					d.writeln('<tr>');
