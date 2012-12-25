@@ -48,7 +48,6 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	FIXME:reset
 	setTimeout("toggleBusy("+w+");",300);
 	}
 
