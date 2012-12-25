@@ -324,6 +324,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 		margin: <?php echo $tabContainerMargin; ?>; padding: 0px;
 		border: 0px;
 		overflow:hidden;
+		line-height:21px;
 	}
 	div.tab{
 		margin: 0px; padding: 0px;
@@ -342,7 +343,6 @@ print we_html_element::jsElement($content = $_contentTypes);
 		background-repeat: repeat-x;
 		<?php echo $tabBG; ?>
 		line-height:21px;
-		font-size:17px;
 		cursor:pointer;
 	}
 	div.tabActive{
