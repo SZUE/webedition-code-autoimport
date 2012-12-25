@@ -31,7 +31,7 @@ class we_exportDirSelector extends we_dirSelector{
 	}
 
 	function printHeaderHeadlines(){
-		print '
+		return '
 <table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
