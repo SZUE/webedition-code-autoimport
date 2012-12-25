@@ -869,15 +869,12 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
 								break;
 							case "setTab":
-								if(self.Vtabs)
-									if(self.Vtabs.setTab){
+								if(self.Vtabs && self.Vtabs.setTab && typeof(treeData!="undefined")){
 										self.Vtabs.setTab(arguments[1]);
 										treeData.table=arguments[1];
+									}else{
+										setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
 									}
-								else
-									setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
-								else
-									setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
 								break;
 							case "showLoadInfo":
 								we_repl(self.Tree,url,arguments[0]);
