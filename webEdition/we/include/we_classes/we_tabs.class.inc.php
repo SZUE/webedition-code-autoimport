@@ -157,8 +157,8 @@ function setTabClass(elem) {
 function allowed_change_edit_page() {
 	try	{
 		var contentEditor = top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
-		if ( contentEditor && contentEditor.fields_are_valid ) {
-			return contentEditor.fields_are_valid();
+		if ( contentEditor && contentEditor.contentWindow.fields_are_valid ) {
+			return contentEditor.contentWindow.fields_are_valid();
 
 		}
 	}
@@ -257,6 +257,13 @@ function setFrameSize(){
 			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
 			document.getElementById('naviDiv').style.height = tabsHeight+"px";
 			document.getElementById('contentDiv').style.top = tabsHeight+"px";
+		}else if(parent.document.getElementsByName('editHeaderDiv').length>0){
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tmp=parent.document.getElementsByName("editHeaderDiv");
+			var nList=tmp[0].parentNode.getElementsByTagName("div");
+			nList[0].style.height = tabsHeight+"px";
+			nList[1].style.top = tabsHeight+"px";
+			nList[2].style.top = tabsHeight+"px";
 		}else{
 		//FIXME: remove this if frames are obsolete
 		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
