@@ -895,10 +895,6 @@ class we_class_folder extends we_folder{
 
 		$ret = <<<EOF
 		function sub(){
-
-			// not needed anymore since version 5?! (Bug Fix #989)
-			//parent.editHeader.we_tabs[0].setState(2,false,parent.editHeader.we_tabs);
-
 			document.we_form_search.target="load";
 			document.we_form_search.action="{$modulepath}search_submit.php";
 			document.we_form_search.todo.value="search";
@@ -989,7 +985,6 @@ EOF;
 	}
 
 	function saveInSession(&$save){
-
 		parent::saveInSession($save);
 
 		if(!isset($_SESSION['weS']['we_objectSearch'])){
