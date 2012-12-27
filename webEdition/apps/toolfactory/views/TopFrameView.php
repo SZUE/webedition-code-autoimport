@@ -92,7 +92,7 @@ self.hot = false;
 self.focus();
 self.appName = "{$this->appName}";
 
-parent.document.title = "webEdition {$translate->_('Applications')} - {$translate->_($this->appName)}";
+parent.document.title = "{$_SERVER['SERVER_NAME']} webEdition {$translate->_('Applications')} - {$translate->_($this->appName)}";
 
 
 /*******************************************
