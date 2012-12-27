@@ -57,32 +57,19 @@ class weCustomerFilterView{
 	 */
 	var $_ShowModeNone = 0;
 
-	/* ################### CONSTRUCTOR #################### */
 
 	/**
-	 * Constructor for PHP 4
+	 * Constructor
 	 *
 	 * @param weAbstractCustomerFilter $filter
 	 * @param string $hotScript
 	 * @param integer $width
 	 * @return weCustomerFilterView
 	 */
-	function weCustomerFilterView(&$filter, $hotScript = "", $width = 0){
+	function __construct(&$filter, $hotScript = "", $width = 0){
 		$this->setFilter($filter);
 		$this->setHotScript($hotScript);
 		$this->setWidth($width);
-	}
-
-	/**
-	 * Constructor for PHP 5
-	 *
-	 * @param weAbstractCustomerFilter $filter
-	 * @param string $hotScript
-	 * @param integer $width
-	 * @return weCustomerFilterView
-	 */
-	function __construct($filter, $hotScript = "", $width = 0){
-		$this->weCustomerFilterView($filter, $hotScript, $width);
 	}
 
 	/* ##################################################### */
@@ -96,7 +83,6 @@ class weCustomerFilterView{
 		$this->_ShowModeNone = $ShowModeNone;
 
 		$_script = <<<EO_SCRIPT
-
 <script type="text/javascript">
 
 function $(id) {
@@ -179,11 +165,10 @@ EO_SCRIPT;
 
 		/* ################# Radio buttons ############### */
 		$_modeRadioOff = we_forms::radiobutton(weAbstractCustomerFilter::OFF, $this->_filter->getMode() === weAbstractCustomerFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
-		if($this->_ShowModeNone){
-			$_modeRadioNone = we_forms::radiobutton(weAbstractCustomerFilter::NONE, $this->_filter->getMode() === weAbstractCustomerFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();");
-		} else{
-			$_modeRadioNone = '';
-		}
+		$_modeRadioNone = ($this->_ShowModeNone ?
+				we_forms::radiobutton(weAbstractCustomerFilter::NONE, $this->_filter->getMode() === weAbstractCustomerFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+				'');
+
 		$_modeRadioAll = we_forms::radiobutton(weAbstractCustomerFilter::ALL, $this->_filter->getMode() === weAbstractCustomerFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioSpecific = we_forms::radiobutton(weAbstractCustomerFilter::SPECIFIC, $this->_filter->getMode() === weAbstractCustomerFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioFilter = we_forms::radiobutton(weAbstractCustomerFilter::FILTER, $this->_filter->getMode() === weAbstractCustomerFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
@@ -265,10 +250,7 @@ EOS;
 	 * @return string
 	 */
 	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
-
-
 		$_delBut = addslashes('<img src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
-
 		$_script = <<<EO_SCRIPT
 
 var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$_delBut",$this->_width,false);
@@ -280,16 +262,12 @@ EO_SCRIPT;
 
 		if(is_array($data)){
 			foreach($data as $_dat){
-
-				$_script .= "\n" . $name . '.addItem();
-' . $name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");
-';
+				$_script .= $name . '.addItem();' .
+					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
 			}
 		}
 
-		$_script .= '
-' . $name . '.showVariant(0);
-';
+		$_script .= $name . '.showVariant(0);';
 
 		$_addbut = we_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
@@ -304,7 +282,7 @@ EO_SCRIPT;
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
-		return weCustomerFilterView::getDiv($_select, $name . 'Div', $isVisible, 22);
+		return self::getDiv($_select, $name . 'Div', $isVisible, 22);
 	}
 
 	function getHTMLCustomerFilter(){

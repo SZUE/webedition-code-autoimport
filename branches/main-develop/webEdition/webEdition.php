@@ -959,7 +959,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
 =======
 								// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
+								//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 >>>>>>> .merge-rechts.r5445
 
 <<<<<<< .working
@@ -987,7 +988,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// switch to normal frame
 									top.weEditorFrameController.switchToNonContentEditor();
 									// set var to new active editor frame
-									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
+									_visibleEditorFrame = _currentEditorRootFrame.frames[1];
+									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
 >>>>>>> .merge-rechts.r5445
 
 								// set flag to false
@@ -1009,7 +1011,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// switch to content editor frame
 									top.weEditorFrameController.switchToContentEditor();
 									// set var to new active editor frame
-									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+									_visibleEditorFrame = _currentEditorRootFrame.frames[2];
+									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 									// set flag to false
 									_isEditpageContent = true;
 								}

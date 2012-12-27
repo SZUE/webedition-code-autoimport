@@ -300,6 +300,7 @@ treeData.table="' . FILE_TABLE . '";' .
 	function getJSLoadTree($treeItems){
 		$js = 'var attribs=new Array();';
 
+		
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$buff = 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){";

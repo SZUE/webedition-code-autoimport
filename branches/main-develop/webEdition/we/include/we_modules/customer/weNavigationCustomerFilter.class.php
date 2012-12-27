@@ -215,16 +215,18 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter{
 		$_blackList = makeCSVFromArray($filterObj->getBlackList(), true);
 		$_filter = serialize($filterObj->getFilter());
 
-
-		$this->DB_WE->query('UPDATE ' . NAVIGATION_TABLE .
-			' SET LimitAccess=' . $_limitAccess .
-			', ApplyFilter=' . $_applyFilter .
-			', AllCustomers=' . $_allCustomers .
-			', Customers="' . $_customers .
-			'", CustomerFilter="' . $this->DB_WE->escape($_filter) .
-			'", BlackList="' . $_blackList .
-			'", WhiteList="' . $_whiteList .
-			'"  WHERE UseDocumentFilter=1 AND ' . weNavigation::getNavCondition($id, $table));
+		$DB_WE = new DB_WE();
+		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
+			we_database_base::arraySetter(array(
+				'LimitAccess' => $_limitAccess,
+				'ApplyFilter' => $_applyFilter,
+				'AllCustomers' => $_allCustomers,
+				'Customers' => $_customers,
+				'CustomerFilter' => $_filter,
+				'BlackList' => $_blackList,
+				'WhiteList' => $_whiteList
+			)) .
+			' WHERE UseDocumentFilter=1 AND ' . weNavigation::getNavCondition($id, $table));
 	}
 
 }
