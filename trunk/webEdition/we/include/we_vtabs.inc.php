@@ -23,25 +23,25 @@
  */
 $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 
-$useSvg = we_base_browserDetect::isIE() ? we_base_browserDetect::getIEVersion() > 8 : (we_base_browserDetect::isFF() ? intval(we_base_browserDetect::inst()->getBrowserVersion()) > 11 : true);
+$useSvg = we_base_browserDetect::isIE() ? we_base_browserDetect::getIEVersion() > 8 : true;
 $svgPre = '<defs>
-    <linearGradient id="gradAct" x1="0%" y1="0%" x2="50%" y2="0%">
-      <stop style="stop-color:#cacaca;stop-opacity:0;" offset="0%" />
+    <linearGradient id="gradAct#ID#" x1="0%" y1="0%" x2="50%" y2="0%">
+      <stop style="stop-color:white;stop-opacity:1;" offset="0%" />
       <stop style="stop-color:#cacaca;stop-opacity:1;" offset="100%" />
     </linearGradient>
-    <linearGradient id="gradDis" x1="0%" y1="0%" x2="50%" y2="0%">
-      <stop style="stop-color:#eaeaea;stop-opacity:0;" offset="0%" />
+    <linearGradient id="gradDis#ID#" x1="0%" y1="0%" x2="50%" y2="0%">
+      <stop style="stop-color:white;stop-opacity:1;" offset="0%" />
       <stop style="stop-color:#eaeaea;stop-opacity:1;" offset="100%" />
     </linearGradient>
   </defs>';
 
 $svg = array(
-	'normal' => $svgPre . '<rect fill="url(#gradAct)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
+	'normal' => $svgPre . '<rect fill="url(#gradAct#ID#)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
     <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
-	'active' => $svgPre . '<rect fill="#f3f7ff" width="19px" height="83px"/>
+	'active' => '<rect fill="#f3f7ff" width="19px" height="83px"/>
  <path style="fill:none;stroke:darkgrey;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 19,83 h-19 v83 h19"/>
     <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
-	'disabled' => $svgPre . '<rect fill="url(#gradDis)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
+	'disabled' => $svgPre . '<rect fill="url(#gradDis#ID#)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
     <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
 );
 
@@ -109,9 +109,10 @@ foreach($vtab as $tab => $val){
 	var we_tabs = new Array(
 <?php
 $tmp = array();
+$id=0;
 foreach($vtab as $tab => $val){
 	if($useSvg){
-		$tmp[] = 'new we_tab("#",\'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)';
+		$tmp[] = 'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#',"\n"), array($val['desc'], ++$id,''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE','#ID#', "\n"), array($val['desc'],++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#',"\n"), array($val['desc'], ++$id,''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)';
 	} else{
 		$file = WE_INCLUDES_DIR . $val['file'];
 		$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
