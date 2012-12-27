@@ -1003,7 +1003,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									top.weEditorFrameController.switchToContentEditor();
 									// set var to new active editor frame
 									_visibleEditorFrame = _currentEditorRootFrame.frames[2];
-									_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 									// set flag to false
 									_isEditpageContent = true;
 								}
