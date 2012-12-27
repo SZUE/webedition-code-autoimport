@@ -85,7 +85,6 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-
 if(!defined('NO_SESS')){
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
@@ -127,9 +126,8 @@ if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''
 if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
 	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
 } else{
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
 }
-
 if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }
