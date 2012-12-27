@@ -23,29 +23,52 @@
  */
 $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 
-/**
- * GET WIDTH AND HEIGHT OF VERTICAL TABS
- */
+$useSvg = we_base_browserDetect::isIE() ? we_base_browserDetect::getIEVersion() > 8 : (we_base_browserDetect::isFF() ? intval(we_base_browserDetect::inst()->getBrowserVersion()) > 11 : true);
+$svgPre = '<defs>
+    <linearGradient id="gradAct" x1="0%" y1="0%" x2="50%" y2="0%">
+      <stop style="stop-color:#cacaca;stop-opacity:0;" offset="0%" />
+      <stop style="stop-color:#cacaca;stop-opacity:1;" offset="100%" />
+    </linearGradient>
+    <linearGradient id="gradDis" x1="0%" y1="0%" x2="50%" y2="0%">
+      <stop style="stop-color:#eaeaea;stop-opacity:0;" offset="0%" />
+      <stop style="stop-color:#eaeaea;stop-opacity:1;" offset="100%" />
+    </linearGradient>
+  </defs>';
+
+$svg = array(
+	'normal' => $svgPre . '<rect fill="url(#gradAct)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
+    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
+	'active' => $svgPre . '<rect fill="#f3f7ff" width="19px" height="83px"/>
+ <path style="fill:none;stroke:darkgrey;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 19,83 h-19 v83 h19"/>
+    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
+	'disabled' => $svgPre . '<rect fill="url(#gradDis)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
+    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
+);
+
 $vtab = array(
 	'FILE_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/documents",
 		'show' => we_hasPerm("CAN_SEE_DOCUMENTS") || we_hasPerm("ADMINISTRATOR"),
 		'size' => array(19, 83),
+		'desc' => g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/templates",
 		'show' => we_hasPerm("CAN_SEE_TEMPLATES") || we_hasPerm("ADMINISTRATOR"),
 		'size' => array(19, 83),
+		'desc' => g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/objects",
 		'show' => defined("OBJECT_TABLE") && (we_hasPerm("CAN_SEE_OBJECTFILES") || we_hasPerm("ADMINISTRATOR")),
 		'size' => array(19, 83),
+		'desc' => g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes",
 		'show' => defined("OBJECT_TABLE") && (we_hasPerm("CAN_SEE_OBJECTS") || we_hasPerm("ADMINISTRATOR")),
 		'size' => array(19, 83),
+		'desc' => g_l('javaMenu_object', '[class]'),
 	)
 );
 foreach($vtab as $key => &$val){
@@ -87,8 +110,12 @@ foreach($vtab as $tab => $val){
 <?php
 $tmp = array();
 foreach($vtab as $tab => $val){
-	$file = WE_INCLUDES_DIR . $val['file'];
-	$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
+	if($useSvg){
+		$tmp[] = 'new we_tab("#",\'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', "\n"), array($val['desc'], ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_NORMAL' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true)';
+	} else{
+		$file = WE_INCLUDES_DIR . $val['file'];
+		$tmp[] = 'new we_tab("#","' . $file . '_normal.gif", "' . $file . '_active.gif", "' . $file . '_disabled.gif", ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? 'TAB_ACTIVE' : 'TAB_DISABLED') . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);")';
+	}
 }
 print implode(',', $tmp);
 ?>
@@ -102,43 +129,47 @@ print implode(',', $tmp);
 
 	function incTree(){
 		var w = parseInt(top.getTreeWidth());
-		if((w><?php echo weTree::MinWidth;?>) && (w<<?php echo weTree::MaxWidth;?>)){
-			w+=<?php echo weTree::StepWidth;?>;
+		if((w><?php echo weTree::MinWidth; ?>) && (w<<?php echo weTree::MaxWidth; ?>)){
+			w+=<?php echo weTree::StepWidth; ?>;
 			top.setTreeWidth(w);
 		}
-		if(w>=<?php echo weTree::MaxWidth;?>){
-			w=<?php echo weTree::MaxWidth;?>;
+		if(w>=<?php echo weTree::MaxWidth; ?>){
+			w=<?php echo weTree::MaxWidth; ?>;
 			self.document.getElementById("incBaum").style.backgroundColor="grey";
 		}
 	}
 
 	function decTree(){
 		var w = parseInt(top.getTreeWidth());
-		w-=<?php echo weTree::StepWidth;?>;
-		if(w><?php echo weTree::MinWidth;?>){
+		w-=<?php echo weTree::StepWidth; ?>;
+		if(w><?php echo weTree::MinWidth; ?>){
 			top.setTreeWidth(w);
 			self.document.getElementById("incBaum").style.backgroundColor="";
 		}
-		if(w<=<?php echo weTree::MinWidth;?> && ((w+<?php echo weTree::StepWidth;?>)>=<?php echo weTree::MinWidth;?>)){
+		if(w<=<?php echo weTree::MinWidth; ?> && ((w+<?php echo weTree::StepWidth; ?>)>=<?php echo weTree::MinWidth; ?>)){
 			toggleTree();
 		}
 	}
 
 
 	function treeOut() {
-		if (top.getTreeWidth() <= <?php echo weTree::MinWidth;?>) {
+		if (top.getTreeWidth() <= <?php echo weTree::MinWidth; ?>) {
 			toggleTree();
 		}
 	}
 	//-->
 </script>
 
-<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
+<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;text-decoration:none ">
 	<script type="text/javascript"><!--
 		for (var i=0; i<we_tabs.length;i++) {
 			we_tabs[i].write();
-			document.writeln('<br/>');
-		}
+<?php
+if(!$useSvg){
+	echo "document.writeln('<br/>')";
+}
+?>
+	}
 <?php
 if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
 	print "var defTab = '" . $_REQUEST["table"] . "';";

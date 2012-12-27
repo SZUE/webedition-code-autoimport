@@ -25,7 +25,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 ?>
 <div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
-		<?php include(WEBEDITION_PATH . 'we_vtabs.php'); ?>
+		<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
 	</div>
 	<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
 		<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_treeheaderDiv">

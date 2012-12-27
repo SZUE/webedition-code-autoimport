@@ -165,12 +165,12 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL('we_ui_controls_Textfield'));
+		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL('we_ui_controls_TextField'));
 		$this->addCSSFiles($this->_buttonObj->getCSSFiles());
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_Textfield'));
+		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_TextField'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/yahoo-min.js');

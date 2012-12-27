@@ -32,7 +32,8 @@ class weTree{
 	const MoveWidth = 500;
 	const HiddenWidth = 24;
 
-	var $db;
+
+	protected $db;
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;

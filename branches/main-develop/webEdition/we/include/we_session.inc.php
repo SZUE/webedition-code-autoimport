@@ -52,7 +52,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		$useSalt = $DB_WE->f('UseSalt');
 
 		if(we_user::comparePasswords($useSalt, $_POST['username'], $DB_WE->f('passwd'), $_POST['password'])){
-			$_userdata = $DB_WE->Record;
+			$_userdata = $DB_WE->getRecord();
 
 			if($_userdata['LoginDenied']){ // userlogin is denied
 				$GLOBALS['userLoginDenied'] = true;
