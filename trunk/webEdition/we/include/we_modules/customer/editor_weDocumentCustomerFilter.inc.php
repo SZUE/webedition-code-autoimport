@@ -85,7 +85,7 @@ function formWebuser($canChange, $width = 388){
 	$webuser = ""; //g_l('weClass',"[nobody]");
 
 	if($GLOBALS['we_doc']->WebUserID != 0){
-		$webuser = id_to_path($GLOBALS['we_doc']->WebUserID, CUSTOMER_TABLE, $GLOBALS['we_doc']->DB_WE);
+		$webuser = id_to_path($GLOBALS['we_doc']->WebUserID, CUSTOMER_TABLE);
 		if(!$webuser){
 			$webuser = ""; //g_l('weClass',"[nobody]");
 		}

@@ -280,16 +280,12 @@ EO_SCRIPT;
 
 		if(is_array($data)){
 			foreach($data as $_dat){
-
-				$_script .= "\n" . $name . '.addItem();
-' . $name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");
-';
+				$_script .= $name . '.addItem();' .
+					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
 			}
 		}
 
-		$_script .= '
-' . $name . '.showVariant(0);
-';
+		$_script .= $name . '.showVariant(0);';
 
 		$_addbut = we_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
@@ -304,7 +300,7 @@ EO_SCRIPT;
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
-		return weCustomerFilterView::getDiv($_select, $name . 'Div', $isVisible, 22);
+		return self::getDiv($_select, $name . 'Div', $isVisible, 22);
 	}
 
 	function getHTMLCustomerFilter(){
