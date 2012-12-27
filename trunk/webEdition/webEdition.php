@@ -1084,8 +1084,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 										if(!we_sbmtFrm(_nextContent,url)) {
 											we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 										}
-									}
-									else {
+									}	else {
 										we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 									}
 
