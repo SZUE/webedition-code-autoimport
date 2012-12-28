@@ -86,7 +86,7 @@ if(!isset($GLOBALS['DB_WE'])){
 }
 
 if(!defined('NO_SESS')){
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if(!empty($_tooldefines)){
