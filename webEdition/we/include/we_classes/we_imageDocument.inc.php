@@ -393,8 +393,7 @@ class we_imageDocument extends we_binaryDocument{
 			// we need to create a thumbnail - check if image exists
 			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path))){
 				$thumbObj = new we_thumbnail();
-				$thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0);
-				if($thumbObj->thumbID && $thumbObj->thumbName){
+				if($thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0)){
 					$img_path = $thumbObj->getOutputPath();
 
 					if($thumbObj->isOriginal()){
