@@ -527,8 +527,12 @@ abstract class we_class{
 				if($fieldName == 'Category'){ // Category-Fix!
 					$val = $this->i_fixCSVPrePost($val);
 				}
-				if($fieldName != 'ID')
+				if($fieldName != 'ID'){
 					$fields[$fieldName] = $val;
+				}
+				if(!$this->wasUpdate && isset($this->insertID) && $fieldName == 'ID'){//for Apps to be able to manipulate Insert-ID
+					$fields['ID'] = $this->insertID;unset($this->insertID);
+				}
 			}
 		}
 		if(count($fields)){
