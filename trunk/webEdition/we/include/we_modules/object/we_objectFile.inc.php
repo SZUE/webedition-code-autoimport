@@ -2270,16 +2270,17 @@ class we_objectFile extends we_document{
 				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 				if($sessDat){
 					$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
-					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
+					if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 
-//make sure at least TableID is set from db
-//and Published as well #5742
-					$this->i_getPersistentSlotsFromDB('TableID,Published');
-					$this->i_getUniqueIDsAndFixNames();
-					break;
-				} else{
-					$from = we_class::LOAD_MAID_DB;
+						//make sure at least TableID is set from db
+						//and Published as well #5742
+						$this->i_getPersistentSlotsFromDB('TableID,Published');
+						$this->i_getUniqueIDsAndFixNames();
+						break;
+					}
 				}
+				$from = we_class::LOAD_MAID_DB;
+
 			case we_class::LOAD_MAID_DB:
 				parent::we_load($from);
 				break;
