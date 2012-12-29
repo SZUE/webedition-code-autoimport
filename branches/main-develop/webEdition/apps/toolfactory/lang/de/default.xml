@@ -128,7 +128,7 @@
 			<tuv xml:lang="de"><seg>Backup-Tabelle</seg></tuv>
 		</tu>
 		<tu tuid="The application '%s' has been succesfully saved. Please restart webEdition!">
-			<tuv xml:lang="de"><seg>Die Anwendung '%s' wurde erfolgreich gespeichert. Bitte starten Sie webEdition neu!</seg></tuv>
+			<tuv xml:lang="de"><seg>Die Anwendung wurde erfolgreich gespeichert. Bitte starten Sie webEdition neu!</seg></tuv>
 		</tu>
 		<tu tuid="Publish">
 			<tuv xml:lang="de"><seg>Aktivieren</seg></tuv>
@@ -183,6 +183,9 @@
 		</tu>
 		<tu tuid="Regenetrate TOC">
 			<tuv xml:lang="de"><seg>Generiere toc.xml neu</seg></tuv>
+		</tu>
+		<tu tuid="Install">
+			<tuv xml:lang="de"><seg>Installiere </seg></tuv>
 		</tu>
 		<tu tuid="The application toc.xml was succesfully rebuild!">
 			<tuv xml:lang="de"><seg>Das Anwendungsverzeichnis toc.xml wurde erfolgreich neu erzeugt.</seg></tuv>

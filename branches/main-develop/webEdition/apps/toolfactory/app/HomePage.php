@@ -81,7 +81,7 @@ class toolfactory_app_HomePage extends we_app_HomePage
 		$i=0;
 		foreach($appdata as $dieApp){
 			$localInstallButton = new we_ui_controls_Button(array(
-				'text'=>$translate->_('Install'.' '.$dieApp['classname'].' '.$dieApp['version']), 
+				'text'=>$translate->_('Install').' '.$dieApp['classname'].' '.$dieApp['version'], 
 				'onClick'=>'weCmdController.fire({cmdName: "app_'.$appName.'_localInstall'.$i.'"})', 
 				'type'=>'onClick', 
 				'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,

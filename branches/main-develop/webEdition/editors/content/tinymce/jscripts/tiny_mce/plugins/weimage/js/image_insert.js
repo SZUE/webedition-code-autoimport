@@ -100,7 +100,7 @@ var ImageDialog = {
 			alt : nl.alt.value,
 			align : nl.align.value,
 			name : nl.name.value,
-			class : nl.class.value,
+			//class : nl.class.value, => not supported by IE 8!
 			title : nl.title.value,
 			longdesc : nl.longdesc.value
 			//style : nl.style.value,

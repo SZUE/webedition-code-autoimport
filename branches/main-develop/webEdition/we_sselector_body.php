@@ -233,7 +233,7 @@ top.allentries = new Array();
 var i = 0;
 ';
 			foreach($final as $key => $entry){
-				print 'top.allentries[i++] = "' . $entry . '"';
+				print 'top.allentries[i++] = "' . $entry . '";';
 			}
 			print '//--></script>';
 			$set_rename = false;

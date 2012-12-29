@@ -954,29 +954,9 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 							// frame where the form should be sent from
 							var _sendFromFrame = _visibleEditorFrame;
 
-<<<<<<< .working
 							// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
 							var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
-=======
-								// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
-								//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
->>>>>>> .merge-rechts.r5445
 
-<<<<<<< .working
-							// if we switch from WE_EDITPAGE_CONTENT to another page
-							if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
-								// clean body to avoid flickering
-								try{
-									_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
-								}catch(e){
-									//can be caused by not loaded content
-								}
-								// switch to normal frame
-								top.weEditorFrameController.switchToNonContentEditor();
-								// set var to new active editor frame
-								_visibleEditorFrame = _currentEditorRootFrame.frames[1];
-=======
 								// if we switch from WE_EDITPAGE_CONTENT to another page
 								if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
 									// clean body to avoid flickering
@@ -990,22 +970,10 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// set var to new active editor frame
 									_visibleEditorFrame = _currentEditorRootFrame.frames[1];
 									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
->>>>>>> .merge-rechts.r5445
 
 								// set flag to false
 								_isEditpageContent = false;
 
-<<<<<<< .working
-								// if we switch to WE_EDITPAGE_CONTENT from another page
-							} else if (!_isEditpageContent && arguments[1] == <?php print WE_EDITPAGE_CONTENT; ?>) {
-								// switch to content editor frame
-								top.weEditorFrameController.switchToContentEditor();
-								// set var to new active editor frame
-								_visibleEditorFrame = _currentEditorRootFrame.frames[2];
-								// set flag to false
-								_isEditpageContent = true;
-							}
-=======
 									// if we switch to WE_EDITPAGE_CONTENT from another page
 								} else if (!_isEditpageContent && arguments[1] == <?php print WE_EDITPAGE_CONTENT; ?>) {
 									// switch to content editor frame
@@ -1016,7 +984,6 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									// set flag to false
 									_isEditpageContent = true;
 								}
->>>>>>> .merge-rechts.r5445
 
 							// frame where the form should be sent to
 							var _sendToFrame = _visibleEditorFrame;
@@ -1029,19 +996,6 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								url += _currentEditorRootFrame.parameters;
 							}
 
-<<<<<<< .working
-							// focus the frame
-							if(_visibleEditorFrame){
-								_visibleEditorFrame.focus();
-							}
-							// if visible frame equals to editpage content and there is already content loaded
-							if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) != "undefined" && _currentEditorRootFrame.frames[2].location != "about:blank") {
-								// tell the backend the right edit page nr and break (don't send the form)
-								//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
-								YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
-								break;
-							}
-=======
 								// focus the frame
 								if(_sendToFrame){
 									_sendToFrame.focus();
@@ -1053,7 +1007,6 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									YAHOO.util.Connect.asyncRequest('POST', "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction='+_we_activeTransaction+"&editPageNr="+arguments[1]);
 									break;
 								}
->>>>>>> .merge-rechts.r5445
 
 
 							if (_currentEditorRootFrame) {
@@ -1104,19 +1057,17 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 								top.weEditorFrameController.toggleFrames();
 
-								if(_nextContent.frames && _nextContent.frames["1"]){
-									if(!we_sbmtFrm(_nextContent,url)) {
+									if(_nextContent.frames && _nextContent.frames["1"]){
+										if(!we_sbmtFrm(_nextContent,url)) {
+											we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
+										}
+									}	else {
 										we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 									}
 								}
 								else {
 									we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 								}
-
-							} else {
-								alert("<?php print g_l('multiEditor', "[no_editor_left]"); ?>");
-
-							}
 							break;
 						case "open_extern_document":
 						case "new_document":

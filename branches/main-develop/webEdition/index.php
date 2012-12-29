@@ -69,8 +69,8 @@ function printHeader($login, $status = 200){
 	header('Pragma: public');
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
-
 	we_html_tools::htmlTop('webEdition');
+
 	print STYLESHEET .
 		we_html_element::cssElement('html, body {height:100%;}') .
 		we_html_element::jsScript(JS_DIR . 'windows.js');

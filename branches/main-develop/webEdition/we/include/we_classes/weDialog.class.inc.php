@@ -359,7 +359,7 @@ class weDialog{
 						</select>';
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
 	}
-	
+
 	function getClassSelect(){
 			$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
 			$clSelect->addOption("", g_l('wysiwyg', "[none]"));
@@ -372,7 +372,7 @@ class weDialog{
 			if(isset($this->args["class"]) && !empty($this->args["class"])){
 				$clSelect->selectOption($this->args["class"]);
 			}
-			
+
 			return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . htmlspecialchars($classesCSV) . '" />';
 	}
 

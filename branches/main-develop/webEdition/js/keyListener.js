@@ -390,7 +390,7 @@ function dealWithKeyboardShortCut(evt) {
 
 	} else {
 		//console.log('for'+evt['keyCode']);
-		return false;
+		return true;
 	// event is NOT forwarded
 	}
 }

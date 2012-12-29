@@ -48,7 +48,7 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	setTimeout("toggleBusy("+w+");",300);
+	setTimeout("toggleBusy("+w+");",300);*/
 	}
 
 	var regular_logout = false;
