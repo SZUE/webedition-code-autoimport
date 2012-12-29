@@ -45,7 +45,7 @@ function pWebEdition_JSFunctions(){
 	}
 
 	function toggleBusy(w) {
-	if(w == busy)
+/*	if(w == busy)
 	return;
 	if(self.header) {
 	if(self.header.toggleBusy) {
@@ -54,7 +54,7 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	setTimeout("toggleBusy("+w+");",300);
+	setTimeout("toggleBusy("+w+");",300);*/
 	}
 
 	function doUnload(whichWindow) {
