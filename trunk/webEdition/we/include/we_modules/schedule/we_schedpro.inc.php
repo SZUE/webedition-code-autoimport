@@ -399,6 +399,7 @@ class we_schedpro{
 		}
 
 		if(!$deleted){
+			t_e($GLOBALS['we_doc']->Published);
 			$pub = ($GLOBALS['we_doc']->Published ?
 					$GLOBALS['we_doc']->we_publish() :
 					$GLOBALS['we_doc']->we_unpublish());
@@ -668,7 +669,7 @@ class we_schedpro{
 						'Wann' => $Wann,
 						'Was' => $s["task"],
 						'ClassName' => $object->ClassName,
-						'SerializedData' => gzcompress($serializedDoc, 9),
+						'SerializedData' => ($serializedDoc?gzcompress($serializedDoc, 9):''),
 						'Schedpro' => serialize($s),
 						'Type' => $s["type"],
 						'Active' => $s["active"]
