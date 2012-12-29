@@ -59,7 +59,7 @@ class we_category extends weModelBase{
 			while($db->next_record()) {
 				if($db->f('IsFolder')){
 					//all folders need to be searched in deep
-					$catCSV.=',' . $db->f('Folder');
+					$catCSV.=',' . $db->f('Path');
 				} else{
 					$idarray[] = $db->f('ID');
 				}
