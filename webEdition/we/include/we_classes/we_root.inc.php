@@ -212,7 +212,7 @@ abstract class we_root extends we_class{
 
 	/* init the object with data from the database */
 
-	function copyDoc(/*$id*/){
+	function copyDoc(/* $id */){
 		// overwrite
 	}
 
@@ -603,7 +603,6 @@ abstract class we_root extends we_class{
 		if($autobr){
 			$this->elements[$name]['autobr'] = $autobr;
 		}
-
 	}
 
 	/* get the data from an element */
@@ -787,22 +786,26 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_initSerializedDat($sessDat){
-		if(is_array($sessDat)){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
-				}
-			}
-			if(isset($sessDat[1])){
-				$this->elements = $sessDat[1];
-			}
-			if(isset($sessDat[2])){
-				$this->NavigationItems = $sessDat[2];
-			} else{
-				$this->i_loadNavigationItems();
+		if(!is_array($sessDat)){
+			$this->Name = md5(uniqid(__FUNCTION__, true));
+			return false;
+		}
+		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			if(isset($sessDat[0][$this->persistent_slots[$i]])){
+				$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
 			}
 		}
+		if(isset($sessDat[1])){
+			$this->elements = $sessDat[1];
+		}
+		if(isset($sessDat[2])){
+			$this->NavigationItems = $sessDat[2];
+		} else{
+			$this->i_loadNavigationItems();
+		}
+
 		$this->Name = md5(uniqid(__FUNCTION__, true));
+		return true;
 	}
 
 # private ###################
