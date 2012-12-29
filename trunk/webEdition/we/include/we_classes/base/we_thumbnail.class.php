@@ -328,7 +328,7 @@ class we_thumbnail{
 		if(!file_exists($_thumbdir)){
 			we_util_File::createLocalFolder($_thumbdir);
 		}
-		$quality = $this->thumbQuality < 1 ? 10 : ($tchis->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
+		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
 		$outarr = we_image_edit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
