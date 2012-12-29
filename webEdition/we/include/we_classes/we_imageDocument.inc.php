@@ -400,7 +400,7 @@ class we_imageDocument extends we_binaryDocument{
 						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img_path) &&
 						// open a file
-						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->date)){
+						intval(filectime($_SERVER['DOCUMENT_ROOT'] . $img_path)) > intval($thumbObj->getDate())){
 						$create = false;
 					}
 

@@ -300,6 +300,10 @@ class we_thumbnail{
 		return true;
 	}
 
+	public function getDate(){
+		return $this->date;
+	}
+
 	/**
 	 * creates the thumbnail and saves it in $this->outputPath
 	 *
