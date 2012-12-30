@@ -130,7 +130,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	public static function getInstance(){
 		static $__instance=NULL;
 		if($__instance === NULL){
-			$__instance = new static();
+			$__instance = new self();
 		}
 		return $__instance;
 	}
