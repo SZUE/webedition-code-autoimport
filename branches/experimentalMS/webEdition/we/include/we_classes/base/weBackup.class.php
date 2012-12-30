@@ -684,6 +684,7 @@ class weBackup extends we_backup{
 	}
 
 	function saveState($of = ""){
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		$save = $this->_saveState() . '
 $this->file_list=' . var_export($this->file_list, true) . ';';
 
@@ -753,7 +754,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 			$this->description["export"][strtolower(ANZEIGE_PREFS_TABLE)] = g_l('backup', "[export_prefs]");
 		}
 		$this->description["export"][strtolower(TEMPLATES_TABLE)] = g_l('backup', "[export_templates]");
-		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[export_temporary_data]");
+		$this->description["export"][strtolower(TEMPORARY_DOC_TABLE)] = g_l('backup', "[export][temporary_data]");
 		$this->description["export"][strtolower(BACKUP_TABLE)] = g_l('backup', "[external_backup]");
 		$this->description["export"][strtolower(LINK_TABLE)] = g_l('backup', "[export_links]");
 		$this->description["export"][strtolower(INDEX_TABLE)] = g_l('backup', "[export_indexes]");

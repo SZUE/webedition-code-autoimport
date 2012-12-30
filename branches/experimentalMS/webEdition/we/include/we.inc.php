@@ -48,7 +48,7 @@ if($_memlimit < 32){
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
-//ini_set("arg_separator.output","&amp;");
+//@ini_set("arg_separator.output","&");
 
 //prepare space for we-variables; $_SESSION['weS'] is set in we_session
 if(!isset($GLOBALS['we'])){
@@ -85,9 +85,8 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-
 if(!defined('NO_SESS')){
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if(!empty($_tooldefines)){
@@ -127,9 +126,8 @@ if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''
 if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
 	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
 } else{
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
 }
-
 if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }

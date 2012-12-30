@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5016 $
- * $Author: lukasimhof $
- * $Date: 2012-10-25 11:53:14 +0200 (Do, 25 Okt 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
  * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 /**
  * This source is based on tinyMCE-plugin "advimage":
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
@@ -28,7 +28,7 @@
 var ImageDialog = {
 	preInit : function() {
 		var url;
-		tinyMCEPopup.requireLangPack();
+		//tinyMCEPopup.requireLangPack();
 		if(url = tinyMCEPopup.getParam("external_image_list_url")){
 			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 		}
@@ -41,7 +41,7 @@ var ImageDialog = {
 	insert : function(file, title) {
 		var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
 		// remove <img> if src=""
-		if(f.src.value === ''){
+		if(f.src.value === '' || f.src.value === 'http://'){
 			if (ed.selection.getNode().nodeName == 'IMG') {
 				ed.dom.remove(ed.selection.getNode());
 				ed.execCommand('mceRepaint');
@@ -52,11 +52,11 @@ var ImageDialog = {
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
 			if(!f.alt.value){
-				tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
-					if (s){
-						t.insertAndClose();
-					}
-				});
+				//tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
+					//if (s){
+						//t.insertAndClose();
+					//}
+				//});
 				return;
 			}
 		}
@@ -100,9 +100,9 @@ var ImageDialog = {
 			alt : nl.alt.value,
 			align : nl.align.value,
 			name : nl.name.value,
-			class : nl.class.value,
+			//class : nl.class.value, => not supported by IE 8!
 			title : nl.title.value,
-			longdesc : nl.longdesc.value,
+			longdesc : nl.longdesc.value
 			//style : nl.style.value,
 			//id : nl.id.value,
 			//dir : nl.dir.value,
@@ -126,7 +126,7 @@ var ImageDialog = {
 		tinyMCEPopup.editor.focus();
 		//tinyMCEPopup.close();
 		top.close();
-	},
+	}
 
 	// removed lots of original tinyMCE-functions
 };

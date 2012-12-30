@@ -52,8 +52,11 @@ function getObjectsForDocWorkspace($id){
 }
 
 $table = $_REQUEST['we_cmd'][2];
-$wfchk = defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? (isset(
-		$_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : 0) : 1;
+$wfchk = defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ?
+	(isset($_REQUEST['we_cmd'][3]) ?
+		$_REQUEST['we_cmd'][3] :
+		0) :
+	1;
 $wfchk_html = "";
 $script = "";
 
@@ -77,21 +80,23 @@ if(!$wfchk){
 	} else{
 		$script = "top.toggleBusy(0);" . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
 	}
-	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">';
-	$wfchk_html .= we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>";
+	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
+		we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>";
 } else
 if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_single_document"){
 	if(isset($_REQUEST["sel"]) && $_REQUEST["sel"]){
 		//	look which documents must be deleted.
-		$selectedItems = explode(",", $_REQUEST["sel"]);
+		$selectedItems = explode(',', $_REQUEST["sel"]);
 		$retVal = 1;
 		$idInfos = array(
 			'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 		);
-		if(!empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
-			$idInfos = getHash("SELECT IsFolder, Path FROM " . $DB_WE->escape($table) . " WHERE ID=" . intval($selectedItems[0]), $DB_WE);
-			if($idInfos['IsFolder']){
-				$idInfos['hasFiles'] = f("SELECT ID FROM " . $DB_WE->escape($table) . " WHERE ParentID=" . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'", "ID", $DB_WE) > 0 ? 1 : 0;
+		if(!empty($_REQUEST["sel"]) && !empty($selectedItems) && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
+			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($selectedItems[0]), $DB_WE);
+			if(empty($idInfos)){
+				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
+			} elseif($idInfos['IsFolder']){
+				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'", 'ID', $DB_WE) > 0 ? 1 : 0;
 			}
 		}
 
@@ -355,7 +360,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 							$_SESSION['weS']['delete_files_nok'] = array();
 							$_SESSION["delete_files_info"] = str_replace("\\n", "", sprintf(g_l('alert', "[folder_not_empty]"), ""));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = array("icon" => "folder.gif", "path" => $datafile);
+								$_SESSION['weS']['delete_files_nok'][] = array("icon" => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
 							}
 							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
 						} else{
@@ -375,8 +380,7 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 					$script .= 'top.toggleBusy(0);';
 					if($table == TEMPLATES_TABLE){
 						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
-					} else
-					if($table == OBJECT_TABLE){
+					} elseif($table == OBJECT_TABLE){
 						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
 					} else{
 						$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
@@ -386,8 +390,8 @@ if($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_si
 	} else{
 		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING) . "\n";
 	}
-	print we_html_element::jsScript(JS_DIR . 'windows.js');
-	print we_html_element::jsElement($script);
+	print we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement($script);
 
 	//exit;
 }
@@ -405,7 +409,7 @@ if($_SESSION['weS']['we_mode'] == "seem"){
 	exit();
 }
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 <?php
 if($_REQUEST['we_cmd'][0] != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){

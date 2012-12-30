@@ -21,12 +21,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-header("Content-Type: text/css");
 $GLOBALS['show_stylesheet'] = true;
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+header("Content-Type: text/css", true);
+header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400) . " GMT", true);
+header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT", true);
+header("Cache-Control: max-age=86400, must-revalidate", true);
+header("Pragma: ", true);
 ?>
-
 .weSelect {
 border: #AAAAAA solid 1px;
 color: black;
@@ -49,7 +51,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 background-color: #EEEEEE;
 }
 
-.weMarkInputError {background-color: #ff8888 ! important;}
+.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}
 
 .wetextinputselected {
 color: black;
@@ -596,7 +598,7 @@ margin-bottom:3px;
 }
 
 .weSidebarBody {
-background	: #ffffff url(<?php echo IMAGE_DIR;?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
+background	: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
 margin		: 5px;
 padding		: 0px;
 }

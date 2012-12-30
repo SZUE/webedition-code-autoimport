@@ -56,7 +56,7 @@ $parentpaths = array();
 if($ws = get_ws($table)){
 	$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
 	foreach($wsPathArray as $path){
-		$wsQuery .= " Path like '$path/%' OR " . getQueryParents($path) . " OR ";
+		$wsQuery .= " Path LIKE '$path/%' OR " . getQueryParents($path) . " OR ";
 		while($path != "/" && $path) {
 			array_push($parentpaths, $path);
 			$path = dirname($path);
@@ -66,7 +66,7 @@ if($ws = get_ws($table)){
 	$ac = getAllowedClasses($DB_WE);
 	foreach($ac as $cid){
 		$path = id_to_path($cid, OBJECT_TABLE);
-		$wsQuery .= " Path like '" . $DB_WE->escape($path) . "/%' OR Path='" . $DB_WE->escape($path) . "' OR ";
+		$wsQuery .= " Path LIKE '" . $DB_WE->escape($path) . "/%' OR Path='" . $DB_WE->escape($path) . "' OR ";
 	}
 }
 
@@ -120,11 +120,7 @@ function getItems($ParentID){
 	}
 
 	$DB_WE = new DB_WE;
-	$where = " WHERE ";
-
-	$where .= " ParentID=$ParentID ";
-	$where .= makeOwnersSql();
-	$where .= $GLOBALS['wsQuery'];
+	$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . makeOwnersSql() .')'. $GLOBALS['wsQuery'].')';
 	//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 	$elem = "ID,ParentID,Path,Text,Icon,IsFolder,ModDate" . (($GLOBALS['table'] == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined("OBJECT_FILES_TABLE") && $GLOBALS['table'] == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "");
 

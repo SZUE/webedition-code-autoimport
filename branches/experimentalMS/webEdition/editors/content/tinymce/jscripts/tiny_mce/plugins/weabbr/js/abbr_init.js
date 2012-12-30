@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5016 $
- * $Author: lukasimhof $
- * $Date: 2012-10-25 11:53:14 +0200 (Do, 25 Okt 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -94,5 +94,4 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 		//tinyMCEPopup.close();
 	}
 };
-
 tinyMCEPopup.onInit.add(WeabbrDialog.init, WeabbrDialog);

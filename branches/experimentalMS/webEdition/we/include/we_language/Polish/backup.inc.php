@@ -1,13 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Save data of the widget last worked on',
-	''=>'Save temporary data',
-	''=>'Save the data of the WE-App',
-	''=>'The data of the widget last worked on',
-	''=>'Import data for the widget last worked on',
-	''=>'Import the data of the WE-App',
-	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Plik kopii zapasowej %s został usunięty',
 	'backup_form'=>'Kopia zapasowa z dn.',
 	'backup_log_exp'=>'Utworzono log w /webEdition/we_backup/data/lastlog.php',
@@ -44,6 +37,12 @@ $l_backup=array(
 	'error_compressing_backup'=>'An error occured while compressing the backup, so the backup could not be finished!',
 	'error_delete'=>'Plik kopii zapasowej nie mógł być usunięty. Proszę usunąć dane za pomocą programu do FTP z katalogu /webEdition/we_backup',
 	'error_timeout'=>'An timeout occured while creating the backup, so the backup could not be finished!',
+	
+	'export'=>array(
+		'history_data'=>'Save data of the widget last worked on',
+		'temporary_data'=>'Save temporary data',
+		'weapp'=>'Save the data of the WE-App',
+	),
 	'export_backup_log'=>'Utwórz log',
 	'export_banner_data'=>'Zabezpiecz dane Bannerów',
 	'export_banner_dep'=>'You have selected the option `Save banner data`. The banner data need the documents and because of that, `Save documents and templates` has been automatically selected.',
@@ -118,6 +117,13 @@ $l_backup=array(
 	'ftp_hint'=>'Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!',
 	'glossary_info'=>'Data from the glossary.',
 	'gzip'=>'gzip',
+	'history_info'=>'The data of the widget last worked on',
+	
+	'import'=>array(
+		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Przywróć dane tymczasowe',
+		'weapp'=>'Import the data of the WE-App',
+	),
 	'import_banner_data'=>'Przywróć dane Bannerów',
 	'import_banner_dep'=>'You have selected the option `Restore banner data`. The banner data need the documents data and because of that, `Restore documents and templates` has been automatically selected.',
 	'import_binary_data'=>'Przywróć dane binarne (obrazki, PDFy, ...)',
@@ -150,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'Wybrano `Przywróć dane sklepu`. Sklep potrzebuje danych klientów do prawidłowego funkcjonowania i dlatego automatycznie zaznaczono`Zabezpiecz dane klientów`.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Przywróć szablony',
-	'import_temporary_data'=>'Przywróć dane tymczasowe',
 	'import_temporary_dep'=>'Wybrano `Przywróć pliki tymczasowe`. Do prawidłowego funkcjonowania pliki tymczasowe potrzebują także dokumentów. Dlatego automatycznie zaznaczono `Przywróć dokumenty i szablony`.',
 	'import_todo_data'=>'Przywróć dane Zadania/Powiadamianie',
 	'import_todo_dep'=>'Wybrano `Przywróć Zadania/Powiadamianie `. Moduł Zadania/Powiadamianie potrzebuje danych użytkowników do prawidłowego funkcjonowania i dlatego automatycznie zaznaczono `Przywróć dane użytkownika`.',

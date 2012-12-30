@@ -1,5 +1,5 @@
 
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 <?php print $we_JavaScript.';';

@@ -30,7 +30,7 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function addOption(txt,id){
 		var a=document.forms["we_form"].elements["filter"];
 		a.options[a.options.length]=new Option(txt,id);
@@ -46,21 +46,21 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
       }
       else {
 <?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-							}
-						}
-						else{
+			}
+		}
+		else{
 <?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_is_folder]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-					}
-				}
+		}
+	}
 
-				function doUnload(){
-					if(jsWindow_count) {
-            for(i=0;i<jsWindow_count;i++){
-							eval("jsWindow"+i+"Object.close()");
-						}
-					}
-				}
-				//-->
+	function doUnload(){
+		if(jsWindow_count) {
+			for(i=0;i<jsWindow_count;i++){
+				eval("jsWindow"+i+"Object.close()");
+			}
+		}
+	}
+	//-->
 </script>
 </head>
 <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
@@ -72,20 +72,20 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			<tr>
 				<td colspan="5"><?php print we_html_tools::getPixel(5, 5); ?></td>
 			</tr>
-<?php
-if($_REQUEST["ret"] == 1){
-	$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
-	$yes_button = we_button::create_button("ok", "javascript:top.exit_close();");
-	$down_button =null;
-} else{
-	$cancel_button = we_button::create_button("close", "javascript:top.exit_close();");
-	$yes_button = we_button::create_button("edit", "javascript:editFile();");
-	//TODO: since .htaccess might be active, we have to call a php-script for download
-	$down_button= null;//we_button::create_button("download", "javascript:downloadFile();");
-}
-$buttons = we_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
-if($_REQUEST["filter"] == "all_Types"){
-	?>
+			<?php
+			if($_REQUEST["ret"] == 1){
+				$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
+				$yes_button = we_button::create_button("ok", "javascript:top.exit_close();");
+				$down_button = null;
+			} else{
+				$cancel_button = we_button::create_button("close", "javascript:top.exit_close();");
+				$yes_button = we_button::create_button("edit", "javascript:editFile();");
+				//TODO: since .htaccess might be active, we have to call a php-script for download
+				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
+			}
+			$buttons = we_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
+			if($_REQUEST["filter"] == "all_Types"){
+				?>
 				<tr>
 					<td></td>
 					<td class="defaultfont">
@@ -94,27 +94,29 @@ if($_REQUEST["filter"] == "all_Types"){
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
 							<option value="<?php print str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')); ?>"><?php print g_l('contentTypes', '[all_Types]'); ?></option>
-	<?php
-	$ct = new we_base_ContentTypes();
-	foreach($ct->getFiles() as $key){
-		print '<option value="' . rawurlencode(g_l('contentTypes', '[' . $key . ']')) . '">' . g_l('contentTypes', '[' . $key . ']') . '</option>';
-	}
-	?>
+							<?php
+							$ct = we_base_ContentTypes::inst();
+							foreach($ct->getFiles() as $key){
+								print '<option value="' . rawurlencode(g_l('contentTypes', '[' . $key . ']')) . '">' . g_l('contentTypes', '[' . $key . ']') . '</option>';
+							}
+							?>
 						</select></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td colspan="5"><?php print we_html_tools::getPixel(5, 5); ?></td>
 				</tr>
-<?php } ?>
+			<?php } ?>
 			<tr>
 				<td></td>
 				<td class="defaultfont">
-					<b><?php if($_REQUEST["filter"] == "folder"){
-	print g_l('fileselector', "[name]");
-} else{
-	print g_l('fileselector', "[name]");
-} ?></b>
+					<b><?php
+			if($_REQUEST["filter"] == "folder"){
+				print g_l('fileselector', "[name]");
+			} else{
+				print g_l('fileselector', "[name]");
+			}
+			?></b>
 				</td>
 				<td></td>
 				<td class="defaultfont" align="left"><?php print we_html_tools::htmlTextInput("fname", 24, $_REQUEST["currentName"], "", "style=\"width:100%\" readonly=\"readonly\""); ?>

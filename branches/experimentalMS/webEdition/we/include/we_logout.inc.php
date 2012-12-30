@@ -72,6 +72,20 @@ echo we_html_element::jsElement('
 		}catch(err){}
 	}
 
+	if(typeof(top.tinyMceDialog) !== "undefinded" && top.tinyMceDialog !== null){
+		var tinyDialog = top.tinyMceDialog;
+		try{
+			tinyDialog.close();
+		}catch(err){}
+	}
+	
+	if(typeof(top.tinyMceSecondaryDialog) !== "undefinded" && top.tinyMceSecondaryDialog !== null){
+		var tinyDialog = top.tinyMceSecondaryDialog;
+		try{
+			tinyDialog.close();
+		}catch(err){}
+	} 
+
 	if(top.opener){ // we was opened in popup
 		top.opener.location.replace("' . $_path . '");
 		top.close();

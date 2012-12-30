@@ -115,8 +115,6 @@ $GLOBALS['configs'] = array(
 		'SEOINSIDE_HIDEINWEBEDITION' => array('Flag if should be displayed in webEdition ', false),
 		'SEOINSIDE_HIDEINEDITMODE' => array('Flag if should be displayed in Editmode ', false),
 		'LANGLINK_SUPPORT' => array('Flag if automatic LanguageLinks should be supported ', true),
-		'LANGLINK_SUPPORT_BACKLINKS' => array('Flag if automatic backlinks should be generated ', true),
-		'LANGLINK_SUPPORT_RECURSIVE' => array('Flag if backlinks should be generated recursive ', true),
 //default charset
 		'DEFAULT_CHARSET' => array('Default Charset', "UTF-8"),
 //countries

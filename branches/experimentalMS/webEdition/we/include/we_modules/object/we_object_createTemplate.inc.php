@@ -25,8 +25,9 @@
 class we_makenewtemplate extends we_template{
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
-		if(!$table)
+		if(!$table){
 			$table = $this->Table;
+		}
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
@@ -47,16 +48,14 @@ class we_makenewtemplate extends we_template{
 
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '		<table cellpadding="2" cellspacing="0" border="1" width="400">
-';
+	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 	for($i = 0; $i < sizeof($tableInfo); $i++){
 		if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
 		}
 	}
-	$content .= '		</table>
-';
+	$content .= '</table>';
 	return $content;
 }
 
@@ -64,7 +63,7 @@ function getMultiObjectTags($name){
 	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"])){
 		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_" . $name . "class"]["dat"];
 	} else{
-		return "";
+		return '';
 		$newfields = explode(",", $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach($newfields as $tempname){
 			if($tempname != ""){
@@ -81,16 +80,14 @@ function getMultiObjectTags($name){
 	}
 
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '		<table cellpadding="2" cellspacing="0" border="1" width="400">
-';
+	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], true);
 		}
 	}
-	$content .= '		</table>
-';
+	$content .= '</table>';
 	return $content;
 }
 
@@ -120,7 +117,7 @@ function getTemplTag($type, $name, $isField = false){
 		case "multiobject":
 			return getMultiObjectTags($name);
 	}
-	return "";
+	return '';
 }
 
 function getTmplTableRow($type, $name, $isField = false){
@@ -132,25 +129,25 @@ function getTmplTableRow($type, $name, $isField = false){
 			$open = '<we:ifVarNotEmpty match="' . $name . '" type="' . $type . '">';
 			$close = "</we:ifVarNotEmpty>";
 		}
-		return '			<tr>
-				<td width="100"><b>' . $name . '</b></td>
-				<td width="300">
-					' . $open . '
-					<we:listview type="multiobject" name="' . $name . '">
-						<we:repeat>' . getTemplTag($type, $name) . '</we:repeat>
-					</we:listview>
-					<we:else>
-						' . g_l('global', "[no_entries]") . '
-					' . $close . '
-				</td>
-			</tr>
-';
+		return '
+<tr>
+	<td width="100"><b>' . $name . '</b></td>
+	<td width="300">
+		' . $open . '
+		<we:listview type="multiobject" name="' . $name . '">
+			<we:repeat>' . getTemplTag($type, $name) . '</we:repeat>
+		</we:listview>
+		<we:else>
+			' . g_l('global', "[no_entries]") . '
+		' . $close . '
+	</td>
+</tr>';
 	} else{
-		return '			<tr>
-				<td width="100"><b>' . (($type != "object") ? $name : "") . '</b></td>
-				<td width="300">' . getTemplTag($type, $name, $isField) . '</td>
-			</tr>
-';
+		return '
+<tr>
+	<td width="100"><b>' . (($type != "object") ? $name : "") . '</b></td>
+	<td width="300">' . getTemplTag($type, $name, $isField) . '</td>
+</tr>';
 	}
 }
 
@@ -160,7 +157,7 @@ print we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo "</head><body class='weDialogBody'><form name='we_form'>";
+echo '</head><body class="weDialogBody"><form name="we_form">';
 $tmpl = new we_makenewtemplate();
 $tmpl->we_new();
 
@@ -237,8 +234,7 @@ if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
 }
 $content .= '
 	</body>
-</html>
-';
+</html>';
 
 
 //  $_SESSION["content"] is only used for generating a default template, it is

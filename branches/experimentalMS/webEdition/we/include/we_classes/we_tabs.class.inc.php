@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class we_tabs {
+class we_tabs{
 
 	var $heightPlus;
 	var $textvalign;
@@ -38,26 +38,26 @@ class we_tabs {
 	var $bodyAttribs;
 	var $JSonResize;
 
-	function __construct() {
+	function __construct(){
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
-		$this->containerEnd   = "</div>\n";
+		$this->containerEnd = "</div>\n";
 
-		switch (we_base_browserDetect::inst()->getBrowser()) {
+		switch(we_base_browserDetect::inst()->getBrowser()){
 			case we_base_browserDetect::SAFARI:
 				$this->heightPlus = '';
 				$this->textvalign = "top";
 				$this->frameDefaultHeight = 21;
 				$this->tabBorder = "border:0px;";
-				$this->tabBG ="";
+				$this->tabBG = "";
 				break;
 			case we_base_browserDetect::IE:
 				if(we_base_browserDetect::inst()->getBrowserVersion() < 9){
 					$this->heightPlus = '';
-				$this->textvalign = "middle";
-				$this->frameDefaultHeight = 21;
-				$this->tabBorder = "border:0px;";
-				$this->tabBG ="background-position:bottom; ";
-				break;
+					$this->textvalign = "middle";
+					$this->frameDefaultHeight = 21;
+					$this->tabBorder = "border:0px;";
+					$this->tabBG = "background-position:bottom; ";
+					break;
 				}
 			default:
 				$this->heightPlus = '';
@@ -67,11 +67,11 @@ class we_tabs {
 		}
 	}
 
-	function addTab($tab) {
+	function addTab($tab){
 		$this->container .= $tab->getHTML();
 	}
 
-	function getHeader() {
+	function getHeader(){
 		$tabBorder = $this->tabBorder;
 		$tabBG = $this->tabBG;
 		$styles = <<<HTS
@@ -157,8 +157,8 @@ function setTabClass(elem) {
 function allowed_change_edit_page() {
 	try	{
 		var contentEditor = top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
-		if ( contentEditor && contentEditor.fields_are_valid ) {
-			return contentEditor.fields_are_valid();
+		if ( contentEditor && contentEditor.contentWindow.fields_are_valid ) {
+			return contentEditor.contentWindow.fields_are_valid();
 
 		}
 	}
@@ -231,25 +231,23 @@ HTS;
 			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 	}
 
-	function getHTML() {
+	function getHTML(){
 		return $this->containerStart . $this->container . $this->containerEnd;
 	}
 
-	/***********************************************************************************************/
+	/*	 * ******************************************************************************************** */
 
-
-	function getJS() {
-
-	}
-
-	function getJSRebuildTabs() {
+	function getJS(){
 
 	}
 
-	/***********************************************************************************************/
+	function getJSRebuildTabs(){
 
+	}
 
-	function onResize() {
+	/*	 * ******************************************************************************************** */
+
+	function onResize(){
 		$heightPlus = $this->heightPlus;
 		$this->JSonResize = <<<HTS
 
@@ -259,6 +257,13 @@ function setFrameSize(){
 			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
 			document.getElementById('naviDiv').style.height = tabsHeight+"px";
 			document.getElementById('contentDiv').style.top = tabsHeight+"px";
+		}else if(parent.document.getElementsByName('editHeaderDiv').length>0){
+			var tabsHeight = document.getElementById('main').offsetHeight $heightPlus;
+			var tmp=parent.document.getElementsByName("editHeaderDiv");
+			var nList=tmp[0].parentNode.getElementsByTagName("div");
+			nList[0].style.height = tabsHeight+"px";
+			nList[1].style.top = tabsHeight+"px";
+			nList[2].style.top = tabsHeight+"px";
 		}else{
 		//FIXME: remove this if frames are obsolete
 		var fs = parent.document.getElementsByTagName("FRAMESET")[0];
@@ -274,14 +279,13 @@ function setFrameSize(){
 }
 
 HTS;
+	}
+
+	function addJS(){
 
 	}
 
-	function addJS() {
-
-	}
-
-	function addCSS() {
+	function addCSS(){
 
 	}
 

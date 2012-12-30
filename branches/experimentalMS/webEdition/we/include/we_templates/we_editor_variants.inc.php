@@ -34,7 +34,7 @@ print STYLESHEET;
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
-$we_doc->pHiddenTrans();
+echo we_class::hiddenTrans();
 
 switch($we_doc->ContentType){
 	case 'text/webedition':

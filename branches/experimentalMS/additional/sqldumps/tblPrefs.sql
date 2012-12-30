@@ -54,7 +54,7 @@ CREATE TABLE tblPrefs (
   editorPiTagFontcolor varchar(255) NOT NULL,
   editorCommentFontcolor varchar(255) NOT NULL,
   specify_jeditor_colors tinyint  NOT NULL,
-  editorMode varchar(64) NOT NULL DEFAULT 'textarea',
+  editorMode enum('textarea','codemirror','codemirror2','java')  NOT NULL DEFAULT 'textarea',
   editorLinenumbers tinyint  NOT NULL default '1',
   editorCodecompletion tinyint  NOT NULL default '0',
   editorTooltips tinyint  NOT NULL default '1',

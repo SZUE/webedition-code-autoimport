@@ -157,12 +157,8 @@ class weGlossary extends weModelBase{
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
 	function __construct($GlossaryId = 0){
-
-		$this->table = GLOSSARY_TABLE;
-
-		$this->_Serialized = array('Attributes');
-
 		parent::__construct(GLOSSARY_TABLE);
+		$this->_Serialized = array('Attributes');
 
 		if($GlossaryId){
 			$this->ID = $GlossaryId;
@@ -256,7 +252,7 @@ class weGlossary extends weModelBase{
 	 *
 	 */
 	function save(){
-		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'prog.gif');
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : 'prog.gif');
 
 		$this->setPath();
 
@@ -431,7 +427,6 @@ class weGlossary extends weModelBase{
 		$fileName = weGlossary::getExceptionFilename($language);
 
 		$content = '';
-		$items = array();
 		$items = explode("\n", $entries);
 		sort($items);
 		foreach($items as $item){

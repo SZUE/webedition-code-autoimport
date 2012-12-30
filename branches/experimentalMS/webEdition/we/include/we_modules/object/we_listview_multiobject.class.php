@@ -202,7 +202,7 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 				}
 			}
 
-			$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != "") ? (" limit " . $this->start . "," . $this->rows) : ""));
+			$this->DB_WE->query("SELECT " . $sqlParts["fields"] . $calendar_select . " FROM " . $sqlParts["tables"] . " WHERE  " . (!empty($this->objects) ? OBJECT_X_TABLE . $this->classID . ".OF_ID IN (" . implode(",", $this->objects) . ") AND " : '') . ($this->searchable ? " " . OBJECT_X_TABLE . $this->classID . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . ".OF_ID != 0 " . ($join ? " AND ($join) " : "") . $cat_tail . $weDocumentCustomerFilter_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? (" AND (" . $sqlParts["cond"] . ") ") : "") . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order != '') ? (' LIMIT ' . $this->start . "," . $this->rows) : ""));
 
 			$mapping = array(); // KEY = ID -> VALUE = ROWID
 			$i = 0;
@@ -345,9 +345,9 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 			case 'we_id':
 			case 'we_filename':
 			case 'we_published':
-				$_tmporder = str_replace('we_id', OBJECT_X_TABLE . $classID . '.OF_ID', $_tmporder);
-				$_tmporder = str_replace('we_filename', OBJECT_X_TABLE . $classID . '.OF_Text', $_tmporder);
-				$_tmporder = str_replace('we_published', OBJECT_X_TABLE . $classID . '.OF_Published', $_tmporder);
+				$_tmporder = str_replace(array(
+					'we_id', 'we_filename', 'we_published',), array(
+					OBJECT_X_TABLE . $classID . '.OF_ID', OBJECT_X_TABLE . $classID . '.OF_Text', OBJECT_X_TABLE . $classID . '.OF_Published'), $_tmporder);
 				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
 				break;
 			case 'random()':
@@ -387,7 +387,6 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 	}
 
 	function next_record(){
-
 		$fetch = false;
 		if($this->calendar_struct["calendar"] != ''){
 			if($this->count < $this->anz){
@@ -422,11 +421,7 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
 					}
 				}
-				if($this->triggerID){
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
-				} else{
-					$this->DB_WE->Record["we_WE_TRIGGERID"] = intval($this->DB_WE->f("OF_TriggerID"));
-				}
+				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? $this->triggerID : intval($this->DB_WE->f("OF_TriggerID")));
 				$this->DB_WE->Record["we_WE_URL"] = $this->DB_WE->f("OF_Url");
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->f("OF_Text");
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->f("OF_ID");
@@ -439,10 +434,11 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 			} else{
 				$this->stop_next_row = $this->shouldPrintEndTR();
 				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-					$this->DB_WE->Record = array();
-					$this->DB_WE->Record["WE_PATH"] = "";
-					$this->DB_WE->Record["WE_TEXT"] = "";
-					$this->DB_WE->Record["WE_ID"] = "";
+					$this->DB_WE->Record = array(
+						"WE_PATH" => "",
+						"WE_TEXT" => "",
+						"WE_ID" => ""
+					);
 					$this->count++;
 					return true;
 				}

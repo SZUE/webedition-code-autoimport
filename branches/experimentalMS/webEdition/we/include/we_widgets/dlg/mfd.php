@@ -28,7 +28,6 @@ we_html_tools::protect();
 
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", $_REQUEST['we_cmd'][1]);
 
-$parts = array();
 $jsCode = "
 var _oCsv_;
 var _sInitCsv_;
@@ -174,20 +173,20 @@ $wecmdenc5 = we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentRef
 $addbut = we_button::create_button(
 		"add", "javascript:opener.getUser('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);");
 
-$content = '<table border="0" cellpadding="0" cellspacing="0" width="300">';
-$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
+$content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
+<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
-if(sizeof($users)){
+if(!empty($users)){
 	$db = new DB_WE();
-	for($i = 0; $i < sizeof($users); $i++){
-		$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID=" . intval($users[$i]), $db);
+	foreach($users as $user){
+		$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID=" . intval($user), $db);
 		$content .= '<tr><td><img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_button::create_button(
-				"image:btn_function_trash", "javascript:delUser('" . $users[$i] . "');") . '</td></tr>' . "\n";
+				"image:btn_function_trash", "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
 } else{
-	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('cockpit', '[all_users]') . '</td><td></td><td></td></tr>' . "\n";
+	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('cockpit', '[all_users]') . '</td><td></td><td></td></tr>';
 }
-$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>' . "\n";
+$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
 		array(
@@ -286,18 +285,20 @@ $oSelMaxEntries->setCol(0, 2, array(
 
 $show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
 
-array_push($parts, array(
-	"headline" => g_l('cockpit', '[type]'), "html" => $oDbTableType->getHTML(), "space" => 80
-));
-array_push($parts, array(
-	"headline" => g_l('cockpit', '[date]'), "html" => $oSctDate->getHTML(), "space" => 80
-));
-array_push($parts, array(
-	"headline" => g_l('cockpit', '[display]'), "html" => $show, "space" => 80
-));
-array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
-));
+$parts = array(
+	array(
+		"headline" => g_l('cockpit', '[type]'), "html" => $oDbTableType->getHTML(), "space" => 80
+	),
+	array(
+		"headline" => g_l('cockpit', '[date]'), "html" => $oSctDate->getHTML(), "space" => 80
+	),
+	array(
+		"headline" => g_l('cockpit', '[display]'), "html" => $show, "space" => 80
+	),
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	)
+);
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
 $preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);

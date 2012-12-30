@@ -24,10 +24,6 @@
  */
 class we_objectEx extends we_object{
 
-	function __construct(){
-		parent::__construct();
-	}
-
 	function saveToDB(){
 		$this->wasUpdate = $this->ID ? true : false;
 
@@ -35,55 +31,65 @@ class we_objectEx extends we_object{
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 		if(!$this->wasUpdate){
+
 			if(DB_CONNECT=='msconnect'){
-				$q = " ID BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY (ID),
-				OF_ID BIGINT NOT NULL,
-				OF_ParentID BIGINT NOT NULL default '0',
-				OF_Text VARCHAR(255) NOT NULL default '',
-				OF_Path VARCHAR(255) NOT NULL default '',
-				OF_Url VARCHAR(255) NOT NULL default '',
-				OF_TriggerID  BIGINT NOT NULL  default '0',
-				OF_Workspaces VARCHAR(255) NOT NULL default '',
-				OF_ExtraWorkspaces VARCHAR(255) NOT NULL default '',
-				OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL default '',
-				OF_Templates VARCHAR(255) NOT NULL default '',
-				OF_ExtraTemplates VARCHAR(255) NOT NULL default '',
-				OF_Category VARCHAR(255) NOT NULL default '',
-				OF_Published int NOT NULL default '',
-				OF_IsSearchable tinyint NOT NULL default '1',
-				OF_Charset VARCHAR(64) NOT NULL default '',
-				OF_WebUserID BIGINT NOT NULL default '0',
-				OF_Language VARCHAR(5) default 'NULL',";
+				$qarr = array(
+				" ID BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY (ID)",
+				"OF_ID BIGINT NOT NULL",
+				"OF_ParentID BIGINT NOT NULL default '0'",
+				"OF_Text VARCHAR(255) NOT NULL default ''",
+				"OF_Path VARCHAR(255) NOT NULL default ''",
+				"OF_Url VARCHAR(255) NOT NULL default ''",
+				"OF_TriggerID  BIGINT NOT NULL  default '0'",
+				"OF_Workspaces VARCHAR(255) NOT NULL default ''",
+				"OF_ExtraWorkspaces VARCHAR(255) NOT NULL default ''",
+				"OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL default ''",
+				"OF_Templates VARCHAR(255) NOT NULL default ''",
+				"OF_ExtraTemplates VARCHAR(255) NOT NULL default ''",
+				"OF_Category VARCHAR(255) NOT NULL default ''",
+				"OF_Published int NOT NULL default ''",
+				"OF_IsSearchable tinyint NOT NULL default '1'",
+				"OF_Charset VARCHAR(64) NOT NULL default ''",
+				"OF_WebUserID BIGINT NOT NULL default '0'",
+				"OF_Language VARCHAR(5) default 'NULL'"
+				);
 				$indexe = array(
 				"CREATE INDEX idx_TABELLE_OF_WebUserID ON TABELLE(OF_WebUserID);",
 				"CREATE INDEX idx_TABELLE_published ON TABELLE(OF_ID,OF_Published,OF_IsSearchable);",
 				"CREATE INDEX idx_TABELLE_OF_IsSearchable ON TABELLE(OF_IsSearchable);",
 				);
 			} else {
-				$q = ' ID BIGINT NOT NULL AUTO_INCREMENT,
-				OF_ID BIGINT NOT NULL,
-				OF_ParentID BIGINT NOT NULL,
-				OF_Text VARCHAR(255) NOT NULL,
-				OF_Path VARCHAR(255) NOT NULL,
-				OF_Url VARCHAR(255) NOT NULL,
-				OF_TriggerID  BIGINT NOT NULL  default "0",
-				OF_Workspaces VARCHAR(255) NOT NULL,
-				OF_ExtraWorkspaces VARCHAR(255) NOT NULL,
-				OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL,
-				OF_Templates VARCHAR(255) NOT NULL,
-				OF_ExtraTemplates VARCHAR(255) NOT NULL,
-				OF_Category VARCHAR(255) NOT NULL,
-				OF_Published int(11) NOT NULL,
-				OF_IsSearchable tinyint(1) NOT NULL default "1",
-				OF_Charset VARCHAR(64) NOT NULL,
-				OF_WebUserID BIGINT NOT NULL,
-				OF_Language VARCHAR(5) default "NULL", ';
+				$qarr = array(
+				'ID BIGINT NOT NULL AUTO_INCREMENT',
+				'OF_ID BIGINT NOT NULL',
+				'OF_ParentID BIGINT NOT NULL',
+				'OF_Text VARCHAR(255) NOT NULL',
+				'OF_Path VARCHAR(255) NOT NULL',
+				'OF_Url VARCHAR(255) NOT NULL',
+				'OF_TriggerID  BIGINT NOT NULL  default "0"',
+				'OF_Workspaces VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspaces VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL',
+				'OF_Templates VARCHAR(255) NOT NULL',
+				'OF_ExtraTemplates VARCHAR(255) NOT NULL',
+				'OF_Category VARCHAR(255) NOT NULL',
+				'OF_Published int(11) NOT NULL',
+				'OF_IsSearchable tinyint(1) NOT NULL default "1"',
+				'OF_Charset VARCHAR(64) NOT NULL',
+				'OF_WebUserID BIGINT NOT NULL',
+				'OF_Language VARCHAR(5) default "NULL"',
+				);
 
-				$indexe = ', KEY OF_WebUserID (OF_WebUserID), KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`),KEY `OF_IsSearchable` (`OF_IsSearchable`)';
+			$indexe = array('PRIMARY KEY (ID)',
+				'KEY OF_WebUserID (OF_WebUserID)',
+				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
+				'KEY `OF_IsSearchable` (`OF_IsSearchable`)'
+			);
+
+
 			}
 			$this->SerializedArray = unserialize($this->DefaultValues);
 
-			$qarr = array();
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			foreach($this->SerializedArray as $key => $value){
 				if(!in_array($key, $noFields)){
@@ -97,18 +103,14 @@ class we_objectEx extends we_object{
 							if(DB_CONNECT=='msconnect'){//msconnectfixme index setzen
 								$indexe[] = "CREATE INDEX idx_TABELLE_".$name." ON TABELLE(". $name .");";
 							} else {
-								$indexe .= ', KEY ' . $key . ' (' . $key . ')';
+								$indexe [] = 'KEY ' . $key . ' (' . $key . ')';
 							}
 						}
 					}
 				}
 			}
 
-			if(empty($qarr)){// bug #7000
-				$q = rtrim($q, ', ');
-			} else{
-				$q .= implode(',', $qarr);
-			}
+			$q = implode(',', $qarr);
 
 			// Charset and Collation
 			$charset_collation = '';
@@ -119,16 +121,14 @@ class we_objectEx extends we_object{
 			}
 			if(DB_CONNECT=='msconnect'){
 				$this->DB_WE->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '". $ctable."') DROP TABLE ".OBJECT_X_TABLE . $ctable);
-
 				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q .  ')');
 				$indexeimplodes=implode(' ', $indexe);
 				$indexeimplodes=str_replace('TABELLE',$ctable,$indexeimplodes);
 				$this->DB_WE->query($indexeimplodes);
 			} else {
 				$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
-				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ', PRIMARY KEY (ID)' . $indexe . ') ENGINE = MYISAM ' . $charset_collation);
+				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE = MYISAM ' . $charset_collation);
 			}
-			
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' (OF_ID) VALUES (0)');
@@ -385,7 +385,11 @@ class we_objectEx extends we_object{
 		} else{
 			$this->strOrder = '';
 		}
-		return $this->saveToDB(true);
+		if(isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
+			return true;
+		} else{
+			return $this->saveToDB(true);
+		}
 	}
 
 	function dropField($name, $type = ''){
@@ -418,7 +422,11 @@ class we_objectEx extends we_object{
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
 
 			$this->strOrder = implode(',', $arrOrder);
-			return $this->saveToDB(true);
+			if(isset($this->isDropFieldNoSave) && $this->isDropFieldNoSave){
+				return true;
+			} else{
+				return $this->saveToDB(true);
+			}
 		}
 
 		return false;
@@ -458,7 +466,12 @@ class we_objectEx extends we_object{
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
-		return $this->saveToDB(true);
+
+		if(isset($this->isModifyFieldNoSave) && $this->isModifyFieldNoSave){
+			return true;
+		} else{
+			return $this->saveToDB(true);
+		}
 	}
 
 	function resetOrder(){
@@ -491,6 +504,8 @@ class we_objectEx extends we_object{
 					}
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
+				} else{
+					t_e('Field not found: Table ' . $this->Text . ' Field: ' . $ovalname);
 				}
 			}
 		}

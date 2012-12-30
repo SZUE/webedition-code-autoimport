@@ -75,6 +75,7 @@ $online_help = true;
 
 print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
 	we_html_element::jsScript(JS_DIR . 'md5.js') .
 	we_html_element::jsScript(JS_DIR . 'weNavigationHistory.php') .
 	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -85,7 +86,7 @@ print STYLESHEET .
 include(JS_PATH . 'weJsStrings.inc.php');
 ?>
 
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 
 	self.focus();
 
@@ -282,24 +283,23 @@ function weSetCookie(name, value, expires, path, domain){
 }
 
 function treeResized() {
-	if (navigator.appVersion.indexOf("Safari") == -1) {
-		var treeWidth = getTreeWidth();
-		if (treeWidth <= 22) {
+//FIXME: remove - it is obsolete
+	var treeWidth = getTreeWidth();
+		if (treeWidth <= <?php echo weTree::HiddenWidth;?>) {
 			setTreeArrow("right");
 		} else {
 			setTreeArrow("left");
+			storeTreeWidth(treeWidth);
 		}
-		storeTreeWidth(treeWidth);
-	}
 }
 
-var oldTreeWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
+var oldTreeWidth = <?php print weTree::DefaultWidth; ?>;
 function toggleTree(){
-	var tfd= self.rframe.bframe.document.getElementById("treeFrameDiv");
+	var tfd= self.rframe.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if(tfd.style.display=="none"){
-		oldTreeWidth=(oldTreeWidth<100?<?php print WE_TREE_DEFAULT_WIDTH; ?>:oldTreeWidth);
+		oldTreeWidth=(oldTreeWidth<<?php echo weTree::MinWidth; ?>?<?php print weTree::DefaultWidth; ?>:oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display="block";
 		setTreeArrow("left");
@@ -307,21 +307,20 @@ function toggleTree(){
 	}else{
 		tfd.style.display="none";
 		oldTreeWidth = w;
-		setTreeWidth(24);
-		storeTreeWidth(24);
+		setTreeWidth(<?php echo weTree::HiddenWidth; ?>);
 		setTreeArrow("right");
 	}
 }
 
 function setTreeArrow(direction) {
 	try{
-		self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
+		self.rframe.document.getElementById("arrowImg").src = "<?php print BUTTONS_DIR; ?>icons/direction_" + direction+ ".gif";
 		if(direction=="right"){
-			self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
-			self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+			self.rframe.document.getElementById("incBaum").style.backgroundColor="gray";
+			self.rframe.document.getElementById("decBaum").style.backgroundColor="gray";
 		}else{
-			self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
-			self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+			self.rframe.document.getElementById("incBaum").style.backgroundColor="";
+			self.rframe.document.getElementById("decBaum").style.backgroundColor="";
 		}
 	}	catch(e) {
 		// Nothing
@@ -353,6 +352,9 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.rframe.document.getElementById("bframeDiv").style.width=w+"px";
 	self.rframe.document.getElementById("bm_content_frameDiv").style.left=w+"px";
+	if(w><?php echo weTree::HiddenWidth;?>){
+		storeTreeWidth(w);
+	}
 }
 
 function storeTreeWidth(w) {
@@ -385,7 +387,11 @@ function we_repl(target,url) {
 		}catch(e) {
 			// Nothing
 		}
-		target.location.replace(url);
+		if(target.location==undefined){
+			target.src=url;
+		}else{
+			target.location.replace(url);
+		}
 	}
 }
 
@@ -394,6 +400,9 @@ function submit_we_form(formlocation, target, url){
 		if(formlocation){
 			if(formlocation.we_submitForm){
 				formlocation.we_submitForm(target.name, url);
+				return true;
+			}else if(formlocation.contentWindow.we_submitForm){
+				formlocation.contentWindow.we_submitForm(target.name, url);
 				return true;
 			}
 		}
@@ -416,10 +425,8 @@ function we_sbmtFrmC(target,url) {
 }
 
 function we_setEditorWasLoaded(flag) {
-	self.weEditorWasLoaded = flag;
-}
-
-function we_setEditorHot() {
+	// imi: console.log("we_setEditorWasLoaded: " + flag);
+	//flag = true; //uncomment to keep first weEditorWasLoaded=true for the rest of the session
 	self.weEditorWasLoaded = flag;
 }
 
@@ -655,7 +662,7 @@ if(!empty($_jsincludes)){
 								break;
 							case "do_delete":
 								toggleBusy(1);
-								submit_we_form(self.rframe.bframe.treeheader, self.load,url)
+								submit_we_form(self.rframe.treeheader, self.load,url)
 								//we_sbmtFrmC(self.load,url);
 								break;
 							case "move_single_document":
@@ -664,7 +671,7 @@ if(!empty($_jsincludes)){
 								break;
 							case "do_move":
 								toggleBusy(1);
-								submit_we_form(self.rframe.bframe.treeheader, self.load,url)
+								submit_we_form(self.rframe.treeheader, self.load,url)
 								//we_sbmtFrmC(self.load,url);
 								break;
 							case "open_document":
@@ -867,15 +874,12 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
 								break;
 							case "setTab":
-								if(self.Vtabs)
-									if(self.Vtabs.setTab){
+								if(self.Vtabs && self.Vtabs.setTab && (typeof treeData!="undefined")){
 										self.Vtabs.setTab(arguments[1]);
 										treeData.table=arguments[1];
+									}else{
+										setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
 									}
-								else
-									setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
-								else
-									setTimeout('we_cmd("setTab","'+arguments[1]+'")',500);
 								break;
 							case "showLoadInfo":
 								we_repl(self.Tree,url,arguments[0]);
@@ -979,15 +983,21 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 
 								// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
 								var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.frames[2];
+								//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
 								// if we switch from WE_EDITPAGE_CONTENT to another page
 								if (_isEditpageContent && arguments[1] != <?php print WE_EDITPAGE_CONTENT; ?>) {
 									// clean body to avoid flickering
-									_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+									try{
+										_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+									}catch(e){
+										//can be caused by not loaded content
+									}
 									// switch to normal frame
 									top.weEditorFrameController.switchToNonContentEditor();
 									// set var to new active editor frame
 									_visibleEditorFrame = _currentEditorRootFrame.frames[1];
+									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
 
 									// set flag to false
 									_isEditpageContent = false;
@@ -998,6 +1008,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 									top.weEditorFrameController.switchToContentEditor();
 									// set var to new active editor frame
 									_visibleEditorFrame = _currentEditorRootFrame.frames[2];
+									//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 									// set flag to false
 									_isEditpageContent = true;
 								}
@@ -1014,8 +1025,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 								}
 
 								// focus the frame
-								if(_visibleEditorFrame){
-									_visibleEditorFrame.focus();
+								if(_sendToFrame){
+									_sendToFrame.focus();
 								}
 								// if visible frame equals to editpage content and there is already content loaded
 								if (_isEditpageContent && typeof(_visibleEditorFrame.weIsTextEditor) != "undefined" && _currentEditorRootFrame.frames[2].location != "about:blank") {
@@ -1078,8 +1089,7 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 										if(!we_sbmtFrm(_nextContent,url)) {
 											we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 										}
-									}
-									else {
+									}	else {
 										we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 									}
 
@@ -1424,9 +1434,9 @@ pWebEdition_JSwe_cmds();
 							}
 
 							function start() {
-								self.Tree = self.rframe.bframe.bm_main;
-								self.Vtabs = self.rframe.bframe.bm_vtabs;
-								self.TreeInfo = self.rframe.bframe;
+								self.Tree = self.rframe;
+								self.Vtabs = self.rframe;
+								self.TreeInfo = self.rframe;
 <?php
 $_table_to_load = "";
 if(we_hasPerm("CAN_SEE_DOCUMENTS")){
@@ -1467,9 +1477,11 @@ we_main_header::pCSS();
 </head>
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
 	<?php
+	flush();
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();
 	we_main_header::pJS();
+	flush();
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	?>

@@ -25,7 +25,6 @@
 class weJUpload{
 
 	var $Params = array();
-	var $Buttons = array();
 
 	/* avail langs
 	 * ar, 	  ar_SA, 	  bg, 	  cs, 	  da, 	  de, 	  en, 	  eo, 	  es,
@@ -84,16 +83,19 @@ class weJUpload{
 	}
 
 	function getAppletTag($content = '', $w = 300, $h = 300){
-		$_params = '';
+		$_params='';
 
 		foreach($this->Params as $name => $value){
 			$_params .= '<param name="' . $name . '" value="' . $value . '"/>';
 		}
 
-		return '<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="' . getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
-				' . $_params . '
-				' . $content . '
-			</applet>';
+		return we_html_element::htmlApplet(array(
+				'name' => "JUpload",
+				'code' => "wjhk.jupload2.JUploadApplet",
+				'archive' => getServerUrl(true) . WEBEDITION_DIR . 'jupload/jupload.jar',
+				'width' => $w,
+				'height' => $h,
+				), $_params . $content);
 	}
 
 	function getJS(){
@@ -117,11 +119,10 @@ class weJUpload{
 			}
 		}
 
-		if($order == 'h'){
-			return we_button::create_button_table($_buttons, $space);
-		} else{
-			return '<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>';
-		}
+		return ($order == 'h' ?
+				we_button::create_button_table($_buttons, $space) :
+				'<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>'
+			);
 	}
 
 }

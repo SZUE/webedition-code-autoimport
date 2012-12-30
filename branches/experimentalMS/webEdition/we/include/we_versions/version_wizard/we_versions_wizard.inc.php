@@ -57,8 +57,7 @@ abstract class we_versions_wizard{
 		$js .= we_html_element::jsElement('function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}');
 
 		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
-		$refreshButton = we_button::create_button(
-				"refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
+		$refreshButton = we_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
 		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm(
 				"REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm(
@@ -70,10 +69,8 @@ abstract class we_versions_wizard{
 					), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', "[rebuild]"), $buttons);
 		} else{
-			$prevButton = we_button::create_button(
-					"back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-			$nextButton = we_button::create_button(
-					"next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
+			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
+			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array(
 					"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
@@ -169,56 +166,88 @@ abstract class we_versions_wizard{
 			$version_reset['reset_doPublish'] = 1;
 		}
 
-		$parts = array();
-		array_push(
-			$parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton(
-				"delete_versions", ($type == "delete_versions"), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
-			"space" => 0
-		));
+		$parts = array(
+			array(
+				"headline" => "",
+				"html" => we_forms::radiobutton(
+					"delete_versions", ($type == "delete_versions"), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
+				"space" => 0
+			),
+			array(
+				"headline" => "",
+				"html" => we_forms::radiobutton(
+					"reset_versions", ($type == "reset_versions"), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
+				"space" => 0
+			));
 
-		array_push(
-			$parts, array(
-			"headline" => "",
-			"html" => we_forms::radiobutton(
-				"reset_versions", ($type == "reset_versions"), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
-			"space" => 0
-		));
+		$js = '
+window.onload = function(){
+	top.focus();
+}
+function handle_event(what){
+	f = document.we_form;
+	switch(what){
+	case "previous":
+		break;
+	case "next":
+		selectedValue="";
+		for(var i=0;i<f.type.length;i++){
+			if(f.type[i].checked){
+				selectedValue = f.type[i].value;
+			}
+		}
+		goTo(selectedValue);
+		break;
+	}
+}
+function goTo(where){
+	f = document.we_form;
+	switch(where){
+	case "rebuild_thumbnails":
+	case "delete_versions":
+		f.target="wizbody";
+		break;
+	case "rebuild_objects":
+	case "rebuild_index":
+	case "rebuild_navigation":
+		set_button_state(1);
+		f.target="wizcmd";
+		f.step.value="2";
+		break;
+	}
+	f.submit();
+}
+function set_button_state(alldis) {
+	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
+		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");
+		if(alldis){
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");
+			top.frames["wizbusy"].showRefreshButton();
+		}else{
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+		}
+	}else{
+		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+	}
+}
+set_button_state(false);';
 
-		$js = "\n" . 'window.onload = function(){top.focus();}' . "\n" . 'function handle_event(what){' . "\n" . '	f = document.we_form;' . "\n" . '	switch(what){' . "\n" . '		case "previous":' . "\n" . '			break;' . "\n" . '		case "next":' . "\n" . '			selectedValue="";' . "\n" . '			for(var i=0;i<f.type.length;i++){' . "\n" . '				if(f.type[i].checked){;' . "\n" . '					selectedValue = f.type[i].value;' . "\n" . '		}' . "\n" . '			}' . "\n" . '			goTo(selectedValue)' . "\n" . '			break;' . "\n" . '	}' . "\n" . '}' . "\n" .
-			'function goTo(where){' . "\n" . '	f = document.we_form;' . "\n" . '	switch(where){' . "\n" . '		case "rebuild_thumbnails":' . "\n" . '		case "delete_versions":' . "\n" . '			f.target="wizbody";' . "\n" . '			break;' . "\n" . '		case "rebuild_objects":' . "\n" . '		case "rebuild_index":' . "\n" . '		case "rebuild_navigation":' . "\n" . '			set_button_state(1);' . "\n" . '			f.target="wizcmd";' . "\n" . '			f.step.value="2";' . "\n" . '			break;' . "\n" . '	}' . "\n" . '	f.submit();' . "\n" . '}' . "\n" .
-			'function set_button_state(alldis) {' . "\n" . '	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){' . "\n" . '		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");' . "\n" . '		if(alldis){' . "\n" . '			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "disabled");' . "\n" . '			top.frames["wizbusy"].showRefreshButton();' . "\n" . '		}else{' . "\n" . '			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");' . "\n" . '		}' . "\n" . '	}else{' . "\n" . '		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);' . "\n" . '	}' . "\n" . '}' . "\n" . 'set_button_state(false);' . "\n";
-
-		$js .= '
-
-';
 		$hiddenFields = "";
 		foreach($version_delete as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array(
-					"name" => $k, "value" => $v
-				));
+			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
 		}
 
 		foreach($version_reset as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array(
-					"name" => $k, "value" => $v
-				));
+			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
 		}
 
 		return array(
 			$js,
-			we_multiIconBox::getHTML(
-				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
+			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
-			we_html_element::htmlHidden(array(
-				"name" => "fr", "value" => "body"
-			)) .
-			we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "versions_wizard"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "step", "value" => "1"
-			))
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "1"))
 		);
 	}
 
@@ -248,14 +277,6 @@ abstract class we_versions_wizard{
 		$version_delete_minutes = isset($_REQUEST["delete_minutes"]) ? $_REQUEST["delete_minutes"] : 0;
 		$version_delete_seconds = isset($_REQUEST["delete_seconds"]) ? $_REQUEST["delete_seconds"] : 0;
 
-		$parts = array();
-
-		array_push(
-			$parts, array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), 2, 520),
-			'noline' => 1,
-			'space' => 0
-		));
 
 		$content = "";
 		foreach($version->contentTypes as $k){
@@ -265,22 +286,25 @@ abstract class we_versions_wizard{
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox(
-						$val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else{
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox(
-						$val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
-
-		array_push(
-			$parts, array(
-			'headline' => g_l('versions', '[ContentType]'),
-			'space' => 170,
-			'html' => $content,
-			'noline' => 1
-		));
+		$parts = array(
+			array(
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), 2, 520),
+				'noline' => 1,
+				'space' => 0
+			),
+			array(
+				'headline' => g_l('versions', '[ContentType]'),
+				'space' => 170,
+				'html' => $content,
+				'noline' => 1
+			)
+		);
 
 		$versions_delete_date = weVersionsSearch::getDateSelector("", "delete_date", "_1", $version_delete_date);
 
@@ -341,23 +365,20 @@ abstract class we_versions_wizard{
 
 		$reset_seconds->selectOption($version_delete_seconds);
 
-		array_push(
-			$parts, array(
+		$parts[] = array(
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), 2, 520),
 			'noline' => 1,
 			'space' => 0
-		));
+		);
 
-		$clearDate = we_button::create_button(
-				"reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
+		$clearDate = we_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
 
-		array_push(
-			$parts, array(
+		$parts[] = array(
 			'headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>" . g_l('versions', '[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions', '[clocktime]') . ":</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s",
 			'noline' => 1,
 			'space' => 170
-		));
+		);
 
 		//js
 		$jsCheckboxCheckAll = '';
@@ -368,123 +389,108 @@ abstract class we_versions_wizard{
 			if($k != "all"){
 				$jsCheckboxCheckAll .= 'document.getElementById("version_delete_' . $k . '").checked = checked;';
 			}
-			if($jsCheckboxCtIf != "")
-				$jsCheckboxCtIf .= " && ";
-			$jsCheckboxCtIf .= 'document.getElementById("version_delete_' . $k . '").checked==0';
+			$jsCheckboxCtIf .= (empty($jsCheckboxCtIf) ? '' : ' && ') . 'document.getElementById("version_delete_' . $k . '").checked==0';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
-		$nextButton = we_button::create_button(
-				"next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
+		$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", "", false);
 
-		$js = 'window.onload = function(){
-					top.focus();
-				}
-				function handle_event(what){
-					f = document.we_form;
-					switch(what){
-						case "previous":
-							f.step.value=0
-							f.target="wizbody";
-							f.submit();
-							break;
-						case "next":
-							var date = document.getElementById("delete_date").value;
-							var hour = document.getElementById("delete_hours").value;
-							var minutes = document.getElementById("delete_minutes").value;
-							var seconds = document.getElementById("delete_seconds").value;
-							if(' . $jsCheckboxCtIf . ') {
-								' . we_message_reporting::getShowMessageCall(
+		$js = '
+window.onload = function(){
+	top.focus();
+}
+function handle_event(what){
+	f = document.we_form;
+	switch(what){
+		case "previous":
+			f.step.value=0
+			f.target="wizbody";
+			f.submit();
+			break;
+		case "next":
+			var date = document.getElementById("delete_date").value;
+			var hour = document.getElementById("delete_hours").value;
+			var minutes = document.getElementById("delete_minutes").value;
+			var seconds = document.getElementById("delete_seconds").value;
+			if(' . $jsCheckboxCtIf . ') {
+				' . we_message_reporting::getShowMessageCall(
 				g_l('versions', '[notCheckedContentType]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-							}
-							else {
-								selectedValue="";
-								for(var i=0;i<f.type.length;i++){
-									if(f.type[i].checked){;
-										selectedValue = f.type[i].value;
-									}
-								}
-								goTo(selectedValue);
-							}
-						break;
+			}else {
+				selectedValue="";
+				for(var i=0;i<f.type.length;i++){
+					if(f.type[i].checked){;
+						selectedValue = f.type[i].value;
 					}
 				}
+				goTo(selectedValue);
+			}
+		break;
+	}
+}
 
-				function checkAll(val) {
+function checkAll(val) {
+	if(val.checked) {
+		checked = 1;
+	}else {
+		checked = 0;
+	}' . $jsCheckboxCheckAll . ';
 
-		            	if(val.checked) {
-		            		checked = 1;
-		            	}
-		            	else {
-		            		checked = 0;
-		            	}
-						' . $jsCheckboxCheckAll . ';
+}
 
-					}
+function checkAllRevert() {
+	var checkbox = document.getElementById("version_delete_all");
+	checkbox.checked = false;
+}
 
-	            	function checkAllRevert() {
+function calendarSetup(){
+	if(document.getElementById("date_picker_1") != null) {
+		Calendar.setup({inputField:"delete_date",ifFormat:"%d.%m.%Y",button:"date_picker_1",align:"Tl",singleClick:true});
+	}
+}
 
-	            		var checkbox = document.getElementById("version_delete_all");
-						checkbox.checked = false;
-	            	}
-
-		            function calendarSetup(){
-
-		            	if(document.getElementById("date_picker_1") != null) {
-							Calendar.setup({inputField:"delete_date",ifFormat:"%d.%m.%Y",button:"date_picker_1",align:"Tl",singleClick:true});
-						}
-
-					}
-
-				function goTo(where){
-					f = document.we_form;
-					switch(where){
-						case "delete_versions":
-							f.target="wizbody";
-							break;
-					}
-					f.submit();
-				}
-
+function goTo(where){
+	f = document.we_form;
+	switch(where){
+		case "delete_versions":
+			f.target="wizbody";
+			break;
+	}
+	f.submit();
+}
 
 
-				function set_button_state(alldis) {
-					if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
-						top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
-						if(alldis){
-							top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
-							top.frames["wizbusy"].showRefreshButton();
-						}else{
-							top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
-							var nextBut = top.frames["wizbusy"].document.getElementById(\'nextCell\');
-				  			nextBut.innerHTML = \'' . $nextButton . '\';
-						}
-					}else{
-						setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
-					}
-				}
-				set_button_state(false);';
+
+function set_button_state(alldis) {
+	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
+		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
+		if(alldis){
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+			top.frames["wizbusy"].showRefreshButton();
+		}else{
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+			var nextBut = top.frames["wizbusy"].document.getElementById(\'nextCell\');
+				nextBut.innerHTML = \'' . $nextButton . '\';
+		}
+	}else{
+		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+	}
+}
+set_button_state(false);';
 
 		$calendar = we_html_element::jsElement("calendarSetup();");
 
-		array_push($parts, array(
+		$parts[] = array(
 			'html' => $calendar, 'noline' => 0, 'space' => 0
-		));
+		);
 
 		return array(
 			$js,
 			we_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHidden(array(
-				"name" => "fr", "value" => "body"
-			)) .
-			we_html_element::htmlHidden(array(
-				"name" => "type", "value" => $type
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "versions_wizard"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "step", "value" => "2"
-			))
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "2"))
 		);
 	}
 
@@ -499,14 +505,6 @@ abstract class we_versions_wizard{
 		$version_reset_seconds = isset($_REQUEST["reset_seconds"]) ? $_REQUEST["reset_seconds"] : 0;
 		$version_reset_doPublish = isset($_REQUEST["reset_doPublish"]) && $_REQUEST["reset_doPublish"] ? 1 : 0;
 
-		$parts = array();
-
-		array_push(
-			$parts, array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), 2, 520),
-			'noline' => 1,
-			'space' => 0
-		));
 
 		$content = "";
 		foreach($version->contentTypes as $k){
@@ -517,38 +515,37 @@ abstract class we_versions_wizard{
 			$checked = isset($_REQUEST[$k]) ? $_REQUEST[$k] : 0;
 			if($k == "all"){
 				$jvs = "checkAll(this);";
-				$content .= we_forms::checkbox(
-						$val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else{
 				$jvs = "checkAllRevert(this);";
-				$content .= we_forms::checkbox(
-						$val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+				$content .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
 			}
 		}
 
-		array_push(
-			$parts, array(
-			'headline' => g_l('versions', '[ContentType]'),
-			'space' => 170,
-			'html' => $content,
-			'noline' => 1
-		));
-
 		$versions_reset_date = weVersionsSearch::getDateSelector("", "reset_date", "_1", $version_reset_date);
+		$doPublish = we_forms::checkbox($version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
 
-		array_push(
-			$parts, array(
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), 2, 520),
-			'noline' => 1,
-			'space' => 0
-		));
-
-		$doPublish = we_forms::checkbox(
-				$version_reset_doPublish, $version_reset_doPublish, "reset_doPublish", g_l('versions', '[publishIfReset]'), false, "defaultfont", "");
-
-		array_push($parts, array(
-			'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
-		));
+		$parts = array(
+			array(
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), 2, 520),
+				'noline' => 1,
+				'space' => 0
+			),
+			array(
+				'headline' => g_l('versions', '[ContentType]'),
+				'space' => 170,
+				'html' => $content,
+				'noline' => 1
+			),
+			array(
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), 2, 520),
+				'noline' => 1,
+				'space' => 0
+			),
+			array(
+				'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
+			),
+		);
 
 		$reset_hours = new we_html_select(
 				array(
@@ -607,23 +604,21 @@ abstract class we_versions_wizard{
 
 		$reset_seconds->selectOption($version_reset_seconds);
 
-		array_push(
-			$parts, array(
+		$parts[] = array(
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), 2, 520),
 			'noline' => 1,
 			'space' => 0
-		));
+		);
 
 		$clearDate = we_button::create_button(
 				"reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
 
-		array_push(
-			$parts, array(
+		$parts[] = array(
 			'headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s ",
 			'noline' => 1,
 			'space' => 170
-		));
+		);
 
 		//js
 		$jsCheckboxCheckAll = '';
@@ -735,24 +730,18 @@ abstract class we_versions_wizard{
 
 		$calendar = we_html_element::jsElement("calendarSetup();");
 
-		array_push($parts, array(
+		$parts[] = array(
 			'html' => $calendar, 'noline' => 0, 'space' => 0
-		));
+		);
 
 		return array(
 			$js,
 			we_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHidden(array(
-				"name" => "fr", "value" => "body"
-			)) .
-			we_html_element::htmlHidden(array(
-				"name" => "type", "value" => $type
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "versions_wizard"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "step", "value" => "2"
-			))
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "2"))
 		);
 	}
 
@@ -773,7 +762,6 @@ abstract class we_versions_wizard{
 	}
 
 	static function getStep3(){
-
 		$version = new weVersions();
 
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
@@ -823,14 +811,12 @@ abstract class we_versions_wizard{
 				return array();
 			} else{
 				return array(
-					$js . we_message_reporting::getShowMessageCall(
-						g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
+					$js . we_message_reporting::getShowMessageCall(g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
 					""
 				);
 			}
 		} else{
 			$fr = new versionFragment($taskname, 1, 0, array());
-
 			return array();
 		}
 	}
@@ -841,7 +827,6 @@ abstract class we_versions_wizard{
 	 * @return array
 	 */
 	static function getDelete2(){
-
 		$version = new weVersions();
 
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
@@ -876,7 +861,6 @@ abstract class we_versions_wizard{
 
 		$whereCt = "";
 		foreach($version_delete as $k => $v){
-
 			if($k != "all" && $k != "delete_date" && $k != "delete_hours" && $k != "delete_minutes" && $k != "delete_seconds"){
 				if($v){
 					if($whereCt != "")
@@ -885,11 +869,7 @@ abstract class we_versions_wizard{
 				}
 			}
 		}
-		if($whereCt != ""){
-			$whereCt = " ContentType IN (" . $whereCt . ")";
-		} else{
-			$whereCt = "1";
-		}
+		$whereCt = (empty($whereCt) ? '1' : " ContentType IN (" . $whereCt . ")");
 
 		$cont = array();
 		$docIds = array();
@@ -902,8 +882,7 @@ abstract class we_versions_wizard{
 				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
 				$docIds[$GLOBALS['DB_WE']->f("documentID")]["ContentType"] = $GLOBALS['DB_WE']->f("ContentType");
 			}
-			array_push(
-				$cont, array(
+			$cont[] = array(
 				"ID" => $GLOBALS['DB_WE']->f("ID"),
 				"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 				"version" => $GLOBALS['DB_WE']->f("version"),
@@ -912,66 +891,50 @@ abstract class we_versions_wizard{
 				"table" => $GLOBALS['DB_WE']->f("documentTable"),
 				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
 				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
-			));
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Text'] = $GLOBALS['DB_WE']->f('Text');
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['ContentType'] = $GLOBALS['DB_WE']->f(
-				'ContentType');
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Path'] = $GLOBALS['DB_WE']->f('Path');
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Version'] = $GLOBALS['DB_WE']->f(
-				'version');
-			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['documentID'] = $GLOBALS['DB_WE']->f(
-				'documentID');
+			);
+			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')] = array(
+				'Text' => $GLOBALS['DB_WE']->f('Text'),
+				'ContentType' => $GLOBALS['DB_WE']->f('ContentType'),
+				'Path' => $GLOBALS['DB_WE']->f('Path'),
+				'Version' => $GLOBALS['DB_WE']->f('version'),
+				'documentID' => $GLOBALS['DB_WE']->f('documentID'),
+			);
 			if($GLOBALS['DB_WE']->f("binaryPath") != ""){
 				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f("binaryPath");
 			}
 		}
 
-		$out = '<div style="width:520px;">';
-		$out .= g_l('versions', '[step2_txt1]');
+		$out = '<div style="width:520px;">' .
+			g_l('versions', '[step2_txt1]');
 
 		if($timestamp != ""){
 			$date = date("d.m.y - H:i:s", $timestamp);
 			$out .= sprintf(g_l('versions', '[step2_txt2_delete]'), $date);
 		}
-		$out .= g_l('versions', '[step2_txt3]');
-		$out .= '</div>';
-
-		$out .= '<div style="background-color:#fff;width:520px;margin-top:20px;">';
-		$out .= '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
-
-		$out .= '<tr class="defaultfont" style="height:30px;">';
-
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[_id]');
-		$out .= '</th>';
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[path]');
-		$out .= '</th>';
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[ContentType]');
-		$out .= '</th>';
-
-		$out .= '</tr>';
+		$out .= g_l('versions', '[step2_txt3]') .
+			'</div>
+<div style="background-color:#fff;width:520px;margin-top:20px;">
+	<table border="0" cellpadding="2" cellspacing="0" width="100%">
+		<tr class="defaultfont" style="height:30px;">
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[ContentType]') . '</th>
+		</tr>';
 
 		foreach($docIds as $k => $v){
-			$out .= '<tr class="defaultfont">';
-			$out .= '<td align="center">';
-			$out .= $k;
-			$out .= '</td>';
-			$out .= '<td align="center">';
-			$out .= shortenPath($v['Path'], 55);
-			$out .= '</td>';
-			$out .= '<td align="center">';
-			$out .= $v['ContentType'];
-			$out .= '</td>';
-			$out .= '</tr>';
+			$out .= '
+<tr class="defaultfont">
+	<td align="center">' . $k . '</td>
+	<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . $v['ContentType'] . '</td>
+</tr>';
 		}
-		$out .= '</table>';
-		$out .= "</div>";
+		$out .= '</table>
+			</div>';
 
-		array_push($parts, array(
+		$parts[] = array(
 			"headline" => "", "html" => $out, "space" => 0
-		));
+		);
 
 		$hiddenFields = "";
 		foreach($version_delete as $k => $v){
@@ -982,23 +945,16 @@ abstract class we_versions_wizard{
 
 		return array(
 			self::getPage2Js(empty($cont), "delete"),
-			we_multiIconBox::getHTML(
-				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHidden(array(
-				"name" => "fr", "value" => "body"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "type", "value" => $type
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "versions_wizard"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "step", "value" => "3"
-			))
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "3"))
 		);
 	}
 
 	static function getReset2(){
-
 		$version = new weVersions();
 
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
@@ -1037,7 +993,6 @@ abstract class we_versions_wizard{
 			$timestampWhere = " timestamp< '" . intval($timestamp) . "' ";
 		}
 
-		$parts = array();
 
 		$w = "";
 		foreach($version_reset as $k => $v){
@@ -1054,18 +1009,11 @@ abstract class we_versions_wizard{
 				}
 			}
 		}
-		if($w != ""){
-			$w = "(" . $w . ") ";
-		} else{
-			$w = "1";
-		}
+		$w = (empty($w) ? '1' : "(" . $w . ") ");
 
 		$cont = array();
 		$docIds = array();
-		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM " . VERSIONS_TABLE . " WHERE timestamp<=" . intval($timestamp) . "  ";
-		$query .= " AND " . $w . " ";
-		$query .= " GROUP BY  documentTable,documentID ";
-		$query .= " ORDER BY version DESC ";
+		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM " . VERSIONS_TABLE . " WHERE timestamp<=" . intval($timestamp) . "   AND " . $w . "  GROUP BY  documentTable,documentID  ORDER BY version DESC ";
 
 		$_SESSION['weS']['versions']['query'] = $query;
 		$GLOBALS['DB_WE']->query($query);
@@ -1088,67 +1036,45 @@ abstract class we_versions_wizard{
 		}
 
 		$date = date("d.m.y - H:i:s", $timestamp);
-		$out = '<div style="width:520px;">';
-		$out .= sprintf(g_l('versions', '[step2_txt_reset]'), $date);
-		$out .= '</div>';
-		$out .= '<div style="background-color:#fff;width:520px;margin-top:20px;">';
-		$out .= '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
-
-		$out .= '<tr class="defaultfont" style="height:30px;">';
-
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[_id]');
-		$out .= '</th>';
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[path]');
-		$out .= '</th>';
-		$out .= '<th style="border-bottom:1px solid #B7B5B6;">';
-		$out .= g_l('versions', '[ContentType]');
-		$out .= '</th>';
-
-		$out .= '</tr>';
+		$out = '
+<div style="width:520px;">' . sprintf(g_l('versions', '[step2_txt_reset]'), $date) . '</div>
+<div style="background-color:#fff;width:520px;margin-top:20px;">
+	<table border="0" cellpadding="2" cellspacing="0" width="100%">
+	<tr class="defaultfont" style="height:30px;">
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>
+		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[ContentType]') . '</th>
+	</tr>';
 
 		foreach($docIds as $k => $v){
-			$out .= '<tr class="defaultfont">';
-			$out .= '<td align="center">';
-			$out .= $k;
-			$out .= '</td>';
-			$out .= '<td align="center">';
-			$out .= shortenPath($v['Path'], 55);
-			$out .= '</td>';
-			$out .= '<td align="center">';
-			$out .= $v['ContentType'];
-			$out .= '</td>';
-			$out .= '</tr>';
+			$out .= '<tr class="defaultfont">
+				<td align="center">' . $k . '</td>
+				<td align="center">' . shortenPath($v['Path'], 55) . '</td>
+				<td align="center">' . $v['ContentType'] . '</td>
+			</tr>';
 		}
-		$out .= '</table>';
-		$out .= "</div>";
+		$out .= '</table>
+			</div>';
 
-		array_push($parts, array(
-			"headline" => "", "html" => $out, "space" => 0
-		));
+		$parts = array(
+			array(
+				"headline" => "", "html" => $out, "space" => 0
+			)
+		);
 
 		$hiddenFields = "";
 		foreach($version_reset as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array(
-					"name" => $k, "value" => $v
-				));
+			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
 		}
 
 		return array(
 			self::getPage2Js(empty($cont), "reset"),
-			we_multiIconBox::getHTML(
-				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHidden(array(
-				"name" => "fr", "value" => "body"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "type", "value" => $type
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "versions_wizard"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "step", "value" => "3"
-			))
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "3"))
 		);
 	}
 
@@ -1277,124 +1203,120 @@ abstract class we_versions_wizard{
 				"go", "javascript:parent.wizbody.handle_event(\"next\");", true, -1, -1, "", "", $disabled, false);
 		$publish = isset($_REQUEST['reset_doPublish']) && $_REQUEST['reset_doPublish'] ? 1 : 0;
 		$we_transaction = $GLOBALS['we_transaction'];
-		return 'window.onload = function(){
-					top.focus();
-				}
-				function handle_event(what){
-					f = document.we_form;
-					switch(what){
-						case "previous":
-							f.step.value=1
-							f.target="wizbody";
-							f.submit();
-							break;
-						case "next":
+		return '
+window.onload = function(){
+	top.focus();
+}
+function handle_event(what){
+	f = document.we_form;
+	switch(what){
+		case "previous":
+			f.step.value=1
+			f.target="wizbody";
+			f.submit();
+			break;
+		case "next":
 
-								selectedValue="";
-								for(var i=0;i<f.type.length;i++){
-									if(f.type[i].checked){;
-										selectedValue = f.type[i].value;
-									}
-								}
-								goTo(selectedValue);
-
-						break;
+				selectedValue="";
+				for(var i=0;i<f.type.length;i++){
+					if(f.type[i].checked){;
+						selectedValue = f.type[i].value;
 					}
 				}
+				goTo(selectedValue);
 
-				var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+		break;
+	}
+}
 
-				var ajaxCallbackDeleteVersionsWizard = {
-					success: function(o) {
-					if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-						parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
-						' . we_message_reporting::getShowMessageCall(
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+
+var ajaxCallbackDeleteVersionsWizard = {
+	success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
+		' . we_message_reporting::getShowMessageCall(
 				addslashes(
 					g_l('versions', '[deleteDateVersionsOK]') ? g_l('versions', '[deleteDateVersionsOK]') : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
-						// reload current document => reload all open Editors on demand
+		// reload current document => reload all open Editors on demand
 
-						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-						for (frameId in _usedEditors) {
+		var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+		for (frameId in _usedEditors) {
 
-							if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-								_usedEditors[frameId].setEditorReloadAllNeeded(true);
-								_usedEditors[frameId].setEditorIsActive(true);
+			if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				_usedEditors[frameId].setEditorIsActive(true);
 
-							} else {
-								_usedEditors[frameId].setEditorReloadAllNeeded(true);
-							}
-						}
-						_multiEditorreload = true;
+			} else {
+				_usedEditors[frameId].setEditorReloadAllNeeded(true);
+			}
+		}
+		_multiEditorreload = true;
 
-						//reload tree
-						top.opener.we_cmd("load", top.opener.treeData.table ,0);
-						top.close();
-					}
-				},
-					failure: function(o) {
-					}
-				}
+		//reload tree
+		top.opener.we_cmd("load", top.opener.treeData.table ,0);
+		top.close();
+	}
+},
+	failure: function(o) {
+	}
+}
 
-				var ajaxCallbackResetVersionsWizard = {
-					success: function(o) {
-					if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-						parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
-						' . we_message_reporting::getShowMessageCall(
+var ajaxCallbackResetVersionsWizard = {
+	success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
+		' . we_message_reporting::getShowMessageCall(
 				addslashes(
 					g_l('versions', '[resetAllVersionsOK]') ? g_l('versions', '[resetAllVersionsOK]') : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
-						top.close();
-					}
-				},
-					failure: function(o) {
-					}
-				}
+		top.close();
+	}
+},
+	failure: function(o) {
+	}
+}
 
-				function goTo(where){
+function goTo(where){
 
-					if(' . $act . ') {
-						f = document.we_form;
-						switch(where){
-							case "delete_versions":
-								f.target="wizbody";
-								break;
-						}
-						f.submit();
+	if(' . $act . ') {
+		f = document.we_form;
+		switch(where){
+			case "delete_versions":
+				f.target="wizbody";
+				break;
+		}
+		f.submit();
 
 //						parent.wizbusy.document.getElementById("progr").style.display = "block";
 //
 //						YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersionsWizard, "protocol=json&publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist&cmd=ResetVersionsWizard");
 //
-					}
-					else {
-						parent.wizbusy.document.getElementById("progr").style.display = "block";
-						//parent.wizbusy.document.getElementById("progr").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\'' . IMAGE_DIR . 'busy2.gif\' /></td></tr></table>";
+	}
+	else {
+		parent.wizbusy.document.getElementById("progr").style.display = "block";
+		//parent.wizbusy.document.getElementById("progr").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\'' . IMAGE_DIR . 'busy2.gif\' /></td></tr></table>";
 
-						YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersionsWizard, "protocol=json&cns=versionlist&cmd=DeleteVersionsWizard");
+		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersionsWizard, "protocol=json&cns=versionlist&cmd=DeleteVersionsWizard");
+	}
+}
 
-					}
-
-
-				}
-
-
-
-				function set_button_state(alldis) {
-					if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
-						top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
-						if(alldis){
-							top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
-							top.frames["wizbusy"].showRefreshButton();
-						}else{
-							top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
-							var nextBut = top.frames["wizbusy"].document.getElementById(\'nextCell\');
-				  			nextBut.innerHTML = \'' . $nextButton . '\';
-						}
-					}else{
-						setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
-					}
-				}
-				set_button_state(false);';
+function set_button_state(alldis) {
+	if(top.frames["wizbusy"] && top.frames["wizbusy"].switch_button_state){
+		top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "enabled");
+		if(alldis){
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+			top.frames["wizbusy"].showRefreshButton();
+		}else{
+			top.frames["wizbusy"].next_enabled = top.frames["wizbusy"].switch_button_state("next", "next_enabled", "enabled");
+			var nextBut = top.frames["wizbusy"].document.getElementById(\'nextCell\');
+				nextBut.innerHTML = \'' . $nextButton . '\';
+		}
+	}else{
+		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+	}
+}
+set_button_state(false);';
 	}
 
 	/**
@@ -1407,17 +1329,20 @@ abstract class we_versions_wizard{
 		if(!count($contents)){
 			return "";
 		}
-		$headCal = we_html_element::linkElement(
+		$headCal =
+			we_html_element::linkElement(
 				array(
 					"rel" => "stylesheet",
 					"type" => "text/css",
 					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
-			)) . we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
+			)) .
+			we_html_element::jsScript(JS_DIR . 'jscalendar/calendar.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 			we_html_element::jsScript(JS_DIR . 'jscalendar/calendar-setup.js');
 
-		$headCal .= we_html_element::jsScript(JS_DIR . 'windows.js') .
+		$headCal .=
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');

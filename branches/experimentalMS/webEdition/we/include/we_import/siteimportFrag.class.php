@@ -40,24 +40,23 @@ class siteimportFrag extends taskFragment{
 
 	function doTask(){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
-		$progress = (int) ((100 / count($this->alldata)) * $this->currentTask);
+		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = shortenPath($path, 30);
-
-		$code = we_html_element::jsElement('
-top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
-top.siteimportbuttons.weButton.disable("back");
-top.siteimportbuttons.weButton.disable("next");
-top.siteimportbuttons.setProgress(' . $progress . ');
-top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . htmlspecialchars(
-					$progressText, ENT_QUOTES) . '";');
 
 		if($this->data["contentType"] == "post/process"){
 			weSiteImport::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
 		} else{
-			weSiteImport::importFile(
-				$this->data["path"], $this->data["contentType"], $this->data["sourceDir"], $this->data["destDirID"], $this->data["sameName"], $this->data["thumbs"], $this->data["width"], $this->data["height"], $this->data["widthSelect"], $this->data["heightSelect"], $this->data["keepRatio"], $this->data["quality"], $this->data["degrees"], $this->data["importMetadata"]);
+			$ret = weSiteImport::importFile($this->data["path"], $this->data["contentType"], $this->data["sourceDir"], $this->data["destDirID"], $this->data["sameName"], $this->data["thumbs"], $this->data["width"], $this->data["height"], $this->data["widthSelect"], $this->data["heightSelect"], $this->data["keepRatio"], $this->data["quality"], $this->data["degrees"], $this->data["importMetadata"]);
+			if(!empty($ret)){
+				t_e('import error:', $ret);
+			}
 		}
-		print $code;
+		print we_html_element::jsElement('
+top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
+top.siteimportbuttons.weButton.disable("back");
+top.siteimportbuttons.weButton.disable("next");
+top.siteimportbuttons.setProgress(' . $progress . ');
+top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . htmlspecialchars($progressText, ENT_QUOTES) . '";');
 	}
 
 	function finish(){

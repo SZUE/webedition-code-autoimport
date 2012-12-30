@@ -26,43 +26,40 @@ class weXMLParser{
 
 	var $parseError;
 	var $Nodes = array();
-	var $Indexes = array();
 	var $Handle = 0;
 	var $Mark;
 	var $XPaths = array();
 
-	function parse(&$data, $encoding='ISO-8859-1'){
-		if(!empty($data)){
-
-			//parser only supports ISO-8859-1, US-ASCII, UTF-8
-			switch($encoding){
-				case 'US-ASCII':
-				case 'ISO-8859-1':
-				case 'UTF-8':
-					break;
-				default:
-					$encoding='ISO-8859-1';
-			}
-			// Initialize the parser
-			$parser = xml_parser_create($encoding);
-
-			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-
-			//  XML_OPTION_SKIP_WHITE has to be set to 0
-			// in php4 if the option is set to 1, all new line characters
-			// will be removed from node content, even from a CDATA section
-			xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-
-			if(!xml_parse_into_struct($parser, $data, $this->Nodes, $this->Indexes)){
-				$this->parseError = xml_get_current_line_number($parser) . ': ' . xml_Error_string(xml_get_error_code($parser));
-				return FALSE;
-			}
-
-			xml_parser_free($parser);
-			//$this->normalize();
-		} else{
+	function parse(&$data, $encoding = 'ISO-8859-1'){
+		if(empty($data)){
 			return FALSE;
 		}
+		//parser only supports ISO-8859-1, US-ASCII, UTF-8
+		switch($encoding){
+			case 'US-ASCII':
+			case 'ISO-8859-1':
+			case 'UTF-8':
+				break;
+			default:
+				$encoding = 'ISO-8859-1';
+		}
+		// Initialize the parser
+		$parser = xml_parser_create($encoding);
+
+		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+
+		//  XML_OPTION_SKIP_WHITE has to be set to 0
+		// in php4 if the option is set to 1, all new line characters
+		// will be removed from node content, even from a CDATA section
+		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+
+		if(!xml_parse_into_struct($parser, $data, $this->Nodes)){
+			$this->parseError = xml_get_current_line_number($parser) . ': ' . xml_Error_string(xml_get_error_code($parser));
+			return FALSE;
+		}
+
+		xml_parser_free($parser);
+		//$this->normalize();
 	}
 
 	function normalize(){

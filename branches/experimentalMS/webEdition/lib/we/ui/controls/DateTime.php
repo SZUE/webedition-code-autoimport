@@ -412,7 +412,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int
 	 */
 	protected function _getYearPos(){
-		return max($this->_findChar("y"), $this->_findChar("Y"), 0);
+		return max(we_html_tools::findChar("y"), we_html_tools::findChar("Y"), 0);
 	}
 
 	/**
@@ -421,7 +421,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int
 	 */
 	protected function _getMonthPos(){
-		return max($this->_findChar("m"), $this->_findChar("M"), $this->_findChar("n"), $this->_findChar("F"), 0);
+		return max(we_html_tools::findChar("m"), we_html_tools::findChar("M"), we_html_tools::findChar("n"), we_html_tools::findChar("F"), 0);
 	}
 
 	/**
@@ -430,7 +430,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int
 	 */
 	protected function _getDayPos(){
-		return max($this->_findChar("d"), $this->_findChar("D"), $this->_findChar("j"), 0);
+		return max(we_html_tools::findChar("d"), we_html_tools::findChar("D"), we_html_tools::findChar("j"), 0);
 	}
 
 	/**
@@ -439,7 +439,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int
 	 */
 	protected function _getHourPos(){
-		return max($this->_findChar("g"), $this->_findChar("G"), $this->_findChar("h"), $this->_findChar("H"), 0);
+		return max(we_html_tools::findChar("g"), we_html_tools::findChar("G"), we_html_tools::findChar("h"), we_html_tools::findChar("H"), 0);
 	}
 
 	/**
@@ -448,7 +448,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int
 	 */
 	protected function _getMinutePos(){
-		return max($this->_findChar("i"), 0);
+		return max(we_html_tools::findChar("i"), 0);
 	}
 
 	/**
@@ -457,24 +457,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return int Position or 0 if not to display
 	 */
 	protected function _getSecondPos(){
-		return max($this->_findChar("s"), 0);
-	}
-
-	/**
-	 * finds position of dateformat in format string
-	 *
-	 * @return integer
-	 */
-	protected function _findChar($searchChar){
-		$backslash = false;
-		for($i = 0; $i < strlen(' ' . $this->_Format); $i++){
-			$char = substr(' ' . $this->_Format, $i, 1);
-			if($backslash == false && $char == $searchChar){
-				return $i;
-			}
-			$backslash = ($char == "\\") ? true : false;
-		}
-		return -1;
+		return max(we_html_tools::findChar("s"), 0);
 	}
 
 	/**

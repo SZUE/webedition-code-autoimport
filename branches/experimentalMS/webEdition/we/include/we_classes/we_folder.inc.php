@@ -24,24 +24,14 @@
  */
 /* a class for handling directories */
 class we_folder extends we_root{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* database table in which the object is stored */
-	var $Table = FILE_TABLE;
-
 	/* Flag which is set, when the file is a folder  */
-	var $IsFolder = 1;
 
-	/* ContentType of the Object  */
-	var $ContentType = 'folder';
+	var $IsFolder = 1;
 	var $IsClassFolder = 0;
 	var $IsNotEditable = 0;
 	var $WorkspacePath = '';
 	var $WorkspaceID = '';
 	var $Language = '';
-	var $Icon = 'folder.gif';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	var $searchclassFolder_class;
@@ -50,13 +40,16 @@ class we_folder extends we_root{
 	 * @var weDocumentCustomerFilter
 	 */
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
 
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'DocType','temp_doc_type','SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'IsNotEditable', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO);
+		$this->Table = FILE_TABLE;
+		$this->ContentType = 'folder';
+		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 	}
 
 	public function we_new(){
@@ -185,7 +178,7 @@ class we_folder extends we_root{
 				}
 			}
 			$this->we_new();
-			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
+			$this->Icon = $IsClassFolder ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 			$this->Table = $tblName;
 			$this->IsClassFolder = $IsClassFolder;
 			$this->ParentID = $last_pid;
@@ -204,7 +197,7 @@ class we_folder extends we_root{
 				return false;
 			} else{
 				if($this->ParentID != 0){
-					$this->Icon = 'folder.gif';
+					$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 					$this->IsClassFolder = 0;
 				}
 			}
@@ -237,7 +230,7 @@ class we_folder extends we_root{
 
 	/* saves the folder */
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$this->i_setText();
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){
@@ -440,7 +433,7 @@ class we_folder extends we_root{
 		// TriggerID auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
-			list(,$ClassPath) = explode('/', $this->Path);
+			list(, $ClassPath) = explode('/', $this->Path);
 			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "/' . $DB_WE->escape($ClassPath) . '"', 'ID', $DB_WE);
 			$_obxTable = OBJECT_X_TABLE . $cid;
 

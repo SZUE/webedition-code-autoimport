@@ -44,8 +44,8 @@ class weCustomer extends weModelBase{
 	var $Forename;
 	var $Surname;
 	var $MemberSince;
-	var $LastLogin;
-	var $LastAccess;
+	var $LastLogin = 0;
+	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
 	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text', 'ModifiedBy', 'ModifyDate');
@@ -57,14 +57,9 @@ class weCustomer extends weModelBase{
 	 * Can load or create new Customer depends of parameter
 	 */
 	function __construct($customerID = 0){
-
-		$this->table = CUSTOMER_TABLE;
-
 		parent::__construct(CUSTOMER_TABLE);
 
 		$this->MemberSince = time();
-		$this->LastLogin = 0;
-		$this->LastAccess = 0;
 
 		if($customerID){
 			$this->ID = $customerID;

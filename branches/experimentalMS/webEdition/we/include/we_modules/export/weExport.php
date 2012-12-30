@@ -70,9 +70,6 @@ class weExport extends weModelBase{
 	 * Can load or create new Newsletter depends of parameter
 	 */
 	function __construct($exportID = 0){
-
-		$this->table = EXPORT_TABLE;
-
 		parent::__construct(EXPORT_TABLE);
 		$this->setDefaults();
 		if($exportID){
@@ -104,7 +101,7 @@ class weExport extends weModelBase{
 	}
 
 	function save($force_new=false){
-		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif' : 'link.gif');
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $key => $val){
@@ -172,7 +169,7 @@ class weExport extends weModelBase{
 	function setDefaults(){
 		$this->ParentID = 0;
 		$this->Text = "weExport_" . time();
-		$this->Icon = 'link.gif';
+		$this->Icon = we_base_ContentTypes::LINK_ICON;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
 		$this->Filename = $this->Text . ".xml";

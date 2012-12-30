@@ -45,7 +45,7 @@ class weNavigationView{
 		$this->setTopFrame($topframe);
 		$this->Model = new weNavigation();
 		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'navigation.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'folder.gif\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
 	//----------- Utility functions ------------------
@@ -853,7 +853,7 @@ class weNavigationView{
 						}
 						$_items = $this->Model->populateGroup($_old_items);
 						foreach($_items as $_k => $_item){
-							$js .= $this->topFrame . '.makeNewEntry(\'link.gif\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+							$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 						}
 					}
 					if($this->Model->IsFolder && $this->Model->Selection == weNavigation::SELECTION_NODYNAMIC){
@@ -961,7 +961,7 @@ class weNavigationView{
 					$_js = '';
 					foreach($_items as $_k => $_item){
 						$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-						$_js .= $this->topFrame . '.makeNewEntry(\'link.gif\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+						$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 					}
 					print we_html_element::jsElement(
 							$_js .

@@ -30,12 +30,11 @@ class weToolModel extends weModelBase{
 	var $Path;
 	var $Icon;
 	var $IsFolder;
-	var $ModelClassName = 'weToolModel';
+	var $ModelClassName = __CLASS__;
 	var $toolName = '';
 	var $requiredFields = array();
 
 	function __construct($table){
-
 		parent::__construct($table);
 	}
 
@@ -102,7 +101,7 @@ class weToolModel extends weModelBase{
 		return true;
 	}
 
-	function evalPath($id=0){
+	function evalPath($id = 0){
 		$db_tmp = new DB_WE();
 		$path = '';
 		if($id == 0){
@@ -136,11 +135,7 @@ class weToolModel extends weModelBase{
 
 	function setIsFolder($value){
 		$this->IsFolder = $value;
-		if($value){
-			$this->Icon = 'folder.gif';
-		} else{
-			$this->Icon = 'link.gif';
-		}
+		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
 	}
 
 	function deleteChilds(){

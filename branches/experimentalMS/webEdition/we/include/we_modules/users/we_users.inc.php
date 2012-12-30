@@ -31,7 +31,7 @@ class we_user{
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 	// In this array are all storagable class variables
-	var $persistent_slots = array();
+	var $persistent_slots = array('ID', 'Type', 'ParentID', 'Salutation', 'First', 'Second', 'Address', 'HouseNo', 'City', 'PLZ', 'State', 'Country', 'Tel_preselection', 'Telephone', 'Fax', 'Fax_preselection', 'Handy', 'Email', 'username', 'passwd', 'clearpasswd', 'Text', 'Path', 'Permissions', 'ParentPerms', 'Description', 'Alias', 'Icon', 'IsFolder', 'CreatorID', 'CreateDate', 'ModifierID', 'ModifyDate', 'Ping', 'workSpace', 'workSpaceDef', 'workSpaceTmp', 'workSpaceNav', 'workSpaceNwl', 'workSpaceObj', 'ParentWs', 'ParentWst', 'ParentWsn', 'ParentWso', 'ParentWsnl', 'altID', 'LoginDenied', 'UseSalt');
 	// Name of the Object that was createt from this class
 	var $Name = '';
 	// ID from the database record
@@ -43,7 +43,7 @@ class we_user{
 	// Parent identificator
 	var $ParentID = 0;
 	// Flag which indicates which kind of user is 0-user;1-group;2-owner group;3 - alias
-	var $Type = 0;
+	var $Type = self::TYPE_USER;
 	// Flag which indicates if user is group
 	var $IsFolder = 0;
 	// Salutation
@@ -87,7 +87,9 @@ class we_user{
 	// Description
 	var $Description = '';
 	// User Prefrences
-	var $Preferences = array();
+	var $Preferences = array(
+		'use_jupload' => 0,
+	);
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
@@ -128,9 +130,17 @@ class we_user{
 	 * ADDITIONAL
 	 */
 	// Workspace array
-	var $workspaces = array();
+	var $workspaces = array(
+		FILE_TABLE => array(),
+		TEMPLATES_TABLE => array(),
+		NAVIGATION_TABLE => array(),
+	);
 	// Workspace array
-	var $workspaces_defaults = array();
+	var $workspaces_defaults = array(
+		FILE_TABLE => array(),
+		TEMPLATES_TABLE => array(),
+		NAVIGATION_TABLE => array(),
+	);
 	// Aliases array
 	var $aliases = array();
 	// Permissions headers array
@@ -142,22 +152,15 @@ class we_user{
 	// Extensions array
 	var $extensions_slots = array();
 	// Preferences array
-	var $preference_slots = array();
+	var $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
 	var $UseSalt = 1;
 
 	// Constructor
 	function __construct(){
-		$this->ClassName = 'we_user';
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
-		array_push($this->persistent_slots, 'ID', 'Type', 'ParentID', 'Salutation', 'First', 'Second', 'Address', 'HouseNo', 'City', 'PLZ', 'State', 'Country', 'Tel_preselection', 'Telephone', 'Fax', 'Fax_preselection', 'Handy', 'Email', 'username', 'passwd', 'clearpasswd', 'Text', 'Path', 'Permissions', 'ParentPerms', 'Description', 'Alias', 'Icon', 'IsFolder', 'CreatorID', 'CreateDate', 'ModifierID', 'ModifyDate', 'Ping', 'workSpace', 'workSpaceDef', 'workSpaceTmp', 'workSpaceNav', 'workSpaceNwl', 'workSpaceObj', 'ParentWs', 'ParentWst', 'ParentWsn', 'ParentWso', 'ParentWsnl', 'altID', 'LoginDenied', 'UseSalt');
-
-		array_push($this->preference_slots, 'sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'use_jupload', 'editorMode');
 
 		$this->DB_WE = new DB_WE;
 
-		$this->workspaces[FILE_TABLE] = array();
-		$this->workspaces[TEMPLATES_TABLE] = array();
-		$this->workspaces[NAVIGATION_TABLE] = array();
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces[OBJECT_FILES_TABLE] = array();
 		}
@@ -165,9 +168,6 @@ class we_user{
 			$this->workspaces[NEWSLETTER_TABLE] = array();
 		}
 
-		$this->workspaces_defaults[FILE_TABLE] = array();
-		$this->workspaces_defaults[TEMPLATES_TABLE] = array();
-		$this->workspaces_defaults[NAVIGATION_TABLE] = array();
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
@@ -175,11 +175,8 @@ class we_user{
 			$this->workspaces_defaults[NEWSLETTER_TABLE] = array();
 		}
 
-		$this->Preferences['use_jupload'] = 0;
-
-		foreach($this->preference_slots as $key => $val){
-			$value = null;
-			$this->Preferences[$val] = $value;
+		foreach($this->preference_slots as $val){
+			$this->Preferences[$val] = null;
 		}
 
 		$this->initType(self::TYPE_USER);
@@ -418,7 +415,6 @@ class we_user{
 		$this->permissions_titles = array();
 		$permissions = unserialize($this->Permissions);
 
-		$entries = array();
 		$entries = weToolLookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_PATH . 'perms');
@@ -483,8 +479,9 @@ class we_user{
 	function setPermission($perm_name, $perm_value){
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $k => $v){
-				if($perm_name == $k)
+				if($perm_name == $k){
 					$this->permissions_slots[$key][$k] = $perm_value;
+				}
 			}
 		}
 	}
@@ -525,8 +522,9 @@ class we_user{
 		foreach($this->workspaces as $k => $v){
 			$new_array = array();
 			foreach($v as $key => $val)
-				if($val != 0)
-					array_push($new_array, $this->workspaces[$k][$key]);
+				if($val != 0){
+					$new_array[] = $this->workspaces[$k][$key];
+				}
 			$this->workspaces[$k] = $new_array;
 		}
 
@@ -548,11 +546,9 @@ class we_user{
 			}
 			$this->workspaces_defaults[$k] = $new_array;
 		}
-		if(count($this->workspaces[FILE_TABLE]) != 0){
-			$this->workSpaceDef = makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',');
-		} else{
-			$this->workSpaceDef = '';
-		}
+		$this->workSpaceDef = (empty($this->workspaces[FILE_TABLE]) ?
+				'' :
+				makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ','));
 
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
@@ -594,22 +590,12 @@ class we_user{
 	}
 
 	function getPreferenceSlotsFromDB(){
-		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
-		$this->DB_WE->query('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID));
-		$this->DB_WE->next_record();
-		for($i = 0; $i < sizeof($tableInfo); $i++){
-			$fieldName = $tableInfo[$i]['name'];
-			if(in_array($fieldName, $this->preference_slots)){
-				$this->Preferences[$fieldName] = $this->DB_WE->f($fieldName);
-			}
-		}
+		$this->Preferences = getHash('SELECT ' . implode(',', $this->preference_slots) . ' FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->ID), $this->DB_WE);
 	}
 
 	function setPreference($name, $value){
-		foreach($this->preference_slots as $key => $val){
-			if($name == $val){
-				$this->Preferences[$name] = $value;
-			}
+		if(in_array($name, $this->preference_slots)){
+			$this->Preferences[$name] = $value;
 		}
 	}
 
@@ -685,14 +671,6 @@ class we_user{
 							if (top.opener.top.header) {
 								top.opener.top.header.location.reload();
 							}
-							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
-								if (top.opener.top.table) {
-									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
-								}
-							}
-							if (top.opener.top.rframe.bframe.bm_vtabs) {
-								top.opener.top.rframe.bframe.bm_vtabs.location.reload();
-							}
 
 							// reload all frames of an editor
 							// reload current document => reload all open Editors on demand
@@ -741,14 +719,6 @@ class we_user{
 							if (top.opener.top.header) {
 								top.opener.top.header.location.reload();
 							}
-							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
-								if (top.opener.top.table) {
-									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='" . WEBEDITION_DIR . "we_vtabs.php?table=' + top.opener.top.table;
-								}
-							}
-							if (top.opener.top.rframe.bframe.bm_vtabs) {
-								top.opener.top.rframe.bframe.bm_vtabs.location.reload();
-							}
 
 							// reload all frames of an editor
 							// reload current document => reload all open Editors on demand
@@ -769,18 +739,23 @@ class we_user{
 					break;
 
 				case 'seem_start_type':
-					if($settingvalue == 'cockpit'){
-						$_SESSION['prefs']['seem_start_file'] = 0;
-						$_SESSION['prefs']['seem_start_type'] = 'cockpit';
-					} elseif($settingvalue == 'object'){
-						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
-						$_SESSION['prefs']['seem_start_type'] = 'object';
-					} elseif($settingvalue == 'weapp'){
-						$_SESSION['prefs']['seem_start_weapp'] = $_REQUEST['seem_start_weapp'];
-						$_SESSION['prefs']['seem_start_type'] = 'weapp';
-					} else{
-						$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
-						$_SESSION['prefs']['seem_start_type'] = 'document';
+					switch($settingvalue){
+						case 'cockpit':
+							$_SESSION['prefs']['seem_start_file'] = 0;
+							$_SESSION['prefs']['seem_start_type'] = 'cockpit';
+							break;
+						case 'object':
+							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_object'];
+							$_SESSION['prefs']['seem_start_type'] = 'object';
+							break;
+						case 'weapp':
+							$_SESSION['prefs']['seem_start_weapp'] = $_REQUEST['seem_start_weapp'];
+							$_SESSION['prefs']['seem_start_type'] = 'weapp';
+							break;
+						default:
+							$_SESSION['prefs']['seem_start_file'] = $_REQUEST['seem_start_document'];
+							$_SESSION['prefs']['seem_start_type'] = 'document';
+							break;
 					}
 					break;
 
@@ -992,21 +967,12 @@ class we_user{
 				}
 
 				if($this->Type == self::TYPE_ALIAS){
-					$obj = $this->Name . '_ParentPerms';
-					$this->ParentPerms = (isset($_POST[$obj])) ? 1 : 0;
-					$obj = $this->Name . '_ParentWs';
-					$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
-					$obj = $this->Name . '_ParentWst';
-					$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWso';
-					$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWsn';
-					$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
-
-					$obj = $this->Name . '_ParentWsnl';
-					$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
+					$this->ParentPerms = (isset($_POST[$this->Name . '_ParentPerms'])) ? 1 : 0;
+					$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
+					$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
+					$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
+					$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
+					$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				}
 				break;
 			case 1:
@@ -1031,20 +997,11 @@ class we_user{
 						$this->workspaces_defaults[$k] = ($_POST[$obj] != '' ? explode(',', $_POST[$obj]) : array());
 					}
 				}
-				$obj = $this->Name . '_ParentWs';
-				$this->ParentWs = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWst';
-				$this->ParentWst = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWso';
-				$this->ParentWso = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWsn';
-				$this->ParentWsn = (isset($_POST[$obj])) ? 1 : 0;
-
-				$obj = $this->Name . '_ParentWsnl';
-				$this->ParentWsnl = (isset($_POST[$obj])) ? 1 : 0;
+				$this->ParentWs = (isset($_POST[$this->Name . '_ParentWs'])) ? 1 : 0;
+				$this->ParentWst = (isset($_POST[$this->Name . '_ParentWst'])) ? 1 : 0;
+				$this->ParentWso = (isset($_POST[$this->Name . '_ParentWso'])) ? 1 : 0;
+				$this->ParentWsn = (isset($_POST[$this->Name . '_ParentWsn'])) ? 1 : 0;
+				$this->ParentWsnl = (isset($_POST[$this->Name . '_ParentWsnl'])) ? 1 : 0;
 				break;
 			case 3:
 				foreach($this->preference_slots as $val){
@@ -1083,11 +1040,7 @@ class we_user{
 		foreach($this->permissions_slots as $key => $val){
 			foreach($val as $key => $val){
 				if($key == $perm){
-					if($val){
-						return true;
-					} else{
-						return false;
-					}
+					return ($val ? true : false);
 				}
 			}
 		}
@@ -1231,46 +1184,32 @@ class we_user{
 	}
 
 	function getState(){
-		$state = '$this->Name="' . $this->Name . '";
-			$this->Table=\'' . $this->Table . '\';';
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		$state = '
+$this->Name=' . var_export($this->Name, true) . ';
+$this->Table=' . var_export($this->Table, true) . ';
+$this->permissions_slots=' . var_export($this->permissions_slots, true) . ';
+$this->workspaces=' . var_export($this->workspaces, true) . ';
+$this->workspaces_defaults=' . var_export($this->workspaces_defaults, true) . ';
+$this->Preferences=' . var_export($this->Preferences, true) . ';
+';
 
 		foreach($this->persistent_slots as $k => $v){
 			$attrib = isset($this->$v) ? $this->$v : null;
-			$state.='$this->' . $v . '=\'' . addslashes($attrib) . '\';';
+			$state.='$this->' . $v . '=' . var_export($attrib, true) . ';';
 		}
 
-		foreach($this->permissions_slots as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->permissions_slots[\'' . $key . '\'][\'' . $k . '\']=\'' . addslashes($v) . '\';';
-			}
-		}
-
-		foreach($this->workspaces as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->workspaces[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
-			}
-		}
-
-		foreach($this->workspaces_defaults as $key => $val){
-			foreach($val as $k => $v){
-				$state.='$this->workspaces_defaults[\'' . $key . '\'][\'' . $k . '\']=\'' . $v . '\';';
-			}
-		}
-
-		foreach($this->preference_slots as $key => $val){
-			$state.='$this->Preferences[\'' . $val . '\'] = \'' . $this->Preferences[$val] . '\';';
-		}
 
 		foreach($this->extensions_slots as $k => $v){
 			$state.='$this->extensions_slots[\'' . $k . '\']=new ' . $v->ClassName . '();
 			$this->extensions_slots[\'' . $k . '\']->init($this);' .
 				$this->extensions_slots[$k]->getState('$this->extensions_slots[\'' . $k . '\']');
 		}
-
 		return serialize($state);
 	}
 
 	function setState($state){
+		//FIXME: use __sleep/__wakeup + serialize/unserialize
 		$code = unserialize($state);
 		eval($code);
 	}
@@ -1282,25 +1221,19 @@ class we_user{
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case 0:
-				$out = $yuiSuggest->getYuiJsFiles();
-				$out .= $this->formGeneralData();
-				$out .= $yuiSuggest->getYuiCss();
-				//$out .= $yuiSuggest->getYuiJs();
-				return $out;
-				break;
+				return $yuiSuggest->getYuiJsFiles() .
+					$this->formGeneralData() .
+					$yuiSuggest->getYuiCss();
+			//.$yuiSuggest->getYuiJs();
 			case 1:
 				return $this->formPermissions($perm_branch);
-				break;
 			case 2:
-				$out = $yuiSuggest->getYuiJsFiles();
-				$out .= $this->formWorkspace();
-				$out .= $yuiSuggest->getYuiCss();
-				//$out .= $yuiSuggest->getYuiJs();
-				return $out;
-				break;
+				return $yuiSuggest->getYuiJsFiles() .
+					$this->formWorkspace() .
+					$yuiSuggest->getYuiCss();
+			//.$yuiSuggest->getYuiJs();
 			case 3:
 				return $this->formPreferences($perm_branch);
-				break;
 		}
 		foreach($this->extensions_slots as $k => $v){
 			return $this->extensions_slots[$k]->formDefinition($tab, $perm_branch);
@@ -1367,7 +1300,7 @@ class we_user{
 			}
 		}
 
-		$content.='</select><br>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br>' . we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, -1, -1, "", "", true, false);
 
 		$parts[] = array(
 			'headline' => g_l('modules_users', '[user]'),
@@ -1586,7 +1519,7 @@ class we_user{
 		);
 
 		// Check if user has right to decide to give administrative rights
-		if(is_array($this->permissions_slots['administrator']) && we_hasPerm('ADMINISTRATOR') && $this->Type == 0){
+		if(is_array($this->permissions_slots['administrator']) && we_hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
 					<table cellpadding="0" cellspacing="0" border="0" width="500">
@@ -1852,12 +1785,11 @@ class we_user{
 			'editor' => $this->formPreferencesEditor(),
 		);
 
-		$content = $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch);
 
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => $content,
+				'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
 				'space' => 0
 			)
 		);
@@ -2195,9 +2127,7 @@ class we_user{
 
 		if($this->Preferences['sizeOpt'] == 0){
 			$_window_max = true;
-		}
-
-		if($this->Preferences['sizeOpt'] == 1){
+		} elseif($this->Preferences['sizeOpt'] == 1){
 			$_window_specify = true;
 		}
 

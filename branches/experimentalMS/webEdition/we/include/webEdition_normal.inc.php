@@ -38,7 +38,7 @@ function pWebEdition_Tree(){
 function pWebEdition_JSFunctions(){
 	?>
 	function toggleBusy(w) {
-	if(w == busy || firstLoad==false){
+/*	if(w == busy || firstLoad==false){
 	return;
 	}
 	if(self.header){
@@ -48,12 +48,27 @@ function pWebEdition_JSFunctions(){
 	return;
 	}
 	}
-	setTimeout("toggleBusy("+w+");",300);
+	setTimeout("toggleBusy("+w+");",300);*/
 	}
 
 	var regular_logout = false;
 	function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if(!regular_logout){
+
+	if(typeof(tinyMceDialog) !== "undefinded" && tinyMceDialog !== null){
+	var tinyDialog = tinyMceDialog;
+	try{
+	tinyDialog.close();
+	}catch(err){}
+	}
+
+	if(typeof(tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null){
+	var tinyDialog = tinyMceSecondaryDialog;
+	try{
+	tinyDialog.close();
+	}catch(err){}
+	}
+
 	try{
 	if(jsWindow_count){
 	for(i = 0;i < jsWindow_count;i++){
@@ -121,8 +136,8 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "1px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "1px";
 	top.setTreeWidth(widthBeforeDeleteMode);
 	top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 	break;
@@ -134,23 +149,23 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "150px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "150px";
 
 	var width = top.getTreeWidth();
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 420) {
-	top.setTreeWidth(420);
-	top.storeTreeWidth(420);
+	if (width < <?php echo weTree::DeleteWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::DeleteWidth; ?>);
 	}
+	top.storeTreeWidth(widthBeforeDeleteMode);
 
 	var widthSidebar = top.getSidebarWidth();
 
 	widthBeforeDeleteModeSidebar = widthSidebar;
 
-	if(arguments[2] != 1) we_repl(self.rframe.bframe.treeheader,url,arguments[0]);
+	if(arguments[2] != 1) we_repl(self.rframe.treeheader,url,arguments[0]);
 	break;
 	case "move":
 	if(top.deleteMode != arguments[1]){
@@ -160,24 +175,24 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "160px";
+	self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
+	self.rframe.document.getElementById("bm_mainDiv").style.top = "160px";
 
 	var width = top.getTreeWidth();
 
 	widthBeforeDeleteMode = width;
 
-	if (width < 500) {
-	top.setTreeWidth(500);
-	top.storeTreeWidth(500);
+	if (width < <?php echo weTree::MoveWidth; ?>) {
+	top.setTreeWidth(<?php echo weTree::MoveWidth; ?>);
 	}
+	top.storeTreeWidth(widthBeforeDeleteMode);
 
 	var widthSidebar = top.getSidebarWidth();
 
 	widthBeforeDeleteModeSidebar = widthSidebar;
 
 	if(arguments[2] != 1) {
-	we_repl(self.rframe.bframe.treeheader,url,arguments[0]);
+	we_repl(self.rframe.treeheader,url,arguments[0]);
 	}
 	break;
 
@@ -207,9 +222,7 @@ function pWebEdition_Frameset(){
 		<div style="height:100%;float:left;width:10%;border:0px;">
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		</div>
-		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php print WE_USERS_MODULE_DIR; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
-		</div>
+		<div style="height:100%;float:left;width:10%;border:0px;"><?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?></div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
 		</div>

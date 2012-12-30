@@ -40,9 +40,8 @@ class weLangDialog extends weDialog{
 	}
 
 	function getTinyMceJS(){
-		$out = parent::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welang/js/lang_init.js');
-		return $out;
+		return parent::getTinyMceJS() .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welang/js/lang_init.js');
 	}
 
 	function getJs(){

@@ -1,13 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Save data of the widget last worked on',
-	''=>'Save temporary data',
-	''=>'Save the data of the WE-App',
-	''=>'The data of the widget last worked on',
-	''=>'Import data for the widget last worked on',
-	''=>'Import the data of the WE-App',
-	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'Het backup bestand %s is verwijderd',
 	'backup_form'=>'Backup vanaf',
 	'backup_log_exp'=>'De log wordt bewaard in /webEdition/we_backup/data/lastlog.php',
@@ -44,6 +37,12 @@ $l_backup=array(
 	'error_compressing_backup'=>'Er is een fout opgetreden tijdens het comprimeren van de backup, waardoor de backup niet kon worden afgerond!',
 	'error_delete'=>'Het backup bestand kan niet verwijderd worden! U kunt proberen het bestand te verwijderen via FTP in de webEdition/we_backup map.',
 	'error_timeout'=>'Er is een timeout opgetreden tijdens het aanmaken van de backup, waardoor de backup niet kon worden afgerond!',
+	
+	'export'=>array(
+		'history_data'=>'Save data of the widget last worked on',
+		'temporary_data'=>'Save temporary data',
+		'weapp'=>'Save the data of the WE-App',
+	),
 	'export_backup_log'=>'Maak log aan',
 	'export_banner_data'=>'Bewaar banner data',
 	'export_banner_dep'=>'U hebt de optie `Bewaar banner data` geselecteerd. De banner data heeft de document data nodig, daarom is `Bewaar documenten en sjablonen` automatisch geselecteerd.',
@@ -118,6 +117,13 @@ $l_backup=array(
 	'ftp_hint'=>'Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!',
 	'glossary_info'=>'Data from the glossary.',
 	'gzip'=>'gzip',
+	'history_info'=>'The data of the widget last worked on',
+	
+	'import'=>array(
+		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Herstel tijdelijke data',
+		'weapp'=>'Import the data of the WE-App',
+	),
 	'import_banner_data'=>'Herstel banner data',
 	'import_banner_dep'=>'U hebt de optie `Herstel banner data` geselecteerd. De banner data heeft de document data nodig, daarom is `Herstel documenten en sjablonen` automatisch geselecteerd.',
 	'import_binary_data'=>'Herstel binaire data (afbeeldingen, pdf`s, ...)',
@@ -150,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'U hebt de optie `Herstel winkel data` geselecteerd. De Winkel Module heeft de klanten data nodig, daarom is `Herstel klanten data` automatisch geselecteerd.',
 	'import_spellchecker_data'=>'Herstel gegevens spellingscontrole',
 	'import_templates'=>'Importeren sjablonen',
-	'import_temporary_data'=>'Herstel tijdelijke data',
 	'import_temporary_dep'=>'U hebt de optie `Herstel tijdelijke data` geselecteerd. De tijdelijke data heeft de documenten data nodig, daarom is `Herstel documenten en sjablonen` automatisch geselecteerd.',
 	'import_todo_data'=>'Herstel taak/berichten data',
 	'import_todo_dep'=>'U hebt de optie `Herstel taak/berichten data` geselecteerd. De Taak/Berichten Module heeft de gebruikersdata nodig, daarom is `Herstel gebruikersdata` automatisch geselecteerd.',

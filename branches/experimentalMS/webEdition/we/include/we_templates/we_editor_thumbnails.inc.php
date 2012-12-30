@@ -29,7 +29,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 </head>
 <body class="weEditorBody">
-	<form name="we_form"><?php $we_doc->pHiddenTrans(); ?>
+	<form name="we_form"><?php echo we_class::hiddenTrans(); ?>
 		<table cellpadding="6" cellspacing="0" border="0">
 			<?php
 			$parts = array();

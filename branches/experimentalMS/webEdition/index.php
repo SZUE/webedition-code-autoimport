@@ -64,16 +64,13 @@ function getValueLoginMode($val){
 }
 
 function printHeader($login, $status = 200){
-	/*	 * ***************************************************************************
-	 * CREATE HEADER
-	 * *************************************************************************** */
 	header('Expires: ' . gmdate('D, d.m.Y H:i:s') . ' GMT');
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: public');
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
-
 	we_html_tools::htmlTop('webEdition');
+
 	print STYLESHEET .
 		we_html_element::cssElement('html, body {height:100%;}') .
 		we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -260,9 +257,9 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		'Debug-Info:' . we_html_element::htmlBr() .
 		'submitted session id: ' . $_POST['checkLogin'] . we_html_element::htmlBr() .
 		'current session id:   ' . session_id() . we_html_element::htmlBr() .
-		'login-page date:      ' . $_POST['indexDate'].
+		'login-page date:      ' . $_POST['indexDate'] .
 		we_html_element::htmlBr() . we_html_element::htmlBr()
-		);
+	);
 	printHeader($login, 408);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !we_base_browserDetect::isSupported()){
@@ -335,7 +332,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id())).
+	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id())) .
 		we_html_element::htmlHidden(array('name' => 'indexDate', 'value' => date('d.m.Y, H:i:s')));
 
 	if($ignore_browser){
@@ -428,7 +425,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 				if(permissionhandler::isUserAllowedForAction('work_mode', 'normal')){
 					$_SESSION['weS']['we_mode'] = 'normal';
 				} else{
-					$_body_javascript .= we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$_body_javascript = we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_SESSION['weS']['we_mode'] = 'seem';
 				}
 			} else{
@@ -436,9 +433,13 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			}
 
 			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!isset($_REQUEST['popup'])))){
-				$httpCode = 303;
-				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
-				$_body_javascript.='alert("automatic redirect disabled");';
+				if(empty($_body_javascript)){
+					$httpCode = 303;
+					header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
+					$_body_javascript = 'alert("automatic redirect disabled");';
+				} else{
+					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
+				}
 			} else{
 				$_body_javascript .= 'function open_we() {
 			var aw=' . (isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0 ? $_SESSION['prefs']['weWidth'] : 8000) . ';

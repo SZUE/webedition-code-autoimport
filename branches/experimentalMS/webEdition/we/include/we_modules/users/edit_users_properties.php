@@ -146,7 +146,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 	<form name="we_form" method="post" onSubmit="return false">
 		<input type="hidden" name="ucmd" value="" />
 		<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
-		<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
+		<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : 0); ?>" />
 		<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
 		<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
 		<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />

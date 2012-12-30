@@ -40,9 +40,20 @@ function up6300_updateLang(){
 function up6300_updateActiveModules(){
 	$dir=$_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/';
 	$file='we_active_integrated_modules.inc.php';
-	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file) ){
-		return rename($dir.$file,$dir.'conf/'.$file);
-	} else {
+	if(file_exists($dir.$file)){
+		include($dir.$file);
+		$modules = "";
+		foreach($_we_active_integrated_modules as $modul){
+			$modules .= "'" . $modul ."',\n";
+		}
+		$content = "<?php
+\$GLOBALS['_we_active_integrated_modules'] = array(\n";
+$content .= substr($modules, 0, -2) . "\n);";
+		if(file_put_contents($dir.'conf/'.$file, $content)){
+			return unlink($dir.$file);
+		}
+		return false;
+	} else{
 		return true;
 	}
 }

@@ -224,9 +224,9 @@ class we_version{
 				$_foo = makeArrayFromCSV($categories);
 				$tmp = array();
 				foreach($_foo as $catID){
-					$tmp[] = " Category like '%," . intval($catID) . ",%'";
+					$tmp[] = " Category LIKE '%," . intval($catID) . ",%'";
 				}
-				$_cat_query = "(" . implode(' ' . ($catAnd ? "AND" : "OR") . ' ', $tmp) . ")";
+				$_cat_query = '(' . implode(' ' . ($catAnd ? 'AND' : 'OR') . ' ', $tmp) . ')';
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
@@ -234,7 +234,7 @@ class we_version{
 				foreach($_foo as $doctypeID){
 					$tmp .= " Doctype = '" . $GLOBALS['DB_WE']->escape($doctypeID) . "'";
 				}
-				$_doctype_query = "(" . implode(' OR ', $tmp) . ")";
+				$_doctype_query = '(' . implode(' OR ', $tmp) . ')';
 			}
 			if($folders){
 				$_foo = makeArrayFromCSV($folders);

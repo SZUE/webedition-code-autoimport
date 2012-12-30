@@ -70,6 +70,7 @@ public class LineNumberPanel extends JPanel {
 
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setClip(0, 2, 40, scrollPane.getViewport().getHeight());

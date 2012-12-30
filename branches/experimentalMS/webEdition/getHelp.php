@@ -27,13 +27,10 @@ we_html_tools::protect();
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsElement('
-	url="http://help.webedition.org/index.php?language=' . $GLOBALS["WE_LANGUAGE"] . '";
-	self.location=url;');
+	self.location="http://help.webedition.org/index.php?language=' . $GLOBALS["WE_LANGUAGE"] . '";');
 ?>
-</script>
 </head>
 
 <body bgcolor="white">
 </body>
-
 </html>

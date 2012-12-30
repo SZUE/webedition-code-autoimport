@@ -1,9 +1,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 5016 $
- * $Author: lukasimhof $
- * $Date: 2012-10-25 11:53:14 +0200 (Do, 25 Okt 2012) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -66,8 +66,10 @@ var ImageDialog = {
 			longdesc = dom.getAttrib(n, 'longdesc');
 			nl["we_dialog_args[longdescsrc]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[0] : '';
 			nl["we_dialog_args[longdescid]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[1] : '';
+			this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
 
 			// parse and insert src
+			/*
 			src_arr = this.analyseSrc(dom.getAttrib(n, 'src'));
 
 			nl["we_dialog_args[type]"][0].checked = src_arr[0]; // type = ext
@@ -75,12 +77,14 @@ var ImageDialog = {
 			nl["we_dialog_args[type]"][1].checked = src_arr[2];
 			nl["we_dialog_args[fileID]"].value = src_arr[3];
 			nl["we_dialog_args[fileSrc]"].value = src_arr[4];
+			*/
 
 			// set some flags
 			ed.isWeDataInitialized = true;
 			f.isTinyMCEInitialization.value="0";
 
 			// reload when image is thumbnail to get path and filename of original image
+			/*
 			if(src_arr[5] !== 0){
 				var thSelect = nl['we_dialog_args[thumbnail]'];
 				for (var i=0; i < thSelect.options.length; i++){
@@ -96,6 +100,7 @@ var ImageDialog = {
 				f.isTinyMCEInitialization.value="1";
 				f.submit();
 			}
+			*/
 
 			// no reload, so we need to set values for ratioh und ratiow
 			if(!(isNaN(imgWidth * imgHeight) || imgHeight === 0 || imgWidth === 0)){
@@ -105,6 +110,7 @@ var ImageDialog = {
 		}
 
 		// add options to css-Pulldown
+		/*
 		if(typeof(ed.settings.theme_advanced_styles) !== 'undefined' && ed.settings.theme_advanced_styles != ''){
 			var cl = '';
 			for(var i=0; i < ed.settings.theme_advanced_styles.split(/;/).length; i++){
@@ -112,7 +118,7 @@ var ImageDialog = {
 				nl["we_dialog_args[class]"].options[nl["we_dialog_args[class]"].length] = new Option('.' + cl, cl);
 			}
 		}
-		this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
+		*/
 	},
 
 	analyseSrc : function(src) {

@@ -27,7 +27,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 if(!isset($aCols)){
-	$aCols = explode(";", $aProps[3]);
+	$aCols = explode(';', $aProps[3]);
 }
 $sTypeBinary = $aCols[0];
 $bTypeDoc = (bool) $sTypeBinary{0};

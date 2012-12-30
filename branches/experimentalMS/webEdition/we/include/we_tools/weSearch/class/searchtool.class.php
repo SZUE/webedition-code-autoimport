@@ -152,11 +152,9 @@ class searchtool extends weToolModel{
 
 		$this->IsFolder = $value;
 
-		if($value){
-			$this->Icon = 'folder.gif';
-		} else{
-			$this->Icon = 'Suche.gif';
-		}
+		$this->Icon = ($value ?
+				we_base_ContentTypes::FOLDER_ICON :
+				'Suche.gif');
 	}
 
 	function filenameNotValid($text){

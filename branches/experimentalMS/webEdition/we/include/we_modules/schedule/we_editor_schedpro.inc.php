@@ -34,7 +34,7 @@ print STYLESHEET .
 </head>
 <body  class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" onsubmit="return false"><?php
-$we_doc->pHiddenTrans();
+echo we_class::hiddenTrans();
 
 $parts = array();
 

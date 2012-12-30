@@ -27,14 +27,8 @@ $yuiSuggest = & weSuggest::getInstance();
 /* a class for handling templates */
 
 class we_class_folder extends we_folder{
-	/* Name of the class => important for reconstructing the class from outside the class */
 
-	var $ClassName = __CLASS__;
-	//var $EditPageNrs = array(WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS);//,WE_EDITPAGE_CFSEARCH); #4076 orig
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_CFWORKSPACE, WE_EDITPAGE_FIELDS, WE_EDITPAGE_INFO);
-	var $Icon = 'class_folder.gif';
 	var $IsClassFolder = '1';
-	var $InWebEdition = false;
 	var $ClassPath = ''; //#4076
 	var $ClassID = ''; //#4076
 	var $RootfolderID = ''; //#4076
@@ -47,11 +41,11 @@ class we_class_folder extends we_folder{
 	var $SearchStart = 0;
 	var $TriggerID = 0;
 
-	/* Constructor */
-
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_CFWORKSPACE, WE_EDITPAGE_FIELDS, WE_EDITPAGE_INFO);
+		$this->Icon = we_base_ContentTypes::CLASS_FOLDER_ICON;
 		$this->ContentType = 'folder';
 	}
 
@@ -95,7 +89,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 	}
 
-	function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = 0, $skipHook = 0){
 		$sp = explode('/', $this->Path);
 		if(isset($sp[2]) && $sp[2] != ''){
 			$this->IsClassFolder = 0;
@@ -105,7 +99,7 @@ class we_class_folder extends we_folder{
 	}
 
 	function initByPath($path, $tblName = OBJECT_FILES_TABLE, $IsClassFolder = 0, $IsNotEditable = 0, $skipHook = 0){
-		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="'.$path.'" AND IsFolder=1', 'ID', $this->DB_WE);
+		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $path . '" AND IsFolder=1', 'ID', $this->DB_WE);
 		if($id != ''){
 			$this->initByID($id, $tblName);
 		} else{
@@ -135,7 +129,7 @@ class we_class_folder extends we_folder{
 						$folder->IsNotEditable = 0;
 						//$folder->ClassName = 'we_class_folder';
 						$folder->IsClassFolder = $IsClassFolder;
-						$folder->Icon = ($IsClassFolder) ? 'we_class_folder.gif' : 'we_folder.gif';
+						$folder->Icon = ($IsClassFolder) ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 
 						$folder->Path = $pa;
 						$folder->save($skipHook);
@@ -153,7 +147,7 @@ class we_class_folder extends we_folder{
 			 */
 			$this->ClassName = 'we_class_folder';
 			$this->IsClassFolder = $IsClassFolder;
-			$this->Icon = $IsClassFolder ? 'class_folder.gif' : 'folder.gif';
+			$this->Icon = $IsClassFolder ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 
 			$this->ParentID = $last_pid;
 			$this->Text = $folderName;
@@ -592,7 +586,7 @@ class we_class_folder extends we_folder{
 		$out = '
 				<table cellpadding="2" cellspacing="0" border="0" width="510">
 				<form name="we_form_search"  onSubmit="sub();return false;" methode="GET">
-				' . $this->HiddenTrans() . '
+				' . we_class::hiddenTrans() . '
 				<input type="hidden" name="todo" />
 				<input type="hidden" name="position" />';
 
@@ -709,7 +703,7 @@ class we_class_folder extends we_folder{
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 		<form name="we_form" method="post">
-		' . $this->hiddenTrans() . '
+		' . we_class::hiddenTrans() . '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
@@ -901,10 +895,6 @@ class we_class_folder extends we_folder{
 
 		$ret = <<<EOF
 		function sub(){
-
-			// not needed anymore since version 5?! (Bug Fix #989)
-			//parent.editHeader.we_tabs[0].setState(2,false,parent.editHeader.we_tabs);
-
 			document.we_form_search.target="load";
 			document.we_form_search.action="{$modulepath}search_submit.php";
 			document.we_form_search.todo.value="search";
@@ -995,7 +985,6 @@ EOF;
 	}
 
 	function saveInSession(&$save){
-
 		parent::saveInSession($save);
 
 		if(!isset($_SESSION['weS']['we_objectSearch'])){
@@ -1194,7 +1183,7 @@ EOF;
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 								. $obj->getUpdateTreeScript(false)
 								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
-								. "top.rframe.bframe.bm_vtabs.we_cmd('load', '" . OBJECT_FILES_TABLE . "', 0);"
+								. "top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);"
 								. "}"
 								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}
@@ -1210,7 +1199,7 @@ EOF;
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 								. $obj->getUpdateTreeScript(false)
 								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
-								. "top.rframe.bframe.bm_vtabs.we_cmd('load', '" . OBJECT_FILES_TABLE . "', 0);"
+								. "top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);"
 								. "}"
 								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}

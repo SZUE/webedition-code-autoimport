@@ -799,7 +799,7 @@ class weVersions{
 
 		$contentTypes = array();
 		$contentTypes[] = 'all';
-		$ct = new we_base_ContentTypes();
+		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object" && $k != "folder" && $k != "class_folder"){

@@ -103,9 +103,10 @@ class we_baseElement{
 	 */
 
 	function setAttributes($attribs){
+		$widthHeightNotInStyle = $this->tag_name == 'applet' ? true : false;
 		if(is_array($attribs)){
 			foreach($attribs as $k => $v){
-				$this->setAttribute($k, $v);
+				$this->setAttribute($k, $v, $widthHeightNotInStyle);
 			}
 		}
 	}
@@ -118,7 +119,7 @@ class we_baseElement{
 	 *
 	 * @return		void
 	 */
-	function setAttribute($attrib_name, $attrib_value){
+	function setAttribute($attrib_name, $attrib_value, $widthHeightNotInStyle = false){
 		switch($attrib_name){
 			case 'style':
 				$attrib_value = rtrim($attrib_value, '; ');
@@ -135,10 +136,10 @@ class we_baseElement{
 				$this->setStyle('vertical-align', $attrib_value);
 				break;
 			case 'width':
-				$this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
+				$widthHeightNotInStyle ? $this->attribs[$attrib_name] = $attrib_value : $this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 				break;
 			case 'height':
-				$this->setStyle('height', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
+				$widthHeightNotInStyle ? $this->attribs[$attrib_name] = $attrib_value : $this->setStyle('height', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 				break;
 			case 'border':
 				$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
@@ -213,6 +214,10 @@ class we_baseElement{
 				$out.=' ' . $k . '="' . $v . '"';
 			} else{//empty attribs
 				switch($k){
+					case 'SCRIPTABLE':
+					case 'MAYSCRIPT':
+						$out.=' ' . $k;
+						break;
 					case 'disabled':
 					case 'multiple':
 					case 'noshade':

@@ -40,7 +40,7 @@ class weBackupPreparer{
 
 	function prepare(){
 
-		if(!weBackupPreparer::checkFilePermission()){
+		if(!self::checkFilePermission()){
 			return false;
 		}
 
@@ -90,7 +90,7 @@ class weBackupPreparer{
 
 		if($_SESSION['weS']['weBackupVars']['options']['backup_extern']){
 			$_SESSION['weS']['weBackupVars']['extern_files'] = array();
-			weBackupPreparer::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
+			self::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
 		$_SESSION['weS']['weBackupVars']['limits'] = array(
@@ -152,11 +152,11 @@ class weBackupPreparer{
 
 	function prepareImport(){
 
-		if(!weBackupPreparer::prepare()){
+		if(!self::prepare()){
 			return false;
 		}
 
-		$_SESSION['weS']['weBackupVars']['backup_file'] = weBackupPreparer::getBackupFile();
+		$_SESSION['weS']['weBackupVars']['backup_file'] = self::getBackupFile();
 		if($_SESSION['weS']['weBackupVars']['backup_file'] === false){
 			return false;
 		}
@@ -168,7 +168,7 @@ class weBackupPreparer{
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = weFile::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? 1 : 0;
 		if($_SESSION['weS']['weBackupVars']['options']['compress']){
-			$_SESSION['weS']['weBackupVars']['backup_file'] = weBackupPreparer::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
+			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
 			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
 			$_SESSION['weS']['weBackupVars']['offset'] = 0;
 		}
@@ -188,11 +188,12 @@ class weBackupPreparer{
 			}
 		}
 
-		$_SESSION['weS']['weBackupVars']['encoding'] = weBackupPreparer::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['encoding'] = self::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
+		$_SESSION['weS']['weBackupVars']['weVersion'] = self::getWeVersion($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		if($_SESSION['weS']['weBackupVars']['handle_options']['core']){
 			weBackupPreparer::clearTemporaryData('tblFile');
-			$_SESSION['weS']['weBackupVars']['files_to_delete'] = weBackupPreparer::getFileLists();
+			$_SESSION['weS']['weBackupVars']['files_to_delete'] = self::getFileLists();
 			$_SESSION['weS']['weBackupVars']['files_to_delete_count'] = count($_SESSION['weS']['weBackupVars']['files_to_delete']);
 		}
 
@@ -422,23 +423,37 @@ class weBackupPreparer{
 			|| (f('SELECT 1 AS a FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", 'a', $DB_WE) == '1'));
 	}
 
-	function getEncoding($file, $iscompressed){
+	static function getEncoding($file, $iscompressed){
 
 		if(!empty($file)){
 			$data = weFile::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$encoding = 'ISO-8859-1';
 			$trenner = "[\040|\n|\t|\r]*";
 			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\">\040? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				if(strtoupper($match[2]) != 'ISO-8859-1'){
-					$encoding = 'UTF-8';
+					return 'UTF-8';
 				}
 			}
 		}
 
-		return $encoding;
+		return 'ISO-8859-1';
+	}
+
+	static function getWeVersion($file, $iscompressed){
+		if(!empty($file)){
+			$data = weFile::loadPart($file, 0, 256, $iscompressed);
+			$match = array();
+			$trenner = "[\040|\n|\t|\r]*";
+			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\">\040? \\\]*)%";
+
+			if(preg_match($pattern, $data, $match)){
+				return $match[1];
+			}
+		}
+
+		return -1;
 	}
 
 	function isOtherXMLImport($format){

@@ -316,11 +316,11 @@ class weMetaData{
 		return true;
 	}
 
-	function getDefinedMetaDataFields(){
+	static function getDefinedMetaDataFields(){
 		// if metadataFields are not cached, we have to get them from db
 		if(!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])){
 			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = array();
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' order by id,type');
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY id,type');
 			while($GLOBALS['DB_WE']->next_record()) {
 				$GLOBALS['WE_METADATA_DEFINED_FIELDS'][] = array(
 					'id' => $GLOBALS['DB_WE']->f('id'),

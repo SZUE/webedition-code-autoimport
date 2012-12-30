@@ -47,26 +47,23 @@ abstract class we_history{
 	}
 
 	static function insertIntoHistory(&$object, $action = 'save'){
-		//msconnect 
-		/*
-		$_db = $object->DB_WE;
-		$table = $_db->escape(stripTblPrefix($object->Table));
+		$db = new DB_WE();
+		$table = $db->escape(stripTblPrefix($object->Table));
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
-		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $_db);
+		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $db);
 		if($cnt > self::MAX){
-			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
+			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
 		if(DB_CONNECT=='msconnect'){
-			$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE .  we_database_base::arraySetterINSERT(array(
+			$db->query('INSERT INTO ' . HISTORY_TABLE . '  ' . we_database_base::arraySetterINSERT(array(
 				'DID' => intval($object->ID),
 				'DocumentTable' => $table,
 				'ContentType' => $object->ContentType,
 				'Act' => $action,
 				'UserName' => $_username,
 			)));
-			
 		} else {
-			$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$db->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'DID' => intval($object->ID),
 				'DocumentTable' => $table,
 				'ContentType' => $object->ContentType,
@@ -74,7 +71,7 @@ abstract class we_history{
 				'UserName' => $_username,
 			)));
 		}
-		*/
+		
 	}
 
 	/**
@@ -84,8 +81,8 @@ abstract class we_history{
 	 * @param string $table
 	 */
 	static function deleteFromHistory($modelIds, $table){
-		$_db = new DB_WE();
-		$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable = "' . stripTblPrefix($table) . '"');
+		$db = new DB_WE();
+		$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID IN (' . implode(', ', $modelIds) . ') AND DocumentTable = "' . stripTblPrefix($table) . '"');
 	}
 
 }

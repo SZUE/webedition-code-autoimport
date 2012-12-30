@@ -66,17 +66,24 @@ if($_REQUEST['we_cmd'][1] == 'frameset'){
 
 	$UserDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
-	$AppletCode = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '" width="2" height="2" id="applet" scriptable mayscript style="visibility: hidden">' . "\n"
-		. '<param name="CODE" value="LeSpellchecker.class">' . "\n"
-		. '<param name="ARCHIVE" value="lespellchecker.jar">' . "\n"
-		. '<param name="type" value="application/x-java-applet;version=1.1">' . "\n"
-		. '<param name="dictBase" value="' . $DictBase . '">' . "\n"
-		. '<param name="dictionary" value="' . $LanguageDict . '">' . "\n"
-		. '<param name="debug" value="off">' . "\n"
-		. '<param name="user" value="' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '">' . "\n"
-		. '<param name="udSize" value="' . (is_file($UserDict) ? filesize($UserDict) : '0') . '">' . "\n"
-		. '</applet>';
-
+	$AppletCode = we_html_element::htmlApplet(array(
+			'name' => "spellchecker",
+			'code' => "LeSpellchecker.class",
+			'archive' => "lespellchecker.jar",
+			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+			'width' => 2,
+			'height' => 2,
+			'id' => "applet",
+			'style' => "visibility: hidden",
+			), '
+<param name="code" value="LeSpellchecker.class"/>
+<param name="archive" value="lespellchecker.jar"/>
+<param name="type" value="application/x-java-applet;version=1.1"/>
+<param name="dictBase" value="' . $DictBase . '"/>
+<param name="dictionary" value="' . $LanguageDict . '"/>
+<param name="debug" value="off"/>
+<param name="user" value="' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '"/>
+<param name="udSize" value="' . (is_file($UserDict) ? filesize($UserDict) : '0') . '"/>');
 
 	//
 	// --> get the content

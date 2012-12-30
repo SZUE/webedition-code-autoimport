@@ -22,31 +22,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-
 we_html_tools::htmlTop();
 
-$parts = array();
 
 $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
-	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>';
-
-$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
+	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>
+	<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
 	'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
-array_push($parts, array("headline" => "",
-	"html" => $_html,
-	"space" => 140,
-	"icon" => "meta.gif"
+$parts = array(
+	array("headline" => "",
+		"html" => $_html,
+		"space" => 140,
+		"icon" => "meta.gif"
 	)
 );
 
-
-
 $_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>' .
 	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';
-
-
 
 
 if($GLOBALS['we_doc']->CreatorID){
@@ -70,11 +64,10 @@ if($GLOBALS['we_doc']->ModifierID){
 }
 
 
-array_push($parts, array("headline" => "",
+$parts[] = array("headline" => "",
 	"html" => $_html,
 	"space" => 140,
 	"icon" => "cal.gif"
-	)
 );
 
 
@@ -82,9 +75,9 @@ print STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody">
-<?php
-print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
-?>
+	<?php
+	print we_multiIconBox::getJS() .
+		we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	?>
 </body>
 </html>

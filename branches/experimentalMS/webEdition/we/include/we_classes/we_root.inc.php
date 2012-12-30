@@ -31,11 +31,8 @@ abstract class we_root extends we_class{
 	const USER_NO_SAVE = -4;
 	const FILE_NOT_IN_USER_WORKSPACE = -1;
 
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
+
 	var $ParentID = 0;
 
 	/* Parent Path of the object (Path of the Parent-Folder of the Object) */
@@ -66,15 +63,13 @@ abstract class we_root extends we_class{
 	var $ContentType = '';
 
 	/* Icon which is shown at the tree-menue  */
-	var $Icon = '';
-	var $IsBinary = false;
-
+	public $Icon = '';
 
 	/* array which holds the content of the Object */
 	var $elements = array();
 
 	/* Number of the EditPage when editor() is called */
-	var $EditPageNr = 1;
+	public $EditPageNr = 1;
 	var $CopyID;
 	var $EditPageNrs = array();
 	var $Owners = '';
@@ -87,8 +82,7 @@ abstract class we_root extends we_class{
 	/* ID of the user who last modify the document */
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
-	var $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
-	var $DocStream = '';
+	protected $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
 
@@ -166,17 +160,18 @@ abstract class we_root extends we_class{
 	}
 
 	function saveInSession(&$save){
-		$save = array();
-		$save[0] = array();
-		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-			$bb = isset($this->{$this->persistent_slots[$i]}) ? $this->{$this->persistent_slots[$i]} : '';
+		$save = array(
+			array(),
+			$this->elements
+		);
+		foreach($this->persistent_slots as $slot){
+			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
 			if(!is_object($bb)){
-				$save[0][$this->persistent_slots[$i]] = $bb;
+				$save[0][$slot] = $bb;
 			} else{
-				$save[0][$this->persistent_slots[$i] . '_class'] = serialize($bb);
+				$save[0][$slot . '_class'] = serialize($bb);
 			}
 		}
-		$save[1] = $this->elements;
 		// save weDocumentCustomerFilter in Session
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$save[3] = serialize($this->documentCustomerFilter);
@@ -184,7 +179,6 @@ abstract class we_root extends we_class{
 	}
 
 	function applyWeDocumentCustomerFilterFromFolder(){
-
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$_tmpFolder = new we_folder();
 			$_tmpFolder->initByID($this->ParentID, $this->Table);
@@ -218,7 +212,7 @@ abstract class we_root extends we_class{
 
 	/* init the object with data from the database */
 
-	function copyDoc($id){
+	function copyDoc(/* $id */){
 		// overwrite
 	}
 
@@ -603,10 +597,12 @@ abstract class we_root extends we_class{
 	function setElement($name, $data, $type = 'txt', $id = 0, $autobr = 0){
 		$this->elements[$name]['dat'] = $data;
 		$this->elements[$name]['type'] = $type;
-		if($id)
+		if($id){
 			$this->elements[$name]['id'] = $id;
-		if($autobr)
+		}
+		if($autobr){
 			$this->elements[$name]['autobr'] = $autobr;
+		}
 	}
 
 	/* get the data from an element */
@@ -647,8 +643,6 @@ abstract class we_root extends we_class{
 		$Tree = new weMainTree('webEdition.php', 'top', 'self.Tree', 'top.load');
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}
-
-##################### Path info functions
 
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */
 	function getPath(){
@@ -724,20 +718,19 @@ abstract class we_root extends we_class{
 		parent::we_new();
 		$this->CreatorID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
-			$ct = new we_base_ContentTypes();
-			$this->Icon = $ct->getIcon($this->ContentType);
+			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
 		}
 		$this->ParentPath = $this->getParentPath();
 	}
 
-	function we_load($from = we_class::LOAD_MAID_DB){
+	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 
 		$this->i_getContentData($this->LoadBinaryContent);
 		$this->OldPath = $this->Path;
 	}
 
-	function we_save($resave = 0){
+	public function we_save($resave = 0){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
@@ -766,8 +759,8 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function we_delete(){
-		if(!we_class::we_delete()){
+	public function we_delete(){
+		if(!parent::we_delete()){
 			return false;
 		}
 		return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
@@ -793,22 +786,26 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_initSerializedDat($sessDat){
-		if(is_array($sessDat)){
-			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
-				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
-				}
-			}
-			if(isset($sessDat[1])){
-				$this->elements = $sessDat[1];
-			}
-			if(isset($sessDat[2])){
-				$this->NavigationItems = $sessDat[2];
-			} else{
-				$this->i_loadNavigationItems();
+		if(!is_array($sessDat)){
+			$this->Name = md5(uniqid(__FUNCTION__, true));
+			return false;
+		}
+		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			if(isset($sessDat[0][$this->persistent_slots[$i]])){
+				$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
 			}
 		}
+		if(isset($sessDat[1])){
+			$this->elements = $sessDat[1];
+		}
+		if(isset($sessDat[2])){
+			$this->NavigationItems = $sessDat[2];
+		} else{
+			$this->i_loadNavigationItems();
+		}
+
 		$this->Name = md5(uniqid(__FUNCTION__, true));
+		return true;
 	}
 
 # private ###################
@@ -900,11 +897,11 @@ abstract class we_root extends we_class{
 		$this->Path = $this->getPath();
 	}
 
-	protected function i_isElement($Name){
+	protected function i_isElement(/* $Name */){
 		return true; // overwrite
 	}
 
-	function i_getContentData($loadBinary = 0){
+	protected function i_getContentData($loadBinary = 0){
 
 		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->ID) .
 			' AND ' . LINK_TABLE . '.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) .
@@ -1025,7 +1022,7 @@ abstract class we_root extends we_class{
 					foreach($tableInfo as $t){
 						$fieldName = $t['name'];
 						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
-						if($k == 'data' && $this->IsBinary){
+						if($k == 'data' && $this->isBinary()){
 							break;
 						}
 						if($fieldName == 'Dat' && (isset($v['ffname']) && $v['ffname'])){
@@ -1155,8 +1152,8 @@ abstract class we_root extends we_class{
 		}
 	}
 	}
-	function i_getPersistentSlotsFromDB($felder = '*'){
-		we_class::i_getPersistentSlotsFromDB($felder);
+	protected function i_getPersistentSlotsFromDB($felder = '*'){
+		parent::i_getPersistentSlotsFromDB($felder);
 		$this->ParentPath = $this->getParentPath();
 	}
 
@@ -1320,7 +1317,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	function we_republish(){
+	public function we_republish(){
 		return true;
 	}
 
@@ -1469,6 +1466,10 @@ abstract class we_root extends we_class{
 
 	function revert_published(){
 
+	}
+
+	public function isBinary(){
+		return false;
 	}
 
 }

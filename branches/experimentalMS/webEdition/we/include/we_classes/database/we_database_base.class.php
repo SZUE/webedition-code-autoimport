@@ -662,16 +662,14 @@ abstract class we_database_base{
 		if(!$this->_connect()){
 			return false;
 		}
-		$query = '';
 		if(is_array($table)){
+			$query = array();
 			foreach($table as $key => $value){
-				if(is_numeric($key)){
-					$query.= $value . ' ' . $mode . ',';
-				} else{
-					$query.= $key . ' ' . $value . ',';
-				}
+				$query[] = (is_numeric($key) ?
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
-			$query = substr($query, 0, -1);
+			$query = implode(',', $query);
 		} else{
 			$query = $table . ' ' . $mode;
 		}
@@ -723,7 +721,7 @@ abstract class we_database_base{
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
 
-	function isColExist($tab, $col){
+	public function isColExist($tab, $col){
 		if($tab == '' || $col == ''){
 			return false;
 		}
@@ -735,7 +733,7 @@ abstract class we_database_base{
 		}
 	}
 
-	function isTabExist($tab){
+	public function isTabExist($tab){
 		if($tab == ''){
 			return false;
 		}
@@ -747,7 +745,7 @@ abstract class we_database_base{
 		return ($this->next_record());
 	}
 
-	function addTable($tab, $cols, $keys = array()){
+	public function addTable($tab, $cols, $keys = array()){
 		if(!is_array($cols) || !count($cols)){
 			return;
 		}
@@ -755,7 +753,7 @@ abstract class we_database_base{
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
 		}
-		if(count($keys)){
+		if(!empty($keys)){
 			foreach($keys as $key){
 				if(DB_CONNECT=='msconnect'){
 					$keys_sql[]=$key;
@@ -780,7 +778,7 @@ abstract class we_database_base{
 		}
 	}
 
-	function delTable($tab){
+	public function delTable($tab){
 		if(DB_CONNECT=='msconnect'){
 			$this->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '".$tab."') DROP TABLE ".$tab);
 		} else {
@@ -788,7 +786,7 @@ abstract class we_database_base{
 		}
 	}
 
-	function addCol($tab, $col, $typ, $pos = ''){
+	public function addCol($tab, $col, $typ, $pos = ''){
 		$col = trim($col, '`');
 		if($this->isColExist($tab, $col)){
 			return false;
@@ -800,7 +798,7 @@ abstract class we_database_base{
 		}
 	}
 
-	function changeColType($tab, $col, $newtyp){
+	public function changeColType($tab, $col, $newtyp){
 		$col = trim($col, '`');
 		if(!$this->isColExist($tab, $col)){
 			return false;
@@ -813,11 +811,11 @@ abstract class we_database_base{
 		}
 	}
 
-	function getColTyp($tab, $col){
+	public function getColTyp($tab, $col){
 		return f('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', 'Type', $this);
 	}
 
-	function delCol($tab, $col){
+	public function delCol($tab, $col){
 		if(!$this->isColExist($tab, $col)){
 			return;
 		}
@@ -835,7 +833,8 @@ abstract class we_database_base{
 			false;
 	}
 
-	function getTableKeyArray($tab){t_e('msconnect: getTableKeyArray fehlt');
+	public function getTableKeyArray($tab){t_e('msconnect: getTableKeyArray fehlt');
+
 		$myarray = array();
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){
@@ -859,7 +858,7 @@ abstract class we_database_base{
 	 * @param string $key full key definition what is used in a create statement
 	 * @return string|boolean extracted key name
 	 */
-	function isKeyExistAtAll($tab, $key){
+	public function isKeyExistAtAll($tab, $key){
 		$matches = array();
 		preg_match('|.*KEY *`?([^( `]*)`? \(|', $key, $matches);
 		$key = $matches[1];
@@ -881,7 +880,7 @@ abstract class we_database_base{
 	 * @param string $key full key definition what is used in a create statement
 	 * @return boolean true, if the exact definition is met, false otherwise
 	 */
-	function isKeyExist($tab, $key){
+	public function isKeyExist($tab, $key){
 		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
@@ -897,7 +896,7 @@ abstract class we_database_base{
 	 * @param string $tab tablename
 	 * @param string $fullKey full key definition what is used in a create statement
 	 */
-	function addKey($tab, $fullKey){
+	public function addKey($tab, $fullKey){
 		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $fullKey);
 	}
 
@@ -906,7 +905,7 @@ abstract class we_database_base{
 	 * @param string $tab tablename
 	 * @param string $keyname ONLY the keyname is wanted here
 	 */
-	function delKey($tab, $keyname){
+	public function delKey($tab, $keyname){
 		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . ($keyname == 'PRIMARY' ? 'PRIMARY KEY' : 'INDEX `' . $keyname . '`'));
 	}
 
@@ -916,7 +915,7 @@ abstract class we_database_base{
 	 * @param string $oldcol old col-name
 	 * @param string $newcol new col-name
 	 */
-	function renameCol($tab, $oldcol, $newcol){
+	public function renameCol($tab, $oldcol, $newcol){
 		if(DB_CONNECT=='msconnect'){
 			$this->query("sp_rename '".$tab.'.'.$oldcol."','".$newcol."' , 'COLUMN'; ");
 		} else {
@@ -930,7 +929,7 @@ abstract class we_database_base{
 	 * @param string $colName the name of the col to move
 	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
 	 */
-	function moveCol($tab, $colName, $newPos){
+	public function moveCol($tab, $colName, $newPos){
 		//get the old col def, use for alter table.
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){

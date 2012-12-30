@@ -34,28 +34,24 @@ if($we_doc->ClassName != "we_imageDocument" && we_hasPerm("CAN_EDIT_CUSTOMERFILT
 	}
 	$_view = new weDocumentCustomerFilterView($_filter, "_EditorFrame.setEditorIsHot(true);", 520);
 
-	array_push(
-		$parts, array(
+	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $_view->getFilterHTML(),
 		'space' => $_space_size
-		)
 	);
 }
 
 
-$_docWebUserHTML = formWebuser(we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434);
-$_docWebUser = array(
+$parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
-	'html' => $_docWebUserHTML,
+	'html' => formWebuser(we_hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
 	'space' => $_space_size
 );
-array_push($parts, $_docWebUser);
 
 
 
-print we_html_tools::htmlTop();
-print STYLESHEET;
+print we_html_tools::htmlTop() .
+	STYLESHEET;
 include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 print we_html_element::cssElement("
 .paddingLeft {
@@ -67,24 +63,20 @@ print we_html_element::cssElement("
 }
 
 ");
-print we_html_element::jsScript(JS_DIR . "windows.js") .
-	we_html_element::jsScript(JS_DIR . "utils/multi_edit.js");
-if(isset($yuiSuggest)){ // webuser filter is not displayed at images, so $yuiSuggest is not defined!
-	print $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles();
-}
 
-print "<head>\n";
-print "<body class=\"weEditorBody\">\n";
-print "<form name=\"we_form\" onsubmit=\"return false\">\n";
-print $we_doc->hiddenTrans();
-if($we_doc->ClassName != "we_imageDocument"){
-	print we_html_tools::hidden("we_edit_weDocumentCustomerFilter", 1);
-	print we_html_tools::hidden("weDocumentCustomerFilter_id", $_filter->getId());
-}
-print we_multiIconBox::getHTML("weDocProp", "100%", $parts, 20, "", -1, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]"));
-print "</form>\n";
-print "</body>";
-print "</html>";
+print we_html_element::jsScript(JS_DIR . "windows.js") .
+	we_html_element::jsScript(JS_DIR . "utils/multi_edit.js") .
+	(isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
+		$yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles() : '') .
+	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
+	we_class::hiddenTrans() .
+	($we_doc->ClassName != "we_imageDocument" ?
+		we_html_tools::hidden("we_edit_weDocumentCustomerFilter", 1) .
+		we_html_tools::hidden("weDocumentCustomerFilter_id", $_filter->getId()) : '') .
+	we_multiIconBox::getHTML("weDocProp", "100%", $parts, 20, "", -1, g_l('weClass', "[moreProps]"), g_l('weClass', "[lessProps]")) .
+	'</form>
+</body>
+</html>';
 
 function formWebuser($canChange, $width = 388){
 	if(!$GLOBALS['we_doc']->WebUserID)
@@ -93,50 +85,48 @@ function formWebuser($canChange, $width = 388){
 	$webuser = ""; //g_l('weClass',"[nobody]");
 
 	if($GLOBALS['we_doc']->WebUserID != 0){
-		$webuser = id_to_path($GLOBALS['we_doc']->WebUserID, CUSTOMER_TABLE, $GLOBALS['we_doc']->DB_WE);
+		$webuser = id_to_path($GLOBALS['we_doc']->WebUserID, CUSTOMER_TABLE);
 		if(!$webuser){
 			$webuser = ""; //g_l('weClass',"[nobody]");
 		}
 	}
 
-	if($canChange){
-
-		$textname = 'wetmp_' . $GLOBALS['we_doc']->Name . '_WebUserID';
-		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
-
-		//$attribs = ' readonly';
-		//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
-		//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
-
-		$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
-
-		$_trashBut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
-		/*
-		  $out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
-		  g_l('modules_customer','[connected_with_customer]'),
-		  "left",
-		  "defaultfont",
-		  $idfield,
-		  we_html_tools::getPixel(20,4),
-		  $button,we_html_tools::getPixel(5,4),$_trashBut);
-		 */
-		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("Customer");
-		$yuiSuggest->setContentType("");
-		$yuiSuggest->setInput($textname, $webuser, '', '', 1);
-		$yuiSuggest->setLabel(g_l('modules_customer', '[connected_with_customer]'));
-		$yuiSuggest->setMaxResults(20);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
-		$yuiSuggest->setSelector("Docselector");
-		$yuiSuggest->setWidth(434);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setTrashButton($_trashBut);
-		$yuiSuggest->setTable(CUSTOMER_TABLE);
-
-		$out = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode() . "\n";
-	} else{
-		$out = $webuser;
+	if(!$canChange){
+		return $webuser;
 	}
-	return $out;
+
+	$textname = 'wetmp_' . $GLOBALS['we_doc']->Name . '_WebUserID';
+	$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
+
+	//$attribs = ' readonly';
+	//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
+	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
+
+	$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
+
+	$_trashBut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
+	/*
+	  $out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
+	  g_l('modules_customer','[connected_with_customer]'),
+	  "left",
+	  "defaultfont",
+	  $idfield,
+	  we_html_tools::getPixel(20,4),
+	  $button,we_html_tools::getPixel(5,4),$_trashBut);
+	 */
+	$yuiSuggest = & weSuggest::getInstance();
+	$yuiSuggest->setAcId("Customer");
+	$yuiSuggest->setContentType("");
+	$yuiSuggest->setInput($textname, $webuser, '', '', 1);
+	$yuiSuggest->setLabel(g_l('modules_customer', '[connected_with_customer]'));
+	$yuiSuggest->setMaxResults(20);
+	$yuiSuggest->setMayBeEmpty(true);
+	$yuiSuggest->setResult($idname, $GLOBALS['we_doc']->WebUserID);
+	$yuiSuggest->setSelector("Docselector");
+	$yuiSuggest->setWidth(434);
+	$yuiSuggest->setSelectButton($button);
+	$yuiSuggest->setTrashButton($_trashBut);
+	$yuiSuggest->setTable(CUSTOMER_TABLE);
+
+	return $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 }

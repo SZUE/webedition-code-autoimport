@@ -40,152 +40,152 @@ class we_thumbnail{
 	 * ID of the thumbnail
 	 * @var int
 	 */
-	var $thumbID = 0;
+	private $thumbID = 0;
 
 	/**
 	 * Width of the thumbnail
 	 * @var int
 	 */
-	var $thumbWidth = '';
+	private $thumbWidth = '';
 
 	/**
 	 * Height of the thumbnail
 	 * @var int
 	 */
-	var $thumbHeight = '';
+	private $thumbHeight = '';
 
 	/**
 	 * Quality of the jpg thumbnail
 	 * @var int
 	 */
-	var $thumbQuality = 8;
+	private $thumbQuality = 8;
 
 	/**
 	 * Ratio (keep ratio) of the thumbnail
 	 * @var boolean
 	 */
-	var $thumbRatio = true;
+	private $thumbRatio = true;
 
 	/**
 	 * Maxsize of the thumbnail
 	 * @var boolean
 	 */
-	var $thumbMaxsize = true;
+	private $thumbMaxsize = true;
 
 	/**
 	 * create thumbnail in interlaced mode
 	 * @var boolean
 	 */
-	var $thumbInterlace = true;
+	private $thumbInterlace = true;
 
 	/**
 	 * Fitinside of the thumbnail
 	 * @var smallint
 	 */
-	var $thumbFitinside = false;
+	private $thumbFitinside = false;
 
 	/**
 	 * Format (jpg, png or gif) of the thumbnail
 	 * @var string
 	 */
-	var $thumbFormat = '';
+	private $thumbFormat = '';
 
 	/**
 	 * Name of the thumbnail
 	 * @var string
 	 */
-	var $thumbName = '';
+	private $thumbName = '';
 
 	/**
 	 * ID of the image
 	 * @var int
 	 */
-	var $imageID = 0;
+	private $imageID = 0;
 
 	/**
 	 * Filename of the image
 	 * @var string
 	 */
-	var $imageFileName = '';
+	private $imageFileName = '';
 
 	/**
 	 * Path of the image
 	 * @var string
 	 */
-	var $imagePath = '';
+	private $imagePath = '';
 
 	/**
 	 * Extension of the image
 	 * @var string
 	 */
-	var $imageExtension = '';
+	private $imageExtension = '';
 
 	/**
 	 * width of the image
 	 * @var int
 	 */
-	var $imageWidth = 0;
+	private $imageWidth = 0;
 
 	/**
 	 * height of the image
 	 * @var int
 	 */
-	var $imageHeight = 0;
+	private $imageHeight = 0;
 
 	/**
 	 * binaryData of the image (is mostly empty)
 	 * @var string
 	 */
-	var $imageData = '';
+	private $imageData = '';
 
 	/**
 	 * date of the thumb last saved in thumbnails table
 	 * @var int
 	 */
-	var $date = '';
+	private $date = '';
 
 	/**
 	 * db Object of the thumbnail
 	 * @var object
 	 */
-	var $db;
+	private $db;
 
 	/**
 	 * format (jpg, png or gif) of the generated thumbnail
 	 * @var string
 	 */
-	var $outputFormat = 'jpg';
+	private $outputFormat = 'jpg';
 
 	/**
 	 * path of the generated thumbnail
 	 * @var string
 	 */
-	var $outputPath = '';
+	private $outputPath = '';
 
 	/**
 	 * width of the generated thumbnail
 	 * @var int
 	 */
-	var $outputWidth = 0;
+	private $outputWidth = 0;
 
 	/**
 	 * height of the generated thumbnail
 	 * @var int
 	 */
-	var $outputHeight = 0;
+	private $outputHeight = 0;
 
 	/**
 	 * defines, that even when the original is smaller than desired size, and image should not be maximized, a thumb is generated, needed for Bug #4258: upload of customer image
 	 * @var bool
 	 */
-	var $generateSmaller = false;
+	private $generateSmaller = false;
 
 	/**
 	 * Constructor of class
 	 *
 	 * @return we_thumbnail
 	 */
-	function __construct(){
+	public function __construct(){
 		$this->db = new DB_WE();
 	}
 
@@ -211,7 +211,7 @@ class we_thumbnail{
 	 * @param int $date
 	 * @public
 	 */
-	function init($thumbID, $thumbWidth, $thumbHeight, $thumbRatio, $thumbMaxsize, $thumbInterlace, $thumbFitinside, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = "", $date = "", $thumbQuality = 8, $generateSmaller = false){
+	public function init($thumbID, $thumbWidth, $thumbHeight, $thumbRatio, $thumbMaxsize, $thumbInterlace, $thumbFitinside, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = "", $date = "", $thumbQuality = 8, $generateSmaller = false){
 
 		$this->thumbID = $thumbID;
 		$this->thumbWidth = $thumbWidth;
@@ -234,9 +234,9 @@ class we_thumbnail{
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
 			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
-			$this->_checkAndGetImageSizeIfNeeded();
-			$this->_setOutputPath();
-			$this->_calculateOutsize();
+			$this->checkAndGetImageSizeIfNeeded();
+			$this->setOutputPath();
+			$this->calculateOutsize();
 		}
 	}
 
@@ -254,10 +254,8 @@ class we_thumbnail{
 	 * @param string $imageData
 	 * @public
 	 */
-	function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-
+	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
-
 		$this->init($thumbID, isset($_foo['Width']) ? $_foo['Width'] : 0, isset($_foo['Height']) ? $_foo['Height'] : 0, isset($_foo['Ratio']) ? $_foo['Ratio'] : 0, isset($_foo['Maxsize']) ? $_foo['Maxsize'] : 0, isset($_foo['Interlace']) ? $_foo['Interlace'] : false, isset($_foo['Fitinside']) ? $_foo['Fitinside'] : false, isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, isset($_foo['Date']) ? $_foo['Date'] : '', isset($_foo['Quality']) ? $_foo['Quality'] : '');
 	}
 
@@ -275,11 +273,10 @@ class we_thumbnail{
 	 * @param string $imageData
 	 * @public
 	 */
-	function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-
+	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db);
-
 		$this->init(isset($_foo['ID']) ? $_foo['ID'] : 0, isset($_foo['Width']) ? $_foo['Width'] : 0, isset($_foo['Height']) ? $_foo['Height'] : 0, isset($_foo['Ratio']) ? $_foo['Ratio'] : 0, isset($_foo['Maxsize']) ? $_foo['Maxsize'] : 0, isset($_foo['Interlace']) ? $_foo['Interlace'] : false, isset($_foo['Fitinside']) ? $_foo['Fitinside'] : false, isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, isset($_foo['Date']) ? $_foo['Date'] : '', isset($_foo['Quality']) ? $_foo['Quality'] : '');
+		return ($this->thumbID && $this->thumbName);
 	}
 
 	/**
@@ -291,18 +288,20 @@ class we_thumbnail{
 	 * @param boolean $getBinary if set, also the binary image data will be loaded
 	 * @public
 	 */
-	function initByImageIDAndThumbID($imageID, $thumbID, $getBinary = false){
-
+	public function initByImageIDAndThumbID($imageID, $thumbID, $getBinary = false){
 		$this->imageID = $imageID;
 
-		if(!$this->_getImageData($getBinary)){
+		if(!$this->getImageData($getBinary)){
 			return false;
 		}
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
 
-		$this->init($thumbID, isset($_foo['Width']) ? $_foo['Width'] : '', isset($_foo['Height']) ? $_foo['Height'] : '', isset($_foo['Ratio']) ? $_foo['Ratio'] : '', isset($_foo['Maxsize']) ? $_foo['Maxsize'] : '', isset($_foo['Interlace']) ? $_foo['Interlace'] : '', isset($_foo['Fitinside']) ? $_foo['Fitinside'] : '', isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, isset($_foo['Date']) ? $_foo['Date'] : ''
-		);
+		$this->init($thumbID, isset($_foo['Width']) ? $_foo['Width'] : '', isset($_foo['Height']) ? $_foo['Height'] : '', isset($_foo['Ratio']) ? $_foo['Ratio'] : '', isset($_foo['Maxsize']) ? $_foo['Maxsize'] : '', isset($_foo['Interlace']) ? $_foo['Interlace'] : '', isset($_foo['Fitinside']) ? $_foo['Fitinside'] : '', isset($_foo['Format']) ? $_foo['Format'] : '', isset($_foo['Name']) ? $_foo['Name'] : '', $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, isset($_foo['Date']) ? $_foo['Date'] : '' );
 		return true;
+	}
+
+	public function getDate(){
+		return $this->date;
 	}
 
 	/**
@@ -311,13 +310,13 @@ class we_thumbnail{
 	 * @return int (WE_THUMB_OK, WE_THUMB_BUILDERROR, WE_THUMB_USE_ORIGINAL or WE_THUMB_NO_GDLIB_ERROR;
 	 * @public
 	 */
-	function createThumb(){
+	public function createThumb(){
 		if(we_image_edit::gd_version() <= 0){
 			return self::NO_GDLIB_ERROR;
 		}
 		$tmp = explode('.', $this->imagePath);
 		$type = we_image_edit::$GDIMAGE_TYPE['.' . strtolower($tmp[count($tmp) - 1])];
-		if($this->_useOriginalSize() && $this->outputFormat == $type){
+		if($this->useOriginalSize() && $this->outputFormat == $type){
 			return self::USE_ORIGINAL;
 		}
 
@@ -335,7 +334,7 @@ class we_thumbnail{
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
 
-	function exists(){
+	public function exists(){
 		return !$this->isOriginal() && file_exists($this->getOutputPath(true));
 	}
 
@@ -346,12 +345,12 @@ class we_thumbnail{
 	 * @param string &$thumbDataPointer Pointer to a string
 	 * @public
 	 */
-	function getThumb(&$thumbDataPointer){
+	public function getThumb(&$thumbDataPointer){
 		if(we_image_edit::gd_version() <= 0){
 			return self::NO_GDLIB_ERROR;
 		}
 
-		if($this->_useOriginalSize()){
+		if($this->useOriginalSize()){
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
@@ -372,7 +371,7 @@ class we_thumbnail{
 	 * @return str
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
-	static function getThumbDirectory($realpath = false){
+	public static function getThumbDirectory($realpath = false){
 		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__')), '/');
 		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
 	}
@@ -388,7 +387,7 @@ class we_thumbnail{
 	 * @return array
 	 * @param $filename complete path of the image
 	 */
-	function getimagesize($filename){
+	public static function getimagesize($filename){
 		$arr = @getimagesize($filename);
 
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
@@ -407,7 +406,7 @@ class we_thumbnail{
 	 * @return string
 	 * @public
 	 */
-	function getOutputPath($withDocumentRoot = false){
+	public function getOutputPath($withDocumentRoot = false){
 		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] : '') . $this->outputPath;
 	}
 
@@ -417,7 +416,7 @@ class we_thumbnail{
 	 * @return int
 	 * @public
 	 */
-	function getOutputWidth(){
+	public function getOutputWidth(){
 		return $this->outputWidth;
 	}
 
@@ -427,7 +426,7 @@ class we_thumbnail{
 	 * @return int
 	 * @public
 	 */
-	function getOutputHeight(){
+	public function getOutputHeight(){
 		return $this->outputHeight;
 	}
 
@@ -437,7 +436,7 @@ class we_thumbnail{
 	 * @return string
 	 * @public
 	 */
-	function getThumbName(){
+	public function getThumbName(){
 		return $this->thumbName;
 	}
 
@@ -447,7 +446,7 @@ class we_thumbnail{
 	 * @return boolean
 	 * @public
 	 */
-	function isOriginal(){
+	public function isOriginal(){
 		return $this->outputPath == $this->imagePath;
 	}
 
@@ -458,12 +457,12 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	function _setOutputPath(){
+	private function setOutputPath(){
 		if(we_image_edit::gd_version() > 0 &&
 			we_image_edit::is_imagetype_supported($this->outputFormat) &&
 			we_image_edit::is_imagetype_read_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
 					we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
-			( (!$this->_useOriginalSize()) || (!$this->_hasOriginalType() ) )){
+			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
 		} else{
 			$this->outputPath = $this->imagePath;
@@ -476,8 +475,8 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	function _calculateOutsize(){
-		if($this->_useOriginalSize()){
+	private function calculateOutsize(){
+		if($this->useOriginalSize()){
 			$this->outputWidth = $this->imageWidth;
 			$this->outputHeight = $this->imageHeight;
 			return;
@@ -522,7 +521,7 @@ class we_thumbnail{
 	 * @return boolean
 	 * @private
 	 */
-	function _useOriginalSize(){
+	private function useOriginalSize(){
 		$outvar = ($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0);
 		if($this->generateSmaller){
 			$outvar = false;
@@ -535,8 +534,7 @@ class we_thumbnail{
 	 *
 	 * @return boolean
 	 */
-	function _hasOriginalType(){
-
+	private function hasOriginalType(){
 		return (strtolower($this->imageExtension) == '.' . $this->outputFormat);
 	}
 
@@ -546,7 +544,7 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	function _getImageData($getBinary = false){
+	private function getImageData($getBinary = false){
 
 		$this->db->query('SELECT ' . LINK_TABLE . '.Name as Name,' . CONTENT_TABLE . '.Dat as Dat  FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.DID=' . intval($this->imageID) .
 			' AND ' . LINK_TABLE . '.DocumentTable="tblFile" AND ' . CONTENT_TABLE . '.ID=' . LINK_TABLE . '.CID  AND ' . CONTENT_TABLE . '.IsBinary=0');
@@ -568,7 +566,7 @@ class we_thumbnail{
 		$this->imageExtension = $imgdat['Extension'];
 
 		if($getBinary){
-			$this->_getBinaryData();
+			$this->getBinaryData();
 		}
 		return true;
 	}
@@ -579,7 +577,7 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	function _checkAndGetImageSizeIfNeeded(){
+	private function checkAndGetImageSizeIfNeeded(){
 		if(!($this->imageWidth && $this->imageHeight)){
 			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . $this->imagePath);
 			if(count($arr) >= 2){
@@ -595,12 +593,12 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	function _getBinaryData(){
+	private function getBinaryData(){
 		$_p = $_SERVER['DOCUMENT_ROOT'] . $this->imagePath;
 		$this->imageData = weFile::load($_p);
 	}
 
-	static function deleteByThumbID($id){
+	public static function deleteByThumbID($id){
 		$thumbsdir = self::getThumbDirectory(true);
 		$dir_obj = @dir($thumbsdir);
 		$filestodelete = array();
@@ -616,7 +614,7 @@ class we_thumbnail{
 		}
 	}
 
-	static function deleteByImageID($id){
+	public static function deleteByImageID($id){
 		$thumbsdir = self::getThumbDirectory(true);
 		$dir_obj = @dir($thumbsdir);
 		$filestodelete = array();

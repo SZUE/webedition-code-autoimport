@@ -682,9 +682,8 @@ class weVersionsView{
 				<td width="100%">' . we_html_tools::getPixel(10, 2) . '
 				</td>
 				</tr>
-				</table>';
-
-		$out .= '<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+				</table>
+				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 				<tr>
 				<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '
 				</td>
@@ -695,17 +694,15 @@ class weVersionsView{
 				<td width="100%">' . we_html_tools::getPixel(10, 2) . '
 				</td>
 				</tr>
-				</table>';
-
-		$out .= '<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+				</table>
+				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 				<tbody id="filterTable">
 				<tr>
-					<td>' . $GLOBALS['we_doc']->HiddenTrans() . '</td>
+					<td>' . we_class::hiddenTrans() . '</td>
 				</tr>';
 
-		$r = array();
-		$r2 = array();
-		$r3 = array();
+		$r = $r2 = $r3 = array();
+
 		if(isset($this->searchclass->search) && is_array($this->searchclass->search)){
 			foreach($this->searchclass->search as $k => $v){
 				$r[] = $this->searchclass->search[$k];
@@ -717,14 +714,8 @@ class weVersionsView{
 			}
 		}
 		if(isset($_REQUEST['location']) && is_array($_REQUEST['location'])){
-			$m = 0;
 			foreach($_REQUEST['searchFields'] as $k => $v){
-				if(isset($_REQUEST['location'][$k])){
-					$r3[$m] = $_REQUEST['location'][$k];
-				} else{
-					$r3[$m] = "disabled";
-				}
-				$m++;
+				$r3[] = (isset($_REQUEST['location'][$k]) ? $_REQUEST['location'][$k] : "disabled");
 			}
 		}
 
@@ -734,11 +725,7 @@ class weVersionsView{
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 
-			$button = we_button::create_button(
-					"image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
-
-			$fieldsSearch = "";
-			$handle = "";
+			$button = we_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$search = we_html_tools::htmlSelect(
 					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
@@ -786,9 +773,8 @@ class weVersionsView{
 				';
 		}
 
-		$out .= '</tbody></table>';
-
-		$out .= '<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+		$out .= '</tbody></table>
+			<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 				<tr>
 					<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 				</tr>
@@ -800,11 +786,9 @@ class weVersionsView{
 				"search", "javascript:search(true);") . '</td>
 					<td></td>
 				</tr>
-				</table>';
-
-		$out .= '<div style="border-top: 1px solid #AFB0AF;margin-top:20px;clear:both;"></div>';
-
-		$out .= we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+				</table>
+				<div style="border-top: 1px solid #AFB0AF;margin-top:20px;clear:both;"></div>' .
+			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
@@ -814,66 +798,27 @@ class weVersionsView{
 	 * @return string html-Code
 	 */
 	function getParameterTop($foundItems){
-
-		$out = "";
-
 		$anzahl_all = array(
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
 		);
 
-		if(isset($_REQUEST['we_cmd']['order'])){
-			$order = $_REQUEST['we_cmd']['order'];
-		} else{
-			$order = $this->searchclass->order;
-		}
-		if(isset($_REQUEST['we_cmd']['mode'])){
-			$mode = $_REQUEST['we_cmd']['mode'];
-		} else{
-			$mode = $this->searchclass->mode;
-		}
-		if(isset($_REQUEST['we_cmd']['height'])){
-			$height = $_REQUEST['we_cmd']['height'];
-		} else{
-			$height = $this->searchclass->height;
-		}
-		if(isset($_REQUEST['we_cmd']['anzahl'])){
-			$_anzahl = $_REQUEST['we_cmd']['anzahl'];
-		} else{
-			$_anzahl = $this->searchclass->anzahl;
-		}
-		if(isset($_REQUEST['we_cmd']['we_transaction'])){
-			$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd']['we_transaction']) ? $_REQUEST['we_cmd']['we_transaction'] : 0);
-		} else{
-			$we_transaction = $GLOBALS['we_transaction'];
-		}
+		$order = (isset($_REQUEST['we_cmd']['order']) ? $_REQUEST['we_cmd']['order'] : $this->searchclass->order);
+		$mode = (isset($_REQUEST['we_cmd']['mode']) ? $_REQUEST['we_cmd']['mode'] : $this->searchclass->mode);
+		$height = (isset($_REQUEST['we_cmd']['height']) ? $_REQUEST['we_cmd']['height'] : $this->searchclass->height);
+		$_anzahl = (isset($_REQUEST['we_cmd']['anzahl']) ? $_REQUEST['we_cmd']['anzahl'] : $this->searchclass->anzahl);
+		$we_transaction = (isset($_REQUEST['we_cmd']['we_transaction']) ?
+				(preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_cmd']['we_transaction']) ? $_REQUEST['we_cmd']['we_transaction'] : 0) :
+				$GLOBALS['we_transaction']);
+		$Text = (isset($_REQUEST['text']) ? $_REQUEST['text'] : $GLOBALS['we_doc']->Text);
+		$ID = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
+		$Path = (isset($_REQUEST['path']) ? $_REQUEST['path'] : $GLOBALS['we_doc']->Path);
 
-		if(isset($_REQUEST['text'])){
-			$Text = $_REQUEST['we_cmd']['we_transaction'];
-		} else{
-			$Text = $GLOBALS['we_doc']->Text;
-		}
-		if(isset($_REQUEST['text'])){
-			$Text = $_REQUEST['text'];
-		} else{
-			$Text = $GLOBALS['we_doc']->Text;
-		}
-		if(isset($_REQUEST['id'])){
-			$ID = $_REQUEST['id'];
-		} else{
-			$ID = $GLOBALS['we_doc']->ID;
-		}
-		if(isset($_REQUEST['path'])){
-			$Path = $_REQUEST['path'];
-		} else{
-			$Path = $GLOBALS['we_doc']->Path;
-		}
 
-		$out .= we_html_tools::hidden("we_transaction", $we_transaction);
-		$out .= we_html_tools::hidden("order", $order);
-		$out .= we_html_tools::hidden("mode", $mode);
-		$out .= we_html_tools::hidden("height", $height);
-
-		$out .= '<table border="0" cellpadding="0" cellspacing="0">
+		return we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("height", $height) .
+			'<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>' . we_html_tools::getPixel(1, 20) . '</td>
 				</tr>
@@ -900,8 +845,6 @@ class weVersionsView{
 					<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
 				</tr>
 				</table>';
-
-		return $out;
 	}
 
 	/**
@@ -909,8 +852,7 @@ class weVersionsView{
 	 * @return string html-Code
 	 */
 	function getParameterBottom($foundItems){
-
-		$out = '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 				 <tr id="paging_bottom">
 					<td>' . we_html_tools::getPixel(19, 12) . '</td>
 					<td style="font-size:12px;width:130px;">' . we_html_tools::getPixel(30, 12) . '</td>
@@ -918,8 +860,6 @@ class weVersionsView{
 					<td style="width:370px;" id="bottom">' . self::getNextPrev($foundItems) . '</td>
 				</tr>
 				</table>';
-
-		return $out;
 	}
 
 	/**
@@ -938,31 +878,20 @@ class weVersionsView{
 			$searchstart = $thisObj->searchclass->searchstart;
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">';
-
-		if($searchstart){
-			$out .= we_button::create_button("back", "javascript:back(" . $anzahl . ");");
-		} else{
-			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
-		}
-
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
-				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
-
-		if(($we_search_anzahl - $searchstart) < $anzahl){
-			$out .= $we_search_anzahl;
-		} else{
-			$out .= $searchstart + $anzahl;
-		}
-
-		$out .= ' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">';
-
-		if(($searchstart + $anzahl) < $we_search_anzahl){
-			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");"); //bt_back
-		} else{
-			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
-		}
-		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">' .
+			($searchstart ?
+				we_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_button::create_button("back", "", true, 100, 22, "", "", true)) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ?
+				$we_search_anzahl :
+				$searchstart + $anzahl) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_button::create_button("next", "javascript:next(" . $anzahl . ");") : //bt_back
+				we_button::create_button("next", "", true, 100, 22, "", "", true)) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -981,9 +910,8 @@ class weVersionsView{
 			}
 		}
 
-		$out .= $select;
-
-		$out .= '</td></tr></table>';
+		$out .= $select .
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -993,46 +921,22 @@ class weVersionsView{
 	 * @return array with content
 	 */
 	function getVersionsOfDoc(){
-
 		$DB_WE = new DB_WE();
 
-		if(isset($_REQUEST['we_cmd']['obj'])){
-			$thisObj = new weVersionsView();
-		} else{
-			$obj = $GLOBALS['we_doc'];
-			$thisObj = $this;
-		}
-		if(isset($_REQUEST['id'])){
-			$id = $_REQUEST['id'];
-		} else{
-			$id = $GLOBALS['we_doc']->ID;
-		}
-		if(isset($_REQUEST['table'])){
-			$table = $_REQUEST['table'];
-		} else{
-			$table = $GLOBALS['we_doc']->Table;
-		}
+		$thisObj = (isset($_REQUEST['we_cmd']['obj']) ? new weVersionsView() : $this);
+		$id = (isset($_REQUEST['id']) ? $_REQUEST['id'] : $GLOBALS['we_doc']->ID);
+		$table = (isset($_REQUEST['table']) ? $_REQUEST['table'] : $GLOBALS['we_doc']->Table);
+		$_order = (isset($_REQUEST['we_cmd']['order']) ? $_REQUEST['we_cmd']['order'] : $thisObj->searchclass->order);
 
-		if(isset($_REQUEST['we_cmd']['order'])){
-			$_order = $_REQUEST['we_cmd']['order'];
-		} else{
-			$_order = $thisObj->searchclass->order;
-		}
-
-		$_versions = array();
 		$content = array();
-		$modificationText = "";
+		$modificationText = '';
 
 		$where = $thisObj->searchclass->getWhere();
-
 		$_versions = $thisObj->version->loadVersionsOfId($id, $table, $where);
-
 		$resultCount = count($_versions);
-
 		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 
 		if($resultCount > 0){
-
 			$sortierung = explode(" ", $_order);
 
 			foreach($_versions as $k => $v){
@@ -1040,15 +944,7 @@ class weVersionsView{
 			}
 
 			if($sortierung[0] == "modifierID"){
-				if(isset($sortierung[1])){
-					usort($_Result, array(
-						$thisObj, 'sortResultListUserDESC'
-					));
-				} else{
-					usort($_Result, array(
-						$thisObj, 'sortResultListUserASC'
-					));
-				}
+				usort($_Result, array($thisObj, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
 			} else{
 				$sortText = $sortierung[0];
 				$sortHow = SORT_ASC;
@@ -1079,26 +975,23 @@ class weVersionsView{
 			$fromImport = ($_versions[$f]["fromImport"]) ? g_l('versions', '[fromImport]') : "";
 			$resetFromVersion = ($_versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $_versions[$f]["resetFromVersion"] . "--" : "";
 
-			$content[$f][0]["dat"] = '<nobr>' . $vers . '</nobr>';
-			$content[$f][1]["dat"] = '<nobr>' . shortenPath($user, 15) . '</nobr>';
-			$content[$f][2]["dat"] = '<nobr>' . ($_versions[$f]["timestamp"] ? date(
-						"d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>';
-			$content[$f][3]["dat"] = ($modificationText != '') ? $modificationText : '';
-
-			$content[$f][3]["dat"] .= ($fromScheduler != '') ? $fromScheduler : '';
-			$content[$f][3]["dat"] .= ($fromImport != '') ? $fromImport : '';
-			$content[$f][3]["dat"] .= ($resetFromVersion != '') ? $resetFromVersion : '';
-
-			$content[$f][4]["dat"] = (we_hasPerm("ADMINISTRATOR")) ? we_forms::checkbox(
-					$_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : "";
-			$content[$f][5]["dat"] = "<span class='printShow'>" . we_button::create_button(
-					"reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>";
-			$content[$f][6]["dat"] = "<span class='printShow'>" . we_button::create_button(
-					"preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1);
-			$content[$f][7]["dat"] = "<span class='printShow'>";
-			$content[$f][7]["dat"] .= ($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ? we_forms::checkbox(
-					$_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") : '';
-			$content[$f][7]["dat"] .= "</span>" . we_html_tools::getPixel(1, 1);
+			$content[] = array(
+				array("dat" => '<nobr>' . $vers . '</nobr>'),
+				array("dat" => '<nobr>' . shortenPath($user, 15) . '</nobr>'),
+				array("dat" => '<nobr>' . ($_versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>'),
+				array("dat" => (($modificationText != '') ? $modificationText : '') .
+					($fromScheduler != '' ? $fromScheduler : '') .
+					($fromImport != '' ? $fromImport : '') .
+					($resetFromVersion != '' ? $resetFromVersion : '')),
+				array("dat" => (we_hasPerm("ADMINISTRATOR")) ? we_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
+				array("dat" => "<span class='printShow'>" . we_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
+				array("dat" => "<span class='printShow'>" . we_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
+				array("dat" => "<span class='printShow'>" .
+					(($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ?
+						we_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+						'') .
+					'</span>' . we_html_tools::getPixel(1, 1)),
+			);
 		}
 
 		return $content;
@@ -1109,31 +1002,22 @@ class weVersionsView{
 	 * @return array with headlines
 	 */
 	function makeHeadLines(){
-
-		$headline = array();
-
 		$markText = g_l('versions', '[mark]');
 
-		$headline[0]["dat"] = '<a href="javascript:setOrder(\'version\');">' . g_l('versions', '[version]') . '</a> <span id="version" >' . $this->getSortImage(
-				'version') . '</span>';
-		$headline[1]["dat"] = '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage(
-				'modifierID') . '</span>';
-		$headline[2]["dat"] = '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage(
-				'timestamp') . '</span>';
-		$headline[3]["dat"] = g_l('versions', '[modifications]');
-		$headline[4]["dat"] = (we_hasPerm("ADMINISTRATOR")) ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
-				"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '';
-
-		$headline[4]["dat"] .= we_forms::checkbox(
-				"1", 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();");
-
-
-		$headline[5]["dat"] = we_html_tools::getPixel(1, 1);
-		$headline[6]["dat"] = we_html_tools::getPixel(1, 1);
-		$headline[7]["dat"] = we_html_tools::getPixel(1, 1);
-		$headline[8]["dat"] = we_html_tools::getPixel(1, 1);
-
-		return $headline;
+		return array(
+			array("dat" => '<a href="javascript:setOrder(\'version\');">' . g_l('versions', '[version]') . '</a> <span id="version" >' . $this->getSortImage('version') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
+			array("dat" => g_l('versions', '[modifications]')),
+			array("dat" => (we_hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
+						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
+				we_forms::checkbox(
+					"1", 0, "deleteAllVersions", $markText, false, "middlefont", "checkAll();")),
+			array("dat" => we_html_tools::getPixel(1, 1)),
+			array("dat" => we_html_tools::getPixel(1, 1)),
+			array("dat" => we_html_tools::getPixel(1, 1)),
+			array("dat" => we_html_tools::getPixel(1, 1)),
+		);
 	}
 
 	/**
@@ -1164,7 +1048,6 @@ class weVersionsView{
 		if($modString == "")
 			return $statusTxt;
 
-		$modTextArr = array();
 
 		$out = '<div>';
 
@@ -1173,16 +1056,14 @@ class weVersionsView{
 		foreach($modifications as $k => $v){
 			foreach($this->version->modFields as $key => $val){
 				if($v == $val){
-					$out .= "<strong>- " . g_l('versions', '[' . $key . ']') . "</strong>";
-					$out .= "<br/>";
+					$out .= "<strong>- " . g_l('versions', '[' . $key . ']') . '</strong><br/>';
 				}
 			}
 			$m++;
 		}
 
-		$out .= "<span style='color:#ff0000;'>" . $statusTxt . "</span>";
-
-		$out .= '</div>';
+		$out .= "<span style='color:#ff0000;'>" . $statusTxt . '</span>
+			</div>';
 
 		return $out;
 	}
@@ -1192,12 +1073,8 @@ class weVersionsView{
 	 * @return string
 	 */
 	function getSortImage($for){
+		$order = (isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->searchclass->order);
 
-		if(isset($_REQUEST['order'])){
-			$order = $_REQUEST['order'];
-		} else{
-			$order = $this->searchclass->order;
-		}
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
@@ -1213,26 +1090,21 @@ class weVersionsView{
 	 * @return string
 	 */
 	function tblList($content, $headline){
-
 		$anz = count($headline) - 1;
-		$out = '<table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">';
-		$out .= '<tr>';
-		$out .= '<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>';
-		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>';
-		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>';
-		$out .= '<td valign="top" style="width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>';
-		$out .= '</tr>';
-		$out .= '</table>';
-
-		$out .= '<div id="scrollContent" style="background-color:#fff;width:100%">';
-
-		$out .= $this->tabListContent($this->searchclass->searchstart, $this->searchclass->anzahl, $content);
-
-		$out .= '</div>';
-
-		return $out;
+		return '
+<table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">
+<tr>
+	<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
+	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
+	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
+	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
+	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
+	<td valign="top" style="width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
+</tr>
+</table>
+<div id="scrollContent" style="background-color:#fff;width:100%">' .
+			$this->tabListContent($this->searchclass->searchstart, $this->searchclass->anzahl, $content) .
+			'</div>';
 	}
 
 	function tabListContent($searchstart, $anzahl, $content){
@@ -1293,9 +1165,7 @@ class weVersionsView{
 
 		$out .= '</td></tr></table>';
 
-		$boxHTML = $out;
-
-		return $boxHTML;
+		return $out;
 	}
 
 }

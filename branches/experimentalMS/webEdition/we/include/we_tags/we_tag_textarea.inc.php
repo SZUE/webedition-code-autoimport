@@ -58,6 +58,7 @@ function we_tag_textarea($attribs, $content){
 		}
 		return we_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'));
 	} else{
-		return $GLOBALS['we_doc']->getField($attribs);
+		$fieldVal = $GLOBALS['we_doc']->getField($attribs);
+		return $fieldVal;
 	}
 }

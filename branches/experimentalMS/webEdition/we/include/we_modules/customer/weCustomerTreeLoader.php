@@ -25,11 +25,9 @@
 class weCustomerTreeLoader{
 
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
-		$db = new DB_WE();
-		if($sort != "")
-			return weCustomerTreeLoader::getSortFromDB($pid, $sort, $offset, $segment);
-		else
-			return weCustomerTreeLoader::getItemsFromDB($pid, $offset, $segment);
+		return ($sort != "" ?
+				weCustomerTreeLoader::getSortFromDB($pid, $sort, $offset, $segment) :
+				weCustomerTreeLoader::getItemsFromDB($pid, $offset, $segment));
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname", $addWhere = "", $addOrderBy = ""){
@@ -61,7 +59,7 @@ class weCustomerTreeLoader{
 		$settings->load();
 
 
-		$where = " WHERE ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ParentID=' . intval($ParentID) . " " . $addWhere;
 
 		$_formatFields = implode(',', $settings->formatFields);
 		if($_formatFields != ''){
@@ -71,30 +69,23 @@ class weCustomerTreeLoader{
 		$_order = '';
 		if($settings->getSettings('default_order') != ''){
 
-			if($_formatFields != ''){
-				$_order = implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order');
-			} else{
-				$_order = 'Text ' . $settings->getSettings('default_order');
-			}
+			$_order = ($_formatFields != '' ?
+					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+					'Text ' . $settings->getSettings('default_order'));
 		}
 
-		$query = "SELECT $_formatFields $elem FROM $table $where " . (!empty($_order) ? "ORDER BY $_order" : '') . ($segment ? " LIMIT $offset,$segment;" : ";" );
-		$db->query($query);
+		$db->query("SELECT $_formatFields $elem FROM $table $where " . (!empty($_order) ? "ORDER BY $_order" : '') . ($segment ? " LIMIT $offset,$segment;" : ";" ));
 
 		while($db->next_record()) {
 
-			if($db->f("IsFolder") == 1)
-				$typ = array("typ" => "group");
-			else
-				$typ = array("typ" => "item");
+			$typ = array("typ" => ($db->f("IsFolder") == 1 ? "group" : "item"));
 
 			$typ["disabled"] = 0;
 			$typ["tooltip"] = $db->f("ID");
 			$typ["offset"] = $offset;
 
-			$tt = "";
 			$ttrow = $db->Record;
-			eval('$tt = "'.$settings->treeTextFormat.'";');
+			eval('$tt = "' . $settings->treeTextFormat . '";');
 
 			$fileds = array();
 
@@ -142,9 +133,7 @@ class weCustomerTreeLoader{
 
 		$notroot = (preg_match('|\{.\}|', $pid)) ? true : false;
 
-		$pid = str_replace("{", "", $pid);
-		$pid = str_replace("}", "", $pid);
-		$pid = str_replace("*****quot*****", "\\\\\'", $pid);
+		$pid = str_replace(array('{', '}', '*****quot*****'), array('', '', "\\\\\'"), $pid);
 
 		if($pid || $notroot){
 			$pidarr = explode("-|-", $pid);
@@ -165,21 +154,19 @@ class weCustomerTreeLoader{
 
 		foreach($sort_defs as $sortdef){
 			if($sortdef["function"]){
-				if($settings->customer->isInfoDate($sortdef["field"])){
-					$select[] = sprintf($settings->FunctionTable[$sortdef["function"]], "FROM_UNIXTIME(" . $sortdef["field"] . ")") . " AS " . $sortdef["field"] . "_" . $sortdef["function"];
-				} else{
-					$select[] = sprintf($settings->FunctionTable[$sortdef["function"]], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"];
-				}
+				$select[] = ($settings->customer->isInfoDate($sortdef["field"]) ?
+						sprintf($settings->FunctionTable[$sortdef["function"]], "FROM_UNIXTIME(" . $sortdef["field"] . ")") . " AS " . $sortdef["field"] . "_" . $sortdef["function"] :
+						sprintf($settings->FunctionTable[$sortdef["function"]], $sortdef["field"]) . " AS " . $sortdef["field"] . "_" . $sortdef["function"]);
+
 				$grouparr[] = $sortdef["field"] . "_" . $sortdef["function"];
 				$orderarr[] = $sortdef["field"] . "_" . $sortdef["function"] . " " . $sortdef["order"];
 				$orderarr[] = $sortdef["field"] . " " . $sortdef["order"];
-				if(isset($pidarr[$c]))
-					if($pidarr[$c] == g_l('modules_customer', '[no_value]'))
-						$havingarr[] = "(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)";
-					else
-						$havingarr[] = $sortdef["field"] . "_" . $sortdef["function"] . "='" . $pidarr[$c] . "'";
-			}
-			else{
+				if(isset($pidarr[$c])){
+					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
+							"(" . $sortdef["field"] . "_" . $sortdef["function"] . "='' OR " . $sortdef["field"] . "_" . $sortdef["function"] . " IS NULL)" :
+							$sortdef["field"] . "_" . $sortdef["function"] . "='" . $pidarr[$c] . "'");
+				}
+			} else{
 				$select[] = $sortdef["field"];
 				$grouparr[] = $sortdef["field"];
 				$orderarr[] = $sortdef["field"] . " " . $sortdef["order"];
@@ -198,9 +185,11 @@ class weCustomerTreeLoader{
 
 		$grp = isset($grouparr[0]) ? $grouparr[0] : null;
 
-		if($level != 0)
-			for($i = 1; $i < $level; $i++)
+		if($level != 0){
+			for($i = 1; $i < $level; $i++){
 				$grp.="," . $grouparr[$i];
+			}
+		}
 
 		$_formatFields = implode(',', $settings->formatFields);
 		if($_formatFields != ''){
@@ -209,14 +198,12 @@ class weCustomerTreeLoader{
 
 		$items = array();
 
-		$_order = '';
 		if($settings->getSettings('default_order') != ''){
-
-			if($_formatFields != ''){
-				$_order = implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order');
-			} else{
-				$_order = 'Text ' . $settings->getSettings('default_order');
-			}
+			$_order = ($_formatFields != '' ?
+					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+					'Text ' . $settings->getSettings('default_order'));
+		} else{
+			$_order = '';
 		}
 
 		$query = "SELECT $_formatFields ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname" . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $table . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . (!empty($_order) ? (',' . $_order) : '' ) . (($level == $levelcount && $segment) ? " LIMIT $offset,$segment;" : ";");
@@ -242,7 +229,7 @@ class weCustomerTreeLoader{
 					"parentid" => $old,
 					"path" => "",
 					"text" => $gname,
-					"icon" => "folder.gif",
+					"icon" => we_base_ContentTypes::FOLDER_ICON,
 					"isfolder" => 1,
 					"typ" => "group",
 					"disabled" => "0",
@@ -252,10 +239,9 @@ class weCustomerTreeLoader{
 			} else{
 				$foo = array();
 				for($i = 0; $i < $levelcount; $i++){
-					if($i == 0)
-						$foo[] = "{" . ($db->f($grouparr[$i]) != "" ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')) . "}";
-					else
-						$foo[] = $db->f($grouparr[$i]) != "" ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]');
+					$foo[] = ($i == 0 ?
+							("{" . ($db->f($grouparr[$i]) != "" ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')) . "}") :
+							($db->f($grouparr[$i]) != "" ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')));
 					$gname = implode("-|-", $foo);
 					if($i >= $level){
 						if(!isset($check[$gname])){
@@ -263,7 +249,7 @@ class weCustomerTreeLoader{
 								"id" => $gname,
 								"parentid" => $old,
 								"path" => "", "text" => ($db->f($grouparr[$i]) != "" ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')),
-								"icon" => "folder.gif",
+								"icon" => we_base_ContentTypes::FOLDER_ICON,
 								"isfolder" => 1,
 								"typ" => "group",
 								"disabled" => "0",
@@ -278,7 +264,7 @@ class weCustomerTreeLoader{
 				if($level == $levelcount){
 					$tt = "";
 					$ttrow = $db->Record;
-					eval('$tt = "'.$settings->treeTextFormat.'";');
+					eval('$tt = "' . $settings->treeTextFormat . '";');
 
 					if($first){
 						$prevoffset = $offset - $segment;

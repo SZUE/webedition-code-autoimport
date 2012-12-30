@@ -25,20 +25,18 @@ we_html_tools::protect();
 we_html_tools::htmlTop();
 
 
-$parts = array();
-
 
 $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
-	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>';
-
-$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
+	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>
+	<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>' .
 	'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
-array_push($parts, array("headline" => "",
-	"html" => $_html,
-	"space" => 140,
-	"icon" => "meta.gif"
+$parts = array(
+	array("headline" => "",
+		"html" => $_html,
+		"space" => 140,
+		"icon" => "meta.gif"
 	)
 );
 
@@ -46,8 +44,6 @@ array_push($parts, array("headline" => "",
 
 $_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>' .
 	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';
-
-
 
 
 if($GLOBALS['we_doc']->CreatorID){
@@ -71,41 +67,38 @@ if($GLOBALS['we_doc']->ModifierID){
 }
 
 $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[lastLive]") . '</div>' .
-	'<div style="margin-bottom:10px;">' . ($we_doc->Published ? date(g_l('weEditorInfo', "[date_format]"), $we_doc->Published) : "-") . '</div>';
+	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 
-array_push($parts, array("headline" => "",
+$parts[] = array("headline" => "",
 	"html" => $_html,
 	"space" => 140,
 	"icon" => "cal.gif"
-	)
 );
 
 
 if(defined("WORKFLOW_TABLE")){
-	if(we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table)){
-		$anzeige = we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table);
-	} else{
-		$anzeige = we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table);
-	}
-	array_push($parts, array("headline" => g_l('modules_workflow', '[workflow]'),
+	$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
+			we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+			we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+
+	$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
 		"html" => $anzeige,
 		"space" => 140,
 		"forceRightHeadline" => 1,
 		"icon" => "workflow.gif"
-		)
 	);
 }
 
-print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+print STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 include_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 	<?php
-	print we_multiIconBox::getJS();
-	print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	print we_multiIconBox::getJS() .
+		we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 	?>
 </body>
 </html>

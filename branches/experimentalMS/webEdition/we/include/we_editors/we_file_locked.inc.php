@@ -24,7 +24,7 @@
 we_html_tools::protect();
 $foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=" . intval($we_user_locked), $DB_WE);
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 <?php print we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[file_locked]"), $foo["Vorname"], $foo["Nachname"]), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 	//-->
 </script>

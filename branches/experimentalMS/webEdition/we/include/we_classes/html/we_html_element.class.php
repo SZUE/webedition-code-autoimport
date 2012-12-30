@@ -58,7 +58,7 @@ abstract class we_html_element{
 
 		if(!isset($attribs['class']))
 			$attribs['class'] = 'defaultfont';
-		return we_baseElement::getHtmlCode(new we_baseElement('input', false, $attribs));
+		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -130,7 +130,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function linkElement($attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('link', false, $attribs));
+		return we_baseElement::getHtmlCode(new we_baseElement('link', 'selfclose', $attribs));
 	}
 
 	/**
@@ -214,7 +214,7 @@ abstract class we_html_element{
 		if(!isset($attribs['alt'])){
 			$attribs['alt'] = '-';
 		}
-		return we_baseElement::getHtmlCode(new we_baseElement('img', false, $attribs));
+		return we_baseElement::getHtmlCode(new we_baseElement('img', 'selfclose', $attribs));
 	}
 
 	/**
@@ -252,7 +252,7 @@ abstract class we_html_element{
 	 */
 	static function htmlHidden($attribs = array()){
 		$attribs['type'] = 'hidden';
-		return we_baseElement::getHtmlCode(new we_baseElement('input', false, $attribs));
+		return we_baseElement::getHtmlCode(new we_baseElement('input', 'selfclose', $attribs));
 	}
 
 	/**
@@ -274,7 +274,7 @@ abstract class we_html_element{
 	 */
 	static function htmlBr(){
 		static $br = 0;
-		$br = ($br ? $br : we_baseElement::getHtmlCode(new we_baseElement('br', false)));
+		$br = ($br ? $br : we_baseElement::getHtmlCode(new we_baseElement('br', 'selfclose')));
 		return $br;
 	}
 
@@ -331,7 +331,6 @@ abstract class we_html_element{
 	}
 
 	static function htmlMeta($attribs = array()){
-
 		return we_baseElement::getHtmlCode(new we_baseElement('meta', 'selfclose', $attribs));
 	}
 
@@ -371,7 +370,21 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	static function htmlApplet($attribs = array(), $content = ''){
+	static function htmlApplet(array $attribs = array(), $content = '', array $params = array()){
+		//$params['cache_archive'] = $attribs['archive']; // Applet seams not to like this param
+		$params['cache_version'] = WE_VERSION;
+		$params['type'] = 'application/x-java-applet;jpi-version=1.6.0';
+		$params['scriptable'] = 'true';
+		$params['mayscript'] = 'true';
+		$tmp = '';
+		foreach($params as $key => $value){
+			$tmp.='<param name="' . $key . '" value="' . $value . '"/>';
+		}
+		$content = $tmp . $content;
+		$attribs['MAYSCRIPT'] = '';
+		$attribs['SCRIPTABLE'] = '';
+
+
 		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
 	}
 
@@ -381,7 +394,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlParam($attribs = array()){
-		return we_baseElement::getHtmlCode(new we_baseElement('param', false, $attribs));
+		return we_baseElement::getHtmlCode(new we_baseElement('param', 'selfclose', $attribs));
 	}
 
 	/**

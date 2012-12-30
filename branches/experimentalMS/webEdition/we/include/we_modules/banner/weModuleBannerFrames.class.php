@@ -39,7 +39,7 @@ class weModuleBannerFrames{
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsScript(JS_DIR . 'md5.js');
 		?>
-		<script  type="text/javascript">
+		<script type="text/javascript"><!--
 
 			var loaded=0;
 			var hot=0;
@@ -207,6 +207,7 @@ class weModuleBannerFrames{
 			var startloc=0;
 
 			self.focus();
+			//-->
 		</script>
 		<?php
 	}

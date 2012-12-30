@@ -668,6 +668,7 @@ class we_updater{
 	}
 
 	static function updateTableKeys(){
+		//FIXME: remove this unsafe code
 		if(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys'])){
 			$myarray = $_SESSION['weS']['weBackupVars']['tablekeys'];
 			foreach($myarray as $table => $v){
@@ -794,7 +795,7 @@ class we_updater{
 		}
 		//FIXME: clean customerfilter
 		//FIXME: clean history
-
+		//FIXME: clean inconsistent objects
 	}
 
 	static function updateGlossar(){

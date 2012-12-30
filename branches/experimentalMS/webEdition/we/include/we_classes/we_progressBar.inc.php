@@ -54,7 +54,7 @@ class we_progressBar{
 	}
 
 	function getJSCode(){
-		$out = '<script  type="text/javascript"><!--
+		$out = '<script type="text/javascript"><!--
 					function setProgressText' . $this->name . '(name,text){
 						if(document.getElementById){
 							var div = document.getElementById(name);

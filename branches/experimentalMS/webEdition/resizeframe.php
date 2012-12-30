@@ -25,6 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
+print STYLESHEET;
 
 
 //	Here begins the code for showing the correct frameset.
@@ -46,11 +47,11 @@ function getSidebarWidth(){
 
 function startNormalMode(){
 	$_sidebarwidth = getSidebarWidth();
-	$_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"] : WE_TREE_DEFAULT_WIDTH;
+	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php print $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>baumFrame.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
@@ -72,7 +73,7 @@ function startEditIncludeMode(){
 
 	$we_cmds = "we_cmd[0]=edit_document&";
 
-	for($i = 1; $i < sizeof($_REQUEST['we_cmd']); $i++){
+	for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
 		$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 	}
 }
@@ -87,7 +88,7 @@ function startSEEMMode(){
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:0px;border-right:1px solid black;" id="bframeDiv">
-			<iframe frameBorder="0" src="<?php print HTML_DIR; ?>white.html" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
@@ -105,10 +106,18 @@ function startSEEMMode(){
 <script type="text/javascript"><!--
 	function we_cmd(){
 		var args = "";
-		for(var i = 0; i < arguments.length; i++){
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+		switch(arguments[0]){
+			case "loadVTab":
+				var op = top.makeFoldersOpenString();
+				parent.we_cmd("load",arguments[1],0,op,top.treeData.table);
+				break;
+			default:
+
+				for(var i = 0; i < arguments.length; i++){
+					args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+				}
+				eval('parent.we_cmd('+args+')');
 		}
-		eval('parent.we_cmd('+args+')');
 	}
 
 
@@ -128,7 +137,7 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 
 //  Open webEdition normally
 } else{
-	echo '<body style="margin:0px;border:0px none;overflow:hidden;">';
+	echo '<body style="margin:0px;border:0px none;position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow:hidden;">';
 	startNormalMode();
 	echo '</body>';
 }

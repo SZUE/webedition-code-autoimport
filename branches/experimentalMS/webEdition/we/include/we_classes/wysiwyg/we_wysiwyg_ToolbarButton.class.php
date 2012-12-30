@@ -18,7 +18,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 
 	var $classname = __CLASS__;
@@ -59,8 +58,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "caption":
 			case "removecaption":
 			case "edittable":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
-					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp() || parent::hasProp('table');
 			case "inserttable":
 			case "editcell":
 			case "insertcolumnright":
@@ -71,39 +69,36 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "deletecol":
 			case "increasecolspan":
 			case "decreasecolspan":
-				return stripos($this->editor->propstring, ",table,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('table');
 			case "editrow":
 			case "deletetable":
-				return we_wysiwyg::$editorType != 'tinyMCE' ? false : stripos($this->editor->propstring, ",table,") !== false ||
-					stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return we_wysiwyg::$editorType != 'tinyMCE' ? false : parent::hasProp() || parent::hasProp('table');
 			case "cut":
 			case "copy":
 			case "paste":
-				return stripos($this->editor->propstring, ",copypaste,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('copypaste');
 			case "pastetext":
 			case "pasteword":
 			case "selectall":
-				return we_wysiwyg::$editorType == 'tinyMCE' &&
-					(stripos($this->editor->propstring, ",copypaste,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('copypaste');
 			case "forecolor":
 			case "backcolor":
-				return stripos($this->editor->propstring, ",color,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('color');
 			case "createlink":
 			case "unlink":
-				return stripos($this->editor->propstring, ",link,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('link');
 			case "insertunorderedlist":
 			case "insertorderedlist":
 			case "indent":
 			case "outdent":
-				return stripos($this->editor->propstring, ",list,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('list');
 			case "blockquote":
-				return we_wysiwyg::$editorType == 'tinyMCE' &&
-					(stripos($this->editor->propstring, ",list,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('list');
 			case "justifyleft":
 			case "justifycenter":
 			case "justifyright":
 			case "justifyfull":
-				return stripos($this->editor->propstring, ",justify,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('justify');
 			case "bold":
 			case "italic":
 			case "underline":
@@ -112,26 +107,24 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "strikethrough":
 			case "removetags":
 			case "removeformat":
-				return stripos($this->editor->propstring, ",prop,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp() || parent::hasProp('prop');
 			case "importrtf":
-				return we_wysiwyg::$editorType == 'tinyMCE' ? false : stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return we_wysiwyg::$editorType == 'tinyMCE' ? false : parent::hasProp();
 			case "absolute":
 			case "insertlayer":
 			case "movebackward":
 			case "moveforward":
-				return we_wysiwyg::$editorType == 'tinyMCE' &&
-					(stripos($this->editor->propstring, ",layer,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('layer');
 			//TODO: we shouldcombine the following command to "insertelements": emotions,insertdate,inserttime,nonbreaking,hr,advhr,specialchar,nbsp?
 			//TODO: we should combine the following command to "direction": ltr,rtl?
 			case "abbr":
 			case "acronym":
 			case "lang":
-				(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return parent::hasProp() || parent::hasProp('xhtmlxtras');
 			case "del":
 			case "ins":
 			case "cite" :
-				return we_wysiwyg::$editorType == 'tinyMCE' &&
-					(stripos($this->editor->propstring, ",xhtmlxtras ,") !== false || stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp() || parent::hasProp('xhtmlxtras');
 			case "emotions":
 				return false; // problems with path to emoticons
 			case "insertdate":
@@ -144,10 +137,9 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case "replace":
 			case "fullscreen":
 			case "styleprops":
-				return we_wysiwyg::$editorType == 'tinyMCE' &&
-					(stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == ""));
+				return we_wysiwyg::$editorType == 'tinyMCE' && parent::hasProp();
 			default:
-				return stripos($this->editor->propstring, "," . $this->cmd . ",") !== false || ($this->editor->propstring == "");
+				return parent::hasProp();
 		}
 	}
 

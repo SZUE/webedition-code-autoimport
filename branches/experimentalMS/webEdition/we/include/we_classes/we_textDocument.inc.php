@@ -24,22 +24,13 @@
  */
 /*  a class for handling text-documents */
 class we_textDocument extends we_document{
-	/* Name of the class => important for reconstructing the class from outside the class */
-
-	var $ClassName = __CLASS__;
-
-	/* Icon which is shown at the tree-menue  */
-	var $Icon = "link.gif";
-
-	/* defines which Tabs should be shown in editor  */
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION, WE_EDITPAGE_VERSIONS);
-
 	/* Constructor */
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, "DocType",'temp_doc_type');
+		array_push($this->EditPageNrs, WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_VALIDATION, WE_EDITPAGE_VERSIONS);
 		$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
+		$this->Icon = we_base_ContentTypes::LINK_ICON;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -82,19 +73,11 @@ class we_textDocument extends we_document{
 	}
 
 	function isValidEditPage($editPageNr){
-
 		if($editPageNr == WE_EDITPAGE_VALIDATION){
-			if($this->ContentType != "text/css"){
-				return false;
-			} else{
-				return true;
-			}
+			return ($this->ContentType == "text/css");
 		}
 
-		if(is_array($this->EditPageNrs)){
-			return in_array($editPageNr, $this->EditPageNrs);
-		}
-		return false;
+		return parent::isValidEditPage($editPageNr);
 	}
 
 }

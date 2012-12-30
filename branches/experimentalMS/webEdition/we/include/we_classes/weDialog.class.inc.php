@@ -40,6 +40,7 @@ class weDialog{
 	var $JsOnly = false;
 	var $dialogWidth = 350;
 	var $charset = "";
+	var $tinyMCEPopupManagment = true;
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -71,6 +72,7 @@ class weDialog{
 	}
 
 	function initByHttp(){
+		$this->tinyMCEPopupManagment = (isset($_REQUEST["tinyMCEPopupManagment"]) && $_REQUEST["tinyMCEPopupManagment"] == "n") ? false : $this->tinyMCEPopupManagment;
 		$this->what = isset($_REQUEST["we_what"]) ? $_REQUEST["we_what"] : "";
 
 		if(isset($_REQUEST["we_dialog_args"]) && is_array($_REQUEST["we_dialog_args"])){
@@ -98,9 +100,7 @@ class weDialog{
 					$this->getFooterHTML();
 			case "cmd":
 				return $this->getCmdHTML();
-
 			default:
-
 				return $this->getHeaderHTML() .
 					$this->getFramesetHTML() .
 					$this->getBodyTagHTML() .
@@ -171,7 +171,7 @@ class weDialog{
 				}') . '
 
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
-				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
+				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '&tinyMCEPopupManagment=n" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
 				<frame src="' . HTML_DIR . 'white.html" name="we_' . $this->ClassName . '_cmd_frame" scrolling="no" noresize="noresize">
 			</frameset>';
 	}
@@ -182,6 +182,10 @@ class weDialog{
 
 	function getOkBut(){
 		return we_button::create_button("ok", "javascript:weDoOk();");
+	}
+
+	function getCancelBut(){
+		return we_button::create_button("cancel", "javascript:top.close();");
 	}
 
 	function getbackBut(){
@@ -211,8 +215,7 @@ class weDialog{
 		} else{
 			$okBut = (($this->getBackBut() != "") && ($this->getOkBut()) != "") ? we_button::create_button_table(array($this->getBackBut(), $this->getOkBut())) : (($this->getBackBut() == "") ? $this->getOkBut() : $this->getBackBut());
 		}
-
-		return we_button::position_yes_no_cancel($okBut, "", we_button::create_button("cancel", "javascript:top.close();"));
+		return we_button::position_yes_no_cancel($okBut, "", $this->getCancelBut());
 	}
 
 	function getFormHTML(){
@@ -245,12 +248,13 @@ class weDialog{
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::htmlTop($this->dialogTitle, $this->charset) .
 			(isset($this->args['editor']) && $this->args['editor'] == 'tinyMce' ? $this->getTinyMceJS() : '') .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') .
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
 			'</head>';
 	}
 
-	function getTinyMceJS(){ //called as parent::getTinyMceJS() from subclasses
+	function getTinyMceJS(){
 		return
+			we_html_element::jsElement('var isWeDialog = true;') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
@@ -334,7 +338,7 @@ class weDialog{
 	}
 
 	function getBodyTagHTML(){
-		return '<body class="weDialogBody" onUnload="doUnload()">';
+		return '<body ' . (!$this->tinyMCEPopupManagment ? 'id="weDialogInnerFrame" ' : '') . 'class="weDialogBody" onUnload="doUnload()">';
 	}
 
 	function getFooterHTML(){
@@ -359,6 +363,22 @@ class weDialog{
 							<option value="pl">pl</option>
 						</select>';
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
+	}
+
+	function getClassSelect(){
+			$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => "1", "style" => "width: 300px;"));
+			$clSelect->addOption("", g_l('wysiwyg', "[none]"));
+			$classesCSV = trim($this->args["cssclasses"], ",");
+			if(!empty($classesCSV)){
+				foreach(explode(",", $classesCSV) as $val){
+					$clSelect->addOption($val, "." . $val);
+				}
+			}
+			if(isset($this->args["class"]) && !empty($this->args["class"])){
+				$clSelect->selectOption($this->args["class"]);
+			}
+
+			return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . htmlspecialchars($classesCSV) . '" />';
 	}
 
 }

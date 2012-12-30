@@ -385,22 +385,22 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){
 <?php
 // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
+$DB_WE->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . " GROUP BY IntOrderID ORDER BY IntID DESC");
 while($DB_WE->next_record()) {
 	//added for #6786
     $style="color:black;font-weight:bold;";
-    
+
     if($DB_WE->f("DateCustomA")!='' || $DB_WE->f("DateCustomB")!='' || $DB_WE->f("DateCustomC")!='' || $DB_WE->f("DateCustomD")!='' || $DB_WE->f("DateCustomE")!='' || $DB_WE->f("DateCustomF")!='' || $DB_WE->f("DateCustomG")!='' || $DB_WE->f("DateCustomH")!='' || $DB_WE->f("DateCustomI")!='' || $DB_WE->f("DateCustomJ")!='' || $DB_WE->f("DateConfirmation")!='' || $DB_WE->f("DateShipping")!='0000-00-00 00:00:00')
         $style="color:red;";
-    
+
     if($DB_WE->f("DatePayment")!='0000-00-00 00:00:00')
         $style="color:#006699;";
 
     if( $DB_WE->f("DateCancellation")!='' || $DB_WE->f("DateFinished")!='')
         $style="color:black;";
-    
-    
-	print "  menuDaten.add(new urlEntry('link.gif','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "','".$style."'));\n";
+
+
+	print "  menuDaten.add(new urlEntry('".we_base_ContentTypes::LINK_ICON."','" . $DB_WE->f("IntOrderID") . "'," . $DB_WE->f("mdate") . ",'" . $DB_WE->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $DB_WE->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($DB_WE->f("DateShipping") > 0) ? 0 : 1) . "','".$style."'));\n";
 	if($DB_WE->f("DateShipping") <= 0){
 		//FIXME: remove eval
 		eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l' . $DB_WE->f("mdate") . '++;} else { $l' . $DB_WE->f("mdate") . ' = 1;}');
@@ -414,7 +414,7 @@ $year = (empty($_REQUEST["year"])) ? date("Y") : $_REQUEST["year"];
 for($f = 12; $f > 0; $f--){
 	$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 	$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
+	echo "menuDaten.add(new dirEntry('".we_base_ContentTypes::FOLDER_ICON."',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
 } //'".$DB_WE->f("mdate")."'
 echo "top.yearshop = '$year';";
 ?>

@@ -1,13 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_backup=array(
-	''=>'Save data of the widget last worked on',
-	''=>'Save temporary data',
-	''=>'Save the data of the WE-App',
-	''=>'The data of the widget last worked on',
-	''=>'Import data for the widget last worked on',
-	''=>'Import the data of the WE-App',
-	''=>'Attention! We strongly recommend you to perform an update repeat after restoring a backup from an <strong>older installation of webEdition</strong> (before 6.3.3)!',
 	'backup_deleted'=>'La copia de seguridad %s ha sido eliminada',
 	'backup_form'=>'Reserva desde',
 	'backup_log_exp'=>'El diario sera guardado en /webEdition/we_backup/data/lastlog.php',
@@ -44,6 +37,12 @@ $l_backup=array(
 	'error_compressing_backup'=>'An error occured while compressing the backup, so the backup could not be finished!',
 	'error_delete'=>'¡La copia de seguridad no puede ser eliminada! Intente eliminarla en la carpeta /webEdition/we_backup del servidor FTP.',
 	'error_timeout'=>'An timeout occured while creating the backup, so the backup could not be finished!',
+	
+	'export'=>array(
+		'history_data'=>'Save data of the widget last worked on',
+		'temporary_data'=>'Save temporary data',
+		'weapp'=>'Save the data of the WE-App',
+	),
 	'export_backup_log'=>'Crear diario',
 	'export_banner_data'=>'Salvar data de la pancarta',
 	'export_banner_dep'=>'Ud ha seleccionado la opción `Salvar data de la pancarta`. El data data de la pancarta necesita los documentos y por eso, `Salvar documentos y plantillas` ha sido automáticamente seleccionado.',
@@ -118,6 +117,13 @@ $l_backup=array(
 	'ftp_hint'=>'Attention! Use the Binary mode for the download by FTP if the backup file is zip compressed! A download in ASCII 	mode destroys the file, so that it cannot be recovered!',
 	'glossary_info'=>'Data from the glossary.',
 	'gzip'=>'gzip',
+	'history_info'=>'The data of the widget last worked on',
+	
+	'import'=>array(
+		'history_data'=>'Import data for the widget last worked on',
+		'temporary_data'=>'Restaurar data temporal',
+		'weapp'=>'Import the data of the WE-App',
+	),
 	'import_banner_data'=>'Restaurar data de la pancarta',
 	'import_banner_dep'=>'Ud ha seleccionado la opción `Restaurar data de la pancarta`. El data data de la pancarta necesita los documentos y por eso, `Salvar documentos y plantillas` ha sido automáticamente seleccionado.',
 	'import_binary_data'=>'Restaurar data binario',
@@ -150,7 +156,6 @@ $l_backup=array(
 	'import_shop_dep'=>'Ud ha seleccionado la opción `Restaurar data de compra`. El Módulo Compras necesita el data del cliente y por eso, `Restaurar data del cliente` ha sido automáticamente seleccionado.',
 	'import_spellchecker_data'=>'Restore spellchecker data',
 	'import_templates'=>'Importando plantillas',
-	'import_temporary_data'=>'Restaurar data temporal',
 	'import_temporary_dep'=>'Ud ha seleccionado la opción `Restaurar data temporal`. El data temporal necesita el data de los documentos y por eso, `Restaurar documentos y plantillas` ha sido automáticamente seleccionado.',
 	'import_todo_data'=>'Restaurar data de tarea\mensaje',
 	'import_todo_dep'=>'Ud ha seleccionado la opción `Restaurar data de tarea\mensaje`. El Módulo Tarea\Mensaje necesita el data del usuario y por eso, `Restaurar data del usuario` ha sido automáticamente seleccionado.',

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1){
-	if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE']==1) ){
+	if(!(isset($_REQUEST['we_dialog_args']) && isset($_REQUEST['we_dialog_args']['outsideWE']) && $_REQUEST['we_dialog_args']['outsideWE'] == 1)){
 		we_html_tools::protect();
 	}
 	$Glossary = new weGlossary();
@@ -60,15 +60,15 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 $dialog = new weAbbrDialog();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAbbrJS");
-print $dialog->getHTML();
-print $appendJS;
+print $dialog->getHTML() .
+	$appendJS;
 
 function weDoAbbrJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){	
+if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
 	WeabbrDialog.insert();
 	top.close();
-} else{	
+} else{
 	eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 	var title = document.we_form.elements["we_dialog_args[title]"].value;
 	var lang = document.we_form.elements["we_dialog_args[lang]"].value;

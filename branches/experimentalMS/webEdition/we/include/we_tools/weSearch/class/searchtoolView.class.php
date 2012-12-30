@@ -33,8 +33,8 @@ class searchtoolView extends weToolView{
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new searchtool();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'link.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'folder.gif\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::LINK_ICON . '\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new searchtoolsearch();
 		$this->searchclassExp = new searchtoolExp();
@@ -331,8 +331,7 @@ class searchtoolView extends weToolView{
 				g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
      return;
     }
-    ' . (!we_hasPerm(
-				"DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
+    ' . (!we_hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
 					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
         if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
@@ -423,11 +422,10 @@ class searchtoolView extends weToolView{
 	}
 
 	function getSearchJS($whichSearch){
-
-		$h = (we_base_browserDetect::isIE() ? 155 : 170);
 		if($whichSearch == "AdvSearch"){
-
 			$h = (we_base_browserDetect::isIE() ? 125 : 140);
+		} else{
+			$h = (we_base_browserDetect::isIE() ? 155 : 170);
 		}
 
 		$addinputRows = "";
@@ -1741,7 +1739,7 @@ class searchtoolView extends weToolView{
 
 				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset(
-							$this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "text", 380);
+							$this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
 
 				break;
 			case "TmplSearch" :
@@ -1778,7 +1776,7 @@ class searchtoolView extends weToolView{
 
 				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset(
-							$this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "text", 380);
+							$this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
 
 				break;
 		}
@@ -2264,14 +2262,10 @@ class searchtoolView extends weToolView{
 
 	function makeHeadLines($whichSearch){
 		return array(
-			array("dat" => '<a href="javascript:setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage(
-					'Text', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage(
-					'SiteTitle', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage(
-					'CreationDate', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage(
-					'ModDate', $whichSearch) . '</span>')
+			array("dat" => '<a href="javascript:setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>')
 		);
 	}
 
@@ -2299,8 +2293,7 @@ class searchtoolView extends weToolView{
 				}
 			}
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$ct = new we_base_ContentTypes();
-			$Icon = $ct->getIcon($_result[$f]["ContentType"], 'link.gif', $ext);
+			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
 
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV(
 					$_result[$f]["foundInVersions"]) : "";
@@ -2357,8 +2350,7 @@ class searchtoolView extends weToolView{
 						$content[$f][5]["version"][$k] .= "</div>";
 					}
 				}
-				$docExists = f(
-					"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
+				$docExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]), "ID", $DB_WE);
 
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == "text/webedition" || $_result[$f]["ContentType"] == "text/html" || $_result[$f]["ContentType"] == "objectFile") && we_hasPerm(
 						'PUBLISH') && $docExists != "") ? we_forms::checkbox(
@@ -2405,7 +2397,7 @@ class searchtoolView extends weToolView{
 						$imagesize = array(
 							0, 0
 						);
-						$thumbpath = IMAGE_DIR . 'icons/doclist/image.gif';
+						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='$thumbpath' border='0' />";
 						$imageViewPopup = "<img src='$thumbpath' border='0' />";
 					}
@@ -2441,15 +2433,15 @@ class searchtoolView extends weToolView{
 
 				$_defined_fields = weMetaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = sizeof($_defined_fields);
-				if($_fieldcount > 6)
+				$_fieldcount = count($_defined_fields);
+				if($_fieldcount > 6){
 					$_fieldcount = 6;
+				}
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields[$i]["tag"];
 
-					if(weContentProvider::IsBinary($_result[$f]["docID"])){
-						$DB_WE->query(
-							"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+					if(weContentProvider::isBinary($_result[$f]["docID"])){
+						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()) {
 							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);
@@ -2458,18 +2450,14 @@ class searchtoolView extends weToolView{
 				}
 
 				$content[$f][1]["dat"] = shortenPath($_result[$f]["SiteTitle"], 17);
-				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . shortenPath(
-						$_result[$f]["Text"], 20) . '</u></a>';
-				$content[$f][3]["dat"] = '<nobr>' . ($_result[$f]["CreationDate"] ? date(
-							g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>';
-				$content[$f][4]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(
-							g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>';
+				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . shortenPath($_result[$f]["Text"], 20) . '</u></a>';
+				$content[$f][3]["dat"] = '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>';
+				$content[$f][4]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>';
 				$content[$f][5]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>';
 				$content[$f][6]["dat"] = $filesize;
 				$content[$f][7]["dat"] = $imagesize[0] . " x " . $imagesize[1];
 				$content[$f][8]["dat"] = shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22);
-				$content[$f][9]["dat"] = '<span style="color:' . $fontColor . ';">' . shortenPath(
-						$_result[$f]["Text"], 30) . '</span>';
+				$content[$f][9]["dat"] = '<span style="color:' . $fontColor . ';">' . shortenPath($_result[$f]["Text"], 30) . '</span>';
 				$content[$f][10]["dat"] = shortenPath($_result[$f]["SiteTitle"], 45);
 				$content[$f][11]["dat"] = shortenPath($_result[$f]["Description"], 100);
 				$content[$f][12]["dat"] = $_result[$f]['ContentType'];
@@ -2583,9 +2571,8 @@ class searchtoolView extends weToolView{
 		}
 
 		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-              			<tr>
-
-			             <td>' . $publishButtonCheckboxAll . '</td>
+       			<tr>
+	             <td>' . $publishButtonCheckboxAll . '</td>
 					     <td style="font-size:12px;width:140px;">' . $publishButton . '</td>
 					     <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
 					     <td style="width:400px;">' . $resetButton . '</td>
@@ -2718,7 +2705,7 @@ class searchtoolView extends weToolView{
 
 			$searchInput = we_html_tools::htmlTextInput(
 					"searchAdvSearch[" . $i . "]", 30, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-						$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch['.$i.']\" ", "text", 170);
+						$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch['.$i.']\" ", "search", 170);
 
 			if(isset($this->Model->searchFieldsAdvSearch[$i])){
 				if($this->Model->searchFieldsAdvSearch[$i] == "ParentIDDoc" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDObj" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDTmpl" || $this->Model->searchFieldsAdvSearch[$i] == "Content" || $this->Model->searchFieldsAdvSearch[$i] == "Status" || $this->Model->searchFieldsAdvSearch[$i] == "Speicherart" || $this->Model->searchFieldsAdvSearch[$i] == "MasterTemplateID" || $this->Model->searchFieldsAdvSearch[$i] == "temp_template_id" || $this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type" || $this->Model->searchFieldsAdvSearch[$i] == "temp_category"){
@@ -2897,23 +2884,18 @@ class searchtoolView extends weToolView{
 			$out .= '<td  class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
 		}
 
-		$out .= '</tr></table>';
-		//FIXME: realize with tbody?
-		$out .= '<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">';
-
-		$out .= searchtoolView::tabListContent($view, $content, $class, $whichSearch);
-
-		$out .= '</div>';
+		$out .= '</tr></table>' .
+			//FIXME: realize with tbody?
+			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">' .
+			searchtoolView::tabListContent($view, $content, $class, $whichSearch) .
+			'</div>';
 
 		return $out;
 	}
 
 	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
-		if(isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist"){
-			$thisObj = new searchtoolView();
-		} else{
-			$thisObj = $this;
-		}
+		$thisObj = (isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist" ? new searchtoolView() : $this);
+
 		$x = count($content);
 		if($view == 0){
 			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
@@ -2927,34 +2909,28 @@ class searchtoolView extends weToolView{
 </colgroup>';
 
 			for($m = 0; $m < $x; $m++){
-				if($whichSearch != "doclist"){
-					$out .= '<tr>' . $thisObj->tblListRow($content[$m]) . '</tr>';
-				} else{
-					$out .= '<tr>' . searchtoolView::tblListRow($content[$m]) . '</tr>';
-				}
+				$out .= '<tr>' . ($whichSearch != "doclist" ?
+						$thisObj->tblListRow($content[$m]) :
+						searchtoolView::tblListRow($content[$m])) . '</tr>';
 			}
 			$out .= '</tbody></table>';
 		} else{
 			$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
 
 			for($m = 0; $m < $x; $m++){
-				$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">';
-				if($whichSearch != "doclist"){
-					$out .= $thisObj->tblListRowIconView($content[$m], $class, $m, $whichSearch);
-				} else{
-					$out .= searchtoolView::tblListRowIconView($content[$m], $class, $m, $whichSearch);
-				}
-
-				$out .= '</div>';
+				$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
+					($whichSearch != "doclist" ?
+						$thisObj->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
+						searchtoolView::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+					) . '</div>';
 			}
 
 			$out .= '</td></tr></table>';
 
-			if($whichSearch != "doclist"){
-				$allDivs = $thisObj->makeMouseOverDivs($x, $content, $whichSearch);
-			} else{
-				$allDivs = searchtoolView::makeMouseOverDivs($x, $content, $whichSearch);
-			}
+			$allDivs = ($whichSearch != "doclist" ?
+					$thisObj->makeMouseOverDivs($x, $content, $whichSearch) :
+					searchtoolView::makeMouseOverDivs($x, $content, $whichSearch));
+
 
 			$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
 		}
@@ -3048,9 +3024,9 @@ class searchtoolView extends weToolView{
 	}
 
 	function tblListRow($content, $class = "middlefont", $bgColor = ""){
-		$anz = sizeof($content);
+		$anz = count($content);
 		if(isset($content[0]["version"])){
-			$anz = sizeof($content) - 1;
+			$anz = count($content) - 1;
 		}
 
 		$out = '';
@@ -3060,35 +3036,24 @@ class searchtoolView extends weToolView{
 		}
 
 		if(isset($content[0]["version"])){
-			$anzahlVersions = sizeof($content[0]["version"]);
+			$anzahlVersions = count($content[0]["version"]);
 
 			foreach($content[0]["version"] as $k => $v){
-				$out .= '</tr><tr>';
-				$out .= '<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
+				$out .= '</tr><tr>
+					<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
-
-					if($f == 0){
-						$width = "width:30px;";
-					} else{
-						$width = "";
-					}
+					$width = ($f == 0 ? "width:30px;" : '');
 					$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(5, 10) . $content[$y]["version"][$k] . '</td>';
 				}
 
-				$out .= '</tr><tr>';
-				$out .= '<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
+				$out .= '</tr><tr>
+					<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
 
-					if($f == 0){
-						$width = "width:30px;";
-					} else{
-						$width = "";
-					}
-					if($y == 2){
-						$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . $content[5]["version"][$k] . '<br/></td>';
-					} else{
-						$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(1, 1) . '</td>';
-					}
+					$width = ($f == 0 ? "width:30px;" : '');
+					$out .= ($y == 2 ?
+							'<td style="font-weight:bold;font-size:11px;' . $width . '">' . $content[5]["version"][$k] . '<br/></td>' :
+							'<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(1, 1) . '</td>');
 				}
 			}
 		}
@@ -3097,15 +3062,13 @@ class searchtoolView extends weToolView{
 	}
 
 	function tblListRowIconView($content, $class = "defaultfont", $i, $whichSearch){
-		$out = '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '"><tr>';
-		$out .= '<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' . ((isset(
-				$content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td width="105" valign="top" style="line-height:20px;">';
-		$out .= '<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>';
-		$out .= '<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>';
-		$out .= '</tr></table>';
-
-		return $out;
+		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '"><tr>
+			<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
+				<td width="105" valign="top" style="line-height:20px;">
+				<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
+				<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
+				</tr></table>';
 	}
 
 	function getDirSelector($whichSearch){
@@ -3142,16 +3105,14 @@ class searchtoolView extends weToolView{
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','document.we_form.elements[\\'$folderID\\'].value','document.we_form.elements[\\'$folderPath\\'].value')
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['$folderID'].value");
 		$wecmdenc2 = we_cmd_enc("document.we_form.elements['$folderPath'].value");
-		$wecmdenc3 = '';
 		$yuiSuggest->setSelectButton(
 			we_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['$folderID'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
-		$weAutoCompleter = $yuiSuggest->getYuiFiles();
-		$weAutoCompleter .= $yuiSuggest->getHTML();
-		$weAutoCompleter .= $yuiSuggest->getYuiCode();
-
-		return $weAutoCompleter;
+		return
+			$yuiSuggest->getYuiFiles() .
+			$yuiSuggest->getHTML() .
+			$yuiSuggest->getYuiCode();
 	}
 
 }

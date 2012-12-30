@@ -306,7 +306,7 @@ class weImportUpdater extends weXMLExIm{
 			}
 
 			// update elements serialized data
-			if(isset($object->IsBinary) && $object->IsBinary != 1){
+			if($object->isBinary() != 1){
 				if($this->debug){
 					debug("Updating serialized data in elements\n");
 				}

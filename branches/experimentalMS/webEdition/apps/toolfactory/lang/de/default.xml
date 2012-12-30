@@ -128,7 +128,7 @@
 			<tuv xml:lang="de"><seg>Backup-Tabelle</seg></tuv>
 		</tu>
 		<tu tuid="The application '%s' has been succesfully saved. Please restart webEdition!">
-			<tuv xml:lang="de"><seg>Die Anwendung '%s' wurde erfolgreich gespeichert. Bitte starten Sie webEdition neu!</seg></tuv>
+			<tuv xml:lang="de"><seg>Die Anwendung wurde erfolgreich gespeichert. Bitte starten Sie webEdition neu!</seg></tuv>
 		</tu>
 		<tu tuid="Publish">
 			<tuv xml:lang="de"><seg>Aktivieren</seg></tuv>
@@ -157,6 +157,9 @@
 		<tu tuid="The application is deletable.">
 			<tuv xml:lang="de"><seg>Die Anwendung ist deinstallierbar.</seg></tuv>
 		</tu>
+		<tu tuid="The application was succesfully deleted!">
+			<tuv xml:lang="de"><seg>Die Anwendung wurde gelöscht.</seg></tuv>
+		</tu>
 		<tu tuid="The application will be deactivated.">
 			<tuv xml:lang="de"><seg>Die Anwendung wird deaktiviert!</seg></tuv>
 		</tu>
@@ -181,8 +184,14 @@
 		<tu tuid="Regenetrate TOC">
 			<tuv xml:lang="de"><seg>Generiere toc.xml neu</seg></tuv>
 		</tu>
+		<tu tuid="Install">
+			<tuv xml:lang="de"><seg>Installiere </seg></tuv>
+		</tu>
 		<tu tuid="The application toc.xml was succesfully rebuild!">
 			<tuv xml:lang="de"><seg>Das Anwendungsverzeichnis toc.xml wurde erfolgreich neu erzeugt.</seg></tuv>
+		</tu>
+		<tu tuid="Generate TGZ-File from App">
+			<tuv xml:lang="de"><seg>Erzeuge eine TGZ-Datei für die App</seg></tuv>
 		</tu>
 	</body>
 </tmx>

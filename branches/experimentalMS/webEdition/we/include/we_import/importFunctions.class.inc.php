@@ -47,7 +47,7 @@ abstract class importFunctions{
 
 		$GLOBALS['we_doc']->Extension = $extension;
 		if($filename){
-			$filename = importFunctions::correctFilename($filename);
+			$filename = self::correctFilename($filename);
 			$GLOBALS['we_doc']->Filename = $filename;
 		}
 		$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Filename . $GLOBALS['we_doc']->Extension;
@@ -55,7 +55,7 @@ abstract class importFunctions{
 		$GLOBALS['we_doc']->setParentID($parentID);
 		$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
 		// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
-		if($file_id = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . "'", "ID", $GLOBALS['DB_WE'])){
+		if(($file_id = f("SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . "'", "ID", $GLOBALS['DB_WE']))){
 			if($conflict == 'rename'){
 				$z = 0;
 				$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
@@ -167,9 +167,9 @@ abstract class importFunctions{
 	 * @param string $filename
 	 * @desc corrects the filename if it contains invalid chars
 	 */
-	static function correctFilename($filename){
+	static function correctFilename($filename,$allowPath=false){
 		$filename = str_replace(array(' ', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß'), array('-', 'ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss'), $filename);
-		$filename = preg_replace('%[^a-z0-9\._+-]%i', '', $filename);
+		$filename = preg_replace('%[^a-z0-9\._+-'.($allowPath?'/':'').']%i', '', $filename);
 		if(strlen($filename) > 100){
 			$filename = substr($filename, 0, 100);
 		}
