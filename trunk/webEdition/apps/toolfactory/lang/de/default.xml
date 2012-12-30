@@ -190,6 +190,9 @@
 		<tu tuid="The application toc.xml was succesfully rebuild!">
 			<tuv xml:lang="de"><seg>Das Anwendungsverzeichnis toc.xml wurde erfolgreich neu erzeugt.</seg></tuv>
 		</tu>
+		<tu tuid="Generate TGZ-File from App">
+			<tuv xml:lang="de"><seg>Erzeuge eine TGZ-Datei für die App</seg></tuv>
+		</tu>
 	</body>
 </tmx>
 	
