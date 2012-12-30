@@ -130,7 +130,7 @@ $_parts = array();
 
 $db = new DB_WE();
 if(isset($_REQUEST['delete'])){
-	if(DB_CONNECT=='msconnect'){;
+	if(DB_CONNECT=='msconnect'){
 		$db->query("TRUNCATE TABLE " . ERROR_LOG_TABLE . "");
 	} else {
 		$db->query('TRUNCATE TABLE `' . ERROR_LOG_TABLE . '`');

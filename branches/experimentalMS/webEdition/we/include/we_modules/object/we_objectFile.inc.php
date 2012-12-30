@@ -2069,7 +2069,8 @@ class we_objectFile extends we_document{
 				if($w == '0'){
 					$wsPath = '/';
 				}
-				$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				if(DB_CONNECT=='msconnect'){
+					$q = 'INSERT INTO ' . INDEX_TABLE . ' ' . we_database_base::arraySetterINSERT(array(
 						'OID' => $this->ID,
 						'Text' => $text,
 						'BText' => $text,
@@ -2082,6 +2083,21 @@ class we_objectFile extends we_document{
 						'Path' => $this->Text,
 						'Language' => $this->Language
 					));
+				} else {
+					$q = 'INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'OID' => $this->ID,
+						'Text' => $text,
+						'BText' => $text,
+						'Workspace' => $wsPath,
+						'WorkspaceID' => $w,
+						'Category' => $this->Category,
+						'ClassID' => $this->TableID,
+						'Title' => $this->getElement("Title"),
+						'Description' => $this->getElement("Description"),
+						'Path' => $this->Text,
+						'Language' => $this->Language
+					));
+				}
 				if(!$this->DB_WE->query($q)){
 					return false;
 				}

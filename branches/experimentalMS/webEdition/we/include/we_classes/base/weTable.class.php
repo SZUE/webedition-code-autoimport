@@ -150,16 +150,90 @@ class weTableAdv extends weTable{
 
 	function getColumns(){
 		if($this->db->isTabExist($this->table)){
-			$this->db->query("SHOW CREATE TABLE $this->table;");
-			if($this->db->next_record()){
-				$zw = explode("\n", $this->db->f("Create Table"));
-				if(TBL_PREFIX != ''){
-					$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
+			if(DB_CONNECT=='msconnect'){
+				$this->db->query("
+				declare @table varchar(100)
+set @table = 'tblContent' -- set table name here
+declare @sql table(s varchar(1000), id int identity)
+
+-- create statement
+insert into  @sql(s) values ('create table [' + @table + '] (')
+
+-- column list
+insert into @sql(s)
+select 
+    '  ['+column_name+'] ' + 
+    data_type + coalesce('('+cast(character_maximum_length as varchar)+')','') + ' ' +
+    case when exists ( 
+        select id from syscolumns
+        where object_name(id)=@table
+        and name=column_name
+        and columnproperty(id,name,'IsIdentity') = 1 
+    ) then
+        'IDENTITY(' + 
+        cast(ident_seed(@table) as varchar) + ',' + 
+        cast(ident_incr(@table) as varchar) + ')'
+    else ''
+    end + ' ' +
+    ( case when IS_NULLABLE = 'No' then 'NOT ' else '' end ) + 'NULL ' + 
+    coalesce('DEFAULT '+COLUMN_DEFAULT,'') + ','
+
+ from INFORMATION_SCHEMA.COLUMNS where table_name = @table
+ order by ordinal_position
+
+-- primary key
+declare @pkname varchar(100)
+select @pkname = constraint_name from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+where table_name = @table and constraint_type='PRIMARY KEY'
+
+if ( @pkname is not null ) begin
+    insert into @sql(s) values('  PRIMARY KEY (')
+    insert into @sql(s)
+    	select '   ['+COLUMN_NAME+'],' from INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+    	where constraint_name = @pkname
+    	order by ordinal_position
+    -- remove trailing comma
+    update @sql set s=left(s,len(s)-1) where id=@@identity
+    insert into @sql(s) values ('  )')
+end
+else begin
+    -- remove trailing comma
+    update @sql set s=left(s,len(s)-1) where id=@@identity
+end
+
+-- closing bracket
+insert into @sql(s) values( ')' )
+
+-- result!
+select s from @sql order by id
+				
+				");
+				$zw=array();
+				while($this->db->next_record()){
+					
+					
+					$zw[]=$this->db->Record[0];
+					//if(TBL_PREFIX != ''){
+					//	$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
+					//}
 				}
-			}
-			$this->elements[$this->db->f("Table")] = array('Field' => 'create');
-			foreach($zw as $k => $v){
-				$this->elements[$this->db->f("Table")]['line' . $k] = $v;
+				$this->elements[$this->db->f("Table")] = array('Field' => 'create');
+				
+				foreach($zw as $k => $v){
+					$this->elements[$this->db->f("Table")]['line' . $k] = $v;
+				}
+			} else {
+				$this->db->query("SHOW CREATE TABLE $this->table;");
+				if($this->db->next_record()){
+					$zw = explode("\n", $this->db->f("Create Table"));
+					if(TBL_PREFIX != ''){
+						$zw[0] = str_replace($this->table, stripTblPrefix($this->table), $zw[0]);
+					}
+				}
+				$this->elements[$this->db->f("Table")] = array('Field' => 'create');
+				foreach($zw as $k => $v){
+					$this->elements[$this->db->f("Table")]['line' . $k] = $v;
+				}
 			}
 		}
 		//$this->fetchNewColumns();

@@ -478,9 +478,9 @@ function getTemplatesOfTemplate($id, &$arr){
 		$GLOBALS['DB_WE']->query("SELECT ID FROM " . TEMPLATES_TABLE . " WHERE MasterTemplateID=" . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'");
 		$arrr=array();
 		while ($GLOBALS['DB_WE']->next_record()) {
-			array_push($arrr, $DB_WE->f("ID"));
+			array_push($arrr, $GLOBALS['DB_WE']->f("ID"));
 		}
-		$foo = $arrr;
+		$foo = implode(',',$arrr);
 	} else {
 		$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%'", 'IDS', $GLOBALS['DB_WE']);
 	}
@@ -802,7 +802,11 @@ function path_to_id($path, $table = FILE_TABLE){
 		return 0;
 	}
 	$db = new DB_WE();
-	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', 'ID', $db));
+	if(DB_CONNECT=='msconnect'){
+		return intval(f('SELECT  DISTINCT ID FROM ' . $db->escape($table) . " WHERE Path='" . $db->escape($path) . "'", 'ID', $db));
+	} else {
+		return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', 'ID', $db));
+	}
 }
 
 function weConvertToIds($paths, $table){

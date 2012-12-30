@@ -958,7 +958,7 @@ abstract class we_root extends we_class{
 			if($this->i_isElement($k)){
 				if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
 
-					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);t_e('$tableInfo',$tableInfo);
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$keys = array();
 					$vals = '';
 					for($i=0;$i<sizeof($tableInfo);$i++){
@@ -1045,14 +1045,15 @@ abstract class we_root extends we_class{
 						}
 					}
 					if(count($data)){
-						$data = we_database_base::arraySetterINSERT($data);
+						
 						$key = $v['type'] . '_' . $k;
 						$cid = 0;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
-							$data.=',ID=' . $cid;
+							$data['ID']=$cid;
 							unset($replace[$key]);
 						}
+						$data = we_database_base::arraySetterINSERT($data);
 						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE .  $data);
 						$cid = $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
@@ -1084,74 +1085,74 @@ abstract class we_root extends we_class{
 			
 			
 		} else {
-		
-		if(!is_array($this->elements)){
-			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
-		}
-		
-		//don't stress index:
-		$replace = $this->getLinkReplaceArray();
-		foreach($this->elements as $k => $v){
-			if($this->i_isElement($k)){
-				if((!isset($v['type']) || $v['type'] != 'vars') && (( isset($v['dat']) && $v['dat'] != '' ) || (isset($v['bdid']) && $v['bdid']) || (isset($v['ffname']) && $v['ffname']))){
-
-					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
-					$data = array();
-					foreach($tableInfo as $t){
-						$fieldName = $t['name'];
-						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
-						if($k == 'data' && $this->IsBinary){
-							break;
+			
+			if(!is_array($this->elements)){
+				return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
+			}
+			
+			//don't stress index:
+			$replace = $this->getLinkReplaceArray();
+			foreach($this->elements as $k => $v){
+				if($this->i_isElement($k)){
+					if((!isset($v['type']) || $v['type'] != 'vars') && (( isset($v['dat']) && $v['dat'] != '' ) || (isset($v['bdid']) && $v['bdid']) || (isset($v['ffname']) && $v['ffname']))){
+	
+						$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
+						$data = array();
+						foreach($tableInfo as $t){
+							$fieldName = $t['name'];
+							$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+							if($k == 'data' && $this->IsBinary){
+								break;
+							}
+							if($fieldName == 'Dat' && (isset($v['ffname']) && $v['ffname'])){
+								$v['type'] = 'formfield';
+								$val = serialize($v);
+								// Artjom garbage fix
+							}
+	
+							if(!isset($v['type']) || $v['type'] == ''){
+								$v['type'] = 'txt';
+							}
+							if($v['type'] == 'date'){
+								$val = sprintf('%016d', $val);
+							}
+							if($fieldName != 'ID'){
+								$data[$fieldName] = is_array($val) ? serialize($val) : $val;
+							}
 						}
-						if($fieldName == 'Dat' && (isset($v['ffname']) && $v['ffname'])){
-							$v['type'] = 'formfield';
-							$val = serialize($v);
-							// Artjom garbage fix
-						}
-
-						if(!isset($v['type']) || $v['type'] == ''){
-							$v['type'] = 'txt';
-						}
-						if($v['type'] == 'date'){
-							$val = sprintf('%016d', $val);
-						}
-						if($fieldName != 'ID'){
-							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
-						}
-					}
-					if(count($data)){
-						$data = we_database_base::arraySetter($data);
-						$key = $v['type'] . '_' . $k;
-						$cid = 0;
-						if(isset($replace[$key])){
-							$cid = $replace[$key];
-							$data.=',ID=' . $cid;
-							unset($replace[$key]);
-						}
-						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
-						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
-						$this->elements[$k]['id'] = $cid; // update Object itself
-						
-						
-						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
-						if(!$cid || !$this->DB_WE->query($q)){
-							//this should never happen
-							return false;
+						if(count($data)){
+							$data = we_database_base::arraySetter($data);
+							$key = $v['type'] . '_' . $k;
+							$cid = 0;
+							if(isset($replace[$key])){
+								$cid = $replace[$key];
+								$data.=',ID=' . $cid;
+								unset($replace[$key]);
+							}
+							$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
+							$cid = $cid ? $cid : $this->DB_WE->getInsertId();
+							$this->elements[$k]['id'] = $cid; // update Object itself
+							
+							
+							$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
+							if(!$cid || !$this->DB_WE->query($q)){
+								//this should never happen
+								return false;
+							}
 						}
 					}
 				}
 			}
+	
+			$replace = implode(',', $replace);
+			if($replace){
+				/* 			t_e($replace,$this);
+				  exit(); */
+				$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
+				$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
+			}
+			return true;
 		}
-
-		$replace = implode(',', $replace);
-		if($replace){
-			/* 			t_e($replace,$this);
-			  exit(); */
-			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
-			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
-		}
-		return true;
-	}
 	}
 	}
 	function i_getPersistentSlotsFromDB($felder = '*'){

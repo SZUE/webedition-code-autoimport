@@ -152,7 +152,11 @@ class we_search{
 		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
 
 		if(!empty($this->table)){
-			$this->where = (empty($where)) ? ((empty($this->where)) ? "1" : $this->where) : $where;
+			if(DB_CONNECT=='msconnect'){
+				$this->where = (empty($where)) ? ((empty($this->where)) ? "1=1" : $this->where) : $where;
+			} else {
+				$this->where = (empty($where)) ? ((empty($this->where)) ? "1" : $this->where) : $where;
+			}
 			return f('SELECT COUNT(1) as Count FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, 'Count', $this->db);
 		} else{
 			return -1;

@@ -77,8 +77,12 @@ abstract class weBackupExport{
 
 		$_keys = weTableItem::getTableKey($_table);
 		$_keys_str = implode(',', $_keys);
+		if(DB_CONNECT=='msconnect'){
+			$_db->query('SELECT TOP '.intval($lines) . $_db->escape($_keys_str) . ' FROM  (SELECT *, ROW_NUMBER() OVER (ORDER BY '.$_keys_str.') AS RowNum FROM ' . $_db->escape($_table) . ') AS MyDerivedTable WHERE MyDerivedTable.RowNum BETWEEN ' . intval($offset) . ' AND ' . intval($offset + $lines), true);
 
-		$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
+		} else {
+			$_db->query('SELECT ' . $_db->escape($_keys_str) . ' FROM  ' . $_db->escape($_table) . ' ORDER BY ' . $_keys_str . ' LIMIT ' . intval($offset) . ' ,' . intval($lines), true);
+		}
 		$_def_table = weBackupUtil::getDefaultTableName($_table);
 		$_attributes = array(
 			'table' => $_def_table

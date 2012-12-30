@@ -133,6 +133,7 @@ class we_otherDocument extends we_binaryDocument{
 		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		$text = substr(preg_replace('/  +/', ' ', $text), 0, $maxDB);
 
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
 			$set = array(
 				'DID' => intval($this->ID),
@@ -145,9 +146,14 @@ class we_otherDocument extends we_binaryDocument{
 				'Title' => $this->getElement("Title"),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			if(DB_CONNECT=='msconnect'){//delete wieder nach oben verschoben
+				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' ' . we_database_base::arraySetterINSERT($set));
+			} else {
+				return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			}
+			
 		}
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+		
 		return true;
 	}
 

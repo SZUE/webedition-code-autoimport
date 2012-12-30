@@ -166,6 +166,8 @@ class we_binaryDocument extends we_document{
 	}
 
 	function insertAtIndex(){
+		
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
@@ -187,9 +189,13 @@ class we_binaryDocument extends we_document{
 				'Title' => $this->getElement('Title'),
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path);
-			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			if(DB_CONNECT=='msconnect'){//delete wieder nach oben verschoben
+				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' ' . we_database_base::arraySetterINSERT($set));
+			} else {
+				return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			}
 		}
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+		
 		return true;
 	}
 

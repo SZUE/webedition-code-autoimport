@@ -232,7 +232,7 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 }
 
 function getVariableMax($var, $db = ''){
-	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
+	static $max = 655000; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	/* if($db == ''){
 	  $max = 1073741824 - 2048; //1MB
 	  }

@@ -111,7 +111,9 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function fetch_array($resultType){
+		//return @mssql_fetch_row($this->Query_ID);
 		return @mssql_fetch_array($this->Query_ID, $resultType);
+		//return @mssql_fetch_assoc($this->Query_ID);
 	}
 
 	/* public: position in result set */

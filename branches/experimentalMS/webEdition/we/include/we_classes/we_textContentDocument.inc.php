@@ -130,7 +130,12 @@ abstract class we_textContentDocument extends we_textDocument{
 				'Description' => $this->getElement("Description"),
 				'Path' => $this->Path,
 				'Language' => $this->Language);
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			if(DB_CONNECT=='msconnect'){
+				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' ' . we_database_base::arraySetterINSERT($set));
+			} else {
+				return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			}
+			
 		}
 		return true;
 	}

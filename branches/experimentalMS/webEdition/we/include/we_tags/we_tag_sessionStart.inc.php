@@ -138,7 +138,7 @@ function we_tag_sessionStart($attribs){
 	}
 	if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
 		if(DB_CONNECT=='msconnect'){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < '.time()-86400 .';');
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < '.(time()-86400) .';');
 		} else {
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess < DATE_SUB(NOW(), INTERVAL 1 HOUR)');
 		}
@@ -179,8 +179,8 @@ function we_tag_sessionStart($attribs){
 					'WebUserDescription' => $WebUserDescription,
 					'Browser' => $Browser,
 					'Referrer' => $Referrer,
-					'LastLogin' => 'NOW()',
-					'LastAccess' => 'NOW()',
+					'LastLogin' => date('Y-m-d H:I:s'),
+					'LastAccess' => date('Y-m-d H:I:s'),
 					'PageID' => $PageID,
 					'ObjectID' => $ObjectID,
 					'SessionAutologin' => $SessionAutologin

@@ -103,16 +103,47 @@ class weBackupPreparer{
 		$_SESSION['weS']['weBackupVars']['row_count'] = 0;
 
 		$db = new DB_WE();
-		$db->query('SHOW TABLE STATUS');
-		while($db->next_record()) {
-			// fix for object tables
-			//if(in_array($db->f('Name'),$_SESSION['weS']['weBackupVars']['tables'])) {
-			if(($name = weBackupUtil::getDefaultTableName($db->f('Name'))) !== false){
-				$_SESSION['weS']['weBackupVars']['row_count'] += $db->f('Rows');
-				$_SESSION['weS']['weBackupVars']['avgLen'][$name] = $db->f('Avg_row_length');
+		$db2 = new DB_WE();
+		if(DB_CONNECT=='msconnect'){
+			$db->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'");
+			while($db->next_record()) {
+				// fix for object tables
+				//if(in_array($db->f('Name'),$_SESSION['weS']['weBackupVars']['tables'])) {
+				if(($name = weBackupUtil::getDefaultTableName($db->f('TABLE_NAME'))) !== false){
+					$db2->query("sp_spaceused ".$db->f('TABLE_NAME'));
+					while($db2->next_record()) {
+						$rows=$db2->f('rows');
+						$_SESSION['weS']['weBackupVars']['row_count'] += $rows;
+						if($rows!=0){
+							$data=$db2->f('data');
+							$intdata= intval($data);
+							if(strpos($data,'KB')!== false){
+								$intdata=$intdata*1024;
+							} else {
+								$intdata=$intdata*1024*1024;
+							}
+							
+							$_SESSION['weS']['weBackupVars']['avgLen'][$name] = intval($intdata/$rows);
+						} else {
+							$_SESSION['weS']['weBackupVars']['avgLen'][$name] = 0;
+						}
+						
+					}
+					
+				}
+			}
+		} else {
+		
+			$db->query('SHOW TABLE STATUS');
+			while($db->next_record()) {
+				// fix for object tables
+				//if(in_array($db->f('Name'),$_SESSION['weS']['weBackupVars']['tables'])) {
+				if(($name = weBackupUtil::getDefaultTableName($db->f('Name'))) !== false){
+					$_SESSION['weS']['weBackupVars']['row_count'] += $db->f('Rows');
+					$_SESSION['weS']['weBackupVars']['avgLen'][$name] = $db->f('Avg_row_length');
+				}
 			}
 		}
-
 		include_once(WE_INCLUDES_PATH . 'we_exim/weXMLExImConf.inc.php');
 		weFile::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] && !$_SESSION['weS']['weBackupVars']['options']['compress'] ? $GLOBALS['weXmlExImProtectCode'] : '') . $GLOBALS['weXmlExImHeader']);
 

@@ -118,7 +118,7 @@ class we_objectEx extends we_object{
 				$charset_collation = ' CHARACTER SET ' . $Charset . " COLLATE " . $Collation;
 			}
 			if(DB_CONNECT=='msconnect'){
-				$DB_WE->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '". $ctable."') DROP TABLE ".OBJECT_X_TABLE . $ctable);
+				$this->DB_WE->query("IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '". $ctable."') DROP TABLE ".OBJECT_X_TABLE . $ctable);
 
 				$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q .  ')');
 				$indexeimplodes=implode(' ', $indexe);

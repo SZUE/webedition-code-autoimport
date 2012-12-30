@@ -421,13 +421,24 @@ abstract class we_database_base{
 	 * @return array all tables (named like $like)
 	 */
 	function table_names($like = ''){
-		$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
-		$return = array();
-		while($this->next_record()) {
-			$return[] = array(
-				"table_name" => $this->f(0),
-				"tablespace_name" => $this->Database,
-				"database" => $this->Database);
+		if(DB_CONNECT=='msconnect'){
+			$this->query('SELECT * FROM INFORMATION_SCHEMA.TABLES ' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
+			$return = array();
+			while($this->next_record()) {
+				$return[] = array(
+					"table_name" => $this->f('TABLE_NAME'),
+					"tablespace_name" => $this->Database,
+					"database" => $this->Database);
+			}
+		} else {
+			$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
+			$return = array();
+			while($this->next_record()) {
+				$return[] = array(
+					"table_name" => $this->f(0),
+					"tablespace_name" => $this->Database,
+					"database" => $this->Database);
+			}
 		}
 		return $return;
 	}
@@ -546,6 +557,7 @@ abstract class we_database_base{
 			//current hack: don't escape some used mysql functions
 			//FIXME: make this more robust to use internal mysql functions - e.g. functions object?
 			$escape = !(is_int($val) || is_float($val));
+			$escape=true;  //msconnect
 			if($escape){
 				switch(strtoupper($val)){
 					case 'Getdate()': //msconnect
