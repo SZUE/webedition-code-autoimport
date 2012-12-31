@@ -138,20 +138,35 @@ class we_schedpro{
 	public static function getMainJS($doc){
 		return we_html_element::jsElement('
 function checkFooter(){
-aEl=this.document.getElementsByClassName("we_schedule_active");
-active=false;
-//we_schedule_task
-//if(this.document.getElementsByName("we_schedule_task_"+nr).value == ' . self::SCHEDULE_FROM . '){}
-}
+	var button=parent.editFooter.document.getElementById("publish_'.$doc->ID.'")
+	var aEl=this.document.getElementsByClassName("we_schedule_active");
+	var active=false;
+	if(button != undefined){
+		button=button.getElementsByTagName("table")[0];
+		for( var i=0; i<aEl.length; ++i){
+			if(aEl[i].value==1){
+			var no=aEl[i].name.split("we_schedule_active_");
+			if(this.document.getElementsByName("we_schedule_task_"+no[1])[0].value== ' . self::SCHEDULE_FROM . '){
+				active=true;
+				break;
+			}
+		}
+	}
 
-//var button=parent.editFooter.document.getElementsById("publish'.$doc->ID.'")
-//	button.title="hallo";
-//button.getElementsByClassName("weBtnMiddle");
+	var textBtn=button.getElementsByClassName("weBtnMiddle")[0];
+	if(active){
+		button.title="'.g_l('button', '[saveInScheduler][alt]').'";
+		button.style.width="'.g_l('button', '[saveInScheduler][width]').'px";
+		textBtn.innerHTML="'.g_l('button', '[saveInScheduler][value]').'";
+	}else{
+		button.title="'.g_l('button', '[publish][alt]').'";
+		button.style.width="'.g_l('button', '[publish][width]').'px";
+		textBtn.innerHTML="'.g_l('button', '[publish][value]').'";
+	}
+}
+//we_schedule_task
+}
 ');
-		g_l('button', '[publish][value]');
-		g_l('button', '[publish][alt]');
-		g_l('button', '[saveInScheduler][value]');
-		g_l('button', '[saveInScheduler][alt]');
 	}
 
 	function getHTML($isobj = false){
