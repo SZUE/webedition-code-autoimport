@@ -62,7 +62,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		<?php
-			echo self::makeWriteDoc($html);
+			echo '<?php self::makeWriteDoc($html); ?>';
 		?>
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
