@@ -23,6 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_objectEx extends we_object{
+	
+	private $_ObjectBaseElements = array(
+				'ID','OF_ID','OF_ParentID','OF_Text','OF_Path','OF_Url','OF_TriggerID','OF_Workspaces','OF_ExtraWorkspaces','OF_ExtraWorkspacesSelected',
+            	'OF_Templates','OF_ExtraTemplates','OF_Category','OF_Published','OF_IsSearchable','OF_Charset','OF_WebUserID','OF_Language','variant_weInternVariantElement'
+			);
 
 	function saveToDB(){
 		$this->wasUpdate = $this->ID ? true : false;
@@ -429,10 +434,10 @@ class we_objectEx extends we_object{
 		$this->we_save();
 	}
 
-	function setOrder($order){
+	function setOrder($order,$writeToDB=false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$metadata = $this->DB_WE->metadata($ctable, true);
-		if(is_array($order)){
+		if(is_array($order) && $writeToDB){
 			$last = '';
 			foreach($order as $oval){
 				if($last == ''){
@@ -453,6 +458,65 @@ class we_objectEx extends we_object{
 				}
 			}
 		}
+		if(is_array($order) && !$writeToDB){
+			
+			$metas= array_keys($metadata['meta']);
+			$consider=array_diff($metas,$this->_ObjectBaseElements);
+			$consider=array_combine(range(0,count($consider)-1),$consider);
+			$neworder=array();
+			foreach($order as $oval){
+				$zw=  $this->getFieldPrefix($oval) . '_' . $oval;
+				if($zw){
+					$neworder[] = $zw;
+				} else {
+					t_e('warning', 'we_ObjectEx::setOrder: No Field-Prefix found in for '.$oval);
+				}
+			}	
+			if(count($neworder)!= count($consider)){
+				t_e('warning', 'we_ObjectEx::setOrder: Order-Array ('.count($neworder).': '.implode(',',$neworder).') has different length than Fields-Array('.count($consider).': '.implode(',',$consider).') ');
+			} else {
+				$neworder=array_flip($neworder);
+				$theorder=array();
+				foreach($consider as $ck => $cv){
+					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))]=$neworder[$cv];
+				}
+				$this->setElement("we_sort", $theorder);
+				$this->strOrder=implode(',',$theorder);
+				$this->saveToDB();
+			}
+		}
+	}
+	function getFieldsOrdered($withoutPrefix=false){
+		$ctable = OBJECT_X_TABLE . intval($this->ID);
+		$metadata = $this->DB_WE->metadata($ctable, true);
+		$metas= array_keys($metadata['meta']);
+		$consider=array_diff($metas,$this->_ObjectBaseElements);
+		if($withoutPrefix){
+			foreach($consider as &$value){
+				$zw=explode('_',$value,2);
+				$value=$zw[1];
+			}	
+		}
+		$consider=array_combine(explode(',',$this->strOrder),$consider);
+		ksort($consider);
+		if($withoutPrefix){}
+		return $consider;
+	}
+	function checkFields($fields){
+		$ctable = OBJECT_X_TABLE . intval($this->ID);
+		$metadata = $this->DB_WE->metadata($ctable, true);
+		$metas= array_keys($metadata['meta']);
+		$consider=array_diff($metas,$this->_ObjectBaseElements);
+		$consider=array_combine(explode(',',$this->strOrder),$consider);
+		$isOK=true;
+		foreach($fields as $field){
+			if(!in_array($field,$consider)){
+				t_e('warning', 'we_ObjectEx::checkFields: Field '.$field.' not found');
+				$isOK=false;
+			}
+		}
+		
+		return $isOK;
 	}
 
 }
