@@ -45,6 +45,17 @@ class we_object extends we_document{
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
 	}
+	
+	/* setter for runtime variable isInApp which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function setIsInApp($isInApp){
+		$this->isInApp=$isInApp;
+	}
+	/* getter for runtime variable isInApp which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function getIsInApp(){
+		return $this->isInApp;
+	}
 
 	function save(){
 		global $we_JavaScript, $we_responseText, $we_responseTextType;
@@ -75,7 +86,7 @@ class we_object extends we_document{
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
-		if(!isset($this->isInApp)){// allows to save Classes from within WE-Apps
+		if(!(isset($this->isInApp) && $this->isInApp)){// allows to save Classes from within WE-Apps
 			$we_JavaScript = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
 				$this->getUpdateTreeScript() .
 				we_main_headermenu::getMenuReloadCode('top.');

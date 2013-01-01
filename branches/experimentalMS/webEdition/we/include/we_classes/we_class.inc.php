@@ -54,6 +54,9 @@ abstract class we_class{
 
 	/* Database Object */
 	protected $DB_WE;
+	
+	/* optional ID for being able to manipulate the ID for DB inserts, requires a getter and setter */
+	protected $insertID = 0;
 
 	/* Flag which is set when the file is not new */
 	var $wasUpdate = 0;
@@ -86,6 +89,16 @@ abstract class we_class{
 
 	function init(){
 		$this->we_new();
+	}
+	
+	/* set the protected variable insertID */
+	function setInsertID($insertID){
+		$this->insertID = $insertID;
+	}
+	
+	/* get the protected variable insertID */
+	function getInsertID(){
+		return $this->insertID;
 	}
 
 	/* returns the url $in with $we_transaction appended */
@@ -518,6 +531,11 @@ abstract class we_class{
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
+		if(!$this->wasUpdate && $this->insertID){
+			if((bool) getHash('SELECT ID FROM ' . $db->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), $this->DB_WE)){
+				return false;
+			}
+		}
 		foreach($tableInfo as $info){
 
 			$fieldName = $info['name'];
@@ -530,8 +548,8 @@ abstract class we_class{
 				if($fieldName != 'ID'){
 					$fields[$fieldName] = $val;
 				}
-				if(!$this->wasUpdate && isset($this->insertID) && $fieldName == 'ID'){//for Apps to be able to manipulate Insert-ID
-					$fields['ID'] = $this->insertID;unset($this->insertID);
+				if(!$this->wasUpdate && $this->insertID && $fieldName == 'ID'){//for Apps to be able to manipulate Insert-ID
+					$fields['ID'] = $this->insertID;$this->insertID=0;
 				}
 			}
 		}

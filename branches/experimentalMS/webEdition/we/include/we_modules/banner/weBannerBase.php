@@ -34,7 +34,7 @@ abstract class weBannerBase{
 	var $table = "";
 	var $ClassName = __CLASS__;
 
-	private function __construct(){
+	protected function __construct(){
 		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
 	}
