@@ -518,5 +518,36 @@ class we_objectEx extends we_object{
 		
 		return $isOK;
 	}
+	
+	/* setter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function setIsAddFieldNoSave($isAddFieldNoSave){
+		$this->isAddFieldNoSave=$isAddFieldNoSave;
+	}
+	/* getter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function getIsAddFieldNoSave(){
+		return $this->isAddFieldNoSave;
+	}
+	/* setter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function setIsModifyFieldNoSave($isModifyFieldNoSave){
+		$this->isModifyFieldNoSave=$isModifyFieldNoSave;
+	}
+	/* getter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function getIsModifyFieldNoSave(){
+		return $this->isModifyFieldNoSave;
+	}
+	/* setter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function setIsDropFieldNoSave($isDropFieldNoSave){
+		$this->isDropFieldNoSave=$isDropFieldNoSave;
+	}
+	/* getter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function getIsDropFieldNoSave(){
+		return $this->isDropFieldNoSave;
+	}
 
 }
