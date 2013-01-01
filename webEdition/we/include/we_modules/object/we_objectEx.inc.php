@@ -497,9 +497,10 @@ class we_objectEx extends we_object{
 				$value=$zw[1];
 			}	
 		}
-		$consider=array_combine(explode(',',$this->strOrder),$consider);
-		ksort($consider);
-		if($withoutPrefix){}
+		if(!empty($consider)){
+			$consider=array_combine(explode(',',$this->strOrder),$consider);
+			ksort($consider);
+		}
 		return $consider;
 	}
 	function checkFields($fields){
