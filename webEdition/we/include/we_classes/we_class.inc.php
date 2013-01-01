@@ -532,7 +532,7 @@ abstract class we_class{
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = array();
 		if(!$this->wasUpdate && $this->insertID){
-			if((bool) getHash('SELECT ID FROM ' . $db->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), $this->DB_WE)){
+			if((bool) getHash('SELECT ID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID), $this->DB_WE)){
 				return false;
 			}
 		}
