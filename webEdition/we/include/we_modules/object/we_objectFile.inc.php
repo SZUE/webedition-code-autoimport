@@ -698,7 +698,7 @@ class we_objectFile extends we_document{
 				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr['name'] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
 			){
 				$tableInfo2[] = $arr;
-			} elseif($checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
+			} elseif(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
 				$variantdata = $arr;
 			}
 		}
