@@ -36,13 +36,15 @@ $svgPre = '<defs>
   </defs>';
 
 $svg = array(
-	'normal' => $svgPre . '<rect fill="url(#gradAct#ID#)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
-    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
+	'normal' => $svgPre . '<rect fill="url(#gradAct#ID#)" width="17px" height="83px"/>
+	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<rect width="18px" fill="black" height="1px" />',
 	'active' => '<rect fill="#f3f7ff" width="19px" height="83px"/>
- <path style="fill:none;stroke:darkgrey;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 19,83 h-19 v83 h19"/>
-    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
-	'disabled' => $svgPre . '<rect fill="url(#gradDis#ID#)" width="19px" height="83px" stroke="darkgrey" stroke-width="1px"/>
-    <text  style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="14px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>',
+	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<rect width="18px" fill="black" height="1px" />',
+	'disabled' => $svgPre . '<rect fill="url(#gradDis#ID#)" width="17px" height="83px"/>
+	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<rect width="18px" fill="black" height="1px" />',
 );
 
 $vtab = array(
@@ -68,7 +70,7 @@ $vtab = array(
 		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/v-tabs/classes",
 		'show' => defined("OBJECT_TABLE") && (we_hasPerm("CAN_SEE_OBJECTS") || we_hasPerm("ADMINISTRATOR")),
 		'size' => array(19, 83),
-		'desc' => g_l('javaMenu_object', '[class]'),
+		'desc' => g_l('javaMenu_object', '[classes]'),
 	)
 );
 foreach($vtab as $key => &$val){
@@ -160,8 +162,7 @@ print implode(',', $tmp);
 	}
 	//-->
 </script>
-
-<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;text-decoration:none ">
+<div style="position:absolute;top:8px;left:5px;z-index:10;<?php $useSvg ? "border-top:1px solid black;" : "border-left:1px solid black;border-bottom:1px solid black;" ?>border-left:1px solid black;border-bottom:1px solid black;text-decoration:none ">
 	<script type="text/javascript"><!--
 		for (var i=0; i<we_tabs.length;i++) {
 			we_tabs[i].write();
