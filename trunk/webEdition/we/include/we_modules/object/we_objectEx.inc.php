@@ -473,14 +473,15 @@ class we_objectEx extends we_object{
 				}
 			}	
 			if(count($neworder)!= count($consider)){
-if(count($neworder)> count($consider)){
+				if(count($neworder)> count($consider)){
 					$thedifference= array_diff($neworder,$consider);
 					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has larger length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
 				} else {
 					$thedifference= array_diff($consider,$neworder);
 					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has smaller length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
 	
-				}			} else {
+				}
+			} else {
 				$neworder=array_flip($neworder);
 				$theorder=array();
 				foreach($consider as $ck => $cv){
@@ -504,7 +505,12 @@ if(count($neworder)> count($consider)){
 			}	
 		}
 		if(!empty($consider)){
-			$consider=array_combine(explode(',',$this->strOrder),$consider);
+			$countarray=explode(',',$this->strOrder);
+			if($count($countarray)!=count($consider)){
+				t_e('warning', 'we_ObjectEx::getFieldsOrdered: '.$ctable.' ('.$this->Text.') Different Field count, resetting Order');
+				$this->resetOrder();
+			}
+			$consider=array_combine($countarray,$consider);
 			ksort($consider);
 		}
 		return $consider;
