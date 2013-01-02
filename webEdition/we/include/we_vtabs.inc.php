@@ -38,13 +38,13 @@ $svgPre = '<defs>
 $svg = array(
 	'normal' => $svgPre . '<rect fill="url(#gradAct#ID#)" width="17px" height="83px"/>
 	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
-	<rect width="18px" fill="black" height="1px" />',
+	<rect width="18px" fill="#a9a9a9" height="1px" />',
 	'active' => '<rect fill="#f3f7ff" width="19px" height="83px"/>
 	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
-	<rect width="18px" fill="black" height="1px" />',
+	<rect width="18px" fill="#a9a9a9" height="1px" />',
 	'disabled' => $svgPre . '<rect fill="url(#gradDis#ID#)" width="17px" height="83px"/>
 	<text style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;' . (we_base_browserDetect::isUNIX() ? 'font-size:12px;font-family:Liberation Sans' : 'font-size:11px;font-family:Verdana') . '" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
-	<rect width="18px" fill="black" height="1px" />',
+	<rect width="18px" fill="#a9a9a9" height="1px" />',
 );
 
 $vtab = array(
@@ -162,7 +162,7 @@ print implode(',', $tmp);
 	}
 	//-->
 </script>
-<div style="position:absolute;top:8px;left:5px;z-index:10;<?php $useSvg ? "border-top:1px solid black;" : "border-top:1px solid black;border-bottom:1px solid black;" ?>border-left:1px solid black;border-bottom:1px solid black;text-decoration:none ">
+<div style="position:absolute;top:8px;left:5px;z-index:10;<?php print $useSvg ? "border-left:1px solid #909090;border-bottom:1px solid #909090;" : "border-top:1px solid black;" ?>text-decoration:none ">
 	<script type="text/javascript"><!--
 		for (var i=0; i<we_tabs.length;i++) {
 			we_tabs[i].write();
