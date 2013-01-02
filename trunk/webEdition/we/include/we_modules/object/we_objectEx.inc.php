@@ -509,6 +509,7 @@ class we_objectEx extends we_object{
 			if($count($countarray)!=count($consider)){
 				t_e('warning', 'we_ObjectEx::getFieldsOrdered: '.$ctable.' ('.$this->Text.') Different Field count, resetting Order');
 				$this->resetOrder();
+				$countarray=explode(',',$this->strOrder);
 			}
 			$consider=array_combine($countarray,$consider);
 			ksort($consider);
