@@ -506,7 +506,7 @@ class we_objectEx extends we_object{
 		}
 		if(!empty($consider)){
 			$countarray=explode(',',$this->strOrder);
-			if($count($countarray)!=count($consider)){
+			if(count($countarray)!=count($consider)){
 				t_e('warning', 'we_ObjectEx::getFieldsOrdered: '.$ctable.' ('.$this->Text.') Different Field count, resetting Order');
 				$this->resetOrder();
 				$countarray=explode(',',$this->strOrder);
