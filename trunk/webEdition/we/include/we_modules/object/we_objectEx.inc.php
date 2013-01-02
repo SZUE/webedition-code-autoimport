@@ -469,7 +469,7 @@ class we_objectEx extends we_object{
 				if($zw){
 					$neworder[] = $zw;
 				} else {
-					t_e('warning', 'we_ObjectEx::setOrder: No Field-Prefix found in for '.$oval);
+					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' No Field-Prefix found in for '.$oval);
 				}
 			}	
 			if(count($neworder)!= count($consider)){
@@ -518,7 +518,7 @@ if(count($neworder)> count($consider)){
 		$isOK=true;
 		foreach($fields as $field){
 			if(!in_array($field,$consider)){
-				t_e('warning', 'we_ObjectEx::checkFields: Field '.$field.' not found');
+				t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' Field '.$field.' not found');
 				$isOK=false;
 			}
 		}
