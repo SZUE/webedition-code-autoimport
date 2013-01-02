@@ -454,7 +454,7 @@ class we_objectEx extends we_object{
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
 				} else{
-					t_e('warning', 'we_ObjectEx::setOrder '.$ctable.' Field not found: Field: ' . $ovalname);
+					t_e('warning', 'we_ObjectEx::setOrder '.$ctable.' ('.$this->Text.') Field not found: Field: ' . $ovalname);
 				}
 			}
 		}
@@ -469,16 +469,16 @@ class we_objectEx extends we_object{
 				if($zw){
 					$neworder[] = $zw;
 				} else {
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' No Field-Prefix found in for '.$oval);
+					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  No Field-Prefix found in for '.$oval);
 				}
 			}	
 			if(count($neworder)!= count($consider)){
 if(count($neworder)> count($consider)){
 					$thedifference= array_diff($neworder,$consider);
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' Order-Array ('.count($neworder).') has larger length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
+					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has larger length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
 				} else {
 					$thedifference= array_diff($consider,$neworder);
-					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' Order-Array ('.count($neworder).') has smaller length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
+					t_e('warning', 'we_ObjectEx::setOrder: '.$ctable.' ('.$this->Text.')  Order-Array ('.count($neworder).') has smaller length than generated Fields Array ('.count($consider).'), Missing: ('.implode(',',$thedifference).') Order-Array:('.implode(',',$neworder).') Fields-Array:('.implode(',',$consider).') ');
 	
 				}			} else {
 				$neworder=array_flip($neworder);
@@ -518,7 +518,7 @@ if(count($neworder)> count($consider)){
 		$isOK=true;
 		foreach($fields as $field){
 			if(!in_array($field,$consider)){
-				t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' Field '.$field.' not found');
+				t_e('warning', 'we_ObjectEx::checkFields: '.$ctable.' ('.$this->Text.')  Field '.$field.' not found');
 				$isOK=false;
 			}
 		}
