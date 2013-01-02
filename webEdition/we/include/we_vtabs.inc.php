@@ -162,7 +162,7 @@ print implode(',', $tmp);
 	}
 	//-->
 </script>
-<div style="position:absolute;top:8px;left:5px;z-index:10;<?php $useSvg ? "border-top:1px solid black;" : "border-left:1px solid black;border-bottom:1px solid black;" ?>border-left:1px solid black;border-bottom:1px solid black;text-decoration:none ">
+<div style="position:absolute;top:8px;left:5px;z-index:10;<?php $useSvg ? "border-top:1px solid black;" : "border-top:1px solid black;border-bottom:1px solid black;" ?>border-left:1px solid black;border-bottom:1px solid black;text-decoration:none ">
 	<script type="text/javascript"><!--
 		for (var i=0; i<we_tabs.length;i++) {
 			we_tabs[i].write();
