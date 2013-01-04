@@ -245,14 +245,14 @@ abstract class we_textContentDocument extends we_textDocument{
 				break;
 			case we_class::LOAD_SCHEDULE_DB :
 				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
-				if($sessDat){
-					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
+				if($sessDat &&
+					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;
 					break;
-				} else{ // take tmp db, when doc not in schedule db
-					$this->we_load(we_class::LOAD_TEMP_DB);
-				}
+				} // take tmp db, when doc not in schedule db
+				$this->we_load(we_class::LOAD_TEMP_DB);
+
 				break;
 		}
 		$this->OldPath = $this->Path;

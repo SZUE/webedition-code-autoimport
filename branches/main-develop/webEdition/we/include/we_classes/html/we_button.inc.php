@@ -166,7 +166,7 @@ class we_button{
 
 		// Check height
 		if($height == -1){
-			$height = 22;
+			$height = self::HEIGHT;
 		}
 
 		/**

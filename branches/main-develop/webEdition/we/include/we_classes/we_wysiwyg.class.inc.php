@@ -132,14 +132,10 @@ class we_wysiwyg{
 
 		if($inlineedit){
 			if($value){
-				$replace = (self::$editorType == 'tinyMCE' ?
-						array("\n" => '', "\r" => '') :
-						array("\\" => "\\\\", "\n" => '\n', "\r" => '\r')
-					);
-				$value = strtr($value, $replace);
 				if(self::$editorType == 'tinyMCE'){
 					//FIXME: what to do with scripts??
 				}else{
+					$value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
 					$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
 					$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
 					$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
@@ -1382,7 +1378,7 @@ function tinyMCECallRegisterDialog(win,action){
 							'
 						. (!$this->removeFirstParagraph ? '' : '
 							ed.onPostProcess.add(function(ed, o) {
-								o.content = o.content.replace(/<p[^>]+>|<p>/, "").replace(/<\/p>/, "");
+								o.content = o.content.replace(/<p [^>]*>|<p>/, "").replace(/<\/p>/, "");
 							});') . '
 
 							/* set EditorFrame.setEditorIsHot(true) */

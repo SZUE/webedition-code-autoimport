@@ -32,7 +32,7 @@ print STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>
-<body  class="weEditorBody" onunload="doUnload()">
+<body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">
 	<form name="we_form" onsubmit="return false"><?php
 echo we_class::hiddenTrans();
 
@@ -55,6 +55,7 @@ $parts[] = array(
 	'space' => 0
 );
 print we_multiIconBox::getJS() .
+	we_schedpro::getMainJS($we_doc) .
 	we_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 ?>
 	</form>

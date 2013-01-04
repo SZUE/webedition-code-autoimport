@@ -464,7 +464,9 @@ class we_imageDocument extends we_binaryDocument{
 
 			//  Here we generate the image-tag
 			//   attribs for the image tag
-			$attribs['src'] = $src;
+			$attribs = array(
+				'src' => $src
+			);
 
 			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid'); //  dont use these array-entries
 
@@ -488,14 +490,15 @@ class we_imageDocument extends we_binaryDocument{
 				$attribs['alt'] = '';
 			}
 
-			foreach($this->nextElement('attrib') as $k => $v){
+			while((list($k, $v) = $this->nextElement('attrib'))) {
 				if(!in_array($k, $filter)){
 					if($v['dat'] != ''){
 						$attribs[$k] = $v['dat'];
 					}
 				}
 			}
-			//  If needed - js output for rollover.
+
+//  If needed - js output for rollover.
 
 			if(isset($attribs['only'])){
 				$this->html = (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');

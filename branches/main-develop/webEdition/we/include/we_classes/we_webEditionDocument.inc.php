@@ -742,14 +742,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->ClassName . "' AND Was=" . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
-				if($sessDat){
-					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)));
+				if($sessDat &&
+					$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 					$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners');
 					break;
-				} else{
-					$from = we_class::LOAD_TEMP_DB;
-					//no break;
 				}
+				$from = we_class::LOAD_TEMP_DB;
+			//no break;
 			default:
 				parent::we_load($from);
 				$this->setTemplatePath();
@@ -1054,15 +1053,17 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * called when document is initialized from inside webEdition
 	 * @param mixed $sessDat
 	 */
-	function i_initSerializedDat($sessDat){
-		if(is_array($sessDat)){
-			parent::i_initSerializedDat($sessDat);
-			if(defined('SHOP_TABLE')){
-				if($this->canHaveVariants()){
-					$this->initVariantDataFromDb();
-				}
+	protected function i_initSerializedDat($sessDat){
+		if(!is_array($sessDat)){
+			return false;
+		}
+		parent::i_initSerializedDat($sessDat);
+		if(defined('SHOP_TABLE')){
+			if($this->canHaveVariants()){
+				$this->initVariantDataFromDb();
 			}
 		}
+		return true;
 	}
 
 	/**

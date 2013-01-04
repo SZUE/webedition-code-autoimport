@@ -38,7 +38,7 @@ function pWebEdition_Tree(){
 function pWebEdition_JSFunctions(){
 	?>
 	function toggleBusy(w) {/* => removed since no header animation anymore
-	if(w == busy || firstLoad==false){
+/*	if(w == busy || firstLoad==false){
 	return;
 	}
 	if(self.header){

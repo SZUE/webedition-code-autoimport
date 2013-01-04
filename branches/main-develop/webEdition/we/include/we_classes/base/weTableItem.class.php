@@ -50,10 +50,6 @@ class weTableItem extends weModelBase{
 			$this->$key = $val;
 		}
 		parent::load();
-		// remove binary content
-		if($this->table == CONTENT_TABLE && weContentProvider::isBinary(f('SELECT DID FROM ' . LINK_TABLE . ' WHERE CID=' . $ids[0], 'DID', $this->db))){
-			$this->Dat = '';
-		}
 	}
 
 	function getTableKey($table){

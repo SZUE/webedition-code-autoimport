@@ -45,7 +45,7 @@ function pWebEdition_JSFunctions(){
 	}
 
 	function toggleBusy(w) {/* => removed since no header animation anymore
-	if(w == busy)
+/*	if(w == busy)
 	return;
 	if(self.header) {
 	if(self.header.toggleBusy) {

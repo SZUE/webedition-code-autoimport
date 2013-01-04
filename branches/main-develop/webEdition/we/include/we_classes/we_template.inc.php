@@ -30,7 +30,7 @@ class we_template extends we_document{
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
 	var $IncludedTemplates = "";
-	private $doUpdateCode = true;
+	var $doUpdateCode = true; // will be protected in later WE Versions
 
 	const TemplateHead = '<?php we_templateHead();?>';
 	const TemplatePreContent = '<?php we_templatePreContent();?>';
@@ -597,9 +597,16 @@ class we_template extends we_document{
 		@eval('$att = array(' . $attribs . ');');
 		return $att;
 	}
-
+	
+	/* setter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
 	function setDoUpdateCode($doUpdateCode = true){
 		$this->doUpdateCode = $doUpdateCode;
+	}
+	/* getter for runtime variable doUpdateCode which allows save a class without rebuilding everything -> for later rebuild */
+	/* do not access this variable directly, in later WE Versions, it will be protected */
+	function getDoUpdateCode(){
+		return $this->doUpdateCode;
 	}
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){

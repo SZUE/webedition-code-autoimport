@@ -576,7 +576,7 @@ $l_buttons_global=array(
 		'width'=>120,
 	),
 	'save'=>array(
-		'alt'=>'Save',
+		'alt'=>'Enregistrer',
 		'value'=>'Enregistrer',
 		'width'=>100,
 	),
