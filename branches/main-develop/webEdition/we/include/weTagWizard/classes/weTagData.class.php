@@ -241,10 +241,10 @@ class weTagData{
 		foreach($this->UsedAttributes as $attribute){
 			$class = get_class($attribute);
 			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && $class != 'weTagData_linkAttribute' && $class != 'weTagData_cmdAttribute'){
-				$attr[] = $attribute->getName().'=""';
+				$attr[] = $attribute->getName();
 			}
 		}
-		return (empty($attr) ? '' : '\'' . implode('\',\'', $attr) . '\'');
+		return $attr;;
 	}
 
 	/**

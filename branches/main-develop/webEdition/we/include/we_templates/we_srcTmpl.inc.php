@@ -461,6 +461,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 			}
 
 			function we_getCodeMirror2Tags($css){
+				//FIXME: this should only be loaded once! not for every document opened!
 				$ret = '';
 				$allWeTags = weTagWizard::getExistingWeTags();
 				foreach($allWeTags as $tagName){
@@ -472,108 +473,486 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 					if($css){
 						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
 					} else{
-						$allTags[] = 'we:' . $tagName;
-						$attr = $weTag->getAttributesForCM();
-						$ret.='CodeMirror.weHints["<we:' . $tagName . ' "] = [' . $attr . '];' . "\n";
+						$allTags['we:' . $tagName] = array('norm' => $weTag->getAttributesForCM());
 					}
 				}
+
 				if(!$css){
 					$allTags = array_merge($allTags, array(
-						'a',
-						'abbr',
-						'acronym',
-						'address',
-						'applet',
-						'area',
-						'b',
-						'base',
-						'basefont',
-						'bdo',
-						'big 	 ',
-						'blockquote',
-						'body',
-						'br',
-						'button',
-						'caption',
-						'center',
-						'cite',
-						'code',
-						'col',
-						'colgroup',
-						'dd 	 ',
-						'del',
-						'dfn',
-						'dir',
-						'div',
-						'dl',
-						'dt',
-						'em',
-						'fieldset',
-						'font',
-						'form',
-						'frame',
-						'frameset',
-						'h1',
-						'h2',
-						'h3',
-						'h4',
-						'h5',
-						'h6',
-						'head',
-						'hr',
-						'html',
-						'i',
-						'iframe',
-						'img',
-						'input',
-						'ins',
-						'isindex',
-						'kbd',
-						'label',
-						'legend',
-						'li',
-						'link',
-						'map',
-						'menu',
-						'meta',
-						'noframes',
-						'noscript',
-						'object',
-						'ol',
-						'optgroup',
-						'option',
-						'p',
-						'param',
-						'pre',
-						'q',
-						's',
-						'samp',
-						'script',
-						'select',
-						'small',
-						'span',
-						'strike',
-						'strong',
-						'style',
-						'sub',
-						'sup',
-						'table',
-						'tbody',
-						'td',
-						'textarea',
-						'tfoot',
-						'th',
-						'thead',
-						'title',
-						'tr',
-						'tt',
-						'u',
-						'ul',
-						'var',
-						'!doctype',
-						'?php',
+						'a' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup', 'onblur', 'onfocus',),
+							'norm' => array('accesskey', 'charset', 'coords', 'href', 'hreflang', 'name', 'rel', 'rev', 'shape', 'tabindex', 'target', 'type'),
+						),
+						'abbr' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'acronym' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'address' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'applet' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'area' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'b' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'base' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'basefont' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'bdo' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'big' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'blockquote' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'body' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'br' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'button' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'caption' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'center' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'cite' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'code' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'col' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'colgroup' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'dd' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'del' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'dfn' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'dir' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'div' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'dl' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'dt' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'em' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'fieldset' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'font' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'form' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'frame' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'frameset' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h1' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h2' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h3' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h4' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h5' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'h6' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'head' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'hr' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'html' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'i' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'iframe' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'img' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'input' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'ins' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'isindex' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'kbd' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'label' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'legend' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'li' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'link' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'map' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'menu' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'meta' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'noframes' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'noscript' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'object' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'ol' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'optgroup' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'option' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'p' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'param' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'pre' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'q' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						's' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'samp' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'script' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'select' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'small' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'span' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'strike' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'strong' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'style' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'sub' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'sup' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'table' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'tbody' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'td' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'textarea' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'tfoot' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'th' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'thead' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'title' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'tr' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'tt' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'u' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'ul' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'var' => array(
+							'default' => array('class', 'id', 'style', 'title', 'dir', 'lang'),
+							'js' => array('onclick', 'ondblclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmousemove', 'onmouseout', 'onkeypress', 'onkeydown', 'onkeyup'),
+							'norm' => array(),
+						),
+						'!doctype' => array(
+						),
+						'?php' => array(
+						),
 						));
-					$ret.='CodeMirror.weHints["<"] = ["' . implode('","', $allTags) . '"];' . "\n";
+					$ret.='CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
+					foreach($allTags as $tagName => $cur){
+						$attribs = array();
+						foreach($cur as $type => $attribList){
+							//use type to determine what is switched off
+							foreach($attribList as $attr){
+								$attribs[] = '\'' . $attr . '=""\'';
+							}
+						}
+						if(!empty($attribs)){
+							sort($attribs);
+							$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+						}
+					}
 				}
 				return $ret;
 			}
