@@ -88,11 +88,11 @@ class we_base_browserDetect{
 						self::$br = self::IE;
 						self::$v = $regs[1];
 					} else
-					if(preg_match('/konqueror\/(.*)$/i', trim($brArr[1]), $regs)){
+					if(preg_match('/konqueror\/(.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs)){
 						self::$br = self::KONQUEROR;
 						self::$v = $regs[1];
 					} else
-					if(preg_match('/galeon\/(.*)$/i', trim($brArr[1]), $regs)){
+					if(preg_match('/galeon\/(.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs)){
 						self::$br = self::UNKNOWN;
 						self::$v = $regs[1];
 					} else{
