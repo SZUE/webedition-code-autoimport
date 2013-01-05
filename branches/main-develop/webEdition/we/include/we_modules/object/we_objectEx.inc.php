@@ -505,16 +505,15 @@ class we_objectEx extends we_object{
 			}	
 		}
 		if(!empty($consider)){
-			$countarray=explode(',',$this->strOrder);
-			if(count($countarray)!=count($consider)){
-				t_e('warning', 'we_ObjectEx::getFieldsOrdered: '.$ctable.' ('.$this->Text.') Different Field count, resetting Order');
-				$this->resetOrder();
-				$countarray=explode(',',$this->strOrder);
+			$consider=array_values($consider);
+			$akeys=explode(',',$this->strOrder);
+			$order=array();
+			foreach($akeys as $k => $v){
+				$order[]=$consider[$v];
 			}
-			$consider=array_combine($countarray,$consider);
-			ksort($consider);
+			return $order;
 		}
-		return $consider;
+		return false;
 	}
 	function checkFields($fields){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);

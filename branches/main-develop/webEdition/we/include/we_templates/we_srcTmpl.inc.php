@@ -1051,7 +1051,7 @@ var CMoptions = { //these are the CodeMirror options
 	workDelay: 800,
 	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
 	lineWrapping:' . ((isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? 'true' : 'false') . ',
-	autoCloseTags: true,
+	autoCloseTags: true, // use object with indentTags to indent these tags
 	autofocus: true,
 	extraKeys: {' . (true || $_SESSION['prefs']['editorCodecompletion'] ? '
 							  "\' \'": function(cm) { CodeMirror.weHint(cm, \' \'); },
