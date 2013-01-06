@@ -319,10 +319,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		//msconnect
-		//if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
-		//	$version->save($this);
-		//}
+		if(($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
+			$version->save($this);
+		}
 
 		/* hook */
 		if($skipHook == 0){
@@ -373,13 +372,12 @@ abstract class we_textContentDocument extends we_textDocument{
 		//FIXME: check this is needed because of filename change (is checked somewhere else) + customerfilter change (not checked yet)
 		$this->rewriteNavigation();
 //		}
-		//msconnect
-		/*
-		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
+
+		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
 			$version = new weVersions();
 			$version->save($this, 'published');
 		}
-		*/
+
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('publish', '', array($this));
@@ -416,13 +414,11 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->rewriteNavigation();
 
 		/* version */
-		//msconnect
-		/*
-		if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
+		if(($this->ContentType == "text/webedition" && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == "text/html" && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML)){
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
-		*/
+
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('unpublish', '', array($this));

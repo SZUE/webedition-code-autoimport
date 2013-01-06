@@ -67,8 +67,7 @@ class we_base_browserDetect{
 		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
 			$pre = $regs[1];
 			//$mid = $regs[2];
-			$bracket = $regs[3];
-			$bracket = str_replace(array('(', ')'), '', $bracket);
+			$bracket = str_replace(array('(', ')'), '', $regs[3]);
 			$brArr = explode(';', $bracket);
 			$post = $regs[4];
 
@@ -85,15 +84,15 @@ class we_base_browserDetect{
 						self::$br = self::JAVA;
 						self::$v = $java[1];
 					} else
-					if(preg_match('/msie (.*)$/i', trim($brArr[1]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined...
+					if(preg_match('/msie (.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined...
 						self::$br = self::IE;
 						self::$v = $regs[1];
 					} else
-					if(preg_match('/konqueror\/(.*)$/i', trim($brArr[1]), $regs)){
+					if(preg_match('/konqueror\/(.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs)){
 						self::$br = self::KONQUEROR;
 						self::$v = $regs[1];
 					} else
-					if(preg_match('/galeon\/(.*)$/i', trim($brArr[1]), $regs)){
+					if(preg_match('/galeon\/(.*)$/i', trim(isset($brArr[1])?$brArr[1]:$brArr[0]), $regs)){
 						self::$br = self::UNKNOWN;
 						self::$v = $regs[1];
 					} else{
@@ -262,7 +261,7 @@ class we_base_browserDetect{
 	static function isWin(){
 		return self::inst()->getSystem() == self::SYS_WIN;
 	}
-	
+
 	static function getIEVersion(){
 		return self::isIE() ? intval(trim(self::$v)) : -1;
 	}

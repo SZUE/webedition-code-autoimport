@@ -28,7 +28,7 @@ CREATE TABLE tblPrefs (
   debug_normal tinyint  NOT NULL default '0',
   debug_seem tinyint  NOT NULL default '0',
   editorFontname varchar(255) NOT NULL default '',
-  editorFontsize tinyint NOT NULL default '0',
+  editorFontsize int NOT NULL default '0',
   editorFont tinyint  NOT NULL default '0',
   default_tree_count smallint  NOT NULL default '0',
   xhtml_show_wrong tinyint  NOT NULL default '0',
@@ -60,7 +60,7 @@ CREATE TABLE tblPrefs (
   editorTooltips tinyint  NOT NULL default '1',
   editorTooltipFont tinyint  NOT NULL default '0',
   editorTooltipFontname varchar(255) NOT NULL default 'none',
-  editorTooltipFontsize tinyint NOT NULL default '-1',
+  editorTooltipFontsize int NOT NULL default '-1',
   editorDocuintegration tinyint  NOT NULL default '1',
   PRIMARY KEY (userID)
 ) 

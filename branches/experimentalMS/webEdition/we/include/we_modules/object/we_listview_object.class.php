@@ -301,8 +301,9 @@ if($pid_tail=='1'){$pid_tail='1=1';}
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(empty($_val) || $_val == '_') // bug #4657
+			if(empty($_val) || $_val==' ' || $_val == '_'){ // bug #4657   //msconnect das $_val==' ' 
 				continue;
+			}
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':

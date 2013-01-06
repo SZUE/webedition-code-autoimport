@@ -2265,44 +2265,55 @@ if(window.onload) {
 
 			// Build db select box
 			$_db_connect = new we_html_select(array("name" => "newconf[DB_CONNECT]", "class" => "weSelect"));
-			if(function_exists('mysql_connect')){
-				$_db_connect->addOption('connect', "connect");
-				$_db_connect->addOption('pconnect', "pconnect");
+			if(DB_CONNECT=='msconnect'){
+				$_db_connect->addOption('msconnect', "msconnect");
+			} else {
+			
+				if(function_exists('mysql_connect')){
+					$_db_connect->addOption('connect', "connect");
+					$_db_connect->addOption('pconnect', "pconnect");
+				}
+				if(class_exists('mysqli', false)){
+					$_db_connect->addOption('mysqli_connect', "mysqli_connect");
+					$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
 			}
-			if(class_exists('mysqli', false)){
-				$_db_connect->addOption('mysqli_connect', "mysqli_connect");
-				$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
 			}
 			$_db_connect->selectOption(DB_CONNECT);
 
-			// Build db charset select box
-			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
-			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), 1, 240, false, 40) . "<br/>";
+			
+			if(DB_CONNECT=='msconnect'){
+				$charsets = array('latin1');
+			} else {
+				
+				// Build db charset select box
+				$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
+				$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), 1, 240, false, 40) . "<br/>";
+				$_db_set_charset = new we_html_select(array("name" => "newconf[DB_SET_CHARSET]", "class" => "weSelect"));
 
-			$_db_set_charset = new we_html_select(array("name" => "newconf[DB_SET_CHARSET]", "class" => "weSelect"));
+			
 
-			$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
-
-			$charsets = array('');
-			while($GLOBALS['DB_WE']->next_record()) {
-				$charsets[] = $GLOBALS['DB_WE']->f('Charset');
-			}
-			sort($charsets);
-			foreach($charsets as $charset){
-				$_db_set_charset->addOption($charset, $charset);
-			}
-
-			if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
-				$_db_set_charset->selectOption(DB_SET_CHARSET);
-			} else{
-				$tmp = $GLOBALS['DB_WE']->getCurrentCharset();
-				if($tmp){
-					$_db_set_charset->selectOption($tmp);
-					$_file = &$GLOBALS['config_files']['conf_global']['content'];
-					$_file = we_base_preferences::changeSourceCode('define', $_file, 'DB_SET_CHARSET', $tmp);
+				$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
+	
+				$charsets = array('');
+				while($GLOBALS['DB_WE']->next_record()) {
+					$charsets[] = $GLOBALS['DB_WE']->f('Charset');
+				}
+				sort($charsets);
+				foreach($charsets as $charset){
+					$_db_set_charset->addOption($charset, $charset);
+				}
+	
+				if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
+					$_db_set_charset->selectOption(DB_SET_CHARSET);
+				} else{
+					$tmp = $GLOBALS['DB_WE']->getCurrentCharset();
+					if($tmp){
+						$_db_set_charset->selectOption($tmp);
+						$_file = &$GLOBALS['config_files']['conf_global']['content'];
+						$_file = we_base_preferences::changeSourceCode('define', $_file, 'DB_SET_CHARSET', $tmp);
+					}
 				}
 			}
-
 			// Generate needed JS
 			$_needed_JavaScript .= we_html_element::jsElement("
 							function set_state_auth() {
@@ -2388,22 +2399,40 @@ if(window.onload) {
 			$phpLocalScopeHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[phpLocalScope_information]'), 2, 240, false) . "<br/>" .
 				$PHPLOCALSCOPE->getHtml();
 
-
-			$_settings = array(
-				array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
-				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
-				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
-				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
-				array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1),
-				array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1),
-				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
-				array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200),
-				array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200),
-				array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200),
-				array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200),
-				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
-				array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
-			);
+			if(DB_CONNECT=='msconnect'){
+				$_settings = array(
+					array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
+					array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
+					array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
+					array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200),
+					array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200),
+					array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200),
+					array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200),
+					array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
+					array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
+				);
+				
+			} else {
+				
+				$_settings = array(
+					array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200),
+					array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
+					array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
+					array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1),
+					array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
+					array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200),
+					array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200),
+					array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), "space" => 200),
+					array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200),
+					array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
+					array("headline" => g_l('prefs', '[phpLocalScope]'), "html" => $phpLocalScopeHtml, "space" => 200),
+				);
+			}
 			// Build dialog element if user has permission
 			return create_dialog("", g_l('prefs', '[tab_system]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 

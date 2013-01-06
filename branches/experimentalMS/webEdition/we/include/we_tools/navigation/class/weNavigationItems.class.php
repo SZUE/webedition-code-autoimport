@@ -72,7 +72,7 @@ class weNavigationItems{
 
 		$this->items = array();
 		$_navigation = unserialize($_SESSION['weS']['navigation_session']);
-
+t_e('$_navigation',$_navigation);
 		$this->rootItem = $_navigation->ID;
 
 		// set defaultTemplates

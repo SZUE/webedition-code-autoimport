@@ -63,7 +63,7 @@ class weNavigationItem{
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
-		$this->text = (isset($display) && !empty($display) && $display != $text) ? $display : $text;
+		$this->text = (isset($display) && !empty($display) && $display != '' && $display != $text) ? $display : $text;
 		$this->display = $display;
 		$this->docid = $docid;
 		$this->table = $table;

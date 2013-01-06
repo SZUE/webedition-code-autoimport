@@ -81,14 +81,22 @@ class we_docSelector extends we_dirSelector{
 				$wsQuery = ' OR RestrictOwners=0 ';
 			}
 		}
-
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-			makeOwnersSql() . ')' .
-			$wsQuery . ')' .
-			$filterQuery . //$publ_q.
-			($this->order ? (' ORDER BY ' . $this->order) : '')
-		);
-
+		if(DB_CONNECT=='msconnect'){
+			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1=1 ' .
+				makeOwnersSql() . ')' .
+				$wsQuery . ')' .
+				$filterQuery . //$publ_q.
+				($this->order ? (' ORDER BY ' . $this->order) : '')
+			);
+		
+		} else {
+			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
+				makeOwnersSql() . ')' .
+				$wsQuery . ')' .
+				$filterQuery . //$publ_q.
+				($this->order ? (' ORDER BY ' . $this->order) : '')
+			);
+		}
 		if($this->table == FILE_TABLE){
 			$titleQuery = new DB_WE();
 			$titleQuery->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ParentID=" . intval($this->dir) . " AND b.Name='Title'");
@@ -101,7 +109,7 @@ class we_docSelector extends we_dirSelector{
 				$_path = dirname($_path);
 			}
 			$_db = new DB_WE();
-			$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE PATH='" . $_db->escape($_path) . "'", "ID", $_db);
+			$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", "ID", $_db);
 			$this->titleName = f("SELECT DefaultTitle FROM " . OBJECT_TABLE . " WHERE ID=" . intval($_cid), "DefaultTitle", $_db);
 			if($this->titleName && strpos($this->titleName, '_')){
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=" . intval($this->dir));

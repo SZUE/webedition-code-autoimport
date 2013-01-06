@@ -471,7 +471,7 @@ class weContentProvider{
 	}
 
 	static function isBinary($id){
-		return f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%'", 'a', new DB_WE());
+		return f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='image/*' OR ContentType LIKE 'application/%'", 'a', new DB_WE()) === '1';
 	}
 
 	static function getCDATA($data){

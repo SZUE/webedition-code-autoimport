@@ -422,7 +422,7 @@ abstract class we_database_base{
 	 */
 	function table_names($like = ''){
 		if(DB_CONNECT=='msconnect'){
-			$this->query('SELECT * FROM INFORMATION_SCHEMA.TABLES ' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
+			$this->query('SELECT * FROM INFORMATION_SCHEMA.TABLES ' . (($like != '') ? " LIKE '" . $like . "'" : ''));
 			$return = array();
 			while($this->next_record()) {
 				$return[] = array(

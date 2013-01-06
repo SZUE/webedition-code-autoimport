@@ -97,11 +97,9 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
 					foreach($workspaces as &$cur){
 						// get workspaces
-						$a = makeArrayFromCSV($DB_WE->f($cur['key']));
+						$a = explode(',', trim($DB_WE->f($cur['key']), ','));
 						foreach($a as $k => $v){
-							if(!in_array($v, $cur['value'])){
-								$cur['value'][] = $v;
-							}
+							$cur['value'][] = $v;
 						}
 						$cur['parent'] = $DB_WE->f($cur['parentKey']);
 					}
@@ -109,20 +107,18 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 					while($pid) { //	For each group
 						$_userGroups[] = $pid;
 
-						$db_tmp->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
-						if($db_tmp->next_record()){
-							$pid = $db_tmp->f('ParentID');
+						$row=getHash('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid),$db_tmp);
+						if(!empty($row)){
+							$pid = $row['ParentID'];
 							foreach($workspaces as &$cur){
 								if($cur['parent']){
 									// get workspaces
-									$a = makeArrayFromCSV($DB_WE->f($cur['key']));
+									$a = explode(',', trim($row[$cur['key']], ','));
 									foreach($a as $k => $v){
-										if(!in_array($v, $cur['value'])){
-											$cur['value'][] = $v;
-										}
+										$cur['value'][] = $v;
 									}
 								}
-								$cur['parent'] = $DB_WE->f($cur['parentKey']);
+								$cur['parent'] = $row[$cur['parentKey']];
 							}
 							unset($cur);
 						} else{
@@ -134,10 +130,10 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				$_SESSION['user']['workSpace'] = array();
 
 				foreach($workspaces as $key => $cur){
-					$_SESSION['user']['workSpace'][$key] = $cur['value'];
+					$_SESSION['user']['workSpace'][$key] = array_unique(array_filter($cur['value']));
 				}
 				
-
+				
 				$exprefs = getHash('SELECT * FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($_userdata['ID']), $DB_WE, MYSQL_ASSOC);
 				
 				if(is_array($exprefs) && (isset($exprefs['userID']) && $exprefs['userID'] != 0) && sizeof($exprefs) > 0){

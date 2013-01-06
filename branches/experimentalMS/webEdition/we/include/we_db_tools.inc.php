@@ -60,7 +60,11 @@ function doUpdateQuery($DB_WE, $table, $hash, $where){
 			$fn[$fieldName] = $hash[$fieldName];
 		}
 	}
-	return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
+	if(DB_CONNECT=='msconnect'){
+		return $DB_WE->query('UPDATE ' . $table . ' SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
+	} else {
+		return $DB_WE->query('UPDATE `' . $table . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
+	}
 }
 
 function escape_sql_query($inp){

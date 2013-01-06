@@ -269,7 +269,7 @@ class searchtoolsearch extends we_search{
 		$titles = array();
 		$_db2 = new DB_WE();
 		//first check published documents
-		$_db2->query('"SELECT a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'");
+		$_db2->query('SELECT a.DID FROM ' . LINK_TABLE . ' a LEFT JOIN ' . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'");
 		while($_db2->next_record()) {
 			$titles[] = $_db2->f('DID');
 		}

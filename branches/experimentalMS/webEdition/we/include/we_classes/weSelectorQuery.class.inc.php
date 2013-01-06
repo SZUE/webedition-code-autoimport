@@ -350,7 +350,9 @@ class weSelectorQuery{
 				$userExtraSQL .= ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
 			}
 		} else{
-			$userExtraSQL.=' OR RestrictOwners=0 ';
+			if($table != USER_TABLE){
+				$userExtraSQL.=' OR RestrictOwners=0 ';
+			}
 		}
 		return $userExtraSQL . ')';
 	}

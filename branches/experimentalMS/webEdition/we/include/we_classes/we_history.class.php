@@ -47,6 +47,7 @@ abstract class we_history{
 	}
 
 	static function insertIntoHistory(&$object, $action = 'save'){
+		/*
 		$db = new DB_WE();
 		$table = $db->escape(stripTblPrefix($object->Table));
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
@@ -71,6 +72,7 @@ abstract class we_history{
 				'UserName' => $_username,
 			)));
 		}
+		*/
 		
 	}
 

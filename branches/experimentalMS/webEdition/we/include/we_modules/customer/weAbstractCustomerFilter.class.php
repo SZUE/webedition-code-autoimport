@@ -139,7 +139,7 @@ abstract class weAbstractCustomerFilter{
 	 *
 	 * @return boolean
 	 */
-	function customerHasFilterAccess(){
+	private function customerHasFilterAccess(){
 
 		if(in_array($_SESSION["webuser"]["ID"], $this->_blackList)){
 			return false;
@@ -163,13 +163,20 @@ abstract class weAbstractCustomerFilter{
 		$_conditions = array();
 
 		$_flag = false;
+		$invalidFields = array();
 		foreach($this->_filter as $_filter){
-			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == 'AND' ? ' && ' : ' || ') : '') . sprintf(
-					$_filter_op[$_filter["operation"]], self::quote4Eval($_SESSION["webuser"][$_filter["field"]]), self::quote4Eval($_filter["value"])
-			);
+			if(!isset($_SESSION["webuser"][$_filter["field"]])){
+				$invalidFields[] = $_filter["field"];
+				continue;
+			}
+			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == 'AND' ? ' && ' : ' || ') : '') .
+				sprintf($_filter_op[$_filter["operation"]], self::quote4Eval($_SESSION["webuser"][$_filter["field"]]), self::quote4Eval($_filter["value"]));
 			$_flag = true;
 		}
 
+		if(!empty($invalidFields)){
+			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
+		}
 		$_hasPermission = false;
 		eval('if (' . implode('', $_conditions) . ') { $_hasPermission = true; }');
 

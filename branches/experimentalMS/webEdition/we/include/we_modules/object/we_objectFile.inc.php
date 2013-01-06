@@ -706,7 +706,7 @@ class we_objectFile extends we_document{
 				(!defined('WE_SHOP_VARIANTS_ELEMENT_NAME') || $arr['name'] != 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME )
 			){
 				$tableInfo2[] = $arr;
-			} elseif($checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
+			} elseif(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $checkVariants && $arr['name'] == 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME){
 				$variantdata = $arr;
 			}
 		}
@@ -2249,13 +2249,11 @@ class we_objectFile extends we_document{
 		$a = $this->i_saveTmp();
 
 // version
-		//msconnect
-		/*
-		if($this->ContentType == "objectFile"){
+		if($this->ContentType == "objectFile" && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new weVersions();
 			$version->save($this);
 		}
-		*/
+
 		if(LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblObjectFile', false, true);
 		} else{
@@ -2435,13 +2433,11 @@ class we_objectFile extends we_document{
 		}
 
 		/* version */
-		//msconnect
-		/*
-		if($this->ContentType == 'objectFile'){
+		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new weVersions();
 			$version->save($this, 'unpublished');
 		}
-		*/
+
 		/* hook */
 		if($skipHook == 0){
 			$hook = new weHook('unpublish', '', array($this));
