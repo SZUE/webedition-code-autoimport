@@ -6,7 +6,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID bigint(20) unsigned NOT NULL auto_increment,
   ParentID bigint(20) unsigned NOT NULL default '0',
   Path varchar(2000) NOT NULL default '',
-  Published int(11) unsigned NOT NULL DEFAULT '1',
+  Published tinyint(1) unsigned NOT NULL DEFAULT '1',
   Text varchar(800) NOT NULL default '',
   Display varchar(800) NOT NULL default '',
   ContentType enum('weNavigation') NOT NULL default 'weNavigation',
