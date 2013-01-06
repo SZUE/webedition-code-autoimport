@@ -20,12 +20,11 @@
 .weTag, .cm-weTag{ font-weight:bold;color:#ff8a00;}
 .weTagAttribute, .cm-weTagAttribute{color:grey;}
 .weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
-	cursor: pointer;
 	position: absolute;
 	z-index: 10;
 	white-space: normal;
-	max-width: 20em;
-	background: rgba(0, 0, 0,1);
+	max-width: 40em;
+	background: rgba(0, 0, 0, 0.85);
 	padding: 3px 7px;
 	color: #FFF;
 	border-radius: 3px;
@@ -42,6 +41,10 @@
 	border: outset 1px;
 	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 	border-radius: 3px;
+}
+
+.CodeMirror pre {
+		z-index: auto;
 }
 
 .activeline {

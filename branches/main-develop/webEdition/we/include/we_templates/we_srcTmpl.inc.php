@@ -465,10 +465,6 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 				$ret = '';
 				$allWeTags = weTagWizard::getExistingWeTags();
 				foreach($allWeTags as $tagName){
-					$GLOBALS['TagRefURLName'] = strtolower($tagName);
-					if(isset($weTag)){
-						unset($weTag);
-					}
 					$weTag = weTagData::getTagData($tagName);
 					if($css){
 						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET'])) . '";}';
