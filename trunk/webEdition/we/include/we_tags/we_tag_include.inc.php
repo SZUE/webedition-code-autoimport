@@ -116,6 +116,9 @@ function we_tag_include($attribs, $content){
 			$nint = $name . "_we_jkhdsf_int";
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
+			if($int && $intID){
+				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0','ContentType', $db);
+			}
 		}
 	}
 
