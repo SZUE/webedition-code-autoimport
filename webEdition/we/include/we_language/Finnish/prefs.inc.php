@@ -276,6 +276,7 @@ $l_prefs=array(
 	'tab_cache'=>'Välimuisti',
 	'tab_cockpit'=>'Pika-aloitus',
 	'tab_countries'=>'Countries',
+	'tab_defaultAttribs'=>'we:tag defaults',
 	'tab_editor'=>'Editori',
 	'tab_email'=>'E-Mail',
 	'tab_error_handling'=>'Virhekäsittely',
