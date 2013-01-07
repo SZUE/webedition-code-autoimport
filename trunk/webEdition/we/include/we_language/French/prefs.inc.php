@@ -276,6 +276,7 @@ $l_prefs=array(
 	'tab_cache'=>'Cache',
 	'tab_cockpit'=>'Cockpit',
 	'tab_countries'=>'Pays',
+	'tab_defaultAttribs'=>'we:tag defaults',
 	'tab_editor'=>'Editeur',
 	'tab_email'=>'Email',
 	'tab_error_handling'=>'Traitement des Erreurs',
