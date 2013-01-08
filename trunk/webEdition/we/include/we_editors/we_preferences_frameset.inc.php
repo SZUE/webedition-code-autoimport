@@ -45,11 +45,11 @@ function we_cmd() {
 END_OF_SCRIPT;
 foreach($GLOBALS['tabs'] as $name => $perm){
 	if(empty($perm) || we_hasPerm($perm)){
-		$_javascript.='case "'.$name.'":'."\n";
+		$_javascript.='case "' . $name . '":' . "\n";
 	}
 }
 foreach($GLOBALS['tabs'] as $name => $perm){
-	$_javascript.="content.document.getElementById('setting_".$name."').style.display = 'none';";
+	$_javascript.="content.document.getElementById('setting_" . $name . "').style.display = 'none';";
 }
 
 $_javascript .= "

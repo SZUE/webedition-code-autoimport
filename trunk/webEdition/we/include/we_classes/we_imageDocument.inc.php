@@ -230,11 +230,11 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = $this->Path;
+			$src = BASE_IMG . $this->Path;
 		}
 
 		if(!$src_over){
-			$src_over = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+			$src_over = BASE_IMG . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
 		}
 
 		if(!$this->getElement('name')){
@@ -249,7 +249,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
-		/**
+	/**
 	 * @return array
 	 * @desc returns the rollover attribs as array
 	 */
@@ -351,7 +351,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 					break;
 				case 'obj':
 					$id = $this->getElement('ObjID');
-
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else{
@@ -405,6 +404,7 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
+				($this->getElement('LinkType') == 'int' ? BASE_IMG : '') .
 				$img_path;
 
 
@@ -441,9 +441,6 @@ we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 
 
 			$this->resetElements();
-
-
-
 
 			//  Here we generate the image-tag
 			//   attribs for the image tag

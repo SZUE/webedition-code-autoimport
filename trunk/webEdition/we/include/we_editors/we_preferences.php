@@ -1182,7 +1182,9 @@ function build_dialog($selected_setting = 'ui'){
 
 			$HIDENAMEATTRIBINWEFORM_DEFAULT->selectOption(get_value("HIDENAMEATTRIBINWEFORM_DEFAULT") ? 1 : 0);
 
-
+			$BASE_IMG = we_html_tools::htmlTextInput("newconf[BASE_IMG]", 22, get_value('BASE_IMG'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
+			$BASE_CSS = we_html_tools::htmlTextInput("newconf[BASE_CSS]", 22, get_value('BASE_CSS'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
+			$BASE_JS = we_html_tools::htmlTextInput("newconf[BASE_JS]", 22, get_value('BASE_JS'), "", 'placeholder="http://example.org"', "url", 225, 0, "");
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[default_php_setting]'), "html" => $WE_PHP_DEFAULT->getHtml(), "space" => 200),
@@ -1191,6 +1193,9 @@ function build_dialog($selected_setting = 'ui'){
 				array("headline" => g_l('prefs', '[showinputs_default]'), "html" => $SHOWINPUTS_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweimg_default]'), "html" => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), "space" => 200),
 				array("headline" => g_l('prefs', '[hidenameattribinweform_default]'), "html" => $HIDENAMEATTRIBINWEFORM_DEFAULT->getHtml(), "space" => 200),
+				array("headline" => g_l('prefs', '[base][img]'), "html" => $BASE_IMG, "space" => 200, "noline" => 1),
+				array("headline" => g_l('prefs', '[base][css]'), "html" => $BASE_CSS, "space" => 200, "noline" => 1),
+				array("headline" => g_l('prefs', '[base][js]'), "html" => $BASE_JS, "space" => 200),
 			);
 
 
