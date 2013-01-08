@@ -27,25 +27,25 @@ function we_tag_img($attribs){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute("name", $attribs);
-	$startid = weTag_getAttribute("startid", $attribs);
-	$parentid = weTag_getAttribute("parentid", $attribs, "0");
-	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
+	$name = weTag_getAttribute('name', $attribs);
+	$startid = weTag_getAttribute('startid', $attribs);
+	$parentid = weTag_getAttribute('parentid', $attribs, '0');
+	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 	//FIXME: wtf is showthumbcontrol?! what does it do?
-	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, false, true);
-	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
-	$showinputs = weTag_getAttribute("showinputs", $attribs, SHOWINPUTS_DEFAULT, true);
+	$showThumb = weTag_getAttribute('showthumbcontrol', $attribs, false, true);
+	$showimage = weTag_getAttribute('showimage', $attribs, true, true);
+	$showinputs = weTag_getAttribute('showinputs', $attribs, SHOWINPUTS_DEFAULT, true);
 
 	//$attribs = removeAttribs($attribs, array('name', 'xmltype','to','nameto'));
 
 
 
-	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-	$id = $id ? $id : weTag_getAttribute("id", $attribs);
+	$id = $id ? $id : weTag_getAttribute('id', $attribs);
 
-	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
-		$id = weTag_getAttribute("id", $attribs);
+	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute('id', $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		$id = weTag_getAttribute('id', $attribs);
 		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
 		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
@@ -153,7 +153,7 @@ function we_tag_img($attribs){
 		}
 		if($showThumb){ //  only when wanted
 			$db = new DB_WE();
-			$db->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
+			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
 				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' . "\n";
 				$thumbnails .= '<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>' . "\n";
@@ -185,7 +185,6 @@ function we_tag_img($attribs){
 			$_editButton = we_button::create_button(
 					"image:btn_edit_image", "javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )");
 		}
-		//"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
 
