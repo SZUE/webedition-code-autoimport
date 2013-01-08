@@ -17,6 +17,12 @@ $l_prefs=array(
 	'backup_slow'=>'Langsam',
 	'backwardcompatibility'=>'Abwärtskompatibilität',
 	'backwardcompatibility_tagloading'=>'Lade alle `alten` we_tag Funktionen',
+	
+	'base'=>array(
+		'css'=>'CSS Basis-URL',
+		'img'=>'Bilder Basis-URL',
+		'js'=>'JS Basis-URL',
+	),
 	'blocked_until'=>'Geblockt bis',
 	'blockFormmail'=>'Formmail Anfragen begrenzen',
 	'blockFor'=>'Blockieren für',
@@ -285,15 +291,16 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 		'error_handling'=>'Fehlerbehandlung',
 		'extensions'=>'Dateierweiterungen',
 		'language'=>'Sprachen',
+		'message_reporting'=>'Benachrichtigungen',
 		'modules'=>'Module',
 		'proxy'=>'Proxy Server',
+		'recipients'=>'Formmail',
 		'seolinks'=>'SEO-Links',
 		'system'=>'System',
 		'ui'=>'Oberfläche',
 		'validation'=>'Validierung',
 		'versions'=>'Versionierung',
 	),
-	'tab_formmail'=>'Formmail',
 	'tab_glossary'=>'Glossar',
 	'taglinks_directoryindex_hide'=>'Voreinstellung für Tags',
 	'taglinks_objectseourls'=>'Voreinstellung für Tags',
@@ -358,4 +365,4 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'xhtml_show_wrong_js_html'=>'Als JavaScript-Meldung',
 	'xhtml_show_wrong_text_html'=>'Als Text',
 	'yes'=>'ja',
-); 
+);
