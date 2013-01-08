@@ -358,4 +358,4 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'xhtml_show_wrong_js_html'=>'Als JavaScript-Meldung',
 	'xhtml_show_wrong_text_html'=>'Als Text',
 	'yes'=>'ja',
-);
+); 

@@ -23,6 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
+$GLOBALS['tabs'] = array(
+	'ui'=>'',
+	'extensions'=>'EDIT_SETTINGS_DEF_EXT',
+	'editor'=>'',
+	'proxy'=>'ADMINISTRATOR',
+	'defaultAttribs'=>'ADMINISTRATOR',
+	'advanced'=>'ADMINISTRATOR',
+	'system'=>'ADMINISTRATOR',
+	'seolinks'=>'ADMINISTRATOR',
+	'modules'=>'ADMINISTRATOR',
+	'language'=>'ADMINISTRATOR',
+	'countries'=>'ADMINISTRATOR',
+	'error_handling'=>'ADMINISTRATOR',
+	'backup'=>'ADMINISTRATOR',
+	'validation'=>'ADMINISTRATOR',
+	'email'=>'ADMINISTRATOR',
+	'message_reporting'=>'',
+	'recipients'=>'FORMMAIL',
+	'versions'=>'ADMINISTRATOR',
+);
 
 $GLOBALS['configs'] = array(
 // Create array for needed configuration variables

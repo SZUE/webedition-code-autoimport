@@ -27,6 +27,7 @@
  * *************************************************************************** */
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_header.inc.php');
+include_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
@@ -38,84 +39,22 @@ $tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST
 $_javascript = <<< END_OF_SCRIPT
 
 function we_cmd() {
-	var url = "/webEdition/we/include/we_editors/we_preferences.php?";
+	//var url = "/webEdition/we/include/we_editors/we_preferences.php?";
 
 	switch (arguments[0]) {
-		case "ui":
-		case "editor":
-		case "message_reporting":
 END_OF_SCRIPT;
-
-if(we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE")){
-	$_javascript .= "
-		case \"cache\":";
+foreach($GLOBALS['tabs'] as $name => $perm){
+	if(empty($perm) || we_hasPerm($perm)){
+		$_javascript.='case "'.$name.'":'."\n";
+	}
 }
-
-if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-	$_javascript .= "
-		case \"extensions\":";
+foreach($GLOBALS['tabs'] as $name => $perm){
+	$_javascript.="content.document.getElementById('setting_".$name."').style.display = 'none';";
 }
-
-if(we_hasPerm("EDIT_SETTINGS_DEF_EXT")){
-	$_javascript .= "
-		case \"recipients\":";
-}
-
-if(we_hasPerm("ADMINISTRATOR")){
-	$_javascript .= "
-		case \"proxy\":
-		case \"advanced\":
-		case \"system\":
-		case \"seolinks\":
-		case \"error_handling\":
-		case \"backup\":
-		case \"validation\":
-		case \"language\":
-		case \"countries\":
-		case \"active_integrated_modules\":
-		case \"versions\":
-		case \"email\":";
-}
-
-if(we_hasPerm("FORMMAIL")){
-	$_javascript .= "
-		case \"recipients\":";
-}
-
-//if (we_hasPerm("ADMINISTRATOR") && defined("OBJECT_TABLE")) {
-//	$_javascript .=	"
-//		case \"modules\":";
-//}
-
-$_javascript .= <<< END_OF_SCRIPT
-			content.document.getElementById('setting_ui').style.display = 'none';
-			content.document.getElementById('setting_extensions').style.display = 'none';
-			content.document.getElementById('setting_editor').style.display = 'none';
-			content.document.getElementById('setting_recipients').style.display = 'none';
-			content.document.getElementById('setting_proxy').style.display = 'none';
-			content.document.getElementById('setting_advanced').style.display = 'none';
-			content.document.getElementById('setting_system').style.display = 'none';
-			content.document.getElementById('setting_seolinks').style.display = 'none';
-			content.document.getElementById('setting_error_handling').style.display = 'none';
-			//content.document.getElementById('setting_modules').style.display = 'none';
-			content.document.getElementById('setting_backup').style.display = 'none';
-			content.document.getElementById('setting_validation').style.display = 'none';
-			content.document.getElementById('setting_language').style.display = 'none';
-			content.document.getElementById('setting_countries').style.display = 'none';
-			content.document.getElementById('setting_message_reporting').style.display = 'none';
-			content.document.getElementById('setting_active_integrated_modules').style.display = 'none';
-			content.document.getElementById('setting_email').style.display = 'none';
-			content.document.getElementById('setting_versions').style.display = 'none';
-
-			content.document.getElementById('setting_' + arguments[0]).style.display = '';
-
-			break;
-END_OF_SCRIPT;
-/* 				$menu = str_replace("\n", '"+"', addslashes($menu->getHTML(false)));
-  return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
- */
 
 $_javascript .= "
+			content.document.getElementById('setting_' + arguments[0]).style.display = '';
+			break;
 	}
 }
 self.focus();
