@@ -1220,7 +1220,6 @@ function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
 				if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				t_e($reg,$foo,$text);
 				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 			} else{
 				$text = preg_replace(array(
