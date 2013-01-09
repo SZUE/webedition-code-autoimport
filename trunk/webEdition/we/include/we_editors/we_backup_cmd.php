@@ -295,9 +295,9 @@ if(isset($_REQUEST['cmd'])){
 			} else{
 				if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
 					$oldPercent = 0;
-					$tmp = intval($_SESSION['weS']['weBackupVars']['backup_steps'] / 5);
+					$tmp = 1;//intval($_SESSION['weS']['weBackupVars']['backup_steps'] / 5);
 					for($i = 0; $i < $tmp; ++$i){
-						if(!weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], 5/* $_SESSION['weS']['weBackupVars']['backup_steps'] */, $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log'])){
+						if(!weBackupImport::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], /*5*/ $_SESSION['weS']['weBackupVars']['backup_steps'] , $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log'])){
 							break;
 						}
 						$percent = weBackupUtil::getImportPercent();
