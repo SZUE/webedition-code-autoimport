@@ -75,14 +75,14 @@ abstract class we_textContentDocument extends we_textDocument{
 
 			if($this->ContentType == 'text/webedition'){
 				// dont save not needed fields in index-table: @bugfix 8798
-				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
-				$fieldTypes["Title"] = "txt";
-				$fieldTypes["Description"] = "txt";
-				$fieldTypes["Keywords"] = "txt";
+				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
+				$fieldTypes['Title'] = 'txt';
+				$fieldTypes['Description'] = 'txt';
+				$fieldTypes['Keywords'] = 'txt';
 			}
 
 			$this->resetElements();
-			while(list($k, $v) = $this->nextElement('')) {
+			while((list($k, $v) = $this->nextElement(''))) {
 				$_dat = (isset($v["dat"]) && is_string($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : (isset($v["dat"]) ? $v["dat"] : "");
 				if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)){
 					foreach($fieldTypes as $name => $val){
@@ -104,8 +104,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$text = trim(strip_tags($text));
 
-		$maxDB = getMaxAllowedPacket($this->DB_WE) - 1024;
-		$maxDB = min(1000000, $maxDB);
+		$maxDB = min(1000000, getMaxAllowedPacket($this->DB_WE) - 1024);
 		if(strlen($text) > $maxDB){
 			$text = substr($text, 0, $maxDB);
 		}
