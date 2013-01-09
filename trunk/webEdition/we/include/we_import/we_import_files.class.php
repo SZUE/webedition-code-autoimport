@@ -365,8 +365,8 @@ function checkButtons(){
 			$foldAt = -1;
 		}
 		$wepos = weGetCookieVariable("but_weimportfiles");
-		$content = we_multiIconBox::getJS();
-		$content .= we_multiIconBox::getHTML(
+		$content = we_multiIconBox::getJS() .
+			we_multiIconBox::getHTML(
 				"weimportfiles", "99%", $parts, 30, "", $foldAt, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos == "down"), g_l('importFiles', "[step1]"));
 		$startsrceen = we_html_element::htmlDiv(
 				array(
