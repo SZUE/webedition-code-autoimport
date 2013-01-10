@@ -35,7 +35,7 @@ class weBackupImport{
 		} else{
 			$data = $GLOBALS['weXmlExImHeader'];
 		}
-		self::$mem = memory_get_usage();
+//		self::$mem = memory_get_usage();
 		weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
 
 		if(!weBackupFileReader::readLine($filename, $data, $offset, $lines, 0, $iscompressed)){
@@ -43,7 +43,7 @@ class weBackupImport{
 		}
 
 		$data .= $GLOBALS['weXmlExImFooter'];
-		weBackupUtil::addLog('read: ' . memory_get_usage() - self::$mem);
+	//	weBackupUtil::addLog('read: ' . memory_get_usage() - self::$mem);
 
 		self::transfer($data, $encoding, $log);
 		return true;
@@ -64,10 +64,10 @@ class weBackupImport{
 		} else{
 			$parser->parse($data);
 		}
-		weBackupUtil::addLog('+parser: ' . memory_get_usage() - self::$mem, memory_get_usage());
+		//weBackupUtil::addLog('+parser: ' . memory_get_usage() - self::$mem, memory_get_usage());
 		// free some memory
 		unset($data);
-		weBackupUtil::addLog('+parser-data: ' . memory_get_usage() - self::$mem);
+		//weBackupUtil::addLog('+parser-data: ' . memory_get_usage() - self::$mem);
 
 		if($parser === false){
 			p_r($parser->parseError);
@@ -78,7 +78,7 @@ class weBackupImport{
 
 
 		$parser->normalize();
-		weBackupUtil::addLog('normalize: ' . memory_get_usage() - self::$mem);
+		//weBackupUtil::addLog('normalize: ' . memory_get_usage() - self::$mem);
 
 		// set parser on the first child node
 		$parser->seek(1);

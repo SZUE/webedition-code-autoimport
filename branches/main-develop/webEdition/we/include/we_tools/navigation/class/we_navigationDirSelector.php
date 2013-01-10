@@ -183,9 +183,9 @@ top.unselectAllFiles();') . '
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
-		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=' + what + '&rootDirID=' .
+		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\' + what + \'&rootDirID=' .
 				$this->rootDirID . (isset($this->open_doc) ?
-					"&open_doc=" . $this->open_doc : '') .
+					'&open_doc=' . $this->open_doc : '') .
 				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}

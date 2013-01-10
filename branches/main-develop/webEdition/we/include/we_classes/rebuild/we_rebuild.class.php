@@ -93,25 +93,22 @@ abstract class we_rebuild{
 			default:
 				switch($data["type"]){
 					case 'document':
-						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = FILE_TABLE;
 						break;
 					case 'template':
-						if(file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_INCLUDES_PATH . 'we_classes/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = TEMPLATES_TABLE;
 						break;
 					case 'object':
-						if(file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
-
-						} else{ // it has to be an object
+						if(!file_exists(WE_MODULES_PATH . 'object/' . $data['cn'] . '.inc.php')){
+							// it has to be an object
 							return false;
 						}
 						$table = OBJECT_FILES_TABLE;

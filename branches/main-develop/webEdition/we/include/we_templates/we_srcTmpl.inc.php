@@ -1339,7 +1339,7 @@ echo (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9
 						}
 						if(!empty($attribs)){
 							sort($attribs);
-							$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+							$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', array_unique($attribs)) . '];' . "\n";
 						}
 					}
 				}

@@ -104,8 +104,8 @@ function we_tag_include($attribs, $content){
 				g_l('css', '[font_family]') . ';">';
 			$_name = weTag_getAttribute('_name_orig', $attribs);
 			echo '<table style="background: #006DB8;" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding: 3px;">' . $_tmpspan . '&nbsp;' . g_l('tags', '[include_file]') . '</span></td></tr><tr><td>' .
-				we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
-				'</td></tr></table>';
+			we_tag('href', array('name' => $_name, 'rootdir' => $rootdir, 'type' => $type)) .
+			'</td></tr></table>';
 			return '';
 		}
 	} else{//notEditmode
@@ -117,7 +117,7 @@ function we_tag_include($attribs, $content){
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
 			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
 			if($int && $intID){
-				list($isDynamic, $ct) = getHash('SELECT IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID) . ' AND Published>0', $db);
+				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0','ContentType', $db);
 			}
 		}
 	}
@@ -129,13 +129,11 @@ function we_tag_include($attribs, $content){
 		$db = new DB_WE();
 		$realPath = '';
 		if($id){
-			$db->query('SELECT Path,IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
-			if($db->next_record() === false){
+			$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', $db);
+			if(empty($tmp)){
 				return '';
 			}
-			$realPath = $db->f('Path');
-			$isDynamic = $db->f('IsDynamic');
-			$ct = $db->f('ContentType');
+			list($realPath, $ct) = $tmp;
 		} else{
 			$realPath = $path;
 		}

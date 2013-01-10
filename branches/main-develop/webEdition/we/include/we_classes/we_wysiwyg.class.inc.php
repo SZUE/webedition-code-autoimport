@@ -1162,7 +1162,7 @@ function tinyMCECallRegisterDialog(win,action){
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(",", $reg[1]);
+				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$editValue = str_ireplace('src="thumbnail:' . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1], $editValue);
@@ -1173,7 +1173,7 @@ function tinyMCECallRegisterDialog(win,action){
 		switch(self::$editorType){
 			case 'tinyMCE':
 				$this->width = $this->width + 20; //imi
-				list($lang, $code) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
+				list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
 				$cmdMapping = array(
 					'abbr' => 'weabbr',

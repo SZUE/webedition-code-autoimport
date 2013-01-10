@@ -1484,7 +1484,7 @@ class weSiteImport{
 	 */
 	private static function _external_to_internal($content){
 		// replace hrefs
-		$regs=array();
+		$regs = array();
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
@@ -1673,7 +1673,7 @@ class weSiteImport{
 		if($destinationDir == '/'){
 			$destinationDir = '';
 		}
-		$destinationPath = $destinationDir .'/'. importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath),true);
+		$destinationPath = $destinationDir . '/' . importFunctions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath), true);
 		$parentDirPath = dirname($destinationPath);
 
 		$parentID = path_to_id($parentDirPath);
@@ -1692,7 +1692,7 @@ class weSiteImport{
 		// get Data of File
 		if(!is_dir($path) && filesize($path) > 0 && $contentType != 'image/*' && $contentType != 'application/*' && $contentType != 'application/x-shockwave-fla
 sh' && $contentType != 'movie/quicktime'){
-		//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
+			//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
 			$data = weFile::load($path);
 		}
 

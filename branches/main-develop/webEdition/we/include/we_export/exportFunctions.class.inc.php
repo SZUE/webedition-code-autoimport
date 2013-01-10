@@ -605,7 +605,7 @@ abstract class exportFunctions{
 								}
 							} else{ // is a normal text field
 								$_tag_name = exportFunctions::correctTagname($k, "text", $_tag_counter);
-								$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID), $format, 2, $cdata, $format == "gxml");
+								$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, '', false), $format, 2, $cdata, $format == "gxml");
 
 								// Remove tagname from array
 								if(isset($_records)){
@@ -718,12 +718,12 @@ abstract class exportFunctions{
 					case "gxml":
 						$_tag_name = exportFunctions::correctTagname($fields[$i]["name"], "value", $i);
 						$_content = $we_obj->getElementByType($fields[$i]["name"], $fields[$i]["type"], $dv[$realName]);
-						$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($_content, 0), $format, 2, $cdata, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")));
+						$_file .= exportFunctions::formatOutput($_tag_name, parseInternalLinks($_content, 0, '', false), $format, 2, $cdata, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")));
 
 						break;
 					case "csv":
 						$_content = $we_obj->getElementByType($fields[$i]["name"], $fields[$i]["type"], $dv[$realName]);
-						$_file .= exportFunctions::formatOutput("", parseInternalLinks($_content, 0), $format, 2, false, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
+						$_file .= exportFunctions::formatOutput("", parseInternalLinks($_content, 0, '', false), $format, 2, false, (($format == "gxml") && ($fields[$i]["type"] != "date") && ($fields[$i]["type"] != "int") && ($fields[$i]["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 						break;
 				}

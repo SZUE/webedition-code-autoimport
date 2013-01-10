@@ -138,9 +138,9 @@ class weImageDialog extends weDialog{
 				$height = $thumbObj->getOutputHeight();
 				unset($thumbObj);
 			} else{
-				$this->args["thumbnail"] = "";
-				$this->args["fileSrc"] = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($this->args["fileID"]), "Path", $this->db);
-				$this->args["src"] = $this->args["fileSrc"] . "?id=" . $fileID;
+				$this->args["thumbnail"] = '';
+				$this->args["fileSrc"] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args["fileID"]), "Path", $this->db);
+				$this->args["src"] = $this->args["fileSrc"] . '?id=' . $fileID;
 			}
 			$this->args["ratio"] = "1";
 		}

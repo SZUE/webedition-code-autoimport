@@ -1758,8 +1758,8 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 
 		$groups = array(
 			'glossary' => g_l('prefs', '[tab_glossary]'),
-			'ui' => g_l('prefs', '[tab_ui]'),
-			'editor' => g_l('prefs', '[tab_editor]'),
+			'ui' => g_l('prefs', '[tab][ui]'),
+			'editor' => g_l('prefs', '[tab][editor]'),
 		);
 
 		$titles = $groups;

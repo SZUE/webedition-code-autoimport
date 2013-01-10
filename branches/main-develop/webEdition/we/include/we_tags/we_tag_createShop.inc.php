@@ -40,7 +40,7 @@ function we_tag_createShop($attribs){
 		@session_start();
 	}
 
-	if(isset($_SESSION[$shopname . '_save']) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"] == 1 || $deleteshop == true)){ // delete shop
+	if(isset($_SESSION[$shopname . '_save']) && (isset($_REQUEST["deleteshop"]) && $_REQUEST["deleteshop"] == 1 && $deleteshop)){ // delete shop
 		unset($_SESSION[$shopname . '_save']);
 	}
 	if(isset($GLOBALS["WE_LOGOUT"]) && $GLOBALS["WE_LOGOUT"] && $deleteshoponlogout){

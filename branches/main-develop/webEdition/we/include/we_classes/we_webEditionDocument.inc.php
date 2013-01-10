@@ -559,8 +559,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->setTemplatePath();
 	}
 
-	function getFieldType($tagname, $tag){
+	private function getFieldType($tagname, $tag, $useTextarea){
 		switch($tagname){
+			case 'textarea':
+				if(!$useTextarea){
+					return 'txt';
+				}
+			//no break;
 			case 'formfield':
 			case 'img':
 			case 'linklist':
@@ -603,35 +608,35 @@ class we_webEditionDocument extends we_textContentDocument{
 		return f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID=' . intval($this->TemplateID) . ' AND ' . LINK_TABLE . '.Name="' . ($completeCode ? "completeData" : "data") . '"', 'Dat', $this->DB_WE);
 	}
 
-	function getFieldTypes($templateCode){
+	function getFieldTypes($templateCode, $useTextarea = false){
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
 		$blocks = array();
 		$fieldTypes = array();
+		$regs = array();
 		//$xmlInputs = array();
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
-				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != "var") && ($tagname != "field")){ // name found
+				if(($tagname != "var") && ($tagname != "field") && preg_match('|name="([^"]+)"|i', $tag, $regs)){ // name found
 					$name = str_replace(array('[', ']'), array('\[', '\]'), $regs[1]);
-					$size = count($blocks);
-					if($size){
-						$foo = $blocks[$size - 1];
+					if(!empty($blocks)){
+						$foo = end($blocks);
 						$blockname = $foo["name"];
 						$blocktype = $foo["type"];
 						switch($blocktype){
 							case "block":
-								$name = we_webEditionDocument::makeBlockName($blockname, $name);
+								$name = self::makeBlockName($blockname, $name);
 								break;
 							case "list":
-								$name = we_webEditionDocument::makeListName($blockname, $name);
+								$name = self::makeListName($blockname, $name);
 								break;
 							case "linklist":
-								$name = we_webEditionDocument::makeLinklistName($blockname, $name);
+								$name = self::makeLinklistName($blockname, $name);
 								break;
 						}
 					}
-					$fieldTypes[$name] = we_webEditionDocument::getFieldType($tagname, $tag);
+					$fieldTypes[$name] = self::getFieldType($tagname, $tag, $useTextarea);
 					switch($tagname){
 						case "block":
 						case "list":
@@ -650,8 +655,9 @@ class we_webEditionDocument extends we_textContentDocument{
 					case "block":
 					case "list":
 					case "linklist":
-						if(!empty($blocks))
+						if(!empty($blocks)){
 							array_pop($blocks);
+						}
 						break;
 				}
 			}
@@ -662,28 +668,47 @@ class we_webEditionDocument extends we_textContentDocument{
 	function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
-		$types = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
-
-		foreach($this->elements as $k => $v){
-			if(
-				!isset($v["type"]) ||
-				($v["type"] != "txt" &&
-				$v["type"] != "attrib" &&
-				$v["type"] != "variant" &&
-				$v["type"] != "formfield" &&
-				$v["type"] != "date" &&
-				$v["type"] != "image" &&
-				$v["type"] != "linklist" &&
-				$v["type"] != "img" &&
-				$v["type"] != "list")){
-				$this->elements[$k]["type"] = "txt";
-			} else{
-				foreach($types as $name => $val){
-					if(preg_match('|^' . $name . '$|i', $k)){
-						$this->elements[$k]["type"] = $val;
-						break;
+		$types = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), true);
+		$regs = array();
+		foreach($types as $name => &$type){
+			if($type == 'textarea'){
+				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
+				$value = $this->getElement($name);
+				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="document:' . $reg[1] . '"', $value);
 					}
 				}
+				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="thumbnail:' . $reg[1] . '"', $value);
+					}
+				}
+
+				$this->setElement($name, $value);
+				$type = 'txt';
+			}
+		}
+		unset($type);
+
+		foreach($this->elements as $k => $v){
+			switch(isset($v["type"]) ? $v["type"] : ''){
+				case 'txt':
+				case 'attrib':
+				case 'variant':
+				case 'formfield':
+				case 'date':
+				case 'image':
+				case 'linklist':
+				case 'img':
+				case 'list':
+					if(isset($types[$k])){
+						$this->elements[$k]["type"] = $types[$k];
+					}
+					break;
+				default:
+					$this->elements[$k]["type"] = "txt";
+					break;
 			}
 		}
 	}

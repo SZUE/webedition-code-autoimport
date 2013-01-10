@@ -230,40 +230,23 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = $this->Path;
+			$src = BASE_IMG . $this->Path;
 		}
 
 		if(!$src_over){
-			$src_over = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
+			$src_over = BASE_IMG . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
 		}
 
 		if(!$this->getElement('name')){
 			$this->setElement('name', 'ro_' . $this->Name, 'attrib');
 		}
 
-		$js = 'we' . $this->getElement('name') . 'Over = new Image();
-    we' . $this->getElement('name') . 'Out = new Image();
-    we' . $this->getElement('name') . "Over.src = '" . $src_over . "';
-    we" . $this->getElement('name') . "Out.src = '" . $src . "';";
+		$js = '
+we' . $this->getElement('name') . 'Over = new Image();
+we' . $this->getElement('name') . 'Out = new Image();
+we' . $this->getElement('name') . 'Over.src = "' . $src_over . '";
+we' . $this->getElement('name') . 'Out.src = "' . $src . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
-	}
-
-	/**
-	 * returns the attribs to be included in the <img> tag if the image has a rollover
-	 *
-	 * @return string
-	 */
-	function getRollOverAttribs(){
-		if($this->getElement('RollOverFlag')){
-			return ' onmouseover="if (document.images) { document.images[\'' .
-				$this->getElement('name') . '\'].src = we' .
-				$this->getElement('name') . 'Over.src; }" ' .
-				'onmouseout="if (document.images) { document.images[\'' .
-				$this->getElement('name') . '\'].src = we' .
-				$this->getElement('name') . 'Out.src;}" ';
-		} else{
-			return '';
-		}
 	}
 
 	/**
@@ -273,8 +256,8 @@ class we_imageDocument extends we_binaryDocument{
 	function getRollOverAttribsArr(){
 		if($this->getElement('RollOverFlag')){
 			return array(
-				'onmouseover' => 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Over.src; }',
-				'onmouseout' => 'if (document.images) { document.images[\'' . $this->getElement('name') . '\'].src = we' . $this->getElement('name') . 'Out.src; }',
+				'onmouseover' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Over.src; }',
+				'onmouseout' => 'if (this.firstChild) { this.firstChild.src = we' . $this->getElement('name') . 'Out.src;}',
 			);
 		} else{
 			return array();
@@ -368,7 +351,6 @@ class we_imageDocument extends we_binaryDocument{
 					break;
 				case 'obj':
 					$id = $this->getElement('ObjID');
-
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else{
@@ -422,6 +404,7 @@ class we_imageDocument extends we_binaryDocument{
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
 				$this->ContentType . '&we_cmd[2]=' .
 				$GLOBALS['we_transaction'] . '&rand=' . $randval :
+				($this->getElement('LinkType') == 'int' ? BASE_IMG : '') .
 				$img_path;
 
 
@@ -458,9 +441,6 @@ class we_imageDocument extends we_binaryDocument{
 
 
 			$this->resetElements();
-
-
-
 
 			//  Here we generate the image-tag
 			//   attribs for the image tag
