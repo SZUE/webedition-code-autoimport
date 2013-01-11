@@ -71,7 +71,7 @@ class DB_WE extends we_database_base{
 	}
 
 	public function affected_rows(){
-		return $this->Link_ID->mysqli_affected_rows;
+		return $this->Link_ID->affected_rows;
 	}
 
 	public function close(){
