@@ -504,7 +504,7 @@ function ObjectUsedByObjectFile($id){
 
 //FIXME: remove this & decide where to use old version of htmlspecialchars
 function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $double_encode = true){
-	$flags = ($flags == -1 ? 'ENT_COMPAT | ENT_HTML401' : $flags);
+	$flags = ($flags == -1 ? ENT_COMPAT | (defined('ENT_HTML401') ? ENT_HTML401 : 0) : $flags);
 	return htmlspecialchars($string, $flags, $encoding, $double_encode);
 }
 
