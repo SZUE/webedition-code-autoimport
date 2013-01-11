@@ -34,7 +34,7 @@ if(isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpres
 	$newHTMLoldB = preg_replace(
 		'|script|i', 'scr"+"ipt', parseInternalLinks($newHTML, 0));
 
-	$newHTMLencA = base64_encode(htmlspecialchars($newHTMLoldA));
+	$newHTMLencA = base64_encode(oldHtmlspecialchars($newHTMLoldA));
 	$newHTMLencB = base64_encode($newHTMLoldB);
 	?>
 	<script language="JavaScript" type="text/javascript">

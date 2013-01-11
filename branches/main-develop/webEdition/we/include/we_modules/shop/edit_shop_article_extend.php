@@ -149,7 +149,7 @@ we_html_element::cssElement('
 $DB_WE->query("SELECT strFelder from " . ANZEIGE_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'");
 $DB_WE->next_record();
 $feldnamen = explode("|", $DB_WE->f("strFelder"));
-$waehr = "&nbsp;" . htmlspecialchars($feldnamen[0]);
+$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbTitlename = "shoptitle";
 $dbPreisname = "Preis";
 $numberformat = $feldnamen[2];

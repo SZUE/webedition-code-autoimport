@@ -502,6 +502,12 @@ function ObjectUsedByObjectFile($id){
 	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id) . ' LIMIT 0,1', 'cnt', $GLOBALS['DB_WE']) == 1;
 }
 
+//FIXME: remove this & decide where to use old version of htmlspecialchars
+function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $double_encode = true){
+	$flags = ($flags == -1 ? (ENT_COMPAT | ENT_HTML401) : $flags);
+	return htmlspecialchars($string, $flags, $encoding, $double_encode);
+}
+
 function we_makeHiddenFields($filter = ''){
 	$filterArr = explode(',', $filter);
 	$hidden = '';
@@ -510,10 +516,10 @@ function we_makeHiddenFields($filter = ''){
 			if(!in_array($key, $filterArr)){
 				if(is_array($val)){
 					foreach($val as $v){
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
+						$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($v) . '" />';
 					}
 				} else{
-					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
+					$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($val) . '" />';
 				}
 			}
 		}
@@ -1001,13 +1007,13 @@ function getArrayKey($needle, $haystack){
 /**
  * This function is equivalent to print_r, except that it adds addtional "pre"-headers
  * @param * $val the variable to print
- * @param bool html (default: true) whether to apply htmlspecialchars
+ * @param bool html (default: true) whether to apply oldHtmlspecialchars
  * @param bool useTA (default: false) whether output is formated as textarea
  */
 function p_r($val, $html = true, $useTA = false){
 	$val = print_r($val, true);
 	echo ($useTA ? '<textarea style="width:100%" rows="20">' : '<pre>') .
-	($html ? htmlspecialchars($val) : $val) .
+	($html ? oldHtmlspecialchars($val) : $val) .
 	($useTA ? '</textarea>' : '</pre>');
 }
 

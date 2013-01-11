@@ -56,7 +56,7 @@ function we_tag_shopVat($attribs){
 		}
 
 		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
-		$val = htmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]["dat"]) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
+		$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]["dat"]) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
 
 		// use a defined name for this...
 		if($GLOBALS['we_editmode']){

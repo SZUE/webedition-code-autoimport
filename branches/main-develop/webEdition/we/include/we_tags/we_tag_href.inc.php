@@ -64,7 +64,7 @@ function we_tag_href($attribs){
 	$extPath = $GLOBALS['we_doc']->getElement($name);
 
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
-	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
+	$extPath = !empty($extPath) ? oldHtmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
 	switch($type){
 		case 'int':

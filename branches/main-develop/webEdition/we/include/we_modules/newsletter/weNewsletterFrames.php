@@ -115,7 +115,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$tabHead = $we_tabs->getHeader() . $js;
 		$tabBody = $we_tabs->getJS();
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . htmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . htmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>'
 		);
@@ -558,12 +558,12 @@ class weNewsletterFrames extends weModuleFrames{
 
 				$radio_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 				$radio_table->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(25, 5));
-				$radio_table->setCol(0, 1, array("class" => "defaultfont"), htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')) . ":&nbsp;");
+				$radio_table->setCol(0, 1, array("class" => "defaultfont"), oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')) . ":&nbsp;");
 				$radio_table->setCol(0, 2, array(), we_html_tools::getPixel(5, 5));
 				$radio_table->setCol(0, 3, array("class" => "defaultfont"), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
 				$radios_code.=$radio_table->getHtml();
 			} else{
-				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, htmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
+				$radios_code.=we_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
 			}
 		}
 
@@ -798,7 +798,7 @@ class weNewsletterFrames extends weModuleFrames{
 	 * @return unknown
 	 */
 	function getHTMLEmails($group){
-		$arr = $this->View->newsletter->getEmailsFromList(htmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
+		$arr = $this->View->newsletter->getEmailsFromList(oldHtmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
 		// Buttons to handle the emails in  the email list
 		$buttons_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 7, 1);
 		$buttons_table->setCol(0, 0, array(), we_button::create_button("add", "javascript:we_cmd('add_email', " . $group . ");"));
@@ -973,7 +973,7 @@ class weNewsletterFrames extends weModuleFrames{
 						"inlineedit" => "true",
 						"bgcolor" => "white",
 					);
-					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => "40", "rows" => "10", "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), htmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
+					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => "40", "rows" => "10", "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
 						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
 						we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
@@ -1408,7 +1408,7 @@ class weNewsletterFrames extends weModuleFrames{
 					<body>
 						<form>
 							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">' .
-				htmlspecialchars(trim($content)) .
+				oldHtmlspecialchars(trim($content)) .
 				'</textarea>
 						</form>
 					</body>
@@ -2223,7 +2223,7 @@ class weNewsletterFrames extends weModuleFrames{
 		$pb->setStudLen(400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
-		$_textarea = we_html_element::htmlTextarea(array("name" => "details", "cols" => "60", "rows" => "15", "style" => "width:530px;height:300px;"), htmlspecialchars($details));
+		$_textarea = we_html_element::htmlTextarea(array("name" => "details", "cols" => "60", "rows" => "15", "style" => "width:530px;height:300px;"), oldHtmlspecialchars($details));
 		$_footer = '<table width="580" border="0" cellpadding="0" cellspacing="0"><tr><td align="left">' .
 			$pb->getHTML() . '</td><td align="right">' .
 			we_button::create_button("close", "javascript:top.close();") .

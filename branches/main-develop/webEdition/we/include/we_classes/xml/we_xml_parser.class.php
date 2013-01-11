@@ -2469,7 +2469,7 @@ class we_xml_parser{
 	 * @see        characterDataHandler(), evaluate()
 	 */
 	function replaceEntities($str){
-		return htmlspecialchars($str, ENT_QUOTES);
+		return oldHtmlspecialchars($str, ENT_QUOTES);
 	}
 
 	/**

@@ -94,7 +94,7 @@ class weCustomerTreeLoader{
 					$fileds[strtolower($k)] = $v;
 			}
 
-			$fileds["text"] = htmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text"));
+			$fileds["text"] = oldHtmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text"));
 			$items[] = array_merge($fileds, $typ);
 		}
 
@@ -291,7 +291,7 @@ class weCustomerTreeLoader{
 						"id" => $db->f("ID"),
 						"parentid" => str_replace("\'", "*****quot*****", $gname),
 						"path" => "",
-						"text" => htmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text")),
+						"text" => oldHtmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text")),
 						"icon" => $db->f("Icon"),
 						"isfolder" => $db->f("IsFolder"),
 						"typ" => "item",
@@ -303,9 +303,7 @@ class weCustomerTreeLoader{
 		}
 
 		if($level == $levelcount){
-			$q = "SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr) . ";";
-			$db->query($q);
-			$total = $db->affected_rows();
+			$total = f("SELECT COUNT(ID) as total " . (count($select) ? "," . implode(",", $select) : "") . " FROM " . $db->escape($table) . " GROUP BY " . $grp . (count($grouparr) ? ($level != 0 ? ",ID" : "") : "ID") . (count($havingarr) ? " HAVING " . implode(" AND ", $havingarr) : "") . " ORDER BY " . implode(",", $orderarr),'total',$db);
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){

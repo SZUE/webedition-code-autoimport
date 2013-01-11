@@ -44,7 +44,7 @@ class weExportView{
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ""){
-		return we_html_element::htmlHidden(array("name" => trim($name), "value" => htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array("name" => trim($name), "value" => oldHtmlspecialchars($value)));
 	}
 
 	//-----------------Init -------------------------------

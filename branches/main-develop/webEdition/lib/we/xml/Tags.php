@@ -43,7 +43,7 @@ class we_xml_Tags
 		$attribString = '';
 		foreach ($attribArray as $n => $v) {
 			if (!in_array($n, $excludeArr)) {
-				$attribString .= ' ' . htmlspecialchars($n) . '="' . htmlspecialchars($v) . '"';
+				$attribString .= ' ' . oldHtmlspecialchars($n) . '="' . oldHtmlspecialchars($v) . '"';
 			}
 		}
 		return $attribString;

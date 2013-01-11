@@ -263,13 +263,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		}
 
 		return 'var myobj = { ' .
-			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(htmlspecialchars($text)) . '</span>"'.
+			'label: "<span title=\"' . $id . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . addslashes(oldHtmlspecialchars($text)) . '</span>"'.
 		//$out .= ',';
 		//$out .= 'href: "javascript:'.$doOnClick.'"';
 		','.
 		'id: "' . $id . '"'.
 		','.
-		'text: "' . addslashes(htmlspecialchars($text)) . '"'.
+		'text: "' . addslashes(oldHtmlspecialchars($text)) . '"'.
 		','.
 		'title: "' . $id . '"'.
 		'}; ';
@@ -297,7 +297,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$out .= ',';
 		$out .= 'id: "' . $id . '"';
 		$out .= ',';
-		//$out .= 'text: "'.addslashes(htmlspecialchars($text)).'"';
+		//$out .= 'text: "'.addslashes(oldHtmlspecialchars($text)).'"';
 		$out .= 'text: "' . $text . '"';
 		$out .= ',';
 		$out .= 'title: "' . $id . '"';
@@ -493,7 +493,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);
 
-		return '<div class="yui-skin-sam"><div id="' . htmlspecialchars($this->_id) . '"></div></div>';
+		return '<div class="yui-skin-sam"><div id="' . oldHtmlspecialchars($this->_id) . '"></div></div>';
 	}
 
 }

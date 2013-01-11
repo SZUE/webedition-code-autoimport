@@ -192,7 +192,7 @@ class weGlossaryTreeLoader{
 
 			foreach($Db->Record as $Key => $Val){
 				if(!is_numeric($Key)){
-					$Item[strtolower($Key)] = (strtolower($Key) == "text" ? htmlspecialchars($Val) : $Val);
+					$Item[strtolower($Key)] = (strtolower($Key) == "text" ? oldHtmlspecialchars($Val) : $Val);
 				}
 			}
 

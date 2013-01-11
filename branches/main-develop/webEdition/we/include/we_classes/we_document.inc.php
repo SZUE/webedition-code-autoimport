@@ -860,15 +860,15 @@ class we_document extends we_root{
 					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 				}
 				if(isset($attribs['alt'])){
-					$attribs['alt'] = htmlspecialchars($attribs['alt']);
+					$attribs['alt'] = oldHtmlspecialchars($attribs['alt']);
 				}
 				if(isset($attribs['title'])){
-					$attribs['title'] = htmlspecialchars($attribs['title']);
+					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
 				if(!(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'reload_editpage' && (isset($_REQUEST['we_cmd'][1]) && $img->Name == $_REQUEST['we_cmd'][1]) && isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
-						$attribs['alt'] = htmlspecialchars($GLOBALS['we_doc']->getElement($altField));
-						$attribs['title'] = htmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
+						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
+						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
 					}
 				}
 
@@ -958,16 +958,16 @@ class we_document extends we_root{
 					}
 
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
-					$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
+					$oldHtmlspecialchars = weTag_getAttribute('oldHtmlspecialchars', $attribs, true, true);
 					if($only){
 						if($only == 'content'){
-							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $htmlspecialchars, $hidedirindex, $objectseourls);
+							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls);
 						} else{
 							return isset($link[$only]) ? $link[$only] : ''; // #3636
 						}
 					} else{
 
-						if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $htmlspecialchars, $hidedirindex, $objectseourls))){
+						if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
 
 							if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
 								return $startTag . $content . '</a>';
@@ -1037,12 +1037,12 @@ class we_document extends we_root{
 					$retval = strip_tags($retval, '<br>,<p>');
 				}
 
-				$_htmlspecialchars = isset($attribs['htmlspecialchars']) && ($attribs['htmlspecialchars'] == 'on' || $attribs['htmlspecialchars'] == 'true' || $attribs['htmlspecialchars'] == 'htmlspecialchars');
+				$_htmlspecialchars = isset($attribs['oldHtmlspecialchars']) && ($attribs['oldHtmlspecialchars'] == 'on' || $attribs['oldHtmlspecialchars'] == 'true' || $attribs['oldHtmlspecialchars'] == 'oldHtmlspecialchars');
 				$_wysiwyg = isset($attribs['wysiwyg']) && ($attribs['wysiwyg'] == 'on' || $attribs['wysiwyg'] == 'true' || $attribs['wysiwyg'] == 'wysiwyg');
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
 					$retval = preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval);
-					$retval = htmlspecialchars($retval, ENT_QUOTES);
+					$retval = oldHtmlspecialchars($retval, ENT_QUOTES);
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', $retval);
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
@@ -1222,7 +1222,7 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
+	function getLinkContent($link, $parentID = 0, $path = '', $db = '', $img = '', $xml = '', $_useName = '', $oldHtmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 
 		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
@@ -1271,9 +1271,9 @@ class we_document extends we_root{
 		} else if(isset($link['ctype']) && $link['ctype'] == 'text'){
 			// Workarround => We have to find another solution
 			if($xml){
-				return htmlspecialchars(html_entity_decode($link['text']));
+				return oldHtmlspecialchars(html_entity_decode($link['text']));
 			} else{
-				return $htmlspecialchars ? htmlspecialchars($link['text']) : $link['text'];
+				return $oldHtmlspecialchars ? oldHtmlspecialchars($link['text']) : $link['text'];
 			}
 		}
 	}

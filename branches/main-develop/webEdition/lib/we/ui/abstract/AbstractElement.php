@@ -239,7 +239,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 
 		$style .= $this->getStyle();
 		if($style !== ''){
-			return ' style="' . htmlspecialchars($style) . '"';
+			return ' style="' . oldHtmlspecialchars($style) . '"';
 		}
 		return '';
 	}
@@ -259,7 +259,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 			}
 		}
 		if($class !== ''){
-			$class = ' class="' . htmlspecialchars($class) . '"';
+			$class = ' class="' . oldHtmlspecialchars($class) . '"';
 		}
 		return $class;
 	}
@@ -276,7 +276,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 		foreach($arr as $attribName){
 			$internalName = "_$attribName";
 			if(isset($this->$internalName) && $this->$internalName !== ''){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($this->$internalName) . '"';
+				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' . oldHtmlspecialchars($this->$internalName) . '"';
 			}
 		}
 		return $attribs;
@@ -294,7 +294,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 		foreach($arr as $attribName){
 			$internalName = "_$attribName";
 			if(isset($this->$internalName) && $this->$internalName === true){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($attribName) . '"';
+				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' . oldHtmlspecialchars($attribName) . '"';
 			}
 		}
 		return $attribs;

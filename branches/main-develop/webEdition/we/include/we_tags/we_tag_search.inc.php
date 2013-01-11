@@ -29,7 +29,7 @@ function we_tag_search($attribs){
 	$xml = weTag_getAttribute('xml', $attribs);
 	$value = weTag_getAttribute('value', $attribs);
 
-	$searchValue = htmlspecialchars(
+	$searchValue = oldHtmlspecialchars(
 		str_replace(
 			'"', '', str_replace(
 				'\\"', '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : $value))));

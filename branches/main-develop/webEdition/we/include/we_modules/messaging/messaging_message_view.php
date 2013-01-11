@@ -66,7 +66,7 @@ print STYLESHEET;
 	if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] == 'we_todo'){
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
-				"html" => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
+				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
 				"noline" => 1,
 				"space" => 140
 			),
@@ -113,7 +113,7 @@ print STYLESHEET;
 	} else{ //	Message
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
-				"html" => "<b>" . htmlspecialchars($format->get_subject()) . "</b>",
+				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
 				"noline" => 1,
 				"space" => 80
 			),
@@ -131,7 +131,7 @@ print STYLESHEET;
 
 		if(!empty($messaging->selected_message['hdrs']['To'])){
 			$parts[] = array("headline" => g_l('modules_messaging', '[recipients]'),
-				"html" => htmlspecialchars($messaging->selected_message['hdrs']['To']),
+				"html" => oldHtmlspecialchars($messaging->selected_message['hdrs']['To']),
 				"space" => 80
 			);
 		}

@@ -28,7 +28,7 @@ function we_tag_unsubscribe($attribs){
 	$attribs['name'] = 'we_unsubscribe_email__';
 
 	if(isset($_REQUEST["we_unsubscribe_email__"])){
-		$attribs['value'] = htmlspecialchars($_REQUEST["we_unsubscribe_email__"]);
+		$attribs['value'] = oldHtmlspecialchars($_REQUEST["we_unsubscribe_email__"]);
 	} else{
 		$attribs['value'] = "";
 	}

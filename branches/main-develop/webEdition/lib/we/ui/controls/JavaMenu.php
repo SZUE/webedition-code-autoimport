@@ -70,10 +70,10 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
 
 		if(!$showAltMenu){
 			if($this->_cmdTarget !== ''){
-				$out .= '<param name="cmdTarget" value="' . htmlspecialchars($this->_cmdTarget) . '">';
+				$out .= '<param name="cmdTarget" value="' . oldHtmlspecialchars($this->_cmdTarget) . '">';
 			}
 			if($this->_cmdURL !== ''){
-				$out .= '<param name="cmdURL" value="' . htmlspecialchars($this->_cmdURL) . '">';
+				$out .= '<param name="cmdURL" value="' . oldHtmlspecialchars($this->_cmdURL) . '">';
 			}
 			$i = 0;
 			foreach($this->_entries as $id => $m){

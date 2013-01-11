@@ -105,7 +105,7 @@ function importFile(){
 				}
 				return '<table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr><td colspan="2" class="defaultfont"><b>' . g_l('global', "[preview]") . '</b></td></tr>
-	<tr><td colspan="2"><textarea id="we_dialog_args[htmltxt]" name="we_dialog_args[htmltxt]" cols="59" rows="15" style="width:550px">' . (isset($rtf2html) ? htmlspecialchars($rtf2html->htmlOut) : "") . '</textarea></td></tr>
+	<tr><td colspan="2"><textarea id="we_dialog_args[htmltxt]" name="we_dialog_args[htmltxt]" cols="59" rows="15" style="width:550px">' . (isset($rtf2html) ? oldHtmlspecialchars($rtf2html->htmlOut) : "") . '</textarea></td></tr>
 	<tr><td colspan="2">' . we_html_tools::getPixel(5, 22) . '</td></tr>
 </table>';
 		}

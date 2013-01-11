@@ -200,7 +200,7 @@ array_push($parts, array(
 $table = '<table border="0" cellpadding="0" cellspacing="0">'
 	. '<tr>'
 	. '	<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">'
-	. we_class::htmlTextArea("cssClasses", 3, 30, htmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), 'style="width:415px;height:50px"')
+	. we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), 'style="width:415px;height:50px"')
 	. '</td>'
 	. '</tr>'
 	. '<tr>'
@@ -224,7 +224,7 @@ $select = we_html_tools::htmlSelect("tmp_commands", $vals, 1, "", false, 'onchan
 $table = '<table border="0" cellpadding="0" cellspacing="0">'
 	. '<tr>'
 	. '	<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br>'
-	. we_class::htmlTextArea("commands", 3, 30, htmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"')
+	. we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), 'id="commands" style="width:415px;height:50px"')
 	. '</td>'
 	. '</tr>'
 	. '<tr>'

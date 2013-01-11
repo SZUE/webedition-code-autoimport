@@ -337,7 +337,7 @@ print
 	'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
-<h1 class="big" style="padding:0px;margin:0px;">' . htmlspecialchars(
+<h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
 		g_l('newFile', "[title_move]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form .

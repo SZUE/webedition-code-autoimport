@@ -649,9 +649,9 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 
 
 		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
-<option value="text"' . (($ctype == "text") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[text]")) . '</option>
-<option value="ext"' . (($ctype == "ext") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[external_image]")) . '</option>
-<option value="int"' . (($ctype == "int") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[internal_image]")) . '</option>
+<option value="text"' . (($ctype == "text") ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[text]")) . '</option>
+<option value="ext"' . (($ctype == "ext") ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[external_image]")) . '</option>
+<option value="int"' . (($ctype == "int") ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[internal_image]")) . '</option>
 </select>';
 
 
@@ -900,7 +900,7 @@ if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_
 			<?php
 			if(isset($ll) && $ll){
 				?>
-				<input type="hidden" name="linklist" value="<?php print htmlspecialchars($ll->getString()); ?>" />
+				<input type="hidden" name="linklist" value="<?php print oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			?>

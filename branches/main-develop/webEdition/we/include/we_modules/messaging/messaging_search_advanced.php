@@ -60,7 +60,7 @@ if(isset($_REQUEST['save']) && $_REQUEST['save'] == 1){
 
 	<body class="weDialogBody">
 		<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
-			<input type="hidden" name="we_transaction" value="<?php echo htmlspecialchars(strip_tags($_REQUEST['we_transaction'])) ?>" />
+			<input type="hidden" name="we_transaction" value="<?php echo oldHtmlspecialchars(strip_tags($_REQUEST['we_transaction'])) ?>" />
 			<input type="hidden" name="save" value="1" />
 
 			<?php

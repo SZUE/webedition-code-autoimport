@@ -59,7 +59,7 @@ class we_wysiwyg{
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $htmlspecialchars = true){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = 'white', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->name = $name;
 		$this->bgcol = $bgcol;
@@ -116,7 +116,7 @@ class we_wysiwyg{
 
 		$this->Language = $Language;
 		$this->showSpell = $spell;
-		$this->htmlSpecialchars = $htmlspecialchars;
+		$this->htmlSpecialchars = $oldHtmlspecialchars;
 		$this->isFrontendEdit = $isFrontendEdit;
 
 		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
@@ -1474,7 +1474,7 @@ function tinyMCECallRegisterDialog(win,action){
 					'style="display: block;color: black;border: 1px solid #A5ACB2;' .
 					(we_base_browserDetect::isSafari() ? '-khtml-user-select:none;"  src="' . WEBEDITION_DIR . 'editors/content/wysiwyg/empty.html"' : '"') .
 					'></iframe></td></tr>
-</table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . htmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
+</table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . oldHtmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
 ' . we_html_element::jsElement('
 var ' . $this->ref . 'Obj = null;
 ' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE ? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit ? 1 : 0) . '");

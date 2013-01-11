@@ -249,8 +249,8 @@ abstract class we_class{
 	}
 
 	function htmlHidden($name, $value = '', $params = null){
-		//we_html_element::htmlHidden(array('name'=>trim($name),value=>htmlspecialchars($value)));
-		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '" ' . $params . ' />';
+		//we_html_element::htmlHidden(array('name'=>trim($name),value=>oldHtmlspecialchars($value)));
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" ' . $params . ' />';
 	}
 
 	function htmlPasswordInput($name, $size = 24, $value = '', $maxlength = '', $attribs = ''){
@@ -258,7 +258,7 @@ abstract class we_class{
 	}
 
 	function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', $attribs = ''){
-		return '<textarea class="defaultfont" name="' . trim($name) . '" rows="' . abs($rows) . '" cols="' . abs($cols) . '"' . ($attribs ? " $attribs" : '') . '>' . ($value ? (htmlspecialchars($value)) : '') . '</textarea>';
+		return '<textarea class="defaultfont" name="' . trim($name) . '" rows="' . abs($rows) . '" cols="' . abs($cols) . '"' . ($attribs ? " $attribs" : '') . '>' . ($value ? (oldHtmlspecialchars($value)) : '') . '</textarea>';
 	}
 
 	function htmlRadioButton($name, $value, $checked = false, $attribs = '', $text = '', $textalign = 'left', $textclass = 'defaultfont', $type = 'radio', $width = ''){
@@ -315,11 +315,11 @@ abstract class we_class{
 					$ret .= '</optgroup>';
 				}
 				$optgroup = true;
-				$ret .= '<optgroup label="' . htmlspecialchars($value) . '">';
+				$ret .= '<optgroup label="' . oldHtmlspecialchars($value) . '">';
 				continue;
 			}
 
-			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
 		return $ret;
@@ -330,7 +330,7 @@ abstract class we_class{
 		reset($values);
 		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		while(list($value, $text) = each($values)) {
-			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (($selectedIndex == (($compare == 'value') ? $value : $text)) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (($selectedIndex == (($compare == 'value') ? $value : $text)) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		$ret .= '</select>';
 		return $ret;

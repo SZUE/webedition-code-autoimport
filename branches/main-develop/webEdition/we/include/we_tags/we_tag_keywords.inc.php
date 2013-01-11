@@ -27,9 +27,9 @@ function we_parse_tag_keywords($attribs, $content){
 }
 
 function we_tag_keywords($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
-		'htmlspecialchars'
+		'oldHtmlspecialchars'
 		));
 
 	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
@@ -38,6 +38,6 @@ function we_tag_keywords($attribs, $content){
 	$keys = $GLOBALS['KEYWORDS'] ? $GLOBALS['KEYWORDS'] : $content;
 
 	$attribs["name"] = "keywords";
-	$attribs["content"] = $htmlspecialchars ? htmlspecialchars(strip_tags($keys)) : strip_tags($keys);
+	$attribs["content"] = $oldHtmlspecialchars ? oldHtmlspecialchars(strip_tags($keys)) : strip_tags($keys);
 	return getHtmlTag("meta", $attribs) . "\n";
 }

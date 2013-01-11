@@ -517,7 +517,7 @@ class weHyperlinkDialog extends weDialog{
 	}
 
 	function getRevRelSelect($type){
-		return '<input type="text" name="we_dialog_args[' . $type . ']" value="' . htmlspecialchars($this->args["$type"]) . '" style="width:70px;" /><select name="' . $type . '_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
+		return '<input type="text" name="we_dialog_args[' . $type . ']" value="' . oldHtmlspecialchars($this->args["$type"]) . '" style="width:70px;" /><select name="' . $type . '_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
 <option>contents</option>
 <option>chapter</option>

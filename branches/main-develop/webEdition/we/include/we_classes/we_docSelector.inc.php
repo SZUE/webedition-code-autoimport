@@ -315,7 +315,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			while($this->next_record()) {
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
-				$title = $title == '&nbsp;' ? '-' : htmlspecialchars($title);
+				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 			}
@@ -329,7 +329,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		while($this->next_record()) {
 			$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
-			$title = $title == '&nbsp;' ? '-' : htmlspecialchars($title);
+			$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), $title));
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
@@ -467,7 +467,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 				<option value="">' . g_l('fileselector', "[all_Types]") . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
-				$ret.= '<option value="' . htmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
+				$ret.= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
 			}
 			$ret.= '
 			</select></td>
@@ -750,7 +750,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					if($Title !== ""){
 						$_previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', "[Title]"),
-							"content" => htmlspecialchars($Title)
+							"content" => oldHtmlspecialchars($Title)
 						);
 					}
 					if($name !== ""){
@@ -762,7 +762,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					if($alt !== ""){
 						$_previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', "[alt]"),
-							"content" => htmlspecialchars($alt)
+							"content" => oldHtmlspecialchars($alt)
 						);
 					}
 				//no break!

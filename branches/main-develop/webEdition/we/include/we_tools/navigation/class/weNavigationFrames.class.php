@@ -1042,7 +1042,7 @@ function onFolderSelectionChangeJS(elem) {
 					$height, "%")) ? "" : "px") . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') . (strstr(
 				$attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs(
-				$size) . '" value="' . htmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs(
+				$size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs(
 					$maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="weInputAppendClass(this, \'wetextinput\'); weInputRemoveClass(this, \'wetextinputselected\');" onfocus="weInputAppendClass(this, \'wetextinputselected\'); weInputRemoveClass(this, \'wetextinput\');" ' . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
 

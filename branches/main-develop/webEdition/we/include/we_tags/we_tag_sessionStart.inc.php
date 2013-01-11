@@ -76,7 +76,7 @@ function we_tag_sessionStart($attribs){
 
 							if($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 								$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
-								$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '", WebUserID=' . intval($_SESSION['webuser']['ID']) . ',LastIp="' . htmlspecialchars((string) $_SERVER['REMOTE_ADDR']) . '",LastLogin=NOW()');
+								$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '", WebUserID=' . intval($_SESSION['webuser']['ID']) . ',LastIp="' . oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR']) . '",LastLogin=NOW()');
 								setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], ($currenttime + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
 								$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET AutoLogin=1 WHERE ID=' . intval($_SESSION["webuser"]["ID"]));
 								$_SESSION['webuser']['AutoLogin'] = 1;
@@ -144,10 +144,10 @@ function we_tag_sessionStart($attribs){
 		$PageID = $doc->ID;
 		$ObjectID = 0;
 		$SessionID = session_id();
-		$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
+		$SessionIp = (!empty($_SERVER['REMOTE_ADDR'])) ? oldHtmlspecialchars((string) $_SERVER['REMOTE_ADDR']) : '';
 
-		$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-		$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
+		$Browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
+		$Referrer = (!empty($_SERVER['HTTP_REFERER'])) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 		if($_SESSION['webuser']['registered']){
 			$WebUserID = $_SESSION['webuser']['ID'];
 			$WebUserGroup = ($monitorgroupfield != '' ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');

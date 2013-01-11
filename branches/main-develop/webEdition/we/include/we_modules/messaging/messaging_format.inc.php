@@ -273,9 +273,9 @@ class we_format extends we_class{
 			case 're':
 				$ret .= $this->attribution_line . "\n";
 
-				$lines = explode("\n", htmlspecialchars($this->sel_msg['body']['MessageText']));
+				$lines = explode("\n", oldHtmlspecialchars($this->sel_msg['body']['MessageText']));
 
-				$ret .= (!empty($lines) ? htmlspecialchars($this->quoting_prefix) : '') . join("\n" . htmlspecialchars($this->quoting_prefix), $lines) . "\n\n";
+				$ret .= (!empty($lines) ? oldHtmlspecialchars($this->quoting_prefix) : '') . join("\n" . oldHtmlspecialchars($this->quoting_prefix), $lines) . "\n\n";
 				break;
 			case 'view':
 			case 'update':
@@ -291,15 +291,15 @@ class we_format extends we_class{
 							do{
 								$pos = strpos($line, $this->quoting_prefix, $len * ++$l);
 							} while(is_integer($pos) && $pos == $len * $l && $l < $this->quote_levels);
-							$ret .= '<span class="quote_lvl_' . $l . '">' . nl2br(htmlspecialchars($line)) . '</span>';
+							$ret .= '<span class="quote_lvl_' . $l . '">' . nl2br(oldHtmlspecialchars($line)) . '</span>';
 						}
 					} else{
-						$ret .= nl2br(htmlspecialchars($this->sel_msg['body']['MessageText']));
+						$ret .= nl2br(oldHtmlspecialchars($this->sel_msg['body']['MessageText']));
 					}
 				}
 				break;
 			case 'forward':
-				$ret .= nl2br(htmlspecialchars($this->sel_msg['body']['MessageText']));
+				$ret .= nl2br(oldHtmlspecialchars($this->sel_msg['body']['MessageText']));
 				break;
 			case 'new':
 			default:
@@ -333,7 +333,7 @@ class we_format extends we_class{
 			}
 			$ret .= '<span class="todo_hist_hdr">--- ' . $this->userid_to_username($c['from_userid']) . ' -- ' . date(g_l('date', '[format][default]'), $c['date']) . ' -- ' . $hist_str . "</span><br>\n";
 			if(!empty($c['comment'])){
-				$ret .= nl2br(htmlspecialchars($c['comment'])) . "<br><br>\n";
+				$ret .= nl2br(oldHtmlspecialchars($c['comment'])) . "<br><br>\n";
 			}
 		}
 

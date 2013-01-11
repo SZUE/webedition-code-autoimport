@@ -428,7 +428,7 @@ abstract class exportFunctions{
 
 				// Generate XML output if content is given
 				if($content != ""){
-					$_output = (isset($_tabs) ? $_tabs : "") . "<" . $tagname . ">" . ($fix_content ? ($cdata ? ("<![CDATA[" . $content . "]]>") : htmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n";
+					$_output = (isset($_tabs) ? $_tabs : "") . "<" . $tagname . ">" . ($fix_content ? ($cdata ? ("<![CDATA[" . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n";
 				} else{
 					$_output = (isset($_tabs) ? $_tabs : "") . "<" . $tagname . "/>\n";
 				}

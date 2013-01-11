@@ -254,7 +254,7 @@ class toolfactory_models_Default extends we_app_Model{
 	 */
 	function save($skipHook = 0){
 
-		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
+		$text = oldHtmlspecialchars($this->Text, ENT_NOQUOTES);
 		include_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'we_version.php');
 
 		$TOOLNAMELANG = $text;

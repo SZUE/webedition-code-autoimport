@@ -172,14 +172,14 @@ function we_tag_sessionField($attribs, $content){
 				$options = '';
 				for($i = 0; $i < count($optionsAr); $i++){
 					if($optionsAr[$i] == $orgVal){
-						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
 						$isin = 1;
 					} else{
-						$options .= getHtmlTag('option', array('value' => htmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
 					}
 				}
 				if(!$isin){
-					$options .= getHtmlTag('option', array('value' => htmlspecialchars($orgVal), 'selected' => 'selected'), htmlspecialchars($orgVal), true);
+					$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($orgVal), 'selected' => 'selected'), oldHtmlspecialchars($orgVal), true);
 				}
 				return getHtmlTag('select', $newAtts, $options, true);
 			} else{
@@ -215,7 +215,7 @@ function we_tag_sessionField($attribs, $content){
 		case 'password':
 			$newAtts = removeAttribs($attribs, array('checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$newAtts['value'] = htmlspecialchars($orgVal);
+			$newAtts['value'] = oldHtmlspecialchars($orgVal);
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);

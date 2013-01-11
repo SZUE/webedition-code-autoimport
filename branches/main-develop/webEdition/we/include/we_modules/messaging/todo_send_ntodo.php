@@ -76,9 +76,9 @@ if(!empty($res['ok'])){
 
 <body class="weDialogBody">
 	<?php
-	$res['ok'] = array_map('htmlspecialchars', $res['ok']);
-	$res['failed'] = array_map('htmlspecialchars', $res['failed']);
-	$res['err'] = array_map('htmlspecialchars', $res['err']);
+	$res['ok'] = array_map('oldHtmlspecialchars', $res['ok']);
+	$res['failed'] = array_map('oldHtmlspecialchars', $res['failed']);
+	$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
 
 
 	$tbl = '<table align="center" cellpadding="7" cellspacing="3">
