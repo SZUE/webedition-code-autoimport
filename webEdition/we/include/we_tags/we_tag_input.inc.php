@@ -39,7 +39,7 @@ function we_tag_input($attribs, $content){
 
 	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'false');
 
-	$val = htmlspecialchars($GLOBALS['we_doc']->issetElement($name) ? $GLOBALS['we_doc']->getElement($name) : $value);
+	$val = oldHtmlspecialchars($GLOBALS['we_doc']->issetElement($name) ? $GLOBALS['we_doc']->getElement($name) : $value);
 
 	if($GLOBALS['we_editmode']){
 		//all edit-specific things

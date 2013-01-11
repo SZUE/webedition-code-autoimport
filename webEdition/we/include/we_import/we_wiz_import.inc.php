@@ -1513,7 +1513,7 @@ HTS;
 			reset($val_nodes);
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
 			while(list($value, $text) = each($val_nodes)) {
-				$sct_we_fields->addOption(htmlspecialchars($value), $text);
+				$sct_we_fields->addOption(oldHtmlspecialchars($value), $text);
 				if(isset($we_flds[$record])){
 					if($value == $we_flds[$record])
 						$sct_we_fields->selectOption($value);
@@ -1553,7 +1553,7 @@ HTS;
 		);
 		reset($val_nodes);
 		while(list($value, $text) = each($val_nodes)) {
-			$rcdPfxSelect->addOption(htmlspecialchars($value), $text);
+			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
 			if(isset($v["rcd_pfx"]))
 				if($text == $v["rcd_pfx"])
 					$rcdPfxSelect->selectOption($value);
@@ -2353,7 +2353,7 @@ function handle_event(evt) {
 			$sct_we_fields->addOption("", g_l('import', "[any]"));
 			while(list($value, $text) = each($val_nodes)) {
 				$b64_value = (!isset($v["startCSVImport"])) ? base64_encode($value) : $value;
-				$sct_we_fields->addOption($b64_value, htmlspecialchars($text));
+				$sct_we_fields->addOption($b64_value, oldHtmlspecialchars($text));
 				if(isset($we_flds[$record])){
 					if($value == base64_decode($we_flds[$record])){
 						$sct_we_fields->selectOption($b64_value);
@@ -2395,7 +2395,7 @@ function handle_event(evt) {
 
 		reset($val_nodes);
 		while(list($value, $text) = each($val_nodes)) {
-			$rcdPfxSelect->addOption(htmlspecialchars($value), $text);
+			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
 			if(isset($v["rcd_pfx"]))
 				if($value == $v["rcd_pfx"])
 					$rcdPfxSelect->selectOption($value);

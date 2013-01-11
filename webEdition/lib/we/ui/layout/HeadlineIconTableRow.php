@@ -218,19 +218,19 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	protected function _renderHTML(){
-		$iconHTML = ($this->_iconPath !== '') ? ('<img src="' . htmlspecialchars($this->_iconPath) . '" alt="" />') : "";
+		$iconHTML = ($this->_iconPath !== '') ? ('<img src="' . oldHtmlspecialchars($this->_iconPath) . '" alt="" />') : "";
 		$divID = we_util_Strings::createUniqueId();
 		$imgID = we_util_Strings::createUniqueId();
 		if($this->_isFoldable){
 			if($this->_isFolded){
-				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars(IMAGE_DIR.'button/btn_direction_right.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\'; i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . oldHtmlspecialchars(IMAGE_DIR.'button/btn_direction_right.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\'; i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
 			} else{
-				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . htmlspecialchars(IMAGE_DIR.'button/btn_direction_down.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');i = document.getElementById(\'' . $imgID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\';i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
+				$folderHTML = '<img style="float:left;margin-right:3px;vertical-align:middle" src="' . oldHtmlspecialchars(IMAGE_DIR.'button/btn_direction_down.gif') . '" alt=""  id="' . $imgID . '" onclick=" d = document.getElementById(\'' . $divID . '\');i = document.getElementById(\'' . $imgID . '\');i = document.getElementById(\'' . $imgID . '\');if(d.style.display == \'none\'){d.style.display = \'block\';i.src=\'/webEdition/images/button/btn_direction_down.gif\';} else {d.style.display = \'none\';i.src=\'/webEdition/images/button/btn_direction_right.gif\';}"/> ';
 			}
 		} else{
 			$folderHTML = '';
 		}
-		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . $folderHTML . htmlspecialchars($this->_title) . '</div>') : "";
+		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . $folderHTML . oldHtmlspecialchars($this->_title) . '</div>') : "";
 
 		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition == 'left')) ? $headlineHTML : "");
 

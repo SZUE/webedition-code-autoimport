@@ -288,7 +288,7 @@ var i = 0;
 					} else{
 						$_size = $filesize . " Byte";
 					}
-					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($_size) . '">' . $_size . '</span>';
+					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($_size) . '">' . $_size . '</span>';
 				}
 				if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_folder") && ($entry == $_REQUEST["sid"]) && ($isfolder) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
@@ -298,18 +298,18 @@ var i = 0;
 				} else if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_file") && ($entry == $_REQUEST["sid"]) && (!$indb)){
 					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 					$set_rename = true;
-					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($type) . '">' . htmlspecialchars(_cutText($type, 17)) . '</span>';
+					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = date("d-m-Y H:i:s");
 				} else{
-					$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($entry) . '">' .
-						((strlen($entry) > 24) ? htmlspecialchars(_cutText($entry, 24)) : htmlspecialchars($entry)) .
+					$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($entry) . '">' .
+						((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
 						'</span>';
-					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($type) . '">' . htmlspecialchars(_cutText($type, 17)) . '</span>';
+					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . date("d-m-Y H:i:s", filectime($dir . "/" . $entry)) . '<span>';
 				}
 
 				if($show){
-					print '<tr id="' . htmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
+					print '<tr id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
 	<td class="selector" align="center" width="25"><img src="' . ICON_DIR . $icon . '" width="16" height="18" border="0"></td>
 	<td class="selector" width="200">' . $_text_to_show . '</td>
 	<td class="selector" width="150">' . $_type . '</td>

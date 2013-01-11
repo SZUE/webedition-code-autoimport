@@ -64,7 +64,7 @@
 					$content[$ind] = array();
 					$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
 					if ($GLOBALS['DB_WE']->f("blockedUntil") == -1) {
-						$content[$ind][1]['dat'] = htmlspecialchars(g_l('prefs','[forever]'));
+						$content[$ind][1]['dat'] = oldHtmlspecialchars(g_l('prefs','[forever]'));
 					} else {
 						$content[$ind][1]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$GLOBALS['DB_WE']->f("blockedUntil"));
 					}

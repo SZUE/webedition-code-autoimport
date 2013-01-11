@@ -84,14 +84,14 @@ if(count($services)){
 
 					$_select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
 				}
-				$_select .= '<option value="' . $service->getName() . '">' . htmlspecialchars($service->name) . '</option>';
-				$js .= '				host["' . $service->getName() . '"] = "' . htmlspecialchars($service->host) . '";
-                        path["' . $service->getName() . '"] = "' . htmlspecialchars($service->path) . '";
+				$_select .= '<option value="' . $service->getName() . '">' . oldHtmlspecialchars($service->name) . '</option>';
+				$js .= '				host["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->host) . '";
+                        path["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->path) . '";
                         s_method["' . $service->getName() . '"] = "' . $service->method . '";
-                        varname["' . $service->getName() . '"] = "' . htmlspecialchars($service->varname) . '";
+                        varname["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->varname) . '";
                         checkvia["' . $service->getName() . '"] = "' . $service->checkvia . '";
-                        ctype["' . $service->getName() . '"] = "' . htmlspecialchars($service->ctype) . '";
-                        additionalVars["' . $service->getName() . '"] = "' . htmlspecialchars($service->additionalVars) . '";';
+                        ctype["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->ctype) . '";
+                        additionalVars["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->additionalVars) . '";';
 			}
 		}
 	}

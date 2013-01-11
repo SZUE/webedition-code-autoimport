@@ -64,7 +64,7 @@ echo we_html_element::htmlDocType();
 		($we_doc->getElement("Description") ?
 			we_html_element::htmlMeta(array('name' => 'description', 'content' => $we_doc->getElement("Description"))) . "\n" : '');
 
-	$foo = '<pre class="defaultfont">' . htmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement("Title"))) . '
+	$foo = '<pre class="defaultfont">' . oldHtmlspecialchars($foo . we_html_element::htmlTitle($we_doc->getElement("Title"))) . '
 </pre>
 	' . we_tag("textarea", array("name" => "HEAD", "rows" => "8", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '<br>
 <pre class="defaultfont">	&lt;/head&gt;

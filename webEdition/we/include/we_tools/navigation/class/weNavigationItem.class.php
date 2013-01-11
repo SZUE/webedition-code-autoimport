@@ -265,12 +265,12 @@ class weNavigationItem{
 		if($fieldname){
 			if(isset($this->$fieldname) && $this->$fieldname != ''){
 				return ($fieldname == 'title' ?
-						htmlspecialchars($this->$fieldname) :
+						oldHtmlspecialchars($this->$fieldname) :
 						$this->$fieldname);
 			} else
 			if(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != ''){
 				return ($fieldname == 'title' ?
-						htmlspecialchars($this->attributes[$fieldname]) :
+						oldHtmlspecialchars($this->attributes[$fieldname]) :
 						$this->attributes[$fieldname]);
 			} else{
 				return '';
@@ -330,13 +330,13 @@ class weNavigationItem{
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
 								$attribs[$field] = ($field == 'title' ?
-										htmlspecialchars($this->$field) :
+										oldHtmlspecialchars($this->$field) :
 										$this->$field);
 							} else
 							if(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
 								$attribs[$field] = ($field == 'link_attribute' ? // Bug #3741
 										$this->attributes[$field] :
-										htmlspecialchars($this->attributes[$field]));
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -373,10 +373,10 @@ class weNavigationItem{
 						break;
 					default :
 						if(isset($this->$_field) && $this->$_field != ''){
-							$attribs[$_field] = htmlspecialchars($this->$_field);
+							$attribs[$_field] = oldHtmlspecialchars($this->$_field);
 						} else
 						if(isset($this->attributes[$_field]) && $this->attributes[$_field] != ''){
-							$attribs[$_field] = htmlspecialchars($this->attributes[$_field]);
+							$attribs[$_field] = oldHtmlspecialchars($this->attributes[$_field]);
 						}
 				}
 			}

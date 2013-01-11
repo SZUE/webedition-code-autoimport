@@ -183,7 +183,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 		<td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>
 	</tr>
 	<tr>
-		<td colspan="3" class="defaultfont"><textarea name="code" rows="8" cols="40" style="width:430px;height:300px">' . htmlspecialchars($code) . '</textarea></td>
+		<td colspan="3" class="defaultfont"><textarea name="code" rows="8" cols="40" style="width:430px;height:300px">' . oldHtmlspecialchars($code) . '</textarea></td>
 	</tr>
 ';
 		}

@@ -860,20 +860,20 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$internalName = "_$attribName";
 			switch($internalName){
 				case "_onMouseDown":
-					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 				case "_onMouseUp":
-					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 				case "_onMouseOut":
-					$attribs .= ' ' . htmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}"';
+					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}"';
 					break;
 			}
 			if(isset($this->$internalName) && $this->$internalName !== ''){
-				$attribs .= ' ' . htmlspecialchars($attribName) . '="' .
+				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' .
 					($internalName === "_onClick" ?
-						'if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . htmlspecialchars($this->$internalName) . '}' :
-						htmlspecialchars($this->$internalName)) .
+						'if(we_ui_controls_Button.up(&quot;' . $this->getId() . '&quot;)) {' . oldHtmlspecialchars($this->$internalName) . '}' :
+						oldHtmlspecialchars($this->$internalName)) .
 					'"';
 			}
 		}

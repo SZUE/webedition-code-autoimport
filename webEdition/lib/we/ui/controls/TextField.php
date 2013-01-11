@@ -119,7 +119,7 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 		if($this->getOnFocus() !== ''){
 			$onFocus .= $this->getOnFocus();
 		}
-		return ' onFocus="' . htmlspecialchars($onFocus) . '"';
+		return ' onFocus="' . oldHtmlspecialchars($onFocus) . '"';
 	}
 
 	/**
@@ -132,7 +132,7 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 		if($this->getOnBlur() !== ''){
 			$onBlur .= $this->getOnBlur();
 		}
-		return ' onBlur="' . htmlspecialchars($onBlur) . '"';
+		return ' onBlur="' . oldHtmlspecialchars($onBlur) . '"';
 	}
 
 	/**

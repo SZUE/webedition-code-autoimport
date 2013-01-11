@@ -167,7 +167,7 @@ class weSpecialCharDialog extends weDialog{
 			} else if((($i % 16) == 0) && ($i != 0)){
 				$table .= "</tr><tr>";
 			}
-			$table .= '<td align="center" style="font-size:14px;border:black solid 1px;width:30px;height:25px;" class="defaultfont" title="' . htmlspecialchars($chars[$i]) . '" onclick="fillField(\'' . htmlspecialchars($chars[$i]) . '\')">' . $chars[$i] . '</td>';
+			$table .= '<td align="center" style="font-size:14px;border:black solid 1px;width:30px;height:25px;" class="defaultfont" title="' . oldHtmlspecialchars($chars[$i]) . '" onclick="fillField(\'' . oldHtmlspecialchars($chars[$i]) . '\')">' . $chars[$i] . '</td>';
 
 			if($i == (count($chars) - 1)){
 				$table .= '</tr>';

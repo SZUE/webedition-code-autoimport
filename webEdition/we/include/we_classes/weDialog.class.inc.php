@@ -235,7 +235,7 @@ class weDialog{
 
 		foreach($this->args as $k => $v){
 			if(!in_array($k, $this->changeableArgs)){
-				$hiddenArgs .= '<input type="hidden" name="we_dialog_args[' . $k . ']" value="' . htmlspecialchars($v) . '" />';
+				$hiddenArgs .= '<input type="hidden" name="we_dialog_args[' . $k . ']" value="' . oldHtmlspecialchars($v) . '" />';
 			}
 		}
 		return $hiddenArgs;
@@ -378,7 +378,7 @@ class weDialog{
 				$clSelect->selectOption($this->args["class"]);
 			}
 
-			return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . htmlspecialchars($classesCSV) . '" />';
+			return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';
 	}
 
 }

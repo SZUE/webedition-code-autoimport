@@ -72,7 +72,7 @@ if(!empty($res['ok'])){
                         <ul>';
 
 		foreach($res['ok'] as $ok){
-			$tbl .= '<li>' . htmlspecialchars($ok) . '</li>';
+			$tbl .= '<li>' . oldHtmlspecialchars($ok) . '</li>';
 		}
 
 		$tbl .= '</ul>
@@ -87,7 +87,7 @@ if(!empty($res['ok'])){
                         <ul>';
 
 		foreach($res['failed'] as $failed){
-			$tbl .= '<li>' . htmlspecialchars($failed) . '</li>';
+			$tbl .= '<li>' . oldHtmlspecialchars($failed) . '</li>';
 		}
 
 		$tbl .= '</ul>

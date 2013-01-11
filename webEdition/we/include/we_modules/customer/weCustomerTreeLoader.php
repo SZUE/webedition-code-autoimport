@@ -94,7 +94,7 @@ class weCustomerTreeLoader{
 					$fileds[strtolower($k)] = $v;
 			}
 
-			$fileds["text"] = htmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text"));
+			$fileds["text"] = oldHtmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text"));
 			$items[] = array_merge($fileds, $typ);
 		}
 
@@ -291,7 +291,7 @@ class weCustomerTreeLoader{
 						"id" => $db->f("ID"),
 						"parentid" => str_replace("\'", "*****quot*****", $gname),
 						"path" => "",
-						"text" => htmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text")),
+						"text" => oldHtmlspecialchars(trim($tt) != "" ? $tt : $db->f("Text")),
 						"icon" => $db->f("Icon"),
 						"isfolder" => $db->f("IsFolder"),
 						"typ" => "item",

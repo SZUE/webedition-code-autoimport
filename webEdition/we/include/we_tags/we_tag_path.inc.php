@@ -27,7 +27,7 @@ function we_tag_path($attribs){
 	$field = weTag_getAttribute("field", $attribs);
 	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
 	$index = weTag_getAttribute("index", $attribs);
-	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute("oldHtmlspecialchars", $attribs, false, true);
 	$fieldforfolder = weTag_getAttribute("fieldforfolder", $attribs, false, true);
 	$docAttr = weTag_getAttribute("doc", $attribs);
 	$sep = weTag_getAttribute("separator", $attribs, "/");
@@ -55,7 +55,7 @@ function we_tag_path($attribs){
 		if(!$show){
 			$show = $doc->Text;
 		}
-		$path = $htmlspecialchars ? htmlspecialchars($sep . $show) : $sep . $show;
+		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID) {
 		$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder = 0 AND (' . $q . ') AND (Published > 0 AND IsSearchable = 1)');
@@ -81,7 +81,7 @@ function we_tag_path($attribs){
 			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "Text", $db);
 		}
 		$pID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID), "ParentID", $db);
-		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
+		$path = (!$pID && $hidehome ? '' : $sep) . $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 	}
 	
 	if($hidehome){
@@ -100,5 +100,5 @@ function we_tag_path($attribs){
 		$link_pre = $link_post = '';
 		$show = $home;
 	}
-	return $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
+	return $link_pre . ($oldHtmlspecialchars ? oldHtmlspecialchars($show) : $show) . $link_post . $path;
 }

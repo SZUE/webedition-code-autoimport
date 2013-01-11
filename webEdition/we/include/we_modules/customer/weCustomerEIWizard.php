@@ -846,7 +846,7 @@ class weCustomerEIWizard{
 			$we_fields->addOption("", g_l('modules_customer', '[any]'));
 
 			foreach(array_keys($nodes) as $node){
-				$we_fields->addOption(htmlspecialchars(str_replace(" ", "", $node)), htmlspecialchars($node));
+				$we_fields->addOption(oldHtmlspecialchars(str_replace(" ", "", $node)), oldHtmlspecialchars($node));
 				if(isset($field_mappings[$record])){
 					if($node == $field_mappings[$record])
 						$we_fields->selectOption($node);
@@ -914,7 +914,7 @@ class weCustomerEIWizard{
 			if($log){
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), 1, "550"));
-				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), htmlspecialchars($log)));
+				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), oldHtmlspecialchars($log)));
 				unlink(TEMP_PATH . "/$tmpdir/$tmpdir.log");
 			}
 		}
@@ -1693,7 +1693,7 @@ class weCustomerEIWizard{
 		$select = new we_html_select(array("name" => $name . "_select", "onChange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
 		$select->addOption("", "");
 		foreach($values as $k => $v)
-			$select->addOption(htmlspecialchars($k), htmlspecialchars($v));
+			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "250"), 1, 3);
 

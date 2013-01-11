@@ -49,8 +49,8 @@ $htmlPage->addJSFile(LIB_DIR . 'we/app/js/EditorHeader.js');
 
 $htmlPage->setBodyAttributes(array('class' => 'weEditorHeader', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()'));
 
-$titlePathGroup = htmlspecialchars($this->model->IsFolder ? $translate->_('Folder') : $translate->_('Entry'));
-$titlePathName = htmlspecialchars($this->model->Text);
+$titlePathGroup = oldHtmlspecialchars($this->model->IsFolder ? $translate->_('Folder') : $translate->_('Entry'));
+$titlePathName = oldHtmlspecialchars($this->model->Text);
 
 $htmlPage->addHTML(
 	'<div id="main">

@@ -28,17 +28,17 @@ function we_parse_tag_title($attribs, $content){
 } 
 
 function we_tag_title($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+	$oldHtmlspecialchars = weTag_getAttribute('oldHtmlspecialchars', $attribs, false, true);
 	$prefix=weTag_getAttribute('prefix', $attribs);
 	$suffix=weTag_getAttribute('suffix', $attribs);
 	$delimiter=weTag_getAttribute('delimiter', $attribs);
 
-	$attribs = removeAttribs($attribs, array('htmlspecialchars','prefix','suffix','delimiter'));
+	$attribs = removeAttribs($attribs, array('oldHtmlspecialchars','prefix','suffix','delimiter'));
 	if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition) { //	normally meta tags are edited on property page
 		return '<?php	$GLOBALS["meta"]["Title"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	} else {
 		$title = ($GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : $content);
 		$title = ($prefix!=''?$prefix.($title!=''?$delimiter:''):'').$title.($suffix!=''?($title!=''?$delimiter:($prefix!=''?$delimiter:'')).$suffix:'');
-		return getHtmlTag('title',$attribs,$htmlspecialchars ? htmlspecialchars(strip_tags($title)) : strip_tags($title),true) . "\n";
+		return getHtmlTag('title',$attribs,$oldHtmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title),true) . "\n";
 	}
 }

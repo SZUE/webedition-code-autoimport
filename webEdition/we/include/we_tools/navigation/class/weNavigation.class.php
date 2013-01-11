@@ -867,7 +867,7 @@ class weNavigation extends weModelBase{
 				'<',
 				'>',
 				'&',
-				), htmlspecialchars($string));
+				), oldHtmlspecialchars($string));
 	}
 
 	static public function getNavCondition($id, $table){
